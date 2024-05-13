@@ -145,7 +145,7 @@ export default class PrivateKey
     try {
       const signature = await pk.signTypedData(JSON.parse(eip712json))
 
-      return Buffer.from(signature).toString('hex')
+      return `0x${Buffer.from(signature).toString('hex')}`
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -208,7 +208,7 @@ export default class PrivateKey
     try {
       const signature = await pk.signHashed(Buffer.from(toUtf8(data), 'utf-8'))
 
-      return Buffer.from(signature).toString('base64')
+      return `0x${Buffer.from(signature).toString('base64')}`
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
