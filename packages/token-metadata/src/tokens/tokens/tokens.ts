@@ -3789,4 +3789,17 @@ export default {
       },
     ],
   },
+
+  ezETH: {
+    name: 'Renzo Restaked ETH',
+    logo: 'ezeth.webp',
+    symbol: 'ezETH',
+    coinGeckoId: 'renzo-restaked-eth',
+
+    erc20: {
+      symbol: 'ezETH',
+      decimals: 18,
+      address: '0xbf5495Efe5DB9ce00f80364C8B423567e58d2110',
+    },
+  },
 } as Record<string, TokenMetaBase>
