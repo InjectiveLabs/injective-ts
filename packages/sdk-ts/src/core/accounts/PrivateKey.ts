@@ -258,7 +258,54 @@ export class PrivateKey {
       ? publicKey
       : `0x${publicKey}`
 
-    return publicKeyInHex === recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKey = recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKeyInHex = recoveredPubKey.startsWith('0x')
+      ? recoveredPubKey
+      : `0x${recoveredPubKey}`
+
+    /** uncompressed/compressed key */
+    if (publicKeyInHex.length !== recoveredPubKeyInHex.length) {
+      return (
+        recoveredPubKeyInHex.substring(0, publicKeyInHex.length) ===
+        publicKeyInHex
+      )
+    }
+
+    return publicKeyInHex === recoveredPubKeyInHex
+  }
+
+  /**
+   * Verify signature using EIP712 typed data
+   * and the publicKey
+   *
+   * (params are passed as an object)
+   *
+   * @param {string} signature: the signature to verify in hex
+   * @param {any} eip712: the EIP712 typed data to verify against
+   * @param {string} publicKey: the public key to verify against in hex
+   * */
+  public verifyThisPkSignature({
+    signature,
+    eip712,
+  }: {
+    signature: string /* in hex */
+    eip712: any
+  }): boolean {
+    const publicKeyInHex = `0x${this.toPublicKey().toHex()}`
+    const recoveredPubKey = recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKeyInHex = recoveredPubKey.startsWith('0x')
+      ? recoveredPubKey
+      : `0x${recoveredPubKey}`
+
+    /** uncompressed/compressed key */
+    if (publicKeyInHex.length !== recoveredPubKeyInHex.length) {
+      return (
+        recoveredPubKeyInHex.substring(0, publicKeyInHex.length) ===
+        publicKeyInHex
+      )
+    }
+
+    return publicKeyInHex === recoveredPubKeyInHex
   }
 
   /**

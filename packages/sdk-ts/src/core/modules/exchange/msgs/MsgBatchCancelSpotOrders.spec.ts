@@ -9,13 +9,13 @@ const params: MsgBatchCancelSpotOrders['params'] = {
       marketId: mockFactory.injUsdtSpotMarket.marketId,
       orderHash: mockFactory.orderHash,
       subaccountId: mockFactory.subaccountId,
-      cid: '',
+      cid: 'order-123',
     },
     {
       marketId: mockFactory.injUsdtSpotMarket.marketId,
       orderHash: mockFactory.orderHash2,
       subaccountId: mockFactory.subaccountId,
-      cid: '',
+      cid: 'order-124',
     },
   ],
 }
@@ -74,6 +74,7 @@ describe('MsgBatchCancelSpotOrders', () => {
         { name: 'subaccount_id', type: 'string' },
         { name: 'order_hash', type: 'string' },
         { name: 'order_mask', type: 'int32' },
+        { name: 'cid', type: 'string' },
       ],
       MsgValue: [
         { name: 'sender', type: 'string' },
