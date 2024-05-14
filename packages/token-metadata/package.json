@@ -5,9 +5,10 @@
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
-    "name": "Bojan Angjelkoski",
-    "email": "bojan@injectivelabs.org"
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
   },
+  "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [

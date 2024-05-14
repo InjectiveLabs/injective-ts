@@ -4,9 +4,10 @@
   "description": "Token Utils is a package for querying different data about tokens",
   "sideEffects": false,
   "author": {
-    "name": "Bojan Angjelkoski",
-    "email": "bojan@injectivelabs.org"
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
   },
+  "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [

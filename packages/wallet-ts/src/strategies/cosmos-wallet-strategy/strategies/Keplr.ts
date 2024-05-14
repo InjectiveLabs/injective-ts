@@ -5,7 +5,6 @@ import {
   TxResponse,
   waitTxBroadcasted,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -20,6 +19,7 @@ import { KeplrWallet } from '../../../utils/wallets/keplr'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { SendTransactionOptions } from '../../wallet-strategy'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
 
 export default class Keplr implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId

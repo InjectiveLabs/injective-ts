@@ -11,7 +11,6 @@ import {
   TxResponse,
   waitTxBroadcasted,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -21,6 +20,7 @@ import { LeapWallet } from '../../../utils/wallets/leap'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 import { SendTransactionOptions } from '../../wallet-strategy'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
 
 export default class Leap implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
