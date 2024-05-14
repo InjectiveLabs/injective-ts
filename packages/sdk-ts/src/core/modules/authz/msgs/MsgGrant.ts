@@ -6,12 +6,16 @@ import {
   CosmosAuthzV1Beta1Authz,
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
-
-const genericAuthorizationType = '/cosmos.authz.v1beta1.GenericAuthorization'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { getGenericAuthorizationFromMessageType } from '../utils'
 
 export declare namespace MsgGrant {
   export interface Params {
-    messageType: string
+    /**
+     * @deprecated Use `authorization` instead - for generic authorizations, use `getGenericAuthorizationFromMessageType` function
+     */
+    messageType?: string
+    authorization?: GoogleProtobufAny.Any
     grantee: string
     granter: string
     expiration?: number
@@ -38,21 +42,20 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     const { params } = this
 
     const timestamp = this.getTimestamp()
-    const genericAuthorization =
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.create()
-    genericAuthorization.msg = params.messageType
-
-    const authorization = GoogleProtobufAny.Any.create()
-    authorization.typeUrl = genericAuthorizationType
-    authorization.value = Buffer.from(
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.encode(
-        genericAuthorization,
-      ).finish(),
-    )
-
     const grant = CosmosAuthzV1Beta1Authz.Grant.create()
-    grant.expiration = new Date(Number(timestamp.seconds) * 1000)
+
+    if (!params.authorization && !params.messageType) {
+      throw new GeneralException(
+        new Error('Either authorization or messageType must be provided'),
+      )
+    }
+
+    const authorization =
+      params.authorization ||
+      getGenericAuthorizationFromMessageType(params.messageType as string)
+
     grant.authorization = authorization
+    grant.expiration = new Date(Number(timestamp.seconds) * 1000)
 
     const message = CosmosAuthzV1Beta1Tx.MsgGrant.create()
     message.grantee = params.grantee

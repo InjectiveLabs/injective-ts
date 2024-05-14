@@ -5,6 +5,7 @@ import {
 
 export type Grant = CosmosAuthzV1Beta1Authz.Grant
 export type GrantAuthorization = CosmosAuthzV1Beta1Authz.GrantAuthorization
+export type GenericAuthorization = CosmosAuthzV1Beta1Authz.GenericAuthorization
 
 export type CreateSpotLimitOrderAuthz =
   InjectiveExchangeV1Beta1Authz.CreateSpotLimitOrderAuthz
@@ -27,3 +28,23 @@ export type CancelDerivativeOrderAuthz =
   InjectiveExchangeV1Beta1Authz.CancelDerivativeOrderAuthz
 export type BatchCancelDerivativeOrdersAuthz =
   InjectiveExchangeV1Beta1Authz.BatchCancelDerivativeOrdersAuthz
+
+export interface GrantWithDecodedAuthorization
+  extends Omit<Grant, 'authorization'> {
+  authorization:
+    | GenericAuthorization
+    | undefined /** Todo: add more authorizations */
+  authorizationType: string
+}
+
+export interface GrantAuthorizationWithDecodedAuthorization
+  extends Omit<GrantAuthorization, 'authorization'> {
+  authorization:
+    | GenericAuthorization
+    | undefined /** Todo: add more authorizations */
+  authorizationType: string
+}
+
+export enum GrantAuthorizationType {
+  GenericAuthorization = 'GenericAuthorization',
+}

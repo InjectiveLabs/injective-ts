@@ -5,25 +5,37 @@ import {
   CosmosAuthzV1Beta1Authz,
   CosmosAuthzV1Beta1Query,
 } from '@injectivelabs/core-proto-ts'
+import {
+  GrantAuthorizationWithDecodedAuthorization,
+  GrantWithDecodedAuthorization,
+} from '../types'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcAuthZTransformer {
-  static grpcGrantToGrant(grant: CosmosAuthzV1Beta1Authz.Grant) {
+  static grpcGrantToGrant(
+    grant: CosmosAuthzV1Beta1Authz.Grant,
+  ): GrantWithDecodedAuthorization {
+    const authorization = decodeAuthorizationNoThrow(grant.authorization)
+
     return {
-      authorization: decodeAuthorizationNoThrow(grant.authorization),
+      authorization: authorization?.authorization,
+      authorizationType: authorization?.authorizationType || '',
       expiration: grant.expiration,
     }
   }
 
   static grpcGrantAuthorizationToGrantAuthorization(
     grant: CosmosAuthzV1Beta1Authz.GrantAuthorization,
-  ) {
+  ): GrantAuthorizationWithDecodedAuthorization {
+    const authorization = decodeAuthorizationNoThrow(grant.authorization)
+
     return {
       granter: grant.granter,
       grantee: grant.grantee,
-      authorization: decodeAuthorizationNoThrow(grant.authorization),
+      authorization: authorization?.authorization,
+      authorizationType: authorization?.authorizationType || '',
       expiration: grant.expiration,
     }
   }
@@ -63,9 +75,12 @@ export class ChainGrpcAuthZTransformer {
 const decodeAuthorization = (authorization: GoogleProtobufAny.Any) => {
   switch (authorization.typeUrl) {
     case '/cosmos.authz.v1beta1.GenericAuthorization':
-      return CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(
-        authorization.value,
-      )
+      return {
+        authorization: CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(
+          authorization.value,
+        ),
+        authorizationType: '/cosmos.authz.v1beta1.GenericAuthorization',
+      }
     default:
       throw new GeneralException(new Error('Unsupported authorization type'))
   }
