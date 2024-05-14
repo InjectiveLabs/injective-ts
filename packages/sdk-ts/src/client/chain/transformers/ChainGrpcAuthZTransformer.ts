@@ -1,3 +1,4 @@
+import { GeneralException } from '@injectivelabs/exceptions'
 import { grpcPaginationToPagination } from '../../../utils/pagination'
 import {
   GoogleProtobufAny,
@@ -11,7 +12,7 @@ import {
 export class ChainGrpcAuthZTransformer {
   static grpcGrantToGrant(grant: CosmosAuthzV1Beta1Authz.Grant) {
     return {
-      authorization: decodeAuthorization(grant.authorization),
+      authorization: decodeAuthorizationNoThrow(grant.authorization),
       expiration: grant.expiration,
     }
   }
@@ -22,7 +23,7 @@ export class ChainGrpcAuthZTransformer {
     return {
       granter: grant.granter,
       grantee: grant.grantee,
-      authorization: decodeAuthorization(grant.authorization),
+      authorization: decodeAuthorizationNoThrow(grant.authorization),
       expiration: grant.expiration,
     }
   }
@@ -59,15 +60,25 @@ export class ChainGrpcAuthZTransformer {
   }
 }
 
-const decodeAuthorization = (authorization?: GoogleProtobufAny.Any) => {
-  if (!authorization) {
-    return ''
-  }
-
+const decodeAuthorization = (authorization: GoogleProtobufAny.Any) => {
   switch (authorization.typeUrl) {
     case '/cosmos.authz.v1beta1.GenericAuthorization':
-      return Buffer.from(authorization.value).toString('utf-8')
+      return CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(
+        authorization.value,
+      )
     default:
-      return Buffer.from(authorization.value).toString('utf-8')
+      throw new GeneralException(new Error('Unsupported authorization type'))
+  }
+}
+
+const decodeAuthorizationNoThrow = (authorization?: GoogleProtobufAny.Any) => {
+  if (!authorization) {
+    return undefined
+  }
+
+  try {
+    return decodeAuthorization(authorization)
+  } catch {
+    return undefined
   }
 }
