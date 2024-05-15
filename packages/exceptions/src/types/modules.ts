@@ -26,6 +26,7 @@ export enum ChainErrorModule {
 export enum IndexerErrorModule {
   Account = 'indexer-account',
   Auction = 'indexer-auction',
+  Archiver = 'indexer-archiver',
   Derivatives = 'indexer-derivatives',
   Explorer = 'indexer-explorer',
   InsuranceFund = 'indexer-insurance-fund',
