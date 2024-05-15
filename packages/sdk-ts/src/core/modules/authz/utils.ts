@@ -25,7 +25,9 @@ export const getGenericAuthorizationFromMessageType = (
 
   const genericAuthorization =
     CosmosAuthzV1Beta1Authz.GenericAuthorization.create()
-  genericAuthorization.msg = messageTypeUrl
+  genericAuthorization.msg = messageTypeUrl.startsWith('/')
+    ? messageTypeUrl
+    : `/${messageTypeUrl}`
 
   const authorization = GoogleProtobufAny.Any.create()
   authorization.typeUrl = genericAuthorizationType
