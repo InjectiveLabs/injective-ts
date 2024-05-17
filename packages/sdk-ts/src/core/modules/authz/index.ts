@@ -4,3 +4,4 @@ import MsgAuthzExec from './msgs/MsgExec'
 
 export { MsgGrant, MsgRevoke, MsgAuthzExec }
 export * from './utils'
+export * from './types'
