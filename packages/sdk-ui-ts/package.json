@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ui-ts",
   "description": "SDK in TypeScript for building Injective UI applications in a browser environment.",
-  "version": "1.14.11-beta.92",
+  "version": "1.14.11-beta.93",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
@@ -41,7 +41,7 @@
     "@injectivelabs/contracts": "^1.14.11-beta.11",
     "@injectivelabs/exceptions": "^1.14.11-beta.7",
     "@injectivelabs/networks": "^1.14.11-beta.10",
-    "@injectivelabs/sdk-ts": "^1.14.11-beta.70",
+    "@injectivelabs/sdk-ts": "^1.14.11-beta.71",
     "@injectivelabs/token-metadata": "^1.14.11-beta.49",
     "@injectivelabs/token-utils": "^1.14.11-beta.9",
     "@injectivelabs/ts-types": "^1.14.11-beta.3",
