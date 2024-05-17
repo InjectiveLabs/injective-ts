@@ -12,6 +12,7 @@ export class IndexerGrpcArchiverTransformer {
   static grpcHistoricalBalanceToHistoricalBalance(
     historicalBalance: InjectiveArchiverRPC.HistoricalBalance,
   ): HistoricalBalance {
+    console.log('historicalBalance', historicalBalance)
     return {
       t: historicalBalance.t,
       v: historicalBalance.v,
@@ -39,12 +40,13 @@ export class IndexerGrpcArchiverTransformer {
   static grpcHistoricalBalanceResponseToHistoricalBalances(
     response: InjectiveArchiverRPC.BalanceResponse,
   ): HistoricalBalance {
+    console.log('response', response)
     if (!response.historicalBalance) {
       return { t: [], v: [] }
     }
 
-    return IndexerGrpcArchiverTransformer.grpcHistoricalBalanceResponseToHistoricalBalances(
-      response,
+    return IndexerGrpcArchiverTransformer.grpcHistoricalBalanceToHistoricalBalance(
+      response.historicalBalance,
     )
   }
 
