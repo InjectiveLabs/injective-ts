@@ -8,7 +8,7 @@ import {
 } from '@injectivelabs/core-proto-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { getGenericAuthorizationFromMessageType } from '../utils'
-import { GrantAuthorizationType } from 'packages/sdk-ts/dist/cjs'
+import { GrantAuthorizationType } from './../types'
 
 export declare namespace MsgGrant {
   export interface Params {

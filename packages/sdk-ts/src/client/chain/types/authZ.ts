@@ -44,7 +44,3 @@ export interface GrantAuthorizationWithDecodedAuthorization
     | undefined /** Todo: add more authorizations */
   authorizationType: string
 }
-
-export enum GrantAuthorizationType {
-  GenericAuthorization = 'GenericAuthorization',
-}
