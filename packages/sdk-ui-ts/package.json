@@ -36,6 +36,8 @@
     "get-ibc-tokens": "ts-node ./src/services/ibc/tokens.ts"
   },
   "dependencies": {
+    "@ensdomains/ens-validation": "^0.1.0",
+    "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@injectivelabs/contracts": "^1.14.11-beta.11",
     "@injectivelabs/exceptions": "^1.14.11-beta.7",
     "@injectivelabs/networks": "^1.14.11-beta.10",

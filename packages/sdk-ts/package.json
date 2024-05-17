@@ -36,8 +36,6 @@
     "@cosmjs/amino": "^0.32.3",
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
-    "@ensdomains/ens-validation": "^0.1.0",
-    "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/bytes": "^5.7.0",
     "@injectivelabs/core-proto-ts": "^0.0.21",
     "@injectivelabs/dmm-proto-ts": "1.0.20",

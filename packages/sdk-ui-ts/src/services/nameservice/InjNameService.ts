@@ -7,14 +7,13 @@ import {
   getInjNameReverseResolverContractForNetwork,
 } from '@injectivelabs/networks'
 import {
-  nameToNode,
   QueryInjName,
-  normalizeName,
   ChainGrpcWasmApi,
   QueryResolverAddress,
   QueryInjectiveAddress,
   InjNameServiceQueryTransformer,
 } from '@injectivelabs/sdk-ts'
+import { nameToNode, normalizeName } from './utils'
 
 export class InjNameService {
   protected client: ChainGrpcWasmApi
