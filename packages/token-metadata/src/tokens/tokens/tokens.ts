@@ -3817,4 +3817,19 @@ export default {
       },
     ],
   },
+
+  SMELLY: {
+    name: 'Durian Token',
+    logo: 'smelly.png',
+    symbol: 'SMELLY',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj10pz3xq7zf8xudqxaqealgyrnfk66u3c99ud5m2',
+        symbol: 'SMELLY',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
