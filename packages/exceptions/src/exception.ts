@@ -90,8 +90,8 @@ export abstract class ConcreteException extends Error implements Exception {
 
   public parseContext(errorContext?: ErrorContext) {
     const { contextModule, type, code, context } = errorContext || {
-      contextModule: '',
-      context: '',
+      contextModule: 'Unknown',
+      context: 'Unknown',
       code: UnspecifiedErrorCode,
       type: ErrorType.Unspecified,
     }
