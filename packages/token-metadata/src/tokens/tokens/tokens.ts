@@ -3817,4 +3817,18 @@ export default {
       },
     ],
   },
+
+  SHROOM: {
+    name: 'shroomin',
+    symbol: 'SHROOM',
+    decimals: 18,
+    logo: 'shroom.jpg',
+    coinGeckoId: '',
+
+    cw20: {
+      decimals: 18,
+      address: 'inj1300xcg9naqy00fujsr9r8alwk7dh65uqu87xm8',
+      tokenType: TokenType.Cw20,
+    },
+  },
 } as Record<string, TokenMetaBase>
