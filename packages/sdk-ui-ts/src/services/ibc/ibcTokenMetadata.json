@@ -161,7 +161,7 @@
   },
   {
     "name": "1K",
-    "denom": "inj1sx8qf8upzccasf7ylv2adsek8nwzgwu944tqkd",
+    "denom": "inj1syak43khmndn5t0f67kmmdzjzuf0cz3tnhm6wd",
     "logo": "unknown.png",
     "symbol": "1K",
     "decimals": 6,
@@ -169,7 +169,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1sx8qf8upzccasf7ylv2adsek8nwzgwu944tqkd",
+      "hash": "inj1syak43khmndn5t0f67kmmdzjzuf0cz3tnhm6wd",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -181,7 +181,7 @@
   },
   {
     "name": "1K",
-    "denom": "inj1syak43khmndn5t0f67kmmdzjzuf0cz3tnhm6wd",
+    "denom": "inj1sx8qf8upzccasf7ylv2adsek8nwzgwu944tqkd",
     "logo": "unknown.png",
     "symbol": "1K",
     "decimals": 6,
@@ -189,7 +189,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1syak43khmndn5t0f67kmmdzjzuf0cz3tnhm6wd",
+      "hash": "inj1sx8qf8upzccasf7ylv2adsek8nwzgwu944tqkd",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -601,26 +601,6 @@
   },
   {
     "name": "aligator",
-    "denom": "inj1t6uqhmlgpju7265aelawdkvn3xqnq3jv8j60l7",
-    "logo": "unknown.png",
-    "symbol": "ALIGATOR",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1t6uqhmlgpju7265aelawdkvn3xqnq3jv8j60l7",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ALIGATOR",
-      "baseDenom": "ALIGATOR",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "aligator",
     "denom": "aligator",
     "logo": "unknown.png",
     "symbol": "aligator",
@@ -635,6 +615,26 @@
       "decimals": 6,
       "symbol": "aligator",
       "baseDenom": "aligator",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "aligator",
+    "denom": "inj1t6uqhmlgpju7265aelawdkvn3xqnq3jv8j60l7",
+    "logo": "unknown.png",
+    "symbol": "ALIGATOR",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1t6uqhmlgpju7265aelawdkvn3xqnq3jv8j60l7",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ALIGATOR",
+      "baseDenom": "ALIGATOR",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -1021,26 +1021,6 @@
   },
   {
     "name": "APE",
-    "denom": "peggy0x4d224452801ACEd8B2F0aebE155379bb5D594381",
-    "logo": "https://raw.githubusercontent.com/astroport-fi/astroport-token-lists/56abf334f3c349ce85983be4f4054ee6178c8ff1/img/ape.png",
-    "symbol": "APE",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "peggy0x4d224452801ACEd8B2F0aebE155379bb5D594381",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "APE",
-      "baseDenom": "APE",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "APE",
     "denom": "factory/inj1qx7qnj9wwdrxc9e239ycshqnqgapdh7s44vez7/APE",
     "logo": "unknown.png",
     "symbol": "APE",
@@ -1053,6 +1033,26 @@
       "path": "",
       "channelId": "",
       "decimals": 6,
+      "symbol": "APE",
+      "baseDenom": "APE",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "APE",
+    "denom": "peggy0x4d224452801ACEd8B2F0aebE155379bb5D594381",
+    "logo": "https://raw.githubusercontent.com/astroport-fi/astroport-token-lists/56abf334f3c349ce85983be4f4054ee6178c8ff1/img/ape.png",
+    "symbol": "APE",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "peggy0x4d224452801ACEd8B2F0aebE155379bb5D594381",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
       "symbol": "APE",
       "baseDenom": "APE",
       "isNative": false,
@@ -1275,6 +1275,26 @@
       "decimals": 8,
       "symbol": "APT",
       "baseDenom": "APT",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Arbitrum",
+    "denom": "ibc/8CF0E4184CA3105798EDB18CAA3981ADB16A9951FE9B05C6D830C746202747E1",
+    "logo": "unknown.png",
+    "symbol": "ARB",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "8CF0E4184CA3105798EDB18CAA3981ADB16A9951FE9B05C6D830C746202747E1",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "ARB",
+      "baseDenom": "ARB",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -1541,15 +1561,15 @@
   },
   {
     "name": "ASH",
-    "denom": "factory/inj1uecmky6hkcexz86hqgrl5p5krg8kl4gfldjkrp/ASH",
-    "logo": "unknown.png",
+    "denom": "ibc/EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/ash.svg",
     "symbol": "ASH",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1uecmky6hkcexz86hqgrl5p5krg8kl4gfldjkrp/ASH",
+      "hash": "EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -1561,15 +1581,15 @@
   },
   {
     "name": "ASH",
-    "denom": "ibc/EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/ash.svg",
+    "denom": "factory/inj1uecmky6hkcexz86hqgrl5p5krg8kl4gfldjkrp/ASH",
+    "logo": "unknown.png",
     "symbol": "ASH",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "EED40547772504DF629EFEC08892E689CD14498B1C0AD766CD5075BBBEE3D808",
+      "hash": "factory/inj1uecmky6hkcexz86hqgrl5p5krg8kl4gfldjkrp/ASH",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -1941,6 +1961,26 @@
   },
   {
     "name": "ATOM",
+    "denom": "ibc/377F82FD1E4F6408B1CB7C8BFF9134A1F2C5D5E5CC2760BAD972AF0F7F6D4675",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
+    "symbol": "ATOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "377F82FD1E4F6408B1CB7C8BFF9134A1F2C5D5E5CC2760BAD972AF0F7F6D4675",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "ATOM",
+      "baseDenom": "ATOM",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "ATOM",
     "denom": "inj1ljrzvjuupmglq62frdcywzlc9a90xrf3vrcp02",
     "logo": "unknown.png",
     "symbol": "ATOM",
@@ -1970,26 +2010,6 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "8D311D92BCD4E87F145DEB9DDA339416DEF7E13571D92A3521CAB0BF62760FBE",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ATOM",
-      "baseDenom": "ATOM",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "ATOM",
-    "denom": "ibc/377F82FD1E4F6408B1CB7C8BFF9134A1F2C5D5E5CC2760BAD972AF0F7F6D4675",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
-    "symbol": "ATOM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "377F82FD1E4F6408B1CB7C8BFF9134A1F2C5D5E5CC2760BAD972AF0F7F6D4675",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -2241,7 +2261,7 @@
   },
   {
     "name": "BABY",
-    "denom": "factory/inj1vrktrmvtxkzd52kk45ptc5m53zncm56d278qza/GINGERDOG",
+    "denom": "factory/inj1vrktrmvtxkzd52kk45ptc5m53zncm56d278qza/BABY",
     "logo": "unknown.png",
     "symbol": "BABY",
     "decimals": 6,
@@ -2249,7 +2269,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1vrktrmvtxkzd52kk45ptc5m53zncm56d278qza/GINGERDOG",
+      "hash": "factory/inj1vrktrmvtxkzd52kk45ptc5m53zncm56d278qza/BABY",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -2261,7 +2281,7 @@
   },
   {
     "name": "BABY",
-    "denom": "factory/inj1vrktrmvtxkzd52kk45ptc5m53zncm56d278qza/BABY",
+    "denom": "factory/inj1vrktrmvtxkzd52kk45ptc5m53zncm56d278qza/GINGERDOG",
     "logo": "unknown.png",
     "symbol": "BABY",
     "decimals": 6,
@@ -2269,7 +2289,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1vrktrmvtxkzd52kk45ptc5m53zncm56d278qza/BABY",
+      "hash": "factory/inj1vrktrmvtxkzd52kk45ptc5m53zncm56d278qza/GINGERDOG",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -2621,7 +2641,7 @@
   },
   {
     "name": "BabyInjective (Wormhole)",
-    "denom": "inj1dvflqrkkaxped5cmks92q6vmtzx75cge9gvvap",
+    "denom": "inj1llatk73a2935vky6nzv78w80ff5v3etqadzv76",
     "logo": "unknown.png",
     "symbol": "BABYINJ",
     "decimals": 8,
@@ -2629,7 +2649,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1dvflqrkkaxped5cmks92q6vmtzx75cge9gvvap",
+      "hash": "inj1llatk73a2935vky6nzv78w80ff5v3etqadzv76",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -2641,7 +2661,7 @@
   },
   {
     "name": "BabyInjective (Wormhole)",
-    "denom": "inj1llatk73a2935vky6nzv78w80ff5v3etqadzv76",
+    "denom": "inj1dvflqrkkaxped5cmks92q6vmtzx75cge9gvvap",
     "logo": "unknown.png",
     "symbol": "BABYINJ",
     "decimals": 8,
@@ -2649,7 +2669,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1llatk73a2935vky6nzv78w80ff5v3etqadzv76",
+      "hash": "inj1dvflqrkkaxped5cmks92q6vmtzx75cge9gvvap",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -2861,20 +2881,20 @@
   },
   {
     "name": "Baby Ninja",
-    "denom": "factory/inj1hs5chngjfhjwc4fsajyr50qfu8tjqsqrj9rf29/baby-ninja",
+    "denom": "factory/inj1h3y27yhly6a87d95937jztc3tupl3nt8fg3lcp/BABYNINJA",
     "logo": "unknown.png",
-    "symbol": "BABY NINJA",
+    "symbol": "BABYNINJA",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1hs5chngjfhjwc4fsajyr50qfu8tjqsqrj9rf29/baby-ninja",
+      "hash": "factory/inj1h3y27yhly6a87d95937jztc3tupl3nt8fg3lcp/BABYNINJA",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "BABY NINJA",
-      "baseDenom": "BABY NINJA",
+      "symbol": "BABYNINJA",
+      "baseDenom": "BABYNINJA",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -2901,7 +2921,27 @@
   },
   {
     "name": "Baby Ninja",
-    "denom": "factory/inj1h3y27yhly6a87d95937jztc3tupl3nt8fg3lcp/BABYNINJA",
+    "denom": "factory/inj1hs5chngjfhjwc4fsajyr50qfu8tjqsqrj9rf29/baby-ninja",
+    "logo": "unknown.png",
+    "symbol": "BABY NINJA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1hs5chngjfhjwc4fsajyr50qfu8tjqsqrj9rf29/baby-ninja",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BABY NINJA",
+      "baseDenom": "BABY NINJA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "BABYNINJA",
+    "denom": "factory/inj12lv4gm863c4pj0utr7zgzp46d6p86krp8stqgp/BABYNINJA",
     "logo": "unknown.png",
     "symbol": "BABYNINJA",
     "decimals": 6,
@@ -2909,7 +2949,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1h3y27yhly6a87d95937jztc3tupl3nt8fg3lcp/BABYNINJA",
+      "hash": "factory/inj12lv4gm863c4pj0utr7zgzp46d6p86krp8stqgp/BABYNINJA",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -2930,26 +2970,6 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "inj16exmkvtzkqgxgl44w6793hzjta78f4zpyv8z9p",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "BABYNINJA",
-      "baseDenom": "BABYNINJA",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "BABYNINJA",
-    "denom": "factory/inj12lv4gm863c4pj0utr7zgzp46d6p86krp8stqgp/BABYNINJA",
-    "logo": "unknown.png",
-    "symbol": "BABYNINJA",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj12lv4gm863c4pj0utr7zgzp46d6p86krp8stqgp/BABYNINJA",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -3221,26 +3241,6 @@
   },
   {
     "name": "Baby Yakuza",
-    "denom": "inj16wa97auct633ft6cjzr22xv2pxvym3k38rzskc",
-    "logo": "unknown.png",
-    "symbol": "babyYKZ",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj16wa97auct633ft6cjzr22xv2pxvym3k38rzskc",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "babyYKZ",
-      "baseDenom": "babyYKZ",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Baby Yakuza",
     "denom": "inj1rep4p2x86avty00qvgcu4vfhywmsznf42jdpzs",
     "logo": "unknown.png",
     "symbol": "babyYAKUZA",
@@ -3255,6 +3255,26 @@
       "decimals": 6,
       "symbol": "babyYAKUZA",
       "baseDenom": "babyYAKUZA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Baby Yakuza",
+    "denom": "inj16wa97auct633ft6cjzr22xv2pxvym3k38rzskc",
+    "logo": "unknown.png",
+    "symbol": "babyYKZ",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj16wa97auct633ft6cjzr22xv2pxvym3k38rzskc",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "babyYKZ",
+      "baseDenom": "babyYKZ",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -3381,26 +3401,6 @@
   },
   {
     "name": "Baguette",
-    "denom": "inj13dcqczqyynw08m0tds50e0z2dsynf48g4uafac",
-    "logo": "unknown.png",
-    "symbol": "BAG",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj13dcqczqyynw08m0tds50e0z2dsynf48g4uafac",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "BAG",
-      "baseDenom": "BAG",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Baguette",
     "denom": "inj15a3yppu5h3zktk2hkq8f3ywhfpqqrwft8awyq0",
     "logo": "unknown.png",
     "symbol": "BAG",
@@ -3433,6 +3433,26 @@
       "path": "",
       "channelId": "",
       "decimals": 6,
+      "symbol": "BAG",
+      "baseDenom": "BAG",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Baguette",
+    "denom": "inj13dcqczqyynw08m0tds50e0z2dsynf48g4uafac",
+    "logo": "unknown.png",
+    "symbol": "BAG",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj13dcqczqyynw08m0tds50e0z2dsynf48g4uafac",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
       "symbol": "BAG",
       "baseDenom": "BAG",
       "isNative": false,
@@ -3860,6 +3880,26 @@
     }
   },
   {
+    "name": "Benance",
+    "denom": "inj1gn8ss00s3htff0gv6flycgdqhc9xdsmvdpzktd",
+    "logo": "unknown.png",
+    "symbol": "BENANCE",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1gn8ss00s3htff0gv6flycgdqhc9xdsmvdpzktd",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "BENANCE",
+      "baseDenom": "BENANCE",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "benjamin",
     "denom": "inj1cr970pgvudvgfva60jtxnztgsu5ngm7e80e7vd",
     "logo": "unknown.png",
@@ -4061,7 +4101,7 @@
   },
   {
     "name": "BINJE",
-    "denom": "inj10dysh3p4q8nh5zzhsq5j84de5pq6dxahnplt2f",
+    "denom": "inj1j0spyxgnxavasfnj5r4pvc4wwmnd6psjf8j6rm",
     "logo": "unknown.png",
     "symbol": "BINJE",
     "decimals": 6,
@@ -4069,7 +4109,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj10dysh3p4q8nh5zzhsq5j84de5pq6dxahnplt2f",
+      "hash": "inj1j0spyxgnxavasfnj5r4pvc4wwmnd6psjf8j6rm",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -4101,7 +4141,7 @@
   },
   {
     "name": "BINJE",
-    "denom": "inj1cncjaeg0q6d8kdr77wxz90t6jhmm5wn23s2gxr",
+    "denom": "inj1fx6cg4xruk55rld4p9urrjc2v3gvmaqh2yx32q",
     "logo": "unknown.png",
     "symbol": "BINJE",
     "decimals": 6,
@@ -4109,7 +4149,27 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1cncjaeg0q6d8kdr77wxz90t6jhmm5wn23s2gxr",
+      "hash": "inj1fx6cg4xruk55rld4p9urrjc2v3gvmaqh2yx32q",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BINJE",
+      "baseDenom": "BINJE",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "BINJE",
+    "denom": "inj10dysh3p4q8nh5zzhsq5j84de5pq6dxahnplt2f",
+    "logo": "unknown.png",
+    "symbol": "BINJE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj10dysh3p4q8nh5zzhsq5j84de5pq6dxahnplt2f",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -4141,7 +4201,7 @@
   },
   {
     "name": "BINJE",
-    "denom": "inj1j0spyxgnxavasfnj5r4pvc4wwmnd6psjf8j6rm",
+    "denom": "inj1cncjaeg0q6d8kdr77wxz90t6jhmm5wn23s2gxr",
     "logo": "unknown.png",
     "symbol": "BINJE",
     "decimals": 6,
@@ -4149,27 +4209,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1j0spyxgnxavasfnj5r4pvc4wwmnd6psjf8j6rm",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "BINJE",
-      "baseDenom": "BINJE",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "BINJE",
-    "denom": "inj1fx6cg4xruk55rld4p9urrjc2v3gvmaqh2yx32q",
-    "logo": "unknown.png",
-    "symbol": "BINJE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1fx6cg4xruk55rld4p9urrjc2v3gvmaqh2yx32q",
+      "hash": "inj1cncjaeg0q6d8kdr77wxz90t6jhmm5wn23s2gxr",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -4541,7 +4581,7 @@
   },
   {
     "name": "BlueInjective (Wormhole)",
-    "denom": "inj1ss3d6gw5xzk5gdt9w4qhp3px62mqygk69uxwyv",
+    "denom": "inj1aalqnnh24ddn3vd9plnevwnxd03x7sevm77lps",
     "logo": "unknown.png",
     "symbol": "BLUEINJ",
     "decimals": 8,
@@ -4549,7 +4589,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1ss3d6gw5xzk5gdt9w4qhp3px62mqygk69uxwyv",
+      "hash": "inj1aalqnnh24ddn3vd9plnevwnxd03x7sevm77lps",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -4561,7 +4601,7 @@
   },
   {
     "name": "BlueInjective (Wormhole)",
-    "denom": "inj1aalqnnh24ddn3vd9plnevwnxd03x7sevm77lps",
+    "denom": "inj1ss3d6gw5xzk5gdt9w4qhp3px62mqygk69uxwyv",
     "logo": "unknown.png",
     "symbol": "BLUEINJ",
     "decimals": 8,
@@ -4569,7 +4609,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1aalqnnh24ddn3vd9plnevwnxd03x7sevm77lps",
+      "hash": "inj1ss3d6gw5xzk5gdt9w4qhp3px62mqygk69uxwyv",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -4981,7 +5021,7 @@
   },
   {
     "name": "BONK",
-    "denom": "factory/inj1t0vyy5c3cnrw9f0mpjz9xk7fp22ezjjmrza7xn/BONK",
+    "denom": "factory/inj1x8larhqwxyr39ytv38476rqpz723uy2ycc66cf/BONK",
     "logo": "unknown.png",
     "symbol": "BONK",
     "decimals": 6,
@@ -4989,7 +5029,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1t0vyy5c3cnrw9f0mpjz9xk7fp22ezjjmrza7xn/BONK",
+      "hash": "factory/inj1x8larhqwxyr39ytv38476rqpz723uy2ycc66cf/BONK",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -5021,7 +5061,7 @@
   },
   {
     "name": "BONK",
-    "denom": "factory/inj1x8larhqwxyr39ytv38476rqpz723uy2ycc66cf/BONK",
+    "denom": "factory/inj1t0vyy5c3cnrw9f0mpjz9xk7fp22ezjjmrza7xn/BONK",
     "logo": "unknown.png",
     "symbol": "BONK",
     "decimals": 6,
@@ -5029,7 +5069,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1x8larhqwxyr39ytv38476rqpz723uy2ycc66cf/BONK",
+      "hash": "factory/inj1t0vyy5c3cnrw9f0mpjz9xk7fp22ezjjmrza7xn/BONK",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -5061,7 +5101,7 @@
   },
   {
     "name": "Bonk Injective",
-    "denom": "factory/inj15705jepx03fxl3sntfhdznjnl0mlqwtdvyt32d/bonk",
+    "denom": "factory/inj1xzjfandwwadxws0a8x2p2vfwg9lzyfksceuhxr/bonk",
     "logo": "unknown.png",
     "symbol": "BONK",
     "decimals": 18,
@@ -5069,7 +5109,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj15705jepx03fxl3sntfhdznjnl0mlqwtdvyt32d/bonk",
+      "hash": "factory/inj1xzjfandwwadxws0a8x2p2vfwg9lzyfksceuhxr/bonk",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -5101,7 +5141,7 @@
   },
   {
     "name": "Bonk Injective",
-    "denom": "factory/inj1xzjfandwwadxws0a8x2p2vfwg9lzyfksceuhxr/bonk",
+    "denom": "factory/inj15705jepx03fxl3sntfhdznjnl0mlqwtdvyt32d/bonk",
     "logo": "unknown.png",
     "symbol": "BONK",
     "decimals": 18,
@@ -5109,7 +5149,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1xzjfandwwadxws0a8x2p2vfwg9lzyfksceuhxr/bonk",
+      "hash": "factory/inj15705jepx03fxl3sntfhdznjnl0mlqwtdvyt32d/bonk",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -5181,7 +5221,7 @@
   },
   {
     "name": "Bonk on INJ",
-    "denom": "factory/inj147laec3n2gq8gadzg8xthr7653r76jzhavemhh/BONK",
+    "denom": "factory/inj1sgnkljwsekkf36p4lgd7v9qa0p66rj64xa756j/BONK",
     "logo": "unknown.png",
     "symbol": "BONK",
     "decimals": 6,
@@ -5189,7 +5229,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj147laec3n2gq8gadzg8xthr7653r76jzhavemhh/BONK",
+      "hash": "factory/inj1sgnkljwsekkf36p4lgd7v9qa0p66rj64xa756j/BONK",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -5201,7 +5241,7 @@
   },
   {
     "name": "Bonk on INJ",
-    "denom": "factory/inj1sgnkljwsekkf36p4lgd7v9qa0p66rj64xa756j/BONK",
+    "denom": "factory/inj147laec3n2gq8gadzg8xthr7653r76jzhavemhh/BONK",
     "logo": "unknown.png",
     "symbol": "BONK",
     "decimals": 6,
@@ -5209,7 +5249,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1sgnkljwsekkf36p4lgd7v9qa0p66rj64xa756j/BONK",
+      "hash": "factory/inj147laec3n2gq8gadzg8xthr7653r76jzhavemhh/BONK",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -5281,26 +5321,6 @@
   },
   {
     "name": "Boomer",
-    "denom": "inj1ethjlrk28wqklz48ejtqja9yfft8t4mm92m2ga",
-    "logo": "unknown.png",
-    "symbol": "Boomer",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1ethjlrk28wqklz48ejtqja9yfft8t4mm92m2ga",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "Boomer",
-      "baseDenom": "Boomer",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Boomer",
     "denom": "inj1xuu84fqdq45wdqj38xt8fhxsazt88d7xumhzrn",
     "logo": "unknown.png",
     "symbol": "BOOM",
@@ -5315,6 +5335,26 @@
       "decimals": 18,
       "symbol": "BOOM",
       "baseDenom": "BOOM",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Boomer",
+    "denom": "inj1ethjlrk28wqklz48ejtqja9yfft8t4mm92m2ga",
+    "logo": "unknown.png",
+    "symbol": "Boomer",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1ethjlrk28wqklz48ejtqja9yfft8t4mm92m2ga",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "Boomer",
+      "baseDenom": "Boomer",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -5841,26 +5881,6 @@
   },
   {
     "name": "Canto",
-    "denom": "ibc/5C0C70B490A3568D40E81884F200716F96FCE8B0A55CB5EE41C1E369E6086CCA",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/canto/images/canto.png",
-    "symbol": "CANTO",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "5C0C70B490A3568D40E81884F200716F96FCE8B0A55CB5EE41C1E369E6086CCA",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "CANTO",
-      "baseDenom": "CANTO",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Canto",
     "denom": "ibc/6C55598A43348E41BCE1CE3C9313208CB953A036955869C47C3265A3BE2BB8D4",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/canto/images/canto.png",
     "symbol": "CANTO",
@@ -5890,6 +5910,26 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "D91A2C4EE7CD86BBAFCE0FA44A60DDD9AFBB7EEB5B2D46C0984DEBCC6FEDFAE8",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "CANTO",
+      "baseDenom": "CANTO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Canto",
+    "denom": "ibc/5C0C70B490A3568D40E81884F200716F96FCE8B0A55CB5EE41C1E369E6086CCA",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/canto/images/canto.png",
+    "symbol": "CANTO",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "5C0C70B490A3568D40E81884F200716F96FCE8B0A55CB5EE41C1E369E6086CCA",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -6261,26 +6301,6 @@
   },
   {
     "name": "Cat Wif Luck",
-    "denom": "inj19lwxrsr2ke407xw2fdgs80f3rghg2pueqae3vf",
-    "logo": "unknown.png",
-    "symbol": "WIFLUCK",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj19lwxrsr2ke407xw2fdgs80f3rghg2pueqae3vf",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "WIFLUCK",
-      "baseDenom": "WIFLUCK",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Cat Wif Luck",
     "denom": "factory/inj1u2fhfn0g8srf2kt3am52wd9dp4zyjvecm86uhj/CWL",
     "logo": "unknown.png",
     "symbol": "CWL",
@@ -6295,6 +6315,26 @@
       "decimals": 6,
       "symbol": "CWL",
       "baseDenom": "CWL",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Cat Wif Luck",
+    "denom": "inj19lwxrsr2ke407xw2fdgs80f3rghg2pueqae3vf",
+    "logo": "unknown.png",
+    "symbol": "WIFLUCK",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj19lwxrsr2ke407xw2fdgs80f3rghg2pueqae3vf",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WIFLUCK",
+      "baseDenom": "WIFLUCK",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -6681,7 +6721,7 @@
   },
   {
     "name": "CHEEMS",
-    "denom": "factory/inj1mck4g2zd7p057un8l3kfamsyj57w7gymgrdyjw/cheems",
+    "denom": "factory/inj1hvhtcmzphss9ks9rlst8xshw00dqq3nvdazm6w/cheems",
     "logo": "unknown.png",
     "symbol": "CHEEMS",
     "decimals": 6,
@@ -6689,7 +6729,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1mck4g2zd7p057un8l3kfamsyj57w7gymgrdyjw/cheems",
+      "hash": "factory/inj1hvhtcmzphss9ks9rlst8xshw00dqq3nvdazm6w/cheems",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -6701,7 +6741,7 @@
   },
   {
     "name": "CHEEMS",
-    "denom": "factory/inj1hvhtcmzphss9ks9rlst8xshw00dqq3nvdazm6w/cheems",
+    "denom": "factory/inj1mck4g2zd7p057un8l3kfamsyj57w7gymgrdyjw/cheems",
     "logo": "unknown.png",
     "symbol": "CHEEMS",
     "decimals": 6,
@@ -6709,7 +6749,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1hvhtcmzphss9ks9rlst8xshw00dqq3nvdazm6w/cheems",
+      "hash": "factory/inj1mck4g2zd7p057un8l3kfamsyj57w7gymgrdyjw/cheems",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -6741,26 +6781,6 @@
   },
   {
     "name": "CheeseBalls",
-    "denom": "inj13mjcjrwwjq7x6fanqvur4atd4sxyjz7t6kfhx0",
-    "logo": "unknown.png",
-    "symbol": "CheeseBalls",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj13mjcjrwwjq7x6fanqvur4atd4sxyjz7t6kfhx0",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "CheeseBalls",
-      "baseDenom": "CheeseBalls",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "CheeseBalls",
     "denom": "inj1usr473hh8hlff874tvcl4pe6qzsmc08w3k32nd",
     "logo": "unknown.png",
     "symbol": "CheeseBalls",
@@ -6780,21 +6800,21 @@
     }
   },
   {
-    "name": "CHEN",
-    "denom": "factory/inj196t4n8dg3pzkk5wh7ytjwtl6e3a56u9fj705wr/CHEN",
+    "name": "CheeseBalls",
+    "denom": "inj13mjcjrwwjq7x6fanqvur4atd4sxyjz7t6kfhx0",
     "logo": "unknown.png",
-    "symbol": "CHEN",
+    "symbol": "CheeseBalls",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj196t4n8dg3pzkk5wh7ytjwtl6e3a56u9fj705wr/CHEN",
+      "hash": "inj13mjcjrwwjq7x6fanqvur4atd4sxyjz7t6kfhx0",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "CHEN",
-      "baseDenom": "CHEN",
+      "symbol": "CheeseBalls",
+      "baseDenom": "CheeseBalls",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -6810,6 +6830,26 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "factory/inj1s79ssggksqujyrwhq5zwxart33t98mmm2xd8f7/CHEN",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "CHEN",
+      "baseDenom": "CHEN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "CHEN",
+    "denom": "factory/inj196t4n8dg3pzkk5wh7ytjwtl6e3a56u9fj705wr/CHEN",
+    "logo": "unknown.png",
+    "symbol": "CHEN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj196t4n8dg3pzkk5wh7ytjwtl6e3a56u9fj705wr/CHEN",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -6961,7 +7001,7 @@
   },
   {
     "name": "Chonk The Cat",
-    "denom": "inj1ftq3h2y70hrx5rn5a26489drjau9qel58h3gfr",
+    "denom": "inj17aze0egvc8hrmgf25kkhlw3720vurz99pdp58q",
     "logo": "unknown.png",
     "symbol": "CHONK",
     "decimals": 18,
@@ -6969,7 +7009,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1ftq3h2y70hrx5rn5a26489drjau9qel58h3gfr",
+      "hash": "inj17aze0egvc8hrmgf25kkhlw3720vurz99pdp58q",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -6981,7 +7021,7 @@
   },
   {
     "name": "Chonk The Cat",
-    "denom": "inj17aze0egvc8hrmgf25kkhlw3720vurz99pdp58q",
+    "denom": "inj1ftq3h2y70hrx5rn5a26489drjau9qel58h3gfr",
     "logo": "unknown.png",
     "symbol": "CHONK",
     "decimals": 18,
@@ -6989,7 +7029,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj17aze0egvc8hrmgf25kkhlw3720vurz99pdp58q",
+      "hash": "inj1ftq3h2y70hrx5rn5a26489drjau9qel58h3gfr",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -7061,26 +7101,6 @@
   },
   {
     "name": "CJ9",
-    "denom": "inj1eln607626f3j058rfh4xd3m4pd728x2cnxw4al",
-    "logo": "unknown.png",
-    "symbol": "CJN",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1eln607626f3j058rfh4xd3m4pd728x2cnxw4al",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "CJN",
-      "baseDenom": "CJN",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "CJ9",
     "denom": "inj1w38vdrkemf8s40m5xpqe5fc8hnvwq3d794vc4a",
     "logo": "unknown.png",
     "symbol": "CNJ",
@@ -7095,6 +7115,26 @@
       "decimals": 18,
       "symbol": "CNJ",
       "baseDenom": "CNJ",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "CJ9",
+    "denom": "inj1eln607626f3j058rfh4xd3m4pd728x2cnxw4al",
+    "logo": "unknown.png",
+    "symbol": "CJN",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1eln607626f3j058rfh4xd3m4pd728x2cnxw4al",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "CJN",
+      "baseDenom": "CJN",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -7161,26 +7201,6 @@
   },
   {
     "name": "Cocaine",
-    "denom": "inj14eaxewvy7a3fk948c3g3qham98mcqpm8v5y0dp",
-    "logo": "unknown.png",
-    "symbol": "COKE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj14eaxewvy7a3fk948c3g3qham98mcqpm8v5y0dp",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "COKE",
-      "baseDenom": "COKE",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Cocaine",
     "denom": "inj14mu7fw0hzxvz3dl9y628xva2xuvngmz4zrwllz",
     "logo": "unknown.png",
     "symbol": "babyCOKE",
@@ -7195,6 +7215,26 @@
       "decimals": 6,
       "symbol": "babyCOKE",
       "baseDenom": "babyCOKE",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Cocaine",
+    "denom": "inj14eaxewvy7a3fk948c3g3qham98mcqpm8v5y0dp",
+    "logo": "unknown.png",
+    "symbol": "COKE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj14eaxewvy7a3fk948c3g3qham98mcqpm8v5y0dp",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "COKE",
+      "baseDenom": "COKE",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -8401,18 +8441,18 @@
   },
   {
     "name": "DAOJO",
-    "denom": "inj1j4pwxtnf27qelps9erqg3fg47r9tz9qyl9l7gh",
+    "denom": "inj1jusxykgkl04rgaam65gmvyyymth9flxjdpdruh",
     "logo": "unknown.png",
     "symbol": "DAOJO",
-    "decimals": 18,
+    "decimals": 9,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1j4pwxtnf27qelps9erqg3fg47r9tz9qyl9l7gh",
+      "hash": "inj1jusxykgkl04rgaam65gmvyyymth9flxjdpdruh",
       "path": "",
       "channelId": "",
-      "decimals": 18,
+      "decimals": 9,
       "symbol": "DAOJO",
       "baseDenom": "DAOJO",
       "isNative": false,
@@ -8441,18 +8481,18 @@
   },
   {
     "name": "DAOJO",
-    "denom": "inj1jusxykgkl04rgaam65gmvyyymth9flxjdpdruh",
+    "denom": "inj1j4pwxtnf27qelps9erqg3fg47r9tz9qyl9l7gh",
     "logo": "unknown.png",
     "symbol": "DAOJO",
-    "decimals": 9,
+    "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1jusxykgkl04rgaam65gmvyyymth9flxjdpdruh",
+      "hash": "inj1j4pwxtnf27qelps9erqg3fg47r9tz9qyl9l7gh",
       "path": "",
       "channelId": "",
-      "decimals": 9,
+      "decimals": 18,
       "symbol": "DAOJO",
       "baseDenom": "DAOJO",
       "isNative": false,
@@ -8621,7 +8661,7 @@
   },
   {
     "name": "DEXTER",
-    "denom": "inj1fg8ffu74pm99nwd584ne3gwa9pexnh39csm7qp",
+    "denom": "inj17dtlpkmw4rtc02p7s9qwqz6kyx4nx8v380m0al",
     "logo": "unknown.png",
     "symbol": "DEXTER",
     "decimals": 6,
@@ -8629,7 +8669,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1fg8ffu74pm99nwd584ne3gwa9pexnh39csm7qp",
+      "hash": "inj17dtlpkmw4rtc02p7s9qwqz6kyx4nx8v380m0al",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -8661,6 +8701,26 @@
   },
   {
     "name": "DEXTER",
+    "denom": "inj1ghdvetj39n6fze4lsfvqq42qjya0e8ljfx420r",
+    "logo": "unknown.png",
+    "symbol": "DEXTER",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1ghdvetj39n6fze4lsfvqq42qjya0e8ljfx420r",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "DEXTER",
+      "baseDenom": "DEXTER",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "DEXTER",
     "denom": "inj1nlcg7dgufuytaa2sfxam5hm0l38dyv3uk47kdf",
     "logo": "unknown.png",
     "symbol": "DEXTER",
@@ -8681,7 +8741,7 @@
   },
   {
     "name": "DEXTER",
-    "denom": "inj17dtlpkmw4rtc02p7s9qwqz6kyx4nx8v380m0al",
+    "denom": "inj1fg8ffu74pm99nwd584ne3gwa9pexnh39csm7qp",
     "logo": "unknown.png",
     "symbol": "DEXTER",
     "decimals": 6,
@@ -8689,27 +8749,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj17dtlpkmw4rtc02p7s9qwqz6kyx4nx8v380m0al",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "DEXTER",
-      "baseDenom": "DEXTER",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "DEXTER",
-    "denom": "inj1ghdvetj39n6fze4lsfvqq42qjya0e8ljfx420r",
-    "logo": "unknown.png",
-    "symbol": "DEXTER",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1ghdvetj39n6fze4lsfvqq42qjya0e8ljfx420r",
+      "hash": "inj1fg8ffu74pm99nwd584ne3gwa9pexnh39csm7qp",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -9721,26 +9761,6 @@
   },
   {
     "name": "dojoswap",
-    "denom": "inj1tml6e474rxgc0gc5pd8ljmheqep5wrqrm9m9ks",
-    "logo": "unknown.png",
-    "symbol": "dojoswap",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1tml6e474rxgc0gc5pd8ljmheqep5wrqrm9m9ks",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "dojoswap",
-      "baseDenom": "dojoswap",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "dojoswap",
     "denom": "inj1wjh8gnp7a6yfcldnp82s0e4yt7n98xpm363c38",
     "logo": "unknown.png",
     "symbol": "DOJO",
@@ -9755,6 +9775,26 @@
       "decimals": 18,
       "symbol": "DOJO",
       "baseDenom": "DOJO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "dojoswap",
+    "denom": "inj1tml6e474rxgc0gc5pd8ljmheqep5wrqrm9m9ks",
+    "logo": "unknown.png",
+    "symbol": "dojoswap",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1tml6e474rxgc0gc5pd8ljmheqep5wrqrm9m9ks",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "dojoswap",
+      "baseDenom": "dojoswap",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -9881,7 +9921,7 @@
   },
   {
     "name": "DonatelloShurikenLipsInjection2dust",
-    "denom": "factory/inj1ya7ltz2mkj0z4w25lxueh7emz6qhwe33m4knx8/INJECTIV",
+    "denom": "factory/inj1x04zxeyrjc7ke5nt7ht3v3gkevxdk7rr0fx8qp/INJECTIV",
     "logo": "unknown.png",
     "symbol": "INJECTIV",
     "decimals": 6,
@@ -9889,7 +9929,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1ya7ltz2mkj0z4w25lxueh7emz6qhwe33m4knx8/INJECTIV",
+      "hash": "factory/inj1x04zxeyrjc7ke5nt7ht3v3gkevxdk7rr0fx8qp/INJECTIV",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -9901,7 +9941,7 @@
   },
   {
     "name": "DonatelloShurikenLipsInjection2dust",
-    "denom": "factory/inj1x04zxeyrjc7ke5nt7ht3v3gkevxdk7rr0fx8qp/INJECTIV",
+    "denom": "factory/inj1ya7ltz2mkj0z4w25lxueh7emz6qhwe33m4knx8/INJECTIV",
     "logo": "unknown.png",
     "symbol": "INJECTIV",
     "decimals": 6,
@@ -9909,7 +9949,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1x04zxeyrjc7ke5nt7ht3v3gkevxdk7rr0fx8qp/INJECTIV",
+      "hash": "factory/inj1ya7ltz2mkj0z4w25lxueh7emz6qhwe33m4knx8/INJECTIV",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -10661,7 +10701,7 @@
   },
   {
     "name": "ELON",
-    "denom": "factory/inj1wjtuzkprkc4gdf4r7dlh9gu96yyxml8qpzzy9p/elon",
+    "denom": "factory/inj13gc95nsrtv3da5x6ujmktekaljwhj5npl2nszl/ELON",
     "logo": "unknown.png",
     "symbol": "ELON",
     "decimals": 6,
@@ -10669,7 +10709,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1wjtuzkprkc4gdf4r7dlh9gu96yyxml8qpzzy9p/elon",
+      "hash": "factory/inj13gc95nsrtv3da5x6ujmktekaljwhj5npl2nszl/ELON",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -10701,7 +10741,7 @@
   },
   {
     "name": "ELON",
-    "denom": "factory/inj13gc95nsrtv3da5x6ujmktekaljwhj5npl2nszl/ELON",
+    "denom": "factory/inj1cm5lg3z9l3gftt0c09trnllmayxpwt8825zxw3/elon",
     "logo": "unknown.png",
     "symbol": "ELON",
     "decimals": 6,
@@ -10709,7 +10749,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj13gc95nsrtv3da5x6ujmktekaljwhj5npl2nszl/ELON",
+      "hash": "factory/inj1cm5lg3z9l3gftt0c09trnllmayxpwt8825zxw3/elon",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -10721,7 +10761,7 @@
   },
   {
     "name": "ELON",
-    "denom": "factory/inj1cm5lg3z9l3gftt0c09trnllmayxpwt8825zxw3/elon",
+    "denom": "factory/inj1wjtuzkprkc4gdf4r7dlh9gu96yyxml8qpzzy9p/elon",
     "logo": "unknown.png",
     "symbol": "ELON",
     "decimals": 6,
@@ -10729,7 +10769,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1cm5lg3z9l3gftt0c09trnllmayxpwt8825zxw3/elon",
+      "hash": "factory/inj1wjtuzkprkc4gdf4r7dlh9gu96yyxml8qpzzy9p/elon",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -10921,7 +10961,7 @@
   },
   {
     "name": "EPIC",
-    "denom": "inj1k0f8fqym9t3gz8qq3f72d3x5uk2gx4prs6mld5",
+    "denom": "inj1ewmqrnxm8a5achem6zqg44w7lut3krls4m5mnu",
     "logo": "unknown.png",
     "symbol": "EPIC",
     "decimals": 18,
@@ -10929,7 +10969,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1k0f8fqym9t3gz8qq3f72d3x5uk2gx4prs6mld5",
+      "hash": "inj1ewmqrnxm8a5achem6zqg44w7lut3krls4m5mnu",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -10941,7 +10981,7 @@
   },
   {
     "name": "EPIC",
-    "denom": "inj1ewmqrnxm8a5achem6zqg44w7lut3krls4m5mnu",
+    "denom": "inj1k0f8fqym9t3gz8qq3f72d3x5uk2gx4prs6mld5",
     "logo": "unknown.png",
     "symbol": "EPIC",
     "decimals": 18,
@@ -10949,7 +10989,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1ewmqrnxm8a5achem6zqg44w7lut3krls4m5mnu",
+      "hash": "inj1k0f8fqym9t3gz8qq3f72d3x5uk2gx4prs6mld5",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -11701,26 +11741,6 @@
   },
   {
     "name": "EVITCEJNI",
-    "denom": "inj1mxcj2f8aqv8uflul4ydr7kqv90kprgsrx0mqup",
-    "logo": "unknown.png",
-    "symbol": "EVI",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1mxcj2f8aqv8uflul4ydr7kqv90kprgsrx0mqup",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "EVI",
-      "baseDenom": "EVI",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "EVITCEJNI",
     "denom": "factory/inj1n8kcnuzsrg9d7guu8c5n4cxcurqyszthy29yhg/EVITCEJNI",
     "logo": "unknown.png",
     "symbol": "EVITCEJNI",
@@ -11735,6 +11755,26 @@
       "decimals": 6,
       "symbol": "EVITCEJNI",
       "baseDenom": "EVITCEJNI",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "EVITCEJNI",
+    "denom": "inj1mxcj2f8aqv8uflul4ydr7kqv90kprgsrx0mqup",
+    "logo": "unknown.png",
+    "symbol": "EVI",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1mxcj2f8aqv8uflul4ydr7kqv90kprgsrx0mqup",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "EVI",
+      "baseDenom": "EVI",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -11935,66 +11975,6 @@
       "decimals": 6,
       "symbol": "factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1zdj9kqnknztl2xclm5ssv25yre09f8908d4923",
       "baseDenom": "factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1zdj9kqnknztl2xclm5ssv25yre09f8908d4923",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/2Wb6ueMFc9WLc2eyYVha6qnwHKbwzUXdooXsg6XXVvos",
-    "denom": "ibc/F16F0F685BEF7BC6A145F16CBE78C6EC8C7C3A5F3066A98A9E57DCEA0903E537",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/solana/images/w.png",
-    "symbol": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/2WB6UEMFC9WLC2EYYVHA6QNWHKBWZUXDOOXSG6XXVVOS",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "F16F0F685BEF7BC6A145F16CBE78C6EC8C7C3A5F3066A98A9E57DCEA0903E537",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/2WB6UEMFC9WLC2EYYVHA6QNWHKBWZUXDOOXSG6XXVVOS",
-      "baseDenom": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/2WB6UEMFC9WLC2EYYVHA6QNWHKBWZUXDOOXSG6XXVVOS",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4gn1J9pchUGh63ez1VwiuTmU4nfJ8Rr8o5HgBC5TMdMk",
-    "denom": "ibc/4DEFEB42BAAB2788723759D95B7550BCE460855563ED977036248F5B94C842FC",
-    "logo": "unknown.png",
-    "symbol": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/4GN1J9PCHUGH63EZ1VWIUTMU4NFJ8RR8O5HGBC5TMDMK",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "4DEFEB42BAAB2788723759D95B7550BCE460855563ED977036248F5B94C842FC",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/4GN1J9PCHUGH63EZ1VWIUTMU4NFJ8RR8O5HGBC5TMDMK",
-      "baseDenom": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/4GN1J9PCHUGH63EZ1VWIUTMU4NFJ8RR8O5HGBC5TMDMK",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/4jq5m8FR6W6nJygDj8NMMbB48mqX4LQHc3j5uEb9syDe",
-    "denom": "ibc/8CF0E4184CA3105798EDB18CAA3981ADB16A9951FE9B05C6D830C746202747E1",
-    "logo": "unknown.png",
-    "symbol": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/4JQ5M8FR6W6NJYGDJ8NMMBB48MQX4LQHC3J5UEB9SYDE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "8CF0E4184CA3105798EDB18CAA3981ADB16A9951FE9B05C6D830C746202747E1",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/4JQ5M8FR6W6NJYGDJ8NMMBB48MQX4LQHC3J5UEB9SYDE",
-      "baseDenom": "ACTORY/WORMHOLE14EJQJYQ8UM4P3XFQJ74YLD5WAQLJF88FZ25YXNMA0CNGSPXE3LES00FPJX/4JQ5M8FR6W6NJYGDJ8NMMBB48MQX4LQHC3J5UEB9SYDE",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -12241,7 +12221,7 @@
   },
   {
     "name": "FDC",
-    "denom": "inj1vulh2mq9awyexpsmntff0wyumafcte4p5pqeav",
+    "denom": "inj1ezt2a9azlwp5ucq84twup0skx9vsewpvjhh20d",
     "logo": "unknown.png",
     "symbol": "FaDaCai",
     "decimals": 6,
@@ -12249,27 +12229,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1vulh2mq9awyexpsmntff0wyumafcte4p5pqeav",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FaDaCai",
-      "baseDenom": "FaDaCai",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "FDC",
-    "denom": "inj16pcxmpl3nquute5hrjta0rgrzc0ga5sj8n6vpv",
-    "logo": "unknown.png",
-    "symbol": "FaDaCai",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj16pcxmpl3nquute5hrjta0rgrzc0ga5sj8n6vpv",
+      "hash": "inj1ezt2a9azlwp5ucq84twup0skx9vsewpvjhh20d",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -12301,86 +12261,6 @@
   },
   {
     "name": "FDC",
-    "denom": "inj1yevjg9fdp7px757d6g3j2dkpzmeczturx3vpme",
-    "logo": "unknown.png",
-    "symbol": "FaDaCai",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1yevjg9fdp7px757d6g3j2dkpzmeczturx3vpme",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FaDaCai",
-      "baseDenom": "FaDaCai",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "FDC",
-    "denom": "inj1fjg0pmf0fttg0g3vawttlshq7k58a49gv5u7up",
-    "logo": "unknown.png",
-    "symbol": "FaDaCai",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1fjg0pmf0fttg0g3vawttlshq7k58a49gv5u7up",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FaDaCai",
-      "baseDenom": "FaDaCai",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "FDC",
-    "denom": "inj1quy82cgpf0jajc76w7why9kt94ph99uff2q7xh",
-    "logo": "unknown.png",
-    "symbol": "FaDaCai",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1quy82cgpf0jajc76w7why9kt94ph99uff2q7xh",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FaDaCai",
-      "baseDenom": "FaDaCai",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "FDC",
-    "denom": "inj1c78258q4ahmaujmmj4emg7upx9n4muv0fzjrms",
-    "logo": "unknown.png",
-    "symbol": "FaDaCai",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1c78258q4ahmaujmmj4emg7upx9n4muv0fzjrms",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FaDaCai",
-      "baseDenom": "FaDaCai",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "FDC",
     "denom": "inj1ltu2smt40xmz8lxvrg9xhkdc75rswkyflqf2p8",
     "logo": "unknown.png",
     "symbol": "FaDaCai",
@@ -12390,6 +12270,26 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "inj1ltu2smt40xmz8lxvrg9xhkdc75rswkyflqf2p8",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FaDaCai",
+      "baseDenom": "FaDaCai",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "FDC",
+    "denom": "inj1yevjg9fdp7px757d6g3j2dkpzmeczturx3vpme",
+    "logo": "unknown.png",
+    "symbol": "FaDaCai",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1yevjg9fdp7px757d6g3j2dkpzmeczturx3vpme",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -12421,7 +12321,7 @@
   },
   {
     "name": "FDC",
-    "denom": "inj14na0udjrdtsqjk22fgr44gfgph4cp220agmwe2",
+    "denom": "inj1quy82cgpf0jajc76w7why9kt94ph99uff2q7xh",
     "logo": "unknown.png",
     "symbol": "FaDaCai",
     "decimals": 6,
@@ -12429,7 +12329,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj14na0udjrdtsqjk22fgr44gfgph4cp220agmwe2",
+      "hash": "inj1quy82cgpf0jajc76w7why9kt94ph99uff2q7xh",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -12441,7 +12341,7 @@
   },
   {
     "name": "FDC",
-    "denom": "inj1f6ejww220hnygsehh7pl7pd484dg4k9fl7wkr5",
+    "denom": "inj182d65my2lfcc07fx658nt8zuf6yyham4r9dazk",
     "logo": "unknown.png",
     "symbol": "FaDaCai",
     "decimals": 6,
@@ -12449,7 +12349,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1f6ejww220hnygsehh7pl7pd484dg4k9fl7wkr5",
+      "hash": "inj182d65my2lfcc07fx658nt8zuf6yyham4r9dazk",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -12461,7 +12361,7 @@
   },
   {
     "name": "FDC",
-    "denom": "inj1ezt2a9azlwp5ucq84twup0skx9vsewpvjhh20d",
+    "denom": "inj1c78258q4ahmaujmmj4emg7upx9n4muv0fzjrms",
     "logo": "unknown.png",
     "symbol": "FaDaCai",
     "decimals": 6,
@@ -12469,7 +12369,67 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1ezt2a9azlwp5ucq84twup0skx9vsewpvjhh20d",
+      "hash": "inj1c78258q4ahmaujmmj4emg7upx9n4muv0fzjrms",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FaDaCai",
+      "baseDenom": "FaDaCai",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "FDC",
+    "denom": "inj1elwp603lt09g8s4ezyp6gg8axhh2n3zkffwfmp",
+    "logo": "unknown.png",
+    "symbol": "FDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1elwp603lt09g8s4ezyp6gg8axhh2n3zkffwfmp",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FDC",
+      "baseDenom": "FDC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "FDC",
+    "denom": "inj1w3j52pppjr452f8ukj5apwpf9sc4t4p5cmyfjl",
+    "logo": "unknown.png",
+    "symbol": "FaDaCai",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1w3j52pppjr452f8ukj5apwpf9sc4t4p5cmyfjl",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FaDaCai",
+      "baseDenom": "FaDaCai",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "FDC",
+    "denom": "inj15wqfmtvdmzy34hm5jafm6uqnqf53ykr0kz6227",
+    "logo": "unknown.png",
+    "symbol": "FaDaCai",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj15wqfmtvdmzy34hm5jafm6uqnqf53ykr0kz6227",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -12495,6 +12455,66 @@
       "decimals": 6,
       "symbol": "FDC",
       "baseDenom": "FDC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "FDC",
+    "denom": "inj14na0udjrdtsqjk22fgr44gfgph4cp220agmwe2",
+    "logo": "unknown.png",
+    "symbol": "FaDaCai",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj14na0udjrdtsqjk22fgr44gfgph4cp220agmwe2",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FaDaCai",
+      "baseDenom": "FaDaCai",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "FDC",
+    "denom": "inj13pff0vsvfhnhcs4fkd609cr2f749rw22hznhar",
+    "logo": "unknown.png",
+    "symbol": "FaDaCai",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj13pff0vsvfhnhcs4fkd609cr2f749rw22hznhar",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FaDaCai",
+      "baseDenom": "FaDaCai",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "FDC",
+    "denom": "inj1fjg0pmf0fttg0g3vawttlshq7k58a49gv5u7up",
+    "logo": "unknown.png",
+    "symbol": "FaDaCai",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1fjg0pmf0fttg0g3vawttlshq7k58a49gv5u7up",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "FaDaCai",
+      "baseDenom": "FaDaCai",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -12581,7 +12601,7 @@
   },
   {
     "name": "FDC",
-    "denom": "inj13pff0vsvfhnhcs4fkd609cr2f749rw22hznhar",
+    "denom": "inj16pcxmpl3nquute5hrjta0rgrzc0ga5sj8n6vpv",
     "logo": "unknown.png",
     "symbol": "FaDaCai",
     "decimals": 6,
@@ -12589,7 +12609,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj13pff0vsvfhnhcs4fkd609cr2f749rw22hznhar",
+      "hash": "inj16pcxmpl3nquute5hrjta0rgrzc0ga5sj8n6vpv",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -12601,27 +12621,7 @@
   },
   {
     "name": "FDC",
-    "denom": "inj1elwp603lt09g8s4ezyp6gg8axhh2n3zkffwfmp",
-    "logo": "unknown.png",
-    "symbol": "FDC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1elwp603lt09g8s4ezyp6gg8axhh2n3zkffwfmp",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FDC",
-      "baseDenom": "FDC",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "FDC",
-    "denom": "inj182d65my2lfcc07fx658nt8zuf6yyham4r9dazk",
+    "denom": "inj1vulh2mq9awyexpsmntff0wyumafcte4p5pqeav",
     "logo": "unknown.png",
     "symbol": "FaDaCai",
     "decimals": 6,
@@ -12629,7 +12629,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj182d65my2lfcc07fx658nt8zuf6yyham4r9dazk",
+      "hash": "inj1vulh2mq9awyexpsmntff0wyumafcte4p5pqeav",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -12641,7 +12641,7 @@
   },
   {
     "name": "FDC",
-    "denom": "inj1w3j52pppjr452f8ukj5apwpf9sc4t4p5cmyfjl",
+    "denom": "inj1f6ejww220hnygsehh7pl7pd484dg4k9fl7wkr5",
     "logo": "unknown.png",
     "symbol": "FaDaCai",
     "decimals": 6,
@@ -12649,27 +12649,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1w3j52pppjr452f8ukj5apwpf9sc4t4p5cmyfjl",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "FaDaCai",
-      "baseDenom": "FaDaCai",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "FDC",
-    "denom": "inj15wqfmtvdmzy34hm5jafm6uqnqf53ykr0kz6227",
-    "logo": "unknown.png",
-    "symbol": "FaDaCai",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj15wqfmtvdmzy34hm5jafm6uqnqf53ykr0kz6227",
+      "hash": "inj1f6ejww220hnygsehh7pl7pd484dg4k9fl7wkr5",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -13021,7 +13001,7 @@
   },
   {
     "name": "FOO",
-    "denom": "inj1svrvyqm8uu6u4xnkz6tva207pztglcjylxe367",
+    "denom": "inj1s290d2uew9k2s00zlx9xnxq84dauysc85yhds0",
     "logo": "unknown.png",
     "symbol": "FOO",
     "decimals": 18,
@@ -13029,7 +13009,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1svrvyqm8uu6u4xnkz6tva207pztglcjylxe367",
+      "hash": "inj1s290d2uew9k2s00zlx9xnxq84dauysc85yhds0",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -13041,7 +13021,7 @@
   },
   {
     "name": "FOO",
-    "denom": "inj1s290d2uew9k2s00zlx9xnxq84dauysc85yhds0",
+    "denom": "inj1svrvyqm8uu6u4xnkz6tva207pztglcjylxe367",
     "logo": "unknown.png",
     "symbol": "FOO",
     "decimals": 18,
@@ -13049,7 +13029,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1s290d2uew9k2s00zlx9xnxq84dauysc85yhds0",
+      "hash": "inj1svrvyqm8uu6u4xnkz6tva207pztglcjylxe367",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -13861,7 +13841,7 @@
   },
   {
     "name": "GAMER",
-    "denom": "inj1gqp2upvl8ftj28amxt90dut76prdpefx3qvpck",
+    "denom": "inj1h8l2xcn4h9v0m67qem8x7rmf2akjwc34tjmm7a",
     "logo": "unknown.png",
     "symbol": "GAMER",
     "decimals": 18,
@@ -13869,7 +13849,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1gqp2upvl8ftj28amxt90dut76prdpefx3qvpck",
+      "hash": "inj1h8l2xcn4h9v0m67qem8x7rmf2akjwc34tjmm7a",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -13881,7 +13861,7 @@
   },
   {
     "name": "GAMER",
-    "denom": "inj1h8l2xcn4h9v0m67qem8x7rmf2akjwc34tjmm7a",
+    "denom": "inj1gqp2upvl8ftj28amxt90dut76prdpefx3qvpck",
     "logo": "unknown.png",
     "symbol": "GAMER",
     "decimals": 18,
@@ -13889,7 +13869,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1h8l2xcn4h9v0m67qem8x7rmf2akjwc34tjmm7a",
+      "hash": "inj1gqp2upvl8ftj28amxt90dut76prdpefx3qvpck",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -14475,6 +14455,26 @@
       "decimals": 6,
       "symbol": "GINKO",
       "baseDenom": "GINKO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "GIPSYkings",
+    "denom": "inj1pyeutpz66lhapppt2ny36s57zfspglqtvdwywd",
+    "logo": "unknown.png",
+    "symbol": "gipsyCOINS",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1pyeutpz66lhapppt2ny36s57zfspglqtvdwywd",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "gipsyCOINS",
+      "baseDenom": "gipsyCOINS",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -15461,26 +15461,6 @@
   },
   {
     "name": "Hava Coin",
-    "denom": "factory/inj1h0ypsdtjfcjynqu3m75z2zwwz5mmrj8rtk2g52/uhava",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/hava.png",
-    "symbol": "HAVA",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj1h0ypsdtjfcjynqu3m75z2zwwz5mmrj8rtk2g52/uhava",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "HAVA",
-      "baseDenom": "HAVA",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Hava Coin",
     "denom": "inj1fnlfy6r22slr72ryt4wl6uwpg3dd7emrqaq7ne",
     "logo": "unknown.png",
     "symbol": "HAVA",
@@ -15493,6 +15473,26 @@
       "path": "",
       "channelId": "",
       "decimals": 18,
+      "symbol": "HAVA",
+      "baseDenom": "HAVA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Hava Coin",
+    "denom": "factory/inj1h0ypsdtjfcjynqu3m75z2zwwz5mmrj8rtk2g52/uhava",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/hava.png",
+    "symbol": "HAVA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1h0ypsdtjfcjynqu3m75z2zwwz5mmrj8rtk2g52/uhava",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
       "symbol": "HAVA",
       "baseDenom": "HAVA",
       "isNative": false,
@@ -15695,6 +15695,26 @@
       "decimals": 8,
       "symbol": "HnH",
       "baseDenom": "HnH",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "HorseShoeBar",
+    "denom": "ibc/7BE6E83B27AC96A280F40229539A1B4486AA789622255283168D237C41577D3B",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/CrazyHorse.png",
+    "symbol": "CRAZYHORSE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "7BE6E83B27AC96A280F40229539A1B4486AA789622255283168D237C41577D3B",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "CRAZYHORSE",
+      "baseDenom": "CRAZYHORSE",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -16881,26 +16901,6 @@
   },
   {
     "name": "Injective Pepe",
-    "denom": "factory/inj15hxjpac22adg3s6znhpc27zx6ufhf6z7fseue2/injpepe",
-    "logo": "unknown.png",
-    "symbol": "INJPEPE",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj15hxjpac22adg3s6znhpc27zx6ufhf6z7fseue2/injpepe",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "INJPEPE",
-      "baseDenom": "INJPEPE",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Injective Pepe",
     "denom": "factory/inj1td7t8spd4k6uev6uunu40qvrrcwhr756d5qw59/ipepe",
     "logo": "unknown.png",
     "symbol": "IPEPE",
@@ -16915,6 +16915,26 @@
       "decimals": 6,
       "symbol": "IPEPE",
       "baseDenom": "IPEPE",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Injective Pepe",
+    "denom": "factory/inj15hxjpac22adg3s6znhpc27zx6ufhf6z7fseue2/injpepe",
+    "logo": "unknown.png",
+    "symbol": "INJPEPE",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj15hxjpac22adg3s6znhpc27zx6ufhf6z7fseue2/injpepe",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "INJPEPE",
+      "baseDenom": "INJPEPE",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -17341,6 +17361,26 @@
   },
   {
     "name": "INJINU",
+    "denom": "inj19hqn3gnxnwg4rm4c7kzc2k7gy9dj00ke9s9lm5",
+    "logo": "unknown.png",
+    "symbol": "INJINU",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj19hqn3gnxnwg4rm4c7kzc2k7gy9dj00ke9s9lm5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "INJINU",
+      "baseDenom": "INJINU",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "INJINU",
     "denom": "factory/inj1vjppa6h9lf75pt0v6qnxtej4xcl0qevnxzcrvm/INJINU",
     "logo": "unknown.png",
     "symbol": "INJINU",
@@ -17370,26 +17410,6 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "inj1ykfurk0jsxcz6hp9tqm8vn2p5k0hn76y6uans6",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "INJINU",
-      "baseDenom": "INJINU",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "INJINU",
-    "denom": "inj19hqn3gnxnwg4rm4c7kzc2k7gy9dj00ke9s9lm5",
-    "logo": "unknown.png",
-    "symbol": "INJINU",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj19hqn3gnxnwg4rm4c7kzc2k7gy9dj00ke9s9lm5",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -17641,26 +17661,6 @@
   },
   {
     "name": "INJPEPE",
-    "denom": "inj122az278echmzpccw30yy4a4kfull4sfnytqqt7",
-    "logo": "unknown.png",
-    "symbol": "INJPEPE",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj122az278echmzpccw30yy4a4kfull4sfnytqqt7",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "INJPEPE",
-      "baseDenom": "INJPEPE",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "INJPEPE",
     "denom": "inj1395ty2rphfvxa6jdwxugk3qrk8h49wn245afcr",
     "logo": "unknown.png",
     "symbol": "INJPEPE",
@@ -17673,6 +17673,26 @@
       "path": "",
       "channelId": "",
       "decimals": 6,
+      "symbol": "INJPEPE",
+      "baseDenom": "INJPEPE",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "INJPEPE",
+    "denom": "inj122az278echmzpccw30yy4a4kfull4sfnytqqt7",
+    "logo": "unknown.png",
+    "symbol": "INJPEPE",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj122az278echmzpccw30yy4a4kfull4sfnytqqt7",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
       "symbol": "INJPEPE",
       "baseDenom": "INJPEPE",
       "isNative": false,
@@ -17860,6 +17880,26 @@
     }
   },
   {
+    "name": "INJ TO THE MOON",
+    "denom": "factory/inj1e05u43qmn9jt502784c009u4elz5l86678esrk/MOON",
+    "logo": "unknown.png",
+    "symbol": "MOON",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1e05u43qmn9jt502784c009u4elz5l86678esrk/MOON",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "MOON",
+      "baseDenom": "MOON",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "InjTwitterX (Wormhole)",
     "denom": "inj1pykhnt3l4ekxe6ra5gjc03pgdglavsv34vdjmx",
     "logo": "unknown.png",
@@ -17941,20 +17981,20 @@
   },
   {
     "name": "INJUSSY",
-    "denom": "inj1qydw0aj2gwv27zkrp7xulrg43kx88rv27ymw6m",
+    "denom": "inj1vt2sgyzrna5uj6yetju8k0fjex4g8t7fr3w0vc",
     "logo": "unknown.png",
-    "symbol": "JUSSY",
-    "decimals": 18,
+    "symbol": "INJUSSY",
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1qydw0aj2gwv27zkrp7xulrg43kx88rv27ymw6m",
+      "hash": "inj1vt2sgyzrna5uj6yetju8k0fjex4g8t7fr3w0vc",
       "path": "",
       "channelId": "",
-      "decimals": 18,
-      "symbol": "JUSSY",
-      "baseDenom": "JUSSY",
+      "decimals": 6,
+      "symbol": "INJUSSY",
+      "baseDenom": "INJUSSY",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -17981,20 +18021,20 @@
   },
   {
     "name": "INJUSSY",
-    "denom": "inj1vt2sgyzrna5uj6yetju8k0fjex4g8t7fr3w0vc",
+    "denom": "inj1qydw0aj2gwv27zkrp7xulrg43kx88rv27ymw6m",
     "logo": "unknown.png",
-    "symbol": "INJUSSY",
-    "decimals": 6,
+    "symbol": "JUSSY",
+    "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1vt2sgyzrna5uj6yetju8k0fjex4g8t7fr3w0vc",
+      "hash": "inj1qydw0aj2gwv27zkrp7xulrg43kx88rv27ymw6m",
       "path": "",
       "channelId": "",
-      "decimals": 6,
-      "symbol": "INJUSSY",
-      "baseDenom": "INJUSSY",
+      "decimals": 18,
+      "symbol": "JUSSY",
+      "baseDenom": "JUSSY",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -18121,7 +18161,7 @@
   },
   {
     "name": "InjXsolana (Wormhole)",
-    "denom": "inj1u82h7d8l47q3kzwvkm2mgzrskk5au4lrkntkjn",
+    "denom": "inj174p4dt45793vylmt8575cltj6wadtc62nakczq",
     "logo": "unknown.png",
     "symbol": "INJXSOL",
     "decimals": 8,
@@ -18129,7 +18169,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1u82h7d8l47q3kzwvkm2mgzrskk5au4lrkntkjn",
+      "hash": "inj174p4dt45793vylmt8575cltj6wadtc62nakczq",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -18141,7 +18181,7 @@
   },
   {
     "name": "InjXsolana (Wormhole)",
-    "denom": "inj174p4dt45793vylmt8575cltj6wadtc62nakczq",
+    "denom": "inj1u82h7d8l47q3kzwvkm2mgzrskk5au4lrkntkjn",
     "logo": "unknown.png",
     "symbol": "INJXSOL",
     "decimals": 8,
@@ -18149,7 +18189,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj174p4dt45793vylmt8575cltj6wadtc62nakczq",
+      "hash": "inj1u82h7d8l47q3kzwvkm2mgzrskk5au4lrkntkjn",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -18341,7 +18381,7 @@
   },
   {
     "name": "ISILLY",
-    "denom": "factory/inj1499ez5npathr0zkphz2yq6npdfc6xvg3d4zynj/iSILLY",
+    "denom": "factory/inj1499ez5npathr0zkphz2yq6npdfc6xvg3d4zynj/ISILLY",
     "logo": "unknown.png",
     "symbol": "ISILLY",
     "decimals": 6,
@@ -18349,7 +18389,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1499ez5npathr0zkphz2yq6npdfc6xvg3d4zynj/iSILLY",
+      "hash": "factory/inj1499ez5npathr0zkphz2yq6npdfc6xvg3d4zynj/ISILLY",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -18361,7 +18401,7 @@
   },
   {
     "name": "ISILLY",
-    "denom": "factory/inj1499ez5npathr0zkphz2yq6npdfc6xvg3d4zynj/ISILLY",
+    "denom": "factory/inj1499ez5npathr0zkphz2yq6npdfc6xvg3d4zynj/iSILLY",
     "logo": "unknown.png",
     "symbol": "ISILLY",
     "decimals": 6,
@@ -18369,7 +18409,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1499ez5npathr0zkphz2yq6npdfc6xvg3d4zynj/ISILLY",
+      "hash": "factory/inj1499ez5npathr0zkphz2yq6npdfc6xvg3d4zynj/iSILLY",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -18415,6 +18455,26 @@
       "decimals": 6,
       "symbol": "notDOJO",
       "baseDenom": "notDOJO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "IUSD",
+    "denom": "factory/inj1l7u9lv8dfqkjnc7antm5lk7lmskh8zldh9yg05/iUSD",
+    "logo": "unknown.png",
+    "symbol": "IUSD",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1l7u9lv8dfqkjnc7antm5lk7lmskh8zldh9yg05/iUSD",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "IUSD",
+      "baseDenom": "IUSD",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -19521,7 +19581,7 @@
   },
   {
     "name": "KingFusion (Wormhole)",
-    "denom": "inj1ynehe0s2kh9fqp5tka99f8wj2xgsha74h3cmtu",
+    "denom": "inj1mnzwm6fvkruendv8r63vzlw72yv7fvtngkkzs9",
     "logo": "unknown.png",
     "symbol": "KINGFUSION",
     "decimals": 8,
@@ -19529,7 +19589,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1ynehe0s2kh9fqp5tka99f8wj2xgsha74h3cmtu",
+      "hash": "inj1mnzwm6fvkruendv8r63vzlw72yv7fvtngkkzs9",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -19541,7 +19601,7 @@
   },
   {
     "name": "KingFusion (Wormhole)",
-    "denom": "inj1mnzwm6fvkruendv8r63vzlw72yv7fvtngkkzs9",
+    "denom": "inj1ynehe0s2kh9fqp5tka99f8wj2xgsha74h3cmtu",
     "logo": "unknown.png",
     "symbol": "KINGFUSION",
     "decimals": 8,
@@ -19549,7 +19609,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1mnzwm6fvkruendv8r63vzlw72yv7fvtngkkzs9",
+      "hash": "inj1ynehe0s2kh9fqp5tka99f8wj2xgsha74h3cmtu",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -19760,6 +19820,26 @@
     }
   },
   {
+    "name": "KOALA",
+    "denom": "inj19lm6nrfvam539ahr0c8nuapfh6xzlhjaxv2a39",
+    "logo": "unknown.png",
+    "symbol": "babyKOALA",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj19lm6nrfvam539ahr0c8nuapfh6xzlhjaxv2a39",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "babyKOALA",
+      "baseDenom": "babyKOALA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "Koga",
     "denom": "factory/inj1npvrye90c9j7vfv8ldh9apt8t3a9mv9lsv52yd/KOGA",
     "logo": "unknown.png",
@@ -19875,6 +19955,26 @@
       "decimals": 18,
       "symbol": "KROPA",
       "baseDenom": "KROPA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Kroppa",
+    "denom": "inj15x62fd9yy0d8lll00k3h66d3terjn79e29l60p",
+    "logo": "unknown.png",
+    "symbol": "KROPPA",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj15x62fd9yy0d8lll00k3h66d3terjn79e29l60p",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "KROPPA",
+      "baseDenom": "KROPPA",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -20561,26 +20661,6 @@
   },
   {
     "name": "LIOR",
-    "denom": "factory/inj1tgphgjqsz8fupkfjx6cy275e3s0l8xfu6rd6jh/DINO",
-    "logo": "unknown.png",
-    "symbol": "LIOR",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj1tgphgjqsz8fupkfjx6cy275e3s0l8xfu6rd6jh/DINO",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "LIOR",
-      "baseDenom": "LIOR",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "LIOR",
     "denom": "factory/inj1sg3yjgjlwhtrepeuusj4jwv209rh6cmk882cw3/LIOR",
     "logo": "unknown.png",
     "symbol": "LIOR",
@@ -20600,8 +20680,28 @@
     }
   },
   {
+    "name": "LIOR",
+    "denom": "factory/inj1tgphgjqsz8fupkfjx6cy275e3s0l8xfu6rd6jh/DINO",
+    "logo": "unknown.png",
+    "symbol": "LIOR",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1tgphgjqsz8fupkfjx6cy275e3s0l8xfu6rd6jh/DINO",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "LIOR",
+      "baseDenom": "LIOR",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "LMAO",
-    "denom": "inj15xz5537eujskaayp600gkke7qu82p5sa76lg50",
+    "denom": "inj15m47mfu8qjh9uc7cr04txp9udea635vkuwduck",
     "logo": "unknown.png",
     "symbol": "LMAO",
     "decimals": 18,
@@ -20609,7 +20709,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj15xz5537eujskaayp600gkke7qu82p5sa76lg50",
+      "hash": "inj15m47mfu8qjh9uc7cr04txp9udea635vkuwduck",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -20621,7 +20721,7 @@
   },
   {
     "name": "LMAO",
-    "denom": "inj1vwhkr9qmntsfe9vzegh7xevvfaj4lnx9t783nf",
+    "denom": "inj1qt32en8rjd0x486tganvc6u7q25xlr5wqr68xn",
     "logo": "unknown.png",
     "symbol": "LMAO",
     "decimals": 18,
@@ -20629,7 +20729,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1vwhkr9qmntsfe9vzegh7xevvfaj4lnx9t783nf",
+      "hash": "inj1qt32en8rjd0x486tganvc6u7q25xlr5wqr68xn",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -20650,6 +20750,26 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "inj1w2w4n4mjzlx5snwf65l54a2gh4x0kmpvzm43fy",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "LMAO",
+      "baseDenom": "LMAO",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "LMAO",
+    "denom": "inj1vwhkr9qmntsfe9vzegh7xevvfaj4lnx9t783nf",
+    "logo": "unknown.png",
+    "symbol": "LMAO",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1vwhkr9qmntsfe9vzegh7xevvfaj4lnx9t783nf",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -20701,7 +20821,7 @@
   },
   {
     "name": "LMAO",
-    "denom": "inj1qt32en8rjd0x486tganvc6u7q25xlr5wqr68xn",
+    "denom": "inj15xz5537eujskaayp600gkke7qu82p5sa76lg50",
     "logo": "unknown.png",
     "symbol": "LMAO",
     "decimals": 18,
@@ -20709,27 +20829,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1qt32en8rjd0x486tganvc6u7q25xlr5wqr68xn",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "LMAO",
-      "baseDenom": "LMAO",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "LMAO",
-    "denom": "inj15m47mfu8qjh9uc7cr04txp9udea635vkuwduck",
-    "logo": "unknown.png",
-    "symbol": "LMAO",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj15m47mfu8qjh9uc7cr04txp9udea635vkuwduck",
+      "hash": "inj15xz5537eujskaayp600gkke7qu82p5sa76lg50",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -20901,7 +21001,7 @@
   },
   {
     "name": "LOOL",
-    "denom": "inj10wuysemk8ptnnt2n4my8qsalgkmw6yxe8wthu2",
+    "denom": "inj12xn584cdkhnz2nn08xz4yrwxscxa8tr2fuxwam",
     "logo": "unknown.png",
     "symbol": "LOOL",
     "decimals": 18,
@@ -20909,7 +21009,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj10wuysemk8ptnnt2n4my8qsalgkmw6yxe8wthu2",
+      "hash": "inj12xn584cdkhnz2nn08xz4yrwxscxa8tr2fuxwam",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -20921,7 +21021,7 @@
   },
   {
     "name": "LOOL",
-    "denom": "inj12xn584cdkhnz2nn08xz4yrwxscxa8tr2fuxwam",
+    "denom": "inj10wuysemk8ptnnt2n4my8qsalgkmw6yxe8wthu2",
     "logo": "unknown.png",
     "symbol": "LOOL",
     "decimals": 18,
@@ -20929,7 +21029,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj12xn584cdkhnz2nn08xz4yrwxscxa8tr2fuxwam",
+      "hash": "inj10wuysemk8ptnnt2n4my8qsalgkmw6yxe8wthu2",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -22561,7 +22661,7 @@
   },
   {
     "name": "MARJ",
-    "denom": "inj1sdxdvnn6g2c7qwfts55w4043x8qzdzrku0qp3z",
+    "denom": "inj1zhqnqzdg6738q9wjrkr50c6qkkd5ghar9fp36s",
     "logo": "unknown.png",
     "symbol": "MARJ",
     "decimals": 18,
@@ -22569,7 +22669,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1sdxdvnn6g2c7qwfts55w4043x8qzdzrku0qp3z",
+      "hash": "inj1zhqnqzdg6738q9wjrkr50c6qkkd5ghar9fp36s",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -22581,7 +22681,7 @@
   },
   {
     "name": "MARJ",
-    "denom": "inj1zhqnqzdg6738q9wjrkr50c6qkkd5ghar9fp36s",
+    "denom": "inj1sdxdvnn6g2c7qwfts55w4043x8qzdzrku0qp3z",
     "logo": "unknown.png",
     "symbol": "MARJ",
     "decimals": 18,
@@ -22589,7 +22689,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1zhqnqzdg6738q9wjrkr50c6qkkd5ghar9fp36s",
+      "hash": "inj1sdxdvnn6g2c7qwfts55w4043x8qzdzrku0qp3z",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -22741,7 +22841,7 @@
   },
   {
     "name": "Matr1x AI (Wormhole)",
-    "denom": "inj1367pnje9e8myaw04av6j2n5z7827407k4sa4m8",
+    "denom": "inj1gu7vdyclf2fjf9jlr6dhzf34kcxchjavevuktl",
     "logo": "unknown.png",
     "symbol": "MATR1X",
     "decimals": 8,
@@ -22749,7 +22849,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1367pnje9e8myaw04av6j2n5z7827407k4sa4m8",
+      "hash": "inj1gu7vdyclf2fjf9jlr6dhzf34kcxchjavevuktl",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -22761,7 +22861,7 @@
   },
   {
     "name": "Matr1x AI (Wormhole)",
-    "denom": "inj1gu7vdyclf2fjf9jlr6dhzf34kcxchjavevuktl",
+    "denom": "inj1367pnje9e8myaw04av6j2n5z7827407k4sa4m8",
     "logo": "unknown.png",
     "symbol": "MATR1X",
     "decimals": 8,
@@ -22769,7 +22869,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1gu7vdyclf2fjf9jlr6dhzf34kcxchjavevuktl",
+      "hash": "inj1367pnje9e8myaw04av6j2n5z7827407k4sa4m8",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -23081,26 +23181,6 @@
   },
   {
     "name": "Men In Black",
-    "denom": "factory/inj1qqge7uaftfykr9wjqy4khwwzyr2wgcctwwgqv2/MIB",
-    "logo": "unknown.png",
-    "symbol": "MIB",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj1qqge7uaftfykr9wjqy4khwwzyr2wgcctwwgqv2/MIB",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "MIB",
-      "baseDenom": "MIB",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Men In Black",
     "denom": "factory/inj1q3xa3r638hmpu2mywg5r0w8a3pz2u5l9n7x4q2/MeninblackINJ",
     "logo": "unknown.png",
     "symbol": "MIB",
@@ -23130,6 +23210,26 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "factory/inj1s9pckznjz4hmgtxu5t9gerxtalch7wtle4y3a6/MIB",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "MIB",
+      "baseDenom": "MIB",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Men In Black",
+    "denom": "factory/inj1qqge7uaftfykr9wjqy4khwwzyr2wgcctwwgqv2/MIB",
+    "logo": "unknown.png",
+    "symbol": "MIB",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1qqge7uaftfykr9wjqy4khwwzyr2wgcctwwgqv2/MIB",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -23801,7 +23901,7 @@
   },
   {
     "name": "MONKEY",
-    "denom": "factory/inj1zgpg4laenyplsjeqz4pxfhmsv55vcx70lf2sgz/MONKEY",
+    "denom": "factory/inj1v88cetqty588vkc5anxnm3zjcj2dmf4dwpdxry/monkey",
     "logo": "unknown.png",
     "symbol": "MONKEY",
     "decimals": 6,
@@ -23809,7 +23909,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1zgpg4laenyplsjeqz4pxfhmsv55vcx70lf2sgz/MONKEY",
+      "hash": "factory/inj1v88cetqty588vkc5anxnm3zjcj2dmf4dwpdxry/monkey",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -23821,7 +23921,7 @@
   },
   {
     "name": "MONKEY",
-    "denom": "factory/inj1v88cetqty588vkc5anxnm3zjcj2dmf4dwpdxry/monkey",
+    "denom": "factory/inj1zgpg4laenyplsjeqz4pxfhmsv55vcx70lf2sgz/MONKEY",
     "logo": "unknown.png",
     "symbol": "MONKEY",
     "decimals": 6,
@@ -23829,7 +23929,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1v88cetqty588vkc5anxnm3zjcj2dmf4dwpdxry/monkey",
+      "hash": "factory/inj1zgpg4laenyplsjeqz4pxfhmsv55vcx70lf2sgz/MONKEY",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -25101,7 +25201,7 @@
   },
   {
     "name": "NINJAPE",
-    "denom": "factory/inj1rvg9a58qtcf8f464w2hkynrvpnl9x59wsaq922/NINJAPE",
+    "denom": "factory/inj13sdyzwu7l4kwcjkyuyepxufjxtk2u59xkksp69/NINJAPE",
     "logo": "unknown.png",
     "symbol": "NINJAPE",
     "decimals": 6,
@@ -25109,7 +25209,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1rvg9a58qtcf8f464w2hkynrvpnl9x59wsaq922/NINJAPE",
+      "hash": "factory/inj13sdyzwu7l4kwcjkyuyepxufjxtk2u59xkksp69/NINJAPE",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -25121,7 +25221,7 @@
   },
   {
     "name": "NINJAPE",
-    "denom": "factory/inj13sdyzwu7l4kwcjkyuyepxufjxtk2u59xkksp69/NINJAPE",
+    "denom": "factory/inj1rvg9a58qtcf8f464w2hkynrvpnl9x59wsaq922/NINJAPE",
     "logo": "unknown.png",
     "symbol": "NINJAPE",
     "decimals": 6,
@@ -25129,7 +25229,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj13sdyzwu7l4kwcjkyuyepxufjxtk2u59xkksp69/NINJAPE",
+      "hash": "factory/inj1rvg9a58qtcf8f464w2hkynrvpnl9x59wsaq922/NINJAPE",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -25341,26 +25441,6 @@
   },
   {
     "name": "NINJAWIFHAT",
-    "denom": "inj1vllv3w7np7t68acdn6xj85yd9dzkxdfcuyluz0",
-    "logo": "unknown.png",
-    "symbol": "WIF",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1vllv3w7np7t68acdn6xj85yd9dzkxdfcuyluz0",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "WIF",
-      "baseDenom": "WIF",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "NINJAWIFHAT",
     "denom": "factory/inj1xukaxxx4yuaz6xys5dpuhe60un7ct9umju5ash/NWIF",
     "logo": "unknown.png",
     "symbol": "NWIF",
@@ -25375,6 +25455,26 @@
       "decimals": 6,
       "symbol": "NWIF",
       "baseDenom": "NWIF",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "NINJAWIFHAT",
+    "denom": "inj1vllv3w7np7t68acdn6xj85yd9dzkxdfcuyluz0",
+    "logo": "unknown.png",
+    "symbol": "WIF",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1vllv3w7np7t68acdn6xj85yd9dzkxdfcuyluz0",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "WIF",
+      "baseDenom": "WIF",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -25641,26 +25741,6 @@
   },
   {
     "name": "nonja",
-    "denom": "inj1fu5u29slsg2xtsj7v5la22vl4mr4ywl7wlqeck",
-    "logo": "unknown.png",
-    "symbol": "NONJA",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1fu5u29slsg2xtsj7v5la22vl4mr4ywl7wlqeck",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "NONJA",
-      "baseDenom": "NONJA",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "nonja",
     "denom": "inj1zwhu648g5zm9dqtxfaa6vcja56q7rqz4vff988",
     "logo": "unknown.png",
     "symbol": "mininonja",
@@ -25680,8 +25760,28 @@
     }
   },
   {
+    "name": "nonja",
+    "denom": "inj1fu5u29slsg2xtsj7v5la22vl4mr4ywl7wlqeck",
+    "logo": "unknown.png",
+    "symbol": "NONJA",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1fu5u29slsg2xtsj7v5la22vl4mr4ywl7wlqeck",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "NONJA",
+      "baseDenom": "NONJA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "NONJA",
-    "denom": "inj1zfcny0x77lt6z4rg04zt2mp6j4zuwm5uufkguz",
+    "denom": "factory/inj1alwxgkns9x7d2sprymwwfvzl5t7teetym02lrj/NONJA",
     "logo": "unknown.png",
     "symbol": "NONJA",
     "decimals": 6,
@@ -25689,7 +25789,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1zfcny0x77lt6z4rg04zt2mp6j4zuwm5uufkguz",
+      "hash": "factory/inj1alwxgkns9x7d2sprymwwfvzl5t7teetym02lrj/NONJA",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -25721,7 +25821,7 @@
   },
   {
     "name": "NONJA",
-    "denom": "factory/inj1alwxgkns9x7d2sprymwwfvzl5t7teetym02lrj/NONJA",
+    "denom": "inj1zfcny0x77lt6z4rg04zt2mp6j4zuwm5uufkguz",
     "logo": "unknown.png",
     "symbol": "NONJA",
     "decimals": 6,
@@ -25729,7 +25829,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1alwxgkns9x7d2sprymwwfvzl5t7teetym02lrj/NONJA",
+      "hash": "inj1zfcny0x77lt6z4rg04zt2mp6j4zuwm5uufkguz",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -26121,6 +26221,26 @@
   },
   {
     "name": "OIN STORE OF VALUE",
+    "denom": "ibc/486A0C3A5D9F8389FE01CF2656DF03DB119BC71C4164212F3541DD538A968B66",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/oin.png",
+    "symbol": "OIN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "486A0C3A5D9F8389FE01CF2656DF03DB119BC71C4164212F3541DD538A968B66",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "OIN",
+      "baseDenom": "OIN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "OIN STORE OF VALUE",
     "denom": "ibc/ABF6109CA87727E3945C2DB5EA17D819D57041A91BFB0BC73320AFE097C230F5",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/oin.png",
     "symbol": "OIN",
@@ -26130,6 +26250,46 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "ABF6109CA87727E3945C2DB5EA17D819D57041A91BFB0BC73320AFE097C230F5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "OIN",
+      "baseDenom": "OIN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "OIN STORE OF VALUE",
+    "denom": "ibc/CDA55861E9E491479CB52D5C89F942F5EAF221F80B7CDDBBA8EE94D3658B03B4",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/oin.png",
+    "symbol": "OIN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "CDA55861E9E491479CB52D5C89F942F5EAF221F80B7CDDBBA8EE94D3658B03B4",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "OIN",
+      "baseDenom": "OIN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "OIN STORE OF VALUE",
+    "denom": "ibc/64D95807CA13CD9EC5BEF9D3709138A14295DDBDFBC9EF58A9FFE34B911545E6",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/oin.png",
+    "symbol": "OIN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "64D95807CA13CD9EC5BEF9D3709138A14295DDBDFBC9EF58A9FFE34B911545E6",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -26170,66 +26330,6 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "09A596CF997F575F2D1E150DFECD7AAE4B44B119F4E45E0A2532EEBD1F8795FE",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "OIN",
-      "baseDenom": "OIN",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "OIN STORE OF VALUE",
-    "denom": "ibc/64D95807CA13CD9EC5BEF9D3709138A14295DDBDFBC9EF58A9FFE34B911545E6",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/oin.png",
-    "symbol": "OIN",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "64D95807CA13CD9EC5BEF9D3709138A14295DDBDFBC9EF58A9FFE34B911545E6",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "OIN",
-      "baseDenom": "OIN",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "OIN STORE OF VALUE",
-    "denom": "ibc/486A0C3A5D9F8389FE01CF2656DF03DB119BC71C4164212F3541DD538A968B66",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/oin.png",
-    "symbol": "OIN",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "486A0C3A5D9F8389FE01CF2656DF03DB119BC71C4164212F3541DD538A968B66",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "OIN",
-      "baseDenom": "OIN",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "OIN STORE OF VALUE",
-    "denom": "ibc/CDA55861E9E491479CB52D5C89F942F5EAF221F80B7CDDBBA8EE94D3658B03B4",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/oin.png",
-    "symbol": "OIN",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "CDA55861E9E491479CB52D5C89F942F5EAF221F80B7CDDBBA8EE94D3658B03B4",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -26281,6 +26381,26 @@
   },
   {
     "name": "OMG",
+    "denom": "inj194p79raj0qjesr26kzvhx9l2y77vyshvdpcgs9",
+    "logo": "unknown.png",
+    "symbol": "OMG",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj194p79raj0qjesr26kzvhx9l2y77vyshvdpcgs9",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "OMG",
+      "baseDenom": "OMG",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "OMG",
     "denom": "inj18ywez34uk9n6y3u590pqr8hjmtel0ges6radf0",
     "logo": "unknown.png",
     "symbol": "OMG",
@@ -26310,26 +26430,6 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "inj14wpqhfcd4q6424vskcv8xch4s0chc8cs82v4qp",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "OMG",
-      "baseDenom": "OMG",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "OMG",
-    "denom": "inj194p79raj0qjesr26kzvhx9l2y77vyshvdpcgs9",
-    "logo": "unknown.png",
-    "symbol": "OMG",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj194p79raj0qjesr26kzvhx9l2y77vyshvdpcgs9",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -26901,26 +27001,6 @@
   },
   {
     "name": "Pedro",
-    "denom": "inj1c6lxety9hqn9q4khwqvjcfa24c2qeqvvfsg4fm",
-    "logo": "unknown.png",
-    "symbol": "Pedro",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1c6lxety9hqn9q4khwqvjcfa24c2qeqvvfsg4fm",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "Pedro",
-      "baseDenom": "Pedro",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Pedro",
     "denom": "inj1hsv0y599unrnv02xntzmcdquh4wagrns8gqfh7",
     "logo": "unknown.png",
     "symbol": "Pedro",
@@ -26940,21 +27020,21 @@
     }
   },
   {
-    "name": "peggy0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
-    "denom": "peggy0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+    "name": "Pedro",
+    "denom": "inj1c6lxety9hqn9q4khwqvjcfa24c2qeqvvfsg4fm",
     "logo": "unknown.png",
-    "symbol": "peggy0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
-    "decimals": 6,
+    "symbol": "Pedro",
+    "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "peggy0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+      "hash": "inj1c6lxety9hqn9q4khwqvjcfa24c2qeqvvfsg4fm",
       "path": "",
       "channelId": "",
-      "decimals": 6,
-      "symbol": "peggy0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
-      "baseDenom": "peggy0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+      "decimals": 18,
+      "symbol": "Pedro",
+      "baseDenom": "Pedro",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -27021,6 +27101,26 @@
   },
   {
     "name": "PEPE",
+    "denom": "inj1tjnjj9hvecuj3dpdvvl4yxhshgwzqyg57k7fnh",
+    "logo": "unknown.png",
+    "symbol": "PEPE",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1tjnjj9hvecuj3dpdvvl4yxhshgwzqyg57k7fnh",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "PEPE",
+      "baseDenom": "PEPE",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "PEPE",
     "denom": "inj1xx04zkrkrplefzgdgl78mrq3qmy9e3fkgspujk",
     "logo": "unknown.png",
     "symbol": "PEPE",
@@ -27053,26 +27153,6 @@
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "PEPE",
-      "baseDenom": "PEPE",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "PEPE",
-    "denom": "inj1tjnjj9hvecuj3dpdvvl4yxhshgwzqyg57k7fnh",
-    "logo": "unknown.png",
-    "symbol": "PEPE",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1tjnjj9hvecuj3dpdvvl4yxhshgwzqyg57k7fnh",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
       "symbol": "PEPE",
       "baseDenom": "PEPE",
       "isNative": false,
@@ -27241,7 +27321,7 @@
   },
   {
     "name": "PHEW",
-    "denom": "inj19dux2glqedeamjwltjv5srvhgxkf6gyawtce5s",
+    "denom": "inj128usk4mqn69h9hmthqxhasyewkrhmprl7jp6lv",
     "logo": "unknown.png",
     "symbol": "PHEW",
     "decimals": 6,
@@ -27249,7 +27329,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj19dux2glqedeamjwltjv5srvhgxkf6gyawtce5s",
+      "hash": "inj128usk4mqn69h9hmthqxhasyewkrhmprl7jp6lv",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -27261,7 +27341,7 @@
   },
   {
     "name": "PHEW",
-    "denom": "inj128usk4mqn69h9hmthqxhasyewkrhmprl7jp6lv",
+    "denom": "inj19dux2glqedeamjwltjv5srvhgxkf6gyawtce5s",
     "logo": "unknown.png",
     "symbol": "PHEW",
     "decimals": 6,
@@ -27269,7 +27349,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj128usk4mqn69h9hmthqxhasyewkrhmprl7jp6lv",
+      "hash": "inj19dux2glqedeamjwltjv5srvhgxkf6gyawtce5s",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -28701,26 +28781,6 @@
   },
   {
     "name": "RAC",
-    "denom": "ibc/0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/rac.png",
-    "symbol": "RAC",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "RAC",
-      "baseDenom": "RAC",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "RAC",
     "denom": "inj1y6dgj675ttk2tzeasdwsk6n7etn0cfh9wz20vy",
     "logo": "unknown.png",
     "symbol": "RAC",
@@ -28733,6 +28793,26 @@
       "path": "",
       "channelId": "",
       "decimals": 18,
+      "symbol": "RAC",
+      "baseDenom": "RAC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "RAC",
+    "denom": "ibc/0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/rac.png",
+    "symbol": "RAC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "0F3A724673F682CF7812D0ED1A0C41D344C09E94C939E79D12712DC7C0676E80",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
       "symbol": "RAC",
       "baseDenom": "RAC",
       "isNative": false,
@@ -29200,6 +29280,26 @@
     }
   },
   {
+    "name": "Renzo ETH",
+    "denom": "peggy0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+    "logo": "unknown.png",
+    "symbol": "ezETH",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "peggy0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "ezETH",
+      "baseDenom": "ezETH",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "RESTAKE",
     "denom": "ibc/102810E506AC0FB1F14755ECA7A1D05066E0CBD574526521EF31E9B3237C0C02",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/migaloo/images/rstk.png",
@@ -29395,6 +29495,26 @@
       "decimals": 18,
       "symbol": "RITSU",
       "baseDenom": "RITSU",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "robertoBAGGIO",
+    "denom": "inj13z8pahkrcu2zk44el6lcnw9z3amstuneay5efs",
+    "logo": "unknown.png",
+    "symbol": "rBAGGIO",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj13z8pahkrcu2zk44el6lcnw9z3amstuneay5efs",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "rBAGGIO",
+      "baseDenom": "rBAGGIO",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -29761,26 +29881,6 @@
   },
   {
     "name": "RYAN",
-    "denom": "inj1zdhl0fk08tr8xwppych2f7apzdymw4r3gf9kyr",
-    "logo": "unknown.png",
-    "symbol": "RYAN",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1zdhl0fk08tr8xwppych2f7apzdymw4r3gf9kyr",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "RYAN",
-      "baseDenom": "RYAN",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "RYAN",
     "denom": "inj1mng4fr0ckvrq8xvgtsjrj6mqzm7passfzjqxcx",
     "logo": "unknown.png",
     "symbol": "RYAN",
@@ -29793,6 +29893,26 @@
       "path": "",
       "channelId": "",
       "decimals": 6,
+      "symbol": "RYAN",
+      "baseDenom": "RYAN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "RYAN",
+    "denom": "inj1zdhl0fk08tr8xwppych2f7apzdymw4r3gf9kyr",
+    "logo": "unknown.png",
+    "symbol": "RYAN",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1zdhl0fk08tr8xwppych2f7apzdymw4r3gf9kyr",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
       "symbol": "RYAN",
       "baseDenom": "RYAN",
       "isNative": false,
@@ -30021,7 +30141,7 @@
   },
   {
     "name": "SAKURA",
-    "denom": "factory/inj183fjyma33jsx0wndkmk69yukk3gpll7gunkyz6/sakurasakura",
+    "denom": "factory/inj183fjyma33jsx0wndkmk69yukk3gpll7gunkyz6/sakura",
     "logo": "unknown.png",
     "symbol": "SAKURA",
     "decimals": 6,
@@ -30029,7 +30149,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj183fjyma33jsx0wndkmk69yukk3gpll7gunkyz6/sakurasakura",
+      "hash": "factory/inj183fjyma33jsx0wndkmk69yukk3gpll7gunkyz6/sakura",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -30041,7 +30161,7 @@
   },
   {
     "name": "SAKURA",
-    "denom": "factory/inj183fjyma33jsx0wndkmk69yukk3gpll7gunkyz6/sakura",
+    "denom": "factory/inj183fjyma33jsx0wndkmk69yukk3gpll7gunkyz6/sakurasakura",
     "logo": "unknown.png",
     "symbol": "SAKURA",
     "decimals": 6,
@@ -30049,7 +30169,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj183fjyma33jsx0wndkmk69yukk3gpll7gunkyz6/sakura",
+      "hash": "factory/inj183fjyma33jsx0wndkmk69yukk3gpll7gunkyz6/sakurasakura",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -30141,26 +30261,6 @@
   },
   {
     "name": "Samurai",
-    "denom": "factory/inj1s5php9vmd03w6nszlnsny43cmuhw3y6u3vt7qc/samurai",
-    "logo": "unknown.png",
-    "symbol": "SAMURAI",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj1s5php9vmd03w6nszlnsny43cmuhw3y6u3vt7qc/samurai",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "SAMURAI",
-      "baseDenom": "SAMURAI",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Samurai",
     "denom": "inj1lvnuam0w70d4yj03vy30umqv4rr7gwfkfsemnc",
     "logo": "unknown.png",
     "symbol": "SAMURAI",
@@ -30180,8 +30280,8 @@
     }
   },
   {
-    "name": "SAMURAI",
-    "denom": "factory/inj1pgkwcngxel97d9qjvg75upe8y3lvvzncq5tdr0/samurai",
+    "name": "Samurai",
+    "denom": "factory/inj1s5php9vmd03w6nszlnsny43cmuhw3y6u3vt7qc/samurai",
     "logo": "unknown.png",
     "symbol": "SAMURAI",
     "decimals": 6,
@@ -30189,7 +30289,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1pgkwcngxel97d9qjvg75upe8y3lvvzncq5tdr0/samurai",
+      "hash": "factory/inj1s5php9vmd03w6nszlnsny43cmuhw3y6u3vt7qc/samurai",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -30230,6 +30330,26 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "factory/inj16nffej2c5xx93lf976wkp7vlhenau464rawhkc/samurai",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SAMURAI",
+      "baseDenom": "SAMURAI",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "SAMURAI",
+    "denom": "factory/inj1pgkwcngxel97d9qjvg75upe8y3lvvzncq5tdr0/samurai",
+    "logo": "unknown.png",
+    "symbol": "SAMURAI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1pgkwcngxel97d9qjvg75upe8y3lvvzncq5tdr0/samurai",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -30401,26 +30521,6 @@
   },
   {
     "name": "SantaInjective (Wormhole)",
-    "denom": "inj19wccuev2399ad0ftdfyvw8h9qq5dvqxqw0pqxe",
-    "logo": "unknown.png",
-    "symbol": "SANTAINJ",
-    "decimals": 8,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj19wccuev2399ad0ftdfyvw8h9qq5dvqxqw0pqxe",
-      "path": "",
-      "channelId": "",
-      "decimals": 8,
-      "symbol": "SANTAINJ",
-      "baseDenom": "SANTAINJ",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "SantaInjective (Wormhole)",
     "denom": "inj1ur3qac37axxmuqpsegr7cts77t78jyupucpua3",
     "logo": "unknown.png",
     "symbol": "INJSANTA",
@@ -30435,6 +30535,26 @@
       "decimals": 8,
       "symbol": "INJSANTA",
       "baseDenom": "INJSANTA",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "SantaInjective (Wormhole)",
+    "denom": "inj19wccuev2399ad0ftdfyvw8h9qq5dvqxqw0pqxe",
+    "logo": "unknown.png",
+    "symbol": "SANTAINJ",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj19wccuev2399ad0ftdfyvw8h9qq5dvqxqw0pqxe",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "SANTAINJ",
+      "baseDenom": "SANTAINJ",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -30641,7 +30761,7 @@
   },
   {
     "name": "SCAM",
-    "denom": "inj1hgh3dqc2kxl464qg9rnt3kctzplmsnqzycdtt7",
+    "denom": "inj1f9rppeq5yduz2te5fxxwnalg54lsa3ac6da5fg",
     "logo": "unknown.png",
     "symbol": "SCAM",
     "decimals": 18,
@@ -30649,7 +30769,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1hgh3dqc2kxl464qg9rnt3kctzplmsnqzycdtt7",
+      "hash": "inj1f9rppeq5yduz2te5fxxwnalg54lsa3ac6da5fg",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -30661,7 +30781,7 @@
   },
   {
     "name": "SCAM",
-    "denom": "inj1f9rppeq5yduz2te5fxxwnalg54lsa3ac6da5fg",
+    "denom": "inj1hgh3dqc2kxl464qg9rnt3kctzplmsnqzycdtt7",
     "logo": "unknown.png",
     "symbol": "SCAM",
     "decimals": 18,
@@ -30669,7 +30789,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1f9rppeq5yduz2te5fxxwnalg54lsa3ac6da5fg",
+      "hash": "inj1hgh3dqc2kxl464qg9rnt3kctzplmsnqzycdtt7",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -30821,26 +30941,6 @@
   },
   {
     "name": "Sei",
-    "denom": "ibc/45C1BDD0F44EA61B79E6F07C61F6FBC601E496B281316C867B542D7964A4BD82",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/sei.png",
-    "symbol": "SEI",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "45C1BDD0F44EA61B79E6F07C61F6FBC601E496B281316C867B542D7964A4BD82",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "SEI",
-      "baseDenom": "SEI",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Sei",
     "denom": "ibc/0D0B98E80BA0158D325074100998A78FB6EC1BF394EFF632E570A5C890ED7CC2",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/sei.png",
     "symbol": "SEI",
@@ -30870,6 +30970,26 @@
     "tokenVerification": "external",
     "ibc": {
       "hash": "BCE43BA530FBE35282B62C1E1EA4AD1F51522C61D40FB761005E1A02F18E0E58",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SEI",
+      "baseDenom": "SEI",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Sei",
+    "denom": "ibc/45C1BDD0F44EA61B79E6F07C61F6FBC601E496B281316C867B542D7964A4BD82",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sei/images/sei.png",
+    "symbol": "SEI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "45C1BDD0F44EA61B79E6F07C61F6FBC601E496B281316C867B542D7964A4BD82",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -31021,7 +31141,7 @@
   },
   {
     "name": "Sekiro",
-    "denom": "factory/inj1nn8xzngf2ydkppk2h0n9nje72ttee726hvjplx/Sekiro",
+    "denom": "factory/inj1tpuscn4wl7sf35zx5w95d74ulzsdfle67x7cq5/Sekiro",
     "logo": "unknown.png",
     "symbol": "SEKIRO",
     "decimals": 6,
@@ -31029,7 +31149,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1nn8xzngf2ydkppk2h0n9nje72ttee726hvjplx/Sekiro",
+      "hash": "factory/inj1tpuscn4wl7sf35zx5w95d74ulzsdfle67x7cq5/Sekiro",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -31041,7 +31161,7 @@
   },
   {
     "name": "Sekiro",
-    "denom": "factory/inj1tpuscn4wl7sf35zx5w95d74ulzsdfle67x7cq5/Sekiro",
+    "denom": "factory/inj1nn8xzngf2ydkppk2h0n9nje72ttee726hvjplx/Sekiro",
     "logo": "unknown.png",
     "symbol": "SEKIRO",
     "decimals": 6,
@@ -31049,7 +31169,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1tpuscn4wl7sf35zx5w95d74ulzsdfle67x7cq5/Sekiro",
+      "hash": "factory/inj1nn8xzngf2ydkppk2h0n9nje72ttee726hvjplx/Sekiro",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -31400,6 +31520,26 @@
     }
   },
   {
+    "name": "SHENZI",
+    "denom": "factory/inj1e05u43qmn9jt502784c009u4elz5l86678esrk/SHENZI",
+    "logo": "unknown.png",
+    "symbol": "SHENZI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1e05u43qmn9jt502784c009u4elz5l86678esrk/SHENZI",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SHENZI",
+      "baseDenom": "SHENZI",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "Shiba",
     "denom": "factory/inj1v0yk4msqsff7e9zf8ktxykfhz2hen6t2u4ue4r/shiba",
     "logo": "unknown.png",
@@ -31521,26 +31661,6 @@
   },
   {
     "name": "ShibINJ",
-    "denom": "inj1w7wwyy6pjs9k2ecxte8p6tp8g7kh6k3ut402af",
-    "logo": "unknown.png",
-    "symbol": "SHI",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1w7wwyy6pjs9k2ecxte8p6tp8g7kh6k3ut402af",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "SHI",
-      "baseDenom": "SHI",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "ShibINJ",
     "denom": "inj19zzdev3nkvpq26nfvdcm0szp8h272u2fxf0myv",
     "logo": "unknown.png",
     "symbol": "SHB",
@@ -31555,6 +31675,26 @@
       "decimals": 6,
       "symbol": "SHB",
       "baseDenom": "SHB",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "ShibINJ",
+    "denom": "inj1w7wwyy6pjs9k2ecxte8p6tp8g7kh6k3ut402af",
+    "logo": "unknown.png",
+    "symbol": "SHI",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1w7wwyy6pjs9k2ecxte8p6tp8g7kh6k3ut402af",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SHI",
+      "baseDenom": "SHI",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -31861,40 +32001,20 @@
   },
   {
     "name": "shroomin",
-    "denom": "inj14zxwefzz5p3l4mltlzgmfwh2jkgjqum256qhna",
+    "denom": "inj1kld2dd6xa5rs98v7afv3l57m6s30hyj8dcuhh4",
     "logo": "unknown.png",
-    "symbol": "babySHROOM",
+    "symbol": "BIGSHROOM",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj14zxwefzz5p3l4mltlzgmfwh2jkgjqum256qhna",
+      "hash": "inj1kld2dd6xa5rs98v7afv3l57m6s30hyj8dcuhh4",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "babySHROOM",
-      "baseDenom": "babySHROOM",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "shroomin",
-    "denom": "inj194l9mfrjsthrvv07d648q24pvpfkntetx68e7l",
-    "logo": "unknown.png",
-    "symbol": "DOJOshroom",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj194l9mfrjsthrvv07d648q24pvpfkntetx68e7l",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "DOJOshroom",
-      "baseDenom": "DOJOshroom",
+      "symbol": "BIGSHROOM",
+      "baseDenom": "BIGSHROOM",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -31921,20 +32041,40 @@
   },
   {
     "name": "shroomin",
-    "denom": "inj1mdzxqh9kag3a9e7x5488vn8hkeh42cuw0hnhrf",
+    "denom": "inj1e0957khyf2l5knwtdnzjr6t4d0x496fyz6fwja",
     "logo": "unknown.png",
-    "symbol": "SHROOM",
+    "symbol": "NEWSHROOM",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1mdzxqh9kag3a9e7x5488vn8hkeh42cuw0hnhrf",
+      "hash": "inj1e0957khyf2l5knwtdnzjr6t4d0x496fyz6fwja",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "SHROOM",
-      "baseDenom": "SHROOM",
+      "symbol": "NEWSHROOM",
+      "baseDenom": "NEWSHROOM",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "shroomin",
+    "denom": "inj14zxwefzz5p3l4mltlzgmfwh2jkgjqum256qhna",
+    "logo": "unknown.png",
+    "symbol": "babySHROOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj14zxwefzz5p3l4mltlzgmfwh2jkgjqum256qhna",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "babySHROOM",
+      "baseDenom": "babySHROOM",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -31981,46 +32121,6 @@
   },
   {
     "name": "shroomin",
-    "denom": "inj1mcdhsphq3rkyg9d0sax0arm95tkac4qxdynlkz",
-    "logo": "unknown.png",
-    "symbol": "miniSHROOM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1mcdhsphq3rkyg9d0sax0arm95tkac4qxdynlkz",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "miniSHROOM",
-      "baseDenom": "miniSHROOM",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "shroomin",
-    "denom": "inj1e0957khyf2l5knwtdnzjr6t4d0x496fyz6fwja",
-    "logo": "unknown.png",
-    "symbol": "NEWSHROOM",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1e0957khyf2l5knwtdnzjr6t4d0x496fyz6fwja",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "NEWSHROOM",
-      "baseDenom": "NEWSHROOM",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "shroomin",
     "denom": "inj16tp2zfy0kd5jjd0vku879j43757qqmt5nezfl0",
     "logo": "unknown.png",
     "symbol": "SHROOM",
@@ -32041,20 +32141,60 @@
   },
   {
     "name": "shroomin",
-    "denom": "inj1kld2dd6xa5rs98v7afv3l57m6s30hyj8dcuhh4",
+    "denom": "inj194l9mfrjsthrvv07d648q24pvpfkntetx68e7l",
     "logo": "unknown.png",
-    "symbol": "BIGSHROOM",
+    "symbol": "DOJOshroom",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1kld2dd6xa5rs98v7afv3l57m6s30hyj8dcuhh4",
+      "hash": "inj194l9mfrjsthrvv07d648q24pvpfkntetx68e7l",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "BIGSHROOM",
-      "baseDenom": "BIGSHROOM",
+      "symbol": "DOJOshroom",
+      "baseDenom": "DOJOshroom",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "shroomin",
+    "denom": "inj1mdzxqh9kag3a9e7x5488vn8hkeh42cuw0hnhrf",
+    "logo": "unknown.png",
+    "symbol": "SHROOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1mdzxqh9kag3a9e7x5488vn8hkeh42cuw0hnhrf",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "SHROOM",
+      "baseDenom": "SHROOM",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "shroomin",
+    "denom": "inj1mcdhsphq3rkyg9d0sax0arm95tkac4qxdynlkz",
+    "logo": "unknown.png",
+    "symbol": "miniSHROOM",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1mcdhsphq3rkyg9d0sax0arm95tkac4qxdynlkz",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "miniSHROOM",
+      "baseDenom": "miniSHROOM",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -32121,7 +32261,7 @@
   },
   {
     "name": "SHURIKEN",
-    "denom": "factory/inj1kt6ujkzdfv9we6t3ca344d3wquynrq6dg77qju/shuriken",
+    "denom": "inj1d8x73kj4xtgzhpztf6d60vcjnrw9w0sh2vq8em",
     "logo": "unknown.png",
     "symbol": "SHURIKEN",
     "decimals": 6,
@@ -32129,7 +32269,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1kt6ujkzdfv9we6t3ca344d3wquynrq6dg77qju/shuriken",
+      "hash": "inj1d8x73kj4xtgzhpztf6d60vcjnrw9w0sh2vq8em",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -32141,7 +32281,7 @@
   },
   {
     "name": "SHURIKEN",
-    "denom": "inj1d8x73kj4xtgzhpztf6d60vcjnrw9w0sh2vq8em",
+    "denom": "factory/inj1kt6ujkzdfv9we6t3ca344d3wquynrq6dg77qju/shuriken",
     "logo": "unknown.png",
     "symbol": "SHURIKEN",
     "decimals": 6,
@@ -32149,7 +32289,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1d8x73kj4xtgzhpztf6d60vcjnrw9w0sh2vq8em",
+      "hash": "factory/inj1kt6ujkzdfv9we6t3ca344d3wquynrq6dg77qju/shuriken",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -32241,7 +32381,7 @@
   },
   {
     "name": "Sinful",
-    "denom": "inj1lhfk33ydwwnnmtluyuu3re2g4lp79c86ge546g",
+    "denom": "inj10fnmtl9mh95gjtgl67ww6clugl35d8lc7tewkd",
     "logo": "unknown.png",
     "symbol": "Sin",
     "decimals": 18,
@@ -32249,7 +32389,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1lhfk33ydwwnnmtluyuu3re2g4lp79c86ge546g",
+      "hash": "inj10fnmtl9mh95gjtgl67ww6clugl35d8lc7tewkd",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -32261,7 +32401,7 @@
   },
   {
     "name": "Sinful",
-    "denom": "inj10fnmtl9mh95gjtgl67ww6clugl35d8lc7tewkd",
+    "denom": "inj1lhfk33ydwwnnmtluyuu3re2g4lp79c86ge546g",
     "logo": "unknown.png",
     "symbol": "Sin",
     "decimals": 18,
@@ -32269,7 +32409,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj10fnmtl9mh95gjtgl67ww6clugl35d8lc7tewkd",
+      "hash": "inj1lhfk33ydwwnnmtluyuu3re2g4lp79c86ge546g",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -32561,7 +32701,7 @@
   },
   {
     "name": "SMLE",
-    "denom": "inj1nqy47ullz048d8lzck9yr89dnpfefrdx30c7fx",
+    "denom": "inj13ent4rmkzf2dht7hnlhg89t527k8xn5ft92e69",
     "logo": "unknown.png",
     "symbol": "SMLE",
     "decimals": 18,
@@ -32569,7 +32709,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1nqy47ullz048d8lzck9yr89dnpfefrdx30c7fx",
+      "hash": "inj13ent4rmkzf2dht7hnlhg89t527k8xn5ft92e69",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -32581,7 +32721,7 @@
   },
   {
     "name": "SMLE",
-    "denom": "inj13ent4rmkzf2dht7hnlhg89t527k8xn5ft92e69",
+    "denom": "inj1nqy47ullz048d8lzck9yr89dnpfefrdx30c7fx",
     "logo": "unknown.png",
     "symbol": "SMLE",
     "decimals": 18,
@@ -32589,7 +32729,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj13ent4rmkzf2dht7hnlhg89t527k8xn5ft92e69",
+      "hash": "inj1nqy47ullz048d8lzck9yr89dnpfefrdx30c7fx",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -32721,26 +32861,6 @@
   },
   {
     "name": "SNIPE",
-    "denom": "inj1ryzgvggaktks2pz69pugltfu7f3hpq7wc98t5e",
-    "logo": "unknown.png",
-    "symbol": "SNIPE",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1ryzgvggaktks2pz69pugltfu7f3hpq7wc98t5e",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "SNIPE",
-      "baseDenom": "SNIPE",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "SNIPE",
     "denom": "factory/inj16g5w38hqehsmye9yavag0g0tw7u8pjuzep0sys/SNIPE",
     "logo": "unknown.png",
     "symbol": "SNIPE",
@@ -32753,6 +32873,26 @@
       "path": "",
       "channelId": "",
       "decimals": 6,
+      "symbol": "SNIPE",
+      "baseDenom": "SNIPE",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "SNIPE",
+    "denom": "inj1ryzgvggaktks2pz69pugltfu7f3hpq7wc98t5e",
+    "logo": "unknown.png",
+    "symbol": "SNIPE",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1ryzgvggaktks2pz69pugltfu7f3hpq7wc98t5e",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
       "symbol": "SNIPE",
       "baseDenom": "SNIPE",
       "isNative": false,
@@ -33081,26 +33221,6 @@
   },
   {
     "name": "spore",
-    "denom": "inj1uqhcsup58gjfxl26z9esenmr03hn8wyz2mlc02",
-    "logo": "unknown.png",
-    "symbol": "spore",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1uqhcsup58gjfxl26z9esenmr03hn8wyz2mlc02",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "spore",
-      "baseDenom": "spore",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "spore",
     "denom": "factory/inj1lq9wn94d49tt7gc834cxkm0j5kwlwu4gm65lhe/spore",
     "logo": "unknown.png",
     "symbol": "spore",
@@ -33120,8 +33240,28 @@
     }
   },
   {
+    "name": "spore",
+    "denom": "inj1uqhcsup58gjfxl26z9esenmr03hn8wyz2mlc02",
+    "logo": "unknown.png",
+    "symbol": "spore",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1uqhcsup58gjfxl26z9esenmr03hn8wyz2mlc02",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "spore",
+      "baseDenom": "spore",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "spuun",
-    "denom": "inj1gkc8ajx5pfkvdux3574r90ahgmtkpnprx0fuaa",
+    "denom": "inj1vgm0pwes4fusmvha62grh5aq55yxdz2x5k58xw",
     "logo": "unknown.png",
     "symbol": "SPUUN",
     "decimals": 18,
@@ -33129,7 +33269,27 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1gkc8ajx5pfkvdux3574r90ahgmtkpnprx0fuaa",
+      "hash": "inj1vgm0pwes4fusmvha62grh5aq55yxdz2x5k58xw",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "SPUUN",
+      "baseDenom": "SPUUN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "spuun",
+    "denom": "inj1ss6rtzavmpr9ssf0pcw8x20vxmphfqdmlfyz9t",
+    "logo": "unknown.png",
+    "symbol": "SPUUN",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1ss6rtzavmpr9ssf0pcw8x20vxmphfqdmlfyz9t",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -33161,26 +33321,6 @@
   },
   {
     "name": "spuun",
-    "denom": "inj1ss6rtzavmpr9ssf0pcw8x20vxmphfqdmlfyz9t",
-    "logo": "unknown.png",
-    "symbol": "SPUUN",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1ss6rtzavmpr9ssf0pcw8x20vxmphfqdmlfyz9t",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "SPUUN",
-      "baseDenom": "SPUUN",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "spuun",
     "denom": "inj1mas3j8u02wzcfysjhgrx0uj0qprua2lm0gx27r",
     "logo": "unknown.png",
     "symbol": "SPUUN",
@@ -33201,7 +33341,7 @@
   },
   {
     "name": "spuun",
-    "denom": "inj1vgm0pwes4fusmvha62grh5aq55yxdz2x5k58xw",
+    "denom": "inj1gkc8ajx5pfkvdux3574r90ahgmtkpnprx0fuaa",
     "logo": "unknown.png",
     "symbol": "SPUUN",
     "decimals": 18,
@@ -33209,7 +33349,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1vgm0pwes4fusmvha62grh5aq55yxdz2x5k58xw",
+      "hash": "inj1gkc8ajx5pfkvdux3574r90ahgmtkpnprx0fuaa",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -33261,6 +33401,26 @@
   },
   {
     "name": "SPUUN",
+    "denom": "inj1cjvssl698h094n6c2uqdx75degfewey26yt6uw",
+    "logo": "unknown.png",
+    "symbol": "babySPUUN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1cjvssl698h094n6c2uqdx75degfewey26yt6uw",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "babySPUUN",
+      "baseDenom": "babySPUUN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "SPUUN",
     "denom": "factory/inj1flkktfvf8nxvk300f2z3vxglpllpw59c563pk7/SPUUN",
     "logo": "unknown.png",
     "symbol": "SPUUN",
@@ -33275,6 +33435,26 @@
       "decimals": 6,
       "symbol": "SPUUN",
       "baseDenom": "SPUUN",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "SPUUN ",
+    "denom": "inj1n73ty9gxej3xk7c0hhktjdq3ppsekwjnhq98p5",
+    "logo": "unknown.png",
+    "symbol": "BABYSPUUN",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1n73ty9gxej3xk7c0hhktjdq3ppsekwjnhq98p5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "BABYSPUUN",
+      "baseDenom": "BABYSPUUN",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -34261,15 +34441,15 @@
   },
   {
     "name": "TALIS",
-    "denom": "factory/inj1maeyvxfamtn8lfyxpjca8kuvauuf2qeu6gtxm3/Talis",
-    "logo": "https://raw.githubusercontent.com/Talis-Art/talis/main/assets/talis.webp",
+    "denom": "factory/inj1238tn4srtzzplhgtd7fdrzdrf77hf9fye6q2xa/TALIS",
+    "logo": "unknown.png",
     "symbol": "TALIS",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1maeyvxfamtn8lfyxpjca8kuvauuf2qeu6gtxm3/Talis",
+      "hash": "factory/inj1238tn4srtzzplhgtd7fdrzdrf77hf9fye6q2xa/TALIS",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -34281,15 +34461,15 @@
   },
   {
     "name": "TALIS",
-    "denom": "factory/inj1238tn4srtzzplhgtd7fdrzdrf77hf9fye6q2xa/TALIS",
-    "logo": "unknown.png",
+    "denom": "factory/inj1maeyvxfamtn8lfyxpjca8kuvauuf2qeu6gtxm3/Talis",
+    "logo": "https://raw.githubusercontent.com/Talis-Art/talis/main/assets/talis.webp",
     "symbol": "TALIS",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1238tn4srtzzplhgtd7fdrzdrf77hf9fye6q2xa/TALIS",
+      "hash": "factory/inj1maeyvxfamtn8lfyxpjca8kuvauuf2qeu6gtxm3/Talis",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -34561,6 +34741,26 @@
   },
   {
     "name": "test",
+    "denom": "inj1gulvsqvun9qcdfxrsfc33ym82fuccu55zsw6ap",
+    "logo": "unknown.png",
+    "symbol": "test",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1gulvsqvun9qcdfxrsfc33ym82fuccu55zsw6ap",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "test",
+      "baseDenom": "test",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "test",
     "denom": "inj1ukx6qs0guxzcf0an80vw8q88203cl75cey67lw",
     "logo": "unknown.png",
     "symbol": "tst",
@@ -34601,7 +34801,7 @@
   },
   {
     "name": "test",
-    "denom": "inj1gulvsqvun9qcdfxrsfc33ym82fuccu55zsw6ap",
+    "denom": "inj1qqn3urdskeq9mlm37c375978kv3rxgjx2kff9p",
     "logo": "unknown.png",
     "symbol": "test",
     "decimals": 18,
@@ -34609,7 +34809,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1gulvsqvun9qcdfxrsfc33ym82fuccu55zsw6ap",
+      "hash": "inj1qqn3urdskeq9mlm37c375978kv3rxgjx2kff9p",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -34641,26 +34841,6 @@
   },
   {
     "name": "test",
-    "denom": "inj1qqn3urdskeq9mlm37c375978kv3rxgjx2kff9p",
-    "logo": "unknown.png",
-    "symbol": "test",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1qqn3urdskeq9mlm37c375978kv3rxgjx2kff9p",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "test",
-      "baseDenom": "test",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "test",
     "denom": "inj1f59h6qh6vckz8asg307zajzrht948vlymesg8c",
     "logo": "unknown.png",
     "symbol": "test",
@@ -34681,7 +34861,7 @@
   },
   {
     "name": "Test",
-    "denom": "ibc/A83851234A83F3FE51CDB44FF1A4435472A197C096EF9E7312B69E67C16B7FB7",
+    "denom": "inj18ehdtnlrreg0ptdtvzx05nzpfvvjgnt8y95hns",
     "logo": "unknown.png",
     "symbol": "TEST",
     "decimals": 6,
@@ -34689,7 +34869,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "A83851234A83F3FE51CDB44FF1A4435472A197C096EF9E7312B69E67C16B7FB7",
+      "hash": "inj18ehdtnlrreg0ptdtvzx05nzpfvvjgnt8y95hns",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -34701,20 +34881,20 @@
   },
   {
     "name": "Test",
-    "denom": "inj1m84527ec0zxfsssrp5c4an5xgjz9hp4d2ev0pz",
+    "denom": "inj17n0zrpvl3u67z4mphxq9qmhv6fuqs8sywxt04d",
     "logo": "unknown.png",
-    "symbol": "Test",
-    "decimals": 6,
+    "symbol": "TST",
+    "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1m84527ec0zxfsssrp5c4an5xgjz9hp4d2ev0pz",
+      "hash": "inj17n0zrpvl3u67z4mphxq9qmhv6fuqs8sywxt04d",
       "path": "",
       "channelId": "",
-      "decimals": 6,
-      "symbol": "Test",
-      "baseDenom": "Test",
+      "decimals": 18,
+      "symbol": "TST",
+      "baseDenom": "TST",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -34741,7 +34921,7 @@
   },
   {
     "name": "Test",
-    "denom": "inj18ehdtnlrreg0ptdtvzx05nzpfvvjgnt8y95hns",
+    "denom": "ibc/A83851234A83F3FE51CDB44FF1A4435472A197C096EF9E7312B69E67C16B7FB7",
     "logo": "unknown.png",
     "symbol": "TEST",
     "decimals": 6,
@@ -34749,7 +34929,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj18ehdtnlrreg0ptdtvzx05nzpfvvjgnt8y95hns",
+      "hash": "A83851234A83F3FE51CDB44FF1A4435472A197C096EF9E7312B69E67C16B7FB7",
       "path": "",
       "channelId": "",
       "decimals": 6,
@@ -34781,38 +34961,38 @@
   },
   {
     "name": "Test",
-    "denom": "inj17n0zrpvl3u67z4mphxq9qmhv6fuqs8sywxt04d",
+    "denom": "inj1m84527ec0zxfsssrp5c4an5xgjz9hp4d2ev0pz",
     "logo": "unknown.png",
-    "symbol": "TST",
-    "decimals": 18,
+    "symbol": "Test",
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj17n0zrpvl3u67z4mphxq9qmhv6fuqs8sywxt04d",
+      "hash": "inj1m84527ec0zxfsssrp5c4an5xgjz9hp4d2ev0pz",
       "path": "",
       "channelId": "",
-      "decimals": 18,
-      "symbol": "TST",
-      "baseDenom": "TST",
+      "decimals": 6,
+      "symbol": "Test",
+      "baseDenom": "Test",
       "isNative": false,
       "tokenType": "ibc"
     }
   },
   {
     "name": "TEST",
-    "denom": "inj1y7q956uxwk7xgyft49n7k3j3gt5faeskje6gq2",
+    "denom": "inj1t9r3s40sr3jjd20kp2w8dunff2466zwr89n2xr",
     "logo": "unknown.png",
     "symbol": "TEST",
-    "decimals": 6,
+    "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1y7q956uxwk7xgyft49n7k3j3gt5faeskje6gq2",
+      "hash": "inj1t9r3s40sr3jjd20kp2w8dunff2466zwr89n2xr",
       "path": "",
       "channelId": "",
-      "decimals": 6,
+      "decimals": 18,
       "symbol": "TEST",
       "baseDenom": "TEST",
       "isNative": false,
@@ -34821,7 +35001,7 @@
   },
   {
     "name": "TEST",
-    "denom": "inj1as2gqhf6ct8fms53uashc2jtaejlj79h3rem2a",
+    "denom": "inj1m2h20qlrhs5nr89s48gm083qdl7333j3v83yjg",
     "logo": "unknown.png",
     "symbol": "TEST",
     "decimals": 6,
@@ -34829,30 +35009,10 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1as2gqhf6ct8fms53uashc2jtaejlj79h3rem2a",
+      "hash": "inj1m2h20qlrhs5nr89s48gm083qdl7333j3v83yjg",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1h2ewqh3mjzm72sfrtvxhzd34kxn0qstc6phl4a",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1h2ewqh3mjzm72sfrtvxhzd34kxn0qstc6phl4a",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
       "symbol": "TEST",
       "baseDenom": "TEST",
       "isNative": false,
@@ -34881,7 +35041,7 @@
   },
   {
     "name": "TEST",
-    "denom": "inj1mpm6l6g77c0flupzynj4lqvktdh5xuj0g4arn6",
+    "denom": "inj15hvdwk0zxxl2uegnryswvxre7pufuluahrl6s6",
     "logo": "unknown.png",
     "symbol": "TEST",
     "decimals": 18,
@@ -34889,7 +35049,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1mpm6l6g77c0flupzynj4lqvktdh5xuj0g4arn6",
+      "hash": "inj15hvdwk0zxxl2uegnryswvxre7pufuluahrl6s6",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -34913,286 +35073,6 @@
       "path": "",
       "channelId": "",
       "decimals": 18,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj17jwmn6gfrwvc9rz6atx3f3rc2g8zuxklcpw8za",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj17jwmn6gfrwvc9rz6atx3f3rc2g8zuxklcpw8za",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj15hvdwk0zxxl2uegnryswvxre7pufuluahrl6s6",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj15hvdwk0zxxl2uegnryswvxre7pufuluahrl6s6",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "factory/inj1qjjhhdn95u8s6tqqhx27n8g9vqtn6uhn63szp8/TEST",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj1qjjhhdn95u8s6tqqhx27n8g9vqtn6uhn63szp8/TEST",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1m6ntlp05hxg6gvmkzyjej8a5at0jemamydzx4g",
-    "logo": "unknown.png",
-    "symbol": "Test",
-    "decimals": 8,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1m6ntlp05hxg6gvmkzyjej8a5at0jemamydzx4g",
-      "path": "",
-      "channelId": "",
-      "decimals": 8,
-      "symbol": "Test",
-      "baseDenom": "Test",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1hd7pwkcwz9pweklkap04ucwztllxp70xu26dc8",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1hd7pwkcwz9pweklkap04ucwztllxp70xu26dc8",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1t9r3s40sr3jjd20kp2w8dunff2466zwr89n2xr",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1t9r3s40sr3jjd20kp2w8dunff2466zwr89n2xr",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj18jn6s6605pa42qgxqekhqtku56gcmf24n2y03k",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj18jn6s6605pa42qgxqekhqtku56gcmf24n2y03k",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1cjft36fxcspjdkcc5j45z6ucuqyxp7ky9ktu4f",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1cjft36fxcspjdkcc5j45z6ucuqyxp7ky9ktu4f",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1wzqsfnz6936efkejd9znvtp6m75eg085yl7wzc",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1wzqsfnz6936efkejd9znvtp6m75eg085yl7wzc",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1cnqf8xld9a2tezf4sq56lc3f9kfs257s45fd29",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1cnqf8xld9a2tezf4sq56lc3f9kfs257s45fd29",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1sp8f3hg3qtjr75qxm89fgawwnme6lvldqxrz87",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1sp8f3hg3qtjr75qxm89fgawwnme6lvldqxrz87",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1s3w6k5snskregtfrjqdc2ee6t3llypw2yy4w3l",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1s3w6k5snskregtfrjqdc2ee6t3llypw2yy4w3l",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "inj1h0ka230k265jtv5hnujr6tszd66rjk3dutmfuj",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1h0ka230k265jtv5hnujr6tszd66rjk3dutmfuj",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "TEST",
-      "baseDenom": "TEST",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TEST",
-    "denom": "factory/inj1jc4zt6y82gy3n0j8g2mh9n3f7fwf35sj6jq5zu/TEST",
-    "logo": "unknown.png",
-    "symbol": "TEST",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj1jc4zt6y82gy3n0j8g2mh9n3f7fwf35sj6jq5zu/TEST",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
       "symbol": "TEST",
       "baseDenom": "TEST",
       "isNative": false,
@@ -35241,6 +35121,26 @@
   },
   {
     "name": "TEST",
+    "denom": "factory/inj1qjjhhdn95u8s6tqqhx27n8g9vqtn6uhn63szp8/TEST",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1qjjhhdn95u8s6tqqhx27n8g9vqtn6uhn63szp8/TEST",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
     "denom": "inj1jdn48px2andzq693c2uu4k3pnr9fm5rtywtvmz",
     "logo": "unknown.png",
     "symbol": "TEST",
@@ -35261,7 +35161,27 @@
   },
   {
     "name": "TEST",
-    "denom": "inj1m2h20qlrhs5nr89s48gm083qdl7333j3v83yjg",
+    "denom": "inj1savfv8nemxsp0870m0dsqgprcwwr447jrj2yh5",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1savfv8nemxsp0870m0dsqgprcwwr447jrj2yh5",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj17jwmn6gfrwvc9rz6atx3f3rc2g8zuxklcpw8za",
     "logo": "unknown.png",
     "symbol": "TEST",
     "decimals": 6,
@@ -35269,10 +35189,210 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1m2h20qlrhs5nr89s48gm083qdl7333j3v83yjg",
+      "hash": "inj17jwmn6gfrwvc9rz6atx3f3rc2g8zuxklcpw8za",
       "path": "",
       "channelId": "",
       "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1mpm6l6g77c0flupzynj4lqvktdh5xuj0g4arn6",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1mpm6l6g77c0flupzynj4lqvktdh5xuj0g4arn6",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1wzqsfnz6936efkejd9znvtp6m75eg085yl7wzc",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1wzqsfnz6936efkejd9znvtp6m75eg085yl7wzc",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1h2ewqh3mjzm72sfrtvxhzd34kxn0qstc6phl4a",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1h2ewqh3mjzm72sfrtvxhzd34kxn0qstc6phl4a",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1m6ntlp05hxg6gvmkzyjej8a5at0jemamydzx4g",
+    "logo": "unknown.png",
+    "symbol": "Test",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1m6ntlp05hxg6gvmkzyjej8a5at0jemamydzx4g",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "Test",
+      "baseDenom": "Test",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1cnqf8xld9a2tezf4sq56lc3f9kfs257s45fd29",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1cnqf8xld9a2tezf4sq56lc3f9kfs257s45fd29",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1y7q956uxwk7xgyft49n7k3j3gt5faeskje6gq2",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1y7q956uxwk7xgyft49n7k3j3gt5faeskje6gq2",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1sp8f3hg3qtjr75qxm89fgawwnme6lvldqxrz87",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1sp8f3hg3qtjr75qxm89fgawwnme6lvldqxrz87",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1h0ka230k265jtv5hnujr6tszd66rjk3dutmfuj",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1h0ka230k265jtv5hnujr6tszd66rjk3dutmfuj",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1hd7pwkcwz9pweklkap04ucwztllxp70xu26dc8",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1hd7pwkcwz9pweklkap04ucwztllxp70xu26dc8",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj18jn6s6605pa42qgxqekhqtku56gcmf24n2y03k",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj18jn6s6605pa42qgxqekhqtku56gcmf24n2y03k",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
       "symbol": "TEST",
       "baseDenom": "TEST",
       "isNative": false,
@@ -35301,7 +35421,47 @@
   },
   {
     "name": "TEST",
-    "denom": "inj1savfv8nemxsp0870m0dsqgprcwwr447jrj2yh5",
+    "denom": "inj1as2gqhf6ct8fms53uashc2jtaejlj79h3rem2a",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1as2gqhf6ct8fms53uashc2jtaejlj79h3rem2a",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "factory/inj1jc4zt6y82gy3n0j8g2mh9n3f7fwf35sj6jq5zu/TEST",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1jc4zt6y82gy3n0j8g2mh9n3f7fwf35sj6jq5zu/TEST",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1cjft36fxcspjdkcc5j45z6ucuqyxp7ky9ktu4f",
     "logo": "unknown.png",
     "symbol": "TEST",
     "decimals": 18,
@@ -35309,7 +35469,27 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1savfv8nemxsp0870m0dsqgprcwwr447jrj2yh5",
+      "hash": "inj1cjft36fxcspjdkcc5j45z6ucuqyxp7ky9ktu4f",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "TEST",
+      "baseDenom": "TEST",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TEST",
+    "denom": "inj1s3w6k5snskregtfrjqdc2ee6t3llypw2yy4w3l",
+    "logo": "unknown.png",
+    "symbol": "TEST",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1s3w6k5snskregtfrjqdc2ee6t3llypw2yy4w3l",
       "path": "",
       "channelId": "",
       "decimals": 18,
@@ -35841,26 +36021,6 @@
   },
   {
     "name": "Tether USD",
-    "denom": "ibc/90C6F06139D663CFD7949223D257C5B5D241E72ED61EBD12FFDDA6F068715E47",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdt.png",
-    "symbol": "USDT.axl",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "90C6F06139D663CFD7949223D257C5B5D241E72ED61EBD12FFDDA6F068715E47",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDT.axl",
-      "baseDenom": "USDT.axl",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "Tether USD",
     "denom": "ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdt.svg",
     "symbol": "USDT",
@@ -35875,6 +36035,26 @@
       "decimals": 6,
       "symbol": "USDT",
       "baseDenom": "USDT",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Tether USD",
+    "denom": "ibc/90C6F06139D663CFD7949223D257C5B5D241E72ED61EBD12FFDDA6F068715E47",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdt.png",
+    "symbol": "USDT.axl",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "90C6F06139D663CFD7949223D257C5B5D241E72ED61EBD12FFDDA6F068715E47",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDT.axl",
+      "baseDenom": "USDT.axl",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -36701,26 +36881,6 @@
   },
   {
     "name": "TRUMP",
-    "denom": "inj17gh0tgtr2d7l5lv47x4ra557jq27qv0tenqxar",
-    "logo": "unknown.png",
-    "symbol": "TRUMP",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj17gh0tgtr2d7l5lv47x4ra557jq27qv0tenqxar",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "TRUMP",
-      "baseDenom": "TRUMP",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "TRUMP",
     "denom": "inj15mfkraj8dhgye7s6gmrxm308w5z0ezd8pu2kef",
     "logo": "unknown.png",
     "symbol": "TRUMP",
@@ -36755,6 +36915,26 @@
       "decimals": 18,
       "symbol": "trump",
       "baseDenom": "trump",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "TRUMP",
+    "denom": "inj17gh0tgtr2d7l5lv47x4ra557jq27qv0tenqxar",
+    "logo": "unknown.png",
+    "symbol": "TRUMP",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj17gh0tgtr2d7l5lv47x4ra557jq27qv0tenqxar",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "TRUMP",
+      "baseDenom": "TRUMP",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -37121,26 +37301,6 @@
   },
   {
     "name": "UNI",
-    "denom": "peggy0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-    "logo": "unknown.png",
-    "symbol": "UNI",
-    "decimals": 18,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "peggy0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-      "path": "",
-      "channelId": "",
-      "decimals": 18,
-      "symbol": "UNI",
-      "baseDenom": "UNI",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "UNI",
     "denom": "factory/inj14epxlhe56lhk5s3nc8wzmetwh6rpehuufe89ak/UNI",
     "logo": "unknown.png",
     "symbol": "UNI",
@@ -37153,6 +37313,26 @@
       "path": "",
       "channelId": "",
       "decimals": 6,
+      "symbol": "UNI",
+      "baseDenom": "UNI",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "UNI",
+    "denom": "peggy0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+    "logo": "unknown.png",
+    "symbol": "UNI",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "peggy0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
       "symbol": "UNI",
       "baseDenom": "UNI",
       "isNative": false,
@@ -37261,6 +37441,26 @@
   },
   {
     "name": "USDC",
+    "denom": "ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png",
+    "symbol": "USDC",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "USDC",
+      "baseDenom": "USDC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "USDC",
     "denom": "peggy0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.svg",
     "symbol": "USDC",
@@ -37300,21 +37500,21 @@
     }
   },
   {
-    "name": "USDC",
-    "denom": "ibc/2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png",
-    "symbol": "USDC",
+    "name": "USD Coin",
+    "denom": "factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk",
+    "logo": "https://raw.githubusercontent.com/astroport-fi/astroport-token-lists/56abf334f3c349ce85983be4f4054ee6178c8ff1/img/usdc.svg",
+    "symbol": "USDCET",
     "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "2CBC2EA121AE42563B08028466F37B600F2D7D4282342DE938283CC3FB2BC00E",
+      "hash": "factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk",
       "path": "",
       "channelId": "",
       "decimals": 6,
-      "symbol": "USDC",
-      "baseDenom": "USDC",
+      "symbol": "USDCET",
+      "baseDenom": "USDCET",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -37335,26 +37535,6 @@
       "decimals": 6,
       "symbol": "USDC",
       "baseDenom": "USDC",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "USD Coin",
-    "denom": "factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk",
-    "logo": "https://raw.githubusercontent.com/astroport-fi/astroport-token-lists/56abf334f3c349ce85983be4f4054ee6178c8ff1/img/usdc.svg",
-    "symbol": "USDCET",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1q6zlut7gtkzknkk773jecujwsdkgq882akqksk",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDCET",
-      "baseDenom": "USDCET",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -37501,26 +37681,6 @@
   },
   {
     "name": "USDT",
-    "denom": "ibc/7965483148018AFAA12DC569959897E7A5E474F4B41A87FFC5513B552C108DB5",
-    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdt.png",
-    "symbol": "USDT",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "7965483148018AFAA12DC569959897E7A5E474F4B41A87FFC5513B552C108DB5",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "USDT",
-      "baseDenom": "USDT",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "USDT",
     "denom": "inj1tcgye8ekwd0fcnrwncdtt7k9r7eg7k824c0pdg",
     "logo": "unknown.png",
     "symbol": "USDT",
@@ -37533,6 +37693,26 @@
       "path": "",
       "channelId": "",
       "decimals": 18,
+      "symbol": "USDT",
+      "baseDenom": "USDT",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "USDT",
+    "denom": "ibc/7965483148018AFAA12DC569959897E7A5E474F4B41A87FFC5513B552C108DB5",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdt.png",
+    "symbol": "USDT",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "7965483148018AFAA12DC569959897E7A5E474F4B41A87FFC5513B552C108DB5",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
       "symbol": "USDT",
       "baseDenom": "USDT",
       "isNative": false,
@@ -38280,6 +38460,26 @@
     }
   },
   {
+    "name": "WNINJ",
+    "denom": "factory/inj1ducfa3t9sj5uyxs7tzqwxhp6mcfdag2jcq2km6/wnINJ",
+    "logo": "unknown.png",
+    "symbol": "WNINJ",
+    "decimals": 18,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "factory/inj1ducfa3t9sj5uyxs7tzqwxhp6mcfdag2jcq2km6/wnINJ",
+      "path": "",
+      "channelId": "",
+      "decimals": 18,
+      "symbol": "WNINJ",
+      "baseDenom": "WNINJ",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "WOJAK",
     "denom": "factory/inj17kqcwkgdayv585dr7mljclechqzymgfsqc8x9k/WOJAK",
     "logo": "unknown.png",
@@ -38455,6 +38655,26 @@
       "decimals": 6,
       "symbol": "WORM",
       "baseDenom": "WORM",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "Wormhole",
+    "denom": "ibc/F16F0F685BEF7BC6A145F16CBE78C6EC8C7C3A5F3066A98A9E57DCEA0903E537",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/solana/images/w.png",
+    "symbol": "W",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "F16F0F685BEF7BC6A145F16CBE78C6EC8C7C3A5F3066A98A9E57DCEA0903E537",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
+      "symbol": "W",
+      "baseDenom": "W",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -38800,6 +39020,26 @@
     }
   },
   {
+    "name": "Wrapped MATIC",
+    "denom": "ibc/4DEFEB42BAAB2788723759D95B7550BCE460855563ED977036248F5B94C842FC",
+    "logo": "unknown.png",
+    "symbol": "WMATIC",
+    "decimals": 8,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "4DEFEB42BAAB2788723759D95B7550BCE460855563ED977036248F5B94C842FC",
+      "path": "",
+      "channelId": "",
+      "decimals": 8,
+      "symbol": "WMATIC",
+      "baseDenom": "WMATIC",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
     "name": "Wrapped Matic (Wormhole)",
     "denom": "factory/inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk/inj1dxv423h8ygzgxmxnvrf33ws3k94aedfdevxd8h",
     "logo": "https://explorer.injective.network/vendor/@injectivelabs/token-metadata/polygon.png",
@@ -39101,26 +39341,6 @@
   },
   {
     "name": "XIII",
-    "denom": "inj1zw35mh6q23cnxa0j6kdh2n4dtss795avxmn9kn",
-    "logo": "unknown.png",
-    "symbol": "XIII",
-    "decimals": 6,
-    "coinGeckoId": "",
-    "tokenType": "ibc",
-    "tokenVerification": "external",
-    "ibc": {
-      "hash": "inj1zw35mh6q23cnxa0j6kdh2n4dtss795avxmn9kn",
-      "path": "",
-      "channelId": "",
-      "decimals": 6,
-      "symbol": "XIII",
-      "baseDenom": "XIII",
-      "isNative": false,
-      "tokenType": "ibc"
-    }
-  },
-  {
-    "name": "XIII",
     "denom": "inj1cgmxmra82qtxxjypjesnvu43e7nf6ucv3njy9u",
     "logo": "unknown.png",
     "symbol": "XIII",
@@ -39133,6 +39353,26 @@
       "path": "",
       "channelId": "",
       "decimals": 18,
+      "symbol": "XIII",
+      "baseDenom": "XIII",
+      "isNative": false,
+      "tokenType": "ibc"
+    }
+  },
+  {
+    "name": "XIII",
+    "denom": "inj1zw35mh6q23cnxa0j6kdh2n4dtss795avxmn9kn",
+    "logo": "unknown.png",
+    "symbol": "XIII",
+    "decimals": 6,
+    "coinGeckoId": "",
+    "tokenType": "ibc",
+    "tokenVerification": "external",
+    "ibc": {
+      "hash": "inj1zw35mh6q23cnxa0j6kdh2n4dtss795avxmn9kn",
+      "path": "",
+      "channelId": "",
+      "decimals": 6,
       "symbol": "XIII",
       "baseDenom": "XIII",
       "isNative": false,
@@ -39181,7 +39421,7 @@
   },
   {
     "name": "XmasPump (Wormhole)",
-    "denom": "inj165lcmjswrkuz2m5p45wn00qz4k2zpq8r9axkp9",
+    "denom": "inj1yjtgs6a9nwsljwk958ypf2u7l5kqf5ld8h3tmd",
     "logo": "unknown.png",
     "symbol": "XMASPUMP",
     "decimals": 8,
@@ -39189,7 +39429,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj165lcmjswrkuz2m5p45wn00qz4k2zpq8r9axkp9",
+      "hash": "inj1yjtgs6a9nwsljwk958ypf2u7l5kqf5ld8h3tmd",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -39201,7 +39441,7 @@
   },
   {
     "name": "XmasPump (Wormhole)",
-    "denom": "inj1yjtgs6a9nwsljwk958ypf2u7l5kqf5ld8h3tmd",
+    "denom": "inj165lcmjswrkuz2m5p45wn00qz4k2zpq8r9axkp9",
     "logo": "unknown.png",
     "symbol": "XMASPUMP",
     "decimals": 8,
@@ -39209,7 +39449,7 @@
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj1yjtgs6a9nwsljwk958ypf2u7l5kqf5ld8h3tmd",
+      "hash": "inj165lcmjswrkuz2m5p45wn00qz4k2zpq8r9axkp9",
       "path": "",
       "channelId": "",
       "decimals": 8,
@@ -39321,20 +39561,20 @@
   },
   {
     "name": "Yakuza",
-    "denom": "inj14rgkkvwar36drhuajheu3u84jh9gdk27acfphy",
+    "denom": "factory/inj1t0vyy5c3cnrw9f0mpjz9xk7fp22ezjjmrza7xn/Yakuza",
     "logo": "unknown.png",
-    "symbol": "YKZ",
-    "decimals": 18,
+    "symbol": "Yakuza",
+    "decimals": 6,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "inj14rgkkvwar36drhuajheu3u84jh9gdk27acfphy",
+      "hash": "factory/inj1t0vyy5c3cnrw9f0mpjz9xk7fp22ezjjmrza7xn/Yakuza",
       "path": "",
       "channelId": "",
-      "decimals": 18,
-      "symbol": "YKZ",
-      "baseDenom": "YKZ",
+      "decimals": 6,
+      "symbol": "Yakuza",
+      "baseDenom": "Yakuza",
       "isNative": false,
       "tokenType": "ibc"
     }
@@ -39361,20 +39601,20 @@
   },
   {
     "name": "Yakuza",
-    "denom": "factory/inj1t0vyy5c3cnrw9f0mpjz9xk7fp22ezjjmrza7xn/Yakuza",
+    "denom": "inj14rgkkvwar36drhuajheu3u84jh9gdk27acfphy",
     "logo": "unknown.png",
-    "symbol": "Yakuza",
-    "decimals": 6,
+    "symbol": "YKZ",
+    "decimals": 18,
     "coinGeckoId": "",
     "tokenType": "ibc",
     "tokenVerification": "external",
     "ibc": {
-      "hash": "factory/inj1t0vyy5c3cnrw9f0mpjz9xk7fp22ezjjmrza7xn/Yakuza",
+      "hash": "inj14rgkkvwar36drhuajheu3u84jh9gdk27acfphy",
       "path": "",
       "channelId": "",
-      "decimals": 6,
-      "symbol": "Yakuza",
-      "baseDenom": "Yakuza",
+      "decimals": 18,
+      "symbol": "YKZ",
+      "baseDenom": "YKZ",
       "isNative": false,
       "tokenType": "ibc"
     }
