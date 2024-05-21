@@ -6,11 +6,11 @@ In addition, the bank module tracks and provides query support for the total sup
 
 ### Messages
 
-Let's explore (and provide examples) the Messages that the Bank module exports and we can use to interact with the Injective chain.
+Let's explore (and provide examples) the messages that the Bank module exports and we can use to interact with the Injective chain.
 
 ### MsgSend
 
-This Message is used to send coins from one address to another.
+This message is used to send coins from one address to another. Any TokenFactory token and Peggy token can be used here. To transfer CW20 tokens, see the `MsgExecuteContract` section [here](https://docs.ts.injective.network/core-modules/wasm#msgexecutecontract-transfer).
 
 ```ts
 import { MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
