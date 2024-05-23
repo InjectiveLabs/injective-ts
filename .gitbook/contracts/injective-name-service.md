@@ -13,7 +13,7 @@ const injNameService = new InjNameService(Network.Testnet)
 <strong>const name = 'ninja.inj'
 </strong>
 // Fetch the address for the particular name
-const addressForName = await injNameService.fetchInjAddress(name) 
+const addressForName = await injNameService.fetchInjAddress(name)
 
 // Fetch the name for the particular address
 const nameFromAddress = await injNameService.fetchInjName(addressForName)
@@ -28,32 +28,37 @@ Example code snippets to resolve .inj domain name.
 * Get resolver address
 
 ```ts
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainId } from '@injectivelabs/ts-types'
+import {
+  Network,
+  getNetworkEndpoints,
+  getInjNameRegistryContractForNetwork
+} from '@injectivelabs/networks'
 import {
   ChainGrpcWasmApi,
   QueryResolverAddress,
   InjNameServiceQueryTransformer
-  INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK,
-  INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK,
 } from '@injectivelabs/sdk-ts'
 
 const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
-const registryContractAddress = INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK[Network.Testnet]
-const reverseResolverContractAddress =
-  INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK[Network.Testnet]
+const registryContractAddress = getInjNameRegistryContractForNetwork(
+  Network.Testnet
+)
+
 const node = ''
 
 const query = new QueryResolverAddress({ node }).toPayload()
 
 const response = await chainGrpcWasmApi.fetchSmartContractState(
   registryContractAddress,
-  query,
+  query
 )
 
-const resolverAddress = InjNameServiceQueryTransformer.resolverAddressResponseToResolverAddress(response)
+const resolverAddress =
+  InjNameServiceQueryTransformer.resolverAddressResponseToResolverAddress(
+    response
+  )
 
 console.log(resolverAddress)
 ```
@@ -61,35 +66,40 @@ console.log(resolverAddress)
 * Get address for .inj domain name.
 
 ```ts
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainId } from '@injectivelabs/ts-types'
 import {
-  nameToNode,
-  normalizeName,
+  Network,
+  getNetworkEndpoints,
+  getInjNameReverseResolverContractForNetwork
+} from '@injectivelabs/networks'
+import {
   ChainGrpcWasmApi,
   QueryInjectiveAddress,
   InjNameServiceQueryTransformer
-  INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK,
 } from '@injectivelabs/sdk-ts'
+import { nameToNode, normalizeName } from '@injectivelabs/sdk-ui-ts'
 
 const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
-const registryContractAddress = INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK[Network.Testnet]
+const reverseResolverContractAddress =
+  getInjNameReverseResolverContractForNetwork(Network.Testnet)
+
 const name = 'allen.inj'
-const resolverAddress = '' /** from above query */
 
 const normalizedName = normalizeName(name)
-const node = nameToNode(normalized)
+const node = nameToNode(normalizedName)
 
 const query = new QueryInjectiveAddress({ node }).toPayload()
 
 const response = await chainGrpcWasmApi.fetchSmartContractState(
-  resolverAddress,
-  query,
+  reverseResolverContractAddress,
+  query
 )
 
-const injectiveAddress = InjNameServiceQueryTransformer.injectiveAddressResponseToInjectiveAddress(response)
+const injectiveAddress =
+  InjNameServiceQueryTransformer.injectiveAddressResponseToInjectiveAddress(
+    response
+  )
 
 if (!injectiveAddress) {
   throw new Error(`address not found for ${name}`)
@@ -103,24 +113,23 @@ console.log(injectiveAddress)
 * Get the primary name for injective address.
 
 ```ts
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainId } from '@injectivelabs/ts-types'
 import {
-  nameToNode,
-  normalizeName,
+  QueryInjName,
   ChainGrpcWasmApi,
-  QueryInjectiveAddress,
   InjNameServiceQueryTransformer
-  INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK,
 } from '@injectivelabs/sdk-ts'
+  import {
+  Network,
+  getNetworkEndpoints,
+  getInjNameReverseResolverContractForNetwork
+} from '@injectivelabs/networks'
 
 const endpoints = getNetworkEndpoints(Network.Testnet)
 const chainGrpcWasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
 const reverseResolverContractAddress =
-  INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK[Network.Testnet]
+  getInjNameReverseResolverContractForNetwork(Network.Testnet)
 const injectiveAddress = ''
-const resolverAddress = '' /** from above query */
 
 const query = new QueryInjName({ address: injectiveAddress }).toPayload()
 
