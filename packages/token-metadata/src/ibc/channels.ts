@@ -20,6 +20,7 @@ export enum CanonicalChannelToDestinationChannel {
   Kujira = 'channel-98',
   Gateway = 'channel-183',
   Andromeda = 'channel-213',
+  Neutron = 'channel-177',
 }
 
 /**
@@ -95,6 +96,7 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-7', chainA: 'Celestia', chainB: 'Injective' },
   { channelId: 'channel-54', chainA: 'Kujira', chainB: 'Injective' },
   { channelId: 'channel-13', chainA: 'Andromeda', chainB: 'Injective' },
+  { channelId: 'channel-60', chainA: 'Neutron', chainB: 'Injective' },
   { channelId: 'channel-1', chainA: 'Injective', chainB: 'CosmosHub' },
   { channelId: 'channel-83', chainA: 'Injective', chainB: 'Evmos' },
   { channelId: 'channel-8', chainA: 'Injective', chainB: 'Osmosis' },
@@ -119,6 +121,7 @@ export const canonicalChannelsToChainList = [
   { channelId: 'channel-147', chainA: 'Injective', chainB: 'Oraichain' },
   { channelId: 'channel-148', chainA: 'Injective', chainB: 'Noble' },
   { channelId: 'channel-152', chainA: 'Injective', chainB: 'Celestia' },
+  { channelId: 'channel-177', chainA: 'Injective', chainB: 'Neutron' },
   { channelId: 'channel-183', chainA: 'Injective', chainB: 'Gateway' },
   { channelId: 'channel-213', chainA: 'Injective', chainB: 'Andromeda' },
 ]
@@ -153,6 +156,7 @@ export const canonicalChannelIds = [
   'channel-147',
   'channel-148',
   'channel-152',
+  'channel-177',
   'channel-183',
   'channel-213',
   'channel-261',

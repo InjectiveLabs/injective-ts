@@ -36,6 +36,7 @@ export enum BridgingNetwork {
   Migaloo = 'migaloo',
   Kujira = 'kujira',
   Andromeda = 'andromeda',
+  Neutron = 'neutron',
 }
 
 export const MintScanExplorerUrl = {
@@ -53,6 +54,7 @@ export const MintScanExplorerUrl = {
   [BridgingNetwork.Kava]: 'kava',
   [BridgingNetwork.Noble]: 'noble',
   [BridgingNetwork.Celestia]: 'celestia',
+  [BridgingNetwork.Neutron]: 'neutron',
 } as Record<BridgingNetwork, string>
 
 export enum BridgeTransactionState {

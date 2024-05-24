@@ -3817,4 +3817,24 @@ export default {
       },
     ],
   },
+
+  NBZ: {
+    name: 'Ninja Blaze Token',
+    coinGeckoId: '',
+    logo: 'nbz.png',
+
+    ibcs: [
+      {
+        symbol: 'NBZ',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'factory/neutron1a6ydq8urdj0gkvjw9e9e5y9r5ce2qegm9m4xufpt96kcm60kmuass0mqq4/nbz',
+        path: 'transfer/channel-177',
+        channelId: 'channel-177',
+        hash: '1011E4D6D4800DA9B8F21D7C207C0B0C18E54E614A8576037F066B775210709D',
+        source: TokenSource.Cosmos,
+      },
+    ],
+  }
 } as Record<string, TokenMetaBase>
