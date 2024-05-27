@@ -3,6 +3,7 @@ import {
   hexToBuff,
   PublicKey,
   SIGN_DIRECT,
+  TxResponse,
   hexToBase64,
   SIGN_EIP712_V2,
   SIGN_EIP712,
@@ -56,6 +57,7 @@ import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 import { isCosmosAminoOnlyWallet } from '../utils'
 import { LeapWallet } from '../utils/wallets'
+import { checkIfTxRunOutOfGas } from './helper'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,
@@ -449,7 +451,7 @@ export class MsgBroadcaster {
    */
   private async broadcastWeb3WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
-  ) {
+  ): Promise<TxResponse> {
     const { options, simulateTx, ethereumChainId, endpoints } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
@@ -484,7 +486,38 @@ export class MsgBroadcaster {
       chainId: ethereumChainId,
     })
 
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
+    try {
+      const txResponse = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+        response.txHash,
+      )
+
+      return txResponse
+    } catch (e) {
+      /**
+       * First MsgExec transaction with a PrivateKey wallet
+       * always runs out of gas for some reason, temporary solution
+       * to just broadcast the transaction twice
+       **/
+      if (
+        walletStrategy.wallet === Wallet.PrivateKey &&
+        checkIfTxRunOutOfGas(e)
+      ) {
+        /** Account Details * */
+        const accountDetails = await new ChainGrpcAuthApi(
+          endpoints.grpc,
+        ).fetchAccount(tx.injectiveAddress)
+        const { baseAccount } = accountDetails
+
+        /** We only do it on the first account tx fail */
+        if (baseAccount.sequence > 1) {
+          throw e
+        }
+
+        return await this.broadcastWeb3WithFeeDelegation(tx)
+      }
+
+      throw e
+    }
   }
 
   /**

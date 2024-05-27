@@ -41,6 +41,13 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
       .toNumber()
   }
 
+  if (messageType.includes('authz')) {
+    return new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
+      .times(messages.length)
+      .decimalPlaces(0)
+      .toNumber()
+  }
+
   if (
     messageType.includes('gov') &&
     (messageType.includes('MsgDeposit') ||
