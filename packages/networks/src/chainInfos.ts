@@ -25,7 +25,7 @@ export const devnetChainInfo: ChainInfo = {
 
 export const localChainInfo: ChainInfo = {
   feeDenom: INJ_DENOM,
-  chainId: ChainId.Devnet,
-  ethereumChainId: EthereumChainId.Sepolia,
+  chainId: ChainId.Mainnet,
+  ethereumChainId: EthereumChainId.Mainnet,
   env: 'local',
 }

@@ -23,7 +23,10 @@ import {
 } from '../../../../types/enums'
 import { getMetamaskProvider } from './utils'
 
-export default class Metamask extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export default class Metamask
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
   }

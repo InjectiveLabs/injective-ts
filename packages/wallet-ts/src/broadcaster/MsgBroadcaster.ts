@@ -104,8 +104,9 @@ export class MsgBroadcaster {
     this.simulateTx = options.simulateTx || true
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.2
-    this.chainId = networkInfo.chainId
-    this.ethereumChainId = networkInfo.ethereumChainId
+    this.chainId = options.chainId || networkInfo.chainId
+    this.ethereumChainId =
+      options.ethereumChainId || networkInfo.ethereumChainId
     this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
   }
 
