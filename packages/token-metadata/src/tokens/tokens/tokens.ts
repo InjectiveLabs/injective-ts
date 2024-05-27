@@ -3817,4 +3817,22 @@ export default {
       },
     ],
   },
+
+  XAG: {
+    name: 'Silver',
+    symbol: 'XAG',
+    decimals: 6,
+    logo: 'xag.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.Unknown,
+  },
+
+  CAD: {
+    name: 'Canadian Dollar',
+    symbol: 'CAD',
+    decimals: 6,
+    logo: 'cad.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.Unknown,
+  },
 } as Record<string, TokenMetaBase>
