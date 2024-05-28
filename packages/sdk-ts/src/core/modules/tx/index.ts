@@ -6,5 +6,6 @@ export * from './utils'
 export * from './types'
 export * from './broadcaster'
 export * from './eip712'
+export * from './arbitrary'
 
 export { CosmosTxV1Beta1Tx }
