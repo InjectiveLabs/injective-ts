@@ -13,6 +13,7 @@
   * [Accounts](wallet/wallet-accounts.md)
   * [Wallet Connections](wallet/wallet-connections.md)
   * [Wallet Strategy](wallet/wallet-wallet-strategy.md)
+  * [Offchain (Arbitrary) Data](wallet/offchain-arbitrary-data.md)
 * [Querying](querying/README.md)
   * [Indexer](querying/querying-api/README.md)
     * [Account](querying/querying-api/querying-indexer-account.md)
