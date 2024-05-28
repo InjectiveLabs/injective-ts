@@ -19,8 +19,9 @@ With the explanation above, we can understand that once you have your **PublicKe
 
 ### Topics
 
-| Topic                                        | Description                                                 |
-| -------------------------------------------- | ----------------------------------------------------------- |
-| [Accounts on Injective](wallet-accounts.md)  | Accounts/Wallets definition on Injective                    |
-| [Wallet Connections](wallet-connections.md)  | Connecting directly using Metamask or Keplr                 |
-| [Wallet Strategy](wallet-wallet-strategy.md) | Using the WalletStrategy to connect using different wallets |
+| Topic                                                   | Description                                                     |
+| ------------------------------------------------------- | --------------------------------------------------------------- |
+| [Accounts on Injective](wallet-accounts.md)             | Accounts/Wallets definition on Injective                        |
+| [Wallet Connections](wallet-connections.md)             | Connecting directly using Metamask or Keplr                     |
+| [Wallet Strategy](wallet-wallet-strategy.md)            | Using the WalletStrategy to connect using different wallets     |
+| [Offchain (Arbitrary) Data](offchain-arbitrary-data.md) | Signing and verifying data offchain using the ADR-036 by Cosmos |
