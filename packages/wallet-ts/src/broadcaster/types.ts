@@ -38,9 +38,7 @@ export interface MsgBroadcasterOptions {
     sentryGrpcApi: string
     sentryHttpApi: string
   }
-  /** @deprecated - taken from the network parameter  */
   chainId?: ChainId
-  /** @deprecated - taken from the network parameter  */
   ethereumChainId?: EthereumChainId
   feePayerPubKey?: string
   simulateTx?: boolean

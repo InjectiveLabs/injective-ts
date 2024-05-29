@@ -1,3 +1,4 @@
+import { generateArbitrarySignDoc } from '../modules'
 import { PrivateKey } from './PrivateKey'
 
 const privateKey =
@@ -65,5 +66,21 @@ describe('PrivateKey', () => {
 
   it('returns true when verifying signature for a public key and a cosmos message', () => {
     //
+  })
+
+  it('returns true when verifying arbitrary message', async () => {
+    const pk = PrivateKey.fromHex(privateKey)
+
+    const message = 'testing ADR-36'
+    const { signDocBuff } = generateArbitrarySignDoc(message, pk.toBech32())
+    const signature = await pk.sign(signDocBuff)
+
+    expect(
+      PrivateKey.verifyArbitrarySignature({
+        signature: Buffer.from(signature).toString('hex'),
+        signDoc: signDocBuff,
+        publicKey: pk.toPublicKey().toHex(),
+      }),
+    ).toBe(true)
   })
 })

@@ -405,4 +405,30 @@ export class PrivateKey {
       publicKey: Buffer.from(signer.publicKey, 'base64').toString('hex'),
     })
   }
+
+  /**
+   * Verify signature using ADR-36 sign doc
+   * and the publicKey
+   *
+   * (params are passed as an object)
+   *
+   * @param {string} signature: the signature to verify in hex
+   * @param {any} signDoc: the signDoc to verify against
+   * @param {string} publicKey:the public key to verify against in hex
+   * */
+  public static verifyArbitrarySignature({
+    signature,
+    signDoc,
+    publicKey,
+  }: {
+    signature: string /* in hex */
+    signDoc: Buffer
+    publicKey: string /* in hex */
+  }): boolean {
+    return secp256k1.ecdsaVerify(
+      Buffer.from(signature, 'hex'),
+      keccak256(signDoc),
+      Buffer.from(publicKey, 'hex'),
+    )
+  }
 }
