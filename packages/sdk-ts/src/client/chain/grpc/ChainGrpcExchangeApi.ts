@@ -32,7 +32,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryExchangeParamsResponse>(
-          () => this.client.QueryExchangeParams(request),
+          () => this.client.QueryExchangeParams(request, this.metadata),
         )
 
       return ChainGrpcExchangeTransformer.moduleParamsResponseToParams(response)
@@ -60,7 +60,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryModuleStateResponse>(
-          () => this.client.ExchangeModuleState(request),
+          () => this.client.ExchangeModuleState(request, this.metadata),
         )
 
       return response.state!
@@ -88,7 +88,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryFeeDiscountScheduleResponse>(
-          () => this.client.FeeDiscountSchedule(request),
+          () => this.client.FeeDiscountSchedule(request, this.metadata),
         )
 
       return ChainGrpcExchangeTransformer.feeDiscountScheduleResponseToFeeDiscountSchedule(
@@ -121,7 +121,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse>(
-          () => this.client.FeeDiscountAccountInfo(request),
+          () => this.client.FeeDiscountAccountInfo(request, this.metadata),
         )
 
       return ChainGrpcExchangeTransformer.feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
@@ -151,7 +151,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse>(
-          () => this.client.TradeRewardCampaign(request),
+          () => this.client.TradeRewardCampaign(request, this.metadata),
         )
 
       return ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign(
@@ -183,7 +183,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryTradeRewardPointsResponse>(
-          () => this.client.TradeRewardPoints(request),
+          () => this.client.TradeRewardPoints(request, this.metadata),
         )
 
       return response.accountTradeRewardPoints
@@ -220,7 +220,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryTradeRewardPointsResponse>(
-          () => this.client.PendingTradeRewardPoints(request),
+          () => this.client.PendingTradeRewardPoints(request, this.metadata),
         )
 
       return response.accountTradeRewardPoints
@@ -247,7 +247,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryPositionsResponse>(
-          () => this.client.Positions(request),
+          () => this.client.Positions(request, this.metadata),
         )
 
       return ChainGrpcExchangeTransformer.positionsResponseToPositions(response)
@@ -277,7 +277,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QuerySubaccountTradeNonceResponse>(
-          () => this.client.SubaccountTradeNonce(request),
+          () => this.client.SubaccountTradeNonce(request, this.metadata),
         )
 
       return response
@@ -307,7 +307,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExchangeV1Beta1Query.QueryIsOptedOutOfRewardsResponse>(
-          () => this.client.IsOptedOutOfRewards(request),
+          () => this.client.IsOptedOutOfRewards(request, this.metadata),
         )
 
       return ChainGrpcExchangeTransformer.isOptedOutOfRewardsResponseToIsOptedOutOfRewards(

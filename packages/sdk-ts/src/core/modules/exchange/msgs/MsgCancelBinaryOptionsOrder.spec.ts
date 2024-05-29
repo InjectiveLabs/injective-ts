@@ -7,7 +7,7 @@ const params: MsgCancelBinaryOptionsOrder['params'] = {
   marketId: mockFactory.injUsdtDerivativeMarket.marketId,
   orderHash: mockFactory.orderHash,
   subaccountId: mockFactory.subaccountId,
-  cid: '',
+  cid: 'order-123',
 }
 
 const protoType = '/injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
@@ -17,8 +17,8 @@ const protoParams = {
   marketId: params.marketId,
   orderHash: params.orderHash,
   subaccountId: params.subaccountId,
-  cid: params.cid,
   orderMask: 1,
+  cid: params.cid,
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
 
@@ -59,6 +59,7 @@ describe('MsgCancelBinaryOptionsOrder', () => {
         { name: 'subaccount_id', type: 'string' },
         { name: 'order_hash', type: 'string' },
         { name: 'order_mask', type: 'int32' },
+        { name: 'cid', type: 'string' },
       ],
     })
   })

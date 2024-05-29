@@ -23,10 +23,7 @@ import {
 } from '../../../../types/enums'
 import { getPhantomProvider } from './utils'
 
-export default class Phantom
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Phantom extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
   }
@@ -80,7 +77,7 @@ export default class Phantom
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -295,7 +292,7 @@ export default class Phantom
           .catch((_error: any) => {
             //
           })
-    }
+      }
     }
 
     this.listeners = {

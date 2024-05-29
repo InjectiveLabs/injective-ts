@@ -64,10 +64,7 @@ const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   return Chain.Mainnet
 }
 
-export default class Trezor
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Trezor extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private trezor: TrezorHW
 
   private ethereumOptions: WalletStrategyEthereumOptions
@@ -108,7 +105,7 @@ export default class Trezor
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,

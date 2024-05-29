@@ -1,4 +1,5 @@
 import MsgDeposit from './msgs/MsgDeposit'
+import MsgSignData from './msgs/MsgSignData'
 import MsgWithdraw from './msgs/MsgWithdraw'
 import MsgRewardsOptOut from './msgs/MsgRewardsOptOut'
 import MsgCancelSpotOrder from './msgs/MsgCancelSpotOrder'
@@ -20,10 +21,12 @@ import MsgCreateBinaryOptionsLimitOrder from './msgs/MsgCreateBinaryOptionsLimit
 import MsgCreateBinaryOptionsMarketOrder from './msgs/MsgCreateBinaryOptionsMarketOrder'
 import MsgInstantBinaryOptionsMarketLaunch from './msgs/MsgInstantBinaryOptionsMarketLaunch'
 import MsgBatchCancelBinaryOptionsOrders from './msgs/MsgBatchCancelBinaryOptionsOrders'
+import MsgAdminUpdateBinaryOptionsMarket from './msgs/MsgAdminUpdateBinaryOptionsMarket'
 
 export {
   MsgDeposit,
   MsgWithdraw,
+  MsgSignData,
   MsgRewardsOptOut,
   MsgCancelSpotOrder,
   MsgExternalTransfer,
@@ -41,6 +44,7 @@ export {
   MsgCreateDerivativeMarketOrder,
   MsgBatchCancelDerivativeOrders,
   MsgCreateBinaryOptionsLimitOrder,
+  MsgAdminUpdateBinaryOptionsMarket,
   MsgCreateBinaryOptionsMarketOrder,
   MsgBatchCancelBinaryOptionsOrders,
   MsgInstantBinaryOptionsMarketLaunch,

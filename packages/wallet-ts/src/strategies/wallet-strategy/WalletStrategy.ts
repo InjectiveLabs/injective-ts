@@ -11,11 +11,13 @@ import {
   WalletStrategyArguments,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
+  WalletStrategyOptions,
 } from '../types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Ninji from './strategies/Ninji'
 import Trezor from './strategies/Trezor'
+import PrivateKey from './strategies/PrivateKey'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
@@ -24,6 +26,7 @@ import Okx from './strategies/Okx'
 import BitGet from './strategies/BitGet'
 import Cosmostation from './strategies/Cosmostation'
 import LedgerCosmos from './strategies/LedgerCosmos'
+import WalletConnect from './strategies/WalletConnect'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet, isCosmosWallet } from './utils'
 import { SendTransactionOptions } from './types'
@@ -97,6 +100,16 @@ const createStrategy = ({
       return new Okx(ethWalletArgs)
     case Wallet.BitGet:
       return new BitGet(ethWalletArgs)
+    case Wallet.WalletConnect:
+      return new WalletConnect({
+        ...ethWalletArgs,
+        metadata: args.options?.metadata,
+      })
+    case Wallet.PrivateKey:
+      return new PrivateKey({
+        ...ethWalletArgs,
+        privateKey: args.options?.privateKey,
+      })
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Cosmostation:
@@ -129,7 +142,10 @@ export default class WalletStrategy {
 
   public wallet: Wallet
 
+  public args: WalletStrategyArguments
+
   constructor(args: WalletStrategyArguments) {
+    this.args = args
     this.strategies = createStrategies(args)
     this.wallet = getInitialWallet(args)
   }
@@ -141,6 +157,30 @@ export default class WalletStrategy {
   public setWallet(wallet: Wallet) {
     this.disconnect()
     this.wallet = wallet
+  }
+
+  /**
+   * Case 1: Private Key is set dynamically
+   * If we have a dynamically set private key,
+   * we are creating a new PrivateKey strategy
+   * with the specified private key
+   *
+   * Case 2: Wallet Connect Metadata set dynamically
+   */
+  public setOptions(options?: WalletStrategyOptions) {
+    if (options?.privateKey) {
+      this.strategies[Wallet.PrivateKey] = createStrategy({
+        args: { ...this.args, options: { privateKey: options.privateKey } },
+        wallet: Wallet.PrivateKey,
+      })
+    }
+
+    if (options?.metadata) {
+      this.strategies[Wallet.WalletConnect] = createStrategy({
+        args: { ...this.args, options: { metadata: options.metadata } },
+        wallet: Wallet.WalletConnect,
+      })
+    }
   }
 
   public getStrategy(): ConcreteWalletStrategy {
@@ -165,12 +205,14 @@ export default class WalletStrategy {
     return this.getStrategy().getPubKey(address)
   }
 
-  public enable(): Promise<boolean> {
-    return this.getStrategy().enable()
+  public enable(args?: unknown): Promise<boolean> {
+    return this.getStrategy().enable(args)
   }
 
-  public async enableAndGetAddresses(): Promise<AccountAddress[]> {
-    await this.getStrategy().enable()
+  public async enableAndGetAddresses(
+    args?: unknown,
+  ): Promise<AccountAddress[]> {
+    await this.getStrategy().enable(args)
 
     return this.getStrategy().getAddresses()
   }
@@ -183,8 +225,8 @@ export default class WalletStrategy {
     return this.getStrategy().getEthereumTransactionReceipt(txHash)
   }
 
-  public async confirm(address: AccountAddress): Promise<string> {
-    return this.getStrategy().confirm(address)
+  public async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
+    return this.getStrategy().getSessionOrConfirm(address)
   }
 
   public async sendTransaction(
@@ -222,6 +264,11 @@ export default class WalletStrategy {
       throw new WalletException(
         new Error(`You can't sign Ethereum Transaction using ${this.wallet}`),
       )
+    }
+
+    /** Phantom wallet needs enabling before signing */
+    if (this.wallet === Wallet.Phantom) {
+      await this.enable()
     }
 
     return this.getStrategy().signEip712TypedData(eip712TypedData, address)

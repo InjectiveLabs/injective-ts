@@ -60,6 +60,7 @@ export const KeplrNetworks = [
   BridgingNetwork.Migaloo,
   BridgingNetwork.Kujira,
   BridgingNetwork.Andromeda,
+  BridgingNetwork.Neutron,
 ]
 
 export const LeapNetworks = [
@@ -76,6 +77,7 @@ export const LeapNetworks = [
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
   BridgingNetwork.Kujira,
+  BridgingNetwork.Neutron,
 ]
 
 export const CosmostationNetworks = [
@@ -95,6 +97,7 @@ export const CosmostationNetworks = [
   BridgingNetwork.Noble,
   BridgingNetwork.Celestia,
   BridgingNetwork.Migaloo,
+  BridgingNetwork.Neutron,
 ]
 
 export const CosmosNetworks = [
@@ -117,6 +120,7 @@ export const CosmosNetworks = [
   BridgingNetwork.Migaloo,
   BridgingNetwork.Kujira,
   BridgingNetwork.Andromeda,
+  BridgingNetwork.Neutron,
 ]
 
 export const EvmWormholeNetworks = [
@@ -307,6 +311,12 @@ export const tokenDenomsPerNetwork: NetworkConfig[] = [
     network: BridgingNetwork.Andromeda,
     denoms: [
       'ibc/61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
+    ],
+  },
+  {
+    network: BridgingNetwork.Neutron,
+    denoms: [
+      'ibc/1011E4D6D4800DA9B8F21D7C207C0B0C18E54E614A8576037F066B775210709D',
     ],
   },
 ]
@@ -535,6 +545,13 @@ export const cosmosChainTokenMetaMap = {
     ),
     denom:
       'ibc/61FA42C3F0B0F8768ED2CE380EDD3BE0E4CB7E67688F81F70DE9ECF5F8684E1E',
+  },
+  [CosmosChainId.Neutron]: {
+    ...getTokenFromMeta(
+      tokenMetaUtils.getMetaBySymbol('NBZ') as TokenMetaBase,
+    ),
+    denom:
+      'ibc/1011E4D6D4800DA9B8F21D7C207C0B0C18E54E614A8576037F066B775210709D',
   },
 } as Record<string, Token | Token[]>
 
@@ -778,6 +795,10 @@ export const getNetworkFromAddress = (address: string): BridgingNetwork => {
     return BridgingNetwork.Andromeda
   }
 
+  if (address.startsWith('neutron')) {
+    return BridgingNetwork.Neutron
+  }
+
   return BridgingNetwork.Injective
 }
 
@@ -841,6 +862,8 @@ export const getGasPriceForChainId = (chainId: CosmosChainId) => {
       return 0.01
     case CosmosChainId.Kava:
       return 0.01
+    case CosmosChainId.Neutron:
+        return 0.01
     case CosmosChainId.Injective:
       return 0.01
     default:

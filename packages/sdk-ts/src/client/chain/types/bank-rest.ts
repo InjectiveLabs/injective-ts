@@ -6,3 +6,13 @@ export interface DenomBalance {
 export interface BalancesResponse {
   balances: DenomBalance[]
 }
+
+export interface DenomOwnersResponse {
+  denom_owners: {
+    address: string
+    balance: {
+      denom: string
+      amount: string
+    }
+  }[]
+}

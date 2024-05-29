@@ -1,5 +1,9 @@
 /* eslint-disable class-methods-use-this */
-import type { Keplr as Leap } from '@keplr-wallet/types'
+import type {
+  AminoSignResponse,
+  Keplr as Leap,
+  StdSignDoc,
+} from '@keplr-wallet/types'
 import type { OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
 import {
@@ -60,6 +64,7 @@ export class LeapWallet {
   async getKey(): Promise<{
     name: string
     algo: string
+    isNanoLedger: boolean
     pubKey: Uint8Array
     address: Uint8Array
     bech32Address: string
@@ -161,6 +166,32 @@ export class LeapWallet {
       throw new CosmosWalletException(new Error((e as any).message), {
         context: 'broadcast-tx',
         contextModule: 'Leap',
+      })
+    }
+  }
+
+  public async signEIP712CosmosTx({
+    eip712,
+    signDoc,
+  }: {
+    eip712: any
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
+    const { chainId } = this
+    const leap = await this.getLeapWallet()
+    const key = await this.getKey()
+
+    try {
+      return leap.experimentalSignEIP712CosmosTx_v0(
+        chainId,
+        key.bech32Address,
+        eip712,
+        signDoc,
+      )
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        context: 'Leap',
+        contextModule: 'sign-eip712-cosmos-tx',
       })
     }
   }

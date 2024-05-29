@@ -37,6 +37,21 @@ export class ChainGrpcBankTransformer {
     }
   }
 
+  static denomOwnersResponseToDenomOwners(
+    response: CosmosBankV1Beta1Query.QueryDenomOwnersResponse,
+  ): {
+    denomOwners: { address: string; balance: Coin | undefined }[]
+    pagination: Pagination
+  } {
+    const denomOwners = response.denomOwners
+    const pagination = response.pagination
+
+    return {
+      denomOwners,
+      pagination: grpcPaginationToPagination(pagination),
+    }
+  }
+
   static totalSupplyResponseToTotalSupply(
     response: CosmosBankV1Beta1Query.QueryTotalSupplyResponse,
   ): {

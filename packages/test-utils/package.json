@@ -1,13 +1,14 @@
 {
   "name": "@injectivelabs/test-utils",
   "description": "List of test-utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.14.5-beta.0",
+  "version": "1.14.5-beta.2",
   "sideEffects": false,
   "author": {
-    "name": "Bojan Angjelkoski",
-    "email": "bojan@injectivelabs.org"
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
   },
   "license": "Apache-2.0",
+  "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
@@ -31,7 +32,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.6.4",
     "bignumber.js": "^9.0.1",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",

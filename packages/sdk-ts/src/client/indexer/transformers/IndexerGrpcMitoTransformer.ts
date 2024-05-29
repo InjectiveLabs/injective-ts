@@ -2,6 +2,7 @@ import { Coin } from '@injectivelabs/ts-types'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import {
   MitoIDO,
+  MitoGauge,
   MitoVault,
   MitoHolders,
   MitoChanges,
@@ -11,6 +12,8 @@ import {
   MitoPortfolio,
   MitoPagination,
   MitoIDOProgress,
+  MitoStakingPool,
+  MitoGaugeStatus,
   MitoLeaderboard,
   MitoVestingConfig,
   MitoDenomBalance,
@@ -126,6 +129,8 @@ export class IndexerGrpcMitoTransformer {
       apyue: vault.apyue,
       apy7D: vault.apy7D,
       apy7DFq: vault.apy7DFq,
+      apyV3: vault.apyV3,
+      registrationMode: vault.registrationMode,
       profits: IndexerGrpcMitoTransformer.changesResponseToChanges(
         vault.profits,
       ),
@@ -226,10 +231,11 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoGaugeToGauge(gauge: MitoApi.Gauge) {
+  static mitoGaugeToGauge(gauge: MitoApi.Gauge): MitoGauge {
     return {
       id: gauge.id,
       owner: gauge.owner,
+      status: gauge.status as MitoGaugeStatus,
       lastDistribution: gauge.lastDistribution,
       endTimestamp: parseInt(gauge.endTimestamp, 10),
       startTimestamp: parseInt(gauge.startTimestamp, 10),
@@ -239,7 +245,9 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoStakingPoolToStakingPool(stakingPool: MitoApi.StakingPool) {
+  static mitoStakingPoolToStakingPool(
+    stakingPool: MitoApi.StakingPool,
+  ): MitoStakingPool {
     return {
       apr: stakingPool.apr,
       vaultName: stakingPool.vaultName,

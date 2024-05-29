@@ -36,7 +36,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosBankV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request),
+          this.client.Params(request, this.metadata),
         )
 
       return ChainGrpcBankTransformer.moduleParamsResponseToModuleParams(
@@ -74,7 +74,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosBankV1Beta1Query.QueryBalanceResponse>(() =>
-          this.client.Balance(request),
+          this.client.Balance(request, this.metadata),
         )
 
       return ChainGrpcBankTransformer.balanceResponseToBalance(response)
@@ -109,7 +109,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosBankV1Beta1Query.QueryAllBalancesResponse>(() =>
-          this.client.AllBalances(request),
+          this.client.AllBalances(request, this.metadata),
         )
 
       return ChainGrpcBankTransformer.balancesResponseToBalances(response)
@@ -141,7 +141,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosBankV1Beta1Query.QueryTotalSupplyResponse>(() =>
-          this.client.TotalSupply(request),
+          this.client.TotalSupply(request, this.metadata),
         )
 
       return ChainGrpcBankTransformer.totalSupplyResponseToTotalSupply(response)
@@ -177,7 +177,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosBankV1Beta1Query.QuerySupplyOfResponse>(() =>
-          this.client.SupplyOf(request),
+          this.client.SupplyOf(request, this.metadata),
         )
 
       return ChainGrpcBankTransformer.grpcCoinToCoin(response.amount!)
@@ -209,7 +209,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosBankV1Beta1Query.QueryDenomsMetadataResponse>(
-          () => this.client.DenomsMetadata(request),
+          () => this.client.DenomsMetadata(request, this.metadata),
         )
 
       return ChainGrpcBankTransformer.denomsMetadataResponseToDenomsMetadata(
@@ -240,7 +240,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosBankV1Beta1Query.QueryDenomMetadataResponse>(
-          () => this.client.DenomMetadata(request),
+          () => this.client.DenomMetadata(request, this.metadata),
         )
 
       return ChainGrpcBankTransformer.metadataToMetadata(response.metadata!)
@@ -256,6 +256,43 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'DenomMetadata',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchDenomOwners(denom: string, pagination?: PaginationOption) {
+    const request = CosmosBankV1Beta1Query.QueryDenomOwnersRequest.create()
+
+    request.denom = denom
+
+    const paginationForRequest = paginationRequestFromPagination(pagination)
+
+    if (paginationForRequest) {
+      request.pagination = paginationForRequest
+    }
+
+    try {
+      const response =
+        await this.retry<CosmosBankV1Beta1Query.QueryDenomOwnersResponse>(() =>
+          this.client.DenomOwners(request, this.metadata),
+        )
+
+      return ChainGrpcBankTransformer.denomOwnersResponseToDenomOwners(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'DenomOwners',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DenomOwners',
         contextModule: this.module,
       })
     }

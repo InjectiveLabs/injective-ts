@@ -1,4 +1,4 @@
-import bip39 from 'bip39'
+import { generateMnemonic } from 'bip39'
 import { Wallet } from 'ethers'
 import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
@@ -7,6 +7,15 @@ import { PublicKey } from './PublicKey'
 import { Address } from './Address'
 import * as BytesUtils from '@ethersproject/bytes'
 import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
+import { recoverTypedSignaturePubKey } from '../../utils'
+import {
+  CosmosTxV1Beta1Tx,
+  InjectiveTypesV1TxExt,
+} from '@injectivelabs/core-proto-ts'
+import { getTransactionPartsFromTxRaw } from '../modules/tx/utils/tx'
+import { getEip712TypedData, MsgDecoder } from '../modules/tx/eip712'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -25,7 +34,7 @@ export class PrivateKey {
    * @returns { privateKey: PrivateKey, mnemonic: string }
    */
   static generate(): { privateKey: PrivateKey; mnemonic: string } {
-    const mnemonic = bip39.generateMnemonic()
+    const mnemonic = generateMnemonic()
     const privateKey = PrivateKey.fromMnemonic(mnemonic)
 
     return {
@@ -224,5 +233,202 @@ export class PrivateKey {
     const { signature } = secp256k1.ecdsaSign(eip712Data, privateKey)
 
     return signature
+  }
+
+  /**
+   * Verify signature using EIP712 typed data
+   * and the publicKey
+   *
+   * (params are passed as an object)
+   *
+   * @param {string} signature: the signature to verify in hex
+   * @param {any} eip712: the EIP712 typed data to verify against
+   * @param {string} publicKey: the public key to verify against in hex
+   * */
+  public static verifySignature({
+    signature,
+    eip712,
+    publicKey,
+  }: {
+    signature: string /* in hex */
+    eip712: any
+    publicKey: string /* in hex */
+  }): boolean {
+    const publicKeyInHex = publicKey.startsWith('0x')
+      ? publicKey
+      : `0x${publicKey}`
+
+    const recoveredPubKey = recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKeyInHex = recoveredPubKey.startsWith('0x')
+      ? recoveredPubKey
+      : `0x${recoveredPubKey}`
+
+    /** uncompressed/compressed key */
+    if (publicKeyInHex.length !== recoveredPubKeyInHex.length) {
+      return (
+        recoveredPubKeyInHex.substring(0, publicKeyInHex.length) ===
+        publicKeyInHex
+      )
+    }
+
+    return publicKeyInHex === recoveredPubKeyInHex
+  }
+
+  /**
+   * Verify signature using EIP712 typed data
+   * and the publicKey
+   *
+   * (params are passed as an object)
+   *
+   * @param {string} signature: the signature to verify in hex
+   * @param {any} eip712: the EIP712 typed data to verify against
+   * @param {string} publicKey: the public key to verify against in hex
+   * */
+  public verifyThisPkSignature({
+    signature,
+    eip712,
+  }: {
+    signature: string /* in hex */
+    eip712: any
+  }): boolean {
+    const publicKeyInHex = `0x${this.toPublicKey().toHex()}`
+    const recoveredPubKey = recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKeyInHex = recoveredPubKey.startsWith('0x')
+      ? recoveredPubKey
+      : `0x${recoveredPubKey}`
+
+    /** uncompressed/compressed key */
+    if (publicKeyInHex.length !== recoveredPubKeyInHex.length) {
+      return (
+        recoveredPubKeyInHex.substring(0, publicKeyInHex.length) ===
+        publicKeyInHex
+      )
+    }
+
+    return publicKeyInHex === recoveredPubKeyInHex
+  }
+
+  /**
+   * Verify cosmos signature EIP712 typed
+   * data from the TxRaw and verify the signature
+   * that's included in the TxRaw
+   *
+   * (params are passed as an object)
+   *
+   * @param {CosmosTxV1Beta1Tx.TxRaw} txRaw: the signature to verify in hex
+   * @param {object} signer: the public key and the account number to verify against
+   **/
+  public static verifyCosmosSignature({
+    txRaw,
+    signer,
+  }: {
+    txRaw: CosmosTxV1Beta1Tx.TxRaw
+    signer: {
+      accountNumber: number | string
+      publicKey: string /* in base64 */
+    }
+  }): boolean {
+    const { body, authInfo, signatures } = getTransactionPartsFromTxRaw(txRaw)
+
+    if (authInfo.signerInfos.length > 1 || signatures.length > 1) {
+      throw new GeneralException(
+        new Error('Validation of multiple signers is not supported'),
+      )
+    }
+
+    if (body.messages.length > 1) {
+      throw new GeneralException(
+        new Error('Validation of multiple messages is not supported'),
+      )
+    }
+
+    const getChainIds = () => {
+      if (!body.extensionOptions.length) {
+        return {
+          ethereumChainId: EthereumChainId.Mainnet,
+          chainId: ChainId.Mainnet,
+        }
+      }
+
+      const extension = body.extensionOptions.find((extension) =>
+        extension.typeUrl.includes('ExtensionOptionsWeb3Tx'),
+      )
+
+      if (!extension) {
+        return {
+          ethereumChainId: EthereumChainId.Mainnet,
+          chainId: ChainId.Mainnet,
+        }
+      }
+
+      const decodedExtension =
+        InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx.decode(extension.value)
+
+      const ethereumChainId = Number(
+        decodedExtension.typedDataChainID,
+      ) as EthereumChainId
+
+      return {
+        ethereumChainId: ethereumChainId,
+        chainId: [
+          EthereumChainId.Goerli,
+          EthereumChainId.Kovan,
+          EthereumChainId.Sepolia,
+        ].includes(ethereumChainId)
+          ? ChainId.Testnet
+          : ChainId.Mainnet,
+      }
+    }
+
+    const { ethereumChainId, chainId } = getChainIds()
+    const [signerInfo] = authInfo.signerInfos
+    const [signature] = signatures
+    const [msg] = body.messages
+    const decodedMsg = MsgDecoder.decode(msg)
+
+    const eip712TypedData = getEip712TypedData({
+      msgs: [decodedMsg],
+      fee: authInfo.fee,
+      tx: {
+        memo: body.memo,
+        accountNumber: signer.accountNumber.toString(),
+        sequence: signerInfo.sequence.toString(),
+        timeoutHeight: body.timeoutHeight.toString(),
+        chainId,
+      },
+      ethereumChainId,
+    })
+
+    return this.verifySignature({
+      eip712: eip712TypedData,
+      signature: Buffer.from(signature).toString('hex'),
+      publicKey: Buffer.from(signer.publicKey, 'base64').toString('hex'),
+    })
+  }
+
+  /**
+   * Verify signature using ADR-36 sign doc
+   * and the publicKey
+   *
+   * (params are passed as an object)
+   *
+   * @param {string} signature: the signature to verify in hex
+   * @param {any} signDoc: the signDoc to verify against
+   * @param {string} publicKey:the public key to verify against in hex
+   * */
+  public static verifyArbitrarySignature({
+    signature,
+    signDoc,
+    publicKey,
+  }: {
+    signature: string /* in hex */
+    signDoc: Buffer
+    publicKey: string /* in hex */
+  }): boolean {
+    return secp256k1.ecdsaVerify(
+      Buffer.from(signature, 'hex'),
+      keccak256(signDoc),
+      Buffer.from(publicKey, 'hex'),
+    )
   }
 }

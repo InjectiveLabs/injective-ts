@@ -55,6 +55,28 @@ export const mapFailedTransactionMessage = (
   message: string,
   context?: ErrorContext,
 ): { message: string; code: ErrorContextCode; contextModule?: string } => {
+  const getWasmErrorFromMessage = (message: string) => {
+    if (!message.includes('execute wasm contract failed')) {
+      return
+    }
+
+    const ReasonPattern = /(.*?)execute wasm contract failed(.*?)/g
+    const reason = ReasonPattern.exec(message)
+
+    if (!reason) {
+      return
+    }
+
+    if (reason.length < 2) {
+      return
+    }
+
+    return reason[1].replace(
+      'failed to execute message; message index: 0: ',
+      '',
+    )
+  }
+
   const getABCICode = (message: string): number | undefined => {
     const ABCICodePattern = /{key:"ABCICode"[ \t]+value:"(.*?)"}/g
 
@@ -85,6 +107,10 @@ export const mapFailedTransactionMessage = (
     const codespace = ReasonPattern.exec(message)
 
     if (!codespace || codespace.length < 2) {
+      if (message.includes('execute wasm contract failed')) {
+        return getWasmErrorFromMessage(message)
+      }
+
       return
     }
 

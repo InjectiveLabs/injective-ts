@@ -1,13 +1,14 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use and interact with different types of wallets on Injective.",
-  "version": "1.14.11-beta.32",
+  "version": "1.14.11-beta.91",
   "sideEffects": false,
   "author": {
-    "name": "Bojan Angjelkoski",
-    "email": "bojan@injectivelabs.org"
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
   },
   "license": "Apache-2.0",
+  "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
@@ -18,7 +19,9 @@
   },
   "scripts": {
     "postinstall": "link-module-alias",
-    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:cjs": "BUILD_MODE=cjs node ./../../etc/replacements.js && tsc --build tsconfig.build.json",
+    "build:esm": "BUILD_MODE=esm node ./../../etc/replacements.js && tsc --build tsconfig.build.esm.json",
+    "build": "yarn build:esm && yarn build:cjs && yarn build:post && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
@@ -37,11 +40,11 @@
     "@cosmostation/extension-client": "^0.1.15",
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.14.11-beta.3",
-    "@injectivelabs/networks": "^1.14.11-beta.4",
-    "@injectivelabs/sdk-ts": "^1.14.11-beta.25",
-    "@injectivelabs/ts-types": "^1.14.11-beta.1",
-    "@injectivelabs/utils": "^1.14.11-beta.3",
+    "@injectivelabs/exceptions": "^1.14.11-beta.8",
+    "@injectivelabs/networks": "^1.14.11-beta.12",
+    "@injectivelabs/sdk-ts": "^1.14.11-beta.77",
+    "@injectivelabs/ts-types": "^1.14.11-beta.3",
+    "@injectivelabs/utils": "^1.14.11-beta.9",
     "@keplr-wallet/cosmos": "^0.12.71",
     "@keplr-wallet/types": "^0.12.71",
     "@ledgerhq/hw-app-cosmos": "^6.29.5",
@@ -53,6 +56,7 @@
     "@solana/wallet-adapter-wallets": "0.19.30",
     "@toruslabs/torus-embed": "^1.39.0",
     "@trezor/connect-web": "9.2.1",
+    "@walletconnect/ethereum-provider": "^2.12.2",
     "alchemy-sdk": "^2.6.3",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",

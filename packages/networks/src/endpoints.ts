@@ -6,7 +6,7 @@ export const endpointsMainnetSentry: NetworkEndpoints = {
   rpc: 'https://sentry.tm.injective.network',
   rest: 'https://sentry.lcd.injective.network',
   chronos: 'https://sentry.exchange.grpc-web.injective.network',
-  explorer: 'https://sentry.exchange.grpc-web.injective.network',
+  explorer: 'https://sentry.explorer.grpc-web.injective.network',
   cacheGrpc: 'https://sentry.chain.grpc-web.injective.network',
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://sentry.exchange.grpc-web.injective.network',

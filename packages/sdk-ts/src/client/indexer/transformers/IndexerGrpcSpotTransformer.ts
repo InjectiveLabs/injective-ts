@@ -290,6 +290,7 @@ export class IndexerGrpcSpotTransformer {
       subaccountId: trade.subaccountId,
       marketId: trade.marketId,
       tradeId: trade.tradeId,
+      cid: trade.cid,
       executedAt: parseInt(trade.executedAt, 10),
       feeRecipient: trade.feeRecipient,
       tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,

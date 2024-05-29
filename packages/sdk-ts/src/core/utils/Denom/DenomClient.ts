@@ -1,5 +1,6 @@
 import {
   Token,
+  TokenType,
   TokenFactory,
   TokenMetaBase,
   TokenMetaUtils,
@@ -45,5 +46,22 @@ export class DenomClient {
 
   getCoinGeckoId(denom: string): string {
     return this.tokenMetaUtils.getCoinGeckoIdFromSymbol(denom)
+  }
+
+  /**
+   * TODO: refactor
+   */
+  getTokenBySymbol(symbol: string): Token {
+    const tokenMeta = this.getTokenMetaDataBySymbol(symbol)
+
+    return {
+      denom: symbol,
+      tokenType: TokenType.Unknown,
+      decimals: tokenMeta?.decimals || 0,
+      logo: tokenMeta?.logo || 'unknown.png',
+      coinGeckoId: tokenMeta?.coinGeckoId || '',
+      name: tokenMeta?.name || symbol.toUpperCase(),
+      symbol: tokenMeta?.symbol || symbol.toUpperCase(),
+    }
   }
 }

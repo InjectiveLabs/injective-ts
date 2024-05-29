@@ -89,7 +89,7 @@ import { BigNumberInBase } from "@injectivelabs/utils";
 
   /** Account Details **/
   const accountDetails = await new ChainRestAuthApi(
-    network.sentryHttpApi
+    network.rest
   ).fetchAccount(injectiveAddress);
 
   /** Prepare the Message */
@@ -97,7 +97,7 @@ import { BigNumberInBase } from "@injectivelabs/utils";
     amount: new BigNumberInBase(0.01).toWei().toFixed(),
     denom: "inj",
   };
-  const bridgeAmount = {
+  const bridgeFee = {
     amount: new BigNumberInBase(0.01).toWei().toFixed(),
     denom: "inj",
   };
@@ -131,10 +131,11 @@ import { BigNumberInBase } from "@injectivelabs/utils";
   /** Calculate hash of the transaction */
   console.log(`Transaction Hash: ${TxClient.hash(txRaw)}`);
 
-  const txService = new TxRestClient(network.sentryHttpApi);
+  const txService = new TxRestClient(network.rest);
 
   /** Simulate transaction */
   const simulationResponse = await txService.simulate(txRaw);
+  
   console.log(
     `Transaction simulation response: ${JSON.stringify(
       simulationResponse.gasInfo

@@ -49,10 +49,7 @@ export const getNetworkFromChainId = (
   }
 }
 
-export default class Torus
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Torus extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private torus: TorusWallet
 
   private connected = false
@@ -114,7 +111,7 @@ export default class Torus
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     await this.connect()
 
     return Promise.resolve(

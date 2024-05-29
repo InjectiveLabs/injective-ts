@@ -3,6 +3,7 @@ import {
   hexToBuff,
   PublicKey,
   SIGN_DIRECT,
+  TxResponse,
   hexToBase64,
   SIGN_EIP712_V2,
   SIGN_EIP712,
@@ -55,6 +56,8 @@ import {
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 import { isCosmosAminoOnlyWallet } from '../utils'
+import { LeapWallet } from '../utils/wallets'
+import { checkIfTxRunOutOfGas } from './helper'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,
@@ -101,8 +104,9 @@ export class MsgBroadcaster {
     this.simulateTx = options.simulateTx || true
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.2
-    this.chainId = networkInfo.chainId
-    this.ethereumChainId = networkInfo.ethereumChainId
+    this.chainId = options.chainId || networkInfo.chainId
+    this.ethereumChainId =
+      options.ethereumChainId || networkInfo.ethereumChainId
     this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
   }
 
@@ -448,7 +452,7 @@ export class MsgBroadcaster {
    */
   private async broadcastWeb3WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
-  ) {
+  ): Promise<TxResponse> {
     const { options, simulateTx, ethereumChainId, endpoints } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
@@ -483,7 +487,38 @@ export class MsgBroadcaster {
       chainId: ethereumChainId,
     })
 
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
+    try {
+      const txResponse = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+        response.txHash,
+      )
+
+      return txResponse
+    } catch (e) {
+      /**
+       * First MsgExec transaction with a PrivateKey wallet
+       * always runs out of gas for some reason, temporary solution
+       * to just broadcast the transaction twice
+       **/
+      if (
+        walletStrategy.wallet === Wallet.PrivateKey &&
+        checkIfTxRunOutOfGas(e)
+      ) {
+        /** Account Details * */
+        const accountDetails = await new ChainGrpcAuthApi(
+          endpoints.grpc,
+        ).fetchAccount(tx.injectiveAddress)
+        const { baseAccount } = accountDetails
+
+        /** We only do it on the first account tx fail */
+        if (baseAccount.sequence > 1) {
+          throw e
+        }
+
+        return await this.broadcastWeb3WithFeeDelegation(tx)
+      }
+
+      throw e
+    }
   }
 
   /**
@@ -499,16 +534,15 @@ export class MsgBroadcaster {
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
-     * When using Ledger with Keplr we have
-     * to send EIP712 to sign on Keplr
+     * When using Ledger with Keplr/Leap we have
+     * to send EIP712 to sign on Keplr/Leap
      */
-    if (walletStrategy.getWallet() === Wallet.Keplr) {
+    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
-      const isLedgerConnectedOnKeplr =
-        walletDeviceType === WalletDeviceType.Hardware
+      const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
-      if (isLedgerConnectedOnKeplr) {
-        return this.experimentalBroadcastKeplrWithLedger(tx)
+      if (isLedgerConnected) {
+        return this.experimentalBroadcastWalletThroughLedger(tx)
       }
     }
 
@@ -590,12 +624,12 @@ export class MsgBroadcaster {
   }
 
   /**
-   * We use this method only when we want to broadcast a transaction using Ledger on Keplr for Injective
+   * We use this method only when we want to broadcast a transaction using Ledger on Keplr/Leap for Injective
    *
    * Note: Gas estimation not available
    * @param tx the transaction that needs to be broadcasted
    */
-  private async experimentalBroadcastKeplrWithLedger(
+  private async experimentalBroadcastWalletThroughLedger(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
     const {
@@ -610,18 +644,17 @@ export class MsgBroadcaster {
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
-     * We can only use this method when Keplr is connected
-     * with ledger
+     * We can NOT use this method
+     * when Ledger is connected through Keplr
      */
-    if (walletStrategy.getWallet() === Wallet.Keplr) {
+    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
-      const isLedgerConnectedOnKeplr =
-        walletDeviceType === WalletDeviceType.Hardware
+      const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
-      if (!isLedgerConnectedOnKeplr) {
+      if (!isLedgerConnected) {
         throw new GeneralException(
           new Error(
-            'This method can only be used when Keplr is connected with Ledger',
+            `This method can only be used when Ledger is connected through ${walletStrategy.getWallet()}`,
           ),
         )
       }
@@ -631,7 +664,10 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const keplrWallet = new KeplrWallet(chainId)
+    const wallet =
+      walletStrategy.getWallet() === Wallet.Keplr
+        ? new KeplrWallet(chainId)
+        : new LeapWallet(chainId)
 
     /** Account Details * */
     const accountDetails = await new ChainGrpcAuthApi(
@@ -663,7 +699,7 @@ export class MsgBroadcaster {
       ethereumChainId,
     })
 
-    const aminoSignResponse = await keplrWallet.signEIP712CosmosTx({
+    const aminoSignResponse = await wallet.signEIP712CosmosTx({
       eip712: eip712TypedData,
       signDoc: createEip712StdSignDoc({
         ...tx,

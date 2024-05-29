@@ -16,7 +16,6 @@ import {
   TxResponse,
   waitTxBroadcasted,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -29,11 +28,9 @@ import {
   WalletEventListener,
 } from '../../../types/enums'
 import { SendTransactionOptions } from '../types'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
 
-export default class Ninji
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Ninji extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private ninjiWallet: NinjiWallet
 
   constructor(args: {
@@ -81,7 +78,7 @@ export default class Ninji
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,

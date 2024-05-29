@@ -79,7 +79,8 @@ const cosmosErrorMap = {
     'The transaction is already in the mempool',
   [ChainCosmosErrorCode.ErrMempoolIsFull]: 'The mempool is full',
   [ChainCosmosErrorCode.ErrTxTooLarge]: 'The transaction is too large',
-  [ChainCosmosErrorCode.ErrKeyNotFound]: 'The key has not been found',
+  [ChainCosmosErrorCode.ErrKeyNotFound]:
+    'Account does not exist on chain. To create an account, send some tokens to it',
   [ChainCosmosErrorCode.ErrWrongPassword]: 'invalid account password',
   [ChainCosmosErrorCode.ErrorInvalidSigner]:
     'tx intended signer does not match the given signer',
@@ -762,7 +763,8 @@ export const chainErrorMessagesMap: Record<
   },
 
   'key not found': {
-    message: 'The key has not been found',
+    message:
+      'Account does not exist on chain. To create an account, send some tokens to it',
     code: ChainCosmosErrorCode.ErrKeyNotFound,
     module: TransactionChainErrorModule.CosmosSdk,
   },
@@ -2045,6 +2047,12 @@ export const chainErrorMessagesMap: Record<
   'not found': {
     message: 'not found',
     code: ChainCosmosErrorCode.ErrNotFound,
+    module: TransactionChainErrorModule.CosmosSdk,
+  },
+
+  'failed to fetch account num/seq': {
+    message: 'Account does not exist on chain. Create it by send funds.',
+    code: ChainCosmosErrorCode.ErrKeyNotFound,
     module: TransactionChainErrorModule.CosmosSdk,
   },
 }

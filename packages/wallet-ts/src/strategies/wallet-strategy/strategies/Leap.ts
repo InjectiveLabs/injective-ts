@@ -16,7 +16,6 @@ import {
   TxResponse,
   waitTxBroadcasted,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -29,11 +28,9 @@ import {
   WalletEventListener,
 } from '../../../types/enums'
 import { SendTransactionOptions } from '../types'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
 
-export default class Leap
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export default class Leap extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private leapWallet: LeapWallet
 
   constructor(args: { chainId: ChainId }) {
@@ -43,7 +40,12 @@ export default class Leap
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
-    return Promise.resolve(WalletDeviceType.Browser)
+    const leapWallet = this.getLeapWallet()
+    const key = await leapWallet.getKey()
+
+    return key.isNanoLedger
+      ? Promise.resolve(WalletDeviceType.Hardware)
+      : Promise.resolve(WalletDeviceType.Browser)
   }
 
   async enable(): Promise<boolean> {
@@ -78,7 +80,7 @@ export default class Leap
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,

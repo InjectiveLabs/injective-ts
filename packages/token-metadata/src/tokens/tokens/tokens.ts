@@ -1376,7 +1376,7 @@ export default {
     name: 'Euro',
     symbol: 'EUR',
     decimals: 6,
-    logo: 'eur.png',
+    logo: 'eur.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
   },
@@ -1394,7 +1394,7 @@ export default {
     name: 'Japanese Yen',
     symbol: 'JPY',
     decimals: 6,
-    logo: 'jpy.png',
+    logo: 'jpy.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
   },
@@ -1403,7 +1403,7 @@ export default {
     name: 'Gold',
     symbol: 'XAU',
     decimals: 6,
-    logo: 'gold.png',
+    logo: 'gold.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
   },
@@ -1412,7 +1412,7 @@ export default {
     name: 'GOLD',
     symbol: 'GOLD',
     decimals: 18,
-    logo: 'gold.png',
+    logo: 'gold.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
   },
@@ -2450,7 +2450,7 @@ export default {
       {
         symbol: 'LVN',
         decimals: 6,
-        isNative: true,
+        isNative: false,
         baseDenom: 'ulvn',
         path: 'transfer/channel-8',
         channelId: 'channel-8',
@@ -2994,7 +2994,7 @@ export default {
           'cw20:terra1cl273523kmr2uwjhhznq54je69mted2u3ljffm8kp2ap4z3drdksftwqun',
         path: 'transfer/channel-118',
         channelId: 'channel-118',
-        hash: 'ibc/565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712',
+        hash: '565FE65B82C091F8BAD1379FA1B4560C036C07913355ED4BD8D156DA63F43712',
         source: TokenSource.Cosmos,
       },
     ],
@@ -3211,14 +3211,6 @@ export default {
         address: 'inj18luqttqyckgpddndh8hvaq25d5nfwjc78m56lc',
       },
     ],
-  },
-
-  W: {
-    name: 'W',
-    logo: 'wormhole.png',
-    symbol: 'W',
-    coinGeckoId: '',
-    tokenType: TokenType.Unknown,
   },
 
   QUNT: {
@@ -3542,6 +3534,322 @@ export default {
         symbol: 'RAY',
         decimals: 6,
         address: 'inj1ckddr5lfwjvm2lvtzra0ftx7066seqr3navva0',
+      },
+    ],
+  },
+
+  SUSDE: {
+    name: 'Staked USDe',
+    logo: 'staked-usde.webp',
+    coinGeckoId: 'ethena-staked-usde',
+
+    erc20: {
+      symbol: 'sUSDE',
+      decimals: 18,
+      address: '0x9D39A5DE30e57443BfF2A8307A4256c8797A3497',
+    },
+  },
+
+  NLC: {
+    name: 'Ninja Labs Coin',
+    logo: 'nlc.png',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'NLC',
+        decimals: 6,
+        address: 'inj1r9h59ke0a77zkaarr4tuq25r3lt9za4r2mgyf4',
+      },
+    ],
+  },
+
+  ENA: {
+    name: 'Ethena',
+    logo: 'ethena.webp',
+    coinGeckoId: 'ethena',
+
+    erc20: {
+      symbol: 'ENA',
+      decimals: 18,
+      address: '0x57e114b691db790c35207b2e685d4a43181e6061',
+    },
+  },
+
+  BONJO: {
+    name: 'Bonjo',
+    logo: 'bonjo.png',
+    coinGeckoId: '',
+
+    cw20s: [
+      {
+        symbol: 'BONJO',
+        decimals: 18,
+        address: 'inj19w5lfwk6k9q2d8kxnwsu4962ljnay85f9sgwn6',
+      },
+    ],
+
+    tokenFactories: [
+      {
+        creator: 'inj1r35twz3smeeycsn4ugnd3w0l5h2lxe44ptuu4w',
+        symbol: 'BONJO',
+        decimals: 6,
+      },
+    ],
+  },
+
+  BONUS: {
+    name: 'Bonus Block',
+    coinGeckoId: '',
+    logo: 'bonus-block.png',
+
+    ibcs: [
+      {
+        symbol: 'BONUS',
+        decimals: 8,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/5mejeW9oeeWU7B84t6CSjXskTumVWsapjsbpsivtVZQw',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: 'DCF43489B9438BB7E462F1A1AD38C7898DF7F49649F9CC8FEBFC533A1192F3EF',
+        source: TokenSource.Arbitrum,
+      },
+    ],
+  },
+
+  W: {
+    name: 'Wormhole',
+    coinGeckoId: 'wormhole',
+    logo: 'wormhole.png',
+
+    ibcs: [
+      {
+        symbol: 'W',
+        decimals: 6,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/2Wb6ueMFc9WLc2eyYVha6qnwHKbwzUXdooXsg6XXVvos',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: 'F16F0F685BEF7BC6A145F16CBE78C6EC8C7C3A5F3066A98A9E57DCEA0903E537',
+        source: TokenSource.Solana,
+      },
+    ],
+  },
+
+  SAE: {
+    name: 'Summoners Arena Essence',
+    logo: 'sae.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj152mdu38fkkk4fl7ycrpdqxpm63w3ztadgtktyr',
+        symbol: 'SAE',
+        decimals: 6,
+      },
+    ],
+
+    evm: {
+      symbol: 'SAE',
+      decimals: 18,
+      address: '0x2FD85ED6EF7c26E07619cF32aee535f3D4393a0F',
+    },
+
+    ibcs: [
+      {
+        symbol: 'SAE',
+        decimals: 8,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/2mWv5umZHxJ1X8zMeSw3hFPdGuUZmq5UjbCsmJcDdEW1',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: '0AFCFFE18230E0E703A527F7522223D808EBB0E02FDBC84AAF8A045CD8FE0BBB',
+        source: TokenSource.BinanceSmartChain,
+      },
+    ],
+  },
+
+  XIII: {
+    name: 'XIII Coin',
+    logo: 'xiii.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj18flmwwaxxqj8m8l5zl8xhjrnah98fcjp3gcy3e',
+        symbol: 'XIII',
+        decimals: 6,
+      },
+    ],
+  },
+
+  DDL: {
+    name: 'Discordels Token',
+    logo: 'ddl.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1put8lfpkwm47tqcl9fgh8grz987mezvrx4arls',
+        symbol: 'DDL',
+        decimals: 6,
+      },
+    ],
+  },
+
+  ASG: {
+    name: 'Ancient Summoners Gem',
+    logo: 'asg.png',
+    coinGeckoId: '',
+
+    evm: {
+      symbol: 'ASG',
+      decimals: 18,
+      address: '0x2ef776488739722Ad174F8f2ffE76eb67a8467Eb',
+    },
+
+    ibcs: [
+      {
+        symbol: 'ASG',
+        decimals: 8,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/54RgtKyJuM9boEu4G7Dzp2mMrg6w5MuctfU95HoHHeL3',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: '2D40732D27E22D27A2AB79F077F487F27B6F13DB6293040097A71A52FB8AD021',
+        source: TokenSource.BinanceSmartChain,
+      },
+    ],
+  },
+
+  CLON: {
+    name: 'CLON',
+    logo: 'clon1.png',
+
+    ibcs: [
+      {
+        symbol: 'CLON',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'cw20:terra164ssz60yvsxey0ku9mtcaegdeyxwzuwwqyrp238nvflwqve0pvxsra7fa2',
+        path: 'transfer/channel-116',
+        channelId: 'channel-116',
+        hash: '695B1D16DE4D0FD293E6B79451640974080B59AA60942974C1CC906568DED795',
+        source: TokenSource.Cosmos,
+      },
+    ],
+  },
+
+  SPUUN: {
+    name: 'SPUUN',
+    logo: 'spuun.png',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj1flkktfvf8nxvk300f2z3vxglpllpw59c563pk7',
+        symbol: 'SPUUN',
+        decimals: 6,
+      },
+    ],
+  },
+
+  OMNI: {
+    name: 'Omni Network',
+    logo: 'omni.png',
+    symbol: 'OMNI',
+    coinGeckoId: 'omni-network',
+
+    erc20: {
+      symbol: 'OMNI',
+      decimals: 18,
+      address: '0x36e66fbbce51e4cd5bd3c62b637eb411b18949d4',
+    },
+  },
+
+  SAGA: {
+    name: 'Saga',
+    logo: 'saga.webp',
+
+    ibcs: [
+      {
+        symbol: 'SAGA',
+        decimals: 6,
+        isNative: true,
+        baseDenom: 'usaga',
+        path: 'transfer/channel-261',
+        channelId: 'channel-261',
+        hash: 'AF921F0874131B56897A11AA3F33D5B29CD9C147A1D7C37FE8D918CB420956B2',
+        source: TokenSource.Cosmos,
+      },
+    ],
+  },
+
+  ezETH: {
+    name: 'Renzo Restaked ETH',
+    logo: 'ezeth.webp',
+    symbol: 'ezETH',
+    coinGeckoId: 'renzo-restaked-eth',
+
+    erc20: {
+      symbol: 'ezETH',
+      decimals: 18,
+      address: '0xbf5495Efe5DB9ce00f80364C8B423567e58d2110',
+    },
+  },
+
+  GOLDIE: {
+    name: 'Goldicocks',
+    logo: 'goldie.webp',
+    symbol: 'GOLDIE',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj130ayayz6ls8qpmu699axhlg7ygy8u6thjjk9nc',
+        symbol: 'GOLDIE',
+        decimals: 6,
+      },
+    ],
+  },
+  XAG: {
+    name: 'Silver',
+    symbol: 'XAG',
+    decimals: 6,
+    logo: 'xag.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.Unknown,
+  },
+
+  CAD: {
+    name: 'Canadian Dollar',
+    symbol: 'CAD',
+    decimals: 6,
+    logo: 'cad.svg',
+    coinGeckoId: '',
+    tokenType: TokenType.Unknown,
+  },
+  NBZ: {
+    name: 'Ninja Blaze Token',
+    coinGeckoId: '',
+    logo: 'nbz.png',
+
+    ibcs: [
+      {
+        symbol: 'NBZ',
+        decimals: 6,
+        isNative: true,
+        baseDenom:
+          'factory/neutron1a6ydq8urdj0gkvjw9e9e5y9r5ce2qegm9m4xufpt96kcm60kmuass0mqq4/nbz',
+        path: 'transfer/channel-177',
+        channelId: 'channel-177',
+        hash: '1011E4D6D4800DA9B8F21D7C207C0B0C18E54E614A8576037F066B775210709D',
+        source: TokenSource.Cosmos,
       },
     ],
   },

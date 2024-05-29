@@ -6,6 +6,7 @@ export interface BrowserEip1993Provider extends Eip1993Provider {
   removeAllListeners(): void
   isMetaMask: boolean
   isTrustWallet: boolean
+  isTrust: boolean
   isOkxWallet: boolean
   isPhantom: boolean
 }
@@ -52,3 +53,8 @@ export interface SendTransactionOptions {
     tm?: string
   }
 }
+
+export type WalletConnectMetadata = Record<
+  string,
+  string | Record<string, string> | Record<string, string[]>
+>

@@ -1,5 +1,5 @@
 export const getKeyFromRpcUrl = (rpcUrl: string) => {
-  if (!rpcUrl.includes('alchemyapi.io')) {
+  if (!rpcUrl.includes('alchemyapi.io') && !rpcUrl.includes('alchemy.com')) {
     return rpcUrl
   }
 

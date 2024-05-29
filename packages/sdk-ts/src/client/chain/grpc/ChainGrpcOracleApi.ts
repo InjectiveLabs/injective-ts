@@ -28,7 +28,7 @@ export class ChainGrpcOracleApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveOracleV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request),
+          this.client.Params(request, this.metadata),
         )
 
       return response.params as OracleModuleParams

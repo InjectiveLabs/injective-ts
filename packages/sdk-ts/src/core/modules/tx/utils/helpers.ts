@@ -30,7 +30,7 @@ export const getInjectiveSignerAddress = (address: string | undefined) => {
     return getInjectiveAddress(address)
   }
 
-  return ''
+  return address
 }
 
 export const getEthereumSignerAddress = (address: string | undefined) => {
@@ -46,5 +46,5 @@ export const getEthereumSignerAddress = (address: string | undefined) => {
     return getEthereumAddress(address)
   }
 
-  return ''
+  return `0x${address}`
 }

@@ -3,7 +3,7 @@ import { TokenType, TokenVerification } from '@injectivelabs/token-metadata'
 import { TokenMetadataResponse } from 'alchemy-sdk'
 
 export const getKeyFromRpcUrl = (rpcUrl: string) => {
-  if (!rpcUrl.includes('alchemyapi.io')) {
+  if (!rpcUrl.includes('alchemyapi.io') && !rpcUrl.includes('alchemy.com')) {
     return rpcUrl
   }
 
