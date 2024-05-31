@@ -3853,4 +3853,24 @@ export default {
       },
     ],
   },
+
+  MOTHER: {
+    name: 'MOTHER IGGY',
+    coinGeckoId: 'mother-iggy',
+    logo: 'mother.webp',
+
+    ibcs: [
+      {
+        symbol: 'MOTHER',
+        decimals: 6,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/3yX6ZZbagFp8pLni1gsy9zifaCMYyARGqADqCBwgABgA',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: '984E90A8E0265B9804B7345C7542BF9B3046978AE5557B4AABADDFE605CACABE',
+        source: TokenSource.Solana,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
