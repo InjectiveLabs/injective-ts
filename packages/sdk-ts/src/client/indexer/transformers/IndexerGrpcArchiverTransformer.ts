@@ -12,7 +12,6 @@ export class IndexerGrpcArchiverTransformer {
   static grpcHistoricalBalanceToHistoricalBalance(
     historicalBalance: InjectiveArchiverRPC.HistoricalBalance,
   ): HistoricalBalance {
-    console.log('historicalBalance', historicalBalance)
     return {
       t: historicalBalance.t,
       v: historicalBalance.v,

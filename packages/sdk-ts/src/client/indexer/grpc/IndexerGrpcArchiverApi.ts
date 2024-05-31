@@ -74,7 +74,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveArchiverRPC.RpnlResponse>(() =>
-        this.client.Balance(request),
+        this.client.Rpnl(request),
       )
 
       return IndexerGrpcArchiverTransformer.grpcHistoricalRPNLResponseToHistoricalRPNL(
@@ -111,7 +111,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveArchiverRPC.VolumesResponse>(
-        () => this.client.Balance(request),
+        () => this.client.Volumes(request),
       )
 
       return IndexerGrpcArchiverTransformer.grpcHistoricalVolumesResponseToHistoricalVolumes(
