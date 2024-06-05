@@ -3873,4 +3873,13 @@ export default {
       },
     ],
   },
+
+  BODEN: {
+    name: 'jeo boden',
+    logo: 'boden.png',
+    decimals: 9,
+    symbol: 'BODEN',
+    coinGeckoId: 'jeo-boden',
+    tokenType: TokenType.Unknown,
+  },
 } as Record<string, TokenMetaBase>
