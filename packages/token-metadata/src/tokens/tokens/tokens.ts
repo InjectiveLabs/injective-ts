@@ -3884,7 +3884,7 @@ export default {
   },
 
   GME: {
-    name: 'Gamestop',
+    name: 'GME',
     coinGeckoId: 'gme',
     logo: 'gme.jpeg',
 
