@@ -30,7 +30,15 @@ export class TokenFactoryStatic {
 
   getMetaBySymbol(
     symbol: string,
-    { source, type }: { source?: TokenSource; type?: TokenType } = {},
+    {
+      type,
+      source,
+      verification,
+    }: {
+      source?: TokenSource
+      type?: TokenType
+      verification?: TokenVerification
+    } = {},
   ): TokenStatic | undefined {
     const tokensBySymbol = this.tokensBySymbol[symbol.toLowerCase()]
 
@@ -41,8 +49,10 @@ export class TokenFactoryStatic {
     const token = tokensBySymbol.find((token: TokenStatic) => {
       const isType = !type || token.tokenType === type
       const isSource = !source || token.source === source
+      const isVerification =
+        !verification || token.tokenVerification === verification
 
-      return isType && isSource
+      return isType && isSource && isVerification
     })
 
     const sortedTokens = tokensBySymbol.sort((t1, t2) => {
