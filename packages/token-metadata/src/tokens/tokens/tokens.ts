@@ -3882,4 +3882,24 @@ export default {
     coinGeckoId: 'jeo-boden',
     tokenType: TokenType.Unknown,
   },
+
+  GME: {
+    name: 'Gamestop',
+    coinGeckoId: 'gme',
+    logo: 'gme.jpeg',
+
+    ibcs: [
+      {
+        symbol: 'GME',
+        decimals: 8,
+        isNative: false,
+        baseDenom:
+          'factory/wormhole14ejqjyq8um4p3xfqj74yld5waqljf88fz25yxnma0cngspxe3les00fpjx/3nNG5xw6fTXkcQCr36ySsd2jpQR5HgVvrQJtsSaAtiQq',
+        path: 'transfer/channel-183',
+        channelId: 'channel-183',
+        hash: 'CAA5AB050F6C3DFE878212A37A4A6D3BEA6670F5B9786FFF7EF2D34213025272',
+        source: TokenSource.Solana,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
