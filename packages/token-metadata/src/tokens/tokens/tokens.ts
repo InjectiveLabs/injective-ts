@@ -3902,4 +3902,18 @@ export default {
       },
     ],
   },
+
+  COKE: {
+    name: 'COKE',
+    logo: 'coke.webp',
+    coinGeckoId: '',
+
+    tokenFactories: [
+      {
+        creator: 'inj158g7dfclyg9rr6u4ddxg9d2afwevq5d79g2tm6',
+        symbol: 'COKE',
+        decimals: 6,
+      },
+    ],
+  },
 } as Record<string, TokenMetaBase>
