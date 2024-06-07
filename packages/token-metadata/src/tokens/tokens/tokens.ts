@@ -3915,5 +3915,13 @@ export default {
         decimals: 6,
       },
     ],
+
+    cw20s: [
+      {
+        decimals: 6,
+        symbol: 'COKE',
+        address: 'inj14eaxewvy7a3fk948c3g3qham98mcqpm8v5y0dp',
+      },
+    ],
   },
 } as Record<string, TokenMetaBase>
