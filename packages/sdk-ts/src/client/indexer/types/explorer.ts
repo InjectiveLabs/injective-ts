@@ -1,8 +1,8 @@
-import { Token } from '@injectivelabs/token-metadata'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import type { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
+import { TokenStatic } from '../../../types/token'
 
 export interface IBCTransferTx {
   sender: string
@@ -229,7 +229,7 @@ export interface ExplorerCW20BalanceWithToken {
   account: string
   balance: string
   updatedAt: number
-  token: Token
+  token: TokenStatic
 }
 
 export interface Contract {

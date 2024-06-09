@@ -42,9 +42,9 @@ import {
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange'
+import { TokenType } from '../../../types/token'
 import { grpcPagingToPaging } from '../../../utils/pagination'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import { TokenType } from '@injectivelabs/token-metadata'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,

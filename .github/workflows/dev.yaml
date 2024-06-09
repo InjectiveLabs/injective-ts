@@ -45,13 +45,6 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Get IBC Tokens
-        run: yarn --cwd packages/sdk-ui-ts get-ibc-tokens || true
-
-      - name: 'Commit ibcTokenMetadata.json if changed'
-        run: |
-          git diff --exit-code -- packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json || (git add packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json && git commit -m "Automatically update ibcTokenMetadata.json")
-
       - name: Version and publish
         run: |
           lerna version prerelease --preid beta --force-git-tag --no-changelog --yes

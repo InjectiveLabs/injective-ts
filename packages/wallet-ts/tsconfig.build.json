@@ -27,9 +27,6 @@
     },
     {
       "path": "../sdk-ts/tsconfig.build.json"
-    },
-    {
-      "path": "../contracts/tsconfig.build.json"
     }
   ]
 }
