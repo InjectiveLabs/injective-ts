@@ -1385,7 +1385,7 @@ export default {
     name: 'British Pound',
     symbol: 'GBP',
     decimals: 6,
-    logo: 'gpb.png',
+    logo: 'gbp.svg',
     coinGeckoId: '',
     tokenType: TokenType.Unknown,
   },
