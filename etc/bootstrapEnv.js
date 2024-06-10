@@ -11,9 +11,19 @@ const main = () => {
 
   packages.forEach((packageName) => {
     const path = `packages/${packageName}/dist`
+    const esmPath = `packages/${packageName}/dist/esm`
+    const cjsPath = `packages/${packageName}/dist/cjs`
 
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path)
+    }
+
+    if (!fs.existsSync(esmPath)) {
+      fs.mkdirSync(esmPath)
+    }
+
+    if (!fs.existsSync(cjsPath)) {
+      fs.mkdirSync(cjsPath)
     }
   })
 }
