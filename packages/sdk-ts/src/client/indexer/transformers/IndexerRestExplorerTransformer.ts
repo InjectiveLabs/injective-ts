@@ -4,7 +4,7 @@ import {
   ContractTransactionWithMessages,
   ExplorerValidator,
 } from '../types/explorer'
-import { TokenType } from '@injectivelabs/token-metadata'
+import { TokenType, TokenVerification } from '../../../types/token'
 import {
   BaseTransaction,
   BlockFromExplorerApiResponse,
@@ -285,18 +285,15 @@ export class IndexerRestExplorerTransformer {
       balance: balance.balance,
       updatedAt: balance.updated_at,
       token: {
+        address: balance.contract_address,
+        denom: balance.contract_address,
         decimals,
         name,
         symbol,
-        logo: marketing_info ? marketing_info.logo || '' : '',
-        cw20: {
-          decimals,
-          symbol,
-          address: balance.contract_address,
-        },
+        tokenVerification: TokenVerification.Internal,
+        logo: marketing_info?.logo || '',
         coinGeckoId: name,
         tokenType: TokenType.Cw20,
-        denom: '',
       },
     }
   }

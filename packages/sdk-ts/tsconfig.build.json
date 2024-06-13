@@ -27,9 +27,6 @@
     },
     {
       "path": "../networks/tsconfig.build.json"
-    },
-    {
-      "path": "../token-metadata/tsconfig.build.json"
-    },
+    }
   ],
 }

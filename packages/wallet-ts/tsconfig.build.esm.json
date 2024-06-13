@@ -25,9 +25,6 @@
     },
     {
       "path": "../sdk-ts/tsconfig.build.esm.json"
-    },
-    {
-      "path": "../contracts/tsconfig.build.esm.json"
     }
   ]
 }

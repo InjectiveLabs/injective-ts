@@ -26,9 +26,9 @@ import {
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange'
+import { TokenType } from '../../../types/token'
 import { grpcPagingToPaging } from '../../../utils/pagination'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import { TokenType } from '@injectivelabs/token-metadata'
 
 const zeroPriceLevel = () => ({
   price: '0',

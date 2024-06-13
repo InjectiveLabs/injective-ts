@@ -3,13 +3,18 @@
 **Stable Package Version**
 
 ![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs/sdk-ts/latest?label=%40injectivelabs%2Fsdk-ts)
-![Supported Node Version](http://img.shields.io/badge/node-16.x-brightgreen.svg)
+![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs/networks/latest?label=%40injectivelabs%2Fnetworks)
+![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs/wallet-ts/latest?label=%40injectivelabs%2Fwallet-ts)
+
+![Supported Node Version](http://img.shields.io/badge/node-18.x-brightgreen.svg)
+
+**Deprecated Packages:**
+
+![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs/bridge-ts/latest?label=%40injectivelabs%2Fbridge-ts)![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs/contracts/latest?label=%40injectivelabs%2Fcontracts)![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs/sdk-ui-ts/latest?label=%40injectivelabs%2Fsdk-ui-ts)![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs/token-utils/latest?label=%40injectivelabs%2Ftoken-utils)![Stable Package (all) versions](https://img.shields.io/npm/v/%40injectivelabs%2Ftoken-metadata/latest?label=%40injectivelabs%2F2Ftoken-metadata)
 
 **Latest Package Versions:**
 
-![](https://img.shields.io/npm/v/%40injectivelabs/sdk-ts/next?label=%40injectivelabs%2Fsdk-ts)![](https://img.shields.io/npm/v/%40injectivelabs/wallet-ts/next?label=%40injectivelabs%2Fwallet-ts)![](https://img.shields.io/npm/v/%40injectivelabs/sdk-ui-ts/next?label=%40injectivelabs%2Fsdk-ui-ts)
-
-![](https://img.shields.io/npm/v/%40injectivelabs/utils/next?label=%40injectivelabs%2Futils)![](https://img.shields.io/npm/v/%40injectivelabs/token-metadata/next?label=%40injectivelabs%2Ftoken-metadata)![](https://img.shields.io/npm/v/%40injectivelabs/networks/next?label=%40injectivelabs%2Fnetworks)
+![](https://img.shields.io/npm/v/%40injectivelabs/sdk-ts/next?label=%40injectivelabs%2Fsdk-ts)![](https://img.shields.io/npm/v/%40injectivelabs/wallet-ts/next?label=%40injectivelabs%2Fwallet-ts)![](https://img.shields.io/npm/v/%40injectivelabs/networks/next?label=%40injectivelabs%2Fnetworks)
 
 _**Note:** The latest versions are published using the `next` tag. For stable versions use the `latest` tag or check npm registry for the latest stable version._&#x20;
 

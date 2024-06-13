@@ -6,7 +6,7 @@ import {
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
-import { TokenMeta } from '@injectivelabs/token-metadata'
+import { IndexerTokenMeta } from './../types/exchange'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface PositionDelta {
@@ -60,7 +60,7 @@ export interface BaseDerivativeMarket {
   ticker: string
   quoteDenom: string
   makerFeeRate: string
-  quoteToken: TokenMeta | undefined
+  quoteToken: IndexerTokenMeta | undefined
   takerFeeRate: string
   serviceProviderFee: string
   minPriceTickSize: number | string

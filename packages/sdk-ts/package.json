@@ -47,7 +47,6 @@
     "@injectivelabs/mito-proto-ts": "1.0.65",
     "@injectivelabs/networks": "^1.14.12-beta.0",
     "@injectivelabs/test-utils": "^1.14.6-beta.0",
-    "@injectivelabs/token-metadata": "^1.14.12-beta.0",
     "@injectivelabs/ts-types": "^1.14.12-beta.0",
     "@injectivelabs/utils": "^1.14.12-beta.0",
     "@metamask/eth-sig-util": "^4.0.0",

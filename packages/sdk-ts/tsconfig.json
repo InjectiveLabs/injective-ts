@@ -16,8 +16,5 @@
     {
       "path": "../networks/tsconfig.json"
     },
-    {
-      "path": "../token-metadata/tsconfig.json"
-    },
   ]
 }
