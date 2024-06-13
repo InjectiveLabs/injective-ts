@@ -4,6 +4,7 @@ import {
   CosmosTxV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
 
+export * from './token'
 export * from './exchange'
 export * from './pagination'
 
