@@ -52,3 +52,12 @@ export interface TokenStatic {
   baseDenom?: string
   externalLogo?: string
 }
+
+export interface TokenMeta {
+  name: string
+  logo: string
+  symbol: string
+  decimals: number
+  tokenType: TokenType
+  coinGeckoId: string
+}

@@ -7,7 +7,7 @@ import {
 } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { PriceLevel } from './exchange'
-import { IndexerTokenMeta } from './../types/exchange'
+import { TokenMeta } from './../../../types/token'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs//ts-types'
 
@@ -18,8 +18,8 @@ export interface SpotMarket {
   baseDenom: string
   quoteDenom: string
   makerFeeRate: string
-  quoteToken: IndexerTokenMeta | undefined
-  baseToken: IndexerTokenMeta | undefined
+  quoteToken: TokenMeta | undefined
+  baseToken: TokenMeta | undefined
   takerFeeRate: string
   serviceProviderFee: string
   minPriceTickSize: number
