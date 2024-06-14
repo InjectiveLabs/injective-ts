@@ -9,8 +9,12 @@ export declare namespace QueryTradingStrategyContractUserStrategies {
 
 export class QueryTradingStrategyContractUserStrategies extends BaseWasmQuery<QueryTradingStrategyContractUserStrategies.Params> {
   toPayload() {
-    return toBase64({
-      user: this.params.user,
+    const payload = toBase64({
+      user_strategy: {
+        user: this.params.user,
+      },
     })
+
+    return payload
   }
 }

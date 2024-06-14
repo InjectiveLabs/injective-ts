@@ -7,6 +7,10 @@ export declare namespace QueryTradingStrategyContractConfig {
 
 export class QueryTradingStrategyContractConfig extends BaseWasmQuery<QueryTradingStrategyContractConfig.Params> {
   toPayload() {
-    return toBase64({})
+    const payload = toBase64({
+      config: {},
+    })
+
+    return payload
   }
 }

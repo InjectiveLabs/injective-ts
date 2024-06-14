@@ -1,4 +1,4 @@
 export { QueryTradingStrategyContractConfig } from './QueryTradingStrategyContractConfig'
-export { QueryTradingStrategyContractStrategies } from './QueryTradingStrategyContractStrategies'
+export { QueryTradingStrategyContractAllStrategies } from './QueryTradingStrategyContractAllStrategies'
 export { QueryTradingStrategyContractUserStrategies } from './QueryTradingStrategyContractUserStrategies'
 export { QueryTradingStrategyContractTotalStrategies } from './QueryTradingStrategyContractTotalStrategies'

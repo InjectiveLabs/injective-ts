@@ -8,6 +8,7 @@ import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens'
 import ExecArgCreateCampaign from './exec-args/ExecArgCreateCampaign'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
+import ExecArgUpdateGridConfig from './exec-args/ExecArgUpdateGridConfig'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgRemoveGridStrategy from './exec-args/ExecArgRemoveGridStrategy'
 import ExecArgCreateSpotGridStrategy from './exec-args/ExecArgCreateSpotGridStrategy'
@@ -41,6 +42,7 @@ export {
   ExecArgCreateCampaign,
   ExecArgSwapExactOutput,
   ExecArgInitiateTransfer,
+  ExecArgUpdateGridConfig,
   ExecArgIncreaseAllowance,
   ExecArgRemoveGridStrategy,
   ExecArgCreateSpotGridStrategy,
