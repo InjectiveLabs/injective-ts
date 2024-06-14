@@ -1,3 +1,5 @@
+# Denom Client (deprecated)
+
 This is deprecated, refer to the [injective-list](readme/token-metadata/injective-list.md) guide instead.
 
 <s>The easiest way to get the token metadata information for a particular denom is to utilize the `TokenFactory` class and use its methods:</s>
@@ -19,13 +21,13 @@ console.log(token)
 <s>
 There are few edge cases that we have to consider while using the `TokenFactory`:
 
-- If you are trying to query token metadata for a denom that doesn't exist in the [list of tokens](https://github.com/InjectiveLabs/injective-ts/blob/master/deprecated/token-metadata/src/tokens/tokens/tokens.ts) the `TokenFactory` will return undefined. If this is the case, you should follow our [CONTRIBUTION guide](https://github.com/InjectiveLabs/injective-ts/blob/master/deprecated/token-metadata/CONTRIBUTING.md) to add the token metadata information in the package.
-- **IMPORTANT** `TokenFactory` does not have the logic to query a denom trace for an IBC denom. Instead, we have a list of pre-defined IBC hashes which we use to get metadata from. We'll explore how to have this possibility as well below.</s>
+- If you are trying to query token metadata for a denom that doesn't exist in the [list of tokens](https://github.com/InjectiveLabs/injective-ts/blob/master/deprecated/token-metadata/src/tokens/tokens/tokens.ts) the `TokenFactory` will return undefined. If so, you should follow our [CONTRIBUTION guide](https://github.com/InjectiveLabs/injective-ts/blob/master/deprecated/token-metadata/CONTRIBUTING.md) to add the token metadata information in the package.
+- **IMPORTANT** `TokenFactory` does not have the logic to query a denom trace for an IBC denom. Instead, we have a list of pre-defined IBC hashes which we use to get metadata from. We'll explore how to have this possibility as well below.
+  </s>
 
-### DenomClientAsync (deprecated)
+#### DenomClientAsync (deprecated)
 
-<s>
-As part of the `@injectivelabs/sdk-ui-ts` package we have an abstraction class [DenomClientAsync](https://github.com/InjectiveLabs/injective-ts/blob/dev/packages/sdk-ui-ts/src/denom/DenomClientAsync.ts) which uses the `TokenFactory` class under the hood, has a caching mechanism for IBC hashes, fetches token metadata from the chain, ERC20 contract details, CW20 contract details, etc. With it, you can ensure that you get all of the `Token` information for the denoms used within your application.
+<s>As part of the `@injectivelabs/sdk-ui-ts` package we have an abstraction class [DenomClientAsync](../../../packages/sdk-ui-ts/src/denom/DenomClientAsync.ts) which uses the `TokenFactory` class under the hood, has a caching mechanism for IBC hashes, fetches token metadata from the chain, ERC20 contract details, CW20 contract details, etc. With it, you can ensure that you get all of the `Token` information for the denoms used within your application.
 
 The usage is pretty simple, here is an example:
 </s>

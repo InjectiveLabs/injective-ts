@@ -8,11 +8,14 @@ Example code snippets to query data from Ethereum.
 
 ```ts
 import { ApolloConsumer } from '@injectivelabs/sdk-ts'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { peggyGraphQlEndpointForNetwork } from '@injectivelabs/sdk-ui-ts'
+import {
+  Network,
+  getNetworkEndpoints,
+  getPeggyGraphQlEndpointForNetwork,
+} from '@injectivelabs/networks'
 
 const apolloConsumer = new ApolloConsumer(
-  peggyGraphQlEndpointForNetwork(Network.Testnet),
+  getPeggyGraphQlEndpointForNetwork(Network.Testnet),
 )
 
 const ethereumAddress = '0x...'
@@ -26,11 +29,14 @@ console.log(userDeposits)
 
 ```ts
 import { ApolloConsumer } from '@injectivelabs/sdk-ts'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { peggyGraphQlEndpointForNetwork } from '@injectivelabs/sdk-ui-ts'
+import {
+  Network,
+  getNetworkEndpoints,
+  getPeggyGraphQlEndpointForNetwork,
+} from '@injectivelabs/networks'
 
 const apolloConsumer = new ApolloConsumer(
-  peggyGraphQlEndpointForNetwork(Network.Testnet),
+  getPeggyGraphQlEndpointForNetwork(Network.Testnet),
 )
 
 const ethereumAddress = '0x...'
