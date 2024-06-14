@@ -6,8 +6,7 @@
     "tsBuildInfoFile": "../../.build-cache/sdk-ts.tsbuildinfo",
   },
   "include": [
-    "./src/**/*.ts",
-    "./module.d.ts"
+    "./src/**/*.ts"
   ],
   "exclude": [
     "./src/**/*.spec.ts",

@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "include": [
-    "./module.d.ts"
-  ],
   "references": [
     {
       "path": "../ts-types/tsconfig.json"
