@@ -10,6 +10,9 @@
     "moduleResolution": "Node",
     "tsBuildInfoFile": "../../.build-cache/sdk-ts.esm.tsbuildinfo"
   },
+  "include": [
+    "./module.d.ts"
+  ],
   "references": [
     {
       "path": "../ts-types/tsconfig.build.esm.json"

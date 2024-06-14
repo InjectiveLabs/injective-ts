@@ -32,6 +32,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@ensdomains/ens-validation": "^0.1.0",
+    "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@apollo/client": "^3.5.8",
     "@cosmjs/amino": "^0.32.3",
     "@cosmjs/proto-signing": "^0.32.3",

@@ -24,22 +24,22 @@ On a basic level, the Peggy module mints new tokens on the Injective Chain upon 
 
 To transfer from Ethereum to Injective you have to make a Web3 Transaction and interact with the Peggy contract on Ethereum. There are two steps required to make a transfer:
 
-1. As we are basically locking our ERC20 assets on the Peggy Contract which lives on Ethereum, we need to set an allowance for the assets we are transferring to the Peggy Contract. We have an [example](https://github.com/InjectiveLabs/injective-ts/blob/1fbc2577b9278a62d1676041d6e502e12f5880a8/packages/sdk-ui-ts/src/services/web3/Web3Composer.ts#L41-L91) here about how to make this transaction and you can use any web3 provider to sign and broadcast the transaction to the Ethereum Network.
-2. After the allowance is set, we need to call the `sendToInjective` function on the Peggy Contract with the desired amount and asset that we want to transfer to the Injective Chain, an example can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/1fbc2577b9278a62d1676041d6e502e12f5880a8/packages/sdk-ui-ts/src/services/web3/Web3Composer.ts#L93-L156). Once we get the transaction, we can use a web3 provider to sign and broadcast the transaction to the Ethereum Network. Once the transaction is confirmed, it’ll take a couple of minutes for the assets to show on the Injective Chain.
+1. As we are basically locking our ERC20 assets on the Peggy Contract which lives on Ethereum, we need to set an allowance for the assets we are transferring to the Peggy Contract. We have an [example](https://github.com/InjectiveLabs/injective-ts/blob/1fbc2577b9278a62d1676041d6e502e12f5880a8/deprecated/sdk-ui-ts/src/services/web3/Web3Composer.ts#L41-L91) here about how to make this transaction and you can use any web3 provider to sign and broadcast the transaction to the Ethereum Network.
+2. After the allowance is set, we need to call the `sendToInjective` function on the Peggy Contract with the desired amount and asset that we want to transfer to the Injective Chain, an example can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/1fbc2577b9278a62d1676041d6e502e12f5880a8/deprecated/sdk-ui-ts/src/services/web3/Web3Composer.ts#L93-L156). Once we get the transaction, we can use a web3 provider to sign and broadcast the transaction to the Ethereum Network. Once the transaction is confirmed, it’ll take a couple of minutes for the assets to show on the Injective Chain.
 
 Couple of notes about the examples above:
 
-* The destination address (if you want to build the transaction yourself) is in the following format
+- The destination address (if you want to build the transaction yourself) is in the following format
 
 ```ts
-  "0x000000000000000000000000{ETHEREUM_ADDRESS_HERE_WITHOUT_0X_PREFIX}"
-  // example
-  "0x000000000000000000000000e28b3b32b6c345a34ff64674606124dd5aceca30"
+'0x000000000000000000000000{ETHEREUM_ADDRESS_HERE_WITHOUT_0X_PREFIX}'
+// example
+'0x000000000000000000000000e28b3b32b6c345a34ff64674606124dd5aceca30'
 ```
 
 where the Ethereum address is the corresponding Ethereum address of the destination Injective address.
 
-* `const web3 = walletStrategy.getWeb3()` `walletStrategy` is an abstraction that we’ve built which supports a lot of wallets which can be used to sign and broadcast transactions (both on Ethereum and on the Injective Chain), more details can be found in the documentation of the npm package [@injectivelabs/wallet-ts](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/wallet-ts). Obviously, this is just an example and you can use the web3 package directly, or any web3 provider to handle the transaction.
+- `const web3 = walletStrategy.getWeb3()` `walletStrategy` is an abstraction that we’ve built which supports a lot of wallets which can be used to sign and broadcast transactions (both on Ethereum and on the Injective Chain), more details can be found in the documentation of the npm package [@injectivelabs/wallet-ts](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/wallet-ts). Obviously, this is just an example and you can use the web3 package directly, or any web3 provider to handle the transaction.
 
 ```ts
 import { PeggyContract } from '@injectivelabs/contracts'
@@ -51,7 +51,7 @@ const contract = new PeggyContract({
 })
 ```
 
-* The snippet below instantiates a PeggyContract instance which can easily `estimateGas` and `sendTransaction` using the `web3` we provide to the contract’s constructor. Its implementation can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/contracts/src/contracts/Peggy.ts). Obviously, this is just an example and you can use the web3 package directly + the ABI of the contract to instantiate the contract, and then handle the logic of signing and broadcasting the transaction using some web3 provider.
+- The snippet below instantiates a PeggyContract instance which can easily `estimateGas` and `sendTransaction` using the `web3` we provide to the contract’s constructor. Its implementation can be found [here](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/contracts/src/contracts/Peggy.ts). Obviously, this is just an example and you can use the web3 package directly + the ABI of the contract to instantiate the contract, and then handle the logic of signing and broadcasting the transaction using some web3 provider.
 
 ### From Injective to Ethereum
 
@@ -66,7 +66,7 @@ There is a bridgeFee included in these transactions to incentivize Validators to
 Here is an example implementation that prepares the transaction, uses a privateKey to sign it and finally, broadcasts it to Injective:
 
 ```ts
-import { getNetworkInfo, Network } from "@injectivelabs/networks";
+import { getNetworkInfo, Network } from '@injectivelabs/networks'
 import {
   TxClient,
   PrivateKey,
@@ -74,33 +74,34 @@ import {
   MsgSendToEth,
   DEFAULT_STD_FEE,
   ChainRestAuthApi,
-  createTransaction } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
+  createTransaction,
+} from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
 
 /** MsgSendToEth Example */
-(async () => {
-  const network = getNetworkInfo(Network.Mainnet); // Gets the rpc/lcd endpoints
+;(async () => {
+  const network = getNetworkInfo(Network.Mainnet) // Gets the rpc/lcd endpoints
   const privateKeyHash =
-    "f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3";
-  const privateKey = PrivateKey.fromPrivateKey(privateKeyHash);
-  const injectiveAddress = privateKey.toBech32();
-  const ethAddress = privateKey.toHex();
-  const publicKey = privateKey.toPublicKey().toBase64();
+    'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3'
+  const privateKey = PrivateKey.fromPrivateKey(privateKeyHash)
+  const injectiveAddress = privateKey.toBech32()
+  const ethAddress = privateKey.toHex()
+  const publicKey = privateKey.toPublicKey().toBase64()
 
   /** Account Details **/
-  const accountDetails = await new ChainRestAuthApi(
-    network.rest
-  ).fetchAccount(injectiveAddress);
+  const accountDetails = await new ChainRestAuthApi(network.rest).fetchAccount(
+    injectiveAddress,
+  )
 
   /** Prepare the Message */
   const amount = {
     amount: new BigNumberInBase(0.01).toWei().toFixed(),
-    denom: "inj",
-  };
+    denom: 'inj',
+  }
   const bridgeFee = {
     amount: new BigNumberInBase(0.01).toWei().toFixed(),
-    denom: "inj",
-  };
+    denom: 'inj',
+  }
 
   const msg = MsgSendToEth.fromJSON({
     amount,
@@ -117,40 +118,40 @@ import { BigNumberInBase } from "@injectivelabs/utils";
     sequence: parseInt(accountDetails.account.base_account.sequence, 10),
     accountNumber: parseInt(
       accountDetails.account.base_account.account_number,
-      10
+      10,
     ),
     chainId: network.chainId,
-  });
+  })
 
   /** Sign transaction */
-  const signature = await privateKey.sign(Buffer.from(signBytes));
+  const signature = await privateKey.sign(Buffer.from(signBytes))
 
   /** Append Signatures */
-  txRaw.signatures = [signature];
+  txRaw.signatures = [signature]
 
   /** Calculate hash of the transaction */
-  console.log(`Transaction Hash: ${TxClient.hash(txRaw)}`);
+  console.log(`Transaction Hash: ${TxClient.hash(txRaw)}`)
 
-  const txService = new TxRestClient(network.rest);
+  const txService = new TxRestClient(network.rest)
 
   /** Simulate transaction */
-  const simulationResponse = await txService.simulate(txRaw);
-  
+  const simulationResponse = await txService.simulate(txRaw)
+
   console.log(
     `Transaction simulation response: ${JSON.stringify(
-      simulationResponse.gasInfo
-    )}`
-  );
+      simulationResponse.gasInfo,
+    )}`,
+  )
 
   /** Broadcast transaction */
-  const txResponse = await txService.broadcast(txRaw);
+  const txResponse = await txService.broadcast(txRaw)
 
   if (txResponse.code !== 0) {
-    console.log(`Transaction failed: ${txResponse.rawLog}`);
+    console.log(`Transaction failed: ${txResponse.rawLog}`)
   } else {
     console.log(
-      `Broadcasted transaction hash: ${JSON.stringify(txResponse.txhash)}`
-    );
+      `Broadcasted transaction hash: ${JSON.stringify(txResponse.txhash)}`,
+    )
   }
-})();
+})()
 ```
