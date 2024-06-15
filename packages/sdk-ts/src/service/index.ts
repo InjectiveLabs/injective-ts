@@ -1,2 +1,2 @@
-export * from './tokenPrice'
+export * from './TokenPrice'
 export * from './TokenFactoryStatic'
