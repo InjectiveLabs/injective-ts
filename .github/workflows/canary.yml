@@ -16,10 +16,10 @@ jobs:
         with:
           fetch-depth: 0 # Checkout all branches and tags
 
-      - name: 'Use NodeJS 16' # Setup node using version 14
+      - name: 'Use NodeJS 18' # Setup node using version 14
         uses: actions/setup-node@v2 # Public action
         with:
-          node-version: '16.18.1'
+          node-version: '18.17.0'
 
       - name: 'Setup lerna@6.6.1'
         run: yarn global add lerna@6.6.1  --ignore-engines
@@ -31,6 +31,7 @@ jobs:
 
       - name: Build dependencies
         run: |
+          lerna clean --yes
           node etc/bootstrapEnv
           yarn install  --ignore-engines
           yarn build
