@@ -63,8 +63,8 @@ import { MsgSubmitProposal } from './gov'
  */
 export type Msgs =
   | MsgBid
-  | MsgGrant
   | MsgRevoke
+  | MsgGrant
   | MsgAuthzExec
   | MsgSend
   | MsgMultiSend
