@@ -33,12 +33,15 @@ jobs:
 
       - name: Build dependencies
         run: |
+          lerna clean --yes
           node etc/bootstrapEnv
           yarn install --ignore-engines
           yarn build
 
-      - name: 'Setup npm'
-        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - name: Setup npm
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -48,6 +51,11 @@ jobs:
         run: |
           lerna version patch --conventional-commits --conventional-graduate --force-git-tag --yes
           lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
+
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: 'Broadcast published versions on Slack'
         run: node etc/slack --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
