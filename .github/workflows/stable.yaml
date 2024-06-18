@@ -47,12 +47,9 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Version and publish
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           lerna version patch --conventional-commits --conventional-graduate --force-git-tag --yes
           lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
-
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
