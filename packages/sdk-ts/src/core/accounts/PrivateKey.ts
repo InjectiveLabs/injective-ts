@@ -105,7 +105,7 @@ export class PrivateKey {
   }
 
   /**
-   * Return a hex representation of signing key.
+   * Return the hex address associated with this private key.
    * @returns {string}
    */
   toHex(): string {

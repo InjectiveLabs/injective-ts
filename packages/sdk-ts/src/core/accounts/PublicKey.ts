@@ -53,6 +53,10 @@ export class PublicKey {
     return Buffer.from(this.toPubKeyBytes()).toString('hex')
   }
 
+  /**
+   * Convert the public key to a pubkey in bech32 format.
+   * Note: this does not convert the public key to an address.
+   */
   public toBech32(): string {
     return bech32.encode(
       BECH32_PUBKEY_ACC_PREFIX,
