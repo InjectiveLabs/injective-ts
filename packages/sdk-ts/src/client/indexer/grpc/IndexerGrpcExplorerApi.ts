@@ -272,10 +272,14 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     before,
     after,
     limit,
+    from,
+    to,
   }: {
     before?: number
     after?: number
     limit?: number
+    from?: number
+    to?: number
   }) {
     const request = InjectiveExplorerRpc.GetBlocksRequest.create()
 
@@ -285,6 +289,14 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
 
     if (after) {
       request.after = after.toString()
+    }
+
+    if (from) {
+      request.from = from.toString()
+    }
+
+    if (to) {
+      request.to = to.toString()
     }
 
     if (limit) {

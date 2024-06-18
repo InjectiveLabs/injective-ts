@@ -7,7 +7,7 @@ import {
 } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
 import { PriceLevel } from './exchange'
-import { TokenMeta } from '@injectivelabs/token-metadata'
+import { TokenMeta } from './../../../types/token'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs//ts-types'
 
@@ -27,6 +27,7 @@ export interface SpotMarket {
 }
 
 export interface SpotLimitOrder {
+  cid: string
   orderHash: string
   orderSide: OrderSide
   marketId: string
@@ -44,6 +45,7 @@ export interface SpotLimitOrder {
 export interface SpotOrderHistory {
   orderHash: string
   marketId: string
+  cid: string
   active: boolean
   subaccountId: string
   executionType: string
@@ -62,6 +64,7 @@ export interface SpotTrade extends PriceLevel {
   orderHash: string
   subaccountId: string
   marketId: string
+  cid: string
   tradeId: string
   executedAt: number
   tradeExecutionType: TradeExecutionType

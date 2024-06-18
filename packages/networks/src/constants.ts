@@ -3,9 +3,9 @@ import { Network } from './types'
 export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetLB]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
+  [Network.MainnetOld]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetK8s]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.MainnetSentry]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
-  [Network.Public]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Staging]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Internal]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
   [Network.Testnet]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
@@ -21,10 +21,10 @@ export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
 export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetLB]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.MainnetOld]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetK8s]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.MainnetSentry]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
-  [Network.Public]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
-  [Network.Staging]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
+  [Network.Staging]: 'inj12yj3mtjarujkhcp6lg3klxjjfrx2v7v8yswgp9',
   [Network.Internal]: 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx',
   [Network.Testnet]: 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43',
   [Network.TestnetK8s]: 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43',
@@ -39,9 +39,9 @@ export const CW20_SWAP_CONTRACT_BY_NETWORK = {
 export const INCENTIVES_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: '',
   [Network.MainnetLB]: '',
+  [Network.MainnetOld]: '',
   [Network.MainnetK8s]: '',
   [Network.MainnetSentry]: '',
-  [Network.Public]: '',
   [Network.Staging]: '',
   [Network.Internal]: '',
   [Network.Testnet]: 'inj16twru668nsl7tqzahxd9q033swhr6a5xuslpkt',
@@ -59,7 +59,7 @@ export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
   [Network.MainnetLB]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.MainnetK8s]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.MainnetSentry]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
-  [Network.Public]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
+  [Network.MainnetOld]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.Staging]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.Internal]: 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275',
   [Network.Testnet]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
@@ -77,7 +77,7 @@ export const INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK = {
   [Network.MainnetLB]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
   [Network.MainnetK8s]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
   [Network.MainnetSentry]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
-  [Network.Public]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
+  [Network.MainnetOld]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
   [Network.Staging]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
   [Network.Internal]: 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu',
   [Network.Testnet]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
@@ -99,7 +99,7 @@ export const PEGGY_GRAPH_URL_BY_NETWORK = {
     'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
   [Network.MainnetSentry]:
     'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
-  [Network.Public]:
+  [Network.MainnetOld]:
     'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
   [Network.Staging]:
     'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet',
@@ -132,7 +132,7 @@ export const ASSET_PRICE_URL_BY_NETWORK = {
     'https://k8s.mainnet.asset.injective.network/asset-price/v1',
   [Network.MainnetSentry]:
     'https://k8s.mainnet.asset.injective.network/asset-price/v1',
-  [Network.Public]:
+  [Network.MainnetOld]:
     'https://k8s.mainnet.asset.injective.network/asset-price/v1',
   [Network.Staging]:
     'https://k8s.mainnet.asset.injective.network/asset-price/v1',
@@ -146,7 +146,7 @@ export const ASSET_PRICE_URL_BY_NETWORK = {
     'https://k8s.testnet.asset.injective.network/asset-price/v1',
   [Network.TestnetOld]:
     'https://k8s.testnet.asset.injective.network/asset-price/v1',
-  [Network.Devnet]: 'https://devnet.api.injective.dev/asset-price/v1',
+  [Network.Devnet]: 'https://devnet.asset.injective.dev/asset-price/v1',
   [Network.Devnet1]: 'https://devnet.api.injective.dev/asset-price/v1',
   [Network.Devnet2]: 'https://devnet.api.injective.dev/asset-price/v1',
   [Network.Local]: 'https://devnet.api.injective.dev/asset-price/v1',

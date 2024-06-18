@@ -3,7 +3,7 @@ import {
   StargateClient as CosmjsStargateClient,
   accountFromAny,
 } from '@cosmjs/stargate'
-import { injectiveAccountParser } from '../accounts'
+import { accountParser as injectiveAccountParser } from '../accounts/AccountParser'
 
 export class StargateClient extends CosmjsStargateClient {
   public async getAccount(searchAddress: string): Promise<Account | null> {

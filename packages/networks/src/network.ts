@@ -6,7 +6,6 @@ import {
 } from './chainInfos'
 import {
   endpointsLocal,
-  endpointsPublic,
   endpointsDevnet,
   endpointsTestnet,
   endpointsMainnet,
@@ -18,6 +17,7 @@ import {
   endpointsTestnetK8s,
   endpointsTestnetOld,
   endpointsMainnetK8s,
+  endpointsMainnetOld,
   endpointsMainnetSentry,
   endpointsTestnetSentry,
 } from './endpoints'
@@ -27,9 +27,9 @@ export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.MainnetLB]: endpointsMainnetLB,
   [Network.MainnetK8s]: endpointsMainnetK8s,
   [Network.MainnetSentry]: endpointsMainnetSentry,
+  [Network.MainnetOld]: endpointsMainnetOld,
   [Network.Staging]: endpointsStaging,
   [Network.Mainnet]: endpointsMainnet,
-  [Network.Public]: endpointsPublic,
   [Network.Internal]: endpointsInternal,
   [Network.Devnet]: endpointsDevnet,
   [Network.Devnet1]: endpointsDevnet1,
@@ -45,9 +45,9 @@ export const chainInfos: Record<Network, ChainInfo> = {
   [Network.MainnetLB]: mainnetChainInfo,
   [Network.MainnetK8s]: mainnetChainInfo,
   [Network.MainnetSentry]: mainnetChainInfo,
+  [Network.MainnetOld]: mainnetChainInfo,
   [Network.Staging]: mainnetChainInfo,
   [Network.Mainnet]: mainnetChainInfo,
-  [Network.Public]: mainnetChainInfo,
   [Network.Internal]: mainnetChainInfo,
   [Network.Devnet]: devnetChainInfo,
   [Network.Devnet1]: devnetChainInfo,
@@ -82,9 +82,9 @@ export const getNetworkInfo = (
 
 export const isMainnet = (network: Network) =>
   [
-    Network.Public,
     Network.Staging,
     Network.Mainnet,
+    Network.MainnetOld,
     Network.MainnetK8s,
     Network.MainnetSentry,
     Network.Internal,

@@ -2,7 +2,6 @@
 import { sleep } from '@injectivelabs/utils'
 import {
   AccountAddress,
-  ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
@@ -18,6 +17,7 @@ import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
 import BaseConcreteStrategy from './Base'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { SendTransactionOptions } from '../types'
 
 export const getNetworkFromChainId = (
   chainId: EthereumChainId,
@@ -26,6 +26,13 @@ export const getNetworkFromChainId = (
     return {
       host: 'goerli',
       networkName: 'Goerli Test Network',
+    }
+  }
+
+  if (chainId === EthereumChainId.Sepolia) {
+    return {
+      host: 'sepolia',
+      networkName: 'Sepolia Test Network',
     }
   }
 
@@ -104,7 +111,7 @@ export default class Torus extends BaseConcreteStrategy implements ConcreteWalle
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     await this.connect()
 
     return Promise.resolve(
@@ -138,17 +145,9 @@ export default class Torus extends BaseConcreteStrategy implements ConcreteWalle
 
   async sendTransaction(
     transaction: TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints } = options
+    const { endpoints, txTimeout } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -159,7 +158,7 @@ export default class Torus extends BaseConcreteStrategy implements ConcreteWalle
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction)
+    const response = await txApi.broadcast(transaction, { txTimeout })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

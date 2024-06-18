@@ -4,7 +4,7 @@ Example code snippets to query the indexer for auction module related data.
 
 ### Using gRPC
 
-- Get an auction based off the round
+#### Fetch auction based off the round
 
 ```ts
 import { IndexerGrpcAuctionApi } from '@injectivelabs/sdk-ts'
@@ -20,7 +20,7 @@ const auction = await indexerGrpcAuctionApi.fetchAuction(round)
 console.log(auction)
 ```
 
-- Get all auctions
+#### Fetch auctions
 
 ```ts
 import { IndexerGrpcAuctionApi } from '@injectivelabs/sdk-ts'

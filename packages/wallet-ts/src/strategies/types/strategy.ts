@@ -7,6 +7,7 @@ import {
 import type { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { Wallet, WalletDeviceType } from '../../types/enums'
+import { SendTransactionOptions } from '../wallet-strategy'
 
 export type onAccountChangeCallback = (account: string) => void
 export type onChainIdChangeCallback = () => void
@@ -43,14 +44,17 @@ export interface ConcreteCosmosWalletStrategy {
    * Perform validations and checks
    * for the wallet (if the chain is supported, etc)
    */
-  enable(): Promise<boolean>
+  enable(args?: unknown): Promise<boolean>
 
   /**
    * Sends Cosmos transaction. Returns a transaction hash
    * @param transaction should implement TransactionConfig
    * @param options
    */
-  sendTransaction(transaction: DirectSignResponse | TxRaw): Promise<TxResponse>
+  sendTransaction(
+    transaction: DirectSignResponse | TxRaw,
+    options: SendTransactionOptions,
+  ): Promise<TxResponse>
 
   signTransaction(transaction: {
     txRaw: TxRaw
@@ -65,15 +69,20 @@ export interface ConcreteCosmosWalletStrategy {
   }): Promise<AminoSignResponse>
 }
 
+export interface WalletStrategyOptions {
+  privateKey?: string
+  metadata?: Record<string, string | Record<string, string>>
+}
+
 export interface CosmosWalletStrategyArguments {
   chainId: CosmosChainId
-  endpoints?: { rpc: string; rest: string }
   wallet?: Wallet
 }
 
 export interface WalletStrategyArguments
   extends Omit<CosmosWalletStrategyArguments, 'chainId'> {
   chainId: ChainId
+  options?: WalletStrategyOptions
   ethereumOptions?: WalletStrategyEthereumOptions
   disabledWallets?: Wallet[]
   wallet?: Wallet
@@ -97,6 +106,7 @@ export interface ConcreteWalletStrategy
     options: {
       address: string
       chainId: ChainId
+      txTimeout?: number
       endpoints?: {
         rest: string
         grpc: string
@@ -109,7 +119,7 @@ export interface ConcreteWalletStrategy
    * Confirm the address on the wallet
    * @param address address
    */
-  confirm(address: string): Promise<string>
+  getSessionOrConfirm(address?: string): Promise<string>
 
   /**
    * Sends Ethereum transaction. Returns a transaction hash
@@ -168,15 +178,9 @@ export interface ConcreteWalletStrategy
 
   getEthereumTransactionReceipt(txHash: string): void
 
-  onAccountChange?(callback: onAccountChangeCallback): void
+  onAccountChange?(callback: onAccountChangeCallback): Promise<void> | void
 
-  onChainIdChange?(callback: onChainIdChangeCallback): void
-
-  cancelOnChainIdChange?(): void
-
-  cancelOnAccountChange?(): void
-
-  cancelAllEvents?(): void
+  onChainIdChange?(callback: onChainIdChangeCallback): Promise<void> | void
 
   disconnect?(): Promise<void> | void
 }

@@ -1,4 +1,4 @@
-import type { grpc } from '@injectivelabs/grpc-web'
+import { grpc } from '@injectivelabs/grpc-web'
 import { StatusCodes } from 'http-status-codes'
 
 export enum TransactionChainErrorModule {
@@ -648,7 +648,7 @@ export enum ChainGovErrorCodes {
   ErrInvalidGenesis = 8,
   //  "no handler exists for proosal type")
   ErrNoProposalHandlerExists = 9,
-  //  "proposal message not recogized by router")
+  //  "proposal message not recognized by router")
   ErrUnroutableProposalMsg = 10,
   //  "no messages proposed"
   ErrNoProposalMsgs = 11,
@@ -768,6 +768,7 @@ export type IndexerApiErrorCode = number
 export const UnspecifiedErrorCode = -1
 
 export type ErrorCode = StatusCodes | typeof UnspecifiedErrorCode | grpc.Code
+export const GRPC_REQUEST_FAILED = grpc.Code.Unavailable;
 
 export type ErrorContextCode =
   | ChainAuctionErrorCodes
@@ -785,4 +786,5 @@ export type ErrorContextCode =
   | ChainGovErrorCodes
   | ChainStakingErrorCodes
   | ChainWasmErrorCodes
+  | ErrorCode
   | typeof UnspecifiedErrorCode

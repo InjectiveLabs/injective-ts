@@ -4,7 +4,7 @@ Example code snippets to query the indexer for insurance fund module related dat
 
 ### Using gRPC
 
-- Get redemptions for an injective address
+#### Fetch redemptions for an injective address
 
 ```ts
 import { IndexerGrpcInsuranceFundApi } from '@injectivelabs/sdk-ts'
@@ -24,7 +24,7 @@ const redemptions = await indexerGrpcInsuranceFundApi.fetchRedemptions({
 console.log(redemptions)
 ```
 
-- Get insurance funds
+#### Fetch insurance funds
 
 ```ts
 import { IndexerGrpcInsuranceFundApi } from '@injectivelabs/sdk-ts'

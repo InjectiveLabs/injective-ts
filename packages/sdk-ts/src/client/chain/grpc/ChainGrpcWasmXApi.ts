@@ -28,7 +28,7 @@ export class ChainGrpcWasmXApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveWasmxV1Beta1Query.QueryWasmxParamsResponse>(
-          () => this.client.WasmxParams(request),
+          () => this.client.WasmxParams(request, this.metadata),
         )
 
       return response
@@ -55,7 +55,7 @@ export class ChainGrpcWasmXApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveWasmxV1Beta1Query.QueryModuleStateResponse>(
-          () => this.client.WasmxModuleState(request),
+          () => this.client.WasmxModuleState(request, this.metadata),
         )
 
       return response.state /* TODO */

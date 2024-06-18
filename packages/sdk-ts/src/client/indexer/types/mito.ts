@@ -1,6 +1,11 @@
 import { Coin } from '@injectivelabs/ts-types'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
 
+export enum MitoGaugeStatus {
+  Active = 'active',
+  Live = 'live',
+}
+
 export interface MitoHolders {
   holderAddress: string
   vaultAddress: string
@@ -55,6 +60,11 @@ export interface MitoVault {
   notionalValueCap: string
   tvlChanges?: MitoChanges
   apy: number
+  apy7D: number
+  apy7DFq: number
+  apyue: number
+  apyV3: number
+  registrationMode: string
 }
 
 export interface MitoSubscription {
@@ -115,6 +125,7 @@ export interface MitoGauge {
   endTimestamp: number
   rewardTokens: Coin[]
   lastDistribution: number
+  status: MitoGaugeStatus
 }
 
 export interface MitoStakingPool {
@@ -188,6 +199,22 @@ export interface MitoStakeToSubscription {
   subscribableAmount: string
 }
 
+export interface MitoVestingConfig {
+  vestingDurationSeconds?: number
+  vestingStartDelaySeconds?: number
+  schedule?: string
+}
+
+export interface MitoVestingConfigMap {
+  projectOwnerQuote?: MitoVestingConfig
+  projectOwnerLpTokens?: MitoVestingConfig
+  usersProjectToken?: MitoVestingConfig
+}
+
+export interface MitoIDOInitParams {
+  vestingConfig?: MitoVestingConfigMap
+}
+
 export interface MitoIDO {
   startTime: number
   endTime: number
@@ -203,6 +230,8 @@ export interface MitoIDO {
   targetAmountInUsd: string
   tokenPrice: number
   isAccountWhiteListed: boolean
+  isLaunchWithVault: boolean
+  isVestingScheduleEnabled: boolean
   name: string
   progress: MitoIDOProgress[]
   quoteDenom: string
@@ -210,6 +239,7 @@ export interface MitoIDO {
   useWhitelist: boolean
   marketId: string
   vaultAddress: string
+  vestingConfig?: MitoVestingConfigMap
 }
 
 export interface MitoIDOSubscriber {
@@ -230,6 +260,11 @@ export interface MitoIDOSubscriptionActivity {
   txHash: string
 }
 
+export interface MitoIDOClaimedCoins {
+  claimedCoins: Coin[]
+  updatedAt: number
+}
+
 export interface MitoIDOSubscription {
   maxSubscriptionCoin?: Coin
   committedAmount: string
@@ -243,11 +278,25 @@ export interface MitoIDOSubscription {
   claimTxHash?: string
   ownerClaimableCoins: Coin[]
   marketId: string
+  claimedCoins?: MitoIDOClaimedCoins
 }
 
 export interface MitoWhitelistAccount {
   accountAddress: string
   updatedAt: number
+  weight: string
+}
+
+export interface MitoClaimReference {
+  denom: string
+  updatedAt: number
+  claimedAmount: string
+  claimableAmount: string
+  accountAddress: string
+  cwContractAddress: string
+  idoContractAddress: string
+  startVestingTime: number
+  vestingDurationSeconds: number
 }
 
 export type GrpcMitoIDO = MitoApi.IDO
@@ -264,6 +313,8 @@ export type GrpcMitoDenomBalance = MitoApi.DenomBalance
 export type GrpcMitoSubscription = MitoApi.Subscription
 export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
 export type GrpcMitoIDOSubscriber = MitoApi.IDOSubscriber
+export type GrpcMitoClaimReference = MitoApi.ClaimReference
+export type GrpcMitoIDOClaimedCoins = MitoApi.IDOClaimedCoins
 export type GrpcMitoIDOSubscription = MitoApi.IDOSubscription
 export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
 export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch

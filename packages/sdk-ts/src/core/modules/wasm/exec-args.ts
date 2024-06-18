@@ -8,9 +8,11 @@ import ExecArgSwapMinOutput from './exec-args/ExecArgSwapMinOutput'
 import ExecArgCreateCampaign from './exec-args/ExecArgCreateCampaign'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer'
+import ExecArgUpdateGridConfig from './exec-args/ExecArgUpdateGridConfig'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance'
 import ExecArgRemoveGridStrategy from './exec-args/ExecArgRemoveGridStrategy'
 import ExecArgCreateSpotGridStrategy from './exec-args/ExecArgCreateSpotGridStrategy'
+import ExecArgCreatePerpGridStrategy from './exec-args/ExecArgCreatePerpGridStrategy'
 
 import ExecArgCW20AdapterRedeemAndTransfer from './exec-args/ExecArgCW20AdapterRedeemAndTransfer'
 
@@ -30,9 +32,11 @@ export type ExecArgs =
   | ExecArgCreateCampaign
   | ExecArgSwapExactOutput
   | ExecArgInitiateTransfer
+  | ExecArgUpdateGridConfig
   | ExecArgIncreaseAllowance
   | ExecArgRemoveGridStrategy
   | ExecArgCreateSpotGridStrategy
+  | ExecArgCreatePerpGridStrategy
   | ExecArgCW20AdapterRedeemAndTransfer
 
 export type ExecPrivilegedArgs =

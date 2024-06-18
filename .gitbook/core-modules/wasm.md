@@ -7,36 +7,33 @@ The `wasm` module is the heart of interacting with the wasm smart contracts depl
 This message is used to execute contract function, below we will use the [CW20 spec](https://github.com/CosmWasm/cw-plus/blob/main/packages/cw20/README.md) transfer message as an example.
 
 ```ts
-import {
-  MsgExecuteContract,
-  MsgBroadcasterWithPk,
-} from "@injectivelabs/sdk-ts";
-import { Network } from "@injectivelabs/networks";
+import { MsgExecuteContract, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
+import { Network } from '@injectivelabs/networks'
 
-const injectiveAddress = "inj1...";
-const recipientAddress = "inj2...";
-const contractAddress = "cw...";
+const injectiveAddress = 'inj1...'
+const recipientAddress = 'inj2...'
+const contractAddress = 'cw...'
 
 const msg = MsgExecuteContract.fromJSON({
   contractAddress,
   sender: injectiveAddress,
   exec: {
-    action: "transfer",
+    action: 'transfer',
     msg: {
       recipient: recipientAddress,
       amount: 100000,
     },
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Mainnet
+  network: Network.Mainnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
 ### MsgExecuteContract (funds example)
@@ -46,43 +43,40 @@ In some scenarios, depending on the smart contract's function we have to transfe
 Below is an example of how we can send the `MsgExecuteContract` using an `test` contract function.
 
 ```ts
-import {
-  MsgExecuteContract,
-  MsgBroadcasterWithPk,
-} from "@injectivelabs/sdk-ts";
-import { INJ_DENOM } from "@injectivelabs/sdk-ui-ts";
-import { Network } from "@injectivelabs/networks";
+import { MsgExecuteContract, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
+import { INJ_DENOM } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
 
-const injectiveAddress = "inj1...";
-const contractAddress = "cw...";
+const injectiveAddress = 'inj1...'
+const contractAddress = 'cw...'
 
 const msg = MsgExecuteContract.fromJSON({
   contractAddress,
   sender: injectiveAddress,
   exec: {
-    action: "test",
+    action: 'test',
     funds: [
       {
-        denom: INJ_DENOM,
+        denom: 'inj',
         amount: new BigNumberInBase(1).toWei().toFixed(),
       },
     ],
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Mainnet
+  network: Network.Mainnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
-### MsgExecuteContractCompact
+### MsgExecuteContractCompat
 
-There are some compatibility issues parsing the `funds` array and `msgs` object in the previous example with EIP712. Since `MsgExecuteContract` can't be properly converted to EIP712 and then signed by Ethereum wallets, we introduced `MsgExecuteContractCompact` which is fully compatible with EIP712.&#x20;
+There are some compatibility issues parsing the `funds` array and `msgs` object in the previous example with EIP712. Since `MsgExecuteContract` can't be properly converted to EIP712 and then signed by Ethereum wallets, we introduced `MsgExecuteContractCompat` which is fully compatible with EIP712.
 
 _**Note:**_ _`MsgExecuteContract` and `MsgExecuteContractCompat` underlying messages are the same. `MsgExecuteContractCompat` is just EIP712 compatible._
 
@@ -91,19 +85,19 @@ Below is an example of how we can send the `MsgExecuteContractCompact` using an 
 ```ts
 import {
   MsgBroadcasterWithPk,
-  MsgExecuteContractCompact,
-} from "@injectivelabs/sdk-ts";
-import { INJ_DENOM } from "@injectivelabs/sdk-ui-ts";
-import { Network } from "@injectivelabs/networks";
+  MsgExecuteContractCompat,
+} from '@injectivelabs/sdk-ts'
+import { INJ_DENOM } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
 
-const injectiveAddress = "inj1...";
-const contractAddress = "cw...";
+const injectiveAddress = 'inj1...'
+const contractAddress = 'cw...'
 
-const msg = MsgExecuteContractCompact.fromJSON({
+const msg = MsgExecuteContractCompat.fromJSON({
   contractAddress,
   sender: injectiveAddress,
   exec: {
-    action: "test",
+    action: 'test',
     funds: [
       {
         denom: INJ_DENOM,
@@ -111,14 +105,14 @@ const msg = MsgExecuteContractCompact.fromJSON({
       },
     ],
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Mainnet
+  network: Network.Mainnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```

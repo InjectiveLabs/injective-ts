@@ -2,9 +2,9 @@
 
 Example code snippets to query the chain for bank module related data.
 
-### Using gRPC
+## Using gRPC
 
-* Get bank module params
+#### Fetch bank module params
 
 <pre class="language-ts"><code class="lang-ts"><strong>import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
 </strong>import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
@@ -17,7 +17,7 @@ const moduleParams = await chainGrpcBankApi.fetchModuleParams()
 console.log(moduleParams)
 </code></pre>
 
-* Fetching injective address's balances
+#### Fetching injective address's balances
 
 ```ts
 import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
@@ -33,7 +33,7 @@ const balances = await chainGrpcBankApi.fetchBalances(injectiveAddress)
 console.log(balances)
 ```
 
-* Fetching cosmos address' balances per base denom
+#### Fetching cosmos address' balances per base denom
 
 ```ts
 import { ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
@@ -53,7 +53,7 @@ const balance = await chainGrpcBankApi.fetchBalance({
 console.log(balance)
 ```
 
-* Fetching total supply on chain
+#### Fetching total supply on chain
 
 ```ts
 import { PaginationOption, ChainGrpcBankApi } from '@injectivelabs/sdk-ts'
@@ -71,9 +71,9 @@ const totalSupply = await chainGrpcBankApi.fetchTotalSupply(
 console.log(totalSupply)
 ```
 
-### Using HTTP REST
+## Using HTTP REST
 
-* Fetching address's balances
+#### Fetching address's balances
 
 ```ts
 import { ChainRestBankApi } from '@injectivelabs/sdk-ts'
@@ -89,7 +89,7 @@ const balances = await chainGrpcBankApi.fetchBalances(injectiveAddress)
 console.log(balances)
 ```
 
-* Fetching cosmos address' balances per base denom
+#### Fetching cosmos address' balances per base denom
 
 ```ts
 import { ChainRestBankApi } from '@injectivelabs/sdk-ts'
@@ -101,7 +101,7 @@ const chainRestBankApi = new ChainRestBankApi(endpoints.rest)
 const cosmosAddress = 'cosmos...' /* example is using Cosmos Hub */
 const denom = 'uatom'
 
-const balance = await chainGrpcBankApi.fetchBalance(cosmosAddress, denom)
+const balance = await chainRestBankApi.fetchBalance(cosmosAddress, denom)
 
 console.log(balance)
 ```

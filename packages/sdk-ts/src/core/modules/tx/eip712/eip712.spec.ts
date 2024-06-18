@@ -56,7 +56,7 @@ describe('EIP712V2', () => {
           },
           {
             name: 'verifyingContract',
-            type: 'string',
+            type: 'address',
           },
           {
             name: 'salt',
@@ -79,15 +79,16 @@ describe('EIP712V2', () => {
         name: 'Injective Web3',
         version: '1.0.0',
         chainId: '0x5',
-        verifyingContract: 'cosmos',
+        verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
         salt: '0',
       },
       message: {
         context:
-          '{"account_number":11,"chain_id":"injective-777","fee":{"amount":[{"denom":"inj","amount":"200000000000000"}],"gas":400000,"payer":"inj18j2myhaf2at75kwwaqxfstk4q28n4am45nlfg7"},"memo":"","sequence":88,"timeout_height":1896}',
+          '{"account_number":11,"chain_id":"injective-777","fee":{"amount":[{"denom":"inj","amount":"64000000000000"}],"gas":400000,"payer":"inj18j2myhaf2at75kwwaqxfstk4q28n4am45nlfg7"},"memo":"","sequence":88,"timeout_height":1896}',
         msgs: `[{"@type":"/cosmos.bank.v1beta1.MsgSend","from_address":"${mockFactory.injectiveAddress}","to_address":"${mockFactory.injectiveAddress}","amount":[{"denom":"inj","amount":"10000000000000000"}]}]`,
       },
     }
+
     expect(eip712TypedData).toEqual(expectedEip712)
   })
 })

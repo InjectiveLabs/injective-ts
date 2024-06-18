@@ -90,8 +90,8 @@ export abstract class ConcreteException extends Error implements Exception {
 
   public parseContext(errorContext?: ErrorContext) {
     const { contextModule, type, code, context } = errorContext || {
-      contextModule: '',
-      context: '',
+      contextModule: 'Unknown',
+      context: 'Unknown',
       code: UnspecifiedErrorCode,
       type: ErrorType.Unspecified,
     }
@@ -119,8 +119,11 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public setStack(stack: string) {
-    super.stack = stack
-    this.stack = stack
+    try {
+      this.stack = stack
+    } catch (e) {
+      // throw nothing here
+    }
   }
 
   public setName(name: string) {

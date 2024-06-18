@@ -1,4 +1,3 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { mockFactory } from '@injectivelabs/test-utils'
 import { IndexerGrpcMitoTransformer } from '../transformers'
 import { IndexerGrpcMitoApi } from './IndexerGrpcMitoApi'
@@ -7,8 +6,9 @@ const injectiveAddress = mockFactory.injectiveAddress
 const vaultAddress = 'inj1zwv6feuzhy6a9wekh96cd57lsarmqlwxvdl4nk'
 const stakingContractAddress = 'inj1pxzykc8qry3ytxwxr3ua72tn6e4wvusj40yy2w'
 const idoAddress = 'inj1zwv6feuzhy6a9wekh96cd57lsarmqlwxvdl4nk'
-const endpoints = getNetworkEndpoints(Network.Devnet)
-const indexerGrpcMitoApi = new IndexerGrpcMitoApi(endpoints.indexer)
+const indexerGrpcMitoApi = new IndexerGrpcMitoApi(
+  'https://devnet.api.ninja.injective.dev',
+)
 
 describe('IndexerGrpcMitoApi', () => {
   test('fetchVault', async () => {
@@ -459,6 +459,32 @@ describe('IndexerGrpcMitoApi', () => {
     } catch (e) {
       console.error(
         'IndexerGrpcMitoApi.fetchIDOWhitelist => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchClaimReferences', async () => {
+    try {
+      const response = await indexerGrpcMitoApi.fetchClaimReferences({
+        idoAddress,
+        accountAddress: injectiveAddress,
+      })
+
+      if (response.claimReferences.length === 0) {
+        console.warn('fetchClaimReferences.responseIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcMitoApi.fetchClaimReferences => ' + (e as any).message,
       )
     }
   })

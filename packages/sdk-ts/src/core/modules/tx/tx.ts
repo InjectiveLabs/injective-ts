@@ -17,7 +17,10 @@ import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { Msgs } from '../msgs'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import {
+  getStdFeeFromString,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+} from '@injectivelabs/utils'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../../client'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { BaseAccount } from '../../accounts'
@@ -56,11 +59,12 @@ export const createTransactionWithSigners = ({
   const [signer] = actualSigners
 
   const body = createBody({ message, memo, timeoutHeight })
+  const actualFee = typeof fee === 'string' ? getStdFeeFromString(fee) : fee
   const feeMessage = createFee({
-    fee: fee.amount[0],
-    payer: fee.payer,
-    granter: fee.granter,
-    gasLimit: parseInt(fee.gas, 10),
+    fee: actualFee.amount[0],
+    payer: actualFee.payer,
+    granter: actualFee.granter,
+    gasLimit: parseInt(actualFee.gas, 10),
   })
 
   const signInfo = createSigners({

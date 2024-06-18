@@ -29,7 +29,7 @@ export class ChainGrpcPeggyApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectivePeggyV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request),
+          this.client.Params(request, this.metadata),
         )
 
       return ChainGrpcPeggyTransformer.moduleParamsResponseToModuleParams(

@@ -26,6 +26,7 @@ import {
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange'
+import { TokenType } from '../../../types/token'
 import { grpcPagingToPaging } from '../../../utils/pagination'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
@@ -54,6 +55,7 @@ export class IndexerGrpcSpotTransformer {
       decimals: tokenMeta.decimals,
       updatedAt: tokenMeta.updatedAt,
       coinGeckoId: '',
+      tokenType: TokenType.Unknown,
     }
   }
 
@@ -228,6 +230,7 @@ export class IndexerGrpcSpotTransformer {
       orderHash: order.orderHash,
       orderSide: order.orderSide as OrderSide,
       marketId: order.marketId,
+      cid: order.cid,
       subaccountId: order.subaccountId,
       price: order.price,
       state: order.state as OrderState,
@@ -252,6 +255,7 @@ export class IndexerGrpcSpotTransformer {
     return {
       orderHash: orderHistory.orderHash,
       marketId: orderHistory.marketId,
+      cid: orderHistory.cid,
       active: orderHistory.isActive,
       subaccountId: orderHistory.subaccountId,
       executionType: orderHistory.executionType,
@@ -286,6 +290,7 @@ export class IndexerGrpcSpotTransformer {
       subaccountId: trade.subaccountId,
       marketId: trade.marketId,
       tradeId: trade.tradeId,
+      cid: trade.cid,
       executedAt: parseInt(trade.executedAt, 10),
       feeRecipient: trade.feeRecipient,
       tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,

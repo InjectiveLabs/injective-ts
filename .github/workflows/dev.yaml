@@ -10,18 +10,20 @@ jobs:
     if: true
     runs-on: ubuntu-latest
 
+    permissions: write-all
+
     steps:
-      - name: 'Checkout' # Download code from the repository
+      - name: Checkout # Download code from the repository
         uses: actions/checkout@v2 # Public action
         with:
           fetch-depth: 0 # Checkout all branches and tags
 
-      - name: 'Use NodeJS 16' # Setup node using version 14
+      - name: 'Use NodeJS 18' # Setup node using version 14
         uses: actions/setup-node@v2 # Public action
         with:
-          node-version: '16.18.1'
+          node-version: '18.17.0'
 
-      - name: 'Setup lerna@6.6.1'
+      - name: Setup lerna@6.6.1
         run: yarn global add lerna@6.6.1 --ignore-engines
 
       - name: Set up Git user
@@ -31,27 +33,29 @@ jobs:
 
       - name: Build dependencies
         run: |
+          lerna clean --yes
           node etc/bootstrapEnv
           yarn install --ignore-engines
           yarn build
 
-      - name: 'Setup npm'
-        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - name: Setup npm
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: 'Commit ibcTokenMetadata.json if changed'
-        run: |
-          git diff --exit-code -- packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json || (git add packages/sdk-ui-ts/src/services/ibc/ibcTokenMetadata.json && git commit -m "Automatically update ibcTokenMetadata.json")
-
       - name: Version and publish
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           lerna version prerelease --preid beta --force-git-tag --no-changelog --yes
           lerna publish from-git --force-git-tag --dist-tag next --yes --summary-file
 
-      - name: 'Broadcast published versions on Slack'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Broadcast published versions on Slack
         run: node etc/slack --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
         env:
           GIT_ACTOR: ${{ github.actor }}

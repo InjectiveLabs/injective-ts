@@ -1,5 +1,9 @@
 /* eslint-disable class-methods-use-this */
-import type { Keplr as Leap } from '@keplr-wallet/types'
+import type {
+  AminoSignResponse,
+  Keplr as Leap,
+  StdSignDoc,
+} from '@keplr-wallet/types'
 import type { OfflineDirectSigner } from '@cosmjs/proto-signing'
 import { BroadcastMode } from '@cosmjs/launchpad'
 import {
@@ -7,7 +11,6 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxGrpcApi, TxRestApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   CosmosWalletException,
@@ -15,7 +18,6 @@ import {
   UnspecifiedErrorCode,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
-import { getEndpointsFromChainId } from '../cosmos/endpoints'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
@@ -25,14 +27,8 @@ const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
 export class LeapWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  private endpoints: { rest: string; rpc?: string }
-
-  constructor(
-    chainId: CosmosChainId | TestnetCosmosChainId | ChainId,
-    endpoints?: { rest: string; rpc?: string },
-  ) {
+  constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
     this.chainId = chainId
-    this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
   static async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
@@ -68,6 +64,7 @@ export class LeapWallet {
   async getKey(): Promise<{
     name: string
     algo: string
+    isNanoLedger: boolean
     pubKey: Uint8Array
     address: Uint8Array
     bech32Address: string
@@ -173,13 +170,30 @@ export class LeapWallet {
     }
   }
 
-  async waitTxBroadcasted(
-    txHash: string,
-    endpoint?: string,
-  ): Promise<TxResponse> {
-    return endpoint
-      ? new TxGrpcApi(endpoint).fetchTxPoll(txHash)
-      : new TxRestApi(this.endpoints.rest).fetchTxPoll(txHash)
+  public async signEIP712CosmosTx({
+    eip712,
+    signDoc,
+  }: {
+    eip712: any
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
+    const { chainId } = this
+    const leap = await this.getLeapWallet()
+    const key = await this.getKey()
+
+    try {
+      return leap.experimentalSignEIP712CosmosTx_v0(
+        chainId,
+        key.bech32Address,
+        eip712,
+        signDoc,
+      )
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
+        context: 'Leap',
+        contextModule: 'sign-eip712-cosmos-tx',
+      })
+    }
   }
 
   public async checkChainIdSupport() {

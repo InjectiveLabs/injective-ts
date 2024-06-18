@@ -7,7 +7,7 @@ const params: MsgCancelSpotOrder['params'] = {
   marketId: mockFactory.injUsdtSpotMarket.marketId,
   orderHash: mockFactory.orderHash,
   subaccountId: mockFactory.subaccountId,
-  cid: '',
+  cid: 'order-123',
 }
 
 const protoType = '/injective.exchange.v1beta1.MsgCancelSpotOrder'
@@ -57,6 +57,7 @@ describe('MsgCancelSpotOrder', () => {
         { name: 'market_id', type: 'string' },
         { name: 'subaccount_id', type: 'string' },
         { name: 'order_hash', type: 'string' },
+        { name: 'cid', type: 'string' },
       ],
     })
   })

@@ -3,15 +3,19 @@ import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCreateDenom['params'] = {
+  name: 'Injective',
   sender: mockFactory.injectiveAddress,
   subdenom: mockFactory.injectiveAddress,
+  symbol: 'INJ',
 }
 
 const protoType = '/injective.tokenfactory.v1beta1.MsgCreateDenom'
 const protoTypeAmino = 'injective/tokenfactory/create-denom'
 const protoParams = {
+  name: params.name,
   sender: params.sender,
   subdenom: params.subdenom,
+  symbol: params.symbol,
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)
@@ -49,6 +53,8 @@ describe('MsgCreateDenom', () => {
       MsgValue: [
         { name: 'sender', type: 'string' },
         { name: 'subdenom', type: 'string' },
+        { name: 'name', type: 'string' },
+        { name: 'symbol', type: 'string' },
       ],
     })
   })

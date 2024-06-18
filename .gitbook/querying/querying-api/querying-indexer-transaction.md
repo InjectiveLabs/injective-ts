@@ -1,10 +1,10 @@
-# Transaction
+# Web3Gw Transactions
 
-Example code snippets to query the indexer for transaction module related data.
+Example code snippets to query the indexer for transaction module related data. Used only when interacting with the [Web3Gateway](../../transactions/web3-gateway.md)
 
 ### Using gRPC
 
-- Get a response for preparing a tx
+#### Fetch response for preparing a transaction
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -29,7 +29,7 @@ const prepareTxResponse = await indexerGrpcTransactionApi.prepareTxRequest({
 console.log(prepareTxResponse)
 ```
 
-- Get a response for preparing a cosmos tx
+#### Fetch response for preparing a cosmos transaction
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -49,32 +49,11 @@ const prepareCosmosTxResponse = await indexerGrpcTransactionApi.prepareCosmosTxR
 console.log(prepareCosmosTxResponse)
 ```
 
-- get a response for preparing a tsx on Injective exchange module
+#### Fetch response for broadcasting transactions using the Web3Gateway&#x20;
 
-```ts
-import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { EthereumChainId } from '@injectivelabs/ts-types'
+Use `MsgBroadcasterWithPk` to broadcast transactions within a node/CLI environment, which can be found in `@injectivelabs/sdk-ts`.&#x20;
 
-const endpoints = getNetworkEndpoints(Network.Testnet)
-const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
-
-const address = '0x...' /* ethereum address */
-const chainId = EthereumChainId.Goerli
-const message = { ... } as Msgs
-const memo = '...' /* optional param */
-
-const prepareTxResponse = await indexerGrpcTransactionApi.prepareExchangeTxRequest({
-  address,
-  chainId,
-  message,
-  memo
-})
-
-console.log(prepareTxResponse)
-```
-
-- get a response for broadcasting a tsx from desktop while using an ethereum wallet extension. Use `MsgBroadcasterWithPk` to broadcast a tsx for node app, which can be found in `@injectivelabs/sdk-ts`. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a tsx
+Use `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a transactions in a browser environment.
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -126,7 +105,7 @@ const broadcastTxResponse = await indexerGrpcTransactionApi.broadcastTxRequest({
 console.log(broadcastTxResponse)
 ```
 
-- get a response for broadcasting a cosmos tsx. Check out `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a cosmos tsx
+#### Fetch response for broadcasting a cosmos transactions.&#x20;
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
@@ -154,7 +133,7 @@ const broadcastCosmosTxResponse = await indexerGrpcTransactionApi.broadcastCosmo
 console.log(broadcastCosmosTxResponse)
 ```
 
-- get the fee payer
+#### Fetch Web3Gateway Fee Payer
 
 ```ts
 import { IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'

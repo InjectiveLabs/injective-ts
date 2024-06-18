@@ -14,15 +14,21 @@ import {
 import {
   TxRaw,
   TxResponse,
+  waitTxBroadcasted,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { NinjiWallet } from '../../../utils/wallets/ninji'
 import { ConcreteWalletStrategy } from '../../types'
 import BaseConcreteStrategy from './Base'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+} from '../../../types/enums'
+import { SendTransactionOptions } from '../types'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
 
 export default class Ninji extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private ninjiWallet: NinjiWallet
@@ -33,7 +39,7 @@ export default class Ninji extends BaseConcreteStrategy implements ConcreteWalle
   }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.ninjiWallet = new NinjiWallet(args.chainId, args.endpoints)
+    this.ninjiWallet = new NinjiWallet(args.chainId)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -44,6 +50,17 @@ export default class Ninji extends BaseConcreteStrategy implements ConcreteWalle
     const ninjiWallet = this.getNinjiWallet()
 
     return await ninjiWallet.checkChainIdSupport()
+  }
+
+  public async disconnect() {
+    if (this.listeners[WalletEventListener.AccountChange]) {
+      window.removeEventListener(
+        'ninji_keystorechange',
+        this.listeners[WalletEventListener.AccountChange],
+      )
+    }
+
+    this.listeners = {}
   }
 
   async getAddresses(): Promise<string[]> {
@@ -61,7 +78,7 @@ export default class Ninji extends BaseConcreteStrategy implements ConcreteWalle
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -87,20 +104,23 @@ export default class Ninji extends BaseConcreteStrategy implements ConcreteWalle
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: { grpc: string }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     const { ninjiWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
 
-    try {
-      return await ninjiWallet.waitTxBroadcasted(
-        await ninjiWallet.broadcastTx(txRaw),
-        options.endpoints?.grpc,
+    if (!options.endpoints) {
+      throw new CosmosWalletException(
+        new Error(
+          'You have to pass endpoints within the options to broadcast transaction',
+        ),
       )
+    }
+
+    try {
+      const txHash = await ninjiWallet.broadcastTx(txRaw)
+
+      return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e
@@ -219,6 +239,22 @@ export default class Ninji extends BaseConcreteStrategy implements ConcreteWalle
     const key = await keplrWallet.getKey()
 
     return Buffer.from(key.pubKey).toString('base64')
+  }
+
+  async onAccountChange(
+    callback: (account: AccountAddress) => void,
+  ): Promise<void> {
+    const listener = async () => {
+      const [account] = await this.getAddresses()
+
+      callback(account)
+    }
+
+    this.listeners = {
+      [WalletEventListener.AccountChange]: listener,
+    }
+
+    window.addEventListener('leap_keystorechange', listener)
   }
 
   private getNinjiWallet(): NinjiWallet {

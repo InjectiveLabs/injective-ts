@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import {
   AccountAddress,
-  ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
@@ -23,7 +22,11 @@ import {
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
 } from '../../../types'
-import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types'
+import {
+  LedgerDerivationPathType,
+  LedgerWalletInfo,
+  SendTransactionOptions,
+} from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_BASE_DERIVATION_PATH,
@@ -39,6 +42,10 @@ import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
     return Chain.Goerli
+  }
+
+  if (chainId === EthereumChainId.Sepolia) {
+    return Chain.Sepolia
   }
 
   if (chainId === EthereumChainId.Kovan) {
@@ -106,7 +113,7 @@ export default class LedgerBase
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -144,17 +151,9 @@ export default class LedgerBase
 
   async sendTransaction(
     transaction: TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints } = options
+    const { endpoints, txTimeout } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -165,7 +164,7 @@ export default class LedgerBase
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction)
+    const response = await txApi.broadcast(transaction, { txTimeout })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

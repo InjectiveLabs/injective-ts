@@ -52,7 +52,7 @@ describe('MsgBroadcasterWithPk', () => {
       network,
       privateKey,
       simulateTx: true,
-      ethereumChainId: EthereumChainId.Goerli,
+      ethereumChainId: EthereumChainId.Sepolia,
     }).broadcastWithFeeDelegation({ msgs: message })
 
     expect(response.txHash).toBeDefined()

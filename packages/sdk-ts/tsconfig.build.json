@@ -6,7 +6,7 @@
     "tsBuildInfoFile": "../../.build-cache/sdk-ts.tsbuildinfo",
   },
   "include": [
-    "./src/**/*.ts",
+    "./src/**/*.ts"
   ],
   "exclude": [
     "./src/**/*.spec.ts",
@@ -27,9 +27,6 @@
     },
     {
       "path": "../networks/tsconfig.build.json"
-    },
-    {
-      "path": "../token-metadata/tsconfig.build.json"
-    },
+    }
   ],
 }

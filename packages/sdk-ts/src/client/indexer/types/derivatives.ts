@@ -6,7 +6,7 @@ import {
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
 import { GrpcOrderType } from '../../chain/types/exchange'
-import { TokenMeta } from '@injectivelabs/token-metadata'
+import { TokenMeta } from './../../../types/token'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface PositionDelta {
@@ -117,6 +117,7 @@ export interface DerivativeLimitOrder {
   orderHash: string
   orderSide: OrderSide
   marketId: string
+  cid: string
   subaccountId: string
   isReduceOnly: boolean
   margin: string
@@ -139,6 +140,7 @@ export interface DerivativeLimitOrder {
 export interface DerivativeOrderHistory {
   orderHash: string
   marketId: string
+  cid: string
   isActive: boolean
   subaccountId: string
   executionType: string
@@ -162,6 +164,7 @@ export interface DerivativeTrade extends PositionDelta {
   orderHash: string
   subaccountId: string
   tradeId: string
+  cid: string
   marketId: string
   executedAt: number
   tradeExecutionType: TradeExecutionType

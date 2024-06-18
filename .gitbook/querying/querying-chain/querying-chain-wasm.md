@@ -4,7 +4,7 @@ Example code snippets to query the wasm module on chain
 
 ### Using gRPC
 
-* Get a contacts' account balance Note that pagination parameters can be passed to obtain additional accounts.
+#### Fetch contacts' account balance Note that pagination parameters can be passed to obtain additional accounts.
 
 ```ts
 import { ChainGrpcWasmApi, PaginationOption } from '@injectivelabs/sdk-ts'
@@ -24,7 +24,7 @@ const contractAccountsBalance = await chainGrpcWasmApi.fetchContractAccountsBala
 console.log(contractAccountsBalance)
 ```
 
-* Get info related to a contract
+#### Fetch info related to a contract
 
 ```ts
 import { ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
@@ -40,7 +40,7 @@ const contractInfo = await chainGrpcWasmApi.fetchContractInfo(contractAddress)
 console.log(contractInfo)
 ```
 
-* Get contract history
+#### Fetch contract history
 
 ```ts
 import { ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
@@ -58,7 +58,7 @@ const contractHistory = await chainGrpcWasmApi.fetchContractHistory(
 console.log(contractHistory)
 ```
 
-* Get the state of a smart contract
+#### Fetch the state of a smart contract
 
 ```ts
 import { ChainGrpcWasmApi, toBase64 } from '@injectivelabs/sdk-ts'
@@ -79,7 +79,7 @@ const contractState = await chainGrpcWasmApi.fetchSmartContractState({
 console.log(contractState)
 ```
 
-* Get the raw state of a smart contract
+#### Fetch the raw state of a smart contract
 
 ```ts
 import { ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
@@ -100,7 +100,7 @@ const rawContractState = await chainGrpcWasmApi.fetchRawContractState({
 console.log(rawContractState)
 ```
 
-* Get the codes associated with a contract
+#### Fetch the codes associated with a contract
 
 ```ts
 import { PaginationOption, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
@@ -119,7 +119,7 @@ pagination /* optional pagination options */
 console.log(rawContractState)
 ```
 
-* Get info associated with a contract code
+#### Fetch info associated with a contract code
 
 ```ts
 import { ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'
@@ -135,7 +135,7 @@ const codeDetails = await chainGrpcWasmApi.fetchContractCode(codeId)
 console.log(codeDetails)
 ```
 
-* Get the contracts associated with a code
+#### Fetch the contracts associated with a code
 
 ```ts
 import { PaginationOption, ChainGrpcWasmApi } from '@injectivelabs/sdk-ts'

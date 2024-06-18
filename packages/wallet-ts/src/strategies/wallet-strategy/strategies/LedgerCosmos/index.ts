@@ -20,7 +20,7 @@ import {
   sortObjectByKeys,
 } from '@injectivelabs/sdk-ts'
 import { ConcreteWalletStrategy } from '../../../types'
-import { LedgerWalletInfo } from '../../types'
+import { LedgerWalletInfo, SendTransactionOptions } from '../../types'
 import BaseConcreteStrategy from '../Base'
 import {
   DEFAULT_BASE_DERIVATION_PATH,
@@ -75,7 +75,7 @@ export default class LedgerCosmos
     }
   }
 
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -103,17 +103,9 @@ export default class LedgerCosmos
 
   async sendTransaction(
     transaction: TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints } = options
+    const { endpoints, txTimeout } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -124,7 +116,7 @@ export default class LedgerCosmos
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction)
+    const response = await txApi.broadcast(transaction, { txTimeout })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

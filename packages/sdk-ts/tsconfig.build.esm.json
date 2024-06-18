@@ -25,9 +25,6 @@
     },
     {
       "path": "../networks/tsconfig.build.esm.json"
-    },
-    {
-      "path": "../token-metadata/tsconfig.build.esm.json"
-    },
+    }
   ],
 }

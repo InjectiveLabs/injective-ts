@@ -31,6 +31,8 @@ const subdenom = "inj-test";
 
 const msg = MsgCreateDenom.fromJSON({
   subdenom,
+  symbol: 'InjTest',
+  name: 'Inj Testing',
   sender: injectiveAddress,
 });
 
@@ -127,7 +129,6 @@ const injectiveAddress = "inj1...";
 const privateKey = "0x...";
 const subdenom = 'inj-test'
 const denom = `factory/${injectiveAddress}/${subdenom}`;
-const amountToBurn = 1_000_000_000
 
 const denomUnitsIfTokenHas0Decimals = [
   {
@@ -148,17 +149,15 @@ const denomUnitsIfTokenHas6Decimals = [
     aliases: [subdenom]
   },
 ]
-const displayIfTokenHas6Decimals = subdenom
-const displayIfTokenHas0Decimals =
 
 const msg = MsgSetDenomMetadata.fromJSON({
   sender: injectiveAddress,
   metadata: {
     base: denom, /** the base denom */
     description: '', /** description of your token */
-    display: subdenom, /** the display alias of your token on UIs (it's the denom of the unit with highest decimals) */,
-    name: '', /** the name of your token */,
-    symbol: '' /** the symbol of your token */,
+    display: subdenom, /** the display alias of your token on UIs (it's the denom of the unit with highest decimals) */
+    name: '', /** the name of your token */
+    symbol: '', /** the symbol of your token */
     uri: '' /** the logo of your token, should be hosted on IPFS and should be a small webp image */
     denomUnits: denomUnitsIfTokenHas6Decimals  /** choose if you want to have 6 or 0 decimals for the token */
   }

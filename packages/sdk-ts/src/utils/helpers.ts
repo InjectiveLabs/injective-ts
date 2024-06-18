@@ -154,3 +154,23 @@ export const getErrorMessage = (error: any, endpoint: string): string => {
     ? error.response.data.message || error.response.data
     : error.response.statusText
 }
+
+/**
+ * Converts value to it's number representation
+ */
+export const hexToNumber = (value: string): number => {
+  const [negative, hexValue] = value.startsWith('-')
+    ? [true, value.slice(1)]
+    : [false, value]
+  const num = BigInt(hexValue)
+
+  if (num > Number.MAX_SAFE_INTEGER) {
+    return Number(negative ? -num : num)
+  }
+
+  if (num < Number.MIN_SAFE_INTEGER) {
+    return Number(num)
+  }
+
+  return negative ? -1 * Number(num) : Number(num)
+}

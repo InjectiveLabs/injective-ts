@@ -31,6 +31,9 @@ export const DEFAULT_STD_FEE = {
     },
   ],
   gas: DEFAULT_GAS_LIMIT.toString(),
+  payer: '',
+  granter: '',
+  feePayer: '',
 }
 
 export const DEFAULT_STD_FEE_BY_DENOM = (denom: string = 'inj') => ({

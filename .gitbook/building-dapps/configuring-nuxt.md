@@ -30,8 +30,7 @@ $ yarn add @bangjelkoski/node-stdlib-browser
 $ yarn add -D @bangjelkoski/vite-plugin-node-polyfills
 ```
 
-Make sure you are using the `vue-tsc@1.8.8
-`, `nuxt@^3.8.1`, `typescript@^5.0.4` versions.
+Make sure you are using the `vue-tsc@1.8.8` , `nuxt@^3.8.1`, `typescript@^5.0.4` versions.
 
 **Buffer**
 
@@ -134,15 +133,10 @@ export default defineNuxtConfig({
 
   // Vite related config
   vite: {
-    define: {
-      "process.env": JSON.stringify({}),
-      "process.env.DEBUG": JSON.stringify(process.env.DEBUG),
-    },
-
     plugins: [ // setting up node + crypto polyfils + vite TS path resolution
       tsconfigPaths(),
       nodePolyfills({ protocolImports: false })
-      ],
+    ],
 
     build: {
       sourcemap: false, // we don't generate

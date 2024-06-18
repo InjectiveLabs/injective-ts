@@ -32,7 +32,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveTokenFactoryV1Beta1Query.QueryDenomsFromCreatorResponse>(
-          () => this.client.DenomsFromCreator(request),
+          () => this.client.DenomsFromCreator(request, this.metadata),
         )
 
       return ChainGrpcTokenFactoryTransformer.denomsCreatorResponseToDenomsString(
@@ -65,7 +65,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveTokenFactoryV1Beta1Query.QueryDenomAuthorityMetadataResponse>(
-          () => this.client.DenomAuthorityMetadata(request),
+          () => this.client.DenomAuthorityMetadata(request, this.metadata),
         )
 
       return ChainGrpcTokenFactoryTransformer.authorityMetadataResponseToAuthorityMetadata(
@@ -95,7 +95,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveTokenFactoryV1Beta1Query.QueryParamsResponse>(
-          () => this.client.Params(request),
+          () => this.client.Params(request, this.metadata),
         )
 
       return ChainGrpcTokenFactoryTransformer.moduleParamsResponseToModuleParams(
@@ -125,7 +125,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveTokenFactoryV1Beta1Query.QueryModuleStateResponse>(
-          () => this.client.TokenfactoryModuleState(request),
+          () => this.client.TokenfactoryModuleState(request, this.metadata),
         )
 
       return ChainGrpcTokenFactoryTransformer.moduleStateResponseToModuleState(

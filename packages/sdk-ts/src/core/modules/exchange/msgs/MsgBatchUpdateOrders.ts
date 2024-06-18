@@ -15,19 +15,19 @@ export declare namespace MsgBatchUpdateOrders {
     spotOrdersToCancel?: {
       marketId: string
       subaccountId: string
-      orderHash: string
+      orderHash?: string
       cid?: string
     }[]
     derivativeOrdersToCancel?: {
       marketId: string
       subaccountId: string
-      orderHash: string
+      orderHash?: string
       cid?: string
     }[]
     binaryOptionsOrdersToCancel?: {
       marketId: string
       subaccountId: string
-      orderHash: string
+      orderHash?: string
       cid?: string
     }[]
     spotOrdersToCreate?: {
@@ -114,8 +114,14 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
-          orderData.orderHash = orderHash
-          orderData.cid = cid || ''
+
+          if (orderHash) {
+            orderData.orderHash = orderHash
+          }
+
+          if (cid) {
+            orderData.cid = cid
+          }
 
           return orderData
         },
@@ -133,8 +139,14 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
-          orderData.orderHash = orderHash
-          orderData.cid = cid || ''
+
+          if (orderHash) {
+            orderData.orderHash = orderHash
+          }
+
+          if (cid) {
+            orderData.cid = cid
+          }
 
           return orderData
         },
@@ -151,8 +163,14 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
-          orderData.orderHash = orderHash
-          orderData.cid = cid || ''
+
+          if (orderHash) {
+            orderData.orderHash = orderHash
+          }
+
+          if (cid) {
+            orderData.cid = cid
+          }
 
           return orderData
         },
@@ -177,7 +195,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
-        orderInfo.cid = orderInfo.cid || ''
+
+        if (paramsFromArgs.cid) {
+          orderInfo.cid = paramsFromArgs.cid
+        }
 
         const order = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
         order.marketId = paramsFromArgs.marketId
@@ -214,7 +235,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
-        orderInfo.cid = orderInfo.cid || ''
+
+        if (paramsFromArgs.cid) {
+          orderInfo.cid = paramsFromArgs.cid
+        }
 
         const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
         order.marketId = paramsFromArgs.marketId
@@ -250,7 +274,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
         orderInfo.quantity = paramsFromArgs.quantity
-        orderInfo.cid = orderInfo.cid || ''
+
+        if (paramsFromArgs.cid) {
+          orderInfo.cid = paramsFromArgs.cid
+        }
 
         const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
         order.marketId = paramsFromArgs.marketId

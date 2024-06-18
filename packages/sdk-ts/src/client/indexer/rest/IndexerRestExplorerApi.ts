@@ -73,11 +73,13 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchBlocks(params?: {
     before?: number
     limit?: number
+    from?: number
+    to?: number
   }): Promise<{ paging: Paging; blocks: Block[] }> {
     const endpoint = 'blocks'
 
     try {
-      const { before, limit } = params || { limit: 12 }
+      const { before, limit, from, to } = params || { limit: 12 }
 
       const response = await this.retry<
         ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
@@ -85,6 +87,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         this.get(endpoint, {
           before,
           limit,
+          from,
+          to,
         }),
       )
 
@@ -110,11 +114,13 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchBlocksWithTx(params?: {
     before?: number
     limit?: number
+    from?: number
+    to?: number
   }): Promise<{ paging: Paging; blocks: ExplorerBlockWithTxs[] }> {
     const endpoint = 'blocks'
 
     try {
-      const { before, limit } = params || { limit: 12 }
+      const { before, limit, from, to } = params || { limit: 12 }
 
       const response = await this.retry<
         ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
@@ -122,6 +128,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         this.get(endpoint, {
           before,
           limit,
+          from,
+          to,
         }),
       )
 
@@ -658,7 +666,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
   async fetchCW20BalancesNoThrow(
     address: string,
-  ): Promise<ExplorerCW20BalanceWithToken[]> {
+  ): Promise<CW20BalanceExplorerApiResponse[]> {
     const endpoint = `/wasm/${address}/cw20-balance`
 
     try {
@@ -670,9 +678,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         return []
       }
 
-      return response.data.map(
-        IndexerRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
-      )
+      return response.data
     } catch (e: unknown) {
       const error = e as any
 

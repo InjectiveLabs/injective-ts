@@ -36,7 +36,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
 
     try {
       const responses = await Promise.all(
-        requests.map((request) => this.client.Params(request)),
+        requests.map((request) => this.client.Params(request, this.metadata)),
       )
       const [votingParams, depositParams, tallyParams] = responses
 
@@ -82,7 +82,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosGovV1Query.QueryProposalsResponse>(() =>
-          this.client.Proposals(request),
+          this.client.Proposals(request, this.metadata),
         )
 
       return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
@@ -110,7 +110,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<CosmosGovV1Query.QueryProposalResponse>(
-        () => this.client.Proposal(request),
+        () => this.client.Proposal(request, this.metadata),
       )
 
       return ChainGrpcGovTransformer.proposalResponseToProposal(response)
@@ -150,7 +150,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<CosmosGovV1Query.QueryDepositsResponse>(
-        () => this.client.Deposits(request),
+        () => this.client.Deposits(request, this.metadata),
       )
 
       return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
@@ -189,7 +189,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     }
     try {
       const response = await this.retry<CosmosGovV1Query.QueryVotesResponse>(
-        () => this.client.Votes(request),
+        () => this.client.Votes(request, this.metadata),
       )
 
       return ChainGrpcGovTransformer.votesResponseToVotes(response)
@@ -217,7 +217,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosGovV1Query.QueryTallyResultResponse>(() =>
-          this.client.TallyResult(request),
+          this.client.TallyResult(request, this.metadata),
         )
 
       return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)

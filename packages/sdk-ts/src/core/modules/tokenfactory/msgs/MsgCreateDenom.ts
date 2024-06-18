@@ -6,6 +6,8 @@ export declare namespace MsgCreateDenom {
   export interface Params {
     sender: string
     subdenom: string
+    name?: string
+    symbol?: string
   }
 
   export type Proto = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom
@@ -28,6 +30,8 @@ export default class MsgCreateDenom extends MsgBase<
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.create()
     message.sender = params.sender
     message.subdenom = params.subdenom
+    message.name = params.name || ''
+    message.symbol = params.symbol || ''
 
     return InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.fromPartial(message)
   }

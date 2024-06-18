@@ -1,10 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { sleep } from '@injectivelabs/utils'
-import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   ErrorType,
   WalletException,
@@ -18,12 +14,19 @@ import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
 } from '../../../types'
-import { BrowserEip1993Provider } from '../../types'
+import { BrowserEip1993Provider, SendTransactionOptions } from '../../types'
 import BaseConcreteStrategy from '../Base'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+} from '../../../../types/enums'
 import { getMetamaskProvider } from './utils'
 
-export default class Metamask extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export default class Metamask
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   constructor(args: EthereumWalletStrategyArgs) {
     super(args)
   }
@@ -34,6 +37,28 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
 
   async enable(): Promise<boolean> {
     return Promise.resolve(true)
+  }
+
+  public async disconnect() {
+    if (this.listeners[WalletEventListener.AccountChange]) {
+      const ethereum = await this.getEthereum()
+
+      ethereum.removeListener(
+        'accountsChanged',
+        this.listeners[WalletEventListener.AccountChange],
+      )
+    }
+
+    if (this.listeners[WalletEventListener.ChainIdChange]) {
+      const ethereum = await this.getEthereum()
+
+      ethereum.removeListener(
+        'chainChanged',
+        this.listeners[WalletEventListener.ChainIdChange],
+      )
+    }
+
+    this.listeners = {}
   }
 
   async getAddresses(): Promise<string[]> {
@@ -53,7 +78,7 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async confirm(address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
         `Confirmation for ${address} at time: ${Date.now()}`,
@@ -83,17 +108,9 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
 
   async sendTransaction(
     transaction: TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints } = options
+    const { endpoints, txTimeout } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -104,7 +121,7 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction)
+    const response = await txApi.broadcast(transaction, { txTimeout })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {
@@ -156,7 +173,7 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
+        contextModule: WalletAction.SignTransaction,
       },
     )
   }
@@ -173,7 +190,7 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SendTransaction,
+        contextModule: WalletAction.SignTransaction,
       },
     )
   }
@@ -250,24 +267,26 @@ export default class Metamask extends BaseConcreteStrategy implements ConcreteWa
     )
   }
 
-  onChainIdChanged(_callback: () => void): void {
-    //
+  async onChainIdChanged(callback: (chain: string) => void): Promise<void> {
+    const ethereum = await this.getEthereum()
+
+    this.listeners = {
+      [WalletEventListener.ChainIdChange]: callback,
+    }
+
+    ethereum.on('chainChanged', callback)
   }
 
-  onAccountChange(_callback: (account: AccountAddress) => void): void {
-    //
-  }
+  async onAccountChange(
+    callback: (account: AccountAddress) => void,
+  ): Promise<void> {
+    const ethereum = await this.getEthereum()
 
-  cancelOnChainIdChange(): void {
-    //
-  }
+    this.listeners = {
+      [WalletEventListener.AccountChange]: callback,
+    }
 
-  cancelOnAccountChange(): void {
-    //
-  }
-
-  cancelAllEvents(): void {
-    //
+    ethereum.on('accountsChanged', callback)
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {

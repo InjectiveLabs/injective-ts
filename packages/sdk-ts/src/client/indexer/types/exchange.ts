@@ -1,4 +1,5 @@
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import { TokenType } from './../../../types/token'
 
 export interface PriceLevel {
   price: string
@@ -17,9 +18,10 @@ export interface OrderbookWithSequence {
   sells: PriceLevel[]
 }
 
-export interface IndexerTokenMeta extends GrpcTokenMeta {
-  coinGeckoId: string
-}
-
 export type GrpcTokenMeta = InjectiveSpotExchangeRpc.TokenMeta
 export type GrpcPriceLevel = InjectiveSpotExchangeRpc.PriceLevel
+
+export interface IndexerTokenMeta extends GrpcTokenMeta {
+  coinGeckoId: string
+  tokenType: TokenType
+}

@@ -28,7 +28,7 @@ export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<CosmosBaseTendermintV1Beta1Query.GetLatestBlockResponse>(
-          () => this.client.GetLatestBlock(request),
+          () => this.client.GetLatestBlock(request, this.metadata),
         )
 
       return response.block || response.sdkBlock

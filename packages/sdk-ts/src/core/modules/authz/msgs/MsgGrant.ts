@@ -6,12 +6,19 @@ import {
   CosmosAuthzV1Beta1Authz,
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
-
-const genericAuthorizationType = '/cosmos.authz.v1beta1.GenericAuthorization'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { getGenericAuthorizationFromMessageType } from '../utils'
+import { GrantAuthorizationType } from './../types'
 
 export declare namespace MsgGrant {
   export interface Params {
-    messageType: string
+    /**
+     * @deprecated Use `authorization` instead - for generic authorizations,
+     * use `getGenericAuthorizationFromMessageType` function
+     * to get the authorization object from messageType
+     */
+    messageType?: string
+    authorization?: GoogleProtobufAny.Any
     grantee: string
     granter: string
     expiration?: number
@@ -38,21 +45,20 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     const { params } = this
 
     const timestamp = this.getTimestamp()
-    const genericAuthorization =
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.create()
-    genericAuthorization.msg = params.messageType
-
-    const authorization = GoogleProtobufAny.Any.create()
-    authorization.typeUrl = genericAuthorizationType
-    authorization.value = Buffer.from(
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.encode(
-        genericAuthorization,
-      ).finish(),
-    )
-
     const grant = CosmosAuthzV1Beta1Authz.Grant.create()
-    grant.expiration = new Date(Number(timestamp.seconds) * 1000)
+
+    if (!params.authorization && !params.messageType) {
+      throw new GeneralException(
+        new Error('Either authorization or messageType must be provided'),
+      )
+    }
+
+    const authorization =
+      params.authorization ||
+      getGenericAuthorizationFromMessageType(params.messageType as string)
+
     grant.authorization = authorization
+    grant.expiration = new Date(Number(timestamp.seconds) * 1000)
 
     const message = CosmosAuthzV1Beta1Tx.MsgGrant.create()
     message.grantee = params.grantee
@@ -78,13 +84,36 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     const timestamp = this.getTimestamp()
     const message = proto
 
+    if (!params.authorization && !params.messageType) {
+      throw new GeneralException(
+        new Error('Either authorization or messageType must be provided'),
+      )
+    }
+
+    const authorization =
+      params.authorization ||
+      getGenericAuthorizationFromMessageType(params.messageType as string)
+
+    if (
+      !authorization.typeUrl.includes(
+        GrantAuthorizationType.GenericAuthorization,
+      )
+    ) {
+      throw new GeneralException(
+        new Error('Currently, only GenericAuthorization type is supported'),
+      )
+    }
+
+    const genericAuthorization =
+      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(authorization.value)
+
     const messageWithAuthorizationType = snakecaseKeys({
       ...message,
       grant: {
         ...message.grant,
         authorization: {
           type: 'cosmos-sdk/GenericAuthorization',
-          value: { msg: params.messageType },
+          value: { msg: genericAuthorization.msg },
         },
         expiration: new Date(Number(timestamp.seconds) * 1000),
       },
@@ -110,13 +139,36 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     const amino = this.toAmino()
     const timestamp = this.getTimestamp()
 
+    if (!params.authorization && !params.messageType) {
+      throw new GeneralException(
+        new Error('Either authorization or messageType must be provided'),
+      )
+    }
+
+    const authorization =
+      params.authorization ||
+      getGenericAuthorizationFromMessageType(params.messageType as string)
+
+    if (
+      !authorization.typeUrl.includes(
+        GrantAuthorizationType.GenericAuthorization,
+      )
+    ) {
+      throw new GeneralException(
+        new Error('Currently, only GenericAuthorization type is supported'),
+      )
+    }
+
+    const genericAuthorization =
+      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(authorization.value)
+
     const messageWithAuthorizationType = {
       granter: amino.value.granter,
       grantee: amino.value.grantee,
       grant: {
         authorization: {
           '@type': '/cosmos.authz.v1beta1.GenericAuthorization',
-          msg: params.messageType,
+          msg: genericAuthorization.msg,
         },
         expiration: new Date(Number(timestamp.seconds) * 1000),
       },

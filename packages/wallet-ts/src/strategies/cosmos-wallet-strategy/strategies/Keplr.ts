@@ -3,8 +3,8 @@ import { CosmosChainId } from '@injectivelabs/ts-types'
 import {
   TxRaw,
   TxResponse,
+  waitTxBroadcasted,
   createTxRawFromSigResponse,
-  createCosmosSignDocFromSignDoc,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
@@ -18,6 +18,8 @@ import { AminoSignResponse, StdSignDoc } from '@cosmjs/launchpad'
 import { KeplrWallet } from '../../../utils/wallets/keplr'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { SendTransactionOptions } from '../../wallet-strategy'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
 
 export default class Keplr implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId
@@ -63,14 +65,23 @@ export default class Keplr implements ConcreteCosmosWalletStrategy {
 
   async sendTransaction(
     transaction: DirectSignResponse | TxRaw,
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     const { keplrWallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
 
-    try {
-      return await keplrWallet.waitTxBroadcasted(
-        await keplrWallet.broadcastTx(txRaw),
+    if (!options.endpoints) {
+      throw new CosmosWalletException(
+        new Error(
+          'You have to pass endpoints within the options to broadcast transaction',
+        ),
       )
+    }
+
+    try {
+      const txHash = await keplrWallet.broadcastTx(txRaw)
+
+      return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
         throw e

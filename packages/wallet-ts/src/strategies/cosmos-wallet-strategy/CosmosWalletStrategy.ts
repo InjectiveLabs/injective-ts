@@ -14,6 +14,7 @@ import {
 } from '../types/strategy'
 import {} from '../../utils/utils'
 import { isCosmosWallet } from '../wallet-strategy/utils'
+import { SendTransactionOptions } from '../wallet-strategy'
 
 export const cosmosWallets = [
   Wallet.Keplr,
@@ -108,8 +109,9 @@ export default class CosmosWalletStrategy {
 
   public async sendTransaction(
     tx: TxRaw | DirectSignResponse,
+    options: SendTransactionOptions
   ): Promise<TxResponse> {
-    return this.getStrategy().sendTransaction(tx)
+    return this.getStrategy().sendTransaction(tx, options)
   }
 
   public async signTransaction(transaction: {

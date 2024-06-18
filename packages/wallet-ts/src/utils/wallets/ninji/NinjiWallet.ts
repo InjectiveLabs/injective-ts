@@ -7,7 +7,6 @@ import {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
-import { TxGrpcApi, TxRestApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   CosmosWalletException,
@@ -15,7 +14,6 @@ import {
   UnspecifiedErrorCode,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
-import { getEndpointsFromChainId } from '../cosmos/endpoints'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
@@ -25,14 +23,8 @@ const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
 export class NinjiWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  private endpoints: { rest: string; rpc?: string }
-
-  constructor(
-    chainId: CosmosChainId | TestnetCosmosChainId | ChainId,
-    endpoints?: { rest: string; rpc?: string },
-  ) {
+  constructor(chainId: CosmosChainId | TestnetCosmosChainId | ChainId) {
     this.chainId = chainId
-    this.endpoints = endpoints || getEndpointsFromChainId(chainId)
   }
 
   static async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
@@ -171,15 +163,6 @@ export class NinjiWallet {
         contextModule: 'Ninji',
       })
     }
-  }
-
-  async waitTxBroadcasted(
-    txHash: string,
-    endpoint?: string,
-  ): Promise<TxResponse> {
-    return endpoint
-      ? new TxGrpcApi(endpoint).fetchTxPoll(txHash)
-      : new TxRestApi(this.endpoints.rest).fetchTxPoll(txHash)
   }
 
   public async checkChainIdSupport() {

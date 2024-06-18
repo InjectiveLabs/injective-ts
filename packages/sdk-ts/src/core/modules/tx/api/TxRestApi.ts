@@ -2,6 +2,8 @@ import {
   HttpClient,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+  BigNumberInBase,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
   BroadcastMode,
@@ -164,9 +166,11 @@ export class TxRestApi implements TxConcreteApi {
     tx: CosmosTxV1Beta1Tx.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
-    const { timeout } = options || {
-      timeout: DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
-    }
+    const timeout =
+      options?.timeout ||
+      new BigNumberInBase(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
+        .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
+        .toNumber()
 
     try {
       const { tx_response: txResponse } = await this.broadcastTx<{

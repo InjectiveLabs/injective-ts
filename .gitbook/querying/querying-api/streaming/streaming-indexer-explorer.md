@@ -4,7 +4,7 @@ Example code snippets to stream from the indexer for explorer module related dat
 
 ### Using gRPC Stream
 
-- stream blocks
+#### Stream blocks
 
 ```ts
 import { IndexerGrpcExplorerStream } from '@injectivelabs/sdk-ts'
@@ -30,7 +30,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream blocks with transactions
+#### Stream blocks with transactions
 
 ```ts
 import { IndexerGrpcExplorerStream } from '@injectivelabs/sdk-ts'
@@ -56,7 +56,7 @@ const streamFnArgs = {
 streamFn(streamFnArgs)
 ```
 
-- stream transactions
+#### Stream transactions
 
 ```ts
 import { IndexerGrpcExplorerStream } from '@injectivelabs/sdk-ts'

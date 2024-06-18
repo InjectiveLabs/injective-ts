@@ -3,7 +3,6 @@ import {
   makeSignDoc as makeSignDocAmino,
   StdFee,
 } from '@cosmjs/amino'
-import { fromBase64 } from '@cosmjs/encoding'
 import { Int53, Uint53 } from '@cosmjs/math'
 import {
   EncodeObject,
@@ -17,8 +16,8 @@ import {
 } from '@cosmjs/proto-signing'
 import {
   HttpEndpoint,
-  Tendermint34Client,
-  TendermintClient,
+  Tendermint37Client,
+  CometClient,
 } from '@cosmjs/tendermint-rpc'
 import { assert, assertDefined } from '@cosmjs/utils'
 import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'
@@ -31,7 +30,6 @@ import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing'
 import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx'
 import { Height } from 'cosmjs-types/ibc/core/client/v1/client'
-import Long from 'long'
 import { AminoConverters, AminoTypes } from '@cosmjs/stargate'
 import { calculateFee, GasPrice } from '@cosmjs/stargate'
 import {
@@ -111,16 +109,16 @@ export class SigningStargateClient extends StargateClient {
     signer: OfflineSigner,
     options: SigningStargateClientOptions = {},
   ): Promise<SigningStargateClient> {
-    const tmClient = await Tendermint34Client.connect(endpoint)
+    const tmClient = await Tendermint37Client.connect(endpoint)
     return SigningStargateClient.createWithSigner(tmClient, signer, options)
   }
 
   /**
    * Creates an instance from a manually created Tendermint client.
-   * Use this to use `Tendermint37Client` instead of `Tendermint34Client`.
+   * Use this to use `Tendermint37Client` instead of `Tendermint37Client`.
    */
   public static async createWithSigner(
-    tmClient: TendermintClient,
+    tmClient: CometClient,
     signer: OfflineSigner,
     options: SigningStargateClientOptions = {},
   ): Promise<SigningStargateClient> {
@@ -144,7 +142,7 @@ export class SigningStargateClient extends StargateClient {
   }
 
   protected constructor(
-    tmClient: TendermintClient | undefined,
+    tmClient: CometClient | undefined,
     signer: OfflineSigner,
     options: SigningStargateClientOptions,
   ) {
@@ -268,7 +266,7 @@ export class SigningStargateClient extends StargateClient {
     memo = '',
   ): Promise<DeliverTxResponse> {
     const timeoutTimestampNanoseconds = timeoutTimestamp
-      ? Long.fromNumber(timeoutTimestamp).multiply(1_000_000_000)
+      ? BigInt(timeoutTimestamp) * BigInt(1_000_000_000)
       : undefined
     const transferMsg: MsgTransferEncodeObject = {
       typeUrl: '/ibc.applications.transfer.v1.MsgTransfer',
@@ -409,7 +407,7 @@ export class SigningStargateClient extends StargateClient {
     return TxRaw.fromPartial({
       bodyBytes: signedTxBodyBytes,
       authInfoBytes: signedAuthInfoBytes,
-      signatures: [fromBase64(signature.signature)],
+      signatures: [Buffer.from(signature.signature, 'base64')],
     })
   }
 
@@ -466,7 +464,7 @@ export class SigningStargateClient extends StargateClient {
     return TxRaw.fromPartial({
       bodyBytes: signed.bodyBytes,
       authInfoBytes: signed.authInfoBytes,
-      signatures: [fromBase64(signature.signature)],
+      signatures: [Buffer.from(signature.signature, 'base64')],
     })
   }
 }

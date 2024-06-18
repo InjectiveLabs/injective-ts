@@ -949,4 +949,53 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchClaimReferences({
+    skip,
+    limit,
+    idoAddress,
+    accountAddress,
+  }: {
+    skip?: number
+    limit?: number
+    idoAddress: string
+    accountAddress: string
+  }) {
+    const request = MitoApi.GetClaimReferencesRequest.create()
+
+    request.idoAddress = idoAddress
+    request.accountAddress = accountAddress
+
+    if (skip) {
+      request.skip = skip
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response = await this.retry<MitoApi.GetClaimReferencesResponse>(
+        () => this.client.GetClaimReferences(request),
+      )
+
+      return IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetClaimReferences',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetClaimReferences',
+        contextModule: this.module,
+      })
+    }
+  }
 }

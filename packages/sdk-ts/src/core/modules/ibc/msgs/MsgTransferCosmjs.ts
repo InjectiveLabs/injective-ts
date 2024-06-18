@@ -24,7 +24,7 @@ export declare namespace MsgTransferCosmjs {
 /**
  * @category Messages
  *
- * @deprected use MsgTransfer with SIGN_DIRECT and a Cosmos wallet
+ * @deprecated use MsgTransfer with SIGN_DIRECT and a Cosmos wallet
  */
 export default class MsgTransferCosmjs {
   params: MsgTransferCosmjs.Params
@@ -56,8 +56,13 @@ export default class MsgTransferCosmjs {
         sender: params.sender,
         receiver: params.receiver,
         token: params.amount,
-        timeoutHeight: params.height,
-        timeoutTimestamp: params.timeout,
+        timeoutHeight: params.height
+          ? {
+              revisionHeight: BigInt(params.height.revisionHeight),
+              revisionNumber: BigInt(params.height.revisionNumber),
+            }
+          : undefined,
+        timeoutTimestamp: params.timeout ? BigInt(params.timeout) : undefined,
       }),
     }
 

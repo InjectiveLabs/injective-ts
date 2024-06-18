@@ -12,20 +12,20 @@ export const mainnetChainInfo: ChainInfo = {
 export const testnetChainInfo: ChainInfo = {
   feeDenom: INJ_DENOM,
   chainId: ChainId.Testnet,
-  ethereumChainId: EthereumChainId.Goerli,
+  ethereumChainId: EthereumChainId.Sepolia,
   env: 'testnet',
 }
 
 export const devnetChainInfo: ChainInfo = {
   feeDenom: INJ_DENOM,
   chainId: ChainId.Devnet,
-  ethereumChainId: EthereumChainId.Goerli,
+  ethereumChainId: EthereumChainId.Sepolia,
   env: 'devnet',
 }
 
 export const localChainInfo: ChainInfo = {
   feeDenom: INJ_DENOM,
-  chainId: ChainId.Devnet,
-  ethereumChainId: EthereumChainId.Goerli,
+  chainId: ChainId.Mainnet,
+  ethereumChainId: EthereumChainId.Mainnet,
   env: 'local',
 }

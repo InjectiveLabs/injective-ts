@@ -1,8 +1,4 @@
-import {
-  AccountAddress,
-  ChainId,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
@@ -15,19 +11,25 @@ import {
   WalletStrategyArguments,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
+  WalletStrategyOptions,
 } from '../types'
 import Keplr from './strategies/Keplr'
 import Leap from './strategies/Leap'
 import Ninji from './strategies/Ninji'
 import Trezor from './strategies/Trezor'
+import PrivateKey from './strategies/PrivateKey'
 import LedgerLive from './strategies/Ledger/LedgerLive'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Torus from './strategies/Torus'
 import Phantom from './strategies/Phantom'
+import Okx from './strategies/Okx'
+import BitGet from './strategies/BitGet'
 import Cosmostation from './strategies/Cosmostation'
 import LedgerCosmos from './strategies/LedgerCosmos'
+import WalletConnect from './strategies/WalletConnect'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet, isCosmosWallet } from './utils'
+import { SendTransactionOptions } from './types'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -94,6 +96,20 @@ const createStrategy = ({
       return new Torus(ethWalletArgs)
     case Wallet.Phantom:
       return new Phantom(ethWalletArgs)
+    case Wallet.OkxWallet:
+      return new Okx(ethWalletArgs)
+    case Wallet.BitGet:
+      return new BitGet(ethWalletArgs)
+    case Wallet.WalletConnect:
+      return new WalletConnect({
+        ...ethWalletArgs,
+        metadata: args.options?.metadata,
+      })
+    case Wallet.PrivateKey:
+      return new PrivateKey({
+        ...ethWalletArgs,
+        privateKey: args.options?.privateKey,
+      })
     case Wallet.Keplr:
       return new Keplr({ ...args })
     case Wallet.Cosmostation:
@@ -126,7 +142,10 @@ export default class WalletStrategy {
 
   public wallet: Wallet
 
+  public args: WalletStrategyArguments
+
   constructor(args: WalletStrategyArguments) {
+    this.args = args
     this.strategies = createStrategies(args)
     this.wallet = getInitialWallet(args)
   }
@@ -138,6 +157,30 @@ export default class WalletStrategy {
   public setWallet(wallet: Wallet) {
     this.disconnect()
     this.wallet = wallet
+  }
+
+  /**
+   * Case 1: Private Key is set dynamically
+   * If we have a dynamically set private key,
+   * we are creating a new PrivateKey strategy
+   * with the specified private key
+   *
+   * Case 2: Wallet Connect Metadata set dynamically
+   */
+  public setOptions(options?: WalletStrategyOptions) {
+    if (options?.privateKey) {
+      this.strategies[Wallet.PrivateKey] = createStrategy({
+        args: { ...this.args, options: { privateKey: options.privateKey } },
+        wallet: Wallet.PrivateKey,
+      })
+    }
+
+    if (options?.metadata) {
+      this.strategies[Wallet.WalletConnect] = createStrategy({
+        args: { ...this.args, options: { metadata: options.metadata } },
+        wallet: Wallet.WalletConnect,
+      })
+    }
   }
 
   public getStrategy(): ConcreteWalletStrategy {
@@ -162,12 +205,14 @@ export default class WalletStrategy {
     return this.getStrategy().getPubKey(address)
   }
 
-  public enable(): Promise<boolean> {
-    return this.getStrategy().enable()
+  public enable(args?: unknown): Promise<boolean> {
+    return this.getStrategy().enable(args)
   }
 
-  public async enableAndGetAddresses(): Promise<AccountAddress[]> {
-    await this.getStrategy().enable()
+  public async enableAndGetAddresses(
+    args?: unknown,
+  ): Promise<AccountAddress[]> {
+    await this.getStrategy().enable(args)
 
     return this.getStrategy().getAddresses()
   }
@@ -180,21 +225,13 @@ export default class WalletStrategy {
     return this.getStrategy().getEthereumTransactionReceipt(txHash)
   }
 
-  public async confirm(address: AccountAddress): Promise<string> {
-    return this.getStrategy().confirm(address)
+  public async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
+    return this.getStrategy().getSessionOrConfirm(address)
   }
 
   public async sendTransaction(
     tx: DirectSignResponse | TxRaw,
-    options: {
-      address: AccountAddress
-      chainId: ChainId
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
-    },
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     return this.getStrategy().sendTransaction(tx, options)
   }
@@ -227,6 +264,11 @@ export default class WalletStrategy {
       throw new WalletException(
         new Error(`You can't sign Ethereum Transaction using ${this.wallet}`),
       )
+    }
+
+    /** Phantom wallet needs enabling before signing */
+    if (this.wallet === Wallet.Phantom) {
+      await this.enable()
     }
 
     return this.getStrategy().signEip712TypedData(eip712TypedData, address)
@@ -271,39 +313,25 @@ export default class WalletStrategy {
     }
   }
 
-  public onAccountChange(callback: onAccountChangeCallback): void {
+  public async onAccountChange(
+    callback: onAccountChangeCallback,
+  ): Promise<void> {
     if (this.getStrategy().onAccountChange) {
       return this.getStrategy().onAccountChange!(callback)
     }
   }
 
-  public onChainIdChange(callback: onChainIdChangeCallback): void {
+  public async onChainIdChange(
+    callback: onChainIdChangeCallback,
+  ): Promise<void> {
     if (this.getStrategy().onChainIdChange) {
       return this.getStrategy().onChainIdChange!(callback)
     }
   }
 
-  public cancelOnChainIdChange(): void {
-    if (this.getStrategy().cancelOnChainIdChange) {
-      return this.getStrategy().cancelOnChainIdChange!()
-    }
-  }
-
-  public cancelAllEvents(): void {
-    if (this.getStrategy().cancelAllEvents) {
-      return this.getStrategy().cancelAllEvents!()
-    }
-  }
-
-  public cancelOnAccountChange(): void {
-    if (this.getStrategy().cancelOnAccountChange) {
-      return this.getStrategy().cancelOnAccountChange!()
-    }
-  }
-
-  public disconnect() {
+  public async disconnect() {
     if (this.getStrategy().disconnect) {
-      this.getStrategy().disconnect!()
+      await this.getStrategy().disconnect!()
     }
   }
 }

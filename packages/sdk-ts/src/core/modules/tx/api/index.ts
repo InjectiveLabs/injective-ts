@@ -3,6 +3,7 @@ import { TxGrpcApi } from '../api/TxGrpcApi'
 
 export * from './TxGrpcApi'
 export * from './TxRestApi'
+export * from './utils'
 
 /**
  * @deprecated use TxRestApi and TxGrpcApi

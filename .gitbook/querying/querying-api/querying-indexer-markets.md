@@ -4,7 +4,7 @@ Example code snippets to query the indexer for all markets data
 
 ### Using HTTP REST
 
-- get the marketsHistory resolution: MARKETS_HISTORY_CHART_ONE_HOUR, countback: MARKETS_HISTORY_CHART_SEVEN_DAYS
+#### Fetch markets History
 
 ```ts
 import { IndexerRestMarketChronosApi } from '@injectivelabs/sdk-ts'
@@ -20,6 +20,8 @@ const SelectList = {
   Day: '1d',
   Week: '7d',
 }
+// const resolution = MARKETS_HISTORY_CHART_ONE_HOUR
+// const countback = MARKETS_HISTORY_CHART_SEVEN_DAYS
 
 const marketIds = ['0x']
 const countback = 154 // in unit of hours

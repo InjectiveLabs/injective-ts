@@ -1,9 +1,10 @@
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
-  CosmosBaseV1Beta1Coin,
   CosmosTxV1Beta1Tx,
+  CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
 
+export * from './token'
 export * from './exchange'
 export * from './pagination'
 

@@ -20,7 +20,7 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
 
   if (messageType.includes('MsgExecuteContract')) {
     return new BigNumberInBase(DEFAULT_GAS_LIMIT)
-      .times(2.5)
+      .times(3)
       .times(messages.length)
       .decimalPlaces(0)
       .toNumber()
@@ -35,6 +35,13 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   }
 
   if (messageType.includes('exchange')) {
+    return new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
+      .times(messages.length)
+      .decimalPlaces(0)
+      .toNumber()
+  }
+
+  if (messageType.includes('authz')) {
     return new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
       .times(messages.length)
       .decimalPlaces(0)

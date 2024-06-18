@@ -2,9 +2,10 @@ import { grpcPaginationToPagination } from '../../../utils/pagination'
 import { uint8ArrayToString } from '../../../utils'
 import { Account, AuthModuleParams } from '../types/auth'
 import {
-  CosmosAuthV1Beta1Query,
   GoogleProtobufAny,
+  CosmosAuthV1Beta1Query,
   InjectiveTypesV1Beta1Account,
+  InjectiveCryptoV1Beta1Ethsecp256k1Keys,
 } from '@injectivelabs/core-proto-ts'
 
 /**
@@ -38,7 +39,11 @@ export class ChainGrpcAuthTransformer {
         address: baseAccount.address,
         pubKey: pubKey
           ? {
-              key: uint8ArrayToString(pubKey.value),
+              key: Buffer.from(
+                InjectiveCryptoV1Beta1Ethsecp256k1Keys.PubKey.decode(
+                  pubKey.value,
+                ).key,
+              ).toString('base64'),
               typeUrl: pubKey.typeUrl,
             }
           : undefined,

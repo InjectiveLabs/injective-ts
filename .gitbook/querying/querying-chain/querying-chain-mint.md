@@ -1,10 +1,10 @@
-# Querying Chain: Mint
+# Mint
 
 Example code snippets to query the mint module on the chain.
 
 ### Using gRPC
 
-- Get parameters related to the mint module
+#### Fetch parameters related to the mint module
 
 ```ts
 import { ChainGrpcMintApi } from '@injectivelabs/sdk-ts'
@@ -18,7 +18,7 @@ const moduleParams = await chainGrpcMintApi.fetchModuleParams()
 console.log(moduleParams)
 ```
 
-- Get the inflation
+#### Fetch inflation
 
 ```ts
 import { ChainGrpcMintApi } from '@injectivelabs/sdk-ts'
@@ -32,7 +32,7 @@ const inflation = await chainGrpcMintApi.fetchInflation()
 console.log(inflation)
 ```
 
-- Get the annual provisions
+#### Fetch the annual provisions
 
 ```ts
 import { ChainGrpcMintApi } from '@injectivelabs/sdk-ts'

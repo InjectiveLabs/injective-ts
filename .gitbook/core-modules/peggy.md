@@ -10,48 +10,52 @@ Note that a $10 USD bridge fee will be charged for this transaction to cover for
 
 ```ts
 import {
-  DenomClientAsync,
+  TokenPrice,
   MsgSendToEth,
+  DenomClientAsync,
   MsgBroadcasterWithPk,
-} from "@injectivelabs/sdk-ts";
-import { TokenPrice, TokenService } from "@injectivelabs/sdk-ui-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+} from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { ChainId } from '@injectivelabs/ts-types'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+// refer to https://docs.ts.injective.network/readme/assets/injective-list
+import { tokens } from '../data/tokens.json'
 
-const tokenPrice = new TokenPrice(COINGECKO_OPTIONS);
+export const tokenFactoryStatic = new TokenFactoryStatic(
+  tokens as TokenStatic[],
+)
+
+const tokenPriceMap = new TokenPrice(Network.Mainnet)
 const tokenService = new TokenService({
   chainId: ChainId.Mainnet,
   network: Network.Mainnet,
-});
+})
 
-const ETH_BRIDGE_FEE_IN_USD = 10;
-const endpointsForNetwork = getNetworkEndpoints(Network.Mainnet);
+const ETH_BRIDGE_FEE_IN_USD = 10
+const endpointsForNetwork = getNetworkEndpoints(Network.Mainnet)
 const denomClient = new DenomClientAsync(Network.Mainnet, {
   endpoints: endpointsForNetwork,
-});
+})
 
-const tokenSymbol = "INJ";
-const tokenMeta = denomClient.getTokenMetaDataBySymbol(tokenSymbol);
+const tokenSymbol = 'INJ'
+const tokenMeta = tokenFactoryStatic.toToken(tokenSymbol)
 
-const amount = 1;
-const injectiveAddress = "inj1...";
-const destinationAddress = "0x..."; // ethereum address
-const tokenDenom = `peggy${tokenMeta.erc20.address}`;
+const amount = 1
+const injectiveAddress = 'inj1...'
+const destinationAddress = '0x...' // ethereum address
+const tokenDenom = `peggy${tokenMeta.erc20.address}`
 
 if (!tokenMeta) {
-  return;
+  return
 }
 
-const tokenUsdPrice = tokenService.fetchUsdTokenPrice(tokenMeta
-.coinGeckoId);
+const tokenUsdPrice = tokenPriceMap[tokenMeta.coinGeckoId]
 const amountToFixed = new BigNumberInBase(amount)
-  .toWei(tokenMeta
-.decimals)
-  .toFixed();
+  .toWei(tokenMeta.decimals)
+  .toFixed()
 const bridgeFeeInToken = new BigNumberInBase(ETH_BRIDGE_FEE_IN_USD)
   .dividedBy(tokenUsdPrice)
-  .toFixed();
+  .toFixed()
 
 const msg = MsgSendToEth.fromJSON({
   injectiveAddress,
@@ -64,12 +68,12 @@ const msg = MsgSendToEth.fromJSON({
     denom: tokenDenom,
     amount: bridgeFeeInToken,
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Mainnet
+  network: Network.Mainnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 ```

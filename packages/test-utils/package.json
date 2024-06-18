@@ -1,13 +1,14 @@
 {
   "name": "@injectivelabs/test-utils",
   "description": "List of test-utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.14.3",
+  "version": "1.14.6-beta.0",
   "sideEffects": false,
   "author": {
-    "name": "Bojan Angjelkoski",
-    "email": "bojan@injectivelabs.org"
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
   },
   "license": "Apache-2.0",
+  "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
@@ -18,7 +19,7 @@
   },
   "scripts": {
     "postinstall": "link-module-alias",
-    "build": "tsc --build tsconfig.build.json && tsc --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
@@ -27,11 +28,11 @@
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:show": "live-server coverage",
-    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.6.4",
     "bignumber.js": "^9.0.1",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
