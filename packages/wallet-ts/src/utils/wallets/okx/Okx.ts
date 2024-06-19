@@ -12,7 +12,7 @@ export const getEthersProviderFromOkxWallet = async () => {
       throw new WalletException(new Error('Please install OkxWallet Extension'))
     }
 
-    return new ethers.providers.Web3Provider(provider, 'any')
+    return new ethers.BrowserProvider(provider, 'any')
   } catch (e) {
     throw new WalletException(new Error('Please install OkxWallet Extension'))
   }

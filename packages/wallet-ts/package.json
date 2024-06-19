@@ -61,7 +61,7 @@
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
-    "ethers": "^5.7.2",
+    "ethers": "^6.5.1",
     "hdkey": "^2.0.1",
     "link-module-alias": "^1.2.0",
     "long": "^5.2.1",
