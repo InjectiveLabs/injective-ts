@@ -297,6 +297,9 @@ export class MsgBroadcaster {
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
     )
+
+    console.log(JSON.stringify(eip712TypedData))
+
     const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
@@ -304,6 +307,23 @@ export class MsgBroadcaster {
     })
 
     /** Preparing the transaction for client broadcasting */
+    console.log({
+      eip712TypedData,
+      signature,
+      txPayload: {
+        message: msgs,
+        memo: tx.memo,
+        signMode: SIGN_EIP712_V2,
+        fee: stdFee,
+        pubKey: pubKeyOrSignatureDerivedPubKey,
+        sequence: baseAccount.sequence,
+        timeoutHeight: timeoutHeight.toNumber(),
+        accountNumber: baseAccount.accountNumber,
+        chainId,
+      },
+    })
+
+
     const { txRaw } = createTransaction({
       message: msgs,
       memo: tx.memo,
@@ -323,6 +343,8 @@ export class MsgBroadcaster {
 
     /** Append Signatures */
     txRawEip712.signatures = [hexToBuff(signature)]
+
+    console.log("signature:", hexToBuff(signature))
 
     return walletStrategy.sendTransaction(txRawEip712, {
       chainId,
@@ -408,6 +430,9 @@ export class MsgBroadcaster {
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
     )
+
+    console.log(JSON.stringify(eip712TypedData))
+
     const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
@@ -415,6 +440,22 @@ export class MsgBroadcaster {
     })
 
     /** Preparing the transaction for client broadcasting */
+    console.log({
+      eip712TypedData,
+      signature,
+      txPayload: {
+        message: msgs,
+        memo: tx.memo,
+        signMode: SIGN_EIP712_V2,
+        fee: stdFee,
+        pubKey: pubKeyOrSignatureDerivedPubKey,
+        sequence: baseAccount.sequence,
+        timeoutHeight: timeoutHeight.toNumber(),
+        accountNumber: baseAccount.accountNumber,
+        chainId,
+      },
+    })
+
     const { txRaw } = createTransaction({
       message: msgs,
       memo: tx.memo,
@@ -434,6 +475,8 @@ export class MsgBroadcaster {
 
     /** Append Signatures */
     txRawEip712.signatures = [hexToBuff(signature)]
+
+    console.log("signature:", hexToBuff(signature))
 
     return walletStrategy.sendTransaction(txRawEip712, {
       chainId,
