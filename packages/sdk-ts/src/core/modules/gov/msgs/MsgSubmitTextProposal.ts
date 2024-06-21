@@ -75,17 +75,17 @@ export default class MsgSubmitTextProposal extends MsgBase<
     const { params } = this
 
     const messageWithProposalType = snakecaseKeys({
-      proposer: params.proposer,
+      content: {
+        type: 'cosmos-sdk/TextProposal',
+        value: this.getContent(),
+      },
       initialDeposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        type_url: 'cosmos-sdk/TextProposal',
-        value: this.getContent(),
-      },
+      proposer: params.proposer,
     })
 
     return {

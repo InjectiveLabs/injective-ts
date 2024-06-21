@@ -1,4 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
+// import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 import type { Msgs } from '../../msgs'
 import {
@@ -63,17 +63,42 @@ export default class MsgExec extends MsgBase<
       ...proto,
     }
   }
+  //
+  // public toAmino() {
+  //   const proto = this.toProto()
+  //   const message = {
+  //     ...snakecaseKeys(proto),
+  //     msgs: proto.msgs,
+  //   }
+  //
+  //   return {
+  //     type: 'cosmos-sdk/MsgExec',
+  //     value: message as unknown as MsgExec.Object,
+  //   }
+  // }
+
 
   public toAmino() {
-    const proto = this.toProto()
-    const message = {
-      ...snakecaseKeys(proto),
-      msgs: proto.msgs,
-    }
+    const { params } = this
+    const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
+    //
+    // const message2 = msgs.map((msg) => {
+    //   return {
+    //     type: msg.toAmino().type,
+    //     value: msg.toAmino().value,
+    //   }
+    // }) as any
+
+    // const msg = message2[0];
 
     return {
       type: 'cosmos-sdk/MsgExec',
-      value: message as unknown as MsgExec.Object,
+      value: {
+        grantee: params.grantee,
+        msgs: msgs.map((msg) => {
+          return msg.toEip712()
+        }),
+      },
     }
   }
 
