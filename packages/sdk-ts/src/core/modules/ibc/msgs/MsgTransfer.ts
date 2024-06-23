@@ -2,8 +2,8 @@ import { MsgBase } from '../../MsgBase'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,
-  IbcApplicationsTransferV1Tx,
   IbcCoreClientV1Client,
+  IbcApplicationsTransferV1Tx,
 } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgTransfer {
