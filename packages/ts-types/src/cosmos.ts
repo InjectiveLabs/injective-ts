@@ -29,6 +29,7 @@ export enum CosmosChainId {
   Andromeda = 'andromeda-1',
   Saga = 'ssc-1',
   Neutron = 'neutron-1',
+  Fetch = 'fetchhub-4',
 }
 
 export enum TestnetCosmosChainId {
