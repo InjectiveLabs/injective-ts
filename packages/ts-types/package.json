@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/ts-types",
   "description": "List of types that can be reused throughout Injective's projects.",
-  "version": "1.14.12",
+  "version": "1.14.13-beta.0",
   "sideEffects": false,
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
