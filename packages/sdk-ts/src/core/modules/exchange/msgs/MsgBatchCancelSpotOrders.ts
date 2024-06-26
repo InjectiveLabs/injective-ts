@@ -38,6 +38,7 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
 
     const orderDataList = params.orders.map((order) => {
       const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
+
       orderData.marketId = order.marketId
       orderData.subaccountId = order.subaccountId
 
@@ -45,17 +46,18 @@ export default class MsgBatchCancelSpotOrders extends MsgBase<
         orderData.orderHash = order.orderHash
       }
 
+      // TODO: Send order.orderMask instead when chain handles order mask properly.
+      orderData.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
+
       if (order.cid) {
         orderData.cid = order.cid
       }
-
-      // TODO: Send order.orderMask instead when chain handles order mask properly.
-      orderData.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
 
       return orderData
     })
 
     const message = InjectiveExchangeV1Beta1Tx.MsgBatchCancelSpotOrders.create()
+
     message.sender = params.injectiveAddress
     message.data = orderDataList.map((o) => o)
 

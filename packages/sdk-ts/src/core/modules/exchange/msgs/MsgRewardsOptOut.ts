@@ -25,6 +25,7 @@ export default class MsgRewardsOptOut extends MsgBase<
     const { params } = this
 
     const message = InjectiveExchangeV1Beta1Tx.MsgRewardsOptOut.create()
+
     message.sender = params.sender
 
     return InjectiveExchangeV1Beta1Tx.MsgRewardsOptOut.fromPartial(message)

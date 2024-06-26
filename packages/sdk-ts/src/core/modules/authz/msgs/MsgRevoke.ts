@@ -27,8 +27,8 @@ export default class MsgRevoke extends MsgBase<
     const { params } = this
 
     const message = CosmosAuthzV1Beta1Tx.MsgRevoke.create()
-    message.grantee = params.grantee
     message.granter = params.granter
+    message.grantee = params.grantee
     message.msgTypeUrl = params.messageType
 
     return CosmosAuthzV1Beta1Tx.MsgRevoke.fromPartial(message)

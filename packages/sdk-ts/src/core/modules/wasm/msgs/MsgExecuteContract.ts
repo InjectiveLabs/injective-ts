@@ -62,9 +62,9 @@ export default class MsgExecuteContract extends MsgBase<
     const message = CosmwasmWasmV1Tx.MsgExecuteContract.create()
     const msg = this.getMsgObject()
 
-    message.msg = fromUtf8(JSON.stringify(msg))
     message.sender = params.sender
     message.contract = params.contractAddress
+    message.msg = fromUtf8(JSON.stringify(msg))
 
     if (params.funds) {
       const fundsToArray = Array.isArray(params.funds)
@@ -74,8 +74,8 @@ export default class MsgExecuteContract extends MsgBase<
       const funds = fundsToArray.map((coin) => {
         const funds = CosmosBaseV1Beta1Coin.Coin.create()
 
-        funds.amount = coin.amount
         funds.denom = coin.denom
+        funds.amount = coin.amount
 
         return funds
       })

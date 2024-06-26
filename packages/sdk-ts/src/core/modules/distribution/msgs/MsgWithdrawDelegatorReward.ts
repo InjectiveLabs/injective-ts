@@ -29,6 +29,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
 
     const message =
       CosmosDistributionV1Beta1Tx.MsgWithdrawDelegatorReward.create()
+
     message.delegatorAddress = params.delegatorAddress
     message.validatorAddress = params.validatorAddress
 

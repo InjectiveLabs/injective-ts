@@ -28,6 +28,7 @@ export default class MsgCreateDenom extends MsgBase<
     const { params } = this
 
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.create()
+
     message.sender = params.sender
     message.subdenom = params.subdenom
     message.name = params.name || ''

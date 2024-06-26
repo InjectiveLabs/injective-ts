@@ -35,11 +35,12 @@ export default class MsgAdminUpdateBinaryOptionsMarket extends MsgBase<
 
     const message =
       InjectiveExchangeV1Beta1Tx.MsgAdminUpdateBinaryOptionsMarket.create()
+
     message.sender = params.sender
     message.marketId = params.marketId
     message.settlementPrice = params.settlementPrice
-    message.settlementTimestamp = params.settlementTimestamp
     message.expirationTimestamp = params.expirationTimestamp
+    message.settlementTimestamp = params.settlementTimestamp
     message.status = params.status
 
     return InjectiveExchangeV1Beta1Tx.MsgAdminUpdateBinaryOptionsMarket.fromPartial(

@@ -1,11 +1,11 @@
 import {
   CosmosTxV1Beta1Tx,
-  TendermintCryptoKeys,
+  CometCryptoV1Keys,
 } from '@injectivelabs/core-proto-ts'
 
 /* eslint-disable camelcase */
 export interface RestSignerInfo {
-  public_key: TendermintCryptoKeys.PublicKey | null
+  public_key: CometCryptoV1Keys.PublicKey | null
   mode_info: CosmosTxV1Beta1Tx.ModeInfo
   sequence: string
 }

@@ -28,6 +28,7 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
 
     const message =
       CosmosDistributionV1Beta1Tx.MsgWithdrawValidatorCommission.create()
+
     message.validatorAddress = params.validatorAddress
 
     return message

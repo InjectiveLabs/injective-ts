@@ -42,8 +42,8 @@ export default class MsgMultiSend extends MsgBase<
       input.coins = i.coins.map((c) => {
         const coin = CosmosBaseV1Beta1Coin.Coin.create()
 
-        coin.amount = c.amount
         coin.denom = c.denom
+        coin.amount = c.amount
 
         return coin
       })
@@ -58,8 +58,8 @@ export default class MsgMultiSend extends MsgBase<
       output.coins = o.coins.map((c) => {
         const coin = CosmosBaseV1Beta1Coin.Coin.create()
 
-        coin.amount = c.amount
         coin.denom = c.denom
+        coin.amount = c.amount
 
         return coin
       })
@@ -68,6 +68,7 @@ export default class MsgMultiSend extends MsgBase<
     })
 
     const message = CosmosBankV1Beta1Tx.MsgMultiSend.create()
+
     message.inputs = inputs
     message.outputs = outputs
 

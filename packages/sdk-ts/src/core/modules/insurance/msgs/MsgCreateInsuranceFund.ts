@@ -42,19 +42,21 @@ export default class MsgCreateInsuranceFund extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
-    amountCoin.amount = params.deposit.amount
-    amountCoin.denom = params.deposit.denom
+    const coin = CosmosBaseV1Beta1Coin.Coin.create()
+
+    coin.denom = params.deposit.denom
+    coin.amount = params.deposit.amount
 
     const message = InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.create()
+
+    message.sender = params.injectiveAddress
     message.ticker = params.fund.ticker
     message.quoteDenom = params.fund.quoteDenom
     message.oracleBase = params.fund.oracleBase
     message.oracleQuote = params.fund.oracleQuote
     message.oracleType = params.fund.oracleType
-    message.sender = params.injectiveAddress
-    message.initialDeposit = amountCoin
     message.expiry = (params.fund.expiry ? params.fund.expiry : -1).toString()
+    message.initialDeposit = coin
 
     return InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.fromPartial(
       message,

@@ -34,14 +34,16 @@ export default class MsgBeginRedelegate extends MsgBase<
     const { params } = this
 
     const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+
     coinAmount.denom = params.amount.denom
     coinAmount.amount = params.amount.amount
 
     const message = CosmosStakingV1Beta1Tx.MsgBeginRedelegate.create()
-    message.amount = coinAmount
+
     message.delegatorAddress = params.injectiveAddress
     message.validatorSrcAddress = params.srcValidatorAddress
     message.validatorDstAddress = params.dstValidatorAddress
+    message.amount = coinAmount
 
     return CosmosStakingV1Beta1Tx.MsgBeginRedelegate.fromPartial(message)
   }

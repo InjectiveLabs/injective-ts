@@ -38,14 +38,6 @@ export default class MsgEditValidator extends MsgBase<
 
     const message = CosmosStakingV1Beta1Tx.MsgEditValidator.create()
 
-    if (params.commissionRate) {
-      message.commissionRate = params.commissionRate
-    }
-
-    if (params.minSelfDelegation) {
-      message.minSelfDelegation = params.minSelfDelegation
-    }
-
     if (params.description) {
       const description = CosmosStakingV1Beta1Staking.Description.create()
 
@@ -73,6 +65,14 @@ export default class MsgEditValidator extends MsgBase<
     }
 
     message.validatorAddress = params.validatorAddress
+
+    if (params.commissionRate) {
+      message.commissionRate = params.commissionRate
+    }
+
+    if (params.minSelfDelegation) {
+      message.minSelfDelegation = params.minSelfDelegation
+    }
 
     return CosmosStakingV1Beta1Tx.MsgEditValidator.fromPartial(message)
   }

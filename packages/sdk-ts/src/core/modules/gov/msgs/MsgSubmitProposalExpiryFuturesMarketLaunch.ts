@@ -14,19 +14,20 @@ const createProposalExpiryFuturesMarketLaunch = (
 ) => {
   const content =
     InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.create()
+
   content.title = params.market.title
   content.description = params.market.description
-  content.quoteDenom = params.market.quoteDenom
   content.ticker = params.market.ticker
-  content.initialMarginRatio = params.market.initialMarginRatio
-  content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
-  content.makerFeeRate = params.market.makerFeeRate
-  content.takerFeeRate = params.market.takerFeeRate
+  content.quoteDenom = params.market.quoteDenom
   content.oracleBase = params.market.oracleBase
   content.oracleQuote = params.market.oracleQuote
   content.oracleScaleFactor = params.market.oracleScaleFactor
   content.oracleType = params.market.oracleType
   content.expiry = params.market.expiry.toString()
+  content.initialMarginRatio = params.market.initialMarginRatio
+  content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
+  content.makerFeeRate = params.market.makerFeeRate
+  content.takerFeeRate = params.market.takerFeeRate
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
 
@@ -115,14 +116,16 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     })
 
     const contentAny = GoogleProtobufAny.Any.create()
+
+    contentAny.typeUrl =
+      '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal'
     contentAny.value =
       InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.encode(
         content,
       ).finish()
-    contentAny.typeUrl =
-      '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal'
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
+
     message.content = contentAny
     message.proposer = params.proposer
     message.initialDeposit = [depositParams]
@@ -143,6 +146,10 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     const { params } = this
 
     const messageWithProposalType = snakecaseKeys({
+      content: {
+        type: 'exchange/ExpiryFuturesMarketLaunchProposal',
+        value: this.getContent(),
+      },
       proposer: params.proposer,
       initialDeposit: [
         {
@@ -150,10 +157,6 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        type_url: 'exchange/ExpiryFuturesMarketLaunchProposal',
-        value: this.getContent(),
-      },
     })
 
     return {
@@ -167,6 +170,11 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     const { params } = this
 
     const messageWithProposalType = {
+      content: {
+        '@type':
+          '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal',
+        ...this.getContent(),
+      },
       proposer: params.proposer,
       initialDeposit: [
         {
@@ -174,11 +182,6 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        '@type':
-          '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal',
-        ...this.getContent(),
-      },
     }
 
     return {

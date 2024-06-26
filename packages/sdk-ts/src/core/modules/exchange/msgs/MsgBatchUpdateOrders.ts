@@ -86,32 +86,24 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       params.spotMarketIdsToCancelAll &&
       params.spotMarketIdsToCancelAll.length > 0
     ) {
-      message.spotMarketIdsToCancelAll = params.spotMarketIdsToCancelAll
       message.subaccountId = params.subaccountId
+      message.spotMarketIdsToCancelAll = params.spotMarketIdsToCancelAll
     }
 
     if (
       params.derivativeMarketIdsToCancelAll &&
       params.derivativeMarketIdsToCancelAll.length > 0
     ) {
+      message.subaccountId = params.subaccountId
       message.derivativeMarketIdsToCancelAll =
         params.derivativeMarketIdsToCancelAll
-      message.subaccountId = params.subaccountId
-    }
-
-    if (
-      params.binaryOptionsMarketIdsToCancelAll &&
-      params.binaryOptionsMarketIdsToCancelAll.length > 0
-    ) {
-      message.binaryOptionsMarketIdsToCancelAll =
-        params.binaryOptionsMarketIdsToCancelAll
-      message.subaccountId = params.subaccountId
     }
 
     if (params.spotOrdersToCancel && params.spotOrdersToCancel.length > 0) {
       const orderData = params.spotOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash, cid }) => {
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
+
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
 
@@ -137,30 +129,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       const orderData = params.derivativeOrdersToCancel.map(
         ({ marketId, subaccountId, orderHash, cid }) => {
           const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
-          orderData.marketId = marketId
-          orderData.subaccountId = subaccountId
 
-          if (orderHash) {
-            orderData.orderHash = orderHash
-          }
-
-          if (cid) {
-            orderData.cid = cid
-          }
-
-          return orderData
-        },
-      )
-
-      message.derivativeOrdersToCancel = orderData
-    }
-    if (
-      params.binaryOptionsOrdersToCancel &&
-      params.binaryOptionsOrdersToCancel.length > 0
-    ) {
-      const orderData = params.binaryOptionsOrdersToCancel.map(
-        ({ marketId, subaccountId, orderHash, cid }) => {
-          const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
           orderData.marketId = marketId
           orderData.subaccountId = subaccountId
 
@@ -182,6 +151,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     if (params.spotOrdersToCreate && params.spotOrdersToCreate.length > 0) {
       const orderData = params.spotOrdersToCreate.map((args) => {
         const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+
         const paramsFromArgs = {
           ...args,
           price: amountToCosmosSdkDecAmount(args.price).toFixed(),
@@ -201,9 +171,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         }
 
         const order = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
+
         order.marketId = paramsFromArgs.marketId
-        order.orderType = paramsFromArgs.orderType
         order.orderInfo = orderInfo
+        order.orderType = paramsFromArgs.orderType
 
         if (paramsFromArgs.triggerPrice) {
           order.triggerPrice = paramsFromArgs.triggerPrice
@@ -231,6 +202,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         }
 
         const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+
         orderInfo.subaccountId = params.subaccountId
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
@@ -241,9 +213,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         }
 
         const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
+
         order.marketId = paramsFromArgs.marketId
-        order.orderType = paramsFromArgs.orderType
         order.orderInfo = orderInfo
+        order.orderType = paramsFromArgs.orderType
         order.margin = paramsFromArgs.margin
 
         if (paramsFromArgs.triggerPrice) {
@@ -255,6 +228,42 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
       message.derivativeOrdersToCreate = orderData
     }
+
+    if (
+      params.binaryOptionsOrdersToCancel &&
+      params.binaryOptionsOrdersToCancel.length > 0
+    ) {
+      const orderData = params.binaryOptionsOrdersToCancel.map(
+        ({ marketId, subaccountId, orderHash, cid }) => {
+          const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
+
+          orderData.marketId = marketId
+          orderData.subaccountId = subaccountId
+
+          if (orderHash) {
+            orderData.orderHash = orderHash
+          }
+
+          if (cid) {
+            orderData.cid = cid
+          }
+
+          return orderData
+        },
+      )
+
+      message.derivativeOrdersToCancel = orderData
+    }
+
+    if (
+      params.binaryOptionsMarketIdsToCancelAll &&
+      params.binaryOptionsMarketIdsToCancelAll.length > 0
+    ) {
+      message.subaccountId = params.subaccountId
+      message.binaryOptionsMarketIdsToCancelAll =
+        params.binaryOptionsMarketIdsToCancelAll
+    }
+
     if (
       params.binaryOptionsOrdersToCreate &&
       params.binaryOptionsOrdersToCreate.length > 0
@@ -270,6 +279,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
         }
         const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+
         orderInfo.subaccountId = params.subaccountId
         orderInfo.feeRecipient = paramsFromArgs.feeRecipient
         orderInfo.price = paramsFromArgs.price
@@ -280,9 +290,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         }
 
         const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
+
         order.marketId = paramsFromArgs.marketId
-        order.orderType = paramsFromArgs.orderType
         order.orderInfo = orderInfo
+        order.orderType = paramsFromArgs.orderType
         order.margin = paramsFromArgs.margin
 
         if (paramsFromArgs.triggerPrice) {

@@ -23,6 +23,7 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
       settlementTimestamp: number
       minPriceTickSize: string
       minQuantityTickSize: string
+      minNotional: string
     }
   }
 
@@ -48,6 +49,7 @@ const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
   message.quoteDenom = params.market.quoteDenom
   message.minPriceTickSize = params.market.minPriceTickSize
   message.minQuantityTickSize = params.market.minQuantityTickSize
+  message.minNotional = params.market.minNotional
 
   return InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch.fromPartial(
     message,
@@ -85,6 +87,9 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
         ).toFixed(),
         minQuantityTickSize: amountToCosmosSdkDecAmount(
           initialParams.market.minQuantityTickSize,
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          initialParams.market.minNotional,
         ).toFixed(),
       },
     } as MsgInstantBinaryOptionsMarketLaunch.Params

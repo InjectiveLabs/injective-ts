@@ -27,6 +27,7 @@ export default class MsgChangeAdmin extends MsgBase<
     const { params } = this
 
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.create()
+
     message.sender = params.sender
     message.denom = params.denom
     message.newAdmin = params.newAdmin

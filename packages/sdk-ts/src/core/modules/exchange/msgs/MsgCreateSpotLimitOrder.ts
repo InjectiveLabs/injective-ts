@@ -24,23 +24,25 @@ export declare namespace MsgCreateSpotLimitOrder {
 
 const createLimitOrder = (params: MsgCreateSpotLimitOrder.Params) => {
   const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+
   orderInfo.subaccountId = params.subaccountId
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
   orderInfo.quantity = params.quantity
 
-    if (params.cid) {
-      orderInfo.cid = params.cid
-    }
+  if (params.cid) {
+    orderInfo.cid = params.cid
+  }
 
   const spotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
-  spotOrder.marketId = params.marketId
-  spotOrder.orderType = params.orderType
-  spotOrder.orderInfo = orderInfo
 
+  spotOrder.marketId = params.marketId
+  spotOrder.orderInfo = orderInfo
+  spotOrder.orderType = params.orderType
   spotOrder.triggerPrice = params.triggerPrice || '0'
 
   const message = InjectiveExchangeV1Beta1Tx.MsgCreateSpotLimitOrder.create()
+
   message.sender = params.injectiveAddress
   message.order = spotOrder
 

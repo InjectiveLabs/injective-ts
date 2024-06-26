@@ -26,6 +26,7 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
 
 const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
   const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+
   orderInfo.subaccountId = params.subaccountId
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
@@ -37,15 +38,17 @@ const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
 
   const derivativeOrder =
     InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
+
   derivativeOrder.marketId = params.marketId
-  derivativeOrder.orderType = params.orderType
   derivativeOrder.orderInfo = orderInfo
+  derivativeOrder.orderType = params.orderType
   derivativeOrder.margin = params.margin
 
   derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
   const message =
     InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsLimitOrder.create()
+
   message.sender = params.injectiveAddress
   message.order = derivativeOrder
 

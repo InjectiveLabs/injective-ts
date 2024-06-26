@@ -34,10 +34,12 @@ export default class MsgExternalTransfer extends MsgBase<
     const { params } = this
 
     const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
-    amountCoin.amount = params.amount.amount
+
     amountCoin.denom = params.amount.denom
+    amountCoin.amount = params.amount.amount
 
     const message = InjectiveExchangeV1Beta1Tx.MsgExternalTransfer.create()
+
     message.sender = params.injectiveAddress
     message.sourceSubaccountId = params.srcSubaccountId
     message.destinationSubaccountId = params.dstSubaccountId

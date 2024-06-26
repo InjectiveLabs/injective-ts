@@ -29,6 +29,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     const { params } = this
 
     const message = InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder.create()
+
     message.sender = params.injectiveAddress
     message.marketId = params.marketId
     message.subaccountId = params.subaccountId

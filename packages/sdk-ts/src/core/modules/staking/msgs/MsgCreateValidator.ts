@@ -61,21 +61,6 @@ export default class MsgCreateValidator extends MsgBase<
 
     const message = CosmosStakingV1Beta1Tx.MsgCreateValidator.create()
 
-    message.delegatorAddress = params.delegatorAddress
-    message.validatorAddress = params.validatorAddress
-
-    if (params.commission) {
-      const commissionRate =
-        CosmosStakingV1Beta1Staking.CommissionRates.create()
-      commissionRate.maxChangeRate = commissionRate.maxChangeRate
-      commissionRate.rate = commissionRate.rate
-      commissionRate.maxRate = commissionRate.maxRate
-    }
-
-    if (params.minSelfDelegation) {
-      message.minSelfDelegation = params.minSelfDelegation
-    }
-
     if (params.description) {
       const description = CosmosStakingV1Beta1Staking.Description.create()
 
@@ -102,6 +87,20 @@ export default class MsgCreateValidator extends MsgBase<
       message.description = description
     }
 
+    if (params.commission) {
+      const commissionRate =
+        CosmosStakingV1Beta1Staking.CommissionRates.create()
+
+      commissionRate.rate = commissionRate.rate
+      commissionRate.maxRate = commissionRate.maxRate
+      commissionRate.maxChangeRate = commissionRate.maxChangeRate
+    }
+
+    if (params.minSelfDelegation) {
+      message.minSelfDelegation = params.minSelfDelegation
+    }
+
+    message.delegatorAddress = params.delegatorAddress
     message.validatorAddress = params.validatorAddress
 
     if (params.pubKey) {
@@ -114,11 +113,12 @@ export default class MsgCreateValidator extends MsgBase<
     }
 
     if (params.value) {
-      const value = CosmosBaseV1Beta1Coin.Coin.create()
-      value.denom = params.value.denom
-      value.amount = params.value.amount
+      const coin = CosmosBaseV1Beta1Coin.Coin.create()
 
-      message.value = value
+      coin.denom = params.value.denom
+      coin.amount = params.value.amount
+
+      message.value = coin
     }
 
     return CosmosStakingV1Beta1Tx.MsgCreateValidator.fromPartial(message)
