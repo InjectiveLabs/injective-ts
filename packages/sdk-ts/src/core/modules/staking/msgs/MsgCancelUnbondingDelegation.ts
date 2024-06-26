@@ -36,13 +36,15 @@ export default class MsgCancelUnbondingDelegation extends MsgBase<
     const { params } = this
 
     const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+
     coinAmount.denom = params.amount.denom
     coinAmount.amount = params.amount.amount
 
     const message = CosmosStakingV1Beta1Tx.MsgCancelUnbondingDelegation.create()
-    message.amount = coinAmount
+
     message.delegatorAddress = params.delegatorAddress
     message.validatorAddress = params.validatorAddress
+    message.amount = coinAmount
     message.creationHeight = params.creationHeight
 
     return CosmosStakingV1Beta1Tx.MsgCancelUnbondingDelegation.fromPartial(

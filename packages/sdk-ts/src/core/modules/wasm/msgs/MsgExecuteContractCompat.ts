@@ -82,9 +82,9 @@ export default class MsgExecuteContractCompat extends MsgBase<
     const message = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.create()
     const msg = this.getMsgObject()
 
-    message.msg = JSON.stringify(msg)
     message.sender = params.sender
     message.contract = params.contractAddress
+    message.msg = JSON.stringify(msg)
 
     if (params.funds) {
       const fundsToArray = Array.isArray(params.funds)

@@ -33,13 +33,15 @@ export default class MsgRequestRedemption extends MsgBase<
     const { params } = this
 
     const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
-    amountCoin.amount = params.amount.amount
+
     amountCoin.denom = params.amount.denom
+    amountCoin.amount = params.amount.amount
 
     const message = InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.create()
-    message.amount = amountCoin
-    message.marketId = params.marketId
+
     message.sender = params.injectiveAddress
+    message.marketId = params.marketId
+    message.amount = amountCoin
 
     return InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.fromJSON(message)
   }

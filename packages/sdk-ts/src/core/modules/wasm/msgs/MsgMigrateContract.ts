@@ -34,9 +34,10 @@ export default class MsgMigrateContract extends MsgBase<
     const { params } = this
 
     const message = CosmwasmWasmV1Tx.MsgMigrateContract.create()
-    message.codeId = params.codeId.toString()
-    message.contract = params.contract
+
     message.sender = params.sender
+    message.contract = params.contract
+    message.codeId = params.codeId.toString()
     message.msg = fromUtf8(JSON.stringify(params.msg))
 
     return CosmwasmWasmV1Tx.MsgMigrateContract.fromPartial(message)

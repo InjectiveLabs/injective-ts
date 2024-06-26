@@ -1,10 +1,11 @@
 import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 import {
-  CosmosFeegrantV1Beta1Tx,
-  CosmosFeegrantV1Beta1Feegrant,
-  GoogleProtobufTimestamp,
   GoogleProtobufAny,
+  CosmosBaseV1Beta1Coin,
+  CosmosFeegrantV1Beta1Tx,
+  GoogleProtobufTimestamp,
+  CosmosFeegrantV1Beta1Feegrant,
 } from '@injectivelabs/core-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
@@ -45,10 +46,21 @@ export default class MsgGrantAllowance extends MsgBase<
 
     const timestamp = this.getTimestamp()
     const basicAllowance = CosmosFeegrantV1Beta1Feegrant.BasicAllowance.create()
-    basicAllowance.spendLimit = params.allowance.spendLimit
+
+    basicAllowance.spendLimit = params.allowance.spendLimit.map(
+      ({ denom, amount }) => {
+        const coin = CosmosBaseV1Beta1Coin.Coin.create()
+
+        coin.denom = denom
+        coin.amount = amount
+
+        return coin
+      },
+    )
     basicAllowance.expiration = new Date(Number(timestamp.seconds) * 1000)
 
     const allowance = GoogleProtobufAny.Any.create()
+
     allowance.typeUrl = basicAllowanceType
     allowance.value = Buffer.from(
       CosmosFeegrantV1Beta1Feegrant.BasicAllowance.encode(
@@ -57,8 +69,9 @@ export default class MsgGrantAllowance extends MsgBase<
     )
 
     const message = CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.create()
-    message.grantee = params.grantee
+
     message.granter = params.granter
+    message.grantee = params.grantee
     message.allowance = allowance
 
     return CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.fromJSON(message)
@@ -85,7 +98,10 @@ export default class MsgGrantAllowance extends MsgBase<
       allowance: {
         type: 'cosmos-sdk/BasicAllowance',
         value: {
-          spendLimit: params.allowance.spendLimit,
+          spendLimit: params.allowance.spendLimit.map(({ denom, amount }) => ({
+            denom,
+            amount,
+          })),
           expiration: new Date(Number(timestamp.seconds) * 1000),
         },
       },
@@ -116,7 +132,10 @@ export default class MsgGrantAllowance extends MsgBase<
       grantee: amino.value.grantee,
       allowance: {
         '@type': basicAllowanceType,
-        spendLimit: params.allowance.spendLimit,
+        spendLimit: params.allowance.spendLimit.map(({ denom, amount }) => ({
+          denom,
+          amount,
+        })),
         expiration: new Date(Number(timestamp.seconds) * 1000),
       },
     }

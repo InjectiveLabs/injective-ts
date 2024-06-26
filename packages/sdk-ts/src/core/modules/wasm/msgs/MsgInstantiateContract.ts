@@ -40,17 +40,17 @@ export default class MsgInstantiateContract extends MsgBase<
 
     const message = CosmwasmWasmV1Tx.MsgInstantiateContract.create()
 
-    message.msg = fromUtf8(JSON.stringify(params.msg))
     message.sender = params.sender
     message.admin = params.admin
     message.codeId = params.codeId.toString()
     message.label = params.label
+    message.msg = fromUtf8(JSON.stringify(params.msg))
 
     if (params.amount) {
       const funds = CosmosBaseV1Beta1Coin.Coin.create()
 
-      funds.amount = params.amount.amount
       funds.denom = params.amount.denom
+      funds.amount = params.amount.amount
 
       message.funds = [funds]
     }

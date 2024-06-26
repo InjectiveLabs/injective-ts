@@ -44,6 +44,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     const { params } = this
 
     const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
@@ -51,13 +52,15 @@ export default class MsgSubmitTextProposal extends MsgBase<
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
 
     const contentAny = GoogleProtobufAny.Any.create()
-    contentAny.value = CosmosGovV1Beta1Gov.TextProposal.encode(content).finish()
+
     contentAny.typeUrl = proposalType
+    contentAny.value = CosmosGovV1Beta1Gov.TextProposal.encode(content).finish()
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
+
     message.content = contentAny
-    message.proposer = params.proposer
     message.initialDeposit = [depositParams]
+    message.proposer = params.proposer
 
     return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
@@ -99,17 +102,17 @@ export default class MsgSubmitTextProposal extends MsgBase<
     const { params } = this
 
     const messageWithProposalType = {
-      proposer: params.proposer,
+      content: {
+        '@type': '/cosmos.gov.v1beta1.TextProposal',
+        ...this.getContent(),
+      },
       initialDeposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        '@type': '/cosmos.gov.v1beta1.TextProposal',
-        ...this.getContent(),
-      },
+      proposer: params.proposer,
     }
 
     return {
@@ -135,6 +138,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     const { params } = this
 
     const content = CosmosGovV1Beta1Gov.TextProposal.create()
+
     content.title = params.title
     content.description = params.description
 

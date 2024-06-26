@@ -43,12 +43,14 @@ export default class MsgLiquidatePosition extends MsgBase<
     const { params } = this
 
     const message = InjectiveExchangeV1Beta1Tx.MsgLiquidatePosition.create()
+
     message.sender = params.injectiveAddress
     message.subaccountId = params.subaccountId
     message.marketId = params.marketId
 
     if (params.order) {
       const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+
       orderInfo.subaccountId = params.order.subaccountId
       orderInfo.feeRecipient = params.order.feeRecipient
       orderInfo.price = params.order.price
@@ -62,6 +64,8 @@ export default class MsgLiquidatePosition extends MsgBase<
 
       order.marketId = params.order.marketId
       order.margin = params.order.margin
+      order.orderInfo = orderInfo
+      order.orderType = params.order.orderType
       order.triggerPrice = params.order.triggerPrice || '0'
     }
 

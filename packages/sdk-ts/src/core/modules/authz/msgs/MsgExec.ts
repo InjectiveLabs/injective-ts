@@ -44,6 +44,7 @@ export default class MsgExec extends MsgBase<
 
     const actualMsgs = msgs.map((msg) => {
       const msgValue = GoogleProtobufAny.Any.create()
+
       msgValue.typeUrl = msg.toDirectSign().type
       msgValue.value = msg.toBinary()
 
@@ -63,33 +64,10 @@ export default class MsgExec extends MsgBase<
       ...proto,
     }
   }
-  //
-  // public toAmino() {
-  //   const proto = this.toProto()
-  //   const message = {
-  //     ...snakecaseKeys(proto),
-  //     msgs: proto.msgs,
-  //   }
-  //
-  //   return {
-  //     type: 'cosmos-sdk/MsgExec',
-  //     value: message as unknown as MsgExec.Object,
-  //   }
-  // }
-
 
   public toAmino() {
     const { params } = this
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
-    //
-    // const message2 = msgs.map((msg) => {
-    //   return {
-    //     type: msg.toAmino().type,
-    //     value: msg.toAmino().value,
-    //   }
-    // }) as any
-
-    // const msg = message2[0];
 
     return {
       type: 'cosmos-sdk/MsgExec',

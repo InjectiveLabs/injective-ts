@@ -38,12 +38,9 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
 
     const orderDataList = params.orders.map((order) => {
       const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
+
       orderData.marketId = order.marketId
       orderData.subaccountId = order.subaccountId
-
-      if (order.cid) {
-        orderData.cid = order.cid
-      }
 
       if (order.orderHash) {
         orderData.orderHash = order.orderHash
@@ -52,11 +49,16 @@ export default class MsgBatchCancelDerivativeOrders extends MsgBase<
       // TODO: Send order.orderMask instead when chain handles order mask properly.
       orderData.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
 
+      if (order.cid) {
+        orderData.cid = order.cid
+      }
+
       return orderData
     })
 
     const message =
       InjectiveExchangeV1Beta1Tx.MsgBatchCancelDerivativeOrders.create()
+
     message.sender = params.injectiveAddress
     message.data = orderDataList.map((o) => o)
 

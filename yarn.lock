@@ -2194,6 +2194,17 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
+"@injectivelabs/exceptions@^1.14.12", "@injectivelabs/exceptions@^1.14.12-beta.0":
+  version "1.14.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exceptions/-/exceptions-1.14.12.tgz#bd1a7ebe07d044bf8d5265e4481770cf694be0f4"
+  integrity sha512-aZaGRIFVQIuOcPsbZcwEiWvDtO7yUWBplmPqBhPGt2h6YGaree8DbHJQnc/youIB61NpbGH6Qev4EJYDx9rIxA==
+  dependencies:
+    "@injectivelabs/grpc-web" "^0.0.1"
+    "@injectivelabs/ts-types" "^1.14.12"
+    http-status-codes "^2.2.0"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+
 "@injectivelabs/grpc-web-node-http-transport@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.0.2.tgz#87c9bbd4db1f70cf18d6a55b54b2cf17d3cf30c0"
@@ -2230,6 +2241,40 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
+
+"@injectivelabs/networks@^1.14.12-beta.0":
+  version "1.14.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/networks/-/networks-1.14.12.tgz#4d6f6849d5329f3f2a06d3455c04a38216ca08e3"
+  integrity sha512-YlUyL5Q8W12xXS7Z4Wp/7WQvIxII3TLXq+muxHHwaH5vpMIS/06IFhhVl2RFtPyvVwUqHRowB8VnCeK22eCgYw==
+  dependencies:
+    "@injectivelabs/exceptions" "^1.14.12"
+    "@injectivelabs/ts-types" "^1.14.12"
+    "@injectivelabs/utils" "^1.14.12"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+
+"@injectivelabs/ts-types@^1.14.12", "@injectivelabs/ts-types@^1.14.12-beta.0":
+  version "1.14.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/ts-types/-/ts-types-1.14.12.tgz#6a3b9882665d0e6899cdf1b3cc290ca1fd2cfa53"
+  integrity sha512-jDyBQQLbdeOSaMjdkeJhvwCRzAM/cixPLuyg9acxYvlwaRZgF4iZKt9nS/N/uWQxxE6pAy2c8hl4YHHbV/N9Ew==
+  dependencies:
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+
+"@injectivelabs/utils@^1.14.12", "@injectivelabs/utils@^1.14.12-beta.0":
+  version "1.14.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/utils/-/utils-1.14.12.tgz#4f002f3923971e9a694a3ae30de049098750dfeb"
+  integrity sha512-4W38Mb6no+UH0pQsK9vhS6q6y5kFUTCVqFtxYs03Ra8AXqODyIS1nDBK9LT78WnJtjIPnbgKOlXgiZxyIVKJqQ==
+  dependencies:
+    "@injectivelabs/exceptions" "^1.14.12"
+    "@injectivelabs/ts-types" "^1.14.12"
+    axios "^1.6.4"
+    bignumber.js "^9.0.1"
+    http-status-codes "^2.2.0"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+    snakecase-keys "^5.1.2"
+    store2 "^2.12.0"
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"

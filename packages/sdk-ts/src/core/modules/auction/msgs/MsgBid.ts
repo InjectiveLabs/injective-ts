@@ -10,8 +10,8 @@ export declare namespace MsgBid {
     round: number
     injectiveAddress: string
     amount: {
-      amount: string
       denom: string
+      amount: string
     }
   }
 
@@ -30,13 +30,15 @@ export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
     const { params } = this
 
     const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
-    amountCoin.amount = params.amount.amount
+
     amountCoin.denom = params.amount.denom
+    amountCoin.amount = params.amount.amount
 
     const message = InjectiveAuctionV1Beta1Tx.MsgBid.create()
+
     message.sender = params.injectiveAddress
-    message.round = params.round.toString()
     message.bidAmount = amountCoin
+    message.round = params.round.toString()
 
     return InjectiveAuctionV1Beta1Tx.MsgBid.fromPartial(message)
   }

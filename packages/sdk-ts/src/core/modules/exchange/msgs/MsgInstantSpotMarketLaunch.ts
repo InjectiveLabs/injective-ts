@@ -24,9 +24,9 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
   const message = InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.create()
 
   message.sender = params.proposer
-  message.quoteDenom = params.market.quoteDenom
   message.ticker = params.market.ticker
   message.baseDenom = params.market.baseDenom
+  message.quoteDenom = params.market.quoteDenom
   message.minPriceTickSize = params.market.minPriceTickSize
   message.minQuantityTickSize = params.market.minQuantityTickSize
   message.minNotional = params.market.minNotional

@@ -1,6 +1,9 @@
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
-import { InjectiveTokenFactoryV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  CosmosBaseV1Beta1Coin,
+  InjectiveTokenFactoryV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgMint {
   export interface Params {
@@ -25,9 +28,15 @@ export default class MsgMint extends MsgBase<MsgMint.Params, MsgMint.Proto> {
   public toProto() {
     const { params } = this
 
+    const coin = CosmosBaseV1Beta1Coin.Coin.create()
+
+    coin.denom = params.amount.denom
+    coin.amount = params.amount.amount
+
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgMint.create()
+
     message.sender = params.sender
-    message.amount = params.amount
+    message.amount = coin
 
     return InjectiveTokenFactoryV1Beta1Tx.MsgMint.fromPartial(message)
   }
