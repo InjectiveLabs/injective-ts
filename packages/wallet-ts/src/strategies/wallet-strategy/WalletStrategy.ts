@@ -25,6 +25,7 @@ import Phantom from './strategies/Phantom'
 import Okx from './strategies/Okx'
 import BitGet from './strategies/BitGet'
 import Cosmostation from './strategies/Cosmostation'
+import Welldone from './strategies/Welldone'
 import LedgerCosmos from './strategies/LedgerCosmos'
 import WalletConnect from './strategies/WalletConnect'
 import { Wallet, WalletDeviceType } from '../../types/enums'
@@ -118,6 +119,8 @@ const createStrategy = ({
       return new LedgerCosmos({ ...args })
     case Wallet.Leap:
       return new Leap({ ...args })
+    case Wallet.Welldone:
+      return new Welldone({ ...args })
     case Wallet.Ninji:
       return new Ninji({ ...args })
     default:
