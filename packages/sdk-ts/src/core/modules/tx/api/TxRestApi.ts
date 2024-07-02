@@ -1,9 +1,9 @@
 import {
   HttpClient,
-  DEFAULT_BLOCK_TIME_IN_SECONDS,
-  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   BigNumberInBase,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_BLOCK_TIME_IN_SECONDS,
+  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import {
   BroadcastMode,
