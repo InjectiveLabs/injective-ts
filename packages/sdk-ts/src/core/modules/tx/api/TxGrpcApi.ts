@@ -207,18 +207,15 @@ export class TxGrpcApi implements TxConcreteApi {
     }
   }
 
-
   /** @deprecated - the BLOCk mode broadcasting is deprecated now, use either sync or async */
-  public async broadcastBlock(
-    txRaw: CosmosTxV1Beta1Tx.TxRaw
-  ) {
+  public async broadcastBlock(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
     const { txService } = this
 
     const broadcastTxRequest =
       CosmosTxV1Beta1Service.BroadcastTxRequest.create()
     broadcastTxRequest.txBytes = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
-    broadcastTxRequest.mode = CosmosTxV1Beta1Service
-      .BroadcastMode.BROADCAST_MODE_BLOCK,
+    broadcastTxRequest.mode =
+      CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_BLOCK
 
     try {
       const response = await txService.BroadcastTx(broadcastTxRequest)
