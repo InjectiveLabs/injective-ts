@@ -2,7 +2,6 @@ import { generateMnemonic } from 'bip39'
 import { Wallet } from 'ethers'
 import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
-import { DEFAULT_DERIVATION_PATH } from '../../utils/constants'
 import { PublicKey } from './PublicKey'
 import { Address } from './Address'
 import * as BytesUtils from '@ethersproject/bytes'
@@ -50,11 +49,8 @@ export class PrivateKey {
    * @param {string|undefined} path the HD path that follows the BIP32 standard (optional)
    * @returns {PrivateKey} Initialized PrivateKey object
    */
-  static fromMnemonic(
-    words: string,
-    path: string | undefined = DEFAULT_DERIVATION_PATH,
-  ): PrivateKey {
-    return new PrivateKey(Wallet.fromMnemonic(words, path))
+  static fromMnemonic(words: string): PrivateKey {
+    return new PrivateKey(new Wallet(Wallet.fromPhrase(words).signingKey))
   }
 
   /**
@@ -83,7 +79,9 @@ export class PrivateKey {
       ? Buffer.from(privateKeyHex.toString(), 'hex')
       : privateKey
 
-    return new PrivateKey(new Wallet(privateKeyBuff))
+    return new PrivateKey(
+      new Wallet(Buffer.from(privateKeyBuff).toString('hex')),
+    )
   }
 
   /**
@@ -105,7 +103,7 @@ export class PrivateKey {
   }
 
   /**
-   * Return a hex representation of signing key.
+   * Return the hex address associated with this private key.
    * @returns {string}
    */
   toHex(): string {
@@ -135,11 +133,11 @@ export class PrivateKey {
    * @param {string} messageBytes: the message that will be hashed and signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  async sign(messageBytes: Buffer): Promise<Uint8Array> {
+  sign(messageBytes: Buffer): Uint8Array {
     const { wallet } = this
 
     const msgHash = keccak256(messageBytes)
-    const signature = await wallet._signingKey().signDigest(msgHash)
+    const signature = wallet.signingKey.sign(msgHash)
     const splitSignature = BytesUtils.splitSignature(signature)
 
     return BytesUtils.arrayify(
@@ -152,7 +150,7 @@ export class PrivateKey {
    * @param {Buffer} messageBytes: the message that will be hashed and signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  async signEcda(messageBytes: Buffer): Promise<Uint8Array> {
+  signEcda(messageBytes: Buffer): Uint8Array {
     const { wallet } = this
 
     const msgHash = keccak256(messageBytes)
@@ -170,10 +168,10 @@ export class PrivateKey {
    * @param {string} messageHashedBytes: the message that will be signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  async signHashed(messageHashedBytes: Buffer): Promise<Uint8Array> {
+  signHashed(messageHashedBytes: Buffer): Uint8Array {
     const { wallet } = this
 
-    const signature = await wallet._signingKey().signDigest(messageHashedBytes)
+    const signature = wallet.signingKey.sign(messageHashedBytes)
     const splitSignature = BytesUtils.splitSignature(signature)
 
     return BytesUtils.arrayify(
@@ -186,7 +184,7 @@ export class PrivateKey {
    * @param {Buffer} messageHashedBytes: the message that will be signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  async signHashedEcda(messageHashedBytes: Buffer): Promise<Uint8Array> {
+  signHashedEcda(messageHashedBytes: Buffer): Uint8Array {
     const { wallet } = this
 
     const privateKeyHex = wallet.privateKey.startsWith('0x')
@@ -203,7 +201,7 @@ export class PrivateKey {
    * @param {Buffer} eip712Data: the typed data that will be hashed and signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  async signTypedData(eip712Data: any): Promise<Uint8Array> {
+  signTypedData(eip712Data: any): Uint8Array {
     const { wallet } = this
 
     const privateKeyHex = wallet.privateKey.startsWith('0x')
@@ -223,7 +221,7 @@ export class PrivateKey {
    * @param {Buffer} eip712Data: the typed data that will be signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  async signHashedTypedData(eip712Data: Buffer): Promise<Uint8Array> {
+  signHashedTypedData(eip712Data: Buffer): Uint8Array {
     const { wallet } = this
 
     const privateKeyHex = wallet.privateKey.startsWith('0x')

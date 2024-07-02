@@ -21,20 +21,8 @@
       "@injectivelabs/wallet-ts": [
         "packages/wallet-ts"
       ],
-      "@injectivelabs/contracts": [
-        "packages/contracts"
-      ],
-      "@injectivelabs/tokens-metadata": [
-        "packages/tokens-metadata"
-      ],
       "@injectivelabs/sdk-ts": [
         "packages/sdk-ts"
-      ],
-      "@injectivelabs/sdk-ui-ts": [
-        "packages/sdk-ui-ts"
-      ],
-      "@injectivelabs/bridge-ts": [
-        "packages/bridge-ts"
       ]
     }
   }

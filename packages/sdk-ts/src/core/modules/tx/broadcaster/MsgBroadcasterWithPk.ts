@@ -175,7 +175,7 @@ export class MsgBroadcasterWithPk {
     const publicKey = privateKey.toPublicKey()
     const accountDetails = await new ChainGrpcAuthApi(
       endpoints.grpc,
-    ).fetchAccount(publicKey.toBech32())
+    ).fetchAccount(publicKey.toAddress().toBech32())
     const { baseAccount } = accountDetails
 
     /** Block Details */

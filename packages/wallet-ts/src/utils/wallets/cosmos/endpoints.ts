@@ -151,6 +151,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://rpc.cosmos.directory/neutron',
         rest: 'https://rest.cosmos.directory/neutron',
       }
+    case CosmosChainId.Fetch:
+      return {
+        rpc: 'https://fetch-rpc.publicnode.com',
+        rest: 'https://fetch-rest.publicnode.com',
+      }
     default:
       throw new GeneralException(
         new Error(`Endpoints for ${chainId} not found`),

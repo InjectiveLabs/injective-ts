@@ -155,7 +155,6 @@ export default class WalletStrategy {
   }
 
   public setWallet(wallet: Wallet) {
-    this.disconnect()
     this.wallet = wallet
   }
 
