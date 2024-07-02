@@ -199,6 +199,8 @@ export class TxRestApi implements TxConcreteApi {
   /**
    * Broadcast the transaction using the "block" mode, waiting for its inclusion in the blockchain.
    * @param tx transaction to broadcast
+   *
+   * @deprecated - the BLOCk mode broadcasting is deprecated now, use either sync or async
    */
   public async broadcastBlock(tx: CosmosTxV1Beta1Tx.TxRaw) {
     const response = await this.broadcastTx<{
