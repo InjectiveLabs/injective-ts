@@ -35,6 +35,10 @@ const getChainNameFromChainId = (chainId: CosmosChainId) => {
     return 'evmos'
   }
 
+  if (chainId.includes('ssc') || chainId.includes('fetch')) {
+    return chainId
+  }
+
   return chainName
 }
 
