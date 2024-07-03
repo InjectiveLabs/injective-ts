@@ -263,7 +263,7 @@ export class MsgBroadcaster {
     if (baseAccount.pubKey) {
       const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee({
         chainId,
-        signMode: SIGN_EIP712_V2,
+        signMode: SIGN_EIP712,
         memo: tx.memo,
         message: msgs,
         timeoutHeight: timeoutHeight.toNumber(),
