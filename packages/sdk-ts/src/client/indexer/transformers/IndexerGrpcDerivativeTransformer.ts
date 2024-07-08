@@ -298,7 +298,13 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcBinaryOptionsMarketsToBinaryOptionsMarkets(
           markets,
         ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: {
+        to: pagination?.to || 0,
+        from: pagination?.from || 0,
+        total: parseInt(pagination?.total || '0', 10),
+        countBySubaccount: parseInt(pagination?.countBySubaccount || '0', 10),
+        next: pagination?.next || [],
+      },
     }
   }
 
