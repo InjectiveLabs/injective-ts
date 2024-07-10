@@ -35,6 +35,7 @@ export enum CosmosChainId {
 export enum TestnetCosmosChainId {
   Injective = 'injective-888',
   Cosmoshub = 'theta-testnet-001',
+  Evmos = 'evmos_9000-4',
 }
 
 export enum DevnetCosmosChainId {
