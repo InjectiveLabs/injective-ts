@@ -46,6 +46,7 @@ export default class MsgSetDenomMetadata extends MsgBase<
     metadata.symbol = params.metadata.symbol
     metadata.uri = params.metadata.uri
     metadata.uriHash = params.metadata.uriHash
+    metadata.decimals = params.metadata.decimals
 
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.create()
 
