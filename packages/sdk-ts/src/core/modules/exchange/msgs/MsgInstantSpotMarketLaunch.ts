@@ -33,7 +33,7 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
   message.minQuantityTickSize = params.market.minQuantityTickSize
   message.minNotional = params.market.minNotional
   message.makerFeeRate = params.market.makerFeeRate
-  message.takerFeeRate = params.market.makerFeeRate
+  message.takerFeeRate = params.market.takerFeeRate
 
   return InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.fromPartial(
     message,
@@ -73,7 +73,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
           initialParams.market.makerFeeRate,
         ).toFixed(),
         takerFeeRate: amountToCosmosSdkDecAmount(
-          initialParams.market.makerFeeRate,
+          initialParams.market.takerFeeRate,
         ).toFixed(),
       },
     } as MsgInstantSpotMarketLaunch.Params
