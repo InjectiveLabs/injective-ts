@@ -1,4 +1,4 @@
-import { InjectiveArchiverRPC } from '@injectivelabs/indexer-proto-ts'
+import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface HistoricalBalance {
   t: number[]
@@ -15,6 +15,6 @@ export interface HistoricalVolumes {
   v: number[]
 }
 
-export type GrpcHistoricalRPNL = InjectiveArchiverRPC.HistoricalRPNL
-export type GrpcHistoricalBalance = InjectiveArchiverRPC.HistoricalBalance
-export type GrpcHistoricalVolumes = InjectiveArchiverRPC.HistoricalVolumes
+export type GrpcHistoricalRPNL = InjectiveArchiverRpc.HistoricalRPNL
+export type GrpcHistoricalBalance = InjectiveArchiverRpc.HistoricalBalance
+export type GrpcHistoricalVolumes = InjectiveArchiverRpc.HistoricalVolumes

@@ -2,7 +2,7 @@ import {
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveArchiverRPC } from '@injectivelabs/indexer-proto-ts'
+import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
 import { IndexerModule } from '../types'
 import { IndexerGrpcArchiverTransformer } from '../transformers'
@@ -13,12 +13,12 @@ import { IndexerGrpcArchiverTransformer } from '../transformers'
 export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Archiver
 
-  protected client: InjectiveArchiverRPC.InjectiveArchiverRPCClientImpl
+  protected client: InjectiveArchiverRpc.InjectiveArchiverRPCClientImpl
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new InjectiveArchiverRPC.InjectiveArchiverRPCClientImpl(
+    this.client = new InjectiveArchiverRpc.InjectiveArchiverRPCClientImpl(
       this.getGrpcWebImpl(endpoint),
     )
   }
@@ -30,13 +30,13 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     account: string
     resolution: string
   }) {
-    const request = InjectiveArchiverRPC.BalanceRequest.create()
+    const request = InjectiveArchiverRpc.BalanceRequest.create()
 
     request.account = account
     request.resolution = resolution
 
     try {
-      const response = await this.retry<InjectiveArchiverRPC.BalanceResponse>(
+      const response = await this.retry<InjectiveArchiverRpc.BalanceResponse>(
         () => this.client.Balance(request),
       )
 
@@ -44,7 +44,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRPC.GrpcWebError) {
+      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           context: 'Historical Balance',
@@ -67,13 +67,13 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     account: string
     resolution: string
   }) {
-    const request = InjectiveArchiverRPC.RpnlRequest.create()
+    const request = InjectiveArchiverRpc.RpnlRequest.create()
 
     request.account = account
     request.resolution = resolution
 
     try {
-      const response = await this.retry<InjectiveArchiverRPC.RpnlResponse>(() =>
+      const response = await this.retry<InjectiveArchiverRpc.RpnlResponse>(() =>
         this.client.Rpnl(request),
       )
 
@@ -81,7 +81,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRPC.GrpcWebError) {
+      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           context: 'Historical Rpnl',
@@ -104,13 +104,13 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     account: string
     resolution: string
   }) {
-    const request = InjectiveArchiverRPC.VolumesRequest.create()
+    const request = InjectiveArchiverRpc.VolumesRequest.create()
 
     request.account = account
     request.resolution = resolution
 
     try {
-      const response = await this.retry<InjectiveArchiverRPC.VolumesResponse>(
+      const response = await this.retry<InjectiveArchiverRpc.VolumesResponse>(
         () => this.client.Volumes(request),
       )
 
@@ -118,7 +118,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
         response,
       )
     } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRPC.GrpcWebError) {
+      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           context: 'Historical Volumes',

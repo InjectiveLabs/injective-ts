@@ -332,8 +332,9 @@ export class IndexerGrpcDerivativeTransformer {
       makerFeeRate: market.makerFeeRate,
       takerFeeRate: market.takerFeeRate,
       serviceProviderFee: market.serviceProviderFee,
-      minPriceTickSize: market.minPriceTickSize,
-      minQuantityTickSize: market.minQuantityTickSize,
+      minPriceTickSize: new BigNumber(market.minPriceTickSize).toNumber(),
+      minQuantityTickSize: new BigNumber(market.minQuantityTickSize).toNumber(),
+      minNotional: new BigNumber(market.minNotional).toNumber(),
       settlementPrice: market.settlementPrice,
     }
   }
@@ -369,6 +370,7 @@ export class IndexerGrpcDerivativeTransformer {
       serviceProviderFee: market.serviceProviderFee,
       minPriceTickSize: new BigNumber(market.minPriceTickSize).toNumber(),
       minQuantityTickSize: new BigNumber(market.minQuantityTickSize).toNumber(),
+      minNotional: new BigNumber(market.minNotional).toNumber(),
       perpetualMarketInfo:
         IndexerGrpcDerivativeTransformer.grpcPerpetualMarketInfoToPerpetualMarketInfo(
           market.perpetualMarketInfo,
