@@ -14,6 +14,8 @@ export declare namespace MsgInstantSpotMarketLaunch {
       minNotional: string
       minPriceTickSize: string
       minQuantityTickSize: string
+      makerFeeRate: string
+      takerFeeRate: string
     }
   }
 
@@ -30,6 +32,8 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
   message.minPriceTickSize = params.market.minPriceTickSize
   message.minQuantityTickSize = params.market.minQuantityTickSize
   message.minNotional = params.market.minNotional
+  message.makerFeeRate = params.market.makerFeeRate
+  message.takerFeeRate = params.market.makerFeeRate
 
   return InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.fromPartial(
     message,
@@ -61,6 +65,15 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
         ).toFixed(),
         minQuantityTickSize: amountToCosmosSdkDecAmount(
           initialParams.market.minQuantityTickSize,
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          initialParams.market.minNotional,
+        ).toFixed(),
+        makerFeeRate: amountToCosmosSdkDecAmount(
+          initialParams.market.makerFeeRate,
+        ).toFixed(),
+        takerFeeRate: amountToCosmosSdkDecAmount(
+          initialParams.market.makerFeeRate,
         ).toFixed(),
       },
     } as MsgInstantSpotMarketLaunch.Params

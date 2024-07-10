@@ -26,6 +26,7 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
       takerFeeRate: string
       minPriceTickSize: string
       minQuantityTickSize: string
+      minNotional: string
     }
     proposer: string
     deposit: {
@@ -64,6 +65,7 @@ const createPerpetualMarketLaunch = (
   content.takerFeeRate = params.market.takerFeeRate
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
+  content.minNotional = params.market.minNotional
 
   return InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.fromPartial(
     content,
@@ -110,6 +112,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
         ).toFixed(),
         minQuantityTickSize: amountToCosmosSdkDecAmount(
           params.market.minQuantityTickSize,
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          params.market.minNotional,
         ).toFixed(),
       },
     })

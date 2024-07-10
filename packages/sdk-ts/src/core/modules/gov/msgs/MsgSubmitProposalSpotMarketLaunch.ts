@@ -20,6 +20,7 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
       minQuantityTickSize: string
       makerFeeRate: string
       takerFeeRate: string
+      minNotional: string
     }
     proposer: string
     deposit: {
@@ -53,6 +54,7 @@ const createSpotMarketLaunchContent = (
   content.minQuantityTickSize = params.market.minQuantityTickSize
   content.makerFeeRate = params.market.makerFeeRate
   content.takerFeeRate = params.market.makerFeeRate
+  content.minNotional = params.market.minNotional
 
   return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.fromPartial(
     content,
@@ -96,6 +98,9 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
         ).toFixed(),
         takerFeeRate: amountToCosmosSdkDecAmount(
           params.market.makerFeeRate,
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          params.market.minNotional,
         ).toFixed(),
       },
     })
