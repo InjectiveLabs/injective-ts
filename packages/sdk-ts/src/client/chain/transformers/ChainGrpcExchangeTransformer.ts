@@ -1,4 +1,5 @@
 import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { AtomicMarketOrderAccessLevel } from '@injectivelabs/core-proto-ts/cjs/injective/exchange/v1beta1/exchange'
 import {
   IsOptedOutOfRewards,
   FeeDiscountSchedule,
@@ -65,6 +66,29 @@ export class ChainGrpcExchangeTransformer {
         params.tradingRewardsVestingDuration,
         10,
       ),
+      liquidatorRewardShareRate: params.liquidatorRewardShareRate,
+      binaryOptionsMarketInstantListingFee:
+        params.binaryOptionsMarketInstantListingFee
+          ? {
+              amount: params.binaryOptionsMarketInstantListingFee.amount,
+              denom: params.binaryOptionsMarketInstantListingFee.denom,
+            }
+          : undefined,
+      atomicMarketOrderAccessLevel:
+        AtomicMarketOrderAccessLevel[params.atomicMarketOrderAccessLevel],
+      spotAtomicMarketOrderFeeMultiplier:
+        params.spotAtomicMarketOrderFeeMultiplier,
+      derivativeAtomicMarketOrderFeeMultiplier:
+        params.derivativeAtomicMarketOrderFeeMultiplier,
+      binaryOptionsAtomicMarketOrderFeeMultiplier:
+        params.binaryOptionsAtomicMarketOrderFeeMultiplier,
+      minimalProtocolFeeRate: params.minimalProtocolFeeRate,
+      isInstantDerivativeMarketLaunchEnabled:
+        params.isInstantDerivativeMarketLaunchEnabled,
+      postOnlyModeHeightThreshold: params.postOnlyModeHeightThreshold,
+      marginDecreasePriceTimestampThresholdSeconds:
+        params.marginDecreasePriceTimestampThresholdSeconds,
+      exchangeAdmins: params.exchangeAdmins,
     }
   }
 

@@ -53,7 +53,7 @@ const createSpotMarketLaunchContent = (
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
   content.makerFeeRate = params.market.makerFeeRate
-  content.takerFeeRate = params.market.makerFeeRate
+  content.takerFeeRate = params.market.takerFeeRate
   content.minNotional = params.market.minNotional
 
   return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.fromPartial(
@@ -97,7 +97,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
           params.market.makerFeeRate,
         ).toFixed(),
         takerFeeRate: amountToCosmosSdkDecAmount(
-          params.market.makerFeeRate,
+          params.market.takerFeeRate,
         ).toFixed(),
         minNotional: amountToCosmosSdkDecAmount(
           params.market.minNotional,
