@@ -134,6 +134,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
   public toAmino() {
     const { params } = this
+
     const content = this.getContent()
 
     const message = {

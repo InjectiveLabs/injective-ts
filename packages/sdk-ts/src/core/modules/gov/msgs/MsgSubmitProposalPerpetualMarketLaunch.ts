@@ -1,4 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -149,34 +149,17 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
   public toAmino() {
     const { params } = this
 
-    const messageWithProposalType = {
-      content: {
-        type: 'exchange/PerpetualMarketLaunchProposal',
-        value: this.getContent(),
-      },
-      initialDeposit: [
-        {
-          denom: params.deposit.denom,
-          amount: params.deposit.amount,
-        },
-      ],
+    const content = this.getContent()
+
+    const message = {
+      content,
       proposer: params.proposer,
     }
 
-    return {
-      type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as MsgSubmitProposalPerpetualMarketLaunch.Object,
-    }
-  }
-
-  public toWeb3() {
-    const { params } = this
-
     const messageWithProposalType = snakecaseKeys({
       content: {
-        '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
-        ...this.getContent(),
+        type: 'exchange/PerpetualMarketLaunchProposal',
+        value: message.content,
       },
       initialDeposit: [
         {
@@ -188,8 +171,32 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     })
 
     return {
+      type: 'cosmos-sdk/MsgSubmitProposal',
+      value:
+        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>,
+    }
+  }
+
+  public toWeb3() {
+    const { params } = this
+
+    const messageWithProposalType = {
+      content: {
+        '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
+        ...this.getContent(),
+      },
+      initialDeposit: [
+        {
+          denom: params.deposit.denom,
+          amount: params.deposit.amount,
+        },
+      ],
+      proposer: params.proposer,
+    }
+
+    return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as MsgSubmitProposalPerpetualMarketLaunch.Object),
+      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>),
     }
   }
 
