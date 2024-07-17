@@ -2174,10 +2174,10 @@
   resolved "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@injectivelabs/core-proto-ts@0.0.26":
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.26.tgz#b986d3c50f983a5fb740d88710f729c373317eee"
-  integrity sha512-s51bQMj8s2G1+EydGnWitfhlnh9/5bExSW0+GrZEhZy22BmXK1AR9SPak20efj2VyzRRv0rj17GG1ck9PNUUGQ==
+"@injectivelabs/core-proto-ts@0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.27.tgz#c925607c77cf226e39b55f71fb695e710d2b4dbd"
+  integrity sha512-jGGjBp0Jp051S5nnvkzgfceHGwUlS05DsbC7coYI5MjFpoWnNKN4DXJb1vo3kYvWUMTYUjLEUIB+3hC1t4SuDA==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
