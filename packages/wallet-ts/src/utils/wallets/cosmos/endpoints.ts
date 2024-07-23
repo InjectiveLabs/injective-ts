@@ -161,6 +161,11 @@ export const getEndpointsFromChainId = (
         rpc: 'https://evmos-testnet-rpc.polkachu.com',
         rest: 'https://evmos-testnet-api.polkachu.com',
       }
+    case TestnetCosmosChainId.Xion:
+      return {
+        rpc: 'https://rpc.xion-testnet-1.burnt.com/',
+        rest: 'https://api.xion-testnet-1.burnt.com/',
+      }
     default:
       throw new GeneralException(
         new Error(`Endpoints for ${chainId} not found`),
