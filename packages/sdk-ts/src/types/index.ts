@@ -4,6 +4,10 @@ import {
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
 
+export * from './../client/gql/types'
+export * from './../client/wasm/types'
+export * from './../client/chain/types'
+export * from './../client/indexer/types'
 export * from './token'
 export * from './exchange'
 export * from './pagination'
