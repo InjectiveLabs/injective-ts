@@ -17,6 +17,7 @@ jobs:
         uses: actions/checkout@v2 # Public action
         with:
           fetch-depth: 0 # Checkout all branches and tags
+          persist-credentials: false
 
       - name: 'Use NodeJS 18' # Setup node using version 14
         uses: actions/setup-node@v2 # Public action

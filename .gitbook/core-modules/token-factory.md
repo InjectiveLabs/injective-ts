@@ -1,4 +1,4 @@
-# Token Factory
+# Tokenfactory
 
 ## Token Factory
 
@@ -141,12 +141,12 @@ const denomUnitsIfTokenHas6Decimals = [
   {
     denom: denom, /** we use the whole denom here */
     exponent: 0,
-    aliases: [`micro${subdenom}`]
+    aliases: [subdenom]
   },
   {
     denom: subdenom,
     exponent: 6, /** we use the subdenom only here (if you want your token to have 6 decimals) */
-    aliases: [subdenom]
+    aliases: []
   },
 ]
 
@@ -247,14 +247,14 @@ const msgSetDenomMetadata = MsgSetDenomMetadata.fromJSON({
     uri: '' /** the logo of your token, should be hosted on IPFS and should be a small webp image */
     denomUnits: [
       {
-        denom: `factory/${injectiveAddress}/u${subdenom}`, /** notice the u */
+        denom: denom,
         exponent: 0,
-        aliases: [`micro${subdenom}`]
+        aliases: [subdenom]
       },
       {
-        denom: denom,
+        denom: subdenom,
         exponent: 6, /** if you want your token to have 6 decimals */
-        aliases: [subdenom]
+        aliases: []
       },
     ]
   }

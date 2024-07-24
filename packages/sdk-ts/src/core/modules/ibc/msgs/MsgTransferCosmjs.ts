@@ -1,4 +1,3 @@
-import { MsgTransferEncodeObject } from '@cosmjs/stargate'
 import { MsgTransfer as BaseMsgTransferCosmjs } from 'cosmjs-types/ibc/applications/transfer/v1/tx'
 import {
   CosmosBaseV1Beta1Coin,
@@ -79,25 +78,27 @@ export default class MsgTransferCosmjs {
   public toAmino() {
     const { params } = this
 
-    const transferMsg: MsgTransferEncodeObject = {
-      typeUrl: '/ibc.applications.transfer.v1.MsgTransfer',
-      value: BaseMsgTransferCosmjs.fromPartial({
-        sourcePort: params.port,
-        sourceChannel: params.channelId,
-        token: params.amount,
-        sender: params.sender,
-        receiver: params.receiver,
-        timeoutHeight: params.height
-          ? {
-              revisionHeight: BigInt(params.height.revisionHeight),
-              revisionNumber: BigInt(params.height.revisionNumber),
-            }
-          : undefined,
-        timeoutTimestamp: params.timeout ? BigInt(params.timeout) : undefined,
-      }),
-    }
+    const message = BaseMsgTransferCosmjs.fromPartial({
+      sourcePort: params.port,
+      sourceChannel: params.channelId,
+      sender: params.sender,
+      receiver: params.receiver,
+      token: params.amount,
+      timeoutHeight: params.height
+        ? {
+            revisionHeight: BigInt(params.height.revisionHeight),
+            revisionNumber: BigInt(params.height.revisionNumber),
+          }
+        : undefined,
+      timeoutTimestamp: params.timeout ? BigInt(params.timeout) : undefined,
+    })
 
-    return transferMsg
+    return {
+      type: '/ibc.applications.transfer.v1.MsgTransfer',
+      value: {
+        ...message,
+      },
+    }
   }
 
   public toWeb3() {

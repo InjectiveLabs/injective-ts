@@ -22,6 +22,11 @@ import Provider, {
   EthereumProviderOptions,
 } from '@walletconnect/ethereum-provider'
 
+const WalletConnectIds = {
+  FireBlocks:
+    '5864e2ced7c293ed18ac35e0db085c09ed567d67346ccb6f58a0327a75137489',
+}
+
 interface WalletConnectArgs extends EthereumWalletStrategyArgs {
   metadata?: WalletConnectMetadata
 }
@@ -320,6 +325,24 @@ export default class WalletConnect
           .metadata as unknown as EthereumProviderOptions['metadata'],
         showQrModal: true,
         optionalChains: [1, 5, 42, 11155111],
+        qrModalOptions: {
+          explorerRecommendedWalletIds: [WalletConnectIds.FireBlocks],
+          explorerExcludedWalletIds: 'ALL',
+          mobileWallets: [],
+          walletImages: {
+            [WalletConnectIds.FireBlocks]: '/wallet-connect/fireblocks.webp',
+          },
+          desktopWallets: [
+            {
+              id: WalletConnectIds.FireBlocks,
+              name: 'Fireblocks',
+              links: {
+                native: 'fireblocks-wc://',
+                universal: 'https://console.fireblocks.io/v2/',
+              },
+            },
+          ],
+        },
       })
 
       return this.provider

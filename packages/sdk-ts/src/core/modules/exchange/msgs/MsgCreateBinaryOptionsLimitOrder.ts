@@ -96,9 +96,9 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const proto = createLimitOrder(params)
+    const order = createLimitOrder(params)
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(order),
     }
 
     return {

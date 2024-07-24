@@ -89,9 +89,9 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const proto = createMarketOrder(params)
+    const order = createMarketOrder(params)
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(order),
     }
 
     return {

@@ -1,9 +1,9 @@
 import {
   HttpClient,
-  DEFAULT_BLOCK_TIME_IN_SECONDS,
-  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   BigNumberInBase,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_BLOCK_TIME_IN_SECONDS,
+  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import {
   BroadcastMode,
@@ -199,6 +199,8 @@ export class TxRestApi implements TxConcreteApi {
   /**
    * Broadcast the transaction using the "block" mode, waiting for its inclusion in the blockchain.
    * @param tx transaction to broadcast
+   *
+   * @deprecated - the BLOCk mode broadcasting is deprecated now, use either sync or async
    */
   public async broadcastBlock(tx: CosmosTxV1Beta1Tx.TxRaw) {
     const response = await this.broadcastTx<{
