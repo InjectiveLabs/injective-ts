@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/exceptions",
   "description": "List of exceptions that can be reused throughout Injective's projects.",
-  "version": "1.14.13-dev.2",
+  "version": "1.14.13-dev.3",
   "sideEffects": false,
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@injectivelabs/grpc-web": "^0.0.1",
-    "@injectivelabs/ts-types": "^1.14.13-dev.2",
+    "@injectivelabs/ts-types": "^1.14.13-dev.3",
     "http-status-codes": "^2.2.0",
     "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
