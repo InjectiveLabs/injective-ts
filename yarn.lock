@@ -2253,6 +2253,18 @@
     link-module-alias "^1.2.0"
     shx "^0.3.2"
 
+"@injectivelabs/test-utils@^1.14.13-beta.0":
+  version "1.14.13"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/test-utils/-/test-utils-1.14.13.tgz#b63636e5c780e86b2dda948ee0b16199d96a42c4"
+  integrity sha512-wa5TQcWLvORRm36mw4Hee+XF7lBlArVK3DM1ebC0uBvVcUgrmm3g/nh1pV/NzLN16WtrLLsvnTsE5uiNEcgYdw==
+  dependencies:
+    axios "^1.6.4"
+    bignumber.js "^9.0.1"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+    snakecase-keys "^5.1.2"
+    store2 "^2.12.0"
+
 "@injectivelabs/ts-types@^1.14.12", "@injectivelabs/ts-types@^1.14.12-beta.0":
   version "1.14.12"
   resolved "https://registry.yarnpkg.com/@injectivelabs/ts-types/-/ts-types-1.14.12.tgz#6a3b9882665d0e6899cdf1b3cc290ca1fd2cfa53"
