@@ -42,6 +42,7 @@ export interface MsgBroadcasterOptions {
   ethereumChainId?: EthereumChainId
   feePayerPubKey?: string
   simulateTx?: boolean
+  txTimeoutOnFeeDelegation?: boolean
   txTimeout?: number // blocks to wait for tx to be included in a block
   walletStrategy: WalletStrategy
   gasBufferCoefficient?: number

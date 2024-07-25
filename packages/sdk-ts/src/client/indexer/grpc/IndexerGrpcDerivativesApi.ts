@@ -140,13 +140,9 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
           () => this.client.BinaryOptionsMarkets(request),
         )
 
-      return pagination
-        ? IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
-            response,
-          )
-        : IndexerGrpcDerivativeTransformer.binaryOptionsMarketsResponseToBinaryOptionsMarkets(
-            response,
-          )
+      return IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -456,7 +452,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
   }
 
   async fetchPositionsV2(params?: {
-    address?: string,
+    address?: string
     marketId?: string
     marketIds?: string[]
     subaccountId?: string

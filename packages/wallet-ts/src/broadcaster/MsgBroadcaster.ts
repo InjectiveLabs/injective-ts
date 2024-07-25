@@ -93,6 +93,8 @@ export class MsgBroadcaster {
 
   public simulateTx: boolean = true
 
+  public txTimeoutOnFeeDelegation: boolean = false
+
   public ethereumChainId?: EthereumChainId
 
   public gasBufferCoefficient: number = 1.2
@@ -101,8 +103,13 @@ export class MsgBroadcaster {
     const networkInfo = getNetworkInfo(options.network)
 
     this.options = options
-    this.simulateTx = options.simulateTx || true
+    this.simulateTx =
+      options.simulateTx !== undefined ? options.simulateTx : true
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
+    this.txTimeoutOnFeeDelegation =
+      options.txTimeoutOnFeeDelegation !== undefined
+        ? options.txTimeoutOnFeeDelegation
+        : true
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.2
     this.chainId = options.chainId || networkInfo.chainId
     this.ethereumChainId =
@@ -113,6 +120,8 @@ export class MsgBroadcaster {
   setOptions(options: Partial<MsgBroadcasterOptions>) {
     this.simulateTx = options.simulateTx || this.simulateTx
     this.txTimeout = options.txTimeout || this.txTimeout
+    this.txTimeoutOnFeeDelegation =
+      options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
   }
 
   /**
@@ -263,7 +272,7 @@ export class MsgBroadcaster {
     if (baseAccount.pubKey) {
       const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee({
         chainId,
-        signMode: SIGN_EIP712_V2,
+        signMode: SIGN_EIP712,
         memo: tx.memo,
         message: msgs,
         timeoutHeight: timeoutHeight.toNumber(),
@@ -496,7 +505,14 @@ export class MsgBroadcaster {
   private async broadcastWeb3WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ): Promise<TxResponse> {
-    const { options, simulateTx, ethereumChainId, endpoints } = this
+    const {
+      options,
+      txTimeout,
+      endpoints,
+      simulateTx,
+      ethereumChainId,
+      txTimeoutOnFeeDelegation,
+    } = this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
@@ -509,7 +525,21 @@ export class MsgBroadcaster {
       endpoints.web3gw || endpoints.indexer,
     )
 
+    let timeoutHeight = undefined
+
+    if (txTimeoutOnFeeDelegation) {
+      const latestBlock = await new ChainGrpcTendermintApi(
+        endpoints.grpc,
+      ).fetchLatestBlock()
+      const latestHeight = latestBlock!.header!.height
+
+      timeoutHeight = new BigNumberInBase(latestHeight)
+        .plus(txTimeout)
+        .toNumber()
+    }
+
     const txResponse = await transactionApi.prepareTxRequest({
+      timeoutHeight,
       memo: tx.memo,
       message: web3Msgs,
       address: tx.ethereumAddress,
@@ -818,7 +848,8 @@ export class MsgBroadcaster {
   private async broadcastCosmosWithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, chainId, endpoints } = this
+    const { options, chainId, txTimeout, endpoints, txTimeoutOnFeeDelegation } =
+      this
     const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -862,7 +893,7 @@ export class MsgBroadcaster {
     ).fetchLatestBlock()
     const latestHeight = latestBlock!.header!.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+      txTimeoutOnFeeDelegation ? txTimeout : DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
     const pubKey = await walletStrategy.getPubKey()

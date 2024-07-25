@@ -9,10 +9,10 @@ import {
   GeneralException,
 } from '@injectivelabs/exceptions'
 import {
-  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+  BigNumberInBase,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-  BigNumberInBase,
+  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import { TxResponse } from '../types/tx'
 import BaseGrpcWebConsumer from '../../../../client/base/BaseGrpcWebConsumer'
@@ -207,17 +207,15 @@ export class TxGrpcApi implements TxConcreteApi {
     }
   }
 
-  public async broadcastBlock(
-    txRaw: CosmosTxV1Beta1Tx.TxRaw,
-    broadcastMode: CosmosTxV1Beta1Service.BroadcastMode = CosmosTxV1Beta1Service
-      .BroadcastMode.BROADCAST_MODE_BLOCK,
-  ) {
+  /** @deprecated - the BLOCk mode broadcasting is deprecated now, use either sync or async */
+  public async broadcastBlock(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
     const { txService } = this
 
     const broadcastTxRequest =
       CosmosTxV1Beta1Service.BroadcastTxRequest.create()
     broadcastTxRequest.txBytes = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
-    broadcastTxRequest.mode = broadcastMode
+    broadcastTxRequest.mode =
+      CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_BLOCK
 
     try {
       const response = await txService.BroadcastTx(broadcastTxRequest)

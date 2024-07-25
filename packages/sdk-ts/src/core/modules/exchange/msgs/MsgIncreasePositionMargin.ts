@@ -63,9 +63,9 @@ export default class MsgIncreasePositionMargin extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const proto = createMessage(params)
+    const msg = createMessage(params)
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(msg),
     }
 
     return {
