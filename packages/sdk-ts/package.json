@@ -37,7 +37,7 @@
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
     "@ethersproject/bytes": "^5.7.0",
-    "@injectivelabs/core-proto-ts": "0.0.27",
+    "@injectivelabs/core-proto-ts": "0.0.28",
     "@injectivelabs/dmm-proto-ts": "1.0.20",
     "@injectivelabs/exceptions": "^1.14.13-dev.3",
     "@injectivelabs/grpc-web": "^0.0.1",

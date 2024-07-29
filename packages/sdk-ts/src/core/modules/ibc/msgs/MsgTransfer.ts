@@ -56,8 +56,8 @@ export default class MsgTransfer extends MsgBase<
     if (params.height) {
       const timeoutHeight = IbcCoreClientV1Client.Height.create()
 
-      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
       timeoutHeight.revisionNumber = params.height.revisionNumber.toString()
+      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
 
       message.timeoutHeight = timeoutHeight
     }
