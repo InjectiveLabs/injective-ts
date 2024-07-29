@@ -2,7 +2,7 @@ import {
   GrpcUnaryRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { IbcApplicationsTransferV2Query } from '@injectivelabs/core-proto-ts'
+import { IbcApplicationsTransferV1Query } from '@injectivelabs/core-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { ChainModule } from '../types'
 import { PaginationOption } from '../../../types/pagination'
@@ -14,31 +14,31 @@ import { paginationRequestFromPagination } from '../../../utils/pagination'
 export class ChainGrpcIbcApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Ibc
 
-  protected client: IbcApplicationsTransferV2Query.QueryV2ClientImpl
+  protected client: IbcApplicationsTransferV1Query.QueryClientImpl
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new IbcApplicationsTransferV2Query.QueryV2ClientImpl(
+    this.client = new IbcApplicationsTransferV1Query.QueryClientImpl(
       this.getGrpcWebImpl(endpoint),
     )
   }
 
   async fetchDenomTrace(hash: string) {
     const request =
-      IbcApplicationsTransferV2Query.QueryDenomRequest.create()
+      IbcApplicationsTransferV1Query.QueryDenomTraceRequest.create()
 
     request.hash = hash
 
     try {
       const response =
-        await this.retry<IbcApplicationsTransferV2Query.QueryDenomResponse>(
-          () => this.client.Denom(request, this.metadata),
+        await this.retry<IbcApplicationsTransferV1Query.QueryDenomTraceResponse>(
+          () => this.client.DenomTrace(request, this.metadata),
         )
 
-      return response.denom!
+      return response.denomTrace!
     } catch (e: any) {
-      if (e instanceof IbcApplicationsTransferV2Query.GrpcWebError) {
+      if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           context: 'DenomTrace',
@@ -56,7 +56,7 @@ export class ChainGrpcIbcApi extends BaseGrpcConsumer {
 
   async fetchDenomsTrace(pagination?: PaginationOption) {
     const request =
-      IbcApplicationsTransferV2Query.QueryDenomsRequest.create()
+      IbcApplicationsTransferV1Query.QueryDenomTracesRequest.create()
 
     const paginationForRequest = paginationRequestFromPagination(pagination)
 
@@ -66,13 +66,13 @@ export class ChainGrpcIbcApi extends BaseGrpcConsumer {
 
     try {
       const response =
-        await this.retry<IbcApplicationsTransferV2Query.QueryDenomsResponse>(
-          () => this.client.Denoms(request, this.metadata),
+        await this.retry<IbcApplicationsTransferV1Query.QueryDenomTracesResponse>(
+          () => this.client.DenomTraces(request, this.metadata),
         )
 
-      return response.denoms
+      return response.denomTraces
     } catch (e: any) {
-      if (e instanceof IbcApplicationsTransferV2Query.GrpcWebError) {
+      if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
           context: 'DenomTraces',

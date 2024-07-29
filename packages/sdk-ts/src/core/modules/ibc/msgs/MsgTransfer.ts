@@ -49,14 +49,15 @@ export default class MsgTransfer extends MsgBase<
 
     message.sourcePort = params.port
     message.sourceChannel = params.channelId
+    message.token = token
     message.sender = params.sender
     message.receiver = params.receiver
 
     if (params.height) {
       const timeoutHeight = IbcCoreClientV1Client.Height.create()
 
-      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
       timeoutHeight.revisionNumber = params.height.revisionNumber.toString()
+      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
 
       message.timeoutHeight = timeoutHeight
     }
@@ -66,7 +67,6 @@ export default class MsgTransfer extends MsgBase<
     }
 
     message.memo = params.memo || ''
-    message.tokens = [token]
 
     return IbcApplicationsTransferV1Tx.MsgTransfer.fromJSON(message)
   }
