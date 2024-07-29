@@ -4,6 +4,7 @@ import { grpcPagingToPaging } from '../../..//utils/pagination'
 import {
   Guild,
   Campaign,
+  CampaignV2,
   GuildMember,
   CampaignUser,
   GuildCampaignSummary,
@@ -175,6 +176,41 @@ export class IndexerCampaignTransformer {
       guildInfo: response.guildInfo
         ? IndexerCampaignTransformer.GrpcGuildToGuild(response.guildInfo)
         : undefined,
+    }
+  }
+
+  static GrpcCampaignV2ToCampaignV2(
+    campaign: InjectiveCampaignRpc.CampaignV2,
+  ): CampaignV2 {
+    return {
+      campaignId: campaign.campaignId,
+      marketId: campaign.marketId,
+      totalScore: campaign.totalScore,
+      createdAt: campaign.createdAt,
+      updatedAt: campaign.updatedAt,
+      startDate: campaign.startDate,
+      endDate: campaign.endDate,
+      isClaimable: campaign.isClaimable,
+      roundId: campaign.roundId,
+      managerContract: campaign.managerContract,
+      rewards: campaign.rewards.map(IndexerCampaignTransformer.GrpcCoinToCoin),
+      subaccountIdSuffix: campaign.subaccountIdSuffix,
+      rewardContract: campaign.rewardContract,
+      type: campaign.type,
+      version: campaign.version,
+      name: campaign.name,
+      description: campaign.description,
+    }
+  }
+
+  static CampaignsV2ResponseToCampaigns(
+    response: InjectiveCampaignRpc.CampaignsV2Response,
+  ) {
+    return {
+      campaigns: response.campaigns.map(
+        IndexerCampaignTransformer.GrpcCampaignV2ToCampaignV2,
+      ),
+      cursor: response.cursor,
     }
   }
 }

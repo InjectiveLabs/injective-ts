@@ -85,6 +85,48 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     }
   }
 
+  async fetchCampaigns({
+    type,
+    active,
+    limit,
+    cursor,
+  }: {
+    type: string
+    active: boolean
+    limit: number
+    cursor: string
+  }) {
+    const request = InjectiveCampaignRpc.CampaignsV2Request.create()
+
+    request.type = type
+    request.active = active
+    request.limit = limit
+    request.cursor = cursor
+    console.log({ request, type, active, limit, cursor })
+    try {
+      const response =
+        await this.retry<InjectiveCampaignRpc.CampaignsV2Response>(() =>
+          this.client.CampaignsV2(request),
+        )
+
+      return IndexerCampaignTransformer.CampaignsV2ResponseToCampaigns(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'FetchCampaigns',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'FetchCampaigns',
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchRound({
     roundId,
     toRoundId,

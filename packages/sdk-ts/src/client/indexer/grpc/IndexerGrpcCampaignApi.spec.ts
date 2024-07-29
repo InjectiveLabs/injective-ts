@@ -98,4 +98,28 @@ describe.skip('IndexerGrpcCampaignApi', () => {
       )
     }
   })
+
+  test('fetchCampaigns', async () => {
+    try {
+      const response = await indexerGrpcCampaignApi.fetchCampaigns({
+        type: 'reward',
+        active: true,
+        limit: 10,
+        cursor: '',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerCampaignTransformer.CampaignsV2ResponseToCampaigns
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcCampaignApi.fetchCampaigns => ' + (e as any).message,
+      )
+    }
+  })
 })
