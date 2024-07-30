@@ -115,7 +115,10 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
         response,
       )
     } catch (e: any) {
-      if (e.message.includes('does not exist')) {
+      if (
+        e.message.includes('does not exist') ||
+        e.message.includes('no delegation for (address, validator) tuple')
+      ) {
         return [] as Coin[]
       }
 
