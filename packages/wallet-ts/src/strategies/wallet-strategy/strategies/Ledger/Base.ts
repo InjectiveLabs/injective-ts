@@ -1,8 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import {
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
@@ -410,7 +407,7 @@ export default class LedgerBase
       network:
         ethereumChainId === EthereumChainId.Mainnet
           ? AlchemyNetwork.ETH_MAINNET
-          : AlchemyNetwork.ETH_GOERLI,
+          : AlchemyNetwork.ETH_SEPOLIA,
     })
 
     return this.alchemy
