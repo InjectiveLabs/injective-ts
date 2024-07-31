@@ -5,6 +5,9 @@ import { IndexerGrpcArchiverApi } from './IndexerGrpcArchiverApi'
 
 const account = mockFactory.injectiveAddress
 const resolution = '1D'
+const startDate = 1622505600
+const endDate = 1625097600
+const limit = 10
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcArchiverApi = new IndexerGrpcArchiverApi(endpoints.indexer)
 
@@ -72,6 +75,100 @@ describe('IndexerGrpcArchiverApi', () => {
     } catch (e) {
       console.error(
         'IndexerGrpcArchiverApi.fetchHistoricalVolumes => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchPnlLeaderboard', async () => {
+    try {
+      const response = await indexerGrpcArchiverApi.fetchPnlLeaderboard({
+        startDate,
+        endDate,
+        limit,
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcArchiverTransformer.grpcPnlLeaderboardResponseToPnlLeaderboard
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcArchiverApi.fetchPnlLeaderboard => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchVolLeaderboard', async () => {
+    try {
+      const response = await indexerGrpcArchiverApi.fetchVolLeaderboard({
+        startDate,
+        endDate,
+        limit,
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcArchiverTransformer.grpcVolLeaderboardResponseToVolLeaderboard
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcArchiverApi.fetchVolLeaderboard => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchPnlLeaderboardFixedResolution', async () => {
+    try {
+      const response =
+        await indexerGrpcArchiverApi.fetchPnlLeaderboardFixedResolution({
+          resolution,
+          limit,
+        })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcArchiverTransformer.grpcPnlLeaderboardFixedResolutionResponseToPnlLeaderboard
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcArchiverApi.fetchPnlLeaderboardFixedResolution => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchVolLeaderboardFixedResolution', async () => {
+    try {
+      const response =
+        await indexerGrpcArchiverApi.fetchVolLeaderboardFixedResolution({
+          resolution,
+          limit,
+        })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcArchiverTransformer.grpcVolLeaderboardFixedResolutionResponseToVolLeaderboard
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcArchiverApi.fetchVolLeaderboardFixedResolution => ' +
           (e as any).message,
       )
     }

@@ -133,4 +133,176 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchPnlLeaderboard({
+    startDate,
+    endDate,
+    limit,
+  }: {
+    startDate: number
+    endDate: number
+    limit?: number
+  }) {
+    const request = InjectiveArchiverRpc.PnlLeaderboardRequest.create()
+
+    request.startDate = startDate
+    request.endDate = endDate
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveArchiverRpc.PnlLeaderboardResponse>(() =>
+          this.client.PnlLeaderboard(request),
+        )
+
+      return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardResponseToPnlLeaderboard(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Pnl Leaderboard',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Pnl Leaderboard',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchVolLeaderboard({
+    startDate,
+    endDate,
+    limit,
+  }: {
+    startDate: number
+    endDate: number
+    limit?: number
+  }) {
+    const request = InjectiveArchiverRpc.VolLeaderboardRequest.create()
+
+    request.startDate = startDate
+    request.endDate = endDate
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveArchiverRpc.VolLeaderboardResponse>(() =>
+          this.client.VolLeaderboard(request),
+        )
+
+      return IndexerGrpcArchiverTransformer.grpcVolLeaderboardResponseToVolLeaderboard(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Vol Leaderboard',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Vol Leaderboard',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchPnlLeaderboardFixedResolution({
+    resolution,
+    limit,
+  }: {
+    resolution: string
+    limit?: number
+  }) {
+    const request =
+      InjectiveArchiverRpc.PnlLeaderboardFixedResolutionRequest.create()
+
+    request.resolution = resolution
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveArchiverRpc.PnlLeaderboardFixedResolutionResponse>(
+          () => this.client.PnlLeaderboardFixedResolution(request),
+        )
+
+      return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardFixedResolutionResponseToPnlLeaderboard(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Pnl Leaderboard Fixed Resolution',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Pnl Leaderboard Fixed Resolution',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchVolLeaderboardFixedResolution({
+    resolution,
+    limit,
+  }: {
+    resolution: string
+    limit?: number
+  }) {
+    const request =
+      InjectiveArchiverRpc.VolLeaderboardFixedResolutionRequest.create()
+
+    request.resolution = resolution
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveArchiverRpc.VolLeaderboardFixedResolutionResponse>(
+          () => this.client.VolLeaderboardFixedResolution(request),
+        )
+
+      return IndexerGrpcArchiverTransformer.grpcVolLeaderboardFixedResolutionResponseToVolLeaderboard(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Vol Leaderboard Fixed Resolution',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Vol Leaderboard Fixed Resolution',
+        contextModule: this.module,
+      })
+    }
+  }
 }

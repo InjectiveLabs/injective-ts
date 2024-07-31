@@ -91,18 +91,29 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     limit,
     cursor,
   }: {
-    type: string
-    active: boolean
-    limit: number
-    cursor: string
+    type?: string
+    active?: boolean
+    limit?: number
+    cursor?: string
   }) {
     const request = InjectiveCampaignRpc.CampaignsV2Request.create()
 
-    request.type = type
-    request.active = active
-    request.limit = limit
-    request.cursor = cursor
-    console.log({ request, type, active, limit, cursor })
+    if (type) {
+      request.type = type
+    }
+
+    if (active) {
+      request.active = active
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    if (cursor) {
+      request.cursor = cursor
+    }
+
     try {
       const response =
         await this.retry<InjectiveCampaignRpc.CampaignsV2Response>(() =>

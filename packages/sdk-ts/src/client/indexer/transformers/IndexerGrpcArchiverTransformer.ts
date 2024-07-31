@@ -2,6 +2,9 @@ import {
   HistoricalRPNL,
   HistoricalBalance,
   HistoricalVolumes,
+  LeaderboardRow,
+  PnlLeaderboard,
+  VolLeaderboard,
 } from '../types/archiver'
 import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
@@ -33,6 +36,17 @@ export class IndexerGrpcArchiverTransformer {
     return {
       t: historicalVolumes.t,
       v: historicalVolumes.v,
+    }
+  }
+
+  static grpcLeaderboardRowToLeaderboardRow(
+    leaderboardRow: InjectiveArchiverRpc.LeaderboardRow,
+  ): LeaderboardRow {
+    return {
+      account: leaderboardRow.account,
+      pnl: leaderboardRow.pnl,
+      volume: leaderboardRow.volume,
+      rank: leaderboardRow.rank,
     }
   }
 
@@ -70,5 +84,53 @@ export class IndexerGrpcArchiverTransformer {
     return IndexerGrpcArchiverTransformer.grpcHistoricalVolumesToHistoricalVolumes(
       response.historicalVolumes,
     )
+  }
+
+  static grpcPnlLeaderboardResponseToPnlLeaderboard(
+    response: InjectiveArchiverRpc.PnlLeaderboardResponse,
+  ): PnlLeaderboard {
+    return {
+      firstDate: response.firstDate,
+      lastDate: response.lastDate,
+      leaders: response.leaders.map(
+        IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
+      ),
+    }
+  }
+
+  static grpcVolLeaderboardResponseToVolLeaderboard(
+    response: InjectiveArchiverRpc.VolLeaderboardResponse,
+  ): VolLeaderboard {
+    return {
+      firstDate: response.firstDate,
+      lastDate: response.lastDate,
+      leaders: response.leaders.map(
+        IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
+      ),
+    }
+  }
+
+  static grpcPnlLeaderboardFixedResolutionResponseToPnlLeaderboard(
+    response: InjectiveArchiverRpc.PnlLeaderboardFixedResolutionResponse,
+  ): PnlLeaderboard {
+    return {
+      firstDate: response.firstDate,
+      lastDate: response.lastDate,
+      leaders: response.leaders.map(
+        IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
+      ),
+    }
+  }
+
+  static grpcVolLeaderboardFixedResolutionResponseToVolLeaderboard(
+    response: InjectiveArchiverRpc.VolLeaderboardFixedResolutionResponse,
+  ): VolLeaderboard {
+    return {
+      firstDate: response.firstDate,
+      lastDate: response.lastDate,
+      leaders: response.leaders.map(
+        IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
+      ),
+    }
   }
 }
