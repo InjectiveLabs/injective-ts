@@ -31,6 +31,7 @@ describe('MsgInstantSpotMarketLaunch', () => {
 
     expect(proto).toStrictEqual({
       ...protoParams,
+      minNotional: '1000000000000000000',
       minPriceTickSize: '1000',
       minQuantityTickSize: '1000000000000000000000000000000000',
     })
@@ -42,6 +43,7 @@ describe('MsgInstantSpotMarketLaunch', () => {
     expect(data).toStrictEqual({
       '@type': protoType,
       ...protoParams,
+      minNotional: '1000000000000000000',
       minPriceTickSize: '1000',
       minQuantityTickSize: '1000000000000000000000000000000000',
     })

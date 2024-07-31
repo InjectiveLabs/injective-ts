@@ -8,6 +8,7 @@ const params: MsgSetDenomMetadata['params'] = {
     symbol: 'TEST',
     display: 'factory/test',
     name: 'Test',
+    decimals: 18,
     description: 'test description',
     uri: 'https://injective.com',
     uriHash: '',
@@ -70,6 +71,7 @@ describe('MsgSetDenomMetadata', () => {
         { name: 'symbol', type: 'string' },
         { name: 'uri', type: 'string' },
         { name: 'uri_hash', type: 'string' },
+        { name: 'decimals', type: 'uint64' },
       ],
       TypeMetadataDenomUnits: [
         { name: 'denom', type: 'string' },
