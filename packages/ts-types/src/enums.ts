@@ -97,6 +97,8 @@ export enum MsgType {
   MsgMint = 'injective.tokenfactory.v1beta1.MsgMint',
   MsgCreateDenom = 'injective.tokenfactory.v1beta1.MsgCreateDenom',
   MsgExecuteContractCompat = 'injective.wasmx.v1.MsgExecuteContractCompat',
+  MsgPrivilegedExecuteContract = 'injective.exchange.v1beta1.MsgPrivilegedExecuteContract',
+  MsgMultiSend = 'cosmos.bank.v1beta1.MsgMultiSend',
 }
 
 export enum MsgStatus {

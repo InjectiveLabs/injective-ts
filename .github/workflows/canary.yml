@@ -46,8 +46,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          lerna version prerelease --preid dev --force-git-tag --no-changelog --yes
-          lerna publish from-git --force-git-tag --dist-tag dev --yes --summary-file
+          lerna version prerelease --preid alpha --force-git-tag --no-changelog --yes
+          lerna publish from-git --force-git-tag --dist-tag alpha --yes --summary-file
 
       - name: 'Broadcast published versions on Slack'
         run: node etc/slack --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
