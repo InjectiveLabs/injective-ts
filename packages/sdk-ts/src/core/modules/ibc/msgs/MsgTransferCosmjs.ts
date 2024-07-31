@@ -49,11 +49,12 @@ export default class MsgTransferCosmjs {
     token.amount = params.amount.amount
 
     const message = IbcApplicationsTransferV1Tx.MsgTransfer.create()
-    message.receiver = params.receiver
-    message.sender = params.sender
-    message.sourceChannel = params.channelId
+
     message.sourcePort = params.port
+    message.sourceChannel = params.channelId
     message.token = token
+    message.sender = params.sender
+    message.receiver = params.receiver
 
     if (params.height) {
       const timeoutHeight = IbcCoreClientV1Client.Height.create()

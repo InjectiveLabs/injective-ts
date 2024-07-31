@@ -24,6 +24,7 @@ export interface SpotMarket {
   serviceProviderFee: string
   minPriceTickSize: number
   minQuantityTickSize: number
+  minNotional: number
 }
 
 export interface SpotLimitOrder {

@@ -39,13 +39,15 @@ export default class MsgSend extends MsgBase<MsgSend.Params, MsgSend.Proto> {
       : [params.amount]
     const amountsToSend = amounts.map((amount) => {
       const amountToSend = CosmosBaseV1Beta1Coin.Coin.create()
-      amountToSend.amount = amount.amount
+
       amountToSend.denom = amount.denom
+      amountToSend.amount = amount.amount
 
       return amountToSend
     })
 
     const message = CosmosBankV1Beta1Tx.MsgSend.create()
+
     message.fromAddress = params.srcInjectiveAddress
     message.toAddress = params.dstInjectiveAddress
     message.amount = amountsToSend

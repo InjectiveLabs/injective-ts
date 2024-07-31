@@ -33,12 +33,14 @@ export default class MsgDeposit extends MsgBase<
     const { params } = this
 
     const deposit = CosmosBaseV1Beta1Coin.Coin.create()
-    deposit.amount = params.amount.amount
+
     deposit.denom = params.amount.denom
+    deposit.amount = params.amount.amount
 
     const message = CosmosGovV1Tx.MsgDeposit.create()
-    message.depositor = params.depositor
+
     message.proposalId = params.proposalId.toString()
+    message.depositor = params.depositor
     message.amount = [deposit]
 
     return CosmosGovV1Tx.MsgDeposit.fromPartial(message)

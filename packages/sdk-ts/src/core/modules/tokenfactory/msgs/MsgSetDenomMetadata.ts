@@ -1,7 +1,9 @@
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
-import { InjectiveTokenFactoryV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
+import {
+  CosmosBankV1Beta1Bank,
+  InjectiveTokenFactoryV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgSetDenomMetadata {
   export interface Params {
@@ -26,9 +28,30 @@ export default class MsgSetDenomMetadata extends MsgBase<
   public toProto() {
     const { params } = this
 
+    const metadata = CosmosBankV1Beta1Bank.Metadata.create()
+
+    metadata.description = params.metadata.description
+    metadata.denomUnits = params.metadata.denomUnits.map((value) => {
+      const denomUnit = CosmosBankV1Beta1Bank.DenomUnit.create()
+
+      denomUnit.denom = value.denom
+      denomUnit.exponent = value.exponent
+      denomUnit.aliases = value.aliases
+
+      return denomUnit
+    })
+    metadata.base = params.metadata.base
+    metadata.display = params.metadata.display
+    metadata.name = params.metadata.name
+    metadata.symbol = params.metadata.symbol
+    metadata.uri = params.metadata.uri
+    metadata.uriHash = params.metadata.uriHash
+    metadata.decimals = params.metadata.decimals
+
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.create()
+
     message.sender = params.sender
-    message.metadata = params.metadata
+    message.metadata = metadata
 
     return InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.fromPartial(
       message,

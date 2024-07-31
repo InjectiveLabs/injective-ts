@@ -20,6 +20,7 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
       minQuantityTickSize: string
       makerFeeRate: string
       takerFeeRate: string
+      minNotional: string
     }
     proposer: string
     deposit: {
@@ -41,17 +42,19 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
 const createSpotMarketLaunchContent = (
   params: MsgSubmitProposalSpotMarketLaunch.Params,
 ) => {
-  const content = InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.create()
+  const content =
+    InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.create()
 
   content.title = params.market.title
   content.description = params.market.description
-  content.quoteDenom = params.market.quoteDenom
   content.ticker = params.market.ticker
   content.baseDenom = params.market.baseDenom
+  content.quoteDenom = params.market.quoteDenom
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
   content.makerFeeRate = params.market.makerFeeRate
-  content.takerFeeRate = params.market.makerFeeRate
+  content.takerFeeRate = params.market.takerFeeRate
+  content.minNotional = params.market.minNotional
 
   return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.fromPartial(
     content,
@@ -76,6 +79,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     const { params } = this
 
     const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
@@ -93,23 +97,28 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
           params.market.makerFeeRate,
         ).toFixed(),
         takerFeeRate: amountToCosmosSdkDecAmount(
-          params.market.makerFeeRate,
+          params.market.takerFeeRate,
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          params.market.minNotional,
         ).toFixed(),
       },
     })
     const proposalType = '/injective.exchange.v1beta1.SpotMarketLaunchProposal'
 
     const contentAny = GoogleProtobufAny.Any.create()
+
+    contentAny.typeUrl = proposalType
     contentAny.value =
       InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.encode(
         content,
       ).finish()
-    contentAny.typeUrl = proposalType
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
+
     message.content = contentAny
-    message.proposer = params.proposer
     message.initialDeposit = [depositParams]
+    message.proposer = params.proposer
 
     return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
@@ -125,6 +134,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
   public toAmino() {
     const { params } = this
+
     const content = this.getContent()
 
     const message = {
@@ -133,17 +143,17 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     }
 
     const messageWithProposalType = snakecaseKeys({
-      proposer: params.proposer,
+      content: {
+        type: 'exchange/SpotMarketLaunchProposal',
+        value: message.content,
+      },
       initialDeposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        value: message.content,
-        type_url: 'exchange/SpotMarketLaunchProposal',
-      },
+      proposer: params.proposer,
     })
 
     return {
@@ -157,17 +167,17 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     const { params } = this
 
     const messageWithProposalType = {
-      proposer: params.proposer,
+      content: {
+        '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
+        ...this.getContent(),
+      },
       initialDeposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
-        ...this.getContent(),
-      },
+      proposer: params.proposer,
     }
 
     return {

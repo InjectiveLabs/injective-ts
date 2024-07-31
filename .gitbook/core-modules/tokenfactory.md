@@ -147,7 +147,8 @@ const msg = MsgSetDenomMetadata.fromJSON({
     name: '', /** the name of your token */,
     symbol: '' /** the symbol of your token */,
     uri: '' /** the logo of your token, should be hosted on IPFS and should be a small webp image */
-    denomUnits: denomUnitsIfTokenHas6Decimals  /** choose if you want to have 6 or 0 decimals for the token */
+    denomUnits: denomUnitsIfTokenHas6Decimals  /** choose if you want to have 6 or 0 decimals for the token */,
+    decimals: 6 /** choose if you want to have 6 or 0 decimals for the token */
   }
 });
 

@@ -19,10 +19,10 @@ const createMessage = (params: MsgIncreasePositionMargin.Params) => {
   const message = InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.create()
 
   message.sender = params.injectiveAddress
-  message.amount = params.amount
-  message.marketId = params.marketId
   message.sourceSubaccountId = params.srcSubaccountId
   message.destinationSubaccountId = params.dstSubaccountId
+  message.marketId = params.marketId
+  message.amount = params.amount
 
   return InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.fromPartial(
     message,

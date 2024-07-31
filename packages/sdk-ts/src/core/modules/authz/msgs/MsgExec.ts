@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase'
 import type { Msgs } from '../../msgs'
 import {
@@ -44,6 +43,7 @@ export default class MsgExec extends MsgBase<
 
     const actualMsgs = msgs.map((msg) => {
       const msgValue = GoogleProtobufAny.Any.create()
+
       msgValue.typeUrl = msg.toDirectSign().type
       msgValue.value = msg.toBinary()
 
@@ -65,15 +65,17 @@ export default class MsgExec extends MsgBase<
   }
 
   public toAmino() {
-    const proto = this.toProto()
-    const message = {
-      ...snakecaseKeys(proto),
-      msgs: proto.msgs,
-    }
+    const { params } = this
+    const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
 
     return {
       type: 'cosmos-sdk/MsgExec',
-      value: message as unknown as MsgExec.Object,
+      value: {
+        grantee: params.grantee,
+        msgs: msgs.map((msg) => {
+          return msg.toEip712()
+        }),
+      },
     }
   }
 

@@ -1,9 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable class-methods-use-this */
-import {
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
@@ -64,7 +61,10 @@ const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   return Chain.Mainnet
 }
 
-export default class Trezor extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export default class Trezor
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   private trezor: TrezorHW
 
   private ethereumOptions: WalletStrategyEthereumOptions
@@ -433,7 +433,7 @@ export default class Trezor extends BaseConcreteStrategy implements ConcreteWall
       network:
         ethereumChainId === EthereumChainId.Mainnet
           ? AlchemyNetwork.ETH_MAINNET
-          : AlchemyNetwork.ETH_GOERLI,
+          : AlchemyNetwork.ETH_SEPOLIA,
     })
 
     return this.alchemy

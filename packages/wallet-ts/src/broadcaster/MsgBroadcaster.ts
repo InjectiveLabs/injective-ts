@@ -306,6 +306,7 @@ export class MsgBroadcaster {
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
     )
+
     const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
@@ -417,13 +418,13 @@ export class MsgBroadcaster {
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
     )
+
     const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
       signature,
     })
 
-    /** Preparing the transaction for client broadcasting */
     const { txRaw } = createTransaction({
       message: msgs,
       memo: tx.memo,

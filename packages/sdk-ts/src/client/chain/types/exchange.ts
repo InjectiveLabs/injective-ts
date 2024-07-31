@@ -89,6 +89,17 @@ export interface ExchangeParams {
   maxDerivativeOrderSideCount: number
   injRewardStakedRequirementThreshold: string
   tradingRewardsVestingDuration: number
+  liquidatorRewardShareRate: string
+  binaryOptionsMarketInstantListingFee?: Coin
+  atomicMarketOrderAccessLevel: string
+  spotAtomicMarketOrderFeeMultiplier: string
+  derivativeAtomicMarketOrderFeeMultiplier: string
+  binaryOptionsAtomicMarketOrderFeeMultiplier: string
+  minimalProtocolFeeRate: string
+  isInstantDerivativeMarketLaunchEnabled: boolean
+  postOnlyModeHeightThreshold: string
+  marginDecreasePriceTimestampThresholdSeconds: string
+  exchangeAdmins: string[]
 }
 
 export interface ExchangeModuleParams extends ExchangeParams {

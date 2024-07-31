@@ -335,6 +335,42 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
       message.derivativeOrdersToCreate = orderData
     }
+
+    if (
+      params.binaryOptionsOrdersToCancel &&
+      params.binaryOptionsOrdersToCancel.length > 0
+    ) {
+      const orderData = params.binaryOptionsOrdersToCancel.map(
+        ({ marketId, subaccountId, orderHash, cid }) => {
+          const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
+
+          orderData.marketId = marketId
+          orderData.subaccountId = subaccountId
+
+          if (orderHash) {
+            orderData.orderHash = orderHash
+          }
+
+          if (cid) {
+            orderData.cid = cid
+          }
+
+          return orderData
+        },
+      )
+
+      message.derivativeOrdersToCancel = orderData
+    }
+
+    if (
+      params.binaryOptionsMarketIdsToCancelAll &&
+      params.binaryOptionsMarketIdsToCancelAll.length > 0
+    ) {
+      message.subaccountId = params.subaccountId
+      message.binaryOptionsMarketIdsToCancelAll =
+        params.binaryOptionsMarketIdsToCancelAll
+    }
+
     if (
       params.binaryOptionsOrdersToCreate &&
       params.binaryOptionsOrdersToCreate.length > 0

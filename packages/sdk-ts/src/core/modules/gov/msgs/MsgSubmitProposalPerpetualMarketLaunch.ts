@@ -1,4 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -26,6 +26,7 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
       takerFeeRate: string
       minPriceTickSize: string
       minQuantityTickSize: string
+      minNotional: string
     }
     proposer: string
     deposit: {
@@ -52,18 +53,19 @@ const createPerpetualMarketLaunch = (
 
   content.title = params.market.title
   content.description = params.market.description
-  content.quoteDenom = params.market.quoteDenom
   content.ticker = params.market.ticker
-  content.initialMarginRatio = params.market.initialMarginRatio
-  content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
-  content.makerFeeRate = params.market.makerFeeRate
-  content.takerFeeRate = params.market.takerFeeRate
+  content.quoteDenom = params.market.quoteDenom
   content.oracleBase = params.market.oracleBase
   content.oracleQuote = params.market.oracleQuote
   content.oracleScaleFactor = params.market.oracleScaleFactor
   content.oracleType = params.market.oracleType
+  content.initialMarginRatio = params.market.initialMarginRatio
+  content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
+  content.makerFeeRate = params.market.makerFeeRate
+  content.takerFeeRate = params.market.takerFeeRate
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
+  content.minNotional = params.market.minNotional
 
   return InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.fromPartial(
     content,
@@ -88,6 +90,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     const { params } = this
 
     const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
@@ -110,21 +113,26 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
         minQuantityTickSize: amountToCosmosSdkDecAmount(
           params.market.minQuantityTickSize,
         ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          params.market.minNotional,
+        ).toFixed(),
       },
     })
 
     const contentAny = GoogleProtobufAny.Any.create()
+
+    contentAny.typeUrl =
+      '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
     contentAny.value =
       InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.encode(
         content,
       ).finish()
-    contentAny.typeUrl =
-      '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
+
     message.content = contentAny
-    message.proposer = params.proposer
     message.initialDeposit = [depositParams]
+    message.proposer = params.proposer
 
     return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
@@ -141,47 +149,54 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
   public toAmino() {
     const { params } = this
 
-    const messageWithProposalType = {
+    const content = this.getContent()
+
+    const message = {
+      content,
       proposer: params.proposer,
+    }
+
+    const messageWithProposalType = snakecaseKeys({
+      content: {
+        type: 'exchange/PerpetualMarketLaunchProposal',
+        value: message.content,
+      },
       initialDeposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        type_url: 'exchange/PerpetualMarketLaunchProposal',
-        value: this.getContent(),
-      },
-    }
+      proposer: params.proposer,
+    })
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
       value:
-        messageWithProposalType as unknown as MsgSubmitProposalPerpetualMarketLaunch.Object,
+        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>,
     }
   }
 
   public toWeb3() {
     const { params } = this
 
-    const messageWithProposalType = snakecaseKeys({
-      proposer: params.proposer,
+    const messageWithProposalType = {
+      content: {
+        '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
+        ...this.getContent(),
+      },
       initialDeposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
-        ...this.getContent(),
-      },
-    })
+      proposer: params.proposer,
+    }
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as MsgSubmitProposalPerpetualMarketLaunch.Object),
+      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>),
     }
   }
 

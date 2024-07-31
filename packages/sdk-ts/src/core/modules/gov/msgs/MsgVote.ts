@@ -25,10 +25,11 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
     const { params } = this
 
     const message = CosmosGovV1Tx.MsgVote.create()
-    message.option = params.vote
+
     message.proposalId = params.proposalId.toString()
-    message.metadata = params.metadata
     message.voter = params.voter
+    message.option = params.vote
+    // message.metadata = params.metadata
     message.metadata = params.proposalId.toString()
 
     return message

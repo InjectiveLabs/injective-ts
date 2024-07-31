@@ -3,14 +3,14 @@ import {
   HistoricalBalance,
   HistoricalVolumes,
 } from '../types/archiver'
-import { InjectiveArchiverRPC } from '@injectivelabs/indexer-proto-ts'
+import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcArchiverTransformer {
   static grpcHistoricalBalanceToHistoricalBalance(
-    historicalBalance: InjectiveArchiverRPC.HistoricalBalance,
+    historicalBalance: InjectiveArchiverRpc.HistoricalBalance,
   ): HistoricalBalance {
     return {
       t: historicalBalance.t,
@@ -19,7 +19,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalRPNLToHistoricalRPNL(
-    historicalRPNL: InjectiveArchiverRPC.HistoricalRPNL,
+    historicalRPNL: InjectiveArchiverRpc.HistoricalRPNL,
   ): HistoricalRPNL {
     return {
       t: historicalRPNL.t,
@@ -28,7 +28,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalVolumesToHistoricalVolumes(
-    historicalVolumes: InjectiveArchiverRPC.HistoricalVolumes,
+    historicalVolumes: InjectiveArchiverRpc.HistoricalVolumes,
   ): HistoricalVolumes {
     return {
       t: historicalVolumes.t,
@@ -37,7 +37,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalBalanceResponseToHistoricalBalances(
-    response: InjectiveArchiverRPC.BalanceResponse,
+    response: InjectiveArchiverRpc.BalanceResponse,
   ): HistoricalBalance {
     if (!response.historicalBalance) {
       return { t: [], v: [] }
@@ -49,7 +49,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalRPNLResponseToHistoricalRPNL(
-    response: InjectiveArchiverRPC.RpnlResponse,
+    response: InjectiveArchiverRpc.RpnlResponse,
   ): HistoricalRPNL {
     if (!response.historicalRpnl) {
       return { t: [], v: [] }
@@ -61,7 +61,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalVolumesResponseToHistoricalVolumes(
-    response: InjectiveArchiverRPC.VolumesResponse,
+    response: InjectiveArchiverRpc.VolumesResponse,
   ): HistoricalVolumes {
     if (!response.historicalVolumes) {
       return { t: [], v: [] }

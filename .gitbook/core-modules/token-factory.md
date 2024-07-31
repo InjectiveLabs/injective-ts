@@ -19,31 +19,29 @@ Creates a denom of `factory/{creator address}/{subdenom}` given the denom creato
 Keep in mind that that the `admin` of the token can change the supply (mint or burn new tokens). Its recommended that the `admin` is unset using the `MsgChangeAdmin`, as explained below.
 
 ```ts
-import {
-  MsgCreateDenom,
-} from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
-import { Network } from "@injectivelabs/networks";
+import { MsgCreateDenom } from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
 
-const injectiveAddress = "inj1...";
-const privateKey = "0x...";
-const subdenom = "inj-test";
+const injectiveAddress = 'inj1...'
+const privateKey = '0x...'
+const subdenom = 'inj-test'
 
 const msg = MsgCreateDenom.fromJSON({
   subdenom,
   symbol: 'InjTest',
   name: 'Inj Testing',
   sender: injectiveAddress,
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
 #### MsgMint
@@ -51,33 +49,31 @@ console.log(txHash);
 Minting of a specific denom is only allowed for the current admin. Note, the current admin is defaulted to the creator of the denom.
 
 ```ts
-import {
-  MsgMint,
-} from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
-import { Network } from "@injectivelabs/networks";
+import { MsgMint } from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
 
-const injectiveAddress = "inj1...";
-const privateKey = "0x...";
-const subdenom = "inj-test";
+const injectiveAddress = 'inj1...'
+const privateKey = '0x...'
+const subdenom = 'inj-test'
 const amountToMint = 1_000_000_000
 
 const msg = MsgMint.fromJSON({
   sender: injectiveAddress,
   amount: {
     denom: `factory/${injectiveAddress}/${subdenom}`,
-    amount: amountToMint
-  }
-});
+    amount: amountToMint,
+  },
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
 #### MsgBurn
@@ -85,33 +81,31 @@ console.log(txHash);
 Burning of a specific denom is only allowed for the current admin. Note, the current admin is defaulted to the creator of the denom.
 
 ```ts
-import {
-  MsgBurn,
-} from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
-import { Network } from "@injectivelabs/networks";
+import { MsgBurn } from '@injectivelabs/sdk-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
 
-const injectiveAddress = "inj1...";
-const privateKey = "0x...";
-const subdenom = "inj-test";
+const injectiveAddress = 'inj1...'
+const privateKey = '0x...'
+const subdenom = 'inj-test'
 const amountToBurn = 1_000_000_000
 
 const msg = MsgBurn.fromJSON({
   sender: injectiveAddress,
   amount: {
     denom: `factory/${injectiveAddress}/${subdenom}`,
-    amount: amountToBurn
-  }
-});
+    amount: amountToBurn,
+  },
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
 #### MsgSetDenomMetadata
@@ -159,7 +153,8 @@ const msg = MsgSetDenomMetadata.fromJSON({
     name: '', /** the name of your token */
     symbol: '', /** the symbol of your token */
     uri: '' /** the logo of your token, should be hosted on IPFS and should be a small webp image */
-    denomUnits: denomUnitsIfTokenHas6Decimals  /** choose if you want to have 6 or 0 decimals for the token */
+    denomUnits: denomUnitsIfTokenHas6Decimals  /** choose if you want to have 6 or 0 decimals for the token */,
+    decimals: 6 /** choose if you want to have 6 or 0 decimals for the token */
   }
 });
 
@@ -190,7 +185,8 @@ const denom = `factory/${injectiveAddress}/${subdenom}`
 const msg = MsgChangeAdmin.fromJSON({
   denom,
   sender: injectiveAddress,
-  newAdmin: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49' /** SET TO ZERO ADDRESS */,
+  newAdmin:
+    'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49' /** SET TO ZERO ADDRESS */,
 })
 
 const txHash = await new MsgBroadcasterWithPk({

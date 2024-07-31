@@ -2174,10 +2174,10 @@
   resolved "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@injectivelabs/core-proto-ts@^0.0.21":
-  version "0.0.21"
-  resolved "https://registry.npmjs.org/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.21.tgz#b52d4bee7556ce57c7c7e2c1ec7f6b920b4c2ffd"
-  integrity sha512-RBxSkRBCty60R/l55/D1jsSW0Aof5dyGFhCFdN3A010KjMv/SzZGGr+6DZPY/hflyFeaJzDv/VTopCymKNRBvQ==
+"@injectivelabs/core-proto-ts@0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.28.tgz#87dde07027c0839fc27a29c19e54275c68538738"
+  integrity sha512-AHzRa8Us48HjciHS9KmZEgLuMBByeujZSyZv8xHOZku97pYapO7grIaLtLH41iMSD0bOAWqfV1SBgywYkOrDug==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2193,6 +2193,17 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
+
+"@injectivelabs/exceptions@^1.14.12", "@injectivelabs/exceptions@^1.14.12-beta.0":
+  version "1.14.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/exceptions/-/exceptions-1.14.12.tgz#bd1a7ebe07d044bf8d5265e4481770cf694be0f4"
+  integrity sha512-aZaGRIFVQIuOcPsbZcwEiWvDtO7yUWBplmPqBhPGt2h6YGaree8DbHJQnc/youIB61NpbGH6Qev4EJYDx9rIxA==
+  dependencies:
+    "@injectivelabs/grpc-web" "^0.0.1"
+    "@injectivelabs/ts-types" "^1.14.12"
+    http-status-codes "^2.2.0"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
 
 "@injectivelabs/grpc-web-node-http-transport@^0.0.2":
   version "0.0.2"
@@ -2211,10 +2222,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/indexer-proto-ts@1.11.42":
-  version "1.11.42"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.42.tgz#6923e286ad12e87d276c6bca1397ba0a013ee82d"
-  integrity sha512-6ejCpcWZWOSsELFIfUf2+xuJPOH+YdiJtwtB3d9x2H7dnrCBjXMxlPCSxoKEUbDH6w/lY2mO6TJm65rNy9piew==
+"@injectivelabs/indexer-proto-ts@1.11.44":
+  version "1.11.44"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.44.tgz#f3d48c421d835d9362d4cc604215295cb14164d7"
+  integrity sha512-D8/y6BE9h2mvMPlPz0GIwEr/0Ge0LdqBnYP9iwvI+4B3XUoE6sCFliE+Q0+4moj7kodsS3lpZ5qm0Q3s9Nun4g==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2230,6 +2241,52 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
+
+"@injectivelabs/networks@^1.14.12-beta.0":
+  version "1.14.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/networks/-/networks-1.14.12.tgz#4d6f6849d5329f3f2a06d3455c04a38216ca08e3"
+  integrity sha512-YlUyL5Q8W12xXS7Z4Wp/7WQvIxII3TLXq+muxHHwaH5vpMIS/06IFhhVl2RFtPyvVwUqHRowB8VnCeK22eCgYw==
+  dependencies:
+    "@injectivelabs/exceptions" "^1.14.12"
+    "@injectivelabs/ts-types" "^1.14.12"
+    "@injectivelabs/utils" "^1.14.12"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+
+"@injectivelabs/test-utils@^1.14.13-beta.0":
+  version "1.14.13"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/test-utils/-/test-utils-1.14.13.tgz#b63636e5c780e86b2dda948ee0b16199d96a42c4"
+  integrity sha512-wa5TQcWLvORRm36mw4Hee+XF7lBlArVK3DM1ebC0uBvVcUgrmm3g/nh1pV/NzLN16WtrLLsvnTsE5uiNEcgYdw==
+  dependencies:
+    axios "^1.6.4"
+    bignumber.js "^9.0.1"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+    snakecase-keys "^5.1.2"
+    store2 "^2.12.0"
+
+"@injectivelabs/ts-types@^1.14.12", "@injectivelabs/ts-types@^1.14.12-beta.0":
+  version "1.14.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/ts-types/-/ts-types-1.14.12.tgz#6a3b9882665d0e6899cdf1b3cc290ca1fd2cfa53"
+  integrity sha512-jDyBQQLbdeOSaMjdkeJhvwCRzAM/cixPLuyg9acxYvlwaRZgF4iZKt9nS/N/uWQxxE6pAy2c8hl4YHHbV/N9Ew==
+  dependencies:
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+
+"@injectivelabs/utils@^1.14.12", "@injectivelabs/utils@^1.14.12-beta.0":
+  version "1.14.12"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/utils/-/utils-1.14.12.tgz#4f002f3923971e9a694a3ae30de049098750dfeb"
+  integrity sha512-4W38Mb6no+UH0pQsK9vhS6q6y5kFUTCVqFtxYs03Ra8AXqODyIS1nDBK9LT78WnJtjIPnbgKOlXgiZxyIVKJqQ==
+  dependencies:
+    "@injectivelabs/exceptions" "^1.14.12"
+    "@injectivelabs/ts-types" "^1.14.12"
+    axios "^1.6.4"
+    bignumber.js "^9.0.1"
+    http-status-codes "^2.2.0"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+    snakecase-keys "^5.1.2"
+    store2 "^2.12.0"
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"

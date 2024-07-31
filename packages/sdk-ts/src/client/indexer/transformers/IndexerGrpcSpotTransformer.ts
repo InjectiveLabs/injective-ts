@@ -171,6 +171,7 @@ export class IndexerGrpcSpotTransformer {
       serviceProviderFee: market.serviceProviderFee,
       minPriceTickSize: new BigNumber(market.minPriceTickSize).toNumber(),
       minQuantityTickSize: new BigNumber(market.minQuantityTickSize).toNumber(),
+      minNotional: new BigNumber(market.minNotional).toNumber(),
     }
   }
 

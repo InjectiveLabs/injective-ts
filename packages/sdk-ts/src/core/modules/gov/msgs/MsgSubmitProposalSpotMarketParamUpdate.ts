@@ -14,15 +14,17 @@ const createSpotMarketParamUpdate = (
 ) => {
   const content =
     InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.create()
+
   content.title = params.market.title
   content.description = params.market.description
+  content.marketId = params.market.marketId
   content.makerFeeRate = params.market.makerFeeRate
   content.takerFeeRate = params.market.takerFeeRate
   content.relayerFeeShareRate = params.market.relayerFeeShareRate
-  content.marketId = params.market.marketId
-  content.status = params.market.status
   content.minPriceTickSize = params.market.minPriceTickSize
   content.minQuantityTickSize = params.market.minQuantityTickSize
+  content.status = params.market.status
+  content.ticker = params.market.ticker
 
   return InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.fromPartial(
     content,
@@ -40,6 +42,7 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
       relayerFeeShareRate: string
       minPriceTickSize: string
       minQuantityTickSize: string
+      ticker: string
       status: InjectiveExchangeV1Beta1Exchange.MarketStatus
     }
     proposer: string
@@ -77,6 +80,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const { params } = this
 
     const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
@@ -100,17 +104,19 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     })
 
     const contentAny = GoogleProtobufAny.Any.create()
+
+    contentAny.typeUrl =
+      '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
     contentAny.value =
       InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.encode(
         content,
       ).finish()
-    contentAny.typeUrl =
-      '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
+
     message.content = contentAny
-    message.proposer = params.proposer
     message.initialDeposit = [depositParams]
+    message.proposer = params.proposer
 
     return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
@@ -128,17 +134,17 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const { params } = this
 
     const messageWithProposalType = snakecaseKeys({
-      proposer: params.proposer,
+      content: {
+        type: 'exchange/SpotMarketParamUpdateProposal',
+        value: this.getContent(),
+      },
       initialDeposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        type_url: 'exchange/SpotMarketParamUpdateProposal',
-        value: this.getContent(),
-      },
+      proposer: params.proposer,
     })
 
     return {
@@ -152,17 +158,17 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const { params } = this
 
     const messageWithProposalType = {
-      proposer: params.proposer,
+      content: {
+        '@type': '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
+        ...this.getContent(),
+      },
       initialDeposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        '@type': '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
-        ...this.getContent(),
-      },
+      proposer: params.proposer,
     }
 
     return {

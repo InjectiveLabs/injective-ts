@@ -12,6 +12,7 @@ const params: MsgInstantSpotMarketLaunch['params'] = {
     baseDenom: market.baseDenom,
     quoteDenom: market.quoteDenom,
     minPriceTickSize: market.minPriceTickSize,
+    minNotional: '1',
     minQuantityTickSize: market.minQuantityTickSize,
   },
 }
@@ -66,6 +67,7 @@ describe('MsgInstantSpotMarketLaunch', () => {
         { name: 'quote_denom', type: 'string' },
         { name: 'min_price_tick_size', type: 'string' },
         { name: 'min_quantity_tick_size', type: 'string' },
+        { name: 'min_notional', type: 'string' },
       ],
     })
   })
