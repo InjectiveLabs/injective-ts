@@ -1,30 +1,18 @@
 import { MsgBase } from '../../MsgBase';
 import snakecaseKeys from 'snakecase-keys';
+import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts';
 
-// future imports
-
-// import {
-//   InjectivePermissionsV1Beta1Tx
-// } from '@injectivelabs/care-proto-ts'
 
 export declare namespace MsgUpdateParams {
   export interface Params {
     authority: string;
     params: {
-      wasmHookQueryMaxGas: number;
+      wasmHookQueryMaxGas: string;
     };
   }
 
-  // Temporary Proto declaration
-  export type Proto = {
-    authority: string;
-    params: {
-      wasmHookQueryMaxGas: number;
-    };
-  };
 
-  // future Proto declaration
-  // export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateParams
+  export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateParams
 }
 
 /**
@@ -34,21 +22,22 @@ export default class MsgUpdateParams extends MsgBase<
   MsgUpdateParams.Params,
   MsgUpdateParams.Proto
 > {
-  static fromJSON(params: MsgUpdateParams.Params): MsgUpdateParams {
+  static fromJSON(
+    params: MsgUpdateParams.Params,
+  ): MsgUpdateParams {
     return new MsgUpdateParams(params);
   }
 
   public toProto() {
     const { params } = this;
 
-    const message = {
-      authority: params.authority,
-      params: {
-        wasmHookQueryMaxGas: params.params.wasmHookQueryMaxGas,
-      },
-    };
+    const message = InjectivePermissionsV1Beta1Tx.MsgUpdateParams.create()
+    message.authority = params.authority
+    message.params = params.params
 
-    return message;
+    return InjectivePermissionsV1Beta1Tx.MsgUpdateParams.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -92,12 +81,8 @@ export default class MsgUpdateParams extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    // Placeholder for binary encoding
-    return new Uint8Array();
-
-    //// Expected binary encoding
-    // return InjectivePermissionsV1Beta1Tx.MsgUpdateParams.encode()
-    //   this.toProto(),
-    // ).finish()
+     return InjectivePermissionsV1Beta1Tx.MsgUpdateParams.encode(
+       this.toProto(),
+     ).finish()
   }
 }
