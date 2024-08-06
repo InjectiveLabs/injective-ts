@@ -1,42 +1,26 @@
 import { MsgBase } from '../../MsgBase';
 import snakecaseKeys from 'snakecase-keys';
-
-// future imports
-
-// import {
-//   InjectivePermissionsV1Beta1Tx
-// } from '@injectivelabs/care-proto-ts'
+import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts';
 
 export declare namespace MsgUpdateNamespace {
   export interface Params {
     sender: string;
     namespaceDenom: string;
-    wasmHook: string;
-    mintsPaused: boolean;
-    sendsPaused: boolean;
-    burnsPaused: boolean;
-  }
-
-  // Temporary Proto declaration
-  export type Proto = {
-    sender: string;
-    namespaceDenom: string;
     wasmHook: {
       newValue: string;
-    };
+    }
     mintsPaused: {
       newValue: boolean;
-    };
+    }
     sendsPaused: {
       newValue: boolean;
-    };
+    }
     burnsPaused: {
       newValue: boolean;
-    };
-  };
+    }
+  }
 
-  // future Proto declaration
-  // export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace
+  export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace
 }
 
 /**
@@ -46,31 +30,34 @@ export default class MsgUpdateNamespace extends MsgBase<
   MsgUpdateNamespace.Params,
   MsgUpdateNamespace.Proto
 > {
-  static fromJSON(params: MsgUpdateNamespace.Params): MsgUpdateNamespace {
+  static fromJSON(
+    params: MsgUpdateNamespace.Params
+  ): MsgUpdateNamespace {
     return new MsgUpdateNamespace(params);
   }
 
   public toProto() {
     const { params } = this;
 
-    const message = {
-      sender: params.sender,
-      namespaceDenom: params.namespaceDenom,
-      wasmHook: {
-        newValue: params.wasmHook,
-      },
-      mintsPaused: {
-        newValue: params.mintsPaused,
-      },
-      sendsPaused: {
-        newValue: params.sendsPaused,
-      },
-      burnsPaused: {
-        newValue: params.burnsPaused,
-      },
-    };
+    const message = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.create()
+    message.sender = params.sender
+    message.namespaceDenom = params.namespaceDenom
+    message.wasmHook = {
+      newValue: params.wasmHook.newValue,
+    }
+    message.mintsPaused = {
+      newValue: params.mintsPaused.newValue,
+    }
+    message.sendsPaused =  {
+      newValue: params.sendsPaused.newValue,
+    }
+    message.burnsPaused = {
+        newValue: params.burnsPaused.newValue,
+    }
 
-    return message;
+    return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -114,12 +101,8 @@ export default class MsgUpdateNamespace extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    // Placeholder for binary encoding
-    return new Uint8Array();
-
-    //// Expected binary encoding
-    // return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.encode()
-    //   this.toProto(),
-    // ).finish()
+    return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.encode(
+      this.toProto(),
+    ).finish()
   }
 }
