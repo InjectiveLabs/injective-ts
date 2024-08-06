@@ -1,11 +1,6 @@
 import { MsgBase } from '../../MsgBase';
 import snakecaseKeys from 'snakecase-keys';
-
-// future imports
-
-// import {
-//   InjectivePermissionsV1Beta1Tx
-// } from '@injectivelabs/care-proto-ts'
+import {  InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts';
 
 export declare namespace MsgDeleteNamespace {
   export interface Params {
@@ -13,14 +8,7 @@ export declare namespace MsgDeleteNamespace {
     namespaceDenom: string;
   }
 
-  // Temporary Proto declaration
-  export type Proto = {
-    sender: string;
-    namespaceDenom: string;
-  };
-
-  // future Proto declaration
-  // export type Proto = InjectivePermissionsV1Beta1Tx.MsgDeleteNamespace
+  export type Proto = InjectivePermissionsV1Beta1Tx.MsgDeleteNamespace
 }
 
 /**
@@ -30,19 +18,23 @@ export default class MsgDeleteNamespace extends MsgBase<
   MsgDeleteNamespace.Params,
   MsgDeleteNamespace.Proto
 > {
-  static fromJSON(params: MsgDeleteNamespace.Params): MsgDeleteNamespace {
+  static fromJSON(
+    params: MsgDeleteNamespace.Params
+  ): MsgDeleteNamespace {
     return new MsgDeleteNamespace(params);
   }
 
   public toProto() {
     const { params } = this;
 
-    const message = {
-      sender: params.sender,
-      namespaceDenom: params.namespaceDenom,
-    };
+    const message = InjectivePermissionsV1Beta1Tx.MsgDeleteNamespace.create()
 
-    return message;
+    message.sender = params.sender
+    message.namespaceDenom = params.namespaceDenom
+
+    return InjectivePermissionsV1Beta1Tx.MsgDeleteNamespace.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -86,12 +78,8 @@ export default class MsgDeleteNamespace extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    // Placeholder for binary encoding
-    return new Uint8Array();
-
-    //// Expected binary encoding
-    // return InjectivePermissionsV1Beta1Tx.MsgDeleteNamespace.encode()
-    //   this.toProto(),
-    // ).finish()
+    return InjectivePermissionsV1Beta1Tx.MsgDeleteNamespace.encode(
+      this.toProto(),
+    ).finish()
   }
 }
