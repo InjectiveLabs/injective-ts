@@ -1,11 +1,6 @@
 import { MsgBase } from '../../MsgBase';
 import snakecaseKeys from 'snakecase-keys';
-
-// future imports
-
-// import {
-//   InjectivePermissionsV1Beta1Tx
-// } from '@injectivelabs/care-proto-ts'
+import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgRevokeNamespaceRoles {
   export interface Params {
@@ -14,15 +9,7 @@ export declare namespace MsgRevokeNamespaceRoles {
     addressRolesToRevoke: { address: string; roles: string[] }[];
   }
 
-  // Temporary Proto declaration
-  export type Proto = {
-    sender: string;
-    namespaceDenom: string;
-    addressRolesToRevoke: { address: string; roles: string[] }[];
-  };
-
-  // future Proto declaration
-  // export type Proto = InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles
+  export type Proto = InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles
 }
 
 /**
@@ -32,20 +19,24 @@ export default class MsgRevokeNamespaceRoles extends MsgBase<
   MsgRevokeNamespaceRoles.Params,
   MsgRevokeNamespaceRoles.Proto
 > {
-  static fromJSON(params: MsgRevokeNamespaceRoles.Params): MsgRevokeNamespaceRoles {
+  static fromJSON(
+    params: MsgRevokeNamespaceRoles.Params
+  ): MsgRevokeNamespaceRoles {
     return new MsgRevokeNamespaceRoles(params);
   }
 
   public toProto() {
     const { params } = this;
 
-    const message = {
-      sender: params.sender,
-      namespaceDenom: params.namespaceDenom,
-      addressRolesToRevoke: params.addressRolesToRevoke,
-    };
+    const message = InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles.create();
 
-    return message;
+    message.sender = params.sender
+    message.namespaceDenom = params.namespaceDenom
+    message.addressRolesToRevoke = params.addressRolesToRevoke
+
+    return InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -89,12 +80,8 @@ export default class MsgRevokeNamespaceRoles extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    // Placeholder for binary encoding
-    return new Uint8Array();
-
-    //// Expected binary encoding
-    // return InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles.encode()
-    //   this.toProto(),
-    // ).finish()
+    return InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles.encode(
+      this.toProto(),
+    ).finish()
   }
 }
