@@ -1,11 +1,6 @@
 import { MsgBase } from '../../MsgBase';
 import snakecaseKeys from 'snakecase-keys';
-
-// future imports
-
-// import {
-//   InjectivePermissionsV1Beta1Tx
-// } from '@injectivelabs/care-proto-ts'
+import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgUpdateNamespaceRoles {
   export interface Params {
@@ -15,16 +10,7 @@ export declare namespace MsgUpdateNamespaceRoles {
     addressRoles: { address: string; roles: string[] }[];
   }
 
-  // Temporary Proto declaration
-  export type Proto = {
-    sender: string;
-    namespaceDenom: string;
-    rolePermissions: { role: string; permissions: number }[];
-    addressRoles: { address: string; roles: string[] }[];
-  };
-
-  // future Proto declaration
-  // export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespaceRoles
+  export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespaceRoles
 }
 
 /**
@@ -34,21 +20,25 @@ export default class MsgUpdateNamespaceRoles extends MsgBase<
   MsgUpdateNamespaceRoles.Params,
   MsgUpdateNamespaceRoles.Proto
 > {
-  static fromJSON(params: MsgUpdateNamespaceRoles.Params): MsgUpdateNamespaceRoles {
+  static fromJSON(
+    params: MsgUpdateNamespaceRoles.Params
+  ): MsgUpdateNamespaceRoles {
     return new MsgUpdateNamespaceRoles(params);
   }
 
   public toProto() {
     const { params } = this;
 
-    const message = {
-      sender: params.sender,
-      namespaceDenom: params.namespaceDenom,
-      rolePermissions: params.rolePermissions,
-      addressRoles: params.addressRoles,
-    };
+    const message = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespaceRoles.create();
 
-    return message;
+    message.sender = params.sender
+    message.namespaceDenom = params.namespaceDenom
+    message.rolePermissions = params.rolePermissions
+    message.addressRoles = params.addressRoles
+
+    return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespaceRoles.fromPartial(
+      message,
+    )
   }
 
   public toData() {
@@ -92,12 +82,8 @@ export default class MsgUpdateNamespaceRoles extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    // Placeholder for binary encoding
-    return new Uint8Array();
-
-    //// Expected binary encoding
-    // return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespaceRoles.encode()
-    //   this.toProto(),
-    // ).finish()
+    return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespaceRoles.encode(
+      this.toProto(),
+    ).finish()
   }
 }
