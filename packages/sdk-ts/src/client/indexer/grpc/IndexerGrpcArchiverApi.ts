@@ -139,8 +139,8 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     endDate,
     limit,
   }: {
-    startDate: number
-    endDate: number
+    startDate: string
+    endDate: string
     limit?: number
   }) {
     const request = InjectiveArchiverRpc.PnlLeaderboardRequest.create()
@@ -183,8 +183,8 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     endDate,
     limit,
   }: {
-    startDate: number
-    endDate: number
+    startDate: string
+    endDate: string
     limit?: number
   }) {
     const request = InjectiveArchiverRpc.VolLeaderboardRequest.create()
