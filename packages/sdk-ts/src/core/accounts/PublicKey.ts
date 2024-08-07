@@ -30,7 +30,13 @@ export class PublicKey {
     return new PublicKey(publicKey)
   }
 
-  static fromHex(privateKey: string | Uint8Array): PublicKey {
+  static fromHex(pubKey: string): PublicKey {
+    const pubKeyHex = pubKey.startsWith('0x') ? pubKey.slice(2) : pubKey
+
+    return new PublicKey(Buffer.from(pubKeyHex.toString(), 'hex'))
+  }
+
+  static fromPrivateKeyHex(privateKey: string | Uint8Array): PublicKey {
     const isString = typeof privateKey === 'string'
     const privateKeyHex =
       isString && privateKey.startsWith('0x') ? privateKey.slice(2) : privateKey
