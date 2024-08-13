@@ -109,7 +109,7 @@ export default class Fox
     transaction: DirectSignResponse | TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { foxwallet: foxwallet } = this
+    const { foxwallet } = this
     const txRaw = createTxRawFromSigResponse(transaction)
 
     if (!options.endpoints) {
