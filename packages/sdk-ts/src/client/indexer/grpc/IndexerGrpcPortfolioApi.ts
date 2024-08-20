@@ -104,4 +104,51 @@ export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchAccountPortfolioTokenHolders({
+    denom,
+    cursor,
+    limit,
+  }: {
+    denom: string
+    cursor?: string
+    limit?: number
+  }) {
+    const request = InjectivePortfolioRpc.TokenHoldersRequest.create()
+
+    request.denom = denom
+
+    if (cursor) {
+      request.cursor = cursor
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response =
+        await this.retry<InjectivePortfolioRpc.TokenHoldersResponse>(() =>
+          this.client.TokenHolders(request),
+        )
+
+      return IndexerGrpcAccountPortfolioTransformer.tokenHoldersResponseToTokenHolders(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'TokenHolders',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'TokenHolders',
+        contextModule: this.module,
+      })
+    }
+  }
 }
