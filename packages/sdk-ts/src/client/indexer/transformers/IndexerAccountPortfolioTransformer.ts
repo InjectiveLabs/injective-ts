@@ -1,6 +1,7 @@
 import { Coin } from '@injectivelabs/ts-types'
 import { GrpcCoin } from '../../../types'
 import {
+  TokenHolders,
   PositionsWithUPNL,
   AccountPortfolioV2,
   SubaccountDepositV2,
@@ -87,9 +88,7 @@ export class IndexerGrpcAccountPortfolioTransformer {
 
     return {
       position: grpcPosition
-        ? IndexerGrpcDerivativeTransformer.grpcPositionToPosition(
-            grpcPosition,
-          )
+        ? IndexerGrpcDerivativeTransformer.grpcPositionToPosition(grpcPosition)
         : undefined,
       unrealizedPnl: positionsWithUPNL.unrealizedPnl,
     }
@@ -117,6 +116,18 @@ export class IndexerGrpcAccountPortfolioTransformer {
             deposit,
           )
         : undefined,
+    }
+  }
+
+  static tokenHoldersResponseToTokenHolders(
+    response: InjectivePortfolioRpc.TokenHoldersResponse,
+  ): TokenHolders {
+    return {
+      holders: response.holders.map((holder) => ({
+        accountAddress: holder.accountAddress,
+        balance: holder.balance,
+      })),
+      nextCursors: response.nextCursors,
     }
   }
 }
