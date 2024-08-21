@@ -51,7 +51,7 @@ console.log(publicKey.toAddress().toBech32())
 import { PublicKey } from '@injectivelabs/sdk-ts'
 
 const privateKey = "afdfd9c3d2095ef696594f6cedcae59e72dcd697e2a7521b1578140422a4f890"
-const publicKey = PublicKey.fromHex(privateKey)
+const publicKey = PublicKey.fromPrivateKeyHex(privateKey)
 const type = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
 
 console.log(publicKey.toBase64())
