@@ -53,10 +53,18 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     address,
     limit,
     type,
+    before,
+    after,
+    startTime,
+    endTime,
   }: {
     address: string
     limit?: number
     type?: string
+    before?: number
+    after?: number
+    startTime?: number
+    endTime?: number
   }) {
     const request = InjectiveExplorerRpc.GetAccountTxsRequest.create()
 
@@ -64,6 +72,26 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
 
     if (limit) {
       request.limit = limit
+    }
+
+    if (before) {
+      request.before = before.toString()
+    }
+
+    if (after) {
+      request.after = after.toString()
+    }
+
+    if (before) {
+      request.before = before.toString()
+    }
+
+    if (startTime) {
+      request.startTime = startTime.toString()
+    }
+
+    if (endTime) {
+      request.endTime = endTime.toString()
     }
 
     if (type) {
@@ -360,14 +388,18 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     limit,
     skip,
     type,
-    module,
+    chainModule,
+    startTime,
+    endTime,
   }: {
     before?: number
     after?: number
     limit?: number
     skip?: number
     type?: string
-    module?: string
+    startTime?: number
+    endTime?: number
+    chainModule?: string
   }) {
     const request = InjectiveExplorerRpc.GetTxsRequest.create()
 
@@ -391,8 +423,20 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
       request.type = type
     }
 
-    if (module) {
-      request.module = module
+    if (chainModule) {
+      request.module = chainModule
+    }
+
+    if (before) {
+      request.before = before.toString()
+    }
+
+    if (startTime) {
+      request.startTime = startTime.toString()
+    }
+
+    if (endTime) {
+      request.endTime = endTime.toString()
     }
 
     try {
