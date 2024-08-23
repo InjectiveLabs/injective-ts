@@ -2,11 +2,13 @@ import { fromUtf8 } from '../../../../utils/utf8'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
 import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
+import { AccessConfig } from '@injectivelabs/core-proto-ts/cjs/cosmwasm/wasm/v1/types'
 
 export declare namespace MsgStoreCode {
   export interface Params {
     sender: string
     wasmBytes: Uint8Array | string
+    instantiatePermission?: AccessConfig
   }
 
   export type Proto = CosmwasmWasmV1Tx.MsgStoreCode
@@ -33,6 +35,10 @@ export default class MsgStoreCode extends MsgBase<
       typeof params.wasmBytes === 'string'
         ? fromUtf8(params.wasmBytes)
         : params.wasmBytes
+
+    if (params.instantiatePermission) {
+      message.instantiatePermission = params.instantiatePermission
+    }
 
     return CosmwasmWasmV1Tx.MsgStoreCode.fromPartial(message)
   }
