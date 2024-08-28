@@ -307,6 +307,13 @@ export class MsgBroadcaster {
       tx.ethereumAddress,
     )
 
+    console.log({
+      signature,
+      eip712TypedData,
+      stringifyVersion: JSON.stringify(eip712TypedData),
+      signatureHex: hexToBuff(signature),
+    })
+
     const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
@@ -418,6 +425,13 @@ export class MsgBroadcaster {
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
     )
+
+    console.log({
+      signature,
+      eip712TypedData,
+      stringifyVersion: JSON.stringify(eip712TypedData),
+      signatureHex: hexToBuff(signature),
+    })
 
     const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,

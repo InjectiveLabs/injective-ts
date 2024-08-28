@@ -1,4 +1,3 @@
-import { fromUtf8 } from '../../../../utils/utf8'
 import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
 import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
@@ -31,10 +30,7 @@ export default class MsgStoreCode extends MsgBase<
     const message = CosmwasmWasmV1Tx.MsgStoreCode.create()
 
     message.sender = params.sender
-    message.wasmByteCode =
-      typeof params.wasmBytes === 'string'
-        ? fromUtf8(params.wasmBytes)
-        : params.wasmBytes
+    message.wasmByteCode = params.wasmBytes as any
 
     if (params.instantiatePermission) {
       message.instantiatePermission = params.instantiatePermission
@@ -53,10 +49,17 @@ export default class MsgStoreCode extends MsgBase<
   }
 
   public toAmino() {
+    // const { params } = this
     const proto = this.toProto()
     const message = {
       ...snakecaseKeys(proto),
     }
+
+    // if (!params.instantiatePermission) {
+    //   delete message.instantiate_permission
+    // }
+
+    // console.log({ message })
 
     return {
       type: 'wasm/MsgStoreCode',
