@@ -17,6 +17,7 @@ export * from './insurance'
 export * from './distribution'
 export * from './tokenfactory'
 export * from './tendermint-rest'
+export * from './permissions'
 
 export interface RestApiResponse<T> {
   data: T
