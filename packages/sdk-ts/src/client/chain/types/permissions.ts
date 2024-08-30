@@ -35,7 +35,7 @@ import { Coin } from '@injectivelabs/ts-types'
 
   export interface AddressVoucher {
     address: string
-    voucher: Voucher | undefined
+    voucher?: Voucher
   }
 
   export type GrpcPermissionsNamespace = InjectivePermissionsV1Beta1Exchange.Namespace
