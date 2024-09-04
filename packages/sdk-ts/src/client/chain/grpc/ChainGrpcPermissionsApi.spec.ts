@@ -64,7 +64,7 @@ describe('ChainGrpcPermissionsApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcPermissionsTransformer.AddressesByRolesResponseToAddressesByRoles
+            typeof ChainGrpcPermissionsTransformer.addressesByRolesResponseToAddressesByRoles
           >
         >(response),
       )

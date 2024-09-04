@@ -40,7 +40,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
           () => this.client.AddressesByRole(request, this.metadata),
         )
 
-      return ChainGrpcPermissionsTransformer.AddressesByRolesResponseToAddressesByRoles(
+      return ChainGrpcPermissionsTransformer.addressesByRolesResponseToAddressesByRoles(
         response,
       )
     } catch (e: unknown) {

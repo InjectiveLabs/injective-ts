@@ -42,7 +42,7 @@ export class ChainGrpcPermissionsTransformer {
         })
     }
 
-    static AddressesByRolesResponseToAddressesByRoles (
+    static addressesByRolesResponseToAddressesByRoles (
         response: InjectivePermissionsV1Beta1Query.QueryAddressesByRoleResponse,
     ){ return response.addresses.map((address) => {
         return {
