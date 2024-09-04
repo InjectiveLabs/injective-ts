@@ -225,6 +225,8 @@ export class IndexerRestExplorerTransformer {
       height: transaction.block_number,
       time: transaction.block_unix_timestamp,
       type: transaction.messages[0].type,
+      logs: transaction.logs,
+      signatures: transaction.signatures,
       fee: transaction.gas_fee.amount
         ? new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase()
         : ZERO_IN_BASE,

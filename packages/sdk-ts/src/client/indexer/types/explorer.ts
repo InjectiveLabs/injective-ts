@@ -4,6 +4,25 @@ import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 import { TokenStatic } from '../../../types/token'
 
+export interface EventLogEvent {
+  type: string
+  attributes: Array<{
+    key: string
+    value: string
+  }>
+}
+
+export interface EventLog {
+  events: EventLogEvent[]
+}
+
+export interface Signature {
+  pubkey: string
+  address: string
+  signature: string
+  sequence: number
+}
+
 export interface IBCTransferTx {
   sender: string
   receiver: string
@@ -113,14 +132,9 @@ export interface Transaction {
     attributes: Record<string, string>
   }>
   txType: string
-  signatures: Array<{
-    pubkey: string
-    address: string
-    sequence: number
-    signature: string
-  }>
+  signatures: Signature[]
   codespace: string
-  messages?: Array<TxMessage>
+  messages?: TxMessage[]
   errorLog?: string
 }
 
@@ -267,6 +281,8 @@ export interface ContractTransaction {
   memo: string
   tx_number: number
   error_log: string
+  logs: EventLog[]
+  signatures: Signature[]
 }
 
 export interface ContractTransactionWithMessages extends ContractTransaction {

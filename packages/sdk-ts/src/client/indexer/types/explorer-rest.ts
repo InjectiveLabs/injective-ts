@@ -1,8 +1,10 @@
 /* eslint-disable camelcase */
 import {
+  EventLog,
+  Signature,
+  ValidatorUptime,
   BlockWithTxs as BaseBlockWithTxs,
   Transaction as BaseTransaction,
-  ValidatorUptime,
 } from './explorer'
 
 export enum AccessTypeCode {
@@ -37,28 +39,11 @@ export interface ExplorerApiResponseWithPagination<T> {
   }
 }
 
-export interface EventLogEvent {
-  type: string
-  attributes: Array<{
-    key: string
-    value: string
-  }>
-}
-
-export interface EventLog {
-  events: EventLogEvent[]
-}
-
 export interface TransactionFromExplorerApiResponse {
   id: string
   block_number: number
   block_timestamp: string
-  signatures: Array<{
-    pubkey: string
-    address: string
-    signature: string
-    sequence: number
-  }>
+  signatures: Signature[]
   tx_type: string
   hash: string
   code: number
@@ -216,6 +201,8 @@ export interface ContractTransactionExplorerApiResponse {
       }
     },
   ]
+  logs: EventLog[]
+  signatures: Signature[]
 }
 
 export interface CW20BalanceExplorerApiResponse {
