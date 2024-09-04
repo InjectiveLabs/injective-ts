@@ -1,11 +1,7 @@
 import {
     Namespace,
     PermissionsModuleParams,
-    AddressRoles,
-    Voucher,
-    GrpcPermissionsAddressRoles,
     GrpcPermissionsNamespace,
-    GrpcPermissionVoucher,
 } from '../types/permissions';
 import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts';
 
@@ -68,7 +64,6 @@ export class ChainGrpcPermissionsTransformer {
     ) {
         return ChainGrpcPermissionsTransformer.grpcNamespaceToNamespace(response.namespace!)
     }
-
 
     static vouchersForAddressResponseToVouchersForAddress (
         response: InjectivePermissionsV1Beta1Query.QueryVouchersForAddressResponse,

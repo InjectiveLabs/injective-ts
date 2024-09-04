@@ -148,7 +148,6 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     }
   }
 
-
   async fetchNamespaceByDenom({
     denom,
     include_roles,
