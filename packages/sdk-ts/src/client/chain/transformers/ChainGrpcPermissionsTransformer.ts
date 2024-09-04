@@ -22,4 +22,13 @@ export class ChainGrpcPermissionsTransformer {
             wasmHookQueryMaxGas: params.wasmHookQueryMaxGas,
         }
     }
+
+    static AddressesByRolesResponseToAddressesByRoles (
+        response: InjectivePermissionsV1Beta1Query.QueryAddressesByRoleResponse,
+    ){ return response.addresses.map((address) => {
+        return {
+            addresses: address,
+        }
+    })
+    }
 }
