@@ -1,35 +1,35 @@
 import { MsgStatus, MsgType } from '@injectivelabs/ts-types'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import {
-  Paging,
-  ExplorerTransaction,
-  ExplorerApiResponse,
-  ExplorerBlockWithTxs,
-  ExplorerValidatorUptime,
-  ContractExplorerApiResponse,
-  BlockFromExplorerApiResponse,
-  CW20BalanceExplorerApiResponse,
-  ExplorerApiResponseWithPagination,
-  TransactionFromExplorerApiResponse,
-  ValidatorUptimeFromExplorerApiResponse,
-  ContractTransactionExplorerApiResponse,
-  WasmCodeExplorerApiResponse,
-} from '../types/explorer-rest'
-import {
-  Contract,
-  WasmCode,
-  BankTransfer,
-  ContractTransaction,
-  ExplorerCW20BalanceWithToken,
-  BankTransferFromExplorerApiResponse,
-  ContractTransactionWithMessages,
-} from '../types/explorer'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { IndexerRestExplorerTransformer } from '../transformers'
+import {
+  Paging,
+  Contract,
+  WasmCode,
+  BankTransfer,
+  ExplorerTransaction,
+  ContractTransaction,
+  ExplorerBlockWithTxs,
+  ExplorerValidatorUptime,
+  ExplorerCW20BalanceWithToken,
+  ContractTransactionWithMessages,
+} from '../types/explorer'
+import {
+  ExplorerApiResponse,
+  ContractExplorerApiResponse,
+  WasmCodeExplorerApiResponse,
+  BlockFromExplorerApiResponse,
+  CW20BalanceExplorerApiResponse,
+  ExplorerApiResponseWithPagination,
+  TransactionFromExplorerApiResponse,
+  BankTransferFromExplorerApiResponse,
+  ValidatorUptimeFromExplorerApiResponse,
+  ContractTransactionExplorerApiResponse,
+} from '../types/explorer-rest'
+import BaseRestConsumer from '../../base/BaseRestConsumer'
 import { Block, ExplorerValidator } from '../types/explorer'
+import { IndexerRestExplorerTransformer } from '../transformers'
 import { IndexerModule } from '../types'
 
 const explorerEndpointSuffix = 'api/explorer/v1'

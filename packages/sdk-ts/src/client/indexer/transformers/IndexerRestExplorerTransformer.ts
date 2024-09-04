@@ -1,32 +1,32 @@
 import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
 import {
-  Block,
-  ContractTransactionWithMessages,
-  ExplorerValidator,
-} from '../types/explorer'
-import { TokenType, TokenVerification } from '../../../types/token'
-import {
-  BaseTransaction,
-  BlockFromExplorerApiResponse,
-  ContractExplorerApiResponse,
-  ContractTransactionExplorerApiResponse,
-  CW20BalanceExplorerApiResponse,
-  ExplorerBlockWithTxs,
-  ExplorerTransaction,
-  ExplorerValidatorUptime,
-  TransactionFromExplorerApiResponse,
-  ValidatorUptimeFromExplorerApiResponse,
-  WasmCodeExplorerApiResponse,
-} from '../types/explorer-rest'
-import {
   Contract,
   WasmCode,
+  Transaction,
   CW20Message,
   BankTransfer,
+  ExplorerTransaction,
   ContractTransaction,
+  ExplorerBlockWithTxs,
+  ExplorerValidatorUptime,
   ExplorerCW20BalanceWithToken,
-  BankTransferFromExplorerApiResponse,
 } from '../types/explorer'
+import {
+  Block,
+  ExplorerValidator,
+  ContractTransactionWithMessages,
+} from '../types/explorer'
+import {
+  ContractExplorerApiResponse,
+  WasmCodeExplorerApiResponse,
+  BlockFromExplorerApiResponse,
+  CW20BalanceExplorerApiResponse,
+  TransactionFromExplorerApiResponse,
+  BankTransferFromExplorerApiResponse,
+  ContractTransactionExplorerApiResponse,
+  ValidatorUptimeFromExplorerApiResponse,
+} from '../types/explorer-rest'
+import { TokenType, TokenVerification } from '../../../types/token'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
 
@@ -149,7 +149,7 @@ export class IndexerRestExplorerTransformer {
   }
 
   static baseTransactionToTransaction(
-    transaction: BaseTransaction,
+    transaction: Transaction,
   ): ExplorerTransaction {
     return {
       ...transaction,
@@ -227,6 +227,12 @@ export class IndexerRestExplorerTransformer {
       type: transaction.messages[0].type,
       logs: transaction.logs,
       signatures: transaction.signatures,
+      messages: (transaction.messages || [])
+        .filter((m) => m)
+        .map((message) => ({
+          type: message.type,
+          message: message.value,
+        })),
       fee: transaction.gas_fee.amount
         ? new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase()
         : ZERO_IN_BASE,

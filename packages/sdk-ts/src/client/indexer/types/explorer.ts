@@ -1,8 +1,35 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import type { CosmWasmChecksum, CosmWasmPermission } from './explorer-rest'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 import { TokenStatic } from '../../../types/token'
+
+export enum AccessTypeCode {
+  AccessTypeUnspecified = 0,
+  AccessTypeNobody = 1,
+  AccessTypeOnlyAddress = 2,
+  AccessTypeEverybody = 3,
+  AccessTypeAnyOfAddresses = 4,
+}
+
+export enum AccessType {
+  AccessTypeUnspecified = 'Unspecified',
+  AccessTypeNobody = 'Nobody',
+  AccessTypeOnlyAddress = 'Only Address',
+  AccessTypeEverybody = 'Everybody',
+  AccessTypeAnyOfAddresses = 'Any of Addresses',
+}
+
+export enum ValidatorUptimeStatus {
+  Proposed = 'proposed',
+  Signed = 'signed',
+  Missed = 'missed',
+}
+
+export interface Paging {
+  from: number
+  to: number
+  total: number
+}
 
 export interface EventLogEvent {
   type: string
@@ -21,6 +48,11 @@ export interface Signature {
   address: string
   signature: string
   sequence: number
+}
+
+export interface Message {
+  type: string
+  message: any
 }
 
 export interface IBCTransferTx {
@@ -269,23 +301,8 @@ export interface Contract {
   }
 }
 
-export interface ContractTransaction {
-  txHash: string
-  type: string
-  code: number
-  amount: BigNumberInBase
-  fee: BigNumberInBase
-  height: number
-  time: number
-  data: string
-  memo: string
-  tx_number: number
-  error_log: string
-  logs: EventLog[]
-  signatures: Signature[]
-}
-
-export interface ContractTransactionWithMessages extends ContractTransaction {
+export interface ContractTransactionWithMessages
+  extends Omit<ContractTransaction, 'messages'> {
   messages: Array<{
     type: string
     value: {
@@ -310,20 +327,56 @@ export interface WasmCode {
   proposalId?: number
 }
 
-export interface BankTransferFromExplorerApiResponse {
-  sender: string
-  recipient: string
-  amounts: Coin[]
-  block_number: number
-  block_timestamp: string
-}
-
 export interface BankTransfer {
   sender: string
   recipient: string
   amounts: Coin[]
   blockNumber: number
   blockTimestamp: number
+}
+
+export interface ContractTransaction {
+  txHash: string
+  type: string
+  code: number
+  messages: Message[]
+  amount: BigNumberInBase
+  fee: BigNumberInBase
+  height: number
+  time: number
+  data: string
+  memo: string
+  tx_number: number
+  error_log: string
+  logs: EventLog[]
+  signatures: Signature[]
+}
+
+export interface ExplorerTransaction extends Omit<Transaction, 'messages'> {
+  memo: string
+  messages: Message[]
+  errorLog?: string
+  logs?: EventLog[]
+  claimIds?: number[]
+}
+
+export interface ExplorerBlockWithTxs extends Omit<BlockWithTxs, 'txs'> {
+  txs: ExplorerTransaction[]
+}
+
+export interface ExplorerValidatorUptime
+  extends Omit<ValidatorUptime, 'status'> {
+  status: ValidatorUptimeStatus
+}
+
+export interface CosmWasmPermission {
+  access_type: AccessTypeCode
+  address: string
+}
+
+export interface CosmWasmChecksum {
+  algorithm: string
+  hash: string
 }
 
 export type GrpcIBCTransferTx = InjectiveExplorerRpc.IBCTransferTx
