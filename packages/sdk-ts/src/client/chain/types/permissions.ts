@@ -1,9 +1,11 @@
 import {
     InjectivePermissionsV1Beta1Exchange,
+    InjectivePermissionsV1Beta1Params
   } from '@injectivelabs/core-proto-ts'
+
 import { Coin } from '@injectivelabs/ts-types'
 
-  export interface PermissionsModuleNamespace {
+  export interface Namespace {
     denom: string
     wasmHook: string
     mintsPaused: boolean
@@ -14,10 +16,16 @@ import { Coin } from '@injectivelabs/ts-types'
 
   }
 
+  export interface PermissionsModuleParams {
+    wasmHookQueryMaxGas: string
+  }
+
+
   export interface AddressRoles {
     address: string
     roles: string[]
   }
+
 
   export interface Role {
     role: string
@@ -44,3 +52,4 @@ import { Coin } from '@injectivelabs/ts-types'
   export type GrpcPermissionsRoleIDs = InjectivePermissionsV1Beta1Exchange.RoleIDs
   export type GrpcPermissionsAddressVoucher = InjectivePermissionsV1Beta1Exchange.AddressVoucher
   export type GrpcPermissionVoucher = InjectivePermissionsV1Beta1Exchange.Voucher
+  export type GrpcPermissionsParams = InjectivePermissionsV1Beta1Params.Params
