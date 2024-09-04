@@ -28,6 +28,31 @@ describe('ChainGrpcPermissionsApi', () => {
       )
     }
   })
+  test('fetchAddressRoles', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchAddressRoles({
+        address: injectiveAddress,
+        denom: INJ_DENOM,
+      })
+
+      if (response.length === 0) {
+        console.warn('fetchAddressRoles.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.addressRolesResponseToAddressRoles
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchAddressRoles => ' + (e as any).message,
+      )
+    }
+  })
   test('fetchAddressesByRoles', async () => {
     try {
       const response = await chainGrpcPermissionsApi.fetchAddressesByRole({

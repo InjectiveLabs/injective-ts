@@ -58,6 +58,41 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     }
   }
 
+  async fetchAddressRoles({
+    address,
+    denom,
+  }: {
+    address: string
+    denom: string
+  }) {
+    const request = InjectivePermissionsV1Beta1Query.QueryAddressRolesRequest.create()
+
+    request.address = address
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryAddressRolesResponse>(
+          () => this.client.AddressRoles(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.addressRolesResponseToAddressRoles(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'AddressRoles',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AddressRoles',
+      })
+    }
+  }
 
   async fetchModuleParams() {
     const request = InjectivePermissionsV1Beta1Query.QueryParamsRequest.create()
