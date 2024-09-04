@@ -113,4 +113,24 @@ describe('ChainGrpcPermissionsApi', () => {
       )
     }
   })
+  test('fetchVouchersForAddress', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchVouchersForAddress({
+        address: injectiveAddress
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.vouchersForAddressResponseToVouchersForAddress
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchVouchersForAddress => ' + (e as any).message,
+      )
+    }
+  })
 })

@@ -68,4 +68,15 @@ export class ChainGrpcPermissionsTransformer {
     ) {
         return ChainGrpcPermissionsTransformer.grpcNamespaceToNamespace(response.namespace!)
     }
+
+
+    static vouchersForAddressResponseToVouchersForAddress (
+        response: InjectivePermissionsV1Beta1Query.QueryVouchersForAddressResponse,
+    ) {
+        return response.vouchers.map((voucher) => {
+           return {
+                vouchers: voucher,
+           }
+        })
+    }
 }

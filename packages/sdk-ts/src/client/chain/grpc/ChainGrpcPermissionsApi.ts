@@ -184,4 +184,37 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchVouchersForAddress({
+    address,
+  }: {
+    address: string
+  }) {
+    const request = InjectivePermissionsV1Beta1Query.QueryVouchersForAddressRequest.create()
+
+    request.address = address
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryVouchersForAddressResponse>(
+          () => this.client.VouchersForAddress(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.vouchersForAddressResponseToVouchersForAddress(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'VouchersForAddress',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'VouchersForAddress',
+      })
+    }
+  }
 }
