@@ -74,4 +74,22 @@ describe('ChainGrpcPermissionsApi', () => {
       )
     }
   })
+  test('fetchAllNamespaces', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchAllNamespaces()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.allNamespacesResponseToAllNamespaces
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchAllNamespaces => ' + (e as any).message,
+      )
+    }
+  })
 })

@@ -23,6 +23,20 @@ export class ChainGrpcPermissionsTransformer {
         }
     }
 
+    static grpcNamespaceToNamespace (
+        grpcNamespace: GrpcPermissionsNamespace,
+    ): Namespace {
+        return {
+            denom: grpcNamespace.denom,
+            wasmHook: grpcNamespace.wasmHook,
+            mintsPaused: grpcNamespace.mintsPaused,
+            sendsPaused: grpcNamespace.sendsPaused,
+            burnsPaused: grpcNamespace.burnsPaused,
+            rolePermissions: grpcNamespace.rolePermissions,
+            addressRoles: grpcNamespace.addressRoles,
+        }
+    }
+
     static addressRolesResponseToAddressRoles(
         response: InjectivePermissionsV1Beta1Query.QueryAddressRolesResponse,
     ){ return response.roles.map((role) => {
@@ -39,5 +53,13 @@ export class ChainGrpcPermissionsTransformer {
             addresses: address,
         }
     })
+    }
+
+    static allNamespacesResponseToAllNamespaces (
+        response: InjectivePermissionsV1Beta1Query.QueryAllNamespacesResponse,
+    ) {
+        return response.namespaces.map((namespace) => {
+            ChainGrpcPermissionsTransformer.grpcNamespaceToNamespace(namespace)
+        })
     }
 }

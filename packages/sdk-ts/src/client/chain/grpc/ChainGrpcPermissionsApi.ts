@@ -94,6 +94,33 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     }
   }
 
+  async fetchAllNamespaces() {
+    const request = InjectivePermissionsV1Beta1Query.QueryAllNamespacesRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryAllNamespacesResponse>(() =>
+          this.client.AllNamespaces(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.allNamespacesResponseToAllNamespaces(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'AllNamespaces',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AllNamespaces',
+      })
+    }
+  }
+
   async fetchModuleParams() {
     const request = InjectivePermissionsV1Beta1Query.QueryParamsRequest.create()
 
