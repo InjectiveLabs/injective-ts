@@ -148,4 +148,40 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     }
   }
 
+
+  async fetchNamespaceByDenom({
+    denom,
+    include_roles,
+  }: {
+    denom: string
+    include_roles: boolean
+  }) {
+    const request = InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomRequest.create()
+
+    request.denom = denom
+    request.includeRoles = include_roles
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomResponse>(
+          () => this.client.NamespaceByDenom(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.namespaceByDenomResponceToNamespaceByDenom(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'NamespaceByDenom',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'NamespaceByDenom',
+      })
+    }
+  }
 }

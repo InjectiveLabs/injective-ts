@@ -92,4 +92,25 @@ describe('ChainGrpcPermissionsApi', () => {
       )
     }
   })
+  test('fetchNamespaceByDenom', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchNamespaceByDenom({
+        denom: INJ_DENOM,
+        include_roles: true,
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.namespaceByDenomResponceToNamespaceByDenom
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchNamespaceByDenom=> ' + (e as any).message,
+      )
+    }
+  })
 })

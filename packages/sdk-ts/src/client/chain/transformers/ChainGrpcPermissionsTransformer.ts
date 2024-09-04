@@ -62,4 +62,10 @@ export class ChainGrpcPermissionsTransformer {
             ChainGrpcPermissionsTransformer.grpcNamespaceToNamespace(namespace)
         })
     }
+
+    static namespaceByDenomResponceToNamespaceByDenom (
+        response: InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomResponse,
+    ) {
+        return ChainGrpcPermissionsTransformer.grpcNamespaceToNamespace(response.namespace!)
+    }
 }
