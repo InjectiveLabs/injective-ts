@@ -150,15 +150,15 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
 
   async fetchNamespaceByDenom({
     denom,
-    include_roles,
+    includeRoles,
   }: {
     denom: string
-    include_roles: boolean
+    includeRoles: boolean
   }) {
     const request = InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomRequest.create()
 
     request.denom = denom
-    request.includeRoles = include_roles
+    request.includeRoles = includeRoles
 
     try {
       const response =
