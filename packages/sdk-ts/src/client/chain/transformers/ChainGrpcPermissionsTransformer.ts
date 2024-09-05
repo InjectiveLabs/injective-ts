@@ -35,20 +35,22 @@ export class ChainGrpcPermissionsTransformer {
 
     static addressRolesResponseToAddressRoles(
         response: InjectivePermissionsV1Beta1Query.QueryAddressRolesResponse,
-    ){ return response.roles.map((role) => {
+    ){
+        return response.roles.map((role) => {
             return {
               roles: role,
-          }
+            }
         })
     }
 
     static addressesByRolesResponseToAddressesByRoles (
         response: InjectivePermissionsV1Beta1Query.QueryAddressesByRoleResponse,
-    ){ return response.addresses.map((address) => {
-        return {
-            addresses: address,
-        }
-    })
+    ){
+        return response.addresses.map((address) => {
+            return {
+                addresses: address,
+            }
+        })
     }
 
     static allNamespacesResponseToAllNamespaces (
