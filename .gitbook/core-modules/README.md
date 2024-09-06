@@ -16,6 +16,7 @@ Within this section, we are going to explore the core modules of the Injective c
 | [IBC](ibc.md)                    | Used for cross-Cosmos chain transfers                |
 | [Insurance](insurance.md)        | Used for on-chain insurance funds                    |
 | [Peggy](peggy.md)                | Used for the Injective <> Ethereum Bridge            |
+| [Permissions](permissions.md)    | Used fot on-chain permissions
 | [Staking](staking.md)            | Used for on-chain staking                            |
 | [Tokenfactory](token-factory.md) | Used for creating and managing `tokenfactory` tokens |
 | [Wasm](wasm.md)                  | Used for interacting with the Cosmwasm Layer         |
