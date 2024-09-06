@@ -1,5 +1,5 @@
 import {
-    InjectivePermissionsV1Beta1Exchange,
+    InjectivePermissionsV1Beta1Permissions,
     InjectivePermissionsV1Beta1Params
   } from '@injectivelabs/core-proto-ts'
 
@@ -46,10 +46,10 @@ import { Coin } from '@injectivelabs/ts-types'
     voucher?: Voucher
   }
 
-  export type GrpcPermissionsNamespace = InjectivePermissionsV1Beta1Exchange.Namespace
-  export type GrpcPermissionsAddressRoles = InjectivePermissionsV1Beta1Exchange.AddressRoles
-  export type GrpcPermissionsRole = InjectivePermissionsV1Beta1Exchange.Role
-  export type GrpcPermissionsRoleIDs = InjectivePermissionsV1Beta1Exchange.RoleIDs
-  export type GrpcPermissionsAddressVoucher = InjectivePermissionsV1Beta1Exchange.AddressVoucher
-  export type GrpcPermissionVoucher = InjectivePermissionsV1Beta1Exchange.Voucher
+  export type GrpcPermissionsNamespace = InjectivePermissionsV1Beta1Permissions.Namespace
+  export type GrpcPermissionsAddressRoles = InjectivePermissionsV1Beta1Permissions.AddressRoles
+  export type GrpcPermissionsRole = InjectivePermissionsV1Beta1Permissions.Role
+  export type GrpcPermissionsRoleIDs = InjectivePermissionsV1Beta1Permissions.RoleIDs
+  export type GrpcPermissionsAddressVoucher = InjectivePermissionsV1Beta1Permissions.AddressVoucher
+  export type GrpcPermissionVoucher = InjectivePermissionsV1Beta1Permissions.Voucher
   export type GrpcPermissionsParams = InjectivePermissionsV1Beta1Params.Params
