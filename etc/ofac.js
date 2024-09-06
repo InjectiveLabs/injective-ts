@@ -14,7 +14,7 @@ const storeJsonFile = (path, data) => {
   }
 
   try {
-    writeFileSync(path, JSON.stringify(data, null, '\t'))
+    writeFileSync(path, data)
   } catch (e) {
     console.error(`❌❌❌ Error creating JSON file: ${path}`, e)
   }
