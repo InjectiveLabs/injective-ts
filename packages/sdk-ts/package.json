@@ -19,6 +19,7 @@
   },
   "scripts": {
     "postinstall": "link-module-alias",
+    "fetch:ofac": "node --experimental-fetch ./../../etc/ofac.js",
     "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",

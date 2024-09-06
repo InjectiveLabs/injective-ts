@@ -1,12 +1,12 @@
-import { MsgBase } from '../../MsgBase';
-import snakecaseKeys from 'snakecase-keys';
+import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
 import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgRevokeNamespaceRoles {
   export interface Params {
-    sender: string;
-    namespaceDenom: string;
-    addressRolesToRevoke: { address: string; roles: string[] }[];
+    sender: string
+    namespaceDenom: string
+    addressRolesToRevoke: { address: string; roles: string[] }[]
   }
 
   export type Proto = InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles
@@ -20,15 +20,16 @@ export default class MsgRevokeNamespaceRoles extends MsgBase<
   MsgRevokeNamespaceRoles.Proto
 > {
   static fromJSON(
-    params: MsgRevokeNamespaceRoles.Params
+    params: MsgRevokeNamespaceRoles.Params,
   ): MsgRevokeNamespaceRoles {
-    return new MsgRevokeNamespaceRoles(params);
+    return new MsgRevokeNamespaceRoles(params)
   }
 
   public toProto() {
-    const { params } = this;
+    const { params } = this
 
-    const message = InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles.create();
+    const message =
+      InjectivePermissionsV1Beta1Tx.MsgRevokeNamespaceRoles.create()
 
     message.sender = params.sender
     message.namespaceDenom = params.namespaceDenom
@@ -40,43 +41,43 @@ export default class MsgRevokeNamespaceRoles extends MsgBase<
   }
 
   public toData() {
-    const proto = this.toProto();
+    const proto = this.toProto()
 
     return {
       '@type': '/injective.permissions.v1beta1.MsgRevokeNamespaceRoles',
       ...proto,
-    };
+    }
   }
 
   public toAmino() {
-    const proto = this.toProto();
+    const proto = this.toProto()
     const message = {
       ...snakecaseKeys(proto),
-    };
+    }
 
     return {
       type: 'permissions/MsgRevokeNamespaceRoles',
       value: message,
-    };
+    }
   }
 
   public toWeb3() {
-    const amino = this.toAmino();
-    const { value } = amino;
+    const amino = this.toAmino()
+    const { value } = amino
 
     return {
       '@type': '/injective.permissions.v1beta1.MsgRevokeNamespaceRoles',
       ...value,
-    };
+    }
   }
 
   public toDirectSign() {
-    const proto = this.toProto();
+    const proto = this.toProto()
 
     return {
       type: '/injective.permissions.v1beta1.MsgRevokeNamespaceRoles',
       message: proto,
-    };
+    }
   }
 
   public toBinary(): Uint8Array {

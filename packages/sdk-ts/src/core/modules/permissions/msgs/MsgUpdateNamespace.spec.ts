@@ -16,7 +16,7 @@ const params: MsgUpdateNamespace['params'] = {
   },
   burnsPaused: {
     newValue: true,
-  }
+  },
 }
 
 const protoType = '/injective.permissions.v1beta1.MsgUpdateNamespace'
@@ -46,7 +46,7 @@ describe('MsgUpdateNamespace', () => {
     const proto = message.toProto()
 
     expect(proto).toStrictEqual({
-      ...protoParams
+      ...protoParams,
     })
   })
 

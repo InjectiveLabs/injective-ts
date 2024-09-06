@@ -21,6 +21,7 @@ export enum ChainErrorModule {
   Wasm = 'chain-wasm',
   WasmX = 'chain-wasmx',
   Tendermint = 'chain-tendermint',
+  Permissions = 'chain-permissions'
 }
 
 export enum IndexerErrorModule {
