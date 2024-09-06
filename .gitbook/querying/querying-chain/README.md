@@ -17,6 +17,7 @@
 | [Mint](querying-chain-mint.md)                      | Query data from the mint module                |
 | [Oracl](querying-chain-oracle.md)                   | Query data related to the oracle api           |
 | [Peggy](querying-chain-peggy.md)                    | Query ethereum data using the peggy api        |
+| [Permissions](querying-chain-permissions.md)        | Query data from the permissions module         |
 | [Staking](querying-chain-staking.md)                | Query data from the staking module             |
 | [Wasm](querying-chain-wasm.md)                      | Query data from the wasm module                |
 | [WasmX](querying-chain-wasmx.md)                    | Query data from the wasmX module               |
