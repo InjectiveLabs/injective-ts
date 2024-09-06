@@ -1,16 +1,17 @@
 import {
-    GrpcUnaryRequestException,
-    UnspecifiedErrorCode,
+  GrpcUnaryRequestException,
+  UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
 import { ChainGrpcPermissionsTransformer } from '../transformers'
+import { ChainModule } from '../types'
 
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
-  //protected module: string = ChainModule.
+  protected module: string = ChainModule.Permissions
 
   protected client: InjectivePermissionsV1Beta1Query.QueryClientImpl
 
@@ -22,14 +23,9 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchAddressesByRole({
-    denom,
-    role,
-  }: {
-    denom: string
-    role: string
-  }) {
-    const request = InjectivePermissionsV1Beta1Query.QueryAddressesByRoleRequest.create()
+  async fetchAddressesByRole({ denom, role }: { denom: string; role: string }) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryAddressesByRoleRequest.create()
 
     request.denom = denom
     request.role = role
@@ -65,7 +61,8 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     address: string
     denom: string
   }) {
-    const request = InjectivePermissionsV1Beta1Query.QueryAddressRolesRequest.create()
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryAddressRolesRequest.create()
 
     request.address = address
     request.denom = denom
@@ -95,12 +92,13 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
   }
 
   async fetchAllNamespaces() {
-    const request = InjectivePermissionsV1Beta1Query.QueryAllNamespacesRequest.create()
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryAllNamespacesRequest.create()
 
     try {
       const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryAllNamespacesResponse>(() =>
-          this.client.AllNamespaces(request, this.metadata),
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryAllNamespacesResponse>(
+          () => this.client.AllNamespaces(request, this.metadata),
         )
 
       return ChainGrpcPermissionsTransformer.allNamespacesResponseToAllNamespaces(
@@ -126,8 +124,8 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
 
     try {
       const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request, this.metadata),
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryParamsResponse>(
+          () => this.client.Params(request, this.metadata),
         )
 
       return ChainGrpcPermissionsTransformer.moduleParamsResponseToModuleParams(
@@ -155,7 +153,8 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     denom: string
     includeRoles: boolean
   }) {
-    const request = InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomRequest.create()
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomRequest.create()
 
     request.denom = denom
     request.includeRoles = includeRoles
@@ -184,12 +183,9 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchVouchersForAddress({
-    address,
-  }: {
-    address: string
-  }) {
-    const request = InjectivePermissionsV1Beta1Query.QueryVouchersForAddressRequest.create()
+  async fetchVouchersForAddress({ address }: { address: string }) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryVouchersForAddressRequest.create()
 
     request.address = address
 

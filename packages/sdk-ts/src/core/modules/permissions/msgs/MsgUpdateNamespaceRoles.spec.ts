@@ -32,7 +32,7 @@ describe('MsgUpdateNamespaceRoles', () => {
     const proto = message.toProto()
 
     expect(proto).toStrictEqual({
-      ...protoParams
+      ...protoParams,
     })
   })
 

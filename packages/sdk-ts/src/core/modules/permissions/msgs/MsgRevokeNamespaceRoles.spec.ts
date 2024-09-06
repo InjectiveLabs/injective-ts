@@ -5,7 +5,9 @@ import { mockFactory } from '@injectivelabs/test-utils'
 const params: MsgRevokeNamespaceRoles['params'] = {
   sender: mockFactory.injectiveAddress,
   namespaceDenom: 'namespace_denom',
-  addressRolesToRevoke: [{ address: mockFactory.injectiveAddress2, roles: ['admin'] }],
+  addressRolesToRevoke: [
+    { address: mockFactory.injectiveAddress2, roles: ['admin'] },
+  ],
 }
 
 const protoType = '/injective.permissions.v1beta1.MsgRevokeNamespaceRoles'
@@ -27,7 +29,7 @@ describe('MsgRevokeNamespaceRoles', () => {
     const proto = message.toProto()
 
     expect(proto).toStrictEqual({
-      ...protoParams
+      ...protoParams,
     })
   })
 

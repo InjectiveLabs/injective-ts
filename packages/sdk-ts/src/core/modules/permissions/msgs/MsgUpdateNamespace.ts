@@ -1,22 +1,22 @@
-import { MsgBase } from '../../MsgBase';
-import snakecaseKeys from 'snakecase-keys';
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts';
+import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
+import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgUpdateNamespace {
   export interface Params {
-    sender: string;
-    namespaceDenom: string;
+    sender: string
+    namespaceDenom: string
     wasmHook: {
-      newValue: string;
+      newValue: string
     }
     mintsPaused: {
-      newValue: boolean;
+      newValue: boolean
     }
     sendsPaused: {
-      newValue: boolean;
+      newValue: boolean
     }
     burnsPaused: {
-      newValue: boolean;
+      newValue: boolean
     }
   }
 
@@ -30,14 +30,12 @@ export default class MsgUpdateNamespace extends MsgBase<
   MsgUpdateNamespace.Params,
   MsgUpdateNamespace.Proto
 > {
-  static fromJSON(
-    params: MsgUpdateNamespace.Params
-  ): MsgUpdateNamespace {
-    return new MsgUpdateNamespace(params);
+  static fromJSON(params: MsgUpdateNamespace.Params): MsgUpdateNamespace {
+    return new MsgUpdateNamespace(params)
   }
 
   public toProto() {
-    const { params } = this;
+    const { params } = this
 
     const message = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.create()
     message.sender = params.sender
@@ -48,56 +46,54 @@ export default class MsgUpdateNamespace extends MsgBase<
     message.mintsPaused = {
       newValue: params.mintsPaused.newValue,
     }
-    message.sendsPaused =  {
+    message.sendsPaused = {
       newValue: params.sendsPaused.newValue,
     }
     message.burnsPaused = {
-        newValue: params.burnsPaused.newValue,
+      newValue: params.burnsPaused.newValue,
     }
 
-    return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.fromPartial(
-      message,
-    )
+    return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.fromPartial(message)
   }
 
   public toData() {
-    const proto = this.toProto();
+    const proto = this.toProto()
 
     return {
       '@type': '/injective.permissions.v1beta1.MsgUpdateNamespace',
       ...proto,
-    };
+    }
   }
 
   public toAmino() {
-    const proto = this.toProto();
+    const proto = this.toProto()
     const message = {
       ...snakecaseKeys(proto),
-    };
+    }
 
     return {
       type: 'permissions/MsgUpdateNamespace',
       value: message,
-    };
+    }
   }
 
   public toWeb3() {
-    const amino = this.toAmino();
-    const { value } = amino;
+    const amino = this.toAmino()
+    const { value } = amino
 
     return {
       '@type': '/injective.permissions.v1beta1.MsgUpdateNamespace',
       ...value,
-    };
+    }
   }
 
   public toDirectSign() {
-    const proto = this.toProto();
+    const proto = this.toProto()
 
     return {
       type: '/injective.permissions.v1beta1.MsgUpdateNamespace',
       message: proto,
-    };
+    }
   }
 
   public toBinary(): Uint8Array {

@@ -11,8 +11,10 @@ const params: MsgCreateNamespace['params'] = {
     sendsPaused: false,
     burnsPaused: true,
     rolePermissions: [{ role: 'admin', permissions: 1 }],
-    addressRoles: [{ address: mockFactory.injectiveAddress2, roles: ['admin'] }],
-  }
+    addressRoles: [
+      { address: mockFactory.injectiveAddress2, roles: ['admin'] },
+    ],
+  },
 }
 
 const protoType = '/injective.permissions.v1beta1.MsgCreateNamespace'
