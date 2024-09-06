@@ -58,6 +58,7 @@ import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 import { isCosmosAminoOnlyWallet } from '../utils'
 import { LeapWallet } from '../utils/wallets'
 import { checkIfTxRunOutOfGas } from './helper'
+import ofac from './../json/ofac.json'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,
@@ -144,6 +145,12 @@ export class MsgBroadcaster {
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
 
+    if (ofac.includes(txWithAddresses.ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
       : isEip712V2OnlyWallet(walletStrategy.wallet)
@@ -171,6 +178,12 @@ export class MsgBroadcaster {
         tx.injectiveAddress || tx.address,
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
+
+    if (ofac.includes(txWithAddresses.ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
@@ -200,6 +213,12 @@ export class MsgBroadcaster {
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
 
+    if (ofac.includes(txWithAddresses.ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
       : this.broadcastWeb3WithFeeDelegation(txWithAddresses)
@@ -224,6 +243,12 @@ export class MsgBroadcaster {
         tx.injectiveAddress || tx.address,
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
+
+    if (ofac.includes(txWithAddresses.ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmosWithFeeDelegation(txWithAddresses)
