@@ -27,7 +27,7 @@ const fetchOfac = async () => {
   const wallets = await response.text()
 
   try {
-    storeJsonFile(`src/json/ofac.json`, wallets)
+    storeJsonFile(`src/json/ofac.ts`, `export const ofacWallets = ${wallets}`)
 
     console.log(`✅✅✅ OFAC list fetched`)
   } catch (e) {

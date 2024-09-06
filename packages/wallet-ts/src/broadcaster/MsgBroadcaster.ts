@@ -5,6 +5,7 @@ import {
   SIGN_DIRECT,
   TxResponse,
   hexToBase64,
+  ofacWallets,
   SIGN_EIP712_V2,
   SIGN_EIP712,
   ChainGrpcAuthApi,
@@ -58,7 +59,6 @@ import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
 import { isCosmosAminoOnlyWallet } from '../utils'
 import { LeapWallet } from '../utils/wallets'
 import { checkIfTxRunOutOfGas } from './helper'
-import ofac from './../json/ofac.json'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,
@@ -145,7 +145,7 @@ export class MsgBroadcaster {
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofac.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -179,7 +179,7 @@ export class MsgBroadcaster {
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofac.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -213,7 +213,7 @@ export class MsgBroadcaster {
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofac.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -244,7 +244,7 @@ export class MsgBroadcaster {
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofac.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )

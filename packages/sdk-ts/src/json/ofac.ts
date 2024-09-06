@@ -1,4 +1,4 @@
-[
+export const ofacWallets = [
   "0x179f48c78f57a3a78f0608cc9197b8972921d1d2",
   "0x1967d8af5bd86a497fb3dd7899a020e47560daaf",
   "0x19aa5fe80d33a56d56c78e82ea5e50e5d80b4dff",
