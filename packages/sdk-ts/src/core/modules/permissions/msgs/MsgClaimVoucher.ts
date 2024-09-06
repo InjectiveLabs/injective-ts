@@ -1,13 +1,12 @@
-import { MsgBase } from '../../MsgBase';
-import snakecaseKeys from 'snakecase-keys';
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts';
+import { MsgBase } from '../../MsgBase'
+import snakecaseKeys from 'snakecase-keys'
+import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgClaimVoucher {
   export interface Params {
     sender: string
     denom: string
   }
-
 
   export type Proto = InjectivePermissionsV1Beta1Tx.MsgClaimVoucher
 }
@@ -19,9 +18,7 @@ export default class MsgClaimVoucher extends MsgBase<
   MsgClaimVoucher.Params,
   MsgClaimVoucher.Proto
 > {
-  static fromJSON(
-    params: MsgClaimVoucher.Params,
-  ): MsgClaimVoucher {
+  static fromJSON(params: MsgClaimVoucher.Params): MsgClaimVoucher {
     return new MsgClaimVoucher(params)
   }
 
@@ -32,9 +29,7 @@ export default class MsgClaimVoucher extends MsgBase<
     message.sender = params.sender
     message.denom = params.denom
 
-    return InjectivePermissionsV1Beta1Tx.MsgClaimVoucher.fromPartial(
-      message,
-    )
+    return InjectivePermissionsV1Beta1Tx.MsgClaimVoucher.fromPartial(message)
   }
 
   public toData() {
@@ -59,7 +54,7 @@ export default class MsgClaimVoucher extends MsgBase<
   }
 
   public toWeb3() {
-    const amino = this.toAmino();
+    const amino = this.toAmino()
     const { value } = amino
 
     return {

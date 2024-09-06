@@ -5,6 +5,7 @@ import {
   SIGN_DIRECT,
   TxResponse,
   hexToBase64,
+  ofacWallets,
   SIGN_EIP712_V2,
   SIGN_EIP712,
   ChainGrpcAuthApi,
@@ -144,6 +145,12 @@ export class MsgBroadcaster {
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
 
+    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
       : isEip712V2OnlyWallet(walletStrategy.wallet)
@@ -171,6 +178,12 @@ export class MsgBroadcaster {
         tx.injectiveAddress || tx.address,
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
+
+    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
@@ -200,6 +213,12 @@ export class MsgBroadcaster {
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
 
+    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmos(txWithAddresses)
       : this.broadcastWeb3WithFeeDelegation(txWithAddresses)
@@ -224,6 +243,12 @@ export class MsgBroadcaster {
         tx.injectiveAddress || tx.address,
       ),
     } as MsgBroadcasterTxOptionsWithAddresses
+
+    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
 
     return isCosmosWallet(walletStrategy.wallet)
       ? this.broadcastCosmosWithFeeDelegation(txWithAddresses)

@@ -25,6 +25,7 @@ import { CreateTransactionArgs } from '../types'
 import { IndexerGrpcTransactionApi } from '../../../../client'
 import { AccountDetails } from '../../../../types/auth'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { ofacWallets } from './../../../../json'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
@@ -104,6 +105,14 @@ export class MsgBroadcasterWithPk {
    * @returns {string} transaction hash
    */
   async broadcast(transaction: MsgBroadcasterTxOptions) {
+    const { privateKey } = this
+
+    if (ofacWallets.includes(privateKey.toHex())) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
     const { txRaw } = await this.prepareTxForBroadcast(transaction)
 
     return await this.broadcastTxRaw(txRaw)
@@ -117,6 +126,15 @@ export class MsgBroadcasterWithPk {
    */
   async broadcastWithFeeDelegation(transaction: MsgBroadcasterTxOptions) {
     const { simulateTx, privateKey, ethereumChainId, endpoints } = this
+
+    const ethereumWallet = this.privateKey.toHex()
+
+    if (ofacWallets.includes(ethereumWallet)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
     const msgs = Array.isArray(transaction.msgs)
       ? transaction.msgs
       : [transaction.msgs]
@@ -164,6 +182,15 @@ export class MsgBroadcasterWithPk {
    */
   async simulate(transaction: MsgBroadcasterTxOptions) {
     const { privateKey, endpoints, chainId } = this
+
+    const ethereumWallet = this.privateKey.toHex()
+
+    if (ofacWallets.includes(ethereumWallet)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
     const tx = {
       ...transaction,
       msgs: Array.isArray(transaction.msgs)

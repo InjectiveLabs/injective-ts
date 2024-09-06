@@ -8,7 +8,6 @@ const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcPermissionsApi = new ChainGrpcPermissionsApi(endpoints.grpc)
 const injectiveAddress = mockFactory.injectiveAddress
 
-
 describe('ChainGrpcPermissionsApi', () => {
   test('fetchModuleParams', async () => {
     try {
@@ -57,7 +56,7 @@ describe('ChainGrpcPermissionsApi', () => {
     try {
       const response = await chainGrpcPermissionsApi.fetchAddressesByRole({
         denom: INJ_DENOM,
-        role: "role",
+        role: 'role',
       })
 
       expect(response).toBeDefined()
@@ -70,7 +69,8 @@ describe('ChainGrpcPermissionsApi', () => {
       )
     } catch (e) {
       console.error(
-        'chainGrpcPermissionsApi.fetchAddressesByRoles => ' + (e as any).message,
+        'chainGrpcPermissionsApi.fetchAddressesByRoles => ' +
+          (e as any).message,
       )
     }
   })
@@ -116,7 +116,7 @@ describe('ChainGrpcPermissionsApi', () => {
   test('fetchVouchersForAddress', async () => {
     try {
       const response = await chainGrpcPermissionsApi.fetchVouchersForAddress({
-        address: injectiveAddress
+        address: injectiveAddress,
       })
 
       expect(response).toBeDefined()
@@ -129,7 +129,8 @@ describe('ChainGrpcPermissionsApi', () => {
       )
     } catch (e) {
       console.error(
-        'chainGrpcPermissionsApi.fetchVouchersForAddress => ' + (e as any).message,
+        'chainGrpcPermissionsApi.fetchVouchersForAddress => ' +
+          (e as any).message,
       )
     }
   })

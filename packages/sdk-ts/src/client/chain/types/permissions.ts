@@ -3,7 +3,7 @@ import {
     InjectivePermissionsV1Beta1Params
   } from '@injectivelabs/core-proto-ts'
 
-import { Coin } from '@injectivelabs/ts-types'
+import { Coin } from '@injectivelabs/ts-types
 
   export interface Namespace {
     denom: string

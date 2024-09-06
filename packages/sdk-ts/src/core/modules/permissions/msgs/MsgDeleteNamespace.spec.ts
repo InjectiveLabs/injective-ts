@@ -7,8 +7,8 @@ const params: MsgDeleteNamespace['params'] = {
   namespaceDenom: 'namespace_denom',
 }
 
-const protoType = '/injective.permissions.v1beta1.MsgDeleteNamespace';
-const protoTypeShort = 'permissions/MsgDeleteNamespace';
+const protoType = '/injective.permissions.v1beta1.MsgDeleteNamespace'
+const protoTypeShort = 'permissions/MsgDeleteNamespace'
 const protoParams = {
   sender: params.sender,
   namespaceDenom: params.namespaceDenom,
