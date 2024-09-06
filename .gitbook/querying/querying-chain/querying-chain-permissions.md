@@ -90,7 +90,7 @@ const chainGrpcPermissionsApi = new ChainGrpcPermissionsApi(endpoints.grpc)
 
 const injectiveAddress = 'inj...'
 
-const vouchers = await chainGrpcPermissionsApi.VouchersForAddress(
+const vouchers = await chainGrpcPermissionsApi.fetchVouchersForAddress(
     injectiveAddress,
 )
 
