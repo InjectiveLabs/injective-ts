@@ -31,20 +31,9 @@ export interface AccountPortfolioBalances {
   subaccountsList: PortfolioSubaccountBalanceV2[]
 }
 
-export interface Holder {
-  accountAddress: string
-  balance: string
-}
-
-export interface TokenHolders {
-  holders: Holder[]
-  nextCursors: string[]
-}
-
 export type GrpcPositionV2 = InjectivePortfolioRpc.DerivativePosition
 export type GrpcAccountPortfolioV2 = InjectivePortfolioRpc.Portfolio
 export type GrpcSubaccountDepositV2 = InjectivePortfolioRpc.SubaccountDeposit
 export type GrpcPositionsWithUPNL = InjectivePortfolioRpc.PositionsWithUPNL
 export type GrpcPortfolioSubaccountBalanceV2 =
   InjectivePortfolioRpc.SubaccountBalanceV2
-export type GrpcTokenHolders = InjectivePortfolioRpc.TokenHoldersResponse

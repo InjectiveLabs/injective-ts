@@ -305,4 +305,51 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchDenomHolders({
+    denom,
+    token,
+    limit,
+  }: {
+    denom: string
+    token?: string
+    limit?: number
+  }) {
+    const request = InjectiveArchiverRpc.DenomHoldersRequest.create()
+
+    request.denom = denom
+
+    if (token) {
+      request.token = token
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveArchiverRpc.DenomHoldersResponse>(() =>
+          this.client.DenomHolders(request),
+        )
+
+      return IndexerGrpcArchiverTransformer.grpcDenomHoldersResponseToDenomHolders(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'DenomHolders',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DenomHolders',
+        contextModule: this.module,
+      })
+    }
+  }
 }

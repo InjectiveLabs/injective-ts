@@ -34,6 +34,16 @@ export interface VolLeaderboard {
   leaders: LeaderboardRow[]
 }
 
+export interface Holder {
+  accountAddress: string
+  balance: string
+}
+
+export interface DenomHolders {
+  holders: Holder[]
+  next: string[]
+}
+
 export type GrpcHistoricalRPNL = InjectiveArchiverRpc.HistoricalRPNL
 export type GrpcHistoricalBalance = InjectiveArchiverRpc.HistoricalBalance
 export type GrpcHistoricalVolumes = InjectiveArchiverRpc.HistoricalVolumes
@@ -44,3 +54,4 @@ export type GrpcVolLeaderboard =
   | InjectiveArchiverRpc.VolLeaderboardResponse
   | InjectiveArchiverRpc.VolLeaderboardFixedResolutionResponse
 export type GrpcLeaderboardRow = InjectiveArchiverRpc.LeaderboardRow
+export type GrpcDenomHolders = InjectiveArchiverRpc.DenomHoldersResponse
