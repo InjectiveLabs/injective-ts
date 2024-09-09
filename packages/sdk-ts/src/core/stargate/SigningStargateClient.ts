@@ -1,23 +1,23 @@
 import {
+  StdFee,
   encodeSecp256k1Pubkey,
   makeSignDoc as makeSignDocAmino,
-  StdFee,
 } from '@cosmjs/amino'
 import { Int53, Uint53 } from '@cosmjs/math'
 import {
-  EncodeObject,
+  Registry,
+  makeSignDoc,
   encodePubkey,
+  EncodeObject,
+  OfflineSigner,
   isOfflineDirectSigner,
   makeAuthInfoBytes,
-  makeSignDoc,
-  OfflineSigner,
-  Registry,
   TxBodyEncodeObject,
 } from '@cosmjs/proto-signing'
 import {
+  CometClient,
   HttpEndpoint,
   Tendermint37Client,
-  CometClient,
 } from '@cosmjs/tendermint-rpc'
 import { assert, assertDefined } from '@cosmjs/utils'
 import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'

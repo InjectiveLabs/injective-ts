@@ -96,7 +96,7 @@ describe('ChainGrpcPermissionsApi', () => {
     try {
       const response = await chainGrpcPermissionsApi.fetchNamespaceByDenom({
         denom: INJ_DENOM,
-        include_roles: true,
+        includeRoles: true,
       })
 
       expect(response).toBeDefined()
