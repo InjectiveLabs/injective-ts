@@ -1,25 +1,26 @@
 import {
-  BankMsgSendTransaction,
   Block,
-  BlockWithTxs,
   GasFee,
-  GrpcBankMsgSendMessage,
   GrpcGasFee,
-  GrpcIndexerValidatorDescription,
-  GrpcValidatorSlashingEvent,
-  GrpcValidatorUptime,
   Transaction,
-  ExplorerValidator,
-  ExplorerValidatorDescription,
-  ValidatorSlashingEvent,
-  ValidatorUptime,
+  BlockWithTxs,
   IBCTransferTx,
+  ExplorerStats,
   PeggyDepositTx,
+  ValidatorUptime,
+  ExplorerValidator,
   PeggyWithdrawalTx,
   GrpcIBCTransferTx,
   GrpcPeggyDepositTx,
+  GrpcValidatorUptime,
   GrpcPeggyWithdrawalTx,
+  BankMsgSendTransaction,
+  GrpcBankMsgSendMessage,
+  ValidatorSlashingEvent,
   IndexerStreamTransaction,
+  GrpcValidatorSlashingEvent,
+  ExplorerValidatorDescription,
+  GrpcIndexerValidatorDescription,
 } from '../types/explorer'
 import { grpcPagingToPaging } from '../../../utils'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
@@ -393,6 +394,21 @@ export class IndexerGrpcExplorerTransformer {
       txHashesList: grpcPeggyWithdrawalTx.txHashes,
       createdAt: grpcPeggyWithdrawalTx.createdAt,
       updatedAt: grpcPeggyWithdrawalTx.updatedAt,
+    }
+  }
+
+  static getExplorerStatsResponseToExplorerStats(
+    response: InjectiveExplorerRpc.GetStatsResponse,
+  ): ExplorerStats {
+    return {
+      assets: response.assets,
+      txsTotal: response.txsTotal,
+      addresses: response.addresses,
+      injSupply: response.injSupply,
+      txsInPast24Hours: response.txs24H,
+      blockCountInPast24Hours: response.blockCount24H,
+      txsPerSecondInPast24Hours: response.txsPs24H,
+      txsPerSecondInPast100Blocks: response.txsPs100B,
     }
   }
 }

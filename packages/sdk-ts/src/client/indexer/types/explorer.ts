@@ -379,6 +379,17 @@ export interface CosmWasmChecksum {
   hash: string
 }
 
+export interface ExplorerStats {
+  assets: string
+  txsTotal: string
+  addresses: string
+  injSupply: string
+  txsInPast24Hours: string
+  blockCountInPast24Hours: string
+  txsPerSecondInPast24Hours: string
+  txsPerSecondInPast100Blocks: string
+}
+
 export type GrpcIBCTransferTx = InjectiveExplorerRpc.IBCTransferTx
 export type GrpcPeggyDepositTx = InjectiveExplorerRpc.PeggyDepositTx
 export type GrpcPeggyWithdrawalTx = InjectiveExplorerRpc.PeggyWithdrawalTx
@@ -387,3 +398,4 @@ export type GrpcValidatorUptime = InjectiveExplorerRpc.ValidatorUptime
 export type GrpcIndexerValidatorDescription =
   InjectiveExplorerRpc.ValidatorDescription
 export type GrpcValidatorSlashingEvent = InjectiveExplorerRpc.SlashingEvent
+export type GrpcExplorerStats = InjectiveExplorerRpc.GetStatsResponse

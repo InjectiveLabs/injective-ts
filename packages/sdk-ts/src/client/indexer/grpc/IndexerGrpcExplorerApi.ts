@@ -540,4 +540,32 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchExplorerStats() {
+    const request = InjectiveExplorerRpc.GetStatsRequest.create()
+
+    try {
+      const response = await this.retry<InjectiveExplorerRpc.GetStatsResponse>(
+        () => this.client.GetStats(request),
+      )
+
+      return IndexerGrpcExplorerTransformer.getExplorerStatsResponseToExplorerStats(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetExplorerStats',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetExplorerStats',
+        contextModule: this.module,
+      })
+    }
+  }
 }
