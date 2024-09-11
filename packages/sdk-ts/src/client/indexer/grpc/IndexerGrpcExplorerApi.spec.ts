@@ -222,4 +222,23 @@ describe('IndexerGrpcExplorerApi', () => {
       )
     }
   })
+
+  test('fetchExplorerStats', async () => {
+    try {
+      const response = await indexerGrpcExplorerApi.fetchExplorerStats()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcExplorerTransformer.getExplorerStatsResponseToExplorerStats
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcExplorerApi.fetchExplorerStats => ' + (e as any).message,
+      )
+    }
+  })
 })

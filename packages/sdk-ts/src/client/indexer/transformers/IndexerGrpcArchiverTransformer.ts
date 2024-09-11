@@ -1,10 +1,11 @@
 import {
+  DenomHolders,
   HistoricalRPNL,
-  HistoricalBalance,
-  HistoricalVolumes,
   LeaderboardRow,
   PnlLeaderboard,
   VolLeaderboard,
+  HistoricalBalance,
+  HistoricalVolumes,
 } from '../types/archiver'
 import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
@@ -131,6 +132,18 @@ export class IndexerGrpcArchiverTransformer {
       leaders: response.leaders.map(
         IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
       ),
+    }
+  }
+
+  static grpcDenomHoldersResponseToDenomHolders(
+    response: InjectiveArchiverRpc.DenomHoldersResponse,
+  ): DenomHolders {
+    return {
+      holders: response.holders.map((holder) => ({
+        accountAddress: holder.accountAddress,
+        balance: holder.balance,
+      })),
+      next: response.next,
     }
   }
 }

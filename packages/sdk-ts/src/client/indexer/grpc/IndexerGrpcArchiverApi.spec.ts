@@ -1,12 +1,13 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { INJ_DENOM } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/test-utils'
 import { IndexerGrpcArchiverTransformer } from '../transformers'
 import { IndexerGrpcArchiverApi } from './IndexerGrpcArchiverApi'
 
 const account = mockFactory.injectiveAddress
 const resolution = '1D'
-const startDate = 1622505600
-const endDate = 1625097600
+const startDate = '1622505600'
+const endDate = '1625097600'
 const limit = 10
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcArchiverApi = new IndexerGrpcArchiverApi(endpoints.indexer)
@@ -170,6 +171,28 @@ describe('IndexerGrpcArchiverApi', () => {
       console.error(
         'IndexerGrpcArchiverApi.fetchVolLeaderboardFixedResolution => ' +
           (e as any).message,
+      )
+    }
+  })
+
+  test('fetchDenomHolders', async () => {
+    try {
+      const response = await indexerGrpcArchiverApi.fetchDenomHolders({
+        denom: INJ_DENOM,
+        limit,
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcArchiverTransformer.grpcDenomHoldersResponseToDenomHolders
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcArchiverApi.fetchDenomHolders => ' + (e as any).message,
       )
     }
   })
