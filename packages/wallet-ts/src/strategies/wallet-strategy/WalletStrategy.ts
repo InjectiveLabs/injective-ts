@@ -30,6 +30,7 @@ import WalletConnect from './strategies/WalletConnect'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import { isEthWallet, isCosmosWallet } from './utils'
 import { SendTransactionOptions } from './types'
+import Fox from './strategies/Fox'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -120,6 +121,8 @@ const createStrategy = ({
       return new Leap({ ...args })
     case Wallet.Ninji:
       return new Ninji({ ...args })
+    case Wallet.FoxWallet:
+      return new Fox({ ...args })
     default:
       return undefined
   }

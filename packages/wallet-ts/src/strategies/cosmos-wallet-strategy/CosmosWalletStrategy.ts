@@ -15,12 +15,14 @@ import {
 import {} from '../../utils/utils'
 import { isCosmosWallet } from '../wallet-strategy/utils'
 import { SendTransactionOptions } from '../wallet-strategy'
+import Fox from './strategies/Fox'
 
 export const cosmosWallets = [
   Wallet.Keplr,
   Wallet.Leap,
   Wallet.Cosmostation,
   Wallet.Ninji,
+  Wallet.FoxWallet,
 ]
 
 const createWallet = ({
@@ -39,6 +41,8 @@ const createWallet = ({
       return new Cosmostation({ ...args })
     case Wallet.Ninji:
       return new Ninji({ ...args })
+    case Wallet.FoxWallet:
+      return new Fox({ ...args })
     default:
       throw new GeneralException(
         new Error(`The ${wallet} concrete wallet strategy is not supported`),
