@@ -406,6 +406,7 @@ export class IndexerGrpcExplorerTransformer {
       addresses: response.addresses,
       injSupply: response.injSupply,
       txsInPast24Hours: response.txs24H,
+      txsInPast30Days: response.txs30D,
       blockCountInPast24Hours: response.blockCount24H,
       txsPerSecondInPast24Hours: response.txsPs24H,
       txsPerSecondInPast100Blocks: response.txsPs100B,

@@ -384,6 +384,7 @@ export interface ExplorerStats {
   txsTotal: string
   addresses: string
   injSupply: string
+  txsInPast30Days: string
   txsInPast24Hours: string
   blockCountInPast24Hours: string
   txsPerSecondInPast24Hours: string
