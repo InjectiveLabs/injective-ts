@@ -6,8 +6,8 @@ import { IndexerGrpcArchiverApi } from './IndexerGrpcArchiverApi'
 
 const account = mockFactory.injectiveAddress
 const resolution = '1D'
-const startDate = String(1622505600)
-const endDate = String(1625097600)
+const startDate = '1622505600'
+const endDate = '1625097600'
 const limit = 10
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcArchiverApi = new IndexerGrpcArchiverApi(endpoints.indexer)
