@@ -1,4 +1,4 @@
-# Assets (Token Metadata)
+# Assets
 
 ## Denom
 
@@ -6,11 +6,11 @@ A denom is how assets are represented within the Bank module of Injective. These
 
 Depending on the origin of the denom and how it was created on Injective we have different types of denoms:
 
-- **Native denoms** - there is only one denom of this type, the `inj` denom which represented the native coin of Injective,
-- **Peggy denoms** - these denoms represent assets bridged over from Ethereum to Injective using the Peggy bridge. They have the following format `peggy{ERC20_CONTRACT_ADDRESS}`
-- **IBC denoms** - these denoms represent assets bridged over from other Cosmos chains through IBC. They have the following format `ibc/{hash}`.
-- **Insurance Fund Denoms** - these denoms represent token shares of the insurance funds created on Injective. They have the following format `share{id}`
-- **Factory Denoms** - these denoms are a representation of a CW20 token from Cosmwasm on the Injective native bank module. They have the following format `factory/{OWNER}/{SUBDENOM}` where the `OWNER` is the owner who created the factory denom. One example is the CW20 token factory denom `factory/{CW20_ADAPTER_CONTRACT}/{CW20_CONTRACT_ADDRESS}` where the `CW20_ADAPTER_CONTRACT` is the adapter contract address which does the conversion between CW20 and the native Bank module.
+* **Native denoms** - there is only one denom of this type, the `inj` denom which represented the native coin of Injective,
+* **Peggy denoms** - these denoms represent assets bridged over from Ethereum to Injective using the Peggy bridge. They have the following format `peggy{ERC20_CONTRACT_ADDRESS}`
+* **IBC denoms** - these denoms represent assets bridged over from other Cosmos chains through IBC. They have the following format `ibc/{hash}`.
+* **Insurance Fund Denoms** - these denoms represent token shares of the insurance funds created on Injective. They have the following format `share{id}`
+* **Factory Denoms** - these denoms are a representation of a CW20 token from Cosmwasm on the Injective native bank module. They have the following format `factory/{OWNER}/{SUBDENOM}` where the `OWNER` is the owner who created the factory denom. One example is the CW20 token factory denom `factory/{CW20_ADAPTER_CONTRACT}/{CW20_CONTRACT_ADDRESS}` where the `CW20_ADAPTER_CONTRACT` is the adapter contract address which does the conversion between CW20 and the native Bank module.
 
 #### Token
 
@@ -22,20 +22,20 @@ Assets on Injective are represented as denoms. Denoms (and the amounts) are not 
 
 Let's recap the types of denoms we have in the Getting Started section:
 
-- **Native denoms** - there is only one denom of this type, the `inj` denom which represented the native coin of Injective,
-- **Peggy denoms** - these denoms represent assets bridged over from Ethereum to Injective using the Peggy bridge. They have the following format `peggy{ERC20_CONTRACT_ADDRESS}`
-- **IBC denoms** - these denoms represent assets bridged over from other Cosmos chains through IBC. They have the following format `ibc/{hash}`.
-- **Insurance Fund Denoms** - these denoms represent token shares of the insurance funds created on Injective. The have the following format `share{id}`
-- **Factory Denoms** - these denoms are a representation of a CW20 token from Cosmwasm on the Injective native bank module. They have the following format `factory/{CW20_ADAPTER_CONTRACT}/{CW20_CONTRACT_ADDRESS}` where the `CW20_ADAPTER_CONTRACT` is the adapter contract address which does the conversion between CW20 and the native Bank module.
+* **Native denoms** - there is only one denom of this type, the `inj` denom which represented the native coin of Injective,
+* **Peggy denoms** - these denoms represent assets bridged over from Ethereum to Injective using the Peggy bridge. They have the following format `peggy{ERC20_CONTRACT_ADDRESS}`
+* **IBC denoms** - these denoms represent assets bridged over from other Cosmos chains through IBC. They have the following format `ibc/{hash}`.
+* **Insurance Fund Denoms** - these denoms represent token shares of the insurance funds created on Injective. The have the following format `share{id}`
+* **Factory Denoms** - these denoms represent a CW20 token from Cosmwasm on the Injective native bank module. They have the following format `factory/{CW20_ADAPTER_CONTRACT}/{CW20_CONTRACT_ADDRESS}` where the `CW20_ADAPTER_CONTRACT` is the adapter contract address that converts CW20 and the native Bank module.
 
-We maintain our own token metadata list off-chain for faster access on the [injective-list](https://github.com/InjectiveLabs/injective-list) repository.
+We maintain our token metadata list off-chain for faster access to the[ injective-lists](https://github.com/InjectiveLabs/injective-lists/tree/master/tokens) repository.
 
 ### Token Verification
 
-Verifying your token's metadata can be done in a couple of ways. Here are the verification levels and what they mean:&#x20;
+Verifying your token's metadata can be done in a couple of ways. Here are the verification levels and what they mean:
 
-- **Verified** -> Your asset metadata has been **submitted and verified** to the `@injectivelabs/token-metadata` package. You can find a tutorial on how to add your token's metadata to the package [here](../../../deprecated/token-metadata/CONTRIBUTING.md).
-- **Submitted** -> Your asset metadata has been **submitted** to the `@injectivelabs/token-metadata` package. You can find a tutorial on how to add your token's metadata to the package [here](../../../deprecated/token-metadata/CONTRIBUTING.md).
-- **Internal** -> Your asset's metadata has been verified on-chain using the `MsgSetDenomMetadata` message, as explained [here](https://docs.ts.injective.network/core-modules/token-factory#msgsetdenommetadata).
-- **External** -> Your asset's metadata has been verified on some external source like from Ethereum's contract details, etc.
-- **Unverified** -> Your asset's metadata has not been provided anywhere.
+* **Verified** -> Your asset metadata has been **submitted and verified** to the `@injectivelabs/token-metadata` package. You can find a tutorial on how to add your token's metadata to the package [here](https://github.com/InjectiveLabs/injective-lists/blob/master/CONTRIBUTING.md).
+* **Submitted** -> Your asset metadata has been **submitted** to the `@injectivelabs/token-metadata` package. You can find a tutorial on how to add your token's metadata to the package [here](https://github.com/InjectiveLabs/injective-lists/blob/master/CONTRIBUTING.md).
+* **Internal** -> Your asset's metadata has been verified on-chain using the `MsgSetDenomMetadata` message, as explained [here](https://docs.ts.injective.network/core-modules/token-factory#msgsetdenommetadata).
+* **External** -> Your asset's metadata has been verified on some external source like from Ethereum's contract details, etc.
+* **Unverified** -> Your asset's metadata has not been provided anywhere.

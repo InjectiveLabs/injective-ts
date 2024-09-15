@@ -7,7 +7,6 @@
     * [Creating Tokens](readme/assets/creating-tokens.md)
     * [Denom Client (deprecated)](readme/assets/denom-client.md)
     * [Injective Lists](readme/assets/injective-list.md)
-    *
   * [Networks](readme/networks.md)
   * [CosmJs Support](readme/getting-started-cosmjs.md)
   * [Running examples](readme/running-examples.md)
