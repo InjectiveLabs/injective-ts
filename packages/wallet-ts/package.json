@@ -52,6 +52,8 @@
     "@ledgerhq/hw-transport": "6.30.4",
     "@ledgerhq/hw-transport-webhid": "6.28.4",
     "@ledgerhq/hw-transport-webusb": "6.28.4",
+    "@magic-ext/cosmos": "23.9.1",
+    "@magic-ext/oauth2": "9.9.0",
     "@metamask/eth-sig-util": "^4.0.0",
     "@solana/wallet-adapter-wallets": "0.19.30",
     "@toruslabs/torus-embed": "^1.39.0",
@@ -65,6 +67,7 @@
     "hdkey": "^2.0.1",
     "link-module-alias": "^1.2.0",
     "long": "^5.2.1",
+    "magic-sdk": "28.9.0",
     "shx": "^0.3.3"
   },
   "devDependencies": {

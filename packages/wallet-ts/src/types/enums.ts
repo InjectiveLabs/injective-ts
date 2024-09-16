@@ -4,6 +4,7 @@ export enum Wallet {
   Leap = 'leap',
   Keplr = 'keplr',
   Ninji = 'ninji',
+  Magic = 'magic',
   Torus = 'torus',
   Ledger = 'ledger',
   BitGet = 'BitGet',
@@ -18,6 +19,16 @@ export enum Wallet {
   LedgerLegacy = 'ledger-legacy',
   WalletConnect = 'wallet-connect',
   CosmostationEth = 'cosmostation-eth',
+}
+
+export enum MagicProvider {
+  Email = 'email',
+  Apple = 'apple',
+  Github = 'github',
+  Google = 'google',
+  Discord = 'discord',
+  Twitter = 'twitter',
+  Facebook = 'facebook',
 }
 
 export enum WalletDeviceType {

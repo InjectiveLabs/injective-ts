@@ -1,5 +1,5 @@
-import Eip1993Provider from 'eip1193-provider'
 import type HDNode from 'hdkey'
+import Eip1993Provider from 'eip1193-provider'
 import { ChainId } from '@injectivelabs/ts-types'
 
 export interface BrowserEip1993Provider extends Eip1993Provider {
@@ -58,3 +58,8 @@ export type WalletConnectMetadata = Record<
   string,
   string | Record<string, string> | Record<string, string[]>
 >
+
+export type MagicMetadata = {
+  apiKey?: string
+  rpcEndpoint?: string
+}
