@@ -26,7 +26,7 @@ export interface ConcreteCosmosWalletStrategy {
   /**
    * The accounts from the wallet (addresses)
    */
-  getAddresses(): Promise<string[]>
+  getAddresses(args?: unknown): Promise<string[]>
 
   /**
    * Return the WalletDeviceType connected on the

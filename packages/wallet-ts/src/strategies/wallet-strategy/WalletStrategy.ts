@@ -1,35 +1,36 @@
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import { GeneralException, WalletException } from '@injectivelabs/exceptions'
+import Okx from './strategies/Okx'
+import Leap from './strategies/Leap'
+import Keplr from './strategies/Keplr'
+import Ninji from './strategies/Ninji'
+import Torus from './strategies/Torus'
+import Trezor from './strategies/Trezor'
+import BitGet from './strategies/BitGet'
+import Phantom from './strategies/Phantom'
 import Metamask from './strategies/Metamask'
+import PrivateKey from './strategies/PrivateKey'
 import TrustWallet from './strategies/TrustWallet'
+import Cosmostation from './strategies/Cosmostation'
+import LedgerCosmos from './strategies/LedgerCosmos'
+import WalletConnect from './strategies/WalletConnect'
+import LedgerLive from './strategies/Ledger/LedgerLive'
+import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
+import Magic from './strategies/Magic'
+import { isEthWallet, isCosmosWallet } from './utils'
+import { Wallet, WalletDeviceType } from '../../types/enums'
+import { MagicMetadata, SendTransactionOptions } from './types'
 import {
+  WalletStrategyOptions,
   ConcreteWalletStrategy,
   onAccountChangeCallback,
   onChainIdChangeCallback,
   WalletStrategyArguments,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
-  WalletStrategyOptions,
 } from '../types'
-import Keplr from './strategies/Keplr'
-import Leap from './strategies/Leap'
-import Ninji from './strategies/Ninji'
-import Trezor from './strategies/Trezor'
-import PrivateKey from './strategies/PrivateKey'
-import LedgerLive from './strategies/Ledger/LedgerLive'
-import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
-import Torus from './strategies/Torus'
-import Phantom from './strategies/Phantom'
-import Okx from './strategies/Okx'
-import BitGet from './strategies/BitGet'
-import Cosmostation from './strategies/Cosmostation'
-import LedgerCosmos from './strategies/LedgerCosmos'
-import WalletConnect from './strategies/WalletConnect'
-import { Wallet, WalletDeviceType } from '../../types/enums'
-import { isEthWallet, isCosmosWallet } from './utils'
-import { SendTransactionOptions } from './types'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -120,6 +121,15 @@ const createStrategy = ({
       return new Leap({ ...args })
     case Wallet.Ninji:
       return new Ninji({ ...args })
+    case Wallet.Magic:
+      if (!args.options?.metadata?.magic) {
+        return undefined
+      }
+
+      return new Magic({
+        ...args,
+        metadata: args.options.metadata.magic as MagicMetadata,
+      })
     default:
       return undefined
   }
@@ -192,8 +202,8 @@ export default class WalletStrategy {
     return this.strategies[this.wallet] as ConcreteWalletStrategy
   }
 
-  public getAddresses(): Promise<AccountAddress[]> {
-    return this.getStrategy().getAddresses()
+  public getAddresses(args?: unknown): Promise<AccountAddress[]> {
+    return this.getStrategy().getAddresses(args)
   }
 
   public getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -213,7 +223,7 @@ export default class WalletStrategy {
   ): Promise<AccountAddress[]> {
     await this.getStrategy().enable(args)
 
-    return this.getStrategy().getAddresses()
+    return this.getStrategy().getAddresses(args)
   }
 
   public getEthereumChainId(): Promise<string> {
