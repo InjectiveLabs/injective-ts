@@ -122,7 +122,11 @@ const createStrategy = ({
     case Wallet.Ninji:
       return new Ninji({ ...args })
     case Wallet.Magic:
-      if (!args.options?.metadata?.magic) {
+      if (
+        !args.options?.metadata?.magic ||
+        !(args.options?.metadata.magic as MagicMetadata)?.apiKey ||
+        !(args.options?.metadata.magic as MagicMetadata)?.rpcEndpoint
+      ) {
         return undefined
       }
 
