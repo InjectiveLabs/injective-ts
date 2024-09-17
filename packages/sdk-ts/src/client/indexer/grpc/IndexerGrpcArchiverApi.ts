@@ -138,10 +138,12 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     startDate,
     endDate,
     limit,
+    account,
   }: {
     startDate: string
     endDate: string
     limit?: number
+    account?: string
   }) {
     const request = InjectiveArchiverRpc.PnlLeaderboardRequest.create()
 
@@ -150,6 +152,10 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     if (limit) {
       request.limit = limit
+    }
+
+    if (account) {
+      request.account = account
     }
 
     try {
@@ -182,10 +188,12 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     startDate,
     endDate,
     limit,
+    account,
   }: {
     startDate: string
     endDate: string
     limit?: number
+    account?: string
   }) {
     const request = InjectiveArchiverRpc.VolLeaderboardRequest.create()
 
@@ -194,6 +202,10 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     if (limit) {
       request.limit = limit
+    }
+
+    if (account) {
+      request.account = account
     }
 
     try {
@@ -225,9 +237,11 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
   async fetchPnlLeaderboardFixedResolution({
     resolution,
     limit,
+    account,
   }: {
     resolution: string
     limit?: number
+    account?: string
   }) {
     const request =
       InjectiveArchiverRpc.PnlLeaderboardFixedResolutionRequest.create()
@@ -236,6 +250,10 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     if (limit) {
       request.limit = limit
+    }
+
+    if (account) {
+      request.account = account
     }
 
     try {
@@ -267,9 +285,11 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
   async fetchVolLeaderboardFixedResolution({
     resolution,
     limit,
+    account,
   }: {
     resolution: string
     limit?: number
+    account?: string
   }) {
     const request =
       InjectiveArchiverRpc.VolLeaderboardFixedResolutionRequest.create()
@@ -278,6 +298,10 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     if (limit) {
       request.limit = limit
+    }
+
+    if (account) {
+      request.account = account
     }
 
     try {

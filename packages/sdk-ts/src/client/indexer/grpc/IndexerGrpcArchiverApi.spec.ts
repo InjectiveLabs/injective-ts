@@ -84,9 +84,10 @@ describe('IndexerGrpcArchiverApi', () => {
   test('fetchPnlLeaderboard', async () => {
     try {
       const response = await indexerGrpcArchiverApi.fetchPnlLeaderboard({
-        startDate,
-        endDate,
         limit,
+        endDate,
+        account,
+        startDate,
       })
 
       expect(response).toBeDefined()
@@ -107,9 +108,10 @@ describe('IndexerGrpcArchiverApi', () => {
   test('fetchVolLeaderboard', async () => {
     try {
       const response = await indexerGrpcArchiverApi.fetchVolLeaderboard({
-        startDate,
-        endDate,
         limit,
+        endDate,
+        account,
+        startDate,
       })
 
       expect(response).toBeDefined()
@@ -131,8 +133,9 @@ describe('IndexerGrpcArchiverApi', () => {
     try {
       const response =
         await indexerGrpcArchiverApi.fetchPnlLeaderboardFixedResolution({
-          resolution,
           limit,
+          account,
+          resolution,
         })
 
       expect(response).toBeDefined()
@@ -155,8 +158,9 @@ describe('IndexerGrpcArchiverApi', () => {
     try {
       const response =
         await indexerGrpcArchiverApi.fetchVolLeaderboardFixedResolution({
-          resolution,
           limit,
+          account,
+          resolution,
         })
 
       expect(response).toBeDefined()

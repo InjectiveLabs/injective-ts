@@ -96,6 +96,11 @@ export class IndexerGrpcArchiverTransformer {
       leaders: response.leaders.map(
         IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
       ),
+      accountRow: response.accountRow
+        ? IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow(
+            response.accountRow,
+          )
+        : undefined,
     }
   }
 
@@ -108,6 +113,11 @@ export class IndexerGrpcArchiverTransformer {
       leaders: response.leaders.map(
         IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
       ),
+      accountRow: response.accountRow
+        ? IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow(
+            response.accountRow,
+          )
+        : undefined,
     }
   }
 
@@ -120,6 +130,11 @@ export class IndexerGrpcArchiverTransformer {
       leaders: response.leaders.map(
         IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
       ),
+      accountRow: response.accountRow
+        ? IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow(
+            response.accountRow,
+          )
+        : undefined,
     }
   }
 
@@ -132,6 +147,11 @@ export class IndexerGrpcArchiverTransformer {
       leaders: response.leaders.map(
         IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow,
       ),
+      accountRow: response.accountRow
+        ? IndexerGrpcArchiverTransformer.grpcLeaderboardRowToLeaderboardRow(
+            response.accountRow,
+          )
+        : undefined,
     }
   }
 

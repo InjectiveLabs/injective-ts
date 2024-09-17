@@ -26,12 +26,14 @@ export interface PnlLeaderboard {
   firstDate: string
   lastDate: string
   leaders: LeaderboardRow[]
+  accountRow: LeaderboardRow | undefined
 }
 
 export interface VolLeaderboard {
   firstDate: string
   lastDate: string
   leaders: LeaderboardRow[]
+  accountRow: LeaderboardRow | undefined
 }
 
 export interface Holder {
