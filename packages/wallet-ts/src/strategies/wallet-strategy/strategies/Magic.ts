@@ -115,7 +115,7 @@ export default class Magic
   async connectViaOauth(provider: MagicProvider) {
     return (this.magicWallet.oauth2 as any).loginWithRedirect({
       provider: provider,
-      redirectURI: window.location.href,
+      redirectURI: window.location.origin,
     })
   }
 
@@ -137,27 +137,30 @@ export default class Magic
     if (!provider) {
       try {
         await (this.magicWallet.oauth2 as any).getRedirectResult()
-        const { publicAddress } = await this.magicWallet.user.getInfo()
-
-        return [publicAddress || '']
-      } catch (e: any) {
+      } catch {
         // fail silently
-      }
-    } else {
-      try {
-        const { publicAddress } = await this.magicWallet.user.getInfo()
-
-        return [publicAddress || '']
-      } catch (e: unknown) {
-        throw new WalletException(new Error((e as any).message), {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: WalletAction.GetAccounts,
-        })
       }
     }
 
-    return Promise.resolve([])
+    try {
+      const { publicAddress } = await this.magicWallet.user.getInfo()
+
+      if (!publicAddress?.startsWith('inj')) {
+        const address = await (this.magicWallet.cosmos as any).changeAddress(
+          'inj',
+        )
+
+        return [address || '']
+      }
+
+      return [publicAddress || '']
+    } catch (e: unknown) {
+      throw new WalletException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
