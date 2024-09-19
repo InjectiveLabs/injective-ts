@@ -5,6 +5,7 @@ import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import Okx from './strategies/Okx'
 import Leap from './strategies/Leap'
 import Keplr from './strategies/Keplr'
+import OWallet from './strategies/OWallet'
 import Ninji from './strategies/Ninji'
 import Torus from './strategies/Torus'
 import Trezor from './strategies/Trezor'
@@ -113,6 +114,8 @@ const createStrategy = ({
       })
     case Wallet.Keplr:
       return new Keplr({ ...args })
+    case Wallet.OWallet:
+      return new OWallet({ ...args })
     case Wallet.Cosmostation:
       return new Cosmostation({ ...args })
     case Wallet.LedgerCosmos:
