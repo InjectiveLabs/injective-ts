@@ -53,6 +53,7 @@ export interface TokenStatic {
   baseDenom?: string
   externalLogo?: string
   marketIds?: string[]
+  overrideSymbol?: string
 }
 
 export interface TokenMeta {
