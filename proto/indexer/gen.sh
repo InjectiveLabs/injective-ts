@@ -106,7 +106,6 @@ cp $TS_STUB_DIR/package.json.cjs.template $TS_OUTPUT_DIR/cjs/package.json
 
 ## 4. Setup proper package.json for both indexer-api and indexer-proto-ts packages
 cp $TS_STUB_DIR/package.json.indexer-proto-ts.template $TS_OUTPUT_DIR/package.json
-# cp $TS_STUB_DIR/package.json.indexer-api.template $TS_OUTPUT_DIR/indexer-api/package.json
 
 # 5. Clean up folders
 rm -rf $BUILD_DIR

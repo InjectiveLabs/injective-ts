@@ -128,10 +128,6 @@ cp $CJS_PKG_TEMPLATE $TS_OUTPUT_DIR/cjs/package.json
 ## 4. Setup proper package.json for core-proto-ts packages
 cp $TS_STUB_DIR/package.json.core-proto-ts.template $TS_OUTPUT_DIR/package.json
 
-## CJS DEPRECATED
-# mkdir -p $TS_OUTPUT_DIR/chain-api
-# cp $TS_STUB_DIR/package.json.chain-api.template $TS_OUTPUT_DIR/chain-api/package.json
-
 # 5. Clean up folders
 rm -rf $BUILD_DIR
 rm -rf $PROTO_DIR

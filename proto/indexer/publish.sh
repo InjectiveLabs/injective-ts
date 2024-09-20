@@ -11,16 +11,3 @@ echo "new package version: $v1"
 
 npm version $v1
 npm publish
-
-## CJS DEPRECATED
-## Publish indexer-api
-# cd ./../indexer-api || exit
-
-# v=$(npm view @injectivelabs/indexer-api version)
-# echo "current package version: $v"
-
-# v1="${v%.*}.$((${v##*.}+1))"
-# echo "new package version: $v1"
-
-# npm version $v1
-# npm publish
