@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "ts-proto": "^1.141.1",
+    "@grpc/grpc-js": "^1.6.7",
+    "google-protobuf": "^3.20.1",
+    "ts-protoc-gen": "^0.15.0"
+  }
+}

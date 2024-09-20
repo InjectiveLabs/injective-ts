@@ -1,0 +1,6 @@
+indexer/proto/
+indexer/gen/
+indexer/proto-ts/
+core/gen/
+core/proto/
+core/proto-ts
