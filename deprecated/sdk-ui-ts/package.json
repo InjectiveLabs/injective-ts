@@ -1,0 +1,55 @@
+{
+  "name": "@injectivelabs/sdk-ui-ts",
+  "description": "SDK in TypeScript for building Injective UI applications in a browser environment.",
+  "version": "1.14.12-beta.2",
+  "sideEffects": false,
+  "license": "Apache-2.0",
+  "author": {
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
+  },
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~sdk-ui-ts": "dist"
+  },
+  "scripts": {
+    "postinstall": "link-module-alias",
+    "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post && link-module-alias && yarn copy-files",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
+    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
+    "copy-files": "copyfiles -u 1 ./src/validators-logo/images/* ./dist/",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js",
+    "validators-logo": "ts-node --ignore-watch=validators-logo ./src/validators-logo && yarn copy-files",
+    "validators-logo:update-all": "ts-node --ignore-watch=validators-logo ./src/validators-logo --update:all && yarn copy-files",
+    "get-ibc-tokens": "ts-node ./src/services/ibc/tokens.ts"
+  },
+  "dependencies": {
+    "@ensdomains/ens-validation": "^0.1.0",
+    "@ensdomains/eth-ens-namehash": "^2.0.15",
+    "@injectivelabs/contracts": "^1.14.12-beta.0",
+    "@injectivelabs/exceptions": "^1.14.12-beta.0",
+    "@injectivelabs/networks": "^1.14.12-beta.0",
+    "@injectivelabs/sdk-ts": "^1.14.12-beta.2",
+    "@injectivelabs/token-metadata": "^1.14.12-beta.0",
+    "@injectivelabs/token-utils": "^1.14.12-beta.0",
+    "@injectivelabs/ts-types": "^1.14.12-beta.0",
+    "@injectivelabs/utils": "^1.14.12-beta.0",
+    "alchemy-sdk": "^2.6.3",
+    "copyfiles": "^2.4.1",
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.2"
+  },
+  "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79"
+}
