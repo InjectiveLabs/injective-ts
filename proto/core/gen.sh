@@ -12,6 +12,7 @@ TS_PROTO_TEMPLATE=$PROTO_DIR/buf.gen.ts.yaml
 injective_core_branch=master
 cosmos_sdk_branch=v0.50.x-inj
 wasmd_branch=v0.50.x-inj
+ibc_go_branch=v8.3.2
 
 # remove old gen
 rm -rf $BUILD_DIR
@@ -46,10 +47,11 @@ cp -r $BUILD_DIR/injective-core/proto/injective $PROTO_DIR
 ## Third Party proto definitions
 git clone https://github.com/InjectiveLabs/cosmos-sdk.git $BUILD_DIR/cosmos-sdk -b $cosmos_sdk_branch --depth 1 --single-branch > /dev/null
 git clone https://github.com/InjectiveLabs/wasmd $BUILD_DIR/wasmd -b $wasmd_branch --depth 1 --single-branch > /dev/null
+git clone https://github.com/InjectiveLabs/ibc-go $BUILD_DIR/ibc-go -b $ibc_go_branch --depth 1 --single-branch > /dev/null
 
 buf export $BUILD_DIR/cosmos-sdk --output=$PROTO_DIR
 buf export $BUILD_DIR/wasmd --exclude-imports --output=$PROTO_DIR
-buf export https://github.com/cosmos/ibc-go.git --exclude-imports --output=$PROTO_DIR
+buf export $BUILD_DIR/ibc-go --exclude-imports --output=$PROTO_DIR
 buf export https://github.com/cosmos/gogoproto.git --exclude-imports --output=$PROTO_DIR
 buf export https://github.com/cometbft/cometbft.git --exclude-imports --output=$PROTO_DIR
 buf export https://github.com/cosmos/ics23.git --exclude-imports --output=$PROTO_DIR
