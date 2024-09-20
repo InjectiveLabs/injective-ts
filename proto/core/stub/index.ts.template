@@ -149,7 +149,7 @@ export * as InjectiveTokenFactoryV1Beta1Tx from "./injective/tokenfactory/v1beta
 export * as InjectiveTokenFactoryV1Beta1Events from "./injective/tokenfactory/v1beta1/events";
 export * as InjectiveTokenFactoryV1Beta1AuthorityMetadata from "./injective/tokenfactory/v1beta1/authorityMetadata";
 export * as InjectiveTypesV1Beta1Account from "./injective/types/v1beta1/account";
-export * as InjectiveTypesV1TxExt from "./injective/types/v1beta1/tx_ext";
+export * as InjectiveTypesV1Beta1TxExt from "./injective/types/v1beta1/tx_ext";
 export * as InjectiveTypesV1TxResponse from "./injective/types/v1beta1/tx_response";
 export * as InjectiveWasmxV1Beta1Genesis from "./injective/wasmx/v1/genesis";
 export * as InjectiveWasmxV1Beta1Query from "./injective/wasmx/v1/query";

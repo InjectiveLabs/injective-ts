@@ -5,7 +5,7 @@ import {
   GoogleProtobufAny,
   CosmosTxV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
-  InjectiveTypesV1TxExt,
+  InjectiveTypesV1Beta1TxExt,
   CosmosCryptoSecp256k1Keys,
   CosmosTxSigningV1Beta1Signing,
 } from '@injectivelabs/core-proto-ts'
@@ -200,11 +200,11 @@ export const createSignDocFromTransaction = (args: {
 
 export const createTxRawEIP712 = (
   txRaw: CosmosTxV1Beta1Tx.TxRaw,
-  extension: InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx,
+  extension: InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx,
 ) => {
   const body = CosmosTxV1Beta1Tx.TxBody.decode(txRaw.bodyBytes)
   const extensionAny = createAny(
-    InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx.encode(extension).finish(),
+    InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.encode(extension).finish(),
     '/injective.types.v1beta1.ExtensionOptionsWeb3Tx',
   )
 
@@ -224,7 +224,7 @@ export const createWeb3Extension = ({
   feePayer?: string
   feePayerSig?: Uint8Array
 }) => {
-  const web3Extension = InjectiveTypesV1TxExt.ExtensionOptionsWeb3Tx.create()
+  const web3Extension = InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.create()
   web3Extension.typedDataChainID = ethereumChainId.toString()
 
   if (feePayer) {

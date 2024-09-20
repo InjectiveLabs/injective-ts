@@ -6,7 +6,6 @@ BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto
 TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
-TS_PROTO_TEMPLATE=$PROTO_DIR/buf.gen.ts.yaml
 
 # remote branches/tags
 injective_core_branch=master
@@ -18,9 +17,6 @@ ibc_go_branch=v8.3.2
 rm -rf $BUILD_DIR
 rm -rf $PROTO_DIR
 rm -rf $TS_OUTPUT_DIR
-
-# BSD rate limit
-counter=0
 
 ########################################
 ######## TS PROTO GENERATION ###########
