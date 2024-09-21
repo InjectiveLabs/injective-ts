@@ -14,6 +14,10 @@
   "scripts": {
     "postinstall": "node etc/bootstrapEnv",
     "build": "node etc/bootstrapEnv && lerna run build",
+    "generate:core-proto-ts": "./proto/core/gen.sh",
+    "publish:core-proto-ts": "./proto/core/publish.sh",
+    "generate:indexer-proto-ts": "./proto/indexer/gen.sh",
+    "publish:indexer-proto-ts": "./proto/indexer/publish.sh",
     "build:docs": "yarn typedoc",
     "lerna:publish:prerelease": "lerna publish --conventional-commits --conventional-prerelease",
     "lerna:publish": "lerna publish patch",
