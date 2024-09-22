@@ -94,12 +94,12 @@ export const endpointsDevnet2: NetworkEndpoints = {
 
 export const endpointsLocal: NetworkEndpoints = {
   indexer: 'https://localhost:4444',
-  grpc: 'http://localhost:9091',
-  rpc: 'http://localhost:9091',
-  rest: 'http://localhost:9091',
-  chronos: 'https://localhost:4445',
-  explorer: 'http://localhost:4446',
-  cacheGrpc: 'http://localhost:9091',
+  grpc: 'http://localhost:10337',
+  rpc: 'http://localhost:9092',
+  rest: 'http://localhost:10337',
+  chronos: 'https://localhost:4442',
+  explorer: 'http://localhost:4443',
+  cacheGrpc: 'http://localhost:10337',
   cacheRest: 'https://localhost:4444',
   web3gw: 'https://localhost:4444',
 }
