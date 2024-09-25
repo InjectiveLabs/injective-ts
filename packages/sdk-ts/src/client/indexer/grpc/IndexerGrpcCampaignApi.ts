@@ -90,11 +90,13 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     active,
     limit,
     cursor,
+    status,
   }: {
     type?: string
     active?: boolean
     limit?: number
     cursor?: string
+    status?: string
   }) {
     const request = InjectiveCampaignRpc.CampaignsV2Request.create()
 
@@ -112,6 +114,10 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
 
     if (cursor) {
       request.cursor = cursor
+    }
+
+    if (status) {
+      request.status = status
     }
 
     try {
