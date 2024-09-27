@@ -61,7 +61,7 @@ export class OWalletBase {
           chainName[0] || chainId
         } network. Please check if the chain can be added.`,
       ),
-      { context: 'https://chains.owallet.app/' },
+      { context: 'https://owallet.io/' },
     )
   }
 
@@ -272,7 +272,7 @@ export class OWalletBase {
             chainName[0] || chainId
           } network. Please check if the chain can be added.`,
         ),
-        { context: 'https://chains.owallet.app/' },
+        { context: 'https://owallet.io/' },
       )
     }
   }
