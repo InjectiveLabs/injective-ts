@@ -51,6 +51,13 @@ export const getEip712TypedData = ({
   }
 }
 
+const Eip712TypedDataV2Replacer =  function (this: Record<string, any>, key: string, value: any) {
+  if (this[key] instanceof Date) {
+      return this[key].toJSON().slice(0, -5) + 'Z';
+  }
+  return value;
+}
+
 export const getEip712TypedDataV2 = ({
   msgs,
   tx,
@@ -72,7 +79,7 @@ export const getEip712TypedDataV2 = ({
     primaryType: 'Tx',
     ...getEip712DomainV2(ethereumChainId),
     message: {
-      context: JSON.stringify(getEipTxContext({ ...tx, fee })),
+      context: JSON.stringify(getEipTxContext({ ...tx, fee }), Eip712TypedDataV2Replacer),
       msgs: JSON.stringify(eip712Msgs),
     },
   }
