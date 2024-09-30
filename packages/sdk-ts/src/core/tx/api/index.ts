@@ -1,5 +1,5 @@
-import { TxRestApi } from '../api/TxRestApi'
-import { TxGrpcApi } from '../api/TxGrpcApi'
+import { TxRestApi } from './TxRestApi'
+import { TxGrpcApi } from './TxGrpcApi'
 
 export * from './TxGrpcApi'
 export * from './TxRestApi'

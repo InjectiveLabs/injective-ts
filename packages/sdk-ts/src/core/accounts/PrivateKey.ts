@@ -11,8 +11,8 @@ import {
   CosmosTxV1Beta1Tx,
   InjectiveTypesV1Beta1TxExt,
 } from '@injectivelabs/core-proto-ts'
-import { getTransactionPartsFromTxRaw } from '../modules/tx/utils/tx'
-import { getEip712TypedData, MsgDecoder } from '../modules/tx/eip712'
+import { getTransactionPartsFromTxRaw } from '../tx/utils/tx'
+import { getEip712TypedData, MsgDecoder } from '../tx/eip712'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 

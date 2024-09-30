@@ -1,4 +1,4 @@
-import { Msgs } from '../../msgs'
+import { Msgs } from '../../modules/msgs'
 import { StdFee } from '@cosmjs/amino'
 import {
   CosmosTxV1Beta1Tx,

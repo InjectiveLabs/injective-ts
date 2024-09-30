@@ -1,11 +1,11 @@
-import { PrivateKey } from '../../../accounts'
-import { Msgs } from '../../msgs'
+import { PrivateKey } from '../../accounts'
+import { Msgs } from '../../modules/msgs'
 import { createTransaction } from '../tx'
 import { TxGrpcApi } from '../api/TxGrpcApi'
 import {
   ChainGrpcAuthApi,
   ChainGrpcTendermintApi,
-} from '../../../../client/chain/grpc'
+} from '../../../client/chain/grpc'
 import {
   getStdFee,
   DEFAULT_STD_FEE,
@@ -20,12 +20,12 @@ import {
   getNetworkEndpoints,
   NetworkEndpoints,
 } from '@injectivelabs/networks'
-import { getGasPriceBasedOnMessage } from '../../../../utils/msgs'
+import { getGasPriceBasedOnMessage } from '../../../utils/msgs'
 import { CreateTransactionArgs } from '../types'
-import { IndexerGrpcTransactionApi } from '../../../../client'
-import { AccountDetails } from '../../../../types/auth'
+import { IndexerGrpcTransactionApi } from '../../../client'
+import { AccountDetails } from '../../../types/auth'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { ofacWallets } from './../../../../json'
+import { ofacWallets } from '../../../json'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]

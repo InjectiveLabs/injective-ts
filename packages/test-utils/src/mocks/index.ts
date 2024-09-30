@@ -1,3 +1,6 @@
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+
+const ethereumAddress = '0xaf79152ac5df276d9a8e1e2e22822f9713474902'
 const injectiveAddress = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
 const injectiveAddress2 = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
 const validatorAddress = 'injvaloper1lsuqpgm8kgwpq96ewyew26xnfwyn3lh3ncrkrk'
@@ -14,6 +17,7 @@ const orderHash =
   '0x3b1bcc8ab01e1e0f1f2cf9de5f44267bed6368fabd62adbcf3826a207340194e'
 const orderHash2 =
   '0x3b1bcc8ab01e1e0f1f2cf9de5f44267bed6368fabd62adbcf3826a207340194e'
+const MAX_TIMEOUT_HEIGHT = 9_999_999_999_999
 
 export const injUsdtSpotMarket = {
   marketId:
@@ -76,6 +80,7 @@ export const injUsdtDerivativeMarket = {
 }
 
 export const mockFactory = {
+  ethereumAddress,
   injectiveAddress,
   injectiveAddress2,
   validatorAddress,
@@ -88,4 +93,24 @@ export const mockFactory = {
   injUsdtDerivativeMarket,
   orderHash,
   orderHash2,
+  MAX_TIMEOUT_HEIGHT,
+
+  eip712Tx: {
+    tx: {
+      chainId: ChainId.Devnet,
+      ethereumChainId: EthereumChainId.Sepolia,
+      accountNumber: '1',
+      sequence: '1',
+      timeoutHeight: '9999',
+      memo: '',
+    },
+    eip712: {
+      chainId: ChainId.Devnet,
+      ethereumChainId: EthereumChainId.Sepolia,
+      accountNumber: 1,
+      sequence: 1,
+      timeoutHeight: 9999,
+      memo: '',
+    },
+  },
 }

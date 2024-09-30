@@ -1,6 +1,6 @@
 import { Network } from '@injectivelabs/networks'
-import { PrivateKey } from '../../../accounts/PrivateKey'
-import { MsgSend } from '../../bank'
+import { PrivateKey } from '../../accounts/PrivateKey'
+import { MsgSend } from '../../modules/bank'
 import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 

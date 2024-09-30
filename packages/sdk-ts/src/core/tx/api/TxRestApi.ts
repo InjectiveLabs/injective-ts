@@ -22,7 +22,7 @@ import {
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { TxResponse } from '../types/tx'
-import { getErrorMessage } from '../../../../utils/helpers'
+import { getErrorMessage } from '../../../utils/helpers'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**

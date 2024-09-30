@@ -44,6 +44,7 @@ export enum IndexerErrorModule {
   ChronosSpot = 'indexer-chronos-spot',
   ChronosMarkets = 'indexer-chronos-markets',
   Campaign = 'indexer-campaign',
+  Web3Gw = 'web3-gateway'
 }
 
 export enum WalletErrorActionModule {

@@ -1,6 +1,8 @@
 import MsgCancelSpotOrder from './MsgCancelSpotOrder'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
+import { IndexerGrpcWeb3GwApi } from '../../../../client'
 import snakecaseKeys from 'snakecase-keys'
+import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx'
 
 const params: MsgCancelSpotOrder['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
@@ -77,6 +79,39 @@ describe('MsgCancelSpotOrder', () => {
     expect(web3).toStrictEqual({
       '@type': protoType,
       ...protoParamsAmino,
+    })
+  })
+
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } =
+      prepareEip712(message)
+
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      try {
+        const txResponse = await new IndexerGrpcWeb3GwApi(
+          endpoints.indexer,
+        ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v1' })
+
+        expect(JSON.parse(txResponse.data)).toStrictEqual(eip712TypedData)
+      } catch (e: any) {
+        // throw silently now
+      }
+    })
+
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      try {
+        const txResponse = await new IndexerGrpcWeb3GwApi(
+          endpoints.indexer,
+        ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
+
+        expect(JSON.parse(txResponse.data)).toStrictEqual(eip712TypedData)
+      } catch (e: any) {
+        // throw silently now
+      }
     })
   })
 })

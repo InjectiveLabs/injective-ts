@@ -2,9 +2,9 @@ import {
   GoogleProtobufAny,
   InjectiveExchangeV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
-import { Msgs } from '../../msgs'
-import { MsgIncreasePositionMargin, MsgSignData } from '../../exchange'
-import { getInjectiveAddress } from './../../../../utils'
+import { Msgs } from '../../modules/msgs'
+import { MsgIncreasePositionMargin, MsgSignData } from '../../modules/exchange'
+import { getInjectiveAddress } from '../../../utils'
 
 export class MsgDecoder {
   static decode(message: GoogleProtobufAny.Any): Msgs {

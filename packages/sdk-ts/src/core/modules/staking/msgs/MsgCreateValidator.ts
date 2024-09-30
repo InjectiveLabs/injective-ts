@@ -5,7 +5,7 @@ import {
   CosmosStakingV1Beta1Tx,
   CosmosStakingV1Beta1Staking,
 } from '@injectivelabs/core-proto-ts'
-import { createAny } from '../../tx'
+import { createAny } from '../../../tx'
 
 export declare namespace MsgCreateValidator {
   export interface Params {

@@ -15,7 +15,7 @@ import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import { TxResponse } from '../types/tx'
-import BaseGrpcWebConsumer from '../../../../client/base/BaseGrpcWebConsumer'
+import BaseGrpcWebConsumer from '../../../client/base/BaseGrpcWebConsumer'
 import {
   CosmosTxV1Beta1Service,
   CosmosTxV1Beta1Tx,
