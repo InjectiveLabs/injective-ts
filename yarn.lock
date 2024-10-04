@@ -2192,16 +2192,6 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/core-proto-ts@^0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.21.tgz#b52d4bee7556ce57c7c7e2c1ec7f6b920b4c2ffd"
-  integrity sha512-RBxSkRBCty60R/l55/D1jsSW0Aof5dyGFhCFdN3A010KjMv/SzZGGr+6DZPY/hflyFeaJzDv/VTopCymKNRBvQ==
-  dependencies:
-    "@injectivelabs/grpc-web" "^0.0.1"
-    google-protobuf "^3.14.0"
-    protobufjs "^7.0.0"
-    rxjs "^7.4.0"
-
 "@injectivelabs/dmm-proto-ts@1.0.20":
   version "1.0.20"
   resolved "https://registry.npmjs.org/@injectivelabs/dmm-proto-ts/-/dmm-proto-ts-1.0.20.tgz#0b240b16ac0b54745dc831b373c455c6d19d8241"
@@ -2229,16 +2219,6 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/indexer-proto-ts@1.11.42":
-  version "1.11.42"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.42.tgz#6923e286ad12e87d276c6bca1397ba0a013ee82d"
-  integrity sha512-6ejCpcWZWOSsELFIfUf2+xuJPOH+YdiJtwtB3d9x2H7dnrCBjXMxlPCSxoKEUbDH6w/lY2mO6TJm65rNy9piew==
-  dependencies:
-    "@injectivelabs/grpc-web" "^0.0.1"
-    google-protobuf "^3.14.0"
-    protobufjs "^7.0.0"
-    rxjs "^7.4.0"
-
 "@injectivelabs/indexer-proto-ts@1.11.56":
   version "1.11.56"
   resolved "https://registry.npmjs.org/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.56.tgz#f60a80985dbcb61e6674e2fa489497b834c84c1b"
@@ -2258,96 +2238,6 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
-
-"@injectivelabs/networks@^1.14.13":
-  version "1.14.13"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/networks/-/networks-1.14.13.tgz#6264b6249469c57b3b18e4803980ec26c576edba"
-  integrity sha512-P+eCQXWpbk4LbPxgTmi2gY7OzdZTNsIEUvDoh59Ma0CkqSFaYMtgB8fZVxpkKM0UPla587EDlEEIVxprDBcnZg==
-  dependencies:
-    "@injectivelabs/exceptions" "^1.14.13"
-    "@injectivelabs/ts-types" "^1.14.13"
-    "@injectivelabs/utils" "^1.14.13"
-    link-module-alias "^1.2.0"
-    shx "^0.3.2"
-
-"@injectivelabs/sdk-ts@^1.14.13":
-  version "1.14.13"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/sdk-ts/-/sdk-ts-1.14.13.tgz#4538b1dd6f954d621b2471f219f410833cfcd166"
-  integrity sha512-qcLoIu+hEMpuvdG0iXGNJvWQD05NkcO59tL3ijEhYmshlJWBMWJtpJJGt/E/hV9YxJfNTl20Rhi/5i7l0y8Hfg==
-  dependencies:
-    "@apollo/client" "^3.5.8"
-    "@cosmjs/amino" "^0.32.3"
-    "@cosmjs/proto-signing" "^0.32.3"
-    "@cosmjs/stargate" "^0.32.3"
-    "@ethersproject/bytes" "^5.7.0"
-    "@injectivelabs/core-proto-ts" "^0.0.21"
-    "@injectivelabs/dmm-proto-ts" "1.0.20"
-    "@injectivelabs/exceptions" "^1.14.13"
-    "@injectivelabs/grpc-web" "^0.0.1"
-    "@injectivelabs/grpc-web-node-http-transport" "^0.0.2"
-    "@injectivelabs/grpc-web-react-native-transport" "^0.0.2"
-    "@injectivelabs/indexer-proto-ts" "1.11.42"
-    "@injectivelabs/mito-proto-ts" "1.0.65"
-    "@injectivelabs/networks" "^1.14.13"
-    "@injectivelabs/test-utils" "^1.14.13"
-    "@injectivelabs/ts-types" "^1.14.13"
-    "@injectivelabs/utils" "^1.14.13"
-    "@metamask/eth-sig-util" "^4.0.0"
-    "@noble/curves" "^1.4.0"
-    axios "^1.6.4"
-    bech32 "^2.0.0"
-    bip39 "^3.0.4"
-    cosmjs-types "^0.9.0"
-    ethereumjs-util "^7.1.4"
-    ethers "^6.5.1"
-    google-protobuf "^3.21.0"
-    graphql "^16.3.0"
-    http-status-codes "^2.2.0"
-    js-sha3 "^0.8.0"
-    jscrypto "^1.0.3"
-    keccak256 "^1.0.6"
-    link-module-alias "^1.2.0"
-    secp256k1 "^4.0.3"
-    shx "^0.3.2"
-    snakecase-keys "^5.4.1"
-
-"@injectivelabs/wallet-ts@^1.14.13":
-  version "1.14.13"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/wallet-ts/-/wallet-ts-1.14.13.tgz#4a29e51538c05f96334170cfd49b9b11954dfdf0"
-  integrity sha512-tP13towdtQs3SvA0QCGhN7L86dNoDKzPjb73ga4qAaaJR2MbSo0cTPryalEaB34l9NYsDmzRsVOmFOnG1AaXFg==
-  dependencies:
-    "@cosmjs/launchpad" "0.27.1"
-    "@cosmjs/proto-signing" "0.32.2"
-    "@cosmjs/stargate" "^0.32.2"
-    "@cosmostation/extension-client" "^0.1.15"
-    "@ethereumjs/common" "^3.1.1"
-    "@ethereumjs/tx" "^4.1.1"
-    "@injectivelabs/exceptions" "^1.14.13"
-    "@injectivelabs/networks" "^1.14.13"
-    "@injectivelabs/sdk-ts" "^1.14.13"
-    "@injectivelabs/ts-types" "^1.14.13"
-    "@injectivelabs/utils" "^1.14.13"
-    "@keplr-wallet/cosmos" "^0.12.71"
-    "@keplr-wallet/types" "^0.12.71"
-    "@ledgerhq/hw-app-cosmos" "^6.29.5"
-    "@ledgerhq/hw-app-eth" "6.35.6"
-    "@ledgerhq/hw-transport" "6.30.4"
-    "@ledgerhq/hw-transport-webhid" "6.28.4"
-    "@ledgerhq/hw-transport-webusb" "6.28.4"
-    "@metamask/eth-sig-util" "^4.0.0"
-    "@solana/wallet-adapter-wallets" "0.19.30"
-    "@toruslabs/torus-embed" "^1.39.0"
-    "@trezor/connect-web" "9.2.1"
-    "@walletconnect/ethereum-provider" "^2.12.2"
-    alchemy-sdk "^2.6.3"
-    eip1193-provider "^1.0.1"
-    eth-sig-util "^3.0.1"
-    ethereumjs-util "^7.1.0"
-    ethers "^6.5.1"
-    hdkey "^2.0.1"
-    link-module-alias "^1.2.0"
-    long "^5.2.1"
-    shx "^0.3.3"
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"

@@ -317,7 +317,7 @@ export default class LedgerBase
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(options.address)
       const ledgerService = await import(
-        '@ledgerhq/hw-app-eth/lib-es/services/ledger'
+        '@ledgerhq/hw-app-eth/lib/services/ledger'
       )
       const resolution = await ledgerService.default.resolveTransaction(
         encodedMessageHex,

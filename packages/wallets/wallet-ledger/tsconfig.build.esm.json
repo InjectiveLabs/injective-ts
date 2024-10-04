@@ -21,9 +21,6 @@
     },
     {
       "path": "../../utils/tsconfig.json"
-    },
-    {
-      "path": "../../sdk-ts/tsconfig.json"
     }
   ]
 }
