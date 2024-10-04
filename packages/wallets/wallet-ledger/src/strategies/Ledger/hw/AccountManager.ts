@@ -1,19 +1,36 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
-import type CosmosApp from '@ledgerhq/hw-app-cosmos'
-import { LedgerWalletInfo } from '../../../types'
-import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '../../../constants'
+import { publicToAddress, addHexPrefix } from 'ethereumjs-util'
+import HDNode from 'hdkey'
+import type EthereumApp from '@ledgerhq/hw-app-eth'
+import { LedgerDerivationPathType, LedgerWalletInfo } from '../../../types'
+import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-ts/src/strategies/wallet-strategy/constants'
+
+const addressOfHDKey = (hdKey: HDNode): string => {
+  const shouldSanitizePublicKey = true
+  const derivedPublicKey = hdKey.publicKey
+  const ethereumAddressWithoutPrefix = publicToAddress(
+    derivedPublicKey,
+    shouldSanitizePublicKey,
+  ).toString('hex')
+  const address = addHexPrefix(ethereumAddressWithoutPrefix)
+
+  return address
+}
 
 export default class AccountManager {
   private wallets: LedgerWalletInfo[] = []
 
-  private ledger: CosmosApp
+  private ledger: EthereumApp
 
-  constructor(ledger: CosmosApp) {
+  constructor(ledger: EthereumApp) {
     this.ledger = ledger
     this.wallets = []
   }
 
-  async getWallets(baseDerivationPath: string): Promise<LedgerWalletInfo[]> {
+  async getWallets(
+    baseDerivationPath: string,
+    derivationPathType: LedgerDerivationPathType,
+  ): Promise<LedgerWalletInfo[]> {
     const { start, end } = this.getOffset()
 
     /**
@@ -25,6 +42,7 @@ export default class AccountManager {
         start,
         end,
         baseDerivationPath,
+        derivationPathType,
       })
     }
 
@@ -33,32 +51,46 @@ export default class AccountManager {
 
   getLedgerDerivationPathBasedOnType = ({
     fullBaseDerivationPath,
+    derivationPathType,
     index,
   }: {
     fullBaseDerivationPath: string
+    derivationPathType: LedgerDerivationPathType
     index: number
   }): string => {
-    return `${fullBaseDerivationPath}/${index}'/0/0`
+    if (derivationPathType === LedgerDerivationPathType.LedgerLive) {
+      return `${fullBaseDerivationPath}/${index}'/0/0`
+    }
+
+    return `${fullBaseDerivationPath}/0'/${index}`
   }
 
   private async getWalletsBasedOnIndex({
     start,
     end,
     baseDerivationPath,
+    derivationPathType,
   }: {
     start: number
     end: number
     baseDerivationPath: string
+    derivationPathType: LedgerDerivationPathType
   }) {
     for (let index = start; index < end; index += 1) {
       const path = this.getLedgerDerivationPathBasedOnType({
         fullBaseDerivationPath: baseDerivationPath,
+        derivationPathType,
         index,
       })
-      const { address, publicKey } = await this.ledger.getAddress(path, 'inj')
+      const result = await this.ledger.getAddress(path)
+
+      const hdKey = new HDNode()
+      hdKey.publicKey = Buffer.from(result.publicKey, 'hex')
+      hdKey.chainCode = Buffer.from(result.chainCode || '', 'hex')
+      const address = result.address || addressOfHDKey(hdKey)
 
       this.wallets.push({
-        publicKey,
+        hdKey,
         baseDerivationPath,
         address: address.toLowerCase(),
         derivationPath: path,

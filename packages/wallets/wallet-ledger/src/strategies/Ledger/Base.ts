@@ -13,28 +13,25 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
-import { TIP_IN_GWEI } from '../../../../utils/constants'
+import { TIP_IN_GWEI } from '@injectivelabs/wallet-ts/src/utils/constants'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
-} from '../../../types'
-import {
-  LedgerDerivationPathType,
-  LedgerWalletInfo,
-  SendTransactionOptions,
-} from '../../types'
-import BaseConcreteStrategy from '../Base'
+} from '@injectivelabs/wallet-ts'
+import { SendTransactionOptions } from '@injectivelabs/wallet-ts'
+import BaseConcreteStrategy from '@injectivelabs/wallet-ts/src/strategies/wallet-strategy/strategies/Base'
 import {
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-} from '../../constants'
+} from '@injectivelabs/wallet-ts/src/strategies/wallet-strategy/constants'
 import LedgerHW from './hw'
 import { domainHash, messageHash } from './utils'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums'
-import { getKeyFromRpcUrl } from '../../../../utils/alchemy'
+import { WalletAction, WalletDeviceType } from '@injectivelabs/wallet-ts'
+import { getKeyFromRpcUrl } from '@injectivelabs/wallet-ts/src/utils/alchemy'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
@@ -320,7 +317,7 @@ export default class LedgerBase
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(options.address)
       const ledgerService = await import(
-        '@ledgerhq/hw-app-eth/lib/services/ledger'
+        '@ledgerhq/hw-app-eth/lib-es/services/ledger'
       )
       const resolution = await ledgerService.default.resolveTransaction(
         encodedMessageHex,

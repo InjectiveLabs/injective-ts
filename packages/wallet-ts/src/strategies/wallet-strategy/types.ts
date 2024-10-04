@@ -24,23 +24,10 @@ export interface WindowWithLedgerSupport extends Window {
   Websocket?: any
 }
 
-export interface LedgerWalletInfo {
-  address: string
-  baseDerivationPath: string
-  derivationPath: string
-  hdKey?: HDNode
-  publicKey?: string
-}
-
 export interface TrezorWalletInfo {
   address: string
   hdKey: HDNode
   derivationPath: string
-}
-
-export enum LedgerDerivationPathType {
-  LedgerLive = 'ledger-live',
-  LedgerMew = 'ledger-mew',
 }
 
 export interface SendTransactionOptions {

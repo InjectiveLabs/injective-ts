@@ -1,40 +1,51 @@
-import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import { GeneralException, WalletException } from '@injectivelabs/exceptions'
-import Okx from './strategies/Okx'
-import Leap from './strategies/Leap'
-import Keplr from './strategies/Keplr'
-import Ninji from './strategies/Ninji'
-import Torus from './strategies/Torus'
-import Trezor from './strategies/Trezor'
-import BitGet from './strategies/BitGet'
-import Phantom from './strategies/Phantom'
-import Metamask from './strategies/Metamask'
-import PrivateKey from './strategies/PrivateKey'
-import TrustWallet from './strategies/TrustWallet'
-import Cosmostation from './strategies/Cosmostation'
-import WalletConnect from './strategies/WalletConnect'
-import Magic from './strategies/Magic'
-import { isEthWallet, isCosmosWallet } from './utils'
-import { Wallet, WalletDeviceType } from '../../types/enums'
-import { MagicMetadata, SendTransactionOptions } from './types'
 import {
-  WalletStrategyOptions,
+  AccountAddress,
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { GeneralException, WalletException } from '@injectivelabs/exceptions'
+import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
+import {
   ConcreteWalletStrategy,
   onAccountChangeCallback,
   onChainIdChangeCallback,
-  WalletStrategyArguments,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
-} from '../types'
+  WalletStrategyOptions,
+  CosmosWalletStrategyArguments,
+  Wallet,
+  WalletDeviceType,
+} from '@injectivelabs/wallet-ts'
+import LedgerLive from './strategies/Ledger/LedgerLive'
+import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
+import LedgerCosmos from './strategies/LedgerCosmos'
+import { SendTransactionOptions } from '@injectivelabs/wallet-ts'
+import { WalletLedger } from './types'
 
-const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
+export interface WalletStrategyArguments
+  extends Omit<
+    CosmosWalletStrategyArguments,
+    'chainId' | 'disabledWallets' | 'wallet'
+  > {
+  chainId: ChainId
+  options?: WalletStrategyOptions
+  ethereumOptions?: WalletStrategyEthereumOptions
+  wallet?: WalletLedger
+}
+
+export const isEthWallet = (wallet: WalletLedger): boolean =>
+  [WalletLedger.Ledger, WalletLedger.LedgerLegacy].includes(wallet)
+
+export const isCosmosWallet = (wallet: WalletLedger): boolean =>
+  !isEthWallet(wallet)
+
+const getInitialWallet = (args: WalletStrategyArguments): WalletLedger => {
   if (args.wallet) {
     return args.wallet
   }
 
-  return args.ethereumOptions ? Wallet.Metamask : Wallet.Keplr
+  return args.ethereumOptions ? WalletLedger.Ledger : WalletLedger.LedgerCosmos
 }
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
@@ -58,14 +69,8 @@ const createStrategy = ({
   wallet,
 }: {
   args: WalletStrategyArguments
-  wallet: Wallet
+  wallet: WalletLedger
 }): ConcreteWalletStrategy | undefined => {
-  const disabledWallets = args.disabledWallets || []
-
-  if (disabledWallets.includes(wallet)) {
-    return undefined
-  }
-
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
@@ -80,51 +85,12 @@ const createStrategy = ({
   } as EthereumWalletStrategyArgs
 
   switch (wallet) {
-    case Wallet.Metamask:
-      return new Metamask(ethWalletArgs)
-    case Wallet.TrustWallet:
-      return new TrustWallet(ethWalletArgs)
-    case Wallet.Trezor:
-      return new Trezor(ethWalletArgs)
-    case Wallet.Torus:
-      return new Torus(ethWalletArgs)
-    case Wallet.Phantom:
-      return new Phantom(ethWalletArgs)
-    case Wallet.OkxWallet:
-      return new Okx(ethWalletArgs)
-    case Wallet.BitGet:
-      return new BitGet(ethWalletArgs)
-    case Wallet.WalletConnect:
-      return new WalletConnect({
-        ...ethWalletArgs,
-        metadata: args.options?.metadata,
-      })
-    case Wallet.PrivateKey:
-      return new PrivateKey({
-        ...ethWalletArgs,
-        privateKey: args.options?.privateKey,
-      })
-    case Wallet.Keplr:
-      return new Keplr({ ...args })
-    case Wallet.Cosmostation:
-      return new Cosmostation({ ...args })
-    case Wallet.Leap:
-      return new Leap({ ...args })
-    case Wallet.Ninji:
-      return new Ninji({ ...args })
-    case Wallet.Magic:
-      if (
-        !args.options?.metadata?.magic ||
-        !(args.options?.metadata.magic as MagicMetadata)?.apiKey ||
-        !(args.options?.metadata.magic as MagicMetadata)?.rpcEndpoint
-      ) {
-        return undefined
-      }
-
-      return new Magic({
-        ...args,
-        metadata: args.options.metadata.magic as MagicMetadata,
-      })
+    case WalletLedger.Ledger:
+      return new LedgerLive(ethWalletArgs)
+    case WalletLedger.LedgerLegacy:
+      return new LedgerLegacy(ethWalletArgs)
+    case WalletLedger.LedgerCosmos:
+      return new LedgerCosmos({ ...args })
     default:
       return undefined
   }
@@ -133,7 +99,7 @@ const createStrategy = ({
 const createStrategies = (
   args: WalletStrategyArguments,
 ): Record<Wallet, ConcreteWalletStrategy | undefined> => {
-  return Object.values(Wallet).reduce(
+  return Object.values(WalletLedger).reduce(
     (strategies, wallet) => ({
       ...strategies,
       [wallet]: createStrategy({ wallet, args }),
@@ -142,10 +108,10 @@ const createStrategies = (
   )
 }
 
-export default class WalletStrategy {
+export default class LedgerWalletStrategy {
   public strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
 
-  public wallet: Wallet
+  public wallet: WalletLedger
 
   public args: WalletStrategyArguments
 
@@ -155,11 +121,11 @@ export default class WalletStrategy {
     this.wallet = getInitialWallet(args)
   }
 
-  public getWallet(): Wallet {
+  public getWallet(): WalletLedger {
     return this.wallet
   }
 
-  public setWallet(wallet: Wallet) {
+  public setWallet(wallet: WalletLedger) {
     this.wallet = wallet
   }
 
@@ -171,20 +137,8 @@ export default class WalletStrategy {
    *
    * Case 2: Wallet Connect Metadata set dynamically
    */
-  public setOptions(options?: WalletStrategyOptions) {
-    if (options?.privateKey) {
-      this.strategies[Wallet.PrivateKey] = createStrategy({
-        args: { ...this.args, options: { privateKey: options.privateKey } },
-        wallet: Wallet.PrivateKey,
-      })
-    }
-
-    if (options?.metadata) {
-      this.strategies[Wallet.WalletConnect] = createStrategy({
-        args: { ...this.args, options: { metadata: options.metadata } },
-        wallet: Wallet.WalletConnect,
-      })
-    }
+  public setOptions(_options?: WalletStrategyOptions) {
+    // no-op to conform with prev interface
   }
 
   public getStrategy(): ConcreteWalletStrategy {
@@ -197,8 +151,8 @@ export default class WalletStrategy {
     return this.strategies[this.wallet] as ConcreteWalletStrategy
   }
 
-  public getAddresses(args?: unknown): Promise<AccountAddress[]> {
-    return this.getStrategy().getAddresses(args)
+  public getAddresses(): Promise<AccountAddress[]> {
+    return this.getStrategy().getAddresses()
   }
 
   public getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -218,7 +172,7 @@ export default class WalletStrategy {
   ): Promise<AccountAddress[]> {
     await this.getStrategy().enable(args)
 
-    return this.getStrategy().getAddresses(args)
+    return this.getStrategy().getAddresses()
   }
 
   public getEthereumChainId(): Promise<string> {
@@ -268,11 +222,6 @@ export default class WalletStrategy {
       throw new WalletException(
         new Error(`You can't sign Ethereum Transaction using ${this.wallet}`),
       )
-    }
-
-    /** Phantom wallet needs enabling before signing */
-    if (this.wallet === Wallet.Phantom) {
-      await this.enable()
     }
 
     return this.getStrategy().signEip712TypedData(eip712TypedData, address)
