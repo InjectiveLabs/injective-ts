@@ -1,6 +1,6 @@
 {
-  "name": "@injectivelabs/wallet-ledger",
-  "description": "Ledger wallet strategy for use with @injectivelabs/wallet-ts.",
+  "name": "@injectivelabs/wallet-metamask",
+  "description": "Metamask wallet strategy for use with @injectivelabs/wallet-ts.",
   "version": "1.14.15-beta.1",
   "sideEffects": false,
   "author": {
@@ -19,8 +19,8 @@
   },
   "scripts": {
     "postinstall": "link-module-alias",
-    "build:cjs": "BUILD_MODE=cjs node ./../../../etc/replacements.js && tsc --build tsconfig.build.json",
-    "build:esm": "BUILD_MODE=esm node ./../../../etc/replacements.js && tsc --build tsconfig.build.esm.json",
+    "build:cjs": "BUILD_MODE=cjs tsc --build tsconfig.build.json",
+    "build:esm": "BUILD_MODE=esm tsc --build tsconfig.build.esm.json",
     "build": "yarn build:esm && yarn build:cjs && yarn build:post && link-module-alias",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
     "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
@@ -42,11 +42,6 @@
     "@injectivelabs/ts-types": "^1.14.14",
     "@injectivelabs/utils": "^1.14.14",
     "@injectivelabs/wallet-ts": "^1.14.15-beta.13",
-    "@ledgerhq/hw-app-cosmos": "^6.29.5",
-    "@ledgerhq/hw-app-eth": "6.35.6",
-    "@ledgerhq/hw-transport": "6.30.4",
-    "@ledgerhq/hw-transport-webhid": "6.28.4",
-    "@ledgerhq/hw-transport-webusb": "6.28.4",
     "alchemy-sdk": "^2.6.3",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
@@ -60,14 +55,13 @@
   "devDependencies": {
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
-    "@types/hdkey": "^2.0.1",
-    "@types/ledgerhq__hw-transport-webusb": "^4.70.1"
+    "@types/hdkey": "^2.0.1"
   },
   "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "wallet-ledger API Documentation"
+    "displayName": "wallet-metamask API Documentation"
   },
   "resolutions": {
     "**/libsodium": "npm:@bangjelkoski/noop",

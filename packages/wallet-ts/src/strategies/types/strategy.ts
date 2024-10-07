@@ -77,6 +77,11 @@ export interface WalletStrategyOptions {
 export interface CosmosWalletStrategyArguments {
   chainId: CosmosChainId
   wallet?: Wallet
+
+  walletStrategies: {
+    wallet: Wallet
+    createStrategy: () => ConcreteWalletStrategy
+  }[]
 }
 
 export interface WalletStrategyArguments
@@ -84,7 +89,6 @@ export interface WalletStrategyArguments
   chainId: ChainId
   options?: WalletStrategyOptions
   ethereumOptions?: WalletStrategyEthereumOptions
-  disabledWallets?: Wallet[]
   wallet?: Wallet
 }
 

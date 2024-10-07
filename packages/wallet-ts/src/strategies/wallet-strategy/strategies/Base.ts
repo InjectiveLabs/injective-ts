@@ -9,7 +9,10 @@ export default abstract class BaseConcreteStrategy {
 
   protected listeners: Partial<Record<WalletEventListener, any>> = {}
 
-  protected constructor({ chainId, ethereumOptions }: WalletStrategyArguments) {
+  protected constructor({
+    chainId,
+    ethereumOptions,
+  }: Omit<WalletStrategyArguments, 'walletStrategies'>) {
     this.ethereumChainId = ethereumOptions
       ? ethereumOptions.ethereumChainId
       : undefined

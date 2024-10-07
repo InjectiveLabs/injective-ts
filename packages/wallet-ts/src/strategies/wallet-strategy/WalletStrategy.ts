@@ -34,6 +34,10 @@ const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
     return args.wallet
   }
 
+  if (args.walletStrategies?.length) {
+    return args.walletStrategies[0].wallet
+  }
+
   return args.ethereumOptions ? Wallet.Metamask : Wallet.Keplr
 }
 
@@ -60,12 +64,6 @@ const createStrategy = ({
   args: WalletStrategyArguments
   wallet: Wallet
 }): ConcreteWalletStrategy | undefined => {
-  const disabledWallets = args.disabledWallets || []
-
-  if (disabledWallets.includes(wallet)) {
-    return undefined
-  }
-
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
@@ -130,13 +128,13 @@ const createStrategy = ({
   }
 }
 
-const createStrategies = (
+const createEnabledStrategies = (
   args: WalletStrategyArguments,
 ): Record<Wallet, ConcreteWalletStrategy | undefined> => {
-  return Object.values(Wallet).reduce(
+  return args.walletStrategies.reduce(
     (strategies, wallet) => ({
       ...strategies,
-      [wallet]: createStrategy({ wallet, args }),
+      [wallet.wallet]: wallet.createStrategy(),
     }),
     {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
   )
@@ -149,9 +147,11 @@ export default class WalletStrategy {
 
   public args: WalletStrategyArguments
 
+  public wallets?: Wallet[]
+
   constructor(args: WalletStrategyArguments) {
     this.args = args
-    this.strategies = createStrategies(args)
+    this.strategies = createEnabledStrategies(args)
     this.wallet = getInitialWallet(args)
   }
 
