@@ -5,7 +5,6 @@ const isESM = process.env.BUILD_MODE.includes('esm')
 
 const REPLACEMENT_PAIRS = [
   {
-    // path: './src/strategies/wallet-strategy/strategies/Ledger/Base.ts',
     path: './src/strategies/Ledger/Base.ts',
     cjs: '@ledgerhq/hw-app-eth/lib/services/ledger',
     esm: '@ledgerhq/hw-app-eth/lib-es/services/ledger',

@@ -134,7 +134,7 @@ const createEnabledStrategies = (
   return args.walletStrategies.reduce(
     (strategies, wallet) => ({
       ...strategies,
-      [wallet.wallet]: wallet.createStrategy(),
+      [wallet.wallet]: wallet.createStrategy(args),
     }),
     {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
   )

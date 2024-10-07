@@ -74,13 +74,20 @@ export interface WalletStrategyOptions {
   metadata?: Record<string, string | Record<string, string>>
 }
 
+export type CreateWalletStrategyArguments = Omit<
+  WalletStrategyArguments,
+  'walletStrategies'
+>
+
 export interface CosmosWalletStrategyArguments {
   chainId: CosmosChainId
   wallet?: Wallet
 
   walletStrategies: {
     wallet: Wallet
-    createStrategy: () => ConcreteWalletStrategy
+    createStrategy: (
+      args: CreateWalletStrategyArguments,
+    ) => ConcreteWalletStrategy
   }[]
 }
 

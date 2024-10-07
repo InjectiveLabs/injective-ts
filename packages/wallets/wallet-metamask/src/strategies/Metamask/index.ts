@@ -13,6 +13,7 @@ import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
+  CreateWalletStrategyArguments,
 } from '@injectivelabs/wallet-ts'
 import {
   BrowserEip1993Provider,
@@ -30,7 +31,9 @@ export class Metamask
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  constructor(args: EthereumWalletStrategyArgs) {
+  constructor(
+    args: CreateWalletStrategyArguments | EthereumWalletStrategyArgs,
+  ) {
     super(args)
   }
 
