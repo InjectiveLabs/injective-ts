@@ -1,12 +1,6 @@
 # Getting Started
 
-**Supported Node Versions **<mark style="color:green;">**> 18x**</mark>
-
-<div align="left">
-
-<img src="http://img.shields.io/badge/node-18.x-brightgreen.svg" alt="Supported Node Version" width="188">
-
-</div>
+**Supported Node Versions **<mark style="color:green;">**> 18.x**</mark>
 
 **Stable Package Version**
 
