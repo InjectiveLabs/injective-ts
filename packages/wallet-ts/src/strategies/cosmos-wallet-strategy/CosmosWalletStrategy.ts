@@ -5,6 +5,7 @@ import { TxResponse, TxRaw } from '@injectivelabs/sdk-ts'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
 import { Wallet, WalletDeviceType } from '../../types/enums'
 import Keplr from './strategies/Keplr'
+import OWallet from './strategies/OWallet'
 import Leap from './strategies/Leap'
 import Cosmostation from './strategies/Cosmostation'
 import Ninji from './strategies/Ninji'
@@ -12,7 +13,7 @@ import {
   ConcreteCosmosWalletStrategy,
   CosmosWalletStrategyArguments,
 } from '../types/strategy'
-import {} from '../../utils/utils'
+
 import { isCosmosWallet } from '../wallet-strategy/utils'
 import { SendTransactionOptions } from '../wallet-strategy'
 
@@ -21,6 +22,7 @@ export const cosmosWallets = [
   Wallet.Leap,
   Wallet.Cosmostation,
   Wallet.Ninji,
+  Wallet.OWallet,
 ]
 
 const createWallet = ({
@@ -39,6 +41,8 @@ const createWallet = ({
       return new Cosmostation({ ...args })
     case Wallet.Ninji:
       return new Ninji({ ...args })
+    case Wallet.OWallet:
+      return new OWallet({ ...args })
     default:
       throw new GeneralException(
         new Error(`The ${wallet} concrete wallet strategy is not supported`),
