@@ -11943,7 +11943,12 @@ libsodium-wrappers-sumo@^0.7.11:
   dependencies:
     libsodium-sumo "^0.7.13"
 
-libsodium-wrappers@^0.7.6, "libsodium-wrappers@npm:@bangjelkoski/noop", "libsodium@npm:@bangjelkoski/noop":
+libsodium-wrappers@^0.7.6, "libsodium-wrappers@npm:@bangjelkoski/noop":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@bangjelkoski/noop/-/noop-0.0.1.tgz#172235ce00dd4269258c420f01464f07eb9801ed"
+  integrity sha512-lQgYJJbok2Unu2vKh0TAtWxXo16kLXNrjqmfo0hQTAuE/tVvz5zVqMgGsj+gMkkWfsInEbUndG0nlyCwaFv8hQ==
+
+"libsodium@npm:@bangjelkoski/noop":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@bangjelkoski/noop/-/noop-0.0.1.tgz#172235ce00dd4269258c420f01464f07eb9801ed"
   integrity sha512-lQgYJJbok2Unu2vKh0TAtWxXo16kLXNrjqmfo0hQTAuE/tVvz5zVqMgGsj+gMkkWfsInEbUndG0nlyCwaFv8hQ==

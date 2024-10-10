@@ -1,6 +1,5 @@
 import type HDNode from 'hdkey'
 import Eip1993Provider from 'eip1193-provider'
-import { ChainId } from '@injectivelabs/ts-types'
 
 export interface BrowserEip1993Provider extends Eip1993Provider {
   removeAllListeners(): void
@@ -28,17 +27,6 @@ export interface TrezorWalletInfo {
   address: string
   hdKey: HDNode
   derivationPath: string
-}
-
-export interface SendTransactionOptions {
-  address: string
-  chainId: ChainId
-  txTimeout?: number
-  endpoints: {
-    rest: string
-    grpc: string
-    tm?: string
-  }
 }
 
 export type WalletConnectMetadata = Record<

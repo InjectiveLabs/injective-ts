@@ -1,4 +1,4 @@
-import { Wallet } from '../../types/enums'
+import { Wallet } from '@injectivelabs/ts-types'
 
 export const isEthWallet = (wallet: Wallet): boolean =>
   [

@@ -17,8 +17,7 @@ import Cosmostation from './strategies/Cosmostation'
 import WalletConnect from './strategies/WalletConnect'
 import Magic from './strategies/Magic'
 import { isEthWallet, isCosmosWallet } from './utils'
-import { Wallet, WalletDeviceType } from '../../types/enums'
-import { MagicMetadata, SendTransactionOptions } from './types'
+import { MagicMetadata } from './types'
 import {
   WalletStrategyOptions,
   ConcreteWalletStrategy,
@@ -28,6 +27,7 @@ import {
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
 } from '../types'
+import{ Wallet, WalletDeviceType, SendTransactionOptions, WalletStrategy as IWalletStrategy } from '@injectivelabs/ts-types'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -142,7 +142,7 @@ const createStrategies = (
   )
 }
 
-export default class WalletStrategy {
+export class WalletStrategy implements IWalletStrategy {
   public strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
 
   public wallet: Wallet
@@ -339,3 +339,5 @@ export default class WalletStrategy {
     }
   }
 }
+
+export default WalletStrategy;

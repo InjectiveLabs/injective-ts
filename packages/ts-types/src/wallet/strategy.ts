@@ -1,13 +1,13 @@
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
+  AccountAddress,
   ChainId,
   CosmosChainId,
   EthereumChainId,
-  SendTransactionOptions,
-} from '@injectivelabs/ts-types'
+} from '../index'
 import type { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
-import { Wallet, WalletDeviceType } from '@injectivelabs/ts-types'
+import { Wallet, WalletDeviceType } from './enums'
 
 export type onAccountChangeCallback = (account: string) => void
 export type onChainIdChangeCallback = () => void
@@ -15,6 +15,17 @@ export type onChainIdChangeCallback = () => void
 export interface WalletStrategyEthereumOptions {
   ethereumChainId: EthereumChainId
   rpcUrl?: string
+}
+
+export interface SendTransactionOptions {
+  address: string
+  chainId: ChainId
+  txTimeout?: number
+  endpoints: {
+    rest: string
+    grpc: string
+    tm?: string
+  }
 }
 
 export interface EthereumWalletStrategyArgs {
@@ -183,4 +194,33 @@ export interface ConcreteWalletStrategy
   onChainIdChange?(callback: onChainIdChangeCallback): Promise<void> | void
 
   disconnect?(): Promise<void> | void
+}
+
+export interface WalletStrategy {
+  strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
+  wallet: Wallet
+  args: WalletStrategyArguments
+
+  getWallet(): Wallet
+  setWallet(wallet: Wallet): void
+  setOptions(options?: WalletStrategyOptions): void
+  getStrategy(): ConcreteWalletStrategy
+  getAddresses(args?: unknown): Promise<AccountAddress[]>
+  getWalletDeviceType(): Promise<WalletDeviceType>
+  getPubKey(address?: string): Promise<string>
+  enable(args?: unknown): Promise<boolean>
+  enableAndGetAddresses(args?: unknown): Promise<AccountAddress[]>
+  getEthereumChainId(): Promise<string>
+  getEthereumTransactionReceipt(txHash: string): Promise<void>
+  getSessionOrConfirm(address?: AccountAddress): Promise<string>
+  sendTransaction(tx: DirectSignResponse | TxRaw, options: SendTransactionOptions): Promise<TxResponse>
+  sendEthereumTransaction(tx: any, options: { address: AccountAddress; ethereumChainId: EthereumChainId }): Promise<string>
+  signTransaction(data: string | { txRaw: TxRaw; accountNumber: number; chainId: string }, address: AccountAddress): Promise<string | DirectSignResponse>
+  signEip712TypedData(eip712TypedData: string, address: AccountAddress): Promise<string>
+  signAminoCosmosTransaction(transaction: { signDoc: any; accountNumber: number; chainId: string; address: string }): Promise<string>
+  signCosmosTransaction(transaction: { txRaw: TxRaw; accountNumber: number; chainId: string; address: string }): Promise<DirectSignResponse>
+  signArbitrary(signer: string, data: string | Uint8Array): Promise<string | void>
+  onAccountChange(callback: onAccountChangeCallback): Promise<void>
+  onChainIdChange(callback: onChainIdChangeCallback): Promise<void>
+  disconnect(): Promise<void>
 }

@@ -3,6 +3,7 @@ export * from './aliases'
 export * from './transactions'
 export * from './cosmos'
 export * from './trade'
+export * from './wallet/index'
 
 export interface StreamStatusResponse {
   details: string
