@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "./dist/esm",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "moduleResolution": "Node"
+  },
+  "references": [
+    {
+      "path": "../../ts-types/tsconfig.json"
+    },
+    {
+      "path": "../../exceptions/tsconfig.json"
+    },
+    {
+      "path": "../../networks/tsconfig.json"
+    },
+    {
+      "path": "../../utils/tsconfig.json"
+    },
+    {
+      "path": "../../sdk-ts/tsconfig.json"
+    }
+  ]
+}

@@ -1,1 +1,3 @@
-export { Metamask, Metamask as default } from './strategies/Metamask/index'
+export { Metamask as MetamaskStrategy } from './strategy/strategy'
+export * from './strategy/utils'
+export * from './utils'

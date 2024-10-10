@@ -32,6 +32,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@injectivelabs/exceptions": "^1.14.13",
+    "@injectivelabs/networks": "^1.14.13",
+    "@injectivelabs/ts-types": "^1.14.13",
+    "@injectivelabs/utils": "^1.14.13",
     "axios": "^1.6.4",
     "bignumber.js": "^9.0.1",
     "link-module-alias": "^1.2.0",

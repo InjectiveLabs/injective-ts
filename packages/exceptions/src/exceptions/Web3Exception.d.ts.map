@@ -1,0 +1,1 @@
+{"version":3,"file":"Web3Exception.d.ts","sourceRoot":"","sources":["Web3Exception.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAA;AAChD,OAAO,EAAE,YAAY,EAAa,MAAM,UAAU,CAAA;AAElD,qBAAa,aAAc,SAAQ,iBAAiB;IAC3C,UAAU,EAAE,MAAM,CAAkB;gBAE/B,KAAK,EAAE,KAAK,EAAE,OAAO,CAAC,EAAE,YAAY;CAKjD"}

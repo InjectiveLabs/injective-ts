@@ -14,7 +14,10 @@ import Metamask from './strategies/Metamask'
 import PrivateKey from './strategies/PrivateKey'
 import TrustWallet from './strategies/TrustWallet'
 import Cosmostation from './strategies/Cosmostation'
+import LedgerCosmos from './strategies/LedgerCosmos'
 import WalletConnect from './strategies/WalletConnect'
+import LedgerLive from './strategies/Ledger/LedgerLive'
+import LedgerLegacy from './strategies/Ledger/LedgerLegacy'
 import Magic from './strategies/Magic'
 import { isEthWallet, isCosmosWallet } from './utils'
 import { Wallet, WalletDeviceType } from '../../types/enums'
@@ -32,10 +35,6 @@ import {
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
     return args.wallet
-  }
-
-  if (args.walletStrategies?.length) {
-    return args.walletStrategies[0].wallet
   }
 
   return args.ethereumOptions ? Wallet.Metamask : Wallet.Keplr
@@ -64,6 +63,12 @@ const createStrategy = ({
   args: WalletStrategyArguments
   wallet: Wallet
 }): ConcreteWalletStrategy | undefined => {
+  const disabledWallets = args.disabledWallets || []
+
+  if (disabledWallets.includes(wallet)) {
+    return undefined
+  }
+
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
@@ -82,6 +87,10 @@ const createStrategy = ({
       return new Metamask(ethWalletArgs)
     case Wallet.TrustWallet:
       return new TrustWallet(ethWalletArgs)
+    case Wallet.Ledger:
+      return new LedgerLive(ethWalletArgs)
+    case Wallet.LedgerLegacy:
+      return new LedgerLegacy(ethWalletArgs)
     case Wallet.Trezor:
       return new Trezor(ethWalletArgs)
     case Wallet.Torus:
@@ -106,6 +115,8 @@ const createStrategy = ({
       return new Keplr({ ...args })
     case Wallet.Cosmostation:
       return new Cosmostation({ ...args })
+    case Wallet.LedgerCosmos:
+      return new LedgerCosmos({ ...args })
     case Wallet.Leap:
       return new Leap({ ...args })
     case Wallet.Ninji:
@@ -128,13 +139,13 @@ const createStrategy = ({
   }
 }
 
-const createEnabledStrategies = (
+const createStrategies = (
   args: WalletStrategyArguments,
 ): Record<Wallet, ConcreteWalletStrategy | undefined> => {
-  return args.walletStrategies.reduce(
+  return Object.values(Wallet).reduce(
     (strategies, wallet) => ({
       ...strategies,
-      [wallet.wallet]: wallet.createStrategy(args),
+      [wallet]: createStrategy({ wallet, args }),
     }),
     {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
   )
@@ -147,11 +158,9 @@ export default class WalletStrategy {
 
   public args: WalletStrategyArguments
 
-  public wallets?: Wallet[]
-
   constructor(args: WalletStrategyArguments) {
     this.args = args
-    this.strategies = createEnabledStrategies(args)
+    this.strategies = createStrategies(args)
     this.wallet = getInitialWallet(args)
   }
 

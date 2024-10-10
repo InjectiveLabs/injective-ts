@@ -74,21 +74,9 @@ export interface WalletStrategyOptions {
   metadata?: Record<string, string | Record<string, string>>
 }
 
-export type CreateWalletStrategyArguments = Omit<
-  WalletStrategyArguments,
-  'walletStrategies'
->
-
 export interface CosmosWalletStrategyArguments {
   chainId: CosmosChainId
   wallet?: Wallet
-
-  walletStrategies: {
-    wallet: Wallet
-    createStrategy: (
-      args: CreateWalletStrategyArguments,
-    ) => ConcreteWalletStrategy
-  }[]
 }
 
 export interface WalletStrategyArguments
@@ -96,6 +84,7 @@ export interface WalletStrategyArguments
   chainId: ChainId
   options?: WalletStrategyOptions
   ethereumOptions?: WalletStrategyEthereumOptions
+  disabledWallets?: Wallet[]
   wallet?: Wallet
 }
 

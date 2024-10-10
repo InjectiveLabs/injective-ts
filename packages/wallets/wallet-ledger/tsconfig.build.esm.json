@@ -21,6 +21,9 @@
     },
     {
       "path": "../../utils/tsconfig.json"
+    },
+    {
+      "path": "../wallet-base/tsconfig.json"
     }
   ]
 }

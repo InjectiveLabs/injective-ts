@@ -1,0 +1,65 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.WalletErrorActionModule = exports.IndexerErrorModule = exports.ChainErrorModule = exports.ContractErrorModule = void 0;
+var ContractErrorModule;
+(function (ContractErrorModule) {
+    ContractErrorModule["Erc20Contract"] = "erc20-contract";
+    ContractErrorModule["Peggy"] = "peggy-contract";
+    ContractErrorModule["PeggyOld"] = "peggy-old-contract";
+})(ContractErrorModule = exports.ContractErrorModule || (exports.ContractErrorModule = {}));
+var ChainErrorModule;
+(function (ChainErrorModule) {
+    ChainErrorModule["Auction"] = "chain-auction";
+    ChainErrorModule["Auth"] = "chain-auth";
+    ChainErrorModule["Authz"] = "chain-authz";
+    ChainErrorModule["Bank"] = "chain-bank";
+    ChainErrorModule["Distribution"] = "chain-distribution";
+    ChainErrorModule["Exchange"] = "chain-exchange";
+    ChainErrorModule["Gov"] = "chain-gov";
+    ChainErrorModule["Ibc"] = "chain-ibc";
+    ChainErrorModule["InsuranceFund"] = "chain-insurance";
+    ChainErrorModule["Mint"] = "chain-mint";
+    ChainErrorModule["Oracle"] = "chain-oracle";
+    ChainErrorModule["Peggy"] = "chain-peggy";
+    ChainErrorModule["Staking"] = "chain-staking";
+    ChainErrorModule["Wasm"] = "chain-wasm";
+    ChainErrorModule["WasmX"] = "chain-wasmx";
+    ChainErrorModule["Tendermint"] = "chain-tendermint";
+    ChainErrorModule["Permissions"] = "chain-permissions";
+})(ChainErrorModule = exports.ChainErrorModule || (exports.ChainErrorModule = {}));
+var IndexerErrorModule;
+(function (IndexerErrorModule) {
+    IndexerErrorModule["Account"] = "indexer-account";
+    IndexerErrorModule["Auction"] = "indexer-auction";
+    IndexerErrorModule["Archiver"] = "indexer-archiver";
+    IndexerErrorModule["Derivatives"] = "indexer-derivatives";
+    IndexerErrorModule["Explorer"] = "indexer-explorer";
+    IndexerErrorModule["InsuranceFund"] = "indexer-insurance-fund";
+    IndexerErrorModule["Meta"] = "indexer-meta";
+    IndexerErrorModule["Mito"] = "indexer-mito";
+    IndexerErrorModule["Dmm"] = "dmm";
+    IndexerErrorModule["OLP"] = "olp";
+    IndexerErrorModule["Oracle"] = "indexer-oracle";
+    IndexerErrorModule["Portfolio"] = "indexer-portfolio";
+    IndexerErrorModule["Spot"] = "indexer-spot";
+    IndexerErrorModule["Transaction"] = "indexer-transaction";
+    IndexerErrorModule["Trading"] = "indexer-trading";
+    IndexerErrorModule["ChronosDerivative"] = "indexer-chronos-derivative";
+    IndexerErrorModule["ChronosSpot"] = "indexer-chronos-spot";
+    IndexerErrorModule["ChronosMarkets"] = "indexer-chronos-markets";
+    IndexerErrorModule["Campaign"] = "indexer-campaign";
+    IndexerErrorModule["Web3Gw"] = "web3-gateway";
+})(IndexerErrorModule = exports.IndexerErrorModule || (exports.IndexerErrorModule = {}));
+var WalletErrorActionModule;
+(function (WalletErrorActionModule) {
+    WalletErrorActionModule["SignTransaction"] = "sign-transaction";
+    WalletErrorActionModule["SignEthereumTransaction"] = "sign-ethereum-transaction";
+    WalletErrorActionModule["SendTransaction"] = "send-transaction";
+    WalletErrorActionModule["SendEthereumTransaction"] = "send-ethereum-transaction";
+    WalletErrorActionModule["SignArbitrary"] = "sign-arbitrary";
+    WalletErrorActionModule["GetAccounts"] = "get-accounts";
+    WalletErrorActionModule["GetNetworkId"] = "get-network-id";
+    WalletErrorActionModule["GetChainId"] = "get-chain-id";
+    WalletErrorActionModule["GetEthereumTransactionReceipt"] = "get-ethereum-transaction-receipt";
+})(WalletErrorActionModule = exports.WalletErrorActionModule || (exports.WalletErrorActionModule = {}));
+//# sourceMappingURL=modules.js.map

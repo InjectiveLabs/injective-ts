@@ -1,0 +1,1 @@
+{"version":3,"file":"LedgerException.d.ts","sourceRoot":"","sources":["LedgerException.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAA;AAChD,OAAO,EAAE,YAAY,EAAa,MAAM,UAAU,CAAA;AAGlD,qBAAa,eAAgB,SAAQ,iBAAiB;IAC7C,UAAU,EAAE,MAAM,CAAoB;gBAEjC,KAAK,EAAE,KAAK,EAAE,OAAO,CAAC,EAAE,YAAY;IAMzC,KAAK,IAAI,IAAI;CA4CrB"}

@@ -30,3 +30,5 @@ export interface PaginationOption {
 export interface Constructable<T> {
   new (...args: never): T
 }
+
+export type UnwrappedPromise<T> = T extends Promise<infer Return> ? Return : T

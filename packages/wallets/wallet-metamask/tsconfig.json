@@ -15,6 +15,9 @@
     },
     {
       "path": "../../sdk-ts/tsconfig.json"
-    }
+    },
+    {
+      "path": "../wallet-base/tsconfig.json"
+    },
   ]
 }
