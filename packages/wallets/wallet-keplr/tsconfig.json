@@ -19,17 +19,5 @@
     {
       "path": "../wallet-base/tsconfig.json"
     },
-    {
-      "path": "../wallet-core/tsconfig.json"
-    },
-    {
-      "path": "../wallet-metamask/tsconfig.json"
-    },
-    {
-      "path": "../wallet-ledger/tsconfig.json"
-    },
-    {
-      "path": "../wallet-keplr/tsconfig.json"
-    }
   ]
 }

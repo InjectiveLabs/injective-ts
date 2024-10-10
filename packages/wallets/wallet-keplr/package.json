@@ -1,6 +1,6 @@
 {
-  "name": "@injectivelabs/wallet-strategy",
-  "description": "Wallet strategy with instantiated wallets",
+  "name": "@injectivelabs/wallet-keplr",
+  "description": "Keplr wallet strategy for use with @injectivelabs/wallet-core.",
   "version": "0.0.1",
   "sideEffects": false,
   "author": {
@@ -15,7 +15,7 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~wallet-strategy": "dist"
+    "~wallet-keplr": "dist"
   },
   "scripts": {
     "postinstall": "link-module-alias",
@@ -42,10 +42,6 @@
     "@injectivelabs/ts-types": "^1.14.14",
     "@injectivelabs/utils": "^1.14.14",
     "@injectivelabs/wallet-base": "^0.0.1",
-    "@injectivelabs/wallet-core": "^0.0.1",
-    "@injectivelabs/wallet-metamask": "^0.0.1",
-    "@injectivelabs/wallet-ledger": "^0.0.1",
-    "@injectivelabs/wallet-keplr": "^0.0.1",
     "alchemy-sdk": "^2.6.3",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
@@ -60,6 +56,12 @@
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
     "@types/hdkey": "^2.0.1"
+  },
+  "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "wallet-metamask API Documentation"
   },
   "resolutions": {
     "**/libsodium": "npm:@bangjelkoski/noop",

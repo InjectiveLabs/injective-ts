@@ -9,6 +9,7 @@ import {
 } from '@injectivelabs/wallet-base'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { MetamaskStrategy } from '@injectivelabs/wallet-metamask'
+import { KeplrStrategy } from '@injectivelabs/wallet-keplr'
 import {
   LedgerLiveStrategy,
   LedgerLegacyStrategy,
@@ -79,8 +80,8 @@ const createStrategy = ({
     //     ...ethWalletArgs,
     //     privateKey: args.options?.privateKey,
     //   })
-    // case Wallet.Keplr:
-    //   return new Keplr({ ...args })
+    case Wallet.Keplr:
+      return new KeplrStrategy({ ...args })
     // case Wallet.Cosmostation:
     //   return new Cosmostation({ ...args })
     // case Wallet.Leap:
@@ -118,6 +119,12 @@ const createAllStrategies = (
 }
 
 export class WalletStrategy extends BaseWalletStrategy {
+  constructor(args: WalletStrategyArguments) {
+    super({
+      ...args,
+      strategies: createAllStrategies(args),
+    })
+  }
   /**
    * Case 1: Private Key is set dynamically
    * If we have a dynamically set private key,
@@ -143,9 +150,6 @@ export class WalletStrategy extends BaseWalletStrategy {
   }
 }
 
-export default (args: WalletStrategyArguments) => {
-  return new WalletStrategy({
-    ...args,
-    strategies: createAllStrategies(args),
-  })
+export const createStrategyFactory = (args: WalletStrategyArguments) => {
+  return new WalletStrategy(args)
 }

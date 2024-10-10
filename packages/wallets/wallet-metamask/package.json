@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-metamask",
-  "description": "Metamask wallet strategy for use with @injectivelabs/wallet-ts.",
+  "description": "Metamask wallet strategy for use with @injectivelabs/wallet-core.",
   "version": "0.0.1",
   "sideEffects": false,
   "author": {

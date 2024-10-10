@@ -36,6 +36,9 @@
       "@injectivelabs/wallet-ledger": [
         "packages/wallets/wallet-ledger"
       ],
+      "@injectivelabs/wallet-keplr": [
+        "packages/wallets/wallet-keplr"
+      ],
       "@injectivelabs/wallet-strategy": [
         "packages/wallets/wallet-strategy"
       ]

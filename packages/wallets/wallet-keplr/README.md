@@ -1,30 +1,26 @@
-# 🌟 Injective Protocol - Wallet Strategy
+# 🌟 Injective Protocol - Keplr Wallet Strategy
 
 <!-- TODO -->
 
-[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-strategy.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-strategy)
-[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-strategy.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-strategy)
+[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
+[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Package to use All Wallets on Injective via the wallet strategy._
+_Package to use Keplr Wallets on Injective via the wallet strategy._
 
 ---
 
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-strategy
+yarn add @injectivelabs/wallet-keplr
 ```
 
 ---
 
 ## 📖 Documentation
 
-```typescript
-import { WalletStrategy } from '@injectivelabs/wallet-strategy'
-
-const walletStrategy = new WalletStrategy(args)
-```
+<!-- TODO -->
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)
 

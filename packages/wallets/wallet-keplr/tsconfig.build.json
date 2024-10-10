@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist/cjs",
-    "tsBuildInfoFile": "../../.build-cache/wallet-strategy.tsbuildinfo"
+    "tsBuildInfoFile": "../../.build-cache/wallet-keplr.tsbuildinfo"
   },
   "include": [
     "./src/**/*.ts",
@@ -30,18 +30,6 @@
     },
     {
       "path": "../wallet-base/tsconfig.build.json"
-    },
-    {
-      "path": "../wallet-core/tsconfig.build.json"
-    },
-    {
-      "path": "../wallet-metamask/tsconfig.build.json"
-    },
-    {
-      "path": "../wallet-ledger/tsconfig.build.json"
-    },
-    {
-      "path": "../wallet-keplr/tsconfig.build.json"
     }
   ]
 }
