@@ -1,7 +1,7 @@
 import { Msgs } from '@injectivelabs/sdk-ts'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { Network, NetworkEndpoints } from '@injectivelabs/networks'
-import { ConcreteWalletStrategy } from '@injectivelabs/wallet-base'
+import BaseWalletStrategy from './../strategy/BaseStrategyFactory'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
@@ -44,6 +44,6 @@ export interface MsgBroadcasterOptions {
   simulateTx?: boolean
   txTimeoutOnFeeDelegation?: boolean
   txTimeout?: number // blocks to wait for tx to be included in a block
-  walletStrategies: ConcreteWalletStrategy | ConcreteWalletStrategy[]
+  walletStrategy: BaseWalletStrategy
   gasBufferCoefficient?: number
 }

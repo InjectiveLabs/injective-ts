@@ -12,6 +12,15 @@ import { WalletDeviceType, Wallet } from './enums'
 export type onAccountChangeCallback = (account: string) => void
 export type onChainIdChangeCallback = () => void
 
+export type CosmosWalletAbstraction = {
+  enableGasCheck?(chainId: ChainId): Promise<void> | void
+  disableGasCheck?(chainId: ChainId): Promise<void> | void
+  signEIP712CosmosTx(args: {
+    signDoc: StdSignDoc
+    eip712: any
+  }): Promise<AminoSignResponse>
+}
+
 export interface WalletStrategyEthereumOptions {
   ethereumChainId: EthereumChainId
   rpcUrl?: string
@@ -28,8 +37,24 @@ export interface SendTransactionOptions {
   }
 }
 
-export interface EthereumWalletStrategyArgs {
+export interface ConcreteWalletStrategyOptions {
+  privateKey?: string
+  metadata?: Record<string, string | Record<string, string>>
+}
+
+export interface ConcreteWalletStrategyArgs {
   chainId: ChainId
+  options?: ConcreteWalletStrategyOptions
+}
+
+export interface ConcreteCosmosWalletStrategyArgs {
+  chainId: CosmosChainId | ChainId
+  wallet?: Wallet
+  options?: ConcreteWalletStrategyOptions
+}
+
+export interface ConcreteEthereumWalletStrategyArgs
+  extends ConcreteWalletStrategyArgs {
   ethereumOptions: WalletStrategyEthereumOptions
 }
 
@@ -80,24 +105,13 @@ export interface ConcreteCosmosWalletStrategy {
   }): Promise<AminoSignResponse>
 }
 
-export interface WalletStrategyOptions {
-  privateKey?: string
-  metadata?: Record<string, string | Record<string, string>>
-}
-
-export interface CosmosWalletStrategyArguments {
-  chainId: CosmosChainId
-  wallet?: Wallet
-}
-
-export interface WalletStrategyArguments
-  extends Omit<CosmosWalletStrategyArguments, 'chainId'> {
+export interface WalletStrategyArguments {
   chainId: ChainId
-  options?: WalletStrategyOptions
+  options?: ConcreteWalletStrategyOptions
   ethereumOptions?: WalletStrategyEthereumOptions
   disabledWallets?: Wallet[]
   wallet?: Wallet
-  strategies?: Record<Wallet, ConcreteWalletStrategy | undefined>
+  strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
 }
 
 export interface ConcreteWalletStrategy
@@ -195,13 +209,8 @@ export interface ConcreteWalletStrategy
   onChainIdChange?(callback: onChainIdChangeCallback): Promise<void> | void
 
   disconnect?(): Promise<void> | void
-}
 
-export type CosmosEip712WalletSigner = {
-  signEIP712CosmosTx(
-    signDoc: StdSignDoc,
-    eip712: any,
-  ): Promise<AminoSignResponse>
+  getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
 }
 
 export interface WalletStrategy {
@@ -211,7 +220,7 @@ export interface WalletStrategy {
 
   getWallet(): Wallet
   setWallet(wallet: Wallet): void
-  setOptions(options?: WalletStrategyOptions): void
+  setOptions(options?: ConcreteWalletStrategyOptions): void
   getStrategy(): ConcreteWalletStrategy
   getAddresses(args?: unknown): Promise<AccountAddress[]>
   getWalletDeviceType(): Promise<WalletDeviceType>
@@ -256,7 +265,5 @@ export interface WalletStrategy {
   onAccountChange(callback: onAccountChangeCallback): Promise<void>
   onChainIdChange(callback: onChainIdChangeCallback): Promise<void>
   disconnect(): Promise<void>
-  enableGasCheck?(chainId: ChainId): Promise<void>
-  disableGasCheck?(chainId: ChainId): Promise<void>
-  getCosmosWallet?(): CosmosEip712WalletSigner
+  getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
 }

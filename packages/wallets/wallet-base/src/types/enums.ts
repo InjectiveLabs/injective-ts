@@ -1,3 +1,5 @@
+import { WalletErrorActionModule } from '@injectivelabs/exceptions'
+
 export enum Wallet {
   Leap = 'leap',
   Keplr = 'keplr',
@@ -30,3 +32,5 @@ export enum WalletEventListener {
   AccountChange = 'account-change',
   ChainIdChange = 'chain-id-change',
 }
+
+export const WalletAction = { ...WalletErrorActionModule }

@@ -1,1 +1,0 @@
-{"version":3,"file":"OkxWalletException.d.ts","sourceRoot":"","sources":["OkxWalletException.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAA;AAChD,OAAO,EAAE,YAAY,EAAa,MAAM,UAAU,CAAA;AASlD,qBAAa,kBAAmB,SAAQ,iBAAiB;IAChD,UAAU,EAAE,MAAM,CAAuB;gBAEpC,KAAK,EAAE,KAAK,EAAE,OAAO,CAAC,EAAE,YAAY;IAMzC,KAAK,IAAI,IAAI;CAKrB"}

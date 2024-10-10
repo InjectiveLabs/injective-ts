@@ -13,23 +13,22 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
-import { TIP_IN_GWEI } from '@injectivelabs/wallet-ts/src/utils/constants'
 import {
+  TIP_IN_GWEI,
+  WalletAction,
+  WalletDeviceType,
+  getKeyFromRpcUrl,
+  BaseConcreteStrategy,
+  SendTransactionOptions,
   ConcreteWalletStrategy,
-  EthereumWalletStrategyArgs,
-  WalletStrategyEthereumOptions,
-} from '@injectivelabs/wallet-ts'
-import { SendTransactionOptions } from '@injectivelabs/wallet-ts'
-import BaseConcreteStrategy from '@injectivelabs/wallet-ts/src/strategies/wallet-strategy/strategies/Base'
-import {
+  ConcreteEthereumWalletStrategyArgs,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-} from '@injectivelabs/wallet-ts/src/strategies/wallet-strategy/constants'
+  WalletStrategyEthereumOptions,
+} from '@injectivelabs/wallet-base'
 import LedgerHW from './hw'
 import { domainHash, messageHash } from './utils'
-import { WalletAction, WalletDeviceType } from '@injectivelabs/wallet-ts'
-import { getKeyFromRpcUrl } from '@injectivelabs/wallet-ts/src/utils/alchemy'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types'
 
@@ -64,7 +63,7 @@ export default class LedgerBase
   private alchemy: Alchemy | undefined
 
   constructor(
-    args: EthereumWalletStrategyArgs & {
+    args: ConcreteEthereumWalletStrategyArgs & {
       derivationPathType: LedgerDerivationPathType
     },
   ) {

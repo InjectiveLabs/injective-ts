@@ -1,1 +1,0 @@
-{"version":3,"file":"TransactionException.d.ts","sourceRoot":"","sources":["TransactionException.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAA;AAChD,OAAO,EAAE,YAAY,EAAa,MAAM,UAAU,CAAA;AAGlD,qBAAa,oBAAqB,SAAQ,iBAAiB;IAClD,UAAU,EAAE,MAAM,CAAyB;gBAEtC,KAAK,EAAE,KAAK,EAAE,OAAO,CAAC,EAAE,YAAY;IAMzC,KAAK,IAAI,IAAI;CAkBrB"}

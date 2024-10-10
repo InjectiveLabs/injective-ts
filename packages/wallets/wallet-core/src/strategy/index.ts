@@ -1,3 +1,3 @@
-import WalletStrategyFactory from './WalletStrategyFactory'
+import WalletStrategyFactory from './BaseStrategyFactory'
 
 export { WalletStrategyFactory }

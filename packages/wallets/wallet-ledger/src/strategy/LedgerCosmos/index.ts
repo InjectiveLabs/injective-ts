@@ -20,18 +20,17 @@ import {
   sortObjectByKeys,
 } from '@injectivelabs/sdk-ts'
 import {
-  ConcreteWalletStrategy,
-  SendTransactionOptions,
-} from '@injectivelabs/wallet-ts'
-import { LedgerWalletInfo } from '../../types'
-import BaseConcreteStrategy from '@injectivelabs/wallet-ts/src/strategies/wallet-strategy/strategies/Base'
-import {
+  WalletAction,
+  WalletDeviceType,
+  BaseConcreteStrategy,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-} from '@injectivelabs/wallet-ts/src/strategies/wallet-strategy/constants'
+  ConcreteWalletStrategy,
+  SendTransactionOptions,
+} from '@injectivelabs/wallet-base'
+import { LedgerWalletInfo } from '../../types'
 import LedgerHW from './hw'
-import { WalletAction, WalletDeviceType } from '@injectivelabs/wallet-ts'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
 
 export class LedgerCosmos

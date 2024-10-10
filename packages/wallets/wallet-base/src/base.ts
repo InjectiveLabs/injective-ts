@@ -1,5 +1,9 @@
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { WalletEventListener, WalletStrategyArguments } from './types'
+import {
+  WalletEventListener,
+  ConcreteWalletStrategyArgs,
+  ConcreteEthereumWalletStrategyArgs,
+} from './types'
 
 export default abstract class BaseConcreteStrategy {
   protected chainId: ChainId
@@ -8,10 +12,10 @@ export default abstract class BaseConcreteStrategy {
 
   protected listeners: Partial<Record<WalletEventListener, any>> = {}
 
-  protected constructor({ chainId, ethereumOptions }: WalletStrategyArguments) {
-    this.ethereumChainId = ethereumOptions
-      ? ethereumOptions.ethereumChainId
+  protected constructor(args: ConcreteWalletStrategyArgs | ConcreteEthereumWalletStrategyArgs) {
+    this.ethereumChainId = 'ethereumOptions' in args && args.ethereumOptions
+      ? args.ethereumOptions.ethereumChainId
       : undefined
-    this.chainId = chainId
+    this.chainId = args.chainId
   }
 }

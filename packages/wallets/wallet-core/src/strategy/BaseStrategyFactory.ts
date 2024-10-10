@@ -1,21 +1,23 @@
 import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
-  ChainId,
   AccountAddress,
+  ChainId,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
-import { isEthWallet, isCosmosWallet } from './utils'
-import { Wallet, WalletDeviceType } from '../../types/enums'
-import { SendTransactionOptions } from './types'
 import {
-  WalletStrategyOptions,
+  Wallet,
+  isEthWallet,
+  isCosmosWallet,
+  WalletDeviceType,
+  SendTransactionOptions,
   ConcreteWalletStrategy,
   onAccountChangeCallback,
   onChainIdChangeCallback,
   WalletStrategyArguments,
-  CosmosEip712WalletSigner,
+  CosmosWalletAbstraction,
+  ConcreteWalletStrategyOptions,
   WalletStrategy as WalletStrategyInterface,
 } from '@injectivelabs/wallet-base'
 
@@ -24,14 +26,14 @@ const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
     return args.wallet
   }
 
-  if (args.strategies?.length) {
-    return args.strategies[0].wallet
+  if (Object.keys(args.strategies || [])?.length) {
+    return Object.keys(args.strategies || [])[0] as Wallet
   }
 
   return args.ethereumOptions ? Wallet.Metamask : Wallet.Keplr
 }
 
-export default class WalletStrategyFactory implements WalletStrategyInterface {
+export default class BaseWalletStrategy implements WalletStrategyInterface {
   public strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
 
   public wallet: Wallet
@@ -54,15 +56,7 @@ export default class WalletStrategyFactory implements WalletStrategyInterface {
     this.wallet = wallet
   }
 
-  /**
-   * Case 1: Private Key is set dynamically
-   * If we have a dynamically set private key,
-   * we are creating a new PrivateKey strategy
-   * with the specified private key
-   *
-   * Case 2: Wallet Connect Metadata set dynamically
-   */
-  public setOptions(_options?: WalletStrategyOptions) {
+  public setOptions(_options?: ConcreteWalletStrategyOptions) {
     //
   }
 
@@ -218,33 +212,23 @@ export default class WalletStrategyFactory implements WalletStrategyInterface {
     }
   }
 
-  public enableGasCheck(chainId: ChainId): Promise<void> {
-    if (this.getWallet() !== Wallet.Keplr) {
-      throw new WalletException(
-        new Error(`You can't use this feature outside of Keplr wallet`),
-      )
-    }
-
-    return this.getStrategy().enableGasCheck(chainId)
-  }
-
-  public disableGasCheck(chainId: ChainId): Promise<void> {
-    if (this.getWallet() !== Wallet.Keplr) {
-      throw new WalletException(
-        new Error(`You can't use this feature outside of Keplr wallet`),
-      )
-    }
-
-    return this.getStrategy().disableGasCheck(chainId)
-  }
-
-  public getCosmosWallet(): CosmosEip712WalletSigner {
+  public getCosmosWallet(chainId: ChainId): CosmosWalletAbstraction {
     if ([Wallet.Keplr, Wallet.Leap].includes(this.getWallet())) {
       throw new WalletException(
-        new Error(`You can't use this feature outside of Keplr/Leap wallet`),
+        new Error(`You can't use this method outside of Keplr/Leap wallet`),
       )
     }
 
-    return this.getStrategy().getCosmosWallet()
+    const strategy = this.getStrategy()
+
+    if (strategy.getCosmosWallet == undefined) {
+      throw new WalletException(
+        new Error(
+          `This method is not available for ${this.getWallet()} wallet`,
+        ),
+      )
+    }
+
+    return strategy.getCosmosWallet(chainId)
   }
 }

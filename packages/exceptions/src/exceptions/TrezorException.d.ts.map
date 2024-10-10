@@ -1,1 +1,0 @@
-{"version":3,"file":"TrezorException.d.ts","sourceRoot":"","sources":["TrezorException.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAA;AAChD,OAAO,EAAE,YAAY,EAAa,MAAM,UAAU,CAAA;AAElD,qBAAa,eAAgB,SAAQ,iBAAiB;IAC7C,UAAU,EAAE,MAAM,CAAoB;gBAEjC,KAAK,EAAE,KAAK,EAAE,OAAO,CAAC,EAAE,YAAY;CAKjD"}

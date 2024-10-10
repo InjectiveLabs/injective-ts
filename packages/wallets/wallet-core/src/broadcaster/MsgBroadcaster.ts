@@ -57,7 +57,7 @@ import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
 } from '@injectivelabs/wallet-base'
-import { WalletStrategy } from 'packages/wallet-ts/dist/cjs'
+import BaseWalletStrategy from '../strategy/BaseStrategyFactory'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,
@@ -85,7 +85,7 @@ const getEthereumWalletPubKey = <T>({
 export class MsgBroadcaster {
   public options: MsgBroadcasterOptions
 
-  public walletStrategy: WalletStrategy
+  public walletStrategy: BaseWalletStrategy
 
   public endpoints: NetworkEndpoints
 
@@ -117,6 +117,7 @@ export class MsgBroadcaster {
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
     this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
+    this.walletStrategy = options.walletStrategy
   }
 
   setOptions(options: Partial<MsgBroadcasterOptions>) {
@@ -134,8 +135,7 @@ export class MsgBroadcaster {
    * @returns {string} transaction hash
    */
   async broadcast(tx: MsgBroadcasterTxOptions) {
-    const { options } = this
-    const { walletStrategy } = options
+    const { walletStrategy } = this
     const txWithAddresses = {
       ...tx,
       ethereumAddress: getEthereumSignerAddress(
@@ -168,8 +168,7 @@ export class MsgBroadcaster {
    * @returns {string} transaction hash
    */
   async broadcastV2(tx: MsgBroadcasterTxOptions) {
-    const { options } = this
-    const { walletStrategy } = options
+    const { walletStrategy } = this
     const txWithAddresses = {
       ...tx,
       ethereumAddress: getEthereumSignerAddress(
@@ -202,8 +201,7 @@ export class MsgBroadcaster {
    * @deprecated
    */
   async broadcastOld(tx: MsgBroadcasterTxOptions) {
-    const { options } = this
-    const { walletStrategy } = options
+    const { walletStrategy } = this
     const txWithAddresses = {
       ...tx,
       ethereumAddress: getEthereumSignerAddress(
@@ -233,8 +231,7 @@ export class MsgBroadcaster {
    * @returns {string} transaction hash
    */
   async broadcastWithFeeDelegation(tx: MsgBroadcasterTxOptions) {
-    const { options } = this
-    const { walletStrategy } = options
+    const { walletStrategy } = this
     const txWithAddresses = {
       ...tx,
       ethereumAddress: getEthereumSignerAddress(
@@ -266,8 +263,8 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastWeb3(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { options, chainId, txTimeout, endpoints, ethereumChainId } = this
-    const { walletStrategy } = options
+    const { chainId, txTimeout, endpoints, ethereumChainId, walletStrategy } =
+      this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     if (!ethereumChainId) {
@@ -378,8 +375,8 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastWeb3V2(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { options, chainId, txTimeout, endpoints, ethereumChainId } = this
-    const { walletStrategy } = options
+    const { walletStrategy, chainId, txTimeout, endpoints, ethereumChainId } =
+      this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     if (!ethereumChainId) {
@@ -490,14 +487,13 @@ export class MsgBroadcaster {
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ): Promise<TxResponse> {
     const {
-      options,
       txTimeout,
       endpoints,
       simulateTx,
+      walletStrategy,
       ethereumChainId,
       txTimeoutOnFeeDelegation,
     } = this
-    const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
@@ -586,8 +582,7 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastCosmos(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { options, txTimeout, endpoints, chainId } = this
-    const { walletStrategy } = options
+    const { walletStrategy, txTimeout, endpoints, chainId } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
@@ -690,14 +685,13 @@ export class MsgBroadcaster {
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
     const {
-      options,
       chainId,
       txTimeout,
       endpoints,
       simulateTx,
+      walletStrategy,
       ethereumChainId,
     } = this
-    const { walletStrategy } = options
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
@@ -721,9 +715,7 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const cosmosWallet = walletStrategy.getCosmosWallet(
-      walletStrategy.getWallet(),
-    )
+    const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
 
     /** Account Details * */
     const accountDetails = await new ChainGrpcAuthApi(
@@ -831,9 +823,14 @@ export class MsgBroadcaster {
   private async broadcastCosmosWithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { options, chainId, txTimeout, endpoints, txTimeoutOnFeeDelegation } =
-      this
-    const { walletStrategy } = options
+    const {
+      options,
+      chainId,
+      txTimeout,
+      endpoints,
+      walletStrategy,
+      txTimeoutOnFeeDelegation,
+    } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
@@ -854,6 +851,7 @@ export class MsgBroadcaster {
       }
     }
 
+    const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )
@@ -904,8 +902,11 @@ export class MsgBroadcaster {
     })
 
     // Temporary remove tx gas check because Keplr doesn't recognize feePayer
-    if (walletStrategy.wallet === Wallet.Keplr) {
-      walletStrategy.disableGasCheck(chainId)
+    if (
+      walletStrategy.wallet === Wallet.Keplr &&
+      cosmosWallet.disableGasCheck
+    ) {
+      cosmosWallet.disableGasCheck(chainId)
     }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
@@ -929,8 +930,8 @@ export class MsgBroadcaster {
     })
 
     // Re-enable tx gas check removed above
-    if (walletStrategy.wallet === Wallet.Keplr) {
-      walletStrategy.enableGasCheck(chainId)
+    if (walletStrategy.wallet === Wallet.Keplr && cosmosWallet.enableGasCheck) {
+      cosmosWallet.enableGasCheck(chainId)
     }
 
     return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)

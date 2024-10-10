@@ -18,8 +18,8 @@ import {
   SendTransactionOptions,
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
-  EthereumWalletStrategyArgs,
-  CreateWalletStrategyArguments,
+  ConcreteWalletStrategyArgs,
+  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import { getMetamaskProvider } from './utils'
 
@@ -28,7 +28,7 @@ export class Metamask
   implements ConcreteWalletStrategy
 {
   constructor(
-    args: CreateWalletStrategyArguments | EthereumWalletStrategyArgs,
+    args: ConcreteWalletStrategyArgs | ConcreteEthereumWalletStrategyArgs,
   ) {
     super(args)
   }

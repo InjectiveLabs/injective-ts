@@ -2,29 +2,31 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist/cjs"
+    "outDir": "./dist/cjs",
+    "tsBuildInfoFile": "../../.build-cache/wallet-ledger.tsbuildinfo"
   },
-  "include": ["./src/**/*.ts"],
+  "include": [
+    "./src/**/*.ts",
+  ],
   "exclude": [
-    "../../sdk-ts/src/**/*.spec.ts",
     "./src/**/*.spec.ts",
     "./src/**/*.test.ts"
   ],
   "references": [
     {
-      "path": "../../ts-types/tsconfig.json"
+      "path": "../../ts-types/tsconfig.build.json"
     },
     {
-      "path": "../../exceptions/tsconfig.json"
+      "path": "../../exceptions/tsconfig.build.json"
     },
     {
-      "path": "../../networks/tsconfig.json"
+      "path": "../../networks/tsconfig.build.json"
     },
     {
-      "path": "../../utils/tsconfig.json"
+      "path": "../../utils/tsconfig.build.json"
     },
     {
-      "path": "../wallet-base/tsconfig.json"
+      "path": "../wallet-base/tsconfig.build.json"
     }
   ]
 }

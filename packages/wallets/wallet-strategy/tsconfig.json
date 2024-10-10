@@ -15,6 +15,18 @@
     },
     {
       "path": "../../sdk-ts/tsconfig.json"
+    },
+    {
+      "path": "../wallet-base/tsconfig.json"
+    },
+    {
+      "path": "../wallet-core/tsconfig.json"
+    },
+    {
+      "path": "../wallet-metamask/tsconfig.json"
+    },
+    {
+      "path": "../wallet-ledger/tsconfig.json"
     }
   ]
 }

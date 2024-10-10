@@ -7,23 +7,36 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "tsBuildInfoFile": "../../.build-cache/wallet-strategy.esm.tsbuildinfo"
   },
   "references": [
     {
-      "path": "../../ts-types/tsconfig.json"
+      "path": "../../ts-types/tsconfig.build.esm.json"
     },
     {
-      "path": "../../exceptions/tsconfig.json"
+      "path": "../../exceptions/tsconfig.build.esm.json"
     },
     {
-      "path": "../../networks/tsconfig.json"
+      "path": "../../networks/tsconfig.build.esm.json"
     },
     {
-      "path": "../../utils/tsconfig.json"
+      "path": "../../utils/tsconfig.build.esm.json"
     },
     {
-      "path": "../../sdk-ts/tsconfig.json"
+      "path": "../../sdk-ts/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-base/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-core/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-metamask/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-ledger/tsconfig.build.esm.json"
     }
   ]
 }

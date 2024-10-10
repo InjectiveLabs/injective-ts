@@ -1,1 +1,0 @@
-{"version":3,"file":"CosmosWalletException.js","sourceRoot":"","sources":["CosmosWalletException.ts"],"names":[],"mappings":";;;AAAA,4CAAgD;AAChD,oCAAkD;AAElD,MAAa,qBAAsB,SAAQ,6BAAiB;IAG1D,YAAY,KAAY,EAAE,OAAsB;QAC9C,KAAK,CAAC,KAAK,EAAE,OAAO,CAAC,CAAA;QAHhB,eAAU,GAAW,uBAAuB,CAAA;QAKjD,IAAI,CAAC,IAAI,GAAG,iBAAS,CAAC,WAAW,CAAA;IACnC,CAAC;CACF;AARD,sDAQC"}

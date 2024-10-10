@@ -1,1 +1,0 @@
-{"version":3,"file":"TrezorException.js","sourceRoot":"","sources":["TrezorException.ts"],"names":[],"mappings":";;;AAAA,4CAAgD;AAChD,oCAAkD;AAElD,MAAa,eAAgB,SAAQ,6BAAiB;IAGpD,YAAY,KAAY,EAAE,OAAsB;QAC9C,KAAK,CAAC,KAAK,EAAE,OAAO,CAAC,CAAA;QAHhB,eAAU,GAAW,iBAAiB,CAAA;QAK3C,IAAI,CAAC,IAAI,GAAG,iBAAS,CAAC,WAAW,CAAA;IACnC,CAAC;CACF;AARD,0CAQC"}

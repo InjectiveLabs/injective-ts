@@ -1,7 +1,7 @@
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { WalletStrategy } from '../strategies/wallet-strategy'
+import BaseWalletStrategy from './../strategy/BaseStrategyFactory'
 
 interface SendTransactionOptions {
   tx: {
@@ -20,7 +20,7 @@ interface SendTransactionOptions {
  * Ethereum transactions
  */
 export class Web3Broadcaster {
-  private walletStrategy: WalletStrategy
+  private walletStrategy: BaseWalletStrategy
 
   private ethereumChainId: EthereumChainId
 
@@ -28,7 +28,7 @@ export class Web3Broadcaster {
     walletStrategy,
     ethereumChainId,
   }: {
-    walletStrategy: WalletStrategy
+    walletStrategy: BaseWalletStrategy
     ethereumChainId: EthereumChainId
     network: Network
   }) {
