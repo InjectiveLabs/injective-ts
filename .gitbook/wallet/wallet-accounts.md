@@ -93,3 +93,38 @@ const buf3 = Buffer.from(publicKeyByte)
 const publicKey = Buffer.concat([buf1, buf2, buf3]).toString('base64')
 const type = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
 ```
+
+#### Convert Cosmos address to Injective Address
+
+As Injective has a different derivation path than the default Cosmos one, you need the `publicKey` of the account to convert a Cosmos `publicAddress` to Injective one.&#x20;
+
+Here is an example of how to do it&#x20;
+
+```typescript
+import { config } from "dotenv";
+import { ChainRestAuthApi, PublicKey } from "@injectivelabs/sdk-ts";
+
+config();
+
+(async () => {
+  const chainApi = new ChainRestAuthApi(
+    "https://rest.cosmos.directory/cosmoshub"
+  );
+
+  const cosmosAddress = "cosmos1..";
+  const account = await chainApi.fetchCosmosAccount(cosmosAddress);
+
+  if (!account.pub_key?.key) {
+    console.log("No public key found");
+    return;
+  }
+
+  console.log(
+    "injectiveAddress",
+    PublicKey.fromBase64(account.pub_key.key || "")
+      .toAddress()
+      .toBech32()
+  );
+})();
+
+```
