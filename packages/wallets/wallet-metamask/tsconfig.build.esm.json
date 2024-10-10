@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.esm.build.json",
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "module": "esnext",
     "outDir": "./dist/esm",
@@ -12,22 +12,22 @@
   },
   "references": [
     {
-      "path": "../../ts-types/tsconfig.esm.json"
+      "path": "../../ts-types/tsconfig.build.esm.json"
     },
     {
-      "path": "../../exceptions/tsconfig.esm.json"
+      "path": "../../exceptions/tsconfig.build.esm.json"
     },
     {
-      "path": "../../networks/tsconfig.esm.json"
+      "path": "../../networks/tsconfig.build.esm.json"
     },
     {
-      "path": "../../utils/tsconfig.esm.json"
+      "path": "../../utils/tsconfig.build.esm.json"
     },
     {
-      "path": "../../sdk-ts/tsconfig.build.json"
+      "path": "../../sdk-ts/tsconfig.build.esm.json"
     },
     {
-      "path": "../wallet-base/tsconfig.esm.json"
+      "path": "../wallet-base/tsconfig.build.esm.json"
     }
   ]
 }

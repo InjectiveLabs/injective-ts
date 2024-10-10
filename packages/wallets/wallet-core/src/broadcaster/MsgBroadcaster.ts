@@ -57,7 +57,7 @@ import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
 } from '@injectivelabs/wallet-base'
-import BaseWalletStrategy from '../strategy/BaseStrategyFactory'
+import BaseWalletStrategy from '../strategy/BaseWalletStrategy'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,

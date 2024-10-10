@@ -1,20 +1,18 @@
 import {
   Wallet,
   isEthWallet,
-  WalletStrategyOptions,
+  WalletStrategyArguments,
   ConcreteWalletStrategy,
-  EthereumWalletStrategyArgs,
+  ConcreteWalletStrategyOptions,
+  ConcreteEthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
 } from '@injectivelabs/wallet-base'
-import {
-  WalletStrategyArguments,
-  WalletStrategy as BaseWalletStrategy,
-} from '@injectivelabs/wallet-core'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { MetamaskStrategy } from '@injectivelabs/wallet-metamask'
 import {
   LedgerLiveStrategy,
   LedgerLegacyStrategy,
-} from '@injectivelabs/ledger-metamask'
+} from '@injectivelabs/wallet-ledger'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { ethereumOptions } = args
@@ -50,7 +48,7 @@ const createStrategy = ({
   const ethWalletArgs = {
     chainId: args.chainId,
     ethereumOptions: args.ethereumOptions as WalletStrategyEthereumOptions,
-  } as EthereumWalletStrategyArgs
+  } as ConcreteEthereumWalletStrategyArgs
 
   switch (wallet) {
     case Wallet.Metamask:
@@ -107,13 +105,13 @@ const createStrategy = ({
   }
 }
 
-const createEnabledStrategies = (
+const createAllStrategies = (
   args: WalletStrategyArguments,
 ): Record<Wallet, ConcreteWalletStrategy | undefined> => {
-  return args.walletStrategies.reduce(
+  return Object.keys(Wallet).reduce(
     (strategies, wallet) => ({
       ...strategies,
-      [wallet.wallet]: wallet.createStrategy(args),
+      [wallet]: createStrategy({ args, wallet: wallet as Wallet }),
     }),
     {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
   )
@@ -128,7 +126,7 @@ export class WalletStrategy extends BaseWalletStrategy {
    *
    * Case 2: Wallet Connect Metadata set dynamically
    */
-  public setOptions(options?: WalletStrategyOptions) {
+  public setOptions(options?: ConcreteWalletStrategyOptions) {
     if (options?.privateKey) {
       this.strategies[Wallet.PrivateKey] = createStrategy({
         args: { ...this.args, options: { privateKey: options.privateKey } },
@@ -147,7 +145,7 @@ export class WalletStrategy extends BaseWalletStrategy {
 
 export default (args: WalletStrategyArguments) => {
   return new WalletStrategy({
-    strategies: createEnabledStrategies(args),
     ...args,
+    strategies: createAllStrategies(args),
   })
 }

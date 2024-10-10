@@ -20,7 +20,11 @@ yarn add @injectivelabs/wallet-strategy
 
 ## 📖 Documentation
 
-<!-- TODO -->
+```typescript
+import createWalletStrategy from '@injectivelabs/wallet-strategy'
+
+const walletStrategy = createWalletStrategy(args)
+```
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)
 
