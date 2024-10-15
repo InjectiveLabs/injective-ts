@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { WalletException } from '@injectivelabs/exceptions'
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import { getMetamaskProvider } from './../strategy/utils'
+import { getMetamaskProvider } from '../strategy/utils/metamask'
 import { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 
 export const getEthersProviderFromMetamask = async () => {

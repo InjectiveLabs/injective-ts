@@ -1,16 +1,17 @@
 /* eslint-disable class-methods-use-this */
-import { sleep } from '@injectivelabs/utils'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   ErrorType,
+  ErrorContext,
   WalletException,
+  BitGetException,
+  OkxWalletException,
   MetamaskException,
   UnspecifiedErrorCode,
   TransactionException,
+  ConcreteException,
 } from '@injectivelabs/exceptions'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
+  Wallet,
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
@@ -21,16 +22,69 @@ import {
   ConcreteWalletStrategyArgs,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { getMetamaskProvider } from './utils'
+import { sleep } from '@injectivelabs/utils'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
+import {
+  getBitGetProvider,
+  getPhantomProvider,
+  getMetamaskProvider,
+  getOkxWalletProvider,
+} from './utils'
 
-export class Metamask
+const evmWallets = [
+  Wallet.BitGet,
+  Wallet.Phantom,
+  Wallet.Metamask,
+  Wallet.OkxWallet,
+]
+
+export class EvmWallet
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
+  public wallet?: Wallet
+
   constructor(
-    args: ConcreteWalletStrategyArgs | ConcreteEthereumWalletStrategyArgs,
+    args: (ConcreteWalletStrategyArgs | ConcreteEthereumWalletStrategyArgs) & {
+      wallet: Wallet
+    },
   ) {
     super(args)
+
+    console.log('EvmWallet.constructor args:', args)
+
+    if (!evmWallets.includes(args.wallet)) {
+      throw new WalletException(
+        new Error(`Evm Wallet for ${args.wallet} is not supported.`),
+      )
+    }
+
+    this.wallet = args.wallet
+  }
+
+  public EvmWalletException(
+    error: Error,
+    context?: ErrorContext,
+  ): ConcreteException {
+    if (this.wallet === Wallet.Metamask) {
+      return new MetamaskException(error, context)
+    }
+
+    if (this.wallet === Wallet.BitGet) {
+      return new BitGetException(error, context)
+    }
+
+    if (this.wallet === Wallet.OkxWallet) {
+      return new OkxWalletException(error, context)
+    }
+
+    if (this.wallet === Wallet.Phantom) {
+      return new MetamaskException(error, context)
+    }
+
+    return new WalletException(error, context)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -71,7 +125,7 @@ export class Metamask
         method: 'eth_requestAccounts',
       })
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
@@ -100,7 +154,7 @@ export class Metamask
         params: [transaction],
       })
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SendEthereumTransaction,
@@ -211,7 +265,7 @@ export class Metamask
 
       return signature
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignArbitrary,
@@ -225,7 +279,7 @@ export class Metamask
     try {
       return ethereum.request({ method: 'eth_chainId' })
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetChainId,
@@ -254,7 +308,7 @@ export class Metamask
     try {
       return await transactionReceiptRetry()
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetEthereumTransactionReceipt,
@@ -292,11 +346,20 @@ export class Metamask
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {
-    const provider = await getMetamaskProvider()
+    const provider =
+      this.wallet === Wallet.Metamask
+        ? await getMetamaskProvider()
+        : this.wallet === Wallet.Phantom
+        ? await getPhantomProvider()
+        : this.wallet === Wallet.BitGet
+        ? await getBitGetProvider()
+        : this.wallet === Wallet.OkxWallet
+        ? await getOkxWalletProvider()
+        : undefined
 
     if (!provider) {
-      throw new MetamaskException(
-        new Error('Please install the Metamask wallet extension.'),
+      throw this.EvmWalletException(
+        new Error(`Please install the ${this.wallet} wallet extension.`),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,

@@ -1,6 +1,6 @@
 {
-  "name": "@injectivelabs/wallet-metamask",
-  "description": "Metamask wallet strategy for use with @injectivelabs/wallet-core.",
+  "name": "@injectivelabs/wallet-evm",
+  "description": "EVM wallet strategies for use with @injectivelabs/wallet-core.",
   "version": "0.0.1",
   "sideEffects": false,
   "author": {
@@ -15,7 +15,7 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~wallet-metamask": "dist"
+    "~wallet-evm": "dist"
   },
   "scripts": {
     "postinstall": "link-module-alias",
@@ -61,7 +61,7 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "wallet-metamask API Documentation"
+    "displayName": "wallet-evm API Documentation"
   },
   "resolutions": {
     "**/libsodium": "npm:@bangjelkoski/noop",

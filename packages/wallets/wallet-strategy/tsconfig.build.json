@@ -35,7 +35,7 @@
       "path": "../wallet-core/tsconfig.build.json"
     },
     {
-      "path": "../wallet-metamask/tsconfig.build.json"
+      "path": "../wallet-evm/tsconfig.build.json"
     },
     {
       "path": "../wallet-ledger/tsconfig.build.json"

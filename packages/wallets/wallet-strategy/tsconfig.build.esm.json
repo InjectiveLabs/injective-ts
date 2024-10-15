@@ -33,7 +33,7 @@
       "path": "../wallet-core/tsconfig.build.esm.json"
     },
     {
-      "path": "../wallet-metamask/tsconfig.build.esm.json"
+      "path": "../wallet-evm/tsconfig.build.esm.json"
     },
     {
       "path": "../wallet-ledger/tsconfig.build.esm.json"

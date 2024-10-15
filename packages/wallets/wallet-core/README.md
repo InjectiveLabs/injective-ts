@@ -13,7 +13,7 @@ _Package to use MetaMask Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-metamask
+yarn add @injectivelabs/wallet-evm
 ```
 
 ---

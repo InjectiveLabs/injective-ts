@@ -43,7 +43,7 @@
     "@injectivelabs/utils": "^1.14.14",
     "@injectivelabs/wallet-base": "^0.0.1",
     "@injectivelabs/wallet-core": "^0.0.1",
-    "@injectivelabs/wallet-metamask": "^0.0.1",
+    "@injectivelabs/wallet-evm": "^0.0.1",
     "@injectivelabs/wallet-ledger": "^0.0.1",
     "@injectivelabs/wallet-keplr": "^0.0.1",
     "alchemy-sdk": "^2.6.3",

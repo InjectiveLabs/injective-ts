@@ -30,8 +30,8 @@
       "@injectivelabs/wallet-core": [
         "packages/wallets/wallet-core"
       ],
-      "@injectivelabs/wallet-metamask": [
-        "packages/wallets/wallet-metamask"
+      "@injectivelabs/wallet-evm": [
+        "packages/wallets/wallet-evm"
       ],
       "@injectivelabs/wallet-ledger": [
         "packages/wallets/wallet-ledger"

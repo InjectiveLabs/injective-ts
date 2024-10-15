@@ -1,19 +1,19 @@
 import {
   Wallet,
   isEthWallet,
-  WalletStrategyArguments,
   ConcreteWalletStrategy,
+  WalletStrategyArguments,
   ConcreteWalletStrategyOptions,
-  ConcreteEthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
+  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import { MetamaskStrategy } from '@injectivelabs/wallet-metamask'
-import { KeplrStrategy } from '@injectivelabs/wallet-keplr'
 import {
   LedgerLiveStrategy,
   LedgerLegacyStrategy,
 } from '@injectivelabs/wallet-ledger'
+import { KeplrStrategy } from '@injectivelabs/wallet-keplr'
+import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { ethereumOptions } = args
@@ -53,7 +53,10 @@ const createStrategy = ({
 
   switch (wallet) {
     case Wallet.Metamask:
-      return new MetamaskStrategy(ethWalletArgs)
+      return new EvmWalletStrategy({
+        ...ethWalletArgs,
+        wallet: Wallet.Metamask,
+      })
     case Wallet.Ledger:
       return new LedgerLiveStrategy(ethWalletArgs)
     case Wallet.LedgerLegacy:
@@ -64,12 +67,21 @@ const createStrategy = ({
     //   return new Trezor(ethWalletArgs)
     // case Wallet.Torus:
     //   return new Torus(ethWalletArgs)
-    // case Wallet.Phantom:
-    //   return new Phantom(ethWalletArgs)
-    // case Wallet.OkxWallet:
-    //   return new Okx(ethWalletArgs)
-    // case Wallet.BitGet:
-    //   return new BitGet(ethWalletArgs)
+    case Wallet.Phantom:
+      return new EvmWalletStrategy({
+        ...ethWalletArgs,
+        wallet: Wallet.Phantom,
+      })
+    case Wallet.OkxWallet:
+      return new EvmWalletStrategy({
+        ...ethWalletArgs,
+        wallet: Wallet.OkxWallet,
+      })
+    case Wallet.BitGet:
+      return new EvmWalletStrategy({
+        ...ethWalletArgs,
+        wallet: Wallet.BitGet,
+      })
     // case Wallet.WalletConnect:
     //   return new WalletConnect({
     //     ...ethWalletArgs,
@@ -109,7 +121,7 @@ const createStrategy = ({
 const createAllStrategies = (
   args: WalletStrategyArguments,
 ): Record<Wallet, ConcreteWalletStrategy | undefined> => {
-  return Object.keys(Wallet).reduce(
+  return Object.values(Wallet).reduce(
     (strategies, wallet) => ({
       ...strategies,
       [wallet]: createStrategy({ args, wallet: wallet as Wallet }),
@@ -120,9 +132,11 @@ const createAllStrategies = (
 
 export class WalletStrategy extends BaseWalletStrategy {
   constructor(args: WalletStrategyArguments) {
+    const strategies = createAllStrategies(args)
+
     super({
       ...args,
-      strategies: createAllStrategies(args),
+      strategies,
     })
   }
   /**
