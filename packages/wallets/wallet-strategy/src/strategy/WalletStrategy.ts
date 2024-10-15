@@ -14,6 +14,7 @@ import {
 import { KeplrStrategy } from '@injectivelabs/wallet-keplr'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { ethereumOptions } = args
@@ -63,10 +64,8 @@ const createStrategy = ({
       return new LedgerLegacyStrategy(ethWalletArgs)
     // case Wallet.TrustWallet:
     //   return new TrustWallet(ethWalletArgs)
-    // case Wallet.Trezor:
-    //   return new Trezor(ethWalletArgs)
-    // case Wallet.Torus:
-    //   return new Torus(ethWalletArgs)
+    case Wallet.Trezor:
+      return new TrezorWalletStrategy(ethWalletArgs)
     case Wallet.Phantom:
       return new EvmWalletStrategy({
         ...ethWalletArgs,
