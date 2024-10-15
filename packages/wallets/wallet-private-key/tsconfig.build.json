@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist/cjs",
-    "tsBuildInfoFile": "../../.build-cache/wallet-trezor.tsbuildinfo"
+    "tsBuildInfoFile": "../../.build-cache/wallet-private-key.tsbuildinfo"
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["./src/**/*.spec.ts", "./src/**/*.test.ts"],
@@ -19,6 +19,9 @@
     },
     {
       "path": "../../utils/tsconfig.build.json"
+    },
+    {
+      "path": "../../sdk-ts/tsconfig.build.json"
     },
     {
       "path": "../wallet-base/tsconfig.build.json"

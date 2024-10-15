@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "moduleResolution": "Node",
-    "tsBuildInfoFile": "../../.build-cache/wallet-trezor.esm.tsbuildinfo"
+    "tsBuildInfoFile": "../../.build-cache/wallet-private-key.esm.tsbuildinfo"
   },
   "references": [
     {
@@ -22,6 +22,9 @@
     },
     {
       "path": "../../utils/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../../sdk-ts/tsconfig.build.esm.json"
     },
     {
       "path": "../wallet-base/tsconfig.build.esm.json"
