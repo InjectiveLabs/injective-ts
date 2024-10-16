@@ -4,11 +4,12 @@ import {
   ErrorContext,
   WalletException,
   BitGetException,
-  OkxWalletException,
+  ConcreteException,
   MetamaskException,
+  OkxWalletException,
   UnspecifiedErrorCode,
   TransactionException,
-  ConcreteException,
+  TrustWalletException,
 } from '@injectivelabs/exceptions'
 import {
   Wallet,
@@ -31,6 +32,7 @@ import {
   getPhantomProvider,
   getMetamaskProvider,
   getOkxWalletProvider,
+  getTrustWalletProvider,
 } from './utils'
 
 const evmWallets = [
@@ -38,6 +40,7 @@ const evmWallets = [
   Wallet.Phantom,
   Wallet.Metamask,
   Wallet.OkxWallet,
+  Wallet.TrustWallet,
 ]
 
 export class EvmWallet
@@ -82,6 +85,10 @@ export class EvmWallet
 
     if (this.wallet === Wallet.Phantom) {
       return new MetamaskException(error, context)
+    }
+
+    if (this.wallet === Wallet.TrustWallet) {
+      return new TrustWalletException(error, context)
     }
 
     return new WalletException(error, context)
@@ -355,6 +362,8 @@ export class EvmWallet
         ? await getBitGetProvider()
         : this.wallet === Wallet.OkxWallet
         ? await getOkxWalletProvider()
+        : this.wallet === Wallet.TrustWallet
+        ? await getTrustWalletProvider()
         : undefined
 
     if (!provider) {
