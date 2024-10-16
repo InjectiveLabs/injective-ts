@@ -21,6 +21,16 @@ export enum Wallet {
   CosmostationEth = 'cosmostation-eth',
 }
 
+export enum MagicProvider {
+  Email = 'email',
+  Apple = 'apple',
+  Github = 'github',
+  Google = 'google',
+  Discord = 'discord',
+  Twitter = 'twitter',
+  Facebook = 'facebook',
+}
+
 export enum WalletDeviceType {
   Mobile = 'mobile',
   Other = 'other',

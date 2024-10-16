@@ -21,6 +21,11 @@ export type CosmosWalletAbstraction = {
   }): Promise<AminoSignResponse>
 }
 
+export type MagicMetadata = {
+  apiKey?: string
+  rpcEndpoint?: string
+}
+
 export interface WalletStrategyEthereumOptions {
   ethereumChainId: EthereumChainId
   rpcUrl?: string

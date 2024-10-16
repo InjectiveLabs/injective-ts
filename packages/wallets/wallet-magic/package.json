@@ -1,6 +1,6 @@
 {
-  "name": "@injectivelabs/wallet-private-key",
-  "description": "Private key wallet strategy for use with @injectivelabs/wallet-core.",
+  "name": "@injectivelabs/wallet-magic",
+  "description": "Magic wallet strategy for use with @injectivelabs/wallet-core.",
   "version": "0.0.1",
   "sideEffects": false,
   "author": {
@@ -15,7 +15,7 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~wallet-private-key": "dist"
+    "~wallet-magic": "dist"
   },
   "scripts": {
     "postinstall": "link-module-alias",
@@ -34,6 +34,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "magic-sdk": "28.9.0",
+    "@magic-ext/oauth2": "9.9.0",
+    "@magic-ext/cosmos": "23.9.1",
     "@injectivelabs/exceptions": "^1.14.14",
     "@injectivelabs/sdk-ts": "^1.14.15-beta.9",
     "@injectivelabs/ts-types": "^1.14.14",
@@ -44,7 +47,7 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
-    "displayName": "wallet-private-key API Documentation"
+    "displayName": "wallet-magic API Documentation"
   },
   "resolutions": {
     "**/libsodium": "npm:@bangjelkoski/noop",

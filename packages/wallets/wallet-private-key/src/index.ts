@@ -1,1 +1,1 @@
-export { PrivateKeyWallet as PrivateKeyWalletStategy } from './strategy/strategy'
+export { PrivateKeyWallet as PrivateKeyWalletStrategy } from './strategy/strategy'

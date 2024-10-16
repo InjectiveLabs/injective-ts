@@ -1,6 +1,7 @@
 import {
   Wallet,
   isEthWallet,
+  MagicMetadata,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
   ConcreteWalletStrategyOptions,
@@ -11,10 +12,12 @@ import {
   LedgerLiveStrategy,
   LedgerLegacyStrategy,
 } from '@injectivelabs/wallet-ledger'
+import { MagicStrategy } from '@injectivelabs/wallet-magic'
 import { KeplrStrategy } from '@injectivelabs/wallet-keplr'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor'
+import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { ethereumOptions } = args
@@ -86,11 +89,11 @@ const createStrategy = ({
     //     ...ethWalletArgs,
     //     metadata: args.options?.metadata,
     //   })
-    // case Wallet.PrivateKey:
-    //   return new PrivateKey({
-    //     ...ethWalletArgs,
-    //     privateKey: args.options?.privateKey,
-    //   })
+    case Wallet.PrivateKey:
+      return new PrivateKeyWalletStrategy({
+        ...ethWalletArgs,
+        privateKey: args.options?.privateKey,
+      })
     case Wallet.Keplr:
       return new KeplrStrategy({ ...args })
     // case Wallet.Cosmostation:
@@ -99,19 +102,19 @@ const createStrategy = ({
     //   return new Leap({ ...args })
     // case Wallet.Ninji:
     //   return new Ninji({ ...args })
-    // case Wallet.Magic:
-    //   if (
-    //     !args.options?.metadata?.magic ||
-    //     !(args.options?.metadata.magic as MagicMetadata)?.apiKey ||
-    //     !(args.options?.metadata.magic as MagicMetadata)?.rpcEndpoint
-    //   ) {
-    //     return undefined
-    //   }
+    case Wallet.Magic:
+      if (
+        !args.options?.metadata?.magic ||
+        !(args.options?.metadata.magic as MagicMetadata)?.apiKey ||
+        !(args.options?.metadata.magic as MagicMetadata)?.rpcEndpoint
+      ) {
+        return undefined
+      }
 
-    //   return new Magic({
-    //     ...args,
-    //     metadata: args.options.metadata.magic as MagicMetadata,
-    //   })
+      return new MagicStrategy({
+        ...args,
+        metadata: args.options.metadata.magic as MagicMetadata,
+      })
     default:
       return undefined
   }
