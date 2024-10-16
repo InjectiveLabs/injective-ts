@@ -26,6 +26,11 @@ export type MagicMetadata = {
   rpcEndpoint?: string
 }
 
+export type WalletConnectMetadata = Record<
+  string,
+  string | Record<string, string> | Record<string, string[]>
+>
+
 export interface WalletStrategyEthereumOptions {
   ethereumChainId: EthereumChainId
   rpcUrl?: string

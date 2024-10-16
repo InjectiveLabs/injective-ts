@@ -1,1 +1,1 @@
-export { default as MagicStrategy } from './strategy/strategy'
+export { Magic as MagicStrategy } from './strategy/strategy'

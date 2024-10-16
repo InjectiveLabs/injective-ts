@@ -28,7 +28,7 @@ interface MagicConnectArgs extends WalletStrategyArguments {
   metadata?: MagicMetadata
 }
 
-export default class Magic
+export class Magic
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {

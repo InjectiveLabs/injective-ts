@@ -17,6 +17,7 @@ import { KeplrStrategy } from '@injectivelabs/wallet-keplr'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor'
+import { WalletConnectStrategy } from '@injectivelabs/wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
@@ -65,8 +66,11 @@ const createStrategy = ({
       return new LedgerLiveStrategy(ethWalletArgs)
     case Wallet.LedgerLegacy:
       return new LedgerLegacyStrategy(ethWalletArgs)
-    // case Wallet.TrustWallet:
-    //   return new TrustWallet(ethWalletArgs)
+    case Wallet.TrustWallet:
+      return new EvmWalletStrategy({
+        ...ethWalletArgs,
+        wallet: Wallet.TrustWallet,
+      })
     case Wallet.Trezor:
       return new TrezorWalletStrategy(ethWalletArgs)
     case Wallet.Phantom:
@@ -84,11 +88,11 @@ const createStrategy = ({
         ...ethWalletArgs,
         wallet: Wallet.BitGet,
       })
-    // case Wallet.WalletConnect:
-    //   return new WalletConnect({
-    //     ...ethWalletArgs,
-    //     metadata: args.options?.metadata,
-    //   })
+    case Wallet.WalletConnect:
+      return new WalletConnectStrategy({
+        ...ethWalletArgs,
+        metadata: args.options?.metadata,
+      })
     case Wallet.PrivateKey:
       return new PrivateKeyWalletStrategy({
         ...ethWalletArgs,
