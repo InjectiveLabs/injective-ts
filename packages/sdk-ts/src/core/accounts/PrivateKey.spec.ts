@@ -1,4 +1,4 @@
-import { generateArbitrarySignDoc } from '../modules'
+import { generateArbitrarySignDoc } from '../tx'
 import { PrivateKey } from './PrivateKey'
 
 const pk = 'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3'
