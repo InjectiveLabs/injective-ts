@@ -19,6 +19,7 @@ import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
 import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor'
 import { WalletConnectStrategy } from '@injectivelabs/wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
+import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { ethereumOptions } = args
@@ -100,8 +101,8 @@ const createStrategy = ({
       })
     case Wallet.Keplr:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Keplr })
-    // case Wallet.Cosmostation:
-    //   return new Cosmostation({ ...args })
+    case Wallet.Cosmostation:
+      return new CosmostationWalletStrategy({ ...args })
     case Wallet.Leap:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Leap })
     case Wallet.Ninji:

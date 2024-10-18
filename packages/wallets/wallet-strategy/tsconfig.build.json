@@ -41,6 +41,9 @@
       "path": "../wallet-cosmos/tsconfig.build.json"
     },
     {
+      "path": "../wallet-cosmostation/tsconfig.build.json"
+    },
+    {
       "path": "../wallet-evm/tsconfig.build.json"
     },
     {

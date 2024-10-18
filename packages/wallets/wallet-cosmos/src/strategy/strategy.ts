@@ -31,6 +31,8 @@ import {
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { CosmosWallet } from './../wallet'
 
+const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr]
+
 export class CosmosWalletStrategy
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
@@ -45,6 +47,12 @@ export class CosmosWalletStrategy
     } & { wallet: Wallet },
   ) {
     super(args)
+
+    if (!cosmosWallets.includes(args.wallet)) {
+      throw new CosmosWalletException(
+        new Error(`Cosmos Wallet for ${args.wallet} is not supported.`),
+      )
+    }
 
     this.wallet = args.wallet
     this.chainId = args.chainId || CosmosChainId.Injective
