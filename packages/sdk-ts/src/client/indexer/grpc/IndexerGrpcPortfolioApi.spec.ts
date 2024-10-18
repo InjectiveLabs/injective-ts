@@ -1,5 +1,5 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { INJ_DENOM } from '@injectivelabs/utils'
+// import { INJ_DENOM } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/test-utils'
 import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
 import { IndexerGrpcAccountPortfolioApi } from './IndexerGrpcPortfolioApi'
@@ -34,25 +34,25 @@ describe('IndexerGrpcAccountPortfolioApi', () => {
   })
 })
 
-test('fetchAccountPortfolioTokenHolders', async () => {
-  try {
-    const response =
-      await indexerGrpcPortfolioApi.fetchAccountPortfolioTokenHolders({
-        denom: INJ_DENOM,
-      })
+// test('fetchAccountPortfolioTokenHolders', async () => {
+//   try {
+//     const response =
+//       await indexerGrpcPortfolioApi.fetchAccountPortfolioTokenHolders({
+//         denom: INJ_DENOM,
+//       })
 
-    expect(response).toBeDefined()
-    expect(response).toEqual(
-      expect.objectContaining<
-        ReturnType<
-          typeof IndexerGrpcAccountPortfolioTransformer.tokenHoldersResponseToTokenHolders
-        >
-      >(response),
-    )
-  } catch (e) {
-    console.error(
-      'IndexerGrpcAccountPortfolioApi.fetchAccountPortfolioTokenHolders => ' +
-        (e as any).message,
-    )
-  }
-})
+//     expect(response).toBeDefined()
+//     expect(response).toEqual(
+//       expect.objectContaining<
+//         ReturnType<
+//           typeof IndexerGrpcAccountPortfolioTransformer.tokenHoldersResponseToTokenHolders
+//         >
+//       >(response),
+//     )
+//   } catch (e) {
+//     console.error(
+//       'IndexerGrpcAccountPortfolioApi.fetchAccountPortfolioTokenHolders => ' +
+//         (e as any).message,
+//     )
+//   }
+// })

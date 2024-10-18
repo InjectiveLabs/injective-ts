@@ -16,6 +16,12 @@
     },
     {
       "path": "../exceptions/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../utils/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../networks/tsconfig.build.esm.json"
     }
   ]
 }

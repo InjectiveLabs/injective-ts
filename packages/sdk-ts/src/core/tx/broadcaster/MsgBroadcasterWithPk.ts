@@ -142,6 +142,7 @@ export class MsgBroadcasterWithPk {
     const tx = {
       ...transaction,
       msgs: msgs,
+      ethereumAddress: ethereumWallet
     } as MsgBroadcasterTxOptions & { ethereumAddress: string }
 
     const web3Msgs = msgs.map((msg) => msg.toWeb3())

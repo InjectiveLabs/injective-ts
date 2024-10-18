@@ -23,6 +23,24 @@
       ],
       "@injectivelabs/sdk-ts": [
         "packages/sdk-ts"
+      ],
+      "@injectivelabs/wallet-base": [
+        "packages/wallets/wallet-base"
+      ],
+      "@injectivelabs/wallet-core": [
+        "packages/wallets/wallet-core"
+      ],
+      "@injectivelabs/wallet-evm": [
+        "packages/wallets/wallet-evm"
+      ],
+      "@injectivelabs/wallet-ledger": [
+        "packages/wallets/wallet-ledger"
+      ],
+      "@injectivelabs/wallet-keplr": [
+        "packages/wallets/wallet-keplr"
+      ],
+      "@injectivelabs/wallet-strategy": [
+        "packages/wallets/wallet-strategy"
       ]
     }
   }
