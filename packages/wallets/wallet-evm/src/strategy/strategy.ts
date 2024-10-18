@@ -56,8 +56,6 @@ export class EvmWallet
   ) {
     super(args)
 
-    console.log('EvmWallet.constructor args:', args)
-
     if (!evmWallets.includes(args.wallet)) {
       throw new WalletException(
         new Error(`Evm Wallet for ${args.wallet} is not supported.`),

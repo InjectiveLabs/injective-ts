@@ -44,7 +44,7 @@
     "@injectivelabs/wallet-evm": "^0.0.1",
     "@injectivelabs/wallet-base": "^0.0.1",
     "@injectivelabs/wallet-core": "^0.0.1",
-    "@injectivelabs/wallet-keplr": "^0.0.1",
+    "@injectivelabs/wallet-cosmos": "^0.0.1",
     "@injectivelabs/wallet-ledger": "^0.0.1",
     "@injectivelabs/wallet-trezor": "^0.0.1",
     "@injectivelabs/wallet-connect": "^0.0.1",

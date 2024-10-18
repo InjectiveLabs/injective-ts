@@ -1,51 +1,59 @@
 /* eslint-disable class-methods-use-this */
 import {
-  ChainId,
-  CosmosChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
-import {
   TxRaw,
   TxResponse,
   waitTxBroadcasted,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
-import type { DirectSignResponse } from '@cosmjs/proto-signing'
+import {
+  ChainId,
+  CosmosChainId,
+  AccountAddress,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import {
   ErrorType,
-  TransactionException,
   UnspecifiedErrorCode,
   CosmosWalletException,
+  TransactionException,
 } from '@injectivelabs/exceptions'
-import { KeplrWallet } from '../utils/wallet'
 import {
+  Wallet,
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
   BaseConcreteStrategy,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  CosmosWalletAbstraction,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
+import { CosmosWallet } from './../wallet'
 
-export class Keplr
+export class CosmosWalletStrategy
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  private keplrWallet: KeplrWallet
+  public wallet: Wallet
+  private cosmosWallet: CosmosWallet
 
-  constructor(args: { chainId: ChainId }) {
+  constructor(
+    args: {
+      chainId: ChainId
+      endpoints?: { rest: string; rpc: string }
+    } & { wallet: Wallet },
+  ) {
     super(args)
+
+    this.wallet = args.wallet
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.keplrWallet = new KeplrWallet(args.chainId)
+    this.cosmosWallet = new CosmosWallet(args.chainId, args.wallet)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
-    const keplrWallet = this.getKeplrWallet()
-    const key = await keplrWallet.getKey()
+    const cosmosWallet = this.getCurrentCosmosWallet()
+    const key = await cosmosWallet.getKey()
 
     return key.isNanoLedger
       ? Promise.resolve(WalletDeviceType.Hardware)
@@ -53,27 +61,45 @@ export class Keplr
   }
 
   async enable(): Promise<boolean> {
-    const keplrWallet = this.getKeplrWallet()
+    const cosmosWallet = this.getCurrentCosmosWallet()
 
-    return await keplrWallet.checkChainIdSupport()
+    return await cosmosWallet.checkChainIdSupport()
   }
 
   public async disconnect() {
+    const { wallet } = this
+
     if (this.listeners[WalletEventListener.AccountChange]) {
-      window.removeEventListener(
-        'keplr_keystorechange',
-        this.listeners[WalletEventListener.AccountChange],
-      )
+      if (wallet === Wallet.Ninji) {
+        window.ninji.off(
+          'accountsChanged',
+          this.listeners[WalletEventListener.AccountChange],
+        )
+      }
+
+      if (wallet === Wallet.Keplr) {
+        window.removeEventListener(
+          'keplr_keystorechange',
+          this.listeners[WalletEventListener.AccountChange],
+        )
+      }
+
+      if (wallet === Wallet.Leap) {
+        window.removeEventListener(
+          'leap_keystorechange',
+          this.listeners[WalletEventListener.AccountChange],
+        )
+      }
     }
 
     this.listeners = {}
   }
 
   async getAddresses(): Promise<string[]> {
-    const keplrWallet = this.getKeplrWallet()
+    const cosmosWallet = this.getCurrentCosmosWallet()
 
     try {
-      const accounts = await keplrWallet.getAccounts()
+      const accounts = await cosmosWallet.getAccounts()
 
       return accounts.map((account) => account.address)
     } catch (e: unknown) {
@@ -97,9 +123,11 @@ export class Keplr
     _transaction: unknown,
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
+    const { wallet } = this
+
     throw new CosmosWalletException(
       new Error(
-        'sendEthereumTransaction is not supported. Keplr only supports sending cosmos transactions',
+        `sendEthereumTransaction is not supported. ${wallet} only supports sending cosmos transactions`,
       ),
       {
         code: UnspecifiedErrorCode,
@@ -112,7 +140,7 @@ export class Keplr
     transaction: DirectSignResponse | TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { keplrWallet } = this
+    const cosmosWallet = this.getCurrentCosmosWallet()
     const txRaw = createTxRawFromSigResponse(transaction)
 
     if (!options.endpoints) {
@@ -124,7 +152,7 @@ export class Keplr
     }
 
     try {
-      const txHash = await keplrWallet.broadcastTx(txRaw)
+      const txHash = await cosmosWallet.broadcastTx(txRaw)
 
       return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
@@ -169,10 +197,10 @@ export class Keplr
     txRaw: TxRaw
     accountNumber: number
     chainId: string
-    address: string
+    address: AccountAddress
   }) {
-    const keplrWallet = this.getKeplrWallet()
-    const signer = await keplrWallet.getOfflineSigner()
+    const cosmosWallet = this.getCurrentCosmosWallet()
+    const signer = await cosmosWallet.getOfflineSigner()
     const signDoc = createSignDocFromTransaction(transaction)
 
     try {
@@ -189,7 +217,7 @@ export class Keplr
   }
 
   async signEip712TypedData(
-    _transaction: string,
+    _eip712TypedData: string,
     _address: AccountAddress,
   ): Promise<string> {
     throw new CosmosWalletException(
@@ -205,13 +233,12 @@ export class Keplr
     signer: string,
     data: string | Uint8Array,
   ): Promise<string> {
-    const keplrWallet = this.getKeplrWallet()
-    const keplr = await keplrWallet.getKeplrWallet()
+    const cosmosWallet = this.getCurrentCosmosWallet()
 
     try {
-      const signature = await keplr.signArbitrary(this.chainId, signer, data)
+      const signature = await cosmosWallet.signArbitrary({ data, signer })
 
-      return signature.signature
+      return signature
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -221,8 +248,10 @@ export class Keplr
   }
 
   async getEthereumChainId(): Promise<string> {
+    const { wallet } = this
+
     throw new CosmosWalletException(
-      new Error('getEthereumChainId is not supported on Keplr'),
+      new Error(`getEthereumChainId is not supported on ${wallet}`),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetChainId,
@@ -231,8 +260,10 @@ export class Keplr
   }
 
   async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
+    const { wallet } = this
+
     throw new CosmosWalletException(
-      new Error('getEthereumTransactionReceipt is not supported on Keplr'),
+      new Error(`getEthereumTransactionReceipt is not supported on ${wallet}`),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetEthereumTransactionReceipt,
@@ -241,8 +272,8 @@ export class Keplr
   }
 
   async getPubKey(): Promise<string> {
-    const keplrWallet = this.getKeplrWallet()
-    const key = await keplrWallet.getKey()
+    const cosmosWallet = this.getCurrentCosmosWallet()
+    const key = await cosmosWallet.getKey()
 
     return Buffer.from(key.pubKey).toString('base64')
   }
@@ -250,6 +281,8 @@ export class Keplr
   async onAccountChange(
     callback: (account: AccountAddress) => void,
   ): Promise<void> {
+    const { wallet } = this
+
     const listener = async () => {
       const [account] = await this.getAddresses()
 
@@ -260,19 +293,31 @@ export class Keplr
       [WalletEventListener.AccountChange]: listener,
     }
 
-    window.addEventListener('keplr_keystorechange', listener)
+    if (wallet === Wallet.Ninji) {
+      window.ninji.on('accountsChanged', listener)
+    }
+
+    if (wallet === Wallet.Keplr) {
+      window.addEventListener('keplr_keystorechange', listener)
+    }
+
+    if (wallet === Wallet.Leap) {
+      window.addEventListener('leap_keystorechange', listener)
+    }
   }
 
-  public getCosmosWallet(chainId: ChainId): CosmosWalletAbstraction {
-    return new KeplrWallet(chainId)
+  public getCosmosWallet(chainId: ChainId): CosmosWallet {
+    const { wallet, cosmosWallet } = this
+
+    return !cosmosWallet ? new CosmosWallet(chainId, wallet) : cosmosWallet
   }
 
-  private getKeplrWallet(): KeplrWallet {
-    const { keplrWallet } = this
+  private getCurrentCosmosWallet(): CosmosWallet {
+    const { wallet, cosmosWallet } = this
 
-    if (!keplrWallet) {
+    if (!cosmosWallet) {
       throw new CosmosWalletException(
-        new Error('Please install the Keplr wallet extension'),
+        new Error(`Please install the ${wallet} wallet extension`),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
@@ -281,6 +326,6 @@ export class Keplr
       )
     }
 
-    return keplrWallet
+    return cosmosWallet as CosmosWallet
   }
 }

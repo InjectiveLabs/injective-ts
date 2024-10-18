@@ -1,9 +1,13 @@
 /* eslint-disable class-methods-use-this */
 import {
-  AccountAddress,
   ChainId,
+  AccountAddress,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
+import {
+  PrivateKey as PrivateKeySigner,
+  getInjectiveSignerAddress,
+} from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   WalletException,
@@ -12,12 +16,15 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
-  PrivateKey as PrivateKeySigner,
-  getInjectiveSignerAddress,
-} from '@injectivelabs/sdk-ts'
+  WalletAction,
+  WalletDeviceType,
+  BaseConcreteStrategy,
+  ConcreteWalletStrategy,
+  SendTransactionOptions,
+  ConcreteEthereumWalletStrategyArgs,
+} from '@injectivelabs/wallet-base'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
-import { BaseConcreteStrategy, ConcreteWalletStrategy, ConcreteEthereumWalletStrategyArgs, SendTransactionOptions, WalletAction, WalletDeviceType } from '@injectivelabs/wallet-base'
 
 interface PrivateKeyArgs extends ConcreteEthereumWalletStrategyArgs {
   privateKey?: string
@@ -25,7 +32,8 @@ interface PrivateKeyArgs extends ConcreteEthereumWalletStrategyArgs {
 
 export class PrivateKeyWallet
   extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy {
+  implements ConcreteWalletStrategy
+{
   private privateKey?: PrivateKeySigner | undefined
 
   constructor(args: PrivateKeyArgs) {

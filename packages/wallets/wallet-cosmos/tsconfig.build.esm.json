@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "moduleResolution": "Node",
-    "tsBuildInfoFile": "../../.build-cache/wallet-keplr.esm.tsbuildinfo"
+    "tsBuildInfoFile": "../../.build-cache/wallet-cosmos.esm.tsbuildinfo"
   },
   "references": [
     {

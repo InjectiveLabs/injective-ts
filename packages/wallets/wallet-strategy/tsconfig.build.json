@@ -32,7 +32,13 @@
       "path": "../wallet-base/tsconfig.build.json"
     },
     {
+      "path": "../wallet-connect/tsconfig.build.json"
+    },
+    {
       "path": "../wallet-core/tsconfig.build.json"
+    },
+    {
+      "path": "../wallet-cosmos/tsconfig.build.json"
     },
     {
       "path": "../wallet-evm/tsconfig.build.json"
@@ -41,7 +47,13 @@
       "path": "../wallet-ledger/tsconfig.build.json"
     },
     {
-      "path": "../wallet-keplr/tsconfig.build.json"
+      "path": "../wallet-magic/tsconfig.build.json"
+    },
+    {
+      "path": "../wallet-private-key/tsconfig.build.json"
+    },
+    {
+      "path": "../wallet-trezor/tsconfig.build.json"
     }
   ]
 }

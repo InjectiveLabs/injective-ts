@@ -1,4 +1,4 @@
-# 🌟 Injective Protocol - Keplr Wallet Strategy
+# 🌟 Injective Protocol - Cosmos Wallet Strategy
 
 <!-- TODO -->
 
@@ -6,14 +6,14 @@
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Package to use Keplr Wallets on Injective via the wallet strategy._
+_Package to use Cosmos Wallets on Injective via the wallet strategy._
 
 ---
 
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-keplr
+yarn add @injectivelabs/wallet-cosmos
 ```
 
 ---

@@ -13,9 +13,9 @@ import {
   LedgerLegacyStrategy,
 } from '@injectivelabs/wallet-ledger'
 import { MagicStrategy } from '@injectivelabs/wallet-magic'
-import { KeplrStrategy } from '@injectivelabs/wallet-keplr'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
 import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor'
 import { WalletConnectStrategy } from '@injectivelabs/wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
@@ -99,13 +99,13 @@ const createStrategy = ({
         privateKey: args.options?.privateKey,
       })
     case Wallet.Keplr:
-      return new KeplrStrategy({ ...args })
+      return new CosmosWalletStrategy({ ...args, wallet: Wallet.Keplr })
     // case Wallet.Cosmostation:
     //   return new Cosmostation({ ...args })
-    // case Wallet.Leap:
-    //   return new Leap({ ...args })
-    // case Wallet.Ninji:
-    //   return new Ninji({ ...args })
+    case Wallet.Leap:
+      return new CosmosWalletStrategy({ ...args, wallet: Wallet.Leap })
+    case Wallet.Ninji:
+      return new CosmosWalletStrategy({ ...args, wallet: Wallet.Ninji })
     case Wallet.Magic:
       if (
         !args.options?.metadata?.magic ||
