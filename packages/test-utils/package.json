@@ -32,6 +32,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@injectivelabs/networks": "^1.14.13",
     "@injectivelabs/ts-types": "^1.14.13",
     "@injectivelabs/utils": "^1.14.13",
     "axios": "^1.6.4",

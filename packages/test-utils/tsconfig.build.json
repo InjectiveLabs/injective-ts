@@ -18,6 +18,9 @@
     },
     {
       "path": "../exceptions/tsconfig.build.json"
+    },
+    {
+      "path": "../networks/tsconfig.build.json"
     }
   ]
 }

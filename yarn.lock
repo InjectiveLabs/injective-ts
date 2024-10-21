@@ -2282,6 +2282,17 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
+"@injectivelabs/networks@^1.14.13":
+  version "1.14.13"
+  resolved "https://registry.npmjs.org/@injectivelabs/networks/-/networks-1.14.13.tgz#6264b6249469c57b3b18e4803980ec26c576edba"
+  integrity sha512-P+eCQXWpbk4LbPxgTmi2gY7OzdZTNsIEUvDoh59Ma0CkqSFaYMtgB8fZVxpkKM0UPla587EDlEEIVxprDBcnZg==
+  dependencies:
+    "@injectivelabs/exceptions" "^1.14.13"
+    "@injectivelabs/ts-types" "^1.14.13"
+    "@injectivelabs/utils" "^1.14.13"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
+
 "@ioredis/commands@^1.1.1":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@ioredis/commands/-/commands-1.2.0.tgz#6d61b3097470af1fdbbe622795b8921d42018e11"
