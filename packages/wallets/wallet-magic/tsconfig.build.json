@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist/cjs",
-    "tsBuildInfoFile": "../../.build-cache/wallet-magic.tsbuildinfo"
+    "tsBuildInfoFile": "../../../.build-cache/wallet-magic.tsbuildinfo"
   },
   "include": [
     "./src/**/*.ts"

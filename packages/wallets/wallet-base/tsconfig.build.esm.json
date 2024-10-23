@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "moduleResolution": "Node",
-    "tsBuildInfoFile": "../../.build-cache/wallet-base.esm.tsbuildinfo"
+    "tsBuildInfoFile": "../../../.build-cache/wallet-base.esm.tsbuildinfo"
   },
   "references": [
     {

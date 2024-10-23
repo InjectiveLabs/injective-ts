@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist/cjs",
-    "tsBuildInfoFile": "../../.build-cache/wallet-cosmos.tsbuildinfo"
+    "tsBuildInfoFile": "../../../.build-cache/wallet-cosmos.tsbuildinfo"
   },
   "include": [
     "./src/**/*.ts",

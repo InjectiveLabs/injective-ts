@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist/cjs",
-    "tsBuildInfoFile": "../../.build-cache/wallet-evm.tsbuildinfo"
+    "tsBuildInfoFile": "../../../.build-cache/wallet-evm.tsbuildinfo"
   },
   "include": [
     "./src/**/*.ts",
