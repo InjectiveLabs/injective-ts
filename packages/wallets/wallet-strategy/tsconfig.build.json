@@ -32,7 +32,7 @@
       "path": "../wallet-base/tsconfig.build.json"
     },
     {
-      "path": "../wallet-connect/tsconfig.build.json"
+      "path": "../wallet-wallet-connect/tsconfig.build.json"
     },
     {
       "path": "../wallet-core/tsconfig.build.json"

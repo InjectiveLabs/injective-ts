@@ -17,7 +17,7 @@ import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
 import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor'
-import { WalletConnectStrategy } from '@injectivelabs/wallet-connect'
+import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
 

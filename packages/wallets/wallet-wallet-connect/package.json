@@ -1,5 +1,5 @@
 {
-  "name": "@injectivelabs/wallet-connect",
+  "name": "@injectivelabs/wallet-wallet-connect",
   "description": "Wallet connect strategy for use with @injectivelabs/wallet-core.",
   "version": "0.0.1",
   "sideEffects": false,
@@ -15,7 +15,7 @@
     "dist"
   ],
   "_moduleAliases": {
-    "~wallet-connect": "dist"
+    "~wallet-wallet-connect": "dist"
   },
   "scripts": {
     "postinstall": "link-module-alias",

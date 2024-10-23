@@ -1,4 +1,4 @@
-# 🌟 Injective Protocol - Magic Wallet Strategy
+# 🌟 Injective Protocol - Wallet connect Wallet Strategy
 
 <!-- TODO -->
 
@@ -6,14 +6,14 @@
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Package to use Magic Wallets on Injective via the wallet strategy._
+_Package to use Wallet Connect Wallets on Injective via the wallet strategy._
 
 ---
 
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-magic
+yarn add @injectivelabs/wallet-wallet-connect
 ```
 
 ---

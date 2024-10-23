@@ -39,6 +39,15 @@
       "@injectivelabs/wallet-keplr": [
         "packages/wallets/wallet-keplr"
       ],
+      "@injectivelabs/wallet-trezor": [
+        "packages/wallets/wallet-trezor"
+      ],
+      "@injectivelabs/wallet-magic": [
+        "packages/wallets/wallet-magic"
+      ],
+      "@injectivelabs/wallet-wallet-connect": [
+        "packages/wallets/wallet-wallet-connect"
+      ],
       "@injectivelabs/wallet-strategy": [
         "packages/wallets/wallet-strategy"
       ]

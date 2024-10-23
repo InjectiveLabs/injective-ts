@@ -43,7 +43,7 @@
     "@injectivelabs/utils": "^1.14.14",
     "@injectivelabs/wallet-base": "^0.0.1",
     "@injectivelabs/wallet-core": "^0.0.1",
-    "@injectivelabs/wallet-connect": "^0.0.1",
+    "@injectivelabs/wallet-wallet-connect": "^0.0.1",
     "@injectivelabs/wallet-cosmos": "^0.0.1",
     "@injectivelabs/wallet-cosmostation": "^0.0.1",
     "@injectivelabs/wallet-evm": "^0.0.1",

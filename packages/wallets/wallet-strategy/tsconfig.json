@@ -30,6 +30,9 @@
     },
     {
       "path": "../wallet-keplr/tsconfig.json"
+    },
+    {
+      "path": "../wallet-wallet-connect/tsconfig.json"
     }
   ]
 }
