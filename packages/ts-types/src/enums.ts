@@ -93,6 +93,8 @@ export enum MsgType {
   MsgValsetConfirm = 'injective.peggy.v1.MsgValsetConfirm',
   MsgValsetUpdatedClaim = 'injective.peggy.v1.MsgValsetUpdatedClaim',
   MsgWithdrawClaim = 'injective.peggy.v1.MsgWithdrawClaim',
+  MsgBlacklistEthereumAddresses = 'injective.peggy.v1.MsgBlacklistEthereumAddresses',
+  MsgRevokeEthereumBlacklist = 'injective.peggy.v1.MsgRevokeEthereumBlacklist',
   MsgBurn = 'injective.tokenfactory.v1beta1.MsgBurn',
   MsgMint = 'injective.tokenfactory.v1beta1.MsgMint',
   MsgCreateDenom = 'injective.tokenfactory.v1beta1.MsgCreateDenom',
