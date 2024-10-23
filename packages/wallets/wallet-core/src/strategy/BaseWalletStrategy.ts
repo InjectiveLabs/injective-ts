@@ -1,8 +1,8 @@
 import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
-  AccountAddress,
   ChainId,
+  AccountAddress,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
@@ -11,6 +11,7 @@ import {
   isEthWallet,
   isCosmosWallet,
   WalletDeviceType,
+  ConcreteStrategiesArg,
   SendTransactionOptions,
   ConcreteWalletStrategy,
   onAccountChangeCallback,
@@ -34,7 +35,7 @@ const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
 }
 
 export default class BaseWalletStrategy implements WalletStrategyInterface {
-  public strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
+  public strategies: ConcreteStrategiesArg
 
   public wallet: Wallet
 

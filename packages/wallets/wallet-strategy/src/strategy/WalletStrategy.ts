@@ -2,6 +2,7 @@ import {
   Wallet,
   isEthWallet,
   MagicMetadata,
+  ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
   ConcreteWalletStrategyOptions,
@@ -127,13 +128,13 @@ const createStrategy = ({
 
 const createAllStrategies = (
   args: WalletStrategyArguments,
-): Record<Wallet, ConcreteWalletStrategy | undefined> => {
+): ConcreteStrategiesArg => {
   return Object.values(Wallet).reduce(
     (strategies, wallet) => ({
       ...strategies,
       [wallet]: createStrategy({ args, wallet: wallet as Wallet }),
     }),
-    {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
+    {} as ConcreteStrategiesArg,
   )
 }
 

@@ -115,13 +115,17 @@ export interface ConcreteCosmosWalletStrategy {
   }): Promise<AminoSignResponse>
 }
 
+export type ConcreteStrategiesArg = {
+  [key in Wallet]?: ConcreteWalletStrategy
+}
+
 export interface WalletStrategyArguments {
   chainId: ChainId
   options?: ConcreteWalletStrategyOptions
   ethereumOptions?: WalletStrategyEthereumOptions
   disabledWallets?: Wallet[]
   wallet?: Wallet
-  strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
+  strategies: ConcreteStrategiesArg
 }
 
 export interface ConcreteWalletStrategy
@@ -224,7 +228,7 @@ export interface ConcreteWalletStrategy
 }
 
 export interface WalletStrategy {
-  strategies: Record<Wallet, ConcreteWalletStrategy | undefined>
+  strategies: ConcreteStrategiesArg
   wallet: Wallet
   args: WalletStrategyArguments
 

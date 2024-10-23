@@ -13,14 +13,32 @@ _Package to use MetaMask Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-evm
+yarn add @injectivelabs/wallet-cire
 ```
 
 ---
 
 ## 📖 Documentation
 
-<!-- TODO -->
+To instantiate your MsgBroadcaster, you need to pass it an instance of `BaseWalletStrategy`. You can specify any strategy you want in the `BaseWalletStrategy` constructor and pass it to the `MsgBroadcaster`.
+
+```ts
+import { Wallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
+
+const strategyArgs: WalletStrategyArguments = {} /** define the args */
+const strategyEthArgs: ConcreteEthereumWalletStrategyArgs = {} /** if the wallet is an Ethereum wallet */
+const strategies = {
+  [Wallet.PrivateKey]: new PrivateKeyWalletStrategy(strategyEthArgs)
+}
+
+export const walletStrategy = new BaseWalletStrategy({...strategyArgs, strategies})
+
+const broadcasterArgs: MsgBroadcasterOptions = {} /** define the broadcaster args */
+export const msgBroadcaster = new MsgBroadcaster({...broadcasterArgs, walletStrategy})
+```
+
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)
 
