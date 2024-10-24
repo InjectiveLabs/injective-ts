@@ -1,0 +1,65 @@
+{
+  "name": "@injectivelabs/wallet-evm",
+  "description": "EVM wallet strategies for use with @injectivelabs/wallet-core.",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "author": {
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
+  },
+  "license": "Apache-2.0",
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~wallet-evm": "dist"
+  },
+  "scripts": {
+    "postinstall": "link-module-alias",
+    "build:cjs": "BUILD_MODE=cjs tsc --build tsconfig.build.json",
+    "build:esm": "BUILD_MODE=esm tsc --build tsconfig.build.esm.json",
+    "build": "yarn build:esm && yarn build:cjs && yarn build:post && link-module-alias",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
+    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@injectivelabs/exceptions": "^1.14.14",
+    "@injectivelabs/networks": "^1.14.15-beta.0",
+    "@injectivelabs/sdk-ts": "^1.14.15-beta.9",
+    "@injectivelabs/ts-types": "^1.14.14",
+    "@injectivelabs/utils": "^1.14.14",
+    "ethers": "^6.5.1",
+    "link-module-alias": "^1.2.0",
+    "long": "^5.2.1",
+    "shx": "^0.3.3"
+  },
+  "peerDependencies": {
+    "@injectivelabs/wallet-base": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/eth-sig-util": "^2.1.1",
+    "@types/ethereumjs-util": "^6.1.0",
+    "@types/hdkey": "^2.0.1"
+  },
+  "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "wallet-evm API Documentation"
+  },
+  "resolutions": {
+    "**/libsodium": "npm:@bangjelkoski/noop",
+    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
+  }
+}

@@ -32,6 +32,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@injectivelabs/exceptions": "^1.14.13",
     "@injectivelabs/networks": "^1.14.13",
     "@injectivelabs/ts-types": "^1.14.15-beta.0",
     "@injectivelabs/utils": "^1.14.15-beta.0",

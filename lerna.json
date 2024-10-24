@@ -1,12 +1,12 @@
 {
   "npmClient": "yarn",
   "name": "injective-ts",
-  "packages": ["packages/*"],
+  "packages": ["packages/*", "packages/wallets/*"],
   "version": "independent",
   "useWorkspaces": true,
   "command": {
     "version": {
-      "message": "chore(release): publish"
+      "message": "chore: release"
     },
     "publish": {
       "conventionalCommits": true
