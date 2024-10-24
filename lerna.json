@@ -6,7 +6,7 @@
   "useWorkspaces": true,
   "command": {
     "version": {
-      "message": "chore(release): release"
+      "message": "chore: release"
     },
     "publish": {
       "conventionalCommits": true
