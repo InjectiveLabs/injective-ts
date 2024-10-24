@@ -10,6 +10,10 @@ const main = () => {
   const packages = getDirectories()
 
   packages.forEach((packageName) => {
+    if (packageName === 'wallets') {
+      return
+    }
+
     const path = `packages/${packageName}/dist`
     const esmPath = `packages/${packageName}/dist/esm`
     const cjsPath = `packages/${packageName}/dist/cjs`
