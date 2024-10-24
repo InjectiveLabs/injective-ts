@@ -56,6 +56,7 @@ import {
 } from '../strategies/wallet-strategy/utils'
 import { Wallet, WalletDeviceType } from '../types'
 import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
+import {  OWalletBase } from '../utils/wallets/owallet'
 import { isCosmosAminoOnlyWallet } from '../utils'
 import { LeapWallet } from '../utils/wallets'
 import { checkIfTxRunOutOfGas } from './helper'
@@ -590,10 +591,10 @@ export class MsgBroadcaster {
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
-     * When using Ledger with Keplr/Leap we have
-     * to send EIP712 to sign on Keplr/Leap
+     * When using Ledger with Keplr/Leap/OWallet we have
+     * to send EIP712 to sign on Keplr/Leap/OWallet
      */
-    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
+    if ([Wallet.Keplr, Wallet.Leap, Wallet.OWallet].includes(walletStrategy.getWallet())) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
@@ -680,7 +681,7 @@ export class MsgBroadcaster {
   }
 
   /**
-   * We use this method only when we want to broadcast a transaction using Ledger on Keplr/Leap for Injective
+   * We use this method only when we want to broadcast a transaction using Ledger on Keplr/Leap/Keplr for Injective
    *
    * Note: Gas estimation not available
    * @param tx the transaction that needs to be broadcasted
@@ -703,7 +704,7 @@ export class MsgBroadcaster {
      * We can NOT use this method
      * when Ledger is connected through Keplr
      */
-    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
+    if ([Wallet.Keplr, Wallet.Leap, Wallet.OWallet].includes(walletStrategy.getWallet())) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
@@ -853,6 +854,23 @@ export class MsgBroadcaster {
         )
       }
     }
+    /**
+     * We can only use this method when OWallet is connected
+     * with ledger
+     */
+    if (walletStrategy.getWallet() === Wallet.Keplr) {
+      const walletDeviceType = await walletStrategy.getWalletDeviceType()
+      const isLedgerConnectedOnKeplr =
+        walletDeviceType === WalletDeviceType.Hardware
+
+      if (isLedgerConnectedOnKeplr) {
+        throw new GeneralException(
+          new Error(
+            'Keplr + Ledger is not available with fee delegation. Connect with Ledger directly.',
+          ),
+        )
+      }
+    }
 
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
@@ -907,6 +925,10 @@ export class MsgBroadcaster {
     if (walletStrategy.wallet === Wallet.Keplr) {
       new KeplrWallet(chainId).disableGasCheck()
     }
+    // Temporary remove tx gas check because OWallet doesn't recognize feePayer
+    if (walletStrategy.wallet === Wallet.OWallet) {
+      new OWalletBase(chainId).disableGasCheck()
+    }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
@@ -931,6 +953,10 @@ export class MsgBroadcaster {
     // Re-enable tx gas check removed above
     if (walletStrategy.wallet === Wallet.Keplr) {
       new KeplrWallet(chainId).enableGasCheck()
+    }
+
+    if (walletStrategy.wallet === Wallet.OWallet) {
+      new OWalletBase(chainId).enableGasCheck()
     }
 
     return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
