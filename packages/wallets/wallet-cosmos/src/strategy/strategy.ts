@@ -31,7 +31,7 @@ import {
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { CosmosWallet } from './../wallet'
 
-const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr]
+const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
 
 export class CosmosWalletStrategy
   extends BaseConcreteStrategy
@@ -85,7 +85,7 @@ export class CosmosWalletStrategy
         )
       }
 
-      if (wallet === Wallet.Keplr) {
+      if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
         window.removeEventListener(
           'keplr_keystorechange',
           this.listeners[WalletEventListener.AccountChange],
@@ -305,7 +305,7 @@ export class CosmosWalletStrategy
       window.ninji.on('accountsChanged', listener)
     }
 
-    if (wallet === Wallet.Keplr) {
+    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       window.addEventListener('keplr_keystorechange', listener)
     }
 

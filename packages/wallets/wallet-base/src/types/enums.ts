@@ -9,6 +9,7 @@ export enum Wallet {
   Ledger = 'ledger',
   BitGet = 'BitGet',
   Trezor = 'trezor',
+  OWallet = 'owallet',
   Phantom = 'phantom',
   Metamask = 'metamask',
   OkxWallet = 'okx-wallet',

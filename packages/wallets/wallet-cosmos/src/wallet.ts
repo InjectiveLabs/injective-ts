@@ -28,6 +28,7 @@ const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
   keplr?: Keplr
   ninji?: Keplr
   leap?: Keplr
+  owallet?: Keplr
 }
 
 export class CosmosWallet {
@@ -65,13 +66,20 @@ export class CosmosWallet {
     const { chainId, wallet } = this
     const chainName = chainId.split('-')
 
+    const context =
+      wallet === Wallet.Keplr
+        ? 'https://chains.keplr.app/'
+        : wallet === Wallet.OWallet
+        ? 'https://owallet.io/'
+        : undefined
+
     throw new CosmosWalletException(
       new Error(
         `${wallet} may not support ${
           chainName[0] || chainId
         } network. Please check if the chain can be added.`,
       ),
-      { context: 'https://chains.keplr.app/' },
+      context ? { context } : {},
     )
   }
 
@@ -126,7 +134,7 @@ export class CosmosWallet {
   public async getOfflineAminoSigner(): Promise<OfflineAminoSigner> {
     const { chainId, wallet } = this
 
-    if (wallet !== Wallet.Keplr) {
+    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       throw new CosmosWalletException(
         new Error(`getOfflineAminoSigner is not support on ${wallet}`),
       )
@@ -232,7 +240,7 @@ export class CosmosWallet {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (wallet !== Wallet.Keplr) {
+    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       throw new CosmosWalletException(
         new Error(
           `signAndBroadcastAminoUsingCosmjs is not support on ${wallet}`,
@@ -348,6 +356,10 @@ export class CosmosWallet {
 
     let cosmos = undefined
 
+    if (wallet === Wallet.OWallet) {
+      cosmos = $window.owallet
+    }
+
     if (wallet === Wallet.Keplr) {
       cosmos = $window.keplr
     }
@@ -374,9 +386,15 @@ export class CosmosWallet {
     return cosmos! as Keplr
   }
 
-  // @bojan q: should we retrict this to Keplr only
   public async disableGasCheck() {
+    const { wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
+
+    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+      throw new CosmosWalletException(
+        new Error(`disableGasCheck is not support on ${wallet}`),
+      )
+    }
 
     // Temporary disable tx gas check for fee delegation purposes
     cosmosWallet.defaultOptions = {
@@ -388,9 +406,15 @@ export class CosmosWallet {
     }
   }
 
-  // @bojan q: should we retrict this to Keplr only
   public async enableGasCheck() {
+    const { wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
+
+    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+      throw new CosmosWalletException(
+        new Error(`enableGasCheck is not support on ${wallet}`),
+      )
+    }
 
     // Temporary disable tx gas check for fee delegation purposes
     cosmosWallet.defaultOptions = {

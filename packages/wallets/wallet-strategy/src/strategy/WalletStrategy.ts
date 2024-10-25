@@ -108,6 +108,8 @@ const createStrategy = ({
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Leap })
     case Wallet.Ninji:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Ninji })
+    case Wallet.OWallet:
+      return new CosmosWalletStrategy({ ...args, wallet: Wallet.OWallet })
     case Wallet.Magic:
       if (
         !args.options?.metadata?.magic ||
