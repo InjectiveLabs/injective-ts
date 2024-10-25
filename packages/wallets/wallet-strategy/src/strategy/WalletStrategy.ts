@@ -149,6 +149,7 @@ export class WalletStrategy extends BaseWalletStrategy {
       strategies,
     })
   }
+
   /**
    * Case 1: Private Key is set dynamically
    * If we have a dynamically set private key,

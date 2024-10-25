@@ -1,19 +1,19 @@
-# 🌟 Injective Protocol - MetaMask Wallet Strategy
+# 🌟 Injective Protocol - Wallet Core
 
 <!-- TODO -->
 
-[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
-[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
+[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-core.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-core)
+[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-core.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-core)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Package to use MetaMask Wallets on Injective via the wallet strategy._
+_Package to use Wallets on Injective via the wallet strategy._
 
 ---
 
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-cire
+yarn add @injectivelabs/wallet-core
 ```
 
 ---
@@ -38,7 +38,6 @@ export const walletStrategy = new BaseWalletStrategy({...strategyArgs, strategie
 const broadcasterArgs: MsgBroadcasterOptions = {} /** define the broadcaster args */
 export const msgBroadcaster = new MsgBroadcaster({...broadcasterArgs, walletStrategy})
 ```
-
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)
 

@@ -1,4 +1,4 @@
-# 🌟 Injective Protocol - MetaMask Wallet Strategy
+# 🌟 Injective Protocol - Private Wallet Strategy
 
 <!-- TODO -->
 
@@ -6,7 +6,7 @@
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Package to use MetaMask Wallets on Injective via the wallet strategy._
+_Package to use Private Wallet on Injective via the wallet strategy._
 
 ---
 

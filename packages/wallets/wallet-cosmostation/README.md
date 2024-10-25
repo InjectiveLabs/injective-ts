@@ -1,4 +1,4 @@
-# 🌟 Injective Protocol - Magic Wallet Strategy
+# 🌟 Injective Protocol - Wallet Cosmostation
 
 <!-- TODO -->
 
@@ -13,7 +13,7 @@ _Package to use Magic Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-magic
+yarn add @injectivelabs/wallet-cosmostation
 ```
 
 ---

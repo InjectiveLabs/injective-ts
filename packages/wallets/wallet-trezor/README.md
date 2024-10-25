@@ -1,4 +1,4 @@
-# 🌟 Injective Protocol - Ledger Wallet Strategy
+# 🌟 Injective Protocol - Trezor Wallet Strategy
 
 <!-- TODO -->
 
@@ -6,14 +6,14 @@
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Package to use Ledger Wallets on Injective via the wallet strategy._
+_Package to use Trezor Wallets on Injective via the wallet strategy._
 
 ---
 
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-ledger
+yarn add @injectivelabs/wallet-trezor
 ```
 
 ---

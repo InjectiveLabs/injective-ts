@@ -6,6 +6,8 @@
 
 _A convenient way to use different types of wallets on Injective._
 
+**DEPRECATED: PLEASE USE `@injectivelabs/wallet-strategy`**
+
 ---
 
 ## 📚 Installation
