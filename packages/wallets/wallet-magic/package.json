@@ -41,8 +41,7 @@
     "@injectivelabs/wallet-base": "^0.0.2",
     "@magic-ext/cosmos": "23.9.1",
     "@magic-ext/oauth2": "9.9.0",
-    "magic-sdk": "28.9.0",
-    "link-module-alias": "^1.2.0"
+    "magic-sdk": "28.9.0"
   },
   "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
   "typedoc": {

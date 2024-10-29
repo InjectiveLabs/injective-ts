@@ -50,8 +50,7 @@
     "alchemy-sdk": "^2.6.3",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
-    "hdkey": "^2.0.1",
-    "link-module-alias": "^1.2.0"
+    "hdkey": "^2.0.1"
   },
   "devDependencies": {
     "@types/eth-sig-util": "^2.1.1",

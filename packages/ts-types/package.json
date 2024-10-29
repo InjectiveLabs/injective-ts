@@ -32,7 +32,6 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
   "gitHead": "00176548701ceed002a45fd690bac43653b88d60"

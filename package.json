@@ -86,6 +86,7 @@
     "jest-junit": "^15.0.0",
     "lerna": "6.6.1",
     "lint-staged": "^11.1.2",
+    "link-module-alias": "^1.2.0",
     "live-server": "^1.2.1",
     "markdownlint-cli": "^0.28.1",
     "prettier": "^2.4.1",

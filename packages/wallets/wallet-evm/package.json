@@ -40,7 +40,6 @@
     "@injectivelabs/ts-types": "^1.14.14",
     "@injectivelabs/utils": "^1.14.14",
     "ethers": "^6.5.1",
-    "link-module-alias": "^1.2.0",
     "long": "^5.2.1",
     "shx": "^0.3.3"
   },

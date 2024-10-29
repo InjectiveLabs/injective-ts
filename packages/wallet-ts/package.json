@@ -65,7 +65,6 @@
     "ethereumjs-util": "^7.1.0",
     "ethers": "^6.5.1",
     "hdkey": "^2.0.1",
-    "link-module-alias": "^1.2.0",
     "long": "^5.2.1",
     "magic-sdk": "28.9.0",
     "shx": "^0.3.3"

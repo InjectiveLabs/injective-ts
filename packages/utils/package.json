@@ -37,7 +37,6 @@
     "axios": "^1.6.4",
     "bignumber.js": "^9.0.1",
     "http-status-codes": "^2.2.0",
-    "link-module-alias": "^1.2.0",
     "shx": "^0.3.2",
     "snakecase-keys": "^5.1.2",
     "store2": "^2.12.0"

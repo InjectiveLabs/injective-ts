@@ -35,7 +35,6 @@
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/ts-types": "^1.14.15",
     "http-status-codes": "^2.2.0",
-    "link-module-alias": "^1.2.0",
     "shx": "^0.3.2"
   },
   "gitHead": "3364a2b1e58aba2387c509431cc1ae8ebf2c53d0"
