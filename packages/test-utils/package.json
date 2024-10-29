@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/test-utils",
   "description": "List of test-utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.14.15-beta.0",
+  "version": "1.14.15",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -34,8 +34,8 @@
   "dependencies": {
     "@injectivelabs/exceptions": "^1.14.13",
     "@injectivelabs/networks": "^1.14.13",
-    "@injectivelabs/ts-types": "^1.14.15-beta.0",
-    "@injectivelabs/utils": "^1.14.15-beta.0",
+    "@injectivelabs/ts-types": "^1.14.15",
+    "@injectivelabs/utils": "^1.14.15",
     "axios": "^1.6.4",
     "bignumber.js": "^9.0.1",
     "link-module-alias": "^1.2.0",

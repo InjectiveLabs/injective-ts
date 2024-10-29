@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.15-beta.10...@injectivelabs/sdk-ts@1.14.15) (2024-10-29)
+
+
+### Bug Fixes
+
+* add ethereumAddress from wallet ([5f27985](https://github.com/InjectiveLabs/injective-ts/commit/5f27985a3512fbab3f5c0a7defc7989dac6646dc))
+
+
+
+
+
 ## [1.14.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.14-beta.22...@injectivelabs/sdk-ts@1.14.14) (2024-09-09)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

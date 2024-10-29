@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-private-key",
   "description": "Private key wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -35,10 +35,10 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^1.14.14",
-    "@injectivelabs/sdk-ts": "^1.14.15-beta.9",
+    "@injectivelabs/sdk-ts": "^1.14.15",
     "@injectivelabs/ts-types": "^1.14.14",
     "@injectivelabs/utils": "^1.14.14",
-    "@injectivelabs/wallet-base": "^0.0.1"
+    "@injectivelabs/wallet-base": "^0.0.2"
   },
   "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
   "typedoc": {
