@@ -41,7 +41,7 @@
     "@injectivelabs/wallet-base": "^0.0.2",
     "@walletconnect/ethereum-provider": "^2.12.2"
   },
-  "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
+  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
