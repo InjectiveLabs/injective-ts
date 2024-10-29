@@ -95,7 +95,7 @@ export default class OWallet extends BaseConcreteStrategy implements ConcreteWal
   ): Promise<string> {
     throw new CosmosWalletException(
       new Error(
-        'sendEthereumTransaction is not supported. Keplr only supports sending cosmos transactions',
+        'sendEthereumTransaction is not supported. OWallet only supports sending cosmos transactions',
       ),
       {
         code: UnspecifiedErrorCode,
@@ -202,10 +202,10 @@ export default class OWallet extends BaseConcreteStrategy implements ConcreteWal
     data: string | Uint8Array,
   ): Promise<string> {
     const owallet = this.getOWalletBase()
-    const keplr = await owallet.getOWallet()
+    const owalletInjected = await owallet.getOWallet()
 
     try {
-      const signature = await keplr.signArbitrary(this.chainId, signer, data)
+      const signature = await owalletInjected.signArbitrary(this.chainId, signer, data)
 
       return signature.signature
     } catch (e: unknown) {
@@ -218,7 +218,7 @@ export default class OWallet extends BaseConcreteStrategy implements ConcreteWal
 
   async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEthereumChainId is not supported on Keplr'),
+      new Error('getEthereumChainId is not supported on OWallet'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetChainId,
@@ -228,7 +228,7 @@ export default class OWallet extends BaseConcreteStrategy implements ConcreteWal
 
   async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEthereumTransactionReceipt is not supported on Keplr'),
+      new Error('getEthereumTransactionReceipt is not supported on OWallet'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetEthereumTransactionReceipt,
@@ -264,7 +264,7 @@ export default class OWallet extends BaseConcreteStrategy implements ConcreteWal
 
     if (!owallet) {
       throw new CosmosWalletException(
-        new Error('Please install the Keplr wallet extension'),
+        new Error('Please install the OWallet wallet extension'),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
