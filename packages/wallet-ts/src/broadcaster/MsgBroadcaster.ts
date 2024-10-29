@@ -681,7 +681,7 @@ export class MsgBroadcaster {
   }
 
   /**
-   * We use this method only when we want to broadcast a transaction using Ledger on Keplr/Leap/Keplr for Injective
+   * We use this method only when we want to broadcast a transaction using Ledger on Keplr/Leap/OWallet for Injective
    *
    * Note: Gas estimation not available
    * @param tx the transaction that needs to be broadcasted
