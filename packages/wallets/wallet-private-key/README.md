@@ -20,7 +20,59 @@ yarn add @injectivelabs/wallet-evm
 
 ## 📖 Documentation
 
-<!-- TODO -->
+Injective's wallet packages are intended to make it easy for developers to choose exactly what wallets - and subsequent dependencies - they
+want to include in their projects.
+
+Regardless of which wallet package(s) you choose to use you must also have `@injectivelabs/wallet-core` and `@injectivelabs/wallet-base`
+installed. These contain all of the types and core wallet functionality, with the separate wallet packages only providing the necessary
+dependencies and implementations for their specific wallets.
+
+Here's a brief example of how to use this package to send 1 INJ.:
+
+```typescript
+import { Wallet } from '@injectivelabs/wallet-base';
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core';
+import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key';
+
+
+const strategyArgs: WalletStrategyArguments = {
+  chainId: ChainId.Mainnet,
+  wallet: Wallet.PrivateKey,
+  strategies: {
+    [Wallet.PrivateKey]: new PrivateKeyWalletStrategy({
+      chainId: ChainId.Mainnet,
+      privateKey: 'YOUR_PRIVATE_KEY'
+      ethereumOptions: {
+        ethereumChainId: EthereumChainId.Mainnet,
+      },
+    }),
+  },
+}
+const walletStrategy = new BaseWalletStrategy(strategyArgs)
+
+const msgBroadcaster = new MsgBroadcaster({
+  walletStrategy,
+  simulateTx: true,
+  network: Network.Mainnet,
+})
+
+const sendTX = async () => {
+    const injectiveAddress = 'someInjectiveAddress'
+
+    const message = MsgSend.fromJSON({
+      srcInjectiveAddress: injectiveAddress,
+      dstInjectiveAddress: injectiveAddress,
+      amount: {
+        amount: '1',
+        denom: 'inj',
+      },
+    })
+
+    return await msgBroadcaster.broadcast({ msgs: message })
+  }
+
+  const result = await sendTX()
+```
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)
 
