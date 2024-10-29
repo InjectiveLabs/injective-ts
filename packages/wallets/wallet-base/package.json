@@ -59,5 +59,6 @@
   "resolutions": {
     "**/libsodium": "npm:@bangjelkoski/noop",
     "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
-  }
+  },
+  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
 }
