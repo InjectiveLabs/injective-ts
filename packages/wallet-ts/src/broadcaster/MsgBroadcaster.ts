@@ -858,7 +858,7 @@ export class MsgBroadcaster {
      * We can only use this method when OWallet is connected
      * with ledger
      */
-    if (walletStrategy.getWallet() === Wallet.Keplr) {
+    if (walletStrategy.getWallet() === Wallet.OWallet) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnectedOnKeplr =
         walletDeviceType === WalletDeviceType.Hardware
@@ -866,7 +866,7 @@ export class MsgBroadcaster {
       if (isLedgerConnectedOnKeplr) {
         throw new GeneralException(
           new Error(
-            'Keplr + Ledger is not available with fee delegation. Connect with Ledger directly.',
+            'OWallet + Ledger is not available with fee delegation. Connect with Ledger directly.',
           ),
         )
       }
