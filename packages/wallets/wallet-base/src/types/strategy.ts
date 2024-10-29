@@ -1,12 +1,16 @@
-import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   ChainId,
   CosmosChainId,
   AccountAddress,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
-import type { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
-import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts'
+import { StdSignDoc } from '@keplr-wallet/types'
 import { WalletDeviceType, Wallet } from './enums'
 
 export type onAccountChangeCallback = (account: string) => void
@@ -102,7 +106,7 @@ export interface ConcreteCosmosWalletStrategy {
     options: SendTransactionOptions,
   ): Promise<TxResponse>
 
-  signTransaction(transaction: {
+  signCosmosTransaction(transaction: {
     txRaw: TxRaw
     chainId: string
     accountNumber: number
@@ -132,7 +136,6 @@ export interface ConcreteWalletStrategy
   extends Omit<
     ConcreteCosmosWalletStrategy,
     | 'sendTransaction'
-    | 'signTransaction'
     | 'isChainIdSupported'
     | 'signAminoTransaction'
   > {
@@ -171,14 +174,6 @@ export interface ConcreteWalletStrategy
     options: { address: string; ethereumChainId: EthereumChainId },
   ): Promise<string>
 
-  /** @deprecated * */
-  signTransaction(
-    data:
-      | string /* EIP712 Typed Data in JSON */
-      | { txRaw: TxRaw; accountNumber: number; chainId: string },
-    address: string,
-  ): Promise<string | DirectSignResponse>
-
   /**
    * Sign a cosmos transaction using the wallet provider
    *
@@ -199,11 +194,9 @@ export interface ConcreteWalletStrategy
    * @param address - injective address
    */
   signAminoCosmosTransaction(transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
+    signDoc: StdSignDoc
     address: string
-  }): Promise<string>
+  }): Promise<AminoSignResponse>
 
   /**
    * Sign EIP712 TypedData using the wallet provider
@@ -252,20 +245,14 @@ export interface WalletStrategy {
     tx: any,
     options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string>
-  signTransaction(
-    data: string | { txRaw: TxRaw; accountNumber: number; chainId: string },
-    address: AccountAddress,
-  ): Promise<string | DirectSignResponse>
   signEip712TypedData(
     eip712TypedData: string,
     address: AccountAddress,
   ): Promise<string>
   signAminoCosmosTransaction(transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
+    signDoc: StdSignDoc
     address: string
-  }): Promise<string>
+  }): Promise<AminoSignResponse>
   signCosmosTransaction(transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -281,3 +268,5 @@ export interface WalletStrategy {
   disconnect(): Promise<void>
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
 }
+
+export { StdSignDoc}

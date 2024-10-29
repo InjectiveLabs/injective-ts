@@ -11,9 +11,16 @@ import {
   UnspecifiedErrorCode,
   WalletException,
 } from '@injectivelabs/exceptions'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import {
+  toUtf8,
+  TxRaw,
+  TxGrpcApi,
+  TxResponse,
+  DirectSignResponse,
+  AminoSignResponse,
+} from '@injectivelabs/sdk-ts'
+import {
+  StdSignDoc,
   TIP_IN_GWEI,
   WalletAction,
   WalletDeviceType,
@@ -170,14 +177,6 @@ export default class LedgerBase
     return response
   }
 
-  /** @deprecated */
-  async signTransaction(
-    eip712json: string,
-    address: AccountAddress,
-  ): Promise<string> {
-    return this.signEip712TypedData(eip712json, address)
-  }
-
   async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
@@ -206,11 +205,9 @@ export default class LedgerBase
   }
 
   async signAminoCosmosTransaction(_transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
     address: string
-  }): Promise<string> {
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
     throw new WalletException(
       new Error('This wallet does not support signing Cosmos transactions'),
       {

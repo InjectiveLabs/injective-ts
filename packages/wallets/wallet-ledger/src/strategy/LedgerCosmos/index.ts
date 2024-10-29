@@ -16,10 +16,12 @@ import {
   toUtf8,
   TxGrpcApi,
   TxResponse,
-  DirectSignResponse,
   sortObjectByKeys,
+  AminoSignResponse,
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import {
+  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
@@ -131,23 +133,10 @@ export class LedgerCosmos
     return response
   }
 
-  /** @deprecated */
-  async signTransaction(
-    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
-    injectiveAddress: AccountAddress,
-  ): Promise<DirectSignResponse> {
-    return this.signCosmosTransaction({
-      ...transaction,
-      address: injectiveAddress,
-    })
-  }
-
   async signAminoCosmosTransaction(transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
     address: string
-  }): Promise<string> {
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
     try {
       const { derivationPath } = await this.getWalletForAddress(
         transaction.address,
@@ -159,7 +148,13 @@ export class LedgerCosmos
         JSON.stringify(sortObjectByKeys(transaction.signDoc)),
       )
 
-      return Buffer.from(result.signature!).toString('base64')
+      return {
+        signed: undefined,
+        signature: {
+          signature: Buffer.from(result.signature!).toString('base64'),
+          pub_key: undefined,
+        },
+      } as unknown as AminoSignResponse
     } catch (e: unknown) {
       throw new LedgerCosmosException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

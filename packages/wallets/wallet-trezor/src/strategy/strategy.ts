@@ -8,26 +8,33 @@ import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import TrezorConnect from '@trezor/connect-web'
 import {
   ErrorType,
+  WalletException,
+  TrezorException,
   GeneralException,
   TransactionException,
-  TrezorException,
   UnspecifiedErrorCode,
-  WalletException,
 } from '@injectivelabs/exceptions'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
 import {
+  TxRaw,
+  toUtf8,
+  TxGrpcApi,
+  TxResponse,
+  DirectSignResponse,
+  AminoSignResponse,
+} from '@injectivelabs/sdk-ts'
+import {
+  StdSignDoc,
   TIP_IN_GWEI,
+  WalletAction,
+  getKeyFromRpcUrl,
+  WalletDeviceType,
   BaseConcreteStrategy,
   ConcreteWalletStrategy,
-  ConcreteEthereumWalletStrategyArgs,
-  WalletStrategyEthereumOptions,
+  SendTransactionOptions,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-  WalletAction,
-  WalletDeviceType,
-  SendTransactionOptions,
-  getKeyFromRpcUrl,
+  WalletStrategyEthereumOptions,
+  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import TrezorHW from './hw'
 import { transformTypedData } from '../utils'
@@ -63,7 +70,8 @@ const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
 
 export class TrezorWallet
   extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy {
+  implements ConcreteWalletStrategy
+{
   private trezor: TrezorHW
 
   private ethereumOptions: WalletStrategyEthereumOptions
@@ -165,14 +173,6 @@ export class TrezorWallet
     return response
   }
 
-  /** @deprecated */
-  async signTransaction(
-    eip712json: string,
-    address: AccountAddress,
-  ): Promise<string> {
-    return this.signEip712TypedData(eip712json, address)
-  }
-
   async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
@@ -230,11 +230,9 @@ export class TrezorWallet
   }
 
   async signAminoCosmosTransaction(_transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
     address: string
-  }): Promise<string> {
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
     throw new WalletException(
       new Error('This wallet does not support signing Cosmos transactions'),
       {
@@ -355,7 +353,7 @@ export class TrezorWallet
         throw new TrezorException(
           new Error(
             (response.payload && response.payload.error) ||
-            'Something happened while signing with Trezor',
+              'Something happened while signing with Trezor',
           ),
           {
             code: UnspecifiedErrorCode,

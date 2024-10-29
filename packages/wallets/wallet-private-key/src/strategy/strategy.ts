@@ -5,6 +5,8 @@ import {
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
+  AminoSignResponse,
+  DirectSignResponse,
   PrivateKey as PrivateKeySigner,
   getInjectiveSignerAddress,
 } from '@injectivelabs/sdk-ts'
@@ -16,6 +18,7 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
+  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
@@ -23,7 +26,6 @@ import {
   SendTransactionOptions,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 
 interface PrivateKeyArgs extends ConcreteEthereumWalletStrategyArgs {
@@ -121,14 +123,6 @@ export class PrivateKeyWallet
     return response
   }
 
-  /** @deprecated */
-  async signTransaction(
-    eip712json: string,
-    address: AccountAddress,
-  ): Promise<string> {
-    return this.signEip712TypedData(eip712json, address)
-  }
-
   async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
@@ -160,11 +154,9 @@ export class PrivateKeyWallet
   }
 
   async signAminoCosmosTransaction(_transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
     address: string
-  }): Promise<string> {
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
     throw new WalletException(
       new Error('This wallet does not support signing Cosmos transactions'),
       {

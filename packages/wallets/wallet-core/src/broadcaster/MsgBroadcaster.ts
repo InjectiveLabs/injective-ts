@@ -138,12 +138,8 @@ export class MsgBroadcaster {
     const { walletStrategy } = this
     const txWithAddresses = {
       ...tx,
-      ethereumAddress: getEthereumSignerAddress(
-        tx.injectiveAddress || tx.address,
-      ),
-      injectiveAddress: getInjectiveSignerAddress(
-        tx.injectiveAddress || tx.address,
-      ),
+      ethereumAddress: getEthereumSignerAddress(tx.injectiveAddress),
+      injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
     if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
@@ -171,12 +167,8 @@ export class MsgBroadcaster {
     const { walletStrategy } = this
     const txWithAddresses = {
       ...tx,
-      ethereumAddress: getEthereumSignerAddress(
-        tx.injectiveAddress || tx.address,
-      ),
-      injectiveAddress: getInjectiveSignerAddress(
-        tx.injectiveAddress || tx.address,
-      ),
+      ethereumAddress: getEthereumSignerAddress(tx.injectiveAddress),
+      injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
     if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
@@ -191,39 +183,6 @@ export class MsgBroadcaster {
   }
 
   /**
-   * Broadcasting the transaction using the client
-   * side approach for cosmos native wallets
-   * and feeDelegation support approach for ethereum native
-   * wallets (default one)
-   *
-   * @param tx
-   * @returns {string} transaction hash
-   * @deprecated
-   */
-  async broadcastOld(tx: MsgBroadcasterTxOptions) {
-    const { walletStrategy } = this
-    const txWithAddresses = {
-      ...tx,
-      ethereumAddress: getEthereumSignerAddress(
-        tx.injectiveAddress || tx.address,
-      ),
-      injectiveAddress: getInjectiveSignerAddress(
-        tx.injectiveAddress || tx.address,
-      ),
-    } as MsgBroadcasterTxOptionsWithAddresses
-
-    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
-      throw new GeneralException(
-        new Error('You cannot execute this transaction'),
-      )
-    }
-
-    return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmos(txWithAddresses)
-      : this.broadcastWeb3WithFeeDelegation(txWithAddresses)
-  }
-
-  /**
    * Broadcasting the transaction using the feeDelegation
    * support approach for both cosmos and ethereum native wallets
    *
@@ -234,12 +193,8 @@ export class MsgBroadcaster {
     const { walletStrategy } = this
     const txWithAddresses = {
       ...tx,
-      ethereumAddress: getEthereumSignerAddress(
-        tx.injectiveAddress || tx.address,
-      ),
-      injectiveAddress: getInjectiveSignerAddress(
-        tx.injectiveAddress || tx.address,
-      ),
+      ethereumAddress: getEthereumSignerAddress(tx.injectiveAddress),
+      injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
     if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
@@ -643,14 +598,14 @@ export class MsgBroadcaster {
         timeoutHeight: timeoutHeight.toFixed(),
       })
 
-      const signature = (await walletStrategy.signAminoCosmosTransaction({
+      const signResponse = await walletStrategy.signAminoCosmosTransaction({
         signDoc: aminoSignDoc,
-        chainId,
         address: tx.injectiveAddress,
-        accountNumber: baseAccount.accountNumber,
-      })) as string
+      })
 
-      txRaw.signatures = [Buffer.from(signature, 'base64')]
+      txRaw.signatures = [
+        Buffer.from(signResponse.signature.signature, 'base64'),
+      ]
 
       return walletStrategy.sendTransaction(txRaw, {
         chainId,

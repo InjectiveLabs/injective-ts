@@ -29,3 +29,11 @@ export const isEip712V2OnlyWallet = (wallet: Wallet): boolean =>
 
 export const isCosmosAminoOnlyWallet = (wallet: Wallet): boolean =>
   [Wallet.LedgerCosmos].includes(wallet)
+
+export const COSMOS_WALLETS = [
+  Wallet.Keplr,
+  Wallet.Leap,
+  Wallet.Ninji,
+  Wallet.Cosmostation,
+  Wallet.OWallet,
+]

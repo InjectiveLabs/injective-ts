@@ -7,12 +7,17 @@ import {
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import { Magic as MagicWallet } from 'magic-sdk'
-import { TxRaw, TxGrpcApi } from '@injectivelabs/sdk-ts'
+import {
+  TxRaw,
+  TxGrpcApi,
+  DirectSignResponse,
+  AminoSignResponse,
+} from '@injectivelabs/sdk-ts'
 import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
+  StdSignDoc,
   WalletAction,
   MagicMetadata,
   MagicProvider,
@@ -28,10 +33,7 @@ interface MagicConnectArgs extends WalletStrategyArguments {
   metadata?: MagicMetadata
 }
 
-export class Magic
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   public provider: BrowserEip1993Provider | undefined
   public metadata?: MagicMetadata
   private magicWallet: MagicWallet
@@ -214,21 +216,6 @@ export class Magic
     return response
   }
 
-  /** @deprecated */
-  async signTransaction(
-    _eip712json: string,
-    _address: AccountAddress,
-  ): Promise<string> {
-    throw new WalletException(
-      new Error('This wallet does not support signTransaction'),
-      {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SignTransaction,
-      },
-    )
-  }
-
   async signEip712TypedData(
     eip712json: string,
     _address: AccountAddress,
@@ -258,11 +245,9 @@ export class Magic
   }
 
   async signAminoCosmosTransaction(_transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
     address: string
-  }): Promise<string> {
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
     throw new WalletException(
       new Error('This wallet does not support signAminoCosmosTransaction'),
       {

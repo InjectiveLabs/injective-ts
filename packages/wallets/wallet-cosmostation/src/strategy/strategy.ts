@@ -1,9 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import {
+  toUtf8,
   TxResponse,
+  AminoSignResponse,
+  DirectSignResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
-  toUtf8,
 } from '@injectivelabs/sdk-ts'
 import {
   ChainId,
@@ -18,6 +20,7 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
+  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
@@ -25,7 +28,7 @@ import {
 } from '@injectivelabs/wallet-base'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 import { InstallError, Cosmos } from '@cosmostation/extension-client'
-import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
+import { makeSignDoc } from '@cosmjs/proto-signing'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
 import { CosmostationWallet } from './../wallet'
 
@@ -138,24 +141,10 @@ export class Cosmostation
     }
   }
 
-  /** @deprecated * */
-  async signTransaction(
-    transaction: {
-      txRaw: CosmosTxV1Beta1Tx.TxRaw
-      chainId: string
-      accountNumber: number
-    },
-    address: AccountAddress,
-  ) {
-    return this.signCosmosTransaction({ ...transaction, address })
-  }
-
   async signAminoCosmosTransaction(_transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
     address: string
-  }): Promise<string> {
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
     throw new CosmosWalletException(
       new Error('This wallet does not support signing using amino'),
       {

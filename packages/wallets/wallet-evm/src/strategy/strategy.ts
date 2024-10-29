@@ -13,6 +13,7 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   Wallet,
+  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
@@ -24,9 +25,15 @@ import {
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import { sleep } from '@injectivelabs/utils'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
+import {
+  TxRaw,
+  toUtf8,
+  TxGrpcApi,
+  TxResponse,
+  DirectSignResponse,
+  AminoSignResponse
+} from '@injectivelabs/sdk-ts'
 import {
   getBitGetProvider,
   getPhantomProvider,
@@ -43,10 +50,7 @@ const evmWallets = [
   Wallet.TrustWallet,
 ]
 
-export class EvmWallet
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export class EvmWallet extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   public wallet?: Wallet
 
   constructor(
@@ -195,14 +199,6 @@ export class EvmWallet
     return response
   }
 
-  /** @deprecated */
-  async signTransaction(
-    eip712json: string,
-    address: AccountAddress,
-  ): Promise<string> {
-    return this.signEip712TypedData(eip712json, address)
-  }
-
   async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
@@ -224,11 +220,9 @@ export class EvmWallet
   }
 
   async signAminoCosmosTransaction(_transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
     address: string
-  }): Promise<string> {
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
     throw new WalletException(
       new Error('This wallet does not support signing Cosmos transactions'),
       {

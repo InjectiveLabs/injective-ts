@@ -3,6 +3,8 @@ import {
   TxRaw,
   TxResponse,
   waitTxBroadcasted,
+  AminoSignResponse,
+  DirectSignResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
@@ -20,6 +22,7 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   Wallet,
+  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
@@ -28,7 +31,6 @@ import {
   SendTransactionOptions,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
-import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { CosmosWallet } from './../wallet'
 
 const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
@@ -175,30 +177,21 @@ export class CosmosWalletStrategy
     }
   }
 
-  /** @deprecated */
-  async signTransaction(
-    transaction: { txRaw: TxRaw; accountNumber: number; chainId: string },
-    injectiveAddress: AccountAddress,
-  ) {
-    return this.signCosmosTransaction({
-      ...transaction,
-      address: injectiveAddress,
-    })
-  }
-
-  async signAminoCosmosTransaction(_transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
+  async signAminoCosmosTransaction(transaction: {
     address: string
-  }): Promise<string> {
-    throw new CosmosWalletException(
-      new Error('This wallet does not support signing using amino'),
-      {
+    signDoc: StdSignDoc
+  }): Promise<AminoSignResponse> {
+    const cosmosWallet = this.getCurrentCosmosWallet()
+    const signer = await cosmosWallet.getOfflineAminoSigner()
+
+    try {
+      return await signer.signAmino(transaction.address, transaction.signDoc)
+    } catch (e: unknown) {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
-        context: WalletAction.SendTransaction,
-      },
-    )
+        context: WalletAction.SignTransaction,
+      })
+    }
   }
 
   async signCosmosTransaction(transaction: {

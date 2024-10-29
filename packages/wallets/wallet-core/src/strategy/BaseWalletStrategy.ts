@@ -1,5 +1,9 @@
-import { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
+import {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts'
 import {
   ChainId,
   AccountAddress,
@@ -21,6 +25,7 @@ import {
   ConcreteWalletStrategyOptions,
   WalletStrategy as WalletStrategyInterface,
 } from '@injectivelabs/wallet-base'
+import { StdSignDoc } from '@keplr-wallet/types'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -124,16 +129,6 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     return this.getStrategy().sendEthereumTransaction(tx, options)
   }
 
-  /** @deprecated * */
-  public async signTransaction(
-    data:
-      | string /* When using EIP712 typed data */
-      | { txRaw: TxRaw; accountNumber: number; chainId: string },
-    address: AccountAddress,
-  ): Promise<string | DirectSignResponse> {
-    return this.getStrategy().signTransaction(data, address)
-  }
-
   public async signEip712TypedData(
     eip712TypedData: string,
     address: AccountAddress,
@@ -153,11 +148,9 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
   }
 
   public async signAminoCosmosTransaction(transaction: {
-    signDoc: any
-    accountNumber: number
-    chainId: string
+    signDoc: StdSignDoc
     address: string
-  }): Promise<string> {
+  }): Promise<AminoSignResponse> {
     if (isEthWallet(this.wallet)) {
       throw new WalletException(
         new Error(`You can't sign Cosmos Transaction using ${this.wallet}`),

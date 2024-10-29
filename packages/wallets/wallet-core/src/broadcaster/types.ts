@@ -5,7 +5,6 @@ import BaseWalletStrategy from '../strategy/BaseWalletStrategy'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
-  address?: string /* @deprecated */
   ethereumAddress?: string
   injectiveAddress?: string
   msgs: Msgs | Msgs[]
@@ -26,18 +25,6 @@ export interface MsgBroadcasterTxOptionsWithAddresses
 export interface MsgBroadcasterOptions {
   network: Network
   endpoints?: NetworkEndpoints
-
-  /**
-   * Only used if we want to override the default
-   * endpoints taken from the network param
-   *
-   * @deprecated - taken from the network parameter or use the endpoints
-   * */
-  networkEndpoints?: {
-    indexerApi: string
-    sentryGrpcApi: string
-    sentryHttpApi: string
-  }
   chainId?: ChainId
   ethereumChainId?: EthereumChainId
   feePayerPubKey?: string
