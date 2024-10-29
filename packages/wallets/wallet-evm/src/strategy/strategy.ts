@@ -3,8 +3,8 @@ import {
   ErrorType,
   ErrorContext,
   WalletException,
+  ThrownException,
   BitGetException,
-  ConcreteException,
   MetamaskException,
   OkxWalletException,
   UnspecifiedErrorCode,
@@ -32,7 +32,7 @@ import {
   TxGrpcApi,
   TxResponse,
   DirectSignResponse,
-  AminoSignResponse
+  AminoSignResponse,
 } from '@injectivelabs/sdk-ts'
 import {
   getBitGetProvider,
@@ -50,7 +50,10 @@ const evmWallets = [
   Wallet.TrustWallet,
 ]
 
-export class EvmWallet extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export class EvmWallet
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   public wallet?: Wallet
 
   constructor(
@@ -72,7 +75,7 @@ export class EvmWallet extends BaseConcreteStrategy implements ConcreteWalletStr
   public EvmWalletException(
     error: Error,
     context?: ErrorContext,
-  ): ConcreteException {
+  ): ThrownException {
     if (this.wallet === Wallet.Metamask) {
       return new MetamaskException(error, context)
     }

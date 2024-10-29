@@ -1,4 +1,5 @@
-import { ConcreteException } from '../exception'
+import { ConcreteException } from '../base'
+
 import { ErrorContext, ErrorType, HttpRequestMethod } from '../types'
 
 export class HttpRequestException extends ConcreteException {

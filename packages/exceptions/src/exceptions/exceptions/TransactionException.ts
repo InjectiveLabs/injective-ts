@@ -1,4 +1,5 @@
-import { ConcreteException } from '../exception'
+import { ConcreteException } from '../base'
+
 import { ErrorContext, ErrorType } from '../types'
 import { mapFailedTransactionMessage, parseErrorMessage } from '../utils/maps'
 

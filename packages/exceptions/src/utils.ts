@@ -1,11 +1,6 @@
-import { ConcreteException } from "../exception"
-import { Exception } from "../types"
+import { Exception } from './exceptions/types'
 
 export const isThrownException = (exception: Error | Exception): boolean => {
-  if (exception instanceof ConcreteException) {
-    return true
-  }
-
   if (
     [
       'GrpcUnaryRequestException',
@@ -28,4 +23,20 @@ export const isThrownException = (exception: Error | Exception): boolean => {
   }
 
   return false
+}
+
+export const formatNotificationDescription = (description: string) => {
+  const DESCRIPTION_CHARACTER_LIMIT = 50
+
+  if (description.length <= DESCRIPTION_CHARACTER_LIMIT) {
+    return {
+      description,
+      tooltip: '',
+    }
+  }
+
+  return {
+    description: description.slice(0, DESCRIPTION_CHARACTER_LIMIT) + ' ...',
+    tooltip: description,
+  }
 }

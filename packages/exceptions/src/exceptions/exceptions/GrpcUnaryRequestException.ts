@@ -1,4 +1,5 @@
-import { ConcreteException } from '../exception'
+import { ConcreteException } from '../base'
+
 import { ErrorContext, ErrorType, GRPC_REQUEST_FAILED } from '../types'
 
 export class GrpcUnaryRequestException extends ConcreteException {

@@ -1,6 +1,6 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
-import { snakeToPascal } from '../../../utils/helpers'
+import { snakeToPascal } from '@injectivelabs/utils'
 import { isNumber, numberToCosmosSdkDecString } from '../../../utils/numbers'
 import { TypedDataField } from './types'
 
