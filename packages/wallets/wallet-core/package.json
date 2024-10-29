@@ -39,7 +39,8 @@
     "@injectivelabs/sdk-ts": "^1.14.15",
     "@injectivelabs/ts-types": "^1.14.14",
     "@injectivelabs/utils": "^1.14.14",
-    "eip1193-provider": "^1.0.1"
+    "eip1193-provider": "^1.0.1",
+    "link-module-alias": "^1.2.0"
   },
   "peerDependencies": {
     "@injectivelabs/wallet-base": "^0.0.1"

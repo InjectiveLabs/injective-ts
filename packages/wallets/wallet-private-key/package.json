@@ -38,7 +38,8 @@
     "@injectivelabs/sdk-ts": "^1.14.15",
     "@injectivelabs/ts-types": "^1.14.14",
     "@injectivelabs/utils": "^1.14.14",
-    "@injectivelabs/wallet-base": "^0.0.2"
+    "@injectivelabs/wallet-base": "^0.0.2",
+    "link-module-alias": "^1.2.0"
   },
   "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
   "typedoc": {
