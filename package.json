@@ -8,7 +8,8 @@
   "repository": "https://github.com/InjectiveLabs/injective-ts",
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "packages/wallets/*"
     ]
   },
   "scripts": {
@@ -34,9 +35,6 @@
     "test:sdk-ts:core:modules": "jest ./packages/sdk-ts/src/core/modules",
     "test:sdk-ts:core": "jest ./packages/sdk-ts/src/core",
     "test:sdk-ts:client": "jest ./packages/sdk-ts/src/client",
-    "test:bridge-ts": "jest ./packages/bridge-ts/src",
-    "test:sdk-ui-ts": "jest ./packages/sdk-ui-ts/src",
-    "test:token-metadata": "jest ./packages/token-metadata/test",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:unit": "yarn test:unit --coverage",

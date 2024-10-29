@@ -1,0 +1,23 @@
+{
+  "extends": "../../../tsconfig.json",
+  "references": [
+    {
+      "path": "../../ts-types/tsconfig.json"
+    },
+    {
+      "path": "../../exceptions/tsconfig.json"
+    },
+    {
+      "path": "../../networks/tsconfig.json"
+    },
+    {
+      "path": "../../utils/tsconfig.json"
+    },
+    {
+      "path": "../../sdk-ts/tsconfig.json"
+    },
+    {
+      "path": "../wallet-base/tsconfig.json"
+    },
+  ]
+}
