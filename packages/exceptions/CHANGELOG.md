@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.16-beta.0...@injectivelabs/exceptions@1.14.16) (2024-10-29)
+
+
+### Bug Fixes
+
+* imports ([877486d](https://github.com/InjectiveLabs/injective-ts/commit/877486d027440d54d043f5b3b8f8a6f45be6521e))
+* imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
+
+
+
+
+
 ## [1.14.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.15-beta.0...@injectivelabs/exceptions@1.14.15) (2024-10-29)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
