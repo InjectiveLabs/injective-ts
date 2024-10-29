@@ -30,7 +30,10 @@ import {
 import { SendTransactionOptions } from '../types'
 import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
 
-export default class OWallet extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export default class OWallet
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   private owallet: OWalletBase
 
   constructor(args: { chainId: ChainId }) {
@@ -116,6 +119,10 @@ export default class OWallet extends BaseConcreteStrategy implements ConcreteWal
         new Error(
           'You have to pass endpoints within the options to broadcast transaction',
         ),
+        {
+          code: UnspecifiedErrorCode,
+          context: WalletAction.SendTransaction,
+        },
       )
     }
 
@@ -205,7 +212,11 @@ export default class OWallet extends BaseConcreteStrategy implements ConcreteWal
     const owalletInjected = await owallet.getOWallet()
 
     try {
-      const signature = await owalletInjected.signArbitrary(this.chainId, signer, data)
+      const signature = await owalletInjected.signArbitrary(
+        this.chainId,
+        signer,
+        data,
+      )
 
       return signature.signature
     } catch (e: unknown) {
