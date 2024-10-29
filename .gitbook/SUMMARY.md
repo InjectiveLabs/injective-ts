@@ -92,6 +92,7 @@
     * [Smart Contract](building-dapps/smart-contract.md)
     * [DEX](building-dapps/dex.md)
     * [Bridge](building-dapps/bridge.md)
+    * [Simple HTML example with Webpack](building-dapps/dapps-examples/simple-html-example-with-webpack.md)
 * [Calculations](calculations/README.md)
   * [Min Price Tick Size](calculations/min-price-tick-size.md)
   * [Min Quantity Tick Size](calculations/min-quantity-tick-size.md)

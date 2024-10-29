@@ -1,9 +1,0 @@
-# Blacklist all files
-.*
-*
-src
-examples
-
-# Whitelist dist
-!dist/**/*.d.ts
-!dist/**/*.js

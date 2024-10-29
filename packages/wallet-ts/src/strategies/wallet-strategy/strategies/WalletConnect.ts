@@ -324,7 +324,9 @@ export default class WalletConnect
         metadata: this.metadata
           .metadata as unknown as EthereumProviderOptions['metadata'],
         showQrModal: true,
-        optionalChains: [1, 5, 42, 11155111],
+        optionalChains: this.ethereumChainId
+          ? [this.ethereumChainId]
+          : [EthereumChainId.Mainnet, EthereumChainId.Sepolia],
         qrModalOptions: {
           explorerRecommendedWalletIds: [WalletConnectIds.FireBlocks],
           explorerExcludedWalletIds: 'ALL',

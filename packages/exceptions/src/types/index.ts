@@ -20,6 +20,7 @@ export enum ErrorType {
   GrpcUnaryRequest = 'grpc-unary-request',
   HttpRequest = 'http-request',
   Web3 = 'web3',
+  Web3Gateway = 'web3-gateway',
 }
 
 export interface ErrorContext {

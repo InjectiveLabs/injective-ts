@@ -55,7 +55,7 @@ import {
   StargateClientOptions,
 } from '@cosmjs/stargate'
 import { StargateClient } from './StargateClient'
-import { getPublicKey } from '../modules'
+import { getPublicKey } from '../tx'
 
 /**
  * Signing information for a single signer that is not included in the transaction.

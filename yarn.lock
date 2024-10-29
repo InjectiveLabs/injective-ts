@@ -2239,10 +2239,10 @@
   resolved "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@injectivelabs/core-proto-ts@0.0.30":
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.30.tgz#15427ecaa9006ba18df19b63dfe7113f5c7f9854"
-  integrity sha512-NqE7W5NoyzUv1+AWZxffjjQcqXLFLdNWwf+0qdbWs4vnr90x2D8js10iqaDaipmFelemnFsjZ1VdX2155XkUkA==
+"@injectivelabs/core-proto-ts@0.0.34":
+  version "0.0.34"
+  resolved "https://registry.npmjs.org/@injectivelabs/core-proto-ts/-/core-proto-ts-0.0.34.tgz#ea67e5c6ecafc5f0d95d04d53de6bfd09b4c6c27"
+  integrity sha512-kg25j+aCFCR/zkfn6U7JlH4Be4VEHO77cjfSLCQfOavQZ2nrXy9pvc9X88OBTYTCL7wLngIqAe0edt39bDk3tQ==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2276,10 +2276,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/indexer-proto-ts@1.11.54":
-  version "1.11.54"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.54.tgz#ae2063909bb998da7fbf97acc141e9f2a64487fd"
-  integrity sha512-G73Fel2ylP5EDSSEcVvWXPq0UrxL9+g7WvZst4tN5fGCTClvA7MYcl2fzcVg+G2pX+aE0zKsGWnNEol8ZkZdBw==
+"@injectivelabs/indexer-proto-ts@1.11.56":
+  version "1.11.56"
+  resolved "https://registry.npmjs.org/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.56.tgz#f60a80985dbcb61e6674e2fa489497b834c84c1b"
+  integrity sha512-hEnN7DTVLGsol9Y/zaaDMDt1BZS/4KpMG419oCyM+MP1FVEOTp2BG/TDnIu7kXOwf66hCugBbnV84bvp2aY7SA==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2295,6 +2295,17 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
+
+"@injectivelabs/networks@^1.14.13":
+  version "1.14.13"
+  resolved "https://registry.npmjs.org/@injectivelabs/networks/-/networks-1.14.13.tgz#6264b6249469c57b3b18e4803980ec26c576edba"
+  integrity sha512-P+eCQXWpbk4LbPxgTmi2gY7OzdZTNsIEUvDoh59Ma0CkqSFaYMtgB8fZVxpkKM0UPla587EDlEEIVxprDBcnZg==
+  dependencies:
+    "@injectivelabs/exceptions" "^1.14.13"
+    "@injectivelabs/ts-types" "^1.14.13"
+    "@injectivelabs/utils" "^1.14.13"
+    link-module-alias "^1.2.0"
+    shx "^0.3.2"
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"
