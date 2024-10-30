@@ -107,7 +107,7 @@ Once we have the signature ready, we need to broadcast the transaction to the In
 ```ts
 import { ChainId } from '@injectivelabs/ts-types'
 import {
-  TxRestClient,
+  TxRestApi,
   CosmosTxV1Beta1Tx,
   BroadcastModeKeplr,
   getTxRawFromTxRawOrDirectSignResponse,
@@ -163,10 +163,10 @@ const txHash = await broadcastTx(ChainId.Mainnet, txRaw)
  * the chain to see when the transaction will be included
  */
 const restEndpoint = 'https://sentry.lcd.injective.network' /* getNetworkEndpoints(Network.MainnetSentry).rest */
-const txRestClient = new TxRestClient(restEndpoint)
+const txRestApi = new TxRestApi(restEndpoint)
 
  /** This will poll querying the transaction and await for it's inclusion in the block */
-const response = await txRestClient.fetchTxPoll(txHash)
+const response = await txRestApi.fetchTxPoll(txHash)
 ```
 
 ### Example (Prepare + Sign + Broadcast)
@@ -178,7 +178,7 @@ import {
   TxRaw,
   MsgSend,
   BaseAccount,
-  TxRestClient,
+  TxRestApi,
   ChainRestAuthApi,
   createTransaction,
   CosmosTxV1Beta1Tx,
@@ -271,7 +271,7 @@ const broadcastTx = async (chainId: string, txRaw: TxRaw) => {
   );
   const txRaw = getTxRawFromTxRawOrDirectSignResponse(directSignResponse);
   const txHash = await broadcastTx(ChainId.Mainnet, txRaw);
-  const response = await new TxRestClient(restEndpoint).fetchTxPoll(txHash);
+  const response = await new TxRestApi(restEndpoint).fetchTxPoll(txHash);
 
   console.log(response);
 })();

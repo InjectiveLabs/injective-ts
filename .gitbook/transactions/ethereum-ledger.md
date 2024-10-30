@@ -208,6 +208,7 @@ import {
   ChainRestTendermintApi,
   BaseAccount,
   DEFAULT_STD_FEE
+  TxRestApi,
   createTransaction,
   createTxRawEIP712,
   createWeb3Extension,
@@ -334,8 +335,8 @@ const signatureBuff = Buffer.from(signature.replace('0x', ''), 'hex')
 txRawEip712.signatures = [signatureBuff]
 
 /** Broadcast the transaction **/
-const txRestClient = new TxRestClient(lcdEndpoint)
-const response = await txRestClient.broadcast(txRawEip712)
+const txRestApi = new TxRestApi(lcdEndpoint)
+const response = await txRestApi.broadcast(txRawEip712)
 
 if (response.code !== 0) {
   throw new Error(`Transaction failed: ${response.rawLog}`)
