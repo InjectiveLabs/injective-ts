@@ -9,7 +9,7 @@ import {
   DirectSignResponse,
   PrivateKey as PrivateKeySigner,
   getInjectiveSignerAddress,
-} from '@injectivelabs/sdk-ts/src/index'
+} from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   WalletException,
