@@ -1,3 +1,4 @@
+import { toUtf8 } from '../..'
 import { generateArbitrarySignDoc } from '../tx'
 import { PrivateKey } from './PrivateKey'
 
@@ -111,6 +112,25 @@ describe('PrivateKey', () => {
         publicKey: publicKey,
       }),
     ).toBe(true)
+  })
+
+  it('returns the correct signature for signing an arbitrary message', () => {
+    // const pubKey = '0x697e62225Dd22A5afcAa82901089b2151DAEB706'
+    const message = 'this is a test message'
+
+    const verifiedSignature =
+      '0xfd0879e35cec78b87ae7e647ebb743093ea15edcb88eb388806adaaff5f645527dab0cfac030b23d702206d6e0840a7bae5d2239518ba20b73c6636f75f150401b'
+
+    const privateKey = PrivateKey.fromHex(pk)
+
+    const privKeySignature = privateKey.sign(
+      Buffer.from(toUtf8(message), 'utf-8'),
+    )
+
+    expect(Buffer.from(privKeySignature).toString('hex')).toEqual(
+      verifiedSignature,
+    )
+    //
   })
 
   it('returns true when verifying signature for a public key and a cosmos message', () => {

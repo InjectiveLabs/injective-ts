@@ -202,8 +202,7 @@ export class PrivateKeyWallet
     }
 
     try {
-      const bufferUTF = Buffer.from(toUtf8(data), 'utf-8')
-      const signature = await pk.signHashed(bufferUTF)
+      const signature = await pk.signHashed(Buffer.from(toUtf8(data), 'utf-8'))
 
       return signature
     } catch (e: unknown) {
