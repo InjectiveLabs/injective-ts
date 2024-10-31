@@ -9,7 +9,7 @@ import {
   DirectSignResponse,
   PrivateKey as PrivateKeySigner,
   getInjectiveSignerAddress,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/src/index'
 import {
   ErrorType,
   WalletException,
@@ -202,9 +202,10 @@ export class PrivateKeyWallet
     }
 
     try {
-      const signature = await pk.signHashed(Buffer.from(toUtf8(data), 'utf-8'))
+      const bufferUTF = Buffer.from(toUtf8(data), 'utf-8')
+      const signature = await pk.signHashed(bufferUTF)
 
-      return `0x${Buffer.from(signature).toString('base64')}`
+      return signature
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
