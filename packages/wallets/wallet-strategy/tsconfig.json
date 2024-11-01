@@ -1,0 +1,50 @@
+{
+  "extends": "../../../tsconfig.json",
+  "references": [
+    {
+      "path": "../../ts-types/tsconfig.json"
+    },
+    {
+      "path": "../../exceptions/tsconfig.json"
+    },
+    {
+      "path": "../../networks/tsconfig.json"
+    },
+    {
+      "path": "../../utils/tsconfig.json"
+    },
+    {
+      "path": "../../sdk-ts/tsconfig.json"
+    },
+    {
+      "path": "../wallet-base/tsconfig.json"
+    },
+    {
+      "path": "../wallet-core/tsconfig.json"
+    },
+    {
+      "path": "../wallet-evm/tsconfig.json"
+    },
+    {
+      "path": "../wallet-ledger/tsconfig.json"
+    },
+    {
+      "path": "../wallet-private-key/tsconfig.json"
+    },
+    {
+      "path": "../wallet-magic/tsconfig.json"
+    },
+    {
+      "path": "../wallet-trezor/tsconfig.json"
+    },
+    {
+      "path": "../wallet-cosmostation/tsconfig.json"
+    },
+    {
+      "path": "../wallet-cosmos/tsconfig.json"
+    },
+    {
+      "path": "../wallet-wallet-connect/tsconfig.json"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "name": "@injectivelabs/wallet-strategy",
+  "description": "Wallet strategy with instantiated wallets",
+  "version": "0.0.3",
+  "sideEffects": false,
+  "author": {
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
+  },
+  "license": "Apache-2.0",
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~wallet-strategy": "dist"
+  },
+  "scripts": {
+    "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
+    "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
+    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@ethereumjs/common": "^3.1.1",
+    "@ethereumjs/tx": "^4.1.1",
+    "@injectivelabs/exceptions": "^1.14.16",
+    "@injectivelabs/networks": "^1.14.16",
+    "@injectivelabs/sdk-ts": "^1.14.16",
+    "@injectivelabs/ts-types": "^1.14.16",
+    "@injectivelabs/utils": "^1.14.16",
+    "@injectivelabs/wallet-base": "^0.0.3",
+    "@injectivelabs/wallet-core": "^0.0.3",
+    "@injectivelabs/wallet-cosmos": "^0.0.3",
+    "@injectivelabs/wallet-cosmostation": "^0.0.3",
+    "@injectivelabs/wallet-evm": "^0.0.3",
+    "@injectivelabs/wallet-ledger": "^0.0.3",
+    "@injectivelabs/wallet-magic": "^0.0.3",
+    "@injectivelabs/wallet-private-key": "^0.0.3",
+    "@injectivelabs/wallet-trezor": "^0.0.3",
+    "@injectivelabs/wallet-wallet-connect": "^0.0.3",
+    "alchemy-sdk": "^2.6.3",
+    "eip1193-provider": "^1.0.1",
+    "eth-sig-util": "^3.0.1",
+    "ethereumjs-util": "^7.1.0",
+    "ethers": "^6.5.1",
+    "hdkey": "^2.0.1",
+    "long": "^5.2.1",
+    "shx": "^0.3.3"
+  },
+  "devDependencies": {
+    "@types/eth-sig-util": "^2.1.1",
+    "@types/ethereumjs-util": "^6.1.0",
+    "@types/hdkey": "^2.0.1"
+  },
+  "resolutions": {
+    "**/libsodium": "npm:@bangjelkoski/noop",
+    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
+  },
+  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
+}

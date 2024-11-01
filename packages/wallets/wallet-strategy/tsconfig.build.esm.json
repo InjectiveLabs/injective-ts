@@ -1,0 +1,60 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "./dist/esm",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "tsBuildInfoFile": "../../../.build-cache/wallet-strategy.esm.tsbuildinfo"
+  },
+  "references": [
+    {
+      "path": "../../ts-types/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../../exceptions/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../../networks/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../../utils/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../../sdk-ts/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-base/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-wallet-connect/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-core/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-cosmos/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-cosmostation/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-evm/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-ledger/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-magic/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-private-key/tsconfig.build.esm.json"
+    },
+    {
+      "path": "../wallet-trezor/tsconfig.build.esm.json"
+    }
+  ]
+}

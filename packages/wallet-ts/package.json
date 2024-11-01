@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use and interact with different types of wallets on Injective.",
-  "version": "1.14.15-beta.14",
+  "version": "1.14.16",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -18,11 +18,10 @@
     "~wallet-ts": "dist"
   },
   "scripts": {
-    "postinstall": "link-module-alias",
     "build:cjs": "BUILD_MODE=cjs node ./../../etc/replacements.js && tsc --build tsconfig.build.json",
     "build:esm": "BUILD_MODE=esm node ./../../etc/replacements.js && tsc --build tsconfig.build.esm.json",
-    "build": "yarn build:esm && yarn build:cjs && yarn build:post && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build": "yarn build:esm && yarn build:cjs && yarn build:post",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
     "test": "jest",
@@ -40,11 +39,11 @@
     "@cosmostation/extension-client": "^0.1.15",
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.14.15-beta.0",
-    "@injectivelabs/networks": "^1.14.15-beta.1",
-    "@injectivelabs/sdk-ts": "^1.14.15-beta.10",
-    "@injectivelabs/ts-types": "^1.14.15-beta.0",
-    "@injectivelabs/utils": "^1.14.15-beta.0",
+    "@injectivelabs/exceptions": "^1.14.16",
+    "@injectivelabs/networks": "^1.14.16",
+    "@injectivelabs/sdk-ts": "^1.14.16",
+    "@injectivelabs/ts-types": "^1.14.16",
+    "@injectivelabs/utils": "^1.14.16",
     "@keplr-wallet/cosmos": "^0.12.71",
     "@keplr-wallet/types": "^0.12.71",
     "@owallet/types": "0.9.13",
@@ -66,7 +65,6 @@
     "ethereumjs-util": "^7.1.0",
     "ethers": "^6.5.1",
     "hdkey": "^2.0.1",
-    "link-module-alias": "^1.2.0",
     "long": "^5.2.1",
     "magic-sdk": "28.9.0",
     "shx": "^0.3.3"
@@ -77,7 +75,7 @@
     "@types/hdkey": "^2.0.1",
     "@types/ledgerhq__hw-transport-webusb": "^4.70.1"
   },
-  "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
+  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",

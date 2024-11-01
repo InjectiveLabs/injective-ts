@@ -10,12 +10,12 @@ import {
   TxRaw,
   TxResponse,
   waitTxBroadcasted,
+  AminoSignResponse,
+  DirectSignResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
-import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { StdSignDoc } from '@keplr-wallet/types'
-import { AminoSignResponse } from '@cosmjs/launchpad'
 import { NinjiWallet } from '../../../utils/wallets/ninji'
 import { WalletAction, WalletDeviceType } from '../../../types/enums'
 import { ConcreteCosmosWalletStrategy } from '../../types/strategy'

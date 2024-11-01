@@ -96,7 +96,7 @@ Once we have the signature ready, we need to broadcast the transaction to the In
 
 ```ts
 import { ChainId } from '@injectivelabs/ts-types'
-import { createTransaction, TxRestClient } from '@injectivelabs/sdk-ts'
+import { createTransaction, TxRestApi } from '@injectivelabs/sdk-ts'
 import {
   SIGN_AMINO,
   Network,
@@ -125,9 +125,9 @@ txRawEip712.signatures = [signatureBuff /* From previous step */]
 /** Broadcast the Transaction */
 const restEndpoint =
   'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
-const txRestClient = new TxRestClient(restEndpoint)
+const txRestApi = new TxRestApi(restEndpoint)
 
-const txHash = await txRestClient.broadcast(txRawEip712)
+const txHash = await txRestApi.broadcast(txRawEip712)
 
 /**
  * Once we get the txHash, because we use the Sync mode we
@@ -137,7 +137,7 @@ const txHash = await txRestClient.broadcast(txRawEip712)
  */
 
 /** This will poll querying the transaction and await for it's inclusion in the block */
-const response = await txRestClient.fetchTxPoll(txHash)
+const response = await txRestApi.fetchTxPoll(txHash)
 ```
 
 ### Example without WalletStrategy (Prepare + Sign + Broadcast)
@@ -158,7 +158,7 @@ import {
   SIGN_AMINO,
   createWeb3Extension,
   createTxRawEIP712,
-  TxRestClient,
+  TxRestApi,
 } from "@injectivelabs/sdk-ts";
 import {
   BigNumberInBase,
@@ -244,10 +244,10 @@ const txRawEip712 = createTxRawEIP712(txRaw, web3Extension);
 txRawEip712.signatures = [signatureBuff];
 
 /** Broadcast the Transaction */
-const txRestClient = new TxRestClient(restEndpoint);
+const txRestApi = new TxRestApi(restEndpoint);
 
-const txResponse = await txRestClient.broadcast(txRawEip712);
-const response = await txRestClient.fetchTxPoll(txResponse.txHash);
+const txResponse = await txRestApi.broadcast(txRawEip712);
+const response = await txRestApi.fetchTxPoll(txResponse.txHash);
 ```
 
 ### Example with WalletStrategy (Prepare + Sign + Broadcast)
