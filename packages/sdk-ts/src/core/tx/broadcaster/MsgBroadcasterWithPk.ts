@@ -7,6 +7,10 @@ import {
   ChainGrpcTendermintApi,
 } from '../../../client/chain/grpc'
 import {
+  ChainRestAuthApi,
+  ChainRestTendermintApi,
+} from '../../../client/chain/rest'
+import {
   getStdFee,
   DEFAULT_STD_FEE,
   BigNumberInBase,
@@ -22,7 +26,7 @@ import {
 } from '@injectivelabs/networks'
 import { getGasPriceBasedOnMessage } from '../../../utils/msgs'
 import { CreateTransactionArgs } from '../types'
-import { IndexerGrpcTransactionApi } from '../../../client'
+import { IndexerGrpcWeb3GwApi } from '../../../client'
 import { AccountDetails } from '../../../types/auth'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { ofacWallets } from '../../../json'
@@ -55,6 +59,7 @@ interface MsgBroadcasterWithPkOptions {
   chainId?: ChainId
   simulateTx?: boolean
   loggingEnabled?: boolean
+  useRest?: boolean
   txTimeout?: number // blocks to wait for tx to be included in a block
   gasBufferCoefficient?: number
 }
@@ -78,6 +83,8 @@ export class MsgBroadcasterWithPk {
 
   public simulateTx: boolean = false
 
+  public useRest: boolean = false
+
   public gasBufferCoefficient: number = 1.1
 
   public txTimeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT
@@ -87,6 +94,7 @@ export class MsgBroadcasterWithPk {
     const networkInfo = getNetworkInfo(network)
     const endpoints = getNetworkEndpoints(network)
 
+    this.useRest = options.useRest || false
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.1
     this.simulateTx = options.simulateTx || false
     this.chainId = options.chainId || networkInfo.chainId
@@ -106,7 +114,10 @@ export class MsgBroadcasterWithPk {
    * @param tx
    * @returns {string} transaction hash
    */
-  async broadcast(transaction: MsgBroadcasterTxOptions) {
+  async broadcast(
+    transaction: MsgBroadcasterTxOptions,
+    accountDetails?: AccountDetails,
+  ) {
     const { privateKey } = this
 
     if (ofacWallets.includes(privateKey.toHex())) {
@@ -115,7 +126,10 @@ export class MsgBroadcasterWithPk {
       )
     }
 
-    const { txRaw } = await this.prepareTxForBroadcast(transaction)
+    const { txRaw } = await this.prepareTxForBroadcast(
+      transaction,
+      accountDetails,
+    )
 
     return await this.broadcastTxRaw(txRaw)
   }
@@ -153,7 +167,7 @@ export class MsgBroadcasterWithPk {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
-    const transactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
+    const transactionApi = new IndexerGrpcWeb3GwApi(endpoints.indexer)
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
       message: web3Msgs,
@@ -183,7 +197,10 @@ export class MsgBroadcasterWithPk {
    * @param tx
    * @returns {string} transaction hash
    */
-  async simulate(transaction: MsgBroadcasterTxOptions) {
+  async simulate(
+    transaction: MsgBroadcasterTxOptions,
+    accountDetails?: AccountDetails,
+  ) {
     const { privateKey, endpoints, chainId } = this
 
     const ethereumWallet = this.privateKey.toHex()
@@ -203,19 +220,10 @@ export class MsgBroadcasterWithPk {
 
     /** Account Details * */
     const publicKey = privateKey.toPublicKey()
-    const accountDetails = await new ChainGrpcAuthApi(
-      endpoints.grpc,
-    ).fetchAccount(publicKey.toAddress().toBech32())
-    const { baseAccount } = accountDetails
+    const actualAccountDetails = await this.getAccountDetails(accountDetails)
 
     /** Block Details */
-    const latestBlock = await new ChainGrpcTendermintApi(
-      endpoints.grpc,
-    ).fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
-      DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-    )
+    const timeoutHeight = await this.getTimeoutHeight()
 
     /** Prepare the Transaction * */
     const { txRaw } = createTransaction({
@@ -224,8 +232,8 @@ export class MsgBroadcasterWithPk {
       message: tx.msgs as Msgs[],
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),
-      sequence: baseAccount.sequence,
-      accountNumber: baseAccount.accountNumber,
+      sequence: actualAccountDetails.sequence,
+      accountNumber: actualAccountDetails.accountNumber,
       chainId: chainId,
     })
 
@@ -291,7 +299,7 @@ export class MsgBroadcasterWithPk {
     transaction: MsgBroadcasterTxOptions,
     accountDetails?: AccountDetails,
   ) {
-    const { chainId, privateKey, endpoints, txTimeout } = this
+    const { chainId, privateKey } = this
     const msgs = Array.isArray(transaction.msgs)
       ? transaction.msgs
       : [transaction.msgs]
@@ -306,11 +314,7 @@ export class MsgBroadcasterWithPk {
     const actualAccountDetails = await this.getAccountDetails(accountDetails)
 
     /** Block Details */
-    const latestBlock = await new ChainGrpcTendermintApi(
-      endpoints.grpc,
-    ).fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = await this.getTimeoutHeight()
 
     const gas = (
       transaction.gas?.gas || getGasPriceBasedOnMessage(msgs)
@@ -337,17 +341,80 @@ export class MsgBroadcasterWithPk {
     return { txRaw, accountDetails: actualAccountDetails }
   }
 
-  private async getAccountDetails(accountDetails?: AccountDetails) {
+  private async getAccountDetails(
+    accountDetails?: AccountDetails,
+  ): Promise<AccountDetails> {
+    const { useRest } = this
+
     if (accountDetails) {
       return accountDetails
+    }
+
+    if (useRest) {
+      const { privateKey, endpoints } = this
+      const accountDetailsResponse = await new ChainRestAuthApi(
+        endpoints.grpc,
+      ).fetchAccount(privateKey.toBech32())
+      const baseAccount = accountDetailsResponse.account.base_account
+
+      return {
+        accountNumber: parseInt(baseAccount.account_number),
+        sequence: parseInt(baseAccount.sequence),
+        address: baseAccount.address,
+        pubKey: baseAccount.pub_key
+          ? {
+              key: baseAccount.pub_key.key,
+              type: baseAccount.pub_key['@type'],
+            }
+          : {
+              key: '',
+              type: '',
+            },
+      }
     }
 
     const { privateKey, endpoints } = this
     const accountDetailsResponse = await new ChainGrpcAuthApi(
       endpoints.grpc,
     ).fetchAccount(privateKey.toBech32())
+    const baseAccount = accountDetailsResponse.baseAccount
 
-    return accountDetailsResponse.baseAccount
+    return {
+      accountNumber: baseAccount.accountNumber,
+      sequence: baseAccount.sequence,
+      address: baseAccount.address,
+      pubKey: baseAccount.pubKey
+        ? {
+            key: baseAccount.pubKey.key,
+            type: baseAccount.pubKey.typeUrl,
+          }
+        : {
+            key: '',
+            type: '',
+          },
+    }
+  }
+
+  private async getTimeoutHeight() {
+    const { useRest, endpoints, txTimeout } = this
+
+    if (useRest) {
+      const latestBlock = await new ChainRestTendermintApi(
+        endpoints.grpc,
+      ).fetchLatestBlock()
+      const latestHeight = latestBlock!.header!.height
+
+      return new BigNumberInBase(latestHeight).plus(
+        txTimeout,
+      )
+    }
+
+    const latestBlock = await new ChainGrpcTendermintApi(
+      endpoints.grpc,
+    ).fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
+
+    return new BigNumberInBase(latestHeight).plus(txTimeout)
   }
 
   private async broadcastTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
