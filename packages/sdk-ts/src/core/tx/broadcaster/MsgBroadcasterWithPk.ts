@@ -39,7 +39,7 @@ interface MsgBroadcasterTxOptions {
 }
 
 interface MsgBroadcasterWithPkOptions {
-  network: Network
+  network?: Network
 
   /**
    * Only used if we want to override the default
@@ -52,6 +52,7 @@ interface MsgBroadcasterWithPkOptions {
   }
   privateKey: string | PrivateKey /* hex or PrivateKey class */
   ethereumChainId?: EthereumChainId
+  chainId?: ChainId
   simulateTx?: boolean
   loggingEnabled?: boolean
   txTimeout?: number // blocks to wait for tx to be included in a block
@@ -82,12 +83,13 @@ export class MsgBroadcasterWithPk {
   public txTimeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT
 
   constructor(options: MsgBroadcasterWithPkOptions) {
-    const networkInfo = getNetworkInfo(options.network)
-    const endpoints = getNetworkEndpoints(options.network)
+    const network = options.network || Network.MainnetSentry
+    const networkInfo = getNetworkInfo(network)
+    const endpoints = getNetworkEndpoints(network)
 
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.1
     this.simulateTx = options.simulateTx || false
-    this.chainId = networkInfo.chainId
+    this.chainId = options.chainId || networkInfo.chainId
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
     this.ethereumChainId =
       options.ethereumChainId || networkInfo.ethereumChainId
@@ -142,7 +144,7 @@ export class MsgBroadcasterWithPk {
     const tx = {
       ...transaction,
       msgs: msgs,
-      ethereumAddress: ethereumWallet
+      ethereumAddress: ethereumWallet,
     } as MsgBroadcasterTxOptions & { ethereumAddress: string }
 
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
