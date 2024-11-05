@@ -3,7 +3,7 @@ BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto
 TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
-injective_indexer_branch=v1.13.41
+injective_indexer_branch=v1.13.62-RC.1
 
 # remove old gen
 rm -rf $BUILD_DIR
@@ -30,14 +30,6 @@ git clone https://github.com/InjectiveLabs/injective-indexer.git $BUILD_DIR -b $
 find $BUILD_DIR/api/gen/grpc -name '*.proto' -exec cp {} $PROTO_DIR \;
 
 proto_dirs=$(find $PROTO_DIR -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
-
-# Rename all files to remove goadesign_goagen_ prefix.
-# This is a patch to fix the script as the new goagen version that was introduced
-# in the go.mod file generates files with a different prefix.
-for file in $proto_dirs/goadesign_goagen_*.proto; do
-    new_file=$(basename "$file" | sed 's/^goadesign_goagen_//')
-    mv "$file" "$proto_dirs/$new_file"
-done
 
 # gen using ts-proto
 npm --prefix $ROOT_DIR install
