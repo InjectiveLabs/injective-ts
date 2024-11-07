@@ -1,12 +1,15 @@
 import { generateMnemonic } from 'bip39'
-import { Wallet } from 'ethers'
+import { Wallet, HDNodeWallet } from 'ethers'
 import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
 import { PublicKey } from './PublicKey'
 import { Address } from './Address'
 import * as BytesUtils from '@ethersproject/bytes'
 import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
-import { recoverTypedSignaturePubKey } from '../../utils'
+import {
+  DEFAULT_DERIVATION_PATH,
+  recoverTypedSignaturePubKey,
+} from '../../utils'
 import {
   CosmosTxV1Beta1Tx,
   InjectiveTypesV1Beta1TxExt,
@@ -49,8 +52,13 @@ export class PrivateKey {
    * @param {string|undefined} path the HD path that follows the BIP32 standard (optional)
    * @returns {PrivateKey} Initialized PrivateKey object
    */
-  static fromMnemonic(words: string): PrivateKey {
-    return new PrivateKey(new Wallet(Wallet.fromPhrase(words).signingKey))
+  static fromMnemonic(
+    words: string,
+    path: string = DEFAULT_DERIVATION_PATH,
+  ): PrivateKey {
+    const hdNodeWallet = HDNodeWallet.fromPhrase(words, undefined, path)
+
+    return new PrivateKey(new Wallet(hdNodeWallet.privateKey))
   }
 
   /**
