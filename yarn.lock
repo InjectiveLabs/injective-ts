@@ -2219,10 +2219,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/indexer-proto-ts@1.11.56":
-  version "1.11.56"
-  resolved "https://registry.npmjs.org/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.56.tgz#f60a80985dbcb61e6674e2fa489497b834c84c1b"
-  integrity sha512-hEnN7DTVLGsol9Y/zaaDMDt1BZS/4KpMG419oCyM+MP1FVEOTp2BG/TDnIu7kXOwf66hCugBbnV84bvp2aY7SA==
+"@injectivelabs/indexer-proto-ts@1.11.57":
+  version "1.11.57"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.11.57.tgz#a8c28e3a8740b3094781c1656a807539b1b76d09"
+  integrity sha512-QAhojk4aWuVODqMAvyk+VTRn5xR+zc3yOrLOorSmKhnAYkDStvk14cEoOnnR6VTUtt03ZeCMu9ORGDJpMrJS2g==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -11943,7 +11943,12 @@ libsodium-wrappers-sumo@^0.7.11:
   dependencies:
     libsodium-sumo "^0.7.13"
 
-libsodium-wrappers@^0.7.6, "libsodium-wrappers@npm:@bangjelkoski/noop", "libsodium@npm:@bangjelkoski/noop":
+libsodium-wrappers@^0.7.6, "libsodium-wrappers@npm:@bangjelkoski/noop":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@bangjelkoski/noop/-/noop-0.0.1.tgz#172235ce00dd4269258c420f01464f07eb9801ed"
+  integrity sha512-lQgYJJbok2Unu2vKh0TAtWxXo16kLXNrjqmfo0hQTAuE/tVvz5zVqMgGsj+gMkkWfsInEbUndG0nlyCwaFv8hQ==
+
+"libsodium@npm:@bangjelkoski/noop":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@bangjelkoski/noop/-/noop-0.0.1.tgz#172235ce00dd4269258c420f01464f07eb9801ed"
   integrity sha512-lQgYJJbok2Unu2vKh0TAtWxXo16kLXNrjqmfo0hQTAuE/tVvz5zVqMgGsj+gMkkWfsInEbUndG0nlyCwaFv8hQ==
