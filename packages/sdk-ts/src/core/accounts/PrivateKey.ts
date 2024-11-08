@@ -176,12 +176,15 @@ export class PrivateKey {
    * @param {string} messageHashedBytes: the message that will be signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  async signHashed(messageHashedBytes: Buffer): Promise<string> {
+  signHashed(messageHashedBytes: Buffer): Uint8Array {
     const { wallet } = this
 
-    const signature = await wallet.signMessage(messageHashedBytes)
+    const signature = wallet.signingKey.sign(messageHashedBytes)
+    const splitSignature = BytesUtils.splitSignature(signature)
 
-    return signature
+    return BytesUtils.arrayify(
+      BytesUtils.concat([splitSignature.r, splitSignature.s]),
+    )
   }
 
   /**
@@ -365,9 +368,7 @@ export class PrivateKey {
       }
 
       const decodedExtension =
-        InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.decode(
-          extension.value,
-        )
+        InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.decode(extension.value)
 
       const ethereumChainId = Number(
         decodedExtension.typedDataChainID,
