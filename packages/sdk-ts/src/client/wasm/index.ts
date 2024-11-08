@@ -1,5 +1,6 @@
-export * from './swap/index.js'
 export * from './types.js'
+export * from './swap/index.js'
+export * from './neptune/index.js'
 export * from './incentives/index.js'
 export * from './nameservice/index.js'
 export * from './trading_strategies/index.js'
