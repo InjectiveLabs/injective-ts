@@ -32,6 +32,7 @@ import {
 } from '@injectivelabs/utils'
 import {
   GeneralException,
+  isThrownException,
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
@@ -151,11 +152,21 @@ export class MsgBroadcaster {
       )
     }
 
-    return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmos(txWithAddresses)
-      : isEip712V2OnlyWallet(walletStrategy.wallet)
-      ? this.broadcastWeb3V2(txWithAddresses)
-      : this.broadcastWeb3(txWithAddresses)
+    try {
+      return isCosmosWallet(walletStrategy.wallet)
+        ? this.broadcastCosmos(txWithAddresses)
+        : isEip712V2OnlyWallet(walletStrategy.wallet)
+        ? this.broadcastWeb3V2(txWithAddresses)
+        : this.broadcastWeb3(txWithAddresses)
+    } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    }
   }
 
   /**
@@ -185,9 +196,19 @@ export class MsgBroadcaster {
       )
     }
 
-    return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmos(txWithAddresses)
-      : this.broadcastWeb3V2(txWithAddresses)
+    try {
+      return isCosmosWallet(walletStrategy.wallet)
+        ? this.broadcastCosmos(txWithAddresses)
+        : this.broadcastWeb3V2(txWithAddresses)
+    } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    }
   }
 
   /**
@@ -250,9 +271,19 @@ export class MsgBroadcaster {
       )
     }
 
-    return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmosWithFeeDelegation(txWithAddresses)
-      : this.broadcastWeb3WithFeeDelegation(txWithAddresses)
+    try {
+      return isCosmosWallet(walletStrategy.wallet)
+        ? this.broadcastCosmosWithFeeDelegation(txWithAddresses)
+        : this.broadcastWeb3WithFeeDelegation(txWithAddresses)
+    } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    }
   }
 
   /**

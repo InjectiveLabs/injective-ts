@@ -20,12 +20,12 @@ yarn add @injectivelabs/wallet-wallet-connect
 
 ## 📖 Documentation
 
-Injective's wallet packages are intended to make it easy for developers to choose exactly what wallets - and subsequent dependencies - they
-want to include in their projects.
+Injective's wallet packages are intended to make it easy for developers to choose exactly what wallets - and subsequent dependencies - they want to include in their projects.
 
-Regardless of which wallet package(s) you choose to use you must also have `@injectivelabs/wallet-core` and `@injectivelabs/wallet-base`
-installed. These contain all of the types and core wallet functionality, with the separate wallet packages only providing the necessary
-dependencies and implementations for their specific wallets.
+Keep in mind to include specific wallet images in your public directory, right now we only have:
+- Fireblocks (path: `wallet-connect/fireblocks.webp`)
+
+Regardless of which wallet package(s) you choose to use you must also have `@injectivelabs/wallet-core` and `@injectivelabs/wallet-base` installed. These contain all of the types and core wallet functionality, with the separate wallet packages only providing the necessary dependencies and implementations for their specific wallets.
 
 Here's a brief example of how to use this package to send 1 INJ.:
 
@@ -58,21 +58,21 @@ const msgBroadcaster = new MsgBroadcaster({
 })
 
 const sendTX = async () => {
-    const injectiveAddress = 'someInjectiveAddress'
+  const injectiveAddress = 'someInjectiveAddress'
 
-    const message = MsgSend.fromJSON({
-      srcInjectiveAddress: injectiveAddress,
-      dstInjectiveAddress: injectiveAddress,
-      amount: {
-        amount: '1',
-        denom: 'inj',
-      },
-    })
+  const message = MsgSend.fromJSON({
+    srcInjectiveAddress: injectiveAddress,
+    dstInjectiveAddress: injectiveAddress,
+    amount: {
+      amount: '1',
+      denom: 'inj',
+    },
+  })
 
-    return await msgBroadcaster.broadcast({ msgs: message })
-  }
+  return await msgBroadcaster.broadcast({ msgs: message })
+}
 
-  const result = await sendTX()
+const result = await sendTX()
 ```
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)
