@@ -9,7 +9,7 @@ const removeBitGetFromErrorString = (message: string): string =>
     .replaceAll('Bitkeep:', '')
 
 export class BitGetException extends ConcreteException {
-  public errorClass: string = 'BitGetException'
+  public static errorClass: string = 'BitGetException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -20,6 +20,7 @@ export class BitGetException extends ConcreteException {
   public parse(): void {
     const { message } = this
 
+    this.setName(BitGetException.errorClass)
     this.setMessage(mapMetamaskMessage(removeBitGetFromErrorString(message)))
   }
 }

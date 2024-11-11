@@ -4,7 +4,7 @@ import { ErrorContext, ErrorType } from '../types'
 import { isCommonLockedError } from '../utils/helpers'
 
 export class LedgerException extends ConcreteException {
-  public errorClass: string = 'LedgerException'
+  public static errorClass: string = 'LedgerException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -55,5 +55,7 @@ export class LedgerException extends ConcreteException {
         'Please use the latest Chrome/Firefox browser versions to connect with your Ledger device',
       )
     }
+
+    this.setName(LedgerException.errorClass)
   }
 }

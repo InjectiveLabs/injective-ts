@@ -3,7 +3,7 @@ import { ConcreteException } from '../base'
 import { ErrorContext, ErrorType, GRPC_REQUEST_FAILED } from '../types'
 
 export class GrpcUnaryRequestException extends ConcreteException {
-  public errorClass: string = 'GrpcUnaryRequestException'
+  public static errorClass: string = 'GrpcUnaryRequestException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -20,5 +20,7 @@ export class GrpcUnaryRequestException extends ConcreteException {
       )
       this.setContextCode(GRPC_REQUEST_FAILED)
     }
+
+    this.setName(GrpcUnaryRequestException.errorClass)
   }
 }

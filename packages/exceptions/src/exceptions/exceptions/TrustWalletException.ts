@@ -12,7 +12,7 @@ const removeTrustWalletFromErrorString = (message: string): string =>
     .replaceAll('Trust Wallet:', '')
 
 export class TrustWalletException extends ConcreteException {
-  public errorClass: string = 'TrustWalletException'
+  public static errorClass: string = 'TrustWalletException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -26,5 +26,7 @@ export class TrustWalletException extends ConcreteException {
     this.setMessage(
       mapMetamaskMessage(removeTrustWalletFromErrorString(message)),
     )
+
+    this.setName(TrustWalletException.errorClass)
   }
 }

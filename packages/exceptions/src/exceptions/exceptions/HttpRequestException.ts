@@ -3,7 +3,7 @@ import { ConcreteException } from '../base'
 import { ErrorContext, ErrorType, HttpRequestMethod } from '../types'
 
 export class HttpRequestException extends ConcreteException {
-  public errorClass: string = 'HttpRequestException'
+  public static errorClass: string = 'HttpRequestException'
 
   public method: HttpRequestMethod = HttpRequestMethod.Get
 
@@ -18,5 +18,9 @@ export class HttpRequestException extends ConcreteException {
       ? context.method || HttpRequestMethod.Get
       : HttpRequestMethod.Get
     this.context = context?.context || 'Unknown'
+  }
+
+  public parse(): void {
+    this.setName(HttpRequestException.errorClass)
   }
 }
