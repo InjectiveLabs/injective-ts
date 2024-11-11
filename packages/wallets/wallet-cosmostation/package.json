@@ -35,10 +35,10 @@
   "dependencies": {
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmostation/extension-client": "^0.1.15",
-    "@injectivelabs/exceptions": "^1.14.17",
+    "@injectivelabs/exceptions": "^1.14.18",
     "@injectivelabs/sdk-ts": "^1.14.18",
-    "@injectivelabs/ts-types": "^1.14.17",
-    "@injectivelabs/utils": "^1.14.17",
+    "@injectivelabs/ts-types": "^1.14.18",
+    "@injectivelabs/utils": "^1.14.18",
     "@injectivelabs/wallet-base": "^0.0.5",
     "@walletconnect/ethereum-provider": "^2.12.2"
   },
