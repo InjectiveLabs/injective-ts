@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-cosmostation",
   "description": "Cosmostation strategy for use with @injectivelabs/wallet-core.",
-  "version": "0.0.4-beta.6",
+  "version": "0.0.4",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -35,11 +35,11 @@
   "dependencies": {
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmostation/extension-client": "^0.1.15",
-    "@injectivelabs/exceptions": "^1.14.17-beta.2",
-    "@injectivelabs/sdk-ts": "^1.14.17-beta.6",
-    "@injectivelabs/ts-types": "^1.14.16",
-    "@injectivelabs/utils": "^1.14.17-beta.2",
-    "@injectivelabs/wallet-base": "^0.0.4-beta.6",
+    "@injectivelabs/exceptions": "^1.14.17",
+    "@injectivelabs/sdk-ts": "^1.14.17",
+    "@injectivelabs/ts-types": "^1.14.17",
+    "@injectivelabs/utils": "^1.14.17",
+    "@injectivelabs/wallet-base": "^0.0.4",
     "@walletconnect/ethereum-provider": "^2.12.2"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",

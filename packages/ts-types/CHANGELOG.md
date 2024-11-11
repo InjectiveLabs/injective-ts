@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.16...@injectivelabs/ts-types@1.14.17) (2024-11-11)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+
+
+
+
 ## [1.14.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.16-beta.0...@injectivelabs/ts-types@1.14.16) (2024-10-29)
 
 
