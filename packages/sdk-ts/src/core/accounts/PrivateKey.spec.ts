@@ -1,5 +1,5 @@
-import { generateArbitrarySignDoc } from '../tx'
-import { PrivateKey } from './PrivateKey'
+import { generateArbitrarySignDoc } from '../tx/index.js'
+import { PrivateKey } from './PrivateKey.js'
 
 const pk = process.env.TEST_PRIVATE_KEY as string
 const seedPhase = process.env.TEST_SEED_PHASE as string

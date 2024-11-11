@@ -1,5 +1,5 @@
-import { IndexerGrpcAccountTransformer } from './IndexerGrpcAccountTransformer'
-import { StreamOperation } from '../../../types'
+import { IndexerGrpcAccountTransformer } from './IndexerGrpcAccountTransformer.js'
+import { StreamOperation } from '../../../types/index.js'
 import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**

@@ -1,1 +1,1 @@
-export { WalletConnect as WalletConnectStrategy } from './strategy/strategy'
+export { WalletConnect as WalletConnectStrategy } from './strategy/strategy.js'

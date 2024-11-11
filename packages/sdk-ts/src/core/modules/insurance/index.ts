@@ -1,5 +1,5 @@
-import MsgUnderwrite from './msgs/MsgUnderwrite'
-import MsgRequestRedemption from './msgs/MsgRequestRedemption'
-import MsgCreateInsuranceFund from './msgs/MsgCreateInsuranceFund'
+import MsgUnderwrite from './msgs/MsgUnderwrite.js'
+import MsgRequestRedemption from './msgs/MsgRequestRedemption.js'
+import MsgCreateInsuranceFund from './msgs/MsgCreateInsuranceFund.js'
 
 export { MsgUnderwrite, MsgRequestRedemption, MsgCreateInsuranceFund }

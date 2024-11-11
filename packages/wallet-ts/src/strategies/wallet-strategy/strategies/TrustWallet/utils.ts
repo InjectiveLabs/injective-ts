@@ -1,5 +1,5 @@
 import { isServerSide } from '@injectivelabs/sdk-ts'
-import { BrowserEip1993Provider, WindowWithEip1193Provider } from '../../types'
+import { BrowserEip1993Provider, WindowWithEip1193Provider } from '../../types.js'
 
 const $window = (isServerSide()
   ? {}

@@ -2,7 +2,7 @@ import {
   dataToExecData,
   ExecPrivilegedArgBase,
   ExecDataRepresentation,
-} from '../ExecPrivilegedArgBase'
+} from '../ExecPrivilegedArgBase.js'
 
 // ult_subaccount_id`:
 

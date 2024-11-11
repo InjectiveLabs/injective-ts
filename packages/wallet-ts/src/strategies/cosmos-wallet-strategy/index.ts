@@ -1,3 +1,3 @@
-import CosmosWalletStrategy from './CosmosWalletStrategy'
+import CosmosWalletStrategy from './CosmosWalletStrategy.js'
 
 export { CosmosWalletStrategy }

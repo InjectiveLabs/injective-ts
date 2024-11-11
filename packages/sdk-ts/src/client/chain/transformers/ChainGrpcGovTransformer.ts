@@ -1,4 +1,4 @@
-import { uint8ArrayToString } from '../../../utils'
+import { uint8ArrayToString } from '../../../utils/index.js'
 import {
   Vote,
   Proposal,
@@ -11,10 +11,10 @@ import {
   GrpcGovernanceTallyParams,
   GrpcGovernanceVotingParams,
   GrpcGovernanceDepositParams,
-} from '../types/gov'
-import { Pagination } from '../../../types'
-import { grpcPaginationToPagination } from '../../../utils/pagination'
-import { cosmosSdkDecToBigNumber } from '../../../utils'
+} from '../types/gov.js'
+import { Pagination } from '../../../types/index.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
 import { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
 
 /**

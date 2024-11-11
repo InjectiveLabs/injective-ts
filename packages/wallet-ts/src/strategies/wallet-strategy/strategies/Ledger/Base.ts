@@ -13,27 +13,27 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
-import { TIP_IN_GWEI } from '../../../../utils/constants'
+import { TIP_IN_GWEI } from '../../../../utils/constants.js'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
-} from '../../../types'
+} from '../../../types/index.js'
 import {
   LedgerDerivationPathType,
   LedgerWalletInfo,
   SendTransactionOptions,
-} from '../../types'
-import BaseConcreteStrategy from '../Base'
+} from '../../types.js'
+import BaseConcreteStrategy from '../Base.js'
 import {
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-} from '../../constants'
-import LedgerHW from './hw'
-import { domainHash, messageHash } from './utils'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums'
-import { getKeyFromRpcUrl } from '../../../../utils/alchemy'
+} from '../../constants.js'
+import LedgerHW from './hw/index.js'
+import { domainHash, messageHash } from './utils.js'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums.js'
+import { getKeyFromRpcUrl } from '../../../../utils/alchemy.js'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
@@ -320,7 +320,7 @@ export default class LedgerBase
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(options.address)
       const ledgerService = await import(
-        '@ledgerhq/hw-app-eth/lib/services/ledger'
+        '@ledgerhq/hw-app-eth/lib/services/ledger/index.js'
       )
       const resolution = await ledgerService.default.resolveTransaction(
         encodedMessageHex,

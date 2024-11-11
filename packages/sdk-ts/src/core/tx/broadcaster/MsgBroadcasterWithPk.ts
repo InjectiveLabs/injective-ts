@@ -1,15 +1,15 @@
-import { PrivateKey } from '../../accounts'
-import { Msgs } from '../../modules/msgs'
-import { createTransaction } from '../tx'
-import { TxGrpcApi } from '../api/TxGrpcApi'
+import { PrivateKey } from '../../accounts/index.js'
+import { Msgs } from '../../modules/msgs.js'
+import { createTransaction } from '../tx.js'
+import { TxGrpcApi } from '../api/TxGrpcApi.js'
 import {
   ChainGrpcAuthApi,
   ChainGrpcTendermintApi,
-} from '../../../client/chain/grpc'
+} from '../../../client/chain/grpc/index.js'
 import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
-} from '../../../client/chain/rest'
+} from '../../../client/chain/rest/index.js'
 import {
   getStdFee,
   DEFAULT_STD_FEE,
@@ -24,12 +24,12 @@ import {
   getNetworkEndpoints,
   NetworkEndpoints,
 } from '@injectivelabs/networks'
-import { getGasPriceBasedOnMessage } from '../../../utils/msgs'
-import { CreateTransactionArgs } from '../types'
-import { IndexerGrpcWeb3GwApi } from '../../../client'
-import { AccountDetails } from '../../../types/auth'
+import { getGasPriceBasedOnMessage } from '../../../utils/msgs.js'
+import { CreateTransactionArgs } from '../types/index.js'
+import { IndexerGrpcWeb3GwApi } from '../../../client/index.js'
+import { AccountDetails } from '../../../types/auth.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { ofacWallets } from '../../../json'
+import { ofacWallets } from '../../../json/index.js'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]

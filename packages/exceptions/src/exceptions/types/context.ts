@@ -1,4 +1,4 @@
-import { ErrorCode, ErrorContextCode } from './codes'
+import { ErrorCode, ErrorContextCode } from './codes.js'
 
 export enum HttpRequestMethod {
   Get = 'GET',

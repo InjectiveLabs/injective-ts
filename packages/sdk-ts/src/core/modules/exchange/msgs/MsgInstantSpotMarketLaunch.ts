@@ -1,6 +1,6 @@
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
-import { MsgBase } from '../../MsgBase'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgInstantSpotMarketLaunch {

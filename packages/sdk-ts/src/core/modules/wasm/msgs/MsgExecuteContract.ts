@@ -1,8 +1,8 @@
-import { ExecArgs } from '../exec-args'
-import { MsgBase } from '../../MsgBase'
+import { ExecArgs } from '../exec-args.js'
+import { MsgBase } from '../../MsgBase.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
-import { fromUtf8 } from '../../../../utils/utf8'
+import { fromUtf8 } from '../../../../utils/utf8.js'
 import {
   CosmosBaseV1Beta1Coin,
   CosmwasmWasmV1Tx,

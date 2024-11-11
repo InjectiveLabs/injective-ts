@@ -1,6 +1,6 @@
-import { QueryRoundResponse, QueryCampaignResponse } from './types'
-import { WasmContractQueryResponse } from '../types'
-import { toUtf8 } from '../../../utils'
+import { QueryRoundResponse, QueryCampaignResponse } from './types.js'
+import { WasmContractQueryResponse } from '../types.js'
+import { toUtf8 } from '../../../utils/index.js'
 
 export class IncentivesQueryTransformer {
   static contractRoundResponseToContractRound(

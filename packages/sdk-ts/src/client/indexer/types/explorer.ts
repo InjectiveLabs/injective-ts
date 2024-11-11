@@ -1,7 +1,7 @@
 import { Coin } from '@injectivelabs/ts-types'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import { TokenStatic } from '../../../types/token'
+import { TokenStatic } from '../../../types/token.js'
 
 export enum AccessTypeCode {
   AccessTypeUnspecified = 0,

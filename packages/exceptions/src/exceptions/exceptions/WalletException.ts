@@ -1,5 +1,4 @@
-import { ConcreteException } from '../base'
-
+import { ConcreteException } from '../base.js'
 
 export class WalletException extends ConcreteException {
   public static errorClass: string = 'WalletException'

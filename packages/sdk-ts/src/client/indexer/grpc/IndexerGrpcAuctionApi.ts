@@ -3,9 +3,9 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { IndexerGrpcAuctionTransformer } from '../transformers'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API

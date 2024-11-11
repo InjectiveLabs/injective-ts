@@ -3,8 +3,8 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveTradingRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule, MarketType, GridStrategyType } from '../types'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule, MarketType, GridStrategyType } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API

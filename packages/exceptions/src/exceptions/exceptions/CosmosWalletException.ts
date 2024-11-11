@@ -1,5 +1,5 @@
-import { ConcreteException } from '../base'
-import { ErrorContext, ErrorType } from '../types'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
 
 export class CosmosWalletException extends ConcreteException {
   public static errorClass: string = 'CosmosWalletException'

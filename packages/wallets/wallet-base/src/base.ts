@@ -3,7 +3,7 @@ import {
   WalletEventListener,
   ConcreteWalletStrategyArgs,
   ConcreteEthereumWalletStrategyArgs,
-} from './types'
+} from './types/index.js'
 
 export default abstract class BaseConcreteStrategy {
   protected chainId: ChainId

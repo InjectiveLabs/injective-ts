@@ -1,5 +1,5 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import { grpcPaginationToPagination } from '../../../utils/pagination'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
 import {
   GoogleProtobufAny,
   CosmosAuthzV1Beta1Authz,
@@ -8,7 +8,7 @@ import {
 import {
   GrantAuthorizationWithDecodedAuthorization,
   GrantWithDecodedAuthorization,
-} from '../types'
+} from '../types/index.js'
 
 /**
  * @category Chain Grpc Transformer

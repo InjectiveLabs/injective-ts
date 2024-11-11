@@ -1,4 +1,4 @@
-import MsgVote from './MsgVote'
+import MsgVote from './MsgVote.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

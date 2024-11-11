@@ -3,9 +3,9 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveTokenFactoryV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { ChainGrpcTokenFactoryTransformer } from '..'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
+import { ChainGrpcTokenFactoryTransformer } from '../index.js'
 
 /**
  * @category TokenFactory Grpc API

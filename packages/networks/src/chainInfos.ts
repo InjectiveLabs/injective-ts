@@ -1,6 +1,6 @@
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { INJ_DENOM } from '@injectivelabs/utils'
-import { ChainInfo } from './types'
+import { ChainInfo } from './types.js'
 
 export const mainnetChainInfo: ChainInfo = {
   feeDenom: INJ_DENOM,

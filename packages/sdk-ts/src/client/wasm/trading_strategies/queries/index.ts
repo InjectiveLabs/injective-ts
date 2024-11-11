@@ -1,4 +1,4 @@
-export { QueryTradingStrategyContractConfig } from './QueryTradingStrategyContractConfig'
-export { QueryTradingStrategyContractAllStrategies } from './QueryTradingStrategyContractAllStrategies'
-export { QueryTradingStrategyContractUserStrategies } from './QueryTradingStrategyContractUserStrategies'
-export { QueryTradingStrategyContractTotalStrategies } from './QueryTradingStrategyContractTotalStrategies'
+export { QueryTradingStrategyContractConfig } from './QueryTradingStrategyContractConfig.js'
+export { QueryTradingStrategyContractAllStrategies } from './QueryTradingStrategyContractAllStrategies.js'
+export { QueryTradingStrategyContractUserStrategies } from './QueryTradingStrategyContractUserStrategies.js'
+export { QueryTradingStrategyContractTotalStrategies } from './QueryTradingStrategyContractTotalStrategies.js'

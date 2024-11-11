@@ -3,11 +3,11 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { PaginationOption } from '../../../types/pagination'
-import { ChainGrpcStakingTransformer } from '../transformers'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { ChainGrpcStakingTransformer } from '../transformers/index.js'
+import { paginationRequestFromPagination } from '../../../utils/pagination.js'
 
 /**
  * @category Chain Grpc API

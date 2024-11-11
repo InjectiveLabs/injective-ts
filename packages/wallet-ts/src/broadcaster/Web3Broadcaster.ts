@@ -1,7 +1,7 @@
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import { WalletStrategy } from '../strategies/wallet-strategy'
+import { WalletStrategy } from '../strategies/wallet-strategy/index.js'
 
 interface SendTransactionOptions {
   tx: {

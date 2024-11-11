@@ -1,8 +1,8 @@
 import { ethers } from 'ethers'
 import { WalletException } from '@injectivelabs/exceptions'
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import { BrowserEip1993Provider } from '../../../strategies/wallet-strategy/types'
-import { getBitGetProvider } from '../../../strategies/wallet-strategy/strategies/BitGet/utils'
+import { BrowserEip1993Provider } from '../../../strategies/wallet-strategy/types.js'
+import { getBitGetProvider } from '../../../strategies/wallet-strategy/strategies/BitGet/utils.js'
 
 export const getEthersProviderFromBitGet = async () => {
   try {

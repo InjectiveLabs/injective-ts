@@ -2,9 +2,9 @@ import {
   dataToExecData,
   ExecArgBase,
   ExecDataRepresentation,
-} from '../ExecArgBase'
+} from '../ExecArgBase.js'
 
-import { ExitType } from '../types'
+import { ExitType } from '../types.js'
 export declare namespace ExecArgCreatePerpGridStrategy {
   export interface Params {
     subaccountId: string

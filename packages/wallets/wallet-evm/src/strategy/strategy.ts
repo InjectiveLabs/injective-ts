@@ -40,7 +40,7 @@ import {
   getMetamaskProvider,
   getOkxWalletProvider,
   getTrustWalletProvider,
-} from './utils'
+} from './utils/index.js'
 
 const evmWallets = [
   Wallet.BitGet,

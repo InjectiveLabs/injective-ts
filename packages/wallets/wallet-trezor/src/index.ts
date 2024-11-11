@@ -1,3 +1,3 @@
-export { TrezorWallet as TrezorWalletStrategy } from './strategy/strategy'
+export { TrezorWallet as TrezorWalletStrategy } from './strategy/strategy.js'
 
-export * from './types'
+export * from './types.js'

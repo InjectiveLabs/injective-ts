@@ -10,12 +10,12 @@ import {
   ExplorerBlockWithTxs,
   ExplorerValidatorUptime,
   ExplorerCW20BalanceWithToken,
-} from '../types/explorer'
+} from '../types/explorer.js'
 import {
   Block,
   ExplorerValidator,
   ContractTransactionWithMessages,
-} from '../types/explorer'
+} from '../types/explorer.js'
 import {
   ContractExplorerApiResponse,
   WasmCodeExplorerApiResponse,
@@ -25,8 +25,8 @@ import {
   BankTransferFromExplorerApiResponse,
   ContractTransactionExplorerApiResponse,
   ValidatorUptimeFromExplorerApiResponse,
-} from '../types/explorer-rest'
-import { TokenType, TokenVerification } from '../../../types/token'
+} from '../types/explorer-rest.js'
+import { TokenType, TokenVerification } from '../../../types/token.js'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
 

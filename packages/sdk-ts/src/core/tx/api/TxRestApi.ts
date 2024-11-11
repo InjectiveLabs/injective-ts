@@ -10,9 +10,9 @@ import {
   TxInfoResponse,
   TxResultResponse,
   SimulationResponse,
-} from '../types/tx-rest-client'
-import { TxClient } from '../utils/classes/TxClient'
-import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx'
+} from '../types/tx-rest-client.js'
+import { TxClient } from '../utils/classes/TxClient.js'
+import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
 import {
   HttpRequestMethod,
   HttpRequestException,
@@ -21,8 +21,8 @@ import {
 } from '@injectivelabs/exceptions'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
-import { TxResponse } from '../types/tx'
-import { getErrorMessage } from '../../../utils/helpers'
+import { TxResponse } from '../types/tx.js'
+import { getErrorMessage } from '../../../utils/helpers.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**

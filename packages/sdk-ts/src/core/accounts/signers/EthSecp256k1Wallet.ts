@@ -1,7 +1,7 @@
 import { AminoSignResponse, serializeSignDoc, StdSignDoc } from '@cosmjs/amino'
-import { PrivateKey } from '../PrivateKey'
-import { PublicKey } from '../PublicKey'
-import { AccountData, OfflineAminoSigner } from './types/amino-signer'
+import { PrivateKey } from '../PrivateKey.js'
+import { PublicKey } from '../PublicKey.js'
+import { AccountData, OfflineAminoSigner } from './types/amino-signer.js'
 
 export class EthSecp256k1Wallet implements OfflineAminoSigner {
   /**

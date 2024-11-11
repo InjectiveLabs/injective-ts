@@ -1,5 +1,5 @@
 import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
-import { StreamOperation } from '../../../types'
+import { StreamOperation } from '../../../types/index.js'
 
 /**
  * @category Indexer Stream Transformer

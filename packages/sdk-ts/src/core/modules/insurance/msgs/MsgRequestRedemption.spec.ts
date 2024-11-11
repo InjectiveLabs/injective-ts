@@ -1,5 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgRequestRedemption from './MsgRequestRedemption'
+import MsgRequestRedemption from './MsgRequestRedemption.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

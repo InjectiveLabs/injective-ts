@@ -1,7 +1,6 @@
-import { ConcreteException } from '../base'
-
-import { ErrorContext, ErrorType } from '../types'
-import { isCommonLockedError } from '../utils/helpers'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
+import { isCommonLockedError } from '../utils/helpers.js'
 
 export class LedgerException extends ConcreteException {
   public static errorClass: string = 'LedgerException'

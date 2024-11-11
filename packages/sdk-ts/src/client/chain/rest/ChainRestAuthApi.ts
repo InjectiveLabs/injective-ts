@@ -2,13 +2,13 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { ChainModule, RestApiResponse } from '../types'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { ChainModule, RestApiResponse } from '../types/index.js'
 import {
   AccountResponse,
   CosmosAccountRestResponse,
   BaseAccountRestResponse,
-} from './../types/auth-rest'
+} from './../types/auth-rest.js'
 
 /**
  * @category Chain Rest API

@@ -1,6 +1,6 @@
 import { Coin } from '@injectivelabs/ts-types'
 import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
-import { grpcPagingToPaging } from '../../..//utils/pagination'
+import { grpcPagingToPaging } from '../../..//utils/pagination.js'
 import {
   Guild,
   Campaign,
@@ -8,8 +8,8 @@ import {
   GuildMember,
   CampaignUser,
   GuildCampaignSummary,
-} from '../types/campaign'
-import { GrpcCoin } from '../../../types'
+} from '../types/campaign.js'
+import { GrpcCoin } from '../../../types/index.js'
 
 export class IndexerCampaignTransformer {
   static GrpcCoinToCoin(coin: GrpcCoin): Coin {

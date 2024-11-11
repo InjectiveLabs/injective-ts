@@ -17,10 +17,10 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
-import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
-import { SendTransactionOptions } from '../types'
-import BaseConcreteStrategy from './Base'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types/index.js'
+import { SendTransactionOptions } from '../types.js'
+import BaseConcreteStrategy from './Base.js'
+import { WalletAction, WalletDeviceType } from '../../../types/enums.js'
 
 interface PrivateKeyArgs extends EthereumWalletStrategyArgs {
   privateKey?: string

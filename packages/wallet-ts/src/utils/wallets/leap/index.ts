@@ -1,1 +1,1 @@
-export * from './LeapWallet'
+export * from './LeapWallet.js'

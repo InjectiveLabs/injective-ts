@@ -1,4 +1,4 @@
-import { ConcreteException } from '../base'
+import { ConcreteException } from '../base.js'
 
 export class GeneralException extends ConcreteException {
   public static errorClass: string = 'GeneralException'

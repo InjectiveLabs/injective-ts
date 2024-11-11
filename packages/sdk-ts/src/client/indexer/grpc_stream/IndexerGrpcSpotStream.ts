@@ -2,12 +2,12 @@ import {
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
-} from '../../../types'
-import { StreamStatusResponse } from '../types'
-import { PaginationOption } from '../../../types/pagination'
+} from '../../../types/index.js'
+import { StreamStatusResponse } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
 import { OrderSide, OrderState } from '@injectivelabs/ts-types'
-import { IndexerSpotStreamTransformer } from '../transformers'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
+import { IndexerSpotStreamTransformer } from '../transformers/index.js'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import { Subscription } from 'rxjs'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { GeneralException } from '@injectivelabs/exceptions'

@@ -1,5 +1,5 @@
 import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import { AtomicMarketOrderAccessLevel } from '@injectivelabs/core-proto-ts/cjs/injective/exchange/v1beta1/exchange'
+import { AtomicMarketOrderAccessLevel } from '@injectivelabs/core-proto-ts/cjs/injective/exchange/v1beta1/exchange.js'
 import {
   IsOptedOutOfRewards,
   FeeDiscountSchedule,
@@ -21,7 +21,7 @@ import {
   GrpcChainPosition,
   ChainPosition,
   ChainDerivativePosition,
-} from '../types/exchange'
+} from '../types/exchange.js'
 
 /**
  * @category Chain Grpc Transformer

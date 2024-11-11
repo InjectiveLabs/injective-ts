@@ -1,4 +1,4 @@
-import MsgCreateSpotLimitOrder from './MsgCreateSpotLimitOrder'
+import MsgCreateSpotLimitOrder from './MsgCreateSpotLimitOrder.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

@@ -1,4 +1,4 @@
-import MsgChangeAdmin from './MsgChangeAdmin'
+import MsgChangeAdmin from './MsgChangeAdmin.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

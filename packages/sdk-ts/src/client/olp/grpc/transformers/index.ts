@@ -21,7 +21,7 @@ import {
   RewardDistribution,
   RewardsEligibility,
   GrpcAccountVolume,
-} from '../types'
+} from '../types/index.js'
 
 export class DmmGrpcTransformer {
   static epochsResponseToEpochs(

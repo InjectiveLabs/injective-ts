@@ -1,5 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgCancelUnbondingDelegation from './MsgCancelUnbondingDelegation'
+import MsgCancelUnbondingDelegation from './MsgCancelUnbondingDelegation.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

@@ -1,1 +1,1 @@
-export { OrderHashManager } from './OrderHashManager'
+export { OrderHashManager } from './OrderHashManager.js'

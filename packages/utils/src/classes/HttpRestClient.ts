@@ -5,7 +5,7 @@ import {
   HttpRequestMethod,
 } from '@injectivelabs/exceptions'
 import { StatusCodes } from 'http-status-codes'
-import HttpClient from './HttpClient'
+import HttpClient from './HttpClient.js'
 
 const getErrorMessage = (error: any, endpoint: string): string => {
   if (!error.response) {

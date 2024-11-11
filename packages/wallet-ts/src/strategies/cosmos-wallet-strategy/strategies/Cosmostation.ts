@@ -13,11 +13,11 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { InstallError, Cosmos } from '@cosmostation/extension-client'
-import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
+import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
-import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
-import { CosmostationWallet } from './../../../utils/wallets/cosmostation'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { ConcreteCosmosWalletStrategy } from '../../types/strategy.js'
+import { CosmostationWallet } from './../../../utils/wallets/cosmostation/index.js'
+import { WalletAction, WalletDeviceType } from '../../../types/enums.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 
 const getChainNameFromChainId = (chainId: CosmosChainId) => {

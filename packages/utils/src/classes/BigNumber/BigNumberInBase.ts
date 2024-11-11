@@ -1,6 +1,6 @@
-import type BigNumberInWei from './BigNumberInWei'
-import BigNumber from './BigNumber'
-import { bigNumberBaseToWei } from './utils'
+import type BigNumberInWei from './BigNumberInWei.js'
+import BigNumber from './BigNumber.js'
+import { bigNumberBaseToWei } from './utils.js'
 
 export default class BigNumberInBase extends BigNumber {
   static make(number: BigNumber.Value): BigNumberInBase {

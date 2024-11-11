@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,

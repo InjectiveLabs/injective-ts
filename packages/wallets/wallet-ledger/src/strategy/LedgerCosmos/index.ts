@@ -31,8 +31,8 @@ import {
   ConcreteWalletStrategy,
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
-import { LedgerWalletInfo } from '../../types'
-import LedgerHW from './hw'
+import { LedgerWalletInfo } from '../../types.js'
+import LedgerHW from './hw/index.js'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
 
 export class LedgerCosmos

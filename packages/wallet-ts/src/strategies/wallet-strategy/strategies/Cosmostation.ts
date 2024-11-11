@@ -19,12 +19,12 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { DirectSignResponse, makeSignDoc } from '@cosmjs/proto-signing'
 import { InstallError, Cosmos } from '@cosmostation/extension-client'
-import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
-import { ConcreteWalletStrategy } from '../../types'
-import BaseConcreteStrategy from './Base'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
+import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
+import { ConcreteWalletStrategy } from '../../types/index.js'
+import BaseConcreteStrategy from './Base.js'
+import { WalletAction, WalletDeviceType } from '../../../types/enums.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
-import { CosmostationWallet } from './../../../utils/wallets/cosmostation'
+import { CosmostationWallet } from './../../../utils/wallets/cosmostation/index.js'
 
 const INJECTIVE_CHAIN_NAME = 'injective'
 

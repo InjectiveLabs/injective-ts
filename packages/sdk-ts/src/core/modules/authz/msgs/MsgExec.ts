@@ -1,5 +1,5 @@
-import { MsgBase } from '../../MsgBase'
-import type { Msgs } from '../../msgs'
+import { MsgBase } from '../../MsgBase.js'
+import type { Msgs } from '../../msgs.js'
 import {
   CosmosAuthzV1Beta1Tx,
   GoogleProtobufAny,

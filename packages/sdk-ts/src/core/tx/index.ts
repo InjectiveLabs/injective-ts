@@ -1,11 +1,11 @@
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
-export * from './api'
-export * from './tx'
-export * from './utils'
-export * from './types'
-export * from './broadcaster'
-export * from './eip712'
-export * from './arbitrary'
+export * from './api/index.js'
+export * from './tx.js'
+export * from './utils/index.js'
+export * from './types/index.js'
+export * from './broadcaster/index.js'
+export * from './eip712/index.js'
+export * from './arbitrary.js'
 
 export { CosmosTxV1Beta1Tx }

@@ -1,7 +1,6 @@
-import { ConcreteException } from '../base'
-
-import { ErrorContext, ErrorType } from '../types'
-import { mapFailedTransactionMessage, parseErrorMessage } from '../utils/maps'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
+import { mapFailedTransactionMessage, parseErrorMessage } from '../utils/maps.js'
 
 export class TransactionException extends ConcreteException {
   public static errorClass: string = 'TransactionException'

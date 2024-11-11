@@ -1,1 +1,1 @@
-export * from './allowance'
+export * from './allowance.js'

@@ -9,11 +9,11 @@ import {
   TradeExecutionSide,
   TradeDirection,
   TradeExecutionType,
-} from '../../../types/exchange'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { PaginationOption } from '../../../types/pagination'
-import { IndexerGrpcSpotTransformer } from '../transformers'
+} from '../../../types/exchange.js'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API

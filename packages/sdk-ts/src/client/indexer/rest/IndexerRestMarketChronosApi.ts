@@ -2,9 +2,9 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { IndexerModule } from '../types'
-import { ChronosMarketHistoryResponse } from '../types/markets-history-rest'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { ChronosMarketHistoryResponse } from '../types/markets-history-rest.js'
 
 export class IndexerRestMarketChronosApi extends BaseRestConsumer {
   async fetchMarketsHistory({

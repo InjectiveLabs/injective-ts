@@ -3,7 +3,7 @@ import {
   ExitType,
   StrategyType,
   TrailingArithmetic,
-} from '../../../core/modules/wasm/types'
+} from '../../../core/modules/wasm/types.js'
 
 export type QueryTradingStrategyContractSrategyResponse = {
   user: string

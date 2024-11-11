@@ -4,9 +4,9 @@ import {
 } from '@injectivelabs/exceptions'
 import { Coin } from '@injectivelabs/ts-types'
 import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ValidatorRewards, ChainModule } from '../types'
-import { ChainGrpcDistributionTransformer } from '../transformers'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ValidatorRewards, ChainModule } from '../types/index.js'
+import { ChainGrpcDistributionTransformer } from '../transformers/index.js'
 
 /**
  * @category Chain Grpc API

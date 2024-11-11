@@ -1,4 +1,4 @@
-import MsgBatchCancelDerivativeOrders from './MsgBatchCancelDerivativeOrders'
+import MsgBatchCancelDerivativeOrders from './MsgBatchCancelDerivativeOrders.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

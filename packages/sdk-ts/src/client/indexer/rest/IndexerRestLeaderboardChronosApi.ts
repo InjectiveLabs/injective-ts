@@ -1,5 +1,5 @@
-import { ChronosLeaderboardResponse } from '../types/leaderboard-rest'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
+import { ChronosLeaderboardResponse } from '../types/leaderboard-rest.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,

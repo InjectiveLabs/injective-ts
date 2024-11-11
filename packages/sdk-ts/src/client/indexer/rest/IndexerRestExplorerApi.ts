@@ -14,7 +14,7 @@ import {
   ExplorerValidatorUptime,
   ExplorerCW20BalanceWithToken,
   ContractTransactionWithMessages,
-} from '../types/explorer'
+} from '../types/explorer.js'
 import {
   ExplorerApiResponse,
   ContractExplorerApiResponse,
@@ -26,11 +26,11 @@ import {
   BankTransferFromExplorerApiResponse,
   ValidatorUptimeFromExplorerApiResponse,
   ContractTransactionExplorerApiResponse,
-} from '../types/explorer-rest'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { Block, ExplorerValidator } from '../types/explorer'
-import { IndexerRestExplorerTransformer } from '../transformers'
-import { IndexerModule } from '../types'
+} from '../types/explorer-rest.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { Block, ExplorerValidator } from '../types/explorer.js'
+import { IndexerRestExplorerTransformer } from '../transformers/index.js'
+import { IndexerModule } from '../types/index.js'
 
 const explorerEndpointSuffix = 'api/explorer/v1'
 

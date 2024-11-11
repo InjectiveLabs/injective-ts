@@ -2,7 +2,7 @@ import {
   AuctionModuleState,
   CurrentBasket,
   AuctionModuleStateParams,
-} from '../types/auction'
+} from '../types/auction.js'
 import {
   InjectiveAuctionV1Beta1Genesis,
   InjectiveAuctionV1Beta1Query,

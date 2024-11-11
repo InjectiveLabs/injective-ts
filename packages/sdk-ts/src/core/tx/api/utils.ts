@@ -3,9 +3,9 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
-import { TxResponse } from '../types'
-import { TxGrpcApi } from './TxGrpcApi'
-import { TxRestApi } from './TxRestApi'
+import { TxResponse } from '../types/index.js'
+import { TxGrpcApi } from './TxGrpcApi.js'
+import { TxRestApi } from './TxRestApi.js'
 
 export const waitTxBroadcasted = (
   txHash: string,

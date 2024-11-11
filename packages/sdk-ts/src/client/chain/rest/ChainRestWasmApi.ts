@@ -2,8 +2,8 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { ChainModule, RestApiResponse } from '../types'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { ChainModule, RestApiResponse } from '../types/index.js'
 
 export type SmartContractStateResponse = unknown
 

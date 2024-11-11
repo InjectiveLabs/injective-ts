@@ -3,7 +3,7 @@ import {
   getDerivativeMarketTensMultiplier,
   getSpotMarketDecimals,
   getSpotMarketTensMultiplier,
-} from './markets'
+} from './markets.js'
 
 describe('derivativeMarketTickSizes', () => {
   it('formats the tick sizes properly using getDerivativeMarketDecimals', () => {

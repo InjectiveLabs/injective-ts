@@ -14,10 +14,10 @@ import {
 import TorusWallet from '@toruslabs/torus-embed'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
-import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
-import BaseConcreteStrategy from './Base'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
-import { SendTransactionOptions } from '../types'
+import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types/index.js'
+import BaseConcreteStrategy from './Base.js'
+import { WalletAction, WalletDeviceType } from '../../../types/enums.js'
+import { SendTransactionOptions } from '../types.js'
 
 export const getNetworkFromChainId = (
   chainId: EthereumChainId,

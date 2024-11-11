@@ -1,4 +1,4 @@
-import MsgIncreasePositionMargin from './MsgIncreasePositionMargin'
+import MsgIncreasePositionMargin from './MsgIncreasePositionMargin.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

@@ -1,4 +1,4 @@
-import { Pagination } from './../../../types/pagination'
+import { Pagination } from './../../../types/pagination.js'
 import {
   CosmwasmWasmV1Query,
   CosmwasmWasmV1Types,

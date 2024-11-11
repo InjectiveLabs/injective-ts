@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "esnext",
+    "module": "NodeNext",
     "moduleResolution": "node",
     "declaration": true,
     "outDir": "./../esm",

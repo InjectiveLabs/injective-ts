@@ -5,15 +5,15 @@ import {
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
-import { recoverTypedSignaturePubKey } from '../../../utils/transaction'
-import { IndexerModule } from '../types'
+import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
+import { IndexerModule } from '../types/index.js'
 import {
   ErrorType,
   GrpcUnaryRequestException,
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   CosmosTxV1Beta1Tx,

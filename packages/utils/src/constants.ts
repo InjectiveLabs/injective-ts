@@ -1,4 +1,4 @@
-import BigNumber from './classes/BigNumber/BigNumber'
+import BigNumber from './classes/BigNumber/BigNumber.js'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 

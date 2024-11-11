@@ -1,7 +1,7 @@
 import TrezorConnect from '@trezor/connect-web'
 import HDNode from 'hdkey'
 import { DEFAULT_BASE_DERIVATION_PATH } from '@injectivelabs/wallet-base'
-import AccountManager from './AccountManager'
+import AccountManager from './AccountManager.js'
 
 // @ts-ignore
 const trezorConnect = TrezorConnect.default || TrezorConnect

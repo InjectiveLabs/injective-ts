@@ -2,7 +2,7 @@ import {
   AuthorityMetadata,
   TokenFactoryModuleParams,
   TokenFactoryModuleState,
-} from '../types/tokenfactory'
+} from '../types/tokenfactory.js'
 import { InjectiveTokenFactoryV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**

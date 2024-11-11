@@ -5,9 +5,9 @@ import {
 import {
   ChronosSpotMarketSummaryResponse,
   AllSpotMarketSummaryResponse,
-} from '../types/spot-rest'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { IndexerModule } from '../types'
+} from '../types/spot-rest.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Chronos API

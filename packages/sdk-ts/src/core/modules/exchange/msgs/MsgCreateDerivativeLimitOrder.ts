@@ -1,5 +1,5 @@
-import { MsgBase } from '../../MsgBase'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import { MsgBase } from '../../MsgBase.js'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   InjectiveExchangeV1Beta1Tx,

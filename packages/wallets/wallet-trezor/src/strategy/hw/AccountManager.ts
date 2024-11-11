@@ -2,7 +2,7 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
 import { addHexPrefix, publicToAddress } from 'ethereumjs-util'
-import { TrezorWalletInfo } from '../../types'
+import { TrezorWalletInfo } from '../../types.js'
 import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
   DEFAULT_BASE_DERIVATION_PATH,

@@ -1,5 +1,5 @@
-import { Exception } from './exceptions/types'
-import { ThrownException } from './types'
+import { Exception } from './exceptions/types/index.js'
+import { ThrownException } from './types.js'
 
 export const THROWN_EXCEPTIONS = [
   'GrpcUnaryRequestException',

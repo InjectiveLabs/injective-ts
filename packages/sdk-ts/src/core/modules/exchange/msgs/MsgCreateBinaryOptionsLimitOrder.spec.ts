@@ -1,4 +1,4 @@
-import MsgCreateBinaryOptionsLimitOrder from './MsgCreateBinaryOptionsLimitOrder'
+import MsgCreateBinaryOptionsLimitOrder from './MsgCreateBinaryOptionsLimitOrder.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

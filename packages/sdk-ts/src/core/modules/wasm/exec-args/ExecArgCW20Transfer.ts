@@ -2,7 +2,7 @@ import {
   dataToExecData,
   ExecArgBase,
   ExecDataRepresentation,
-} from '../ExecArgBase'
+} from '../ExecArgBase.js'
 
 /**
  * When we execute the `transfer` action on

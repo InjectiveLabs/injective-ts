@@ -46,8 +46,8 @@ import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
-} from './types'
-import { checkIfTxRunOutOfGas } from './../utils/tx'
+} from './types.js'
+import { checkIfTxRunOutOfGas } from './../utils/tx.js'
 import {
   Wallet,
   isCosmosWallet,
@@ -58,7 +58,7 @@ import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
 } from '@injectivelabs/wallet-base'
-import BaseWalletStrategy from '../strategy/BaseWalletStrategy'
+import BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,

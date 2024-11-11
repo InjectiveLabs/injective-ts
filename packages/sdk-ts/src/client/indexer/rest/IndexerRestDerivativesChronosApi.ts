@@ -1,13 +1,13 @@
 import {
   ChronosDerivativeMarketSummaryResponse,
   AllDerivativeMarketSummaryResponse,
-} from '../types/derivatives-rest'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
+} from '../types/derivatives-rest.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { IndexerModule } from '../types'
+import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Chronos API

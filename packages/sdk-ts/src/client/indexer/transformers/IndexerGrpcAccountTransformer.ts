@@ -1,6 +1,6 @@
 import { Coin } from '@injectivelabs/ts-types'
-import { grpcPagingToPaging } from '../../..//utils/pagination'
-import { GrpcCoin } from '../../../types'
+import { grpcPagingToPaging } from '../../..//utils/pagination.js'
+import { GrpcCoin } from '../../../types/index.js'
 import {
   TransferType,
   TradingReward,
@@ -15,7 +15,7 @@ import {
   GrpcSubaccountDeposit,
   GrpcSubaccountPortfolio,
   GrpcSubaccountBalanceTransfer,
-} from '../types/account'
+} from '../types/account.js'
 import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**

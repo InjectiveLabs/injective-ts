@@ -1,4 +1,4 @@
-import { Network } from './types'
+import { Network } from './types.js'
 
 export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',

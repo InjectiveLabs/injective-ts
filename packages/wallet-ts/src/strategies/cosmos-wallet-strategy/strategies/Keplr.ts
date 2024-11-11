@@ -15,11 +15,11 @@ import {
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import { AminoSignResponse, StdSignDoc } from '@cosmjs/launchpad'
-import { KeplrWallet } from '../../../utils/wallets/keplr'
-import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
-import { SendTransactionOptions } from '../../wallet-strategy'
-import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
+import { KeplrWallet } from '../../../utils/wallets/keplr/index.js'
+import { ConcreteCosmosWalletStrategy } from '../../types/strategy.js'
+import { WalletAction, WalletDeviceType } from '../../../types/enums.js'
+import { SendTransactionOptions } from '../../wallet-strategy/index.js'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos.js'
 
 export default class Keplr implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId

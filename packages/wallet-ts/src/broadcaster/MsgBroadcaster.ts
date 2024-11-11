@@ -45,21 +45,21 @@ import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
-} from '../utils/utils'
+} from '../utils/utils.js'
 import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
-} from './types'
+} from './types.js'
 import {
   isCosmosWallet,
   isEip712V2OnlyWallet,
-} from '../strategies/wallet-strategy/utils'
-import { Wallet, WalletDeviceType } from '../types'
-import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
-import { isCosmosAminoOnlyWallet } from '../utils'
-import { LeapWallet } from '../utils/wallets'
-import { checkIfTxRunOutOfGas } from './helper'
+} from '../strategies/wallet-strategy/utils.js'
+import { Wallet, WalletDeviceType } from '../types/index.js'
+import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr/index.js'
+import { isCosmosAminoOnlyWallet } from '../utils/index.js'
+import { LeapWallet } from '../utils/wallets/index.js'
+import { checkIfTxRunOutOfGas } from './helper.js'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,

@@ -5,7 +5,7 @@ import {
   BECH32_ADDR_ACC_PREFIX,
   BECH32_ADDR_CONS_PREFIX,
   BECH32_ADDR_VAL_PREFIX,
-} from '../../utils/constants'
+} from '../../utils/constants.js'
 
 /**
  * @category Utility Classes

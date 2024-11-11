@@ -1,4 +1,4 @@
-import { BigNumber } from './classes'
+import BigNumber from './classes/BigNumber/BigNumber.js'
 
 const $BigNumber = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
 

@@ -1,6 +1,6 @@
-import MsgTransferCosmjs from './core/modules/ibc/msgs/MsgTransferCosmjs'
-import { accountParser as injectiveAccountParser } from './core/accounts/AccountParser'
+import MsgTransferCosmjs from './core/modules/ibc/msgs/MsgTransferCosmjs.js'
+import { accountParser as injectiveAccountParser } from './core/accounts/AccountParser.js'
 
-export * from './core/accounts/signers'
-export * from './core/stargate'
+export * from './core/accounts/signers/index.js'
+export * from './core/stargate/index.js'
 export { MsgTransferCosmjs, injectiveAccountParser }

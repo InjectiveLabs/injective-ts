@@ -31,7 +31,7 @@ import {
   SendTransactionOptions,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
-import { CosmosWallet } from './../wallet'
+import { CosmosWallet } from './../wallet.js'
 
 const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
 

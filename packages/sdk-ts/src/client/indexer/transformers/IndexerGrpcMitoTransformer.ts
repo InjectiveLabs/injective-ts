@@ -31,8 +31,8 @@ import {
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
   MitoIDOClaimedCoins,
-} from '../types/mito'
-import { GrpcCoin } from '../../../types'
+} from '../types/mito.js'
+import { GrpcCoin } from '../../../types/index.js'
 
 /**
  * @category Indexer Grpc Transformer

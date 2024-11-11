@@ -1,5 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgExternalTransfer from './MsgExternalTransfer'
+import MsgExternalTransfer from './MsgExternalTransfer.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

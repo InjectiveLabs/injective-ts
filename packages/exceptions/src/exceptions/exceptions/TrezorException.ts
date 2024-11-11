@@ -1,6 +1,5 @@
-import { ConcreteException } from '../base'
-
-import { ErrorContext, ErrorType } from '../types'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
 
 export class TrezorException extends ConcreteException {
   public static errorClass: string = 'TrezorException'

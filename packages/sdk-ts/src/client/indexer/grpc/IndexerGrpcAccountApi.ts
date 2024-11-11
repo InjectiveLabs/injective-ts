@@ -4,10 +4,10 @@ import {
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { PaginationOption } from '../../../types/pagination'
-import { IndexerGrpcAccountTransformer } from '../transformers'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { IndexerGrpcAccountTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API

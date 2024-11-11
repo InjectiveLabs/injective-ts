@@ -1,6 +1,6 @@
-import { ConcreteException } from '../base'
-import { ErrorContext, ErrorType } from '../types'
-import { mapMetamaskMessage } from '../utils/maps'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
+import { mapMetamaskMessage } from '../utils/maps.js'
 
 const removeBitGetFromErrorString = (message: string): string =>
   message

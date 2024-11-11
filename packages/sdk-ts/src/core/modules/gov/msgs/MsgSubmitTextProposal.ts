@@ -5,7 +5,7 @@ import {
   CosmosGovV1Beta1Gov,
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgSubmitTextProposal {
   export interface Params {

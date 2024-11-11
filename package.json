@@ -95,6 +95,7 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "2.0.0",
     "tsc-alias": "^1.7.0",
+    "tsc-esm-fix": "^3.1.2",
     "tsconfig-paths": "^4.2.0",
     "typedoc": "^0.25.11",
     "typedoc-monorepo-link-types": "^0.0.4",

@@ -1,6 +1,6 @@
-import { grpcPaginationToPagination } from '../../../utils/pagination'
-import { uint8ArrayToString } from '../../../utils'
-import { Account, AuthModuleParams } from '../types/auth'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import { uint8ArrayToString } from '../../../utils/index.js'
+import { Account, AuthModuleParams } from '../types/auth.js'
 import {
   GoogleProtobufAny,
   CosmosAuthV1Beta1Query,

@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { CosmosFeegrantV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 

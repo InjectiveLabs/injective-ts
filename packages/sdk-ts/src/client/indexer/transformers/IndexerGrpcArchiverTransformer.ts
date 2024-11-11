@@ -6,7 +6,7 @@ import {
   VolLeaderboard,
   HistoricalBalance,
   HistoricalVolumes,
-} from '../types/archiver'
+} from '../types/archiver.js'
 import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**

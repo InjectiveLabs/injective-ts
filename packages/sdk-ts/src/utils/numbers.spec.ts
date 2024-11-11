@@ -1,7 +1,7 @@
 import {
   spotPriceFromChainPriceToFixed,
   spotQuantityFromChainQuantityToFixed,
-} from './numbers'
+} from './numbers.js'
 
 describe('formatSpotChainNumbersToProperFormat', () => {
   it('formats the number properly', () => {

@@ -4,7 +4,7 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_STD_FEE,
 } from '@injectivelabs/utils'
-import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types'
+import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
 
 export const getEip712Domain = (ethereumChainId: EthereumChainId) => {
   return {

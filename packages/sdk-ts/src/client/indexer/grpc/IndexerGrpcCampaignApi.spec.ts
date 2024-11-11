@@ -1,7 +1,7 @@
 import { mockFactory } from '@injectivelabs/test-utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { IndexerCampaignTransformer } from '../transformers'
-import { IndexerGrpcCampaignApi } from './IndexerGrpcCampaignApi'
+import { IndexerCampaignTransformer } from '../transformers/index.js'
+import { IndexerGrpcCampaignApi } from './IndexerGrpcCampaignApi.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const CAMPAIGN_ID = 'spot-grid-inj-usdt-test'

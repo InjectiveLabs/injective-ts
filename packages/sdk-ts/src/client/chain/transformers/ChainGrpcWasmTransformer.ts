@@ -10,9 +10,9 @@ import {
   ContractStateWithPagination,
   GrpcContractCodeHistoryEntry,
   ContractAccountsBalanceWithPagination,
-} from '../types/wasm'
-import { fromUtf8 } from '../../../utils'
-import { grpcPaginationToPagination } from './../../../utils/pagination'
+} from '../types/wasm.js'
+import { fromUtf8 } from '../../../utils/index.js'
+import { grpcPaginationToPagination } from './../../../utils/pagination.js'
 import { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
 
 /**

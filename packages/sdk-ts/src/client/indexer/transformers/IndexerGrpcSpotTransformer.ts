@@ -17,7 +17,7 @@ import {
   GrpcSpotLimitOrder,
   GrpcSpotOrderHistory,
   GrpcAtomicSwap,
-} from '../types/spot'
+} from '../types/spot.js'
 import {
   Orderbook,
   PriceLevel,
@@ -25,9 +25,9 @@ import {
   GrpcPriceLevel,
   IndexerTokenMeta,
   OrderbookWithSequence,
-} from '../types/exchange'
-import { TokenType } from '../../../types/token'
-import { grpcPagingToPaging } from '../../../utils/pagination'
+} from '../types/exchange.js'
+import { TokenType } from '../../../types/token.js'
+import { grpcPagingToPaging } from '../../../utils/pagination.js'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 const zeroPriceLevel = () => ({

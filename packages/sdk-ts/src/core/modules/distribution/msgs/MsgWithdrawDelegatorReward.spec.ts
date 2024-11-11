@@ -1,4 +1,4 @@
-import MsgWithdrawDelegatorReward from './MsgWithdrawDelegatorReward'
+import MsgWithdrawDelegatorReward from './MsgWithdrawDelegatorReward.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

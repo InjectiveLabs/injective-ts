@@ -1,6 +1,6 @@
-import { StreamStatusResponse } from '../types'
-import { IndexerGrpcMitoStreamTransformer } from '../transformers'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
+import { StreamStatusResponse } from '../types/index.js'
+import { IndexerGrpcMitoStreamTransformer } from '../transformers/index.js'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import { Subscription } from 'rxjs'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
 

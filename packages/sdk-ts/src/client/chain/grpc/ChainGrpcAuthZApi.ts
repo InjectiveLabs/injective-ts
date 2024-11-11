@@ -3,11 +3,11 @@ import {
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { CosmosAuthzV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
-import { ChainGrpcAuthZTransformer } from '../transformers/ChainGrpcAuthZTransformer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { paginationRequestFromPagination } from '../../../utils/pagination.js'
+import { ChainGrpcAuthZTransformer } from '../transformers/ChainGrpcAuthZTransformer.js'
 
 /**
  * @category Chain Grpc API

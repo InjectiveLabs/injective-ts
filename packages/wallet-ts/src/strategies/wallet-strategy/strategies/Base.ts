@@ -1,6 +1,6 @@
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { WalletStrategyArguments } from '../../types'
-import { WalletEventListener } from '../../../types/enums'
+import { WalletStrategyArguments } from '../../types/index.js'
+import { WalletEventListener } from '../../../types/enums.js'
 
 export default abstract class BaseConcreteStrategy {
   protected chainId: ChainId

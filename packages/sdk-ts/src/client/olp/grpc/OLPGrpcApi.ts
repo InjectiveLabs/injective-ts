@@ -4,8 +4,8 @@ import {
   IndexerErrorModule,
 } from '@injectivelabs/exceptions'
 import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { DmmGrpcTransformer } from './transformers'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { DmmGrpcTransformer } from './transformers/index.js'
 
 export class OLPGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.OLP

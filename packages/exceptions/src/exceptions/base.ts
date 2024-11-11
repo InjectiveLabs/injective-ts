@@ -6,7 +6,7 @@ import {
   ErrorCode,
   UnspecifiedErrorCode,
   ErrorContextCode,
-} from './types'
+} from './types/index.js'
 
 /**
  * we have to define it here as

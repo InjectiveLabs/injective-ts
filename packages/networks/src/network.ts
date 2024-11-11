@@ -3,7 +3,7 @@ import {
   localChainInfo,
   mainnetChainInfo,
   testnetChainInfo,
-} from './chainInfos'
+} from './chainInfos.js'
 import {
   endpointsLocal,
   endpointsDevnet,
@@ -20,8 +20,8 @@ import {
   endpointsMainnetOld,
   endpointsMainnetSentry,
   endpointsTestnetSentry,
-} from './endpoints'
-import { Network, ChainInfo, NetworkEndpoints } from './types'
+} from './endpoints.js'
+import { Network, ChainInfo, NetworkEndpoints } from './types.js'
 
 export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.MainnetLB]: endpointsMainnetLB,

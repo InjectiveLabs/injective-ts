@@ -1,5 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgCreateInsuranceFund from './MsgCreateInsuranceFund'
+import MsgCreateInsuranceFund from './MsgCreateInsuranceFund.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

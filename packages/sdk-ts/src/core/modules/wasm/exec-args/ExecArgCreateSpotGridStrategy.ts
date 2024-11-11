@@ -2,14 +2,14 @@ import {
   dataToExecData,
   ExecArgBase,
   ExecDataRepresentation,
-} from '../ExecArgBase'
+} from '../ExecArgBase.js'
 
 import {
   ExitType,
   ExitConfig,
   StrategyType,
   TrailingArithmetic,
-} from '../types'
+} from '../types.js'
 export declare namespace ExecArgCreateSpotGridStrategy {
   export interface Params {
     subaccountId: string

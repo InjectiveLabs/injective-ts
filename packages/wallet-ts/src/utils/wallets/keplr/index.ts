@@ -1,2 +1,2 @@
-export * from './KeplrWallet'
-export * from './utils'
+export * from './KeplrWallet.js'
+export * from './utils/index.js'

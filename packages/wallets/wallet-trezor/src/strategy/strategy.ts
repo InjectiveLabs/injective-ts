@@ -36,9 +36,9 @@ import {
   WalletStrategyEthereumOptions,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import TrezorHW from './hw'
-import { transformTypedData } from '../utils'
-import { TrezorWalletInfo } from '../types'
+import TrezorHW from './hw/index.js'
+import { transformTypedData } from '../utils.js'
+import { TrezorWalletInfo } from '../types.js'
 
 type EthereumTransactionEIP1559 = {
   to: string

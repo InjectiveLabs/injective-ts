@@ -1,7 +1,7 @@
-import { GrpcCoin, Pagination } from '../../../types'
+import { GrpcCoin, Pagination } from '../../../types/index.js'
 import { Coin } from '@injectivelabs/ts-types'
-import { BankModuleParams, Metadata, TotalSupply } from '../types'
-import { grpcPaginationToPagination } from '../../../utils/pagination'
+import { BankModuleParams, Metadata, TotalSupply } from '../types/index.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
 

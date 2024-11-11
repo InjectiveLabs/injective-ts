@@ -1,10 +1,10 @@
-import MsgClaimVoucher from './msgs/MsgClaimVoucher'
-import MsgCreateNamespace from './msgs/MsgCreateNamespace'
-import MsgDeleteNamespace from './msgs/MsgDeleteNamespace'
-import MsgRevokeNamespaceRoles from './msgs/MsgRevokeNamespaceRoles'
-import MsgUpdateNamespace from './msgs/MsgUpdateNamespace'
-import MsgUpdateNamespaceRoles from './msgs/MsgUpdateNamespaceRoles'
-import MsgUpdateParams from './msgs/MsgUpdateParams'
+import MsgClaimVoucher from './msgs/MsgClaimVoucher.js'
+import MsgCreateNamespace from './msgs/MsgCreateNamespace.js'
+import MsgDeleteNamespace from './msgs/MsgDeleteNamespace.js'
+import MsgRevokeNamespaceRoles from './msgs/MsgRevokeNamespaceRoles.js'
+import MsgUpdateNamespace from './msgs/MsgUpdateNamespace.js'
+import MsgUpdateNamespaceRoles from './msgs/MsgUpdateNamespaceRoles.js'
+import MsgUpdateParams from './msgs/MsgUpdateParams.js'
 
 export {
   MsgClaimVoucher,
