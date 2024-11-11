@@ -38,7 +38,7 @@ export default class LedgerTransport {
         return await TransportWebUSB.request()
       }
     } catch (e: unknown) {
-      throw new LedgerException(new Error((e as any).message))
+      throw new LedgerException(new Error(e as any))
     }
 
     return TransportWebUSB.request()

@@ -49,7 +49,7 @@ export class Web3Broadcaster {
 
       return txHash
     } catch (e: unknown) {
-      throw new Web3Exception(new Error((e as any).message))
+      throw new Web3Exception(new Error(e as any))
     }
   }
 }

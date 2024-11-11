@@ -17,5 +17,6 @@ export class HttpRequestException extends ConcreteException {
     this.method = context
       ? context.method || HttpRequestMethod.Get
       : HttpRequestMethod.Get
+    this.context = context?.context || 'Unknown'
   }
 }

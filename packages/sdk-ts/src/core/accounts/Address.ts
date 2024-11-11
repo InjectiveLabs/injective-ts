@@ -48,7 +48,7 @@ export class Address {
 
       return new Address(bech32Address)
     } catch (e) {
-      throw new GeneralException(new Error((e as any).message), {
+      throw new GeneralException(new Error((e as any)), {
         type: ErrorType.ValidationError,
       })
     }

@@ -29,7 +29,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Tendermint,
@@ -57,7 +57,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Tendermint,

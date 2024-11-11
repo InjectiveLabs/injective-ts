@@ -161,7 +161,7 @@ export class TxGrpcApi implements TxConcreteApi {
         gasInfo: gasInfo,
       }
     } catch (e: unknown) {
-      throw new TransactionException(new Error((e as any).message))
+      throw new TransactionException(new Error(e as any))
     }
   }
 
@@ -203,7 +203,7 @@ export class TxGrpcApi implements TxConcreteApi {
         throw e
       }
 
-      throw new TransactionException(new Error((e as any).message))
+      throw new TransactionException(new Error(e as any))
     }
   }
 
@@ -249,7 +249,7 @@ export class TxGrpcApi implements TxConcreteApi {
         throw e
       }
 
-      throw new TransactionException(new Error((e as any).message))
+      throw new TransactionException(new Error(e as any))
     }
   }
 }
