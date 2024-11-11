@@ -3,7 +3,7 @@ import {
   GrpcUnaryRequestException,
   IndexerErrorModule,
 } from '@injectivelabs/exceptions'
-import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
+import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { DmmGrpcTransformer } from './transformers/index.js'
 

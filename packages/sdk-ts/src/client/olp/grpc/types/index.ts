@@ -1,4 +1,4 @@
-import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
+import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
 
 export interface DmmPagination {
   from?: number
