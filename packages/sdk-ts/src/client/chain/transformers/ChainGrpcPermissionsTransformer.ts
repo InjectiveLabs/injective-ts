@@ -1,7 +1,11 @@
 import {
+  Voucher,
   Namespace,
+  RoleManager,
+  PolicyStatus,
+  AddressVoucher,
+  PolicyManagerCapability,
   PermissionsModuleParams,
-  GrpcPermissionsNamespace,
 } from '../types/permissions.js'
 import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
@@ -9,73 +13,77 @@ import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcPermissionsTransformer {
-  static moduleParamsResponseToModuleParams(
+  static paramsResponseToParams(
     response: InjectivePermissionsV1Beta1Query.QueryParamsResponse,
   ): PermissionsModuleParams {
-    const params = response.params!
-
     return {
-      wasmHookQueryMaxGas: params.wasmHookQueryMaxGas,
+      wasmHookQueryMaxGas: response.params?.wasmHookQueryMaxGas || '0',
     }
   }
 
-  static grpcNamespaceToNamespace(
-    grpcNamespace: GrpcPermissionsNamespace,
+  static namespacesResponseToNamespaces(
+    response: InjectivePermissionsV1Beta1Query.QueryNamespacesResponse,
+  ): Namespace[] {
+    return response.namespaces
+  }
+
+  static namespaceResponseToNamespace(
+    response: InjectivePermissionsV1Beta1Query.QueryNamespaceResponse,
   ): Namespace {
-    return {
-      denom: grpcNamespace.denom,
-      wasmHook: grpcNamespace.wasmHook,
-      mintsPaused: grpcNamespace.mintsPaused,
-      sendsPaused: grpcNamespace.sendsPaused,
-      burnsPaused: grpcNamespace.burnsPaused,
-      rolePermissions: grpcNamespace.rolePermissions,
-      addressRoles: grpcNamespace.addressRoles,
-    }
+    return response.namespace!
   }
 
-  static addressRolesResponseToAddressRoles(
-    response: InjectivePermissionsV1Beta1Query.QueryAddressRolesResponse,
-  ) {
-    return response.roles.map((role) => {
-      return {
-        roles: role,
-      }
-    })
+  static namespaceDenomsResponseToNamespaceDenoms(
+    response: InjectivePermissionsV1Beta1Query.QueryNamespaceDenomsResponse,
+  ): string[] {
+    return response.denoms
   }
 
-  static addressesByRolesResponseToAddressesByRoles(
-    response: InjectivePermissionsV1Beta1Query.QueryAddressesByRoleResponse,
-  ) {
-    return response.addresses.map((address) => {
-      return {
-        addresses: address,
-      }
-    })
+  static actorsByRoleResponseToActorsByRole(
+    response: InjectivePermissionsV1Beta1Query.QueryActorsByRoleResponse,
+  ): string[] {
+    return response.actors
   }
 
-  static allNamespacesResponseToAllNamespaces(
-    response: InjectivePermissionsV1Beta1Query.QueryAllNamespacesResponse,
-  ) {
-    return response.namespaces.map((namespace) => {
-      ChainGrpcPermissionsTransformer.grpcNamespaceToNamespace(namespace)
-    })
+  static rolesByActorResponseToRolesByActor(
+    response: InjectivePermissionsV1Beta1Query.QueryRolesByActorResponse,
+  ): string[] {
+    return response.roles
   }
 
-  static namespaceByDenomResponceToNamespaceByDenom(
-    response: InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomResponse,
-  ) {
-    return ChainGrpcPermissionsTransformer.grpcNamespaceToNamespace(
-      response.namespace!,
-    )
+  static roleManagersResponseToRoleManagers(
+    response: InjectivePermissionsV1Beta1Query.QueryRoleManagersResponse,
+  ): RoleManager[] {
+    return response.roleManagers
   }
 
-  static vouchersForAddressResponseToVouchersForAddress(
-    response: InjectivePermissionsV1Beta1Query.QueryVouchersForAddressResponse,
-  ) {
-    return response.vouchers.map((voucher) => {
-      return {
-        vouchers: voucher,
-      }
-    })
+  static roleManagerResponseToRoleManager(
+    response: InjectivePermissionsV1Beta1Query.QueryRoleManagerResponse,
+  ): RoleManager {
+    return response.roleManager!
+  }
+
+  static policyStatusesResponseToPolicyStatuses(
+    response: InjectivePermissionsV1Beta1Query.QueryPolicyStatusesResponse,
+  ): PolicyStatus[] {
+    return response.policyStatuses
+  }
+
+  static policyManagerCapabilitiesResponseToPolicyManagerCapabilities(
+    response: InjectivePermissionsV1Beta1Query.QueryPolicyManagerCapabilitiesResponse,
+  ): PolicyManagerCapability[] {
+    return response.policyManagerCapabilities
+  }
+
+  static vouchersResponseToVouchers(
+    response: InjectivePermissionsV1Beta1Query.QueryVouchersResponse,
+  ): AddressVoucher[] {
+    return response.vouchers
+  }
+
+  static voucherResponseToVoucher(
+    response: InjectivePermissionsV1Beta1Query.QueryVoucherResponse,
+  ): Voucher {
+    return response.voucher
   }
 }

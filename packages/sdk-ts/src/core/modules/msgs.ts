@@ -56,6 +56,10 @@ import MsgSignData from './exchange/msgs/MsgSignData.js'
 import MsgSetDenomMetadata from './tokenfactory/msgs/MsgSetDenomMetadata.js'
 import MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer.js'
 import MsgLiquidatePosition from './exchange/msgs/MsgLiquidatePosition.js'
+import MsgClaimVoucher from './permissions/msgs/MsgClaimVoucher.js'
+import MsgCreateNamespace from './permissions/msgs/MsgCreateNamespace.js'
+import MsgUpdateNamespace from './permissions/msgs/MsgUpdateNamespace.js'
+import MsgUpdatePermissionParams from './permissions/msgs/MsgUpdateParams.js'
 import { MsgSubmitProposal } from './gov/index.js'
 
 /**
@@ -121,6 +125,10 @@ export type Msgs =
   | MsgAdminUpdateBinaryOptionsMarket
   | MsgLiquidatePosition
   | MsgSignData
+  | MsgClaimVoucher
+  | MsgCreateNamespace
+  | MsgUpdateNamespace
+  | MsgUpdatePermissionParams
 
 /**
  * @category Messages

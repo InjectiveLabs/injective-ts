@@ -1,19 +1,14 @@
 import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  InjectivePermissionsV1Beta1Tx,
+  InjectivePermissionsV1Beta1Permissions,
+} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateNamespace {
   export interface Params {
     sender: string
-    namespace: {
-      denom: string
-      wasmHook: string
-      mintsPaused: boolean
-      sendsPaused: boolean
-      burnsPaused: boolean
-      rolePermissions: { role: string; permissions: number }[]
-      addressRoles: { address: string; roles: string[] }[]
-    }
+    namespace: InjectivePermissionsV1Beta1Permissions.Namespace
   }
 
   export type Proto = InjectivePermissionsV1Beta1Tx.MsgCreateNamespace
