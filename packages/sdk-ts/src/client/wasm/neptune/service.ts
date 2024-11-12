@@ -3,6 +3,7 @@ import {
   isMainnet,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
+import { NetworkEndpoints } from '@injectivelabs/networks'
 import { AssetInfo, NEPTUNE_USDT_CW20_CONTRACT, AssetInfoWithPrice } from './types'
 import { ChainGrpcWasmApi } from '../../chain'
 import { QueryGetPrices } from './queries'
@@ -27,16 +28,16 @@ export class NeptuneService {
    * @param endpoints Optional custom network endpoints.
    */
   constructor(
-    network: Network = Network.Mainnet,
-    endpoints?: any // Replace `any` with the appropriate type if available
+    network: Network = Network.MainnetSentry,
+    endpoints?: NetworkEndpoints
   ) {
-    if (network !== Network.Mainnet) {
+    if (!isMainnet(network)) {
       throw new GeneralException(new Error('Please switch to mainnet network'))
     }
 
     const networkEndpoints = endpoints || getNetworkEndpoints(network)
     this.client = new ChainGrpcWasmApi(networkEndpoints.grpc)
-    this.priceOracleContract = isMainnet(network) ? NEPTUNE_PRICE_CONTRACT : ''
+    this.priceOracleContract = NEPTUNE_PRICE_CONTRACT
   }
 
   /**
@@ -112,12 +113,12 @@ export class NeptuneService {
    * @param amount Amount to deposit as a string.
    * @returns MsgExecuteContractCompat message.
    */
-  createDepositMsg(
+  createDepositMsg({ denom, amount, sender, contractAddress = NEPTUNE_USDT_MARKET_CONTRACT }: {
     denom: string,
     amount: string,
     sender: string,
-    contractAddress: string = NEPTUNE_USDT_MARKET_CONTRACT,
-  ): MsgExecuteContractCompat {
+    contractAddress?: string
+  }): MsgExecuteContractCompat {
     return MsgExecuteContractCompat.fromJSON({
       sender,
       contractAddress,
