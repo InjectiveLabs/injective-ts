@@ -9,6 +9,7 @@ import {
   ExitConfig,
   StrategyType,
   TrailingArithmetic,
+  TrailingArithmeticLP,
 } from '../types.js'
 export declare namespace ExecArgCreateSpotGridStrategy {
   export interface Params {
@@ -21,7 +22,11 @@ export declare namespace ExecArgCreateSpotGridStrategy {
     takeProfit?: ExitConfig
     exitType?: ExitType
     strategyType?: StrategyType
-    trailingArithmetic?: TrailingArithmetic
+    trailingArithmetic?: {
+      upperTrailing: string
+      lowerTrailing: string
+      lpMode?: boolean
+    }
   }
 
   export interface Data {
@@ -38,7 +43,7 @@ export declare namespace ExecArgCreateSpotGridStrategy {
       exit_price: string
     }
     exit_type?: ExitType
-    strategy_type?: StrategyType | TrailingArithmetic
+    strategy_type?: StrategyType | TrailingArithmetic | TrailingArithmeticLP
   }
 }
 
@@ -58,6 +63,20 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
   toData(): ExecArgCreateSpotGridStrategy.Data {
     const { params } = this
 
+    const trailingBounds = params.trailingArithmetic
+      ? {
+          upper_trailing_bound: params.trailingArithmetic.upperTrailing,
+          lower_trailing_bound: params.trailingArithmetic.lowerTrailing,
+        }
+      : undefined
+
+    const strategyType =
+      params.trailingArithmetic && trailingBounds
+        ? params.trailingArithmetic.lpMode
+          ? { trailing_arithmetic_l_p: trailingBounds }
+          : { trailing_arithmetic: trailingBounds }
+        : params.strategyType ?? StrategyType.Arithmetic
+
     return {
       subaccount_id: params.subaccountId,
       levels: params.levels,
@@ -76,7 +95,7 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
             exit_price: params.takeProfit.exitPrice,
           }
         : undefined,
-      strategy_type: params.trailingArithmetic ?? params.strategyType,
+      strategy_type: strategyType,
     }
   }
 
