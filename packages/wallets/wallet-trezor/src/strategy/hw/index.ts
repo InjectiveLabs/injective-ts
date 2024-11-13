@@ -2,6 +2,7 @@ import TrezorConnect from '@trezor/connect-web'
 import HDNode from 'hdkey'
 import { DEFAULT_BASE_DERIVATION_PATH } from '@injectivelabs/wallet-base'
 import AccountManager from './AccountManager.js'
+import { WalletException } from '@injectivelabs/exceptions'
 
 // @ts-ignore
 const trezorConnect = TrezorConnect.default || TrezorConnect
@@ -17,7 +18,11 @@ export default class TrezorTransport {
   private hdKey: HDNode = new HDNode()
 
   constructor() {
-    trezorConnect.init({ lazyLoad: true, manifest: TREZOR_CONNECT_MANIFEST })
+    try {
+      trezorConnect.init({ lazyLoad: true, manifest: TREZOR_CONNECT_MANIFEST })
+    } catch (e) {
+      throw new WalletException(e as Error)
+    }
   }
 
   async connect() {
