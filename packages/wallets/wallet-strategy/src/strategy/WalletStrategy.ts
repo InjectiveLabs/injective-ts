@@ -90,6 +90,11 @@ const createStrategy = ({
         ...ethWalletArgs,
         wallet: Wallet.BitGet,
       })
+    case Wallet.FoxWallet:
+      return new EvmWalletStrategy({
+        ...ethWalletArgs,
+        wallet: Wallet.FoxWallet,
+      })
     case Wallet.WalletConnect:
       return new WalletConnectStrategy({
         ...ethWalletArgs,

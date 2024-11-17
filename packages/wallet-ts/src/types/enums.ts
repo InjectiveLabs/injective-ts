@@ -19,6 +19,8 @@ export enum Wallet {
   LedgerLegacy = 'ledger-legacy',
   WalletConnect = 'wallet-connect',
   CosmostationEth = 'cosmostation-eth',
+  FoxWallet = 'fox-wallet',
+  FoxWalletCosmos = 'fox-wallet-cosmos',
 }
 
 export enum MagicProvider {
