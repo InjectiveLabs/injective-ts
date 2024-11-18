@@ -19,7 +19,7 @@ export interface WindowWithEip1193Provider extends Window {
   providers: BrowserEip1993Provider[]
   trustWallet?: BrowserEip1993Provider
   phantom?: { ethereum?: BrowserEip1993Provider }
-  foxwallet?: BrowserEip1993Provider
+  foxwallet?: { ethereum?: BrowserEip1993Provider }
 }
 
 export interface WindowWithLedgerSupport extends Window {

@@ -50,8 +50,8 @@ function getFoxWalletFromWindow() {
     return
   }
 
-  if ($window.foxwallet) {
-    return $window.foxwallet
+  if ($window.foxwallet?.ethereum) {
+    return $window.foxwallet.ethereum
   }
 
   if ($window.ethereum.isFoxWallet) {

@@ -49,6 +49,7 @@ const evmWallets = [
   Wallet.Metamask,
   Wallet.OkxWallet,
   Wallet.TrustWallet,
+  Wallet.FoxWallet,
 ]
 
 export class EvmWallet
