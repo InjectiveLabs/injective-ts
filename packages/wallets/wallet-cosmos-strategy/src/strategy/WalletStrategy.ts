@@ -6,8 +6,8 @@ import {
   isCosmosWallet,
 } from '@injectivelabs/wallet-base'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import { CosmosWalletStrategy, CosmostationWalletStrategy } from './strategies'
-import { CosmosWalletStrategyArguments } from './types'
+import { CosmosWalletStrategy, CosmostationWalletStrategy } from './strategies/index.js'
+import { CosmosWalletStrategyArguments } from './types.js'
 
 const createStrategy = ({
   args,

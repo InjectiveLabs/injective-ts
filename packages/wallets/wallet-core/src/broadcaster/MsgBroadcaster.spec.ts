@@ -1,6 +1,6 @@
 import { Network } from '@injectivelabs/networks'
-import { MsgBroadcaster } from './MsgBroadcaster'
-import { MsgBroadcasterOptions } from './types'
+import { MsgBroadcaster } from './MsgBroadcaster.js'
+import { MsgBroadcasterOptions } from './types.js'
 import {
   Wallet,
   WalletStrategyArguments,

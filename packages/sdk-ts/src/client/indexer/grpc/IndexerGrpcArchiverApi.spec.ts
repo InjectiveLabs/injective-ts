@@ -1,8 +1,8 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/test-utils'
-import { IndexerGrpcArchiverTransformer } from '../transformers'
-import { IndexerGrpcArchiverApi } from './IndexerGrpcArchiverApi'
+import { IndexerGrpcArchiverTransformer } from '../transformers/index.js'
+import { IndexerGrpcArchiverApi } from './IndexerGrpcArchiverApi.js'
 
 const account = mockFactory.injectiveAddress
 const resolution = '1D'

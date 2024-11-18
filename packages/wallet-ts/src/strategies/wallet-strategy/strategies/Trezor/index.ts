@@ -16,22 +16,22 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
-import { TIP_IN_GWEI } from '../../../../utils/constants'
+import { TIP_IN_GWEI } from '../../../../utils/constants.js'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
-} from '../../../types'
-import { SendTransactionOptions, TrezorWalletInfo } from '../../types'
-import BaseConcreteStrategy from '../Base'
+} from '../../../types/index.js'
+import { SendTransactionOptions, TrezorWalletInfo } from '../../types.js'
+import BaseConcreteStrategy from '../Base.js'
 import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-} from '../../constants'
-import TrezorHW from './hw'
-import { transformTypedData } from './utils'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums'
-import { getKeyFromRpcUrl } from '../../../../utils/alchemy'
+} from '../../constants.js'
+import TrezorHW from './hw/index.js'
+import { transformTypedData } from './utils.js'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums.js'
+import { getKeyFromRpcUrl } from '../../../../utils/alchemy.js'
 
 type EthereumTransactionEIP1559 = {
   to: string

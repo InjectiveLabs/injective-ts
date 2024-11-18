@@ -1,5 +1,5 @@
-import { fromUtf8 } from '../../../../utils/utf8'
-import { MsgBase } from '../../MsgBase'
+import { fromUtf8 } from '../../../../utils/utf8.js'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmwasmWasmV1Tx,

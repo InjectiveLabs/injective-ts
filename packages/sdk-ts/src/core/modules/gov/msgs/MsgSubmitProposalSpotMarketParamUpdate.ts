@@ -6,8 +6,8 @@ import {
   InjectiveExchangeV1Beta1Proposal,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import { MsgBase } from '../../MsgBase.js'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
 
 const createSpotMarketParamUpdate = (
   params: MsgSubmitProposalSpotMarketParamUpdate.Params,

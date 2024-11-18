@@ -1,8 +1,8 @@
 import { coins } from '@cosmjs/amino'
-import { PrivateKey } from '../accounts'
-import { InjectiveDirectEthSecp256k1Wallet } from '../accounts/signers'
-import { InjectiveOfflineSigner } from '../accounts/signers/types'
-import { SigningStargateClient } from './SigningStargateClient'
+import { PrivateKey } from '../accounts/index.js'
+import { InjectiveDirectEthSecp256k1Wallet } from '../accounts/signers/index.js'
+import { InjectiveOfflineSigner } from '../accounts/signers/types/index.js'
+import { SigningStargateClient } from './SigningStargateClient.js'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { OfflineSigner } from '@cosmjs/proto-signing'
 

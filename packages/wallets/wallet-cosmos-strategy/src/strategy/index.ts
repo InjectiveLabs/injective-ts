@@ -1,1 +1,1 @@
-export * from './WalletStrategy'
+export * from './WalletStrategy.js'

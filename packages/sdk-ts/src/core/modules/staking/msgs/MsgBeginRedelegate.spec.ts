@@ -1,5 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgBeginRedelegate from './MsgBeginRedelegate'
+import MsgBeginRedelegate from './MsgBeginRedelegate.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

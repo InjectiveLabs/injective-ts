@@ -1,1 +1,1 @@
-export * as UtilsWallets from './utils/wallets'
+export * as UtilsWallets from './utils/wallets/index.js'

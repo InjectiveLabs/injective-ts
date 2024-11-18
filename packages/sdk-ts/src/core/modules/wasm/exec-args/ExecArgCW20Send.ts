@@ -1,9 +1,9 @@
-import { fromUtf8 } from '../../../../utils/utf8'
+import { fromUtf8 } from '../../../../utils/utf8.js'
 import {
   dataToExecData,
   ExecArgBase,
   ExecDataRepresentation,
-} from '../ExecArgBase'
+} from '../ExecArgBase.js'
 
 /**
  * When we execute the `send` action on

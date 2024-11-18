@@ -2,7 +2,7 @@ import {
   dataToExecData,
   ExecPrivilegedArgBase,
   ExecDataRepresentation,
-} from '../ExecPrivilegedArgBase'
+} from '../ExecPrivilegedArgBase.js'
 
 export declare namespace ExecPrivilegedArgOffChainVaultRedeem {
   export interface Params {

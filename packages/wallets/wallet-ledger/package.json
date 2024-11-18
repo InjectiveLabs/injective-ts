@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ledger",
   "description": "Ledger wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "0.0.4-beta.1",
+  "version": "0.0.7-beta.2",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -18,9 +18,9 @@
     "~wallet-ledger": "dist"
   },
   "scripts": {
+    "build": "yarn build:esm && yarn build:cjs && yarn build:post",
     "build:cjs": "BUILD_MODE=cjs node ./../../../etc/replacements-ledger.js && tsc --build tsconfig.build.json",
     "build:esm": "BUILD_MODE=esm node ./../../../etc/replacements-ledger.js && tsc --build tsconfig.build.esm.json",
-    "build": "yarn build:esm && yarn build:cjs && yarn build:post",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
     "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
@@ -35,18 +35,18 @@
   "dependencies": {
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.14.16",
-    "@injectivelabs/networks": "^1.14.16",
-    "@injectivelabs/sdk-ts": "^1.14.17-beta.1",
-    "@injectivelabs/ts-types": "^1.14.16",
-    "@injectivelabs/utils": "^1.14.16",
-    "@injectivelabs/wallet-base": "^0.0.4-beta.1",
+    "@injectivelabs/exceptions": "^1.14.19",
+    "@injectivelabs/networks": "^1.14.19",
+    "@injectivelabs/sdk-ts": "^1.14.20-beta.2",
+    "@injectivelabs/ts-types": "^1.14.19",
+    "@injectivelabs/utils": "^1.14.19",
+    "@injectivelabs/wallet-base": "^0.0.7-beta.2",
     "@ledgerhq/hw-app-cosmos": "^6.29.5",
     "@ledgerhq/hw-app-eth": "6.35.6",
     "@ledgerhq/hw-transport": "6.30.4",
     "@ledgerhq/hw-transport-webhid": "6.28.4",
     "@ledgerhq/hw-transport-webusb": "6.28.4",
-    "alchemy-sdk": "^2.6.3",
+    "alchemy-sdk": "^3.4.7",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
     "hdkey": "^2.0.1"

@@ -1,4 +1,4 @@
-import MsgGrant from './MsgGrant'
+import MsgGrant from './MsgGrant.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

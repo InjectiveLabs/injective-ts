@@ -1,11 +1,10 @@
 import {
   HttpRequestException,
-  HttpRequestMethod,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { IndexerModule } from '../types'
-import { ChronosMarketHistoryResponse } from '../types/markets-history-rest'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { ChronosMarketHistoryResponse } from '../types/markets-history-rest.js'
 
 export class IndexerRestMarketChronosApi extends BaseRestConsumer {
   async fetchMarketsHistory({
@@ -43,10 +42,9 @@ export class IndexerRestMarketChronosApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${pathWithParams}`,
-        method: HttpRequestMethod.Get,
         contextModule: IndexerModule.ChronosMarkets,
       })
     }

@@ -19,16 +19,16 @@ import {
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import { LeapWallet } from '../../../utils/wallets/leap'
-import { ConcreteWalletStrategy } from '../../types'
-import BaseConcreteStrategy from './Base'
+import { LeapWallet } from '../../../utils/wallets/leap/index.js'
+import { ConcreteWalletStrategy } from '../../types/index.js'
+import BaseConcreteStrategy from './Base.js'
 import {
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
-} from '../../../types/enums'
-import { SendTransactionOptions } from '../types'
-import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
+} from '../../../types/enums.js'
+import { SendTransactionOptions } from '../types.js'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos.js'
 
 export default class Leap extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private leapWallet: LeapWallet

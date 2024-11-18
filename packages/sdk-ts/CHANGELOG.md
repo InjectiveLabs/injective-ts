@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.18...@injectivelabs/sdk-ts@1.14.19) (2024-11-11)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.14.18](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.17...@injectivelabs/sdk-ts@1.14.18) (2024-11-11)
+
+
+### Features
+
+* add mito and olp proto and refactor esm imports ([f50e172](https://github.com/InjectiveLabs/injective-ts/commit/f50e1726aa2f808f0fdb53d159c01b90c59b8449))
+
+
+
+
+
+## [1.14.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.17-beta.6...@injectivelabs/sdk-ts@1.14.17) (2024-11-11)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
 ## [1.14.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.16-beta.0...@injectivelabs/sdk-ts@1.14.16) (2024-10-29)
 
 

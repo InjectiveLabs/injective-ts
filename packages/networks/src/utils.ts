@@ -6,9 +6,9 @@ import {
   CW20_ADAPTER_CONTRACT_BY_NETWORK,
   INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK,
   INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK,
-} from './constants'
-import { isTestnet } from './network'
-import { Network } from './types'
+} from './constants.js'
+import { isTestnet } from './network.js'
+import { Network } from './types.js'
 
 export const CW20_CODE_IDS_BY_NETWORK = (
   network: Network = Network.Mainnet,

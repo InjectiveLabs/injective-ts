@@ -1,1 +1,1 @@
-export * from './MsgBroadcasterWithPk'
+export * from './MsgBroadcasterWithPk.js'

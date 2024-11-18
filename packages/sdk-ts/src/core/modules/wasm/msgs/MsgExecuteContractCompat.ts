@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
-import { ExecArgs } from '../exec-args'
-import { MsgBase } from '../../MsgBase'
+import { ExecArgs } from '../exec-args.js'
+import { MsgBase } from '../../MsgBase.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { InjectiveWasmxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 

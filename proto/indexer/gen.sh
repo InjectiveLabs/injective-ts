@@ -3,7 +3,7 @@ BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto
 TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
-injective_indexer_branch=v1.13.41
+injective_indexer_branch=v1.13.62-RC.1
 
 # remove old gen
 rm -rf $BUILD_DIR
@@ -31,14 +31,6 @@ find $BUILD_DIR/api/gen/grpc -name '*.proto' -exec cp {} $PROTO_DIR \;
 
 proto_dirs=$(find $PROTO_DIR -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
 
-# Rename all files to remove goadesign_goagen_ prefix.
-# This is a patch to fix the script as the new goagen version that was introduced
-# in the go.mod file generates files with a different prefix.
-for file in $proto_dirs/goadesign_goagen_*.proto; do
-    new_file=$(basename "$file" | sed 's/^goadesign_goagen_//')
-    mv "$file" "$proto_dirs/$new_file"
-done
-
 # gen using ts-proto
 npm --prefix $ROOT_DIR install
 for dir in $proto_dirs; do
@@ -61,7 +53,10 @@ find $TS_OUTPUT_DIR/proto -name "*.d.ts" -type f -delete
 ####### POST GENERATION CLEANUP #######
 ########################################
 
-## 1. Replace package with our own fork
+echo "Compiling npm packages..."
+
+## 1. Replace strings
+## 1. Replace packages
 search1="@improbable-eng/grpc-web"
 replace1="@injectivelabs/grpc-web"
 
@@ -69,10 +64,9 @@ FILES=$( find $TS_OUTPUT_DIR/proto -type f )
 
 for file in $FILES
 do
-	sed -ie "s/${search1//\//\\/}/${replace1//\//\\/}/g" $file
+  sed -ie "s/${search1//\//\\/}/${replace1//\//\\/}/g" "$file"
 done
 
-## 2. Replace extension type to ignore on compile time
 search1="getExtension():"
 replace1="// @ts-ignore \n  getExtension():"
 search2="setExtension("
@@ -82,12 +76,21 @@ FILES=$( find $TS_OUTPUT_DIR/proto -type f -name '*.d.ts' )
 
 for file in $FILES
 do
-	sed -ie "s/${search1//\//\\/}/${replace1//\//\\/}/g" $file
-  sed -ie "s/${search2//\//\\/}/${replace2//\//\\/}/g" $file
+  sed -ie "s/${search1//\//\\/}/${replace1//\//\\/}/g" "$file"
+  sed -ie "s/${search2//\//\\/}/${replace2//\//\\/}/g" "$file"
 done
 
+search3="protobufjs/minimal"
+replace3="protobufjs/minimal.js"
 
-## 3. Compile TypeScript for ESM package
+FILES=$( find $TS_OUTPUT_DIR/proto -type f )
+
+for file in $FILES
+do
+  sed -ie "s/${search3//\//\\/}/${replace3//\//\\/}/g" "$file"
+done
+
+## 4. Compile TypeScript for ESM package
 cp $TS_STUB_DIR/index.ts.template $TS_OUTPUT_DIR/proto/index.ts
 
 ### ESM
@@ -104,10 +107,13 @@ npm --prefix $TS_OUTPUT_DIR/proto install
 npm --prefix $TS_OUTPUT_DIR/proto run gen
 cp $TS_STUB_DIR/package.json.cjs.template $TS_OUTPUT_DIR/cjs/package.json
 
-## 4. Setup proper package.json for both indexer-api and indexer-proto-ts packages
+## 5. Setup proper package.json for indexer-proto-ts packages
 cp $TS_STUB_DIR/package.json.indexer-proto-ts.template $TS_OUTPUT_DIR/package.json
 
-# 5. Clean up folders
+## 6. ESM import fixes
+npm --prefix $ROOT_DIR run tscEsmFix
+
+# 7. Clean up folders
 rm -rf $BUILD_DIR
 rm -rf $PROTO_DIR
 rm -rf $TS_OUTPUT_DIR/proto

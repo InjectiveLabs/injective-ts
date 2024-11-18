@@ -1,5 +1,5 @@
 import snakecaseKeys from 'snakecase-keys'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import {
   CosmosBankV1Beta1Tx,
   CosmosBankV1Beta1Bank,

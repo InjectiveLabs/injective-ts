@@ -21,8 +21,8 @@ import {
   GrpcValidatorSlashingEvent,
   ExplorerValidatorDescription,
   GrpcIndexerValidatorDescription,
-} from '../types/explorer'
-import { grpcPagingToPaging } from '../../../utils'
+} from '../types/explorer.js'
+import { grpcPagingToPaging } from '../../../utils/index.js'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**

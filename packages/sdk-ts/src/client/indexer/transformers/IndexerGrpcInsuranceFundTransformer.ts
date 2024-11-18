@@ -4,7 +4,7 @@ import {
   GrpcIndexerRedemptionSchedule,
   Redemption,
   RedemptionStatus,
-} from '../types/insurance-funds'
+} from '../types/insurance-funds.js'
 import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
 import { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
 

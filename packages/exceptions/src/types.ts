@@ -13,7 +13,7 @@ import {
   CosmosWalletException,
   TransactionException,
   GrpcUnaryRequestException,
-} from './exceptions/exceptions'
+} from './exceptions/exceptions/index.js'
 
 export type ThrownException =
   | GrpcUnaryRequestException

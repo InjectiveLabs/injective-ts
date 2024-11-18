@@ -1,23 +1,18 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  NormalizedCacheObject,
-  ApolloQueryResult,
-} from '@apollo/client/core'
+import * as Apollo from '@apollo/client'
 import { HttpRequestException } from '@injectivelabs/exceptions'
-import { USER_DEPOSITS, USER_BRIDGE_DEPOSITS } from './queries'
-import { UserDepositResponse } from './types'
+import { USER_DEPOSITS, USER_BRIDGE_DEPOSITS } from './queries.js'
+import { UserDepositResponse } from './types.js'
 
 /**
  * @hidden
  */
 export class ApolloConsumer {
-  private apolloClient: ApolloClient<NormalizedCacheObject>
+  private apolloClient: Apollo.ApolloClient<Apollo.NormalizedCacheObject>
 
   constructor(graphQlEndpoint: string) {
-    this.apolloClient = new ApolloClient({
+    this.apolloClient = new Apollo.ApolloClient({
       uri: graphQlEndpoint,
-      cache: new InMemoryCache(),
+      cache: new Apollo.InMemoryCache(),
       defaultOptions: {
         query: {
           fetchPolicy: 'no-cache',
@@ -35,7 +30,7 @@ export class ApolloConsumer {
           .toLowerCase()
           .replace('0x', '')}`,
       },
-    })) as ApolloQueryResult<UserDepositResponse>
+    })) as Apollo.ApolloQueryResult<UserDepositResponse>
 
     if (response.errors && response.errors.length > 0) {
       throw new HttpRequestException(new Error(response.errors[0].message))
@@ -51,7 +46,7 @@ export class ApolloConsumer {
         timestamp,
         sender: address,
       },
-    })) as ApolloQueryResult<UserDepositResponse>
+    })) as Apollo.ApolloQueryResult<UserDepositResponse>
 
     if (response.errors && response.errors.length > 0) {
       throw new HttpRequestException(new Error(response.errors[0].message))

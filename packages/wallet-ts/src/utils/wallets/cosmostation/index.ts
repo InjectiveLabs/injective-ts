@@ -1,1 +1,1 @@
-export * from './CosmostationWallet'
+export * from './CosmostationWallet.js'

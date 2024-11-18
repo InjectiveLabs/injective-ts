@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcMintApi } from './ChainGrpcMintApi'
-import { ChainGrpcMintTransformer } from '../transformers'
+import { ChainGrpcMintApi } from './ChainGrpcMintApi.js'
+import { ChainGrpcMintTransformer } from '../transformers/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcMintApi = new ChainGrpcMintApi(endpoints.grpc)

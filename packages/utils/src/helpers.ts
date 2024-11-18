@@ -3,10 +3,10 @@ import {
   DEFAULT_STD_FEE,
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
-} from './constants'
-import BigNumberInBase from './classes/BigNumber/BigNumberInBase'
-import BigNumberInWei from './classes/BigNumber/BigNumberInWei'
-import { Awaited } from './types'
+} from './constants.js'
+import BigNumberInBase from './classes/BigNumber/BigNumberInBase.js'
+import BigNumberInWei from './classes/BigNumber/BigNumberInWei.js'
+import { Awaited } from './types.js'
 
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))

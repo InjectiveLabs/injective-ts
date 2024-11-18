@@ -1,12 +1,12 @@
-import { IndexerGrpcMetaApi } from './grpc/IndexerGrpcMetaApi'
-import { IndexerGrpcAccountApi } from './grpc/IndexerGrpcAccountApi'
-import { IndexerGrpcAccountPortfolioApi } from './grpc/IndexerGrpcPortfolioApi'
-import { IndexerGrpcAuctionApi } from './grpc/IndexerGrpcAuctionApi'
-import { IndexerGrpcExplorerApi } from './grpc/IndexerGrpcExplorerApi'
-import { IndexerGrpcOracleApi } from './grpc/IndexerGrpcOracleApi'
-import { IndexerGrpcInsuranceFundApi } from './grpc/IndexerGrpcInsuranceFundApi'
-import { IndexerGrpcDerivativesApi } from './grpc/IndexerGrpcDerivativesApi'
-import { IndexerGrpcSpotApi } from './grpc/IndexerGrpcSpotApi'
+import { IndexerGrpcMetaApi } from './grpc/IndexerGrpcMetaApi.js'
+import { IndexerGrpcAccountApi } from './grpc/IndexerGrpcAccountApi.js'
+import { IndexerGrpcAccountPortfolioApi } from './grpc/IndexerGrpcPortfolioApi.js'
+import { IndexerGrpcAuctionApi } from './grpc/IndexerGrpcAuctionApi.js'
+import { IndexerGrpcExplorerApi } from './grpc/IndexerGrpcExplorerApi.js'
+import { IndexerGrpcOracleApi } from './grpc/IndexerGrpcOracleApi.js'
+import { IndexerGrpcInsuranceFundApi } from './grpc/IndexerGrpcInsuranceFundApi.js'
+import { IndexerGrpcDerivativesApi } from './grpc/IndexerGrpcDerivativesApi.js'
+import { IndexerGrpcSpotApi } from './grpc/IndexerGrpcSpotApi.js'
 
 /**
  * @category Indexer Grpc API

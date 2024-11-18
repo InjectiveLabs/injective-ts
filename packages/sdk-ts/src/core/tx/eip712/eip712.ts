@@ -1,6 +1,6 @@
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import { Msgs } from '../../modules/msgs'
-import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types'
+import { Msgs } from '../../modules/msgs.js'
+import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
 import {
   getEip712Fee,
   getEipTxDetails,
@@ -9,8 +9,8 @@ import {
   getDefaultEip712Types,
   getTypesIncludingFeePayer,
   getDefaultEip712TypesV2,
-} from './utils'
-import { getEipTxContext } from './utils'
+} from './utils.js'
+import { getEipTxContext } from './utils.js'
 
 export const getEip712TypedData = ({
   msgs,

@@ -1,6 +1,6 @@
-import WalletStrategy from './WalletStrategy'
+import WalletStrategy from './WalletStrategy.js'
 
-export * from './types'
-export * from './utils'
+export * from './types.js'
+export * from './utils.js'
 
 export { WalletStrategy }

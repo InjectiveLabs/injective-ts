@@ -1,4 +1,4 @@
-import { GrpcOracle, Oracle } from '../types/oracle'
+import { GrpcOracle, Oracle } from '../types/oracle.js'
 import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 
 export class IndexerGrpcOracleTransformer {

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-magic",
   "description": "Magic wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "0.0.4-beta.1",
+  "version": "0.0.7-beta.2",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -18,7 +18,9 @@
     "~wallet-magic": "dist"
   },
   "scripts": {
-    "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post",
+    "build": "yarn build:cjs && yarn build:esm && yarn build:post",
+    "build:cjs": "tsc --build --force tsconfig.build.json",
+    "build:esm": "tsc --build --force tsconfig.build.esm.json",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
     "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
@@ -31,11 +33,11 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.16",
-    "@injectivelabs/sdk-ts": "^1.14.17-beta.1",
-    "@injectivelabs/ts-types": "^1.14.16",
-    "@injectivelabs/utils": "^1.14.16",
-    "@injectivelabs/wallet-base": "^0.0.4-beta.1",
+    "@injectivelabs/exceptions": "^1.14.19",
+    "@injectivelabs/sdk-ts": "^1.14.20-beta.2",
+    "@injectivelabs/ts-types": "^1.14.19",
+    "@injectivelabs/utils": "^1.14.19",
+    "@injectivelabs/wallet-base": "^0.0.7-beta.2",
     "@magic-ext/cosmos": "23.9.1",
     "@magic-ext/oauth2": "9.9.0",
     "magic-sdk": "28.9.0"

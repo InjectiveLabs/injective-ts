@@ -1,3 +1,3 @@
-import MsgBid from './msgs/MsgBid'
+import MsgBid from './msgs/MsgBid.js'
 
 export { MsgBid }

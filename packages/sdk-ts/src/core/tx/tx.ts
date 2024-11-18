@@ -7,23 +7,23 @@ import {
   createSignDoc,
   createSigners,
   SIGN_DIRECT,
-} from './utils'
+} from './utils/index.js'
 import {
   CreateTransactionArgs,
   CreateTransactionResult,
   CreateTransactionWithSignersArgs,
-} from './types'
+} from './types/index.js'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { Msgs } from '../modules/msgs'
+import { Msgs } from '../modules/msgs.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import {
   getStdFeeFromString,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
-import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client'
+import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client/index.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { BaseAccount } from '../accounts'
+import { BaseAccount } from '../accounts/index.js'
 
 /**
  * @typedef {Object} CreateTransactionWithSignersArgs

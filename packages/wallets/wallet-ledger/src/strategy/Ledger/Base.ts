@@ -34,10 +34,10 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
   WalletStrategyEthereumOptions,
 } from '@injectivelabs/wallet-base'
-import LedgerHW from './hw'
-import { domainHash, messageHash } from './utils'
+import LedgerHW from './hw/index.js'
+import { domainHash, messageHash } from './utils.js'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
-import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types'
+import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
@@ -313,7 +313,7 @@ export default class LedgerBase
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(options.address)
       const ledgerService = await import(
-        '@ledgerhq/hw-app-eth/lib/services/ledger'
+        '@ledgerhq/hw-app-eth/lib/services/ledger/index.js'
       )
       const resolution = await ledgerService.default.resolveTransaction(
         encodedMessageHex,

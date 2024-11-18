@@ -1,8 +1,8 @@
-import { BECH32_PUBKEY_ACC_PREFIX, decompressPubKey } from '../../utils'
+import { BECH32_PUBKEY_ACC_PREFIX, decompressPubKey } from '../../utils/index.js'
 import { bech32 } from 'bech32'
 import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
-import { Address } from './Address'
+import { Address } from './Address.js'
 import { keccak256 } from 'js-sha3'
 import {
   GoogleProtobufAny,

@@ -1,4 +1,4 @@
-import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch'
+import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

@@ -1,4 +1,4 @@
-import BigNumberInBase from './BigNumberInBase'
+import BigNumberInBase from './BigNumberInBase.js'
 
 describe('bigNumberInBase', () => {
   it('should convert base to wei', () => {

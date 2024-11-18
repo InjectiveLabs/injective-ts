@@ -2,9 +2,9 @@ import { SnakeCaseKeys } from 'snakecase-keys'
 import {
   mapValuesToProperValueType,
   objectKeysToEip712Types,
-} from '../tx/eip712/maps'
-import { TypedDataField } from '../tx/eip712/types'
-import { prepareSignBytes } from './utils'
+} from '../tx/eip712/maps.js'
+import { TypedDataField } from '../tx/eip712/types.js'
+import { prepareSignBytes } from './utils.js'
 
 /**
  * @category Messages

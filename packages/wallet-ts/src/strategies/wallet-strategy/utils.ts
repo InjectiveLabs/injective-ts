@@ -1,4 +1,4 @@
-import { Wallet } from '../../types/enums'
+import { Wallet } from '../../types/enums.js'
 
 export const isEthWallet = (wallet: Wallet): boolean =>
   [

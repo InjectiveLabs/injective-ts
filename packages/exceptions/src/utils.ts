@@ -1,23 +1,37 @@
-import { Exception } from './exceptions/types'
+import { Exception } from './exceptions/types/index.js'
+import { ThrownException } from './types.js'
 
-export const isThrownException = (exception: Error | Exception): boolean => {
+export const THROWN_EXCEPTIONS = [
+  'GrpcUnaryRequestException',
+  'HttpRequestException',
+  'Web3Exception',
+  'GeneralException',
+  'LedgerException',
+  'LedgerCosmosException',
+  'MetamaskException',
+  'TrezorException',
+  'CosmosWalletException',
+  'TransactionException',
+  'WalletException',
+  'TrustWalletException',
+  'OkxWalletException',
+  'BitGetException',
+]
+
+export const isThrownException = (
+  exception: Error | Exception | ThrownException,
+): boolean => {
+  if (THROWN_EXCEPTIONS.includes(exception.constructor.name)) {
+    return true
+  }
+
+  if (THROWN_EXCEPTIONS.includes(exception.name)) {
+    return true
+  }
+
   if (
-    [
-      'GrpcUnaryRequestException',
-      'HttpRequestException',
-      'Web3Exception',
-      'GeneralException',
-      'LedgerException',
-      'LedgerCosmosException',
-      'MetamaskException',
-      'TrezorException',
-      'CosmosWalletException',
-      'TransactionException',
-      'WalletException',
-      'TrustWalletException',
-      'OkxWalletException',
-      'BitGetException',
-    ].includes(exception.constructor.name)
+    'errorClass' in exception &&
+    THROWN_EXCEPTIONS.includes((exception as ThrownException).errorClass)
   ) {
     return true
   }

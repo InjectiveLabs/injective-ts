@@ -1,3 +1,3 @@
-export * from './TxGrpcApi'
-export * from './TxRestApi'
-export * from './utils'
+export * from './TxGrpcApi.js'
+export * from './TxRestApi.js'
+export * from './utils.js'

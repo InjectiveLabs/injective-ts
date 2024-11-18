@@ -9,14 +9,14 @@ import {
 } from '@injectivelabs/exceptions'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
-import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types'
-import { SendTransactionOptions, WalletConnectMetadata } from '../types'
-import BaseConcreteStrategy from './Base'
+import { ConcreteWalletStrategy, EthereumWalletStrategyArgs } from '../../types/index.js'
+import { SendTransactionOptions, WalletConnectMetadata } from '../types.js'
+import BaseConcreteStrategy from './Base.js'
 import {
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
-} from '../../../types/enums'
+} from '../../../types/enums.js'
 import Provider, {
   EthereumProvider,
   EthereumProviderOptions,

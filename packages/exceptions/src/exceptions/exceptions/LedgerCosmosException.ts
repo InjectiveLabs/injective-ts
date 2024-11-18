@@ -1,10 +1,9 @@
-import { ConcreteException } from '../base'
-
-import { ErrorContext, ErrorType } from '../types'
-import { isCommonLockedError } from '../utils/helpers'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
+import { isCommonLockedError } from '../utils/helpers.js'
 
 export class LedgerCosmosException extends ConcreteException {
-  public errorClass: string = 'LedgerCosmosException'
+  public static errorClass: string = 'LedgerCosmosException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -55,5 +54,7 @@ export class LedgerCosmosException extends ConcreteException {
         'Please use the latest Chrome/Firefox browser versions to connect with your Ledger device',
       )
     }
+
+    this.setName(LedgerCosmosException.errorClass)
   }
 }

@@ -2,13 +2,13 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { ChainModule, RestApiResponse } from '../types'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { ChainModule, RestApiResponse } from '../types/index.js'
 import {
   AccountResponse,
   CosmosAccountRestResponse,
   BaseAccountRestResponse,
-} from './../types/auth-rest'
+} from './../types/auth-rest.js'
 
 /**
  * @category Chain Rest API
@@ -36,7 +36,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Auth,
@@ -73,7 +73,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Auth,

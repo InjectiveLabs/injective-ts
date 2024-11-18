@@ -16,11 +16,11 @@ import {
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
 import { StdSignDoc } from '@keplr-wallet/types'
-import { NinjiWallet } from '../../../utils/wallets/ninji'
-import { WalletAction, WalletDeviceType } from '../../../types/enums'
-import { ConcreteCosmosWalletStrategy } from '../../types/strategy'
-import { SendTransactionOptions } from '../../wallet-strategy'
-import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
+import { NinjiWallet } from '../../../utils/wallets/ninji/index.js'
+import { WalletAction, WalletDeviceType } from '../../../types/enums.js'
+import { ConcreteCosmosWalletStrategy } from '../../types/strategy.js'
+import { SendTransactionOptions } from '../../wallet-strategy/index.js'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos.js'
 
 export default class Ninji implements ConcreteCosmosWalletStrategy {
   public chainId: CosmosChainId

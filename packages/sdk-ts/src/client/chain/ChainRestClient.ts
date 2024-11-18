@@ -1,4 +1,4 @@
-import { ChainRestAuthApi } from './rest/ChainRestAuthApi'
+import { ChainRestAuthApi } from './rest/ChainRestAuthApi.js'
 
 /**
  * @category Chain Rest API

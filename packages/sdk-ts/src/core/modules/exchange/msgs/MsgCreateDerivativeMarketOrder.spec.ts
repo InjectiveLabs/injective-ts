@@ -1,4 +1,4 @@
-import MsgCreateDerivativeMarketOrder from './MsgCreateDerivativeMarketOrder'
+import MsgCreateDerivativeMarketOrder from './MsgCreateDerivativeMarketOrder.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

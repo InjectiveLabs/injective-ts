@@ -1,4 +1,4 @@
-import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
+import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
 import {
   GrpcEpochV2,
   EpochV2,
@@ -21,7 +21,7 @@ import {
   RewardDistribution,
   RewardsEligibility,
   GrpcAccountVolume,
-} from '../types'
+} from '../types/index.js'
 
 export class DmmGrpcTransformer {
   static epochsResponseToEpochs(

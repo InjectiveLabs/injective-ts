@@ -1,4 +1,4 @@
-import MsgWithdrawValidatorCommission from './MsgWithdrawValidatorCommission'
+import MsgWithdrawValidatorCommission from './MsgWithdrawValidatorCommission.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

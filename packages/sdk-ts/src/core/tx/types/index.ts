@@ -1,2 +1,2 @@
-export * from './tx'
-export * from './tx-rest-client'
+export * from './tx.js'
+export * from './tx-rest-client.js'

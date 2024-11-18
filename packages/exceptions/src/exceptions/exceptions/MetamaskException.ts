@@ -1,7 +1,6 @@
-import { ConcreteException } from '../base'
-
-import { ErrorContext, ErrorType } from '../types'
-import { mapMetamaskMessage } from '../utils/maps'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
+import { mapMetamaskMessage } from '../utils/maps.js'
 
 const removeMetamaskFromErrorString = (message: string): string =>
   message
@@ -10,7 +9,7 @@ const removeMetamaskFromErrorString = (message: string): string =>
     .replaceAll('Metamask:', '')
 
 export class MetamaskException extends ConcreteException {
-  public errorClass: string = 'MetamaskException'
+  public static errorClass: string = 'MetamaskException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -22,5 +21,7 @@ export class MetamaskException extends ConcreteException {
     const { message } = this
 
     this.setMessage(mapMetamaskMessage(removeMetamaskFromErrorString(message)))
+
+    this.setName(MetamaskException.errorClass)
   }
 }

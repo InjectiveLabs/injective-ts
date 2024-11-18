@@ -1,2 +1,2 @@
-export { QueryAllRounds } from './QueryAllRounds'
-export { QueryGetCampaigns } from './QueryGetCampaigns'
+export { QueryAllRounds } from './QueryAllRounds.js'
+export { QueryGetCampaigns } from './QueryGetCampaigns.js'

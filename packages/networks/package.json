@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/networks",
   "description": "Endpoints, networks, etc. Can be reused throughout Injective's projects.",
-  "version": "1.14.16",
+  "version": "1.14.19",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
@@ -18,7 +18,9 @@
     "~networks": "dist"
   },
   "scripts": {
-    "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post",
+    "build": "yarn build:cjs && yarn build:esm && yarn build:post",
+    "build:cjs": "tsc --build --force tsconfig.build.json",
+    "build:esm": "tsc --build --force tsconfig.build.esm.json",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
@@ -31,9 +33,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.16",
-    "@injectivelabs/ts-types": "^1.14.16",
-    "@injectivelabs/utils": "^1.14.16",
+    "@injectivelabs/exceptions": "^1.14.19",
+    "@injectivelabs/ts-types": "^1.14.19",
+    "@injectivelabs/utils": "^1.14.19",
     "shx": "^0.3.2"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"

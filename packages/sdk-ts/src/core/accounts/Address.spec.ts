@@ -1,4 +1,4 @@
-import { Address } from './Address'
+import { Address } from './Address.js'
 
 const injectiveAddress = 'inj1hkhdaj2a2clmq5jq6mspsggqs32vynpk228q3r'
 const ethereumAddress = '0xbdaedec95d563fb05240d6e01821008454c24c36'

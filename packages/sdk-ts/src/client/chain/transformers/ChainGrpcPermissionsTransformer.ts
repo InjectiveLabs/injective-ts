@@ -2,7 +2,7 @@ import {
   Namespace,
   PermissionsModuleParams,
   GrpcPermissionsNamespace,
-} from '../types/permissions'
+} from '../types/permissions.js'
 import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**

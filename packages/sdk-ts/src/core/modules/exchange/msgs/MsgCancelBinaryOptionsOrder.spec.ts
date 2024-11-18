@@ -1,4 +1,4 @@
-import MsgCancelBinaryOptionsOrder from './MsgCancelBinaryOptionsOrder'
+import MsgCancelBinaryOptionsOrder from './MsgCancelBinaryOptionsOrder.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

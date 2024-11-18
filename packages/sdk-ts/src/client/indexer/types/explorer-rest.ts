@@ -7,7 +7,7 @@ import {
   CosmWasmChecksum,
   CosmWasmPermission,
   ValidatorUptimeStatus,
-} from './explorer'
+} from './explorer.js'
 
 export interface ExplorerApiResponse<T> {
   data: T

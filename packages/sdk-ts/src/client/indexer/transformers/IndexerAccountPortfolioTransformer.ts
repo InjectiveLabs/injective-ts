@@ -1,5 +1,5 @@
 import { Coin } from '@injectivelabs/ts-types'
-import { GrpcCoin } from '../../../types'
+import { GrpcCoin } from '../../../types/index.js'
 import {
   PositionsWithUPNL,
   AccountPortfolioV2,
@@ -9,9 +9,9 @@ import {
   AccountPortfolioBalances,
   PortfolioSubaccountBalanceV2,
   GrpcPortfolioSubaccountBalanceV2,
-} from '../types/account-portfolio'
+} from '../types/account-portfolio.js'
 import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
-import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
+import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
 
 export class IndexerGrpcAccountPortfolioTransformer {
   static accountPortfolioResponseToAccountPortfolio(

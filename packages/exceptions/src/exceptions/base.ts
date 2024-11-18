@@ -6,7 +6,7 @@ import {
   ErrorCode,
   UnspecifiedErrorCode,
   ErrorContextCode,
-} from './types'
+} from './types/index.js'
 
 /**
  * we have to define it here as
@@ -26,12 +26,6 @@ const toPascalCase = (str: string): string => {
 }
 
 export abstract class ConcreteException extends Error implements Exception {
-  /**
-   * The name of the error class as it the constructor.name might
-   * give a minified class name when we bundle using webpack
-   */
-  public static errorClass = ''
-
   /**
    * The type of the Error
    */
@@ -98,7 +92,6 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public parseError(error: Error) {
-    this.setName(this.errorClass || this.constructor.name)
     this.setStack(error.stack || '')
     this.setMessage(error.message)
     this.originalMessage = error.message
@@ -143,14 +136,14 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public setName(name: string) {
-    super.name = name
     this.name = name
     this.errorClass = name
+    super.name = name
   }
 
   public setMessage(message: string) {
-    super.message = message
     this.message = message
+    super.message = message
   }
 
   public setContextModule(contextModule: string) {
@@ -182,14 +175,14 @@ export abstract class ConcreteException extends Error implements Exception {
 
     const error = new Error(
       `${this.message} | ${JSON.stringify({
-        originalMessage: this.originalMessage,
-        message: this.message,
-        errorClass: name,
-        code: this.code,
         type: this.type,
+        code: this.code,
+        errorClass: name,
+        message: this.message,
         context: this.context,
-        contextModule: this.contextModule,
         contextCode: this.contextCode,
+        contextModule: this.contextModule,
+        originalMessage: this.originalMessage,
         stack: (this.stack || '').split('\n').map((line) => line.trim()),
       })}`,
     )
@@ -207,14 +200,14 @@ export abstract class ConcreteException extends Error implements Exception {
     const name = this.name || toPascalCase(this.type)
 
     return {
-      message: this.message,
-      originalMessage: this.originalMessage,
-      errorClass: name,
       code: this.code,
       type: this.type,
+      errorClass: name,
+      message: this.message,
       context: this.context,
-      contextModule: this.contextModule,
       contextCode: this.contextCode,
+      contextModule: this.contextModule,
+      originalMessage: this.originalMessage,
       stack: (this.stack || '').split('\n').map((line) => line.trim()),
     }
   }

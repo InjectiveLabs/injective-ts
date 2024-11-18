@@ -1,11 +1,11 @@
-import MsgVote from './msgs/MsgVote'
-import MsgGovDeposit from './msgs/MsgDeposit'
-import MsgSubmitTextProposal from './msgs/MsgSubmitTextProposal'
-import MsgSubmitGenericProposal from './msgs/MsgSubmitGenericProposal'
-import MsgSubmitProposalSpotMarketLaunch from './msgs/MsgSubmitProposalSpotMarketLaunch'
-import MsgSubmitProposalPerpetualMarketLaunch from './msgs/MsgSubmitProposalPerpetualMarketLaunch'
-import MsgSubmitProposalSpotMarketParamUpdate from './msgs/MsgSubmitProposalSpotMarketParamUpdate'
-import MsgSubmitProposalExpiryFuturesMarketLaunch from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch'
+import MsgVote from './msgs/MsgVote.js'
+import MsgGovDeposit from './msgs/MsgDeposit.js'
+import MsgSubmitTextProposal from './msgs/MsgSubmitTextProposal.js'
+import MsgSubmitGenericProposal from './msgs/MsgSubmitGenericProposal.js'
+import MsgSubmitProposalSpotMarketLaunch from './msgs/MsgSubmitProposalSpotMarketLaunch.js'
+import MsgSubmitProposalPerpetualMarketLaunch from './msgs/MsgSubmitProposalPerpetualMarketLaunch.js'
+import MsgSubmitProposalSpotMarketParamUpdate from './msgs/MsgSubmitProposalSpotMarketParamUpdate.js'
+import MsgSubmitProposalExpiryFuturesMarketLaunch from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch.js'
 
 export type MsgSubmitProposal =
   | MsgSubmitTextProposal
@@ -24,6 +24,6 @@ export {
   MsgSubmitProposalExpiryFuturesMarketLaunch,
 }
 
-export * from './ProposalContentDecomposer'
+export * from './ProposalContentDecomposer.js'
 
 export { MsgVote, MsgGovDeposit }

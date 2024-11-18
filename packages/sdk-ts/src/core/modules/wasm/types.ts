@@ -6,11 +6,19 @@ export enum ExitType {
 
 export enum StrategyType {
   Arithmetic = 'arithmetic',
+  ArithmeticLP = 'arithmetic_l_p',
   Geometric = 'geometric',
 }
 
 export type TrailingArithmetic = {
   trailing_arithmetic: {
+    lower_trailing_bound: string
+    upper_trailing_bound: string
+  }
+}
+
+export type TrailingArithmeticLP = {
+  trailing_arithmetic_l_p: {
     lower_trailing_bound: string
     upper_trailing_bound: string
   }

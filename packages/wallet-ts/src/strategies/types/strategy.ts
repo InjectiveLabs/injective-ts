@@ -6,8 +6,8 @@ import {
 } from '@injectivelabs/ts-types'
 import type { TxRaw, TxResponse } from '@injectivelabs/sdk-ts'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
-import { Wallet, WalletDeviceType } from '../../types/enums'
-import { SendTransactionOptions } from '../wallet-strategy'
+import { Wallet, WalletDeviceType } from '../../types/enums.js'
+import { SendTransactionOptions } from '../wallet-strategy/index.js'
 
 export type onAccountChangeCallback = (account: string) => void
 export type onChainIdChangeCallback = () => void

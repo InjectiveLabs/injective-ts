@@ -1,4 +1,4 @@
-import MsgCreateDenom from './MsgCreateDenom'
+import MsgCreateDenom from './MsgCreateDenom.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

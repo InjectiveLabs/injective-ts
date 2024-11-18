@@ -1,3 +1,3 @@
-import MsgTransfer from './msgs/MsgTransfer'
+import MsgTransfer from './msgs/MsgTransfer.js'
 
 export { MsgTransfer }

@@ -1,8 +1,12 @@
-import { generateArbitrarySignDoc } from '../tx'
-import { PrivateKey } from './PrivateKey'
+import { generateArbitrarySignDoc } from '../tx/index.js'
+import { PrivateKey } from './PrivateKey.js'
 
-const pk = 'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3'
+const pk = process.env.TEST_PRIVATE_KEY as string
 const seedPhase = process.env.TEST_SEED_PHASE as string
+
+if (!pk || !seedPhase) {
+  throw new Error('TEST_PRIVATE_KEY or TEST_SEED_PHASE is not set')
+}
 
 describe('PrivateKey', () => {
   it('returns the correct address derived from a mnemonic', () => {

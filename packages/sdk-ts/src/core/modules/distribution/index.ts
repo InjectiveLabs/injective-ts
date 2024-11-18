@@ -1,4 +1,4 @@
-import MsgWithdrawDelegatorReward from './msgs/MsgWithdrawDelegatorReward'
-import MsgWithdrawValidatorCommission from './msgs/MsgWithdrawValidatorCommission'
+import MsgWithdrawDelegatorReward from './msgs/MsgWithdrawDelegatorReward.js'
+import MsgWithdrawValidatorCommission from './msgs/MsgWithdrawValidatorCommission.js'
 
 export { MsgWithdrawDelegatorReward, MsgWithdrawValidatorCommission }

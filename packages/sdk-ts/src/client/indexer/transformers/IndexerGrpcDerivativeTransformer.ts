@@ -33,7 +33,7 @@ import {
   DerivativeOrderHistory,
   GrpcDerivativePositionV2,
   PositionV2,
-} from '../types/derivatives'
+} from '../types/derivatives.js'
 import {
   Orderbook,
   PriceLevel,
@@ -41,9 +41,9 @@ import {
   GrpcPriceLevel,
   IndexerTokenMeta,
   OrderbookWithSequence,
-} from '../types/exchange'
-import { TokenType } from '../../../types/token'
-import { grpcPagingToPaging } from '../../../utils/pagination'
+} from '../types/exchange.js'
+import { TokenType } from '../../../types/token.js'
+import { grpcPagingToPaging } from '../../../utils/pagination.js'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 const zeroPositionDelta = () => ({

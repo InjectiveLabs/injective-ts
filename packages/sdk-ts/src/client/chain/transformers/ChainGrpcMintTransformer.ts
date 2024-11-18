@@ -1,4 +1,4 @@
-import { MinModuleParams } from '../types/mint'
+import { MinModuleParams } from '../types/mint.js'
 import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
