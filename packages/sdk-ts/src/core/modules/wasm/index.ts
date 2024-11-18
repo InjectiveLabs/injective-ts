@@ -6,7 +6,9 @@ import ExecArgCW20Transfer from './exec-args/ExecArgCW20Transfer.js'
 import ExecArgSwapMinOutput from './exec-args/ExecArgSwapMinOutput.js'
 import ExecArgDepositTokens from './exec-args/ExecArgDepositTokens.js'
 import ExecArgCreateCampaign from './exec-args/ExecArgCreateCampaign.js'
+import ExecArgNeptuneDeposit from './exec-args/ExecArgNeptuneDeposit.js'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput.js'
+import ExecArgNeptuneWithdraw from './exec-args/ExecArgNeptuneWithdraw.js'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer.js'
 import ExecArgUpdateGridConfig from './exec-args/ExecArgUpdateGridConfig.js'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance.js'
@@ -40,7 +42,9 @@ export {
   ExecArgSwapMinOutput,
   ExecArgDepositTokens,
   ExecArgCreateCampaign,
+  ExecArgNeptuneDeposit,
   ExecArgSwapExactOutput,
+  ExecArgNeptuneWithdraw,
   ExecArgInitiateTransfer,
   ExecArgUpdateGridConfig,
   ExecArgIncreaseAllowance,
