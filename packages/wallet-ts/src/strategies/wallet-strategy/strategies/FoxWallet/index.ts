@@ -16,7 +16,11 @@ import {
 } from '../../../types'
 import { BrowserEip1993Provider, SendTransactionOptions } from '../../types'
 import BaseConcreteStrategy from './../Base'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+} from '../../../../types/enums'
 import { getFoxWalletProvider } from './utils'
 
 export default class FoxWallet
@@ -33,6 +37,19 @@ export default class FoxWallet
 
   async enable(): Promise<boolean> {
     return Promise.resolve(true)
+  }
+
+  public async disconnect() {
+    if (this.listeners[WalletEventListener.ChainIdChange]) {
+      const ethereum = await this.getEthereum()
+
+      ethereum.removeListener(
+        'chainChanged',
+        this.listeners[WalletEventListener.ChainIdChange],
+      )
+    }
+
+    this.listeners = {}
   }
 
   async getAddresses(): Promise<string[]> {
@@ -241,24 +258,14 @@ export default class FoxWallet
     )
   }
 
-  onChainIdChanged(_callback: () => void): void {
-    //
-  }
+  async onChainIdChanged(callback: (chain: string) => void): Promise<void> {
+    const ethereum = await this.getEthereum()
 
-  onAccountChange(_callback: (account: AccountAddress) => void): void {
-    //
-  }
+    this.listeners = {
+      [WalletEventListener.ChainIdChange]: callback,
+    }
 
-  cancelOnChainIdChange(): void {
-    //
-  }
-
-  cancelOnAccountChange(): void {
-    //
-  }
-
-  cancelAllEvents(): void {
-    //
+    ethereum.on('chainChanged', callback)
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {

@@ -21,11 +21,7 @@ import {
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import { ConcreteWalletStrategy } from '../../../types'
 import BaseConcreteStrategy from '../Base'
-import {
-  WalletAction,
-  WalletDeviceType,
-  WalletEventListener,
-} from '../../../../types/enums'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums'
 import { SendTransactionOptions } from '../../types'
 import { createCosmosSignDocFromSignDoc } from '../../../../utils/cosmos'
 import { FoxWallet } from './foxwallet'
@@ -56,14 +52,7 @@ export default class FoxWalletCosmos
   }
 
   public async disconnect() {
-    if (this.listeners[WalletEventListener.AccountChange]) {
-      window.removeEventListener(
-        'fox_keystorechange',
-        this.listeners[WalletEventListener.AccountChange],
-      )
-    }
-
-    this.listeners = {}
+    //
   }
 
   async getAddresses(): Promise<string[]> {
@@ -244,20 +233,14 @@ export default class FoxWalletCosmos
     return Buffer.from(key.pubKey).toString('base64')
   }
 
-  async onAccountChange(
-    callback: (account: AccountAddress) => void,
-  ): Promise<void> {
-    const listener = async () => {
-      const [account] = await this.getAddresses()
-
-      callback(account)
-    }
-
-    this.listeners = {
-      [WalletEventListener.AccountChange]: listener,
-    }
-
-    window.addEventListener('fox_keystorechange', listener)
+  onAccountChange(_callback: (account: AccountAddress) => void): Promise<void> {
+    throw new CosmosWalletException(
+      new Error('onAccountChange is not supported on FoxWallet'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.GetAccounts,
+      },
+    )
   }
 
   private getFoxWallet(): FoxWallet {
