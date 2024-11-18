@@ -21,7 +21,7 @@ import {
 
 const NEPTUNE_USDT_MARKET_CONTRACT =
   'inj1nc7gjkf2mhp34a6gquhurg8qahnw5kxs5u3s4u'
-const NEPTUNE_USDT_INTEREST_CONTRACT =
+const NEPTUNE_INTEREST_CONTRACT =
   'inj1ftech0pdjrjawltgejlmpx57cyhsz6frdx2dhq'
 
 export class NeptuneService {
@@ -184,7 +184,7 @@ export class NeptuneService {
   async getLendingRates({
     limit,
     startAfter,
-    contractAddress = NEPTUNE_USDT_INTEREST_CONTRACT,
+    contractAddress = NEPTUNE_INTEREST_CONTRACT,
   }: {
     limit?: number
     startAfter?: AssetInfo
@@ -218,7 +218,7 @@ export class NeptuneService {
    */
   async getLendingRateByDenom({
     denom,
-    contractAddress = NEPTUNE_USDT_INTEREST_CONTRACT,
+    contractAddress = NEPTUNE_INTEREST_CONTRACT,
   }: {
     denom: string
     contractAddress?: string
@@ -262,7 +262,7 @@ export class NeptuneService {
    * @param compoundingFrequency - Number of times interest is compounded per year
    * @returns The annual percentage yield as a decimal
    */
-  calculateAPY(apr: number, compoundingFrequency = 365): number {
-    return Math.pow(1 + apr / compoundingFrequency, compoundingFrequency) - 1
+  calculateAPY(apr: number): number {
+    return Math.exp(apr) - 1
   }
 }
