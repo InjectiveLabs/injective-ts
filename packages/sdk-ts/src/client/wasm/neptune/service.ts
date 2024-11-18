@@ -1,22 +1,28 @@
 import {
   Network,
   isMainnet,
+  NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
-import { NetworkEndpoints } from '@injectivelabs/networks'
-import { AssetInfo, NEPTUNE_USDT_CW20_CONTRACT, AssetInfoWithPrice } from './types'
-import { ChainGrpcWasmApi } from '../../chain'
-import { QueryGetPrices } from './queries'
-import { PriceQueryTransformer } from './transformer'
-import ExecArgNeptuneDeposit from '../../../core/modules/wasm/exec-args/ExecArgNeptuneDeposit'
-import ExecArgNeptuneWithdraw from '../../../core/modules/wasm/exec-args/ExecArgNeptuneWithdraw'
-
-import MsgExecuteContractCompat from '../../../core/modules/wasm/msgs/MsgExecuteContractCompat'
-
+import { getDenom } from './helper.js'
+import { ChainGrpcWasmApi } from '../../chain/index.js'
+import { QueryGetPrices, QueryGetAllLendingRates } from './queries/index.js'
+import { NeptuneQueryTransformer } from './transformer.js'
+import ExecArgNeptuneDeposit from '../../../core/modules/wasm/exec-args/ExecArgNeptuneDeposit.js'
+import ExecArgNeptuneWithdraw from '../../../core/modules/wasm/exec-args/ExecArgNeptuneWithdraw.js'
+import MsgExecuteContractCompat from '../../../core/modules/wasm/msgs/MsgExecuteContractCompat.js'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { NEPTUNE_PRICE_CONTRACT } from './index'
+import { NEPTUNE_PRICE_CONTRACT } from './index.js'
+import {
+  AssetInfo,
+  AssetInfoWithPrice,
+  NEPTUNE_USDT_CW20_CONTRACT,
+} from './types.js'
 
-const NEPTUNE_USDT_MARKET_CONTRACT = 'inj1nc7gjkf2mhp34a6gquhurg8qahnw5kxs5u3s4u'
+const NEPTUNE_USDT_MARKET_CONTRACT =
+  'inj1nc7gjkf2mhp34a6gquhurg8qahnw5kxs5u3s4u'
+const NEPTUNE_USDT_INTEREST_CONTRACT =
+  'inj1ftech0pdjrjawltgejlmpx57cyhsz6frdx2dhq'
 
 export class NeptuneService {
   private client: ChainGrpcWasmApi
@@ -29,7 +35,7 @@ export class NeptuneService {
    */
   constructor(
     network: Network = Network.MainnetSentry,
-    endpoints?: NetworkEndpoints
+    endpoints?: NetworkEndpoints,
   ) {
     if (!isMainnet(network)) {
       throw new GeneralException(new Error('Please switch to mainnet network'))
@@ -51,10 +57,11 @@ export class NeptuneService {
     try {
       const response = await this.client.fetchSmartContractState(
         this.priceOracleContract,
-        queryGetPricesPayload
+        queryGetPricesPayload,
       )
 
-      const prices = PriceQueryTransformer.contractPricesResponseToPrices(response)
+      const prices =
+        NeptuneQueryTransformer.contractPricesResponseToPrices(response)
 
       return prices
     } catch (error) {
@@ -69,8 +76,11 @@ export class NeptuneService {
    * @param nativeAsset AssetInfo for the native token.
    * @returns Redemption ratio as a number.
    */
-  async fetchRedemptionRatio({ cw20Asset, nativeAsset }: {
-    cw20Asset: AssetInfo,
+  async fetchRedemptionRatio({
+    cw20Asset,
+    nativeAsset,
+  }: {
+    cw20Asset: AssetInfo
     nativeAsset: AssetInfo
   }): Promise<number> {
     const prices = await this.fetchPrices([cw20Asset, nativeAsset])
@@ -79,7 +89,9 @@ export class NeptuneService {
     const [nativePrice] = prices.reverse()
 
     if (!cw20Price || !nativePrice) {
-      throw new GeneralException(new Error('Failed to compute redemption ratio'))
+      throw new GeneralException(
+        new Error('Failed to compute redemption ratio'),
+      )
     }
 
     return Number(cw20Price.price) / Number(nativePrice.price)
@@ -113,10 +125,15 @@ export class NeptuneService {
    * @param amount Amount to deposit as a string.
    * @returns MsgExecuteContractCompat message.
    */
-  createDepositMsg({ denom, amount, sender, contractAddress = NEPTUNE_USDT_MARKET_CONTRACT }: {
-    denom: string,
-    amount: string,
-    sender: string,
+  createDepositMsg({
+    denom,
+    amount,
+    sender,
+    contractAddress = NEPTUNE_USDT_MARKET_CONTRACT,
+  }: {
+    denom: string
+    amount: string
+    sender: string
     contractAddress?: string
   }): MsgExecuteContractCompat {
     return MsgExecuteContractCompat.fromJSON({
@@ -143,10 +160,10 @@ export class NeptuneService {
     cw20ContractAddress = NEPTUNE_USDT_CW20_CONTRACT,
     marketContractAddress = NEPTUNE_USDT_MARKET_CONTRACT,
   }: {
-    amount: string,
-    sender: string,
-    cw20ContractAddress?: string,
-    marketContractAddress?: string,
+    amount: string
+    sender: string
+    cw20ContractAddress?: string
+    marketContractAddress?: string
   }): MsgExecuteContractCompat {
     return MsgExecuteContractCompat.fromJSON({
       sender,
@@ -156,5 +173,96 @@ export class NeptuneService {
         contract: marketContractAddress,
       }),
     })
+  }
+
+  /**
+   * Fetch lending rates with optional pagination parameters.
+   * @param limit Maximum number of lending rates to fetch.
+   * @param startAfter AssetInfo to start after for pagination.
+   * @returns Array of [AssetInfo, Decimal256] tuples.
+   */
+  async getLendingRates({
+    limit,
+    startAfter,
+    contractAddress = NEPTUNE_USDT_INTEREST_CONTRACT,
+  }: {
+    limit?: number
+    startAfter?: AssetInfo
+    contractAddress?: string
+  }): Promise<Array<{ assetInfo: AssetInfo; lendingRate: string }>> {
+    const query = new QueryGetAllLendingRates({ limit, startAfter })
+    const payload = query.toPayload()
+
+    try {
+      const response = await this.client.fetchSmartContractState(
+        contractAddress,
+        payload,
+      )
+
+      const lendingRates =
+        NeptuneQueryTransformer.contractLendingRatesResponseToLendingRates(
+          response,
+        )
+
+      return lendingRates
+    } catch (error) {
+      console.error('Error fetching lending rates:', error)
+      throw new GeneralException(new Error('Failed to fetch lending rates'))
+    }
+  }
+
+  /**
+   * Fetch the lending rate for a specific denom by querying the smart contract with pagination.
+   * @param denom The denomination string of the asset to find the lending rate for.
+   * @returns Lending rate as a string.
+   */
+  async getLendingRateByDenom({
+    denom,
+    contractAddress = NEPTUNE_USDT_INTEREST_CONTRACT,
+  }: {
+    denom: string
+    contractAddress?: string
+  }): Promise<string | undefined> {
+    const limit = 10
+    let startAfter = undefined
+
+    while (true) {
+      const lendingRates = await this.getLendingRates({
+        limit,
+        startAfter,
+        contractAddress,
+      })
+
+      if (lendingRates.length === 0) {
+        return
+      }
+
+      for (const { assetInfo, lendingRate } of lendingRates) {
+        const currentDenom = getDenom(assetInfo)
+
+        if (currentDenom === denom) {
+          return lendingRate
+        }
+      }
+
+      if (lendingRates.length < limit) {
+        return
+      }
+
+      const lastLendingRate = lendingRates[lendingRates.length - 1]
+
+      startAfter = lastLendingRate.assetInfo
+    }
+  }
+
+  /**
+   * Calculates APY from APR and compounding frequency.
+   *
+   * @param apr - The annual percentage rate as a decimal (e.g., 0.10 for 10%)
+   * @param compoundingFrequency - Number of times interest is compounded per year
+   * @returns The annual percentage yield as a decimal
+   */
+  calculateAPY(apr: number, compoundingFrequency = 365): number {
+    return Math.pow(1 + apr / compoundingFrequency, compoundingFrequency) - 1
   }
 }

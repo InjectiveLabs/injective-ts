@@ -1,1 +1,2 @@
-export { QueryGetPrices } from './QueryGetPrices'
+export { QueryGetPrices } from './QueryGetPrices.js'
+export { QueryGetAllLendingRates } from './QueryLendingRates.js'

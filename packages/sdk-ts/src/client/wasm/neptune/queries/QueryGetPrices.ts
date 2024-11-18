@@ -1,6 +1,6 @@
-import { BaseWasmQuery } from '../../BaseWasmQuery'
-import { toBase64 } from '../../../../utils'
-import { AssetInfo } from '../types'
+import { BaseWasmQuery } from '../../BaseWasmQuery.js'
+import { toBase64 } from '../../../../utils/index.js'
+import { AssetInfo } from '../types.js'
 
 export declare namespace QueryGetPrices {
   export interface Params {
