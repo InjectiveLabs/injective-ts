@@ -72,9 +72,7 @@ export default class MsgExec extends MsgBase<
       type: 'cosmos-sdk/MsgExec',
       value: {
         grantee: params.grantee,
-        msgs: msgs.map((msg) => {
-          return msg.toEip712()
-        }),
+        msgs: msgs.map((msg) => msg.toEip712()),
       },
     }
   }

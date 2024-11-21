@@ -77,6 +77,7 @@ export * as CosmwasmWasmV1Proposal from "./cosmwasm/wasm/v1/proposal_legacy.js";
 export * as CosmwasmWasmV1Query from "./cosmwasm/wasm/v1/query.js";
 export * as CosmwasmWasmV1Tx from "./cosmwasm/wasm/v1/tx.js";
 export * as CosmwasmWasmV1Types from "./cosmwasm/wasm/v1/types.js";
+export * as CosmwasmWasmV1Authz from "./cosmwasm/wasm/v1/authz.js";
 export * as GoogleApiHttp from "./google/api/http.js";
 export * as GoogleProtobufAny from "./google/protobuf/any.js";
 export * as GoogleProtobufDescriptor from "./google/protobuf/descriptor.js";

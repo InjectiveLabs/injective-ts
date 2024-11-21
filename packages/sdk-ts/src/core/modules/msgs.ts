@@ -1,5 +1,6 @@
 import MsgBid from './auction/msgs/MsgBid.js'
 import MsgGrant from './authz/msgs/MsgGrant.js'
+import MsgGrantWithAuthorization from './authz/msgs/MsgGrantWithAuthorization.js'
 import MsgRevoke from './authz/msgs/MsgRevoke.js'
 import MsgAuthzExec from './authz/msgs/MsgExec.js'
 import MsgSend from './bank/msgs/MsgSend.js'
@@ -121,6 +122,7 @@ export type Msgs =
   | MsgAdminUpdateBinaryOptionsMarket
   | MsgLiquidatePosition
   | MsgSignData
+  | MsgGrantWithAuthorization
 
 /**
  * @category Messages
