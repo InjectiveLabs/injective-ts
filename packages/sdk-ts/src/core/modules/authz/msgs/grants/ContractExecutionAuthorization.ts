@@ -17,6 +17,8 @@ export declare namespace ContractExecutionAuthorization {
 
   export type Any = GoogleProtobufAny.Any
 
+  export type Proto = CosmwasmWasmV1Authz.ContractExecutionAuthorization
+
   export type Amino = Object
 }
 
@@ -25,6 +27,7 @@ export declare namespace ContractExecutionAuthorization {
  */
 export default class ContractExecutionAuthorization extends BaseAuthorization<
   ContractExecutionAuthorization.Params,
+  ContractExecutionAuthorization.Proto,
   ContractExecutionAuthorization.Amino
 > {
   static fromJSON(
@@ -77,6 +80,15 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
       ).finish()
 
     return any
+  }
+
+  public toProto(): ContractExecutionAuthorization.Proto {
+    const authorization =
+      CosmwasmWasmV1Authz.ContractExecutionAuthorization.decode(
+        this.toAny().value,
+      )
+
+    return authorization
   }
 
   public toAmino(): ContractExecutionAuthorization.Amino {

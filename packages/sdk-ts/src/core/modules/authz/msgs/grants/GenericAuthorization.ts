@@ -5,7 +5,6 @@ import {
 import { BaseAuthorization } from './Base.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { getGenericAuthorizationFromMessageType } from '../../utils.js'
-import { GrantAuthorizationType } from '../../types.js'
 
 export declare namespace GenericAuthorization {
   export interface Params {
@@ -15,6 +14,8 @@ export declare namespace GenericAuthorization {
 
   export type Any = GoogleProtobufAny.Any
 
+  export type Proto = CosmosAuthzV1Beta1Authz.GenericAuthorization
+
   export type Amino = Object
 }
 
@@ -23,31 +24,23 @@ export declare namespace GenericAuthorization {
  */
 export default class GenericAuthorization extends BaseAuthorization<
   GenericAuthorization.Params,
+  GenericAuthorization.Proto,
   GenericAuthorization.Amino
 > {
   static fromJSON(params: GenericAuthorization.Params): GenericAuthorization {
     return new GenericAuthorization(params)
   }
 
-  public toAmino(): GenericAuthorization.Amino {
-    const { params } = this
-
-    const authorization =
-      params.authorization ||
-      getGenericAuthorizationFromMessageType(params.messageTypeUrl as string)
-
-    if (
-      !authorization.typeUrl.includes(
-        GrantAuthorizationType.GenericAuthorization,
-      )
-    ) {
-      throw new GeneralException(
-        new Error('Currently, only GenericAuthorization type is supported'),
-      )
-    }
-
+  public toProto(): GenericAuthorization.Proto {
     const genericAuthorization =
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(authorization.value)
+      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(this.toAny().value)
+
+    return genericAuthorization
+  }
+
+  public toAmino(): GenericAuthorization.Amino {
+    const genericAuthorization =
+      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(this.toAny().value)
 
     return {
       type: 'cosmos-sdk/GenericAuthorization',
@@ -56,24 +49,8 @@ export default class GenericAuthorization extends BaseAuthorization<
   }
 
   public toWeb3(): GenericAuthorization.Amino {
-    const { params } = this
-
-    const authorization =
-      params.authorization ||
-      getGenericAuthorizationFromMessageType(params.messageTypeUrl as string)
-
-    if (
-      !authorization.typeUrl.includes(
-        GrantAuthorizationType.GenericAuthorization,
-      )
-    ) {
-      throw new GeneralException(
-        new Error('Currently, only GenericAuthorization type is supported'),
-      )
-    }
-
     const genericAuthorization =
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(authorization.value)
+      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(this.toAny().value)
 
     return {
       '@type': '/cosmos.authz.v1beta1.GenericAuthorization',

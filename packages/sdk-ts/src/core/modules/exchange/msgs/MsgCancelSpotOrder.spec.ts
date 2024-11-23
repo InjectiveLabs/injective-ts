@@ -1,6 +1,6 @@
-import MsgCancelSpotOrder from './MsgCancelSpotOrder.js'
+import MsgCancelSpotOrder from './MsgCancelSpotOrder'
 import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
-import { IndexerGrpcWeb3GwApi } from '../../../../client/index.js'
+import { IndexerGrpcWeb3GwApi } from '../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import snakecaseKeys from 'snakecase-keys'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 
