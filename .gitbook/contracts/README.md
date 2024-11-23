@@ -6,7 +6,8 @@ CosmWasm is a novel smart contracting platform built for the Cosmos ecosystem. Y
 
 #### Specific Cosmwasm Contracts
 
-| Topic                                               | Description            |
-| --------------------------------------------------- | ---------------------- |
-| [Injective Name Service](injective-name-service.md) | Injective Name Service |
-| [Neptune Service](neptune-service.md)               | Injective Name Service |
+| Topic                                                                                      | Description            |
+| ------------------------------------------------------------------------------------------ | ---------------------- |
+| [Injective Name Service](injective-name-service.md)                                        | Injective Name Service |
+| [Neptune Service](neptune-service.md)                                                      | Neptune Service        |
+| [CW20 to Bank & Market Order in One Transaction](cw20-convert-and-market-order-example.md) | Convert Cw20 Example   |
