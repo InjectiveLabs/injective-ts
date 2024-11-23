@@ -22,7 +22,7 @@ const storeJsonFile = (path, data) => {
 
 const fetchOfac = async () => {
   const response = await fetch(
-    'https://raw.githubusercontent.com/InjectiveLabs/injective-lists/master/wallets/ofac.json',
+    'https://raw.githubusercontent.com/InjectiveLabs/injective-lists/master/wallets/ofacAndRestricted.json',
   )
   const wallets = await response.text()
 

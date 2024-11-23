@@ -2183,6 +2183,16 @@
   resolved "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
+"@injectivelabs/core-proto-ts@1.13.3":
+  version "1.13.3"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.13.3.tgz#9f2a57106d89d414ea1f9e5ea8287e6f08713271"
+  integrity sha512-G7gr9pJM/bDDtmW8fuXlUQZ+pNjFsypxM8gpd6bA7BbbBnZArdC8NlZvqfHgKYcaI27/CwIix2jlnz0okstjMg==
+  dependencies:
+    "@injectivelabs/grpc-web" "^0.0.1"
+    google-protobuf "^3.14.0"
+    protobufjs "^7.0.0"
+    rxjs "^7.4.0"
+
 "@injectivelabs/core-proto-ts@1.13.4":
   version "1.13.4"
   resolved "https://registry.npmjs.org/@injectivelabs/core-proto-ts/-/core-proto-ts-1.13.4.tgz#c33568e471b8031ed66b1b954ac752f965e7f2bf"
@@ -2239,6 +2249,67 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
+
+"@injectivelabs/sdk-ts@^1.14.19":
+  version "1.14.19"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/sdk-ts/-/sdk-ts-1.14.19.tgz#6c20de0b211092fc76c1c1c0d9e44e26fac6b61e"
+  integrity sha512-cNmE7nEobZSSxbrnygmSqBASGXmEkk0ftA06qhQTwK/GiYJI6GK5ihRehsSbtatibopqBXB2s3TfsB2cN/IVzQ==
+  dependencies:
+    "@apollo/client" "^3.11.9"
+    "@cosmjs/amino" "^0.32.3"
+    "@cosmjs/proto-signing" "^0.32.3"
+    "@cosmjs/stargate" "^0.32.3"
+    "@ethersproject/bytes" "^5.7.0"
+    "@injectivelabs/core-proto-ts" "1.13.3"
+    "@injectivelabs/exceptions" "^1.14.19"
+    "@injectivelabs/grpc-web" "^0.0.1"
+    "@injectivelabs/grpc-web-node-http-transport" "^0.0.2"
+    "@injectivelabs/grpc-web-react-native-transport" "^0.0.2"
+    "@injectivelabs/indexer-proto-ts" "1.13.1"
+    "@injectivelabs/mito-proto-ts" "1.13.0"
+    "@injectivelabs/networks" "^1.14.19"
+    "@injectivelabs/olp-proto-ts" "1.13.1"
+    "@injectivelabs/test-utils" "^1.14.19"
+    "@injectivelabs/ts-types" "^1.14.19"
+    "@injectivelabs/utils" "^1.14.19"
+    "@metamask/eth-sig-util" "^4.0.0"
+    "@noble/curves" "^1.4.0"
+    axios "^1.6.4"
+    bech32 "^2.0.0"
+    bip39 "^3.0.4"
+    cosmjs-types "^0.9.0"
+    ethereumjs-util "^7.1.4"
+    ethers "^6.5.1"
+    google-protobuf "^3.21.0"
+    graphql "^16.3.0"
+    http-status-codes "^2.2.0"
+    js-sha3 "^0.8.0"
+    jscrypto "^1.0.3"
+    keccak256 "^1.0.6"
+    secp256k1 "^4.0.3"
+    shx "^0.3.2"
+    snakecase-keys "^5.4.1"
+
+"@injectivelabs/wallet-base@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/wallet-base/-/wallet-base-0.0.6.tgz#073ee305b901c939b1dd5807b0506105c8d3f84d"
+  integrity sha512-QfFCW7KGbTC6MSPZxTAwy4vqH855EHWtvEXi3l3cS2OWb8llt1XhOc2W0YiCywcgEWh/Sv7EQb00VfMQAGM58g==
+  dependencies:
+    "@ethereumjs/common" "^3.1.1"
+    "@ethereumjs/tx" "^4.1.1"
+    "@injectivelabs/exceptions" "^1.14.19"
+    "@injectivelabs/networks" "^1.14.19"
+    "@injectivelabs/sdk-ts" "^1.14.19"
+    "@injectivelabs/ts-types" "^1.14.19"
+    "@injectivelabs/utils" "^1.14.19"
+    alchemy-sdk "^3.4.7"
+    eip1193-provider "^1.0.1"
+    eth-sig-util "^3.0.1"
+    ethereumjs-util "^7.1.0"
+    ethers "^6.5.1"
+    hdkey "^2.0.1"
+    long "^5.2.1"
+    shx "^0.3.3"
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"
