@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.20-beta.4...@injectivelabs/sdk-ts@1.14.20) (2024-11-25)
+
+
+### Features
+
+* add authorization ([76b6e0a](https://github.com/InjectiveLabs/injective-ts/commit/76b6e0a88154079b56e193c6d89574da17568b0b))
+
+
+
+
+
 ## [1.14.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.18...@injectivelabs/sdk-ts@1.14.19) (2024-11-11)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

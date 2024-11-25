@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-evm",
   "description": "EVM wallet strategies for use with @injectivelabs/wallet-core.",
-  "version": "0.0.7-beta.5",
+  "version": "0.0.7",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -55,11 +55,11 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.19",
-    "@injectivelabs/networks": "^1.14.19",
-    "@injectivelabs/sdk-ts": "^1.14.20-beta.4",
-    "@injectivelabs/ts-types": "^1.14.19",
-    "@injectivelabs/utils": "^1.14.19",
+    "@injectivelabs/exceptions": "^1.14.20",
+    "@injectivelabs/networks": "^1.14.20",
+    "@injectivelabs/sdk-ts": "^1.14.20",
+    "@injectivelabs/ts-types": "^1.14.20",
+    "@injectivelabs/utils": "^1.14.20",
     "@injectivelabs/wallet-base": "^0.0.6",
     "ethers": "^6.5.1",
     "long": "^5.2.1",
