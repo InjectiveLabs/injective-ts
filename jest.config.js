@@ -22,7 +22,6 @@ const directoryPaths = Object.keys(compilerOptions.paths).reduce(
   {},
 )
 
-
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
@@ -115,7 +114,7 @@ module.exports = {
   // resetModules: false,
 
   // A path to a custom resolver
-  resolver: './etc/jest-resolver.js',
+  resolver: `${__dirname}/etc/jest-resolver.js`,
 
   // Automatically restore mock state between every test
   // restoreMocks: false,
