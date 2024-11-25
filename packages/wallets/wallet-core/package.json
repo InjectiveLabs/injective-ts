@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-core",
   "description": "Core wallet strategy",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -57,7 +57,7 @@
   "dependencies": {
     "@injectivelabs/exceptions": "^1.14.21",
     "@injectivelabs/networks": "^1.14.21",
-    "@injectivelabs/sdk-ts": "^1.14.21",
+    "@injectivelabs/sdk-ts": "^1.14.22",
     "@injectivelabs/ts-types": "^1.14.20",
     "@injectivelabs/utils": "^1.14.21",
     "@injectivelabs/wallet-base": "^0.0.6",
