@@ -3,7 +3,6 @@ import {
   ExecArgBase,
   ExecDataRepresentation,
 } from '../ExecArgBase.js'
-
 import {
   ExitType,
   ExitConfig,
@@ -11,6 +10,7 @@ import {
   TrailingArithmetic,
   TrailingArithmeticLP,
 } from '../types.js'
+
 export declare namespace ExecArgCreateSpotGridStrategy {
   export interface Params {
     subaccountId: string

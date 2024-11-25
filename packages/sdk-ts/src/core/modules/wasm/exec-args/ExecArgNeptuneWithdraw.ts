@@ -5,7 +5,6 @@ import {
 } from '../ExecArgBase.js'
 import { toBase64 } from '../../../../utils'
 
-
 export declare namespace ExecArgNeptuneWithdraw {
   export interface Params {
     amount: string
