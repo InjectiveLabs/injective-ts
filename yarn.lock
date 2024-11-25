@@ -2220,6 +2220,16 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
+"@injectivelabs/indexer-proto-ts@1.13.2":
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/indexer-proto-ts/-/indexer-proto-ts-1.13.2.tgz#ad784602ea392b7a25410784cf90eed74895d07b"
+  integrity sha512-Sn6TiFslc1Lvxhljr5lJCymIRpAcsyfevAyQlGDbls0ZKHcZnl9oBHlFbCPA04dyNGcs9txU2odzBC/1hsYfwQ==
+  dependencies:
+    "@injectivelabs/grpc-web" "^0.0.1"
+    google-protobuf "^3.14.0"
+    protobufjs "^7.0.0"
+    rxjs "^7.4.0"
+
 "@injectivelabs/mito-proto-ts@1.13.0":
   version "1.13.0"
   resolved "https://registry.npmjs.org/@injectivelabs/mito-proto-ts/-/mito-proto-ts-1.13.0.tgz#9bc5325977a3c51b3fb8ec54a93244435861a9ca"
@@ -2239,6 +2249,46 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
+
+"@injectivelabs/sdk-ts@^1.14.19":
+  version "1.14.32"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/sdk-ts/-/sdk-ts-1.14.32.tgz#560bc07a717d14bac81ee4f5ef17f9ac42abbd67"
+  integrity sha512-l4V5TK4QnTS8kgv4Qnmmi4rZo+2yF9y4S6lhH6eoyRuPb/xXODUzkyQDIHwbd1Qf92G31qSdL76Koe13v/SBIQ==
+  dependencies:
+    "@apollo/client" "^3.11.10"
+    "@cosmjs/amino" "^0.32.3"
+    "@cosmjs/proto-signing" "^0.32.3"
+    "@cosmjs/stargate" "^0.32.3"
+    "@ethersproject/bytes" "^5.7.0"
+    "@injectivelabs/core-proto-ts" "1.13.4"
+    "@injectivelabs/exceptions" "^1.14.32"
+    "@injectivelabs/grpc-web" "^0.0.1"
+    "@injectivelabs/grpc-web-node-http-transport" "^0.0.2"
+    "@injectivelabs/grpc-web-react-native-transport" "^0.0.2"
+    "@injectivelabs/indexer-proto-ts" "1.13.1"
+    "@injectivelabs/mito-proto-ts" "1.13.0"
+    "@injectivelabs/networks" "^1.14.32"
+    "@injectivelabs/olp-proto-ts" "1.13.1"
+    "@injectivelabs/test-utils" "^1.14.32"
+    "@injectivelabs/ts-types" "^1.14.32"
+    "@injectivelabs/utils" "^1.14.32"
+    "@metamask/eth-sig-util" "^4.0.0"
+    "@noble/curves" "^1.4.0"
+    axios "^1.6.4"
+    bech32 "^2.0.0"
+    bip39 "^3.0.4"
+    cosmjs-types "^0.9.0"
+    ethereumjs-util "^7.1.4"
+    ethers "^6.5.1"
+    google-protobuf "^3.21.0"
+    graphql "^16.3.0"
+    http-status-codes "^2.2.0"
+    js-sha3 "^0.8.0"
+    jscrypto "^1.0.3"
+    keccak256 "^1.0.6"
+    secp256k1 "^4.0.3"
+    shx "^0.3.2"
+    snakecase-keys "^5.4.1"
 
 "@injectivelabs/wallet-base@^0.0.6":
   version "0.0.6"
@@ -12113,7 +12163,12 @@ libsodium-wrappers-sumo@^0.7.11:
   dependencies:
     libsodium-sumo "^0.7.13"
 
-libsodium-wrappers@^0.7.6, "libsodium-wrappers@npm:@bangjelkoski/noop", "libsodium@npm:@bangjelkoski/noop":
+libsodium-wrappers@^0.7.6, "libsodium-wrappers@npm:@bangjelkoski/noop":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@bangjelkoski/noop/-/noop-0.0.1.tgz#172235ce00dd4269258c420f01464f07eb9801ed"
+  integrity sha512-lQgYJJbok2Unu2vKh0TAtWxXo16kLXNrjqmfo0hQTAuE/tVvz5zVqMgGsj+gMkkWfsInEbUndG0nlyCwaFv8hQ==
+
+"libsodium@npm:@bangjelkoski/noop":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@bangjelkoski/noop/-/noop-0.0.1.tgz#172235ce00dd4269258c420f01464f07eb9801ed"
   integrity sha512-lQgYJJbok2Unu2vKh0TAtWxXo16kLXNrjqmfo0hQTAuE/tVvz5zVqMgGsj+gMkkWfsInEbUndG0nlyCwaFv8hQ==

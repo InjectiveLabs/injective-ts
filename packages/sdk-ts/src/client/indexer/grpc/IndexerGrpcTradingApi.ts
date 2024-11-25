@@ -22,6 +22,33 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     )
   }
 
+  async fetchTradingStats() {
+    const request = InjectiveTradingRpc.GetTradingStatsRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectiveTradingRpc.GetTradingStatsResponse>(() =>
+          this.client.GetTradingStats(request),
+        )
+
+      return response
+    } catch (e: unknown) {
+      if (e instanceof InjectiveTradingRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'TradingStats',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'TradingStats',
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchGridStrategies({
     accountAddress,
     subaccountId,
