@@ -14,6 +14,88 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./exports": {
+      "react-native": {
+        "import": "./dist/esm/exports.js",
+        "require": "./dist/cjs/exports.js",
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "require": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "import": {
+        "types": "./dist/esm/exports.d.ts",
+        "default": "./dist/esm/exports.js"
+      },
+      "default": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      }
+    },
+    "./graphql": {
+      "react-native": {
+        "import": "./dist/esm/client/gql/index.js",
+        "require": "./dist/cjs/client/gql/index.js",
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/client/gql/index.d.ts",
+        "default": "./dist/esm/client/gql/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      }
+    },
+    "./cosmjs": {
+      "react-native": {
+        "import": "./dist/esm/cosmjs.js",
+        "require": "./dist/cjs/cosmjs.js",
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      },
+      "require": {
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      },
+      "import": {
+        "types": "./dist/esm/cosmjs.d.ts",
+        "default": "./dist/esm/cosmjs.js"
+      },
+      "default": {
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      }
+    }
+  },
   "_moduleAliases": {
     "~sdk-ts": "dist"
   },
@@ -34,7 +116,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@apollo/client": "^3.11.9",
+    "@apollo/client": "^3.11.10",
     "@cosmjs/amino": "^0.32.3",
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
