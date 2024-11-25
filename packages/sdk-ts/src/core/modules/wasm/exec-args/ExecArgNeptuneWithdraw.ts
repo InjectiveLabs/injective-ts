@@ -2,7 +2,7 @@ import {
   ExecArgBase,
   dataToExecData,
   ExecDataRepresentation,
-} from '../ExecArgBase'
+} from '../ExecArgBase.js'
 import { toBase64 } from '../../../../utils'
 
 
