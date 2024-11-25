@@ -1,9 +1,9 @@
-import { grpc } from '@injectivelabs/grpc-web'
+import * as grpc from '@injectivelabs/grpc-web'
 import { BrowserHeaders } from 'browser-headers'
 import { Observable } from 'rxjs'
 import { share } from 'rxjs/operators'
 
-interface UnaryMethodDefinitionR extends grpc.UnaryMethodDefinition<any, any> {
+interface UnaryMethodDefinitionR extends grpc.grpc.UnaryMethodDefinition<any, any> {
   requestStream: any
   responseStream: any
 }
@@ -14,20 +14,20 @@ export interface Rpc {
   unary<T extends UnaryMethodDefinition>(
     methodDesc: T,
     request: any,
-    metadata: grpc.Metadata | undefined,
+    metadata: grpc.grpc.Metadata | undefined,
   ): Promise<any>
   invoke<T extends UnaryMethodDefinition>(
     methodDesc: T,
     request: any,
-    metadata: grpc.Metadata | undefined,
+    metadata: grpc.grpc.Metadata | undefined,
   ): Observable<any>
 }
 
 export class GrpcWebError extends Error {
   constructor(
     message: string,
-    public code: grpc.Code,
-    public metadata: grpc.Metadata,
+    public code: grpc.grpc.Code,
+    public metadata: grpc.grpc.Metadata,
   ) {
     super(message)
   }
@@ -36,20 +36,20 @@ export class GrpcWebError extends Error {
 export class GrpcWebImpl {
   private host: string
   private options: {
-    transport?: grpc.TransportFactory
-    streamingTransport?: grpc.TransportFactory
+    transport?: grpc.grpc.TransportFactory
+    streamingTransport?: grpc.grpc.TransportFactory
     debug?: boolean
-    metadata?: grpc.Metadata
+    metadata?: grpc.grpc.Metadata
     upStreamRetryCodes?: number[]
   }
 
   constructor(
     host: string,
     options: {
-      transport?: grpc.TransportFactory
-      streamingTransport?: grpc.TransportFactory
+      transport?: grpc.grpc.TransportFactory
+      streamingTransport?: grpc.grpc.TransportFactory
       debug?: boolean
-      metadata?: grpc.Metadata
+      metadata?: grpc.grpc.Metadata
       upStreamRetryCodes?: number[]
     },
   ) {
@@ -60,7 +60,7 @@ export class GrpcWebImpl {
   unary<T extends UnaryMethodDefinition>(
     methodDesc: T,
     _request: any,
-    metadata: grpc.Metadata | undefined,
+    metadata: grpc.grpc.Metadata | undefined,
   ): Promise<any> {
     const request = { ..._request, ...methodDesc.requestType }
     const metadataWithCookieMetadata = new BrowserHeaders({
@@ -69,14 +69,14 @@ export class GrpcWebImpl {
     })
 
     return new Promise((resolve, reject) => {
-      grpc.unary(methodDesc, {
+      grpc.grpc.unary(methodDesc, {
         request,
         host: this.host,
         metadata: metadataWithCookieMetadata,
         transport: this.options.transport,
         debug: this.options.debug,
         onEnd: (response) => {
-          if (response.status === grpc.Code.OK) {
+          if (response.status === grpc.grpc.Code.OK) {
             return resolve(response.message!.toObject())
           }
 
@@ -95,7 +95,7 @@ export class GrpcWebImpl {
   invoke<T extends UnaryMethodDefinition>(
     methodDesc: T,
     _request: any,
-    metadata: grpc.Metadata | undefined,
+    metadata: grpc.grpc.Metadata | undefined,
   ): Observable<any> {
     const upStreamCodes = this.options.upStreamRetryCodes || []
     const DEFAULT_TIMEOUT_TIME: number = 3_000
@@ -107,7 +107,7 @@ export class GrpcWebImpl {
 
     return new Observable((observer) => {
       const upStream = () => {
-        const client = grpc.invoke(methodDesc, {
+        const client = grpc.grpc.invoke(methodDesc, {
           host: this.host,
           request,
           transport: this.options.streamingTransport || this.options.transport,
@@ -115,9 +115,9 @@ export class GrpcWebImpl {
           debug: this.options.debug,
           onMessage: (next) => observer.next(next),
           onEnd: (
-            code: grpc.Code,
+            code: grpc.grpc.Code,
             message: string,
-            trailers: grpc.Metadata,
+            trailers: grpc.grpc.Metadata,
           ) => {
             if (code === 0) {
               observer.complete()
