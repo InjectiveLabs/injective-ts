@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.14.20...@injectivelabs/networks@1.14.21) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
 ## [1.14.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.14.19...@injectivelabs/networks@1.14.20) (2024-11-25)
 
 **Note:** Version bump only for package @injectivelabs/networks

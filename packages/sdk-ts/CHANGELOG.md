@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.20...@injectivelabs/sdk-ts@1.14.21) (2024-11-25)
+
+
+### Bug Fixes
+
+* esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
+
+
+
+
+
 ## [1.14.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.20-beta.4...@injectivelabs/sdk-ts@1.14.20) (2024-11-25)
 
 
