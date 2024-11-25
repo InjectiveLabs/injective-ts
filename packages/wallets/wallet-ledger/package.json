@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ledger",
   "description": "Ledger wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "0.0.9",
+  "version": "1.14.30",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -57,12 +57,12 @@
   "dependencies": {
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.14.21",
-    "@injectivelabs/networks": "^1.14.21",
-    "@injectivelabs/sdk-ts": "^1.14.22",
-    "@injectivelabs/ts-types": "^1.14.20",
-    "@injectivelabs/utils": "^1.14.21",
-    "@injectivelabs/wallet-base": "^0.0.9",
+    "@injectivelabs/exceptions": "^1.14.30",
+    "@injectivelabs/networks": "^1.14.30",
+    "@injectivelabs/sdk-ts": "^1.14.30",
+    "@injectivelabs/ts-types": "^1.14.30",
+    "@injectivelabs/utils": "^1.14.30",
+    "@injectivelabs/wallet-base": "^1.14.30",
     "@ledgerhq/hw-app-cosmos": "^6.29.5",
     "@ledgerhq/hw-app-eth": "6.35.6",
     "@ledgerhq/hw-transport": "6.30.4",
