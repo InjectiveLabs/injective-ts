@@ -1,104 +1,34 @@
 /* eslint-disable class-methods-use-this */
-import {
-  ErrorType,
-  ErrorContext,
-  WalletException,
-  ThrownException,
-  BitGetException,
-  MetamaskException,
-  OkxWalletException,
-  UnspecifiedErrorCode,
-  TransactionException,
-  TrustWalletException,
-} from '@injectivelabs/exceptions'
-import {
-  Wallet,
-  StdSignDoc,
-  WalletAction,
-  WalletDeviceType,
-  WalletEventListener,
-  BaseConcreteStrategy,
-  SendTransactionOptions,
-  BrowserEip1993Provider,
-  ConcreteWalletStrategy,
-  ConcreteWalletStrategyArgs,
-  ConcreteEthereumWalletStrategyArgs,
-} from '@injectivelabs/wallet-base'
 import { sleep } from '@injectivelabs/utils'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
-  TxRaw,
-  toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  DirectSignResponse,
-  AminoSignResponse,
-} from '@injectivelabs/sdk-ts'
+  ErrorType,
+  CosmosWalletException,
+  WalletException,
+  UnspecifiedErrorCode,
+  TransactionException,
+} from '@injectivelabs/exceptions'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
-  getBitGetProvider,
-  getPhantomProvider,
-  getMetamaskProvider,
-  getOkxWalletProvider,
-  getTrustWalletProvider,
-  getFoxWalletProvider
-} from './utils/index.js'
+  ConcreteWalletStrategy,
+  EthereumWalletStrategyArgs,
+} from '../../../types'
+import { BrowserEip1993Provider, SendTransactionOptions } from '../../types'
+import BaseConcreteStrategy from './../Base'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+} from '../../../../types/enums'
+import { getFoxWalletProvider } from './utils'
 
-const evmWallets = [
-  Wallet.BitGet,
-  Wallet.Phantom,
-  Wallet.Metamask,
-  Wallet.OkxWallet,
-  Wallet.TrustWallet,
-  Wallet.FoxWallet,
-]
-
-export class EvmWallet
+export default class FoxWallet
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  public wallet?: Wallet
-
-  constructor(
-    args: (ConcreteWalletStrategyArgs | ConcreteEthereumWalletStrategyArgs) & {
-      wallet: Wallet
-    },
-  ) {
+  constructor(args: EthereumWalletStrategyArgs) {
     super(args)
-
-    if (!evmWallets.includes(args.wallet)) {
-      throw new WalletException(
-        new Error(`Evm Wallet for ${args.wallet} is not supported.`),
-      )
-    }
-
-    this.wallet = args.wallet
-  }
-
-  public EvmWalletException(
-    error: Error,
-    context?: ErrorContext,
-  ): ThrownException {
-    if (this.wallet === Wallet.Metamask) {
-      return new MetamaskException(error, context)
-    }
-
-    if (this.wallet === Wallet.BitGet) {
-      return new BitGetException(error, context)
-    }
-
-    if (this.wallet === Wallet.OkxWallet) {
-      return new OkxWalletException(error, context)
-    }
-
-    if (this.wallet === Wallet.Phantom) {
-      return new MetamaskException(error, context)
-    }
-
-    if (this.wallet === Wallet.TrustWallet) {
-      return new TrustWalletException(error, context)
-    }
-
-    return new WalletException(error, context)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -110,15 +40,6 @@ export class EvmWallet
   }
 
   public async disconnect() {
-    if (this.listeners[WalletEventListener.AccountChange]) {
-      const ethereum = await this.getEthereum()
-
-      ethereum.removeListener(
-        'accountsChanged',
-        this.listeners[WalletEventListener.AccountChange],
-      )
-    }
-
     if (this.listeners[WalletEventListener.ChainIdChange]) {
       const ethereum = await this.getEthereum()
 
@@ -139,7 +60,7 @@ export class EvmWallet
         method: 'eth_requestAccounts',
       })
     } catch (e: unknown) {
-      throw this.EvmWalletException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
@@ -168,7 +89,7 @@ export class EvmWallet
         params: [transaction],
       })
     } catch (e: unknown) {
-      throw this.EvmWalletException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SendEthereumTransaction,
@@ -204,6 +125,14 @@ export class EvmWallet
     return response
   }
 
+  /** @deprecated */
+  async signTransaction(
+    eip712json: string,
+    address: AccountAddress,
+  ): Promise<string> {
+    return this.signEip712TypedData(eip712json, address)
+  }
+
   async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
@@ -213,10 +142,10 @@ export class EvmWallet
     try {
       return await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [address, eip712json],
+        params: [eip712json, address],
       })
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,
@@ -225,15 +154,17 @@ export class EvmWallet
   }
 
   async signAminoCosmosTransaction(_transaction: {
+    signDoc: any
+    accountNumber: number
+    chainId: string
     address: string
-    signDoc: StdSignDoc
-  }): Promise<AminoSignResponse> {
+  }): Promise<string> {
     throw new WalletException(
       new Error('This wallet does not support signing Cosmos transactions'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SignTransaction,
+        contextModule: WalletAction.SendTransaction,
       },
     )
   }
@@ -250,7 +181,7 @@ export class EvmWallet
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SignTransaction,
+        contextModule: WalletAction.SendTransaction,
       },
     )
   }
@@ -269,7 +200,7 @@ export class EvmWallet
 
       return signature
     } catch (e: unknown) {
-      throw this.EvmWalletException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignArbitrary,
@@ -283,7 +214,7 @@ export class EvmWallet
     try {
       return ethereum.request({ method: 'eth_chainId' })
     } catch (e: unknown) {
-      throw this.EvmWalletException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetChainId,
@@ -312,7 +243,7 @@ export class EvmWallet
     try {
       return await transactionReceiptRetry()
     } catch (e: unknown) {
-      throw this.EvmWalletException(new Error((e as any).message), {
+      throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetEthereumTransactionReceipt,
@@ -337,37 +268,12 @@ export class EvmWallet
     ethereum.on('chainChanged', callback)
   }
 
-  async onAccountChange(
-    callback: (account: AccountAddress) => void,
-  ): Promise<void> {
-    const ethereum = await this.getEthereum()
-
-    this.listeners = {
-      [WalletEventListener.AccountChange]: callback,
-    }
-
-    ethereum.on('accountsChanged', callback)
-  }
-
   private async getEthereum(): Promise<BrowserEip1993Provider> {
-    const provider =
-      this.wallet === Wallet.Metamask
-        ? await getMetamaskProvider()
-        : this.wallet === Wallet.Phantom
-        ? await getPhantomProvider()
-        : this.wallet === Wallet.BitGet
-        ? await getBitGetProvider()
-        : this.wallet === Wallet.OkxWallet
-        ? await getOkxWalletProvider()
-        : this.wallet === Wallet.TrustWallet
-        ? await getTrustWalletProvider()
-        : this.wallet === Wallet.FoxWallet
-        ? await getFoxWalletProvider()
-        : undefined
+    const provider = await getFoxWalletProvider()
 
     if (!provider) {
-      throw this.EvmWalletException(
-        new Error(`Please install the ${this.wallet} wallet extension.`),
+      throw new CosmosWalletException(
+        new Error('Please install the FoxWallet wallet extension.'),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,

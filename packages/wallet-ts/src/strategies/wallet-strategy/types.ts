@@ -9,6 +9,7 @@ export interface BrowserEip1993Provider extends Eip1993Provider {
   isTrust: boolean
   isOkxWallet: boolean
   isPhantom: boolean
+  isFoxWallet: boolean
 }
 
 export interface WindowWithEip1193Provider extends Window {
@@ -18,6 +19,7 @@ export interface WindowWithEip1193Provider extends Window {
   providers: BrowserEip1993Provider[]
   trustWallet?: BrowserEip1993Provider
   phantom?: { ethereum?: BrowserEip1993Provider }
+  foxwallet?: { ethereum?: BrowserEip1993Provider }
 }
 
 export interface WindowWithLedgerSupport extends Window {

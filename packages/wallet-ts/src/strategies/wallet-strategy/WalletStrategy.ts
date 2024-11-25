@@ -19,6 +19,8 @@ import WalletConnect from './strategies/WalletConnect.js'
 import LedgerLive from './strategies/Ledger/LedgerLive.js'
 import LedgerLegacy from './strategies/Ledger/LedgerLegacy.js'
 import Magic from './strategies/Magic.js'
+import FoxWallet from './strategies/FoxWallet/index.js'
+import FoxWalletCosmos from './strategies/FoxWalletCosmos/index.js'
 import { isEthWallet, isCosmosWallet } from './utils.js'
 import { Wallet, WalletDeviceType } from '../../types/enums.js'
 import { MagicMetadata, SendTransactionOptions } from './types.js'
@@ -101,6 +103,10 @@ const createStrategy = ({
       return new Okx(ethWalletArgs)
     case Wallet.BitGet:
       return new BitGet(ethWalletArgs)
+    case Wallet.FoxWallet:
+      return new FoxWallet(ethWalletArgs)
+    case Wallet.FoxWalletCosmos:
+      return new FoxWalletCosmos({ ...args })
     case Wallet.WalletConnect:
       return new WalletConnect({
         ...ethWalletArgs,

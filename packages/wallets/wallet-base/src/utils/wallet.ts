@@ -15,6 +15,7 @@ export const isEthWallet = (wallet: Wallet): boolean =>
     Wallet.LedgerLegacy,
     Wallet.WalletConnect,
     Wallet.CosmostationEth,
+    Wallet.FoxWallet,
   ].includes(wallet)
 
 export const isCosmosWallet = (wallet: Wallet): boolean => !isEthWallet(wallet)
