@@ -68,7 +68,7 @@ How to use funds that are currently associated with your Injective Address in ba
 - If you have existing non-default subaccounts, you'll want to do a[ MsgDeposit ](exchange.md#msgdeposit)to one of your existing non-default subaccountIds and use that subaccountId as the `srcSubaccountId` below.
 - If you don't have existing non-default subaccounts, you can do a [MsgDeposit](exchange.md#msgdeposit) to a new default subaccountId, which would be done via importing `getSubaccountId` from `sdk-ts` and setting the `subaccountId` field in [MsgDeposit](exchange.md#msgdeposit) to `getSubaccountId(injectiveAddress, 1)`.
 
-For more info, check out the [burn auction pool docs](https://docs.injective.network/develop/tech-concepts/auction_pool/).
+For more info, check out the [burn auction pool docs](https://docs.injective.network/developers/modules/injective/auction).
 
 ```ts
 import {
