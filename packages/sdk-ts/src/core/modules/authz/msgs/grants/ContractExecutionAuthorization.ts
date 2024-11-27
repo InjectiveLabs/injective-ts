@@ -67,7 +67,7 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
       any.value =
         CosmwasmWasmV1Authz.AcceptedMessageKeysFilter.encode(filter).finish()
 
-      grant.limit = any
+      grant.filter = any
     }
 
     authorization.grants = [grant]
