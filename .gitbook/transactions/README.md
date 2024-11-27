@@ -1,6 +1,6 @@
 # Transactions
 
-_Pre-requisite reading:_ [Cosmos SDK Transactions](https://docs.cosmos.network/main/core/transactions.html)
+_Pre-requisite reading:_ [Cosmos SDK Transactions](https://docs.cosmos.network/main/learn/advanced/transactions)
 
 State changes on Injective can be done through transactions. Users create transactions, sign them and broadcast them to Injective.
 
