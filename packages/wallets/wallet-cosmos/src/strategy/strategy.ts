@@ -22,6 +22,7 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   Wallet,
+  capitalize,
   StdSignDoc,
   WalletAction,
   WalletDeviceType,
@@ -52,13 +53,18 @@ export class CosmosWalletStrategy
 
     if (!cosmosWallets.includes(args.wallet)) {
       throw new CosmosWalletException(
-        new Error(`Cosmos Wallet for ${args.wallet} is not supported.`),
+        new Error(
+          `Cosmos Wallet for ${capitalize(args.wallet)} is not supported.`,
+        ),
       )
     }
 
     this.wallet = args.wallet
     this.chainId = args.chainId || CosmosChainId.Injective
-    this.cosmosWallet = new CosmosWallet(args.chainId, args.wallet)
+    this.cosmosWallet = new CosmosWallet({
+      wallet: args.wallet,
+      chainId: args.chainId,
+    })
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -137,7 +143,9 @@ export class CosmosWalletStrategy
 
     throw new CosmosWalletException(
       new Error(
-        `sendEthereumTransaction is not supported. ${wallet} only supports sending cosmos transactions`,
+        `sendEthereumTransaction is not supported. ${capitalize(
+          wallet,
+        )} only supports sending cosmos transactions`,
       ),
       {
         code: UnspecifiedErrorCode,
@@ -252,7 +260,7 @@ export class CosmosWalletStrategy
     const { wallet } = this
 
     throw new CosmosWalletException(
-      new Error(`getEthereumChainId is not supported on ${wallet}`),
+      new Error(`getEthereumChainId is not supported on ${capitalize(wallet)}`),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetChainId,
@@ -264,7 +272,11 @@ export class CosmosWalletStrategy
     const { wallet } = this
 
     throw new CosmosWalletException(
-      new Error(`getEthereumTransactionReceipt is not supported on ${wallet}`),
+      new Error(
+        `getEthereumTransactionReceipt is not supported on ${capitalize(
+          wallet,
+        )}`,
+      ),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetEthereumTransactionReceipt,
@@ -310,7 +322,7 @@ export class CosmosWalletStrategy
   public getCosmosWallet(chainId: ChainId): CosmosWallet {
     const { wallet, cosmosWallet } = this
 
-    return !cosmosWallet ? new CosmosWallet(chainId, wallet) : cosmosWallet
+    return !cosmosWallet ? new CosmosWallet({ chainId, wallet }) : cosmosWallet
   }
 
   private getCurrentCosmosWallet(): CosmosWallet {
@@ -318,7 +330,7 @@ export class CosmosWalletStrategy
 
     if (!cosmosWallet) {
       throw new CosmosWalletException(
-        new Error(`Please install the ${wallet} wallet extension`),
+        new Error(`Please install the ${capitalize(wallet)} wallet extension`),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
