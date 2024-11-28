@@ -9,7 +9,7 @@ import { BaseAuthorization } from './grants/Base.js'
 
 export declare namespace MsgGrantWithAuthorization {
   export interface Params {
-    authorization: BaseAuthorization<unknown, unknown>
+    authorization: BaseAuthorization<unknown, unknown, unknown>
     grantee: string
     granter: string
     expiration?: number

@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-evm@1.14.31...@injectivelabs/wallet-evm@1.14.32) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/wallet-evm
+
+
+
+
+
+## [1.14.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-evm@1.14.30...@injectivelabs/wallet-evm@1.14.31) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/wallet-evm
+
+
+
+
+
+## [1.14.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-evm@0.0.9...@injectivelabs/wallet-evm@1.14.30) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/wallet-evm
+
+
+
+
+
+## [0.0.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-evm@0.0.8...@injectivelabs/wallet-evm@0.0.9) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/wallet-evm
+
+
+
+
+
+## [0.0.8](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-evm@0.0.7...@injectivelabs/wallet-evm@0.0.8) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/wallet-evm
+
+
+
+
+
+## [0.0.7](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-evm@0.0.7-beta.5...@injectivelabs/wallet-evm@0.0.7) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/wallet-evm
+
+
+
+
+
 ## [0.0.6](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-evm@0.0.5...@injectivelabs/wallet-evm@0.0.6) (2024-11-11)
 
 **Note:** Version bump only for package @injectivelabs/wallet-evm

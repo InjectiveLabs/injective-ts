@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
-  "version": "1.14.20-beta.4",
+  "version": "1.14.33-beta.1",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
@@ -14,6 +14,88 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./exports": {
+      "react-native": {
+        "import": "./dist/esm/exports.js",
+        "require": "./dist/cjs/exports.js",
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "require": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "import": {
+        "types": "./dist/esm/exports.d.ts",
+        "default": "./dist/esm/exports.js"
+      },
+      "default": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      }
+    },
+    "./graphql": {
+      "react-native": {
+        "import": "./dist/esm/client/gql/index.js",
+        "require": "./dist/cjs/client/gql/index.js",
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/client/gql/index.d.ts",
+        "default": "./dist/esm/client/gql/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      }
+    },
+    "./cosmjs": {
+      "react-native": {
+        "import": "./dist/esm/cosmjs.js",
+        "require": "./dist/cjs/cosmjs.js",
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      },
+      "require": {
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      },
+      "import": {
+        "types": "./dist/esm/cosmjs.d.ts",
+        "default": "./dist/esm/cosmjs.js"
+      },
+      "default": {
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      }
+    }
+  },
   "_moduleAliases": {
     "~sdk-ts": "dist"
   },
@@ -34,23 +116,23 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@apollo/client": "^3.11.9",
+    "@apollo/client": "^3.11.10",
     "@cosmjs/amino": "^0.32.3",
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
     "@ethersproject/bytes": "^5.7.0",
     "@injectivelabs/core-proto-ts": "1.13.4",
-    "@injectivelabs/exceptions": "^1.14.19",
+    "@injectivelabs/exceptions": "^1.14.32",
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
-    "@injectivelabs/indexer-proto-ts": "1.13.1",
+    "@injectivelabs/indexer-proto-ts": "1.13.2",
     "@injectivelabs/mito-proto-ts": "1.13.0",
-    "@injectivelabs/networks": "^1.14.19",
+    "@injectivelabs/networks": "^1.14.32",
     "@injectivelabs/olp-proto-ts": "1.13.1",
-    "@injectivelabs/test-utils": "^1.14.19",
-    "@injectivelabs/ts-types": "^1.14.19",
-    "@injectivelabs/utils": "^1.14.19",
+    "@injectivelabs/test-utils": "^1.14.32",
+    "@injectivelabs/ts-types": "^1.14.32",
+    "@injectivelabs/utils": "^1.14.32",
     "@metamask/eth-sig-util": "^4.0.0",
     "@noble/curves": "^1.4.0",
     "axios": "^1.6.4",

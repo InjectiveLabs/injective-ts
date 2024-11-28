@@ -1,8 +1,8 @@
 import {
-  dataToExecData,
   ExecArgBase,
+  dataToExecData,
   ExecDataRepresentation,
-} from '../ExecArgBase'
+} from '../ExecArgBase.js'
 
 export declare namespace ExecArgNeptuneDeposit {
   export interface Params {}
@@ -17,9 +17,7 @@ export default class ExecArgNeptuneDeposit extends ExecArgBase<
   ExecArgNeptuneDeposit.Params,
   ExecArgNeptuneDeposit.Data
 > {
-  static fromJSON(
-    params: ExecArgNeptuneDeposit.Params,
-  ): ExecArgNeptuneDeposit {
+  static fromJSON(params: ExecArgNeptuneDeposit.Params): ExecArgNeptuneDeposit {
     return new ExecArgNeptuneDeposit(params)
   }
 

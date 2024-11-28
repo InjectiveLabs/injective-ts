@@ -1,9 +1,9 @@
-import * as Apollo from '@apollo/client'
+import { gql } from '@apollo/client'
 
 /**
  * @hidden
  */
-export const USER_DEPOSITS = Apollo.gql`
+export const USER_DEPOSITS = gql`
   query Deposits($destination: Bytes!) {
     deposits(
       orderBy: timestamp
@@ -23,7 +23,7 @@ export const USER_DEPOSITS = Apollo.gql`
   }
 `
 
-export const USER_BRIDGE_DEPOSITS = Apollo.gql`
+export const USER_BRIDGE_DEPOSITS = gql`
   query Deposits($sender: Bytes!, $timestamp: Int!) {
     deposits(
       orderBy: timestamp

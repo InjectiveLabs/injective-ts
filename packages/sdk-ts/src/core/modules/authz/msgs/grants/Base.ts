@@ -1,6 +1,6 @@
 import { GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
 
-export abstract class BaseAuthorization<Params, DataRepresentation> {
+export abstract class BaseAuthorization<Params, Proto, DataRepresentation> {
   params: Params
 
   constructor(params: Params) {
@@ -12,4 +12,6 @@ export abstract class BaseAuthorization<Params, DataRepresentation> {
   public abstract toAmino(): DataRepresentation
 
   public abstract toWeb3(): DataRepresentation
+
+  public abstract toProto(): Proto
 }

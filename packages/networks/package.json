@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/networks",
   "description": "Endpoints, networks, etc. Can be reused throughout Injective's projects.",
-  "version": "1.14.19",
+  "version": "1.14.32",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
@@ -16,6 +16,28 @@
   ],
   "_moduleAliases": {
     "~networks": "dist"
+  },
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
   },
   "scripts": {
     "build": "yarn build:cjs && yarn build:esm && yarn build:post",
@@ -33,9 +55,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.19",
-    "@injectivelabs/ts-types": "^1.14.19",
-    "@injectivelabs/utils": "^1.14.19",
+    "@injectivelabs/exceptions": "^1.14.32",
+    "@injectivelabs/ts-types": "^1.14.32",
+    "@injectivelabs/utils": "^1.14.32",
     "shx": "^0.3.2"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
