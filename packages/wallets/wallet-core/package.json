@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-core",
   "description": "Core wallet strategy",
-  "version": "1.14.33-beta.4",
+  "version": "1.14.33",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -55,12 +55,12 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.32",
-    "@injectivelabs/networks": "^1.14.33-beta.1",
-    "@injectivelabs/sdk-ts": "^1.14.33-beta.4",
-    "@injectivelabs/ts-types": "^1.14.32",
-    "@injectivelabs/utils": "^1.14.33-beta.1",
-    "@injectivelabs/wallet-base": "^1.14.33-beta.4",
+    "@injectivelabs/exceptions": "^1.14.33",
+    "@injectivelabs/networks": "^1.14.33",
+    "@injectivelabs/sdk-ts": "^1.14.33",
+    "@injectivelabs/ts-types": "^1.14.33",
+    "@injectivelabs/utils": "^1.14.33",
+    "@injectivelabs/wallet-base": "^1.14.33",
     "eip1193-provider": "^1.0.1"
   },
   "devDependencies": {
