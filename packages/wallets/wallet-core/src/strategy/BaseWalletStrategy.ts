@@ -12,7 +12,7 @@ import {
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import {
   Wallet,
-  isEthWallet,
+  isEvmWallet,
   isCosmosWallet,
   WalletDeviceType,
   ConcreteStrategiesArg,
@@ -151,7 +151,7 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     signDoc: StdSignDoc
     address: string
   }): Promise<AminoSignResponse> {
-    if (isEthWallet(this.wallet)) {
+    if (isEvmWallet(this.wallet)) {
       throw new WalletException(
         new Error(`You can't sign Cosmos Transaction using ${this.wallet}`),
       )
@@ -166,7 +166,7 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     chainId: string
     address: string
   }): Promise<DirectSignResponse> {
-    if (isEthWallet(this.wallet)) {
+    if (isEvmWallet(this.wallet)) {
       throw new WalletException(
         new Error(`You can't sign Cosmos Transaction using ${this.wallet}`),
       )

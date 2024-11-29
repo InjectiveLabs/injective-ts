@@ -1,6 +1,6 @@
 import {
   Wallet,
-  isEthWallet,
+  isEvmWallet,
   MagicMetadata,
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
@@ -49,7 +49,7 @@ const createStrategy = ({
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
    */
-  if (isEthWallet(wallet) && ethereumWalletsDisabled(args)) {
+  if (isEvmWallet(wallet) && ethereumWalletsDisabled(args)) {
     return undefined
   }
 

@@ -22,7 +22,6 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   Wallet,
-  capitalize,
   StdSignDoc,
   WalletAction,
   WalletDeviceType,
@@ -32,6 +31,7 @@ import {
   SendTransactionOptions,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
+import { capitalize } from '@injectivelabs/utils'
 import { CosmosWallet } from './../wallet.js'
 
 const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]

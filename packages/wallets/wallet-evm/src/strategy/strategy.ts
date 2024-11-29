@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
 import {
   TxRaw,
   toUtf8,
@@ -21,7 +22,6 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   Wallet,
-  capitalize,
   StdSignDoc,
   WalletAction,
   WalletDeviceType,
@@ -33,7 +33,7 @@ import {
   ConcreteWalletStrategyArgs,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { sleep } from '@injectivelabs/utils'
+import { sleep, capitalize } from '@injectivelabs/utils'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   getBitGetProvider,
@@ -42,7 +42,6 @@ import {
   getOkxWalletProvider,
   getTrustWalletProvider,
 } from './utils/index.js'
-import { evmWallets } from '../data/index.js'
 
 export class EvmWallet
   extends BaseConcreteStrategy
@@ -57,7 +56,7 @@ export class EvmWallet
   ) {
     super(args)
 
-    if (!evmWallets.includes(args.wallet)) {
+    if (!isEvmBrowserWallet(args.wallet)) {
       throw new WalletException(
         new Error(
           `Evm Wallet for ${capitalize(args.wallet)} is not supported.`,

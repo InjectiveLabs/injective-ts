@@ -1,6 +1,6 @@
 import { Wallet } from './../types/enums.js'
 
-export const isEthWallet = (wallet: Wallet): boolean =>
+export const isEvmWallet = (wallet: Wallet): boolean =>
   [
     Wallet.Magic,
     Wallet.Torus,
@@ -17,7 +17,16 @@ export const isEthWallet = (wallet: Wallet): boolean =>
     Wallet.CosmostationEth,
   ].includes(wallet)
 
-export const isCosmosWallet = (wallet: Wallet): boolean => !isEthWallet(wallet)
+export const isCosmosWallet = (wallet: Wallet): boolean => !isEvmWallet(wallet)
+
+export const isEvmBrowserWallet = (wallet: Wallet) => [
+  Wallet.BitGet,
+  Wallet.Phantom,
+  Wallet.Metamask,
+  Wallet.OkxWallet,
+  Wallet.TrustWallet,
+].includes(wallet)
+
 
 export const isCosmosBrowserWallet = (wallet: Wallet): boolean =>
   [
@@ -38,11 +47,3 @@ export const isEip712V2OnlyWallet = (wallet: Wallet): boolean =>
 
 export const isCosmosAminoOnlyWallet = (wallet: Wallet): boolean =>
   [Wallet.LedgerCosmos].includes(wallet)
-
-export const COSMOS_WALLETS = [
-  Wallet.Keplr,
-  Wallet.Leap,
-  Wallet.Ninji,
-  Wallet.Cosmostation,
-  Wallet.OWallet,
-]

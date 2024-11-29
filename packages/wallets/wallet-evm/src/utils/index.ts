@@ -1,8 +1,9 @@
 import {
   Wallet,
-  capitalize,
+  isEvmBrowserWallet,
   BrowserEip1993Provider,
 } from '@injectivelabs/wallet-base'
+import { capitalize } from '@injectivelabs/utils'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 import { WalletException } from '@injectivelabs/exceptions'
 import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
@@ -10,12 +11,11 @@ import { getBitGetProvider } from '../strategy/utils/bitget.js'
 import { getPhantomProvider } from '../strategy/utils/phantom.js'
 import { getMetamaskProvider } from '../strategy/utils/metamask.js'
 import { getTrustWalletProvider } from '../strategy/utils/trustWallet.js'
-import { evmWallets } from '../data/index.js'
 
 export const getEvmProvider = async (
   wallet: Wallet,
 ): Promise<BrowserEip1993Provider> => {
-  if (!evmWallets.includes(wallet)) {
+  if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(
       new Error(`Evm Wallet for ${capitalize(wallet)} is not supported.`),
     )
@@ -62,7 +62,7 @@ export const updateEvmNetwork = async (
   wallet: Wallet,
   chainId: EthereumChainId,
 ) => {
-  if (!evmWallets.includes(wallet)) {
+   if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(
       new Error(`Evm Wallet for ${capitalize(wallet)} is not supported.`),
     )
