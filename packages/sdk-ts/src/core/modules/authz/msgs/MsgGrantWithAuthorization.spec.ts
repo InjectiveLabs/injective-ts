@@ -1,7 +1,9 @@
 import MsgGrantWithAuthorization from './MsgGrantWithAuthorization.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
 import GenericAuthorization from './authorizations/GenericAuthorization.js'
 import ContractExecutionAuthorization from './authorizations/ContractExecutionAuthorization.js'
+import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/index.js'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
@@ -39,14 +41,6 @@ describe('MsgGrantWithAuthorization', () => {
         expiration: new Date(params.expiration! * 1000),
       },
     }
-    const protoParamsGenericAuthorizationWeb3 = {
-      grantee: params.grantee,
-      granter: params.granter,
-      grant: {
-        authorization: params.authorization.toWeb3(),
-        expiration: new Date(params.expiration! * 1000),
-      },
-    }
     const message = MsgGrantWithAuthorization.fromJSON(params)
 
     it('generates proper proto', () => {
@@ -72,55 +66,6 @@ describe('MsgGrantWithAuthorization', () => {
       expect(amino).toStrictEqual({
         type: protoTypeShort,
         value: protoParamsGenericAuthorizationAmino,
-      })
-    })
-
-    it('generates proper Eip712 types', () => {
-      const eip712Types = message.toEip712Types()
-
-      expect(Object.fromEntries(eip712Types)).toStrictEqual({
-        TypeGrant: [
-          { name: 'authorization', type: 'TypeGrantAuthorization' },
-          { name: 'expiration', type: 'string' },
-        ],
-        TypeGrantAuthorization: [
-          { name: 'type', type: 'string' },
-          { name: 'value', type: 'TypeGrantAuthorizationValue' },
-        ],
-        TypeGrantAuthorizationValue: [{ name: 'msg', type: 'string' }],
-        MsgValue: [
-          { name: 'granter', type: 'string' },
-          { name: 'grantee', type: 'string' },
-          { name: 'grant', type: 'TypeGrant' },
-        ],
-      })
-    })
-
-    it('generates proper Eip712 values', () => {
-      const eip712 = message.toEip712()
-
-      expect(eip712).toStrictEqual({
-        type: 'cosmos-sdk/MsgGrant',
-        value: {
-          granter: 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku',
-          grantee: 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku',
-          grant: {
-            authorization: {
-              type: 'cosmos-sdk/GenericAuthorization',
-              value: { msg: '/cosmos.bank.v1beta1.MsgSend' },
-            },
-            expiration: '2027-01-15T08:00:00Z',
-          },
-        },
-      })
-    })
-
-    it('generates proper web3', () => {
-      const web3 = message.toWeb3()
-
-      expect(web3).toStrictEqual({
-        '@type': protoType,
-        ...protoParamsGenericAuthorizationWeb3,
       })
     })
   })
@@ -164,14 +109,6 @@ describe('MsgGrantWithAuthorization', () => {
         expiration: new Date(params.expiration! * 1000),
       },
     }
-    const protoParamsContractExecutionAuthorizationWeb3 = {
-      grantee: params.grantee,
-      granter: params.granter,
-      grant: {
-        authorization: params.authorization.toWeb3(),
-        expiration: new Date(params.expiration! * 1000),
-      },
-    }
     const message = MsgGrantWithAuthorization.fromJSON(params)
 
     it('generates proper proto', () => {
@@ -200,73 +137,37 @@ describe('MsgGrantWithAuthorization', () => {
       })
     })
 
-    it('generates proper Eip712 types', () => {
-      const eip712Types = message.toEip712Types()
-
-      expect(Object.fromEntries(eip712Types)).toStrictEqual({
-        TypeGrant: [
-          { name: 'authorization', type: 'TypeGrantAuthorization' },
-          { name: 'expiration', type: 'string' },
-        ],
-        TypeGrantAuthorization: [
-          { name: 'type', type: 'string' },
-          { name: 'grants', type: 'TypeGrantAuthorizationGrants[]' },
-        ],
-        TypeGrantAuthorizationGrants: [
-          { name: 'contract', type: 'string' },
-          { name: 'limit', type: 'TypeGrantAuthorizationGrantsLimit' },
-          { name: 'filter', type: 'TypeGrantAuthorizationGrantsFilter' },
-        ],
-        TypeGrantAuthorizationGrantsLimit: [
-          { name: 'type', type: 'string' },
-          { name: 'remaining', type: 'uint64' },
-        ],
-        TypeGrantAuthorizationGrantsFilter: [
-          { name: 'type', type: 'string' },
-          { name: 'keys', type: 'string[]' },
-        ],
-        MsgValue: [
-          { name: 'granter', type: 'string' },
-          { name: 'grantee', type: 'string' },
-          { name: 'grant', type: 'TypeGrant' },
-        ],
+    describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+      const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+        sequence: 0,
+        accountNumber: 3,
+        messages: message,
       })
-    })
 
-    it('generates proper Eip712 values', () => {
-      const eip712 = message.toEip712()
+      test('EIP712 v1', async () => {
+        const eip712TypedData = getEip712TypedData(eip712Args)
 
-      expect(eip712).toStrictEqual({
-        type: 'cosmos-sdk/MsgGrant',
-        value: {
-          granter: 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku',
-          grantee: 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku',
-          grant: {
-            authorization: {
-              type: 'wasm/ContractExecutionAuthorization',
-              grants: [
-                {
-                  contract: 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku',
-                  limit: { type: 'wasm/MaxCallsLimit', remaining: 100 },
-                  filter: {
-                    type: 'wasm/AcceptedMessageKeysFilter',
-                    keys: ['set_routes'],
-                  },
-                },
-              ],
-            },
-            expiration: '2027-01-15T08:00:00Z',
-          },
-        },
+        const txResponse = await new IndexerGrpcWeb3GwApi(
+          endpoints.indexer,
+        ).prepareEip712Request({
+          ...prepareEip712Request,
+          eip712Version: 'v1',
+        })
+
+        expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
       })
-    })
 
-    it('generates proper web3', () => {
-      const web3 = message.toWeb3()
+      test('EIP712 v2', async () => {
+        const eip712TypedData = getEip712TypedDataV2(eip712Args)
 
-      expect(web3).toStrictEqual({
-        '@type': protoType,
-        ...protoParamsContractExecutionAuthorizationWeb3,
+        const txResponse = await new IndexerGrpcWeb3GwApi(
+          endpoints.indexer,
+        ).prepareEip712Request({
+          ...prepareEip712Request,
+          eip712Version: 'v2',
+        })
+
+        expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
       })
     })
   })

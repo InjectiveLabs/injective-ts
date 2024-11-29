@@ -95,22 +95,36 @@ export const mockFactory = {
   orderHash2,
   MAX_TIMEOUT_HEIGHT,
 
-  eip712Tx: {
+  eip712Tx: ({
+    chainId = ChainId.Devnet,
+    ethereumChainId = EthereumChainId.Sepolia,
+    accountNumber = 1,
+    sequence = 0,
+    timeoutHeight = 999999999,
+    memo = '',
+  }: {
+    chainId?: ChainId
+    ethereumChainId?: EthereumChainId
+    accountNumber?: number
+    sequence?: number
+    timeoutHeight?: number
+    memo?: string
+  }) => ({
     tx: {
-      chainId: ChainId.Devnet,
-      ethereumChainId: EthereumChainId.Sepolia,
-      accountNumber: '1',
-      sequence: '1',
-      timeoutHeight: '9999',
-      memo: '',
+      memo,
+      chainId,
+      sequence,
+      ethereumChainId,
+      accountNumber,
+      timeoutHeight,
     },
     eip712: {
-      chainId: ChainId.Devnet,
-      ethereumChainId: EthereumChainId.Sepolia,
-      accountNumber: 1,
-      sequence: 1,
-      timeoutHeight: 9999,
-      memo: '',
+      memo,
+      chainId,
+      sequence,
+      accountNumber,
+      ethereumChainId,
+      timeoutHeight,
     },
-  },
+  }),
 }

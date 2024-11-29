@@ -83,35 +83,33 @@ describe('MsgCancelSpotOrder', () => {
   })
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
-    const { endpoints, eip712Args, prepareEip712Request } =
-      prepareEip712(message)
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      sequence: 0,
+      accountNumber: 3,
+      messages: message,
+    })
 
     it('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
-      try {
-        const txResponse = await new IndexerGrpcWeb3GwApi(
-          endpoints.indexer,
-        ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v1' })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: 'v1',
+      })
 
-        expect(JSON.parse(txResponse.data)).toStrictEqual(eip712TypedData)
-      } catch (e: any) {
-        // throw silently now
-      }
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
     it('EIP712 v2', async () => {
       const eip712TypedData = getEip712TypedDataV2(eip712Args)
 
-      try {
-        const txResponse = await new IndexerGrpcWeb3GwApi(
-          endpoints.indexer,
-        ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
 
-        expect(JSON.parse(txResponse.data)).toStrictEqual(eip712TypedData)
-      } catch (e: any) {
-        // throw silently now
-      }
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

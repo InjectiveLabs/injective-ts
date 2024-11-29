@@ -105,7 +105,9 @@ export default class MsgGrantWithAuthorization extends MsgBase<
       grantee: amino.value.grantee,
       grant: {
         authorization: params.authorization.toWeb3(),
-        expiration: new Date(Number(timestamp.seconds) * 1000),
+        expiration:
+          new Date(Number(timestamp.seconds) * 1000).toJSON().slice(0, -5) +
+          'Z',
       },
     }
 

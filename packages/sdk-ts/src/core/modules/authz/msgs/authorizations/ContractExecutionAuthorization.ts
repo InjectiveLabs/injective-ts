@@ -101,7 +101,7 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
     if (params.limit) {
       grant.limit = {
         type: 'wasm/MaxCallsLimit',
-        remaining: params.limit.maxCalls,
+        remaining: params.limit.maxCalls.toString(),
       }
     }
 
@@ -128,7 +128,7 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
     if (params.limit) {
       grant.limit = {
         '@type': '/cosmwasm.wasm.v1.MaxCallsLimit',
-        remaining: params.limit.maxCalls,
+        remaining: params.limit.maxCalls.toString(),
       }
     }
 

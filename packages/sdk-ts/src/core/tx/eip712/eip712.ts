@@ -38,7 +38,6 @@ export const getEip712TypedData = ({
     fee,
     types: typesWithMessageTypes,
   })
-
   return {
     ...typesWithFeePayer,
     primaryType: 'Tx',
