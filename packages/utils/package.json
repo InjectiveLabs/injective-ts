@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/utils",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.14.32",
+  "version": "1.14.33-beta.0",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
