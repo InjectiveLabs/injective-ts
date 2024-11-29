@@ -33,7 +33,7 @@
     "build:patch:publish": "yarn build:fresh && yarn patch && yarn lerna:publish",
     "patch": "lerna version patch",
     "clean-up": "lerna run clean && shx rm -rf .build-cache *.log coverage junit.xml",
-    "bootstrap": "yarn clean-up && lerna bootstrap",
+    "bootstrap": "yarn clean-up && yarn install",
     "test": "jest",
     "test:sdk-ts:core:stargate": "jest ./packages/sdk-ts/src/core/stargate",
     "test:sdk-ts:core:modules": "jest ./packages/sdk-ts/src/core/modules",
