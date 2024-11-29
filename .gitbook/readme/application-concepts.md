@@ -11,7 +11,10 @@ Combined with the `CW20AdapterContract` which acts as a creator, we allow CW20 a
 Example on how to redeem a factory denom to CW20:
 
 ```ts
-import { MsgExecuteContractCompat, ExecArgCW20AdapterRedeemAndTransfer } from '@injectivelabs/sdk-ts'
+import {
+  MsgExecuteContractCompat,
+  ExecArgCW20AdapterRedeemAndTransfer,
+} from '@injectivelabs/sdk-ts'
 
 const CW20_ADAPTER_CONTRACT = 'inj...'
 const contractCw20Address = 'inj...'
@@ -22,20 +25,23 @@ const message = MsgExecuteContractCompat.fromJSON({
   contractAddress: CW20_ADAPTER_CONTRACT,
   funds: {
     denom: `factory/${CW20_ADAPTER_CONTRACT}/${contractCw20Address}`,
-    amount: actualAmount.toFixed()
+    amount: actualAmount.toFixed(),
   },
   execArgs: ExecArgCW20AdapterRedeemAndTransfer.fromJSON({
-    recipient: injectiveAddress
-  })
+    recipient: injectiveAddress,
+  }),
 })
 
 // Then pack the message in a transaction, sign it and broadcast to the chain
 ```
 
-Example on how to convert CW20 to a factory denom:
+### Example on how to convert CW20 to a factory denom:
 
 ```ts
-import { MsgExecuteContractCompat, ExecArgCW20Send } from '@injectivelabs/sdk-ts'
+import {
+  ExecArgCW20Send,
+  MsgExecuteContractCompat,
+} from '@injectivelabs/sdk-ts'
 
 const CW20_ADAPTER_CONTRACT = 'inj...'
 const contractCw20Address = 'inj...'
@@ -47,8 +53,8 @@ const message = MsgExecuteContractCompat.fromJSON({
   sender: injectiveAddress,
   execArgs: ExecArgCW20Send.fromJSON({
     amount,
-    contractAddress: CW20_ADAPTER_CONTRACT
-  })
+    contractAddress: CW20_ADAPTER_CONTRACT,
+  }),
 })
 
 // Then pack the message in a transaction, sign it and broadcast to the chain

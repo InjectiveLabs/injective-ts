@@ -86,6 +86,7 @@
 - [Contracts](contracts/README.md)
   - [Injective Name Service](contracts/injective-name-service.md)
   - [Neptune Service](contracts/neptune-service.md)
+  - [CW20 to Bank & Market Order in One Transaction](contracts/cw20-convert-and-market-order-example.md)
 - [Building dApps](building-dapps/README.md)
   - [Configuring Nuxt](building-dapps/configuring-nuxt.md)
   - [Configuring React](building-dapps/configuring-react.md)

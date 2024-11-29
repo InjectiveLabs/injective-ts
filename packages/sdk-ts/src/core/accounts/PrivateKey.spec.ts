@@ -1,5 +1,7 @@
-import { generateArbitrarySignDoc } from '../tx/index.js'
+import { verifyMessage, Wallet } from 'ethers'
+import { toUtf8 } from '../../utils'
 import { PrivateKey } from './PrivateKey.js'
+import { generateArbitrarySignDoc } from '../tx/index.js'
 
 const pk = process.env.TEST_PRIVATE_KEY as string
 const seedPhase = process.env.TEST_SEED_PHASE as string
@@ -115,6 +117,32 @@ describe('PrivateKey', () => {
 
   it('returns true when verifying signature for a public key and a cosmos message', () => {
     //
+  })
+
+  it('returns true when checking a pk signature against the signer public key', async () => {
+    const message = 'this is a test message'
+
+    const wallet = new Wallet(pk)
+    const ethersSignature = await wallet.signMessage(message)
+
+    const privateKey = PrivateKey.fromHex(pk)
+    const publicKey = privateKey.toHex()
+
+    const privKeySignatureArray = privateKey.sign(
+      Buffer.from(toUtf8(message), 'utf-8'),
+    )
+    const privKeySignature = `0x${Buffer.from(privKeySignatureArray).toString(
+      'hex',
+    )}`
+
+    const ethersVerifiedSigner = verifyMessage(message, ethersSignature)
+    const ethersSignatureVerifiedCorrectly = ethersVerifiedSigner === publicKey
+    expect(ethersSignatureVerifiedCorrectly).toBe(true)
+
+    const privKeyVerifiedSigner = verifyMessage(message, privKeySignature)
+    const privKeySignatureVerifiedCorrectly =
+      privKeyVerifiedSigner === publicKey
+    expect(privKeySignatureVerifiedCorrectly).toBe(true)
   })
 
   it('returns true when verifying arbitrary message', async () => {
