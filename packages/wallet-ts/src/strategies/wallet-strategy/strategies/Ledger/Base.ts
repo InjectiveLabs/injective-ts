@@ -1,40 +1,40 @@
 /* eslint-disable class-methods-use-this */
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import {
+  ErrorType,
+  LedgerException,
+  WalletException,
+  GeneralException,
+  UnspecifiedErrorCode,
+  TransactionException,
+} from '@injectivelabs/exceptions'
+import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import {
-  ErrorType,
-  GeneralException,
-  LedgerException,
-  TransactionException,
-  UnspecifiedErrorCode,
-  WalletException,
-} from '@injectivelabs/exceptions'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
+import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import { TxGrpcApi, TxRaw, TxResponse, toUtf8 } from '@injectivelabs/sdk-ts'
-import { TIP_IN_GWEI } from '../../../../utils/constants.js'
+import {
+  LedgerWalletInfo,
+  SendTransactionOptions,
+  LedgerDerivationPathType,
+} from '../../types.js'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
   WalletStrategyEthereumOptions,
 } from '../../../types/index.js'
 import {
-  LedgerDerivationPathType,
-  LedgerWalletInfo,
-  SendTransactionOptions,
-} from '../../types.js'
-import BaseConcreteStrategy from '../Base.js'
-import {
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '../../constants.js'
 import LedgerHW from './hw/index.js'
+import BaseConcreteStrategy from '../Base.js'
 import { domainHash, messageHash } from './utils.js'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums.js'
+import { TIP_IN_GWEI } from '../../../../utils/constants.js'
 import { getKeyFromRpcUrl } from '../../../../utils/alchemy.js'
-import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums.js'
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
