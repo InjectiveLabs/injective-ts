@@ -1,6 +1,6 @@
 import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
-import { mockFactory } from './mocks'
+import { mockFactory } from './mocks/index.js'
 
 export const prepareEip712 = <T>(messages: T) => {
   const endpoints = getNetworkEndpoints(Network.Devnet)

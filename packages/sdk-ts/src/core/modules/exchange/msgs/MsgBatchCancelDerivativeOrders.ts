@@ -1,5 +1,5 @@
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import {
   InjectiveExchangeV1Beta1Tx,
   InjectiveExchangeV1Beta1Exchange,

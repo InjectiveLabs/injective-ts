@@ -1,5 +1,5 @@
-import { InsuranceFund, InsuranceModuleParams } from '../types/insurance'
-import { GrpcInsuranceFund } from '../types/insurance'
+import { InsuranceFund, InsuranceModuleParams } from '../types/insurance.js'
+import { GrpcInsuranceFund } from '../types/insurance.js'
 import { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**

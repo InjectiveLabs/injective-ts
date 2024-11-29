@@ -1,6 +1,6 @@
-import { ConcreteException } from '../base'
-import { ErrorContext, ErrorType } from '../types'
-import { mapMetamaskMessage } from '../utils/maps'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
+import { mapMetamaskMessage } from '../utils/maps.js'
 
 const removeBitGetFromErrorString = (message: string): string =>
   message
@@ -9,7 +9,7 @@ const removeBitGetFromErrorString = (message: string): string =>
     .replaceAll('Bitkeep:', '')
 
 export class BitGetException extends ConcreteException {
-  public errorClass: string = 'BitGetException'
+  public static errorClass: string = 'BitGetException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -20,6 +20,7 @@ export class BitGetException extends ConcreteException {
   public parse(): void {
     const { message } = this
 
+    this.setName(BitGetException.errorClass)
     this.setMessage(mapMetamaskMessage(removeBitGetFromErrorString(message)))
   }
 }

@@ -1,5 +1,5 @@
-import { getGrpcTransport } from '../../utils/grpc'
-import { GrpcWebImpl } from './GrpcWebImpl'
+import { getGrpcTransport } from '../../utils/grpc.js'
+import { GrpcWebImpl } from './GrpcWebImpl.js'
 
 /**
  * @hidden

@@ -3,7 +3,7 @@ import {
   CosmosGovV1Tx,
 } from '@injectivelabs/core-proto-ts'
 import snakeCaseKeys from 'snakecase-keys'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgDeposit {
   export interface Params {

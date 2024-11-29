@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   GoogleProtobufAny,
@@ -7,9 +7,12 @@ import {
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { getGenericAuthorizationFromMessageType } from '../utils'
-import { GrantAuthorizationType } from './../types'
+import { getGenericAuthorizationFromMessageType } from '../utils.js'
+import { GrantAuthorizationType } from './../types.js'
 
+/**
+ * @deprecated please use MsgGrantWithAuthorization
+ */
 export declare namespace MsgGrant {
   export interface Params {
     /**

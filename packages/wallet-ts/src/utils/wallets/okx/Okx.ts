@@ -1,8 +1,8 @@
 import { ethers } from 'ethers'
 import { WalletException } from '@injectivelabs/exceptions'
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import { BrowserEip1993Provider } from '../../../strategies/wallet-strategy/types'
-import { getOkxWalletProvider } from '../../../strategies/wallet-strategy/strategies/Okx/utils'
+import { BrowserEip1993Provider } from '../../../strategies/wallet-strategy/types.js'
+import { getOkxWalletProvider } from '../../../strategies/wallet-strategy/strategies/Okx/utils.js'
 
 export const getEthersProviderFromOkxWallet = async () => {
   try {

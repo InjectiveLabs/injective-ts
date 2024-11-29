@@ -3,12 +3,12 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { ChainGrpcWasmTransformer } from '../transformers'
-import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
-import { toBase64 } from '../../../utils/utf8'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
+import { ChainGrpcWasmTransformer } from '../transformers/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { paginationRequestFromPagination } from '../../../utils/pagination.js'
+import { toBase64 } from '../../../utils/utf8.js'
 
 /**
  * @category Chain Grpc API

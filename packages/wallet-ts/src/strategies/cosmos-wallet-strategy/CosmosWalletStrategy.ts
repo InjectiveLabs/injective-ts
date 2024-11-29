@@ -3,18 +3,18 @@ import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { TxResponse, TxRaw } from '@injectivelabs/sdk-ts'
 import { AminoSignResponse, StdSignDoc } from '@keplr-wallet/types'
-import { Wallet, WalletDeviceType } from '../../types/enums'
-import Keplr from './strategies/Keplr'
-import Leap from './strategies/Leap'
-import Cosmostation from './strategies/Cosmostation'
-import Ninji from './strategies/Ninji'
+import { Wallet, WalletDeviceType } from '../../types/enums.js'
+import Keplr from './strategies/Keplr.js'
+import Leap from './strategies/Leap.js'
+import Cosmostation from './strategies/Cosmostation.js'
+import Ninji from './strategies/Ninji.js'
 import {
   ConcreteCosmosWalletStrategy,
   CosmosWalletStrategyArguments,
-} from '../types/strategy'
-import {} from '../../utils/utils'
-import { isCosmosWallet } from '../wallet-strategy/utils'
-import { SendTransactionOptions } from '../wallet-strategy'
+} from '../types/strategy.js'
+import {} from '../../utils/utils.js'
+import { isCosmosWallet } from '../wallet-strategy/utils.js'
+import { SendTransactionOptions } from '../wallet-strategy/index.js'
 
 export const cosmosWallets = [
   Wallet.Keplr,

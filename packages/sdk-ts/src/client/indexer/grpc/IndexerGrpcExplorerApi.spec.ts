@@ -1,9 +1,9 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { mockFactory } from '@injectivelabs/test-utils'
-import { IndexerRestExplorerApi } from '../rest'
-import { IndexerGrpcExplorerTransformer } from '../transformers'
-import { ExplorerValidator } from '../types'
-import { IndexerGrpcExplorerApi } from './IndexerGrpcExplorerApi'
+import { IndexerRestExplorerApi } from '../rest/index.js'
+import { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
+import { ExplorerValidator } from '../types/index.js'
+import { IndexerGrpcExplorerApi } from './IndexerGrpcExplorerApi.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)

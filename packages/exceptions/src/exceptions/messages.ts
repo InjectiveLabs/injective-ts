@@ -16,7 +16,7 @@ import {
   ChainDistributionErrorCodes,
   TransactionChainErrorModule,
   ChainExchangeModuleErrorCode,
-} from './types'
+} from './types/index.js'
 
 const auctionErrorMap = {
   [ChainAuctionErrorCodes.ErrBidInvalid]:

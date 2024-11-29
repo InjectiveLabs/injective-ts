@@ -1,7 +1,7 @@
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
-import { GrpcMarketStatus } from '../../../../client/chain/types'
+import { GrpcMarketStatus } from '../../../../client/chain/types/index.js'
 
 export declare namespace MsgAdminUpdateBinaryOptionsMarket {
   export interface Params {

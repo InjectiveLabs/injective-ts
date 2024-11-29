@@ -1,8 +1,8 @@
-import { fromUtf8 } from '../../../../utils/utf8'
-import { MsgBase } from '../../MsgBase'
+import { fromUtf8 } from '../../../../utils/utf8.js'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
-import { AccessConfig } from '@injectivelabs/core-proto-ts/cjs/cosmwasm/wasm/v1/types'
+import { AccessConfig } from '@injectivelabs/core-proto-ts/cjs/cosmwasm/wasm/v1/types.js'
 
 export declare namespace MsgStoreCode {
   export interface Params {

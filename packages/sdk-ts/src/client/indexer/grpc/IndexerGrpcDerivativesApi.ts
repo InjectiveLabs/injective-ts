@@ -5,15 +5,15 @@ import {
 } from '@injectivelabs/exceptions'
 import { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import {
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
-} from '../../../types/exchange'
-import { IndexerModule } from '../types'
-import { PaginationOption } from '../../../types/pagination'
-import { IndexerGrpcDerivativeTransformer } from '../transformers'
+} from '../../../types/exchange.js'
+import { IndexerModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { IndexerGrpcDerivativeTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API

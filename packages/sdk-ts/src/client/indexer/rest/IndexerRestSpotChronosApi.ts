@@ -1,14 +1,13 @@
 import {
   HttpRequestException,
-  HttpRequestMethod,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import {
   ChronosSpotMarketSummaryResponse,
   AllSpotMarketSummaryResponse,
-} from '../types/spot-rest'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { IndexerModule } from '../types'
+} from '../types/spot-rest.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Chronos API
@@ -31,10 +30,9 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${path}?marketId=${marketId}`,
-        method: HttpRequestMethod.Get,
         contextModule: IndexerModule.ChronosSpot,
       })
     }
@@ -56,10 +54,9 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${path}`,
-        method: HttpRequestMethod.Get,
         contextModule: IndexerModule.ChronosSpot,
       })
     }

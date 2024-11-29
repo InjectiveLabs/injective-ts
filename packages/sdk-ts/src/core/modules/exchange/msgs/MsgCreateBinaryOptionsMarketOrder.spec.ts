@@ -1,4 +1,4 @@
-import MsgCreateBinaryOptionsMarketOrder from './MsgCreateBinaryOptionsMarketOrder'
+import MsgCreateBinaryOptionsMarketOrder from './MsgCreateBinaryOptionsMarketOrder.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

@@ -3,14 +3,14 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { ChainGrpcBankTransformer } from '../transformers'
-import { PaginationOption } from '../../../types/pagination'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
+import { ChainGrpcBankTransformer } from '../transformers/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
 import {
   fetchAllWithPagination,
   paginationRequestFromPagination,
-} from '../../../utils/pagination'
+} from '../../../utils/pagination.js'
 
 const MAX_LIMIT_FOR_SUPPLY = 10000
 

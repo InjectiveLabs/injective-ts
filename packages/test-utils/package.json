@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/test-utils",
   "description": "List of test-utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.14.16",
+  "version": "1.14.32",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -14,11 +14,35 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
+  },
   "_moduleAliases": {
     "~test-utils": "dist"
   },
   "scripts": {
-    "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post",
+    "build": "yarn build:cjs && yarn build:esm && yarn build:post",
+    "build:cjs": "tsc --build --force tsconfig.build.json",
+    "build:esm": "tsc --build --force tsconfig.build.esm.json",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
@@ -31,10 +55,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.16",
-    "@injectivelabs/networks": "^1.14.16",
-    "@injectivelabs/ts-types": "^1.14.16",
-    "@injectivelabs/utils": "^1.14.16",
+    "@injectivelabs/exceptions": "^1.14.32",
+    "@injectivelabs/networks": "^1.14.32",
+    "@injectivelabs/ts-types": "^1.14.32",
+    "@injectivelabs/utils": "^1.14.32",
     "axios": "^1.6.4",
     "bignumber.js": "^9.0.1",
     "shx": "^0.3.2",

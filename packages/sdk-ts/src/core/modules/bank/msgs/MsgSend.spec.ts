@@ -1,5 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgSend from './MsgSend'
+import MsgSend from './MsgSend.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 
 const params: MsgSend['params'] = {

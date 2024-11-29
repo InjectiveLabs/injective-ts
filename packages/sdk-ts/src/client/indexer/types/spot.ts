@@ -5,9 +5,9 @@ import {
   TradeExecutionType,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
-import { GrpcOrderType } from '../../chain/types/exchange'
-import { PriceLevel } from './exchange'
-import { TokenMeta } from './../../../types/token'
+import { GrpcOrderType } from '../../chain/types/exchange.js'
+import { PriceLevel } from './exchange.js'
+import { TokenMeta } from './../../../types/token.js'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { Coin } from '@injectivelabs//ts-types'
 

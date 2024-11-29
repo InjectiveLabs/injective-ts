@@ -1,4 +1,4 @@
-import { MsgTransfer as BaseMsgTransferCosmjs } from 'cosmjs-types/ibc/applications/transfer/v1/tx'
+import { MsgTransfer as BaseMsgTransferCosmjs } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
 import {
   CosmosBaseV1Beta1Coin,
   IbcCoreClientV1Client,

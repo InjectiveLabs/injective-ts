@@ -1,2 +1,3 @@
-export { CosmostationWallet } from './wallet'
-export { Cosmostation as CosmostationWalletStrategy } from './strategy/strategy'
+export { CosmostationWallet } from './wallet.js'
+export { Cosmostation as CosmostationWalletStrategy } from './strategy/strategy.js'
+export * from './utils/index.js'

@@ -11,7 +11,7 @@ import type {
   DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import { StdSignDoc } from '@keplr-wallet/types'
-import { WalletDeviceType, Wallet } from './enums'
+import { WalletDeviceType, Wallet } from './enums.js'
 
 export type onAccountChangeCallback = (account: string) => void
 export type onChainIdChangeCallback = () => void

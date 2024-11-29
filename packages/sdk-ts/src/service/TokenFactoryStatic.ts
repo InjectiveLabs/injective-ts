@@ -3,7 +3,7 @@ import {
   TokenSource,
   TokenStatic,
   TokenVerification,
-} from './../types'
+} from './../types/index.js'
 
 export class TokenFactoryStatic {
   public registry: TokenStatic[]

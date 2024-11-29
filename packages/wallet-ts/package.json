@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use and interact with different types of wallets on Injective.",
-  "version": "1.14.17-beta.3",
+  "version": "1.14.33-beta.2",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -14,13 +14,55 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./exports": {
+      "react-native": {
+        "import": "./dist/esm/exports.js",
+        "require": "./dist/cjs/exports.js",
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "require": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "import": {
+        "types": "./dist/esm/exports.d.ts",
+        "default": "./dist/esm/exports.js"
+      },
+      "default": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      }
+    }
+  },
   "_moduleAliases": {
     "~wallet-ts": "dist"
   },
   "scripts": {
+    "build": "yarn build:esm && yarn build:cjs && yarn build:post",
     "build:cjs": "BUILD_MODE=cjs node ./../../etc/replacements.js && tsc --build tsconfig.build.json",
     "build:esm": "BUILD_MODE=esm node ./../../etc/replacements.js && tsc --build tsconfig.build.esm.json",
-    "build": "yarn build:esm && yarn build:cjs && yarn build:post",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
@@ -39,11 +81,11 @@
     "@cosmostation/extension-client": "^0.1.15",
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.14.16",
-    "@injectivelabs/networks": "^1.14.16",
-    "@injectivelabs/sdk-ts": "^1.14.17-beta.3",
-    "@injectivelabs/ts-types": "^1.14.16",
-    "@injectivelabs/utils": "^1.14.16",
+    "@injectivelabs/exceptions": "^1.14.32",
+    "@injectivelabs/networks": "^1.14.32",
+    "@injectivelabs/sdk-ts": "^1.14.33-beta.2",
+    "@injectivelabs/ts-types": "^1.14.32",
+    "@injectivelabs/utils": "^1.14.32",
     "@keplr-wallet/cosmos": "^0.12.71",
     "@keplr-wallet/types": "^0.12.71",
     "@ledgerhq/hw-app-cosmos": "^6.29.5",
@@ -58,7 +100,7 @@
     "@toruslabs/torus-embed": "^1.39.0",
     "@trezor/connect-web": "9.2.1",
     "@walletconnect/ethereum-provider": "^2.12.2",
-    "alchemy-sdk": "^2.6.3",
+    "alchemy-sdk": "^3.4.7",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",

@@ -1,4 +1,4 @@
-import MsgSetDenomMetadata from './MsgSetDenomMetadata'
+import MsgSetDenomMetadata from './MsgSetDenomMetadata.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

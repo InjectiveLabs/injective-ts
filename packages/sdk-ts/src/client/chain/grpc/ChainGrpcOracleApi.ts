@@ -3,8 +3,8 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveOracleV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule, OracleModuleParams } from '../types'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule, OracleModuleParams } from '../types/index.js'
 
 /**
  * @category Chain Grpc API

@@ -8,7 +8,7 @@ TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
 
 # remote branches/tags
-injective_core_branch=master
+injective_core_branch=dev
 cosmos_sdk_branch=v0.50.x-inj
 wasmd_branch=v0.50.x-inj
 ibc_go_branch=v8.3.2
@@ -78,7 +78,7 @@ done
 
 echo "Compiling npm packages..."
 
-## 1. Replace package with our own fork
+## 1. Replace packages
 search1="@improbable-eng/grpc-web"
 replace1="@injectivelabs/grpc-web"
 
@@ -89,7 +89,6 @@ do
   sed -ie "s/${search1//\//\\/}/${replace1//\//\\/}/g" "$file"
 done
 
-## 2. Replace extension type to ignore on compile time
 search1="getExtension():"
 replace1="// @ts-ignore \n  getExtension():"
 search2="setExtension("
@@ -101,6 +100,16 @@ for file in $FILES
 do
   sed -ie "s/${search1//\//\\/}/${replace1//\//\\/}/g" "$file"
   sed -ie "s/${search2//\//\\/}/${replace2//\//\\/}/g" "$file"
+done
+
+search3="protobufjs/minimal"
+replace3="protobufjs/minimal.js"
+
+FILES=$( find $TS_OUTPUT_DIR -type f )
+
+for file in $FILES
+do
+  sed -ie "s/${search3//\//\\/}/${replace3//\//\\/}/g" "$file"
 done
 
 ESM_PKG_TEMPLATE=$TS_STUB_DIR/package.json.esm.template
@@ -128,7 +137,10 @@ cp $CJS_PKG_TEMPLATE $TS_OUTPUT_DIR/cjs/package.json
 ## 4. Setup proper package.json for core-proto-ts packages
 cp $TS_STUB_DIR/package.json.core-proto-ts.template $TS_OUTPUT_DIR/package.json
 
-# 5. Clean up folders
+## 5. ESM import fixes
+npm --prefix $ROOT_DIR run tscEsmFix
+
+# 6. Clean up folders
 rm -rf $BUILD_DIR
 rm -rf $PROTO_DIR
 rm -rf $TS_OUTPUT_DIR/proto

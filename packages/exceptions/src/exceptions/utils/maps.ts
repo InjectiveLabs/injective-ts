@@ -1,13 +1,13 @@
 import {
   chainErrorMessagesMap,
   chainModuleCodeErrorMessagesMap,
-} from '../messages'
+} from '../messages.js'
 import {
   ErrorContext,
   ErrorContextCode,
   TransactionChainErrorModule,
   UnspecifiedErrorCode,
-} from '../types'
+} from '../types/index.js'
 
 export const parseErrorMessage = (message: string): string => {
   const firstParse = message.split('message index: 0:')

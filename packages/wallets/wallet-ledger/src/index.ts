@@ -1,4 +1,4 @@
-export { LedgerLive as LedgerLiveStrategy  } from './strategy/Ledger/LedgerLive'
-export { LedgerLegacy as LedgerLegacyStrategy  } from './strategy/Ledger/LedgerLegacy'
-export { LedgerCosmos as LedgerCosmosStrategy  } from './strategy/LedgerCosmos'
-export * from './types'
+export { LedgerLive as LedgerLiveStrategy  } from './strategy/Ledger/LedgerLive.js'
+export { LedgerLegacy as LedgerLegacyStrategy  } from './strategy/Ledger/LedgerLegacy.js'
+export { LedgerCosmos as LedgerCosmosStrategy  } from './strategy/LedgerCosmos/index.js'
+export * from './types.js'

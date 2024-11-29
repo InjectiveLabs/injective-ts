@@ -4,9 +4,9 @@ import {
 } from '@injectivelabs/exceptions'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { IndexerGrpcMitoTransformer } from '../transformers'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API

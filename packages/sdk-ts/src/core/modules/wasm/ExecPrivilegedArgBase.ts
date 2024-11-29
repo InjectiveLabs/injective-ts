@@ -1,4 +1,4 @@
-import { prepareSignBytes } from '../utils'
+import { prepareSignBytes } from '../utils.js'
 
 export type ExecDataRepresentation<Data> = {
   origin: string

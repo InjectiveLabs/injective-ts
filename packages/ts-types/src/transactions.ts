@@ -1,4 +1,4 @@
-import { AccountAddress } from './aliases'
+import { AccountAddress } from './aliases.js'
 
 export interface TransactionOptions {
   from?: AccountAddress

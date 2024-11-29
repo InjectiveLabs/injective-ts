@@ -1,4 +1,4 @@
-import MsgRevoke from './MsgRevoke'
+import MsgRevoke from './MsgRevoke.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

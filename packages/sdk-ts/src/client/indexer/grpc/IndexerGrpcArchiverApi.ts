@@ -3,9 +3,9 @@ import {
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { IndexerGrpcArchiverTransformer } from '../transformers'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { IndexerGrpcArchiverTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API

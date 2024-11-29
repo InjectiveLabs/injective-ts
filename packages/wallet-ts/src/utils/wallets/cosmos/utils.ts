@@ -1,7 +1,7 @@
 import { DEFAULT_TIMESTAMP_TIMEOUT_MS } from '@injectivelabs/utils'
 import { Cosmos } from '@cosmostation/extension-client'
 import type { Keplr } from '@keplr-wallet/types'
-import { Wallet } from '../../../types/enums'
+import { Wallet } from '../../../types/enums.js'
 
 /**
  * Returns a timeout timestamp in milliseconds so its compatible

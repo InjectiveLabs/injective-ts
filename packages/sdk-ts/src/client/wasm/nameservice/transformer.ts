@@ -1,5 +1,5 @@
-import { WasmContractQueryResponse } from '../types'
-import { binaryToBase64, fromBase64 } from '../../../utils'
+import { WasmContractQueryResponse } from '../types.js'
+import { binaryToBase64, fromBase64 } from '../../../utils/index.js'
 
 export class InjNameServiceQueryTransformer {
   static resolverAddressResponseToResolverAddress(

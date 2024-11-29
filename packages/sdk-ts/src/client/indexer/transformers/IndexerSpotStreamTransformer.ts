@@ -1,5 +1,5 @@
-import { StreamOperation } from '../../../types'
-import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer'
+import { StreamOperation } from '../../../types/index.js'
+import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer.js'
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**

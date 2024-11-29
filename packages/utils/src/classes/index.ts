@@ -1,11 +1,11 @@
-import LocalStorage from './LocalStorage'
-import BigNumberInBase from './BigNumber/BigNumberInBase'
-import BigNumberInWei from './BigNumber/BigNumberInWei'
-import BigNumber from './BigNumber/BigNumber'
-import HttpClient from './HttpClient'
-import HttpRestClient from './HttpRestClient'
-import StreamManager from './StreamManager'
-import Status, { StatusType } from './Status'
+import LocalStorage from './LocalStorage.js'
+import BigNumberInBase from './BigNumber/BigNumberInBase.js'
+import BigNumberInWei from './BigNumber/BigNumberInWei.js'
+import BigNumber from './BigNumber/BigNumber.js'
+import HttpClient from './HttpClient.js'
+import HttpRestClient from './HttpRestClient.js'
+import StreamManager from './StreamManager.js'
+import Status, { StatusType } from './Status.js'
 
 export {
   Status,

@@ -1,7 +1,6 @@
-import { ConcreteException } from '../base'
-
-import { ErrorContext, ErrorType } from '../types'
-import { mapMetamaskMessage } from '../utils/maps'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
+import { mapMetamaskMessage } from '../utils/maps.js'
 
 const removeOkxWalletFromErrorString = (message: string): string =>
   message
@@ -10,7 +9,7 @@ const removeOkxWalletFromErrorString = (message: string): string =>
     .replaceAll('OkxWallet:', '')
 
 export class OkxWalletException extends ConcreteException {
-  public errorClass: string = 'OkxWalletException'
+  public static errorClass: string = 'OkxWalletException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -22,5 +21,7 @@ export class OkxWalletException extends ConcreteException {
     const { message } = this
 
     this.setMessage(mapMetamaskMessage(removeOkxWalletFromErrorString(message)))
+
+    this.setName(OkxWalletException.errorClass)
   }
 }

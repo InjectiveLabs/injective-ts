@@ -1,7 +1,7 @@
 import { WalletException } from '@injectivelabs/exceptions'
 import { EthereumChainId } from '@injectivelabs/ts-types'
-import { BrowserEip1993Provider } from '../../../strategies/wallet-strategy/types'
-import { getTrustWalletProvider } from '../../../strategies/wallet-strategy/strategies/TrustWallet/utils'
+import { BrowserEip1993Provider } from '../../../strategies/wallet-strategy/types.js'
+import { getTrustWalletProvider } from '../../../strategies/wallet-strategy/strategies/TrustWallet/utils.js'
 
 export const updateTrustWalletNetwork = async (chainId: EthereumChainId) => {
   try {

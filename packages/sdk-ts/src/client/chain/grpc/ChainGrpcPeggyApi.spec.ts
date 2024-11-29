@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcPeggyApi } from './ChainGrpcPeggyApi'
-import { ChainGrpcPeggyTransformer } from '../transformers'
+import { ChainGrpcPeggyApi } from './ChainGrpcPeggyApi.js'
+import { ChainGrpcPeggyTransformer } from '../transformers/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcPeggyApi = new ChainGrpcPeggyApi(endpoints.grpc)

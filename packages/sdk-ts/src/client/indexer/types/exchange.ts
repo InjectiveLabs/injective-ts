@@ -1,5 +1,5 @@
 import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import { TokenType } from './../../../types/token'
+import { TokenType } from './../../../types/token.js'
 
 export interface PriceLevel {
   price: string

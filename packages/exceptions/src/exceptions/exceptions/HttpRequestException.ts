@@ -1,9 +1,8 @@
-import { ConcreteException } from '../base'
-
-import { ErrorContext, ErrorType, HttpRequestMethod } from '../types'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType, HttpRequestMethod } from '../types/index.js'
 
 export class HttpRequestException extends ConcreteException {
-  public errorClass: string = 'HttpRequestException'
+  public static errorClass: string = 'HttpRequestException'
 
   public method: HttpRequestMethod = HttpRequestMethod.Get
 
@@ -17,5 +16,10 @@ export class HttpRequestException extends ConcreteException {
     this.method = context
       ? context.method || HttpRequestMethod.Get
       : HttpRequestMethod.Get
+    this.context = context?.context || 'Unknown'
+  }
+
+  public parse(): void {
+    this.setName(HttpRequestException.errorClass)
   }
 }

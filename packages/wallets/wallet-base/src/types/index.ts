@@ -1,3 +1,3 @@
-export * from './enums'
-export * from './strategy'
-export * from './provider'
+export * from './enums.js'
+export * from './strategy.js'
+export * from './provider.js'

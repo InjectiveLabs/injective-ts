@@ -1,7 +1,11 @@
 {
+  "scripts": {
+    "tscEsmFix": "tsc-esm-fix --src='**/*.d.ts' --ext='.js' --tsconfig='./../../tsconfig.json' && tsc-esm-fix --src='**/*.js' --ext='.js' --tsconfig='./../../tsconfig.json'"
+  },
   "devDependencies": {
+    "tsc-esm-fix": "^3.1.2",
     "ts-proto": "^1.141.1",
-    "@grpc/grpc-js": "^1.6.7",
+    "@grpc/grpc-js": "^1.12.2",
     "google-protobuf": "^3.20.1",
     "ts-protoc-gen": "^0.15.0"
   }

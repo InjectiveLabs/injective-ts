@@ -1,4 +1,4 @@
-import MsgCreateSpotMarketOrder from './MsgCreateSpotMarketOrder'
+import MsgCreateSpotMarketOrder from './MsgCreateSpotMarketOrder.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

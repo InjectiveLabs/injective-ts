@@ -1,6 +1,6 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/test-utils'
-import MsgBid from './MsgBid'
+import MsgBid from './MsgBid.js'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgBid['params'] = {

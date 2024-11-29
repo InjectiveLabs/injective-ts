@@ -1,3 +1,3 @@
-export * from './broadcaster'
-export * from './strategy'
-export * from './utils'
+export * from './broadcaster/index.js'
+export * from './strategy/index.js'
+export * from './utils/index.js'

@@ -1,10 +1,9 @@
-import { ConcreteException } from '../base'
-
-import { ErrorContext, ErrorType } from '../types'
-import { mapFailedTransactionMessage, parseErrorMessage } from '../utils/maps'
+import { ConcreteException } from '../base.js'
+import { ErrorContext, ErrorType } from '../types/index.js'
+import { mapFailedTransactionMessage, parseErrorMessage } from '../utils/maps.js'
 
 export class TransactionException extends ConcreteException {
-  public errorClass: string = 'TransactionException'
+  public static errorClass: string = 'TransactionException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
@@ -29,5 +28,7 @@ export class TransactionException extends ConcreteException {
     if (parsedContextModule) {
       this.setContextModule(parsedContextModule)
     }
+
+    this.setName(TransactionException.errorClass)
   }
 }

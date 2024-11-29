@@ -2,7 +2,7 @@ import {
   TxConcreteApi,
   TxClientBroadcastOptions,
   TxClientBroadcastResponse,
-} from '../types/tx'
+} from '../types/tx.js'
 import {
   TransactionException,
   GrpcUnaryRequestException,
@@ -14,8 +14,8 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
-import { TxResponse } from '../types/tx'
-import BaseGrpcWebConsumer from '../../../client/base/BaseGrpcWebConsumer'
+import { TxResponse } from '../types/tx.js'
+import BaseGrpcWebConsumer from '../../../client/base/BaseGrpcWebConsumer.js'
 import {
   CosmosTxV1Beta1Service,
   CosmosTxV1Beta1Tx,
@@ -161,7 +161,7 @@ export class TxGrpcApi implements TxConcreteApi {
         gasInfo: gasInfo,
       }
     } catch (e: unknown) {
-      throw new TransactionException(new Error((e as any).message))
+      throw new TransactionException(new Error(e as any))
     }
   }
 
@@ -203,7 +203,7 @@ export class TxGrpcApi implements TxConcreteApi {
         throw e
       }
 
-      throw new TransactionException(new Error((e as any).message))
+      throw new TransactionException(new Error(e as any))
     }
   }
 
@@ -249,7 +249,7 @@ export class TxGrpcApi implements TxConcreteApi {
         throw e
       }
 
-      throw new TransactionException(new Error((e as any).message))
+      throw new TransactionException(new Error(e as any))
     }
   }
 }

@@ -1,6 +1,6 @@
-import { createAny, createAnyMessage } from './helpers'
+import { createAny, createAnyMessage } from './helpers.js'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { Msgs } from '../../modules/msgs'
+import { Msgs } from '../../modules/msgs.js'
 import {
   GoogleProtobufAny,
   CosmosTxV1Beta1Tx,

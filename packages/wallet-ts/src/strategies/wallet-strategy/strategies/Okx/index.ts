@@ -13,15 +13,15 @@ import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
 import {
   ConcreteWalletStrategy,
   EthereumWalletStrategyArgs,
-} from '../../../types'
-import { BrowserEip1993Provider, SendTransactionOptions } from '../../types'
-import BaseConcreteStrategy from '../Base'
+} from '../../../types/index.js'
+import { BrowserEip1993Provider, SendTransactionOptions } from '../../types.js'
+import BaseConcreteStrategy from '../Base.js'
 import {
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
-} from '../../../../types/enums'
-import { getOkxWalletProvider } from './utils'
+} from '../../../../types/enums.js'
+import { getOkxWalletProvider } from './utils.js'
 
 export default class OkxWallet extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   constructor(args: EthereumWalletStrategyArgs) {

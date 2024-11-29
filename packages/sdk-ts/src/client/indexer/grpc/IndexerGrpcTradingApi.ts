@@ -3,8 +3,8 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveTradingRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule, MarketType, GridStrategyType } from '../types'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule, MarketType, GridStrategyType } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -22,24 +22,65 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     )
   }
 
+  async fetchTradingStats() {
+    const request = InjectiveTradingRpc.GetTradingStatsRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectiveTradingRpc.GetTradingStatsResponse>(() =>
+          this.client.GetTradingStats(request),
+        )
+
+      return response
+    } catch (e: unknown) {
+      if (e instanceof InjectiveTradingRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'TradingStats',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'TradingStats',
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchGridStrategies({
-    accountAddress,
-    subaccountId,
-    state,
-    marketId,
-    limit,
     skip,
+    state,
+    limit,
+    withTvl,
+    endTime,
+    marketId,
+    startTime,
     marketType,
     strategyType,
+    subaccountId,
+    accountAddress,
+    withPerformance,
+    pendingExecution,
+    lastExecutedTime,
+    isTrailingStrategy,
   }: {
-    accountAddress?: string
-    subaccountId?: string
-    state?: string
-    marketId?: string
-    limit?: number
     skip?: number
+    state?: string
+    limit?: number
+    endTime?: number
+    withTvl?: boolean
+    marketId?: string
+    startTime?: number
     marketType?: MarketType
+    subaccountId?: string
     strategyType?: GridStrategyType[]
+    accountAddress?: string
+    withPerformance?: boolean
+    pendingExecution?: boolean
+    lastExecutedTime?: number
+    isTrailingStrategy?: boolean
   }) {
     const request = InjectiveTradingRpc.ListTradingStrategiesRequest.create()
 
@@ -73,6 +114,34 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
 
     if (marketId) {
       request.marketId = marketId
+    }
+
+    if (withTvl) {
+      request.withTvl = withTvl
+    }
+
+    if (withPerformance) {
+      request.withPerformance = withPerformance
+    }
+
+    if (isTrailingStrategy) {
+      request.isTrailingStrategy = isTrailingStrategy
+    }
+
+    if (startTime) {
+      request.startTime = startTime.toString()
+    }
+
+    if (endTime) {
+      request.endTime = endTime.toString()
+    }
+
+    if (pendingExecution) {
+      request.pendingExecution = pendingExecution
+    }
+
+    if (lastExecutedTime) {
+      request.lastExecutedTime = lastExecutedTime.toString()
     }
 
     try {

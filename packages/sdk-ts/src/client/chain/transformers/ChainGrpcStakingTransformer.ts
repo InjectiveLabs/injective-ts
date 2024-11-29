@@ -12,10 +12,10 @@ import {
   ReDelegation,
   Pool,
   StakingModuleParams,
-} from '../types/staking'
-import { cosmosSdkDecToBigNumber } from '../../../utils'
-import { grpcPaginationToPagination } from '../../../utils/pagination'
-import { Pagination } from '../../../types'
+} from '../types/staking.js'
+import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import { Pagination } from '../../../types/index.js'
 import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**

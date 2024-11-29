@@ -1,5 +1,5 @@
-import { MsgBase } from '../../MsgBase'
-import type { Msgs } from '../../msgs'
+import { MsgBase } from '../../MsgBase.js'
+import type { Msgs } from '../../msgs.js'
 import {
   CosmosAuthzV1Beta1Tx,
   GoogleProtobufAny,
@@ -72,9 +72,7 @@ export default class MsgExec extends MsgBase<
       type: 'cosmos-sdk/MsgExec',
       value: {
         grantee: params.grantee,
-        msgs: msgs.map((msg) => {
-          return msg.toEip712()
-        }),
+        msgs: msgs.map((msg) => msg.toEip712()),
       },
     }
   }

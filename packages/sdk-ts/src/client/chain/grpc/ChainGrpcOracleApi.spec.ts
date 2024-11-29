@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcOracleApi } from './ChainGrpcOracleApi'
-import { OracleModuleParams } from '../types'
+import { ChainGrpcOracleApi } from './ChainGrpcOracleApi.js'
+import { OracleModuleParams } from '../types/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcOracleApi = new ChainGrpcOracleApi(endpoints.grpc)

@@ -29,8 +29,8 @@ import {
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 import { InstallError, Cosmos } from '@cosmostation/extension-client'
 import { makeSignDoc } from '@cosmjs/proto-signing'
-import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos'
-import { CosmostationWallet } from './../wallet'
+import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
+import { CosmostationWallet } from './../wallet.js'
 
 const INJECTIVE_CHAIN_NAME = 'injective'
 

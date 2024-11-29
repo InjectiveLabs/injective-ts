@@ -1,7 +1,7 @@
 import { verifyMessage, Wallet } from 'ethers'
-import { generateArbitrarySignDoc } from '../tx'
-import { PrivateKey } from './PrivateKey'
 import { toUtf8 } from '../../utils'
+import { PrivateKey } from './PrivateKey.js'
+import { generateArbitrarySignDoc } from '../tx/index.js'
 
 const pk = process.env.TEST_PRIVATE_KEY as string
 const seedPhase = process.env.TEST_SEED_PHASE as string

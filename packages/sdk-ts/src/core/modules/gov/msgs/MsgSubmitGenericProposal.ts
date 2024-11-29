@@ -4,8 +4,8 @@ import {
   GoogleProtobufAny,
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
-import { Msgs } from '../../../../core/modules/msgs'
+import { MsgBase } from '../../MsgBase.js'
+import { Msgs } from '../../../../core/modules/msgs.js'
 
 export declare namespace MsgSubmitGenericProposal {
   export interface Params {

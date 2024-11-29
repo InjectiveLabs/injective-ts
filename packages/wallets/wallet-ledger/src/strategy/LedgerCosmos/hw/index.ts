@@ -3,7 +3,7 @@ import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import CosmosApp from '@ledgerhq/hw-app-cosmos'
 import type Transport from '@ledgerhq/hw-transport'
 import { LedgerCosmosException } from '@injectivelabs/exceptions'
-import AccountManager from './AccountManager'
+import AccountManager from './AccountManager.js'
 
 export default class LedgerTransport {
   private ledger: CosmosApp | null = null

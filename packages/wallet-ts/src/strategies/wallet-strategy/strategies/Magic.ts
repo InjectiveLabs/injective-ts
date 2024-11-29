@@ -12,18 +12,18 @@ import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
 import { DirectSignResponse } from '@cosmjs/proto-signing'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import BaseConcreteStrategy from './Base'
+import BaseConcreteStrategy from './Base.js'
 import {
   WalletAction,
   MagicProvider,
   WalletDeviceType,
-} from '../../../types/enums'
-import { ConcreteWalletStrategy, WalletStrategyArguments } from '../../types'
+} from '../../../types/enums.js'
+import { ConcreteWalletStrategy, WalletStrategyArguments } from '../../types/index.js'
 import {
   MagicMetadata,
   BrowserEip1993Provider,
   SendTransactionOptions,
-} from '../types'
+} from '../types.js'
 
 interface MagicConnectArgs extends WalletStrategyArguments {
   metadata?: MagicMetadata

@@ -1,4 +1,4 @@
-import { NetworkEndpoints } from './types'
+import { NetworkEndpoints } from './types.js'
 
 export const endpointsMainnetSentry: NetworkEndpoints = {
   indexer: 'https://sentry.exchange.grpc-web.injective.network',

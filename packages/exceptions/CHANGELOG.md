@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.30...@injectivelabs/exceptions@1.14.32) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.14.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.21...@injectivelabs/exceptions@1.14.30) (2024-11-25)
+
+
+### Bug Fixes
+
+* version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
+
+
+
+
+
+## [1.14.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.20...@injectivelabs/exceptions@1.14.21) (2024-11-25)
+
+
+### Bug Fixes
+
+* esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
+
+
+
+
+
+## [1.14.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.19...@injectivelabs/exceptions@1.14.20) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.14.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.17...@injectivelabs/exceptions@1.14.19) (2024-11-11)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
+## [1.14.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.17-beta.2...@injectivelabs/exceptions@1.14.17) (2024-11-11)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
+
+
+
+
 ## [1.14.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.16-beta.0...@injectivelabs/exceptions@1.14.16) (2024-10-29)
 
 

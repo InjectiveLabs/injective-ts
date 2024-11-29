@@ -1,7 +1,7 @@
 import { mockFactory } from '@injectivelabs/test-utils'
 import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import { MsgSend } from '@injectivelabs/sdk-ts'
-import { getEip712TypedDataV2 } from './eip712'
+import { getEip712TypedDataV2 } from './eip712.js'
 
 describe('EIP712V2', () => {
   test('generating proper EI712 v2', () => {

@@ -10,9 +10,9 @@ import {
   TxInfoResponse,
   TxResultResponse,
   SimulationResponse,
-} from '../types/tx-rest-client'
-import { TxClient } from '../utils/classes/TxClient'
-import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx'
+} from '../types/tx-rest-client.js'
+import { TxClient } from '../utils/classes/TxClient.js'
+import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
 import {
   HttpRequestMethod,
   HttpRequestException,
@@ -21,8 +21,8 @@ import {
 } from '@injectivelabs/exceptions'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
-import { TxResponse } from '../types/tx'
-import { getErrorMessage } from '../../../utils/helpers'
+import { TxResponse } from '../types/tx.js'
+import { getErrorMessage } from '../../../utils/helpers.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
@@ -53,8 +53,8 @@ export class TxRestApi implements TxConcreteApi {
         throw new HttpRequestException(
           new Error(`The transaction with ${txHash} is not found`),
           {
-            context: 'TxRestApi',
-            contextModule: 'fetch-tx',
+            context: `/cosmos/tx/v1beta1/txs/${txHash}`,
+            contextModule: 'TxRestApi.fetch-tx',
           },
         )
       }
@@ -89,8 +89,8 @@ export class TxRestApi implements TxConcreteApi {
       throw new HttpRequestException(
         new Error('There was an issue while fetching transaction details'),
         {
-          context: 'TxRestApi',
-          contextModule: 'fetch-tx',
+          context: `/cosmos/tx/v1beta1/txs/${txHash}`,
+          contextModule: 'TxRestApi.fetch-tx',
         },
       )
     }
@@ -125,8 +125,8 @@ export class TxRestApi implements TxConcreteApi {
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),
       {
-        context: 'TxRestApi',
-        contextModule: 'fetch-tx-poll',
+        context: `/cosmos/tx/v1beta1/txs/${txHash}`,
+        contextModule: 'TxRestApi.fetch-tx-poll',
       },
     )
   }
@@ -158,7 +158,7 @@ export class TxRestApi implements TxConcreteApi {
         },
       }
     } catch (e) {
-      throw new TransactionException(new Error((e as any).message))
+      throw new TransactionException(new Error(e as any))
     }
   }
 
@@ -235,7 +235,7 @@ export class TxRestApi implements TxConcreteApi {
         throw e
       }
 
-      throw new TransactionException(new Error((e as any).message))
+      throw new TransactionException(new Error(e as any))
     }
   }
 
@@ -267,7 +267,6 @@ export class TxRestApi implements TxConcreteApi {
           throw new HttpRequestException(new Error(error.message), {
             code: StatusCodes.REQUEST_TOO_LONG,
             context: endpoint,
-            method: HttpRequestMethod.Get,
           })
         }
 
@@ -278,14 +277,12 @@ export class TxRestApi implements TxConcreteApi {
           code: error.response
             ? error.response.status
             : StatusCodes.BAD_REQUEST,
-          method: HttpRequestMethod.Get,
         })
       }
 
       throw new HttpRequestException(new Error((error as any).message), {
         context: endpoint,
         code: UnspecifiedErrorCode,
-        contextModule: HttpRequestMethod.Get,
       })
     }
   }

@@ -1,5 +1,5 @@
-import { BaseWasmQuery } from '../../BaseWasmQuery'
-import { toBase64 } from '../../../../utils'
+import { BaseWasmQuery } from '../../BaseWasmQuery.js'
+import { toBase64 } from '../../../../utils/index.js'
 
 export declare namespace QueryTradingStrategyContractAllStrategies {
   export interface Params {

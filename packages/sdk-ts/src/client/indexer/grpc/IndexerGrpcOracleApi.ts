@@ -3,9 +3,9 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer.js'
 
 /**
  * @category Indexer Grpc API

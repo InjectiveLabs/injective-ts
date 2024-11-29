@@ -1,0 +1,38 @@
+{
+  "name": "@injectivelabs/olp-proto-ts",
+  "version": "1.13.1",
+  "description": "Injective DMM API client with generated gRPC bindings.",
+  "sideEffects": "false",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "./cjs/index.js",
+  "module": "./esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InjectiveLabs/injective-dmm-be.git"
+  },
+  "keywords": [
+    "dmm-api",
+    "grpc",
+    "bindings"
+  ],
+  "author": "Injective Labs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/InjectiveLabs/injective-dmm-be/issues"
+  },
+  "homepage": "https://github.com/InjectiveLabs/injective-dmm-be#readme",
+  "dependencies": {
+    "@injectivelabs/grpc-web": "^0.0.1",
+    "google-protobuf": "^3.14.0",
+    "protobufjs": "^7.0.0",
+    "rxjs": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/long": "^4.0.2",
+    "@types/node": "^18.0.3",
+    "typescript": "^4.7.4"
+  }
+}

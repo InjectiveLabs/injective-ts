@@ -1,3 +1,3 @@
-import BaseWalletStrategy from './BaseWalletStrategy'
+import BaseWalletStrategy from './BaseWalletStrategy.js'
 
 export { BaseWalletStrategy }

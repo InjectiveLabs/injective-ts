@@ -3,7 +3,7 @@ import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 import type EthereumApp from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
 import { LedgerException } from '@injectivelabs/exceptions'
-import AccountManager from './AccountManager'
+import AccountManager from './AccountManager.js'
 
 export default class LedgerTransport {
   private ledger: EthereumApp | null = null
@@ -38,7 +38,7 @@ export default class LedgerTransport {
         return await TransportWebUSB.request()
       }
     } catch (e: unknown) {
-      throw new LedgerException(new Error((e as any).message))
+      throw new LedgerException(new Error(e as any))
     }
 
     return TransportWebUSB.request()

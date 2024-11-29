@@ -19,16 +19,16 @@ import {
   DirectSignResponse,
   sortObjectByKeys,
 } from '@injectivelabs/sdk-ts'
-import { ConcreteWalletStrategy } from '../../../types'
-import { LedgerWalletInfo, SendTransactionOptions } from '../../types'
-import BaseConcreteStrategy from '../Base'
+import { ConcreteWalletStrategy } from '../../../types/index.js'
+import { LedgerWalletInfo, SendTransactionOptions } from '../../types.js'
+import BaseConcreteStrategy from '../Base.js'
 import {
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-} from '../../constants'
-import LedgerHW from './hw'
-import { WalletAction, WalletDeviceType } from '../../../../types/enums'
+} from '../../constants.js'
+import LedgerHW from './hw/index.js'
+import { WalletAction, WalletDeviceType } from '../../../../types/enums.js'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
 
 export default class LedgerCosmos

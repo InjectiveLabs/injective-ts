@@ -19,16 +19,16 @@ import {
   UnspecifiedErrorCode,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { KeplrWallet } from '../../../utils/wallets/keplr'
-import { ConcreteWalletStrategy } from '../../types'
-import BaseConcreteStrategy from './Base'
+import { KeplrWallet } from '../../../utils/wallets/keplr/index.js'
+import { ConcreteWalletStrategy } from '../../types/index.js'
+import BaseConcreteStrategy from './Base.js'
 import {
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
-} from '../../../types/enums'
-import { SendTransactionOptions } from '../types'
-import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos'
+} from '../../../types/enums.js'
+import { SendTransactionOptions } from '../types.js'
+import { createCosmosSignDocFromSignDoc } from '../../../utils/cosmos.js'
 
 export default class Keplr extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   private keplrWallet: KeplrWallet

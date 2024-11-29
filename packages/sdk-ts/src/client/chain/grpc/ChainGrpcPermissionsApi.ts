@@ -3,9 +3,9 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainGrpcPermissionsTransformer } from '../transformers'
-import { ChainModule } from '../types'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
+import { ChainModule } from '../types/index.js'
 
 /**
  * @category Chain Grpc API

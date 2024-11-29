@@ -1,8 +1,7 @@
-import { ChronosLeaderboardResponse } from '../types/leaderboard-rest'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
+import { ChronosLeaderboardResponse } from '../types/leaderboard-rest.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import {
   HttpRequestException,
-  HttpRequestMethod,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 
@@ -26,10 +25,9 @@ export class IndexerRestLeaderboardChronosApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}`,
-        method: HttpRequestMethod.Get,
         contextModule: 'Leaderboard',
       })
     }

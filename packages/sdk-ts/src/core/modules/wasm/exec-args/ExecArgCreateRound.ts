@@ -2,7 +2,7 @@ import {
   dataToExecData,
   ExecArgBase,
   ExecDataRepresentation,
-} from '../ExecArgBase'
+} from '../ExecArgBase.js'
 
 export declare namespace ExecArgCreateRound {
   export interface Params {

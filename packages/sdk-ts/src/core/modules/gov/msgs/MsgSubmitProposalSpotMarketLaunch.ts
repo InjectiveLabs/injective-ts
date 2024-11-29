@@ -5,8 +5,8 @@ import {
   CosmosBaseV1Beta1Coin,
   InjectiveExchangeV1Beta1Proposal,
 } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import { MsgBase } from '../../MsgBase.js'
+import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalSpotMarketLaunch {
   export interface Params {

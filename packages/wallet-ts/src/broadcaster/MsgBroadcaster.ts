@@ -32,6 +32,7 @@ import {
 } from '@injectivelabs/utils'
 import {
   GeneralException,
+  isThrownException,
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
@@ -44,21 +45,21 @@ import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
-} from '../utils/utils'
+} from '../utils/utils.js'
 import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
-} from './types'
+} from './types.js'
 import {
   isCosmosWallet,
   isEip712V2OnlyWallet,
-} from '../strategies/wallet-strategy/utils'
-import { Wallet, WalletDeviceType } from '../types'
-import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr'
-import { isCosmosAminoOnlyWallet } from '../utils'
-import { LeapWallet } from '../utils/wallets'
-import { checkIfTxRunOutOfGas } from './helper'
+} from '../strategies/wallet-strategy/utils.js'
+import { Wallet, WalletDeviceType } from '../types/index.js'
+import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr/index.js'
+import { isCosmosAminoOnlyWallet } from '../utils/index.js'
+import { LeapWallet } from '../utils/wallets/index.js'
+import { checkIfTxRunOutOfGas } from './helper.js'
 
 const getEthereumWalletPubKey = <T>({
   pubKey,
@@ -151,11 +152,21 @@ export class MsgBroadcaster {
       )
     }
 
-    return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmos(txWithAddresses)
-      : isEip712V2OnlyWallet(walletStrategy.wallet)
-      ? this.broadcastWeb3V2(txWithAddresses)
-      : this.broadcastWeb3(txWithAddresses)
+    try {
+      return isCosmosWallet(walletStrategy.wallet)
+        ? this.broadcastCosmos(txWithAddresses)
+        : isEip712V2OnlyWallet(walletStrategy.wallet)
+        ? this.broadcastWeb3V2(txWithAddresses)
+        : this.broadcastWeb3(txWithAddresses)
+    } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    }
   }
 
   /**
@@ -185,9 +196,19 @@ export class MsgBroadcaster {
       )
     }
 
-    return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmos(txWithAddresses)
-      : this.broadcastWeb3V2(txWithAddresses)
+    try {
+      return isCosmosWallet(walletStrategy.wallet)
+        ? this.broadcastCosmos(txWithAddresses)
+        : this.broadcastWeb3V2(txWithAddresses)
+    } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    }
   }
 
   /**
@@ -250,9 +271,19 @@ export class MsgBroadcaster {
       )
     }
 
-    return isCosmosWallet(walletStrategy.wallet)
-      ? this.broadcastCosmosWithFeeDelegation(txWithAddresses)
-      : this.broadcastWeb3WithFeeDelegation(txWithAddresses)
+    try {
+      return isCosmosWallet(walletStrategy.wallet)
+        ? this.broadcastCosmosWithFeeDelegation(txWithAddresses)
+        : this.broadcastWeb3WithFeeDelegation(txWithAddresses)
+    } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    }
   }
 
   /**

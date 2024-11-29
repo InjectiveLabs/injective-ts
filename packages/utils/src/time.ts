@@ -1,4 +1,4 @@
-import { BigNumberInBase, BigNumber } from './classes'
+import { BigNumberInBase, BigNumber } from './classes/index.js'
 
 export const SECONDS_IN_A_DAY: BigNumber = new BigNumber(60 * 60 * 24)
 

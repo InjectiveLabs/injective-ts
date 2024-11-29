@@ -4,7 +4,7 @@ import {
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
-import { IndexerModule } from '../types'
+import { IndexerModule } from '../types/index.js'
 import {
   ErrorType,
   TransactionException,
@@ -12,7 +12,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
-import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi'
+import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
 
 /**
  * @category Indexer Grpc API

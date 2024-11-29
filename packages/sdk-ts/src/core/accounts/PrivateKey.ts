@@ -2,20 +2,20 @@ import { generateMnemonic } from 'bip39'
 import { Wallet, HDNodeWallet } from 'ethers'
 import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
-import { PublicKey } from './PublicKey'
-import { Address } from './Address'
+import { PublicKey } from './PublicKey.js'
+import { Address } from './Address.js'
 import * as BytesUtils from '@ethersproject/bytes'
 import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 import {
   DEFAULT_DERIVATION_PATH,
   recoverTypedSignaturePubKey,
-} from '../../utils'
+} from '../../utils/index.js'
 import {
   CosmosTxV1Beta1Tx,
   InjectiveTypesV1Beta1TxExt,
 } from '@injectivelabs/core-proto-ts'
-import { getTransactionPartsFromTxRaw } from '../tx/utils/tx'
-import { getEip712TypedData, MsgDecoder } from '../tx/eip712'
+import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
+import { getEip712TypedData, MsgDecoder } from '../tx/eip712/index.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 

@@ -1,3 +1,3 @@
-export * from './types'
-export * from './utils'
-export { default as BaseConcreteStrategy } from './base'
+export * from './types/index.js'
+export * from './utils/index.js'
+export { default as BaseConcreteStrategy } from './base.js'

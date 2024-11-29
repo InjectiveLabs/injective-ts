@@ -4,7 +4,7 @@ import {
   DEFAULT_IBC_GAS_LIMIT,
   DEFAULT_EXCHANGE_LIMIT,
 } from '@injectivelabs/utils'
-import { Msgs } from '../core/modules/msgs'
+import { Msgs } from '../core/modules/msgs.js'
 
 export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
   const messages = Array.isArray(msgs) ? msgs : [msgs]

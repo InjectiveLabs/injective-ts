@@ -1,1 +1,1 @@
-export * from './NinjiWallet'
+export * from './NinjiWallet.js'

@@ -1,7 +1,7 @@
 import { DirectSignResponse, makeSignBytes } from '@cosmjs/proto-signing'
-import { PrivateKey } from '../PrivateKey'
-import { PublicKey } from '../PublicKey'
-import { AccountData, OfflineDirectSigner } from './types/proto-signer'
+import { PrivateKey } from '../PrivateKey.js'
+import { PublicKey } from '../PublicKey.js'
+import { AccountData, OfflineDirectSigner } from './types/proto-signer.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {

@@ -1,4 +1,4 @@
-import MsgCreateDerivativeLimitOrder from './MsgCreateDerivativeLimitOrder'
+import MsgCreateDerivativeLimitOrder from './MsgCreateDerivativeLimitOrder.js'
 import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 

@@ -1,12 +1,12 @@
 import {
   ApolloClient,
   InMemoryCache,
-  NormalizedCacheObject,
   ApolloQueryResult,
-} from '@apollo/client/core'
+  NormalizedCacheObject,
+} from '@apollo/client'
 import { HttpRequestException } from '@injectivelabs/exceptions'
-import { USER_DEPOSITS, USER_BRIDGE_DEPOSITS } from './queries'
-import { UserDepositResponse } from './types'
+import { USER_DEPOSITS, USER_BRIDGE_DEPOSITS } from './queries.js'
+import { UserDepositResponse } from './types.js'
 
 /**
  * @hidden

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "./../cjs",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "allowJs": true,
+    "lib": ["dom", "es6", "scripthost", "es2020.bigint"]
+  },
+  "exclude": ["node_modules"]
+}

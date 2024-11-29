@@ -1,5 +1,5 @@
-import { sortObjectByKeys } from '../../utils/helpers'
-import { toUtf8 } from '../../utils/utf8'
+import { sortObjectByKeys } from '../../utils/helpers.js'
+import { toUtf8 } from '../../utils/utf8.js'
 
 export const generateArbitrarySignDoc = (message: string, signer: string) => {
   const signDoc = {
