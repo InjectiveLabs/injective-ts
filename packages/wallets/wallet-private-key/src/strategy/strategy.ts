@@ -204,7 +204,7 @@ export class PrivateKeyWallet
     try {
       const signature = await pk.signHashed(Buffer.from(toUtf8(data), 'utf-8'))
 
-      return signature
+      return `0x${Buffer.from(signature).toString('base64')}`
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
