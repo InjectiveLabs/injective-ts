@@ -1,7 +1,7 @@
 import MsgGrantWithAuthorization from './MsgGrantWithAuthorization.js'
 import { mockFactory } from '@injectivelabs/test-utils'
-import GenericAuthorization from './grants/GenericAuthorization.js'
-import ContractExecutionAuthorization from './grants/ContractExecutionAuthorization.js'
+import GenericAuthorization from './authorizations/GenericAuthorization.js'
+import ContractExecutionAuthorization from './authorizations/ContractExecutionAuthorization.js'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 

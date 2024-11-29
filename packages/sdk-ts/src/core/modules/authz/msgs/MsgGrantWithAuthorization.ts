@@ -5,7 +5,7 @@ import {
   CosmosAuthzV1Beta1Authz,
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
-import { BaseAuthorization } from './grants/Base.js'
+import { BaseAuthorization } from './authorizations/Base.js'
 
 export declare namespace MsgGrantWithAuthorization {
   export interface Params {
