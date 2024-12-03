@@ -30,6 +30,7 @@ export enum CosmosChainId {
   Saga = 'ssc-1',
   Neutron = 'neutron-1',
   Fetch = 'fetchhub-4',
+  Mantra = 'mantra-1',
 }
 
 export enum TestnetCosmosChainId {
