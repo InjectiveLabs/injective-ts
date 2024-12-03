@@ -3,6 +3,77 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.33-beta.4...@injectivelabs/sdk-ts@1.14.33) (2024-11-29)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.14.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.31...@injectivelabs/sdk-ts@1.14.32) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/sdk-ts
+
+
+
+
+
+## [1.14.31](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.30...@injectivelabs/sdk-ts@1.14.31) (2024-11-25)
+
+
+### Bug Fixes
+
+* import ([cfc70ec](https://github.com/InjectiveLabs/injective-ts/commit/cfc70ec11fba9e40867e554a18219055842ea6af))
+
+
+
+
+
+## [1.14.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.22...@injectivelabs/sdk-ts@1.14.30) (2024-11-25)
+
+
+### Bug Fixes
+
+* version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
+
+
+
+
+
+## [1.14.22](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.21...@injectivelabs/sdk-ts@1.14.22) (2024-11-25)
+
+
+### Bug Fixes
+
+* import js missing ([01835b4](https://github.com/InjectiveLabs/injective-ts/commit/01835b4cb631b7b5778f77bf44c60dd4d0be18ac))
+
+
+
+
+
+## [1.14.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.20...@injectivelabs/sdk-ts@1.14.21) (2024-11-25)
+
+
+### Bug Fixes
+
+* esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
+
+
+
+
+
+## [1.14.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.20-beta.4...@injectivelabs/sdk-ts@1.14.20) (2024-11-25)
+
+
+### Features
+
+* add authorization ([76b6e0a](https://github.com/InjectiveLabs/injective-ts/commit/76b6e0a88154079b56e193c6d89574da17568b0b))
+
+
+
+
+
 ## [1.14.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/sdk-ts@1.14.18...@injectivelabs/sdk-ts@1.14.19) (2024-11-11)
 
 **Note:** Version bump only for package @injectivelabs/sdk-ts

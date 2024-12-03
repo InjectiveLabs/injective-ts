@@ -9,13 +9,5 @@
     "target": "ESNext",
     "moduleResolution": "Bundler",
     "tsBuildInfoFile": "../../.build-cache/utils.esm.tsbuildinfo"
-  },
-  "references": [
-    {
-      "path": "../ts-types/tsconfig.build.esm.json"
-    },
-    {
-      "path": "../exceptions/tsconfig.build.esm.json"
-    }
-  ]
+  }
 }

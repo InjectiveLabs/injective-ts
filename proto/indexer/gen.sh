@@ -3,7 +3,7 @@ BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto
 TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
-injective_indexer_branch=v1.13.62-RC.1
+injective_indexer_branch=v1.13.78-RC.1
 
 # remove old gen
 rm -rf $BUILD_DIR

@@ -11,22 +11,5 @@
   "exclude": [
     "./src/**/*.spec.ts",
     "./src/**/*.test.ts"
-  ],
-  "references": [
-    {
-      "path": "../../ts-types/tsconfig.build.json"
-    },
-    {
-      "path": "../../exceptions/tsconfig.build.json"
-    },
-    {
-      "path": "../../networks/tsconfig.build.json"
-    },
-    {
-      "path": "../../utils/tsconfig.build.json"
-    },
-        {
-      "path": "../../sdk-ts/tsconfig.build.json"
-    }
   ]
 }

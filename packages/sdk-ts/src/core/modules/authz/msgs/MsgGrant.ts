@@ -10,6 +10,9 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import { getGenericAuthorizationFromMessageType } from '../utils.js'
 import { GrantAuthorizationType } from './../types.js'
 
+/**
+ * @deprecated please use MsgGrantWithAuthorization
+ */
 export declare namespace MsgGrant {
   export interface Params {
     /**

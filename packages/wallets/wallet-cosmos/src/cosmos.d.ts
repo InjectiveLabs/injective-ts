@@ -6,5 +6,6 @@ declare global {
     leap: KeplrWindow['keplr']
     keplr: KeplrWindow['keplr']
     ninji: KeplrWindow['ninji']
+    owallet?: KeplrWindow['owallet']
   }
 }

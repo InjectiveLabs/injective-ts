@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.14.33-beta.1...@injectivelabs/networks@1.14.33) (2024-11-29)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
+## [1.14.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.14.30...@injectivelabs/networks@1.14.32) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
+## [1.14.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.14.21...@injectivelabs/networks@1.14.30) (2024-11-25)
+
+
+### Bug Fixes
+
+* version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
+
+
+
+
+
+## [1.14.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.14.20...@injectivelabs/networks@1.14.21) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
+## [1.14.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.14.19...@injectivelabs/networks@1.14.20) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/networks
+
+
+
+
+
 ## [1.14.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/networks@1.14.17...@injectivelabs/networks@1.14.19) (2024-11-11)
 
 **Note:** Version bump only for package @injectivelabs/networks

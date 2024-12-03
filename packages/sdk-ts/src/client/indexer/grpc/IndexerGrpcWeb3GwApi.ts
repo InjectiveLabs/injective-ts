@@ -31,7 +31,7 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     memo,
     sequence,
     accountNumber,
-    estimateGas = true,
+    estimateGas = false,
     gasLimit = DEFAULT_GAS_LIMIT,
     feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
     feePrice = DEFAULT_BRIDGE_FEE_PRICE,

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-evm",
   "description": "EVM wallet strategies for use with @injectivelabs/wallet-core.",
-  "version": "0.0.7-beta.1",
+  "version": "1.14.34-beta.2",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -16,6 +16,28 @@
   ],
   "_moduleAliases": {
     "~wallet-evm": "dist"
+  },
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
   },
   "scripts": {
     "build": "yarn build:cjs && yarn build:esm && yarn build:post",
@@ -33,17 +55,15 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.14.19",
-    "@injectivelabs/networks": "^1.14.19",
-    "@injectivelabs/sdk-ts": "^1.14.20-beta.1",
-    "@injectivelabs/ts-types": "^1.14.19",
-    "@injectivelabs/utils": "^1.14.19",
+    "@injectivelabs/exceptions": "^1.14.33",
+    "@injectivelabs/networks": "^1.14.33",
+    "@injectivelabs/sdk-ts": "^1.14.34-beta.2",
+    "@injectivelabs/ts-types": "^1.14.33",
+    "@injectivelabs/utils": "^1.14.33",
+    "@injectivelabs/wallet-base": "^1.14.34-beta.2",
     "ethers": "^6.5.1",
     "long": "^5.2.1",
     "shx": "^0.3.3"
-  },
-  "peerDependencies": {
-    "@injectivelabs/wallet-base": "^0.0.1"
   },
   "devDependencies": {
     "@types/eth-sig-util": "^2.1.1",

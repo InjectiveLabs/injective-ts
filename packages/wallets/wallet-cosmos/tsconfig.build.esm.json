@@ -9,25 +9,5 @@
     "target": "ESNext",
     "moduleResolution": "Bundler",
     "tsBuildInfoFile": "../../../.build-cache/wallet-cosmos.esm.tsbuildinfo"
-  },
-  "references": [
-    {
-      "path": "../../ts-types/tsconfig.build.esm.json"
-    },
-    {
-      "path": "../../exceptions/tsconfig.build.esm.json"
-    },
-    {
-      "path": "../../networks/tsconfig.build.esm.json"
-    },
-    {
-      "path": "../../utils/tsconfig.build.esm.json"
-    },
-    {
-      "path": "../../sdk-ts/tsconfig.build.esm.json"
-    },
-    {
-      "path": "../wallet-base/tsconfig.build.esm.json"
-    }
-  ]
+  }
 }

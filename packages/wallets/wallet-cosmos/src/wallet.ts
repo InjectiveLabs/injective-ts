@@ -18,9 +18,10 @@ import {
   CosmosWalletException,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
+import { capitalize } from '@injectivelabs/utils'
 import { BroadcastMode } from '@cosmjs/launchpad'
-import { Wallet } from '@injectivelabs/wallet-base'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import { Wallet } from '@injectivelabs/wallet-base'
 import { SigningStargateClient, StdFee } from '@cosmjs/stargate'
 import type { EncodeObject, OfflineDirectSigner } from '@cosmjs/proto-signing'
 
@@ -35,10 +36,13 @@ export class CosmosWallet {
   public wallet: Wallet
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
 
-  constructor(
-    chainId: CosmosChainId | TestnetCosmosChainId | ChainId,
-    wallet: Wallet,
-  ) {
+  constructor({
+    wallet,
+    chainId,
+  }: {
+    wallet: Wallet
+    chainId: CosmosChainId | TestnetCosmosChainId | ChainId
+  }) {
     this.wallet = wallet
     this.chainId = chainId
   }
@@ -46,7 +50,7 @@ export class CosmosWallet {
   public async isChainIdSupported(chainId: CosmosChainId): Promise<boolean> {
     const { wallet } = this
 
-    return new CosmosWallet(chainId, wallet).checkChainIdSupport()
+    return new CosmosWallet({ chainId, wallet }).checkChainIdSupport()
   }
 
   public async getCosmosWallet() {
@@ -75,7 +79,7 @@ export class CosmosWallet {
 
     throw new CosmosWalletException(
       new Error(
-        `${wallet} may not support ${
+        `${capitalize(wallet)} may not support ${
           chainName[0] || chainId
         } network. Please check if the chain can be added.`,
       ),
@@ -136,7 +140,9 @@ export class CosmosWallet {
 
     if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       throw new CosmosWalletException(
-        new Error(`getOfflineAminoSigner is not support on ${wallet}`),
+        new Error(
+          `getOfflineAminoSigner is not support on ${capitalize(wallet)}`,
+        ),
       )
     }
 
@@ -243,7 +249,9 @@ export class CosmosWallet {
     if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       throw new CosmosWalletException(
         new Error(
-          `signAndBroadcastAminoUsingCosmjs is not support on ${wallet}`,
+          `signAndBroadcastAminoUsingCosmjs is not support on ${capitalize(
+            wallet,
+          )}`,
         ),
       )
     }
@@ -280,7 +288,7 @@ export class CosmosWallet {
 
     if (wallet !== Wallet.Keplr) {
       throw new CosmosWalletException(
-        new Error(`signArbitrary is not supported on ${wallet}`),
+        new Error(`signArbitrary is not supported on ${capitalize(wallet)}`),
       )
     }
 
@@ -332,7 +340,7 @@ export class CosmosWallet {
     } catch (e) {
       throw new CosmosWalletException(
         new Error(
-          `${wallet} doesn't support ${
+          `${capitalize(wallet)} doesn't support ${
             chainName[0] || chainId
           } network. Please use another Cosmos wallet`,
         ),
@@ -345,7 +353,7 @@ export class CosmosWallet {
 
     if (!$window) {
       throw new CosmosWalletException(
-        new Error(`Please install ${wallet} extension`),
+        new Error(`Please install ${capitalize(wallet)} extension`),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
@@ -374,7 +382,7 @@ export class CosmosWallet {
 
     if (!cosmos) {
       throw new CosmosWalletException(
-        new Error(`Please install ${wallet} extension`),
+        new Error(`Please install ${capitalize(wallet)} extension`),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletNotInstalledError,
@@ -390,9 +398,9 @@ export class CosmosWallet {
     const { wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       throw new CosmosWalletException(
-        new Error(`disableGasCheck is not support on ${wallet}`),
+        new Error(`disableGasCheck is not support on ${capitalize(wallet)}`),
       )
     }
 
@@ -412,7 +420,7 @@ export class CosmosWallet {
 
     if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       throw new CosmosWalletException(
-        new Error(`enableGasCheck is not support on ${wallet}`),
+        new Error(`enableGasCheck is not support on ${capitalize(wallet)}`),
       )
     }
 

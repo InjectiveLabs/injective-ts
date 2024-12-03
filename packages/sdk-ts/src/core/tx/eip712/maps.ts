@@ -235,6 +235,7 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
 ): T => {
   const numberToStringKeys = [
     'proposal_id',
+    'remaining',
     'round',
     'oracle_scale_factor',
     'timeout_timestamp',
@@ -256,6 +257,9 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
   const nullableStringsTypeMaps = {
     'wasmx/MsgExecuteContractCompat': ['funds'],
   }
+  // const dateTypesMap = {
+  //   'cosmos-sdk/MsgGrant': ['expiration'],
+  // }
 
   const nullableStrings = ['uri', 'uri_hash']
 
@@ -301,20 +305,25 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
           [key]: value.toJSON().split('.')[0] + 'Z',
         }
       }
+
       if (Array.isArray(value)) {
         return {
           ...result,
           [key]: value.every((i) => typeof i === 'string')
             ? value
             : value.map((item) =>
-                mapValuesToProperValueType(item as Record<string, unknown>),
+                mapValuesToProperValueType(
+                  item as Record<string, unknown>,
+                ),
               ),
         }
       }
 
       return {
         ...result,
-        [key]: mapValuesToProperValueType(value as Record<string, unknown>),
+        [key]: mapValuesToProperValueType(
+          value as Record<string, unknown>,
+        ),
       }
     }
 
@@ -609,6 +618,7 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'injective/tokenfactory/burn'
     case 'injective.tokenfactory.v1beta1.MsgSetDenomMetadata':
       return 'injective/tokenfactory/set-denom-metadata'
+
     // Auth
     case 'cosmos.auth.v1beta1.MsgUpdateParams':
       return 'cosmos-sdk/x/auth/MsgUpdateParams'

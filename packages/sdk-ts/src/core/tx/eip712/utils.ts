@@ -106,7 +106,7 @@ export const getEip712Fee = (
 
   return {
     fee: {
-      feePayer: feePayer,
+      ...(feePayer && { feePayer }),
       gas,
       amount,
     },
@@ -152,7 +152,7 @@ export const getEip712FeeV2 = (
     fee: {
       amount,
       gas,
-      payer: payer,
+      ...(payer && { payer }),
     },
   }
 }
