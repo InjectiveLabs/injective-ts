@@ -3,10 +3,8 @@
 The `wasm` module is the heart of interacting with the wasm smart contracts deployed on the injective chain, here you can find a list of [smart contracts](https://explorer.injective.network/contracts/) that are deployed on the Injective chain.
 
 {% hint style="info" %}
-`MsgUpdateCode` and `MsgStoreCode` are not support by the Metamask wallet.
+`MsgUpdateCode` and `MsgStoreCode` are not supported by Ethereum (ex: Metamask) wallets.
 {% endhint %}
-
-
 
 ### MsgExecuteContract (Transfer)
 
