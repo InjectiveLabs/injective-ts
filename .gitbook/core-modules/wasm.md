@@ -2,6 +2,12 @@
 
 The `wasm` module is the heart of interacting with the wasm smart contracts deployed on the injective chain, here you can find a list of [smart contracts](https://explorer.injective.network/contracts/) that are deployed on the Injective chain.
 
+{% hint style="info" %}
+`MsgUpdateCode` and `MsgStoreCode` are not support by the Metamask wallet.
+{% endhint %}
+
+
+
 ### MsgExecuteContract (Transfer)
 
 This message is used to execute contract function, below we will use the [CW20 spec](https://github.com/CosmWasm/cw-plus/blob/main/packages/cw20/README.md) transfer message as an example.
