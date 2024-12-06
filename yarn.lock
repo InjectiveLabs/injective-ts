@@ -2183,6 +2183,16 @@
   resolved "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
+"@injectivelabs/abacus-proto-ts@1.13.0":
+  version "1.13.0"
+  resolved "https://registry.npmjs.org/@injectivelabs/abacus-proto-ts/-/abacus-proto-ts-1.13.0.tgz#cf5b0e683d9c51e01377f3137a2b8af65e798a13"
+  integrity sha512-yfMbTux7ljzDcmkKAZTHh3PuwjtlNfQ5PxFhEPO51gfQdRab0t3CqZ31rN+Q7LEaRMxZH/OxW2+ULLAUF07fsQ==
+  dependencies:
+    "@injectivelabs/grpc-web" "^0.0.1"
+    google-protobuf "^3.14.0"
+    protobufjs "^7.0.0"
+    rxjs "^7.4.0"
+
 "@injectivelabs/core-proto-ts@1.13.4":
   version "1.13.4"
   resolved "https://registry.npmjs.org/@injectivelabs/core-proto-ts/-/core-proto-ts-1.13.4.tgz#c33568e471b8031ed66b1b954ac752f965e7f2bf"
