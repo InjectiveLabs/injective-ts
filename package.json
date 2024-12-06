@@ -38,6 +38,7 @@
     "test:sdk-ts:core:stargate": "jest ./packages/sdk-ts/src/core/stargate",
     "test:sdk-ts:core:modules": "jest ./packages/sdk-ts/src/core/modules",
     "test:sdk-ts:core": "jest ./packages/sdk-ts/src/core",
+    "test:sdk-ts:utils": "jest ./packages/sdk-ts/src/utils",
     "test:sdk-ts:client": "jest ./packages/sdk-ts/src/client",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",

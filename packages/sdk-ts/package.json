@@ -139,13 +139,13 @@
     "bech32": "^2.0.0",
     "bip39": "^3.0.4",
     "cosmjs-types": "^0.9.0",
+    "crypto-js": "^4.2.0",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^6.5.1",
     "google-protobuf": "^3.21.0",
     "graphql": "^16.3.0",
     "http-status-codes": "^2.2.0",
     "js-sha3": "^0.8.0",
-    "jscrypto": "^1.0.3",
     "keccak256": "^1.0.6",
     "secp256k1": "^4.0.3",
     "shx": "^0.3.2",
@@ -163,6 +163,7 @@
     "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@types/lodash.toarray": "^4.4.7"
   }
 }

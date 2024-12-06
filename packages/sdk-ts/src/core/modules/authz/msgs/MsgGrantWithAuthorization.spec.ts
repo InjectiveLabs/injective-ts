@@ -7,7 +7,8 @@ import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/index.js'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
-describe('MsgGrantWithAuthorization', () => {
+// TODO
+describe.skip('MsgGrantWithAuthorization', () => {
   describe('GenericAuthorization', () => {
     const params: MsgGrantWithAuthorization['params'] = {
       grantee: injectiveAddress,

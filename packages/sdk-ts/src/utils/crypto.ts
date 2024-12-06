@@ -1,20 +1,23 @@
-import { SHA256 } from 'jscrypto/SHA256.js'
-import { RIPEMD160 } from 'jscrypto/RIPEMD160.js'
-import { Base64 } from 'jscrypto/Base64.js'
-import { Word32Array } from 'jscrypto'
+import SHA256 from 'crypto-js/sha256'
+import RIPEMD160 from 'crypto-js/ripemd160'
+import Base64 from 'crypto-js/enc-base64'
 import * as secp256k1 from 'secp256k1'
 import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 
 export const hashToHex = (data: string): string => {
-  return SHA256.hash(Base64.parse(data)).toString().toUpperCase()
+  return SHA256(Base64.parse(data)).toString().toUpperCase()
 }
 
 export const sha256 = (data: Uint8Array): Uint8Array => {
-  return SHA256.hash(new Word32Array(data)).toUint8Array()
+  const dataInUtf8 = Buffer.from(data).toString('utf-8')
+
+  return Uint8Array.from(Buffer.from(SHA256(dataInUtf8).toString(), 'hex'))
 }
 
 export const ripemd160 = (data: Uint8Array): Uint8Array => {
-  return RIPEMD160.hash(new Word32Array(data)).toUint8Array()
+  const dataInUtf8 = Buffer.from(data).toString('utf-8')
+
+  return Uint8Array.from(Buffer.from(RIPEMD160(dataInUtf8).toString(), 'hex'))
 }
 
 export const privateKeyToPublicKey = (privateKey: Uint8Array): Uint8Array => {
