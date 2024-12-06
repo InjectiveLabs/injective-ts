@@ -1,5 +1,5 @@
 import MsgGrantAllowance from './MsgGrantAllowance.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { CosmosFeegrantV1Beta1Feegrant } from '@injectivelabs/core-proto-ts'
 import snakecaseKeys from 'snakecase-keys'
 

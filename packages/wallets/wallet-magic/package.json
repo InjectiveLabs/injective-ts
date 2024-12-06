@@ -3,6 +3,7 @@
   "description": "Magic wallet strategy for use with @injectivelabs/wallet-core.",
   "version": "1.14.34-beta.4",
   "sideEffects": false,
+  "type": "module",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
@@ -69,9 +70,5 @@
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
     "displayName": "wallet-magic API Documentation"
-  },
-  "resolutions": {
-    "**/libsodium": "npm:@bangjelkoski/noop",
-    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   }
 }

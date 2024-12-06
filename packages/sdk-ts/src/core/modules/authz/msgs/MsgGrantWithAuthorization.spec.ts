@@ -1,5 +1,5 @@
 import MsgGrantWithAuthorization from './MsgGrantWithAuthorization.js'
-import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import GenericAuthorization from './authorizations/GenericAuthorization.js'
 import ContractExecutionAuthorization from './authorizations/ContractExecutionAuthorization.js'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'

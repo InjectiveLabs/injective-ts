@@ -1,6 +1,6 @@
-import Eip1993Provider from 'eip1193-provider'
+import { type EIP1193Provider } from 'eip1193-provider'
 
-export interface BrowserEip1993Provider extends Eip1993Provider {
+export interface BrowserEip1993Provider extends EIP1193Provider {
   removeAllListeners(): void
   isMetaMask: boolean
   isTrustWallet: boolean

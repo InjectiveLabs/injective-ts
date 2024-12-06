@@ -1,5 +1,5 @@
 import MsgBatchCancelSpotOrders from './MsgBatchCancelSpotOrders.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 // import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import snakecaseKeys from 'snakecase-keys'
 // import { getEthereumAddress } from '../../../../utils/address'

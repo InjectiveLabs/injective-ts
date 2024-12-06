@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcExchangeApi } from './ChainGrpcExchangeApi.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { ChainGrpcExchangeTransformer } from '../transformers/index.js'
 import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 

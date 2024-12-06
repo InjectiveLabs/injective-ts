@@ -3,6 +3,7 @@
   "description": "Wallet strategy with instantiated wallets",
   "version": "1.14.34-beta.4",
   "sideEffects": false,
+  "type": "module",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
@@ -77,18 +78,13 @@
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
     "ethers": "^6.5.1",
-    "hdkey": "^2.0.1",
-    "long": "^5.2.1",
-    "shx": "^0.3.3"
+    "hdkey": "^2.1.0"
   },
   "devDependencies": {
+    "shx": "^0.3.3",
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
     "@types/hdkey": "^2.0.1"
-  },
-  "resolutions": {
-    "**/libsodium": "npm:@bangjelkoski/noop",
-    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
 }

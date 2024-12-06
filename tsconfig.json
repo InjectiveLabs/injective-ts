@@ -3,54 +3,22 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@injectivelabs/ts-types": [
-        "packages/ts-types"
-      ],
-      "@injectivelabs/exceptions": [
-        "packages/exceptions"
-      ],
-      "@injectivelabs/utils": [
-        "packages/utils"
-      ],
-      "@injectivelabs/networks": [
-        "packages/networks"
-      ],
-      "@injectivelabs/test-utils": [
-        "packages/test-utils"
-      ],
-      "@injectivelabs/wallet-ts": [
-        "packages/wallet-ts"
-      ],
-      "@injectivelabs/sdk-ts": [
-        "packages/sdk-ts"
-      ],
-      "@injectivelabs/wallet-base": [
-        "packages/wallets/wallet-base"
-      ],
-      "@injectivelabs/wallet-core": [
-        "packages/wallets/wallet-core"
-      ],
-      "@injectivelabs/wallet-evm": [
-        "packages/wallets/wallet-evm"
-      ],
-      "@injectivelabs/wallet-ledger": [
-        "packages/wallets/wallet-ledger"
-      ],
-      "@injectivelabs/wallet-keplr": [
-        "packages/wallets/wallet-keplr"
-      ],
-      "@injectivelabs/wallet-trezor": [
-        "packages/wallets/wallet-trezor"
-      ],
-      "@injectivelabs/wallet-magic": [
-        "packages/wallets/wallet-magic"
-      ],
+      "@injectivelabs/ts-types": ["packages/ts-types"],
+      "@injectivelabs/exceptions": ["packages/exceptions"],
+      "@injectivelabs/networks": ["packages/networks"],
+      "@injectivelabs/utils": ["packages/utils"],
+      "@injectivelabs/sdk-ts": ["packages/sdk-ts"],
+      "@injectivelabs/wallet-base": ["packages/wallets/wallet-base"],
+      "@injectivelabs/wallet-core": ["packages/wallets/wallet-core"],
+      "@injectivelabs/wallet-evm": ["packages/wallets/wallet-evm"],
+      "@injectivelabs/wallet-ledger": ["packages/wallets/wallet-ledger"],
+      "@injectivelabs/wallet-keplr": ["packages/wallets/wallet-keplr"],
+      "@injectivelabs/wallet-trezor": ["packages/wallets/wallet-trezor"],
+      "@injectivelabs/wallet-magic": ["packages/wallets/wallet-magic"],
       "@injectivelabs/wallet-wallet-connect": [
         "packages/wallets/wallet-wallet-connect"
       ],
-      "@injectivelabs/wallet-strategy": [
-        "packages/wallets/wallet-strategy"
-      ]
+      "@injectivelabs/wallet-strategy": ["packages/wallets/wallet-strategy"]
     }
   }
 }

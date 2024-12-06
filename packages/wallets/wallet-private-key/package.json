@@ -3,6 +3,7 @@
   "description": "Private key wallet strategy for use with @injectivelabs/wallet-core.",
   "version": "1.14.34-beta.4",
   "sideEffects": false,
+  "type": "module",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
@@ -58,7 +59,6 @@
     "@injectivelabs/exceptions": "^1.14.33",
     "@injectivelabs/sdk-ts": "^1.14.34-beta.4",
     "@injectivelabs/ts-types": "^1.14.33",
-    "@injectivelabs/utils": "^1.14.33",
     "@injectivelabs/wallet-base": "^1.14.34-beta.4"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
@@ -66,9 +66,5 @@
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
     "displayName": "wallet-private-key API Documentation"
-  },
-  "resolutions": {
-    "**/libsodium": "npm:@bangjelkoski/noop",
-    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   }
 }

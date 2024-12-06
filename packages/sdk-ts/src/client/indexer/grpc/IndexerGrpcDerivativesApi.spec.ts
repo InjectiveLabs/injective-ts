@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { getDefaultSubaccountId } from '../../../utils/address.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { IndexerGrpcDerivativeTransformer } from '../transformers/index.js'
 import { DerivativeMarket } from '../types/index.js'
 import { IndexerGrpcDerivativesApi } from './IndexerGrpcDerivativesApi.js'

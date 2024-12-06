@@ -1,5 +1,6 @@
 import {
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
@@ -46,7 +47,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Historical Balance',
           contextModule: this.module,
         })
@@ -83,7 +84,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Historical Rpnl',
           contextModule: this.module,
         })
@@ -120,7 +121,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Historical Volumes',
           contextModule: this.module,
         })
@@ -170,7 +171,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Pnl Leaderboard',
           contextModule: this.module,
         })
@@ -220,7 +221,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Vol Leaderboard',
           contextModule: this.module,
         })
@@ -268,7 +269,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Pnl Leaderboard Fixed Resolution',
           contextModule: this.module,
         })
@@ -316,7 +317,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Vol Leaderboard Fixed Resolution',
           contextModule: this.module,
         })
@@ -363,7 +364,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomHolders',
           contextModule: this.module,
         })

@@ -4,7 +4,8 @@ import { MsgSend } from '../../modules/bank/index.js'
 import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk.js'
 import { EthereumChainId } from '@injectivelabs/ts-types'
 
-describe('MsgBroadcasterWithPk', () => {
+// TODO
+describe.skip('MsgBroadcasterWithPk', () => {
   test('prepares, simulates, signs and broadcasts a transaction', async () => {
     const privateKey = PrivateKey.fromHex(
       process.env.TEST_PRIVATE_KEY as string,

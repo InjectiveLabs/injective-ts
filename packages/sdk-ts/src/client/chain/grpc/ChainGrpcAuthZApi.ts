@@ -1,5 +1,6 @@
 import {
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { CosmosAuthzV1Beta1Query } from '@injectivelabs/core-proto-ts'
@@ -66,7 +67,7 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosAuthzV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Grants',
           contextModule: this.module,
         })
@@ -105,7 +106,7 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosAuthzV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GranterGrants',
           contextModule: this.module,
         })
@@ -144,7 +145,7 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosAuthzV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GranteeGrants',
           contextModule: this.module,
         })

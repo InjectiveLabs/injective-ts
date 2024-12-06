@@ -17,7 +17,7 @@ import {
   SendTransactionOptions,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import Provider, {
+import EthProvider, {
   EthereumProvider,
   EthereumProviderOptions,
 } from '@walletconnect/ethereum-provider'
@@ -35,6 +35,8 @@ const WalletConnectIds = {
   FireBlocks:
     '5864e2ced7c293ed18ac35e0db085c09ed567d67346ccb6f58a0327a75137489',
 }
+
+type Provider = EthProvider.default
 
 interface WalletConnectArgs extends ConcreteEthereumWalletStrategyArgs {
   metadata?: WalletConnectMetadata
@@ -277,7 +279,7 @@ export class WalletConnect
   }
 
   async onAccountChange(
-    callback: (account: AccountAddress) => void,
+    callback: (account: AccountAddress | string[]) => void,
   ): Promise<void> {
     const wc = await this.getConnectedWalletConnect()
 
@@ -288,7 +290,7 @@ export class WalletConnect
     wc.on('accountsChanged', (accounts) => callback(accounts[0]))
   }
 
-  private async getWalletConnect(): Promise<Provider> {
+  private async getWalletConnect() {
     if (this.provider) {
       return this.provider
     }
@@ -346,7 +348,7 @@ export class WalletConnect
         },
       })
 
-      return this.provider
+      return this.provider as Provider
     } catch (e) {
       throw new WalletException(
         new Error('WalletConnect not supported for this wallet'),

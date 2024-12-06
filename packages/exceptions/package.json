@@ -4,6 +4,7 @@
   "version": "1.14.33",
   "sideEffects": false,
   "license": "Apache-2.0",
+  "type": "module",
   "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -55,9 +56,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/grpc-web": "^0.0.1",
-    "@injectivelabs/ts-types": "^1.14.33",
-    "http-status-codes": "^2.2.0",
+    "http-status-codes": "^2.2.0"
+  },
+  "devDependencies": {
     "shx": "^0.3.2"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"

@@ -10,7 +10,7 @@ export default class LedgerTransport {
 
   private accountManager: AccountManager | null = null
 
-  protected static async getTransport(): Promise<Transport> {
+  protected static async getTransport(): Promise<Transport.default> {
     try {
       if (await TransportWebHID.isSupported()) {
         return await TransportWebHID.create()

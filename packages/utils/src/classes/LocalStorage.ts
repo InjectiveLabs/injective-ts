@@ -4,6 +4,7 @@ export default class LocalStorage {
   private storage: StoreAPI
 
   constructor(namespace: string) {
+    // @ts-ignore
     this.storage = store.namespace(namespace)
   }
 

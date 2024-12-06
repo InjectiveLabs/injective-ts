@@ -1,5 +1,5 @@
 import MsgChangeAdmin from './MsgChangeAdmin.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgChangeAdmin['params'] = {

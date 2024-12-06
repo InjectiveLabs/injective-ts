@@ -9,9 +9,10 @@ import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
 import { IndexerModule } from '../types/index.js'
 import {
   ErrorType,
-  GrpcUnaryRequestException,
-  TransactionException,
   UnspecifiedErrorCode,
+  TransactionException,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
@@ -97,7 +98,7 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'PrepareTx',
           contextModule: 'Web3Gateway',
           type: e.type,
@@ -177,7 +178,7 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
           context: 'CosmosPrepareTx',
           contextModule: 'Web3Gateway',
@@ -248,7 +249,7 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
           context: 'BroadcastTx',
           contextModule: 'Web3Gateway',
@@ -306,7 +307,7 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw new TransactionException(e.toOriginalError(), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
           context: 'BroadcastTx',
           contextModule: 'Web3Gateway',
@@ -332,7 +333,7 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
           context: 'FeePayer',
           contextModule: 'Web3Gateway',

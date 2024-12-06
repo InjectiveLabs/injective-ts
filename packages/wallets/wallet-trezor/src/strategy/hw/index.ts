@@ -4,9 +4,6 @@ import { DEFAULT_BASE_DERIVATION_PATH } from '@injectivelabs/wallet-base'
 import AccountManager from './AccountManager.js'
 import { WalletException } from '@injectivelabs/exceptions'
 
-// @ts-ignore
-const trezorConnect = TrezorConnect.default || TrezorConnect
-
 const TREZOR_CONNECT_MANIFEST = {
   email: 'contact@injectivelabs.org',
   appUrl: 'https://injectivelabs.org',
@@ -19,7 +16,10 @@ export default class TrezorTransport {
 
   constructor() {
     try {
-      trezorConnect.init({ lazyLoad: true, manifest: TREZOR_CONNECT_MANIFEST })
+      TrezorConnect.init({
+        lazyLoad: true,
+        manifest: TREZOR_CONNECT_MANIFEST,
+      })
     } catch (e) {
       throw new WalletException(e as Error)
     }

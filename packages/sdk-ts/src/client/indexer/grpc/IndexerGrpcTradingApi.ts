@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveTradingRpc } from '@injectivelabs/indexer-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
@@ -35,7 +36,7 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveTradingRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TradingStats',
           contextModule: this.module,
         })
@@ -154,7 +155,7 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveTradingRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GridStrategies',
           contextModule: this.module,
         })

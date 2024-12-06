@@ -1,6 +1,6 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgCancelUnbondingDelegation from './MsgCancelUnbondingDelegation.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgCancelUnbondingDelegation['params'] = {

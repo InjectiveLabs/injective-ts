@@ -1,5 +1,5 @@
 import { verifyMessage, Wallet } from 'ethers'
-import { toUtf8 } from '../../utils'
+import { toUtf8 } from '../../utils/utf8.js'
 import { PrivateKey } from './PrivateKey.js'
 import { generateArbitrarySignDoc } from '../tx/index.js'
 

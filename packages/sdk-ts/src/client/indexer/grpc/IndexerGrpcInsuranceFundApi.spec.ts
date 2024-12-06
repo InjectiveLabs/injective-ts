@@ -1,5 +1,5 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
 import { IndexerGrpcInsuranceFundApi } from './IndexerGrpcInsuranceFundApi.js'
 

@@ -1,5 +1,5 @@
 import MsgExec from './MsgExec'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from 'deprecated/test-utils/dist/cjs'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgSend from '../../bank/msgs/MsgSend.js'
 

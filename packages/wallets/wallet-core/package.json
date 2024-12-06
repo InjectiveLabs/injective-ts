@@ -3,6 +3,7 @@
   "description": "Core wallet strategy",
   "version": "1.14.34-beta.4",
   "sideEffects": false,
+  "type": "module",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
@@ -61,16 +62,10 @@
     "@injectivelabs/ts-types": "^1.14.33",
     "@injectivelabs/utils": "^1.14.33",
     "@injectivelabs/wallet-base": "^1.14.34-beta.4",
-    "eip1193-provider": "^1.0.1"
+    "@keplr-wallet/types": "^0.12.159"
   },
   "devDependencies": {
-    "@types/eth-sig-util": "^2.1.1",
-    "@types/ethereumjs-util": "^6.1.0",
-    "@types/hdkey": "^2.0.1"
-  },
-  "resolutions": {
-    "**/libsodium": "npm:@bangjelkoski/noop",
-    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
+    "shx": "^0.3.3"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
 }

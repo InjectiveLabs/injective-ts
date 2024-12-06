@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { Coin } from '@injectivelabs/ts-types'
 import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
@@ -39,7 +40,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
           contextModule: this.module,
         })
@@ -78,7 +79,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DelegationRewards',
           contextModule: this.module,
         })
@@ -124,7 +125,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
 
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DelegationRewards',
           contextModule: this.module,
         })
@@ -156,7 +157,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DelegationTotalRewards',
           contextModule: this.module,
         })
@@ -192,7 +193,7 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
 
       if (e instanceof CosmosDistributionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DelegationTotalRewards',
           contextModule: this.module,
         })

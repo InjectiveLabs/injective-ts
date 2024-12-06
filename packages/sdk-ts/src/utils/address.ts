@@ -103,3 +103,9 @@ export const getChecksumAddress = (ethAddress: string) => {
 
 export const isCw20ContractAddress = (address: string) =>
   address.length === 42 && address.startsWith('inj')
+
+export const addHexPrefix = (hex: string) =>
+  hex.startsWith('0x') ? hex : `0x${hex}`
+
+export const removeHexPrefix = (hex: string) =>
+  hex.startsWith('0x') ? hex.slice(2) : hex

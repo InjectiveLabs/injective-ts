@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js'
 import {
   DEFAULT_STD_FEE,
   DEFAULT_GAS_LIMIT,
@@ -78,7 +77,9 @@ export const getStdFeeForToken = (
   const gasPriceScaled = new BigNumberInBase(gasPriceInBase)
     .toWei(token.decimals)
     .toFixed(0)
-  const gasNormalized = new BigNumber(gasLimit || DEFAULT_GAS_LIMIT).toFixed(0)
+  const gasNormalized = new BigNumberInBase(
+    gasLimit || DEFAULT_GAS_LIMIT,
+  ).toFixed(0)
 
   return {
     amount: [
@@ -111,19 +112,19 @@ export const getStdFeeFromObject = (args?: {
     granter,
     feePayer,
   } = args
-  const gasNormalized = new BigNumber(gas).toFixed(0)
-  const gasPriceNormalized = new BigNumber(gasPrice).toFixed(0)
+  const gasNormalized = new BigNumberInBase(gas).toFixed(0)
+  const gasPriceNormalized = new BigNumberInBase(gasPrice).toFixed(0)
 
   return {
     amount: [
       {
         denom: 'inj',
-        amount: new BigNumber(gasNormalized)
+        amount: new BigNumberInBase(gasNormalized)
           .times(gasPriceNormalized)
           .toFixed(),
       },
     ],
-    gas: new BigNumber(gasNormalized).toFixed(),
+    gas: new BigNumberInBase(gasNormalized).toFixed(),
     payer /** for Web3Gateway fee delegation */,
     granter,
     feePayer,

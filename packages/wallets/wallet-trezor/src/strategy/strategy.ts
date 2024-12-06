@@ -52,6 +52,8 @@ type EthereumTransactionEIP1559 = {
   maxPriorityFeePerGas: string
 }
 
+const trezorConnect = TrezorConnect as unknown as TrezorConnect.default
+
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
     return Chain.Goerli
@@ -199,7 +201,7 @@ export class TrezorWallet
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(address)
-      const response = await TrezorConnect.ethereumSignTypedData({
+      const response = await trezorConnect.ethereumSignTypedData({
         path: derivationPath,
         data: {
           types: { EIP712Domain, ...otherTypes },
@@ -268,7 +270,7 @@ export class TrezorWallet
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(signer)
 
-      const response = await TrezorConnect.ethereumSignMessage({
+      const response = await trezorConnect.ethereumSignMessage({
         path: derivationPath,
         message: toUtf8(data),
       })
@@ -344,7 +346,7 @@ export class TrezorWallet
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(options.address)
-      const response = await TrezorConnect.ethereumSignTransaction({
+      const response = await trezorConnect.ethereumSignTransaction({
         path: derivationPath,
         transaction,
       })

@@ -292,7 +292,7 @@ export class CosmosWalletStrategy
   }
 
   async onAccountChange(
-    callback: (account: AccountAddress) => void,
+    callback: (account: AccountAddress | string[]) => void,
   ): Promise<void> {
     const { wallet } = this
 

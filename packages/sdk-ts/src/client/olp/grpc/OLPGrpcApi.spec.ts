@@ -1,4 +1,4 @@
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { OLPGrpcApi } from './OLPGrpcApi.js'
 import { DmmGrpcTransformer } from './transformers/index.js'
 

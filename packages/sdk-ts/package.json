@@ -8,6 +8,7 @@
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
+  "type": "module",
   "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -130,16 +131,15 @@
     "@injectivelabs/mito-proto-ts": "1.13.2",
     "@injectivelabs/networks": "^1.14.33",
     "@injectivelabs/olp-proto-ts": "1.13.1",
-    "@injectivelabs/test-utils": "^1.14.34-beta.2",
     "@injectivelabs/ts-types": "^1.14.33",
     "@injectivelabs/utils": "^1.14.33",
     "@metamask/eth-sig-util": "^4.0.0",
-    "@noble/curves": "^1.4.0",
+    "@noble/curves": "^1.7.0",
     "axios": "^1.6.4",
     "bech32": "^2.0.0",
     "bip39": "^3.0.4",
     "cosmjs-types": "^0.9.0",
-    "crypto-js": "^4.2.0",
+    "crypto-es": "^2.1.0",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^6.5.1",
     "google-protobuf": "^3.21.0",
@@ -164,6 +164,7 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
-    "@types/lodash.toarray": "^4.4.7"
+    "@types/lodash.toarray": "^4.4.7",
+    "crypto-js": "^4.2.0"
   }
 }

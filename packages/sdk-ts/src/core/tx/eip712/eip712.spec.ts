@@ -1,4 +1,4 @@
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import { MsgSend } from '@injectivelabs/sdk-ts'
 import { getEip712TypedDataV2 } from './eip712.js'

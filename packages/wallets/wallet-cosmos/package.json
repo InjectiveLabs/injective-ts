@@ -3,6 +3,7 @@
   "description": "Cosmos wallet strategies for use with @injectivelabs/wallet-core.",
   "version": "1.14.34-beta.4",
   "sideEffects": false,
+  "type": "module",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
@@ -55,18 +56,17 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@cosmjs/amino": "^0.32.3",
     "@cosmjs/launchpad": "0.27.1",
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
     "@injectivelabs/exceptions": "^1.14.33",
-    "@injectivelabs/networks": "^1.14.33",
     "@injectivelabs/sdk-ts": "^1.14.34-beta.4",
     "@injectivelabs/ts-types": "^1.14.33",
     "@injectivelabs/utils": "^1.14.33",
     "@injectivelabs/wallet-base": "^1.14.34-beta.4",
-    "@keplr-wallet/cosmos": "^0.12.71",
-    "@keplr-wallet/types": "^0.12.71",
+    "@keplr-wallet/types": "^0.12.71"
+  },
+  "devDependencies": {
     "shx": "^0.3.3"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
@@ -74,9 +74,5 @@
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
     "displayName": "wallet-cosmos API Documentation"
-  },
-  "resolutions": {
-    "**/libsodium": "npm:@bangjelkoski/noop",
-    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   }
 }

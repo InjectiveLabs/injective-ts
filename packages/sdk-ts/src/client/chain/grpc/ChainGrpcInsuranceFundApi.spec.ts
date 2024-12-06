@@ -1,7 +1,7 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcInsuranceFundApi } from './ChainGrpcInsuranceFundApi.js'
 import { ChainGrpcInsuranceFundTransformer } from '../transformers/index.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { IndexerGrpcDerivativesApi } from '../../indexer/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
