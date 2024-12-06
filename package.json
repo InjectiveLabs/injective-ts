@@ -23,6 +23,8 @@
     "publish:mito-proto-ts": "./proto/mito/publish.sh",
     "generate:olp-proto-ts": "./proto/olp/gen.sh",
     "publish:olp-proto-ts": "./proto/olp/publish.sh",
+    "generate:abacus-proto-ts": "./proto/abacus/gen.sh",
+    "publish:abacus-proto-ts": "./proto/abacus/publish.sh",
     "build:docs": "yarn typedoc",
     "lerna:publish:prerelease": "lerna publish --conventional-commits --conventional-prerelease",
     "lerna:publish": "lerna publish patch",

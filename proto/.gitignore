@@ -10,3 +10,6 @@ olp/proto-ts
 mito/gen/
 mito/proto/
 mito/proto-ts
+abacus/gen/
+abacus/proto/
+abacus/proto-ts
