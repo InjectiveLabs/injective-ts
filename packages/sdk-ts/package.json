@@ -121,7 +121,7 @@
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
     "@ethersproject/bytes": "^5.7.0",
-    "@injectivelabs/abacus-proto-ts": "1.13.0",
+    "@injectivelabs/abacus-proto-ts": "1.13.1",
     "@injectivelabs/core-proto-ts": "1.13.4",
     "@injectivelabs/exceptions": "^1.14.34-beta.0",
     "@injectivelabs/grpc-web": "^0.0.1",

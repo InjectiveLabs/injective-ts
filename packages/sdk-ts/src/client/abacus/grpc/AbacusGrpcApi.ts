@@ -61,7 +61,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
 
     try {
       const response =
-        await this.retry<InjectiveAbacusRpc.PointsStatsDailyForAccountResponse>(
+        await this.retry<InjectiveAbacusRpc.HistoricalPointsStatsRowCollection>(
           () => this.client.PointsStatsDailyForAccount(request),
         )
 
@@ -97,7 +97,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
 
     try {
       const response =
-        await this.retry<InjectiveAbacusRpc.PointsStatsWeeklyForAccountResponse>(
+        await this.retry<InjectiveAbacusRpc.HistoricalPointsStatsRowCollection>(
           () => this.client.PointsStatsWeeklyForAccount(request),
         )
 
