@@ -1,0 +1,22 @@
+diff --git a/node_modules/store2/dist/store2.js b/node_modules/store2/dist/store2.js
+index 85b4e27..f7fabca 100644
+--- a/node_modules/store2/dist/store2.js
++++ b/node_modules/store2/dist/store2.js
+@@ -274,6 +274,7 @@
+         });
+     } else if (typeof module !== 'undefined' && module.exports) {
+         module.exports = store;
++        module.exports.store = store;
+     } else {
+         // expose the primary store fn to the global object and save conflicts
+         if (window.store){ _.conflict = window.store; }
+diff --git a/node_modules/store2/index.d.ts b/node_modules/store2/index.d.ts
+index 51856b8..0ebae0a 100644
+--- a/node_modules/store2/index.d.ts
++++ b/node_modules/store2/index.d.ts
+@@ -65,4 +65,5 @@ export type StoreType = StoreBase & {
+ };
+ 
+ declare const store: StoreType
++export { store }
+ export default store
