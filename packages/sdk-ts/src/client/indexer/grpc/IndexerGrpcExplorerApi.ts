@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
@@ -35,7 +36,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetTxByTxHash',
           contextModule: this.module,
         })
@@ -110,7 +111,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetAccountTxs',
           contextModule: this.module,
         })
@@ -141,7 +142,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetValidator',
           contextModule: this.module,
         })
@@ -172,7 +173,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetValidatorUptime',
           contextModule: this.module,
         })
@@ -227,7 +228,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetPeggyDepositTxs',
           contextModule: this.module,
         })
@@ -282,7 +283,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetPeggyWithdrawalTxs',
           contextModule: this.module,
         })
@@ -340,7 +341,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetBlocks',
           contextModule: this.module,
         })
@@ -368,7 +369,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetBlock',
           contextModule: this.module,
         })
@@ -448,7 +449,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetTxs',
           contextModule: this.module,
         })
@@ -527,7 +528,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetIBCTransferTxs',
           contextModule: this.module,
         })
@@ -555,7 +556,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetExplorerStats',
           contextModule: this.module,
         })

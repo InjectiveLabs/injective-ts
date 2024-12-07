@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcGovApi } from './ChainGrpcGovApi.js'
-// import { mockFactory } from '@injectivelabs/test-utils'
+// import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { ChainGrpcGovTransformer } from '../transformers/index.js'
 import { CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
 

@@ -130,7 +130,7 @@ export class EvmWallet
     try {
       return await ethereum.request({
         method: 'eth_requestAccounts',
-      })
+      }) as string[]
     } catch (e: unknown) {
       throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -159,7 +159,7 @@ export class EvmWallet
       return await ethereum.request({
         method: 'eth_sendTransaction',
         params: [transaction],
-      })
+      }) as string
     } catch (e: unknown) {
       throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -207,7 +207,7 @@ export class EvmWallet
       return await ethereum.request({
         method: 'eth_signTypedData_v4',
         params: [address, eip712json],
-      })
+      }) as string
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -260,7 +260,7 @@ export class EvmWallet
         params: [toUtf8(data), signer],
       })
 
-      return signature
+      return signature as string
     } catch (e: unknown) {
       throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -274,7 +274,7 @@ export class EvmWallet
     const ethereum = await this.getEthereum()
 
     try {
-      return ethereum.request({ method: 'eth_chainId' })
+      return ethereum.request({ method: 'eth_chainId' }) as Promise<string>
     } catch (e: unknown) {
       throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -292,7 +292,7 @@ export class EvmWallet
       const receipt = await ethereum.request({
         method: 'eth_getTransactionReceipt',
         params: [txHash],
-      })
+      }) as string
 
       if (!receipt) {
         await sleep(interval)
@@ -331,7 +331,7 @@ export class EvmWallet
   }
 
   async onAccountChange(
-    callback: (account: AccountAddress) => void,
+    callback: (account: AccountAddress | string[]) => void,
   ): Promise<void> {
     const ethereum = await this.getEthereum()
 

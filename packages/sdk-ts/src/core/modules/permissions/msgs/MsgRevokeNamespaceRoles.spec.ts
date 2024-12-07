@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
 import MsgRevokeNamespaceRoles from './MsgRevokeNamespaceRoles.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 
 const params: MsgRevokeNamespaceRoles['params'] = {
   sender: mockFactory.injectiveAddress,

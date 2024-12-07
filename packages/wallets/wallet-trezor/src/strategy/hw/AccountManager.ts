@@ -1,8 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import { AccountAddress } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
-import { addHexPrefix, publicToAddress } from 'ethereumjs-util'
 import { TrezorWalletInfo } from '../../types.js'
+import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
 import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
   DEFAULT_BASE_DERIVATION_PATH,
@@ -11,9 +11,8 @@ import {
 const addressOfHDKey = (hdKey: HDNode): string => {
   const shouldSanitizePublicKey = true
   const derivedPublicKey = hdKey.publicKey
-  const ethereumAddressWithoutPrefix = publicToAddress(
-    derivedPublicKey,
-    shouldSanitizePublicKey,
+  const ethereumAddressWithoutPrefix = Buffer.from(
+    publicKeyToAddress(derivedPublicKey, shouldSanitizePublicKey),
   ).toString('hex')
   const address = addHexPrefix(ethereumAddressWithoutPrefix)
 

@@ -2,8 +2,8 @@
 
 <!-- TODO -->
 
-[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
-[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
+[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-wallet-connect.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-wallet-connect)
+[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-wallet-connect.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-wallet-connect)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
 _Package to use Wallet Connect Wallets on Injective via the wallet strategy._

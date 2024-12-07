@@ -1,5 +1,5 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { IndexerRestExplorerApi } from '../rest/index.js'
 import { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
 import { ExplorerValidator } from '../types/index.js'

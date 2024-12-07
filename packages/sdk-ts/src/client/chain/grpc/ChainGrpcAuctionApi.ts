@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveAuctionV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
@@ -39,7 +40,7 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AuctionParams',
           contextModule: this.module,
         })
@@ -69,7 +70,7 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AuctionModuleState',
           contextModule: this.module,
         })
@@ -99,7 +100,7 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'CurrentAuctionBasket',
           contextModule: this.module,
         })

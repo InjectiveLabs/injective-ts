@@ -1,5 +1,5 @@
 import MsgWithdrawValidatorCommission from './MsgWithdrawValidatorCommission.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const params: MsgWithdrawValidatorCommission['params'] = {

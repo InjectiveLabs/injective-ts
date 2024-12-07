@@ -8,6 +8,7 @@ import {
   ofacWallets,
   SIGN_EIP712_V2,
   SIGN_EIP712,
+  DirectSignResponse,
   ChainGrpcAuthApi,
   CosmosTxV1Beta1Tx,
   createTxRawEIP712,
@@ -24,7 +25,6 @@ import {
   recoverTypedSignaturePubKey,
   CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
-import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
   getStdFee,
   BigNumberInBase,

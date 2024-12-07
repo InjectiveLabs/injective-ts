@@ -13,7 +13,7 @@ import type {
 import { StdSignDoc } from '@keplr-wallet/types'
 import { WalletDeviceType, Wallet } from './enums.js'
 
-export type onAccountChangeCallback = (account: string) => void
+export type onAccountChangeCallback = (account: string | string[]) => void
 export type onChainIdChangeCallback = () => void
 
 export type CosmosWalletAbstraction = {

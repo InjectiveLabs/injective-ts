@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcStakingApi } from './ChainGrpcStakingApi.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { ChainGrpcStakingTransformer } from '../transformers/index.js'
 import { Delegation, Validator } from '../types/index.js'
 

@@ -1,4 +1,4 @@
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 import { IndexerGrpcMitoApi } from './IndexerGrpcMitoApi.js'
 

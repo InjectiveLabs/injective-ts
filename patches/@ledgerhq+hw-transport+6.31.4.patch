@@ -1,0 +1,86 @@
+diff --git a/node_modules/@ledgerhq/hw-transport/.DS_Store b/node_modules/@ledgerhq/hw-transport/.DS_Store
+new file mode 100644
+index 0000000..5ebd040
+Binary files /dev/null and b/node_modules/@ledgerhq/hw-transport/.DS_Store differ
+diff --git a/node_modules/@ledgerhq/hw-transport/lib-es/Transport.d.ts b/node_modules/@ledgerhq/hw-transport/lib-es/Transport.d.ts
+index 9099450..33d84ac 100644
+--- a/node_modules/@ledgerhq/hw-transport/lib-es/Transport.d.ts
++++ b/node_modules/@ledgerhq/hw-transport/lib-es/Transport.d.ts
+@@ -40,7 +40,7 @@ export type Observer<EventType, EventError = unknown> = Readonly<{
+  * There are different kind of transports based on the technology (channels like U2F, HID, Bluetooth, Webusb) and environment (Node, Web,...).
+  * It is an abstract class that needs to be implemented.
+  */
+-export default class Transport {
++declare class Transport {
+     exchangeTimeout: number;
+     unresponsiveTimeout: number;
+     deviceModel: DeviceModel | null | undefined;
+@@ -220,4 +220,6 @@ export default class Transport {
+     static ErrorMessage_ListenTimeout: string;
+     static ErrorMessage_NoDeviceFound: string;
+ }
++export { Transport };
++export default Transport;
+ //# sourceMappingURL=Transport.d.ts.map
+diff --git a/node_modules/@ledgerhq/hw-transport/lib-es/Transport.js b/node_modules/@ledgerhq/hw-transport/lib-es/Transport.js
+index 2dfe25c..ac10991 100644
+--- a/node_modules/@ledgerhq/hw-transport/lib-es/Transport.js
++++ b/node_modules/@ledgerhq/hw-transport/lib-es/Transport.js
+@@ -297,5 +297,6 @@ class Transport {
+ }
+ Transport.ErrorMessage_ListenTimeout = "No Ledger device found (timeout)";
+ Transport.ErrorMessage_NoDeviceFound = "No Ledger device found";
++export { Transport };
+ export default Transport;
+ //# sourceMappingURL=Transport.js.map
+diff --git a/node_modules/@ledgerhq/hw-transport/lib/Transport.d.ts b/node_modules/@ledgerhq/hw-transport/lib/Transport.d.ts
+index 9099450..33d84ac 100644
+--- a/node_modules/@ledgerhq/hw-transport/lib/Transport.d.ts
++++ b/node_modules/@ledgerhq/hw-transport/lib/Transport.d.ts
+@@ -40,7 +40,7 @@ export type Observer<EventType, EventError = unknown> = Readonly<{
+  * There are different kind of transports based on the technology (channels like U2F, HID, Bluetooth, Webusb) and environment (Node, Web,...).
+  * It is an abstract class that needs to be implemented.
+  */
+-export default class Transport {
++declare class Transport {
+     exchangeTimeout: number;
+     unresponsiveTimeout: number;
+     deviceModel: DeviceModel | null | undefined;
+@@ -220,4 +220,6 @@ export default class Transport {
+     static ErrorMessage_ListenTimeout: string;
+     static ErrorMessage_NoDeviceFound: string;
+ }
++export { Transport };
++export default Transport;
+ //# sourceMappingURL=Transport.d.ts.map
+diff --git a/node_modules/@ledgerhq/hw-transport/lib/Transport.js b/node_modules/@ledgerhq/hw-transport/lib/Transport.js
+index 2d23d92..e485bc2 100644
+--- a/node_modules/@ledgerhq/hw-transport/lib/Transport.js
++++ b/node_modules/@ledgerhq/hw-transport/lib/Transport.js
+@@ -306,5 +306,6 @@ class Transport {
+ }
+ Transport.ErrorMessage_ListenTimeout = "No Ledger device found (timeout)";
+ Transport.ErrorMessage_NoDeviceFound = "No Ledger device found";
++exports.Transport = Transport;
+ exports.default = Transport;
+ //# sourceMappingURL=Transport.js.map
+diff --git a/node_modules/@ledgerhq/hw-transport/src/Transport.ts b/node_modules/@ledgerhq/hw-transport/src/Transport.ts
+index d44d282..74068fc 100644
+--- a/node_modules/@ledgerhq/hw-transport/src/Transport.ts
++++ b/node_modules/@ledgerhq/hw-transport/src/Transport.ts
+@@ -51,7 +51,7 @@ export type Observer<EventType, EventError = unknown> = Readonly<{
+  * There are different kind of transports based on the technology (channels like U2F, HID, Bluetooth, Webusb) and environment (Node, Web,...).
+  * It is an abstract class that needs to be implemented.
+  */
+-export default class Transport {
++class Transport {
+   exchangeTimeout = 30000;
+   unresponsiveTimeout = 15000;
+   deviceModel: DeviceModel | null | undefined = null;
+@@ -445,3 +445,6 @@ export default class Transport {
+   static ErrorMessage_ListenTimeout = "No Ledger device found (timeout)";
+   static ErrorMessage_NoDeviceFound = "No Ledger device found";
+ }
++
++export { Transport };
++export default Transport;

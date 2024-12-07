@@ -247,7 +247,7 @@ export class PrivateKeyWallet
   }
 
   async onAccountChange(
-    _callback: (account: AccountAddress) => void,
+    _callback: (account: AccountAddress | string[]) => void,
   ): Promise<void> {
     //
   }

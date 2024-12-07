@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
@@ -35,7 +36,7 @@ export class IndexerGrpcOracleApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'OracleList',
           contextModule: this.module,
         })
@@ -79,7 +80,7 @@ export class IndexerGrpcOracleApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Price',
           contextModule: this.module,
         })
@@ -129,7 +130,7 @@ export class IndexerGrpcOracleApi extends BaseGrpcConsumer {
 
       if (e instanceof InjectiveOracleRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Price',
           contextModule: this.module,
         })

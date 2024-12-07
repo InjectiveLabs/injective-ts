@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { getDefaultSubaccountId } from '../../../utils/address.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
 import { SpotMarket } from '../types/index.js'
 import { IndexerGrpcSpotApi } from './IndexerGrpcSpotApi.js'

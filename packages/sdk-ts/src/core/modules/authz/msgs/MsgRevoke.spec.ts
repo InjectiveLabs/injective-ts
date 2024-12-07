@@ -1,5 +1,5 @@
 import MsgRevoke from './MsgRevoke.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory

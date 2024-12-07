@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { CosmosGovV1Gov, CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
@@ -48,7 +49,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosGovV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
           contextModule: this.module,
         })
@@ -89,7 +90,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosGovV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Proposals',
           contextModule: this.module,
         })
@@ -117,7 +118,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosGovV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Proposal',
           contextModule: this.module,
         })
@@ -157,7 +158,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosGovV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Deposits',
           contextModule: this.module,
         })
@@ -196,7 +197,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosGovV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Votes',
           contextModule: this.module,
         })
@@ -224,7 +225,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof CosmosGovV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TallyResult',
           contextModule: this.module,
         })

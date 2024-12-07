@@ -3,7 +3,6 @@
   "name": "injective-ts",
   "packages": ["packages/*", "packages/wallets/*"],
   "version": "independent",
-  "useWorkspaces": true,
   "command": {
     "version": {
       "message": "chore: release"

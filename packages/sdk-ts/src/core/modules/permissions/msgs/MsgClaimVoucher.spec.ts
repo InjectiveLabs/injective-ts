@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
 import MsgClaimVoucher from './MsgClaimVoucher.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 
 const params: MsgClaimVoucher['params'] = {
   sender: mockFactory.injectiveAddress,

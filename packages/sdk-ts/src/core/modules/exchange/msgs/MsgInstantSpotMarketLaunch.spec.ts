@@ -1,5 +1,5 @@
 import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
 
 const market = mockFactory.injUsdtSpotMarket

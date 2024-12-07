@@ -5,7 +5,6 @@ export enum Wallet {
   Keplr = 'keplr',
   Ninji = 'ninji',
   Magic = 'magic',
-  Torus = 'torus',
   Ledger = 'ledger',
   BitGet = 'BitGet',
   Trezor = 'trezor',

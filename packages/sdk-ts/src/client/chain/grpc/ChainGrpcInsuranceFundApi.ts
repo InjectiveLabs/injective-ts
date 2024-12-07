@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
@@ -39,7 +40,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'InsuranceParams',
           contextModule: this.module,
         })
@@ -69,7 +70,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'InsuranceFunds',
           contextModule: this.module,
         })
@@ -101,7 +102,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'InsuranceFund',
           contextModule: this.module,
         })
@@ -140,7 +141,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'EstimatedRedemptions',
           contextModule: this.module,
         })
@@ -179,7 +180,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'PendingRedemptions',
           contextModule: this.module,
         })

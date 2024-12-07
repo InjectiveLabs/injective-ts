@@ -1,6 +1,7 @@
 import {
   GeneralException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
@@ -56,7 +57,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Rewards',
           contextModule: this.module,
         })
@@ -85,7 +86,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountsList',
           contextModule: this.module,
         })
@@ -116,7 +117,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountBalanceEndpoint',
           contextModule: this.module,
         })
@@ -145,7 +146,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountBalancesList',
           contextModule: this.module,
         })
@@ -208,7 +209,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountHistory',
           contextModule: this.module,
         })
@@ -253,7 +254,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountOrderSummary',
           contextModule: this.module,
         })
@@ -287,7 +288,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAccountRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'OrderStates',
           contextModule: this.module,
         })

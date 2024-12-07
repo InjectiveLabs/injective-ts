@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
@@ -42,7 +43,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AddressesByRole',
         })
       }
@@ -79,7 +80,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AddressRoles',
         })
       }
@@ -107,7 +108,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AllNamespaces',
         })
       }
@@ -134,7 +135,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
         })
       }
@@ -171,7 +172,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'NamespaceByDenom',
         })
       }
@@ -201,7 +202,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'VouchersForAddress',
         })
       }

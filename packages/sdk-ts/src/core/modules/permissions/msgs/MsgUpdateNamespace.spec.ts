@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
 import MsgUpdateNamespace from './MsgUpdateNamespace.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 
 const params: MsgUpdateNamespace['params'] = {
   sender: mockFactory.injectiveAddress,

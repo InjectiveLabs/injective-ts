@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { INJ_DENOM } from '@injectivelabs/utils'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { IndexerGrpcArchiverTransformer } from '../transformers/index.js'
 import { IndexerGrpcArchiverApi } from './IndexerGrpcArchiverApi.js'
 

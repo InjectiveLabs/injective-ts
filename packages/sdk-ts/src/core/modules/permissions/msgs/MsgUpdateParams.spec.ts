@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
 import MsgUpdateParams from './MsgUpdateParams.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 
 const params: MsgUpdateParams['params'] = {
   authority: mockFactory.injectiveAddress,
