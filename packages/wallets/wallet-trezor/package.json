@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-trezor",
   "description": "Trezor wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.14.34-beta.4",
+  "version": "1.14.34-beta.5",
   "sideEffects": false,
   "type": "module",
   "author": {
