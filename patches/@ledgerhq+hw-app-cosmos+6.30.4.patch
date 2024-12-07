@@ -1,0 +1,95 @@
+diff --git a/node_modules/@ledgerhq/hw-app-cosmos/.DS_Store b/node_modules/@ledgerhq/hw-app-cosmos/.DS_Store
+new file mode 100644
+index 0000000..be5febd
+Binary files /dev/null and b/node_modules/@ledgerhq/hw-app-cosmos/.DS_Store differ
+diff --git a/node_modules/@ledgerhq/hw-app-cosmos/lib-es/Cosmos.d.ts b/node_modules/@ledgerhq/hw-app-cosmos/lib-es/Cosmos.d.ts
+index 0317ca3..a6d0ffa 100644
+--- a/node_modules/@ledgerhq/hw-app-cosmos/lib-es/Cosmos.d.ts
++++ b/node_modules/@ledgerhq/hw-app-cosmos/lib-es/Cosmos.d.ts
+@@ -23,7 +23,7 @@ import type Transport from "@ledgerhq/hw-transport";
+  * import Cosmos from "@ledgerhq/hw-app-cosmos";
+  * const cosmos = new Cosmos(transport)
+  */
+-export default class Cosmos {
++declare class Cosmos {
+     transport: Transport;
+     constructor(transport: Transport, scrambleKey?: string);
+     getAppConfiguration(): Promise<{
+@@ -53,4 +53,6 @@ export default class Cosmos {
+         return_code: number | string;
+     }>;
+ }
++export { Cosmos };
++export default Cosmos;
+ //# sourceMappingURL=Cosmos.d.ts.map
+diff --git a/node_modules/@ledgerhq/hw-app-cosmos/lib-es/Cosmos.js b/node_modules/@ledgerhq/hw-app-cosmos/lib-es/Cosmos.js
+index 1b0b463..49c69b2 100644
+--- a/node_modules/@ledgerhq/hw-app-cosmos/lib-es/Cosmos.js
++++ b/node_modules/@ledgerhq/hw-app-cosmos/lib-es/Cosmos.js
+@@ -27,7 +27,7 @@ const SW_CANCEL = 0x6986;
+  * import Cosmos from "@ledgerhq/hw-app-cosmos";
+  * const cosmos = new Cosmos(transport)
+  */
+-export default class Cosmos {
++class Cosmos {
+     constructor(transport, scrambleKey = APP_KEY) {
+         this.transport = transport;
+         transport.decorateAppAPIMethods(this, ["getAddress", "sign", "getAppConfiguration"], scrambleKey);
+@@ -140,4 +140,6 @@ export default class Cosmos {
+         });
+     }
+ }
++export { Cosmos };
++export default Cosmos;
+ //# sourceMappingURL=Cosmos.js.map
+diff --git a/node_modules/@ledgerhq/hw-app-cosmos/lib/Cosmos.d.ts b/node_modules/@ledgerhq/hw-app-cosmos/lib/Cosmos.d.ts
+index 0317ca3..a6d0ffa 100644
+--- a/node_modules/@ledgerhq/hw-app-cosmos/lib/Cosmos.d.ts
++++ b/node_modules/@ledgerhq/hw-app-cosmos/lib/Cosmos.d.ts
+@@ -23,7 +23,7 @@ import type Transport from "@ledgerhq/hw-transport";
+  * import Cosmos from "@ledgerhq/hw-app-cosmos";
+  * const cosmos = new Cosmos(transport)
+  */
+-export default class Cosmos {
++declare class Cosmos {
+     transport: Transport;
+     constructor(transport: Transport, scrambleKey?: string);
+     getAppConfiguration(): Promise<{
+@@ -53,4 +53,6 @@ export default class Cosmos {
+         return_code: number | string;
+     }>;
+ }
++export { Cosmos };
++export default Cosmos;
+ //# sourceMappingURL=Cosmos.d.ts.map
+diff --git a/node_modules/@ledgerhq/hw-app-cosmos/lib/Cosmos.js b/node_modules/@ledgerhq/hw-app-cosmos/lib/Cosmos.js
+index c91196d..7acc3d7 100644
+--- a/node_modules/@ledgerhq/hw-app-cosmos/lib/Cosmos.js
++++ b/node_modules/@ledgerhq/hw-app-cosmos/lib/Cosmos.js
+@@ -145,5 +145,6 @@ class Cosmos {
+         });
+     }
+ }
++exports.Cosmos = Cosmos;
+ exports.default = Cosmos;
+ //# sourceMappingURL=Cosmos.js.map
+diff --git a/node_modules/@ledgerhq/hw-app-cosmos/src/Cosmos.ts b/node_modules/@ledgerhq/hw-app-cosmos/src/Cosmos.ts
+index 34ade2e..767bbd6 100644
+--- a/node_modules/@ledgerhq/hw-app-cosmos/src/Cosmos.ts
++++ b/node_modules/@ledgerhq/hw-app-cosmos/src/Cosmos.ts
+@@ -36,7 +36,7 @@ const SW_CANCEL = 0x6986;
+  * const cosmos = new Cosmos(transport)
+  */
+ 
+-export default class Cosmos {
++class Cosmos {
+   transport: Transport;
+ 
+   constructor(transport: Transport, scrambleKey: string = APP_KEY) {
+@@ -194,3 +194,6 @@ export default class Cosmos {
+     });
+   }
+ }
++
++export { Cosmos };
++export default Cosmos;

@@ -17,7 +17,8 @@ import {
   SendTransactionOptions,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import EthProvider, {
+import {
+  Provider,
   EthereumProvider,
   EthereumProviderOptions,
 } from '@walletconnect/ethereum-provider'
@@ -35,8 +36,6 @@ const WalletConnectIds = {
   FireBlocks:
     '5864e2ced7c293ed18ac35e0db085c09ed567d67346ccb6f58a0327a75137489',
 }
-
-type Provider = EthProvider.default
 
 interface WalletConnectArgs extends ConcreteEthereumWalletStrategyArgs {
   metadata?: WalletConnectMetadata

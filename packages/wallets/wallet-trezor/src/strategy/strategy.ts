@@ -5,7 +5,7 @@ import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import TrezorConnect from '@trezor/connect-web'
+import { TrezorConnect } from '@trezor/connect-web'
 import {
   ErrorType,
   WalletException,
@@ -51,8 +51,6 @@ type EthereumTransactionEIP1559 = {
   maxFeePerGas: string
   maxPriorityFeePerGas: string
 }
-
-const trezorConnect = TrezorConnect as unknown as TrezorConnect.default
 
 const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   if (chainId === EthereumChainId.Goerli) {
@@ -201,7 +199,7 @@ export class TrezorWallet
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(address)
-      const response = await trezorConnect.ethereumSignTypedData({
+      const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
         data: {
           types: { EIP712Domain, ...otherTypes },
@@ -270,7 +268,7 @@ export class TrezorWallet
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(signer)
 
-      const response = await trezorConnect.ethereumSignMessage({
+      const response = await TrezorConnect.ethereumSignMessage({
         path: derivationPath,
         message: toUtf8(data),
       })
@@ -346,7 +344,7 @@ export class TrezorWallet
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(options.address)
-      const response = await trezorConnect.ethereumSignTransaction({
+      const response = await TrezorConnect.ethereumSignTransaction({
         path: derivationPath,
         transaction,
       })

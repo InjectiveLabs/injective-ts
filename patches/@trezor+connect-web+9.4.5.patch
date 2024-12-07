@@ -1,0 +1,25 @@
+diff --git a/node_modules/@trezor/connect-web/lib/index.d.ts b/node_modules/@trezor/connect-web/lib/index.d.ts
+index 7a8e473..fdc76ea 100644
+--- a/node_modules/@trezor/connect-web/lib/index.d.ts
++++ b/node_modules/@trezor/connect-web/lib/index.d.ts
+@@ -7,6 +7,6 @@ type ConnectWebExtraMethods = {
+ declare const TrezorConnect: Omit<import("@trezor/connect").TrezorConnect, "init"> & {
+     init: import("@trezor/connect/lib/types/api/init").InitType<ConnectSettingsWeb>;
+ } & ConnectWebExtraMethods;
+-export default TrezorConnect;
++export { TrezorConnect };
+ export * from '@trezor/connect/lib/exports';
+ //# sourceMappingURL=index.d.ts.map
+diff --git a/node_modules/@trezor/connect-web/lib/index.js b/node_modules/@trezor/connect-web/lib/index.js
+index 63cf4e0..1b6ca1a 100644
+--- a/node_modules/@trezor/connect-web/lib/index.js
++++ b/node_modules/@trezor/connect-web/lib/index.js
+@@ -72,6 +72,7 @@ const TrezorConnect = (0, factory_1.factory)({
+     disableWebUSB: impl.getTarget().disableWebUSB.bind(impl),
+     requestWebUSBDevice: impl.getTarget().requestWebUSBDevice.bind(impl),
+ });
+-exports.default = TrezorConnect;
++// exports.default = TrezorConnect;
++exports.TrezorConnect = TrezorConnect;
+ tslib_1.__exportStar(require("@trezor/connect/lib/exports"), exports);
+ //# sourceMappingURL=index.js.map

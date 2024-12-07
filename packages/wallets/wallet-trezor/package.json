@@ -56,16 +56,16 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@trezor/connect-web": "^9.4.5",
     "@ethereumjs/common": "3.1.1",
     "@ethereumjs/tx": "^4.1.1",
     "@injectivelabs/exceptions": "^1.14.33",
     "@injectivelabs/sdk-ts": "^1.14.34-beta.4",
     "@injectivelabs/ts-types": "^1.14.33",
     "@injectivelabs/wallet-base": "^1.14.34-beta.4",
-    "@trezor/connect-web": "9.4.5",
+    "@metamask/eth-sig-util": "^8.0.0",
     "alchemy-sdk": "^3.4.7",
-    "hdkey": "^2.1.0",
-    "@metamask/eth-sig-util": "^8.0.0"
+    "hdkey": "^2.1.0"
   },
   "devDependencies": {
     "shx": "^0.3.3"
