@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 
-export declare enum GrpcErrorCode {
+export enum GrpcErrorCode {
   OK = 0,
   Canceled = 1,
   Unknown = 2,

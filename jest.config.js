@@ -87,7 +87,7 @@ module.exports = {
   moduleNameMapper: {
     ...pathsToModuleNameMapper(packagePaths, { prefix: '<rootDir>/' }),
     ...pathsToModuleNameMapper(directoryPaths),
-    '^crypto-es$': 'crypto-js'
+    // '^crypto-es$': 'crypto-js'
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

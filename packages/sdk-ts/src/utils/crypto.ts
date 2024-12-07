@@ -1,4 +1,5 @@
-import CryptoEs from 'crypto-es'
+// import CryptoEs from 'crypto-es'
+import CryptoEs from 'crypto-js'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import keccak256 from 'keccak256'
 import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
@@ -10,19 +11,17 @@ export const hashToHex = (data: string): string => {
 }
 
 export const sha256 = (data: Uint8Array): Uint8Array => {
-  const dataInUtf8 = Buffer.from(data).toString('utf-8')
+  const wordArray = CryptoEs.lib.WordArray.create(data)
+  const hash = CryptoEs.SHA256(wordArray)
 
-  return Uint8Array.from(
-    Buffer.from(CryptoEs.SHA256(dataInUtf8).toString(), 'hex'),
-  )
+  return Uint8Array.from(Buffer.from(hash.toString(), 'hex'))
 }
 
 export const ripemd160 = (data: Uint8Array): Uint8Array => {
-  const dataInUtf8 = Buffer.from(data).toString('utf-8')
+  const wordArray = CryptoEs.lib.WordArray.create(data)
+  const hash = CryptoEs.RIPEMD160(wordArray)
 
-  return Uint8Array.from(
-    Buffer.from(CryptoEs.RIPEMD160(dataInUtf8).toString(), 'hex'),
-  )
+  return Uint8Array.from(Buffer.from(hash.toString(), 'hex'))
 }
 
 export const privateKeyToPublicKey = (privateKey: Uint8Array): Uint8Array => {
