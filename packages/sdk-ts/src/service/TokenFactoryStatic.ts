@@ -9,6 +9,7 @@ export class TokenFactoryStatic {
   public registry: TokenStatic[]
   public tokensByDenom: Record<string, TokenStatic>
   public tokensBySymbol: Record<string, TokenStatic[]>
+  public tokensByAddress: Record<string, TokenStatic[]>
 
   constructor(registry: TokenStatic[]) {
     this.registry = registry
@@ -26,6 +27,16 @@ export class TokenFactoryStatic {
       const symbol = token.symbol.toLowerCase()
 
       return { ...list, [symbol]: [...(list[symbol] || []), token] }
+    }, {} as Record<string, TokenStatic[]>)
+
+    this.tokensByAddress = registry.reduce((list, token) => {
+      const address = token.address.toLowerCase()
+
+      if (!address) {
+        return list
+      }
+
+      return { ...list, [address]: [...(list[address] || []), token] }
     }, {} as Record<string, TokenStatic[]>)
   }
 
@@ -70,9 +81,11 @@ export class TokenFactoryStatic {
     return token || sortedTokens[0]
   }
 
-  getMetaByDenomOrAddress(denom: string): TokenStatic | undefined {
-    const formattedDenom = denom.toLowerCase()
+  getMetaByDenomOrAddress(denomOrAddress: string): TokenStatic | undefined {
+    const formattedDenom = denomOrAddress.toLowerCase()
 
-    return this.tokensByDenom[formattedDenom]
+    return (
+      this.tokensByDenom[formattedDenom] || this.tokensByAddress[formattedDenom]
+    )
   }
 }
