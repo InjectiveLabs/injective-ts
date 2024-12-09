@@ -88,13 +88,15 @@ export class TokenFactoryStatic {
       return this.tokensByDenom[formattedDenom]
     }
 
-    if (this.tokensByAddress[formattedDenom]) {
-      const verifiedToken = this.tokensByAddress[formattedDenom].find(
-        ({ tokenVerification }) =>
-          tokenVerification === TokenVerification.Verified,
-      )
-
-      return verifiedToken || this.tokensByAddress[formattedDenom][0]
+    if (!this.tokensByAddress[formattedDenom]) {
+      return
     }
+
+    const verifiedToken = this.tokensByAddress[formattedDenom].find(
+      ({ tokenVerification }) =>
+        tokenVerification === TokenVerification.Verified,
+    )
+
+    return verifiedToken || this.tokensByAddress[formattedDenom][0]
   }
 }
