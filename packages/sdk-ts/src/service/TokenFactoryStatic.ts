@@ -84,8 +84,17 @@ export class TokenFactoryStatic {
   getMetaByDenomOrAddress(denomOrAddress: string): TokenStatic | undefined {
     const formattedDenom = denomOrAddress.toLowerCase()
 
-    return (
-      this.tokensByDenom[formattedDenom] || this.tokensByAddress[formattedDenom]
-    )
+    if (this.tokensByDenom[formattedDenom]) {
+      return this.tokensByDenom[formattedDenom]
+    }
+
+    if (this.tokensByAddress[formattedDenom]) {
+      const verifiedToken = this.tokensByAddress[formattedDenom].find(
+        ({ tokenVerification }) =>
+          tokenVerification === TokenVerification.Verified,
+      )
+
+      return verifiedToken || this.tokensByAddress[formattedDenom][0]
+    }
   }
 }
