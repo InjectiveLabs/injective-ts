@@ -2183,10 +2183,10 @@
   resolved "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@injectivelabs/abacus-proto-ts@1.13.2":
-  version "1.13.2"
-  resolved "https://registry.npmjs.org/@injectivelabs/abacus-proto-ts/-/abacus-proto-ts-1.13.2.tgz#ba75b944b6806d149d70a3f95d2084bc35186d1d"
-  integrity sha512-WBfOsTWFsFMsztcYJWF9pszyorNxPqu5xxWjLp9KIhAm538dLuUPRCGIOCPDjQqMhOc+uGCS5ei92QAf6IcPrw==
+"@injectivelabs/abacus-proto-ts@1.13.3":
+  version "1.13.3"
+  resolved "https://registry.npmjs.org/@injectivelabs/abacus-proto-ts/-/abacus-proto-ts-1.13.3.tgz#4ab839927ea995a13246da91d22074dc4a59a646"
+  integrity sha512-GUxYtBRcskg8LkX2g0oK+D9zlbahq2QTBzmLAQoG5zCeXsjoWxkSkmO1Ez146gODL9ytofnwZsCr2hCE7wgH0w==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
