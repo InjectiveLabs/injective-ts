@@ -57,6 +57,7 @@ import MsgSignData from './exchange/msgs/MsgSignData.js'
 import MsgSetDenomMetadata from './tokenfactory/msgs/MsgSetDenomMetadata.js'
 import MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer.js'
 import MsgLiquidatePosition from './exchange/msgs/MsgLiquidatePosition.js'
+import MsgAuthorizeStakeGrants from './exchange/msgs/MsgAuthorizeStakeGrants.js'
 import { MsgSubmitProposal } from './gov/index.js'
 
 /**
@@ -123,6 +124,7 @@ export type Msgs =
   | MsgLiquidatePosition
   | MsgSignData
   | MsgGrantWithAuthorization
+  | MsgAuthorizeStakeGrants
 
 /**
  * @category Messages
@@ -152,4 +154,5 @@ export type ExchangeMsgs =
   | MsgSignData
   | MsgRewardsOptOut
   | MsgLiquidatePosition
+  | MsgAuthorizeStakeGrants
   | MsgAdminUpdateBinaryOptionsMarket
