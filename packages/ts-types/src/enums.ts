@@ -101,6 +101,8 @@ export enum MsgType {
   MsgExecuteContractCompat = 'injective.wasmx.v1.MsgExecuteContractCompat',
   MsgPrivilegedExecuteContract = 'injective.exchange.v1beta1.MsgPrivilegedExecuteContract',
   MsgMultiSend = 'cosmos.bank.v1beta1.MsgMultiSend',
+  MsgSetWithdrawAddress = 'cosmos.distribution.v1beta1.MsgSetWithdrawAddress',
+  MsgWithdrawValidatorCommission = 'cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
 }
 
 export enum MsgStatus {
