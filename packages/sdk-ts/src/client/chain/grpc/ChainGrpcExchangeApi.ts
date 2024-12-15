@@ -329,4 +329,36 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchActiveStakeGrant(account: string) {
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryActiveStakeGrantRequest.create()
+
+    request.grantee = account
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QueryActiveStakeGrantResponse>(
+          () => this.client.ActiveStakeGrant(request, this.metadata),
+        )
+
+      return ChainGrpcExchangeTransformer.activeStakeGrantResponseToActiveStakeGrant(
+        response,
+      )
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'ActiveStakeGrant',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'ActiveStakeGrant',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
 }

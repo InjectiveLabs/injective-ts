@@ -1,4 +1,7 @@
-import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import {
+  InjectiveExchangeV1Beta1Query,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
 import { AtomicMarketOrderAccessLevel } from '@injectivelabs/core-proto-ts/cjs/injective/exchange/v1beta1/exchange.js'
 import {
   IsOptedOutOfRewards,
@@ -259,6 +262,18 @@ export class ChainGrpcExchangeTransformer {
   ): IsOptedOutOfRewards {
     return {
       isOptedOut: response.isOptedOut,
+    }
+  }
+
+  static activeStakeGrantResponseToActiveStakeGrant(
+    response: InjectiveExchangeV1Beta1Query.QueryActiveStakeGrantResponse,
+  ): {
+    grant: InjectiveExchangeV1Beta1Exchange.ActiveGrant
+    effectiveGrant: InjectiveExchangeV1Beta1Exchange.EffectiveGrant
+  } {
+    return {
+      grant: response.grant!,
+      effectiveGrant: response.effectiveGrant!,
     }
   }
 }
