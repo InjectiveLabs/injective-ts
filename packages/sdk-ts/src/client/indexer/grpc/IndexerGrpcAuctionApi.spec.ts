@@ -47,4 +47,23 @@ describe('IndexerGrpcAuctionApi', () => {
       )
     }
   })
+
+  test('fetchInjBurnt', async () => {
+    try {
+      const response = await indexerGrpcAuctionApi.fetchInjBurnt()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcAuctionTransformer.injBurntResponseToInjBurnt
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcAuctionApi.fetchInjBurnt => ' + (e as any).message,
+      )
+    }
+  })
 })
