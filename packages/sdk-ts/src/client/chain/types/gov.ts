@@ -24,6 +24,8 @@ export interface Proposal {
   content: any
   type: string
   status: CosmosGovV1Gov.ProposalStatus
+  expedited: boolean
+  failedReason: string
   submitTime: number
   finalTallyResult: GrpcTallyResult | undefined
   totalDeposits: Coin[]

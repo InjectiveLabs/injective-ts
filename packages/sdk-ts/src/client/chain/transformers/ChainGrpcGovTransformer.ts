@@ -177,6 +177,8 @@ export class ChainGrpcGovTransformer {
         ? Math.floor(proposal.submitTime!.getTime() / 1000)
         : 0,
       status: proposal.status,
+      expedited: proposal.expedited,
+      failedReason: proposal.failedReason,
       finalTallyResult:
         ChainGrpcGovTransformer.grpcTallyResultToTallyResult(finalTallyResult),
       depositEndTime: proposal.depositEndTime
