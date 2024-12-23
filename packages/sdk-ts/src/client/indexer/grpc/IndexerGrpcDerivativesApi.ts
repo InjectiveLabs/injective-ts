@@ -203,7 +203,8 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     orderSide?: OrderSide
     isConditional?: boolean
     subaccountId?: string
-    pagination?: PaginationOption
+    pagination?: PaginationOption,
+    cid?: string
   }) {
     const {
       marketId,
@@ -212,6 +213,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
       orderSide,
       isConditional,
       pagination,
+      cid,
     } = params || {}
 
     const request = InjectiveDerivativeExchangeRpc.OrdersRequest.create()
@@ -234,6 +236,10 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
 
     if (isConditional !== undefined) {
       request.isConditional = isConditional ? 'true' : 'false'
+    }
+
+    if (cid) {
+      request.cid = cid
     }
 
     if (pagination) {
@@ -287,6 +293,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     direction?: TradeDirection
     isConditional?: boolean
     state?: OrderState
+    cid?: string,
     pagination?: PaginationOption
   }) {
     const {
@@ -299,6 +306,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
       isConditional,
       state,
       pagination,
+      cid,
     } = params || {}
 
     const request = InjectiveDerivativeExchangeRpc.OrdersHistoryRequest.create()
@@ -333,6 +341,10 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
 
     if (state) {
       request.state = state
+    }
+
+    if (cid) {
+      request.cid = cid
     }
 
     if (pagination) {
@@ -546,6 +558,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     pagination?: PaginationOption
     executionSide?: TradeExecutionSide
     executionTypes?: TradeExecutionType[]
+    cid?: string
   }) {
     const {
       endTime,
@@ -559,6 +572,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
       executionSide,
       executionTypes,
       accountAddress,
+      cid,
     } = params || {}
 
     const request = InjectiveDerivativeExchangeRpc.TradesRequest.create()
@@ -601,6 +615,10 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
 
     if (endTime) {
       request.endTime = endTime.toString()
+    }
+
+    if (cid) {
+      request.cid = cid
     }
 
     if (pagination) {
