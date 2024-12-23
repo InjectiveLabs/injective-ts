@@ -207,12 +207,6 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
   }
 
   public getCosmosWallet(chainId: ChainId): CosmosWalletAbstraction {
-    if (![Wallet.Keplr, Wallet.Leap].includes(this.getWallet())) {
-      throw new WalletException(
-        new Error(`You can't use this method outside of Keplr/Leap wallet`),
-      )
-    }
-
     const strategy = this.getStrategy()
 
     if (strategy.getCosmosWallet == undefined) {
