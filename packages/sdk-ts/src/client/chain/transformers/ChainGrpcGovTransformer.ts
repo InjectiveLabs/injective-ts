@@ -28,7 +28,8 @@ export class ChainGrpcGovTransformer {
 
     return {
       depositParams: {
-        minDepositList: params?.minDeposit || [],
+        minDeposit: params?.minDeposit || [],
+        expeditedMinDeposit: params?.expeditedMinDeposit || [],
         maxDepositPeriod: parseInt(
           params?.maxDepositPeriod?.seconds || '0',
           10,
@@ -36,11 +37,17 @@ export class ChainGrpcGovTransformer {
       },
       votingParams: {
         votingPeriod: parseInt(params?.votingPeriod?.seconds || '0'),
+        expeditedVotingPeriod: parseInt(
+          params?.expeditedVotingPeriod?.seconds || '0',
+        ),
       },
       tallyParams: {
         quorum: uint8ArrayToString(params?.quorum || '0'),
         threshold: uint8ArrayToString(params?.threshold || '0'),
         vetoThreshold: uint8ArrayToString(params?.vetoThreshold || '0'),
+        expeditedThreshold: uint8ArrayToString(
+          params?.expeditedThreshold || '0',
+        ),
       },
     }
   }
@@ -56,7 +63,8 @@ export class ChainGrpcGovTransformer {
   }): GovModuleStateParams {
     return {
       depositParams: {
-        minDepositList: depositParams?.minDeposit,
+        minDeposit: depositParams?.minDeposit,
+        expeditedMinDeposit: depositParams?.expeditedMinDeposit,
         maxDepositPeriod: parseInt(
           depositParams?.maxDepositPeriod?.seconds || '0',
           10,
@@ -64,11 +72,15 @@ export class ChainGrpcGovTransformer {
       },
       votingParams: {
         votingPeriod: parseInt(votingParams.votingPeriod?.seconds || '0'),
+        expeditedVotingPeriod: parseInt(
+          votingParams.expeditedVotingPeriod?.seconds || '0',
+        ),
       },
       tallyParams: {
         quorum: uint8ArrayToString(tallyParams.quorum),
         threshold: uint8ArrayToString(tallyParams.threshold),
         vetoThreshold: uint8ArrayToString(tallyParams.vetoThreshold),
+        expeditedThreshold: uint8ArrayToString(tallyParams.expeditedThreshold),
       },
     }
   }
