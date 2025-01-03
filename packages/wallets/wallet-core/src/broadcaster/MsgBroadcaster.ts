@@ -930,8 +930,8 @@ export class MsgBroadcaster {
       endpoints.web3gw || endpoints.indexer,
     )
 
-    try {
-      const response = await transactionApi.broadcastCosmosTxRequest({
+    const broadcast = async () =>
+      await transactionApi.broadcastCosmosTxRequest({
         address: tx.injectiveAddress,
         txRaw: createTxRawFromSigResponse(directSignResponse),
         signature: directSignResponse.signature.signature,
@@ -941,6 +941,9 @@ export class MsgBroadcaster {
         },
       })
 
+    try {
+      const response = await broadcast()
+
       // Re-enable tx gas check removed above
       if (canDisableCosmosGasCheck && cosmosWallet.enableGasCheck) {
         cosmosWallet.enableGasCheck(chainId)
@@ -948,6 +951,14 @@ export class MsgBroadcaster {
 
       return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
     } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        const exception = error as ThrownException
+
+        return await this.retryOnException(exception, broadcast)
+      }
+
       throw e
     }
   }

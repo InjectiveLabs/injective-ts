@@ -977,22 +977,37 @@ export class MsgBroadcaster {
       endpoints.web3gw || endpoints.indexer,
     )
 
-    const response = await transactionApi.broadcastCosmosTxRequest({
-      address: tx.injectiveAddress,
-      txRaw: createTxRawFromSigResponse(directSignResponse),
-      signature: directSignResponse.signature.signature,
-      pubKey: directSignResponse.signature.pub_key || {
-        value: pubKey,
-        type: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
-      },
-    })
+    const broadcast = async () =>
+      await transactionApi.broadcastCosmosTxRequest({
+        address: tx.injectiveAddress,
+        txRaw: createTxRawFromSigResponse(directSignResponse),
+        signature: directSignResponse.signature.signature,
+        pubKey: directSignResponse.signature.pub_key || {
+          value: pubKey,
+          type: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
+        },
+      })
 
-    // Re-enable tx gas check removed above
-    if (walletStrategy.wallet === Wallet.Keplr) {
-      new KeplrWallet(chainId).enableGasCheck()
+    try {
+      const response = await broadcast()
+
+      // Re-enable tx gas check removed above
+      if (walletStrategy.wallet === Wallet.Keplr) {
+        new KeplrWallet(chainId).enableGasCheck()
+      }
+
+      return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
+    } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        const exception = error as ThrownException
+
+        return await this.retryOnException(exception, broadcast)
+      }
+
+      throw e
     }
-
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**
