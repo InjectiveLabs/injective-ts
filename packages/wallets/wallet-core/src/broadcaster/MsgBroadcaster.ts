@@ -29,6 +29,7 @@ import {
   getStdFee,
   BigNumberInBase,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  sleep,
 } from '@injectivelabs/utils'
 import {
   ThrownException,
@@ -165,10 +166,10 @@ export class MsgBroadcaster {
 
     try {
       return isCosmosWallet(walletStrategy.wallet)
-        ? this.broadcastCosmos(txWithAddresses)
+        ? await this.broadcastCosmos(txWithAddresses)
         : isEip712V2OnlyWallet(walletStrategy.wallet)
-        ? this.broadcastWeb3V2(txWithAddresses)
-        : this.broadcastWeb3(txWithAddresses)
+        ? await this.broadcastWeb3V2(txWithAddresses)
+        : await this.broadcastWeb3(txWithAddresses)
     } catch (e) {
       const error = e as any
 
@@ -204,8 +205,8 @@ export class MsgBroadcaster {
 
     try {
       return isCosmosWallet(walletStrategy.wallet)
-        ? this.broadcastCosmos(txWithAddresses)
-        : this.broadcastWeb3V2(txWithAddresses)
+        ? await this.broadcastCosmos(txWithAddresses)
+        : await this.broadcastWeb3V2(txWithAddresses)
     } catch (e) {
       const error = e as any
 
@@ -224,7 +225,9 @@ export class MsgBroadcaster {
    * @param tx
    * @returns {string} transaction hash
    */
-  async broadcastWithFeeDelegation(tx: MsgBroadcasterTxOptions): Promise<TxResponse> {
+  async broadcastWithFeeDelegation(
+    tx: MsgBroadcasterTxOptions,
+  ): Promise<TxResponse> {
     const { walletStrategy } = this
     const txWithAddresses = {
       ...tx,
@@ -240,15 +243,13 @@ export class MsgBroadcaster {
 
     try {
       return isCosmosWallet(walletStrategy.wallet)
-        ? this.broadcastCosmosWithFeeDelegation(txWithAddresses)
-        : this.broadcastWeb3WithFeeDelegation(txWithAddresses)
+        ? await this.broadcastCosmosWithFeeDelegation(txWithAddresses)
+        : await this.broadcastWeb3WithFeeDelegation(txWithAddresses)
     } catch (e) {
       const error = e as any
 
       if (isThrownException(error)) {
-        return this.retryOnException(error, () =>
-          this.broadcastWithFeeDelegation(tx),
-        )
+        throw error
       }
 
       throw new TransactionException(new Error(error))
@@ -520,7 +521,7 @@ export class MsgBroadcaster {
         .toNumber()
     }
 
-    const txResponse = await transactionApi.prepareTxRequest({
+    const prepareTxResponse = await transactionApi.prepareTxRequest({
       timeoutHeight,
       memo: tx.memo,
       message: web3Msgs,
@@ -531,45 +532,52 @@ export class MsgBroadcaster {
     })
 
     const signature = await walletStrategy.signEip712TypedData(
-      txResponse.data,
+      prepareTxResponse.data,
       tx.ethereumAddress,
     )
 
-    const response = await transactionApi.broadcastTxRequest({
-      signature,
-      txResponse,
-      message: web3Msgs,
-      chainId: ethereumChainId,
-    })
+    const broadcast = async () =>
+      await transactionApi.broadcastTxRequest({
+        signature,
+        message: web3Msgs,
+        txResponse: prepareTxResponse,
+        chainId: ethereumChainId,
+      })
 
     try {
-      const txResponse = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
-        response.txHash,
-      )
+      const response = await broadcast()
 
-      return txResponse
+      return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
     } catch (e) {
-      /**
-       * First MsgExec transaction with a PrivateKey wallet
-       * always runs out of gas for some reason, temporary solution
-       * to just broadcast the transaction twice
-       **/
-      if (
-        walletStrategy.wallet === Wallet.PrivateKey &&
-        checkIfTxRunOutOfGas(e)
-      ) {
-        /** Account Details * */
-        const accountDetails = await new ChainGrpcAuthApi(
-          endpoints.grpc,
-        ).fetchAccount(tx.injectiveAddress)
-        const { baseAccount } = accountDetails
+      const error = e as any
 
-        /** We only do it on the first account tx fail */
-        if (baseAccount.sequence > 1) {
-          throw e
+      if (isThrownException(error)) {
+        const exception = error as ThrownException
+
+        /**
+         * First MsgExec transaction with a PrivateKey wallet
+         * always runs out of gas for some reason, temporary solution
+         * to just broadcast the transaction twice
+         **/
+        if (
+          walletStrategy.wallet === Wallet.PrivateKey &&
+          checkIfTxRunOutOfGas(exception)
+        ) {
+          /** Account Details * */
+          const accountDetails = await new ChainGrpcAuthApi(
+            endpoints.grpc,
+          ).fetchAccount(tx.injectiveAddress)
+          const { baseAccount } = accountDetails
+
+          /** We only do it on the first account tx fail */
+          if (baseAccount.sequence > 1) {
+            throw e
+          }
+
+          return await this.broadcastWeb3WithFeeDelegation(tx)
         }
 
-        return await this.broadcastWeb3WithFeeDelegation(tx)
+        return await this.retryOnException(exception, broadcast)
       }
 
       throw e
@@ -921,22 +929,27 @@ export class MsgBroadcaster {
     const transactionApi = new IndexerGrpcWeb3GwApi(
       endpoints.web3gw || endpoints.indexer,
     )
-    const response = await transactionApi.broadcastCosmosTxRequest({
-      address: tx.injectiveAddress,
-      txRaw: createTxRawFromSigResponse(directSignResponse),
-      signature: directSignResponse.signature.signature,
-      pubKey: directSignResponse.signature.pub_key || {
-        value: pubKey,
-        type: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
-      },
-    })
 
-    // Re-enable tx gas check removed above
-    if (canDisableCosmosGasCheck && cosmosWallet.enableGasCheck) {
-      cosmosWallet.enableGasCheck(chainId)
+    try {
+      const response = await transactionApi.broadcastCosmosTxRequest({
+        address: tx.injectiveAddress,
+        txRaw: createTxRawFromSigResponse(directSignResponse),
+        signature: directSignResponse.signature.signature,
+        pubKey: directSignResponse.signature.pub_key || {
+          value: pubKey,
+          type: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
+        },
+      })
+
+      // Re-enable tx gas check removed above
+      if (canDisableCosmosGasCheck && cosmosWallet.enableGasCheck) {
+        cosmosWallet.enableGasCheck(chainId)
+      }
+
+      return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
+    } catch (e) {
+      throw e
     }
-
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**
@@ -1070,12 +1083,20 @@ export class MsgBroadcaster {
       throw exception
     }
 
-    retryConfig.retries += 1
+    await sleep(retryConfig.timeout)
 
-    return new Promise((resolve) => {
-      setTimeout(async () => {
-        resolve(retryLogic())
-      }, retryConfig.timeout)
-    })
+    try {
+      retryConfig.retries += 1
+
+      return await retryLogic()
+    } catch (e) {
+      const error = e as any
+
+      if (isThrownException(error)) {
+        return this.retryOnException(error, retryLogic)
+      }
+
+      throw e
+    }
   }
 }

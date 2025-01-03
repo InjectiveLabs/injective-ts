@@ -302,13 +302,13 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(e.toOriginalError(), {
           code: e.code,
           type: e.type,
-          context: 'Web3Gateway.BroadcastTx',
+          context: 'Web3Gateway.BroadcastCosmosTx',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'Web3Gateway.BroadcastTx',
+        context: 'Web3Gateway.BroadcastCosmosTx',
         type: ErrorType.Web3Gateway,
       })
     }
