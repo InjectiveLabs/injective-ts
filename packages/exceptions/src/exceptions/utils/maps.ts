@@ -139,6 +139,7 @@ export const mapFailedTransactionMessage = (
 
     return {
       ...failedTxMap,
+      contextModule: failedTxMap.module || contextModule,
       message: reason || failedTxMap.message,
     }
   }

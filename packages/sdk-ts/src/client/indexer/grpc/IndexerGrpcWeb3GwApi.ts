@@ -102,16 +102,14 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
           code: e.code,
-          context: 'PrepareEip712',
-          contextModule: 'Web3Gateway',
+          context: 'Web3Gateway.PrepareEip712',
           type: e.type,
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'PrepareEip712',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.PrepareEip712',
         type: ErrorType.Web3Gateway,
       })
     }

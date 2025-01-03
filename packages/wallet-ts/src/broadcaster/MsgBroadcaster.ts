@@ -31,8 +31,11 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
+  ChainCosmosErrorCode,
   GeneralException,
   isThrownException,
+  ThrownException,
+  TransactionChainErrorModule,
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
@@ -56,7 +59,10 @@ import {
   isEip712V2OnlyWallet,
 } from '../strategies/wallet-strategy/utils.js'
 import { Wallet, WalletDeviceType } from '../types/index.js'
-import { createEip712StdSignDoc, KeplrWallet } from '../utils/wallets/keplr/index.js'
+import {
+  createEip712StdSignDoc,
+  KeplrWallet,
+} from '../utils/wallets/keplr/index.js'
 import { isCosmosAminoOnlyWallet } from '../utils/index.js'
 import { LeapWallet } from '../utils/wallets/index.js'
 import { checkIfTxRunOutOfGas } from './helper.js'
@@ -76,6 +82,15 @@ const getEthereumWalletPubKey = <T>({
 
   return hexToBase64(recoverTypedSignaturePubKey(eip712TypedData, signature))
 }
+
+const defaultRetriesConfig = () => ({
+  [`${TransactionChainErrorModule.CosmosSdk}-${ChainCosmosErrorCode.ErrMempoolIsFull}`]:
+    {
+      retries: 0,
+      maxRetries: 10,
+      timeout: 1000,
+    },
+})
 
 /**
  * This class is used to broadcast transactions
@@ -100,6 +115,8 @@ export class MsgBroadcaster {
   public ethereumChainId?: EthereumChainId
 
   public gasBufferCoefficient: number = 1.2
+
+  public retriesOnError = defaultRetriesConfig()
 
   constructor(options: MsgBroadcasterOptions) {
     const networkInfo = getNetworkInfo(options.network)
@@ -250,9 +267,11 @@ export class MsgBroadcaster {
    * support approach for both cosmos and ethereum native wallets
    *
    * @param tx
-   * @returns {string} transaction hash
+   * @returns {TxResponse}
    */
-  async broadcastWithFeeDelegation(tx: MsgBroadcasterTxOptions) {
+  async broadcastWithFeeDelegation(
+    tx: MsgBroadcasterTxOptions,
+  ): Promise<TxResponse> {
     const { options } = this
     const { walletStrategy } = options
     const txWithAddresses = {
@@ -279,7 +298,9 @@ export class MsgBroadcaster {
       const error = e as any
 
       if (isThrownException(error)) {
-        throw error
+        return this.retryOnException(error, () =>
+          this.broadcastWithFeeDelegation(tx),
+        )
       }
 
       throw new TransactionException(new Error(error))
@@ -1076,5 +1097,34 @@ export class MsgBroadcaster {
     )
 
     return simulationResponse
+  }
+
+  private async retryOnException<T>(
+    exception: ThrownException,
+    retryLogic: () => Promise<T>,
+  ): Promise<any> {
+    const errorsToRetry = Object.keys(this.retriesOnError)
+    const errorKey =
+      `${exception.contextModule}-${exception.contextCode}` as keyof typeof this.retriesOnError
+
+    if (!errorsToRetry.includes(errorKey)) {
+      throw exception
+    }
+
+    const retryConfig = this.retriesOnError[errorKey]
+
+    if (retryConfig.retries >= retryConfig.maxRetries) {
+      this.retriesOnError = defaultRetriesConfig()
+
+      throw exception
+    }
+
+    retryConfig.retries += 1
+
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        resolve(retryLogic())
+      }, retryConfig.timeout)
+    })
   }
 }
