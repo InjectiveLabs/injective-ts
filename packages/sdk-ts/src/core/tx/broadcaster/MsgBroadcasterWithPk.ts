@@ -62,6 +62,7 @@ interface MsgBroadcasterWithPkOptions {
   useRest?: boolean
   txTimeout?: number // blocks to wait for tx to be included in a block
   gasBufferCoefficient?: number
+  txTimeoutOnFeeDelegation?: boolean
 }
 
 /**
@@ -82,6 +83,8 @@ export class MsgBroadcasterWithPk {
   public privateKey: PrivateKey
 
   public simulateTx: boolean = false
+
+  public txTimeoutOnFeeDelegation: boolean = false
 
   public useRest: boolean = false
 
@@ -106,6 +109,8 @@ export class MsgBroadcasterWithPk {
       options.privateKey instanceof PrivateKey
         ? options.privateKey
         : PrivateKey.fromHex(options.privateKey)
+    this.txTimeoutOnFeeDelegation =
+      options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
   }
 
   /**
@@ -141,7 +146,14 @@ export class MsgBroadcasterWithPk {
    * @returns {string} transaction hash
    */
   async broadcastWithFeeDelegation(transaction: MsgBroadcasterTxOptions) {
-    const { simulateTx, privateKey, ethereumChainId, endpoints } = this
+    const {
+      simulateTx,
+      privateKey,
+      ethereumChainId,
+      endpoints,
+      txTimeoutOnFeeDelegation,
+      txTimeout,
+    } = this
 
     const ethereumWallet = this.privateKey.toHex()
 
@@ -167,6 +179,19 @@ export class MsgBroadcasterWithPk {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
+    let timeoutHeight = undefined
+
+    if (txTimeoutOnFeeDelegation) {
+      const latestBlock = await new ChainGrpcTendermintApi(
+        endpoints.grpc,
+      ).fetchLatestBlock()
+      const latestHeight = latestBlock!.header!.height
+
+      timeoutHeight = new BigNumberInBase(latestHeight)
+        .plus(txTimeout)
+        .toNumber()
+    }
+
     const transactionApi = new IndexerGrpcWeb3GwApi(endpoints.indexer)
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
@@ -175,6 +200,7 @@ export class MsgBroadcasterWithPk {
       chainId: ethereumChainId,
       gasLimit: getGasPriceBasedOnMessage(msgs),
       estimateGas: simulateTx || false,
+      timeoutHeight,
     })
 
     const signature = await privateKey.signTypedData(
@@ -404,9 +430,7 @@ export class MsgBroadcasterWithPk {
       ).fetchLatestBlock()
       const latestHeight = latestBlock!.header!.height
 
-      return new BigNumberInBase(latestHeight).plus(
-        txTimeout,
-      )
+      return new BigNumberInBase(latestHeight).plus(txTimeout)
     }
 
     const latestBlock = await new ChainGrpcTendermintApi(
