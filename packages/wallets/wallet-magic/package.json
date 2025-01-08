@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-magic",
   "description": "Magic wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.14.34-beta.22",
+  "version": "1.14.34-beta.23",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -56,10 +56,10 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^1.14.34-beta.5",
-    "@injectivelabs/sdk-ts": "^1.14.34-beta.21",
+    "@injectivelabs/sdk-ts": "^1.14.34-beta.22",
     "@injectivelabs/ts-types": "^1.14.34-beta.2",
     "@injectivelabs/utils": "^1.14.34-beta.5",
-    "@injectivelabs/wallet-base": "^1.14.34-beta.22",
+    "@injectivelabs/wallet-base": "^1.14.34-beta.23",
     "@magic-ext/cosmos": "23.9.1",
     "@magic-ext/oauth2": "9.9.0",
     "magic-sdk": "28.9.0"
