@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.14.35 (2025-01-20)
+
+
+### Bug Fixes
+
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+* move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
+* trezor exception ([f19f819](https://github.com/InjectiveLabs/injective-ts/commit/f19f819f1bc9b80a71a582bad81f589505ec590b))
+
+
+### Features
+
+* add private key wallet ([881b81c](https://github.com/InjectiveLabs/injective-ts/commit/881b81c9d07532def5168b6f761108a7ab3fd3f2))
+* refactor trezor wallet ([9807132](https://github.com/InjectiveLabs/injective-ts/commit/980713258fb2b667b97183a1d79f2c1b0374c70d))
+
+
+
+
+
 #  (2025-01-20)
 
 

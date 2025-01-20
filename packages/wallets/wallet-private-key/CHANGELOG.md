@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.14.35 (2025-01-20)
+
+
+### Bug Fixes
+
+* build ([762e938](https://github.com/InjectiveLabs/injective-ts/commit/762e938164cb617b190fcffa49596280d4547d76))
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+* return correct signature ([99da278](https://github.com/InjectiveLabs/injective-ts/commit/99da278ae2d5e812763cea84a94f3fdf9e88e0ed))
+
+
+### Features
+
+* add private key wallet ([881b81c](https://github.com/InjectiveLabs/injective-ts/commit/881b81c9d07532def5168b6f761108a7ab3fd3f2))
+
+
+
+
+
 #  (2025-01-20)
 
 
