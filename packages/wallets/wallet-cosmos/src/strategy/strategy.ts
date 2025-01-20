@@ -45,7 +45,7 @@ export class CosmosWalletStrategy
 
   constructor(
     args: {
-      chainId: ChainId
+      chainId: ChainId | CosmosChainId
       endpoints?: { rest: string; rpc: string }
     } & { wallet: Wallet },
   ) {

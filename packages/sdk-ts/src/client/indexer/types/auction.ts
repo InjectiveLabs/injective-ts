@@ -16,6 +16,8 @@ export interface Auction {
   updatedAt: number
 }
 
+export type TotalInjBurnt = number
+
 export type GrpcIndexerBid = InjectiveAuctionRpc.Bid
 export type GrpcAuction = InjectiveAuctionRpc.Auction
 export type StreamBidsResponse = InjectiveAuctionRpc.StreamBidsResponse

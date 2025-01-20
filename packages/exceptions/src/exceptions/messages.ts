@@ -751,7 +751,7 @@ export const chainErrorMessagesMap: Record<
   },
 
   'mempool is full': {
-    message: 'The mempool is full',
+    message: 'The transaction failed to be included within a block on time.',
     code: ChainCosmosErrorCode.ErrMempoolIsFull,
     module: TransactionChainErrorModule.CosmosSdk,
   },

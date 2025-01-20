@@ -122,8 +122,9 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     orderSide?: OrderSide
     isConditional?: boolean
     pagination?: PaginationOption
+    cid?: string
   }) {
-    const { marketId, marketIds, subaccountId, orderSide, pagination } =
+    const { marketId, marketIds, subaccountId, orderSide, pagination, cid } =
       params || {}
     const request = InjectiveSpotExchangeRpc.OrdersRequest.create()
 
@@ -141,6 +142,10 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
 
     if (orderSide) {
       request.orderSide = orderSide
+    }
+
+    if (cid) {
+      request.cid = cid
     }
 
     /*
@@ -201,6 +206,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     isConditional?: boolean
     state?: OrderState
     pagination?: PaginationOption
+    cid?: string
   }) {
     const {
       subaccountId,
@@ -211,6 +217,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
       direction,
       state,
       pagination,
+      cid,
     } = params || {}
 
     const request = InjectiveSpotExchangeRpc.OrdersHistoryRequest.create()
@@ -241,6 +248,10 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
 
     if (state) {
       request.state = state
+    }
+
+    if (cid) {
+      request.cid = cid
     }
 
     /*
@@ -305,6 +316,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     pagination?: PaginationOption
     executionSide?: TradeExecutionSide
     executionTypes?: TradeExecutionType[]
+    cid?: string
   }) {
     const {
       endTime,
@@ -318,6 +330,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
       executionSide,
       executionTypes,
       accountAddress,
+      cid
     } = params || {}
 
     const request = InjectiveSpotExchangeRpc.TradesRequest.create()
@@ -360,6 +373,10 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
 
     if (endTime) {
       request.endTime = endTime.toString()
+    }
+
+    if (cid) {
+      request.cid = cid;
     }
 
     if (pagination) {

@@ -48,6 +48,12 @@ export type PositionsStreamCallback = (
   >,
 ) => void
 
+export type PositionsV2StreamCallback = (
+  response: ReturnType<
+    typeof IndexerDerivativeStreamTransformer.positionV2StreamCallback
+  >,
+) => void
+
 export type MarketStreamCallback = (
   response: InjectiveDerivativeExchangeRpc.StreamMarketResponse,
 ) => void
@@ -429,6 +435,57 @@ export class IndexerGrpcDerivativesStream {
           IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
             response,
           ),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
+    })
+
+    return subscription as unknown as Subscription
+  }
+
+  streamDerivativePositionsV2({
+    marketId,
+    subaccountId,
+    callback,
+    address,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketId?: string
+    address?: string
+    subaccountId?: string
+    callback: PositionsV2StreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }): Subscription {
+    const request =
+      InjectiveDerivativeExchangeRpc.StreamPositionsV2Request.create()
+
+    if (marketId) {
+      request.marketId = marketId
+    }
+
+    if (address) {
+      request.accountAddress = address
+    }
+
+    if (subaccountId) {
+      request.subaccountId = subaccountId
+    }
+
+    const subscription = this.client.StreamPositionsV2(request).subscribe({
+      next(response: InjectiveDerivativeExchangeRpc.StreamPositionsV2Response) {
+        callback(
+          IndexerDerivativeStreamTransformer.positionV2StreamCallback(response),
         )
       },
       error(err) {

@@ -1,10 +1,11 @@
 import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 import { GrpcCoin } from '../../../types/index.js'
 import {
-  GrpcIndexerBid,
-  GrpcAuction,
-  IndexerBid,
   Auction,
+  IndexerBid,
+  GrpcAuction,
+  TotalInjBurnt,
+  GrpcIndexerBid,
 } from '../types/auction.js'
 import { Coin } from '@injectivelabs/ts-types'
 
@@ -60,5 +61,11 @@ export class IndexerGrpcAuctionTransformer {
       endTimestamp: parseInt(grpcAuction.endTimestamp, 10),
       updatedAt: parseInt(grpcAuction.updatedAt, 10),
     }
+  }
+
+  static injBurntResponseToInjBurnt(
+    response: InjectiveAuctionRpc.InjBurntEndpointResponse,
+  ): TotalInjBurnt {
+    return Number(response.totalInjBurnt)
   }
 }

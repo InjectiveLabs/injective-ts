@@ -98,17 +98,15 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PrepareTx',
-          contextModule: 'Web3Gateway',
           type: e.type,
+          context: 'Web3Gateway.PrepareTx',
+          code: grpcErrorCodeToErrorCode(e.code),
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'PrepareTx',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.PrepareTx',
         type: ErrorType.Web3Gateway,
       })
     }
@@ -180,15 +178,13 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
-          context: 'CosmosPrepareTx',
-          contextModule: 'Web3Gateway',
+          context: 'Web3Gateway.CosmosPrepareTx',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'CosmosPrepareTx',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.CosmosPrepareTx',
         type: ErrorType.Web3Gateway,
       })
     }
@@ -251,15 +247,13 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
-          context: 'BroadcastTx',
-          contextModule: 'Web3Gateway',
+          context: 'Web3Gateway.BroadcastTx',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'BroadcastTx',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.BroadcastTx',
         type: ErrorType.Web3Gateway,
       })
     }
@@ -309,15 +303,13 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(e.toOriginalError(), {
           code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
-          context: 'BroadcastTx',
-          contextModule: 'Web3Gateway',
+          context: 'Web3Gateway.BroadcastCosmosTx',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'BroadcastTx',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.BroadcastCosmosTx',
         type: ErrorType.Web3Gateway,
       })
     }
@@ -335,15 +327,13 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
-          context: 'FeePayer',
-          contextModule: 'Web3Gateway',
+          context: 'Web3Gateway.FeePayer',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'FeePayer',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.FeePayer',
         type: ErrorType.Web3Gateway,
       })
     }

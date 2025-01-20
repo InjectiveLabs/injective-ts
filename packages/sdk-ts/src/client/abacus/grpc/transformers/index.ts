@@ -2,15 +2,15 @@ import { InjectiveAbacusRpc } from '@injectivelabs/abacus-proto-ts'
 
 export class AbacusGrpcTransformer {
   static grpcPointsStatsDailyToPointsStatsDaily(
-    response: InjectiveAbacusRpc.PointsStatsDailyForAccountResponse,
+    response: InjectiveAbacusRpc.HistoricalPointsStatsRowCollection,
   ) {
-    return response.field
+    return response.rows
   }
 
   static grpcPointsStatsWeeklyToPointsStatsWeekly(
-    response: InjectiveAbacusRpc.PointsStatsWeeklyForAccountResponse,
+    response: InjectiveAbacusRpc.HistoricalPointsStatsRowCollection,
   ) {
-    return response.field
+    return response.rows
   }
 
   static grpcPointsLatestToPointsLatest(
