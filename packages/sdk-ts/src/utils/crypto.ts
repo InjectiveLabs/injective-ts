@@ -1,6 +1,6 @@
-import SHA256 from 'crypto-js/sha256'
-import RIPEMD160 from 'crypto-js/ripemd160'
-import Base64 from 'crypto-js/enc-base64'
+import SHA256 from 'crypto-js/sha256.js'
+import RIPEMD160 from 'crypto-js/ripemd160.js'
+import Base64 from 'crypto-js/enc-base64.js'
 import * as secp256k1 from 'secp256k1'
 import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 
