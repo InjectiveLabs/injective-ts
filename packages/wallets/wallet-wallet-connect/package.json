@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-wallet-connect",
   "description": "Wallet connect strategy for use with @injectivelabs/wallet-core.",
-  "version": null,
+  "version": "1.14.34",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",

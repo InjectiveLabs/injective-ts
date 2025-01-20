@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ts",
   "description": "A convenient way to use and interact with different types of wallets on Injective.",
-  "version": null,
+  "version": "1.14.34",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",

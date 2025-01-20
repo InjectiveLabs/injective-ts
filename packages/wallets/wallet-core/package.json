@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-core",
   "description": "Core wallet strategy",
-  "version": null,
+  "version": "1.14.34",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
