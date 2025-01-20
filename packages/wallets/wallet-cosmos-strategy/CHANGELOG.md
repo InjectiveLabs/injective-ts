@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+#  (2025-01-20)
+
+
+### Bug Fixes
+
+* move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
+
+
+
+
+
 ## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-cosmos-strategy@1.14.33-beta.4...@injectivelabs/wallet-cosmos-strategy@1.14.33) (2024-11-29)
 
 **Note:** Version bump only for package @injectivelabs/wallet-cosmos-strategy

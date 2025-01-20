@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+#  (2025-01-20)
+
+
+### Bug Fixes
+
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+
+
+
+
+
 ## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-magic@1.14.33-beta.4...@injectivelabs/wallet-magic@1.14.33) (2024-11-29)
 
 **Note:** Version bump only for package @injectivelabs/wallet-magic

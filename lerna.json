@@ -1,8 +1,11 @@
 {
   "npmClient": "yarn",
   "name": "injective-ts",
-  "packages": ["packages/*", "packages/wallets/*"],
-  "version": "independent",
+  "packages": [
+    "packages/*",
+    "packages/wallets/*"
+  ],
+  "version": null,
   "useWorkspaces": true,
   "command": {
     "version": {
