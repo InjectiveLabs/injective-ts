@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-strategy",
   "description": "Wallet strategy with instantiated wallets",
-  "version": "1.14.34-beta.24",
+  "version": "1.14.34-alpha.0",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -58,21 +58,21 @@
   "dependencies": {
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.14.34-beta.5",
-    "@injectivelabs/networks": "^1.14.34-beta.5",
-    "@injectivelabs/sdk-ts": "^1.14.34-beta.22",
-    "@injectivelabs/ts-types": "^1.14.34-beta.2",
-    "@injectivelabs/utils": "^1.14.34-beta.5",
-    "@injectivelabs/wallet-base": "^1.14.34-beta.23",
-    "@injectivelabs/wallet-core": "^1.14.34-beta.24",
-    "@injectivelabs/wallet-cosmos": "^1.14.34-beta.23",
-    "@injectivelabs/wallet-cosmostation": "^1.14.34-beta.23",
-    "@injectivelabs/wallet-evm": "^1.14.34-beta.23",
-    "@injectivelabs/wallet-ledger": "^1.14.34-beta.23",
-    "@injectivelabs/wallet-magic": "^1.14.34-beta.23",
-    "@injectivelabs/wallet-private-key": "^1.14.34-beta.23",
-    "@injectivelabs/wallet-trezor": "^1.14.34-beta.23",
-    "@injectivelabs/wallet-wallet-connect": "^1.14.34-beta.23",
+    "@injectivelabs/exceptions": "^1.14.34-alpha.0",
+    "@injectivelabs/networks": "^1.14.34-alpha.0",
+    "@injectivelabs/sdk-ts": "^1.14.34-alpha.0",
+    "@injectivelabs/ts-types": "^1.14.34-alpha.0",
+    "@injectivelabs/utils": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-base": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-core": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-cosmos": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-cosmostation": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-evm": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-ledger": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-magic": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-private-key": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-trezor": "^1.14.34-alpha.0",
+    "@injectivelabs/wallet-wallet-connect": "^1.14.34-alpha.0",
     "alchemy-sdk": "^3.4.7",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
@@ -81,10 +81,10 @@
     "hdkey": "^2.1.0"
   },
   "devDependencies": {
-    "shx": "^0.3.3",
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
-    "@types/hdkey": "^2.0.1"
+    "@types/hdkey": "^2.0.1",
+    "shx": "^0.3.3"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
 }
