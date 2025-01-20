@@ -5,7 +5,7 @@
     "packages/*",
     "packages/wallets/*"
   ],
-  "version": "1.14.35",
+  "version": "independent",
   "useWorkspaces": true,
   "command": {
     "version": {
