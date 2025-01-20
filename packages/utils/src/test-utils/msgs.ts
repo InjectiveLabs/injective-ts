@@ -1,28 +1,38 @@
 import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '../constants.js'
 import { BigNumberInBase } from '../classes/index.js'
-import {
-  Network,
-  getNetworkInfo,
-  NetworkEndpoints,
-  getNetworkEndpoints,
-} from '@injectivelabs/networks'
 import { mockFactory } from './mocks/index.js'
 import { ChainId, Coin, EthereumChainId } from '@injectivelabs/ts-types'
+
+type NetworkEndpoints = {
+  indexer: string // Indexer API
+  grpc: string // Sentry gRPC
+  rest: string // LCD
+  rpc?: string // Tendermint
+  cacheGrpc?: string // Cache gRPC service
+  cacheRest?: string // Cache LCD service
+  chronos?: string // Chronos Service
+  web3gw?: string // Web3Gateway Service
+  explorer?: string // Explorer Service
+}
 
 export const prepareEip712 = <T>({
   messages,
   gas = DEFAULT_GAS_LIMIT,
-  network = Network.Devnet,
+  endpoints,
   injectiveAddress = mockFactory.injectiveAddress,
   ethereumAddress = mockFactory.ethereumAddress,
   accountNumber = 1,
   sequence = 0,
+  chainId = ChainId.Mainnet,
+  ethereumChainId = EthereumChainId.Mainnet,
   timeoutHeight = 999_999_999,
   memo = '',
 }: {
+  chainId?: ChainId
+  ethereumChainId?: EthereumChainId
   ethereumAddress?: string
   messages: T
-  network?: Network
+  endpoints: NetworkEndpoints
   gas?: number | string
   accountNumber?: number
   sequence?: number
@@ -55,12 +65,11 @@ export const prepareEip712 = <T>({
     timeoutHeight: number
   }
 } => {
-  const chainInfo = getNetworkInfo(network)
-  const endpoints = getNetworkEndpoints(network)
   const msgs = Array.isArray(messages) ? messages : [messages]
   const web3Msgs = msgs.map((msg) => msg.toWeb3())
   const { tx, eip712 } = mockFactory.eip712Tx({
-    ...chainInfo,
+    chainId,
+    ethereumChainId,
     accountNumber,
     sequence,
     timeoutHeight,

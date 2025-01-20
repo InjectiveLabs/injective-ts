@@ -56,7 +56,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@trezor/connect-web": "^9.4.5",
+    "@trezor/connect-web": "9.4.5",
     "@ethereumjs/common": "3.1.1",
     "@ethereumjs/tx": "^4.1.1",
     "@injectivelabs/exceptions": "^1.14.34-beta.5",
@@ -65,7 +65,6 @@
     "@injectivelabs/ts-types": "^1.14.34-beta.2",
     "@injectivelabs/utils": "^1.14.34-beta.5",
     "@injectivelabs/wallet-base": "^1.14.34-beta.23",
-    "@trezor/connect-web": "9.2.1",
     "alchemy-sdk": "^3.4.7",
     "hdkey": "^2.1.0"
   },
