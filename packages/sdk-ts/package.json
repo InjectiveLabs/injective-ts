@@ -146,7 +146,6 @@
     "google-protobuf": "^3.21.0",
     "graphql": "^16.3.0",
     "http-status-codes": "^2.2.0",
-    "js-sha3": "^0.8.0",
     "keccak256": "^1.0.6",
     "secp256k1": "^4.0.3",
     "shx": "^0.3.2",
