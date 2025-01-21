@@ -79,7 +79,7 @@ export default class MsgSubmitGenericProposal extends MsgBase<
 
     const messageWithProposalType: any = snakecaseKeys({
       messages: params.messages.map((msg) => msg.toAmino()),
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
@@ -103,7 +103,7 @@ export default class MsgSubmitGenericProposal extends MsgBase<
 
     const messageWithProposalType: any = {
       messages: params.messages.map((msg) => msg.toWeb3()),
-      initialDeposit: [
+      initial_Deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,

@@ -6,7 +6,10 @@ import {
   InjectiveExchangeV1Beta1Proposal,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalSpotMarketLaunch {
   export interface Params {
@@ -135,19 +138,29 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   public toAmino() {
     const { params } = this
 
-    const content = this.getContent()
-
     const message = {
-      content,
+      content: this.getContent(),
       proposer: params.proposer,
     }
 
     const messageWithProposalType = snakecaseKeys({
       content: {
         type: 'exchange/SpotMarketLaunchProposal',
-        value: message.content,
+        value: snakecaseKeys({
+          ...message.content,
+          minPriceTickSize: numberToCosmosSdkDecString(
+            params.market.minPriceTickSize,
+          ),
+          minQuantityTickSize: numberToCosmosSdkDecString(
+            params.market.minQuantityTickSize,
+          ),
+          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
+          adminInfo: null,
+        }),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
@@ -169,9 +182,21 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
     const messageWithProposalType = {
       content: {
         '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
-        ...this.getContent(),
+        ...snakecaseKeys({
+          ...this.getContent(),
+          minPriceTickSize: numberToCosmosSdkDecString(
+            params.market.minPriceTickSize,
+          ),
+          minQuantityTickSize: numberToCosmosSdkDecString(
+            params.market.minQuantityTickSize,
+          ),
+          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
+          adminInfo: null,
+        }),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,

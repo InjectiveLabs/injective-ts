@@ -82,7 +82,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
         type: 'cosmos-sdk/TextProposal',
         value: this.getContent(),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
@@ -106,7 +106,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
         '@type': '/cosmos.gov.v1beta1.TextProposal',
         ...this.getContent(),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,

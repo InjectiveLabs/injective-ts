@@ -8,7 +8,7 @@ TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
 
 # remote branches/tags
-injective_core_branch=dev
+injective_core_branch=release-prod
 cosmos_sdk_branch=v0.50.x-inj
 wasmd_branch=v0.50.x-inj
 ibc_go_branch=v8.3.2

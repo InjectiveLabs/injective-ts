@@ -1,4 +1,3 @@
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -6,8 +5,9 @@ import {
   InjectiveExchangeV1Beta1Proposal,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase.js'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   export interface Params {
@@ -98,24 +98,18 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
       ...params,
       market: {
         ...params.market,
-        initialMarginRatio: amountToCosmosSdkDecAmount(
+        initialMarginRatio: numberToCosmosSdkDecString(
           params.market.initialMarginRatio,
-        ).toFixed(),
-        maintenanceMarginRatio: amountToCosmosSdkDecAmount(
+        ),
+        maintenanceMarginRatio: numberToCosmosSdkDecString(
           params.market.maintenanceMarginRatio,
-        ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
-          params.market.makerFeeRate,
-        ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
-          params.market.takerFeeRate,
-        ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
+        ),
+        makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+        takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+        minQuantityTickSize: numberToCosmosSdkDecString(
           params.market.minQuantityTickSize,
-        ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
-          params.market.minNotional,
-        ).toFixed(),
+        ),
+        minNotional: numberToCosmosSdkDecString(params.market.minNotional),
       },
     })
 
@@ -159,9 +153,30 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     const messageWithProposalType = snakecaseKeys({
       content: {
         type: 'exchange/PerpetualMarketLaunchProposal',
-        value: message.content,
+        value: snakecaseKeys({
+          ...message.content,
+          oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
+            message.content.oracleType,
+          ),
+          initialMarginRatio: numberToCosmosSdkDecString(
+            params.market.initialMarginRatio,
+          ),
+          maintenanceMarginRatio: numberToCosmosSdkDecString(
+            params.market.maintenanceMarginRatio,
+          ),
+          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+          minPriceTickSize: numberToCosmosSdkDecString(
+            params.market.minPriceTickSize,
+          ),
+          minQuantityTickSize: numberToCosmosSdkDecString(
+            params.market.minQuantityTickSize,
+          ),
+          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
+          adminInfo: null,
+        }),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
@@ -183,9 +198,30 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     const messageWithProposalType = {
       content: {
         '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
-        ...this.getContent(),
+        ...snakecaseKeys({
+          ...this.getContent(),
+          oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
+            params.market.oracleType,
+          ),
+          initialMarginRatio: numberToCosmosSdkDecString(
+            params.market.initialMarginRatio,
+          ),
+          maintenanceMarginRatio: numberToCosmosSdkDecString(
+            params.market.maintenanceMarginRatio,
+          ),
+          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+          minPriceTickSize: numberToCosmosSdkDecString(
+            params.market.minPriceTickSize,
+          ),
+          minQuantityTickSize: numberToCosmosSdkDecString(
+            params.market.minQuantityTickSize,
+          ),
+          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
+          adminInfo: null,
+        }),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,

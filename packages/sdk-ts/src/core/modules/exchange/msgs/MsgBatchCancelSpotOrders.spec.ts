@@ -1,11 +1,6 @@
 import MsgBatchCancelSpotOrders from './MsgBatchCancelSpotOrders.js'
 import { mockFactory } from '@injectivelabs/test-utils'
-// import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import snakecaseKeys from 'snakecase-keys'
-// import { getEthereumAddress } from '../../../../utils/address'
-// import { IndexerGrpcTransactionApi } from '../../../../client'
-// import { DEFAULT_GAS_LIMIT } from '@injectivelabs/utils'
-// import { EthereumChainId } from '@injectivelabs/ts-types'
 
 const params: MsgBatchCancelSpotOrders['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
@@ -105,28 +100,4 @@ describe('MsgBatchCancelSpotOrders', () => {
       ...protoParamsAmino,
     })
   })
-
-  // it('generates correct EIP712 compared to the chain', async () => {
-  //   const web3 = message.toWeb3()
-  //   const endpoints = getNetworkEndpoints(Network.TestnetSentry)
-  //   const transactionApi = new IndexerGrpcTransactionApi(
-  //     endpoints.web3gw || endpoints.indexer,
-  //   )
-
-  //   const txResponse = await transactionApi.prepareTxRequest({
-  //     memo: '',
-  //     message: web3,
-  //     address: getEthereumAddress(mockFactory.injectiveAddress),
-  //     chainId: EthereumChainId.Sepolia,
-  //     gasLimit: DEFAULT_GAS_LIMIT,
-  //     estimateGas: false,
-  //   })
-
-  //   console.log(txResponse.data)
-
-  //   expect(web3).toStrictEqual({
-  //     '@type': protoType,
-  //     ...protoParamsAmino,
-  //   })
-  // })
 })
