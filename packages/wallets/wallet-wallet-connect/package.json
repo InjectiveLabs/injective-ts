@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-wallet-connect",
   "description": "Wallet connect strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.14.40",
+  "version": "1.14.41-beta.0",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -56,10 +56,10 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "^1.14.40",
-    "@injectivelabs/sdk-ts": "^1.14.40",
+    "@injectivelabs/sdk-ts": "^1.14.41-beta.0",
     "@injectivelabs/ts-types": "^1.14.40",
     "@injectivelabs/utils": "^1.14.40",
-    "@injectivelabs/wallet-base": "^1.14.40",
+    "@injectivelabs/wallet-base": "^1.14.41-beta.0",
     "@walletconnect/ethereum-provider": "^2.12.2"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
