@@ -1,8 +1,5 @@
-import * as grpc from '@injectivelabs/grpc-web'
+import { grpc } from '@injectivelabs/grpc-web'
 import { StatusCodes } from 'http-status-codes'
-
-// @ts-ignore
-const $grpc = (grpc.default || grpc) as typeof grpc
 
 export enum TransactionChainErrorModule {
   Auction = 'auction',
@@ -770,11 +767,8 @@ export type IndexerApiErrorCode = number
 
 export const UnspecifiedErrorCode = -1
 
-export type ErrorCode =
-  | StatusCodes
-  | typeof UnspecifiedErrorCode
-  | grpc.grpc.Code
-export const GRPC_REQUEST_FAILED = $grpc.grpc.Code.Unavailable
+export type ErrorCode = StatusCodes | typeof UnspecifiedErrorCode | grpc.Code
+export const GRPC_REQUEST_FAILED = grpc.Code.Unavailable
 
 export type ErrorContextCode =
   | ChainAuctionErrorCodes
