@@ -7,7 +7,10 @@ import {
 } from '@injectivelabs/core-proto-ts'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase.js'
-import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   export interface Params {
@@ -98,18 +101,24 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
       ...params,
       market: {
         ...params.market,
-        initialMarginRatio: numberToCosmosSdkDecString(
+        initialMarginRatio: amountToCosmosSdkDecAmount(
           params.market.initialMarginRatio,
-        ),
-        maintenanceMarginRatio: numberToCosmosSdkDecString(
+        ).toFixed(),
+        maintenanceMarginRatio: amountToCosmosSdkDecAmount(
           params.market.maintenanceMarginRatio,
-        ),
-        makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
-        takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
-        minQuantityTickSize: numberToCosmosSdkDecString(
+        ).toFixed(),
+        makerFeeRate: amountToCosmosSdkDecAmount(
+          params.market.makerFeeRate,
+        ).toFixed(),
+        takerFeeRate: amountToCosmosSdkDecAmount(
+          params.market.takerFeeRate,
+        ).toFixed(),
+        minQuantityTickSize: amountToCosmosSdkDecAmount(
           params.market.minQuantityTickSize,
-        ),
-        minNotional: numberToCosmosSdkDecString(params.market.minNotional),
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          params.market.minNotional,
+        ).toFixed(),
       },
     })
 

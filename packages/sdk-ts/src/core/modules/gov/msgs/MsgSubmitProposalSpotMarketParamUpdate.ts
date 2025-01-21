@@ -7,7 +7,10 @@ import {
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 
 const createSpotMarketParamUpdate = (
   params: MsgSubmitProposalSpotMarketParamUpdate.Params,
@@ -25,6 +28,7 @@ const createSpotMarketParamUpdate = (
   content.minQuantityTickSize = params.market.minQuantityTickSize
   content.status = params.market.status
   content.ticker = params.market.ticker
+  content.minNotional = params.market.minNotional
 
   return InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.fromPartial(
     content,
@@ -42,7 +46,9 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
       relayerFeeShareRate: string
       minPriceTickSize: string
       minQuantityTickSize: string
+      minNotional: string
       ticker: string
+      adminInfo?: string
       status: InjectiveExchangeV1Beta1Exchange.MarketStatus
     }
     proposer: string
@@ -97,6 +103,12 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
         takerFeeRate: amountToCosmosSdkDecAmount(
           params.market.takerFeeRate,
         ).toFixed(),
+        minPriceTickSize: amountToCosmosSdkDecAmount(
+          params.market.minPriceTickSize,
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          params.market.minNotional,
+        ).toFixed(),
         minQuantityTickSize: amountToCosmosSdkDecAmount(
           params.market.minQuantityTickSize,
         ).toFixed(),
@@ -136,9 +148,26 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const messageWithProposalType = snakecaseKeys({
       content: {
         type: 'exchange/SpotMarketParamUpdateProposal',
-        value: this.getContent(),
+        value: snakecaseKeys({
+          ...this.getContent(),
+          status: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
+            params.market.status,
+          ),
+          minPriceTickSize: numberToCosmosSdkDecString(
+            params.market.minPriceTickSize,
+          ),
+          minQuantityTickSize: numberToCosmosSdkDecString(
+            params.market.minQuantityTickSize,
+          ),
+          relayerFeeShareRate: numberToCosmosSdkDecString(
+            params.market.relayerFeeShareRate,
+          ),
+          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+          adminInfo: null,
+        }),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
@@ -160,9 +189,27 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const messageWithProposalType = {
       content: {
         '@type': '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
-        ...this.getContent(),
+        ...snakecaseKeys({
+          ...this.getContent(),
+          status: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
+            params.market.status,
+          ),
+          minPriceTickSize: numberToCosmosSdkDecString(
+            params.market.minPriceTickSize,
+          ),
+          minQuantityTickSize: numberToCosmosSdkDecString(
+            params.market.minQuantityTickSize,
+          ),
+          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
+          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+          relayerFeeShareRate: numberToCosmosSdkDecString(
+            params.market.relayerFeeShareRate,
+          ),
+          adminInfo: null,
+        }),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,

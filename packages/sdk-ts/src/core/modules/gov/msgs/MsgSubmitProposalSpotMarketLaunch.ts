@@ -138,16 +138,11 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   public toAmino() {
     const { params } = this
 
-    const message = {
-      content: this.getContent(),
-      proposer: params.proposer,
-    }
-
     const messageWithProposalType = snakecaseKeys({
       content: {
         type: 'exchange/SpotMarketLaunchProposal',
         value: snakecaseKeys({
-          ...message.content,
+          ...this.getContent(),
           minPriceTickSize: numberToCosmosSdkDecString(
             params.market.minPriceTickSize,
           ),
