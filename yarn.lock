@@ -2220,10 +2220,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@injectivelabs/grpc-web@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@injectivelabs/grpc-web/-/grpc-web-0.0.4.tgz#f35788cbad2097269a9efb257990d252cb3fb0e4"
-  integrity sha512-lQrQ//YsRDo05YckLcgKP4Ptk+VPVyEbtLhb7q6PoNXHwL5UyoDxZvFYmF35y5l7mYYu/agzcJmoNROJrfzcVw==
+"@injectivelabs/grpc-web@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@injectivelabs/grpc-web/-/grpc-web-0.0.5.tgz#9e95b863d017b9a27d47af4fc59a65bfa5d42376"
+  integrity sha512-Btu8t9HqIdNrGxI3GIc+6mUqUq85Jhj7um+5prSMQDO8o3QQh0Eqwt4Rykery8cene/jyI7UoWsbardkqRJDRQ==
   dependencies:
     browser-headers "^0.4.1"
 
