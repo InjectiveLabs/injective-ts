@@ -1,11 +1,11 @@
-import { grpc } from '@injectivelabs/grpc-web'
+import { $grpc, Metadata } from '@injectivelabs/grpc-web'
 import { getGrpcTransport } from '../../utils/grpc.js'
 import { GrpcWebImpl } from './GrpcWebImpl.js'
 
 export default class BaseGrpcConsumer extends GrpcWebImpl {
   protected module: string = ''
 
-  protected metadata?: grpc.Metadata
+  protected metadata?: Metadata
 
   constructor(endpoint: string) {
     super(endpoint, {
@@ -14,7 +14,7 @@ export default class BaseGrpcConsumer extends GrpcWebImpl {
   }
 
   public setMetadata(map: Record<string, string>) {
-    const metadata = new grpc.Metadata()
+    const metadata = new $grpc.Metadata()
     Object.keys(map).forEach((key) => metadata.set(key, map[key]))
 
     this.metadata = metadata

@@ -124,7 +124,7 @@
     "@injectivelabs/abacus-proto-ts": "1.13.3",
     "@injectivelabs/core-proto-ts": "1.13.4",
     "@injectivelabs/exceptions": "^1.14.35",
-    "@injectivelabs/grpc-web": "^0.0.1",
+    "@injectivelabs/grpc-web": "^0.0.4",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
     "@injectivelabs/indexer-proto-ts": "1.13.5",
