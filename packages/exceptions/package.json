@@ -55,7 +55,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/grpc-web": "^0.0.5",
+    "@injectivelabs/grpc-web": "^0.0.6",
     "@injectivelabs/ts-types": "^1.14.35",
     "http-status-codes": "^2.2.0",
     "shx": "^0.3.2"
