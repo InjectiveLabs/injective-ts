@@ -3,7 +3,11 @@ import { NodeHttpTransport } from '@injectivelabs/grpc-web-node-http-transport'
 import { ReactNativeTransport } from '@injectivelabs/grpc-web-react-native-transport'
 import { isNode, isReactNative } from './helpers.js'
 
-const grpc = grpcPkg.grpc ?? grpcPkg
+const grpc: typeof grpcPkg.grpc =
+  grpcPkg.grpc ??
+  (grpcPkg as unknown as { default: { grpc: typeof grpcPkg.grpc } }).default
+    .grpc ??
+  grpcPkg
 
 export const getGrpcTransport = () => {
   if (isReactNative()) {

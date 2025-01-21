@@ -1,4 +1,4 @@
-import { grpc, grpcPkg } from '../utils/grpc'
+import { grpc, grpcPkg } from '../utils/grpc.js'
 import { StatusCodes } from 'http-status-codes'
 
 export enum TransactionChainErrorModule {
