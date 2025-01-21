@@ -164,8 +164,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
         type: 'exchange/PerpetualMarketLaunchProposal',
         value: snakecaseKeys({
           ...message.content,
+          oracleScaleFactor: Number(message.content.oracleScaleFactor),
           oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-            message.content.oracleType,
+            Number(message.content.oracleType),
           ),
           initialMarginRatio: numberToCosmosSdkDecString(
             params.market.initialMarginRatio,
@@ -209,8 +210,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
         '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
         ...snakecaseKeys({
           ...this.getContent(),
+          oracleScaleFactor: Number(params.market.oracleScaleFactor),
           oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-            params.market.oracleType,
+            Number(params.market.oracleType),
           ),
           initialMarginRatio: numberToCosmosSdkDecString(
             params.market.initialMarginRatio,
