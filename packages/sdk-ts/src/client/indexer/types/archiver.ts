@@ -44,6 +44,7 @@ export interface Holder {
 export interface DenomHolders {
   holders: Holder[]
   next: string[]
+  total: number
 }
 
 export type GrpcHistoricalRPNL = InjectiveArchiverRpc.HistoricalRPNL

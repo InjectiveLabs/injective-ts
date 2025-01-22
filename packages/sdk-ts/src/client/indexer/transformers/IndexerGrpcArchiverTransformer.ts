@@ -164,6 +164,7 @@ export class IndexerGrpcArchiverTransformer {
         balance: holder.balance,
       })),
       next: response.next,
+      total: response.total,
     }
   }
 }
