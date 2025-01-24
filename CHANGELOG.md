@@ -346,7 +346,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * gas used increased ([9e54891](https://github.com/InjectiveLabs/injective-ts/commit/9e54891a87f4eca17e4026187c64382f92067883))
 * gasPrice increased ([0ba0cc5](https://github.com/InjectiveLabs/injective-ts/commit/0ba0cc5bbaf9872bd335ca0ef74c1a57030044c2))
 * gasStep in feeCurrency ([1a4de24](https://github.com/InjectiveLabs/injective-ts/commit/1a4de24b1446a14ca4873e885d0bbcf215354e53))
-* generalised cosmosChainId for Keplr wallet stragety ([97d52dd](https://github.com/InjectiveLabs/injective-ts/commit/97d52dd8782c0482688b80154c5fda33a11de990))
+* generalised cosmosChainId for Keplr wallet strategy ([97d52dd](https://github.com/InjectiveLabs/injective-ts/commit/97d52dd8782c0482688b80154c5fda33a11de990))
 * getBlockExplorerPathFromNetworkType for ethereum address ([accdae9](https://github.com/InjectiveLabs/injective-ts/commit/accdae9f81caa9a32fb383f226535936d456b607))
 * getBridgeTransactionsWithToken not returning token metadata ([46c5ef7](https://github.com/InjectiveLabs/injective-ts/commit/46c5ef7e1d2956f560db7e9e152db0a03d95f78d))
 * getContractAddressesForNetworkOrThrow method referencing wrong list of contract addresses ([ce4cdbb](https://github.com/InjectiveLabs/injective-ts/commit/ce4cdbb58f1bd01c9c00dfc968b02928540fa751))
