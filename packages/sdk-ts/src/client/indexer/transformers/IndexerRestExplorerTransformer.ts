@@ -27,6 +27,7 @@ import {
   ValidatorUptimeFromExplorerApiResponse,
 } from '../types/explorer-rest.js'
 import { TokenType, TokenVerification } from '../../../types/token.js'
+import { isJsonString } from '../../../utils/helpers.js'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
 
@@ -248,14 +249,23 @@ export class IndexerRestExplorerTransformer {
         transaction,
       ),
       messages: (transaction.messages || []).map((message) => {
+        if (!isJsonString(message.value.msg)) {
+          return {
+            type: message.type,
+            value: {
+              ...message.value,
+              msg: message.value.msg,
+            },
+          }
+        }
+
+        const msg = message.value.msg as unknown as string
+
         return {
           type: message.type,
           value: {
             ...message.value,
-            msg:
-              typeof message.value.msg === 'string'
-                ? (JSON.parse(message.value.msg) as Record<string, any>)
-                : message.value.msg,
+            msg: JSON.parse(msg),
           },
         }
       }),

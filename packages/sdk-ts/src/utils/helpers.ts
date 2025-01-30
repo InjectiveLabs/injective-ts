@@ -150,3 +150,17 @@ export const hexToNumber = (value: string): number => {
 
   return negative ? -1 * Number(num) : Number(num)
 }
+
+export function isJsonString<T>(str: T): boolean {
+  if (typeof str !== 'string') {
+    return false
+  }
+
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+
+  return true
+}

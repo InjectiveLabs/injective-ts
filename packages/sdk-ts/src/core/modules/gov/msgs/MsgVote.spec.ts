@@ -91,8 +91,7 @@ describe('MsgVote', () => {
       messages: message,
     })
 
-    // TODO
-    it.skip('EIP712 v1', async () => {
+    it('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
@@ -101,6 +100,7 @@ describe('MsgVote', () => {
         ...prepareEip712Request,
         eip712Version: 'v1',
       })
+
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
