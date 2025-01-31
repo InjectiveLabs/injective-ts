@@ -14,6 +14,7 @@ export enum Network {
   Testnet = 'testnet',
   Devnet1 = 'devnet1',
   Devnet2 = 'devnet2',
+  Devnet3 = 'devnet3',
   Devnet = 'devnet',
   Local = 'local',
 }
