@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-base",
   "description": "Base wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.14.41-beta.4",
+  "version": "1.14.41-beta.5",
   "sideEffects": false,
   "author": {
     "name": "InjectiveLabs",
@@ -58,8 +58,8 @@
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
     "@injectivelabs/exceptions": "^1.14.40",
-    "@injectivelabs/networks": "^1.14.41-beta.0",
-    "@injectivelabs/sdk-ts": "^1.14.41-beta.4",
+    "@injectivelabs/networks": "^1.14.41-beta.1",
+    "@injectivelabs/sdk-ts": "^1.14.41-beta.5",
     "@injectivelabs/ts-types": "^1.14.40",
     "@injectivelabs/utils": "^1.14.40",
     "alchemy-sdk": "^3.4.7",
