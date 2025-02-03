@@ -113,6 +113,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
         takerFeeRate: amountToCosmosSdkDecAmount(
           params.market.takerFeeRate,
         ).toFixed(),
+        minPriceTickSize: amountToCosmosSdkDecAmount(
+          params.market.minPriceTickSize,
+        ).toFixed(),
         minQuantityTickSize: amountToCosmosSdkDecAmount(
           params.market.minQuantityTickSize,
         ).toFixed(),
