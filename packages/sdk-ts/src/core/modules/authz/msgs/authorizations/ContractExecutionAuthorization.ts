@@ -1,3 +1,4 @@
+import { Coin } from '@injectivelabs/ts-types'
 import {
   GoogleProtobufAny,
   CosmwasmWasmV1Authz,
@@ -8,7 +9,8 @@ export declare namespace ContractExecutionAuthorization {
   export interface Params {
     contract: string
     limit?: {
-      maxCalls: number
+      maxCalls?: number
+      amounts?: Coin[]
     }
     filter?: {
       acceptedMessagesKeys: string[]
@@ -46,15 +48,38 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
     grant.contract = params.contract
 
     if (params.limit) {
-      const limit = CosmwasmWasmV1Authz.MaxCallsLimit.create()
+      if (params.limit.maxCalls && params.limit.amounts) {
+        const limit = CosmwasmWasmV1Authz.CombinedLimit.create()
 
-      limit.remaining = params.limit.maxCalls.toString()
+        limit.callsRemaining = params.limit.maxCalls.toString()
+        limit.amounts = params.limit.amounts
 
-      const any = GoogleProtobufAny.Any.create()
-      any.typeUrl = '/cosmwasm.wasm.v1.MaxCallsLimit'
-      any.value = CosmwasmWasmV1Authz.MaxCallsLimit.encode(limit).finish()
+        const any = GoogleProtobufAny.Any.create()
+        any.typeUrl = '/cosmwasm.wasm.v1.CombinedLimit'
+        any.value = CosmwasmWasmV1Authz.CombinedLimit.encode(limit).finish()
 
-      grant.limit = any
+        grant.limit = any
+      } else if (params.limit.maxCalls) {
+        const limit = CosmwasmWasmV1Authz.MaxCallsLimit.create()
+
+        limit.remaining = params.limit.maxCalls.toString()
+
+        const any = GoogleProtobufAny.Any.create()
+        any.typeUrl = '/cosmwasm.wasm.v1.MaxCallsLimit'
+        any.value = CosmwasmWasmV1Authz.MaxCallsLimit.encode(limit).finish()
+
+        grant.limit = any
+      } else if (params.limit.amounts) {
+        const limit = CosmwasmWasmV1Authz.MaxFundsLimit.create()
+
+        limit.amounts = params.limit.amounts
+
+        const any = GoogleProtobufAny.Any.create()
+        any.typeUrl = '/cosmwasm.wasm.v1.MaxFundsLimit'
+        any.value = CosmwasmWasmV1Authz.MaxFundsLimit.encode(limit).finish()
+
+        grant.limit = any
+      }
     }
 
     if (params.filter) {
@@ -99,9 +124,22 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
     grant.contract = params.contract
 
     if (params.limit) {
-      grant.limit = {
-        type: 'wasm/MaxCallsLimit',
-        remaining: params.limit.maxCalls.toString(),
+      if (params.limit.maxCalls && params.limit.amounts) {
+        grant.limit = {
+          type: 'wasm/CombinedLimit',
+          calls_remaining: params.limit.maxCalls.toString(),
+          amounts: params.limit.amounts,
+        }
+      } else if (params.limit.maxCalls) {
+        grant.limit = {
+          type: 'wasm/MaxCallsLimit',
+          remaining: params.limit.maxCalls.toString(),
+        }
+      } else if (params.limit.amounts) {
+        grant.limit = {
+          type: 'wasm/MaxFundsLimit',
+          amounts: params.limit.amounts,
+        }
       }
     }
 
@@ -126,9 +164,22 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
     grant.contract = params.contract
 
     if (params.limit) {
-      grant.limit = {
-        '@type': '/cosmwasm.wasm.v1.MaxCallsLimit',
-        remaining: params.limit.maxCalls.toString(),
+      if (params.limit.maxCalls && params.limit.amounts) {
+        grant.limit = {
+          '@type': '/cosmwasm.wasm.v1.CombinedLimit',
+          calls_remaining: params.limit.maxCalls.toString(),
+          amounts: params.limit.amounts,
+        }
+      } else if (params.limit.maxCalls) {
+        grant.limit = {
+          '@type': '/cosmwasm.wasm.v1.MaxCallsLimit',
+          remaining: params.limit.maxCalls.toString(),
+        }
+      } else if (params.limit.amounts) {
+        grant.limit = {
+          '@type': '/cosmwasm.wasm.v1.MaxFundsLimit',
+          amounts: params.limit.amounts,
+        }
       }
     }
 

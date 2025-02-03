@@ -138,7 +138,7 @@ export class CosmosWallet {
   public async getOfflineAminoSigner(): Promise<OfflineAminoSigner> {
     const { chainId, wallet } = this
 
-    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       throw new CosmosWalletException(
         new Error(
           `getOfflineAminoSigner is not support on ${capitalize(wallet)}`,
@@ -418,9 +418,9 @@ export class CosmosWallet {
     const { wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
       throw new CosmosWalletException(
-        new Error(`enableGasCheck is not support on ${capitalize(wallet)}`),
+        new Error(`EnableGasCheck is not support on ${capitalize(wallet)}`),
       )
     }
 

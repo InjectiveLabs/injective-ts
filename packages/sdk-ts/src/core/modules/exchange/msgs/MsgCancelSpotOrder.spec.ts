@@ -82,15 +82,15 @@ describe('MsgCancelSpotOrder', () => {
     })
   })
 
-  // TODO
-  describe.skip('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       sequence: 0,
       accountNumber: 3,
       messages: message,
     })
 
-    it('EIP712 v1', async () => {
+    // TODO
+    it.skip('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(

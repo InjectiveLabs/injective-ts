@@ -6,7 +6,7 @@ export enum ExitType {
 
 export enum StrategyType {
   Arithmetic = 'arithmetic',
-  ArithmeticLP = 'arithmetic_l_p',
+  ArithmeticLP = 'trailing_arithmetic_lp',
   Geometric = 'geometric',
 }
 

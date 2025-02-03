@@ -4,15 +4,18 @@ import { Coin } from '@injectivelabs/ts-types'
 export interface GovModuleStateParams {
   votingParams: {
     votingPeriod: number
+    expeditedVotingPeriod: number
   }
   tallyParams: {
     quorum: string
     threshold: string
     vetoThreshold: string
+    expeditedThreshold: string
   }
   depositParams: {
-    minDepositList: Coin[]
+    minDeposit: Coin[]
     maxDepositPeriod: number
+    expeditedMinDeposit: Coin[]
   }
 }
 
@@ -24,6 +27,8 @@ export interface Proposal {
   content: any
   type: string
   status: CosmosGovV1Gov.ProposalStatus
+  expedited: boolean
+  failedReason: string
   submitTime: number
   finalTallyResult: GrpcTallyResult | undefined
   totalDeposits: Coin[]
@@ -58,9 +63,9 @@ export type ProposalDeposit = {
 
 export type GrpcProposal = CosmosGovV1Gov.Proposal
 export type GrpcProposalDeposit = CosmosGovV1Gov.Deposit
-export type GrpcGovernanceTallyParams = CosmosGovV1Gov.TallyParams
-export type GrpcGovernanceVotingParams = CosmosGovV1Gov.VotingParams
-export type GrpcGovernanceDepositParams = CosmosGovV1Gov.DepositParams
+export type GrpcGovernanceTallyParams = CosmosGovV1Gov.Params
+export type GrpcGovernanceVotingParams = CosmosGovV1Gov.Params
+export type GrpcGovernanceDepositParams = CosmosGovV1Gov.Params
 export type GrpcTallyResult = CosmosGovV1Gov.TallyResult
 export type GrpcVote = CosmosGovV1Gov.Vote
 

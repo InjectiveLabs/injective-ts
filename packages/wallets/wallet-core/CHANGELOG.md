@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.40](https://github.com/InjectiveLabs/injective-ts/compare/v1.14.35...v1.14.40) (2025-01-21)
+
+**Note:** Version bump only for package @injectivelabs/wallet-core
+
+
+
+
+
+## 1.14.35 (2025-01-20)
+
+
+### Bug Fixes
+
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+
+
+### Features
+
+* retries on mempool full ([309317a](https://github.com/InjectiveLabs/injective-ts/commit/309317a4be674c0538474ed5cac49b007b764e7d))
+* retry on broadcast ([6aaed21](https://github.com/InjectiveLabs/injective-ts/commit/6aaed216e433260f0e2b5683d52b364bf8824db1))
+
+
+
+
+
+#  (2025-01-20)
+
+
+### Bug Fixes
+
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+
+
+### Features
+
+* retries on mempool full ([309317a](https://github.com/InjectiveLabs/injective-ts/commit/309317a4be674c0538474ed5cac49b007b764e7d))
+* retry on broadcast ([6aaed21](https://github.com/InjectiveLabs/injective-ts/commit/6aaed216e433260f0e2b5683d52b364bf8824db1))
+
+
+
+
+
 ## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-core@1.14.33-beta.4...@injectivelabs/wallet-core@1.14.33) (2024-11-29)
 
 **Note:** Version bump only for package @injectivelabs/wallet-core

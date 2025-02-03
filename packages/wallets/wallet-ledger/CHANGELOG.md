@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.40](https://github.com/InjectiveLabs/injective-ts/compare/v1.14.35...v1.14.40) (2025-01-21)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ledger
+
+
+
+
+
+## 1.14.35 (2025-01-20)
+
+
+### Bug Fixes
+
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+* move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
+* refactor Wallets instead of WalletStrategies ([cacaae7](https://github.com/InjectiveLabs/injective-ts/commit/cacaae7eeff022d4923e829cdfb49dbf5b04d851))
+* rm unused tsconfig ref ([f625e05](https://github.com/InjectiveLabs/injective-ts/commit/f625e05b7ff110acd28247062e8a2a92a70cc9b2))
+
+
+### Features
+
+* decouple keplr ([0e921a3](https://github.com/InjectiveLabs/injective-ts/commit/0e921a32892ef288ffe074e024250406f0fd78ad))
+
+
+
+
+
+#  (2025-01-20)
+
+
+### Bug Fixes
+
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+* move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
+* refactor Wallets instead of WalletStrategies ([cacaae7](https://github.com/InjectiveLabs/injective-ts/commit/cacaae7eeff022d4923e829cdfb49dbf5b04d851))
+* rm unused tsconfig ref ([f625e05](https://github.com/InjectiveLabs/injective-ts/commit/f625e05b7ff110acd28247062e8a2a92a70cc9b2))
+
+
+### Features
+
+* decouple keplr ([0e921a3](https://github.com/InjectiveLabs/injective-ts/commit/0e921a32892ef288ffe074e024250406f0fd78ad))
+
+
+
+
+
 ## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ledger@1.14.33-beta.4...@injectivelabs/wallet-ledger@1.14.33) (2024-11-29)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ledger

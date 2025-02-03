@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.40](https://github.com/InjectiveLabs/injective-ts/compare/v1.14.35...v1.14.40) (2025-01-21)
+
+**Note:** Version bump only for package @injectivelabs/wallet-cosmostation
+
+
+
+
+
+## 1.14.35 (2025-01-20)
+
+
+### Bug Fixes
+
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+
+
+
+
+
+#  (2025-01-20)
+
+
+### Bug Fixes
+
+* build cache paths ([7b50184](https://github.com/InjectiveLabs/injective-ts/commit/7b5018431d970bfb00d022878fbf7994e4878e72))
+
+
+
+
+
 ## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-cosmostation@1.14.33-beta.4...@injectivelabs/wallet-cosmostation@1.14.33) (2024-11-29)
 
 **Note:** Version bump only for package @injectivelabs/wallet-cosmostation

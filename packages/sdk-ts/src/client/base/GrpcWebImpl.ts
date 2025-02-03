@@ -1,7 +1,8 @@
-import * as grpc from '@injectivelabs/grpc-web'
+import { grpc, grpcPkg } from './../../utils/grpc.js'
 import { BrowserHeaders } from 'browser-headers'
 
-interface UnaryMethodDefinitionR extends grpc.grpc.UnaryMethodDefinition<any, any> {
+interface UnaryMethodDefinitionR
+  extends grpcPkg.grpc.UnaryMethodDefinition<any, any> {
   requestStream: any
   responseStream: any
 }
@@ -12,15 +13,15 @@ export interface Rpc {
   unary<T extends UnaryMethodDefinition>(
     methodDesc: T,
     request: any,
-    metadata: grpc.grpc.Metadata | undefined,
+    metadata: grpcPkg.grpc.Metadata | undefined,
   ): Promise<any>
 }
 
 export class GrpcWebError extends Error {
   constructor(
     message: string,
-    public code: grpc.grpc.Code,
-    public metadata: grpc.grpc.Metadata,
+    public code: grpcPkg.grpc.Code,
+    public metadata: grpcPkg.grpc.Metadata,
   ) {
     super(message)
   }
@@ -29,20 +30,20 @@ export class GrpcWebError extends Error {
 export class GrpcWebImpl {
   private host: string
   private options: {
-    transport?: grpc.grpc.TransportFactory
+    transport?: grpcPkg.grpc.TransportFactory
     debug?: boolean
     setCookieMetadata?: boolean
-    metadata?: grpc.grpc.Metadata
+    metadata?: grpcPkg.grpc.Metadata
     upStreamRetryCodes?: number[]
   }
 
   constructor(
     host: string,
     options: {
-      transport?: grpc.grpc.TransportFactory
+      transport?: grpcPkg.grpc.TransportFactory
       debug?: boolean
       setCookieMetadata?: boolean
-      metadata?: grpc.grpc.Metadata
+      metadata?: grpcPkg.grpc.Metadata
       upStreamRetryCodes?: number[]
     },
   ) {
@@ -53,7 +54,7 @@ export class GrpcWebImpl {
   unary<T extends UnaryMethodDefinition>(
     methodDesc: T,
     _request: any,
-    metadata: grpc.grpc.Metadata | undefined,
+    metadata: grpcPkg.grpc.Metadata | undefined,
   ): Promise<any> {
     const request = { ..._request, ...methodDesc.requestType }
     const actualMetadata = new BrowserHeaders({
@@ -62,14 +63,14 @@ export class GrpcWebImpl {
     })
 
     return new Promise((resolve, reject) => {
-      grpc.grpc.unary(methodDesc, {
+      grpc.unary(methodDesc, {
         request,
         host: this.host,
         metadata: actualMetadata,
         transport: this.options.transport,
         debug: this.options.debug,
         onEnd: (response) => {
-          if (response.status === grpc.grpc.Code.OK) {
+          if (response.status === grpc.Code.OK) {
             return resolve(response.message!.toObject())
           }
 

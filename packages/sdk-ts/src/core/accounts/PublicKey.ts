@@ -3,7 +3,7 @@ import { bech32 } from 'bech32'
 import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
 import { Address } from './Address.js'
-import { keccak256 } from 'js-sha3'
+import keccak256 from 'keccak256'
 import {
   GoogleProtobufAny,
   InjectiveCryptoV1Beta1Ethsecp256k1Keys,
@@ -73,15 +73,12 @@ export class PublicKey {
   public toAddress(): Address {
     const publicKeyHex = this.toHex()
     const decompressedPublicKey = decompressPubKey(publicKeyHex)
-    const addressBuffer = Buffer.from(
-      keccak256(
-        toBuffer(
-          decompressedPublicKey.startsWith('0x')
-            ? decompressedPublicKey
-            : '0x' + decompressedPublicKey,
-        ),
+    const addressBuffer = keccak256(
+      toBuffer(
+        decompressedPublicKey.startsWith('0x')
+          ? decompressedPublicKey
+          : '0x' + decompressedPublicKey,
       ),
-      'hex',
     ).subarray(-20)
 
     return Address.fromHex(

@@ -1,4 +1,3 @@
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -6,8 +5,12 @@ import {
   InjectiveExchangeV1Beta1Proposal,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase.js'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   export interface Params {
@@ -110,6 +113,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
         takerFeeRate: amountToCosmosSdkDecAmount(
           params.market.takerFeeRate,
         ).toFixed(),
+        minPriceTickSize: amountToCosmosSdkDecAmount(
+          params.market.minPriceTickSize,
+        ).toFixed(),
         minQuantityTickSize: amountToCosmosSdkDecAmount(
           params.market.minQuantityTickSize,
         ).toFixed(),
@@ -159,9 +165,31 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     const messageWithProposalType = snakecaseKeys({
       content: {
         type: 'exchange/PerpetualMarketLaunchProposal',
-        value: message.content,
+        value: snakecaseKeys({
+          ...message.content,
+          oracleScaleFactor: Number(message.content.oracleScaleFactor),
+          oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
+            Number(message.content.oracleType),
+          ),
+          initialMarginRatio: numberToCosmosSdkDecString(
+            params.market.initialMarginRatio,
+          ),
+          maintenanceMarginRatio: numberToCosmosSdkDecString(
+            params.market.maintenanceMarginRatio,
+          ),
+          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+          minPriceTickSize: numberToCosmosSdkDecString(
+            params.market.minPriceTickSize,
+          ),
+          minQuantityTickSize: numberToCosmosSdkDecString(
+            params.market.minQuantityTickSize,
+          ),
+          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
+          adminInfo: null,
+        }),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
@@ -183,9 +211,31 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     const messageWithProposalType = {
       content: {
         '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
-        ...this.getContent(),
+        ...snakecaseKeys({
+          ...this.getContent(),
+          oracleScaleFactor: Number(params.market.oracleScaleFactor),
+          oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
+            Number(params.market.oracleType),
+          ),
+          initialMarginRatio: numberToCosmosSdkDecString(
+            params.market.initialMarginRatio,
+          ),
+          maintenanceMarginRatio: numberToCosmosSdkDecString(
+            params.market.maintenanceMarginRatio,
+          ),
+          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+          minPriceTickSize: numberToCosmosSdkDecString(
+            params.market.minPriceTickSize,
+          ),
+          minQuantityTickSize: numberToCosmosSdkDecString(
+            params.market.minQuantityTickSize,
+          ),
+          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
+          adminInfo: null,
+        }),
       },
-      initialDeposit: [
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,

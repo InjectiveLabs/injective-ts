@@ -111,8 +111,7 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'PrepareEip712',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.PrepareEip712',
         type: ErrorType.Web3Gateway,
       })
     }

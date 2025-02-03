@@ -92,6 +92,18 @@ export const endpointsDevnet2: NetworkEndpoints = {
   web3gw: 'https://devnet-2.api.injective.dev',
 }
 
+export const endpointsDevnet3: NetworkEndpoints = {
+  indexer: 'https://devnet-3.api.injective.dev',
+  grpc: 'https://devnet-3.grpc.injective.dev',
+  rpc: 'https://devnet-3.tm.injective.dev',
+  rest: 'https://devnet-3.lcd.injective.dev',
+  chronos: 'https://devnet-3.api.injective.dev',
+  explorer: 'https://devnet-3.api.injective.dev',
+  cacheGrpc: 'https://devnet-3.grpc.injective.dev',
+  cacheRest: 'https://devnet-3.api.injective.dev',
+  web3gw: 'https://devnet-3.api.injective.dev',
+}
+
 export const endpointsLocal: NetworkEndpoints = {
   indexer: 'https://localhost:4444',
   grpc: 'http://localhost:10337',

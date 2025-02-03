@@ -1,7 +1,10 @@
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
+import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgInstantSpotMarketLaunch {
   export interface Params {
@@ -81,7 +84,24 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
   }
 
   public toAmino() {
-    const { params } = this
+    const { params: initialParams } = this
+
+    const params = {
+      ...initialParams,
+      market: {
+        ...initialParams.market,
+        minPriceTickSize: numberToCosmosSdkDecString(
+          initialParams.market.minPriceTickSize,
+        ),
+        minQuantityTickSize: numberToCosmosSdkDecString(
+          initialParams.market.minQuantityTickSize,
+        ),
+        minNotional: numberToCosmosSdkDecString(
+          initialParams.market.minNotional,
+        ),
+      },
+    } as MsgInstantSpotMarketLaunch.Params
+
     const msg = createMessage(params)
     const message = {
       ...snakecaseKeys(msg),

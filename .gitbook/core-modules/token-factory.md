@@ -6,7 +6,7 @@ This `tokenfactory` module allows any account to create a new token with the nam
 
 _Note: If you want your denom to be visible on products like Helix, Hub, Explorer, etc, it's important to add token metadata information using the `MsgSetDenomMetadata` message as explained below._
 
-_Note #2: It's recommended to change your admin to the zero address for safety and preventing supply manipulation._&#x20;
+_Note #2: It's recommended to change your admin to the zero address for safety and preventing supply manipulation._
 
 #### Messages
 
@@ -78,7 +78,7 @@ console.log(txHash)
 
 #### MsgBurn
 
-Burning of a specific denom is only allowed for the current admin. Note, the current admin is defaulted to the creator of the denom.
+The admin can burn the supply of the token factory. Everyone else can use this message to burn their funds only.&#x20;
 
 ```ts
 import { MsgBurn } from '@injectivelabs/sdk-ts'

@@ -98,4 +98,17 @@ export class IndexerDerivativeStreamTransformer {
       timestamp: response.timestamp,
     }
   }
+
+  static positionV2StreamCallback = (
+    response: InjectiveDerivativeExchangeRpc.StreamPositionsV2Response,
+  ) => {
+    const position = response.position
+
+    return {
+      position: position
+        ? IndexerGrpcDerivativeTransformer.grpcPositionV2ToPositionV2(position)
+        : undefined,
+      timestamp: response.timestamp,
+    }
+  }
 }

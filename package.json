@@ -110,5 +110,9 @@
     "typedoc": "^0.25.11",
     "typedoc-monorepo-link-types": "^0.0.4",
     "typescript": "^5.7.2"
+  },
+  "resolutions": {
+    "@solana/web3.js": "1.98.0",
+    "rpc-websockets": "9.0.4"
   }
 }

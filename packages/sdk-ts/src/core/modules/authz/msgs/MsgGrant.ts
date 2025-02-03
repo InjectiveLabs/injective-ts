@@ -1,12 +1,12 @@
-import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosAuthzV1Beta1Tx,
   CosmosAuthzV1Beta1Authz,
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
+import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
+import { MsgBase } from '../../MsgBase.js'
 import { getGenericAuthorizationFromMessageType } from '../utils.js'
 import { GrantAuthorizationType } from './../types.js'
 
@@ -173,7 +173,9 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
           '@type': '/cosmos.authz.v1beta1.GenericAuthorization',
           msg: genericAuthorization.msg,
         },
-        expiration: new Date(Number(timestamp.seconds) * 1000),
+        expiration: new Date(Number(timestamp.seconds) * 1000)
+          .toISOString()
+          .replace('000Z', 'Z'),
       },
     }
 
@@ -183,7 +185,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     }
   }
 
-  private getTimestamp() {
+  public getTimestamp() {
     const { params } = this
 
     if (params.expiration) {

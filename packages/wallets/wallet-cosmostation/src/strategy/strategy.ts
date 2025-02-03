@@ -32,17 +32,39 @@ import { makeSignDoc } from '@cosmjs/proto-signing'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
 import { CosmostationWallet } from './../wallet.js'
 
-const INJECTIVE_CHAIN_NAME = 'injective'
+const getChainNameFromChainId = (chainId: CosmosChainId | ChainId) => {
+  const [chainName] = chainId.split('-')
+
+  if (chainName.includes('cosmoshub')) {
+    return 'cosmos'
+  }
+
+  if (chainName.includes('core')) {
+    return 'persistence'
+  }
+
+  if (chainName.includes('evmos')) {
+    return 'evmos'
+  }
+
+  if (chainId.includes('ssc') || chainId.includes('fetch')) {
+    return chainId
+  }
+
+  return chainName
+}
 
 export class Cosmostation
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
   private cosmostationWallet?: Cosmos
+  public chainName: string
 
-  constructor(args: { chainId: ChainId }) {
+  constructor(args: { chainId: ChainId | CosmosChainId }) {
     super(args)
     this.chainId = args.chainId || CosmosChainId.Injective
+    this.chainName = getChainNameFromChainId(this.chainId)
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -57,20 +79,17 @@ export class Cosmostation
     const cosmostationWallet = await this.getCosmostationWallet()
 
     try {
-      const accounts = await cosmostationWallet.requestAccount(
-        INJECTIVE_CHAIN_NAME,
-      )
+      const accounts = await cosmostationWallet.requestAccount(this.chainName)
 
       return [accounts.address]
     } catch (e: unknown) {
       if ((e as any).code === 4001) {
-        throw new CosmosWalletException(
-          new Error('The user rejected the request'),
-          {
-            code: UnspecifiedErrorCode,
-            context: WalletAction.GetAccounts,
-          },
-        )
+        throw new CosmosWalletException(new Error('The user rejected the request'),
+        {
+          code: UnspecifiedErrorCode,
+          context: WalletAction.GetAccounts,
+        },
+      )
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
@@ -94,9 +113,7 @@ export class Cosmostation
     _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
   ): Promise<string> {
     throw new CosmosWalletException(
-      new Error(
-        'sendEthereumTransaction is not supported. Cosmostation only supports sending cosmos transactions',
-      ),
+      new Error('sendEthereumTransaction is not supported. Cosmostation only supports sending cosmos transactions'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendEthereumTransaction,
@@ -113,7 +130,7 @@ export class Cosmostation
 
     try {
       const response = await cosmostationWallet.sendTransaction(
-        INJECTIVE_CHAIN_NAME,
+        this.chainName,
         CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
         SEND_TRANSACTION_MODE.SYNC,
       )
@@ -167,7 +184,7 @@ export class Cosmostation
     try {
       /* Sign the transaction */
       const signDirectResponse = await cosmostationWallet.signDirect(
-        INJECTIVE_CHAIN_NAME,
+        this.chainName,
         {
           chain_id: chainId,
           body_bytes: signDoc.bodyBytes,
@@ -200,20 +217,15 @@ export class Cosmostation
     const cosmostationWallet = await this.getCosmostationWallet()
 
     try {
-      const account = await cosmostationWallet.requestAccount(
-        INJECTIVE_CHAIN_NAME,
-      )
+      const account = await cosmostationWallet.requestAccount(this.chainName)
 
       return Buffer.from(account.publicKey).toString('base64')
     } catch (e: unknown) {
       if ((e as any).code === 4001) {
-        throw new CosmosWalletException(
-          new Error('The user rejected the request'),
-          {
-            code: UnspecifiedErrorCode,
-            context: WalletAction.GetAccounts,
-          },
-        )
+        throw new CosmosWalletException(new Error('The user rejected the request'), {
+          code: UnspecifiedErrorCode,
+          context: WalletAction.GetAccounts,
+        })
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
@@ -244,7 +256,7 @@ export class Cosmostation
       const cosmostationWallet = await this.getCosmostationWallet()
 
       const signature = await cosmostationWallet.signMessage(
-        INJECTIVE_CHAIN_NAME,
+        this.chainName,
         signer,
         toUtf8(data),
       )
@@ -270,9 +282,7 @@ export class Cosmostation
 
   async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
     throw new CosmosWalletException(
-      new Error(
-        'getEthereumTransactionReceipt is not supported on Cosmostation',
-      ),
+      new Error('getEthereumTransactionReceipt is not supported on Cosmostation'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,

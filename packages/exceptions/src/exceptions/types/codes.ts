@@ -1,3 +1,4 @@
+import * as grpcPkg from '@injectivelabs/grpc-web'
 import { StatusCodes } from 'http-status-codes'
 
 export enum GrpcErrorCode {
@@ -793,6 +794,7 @@ export type IndexerApiErrorCode = number
 export const UnspecifiedErrorCode = -1
 
 export type ErrorCode =
+  | grpcPkg.grpc.Code
   | StatusCodes
   | typeof UnspecifiedErrorCode
   | GrpcErrorCode

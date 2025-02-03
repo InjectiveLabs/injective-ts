@@ -22,6 +22,7 @@ import MsgCreateBinaryOptionsMarketOrder from './msgs/MsgCreateBinaryOptionsMark
 import MsgInstantBinaryOptionsMarketLaunch from './msgs/MsgInstantBinaryOptionsMarketLaunch.js'
 import MsgBatchCancelBinaryOptionsOrders from './msgs/MsgBatchCancelBinaryOptionsOrders.js'
 import MsgAdminUpdateBinaryOptionsMarket from './msgs/MsgAdminUpdateBinaryOptionsMarket.js'
+import MsgAuthorizeStakeGrants from './msgs/MsgAuthorizeStakeGrants.js'
 
 export {
   MsgDeposit,
@@ -33,6 +34,7 @@ export {
   MsgLiquidatePosition,
   MsgBatchUpdateOrders,
   MsgReclaimLockedFunds,
+  MsgAuthorizeStakeGrants,
   MsgCreateSpotLimitOrder,
   MsgCancelDerivativeOrder,
   MsgBatchCancelSpotOrders,
