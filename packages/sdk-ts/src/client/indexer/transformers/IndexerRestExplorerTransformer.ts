@@ -31,6 +31,16 @@ import { isJsonString } from '../../../utils/helpers.js'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
 
+const isValidJson = (value: string) => {
+  try {
+    JSON.parse(value)
+
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
 const getContractTransactionAmount = (
   ApiTransaction: ContractTransactionExplorerApiResponse,
 ): BigNumberInBase => {
@@ -40,6 +50,10 @@ const getContractTransactionAmount = (
   } = ApiTransaction.messages[0]
 
   if (!type.includes('MsgExecuteContract')) {
+    return ZERO_IN_BASE
+  }
+
+  if (typeof msg === 'string' && !isValidJson(msg)) {
     return ZERO_IN_BASE
   }
 
