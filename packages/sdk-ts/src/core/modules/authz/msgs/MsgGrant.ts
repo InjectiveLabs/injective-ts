@@ -173,9 +173,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
           '@type': '/cosmos.authz.v1beta1.GenericAuthorization',
           msg: genericAuthorization.msg,
         },
-        expiration: new Date(Number(timestamp.seconds) * 1000)
-          .toISOString()
-          .replace('000Z', 'Z'),
+        expiration: new Date(Number(timestamp.seconds) * 1000),
       },
     }
 
