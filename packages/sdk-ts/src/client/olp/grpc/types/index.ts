@@ -79,7 +79,6 @@ export interface Market {
 }
 
 export interface EpochConfigV2 {
-  number: number
   startDate?: Date
   endDate?: Date
   rewardInj: string
@@ -89,6 +88,8 @@ export interface EpochConfigV2 {
   volumeExponent: string
   permanenceVolumeThreshold: string
   qualifyingVolumeThreshold: string
+  number: number
+  isMiniEpoch: boolean
 }
 
 export interface TotalScore {
