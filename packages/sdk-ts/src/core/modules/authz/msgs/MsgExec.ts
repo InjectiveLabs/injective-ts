@@ -27,6 +27,8 @@ export default class MsgExec extends MsgBase<
   MsgExec.Object
 > {
   static fromJSON(params: MsgExec.Params): MsgExec {
+    console.log('MsgExec.fromJSON')
+
     return new MsgExec(params)
   }
 

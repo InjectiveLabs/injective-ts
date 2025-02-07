@@ -1,6 +1,8 @@
 import MsgGrant from './MsgGrant.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import { IndexerGrpcWeb3GwApi } from '../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
@@ -40,17 +42,7 @@ const protoParamsAmino = snakecaseKeys({
     expiration: new Date(params.expiration! * 1000),
   },
 })
-const protoParamsWeb3 = {
-  grantee: params.grantee,
-  granter: params.granter,
-  grant: {
-    authorization: {
-      '@type': '/cosmos.authz.v1beta1.GenericAuthorization',
-      msg: params.messageType,
-    },
-    expiration: new Date(params.expiration! * 1000),
-  },
-}
+
 const message = MsgGrant.fromJSON(params)
 
 describe('MsgGrant', () => {
@@ -117,12 +109,34 @@ describe('MsgGrant', () => {
     })
   })
 
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      sequence: 0,
+      accountNumber: 3,
+      messages: message,
+    })
 
-    expect(web3).toStrictEqual({
-      '@type': protoType,
-      ...protoParamsWeb3,
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: 'v1',
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

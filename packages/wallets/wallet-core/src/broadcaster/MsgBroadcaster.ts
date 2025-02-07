@@ -45,7 +45,11 @@ import {
   NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import {
+  ChainId,
+  EIP712Version,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
@@ -498,7 +502,7 @@ export class MsgBroadcaster {
       txTimeoutOnFeeDelegation,
     } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
-    const web3Msgs = msgs.map((msg) => msg.toWeb3())
+    const web3Msgs = msgs.map((msg) => msg.toWeb3(EIP712Version.V1))
 
     if (!ethereumChainId) {
       throw new GeneralException(new Error('Please provide ethereumChainId'))

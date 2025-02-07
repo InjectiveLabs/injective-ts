@@ -51,6 +51,7 @@ export abstract class MsgBase<
   /**
    * Returns the types of the message for EIP712
    */
+  // todo: check if we need the types
   public toEip712Types(): Map<string, TypedDataField[]> {
     const amino = this.toAmino()
 
@@ -63,6 +64,7 @@ export abstract class MsgBase<
   /**
    * Returns the values of the message for EIP712
    */
+
   public toEip712(): {
     type: string
     value: Record<string, unknown /** TODO */>
