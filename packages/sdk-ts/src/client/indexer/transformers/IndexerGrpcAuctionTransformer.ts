@@ -1,5 +1,5 @@
 import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
-import { GrpcCoin } from '../../../types/index.js'
+import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
 import {
   Auction,
   IndexerBid,
@@ -7,7 +7,6 @@ import {
   TotalInjBurnt,
   GrpcIndexerBid,
 } from '../types/auction.js'
-import { Coin } from '@injectivelabs/ts-types'
 
 /**
  * @category Indexer Grpc Transformer
@@ -43,18 +42,11 @@ export class IndexerGrpcAuctionTransformer {
     }
   }
 
-  static grpcCoinToCoin(grpcCoin: GrpcCoin): Coin {
-    return {
-      denom: grpcCoin.denom,
-      amount: grpcCoin.amount,
-    }
-  }
-
   static grpcAuctionToAuction(grpcAuction: GrpcAuction): Auction {
     return {
       winner: grpcAuction.winner,
       basketList: grpcAuction.basket.map(
-        IndexerGrpcAuctionTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
       winningBidAmount: grpcAuction.winningBidAmount,
       round: parseInt(grpcAuction.round, 10),

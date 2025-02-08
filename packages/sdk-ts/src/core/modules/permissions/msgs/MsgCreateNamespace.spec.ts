@@ -1,79 +1,71 @@
-import snakecaseKeys from 'snakecase-keys'
+import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
+import { InjectivePermissionsV1Beta1Permissions } from '@injectivelabs/core-proto-ts'
 import MsgCreateNamespace from './MsgCreateNamespace.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { IndexerGrpcWeb3GwApi } from './../../../../client'
+import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 
 const params: MsgCreateNamespace['params'] = {
   sender: mockFactory.injectiveAddress,
   namespace: {
     denom: 'inj',
-    wasmHook: 'wasmHookAddress',
-    mintsPaused: true,
-    sendsPaused: false,
-    burnsPaused: true,
-    rolePermissions: [{ role: 'admin', permissions: 1 }],
-    addressRoles: [
-      { address: mockFactory.injectiveAddress2, roles: ['admin'] },
+    contractHook: 'wasmHookAddress',
+    rolePermissions: [{ name: 'admin', roleId: 1, permissions: 1 }],
+    actorRoles: [{ actor: mockFactory.injectiveAddress2, roles: ['admin'] }],
+    roleManagers: [
+      {
+        manager: mockFactory.injectiveAddress,
+        roles: ['admin'],
+      },
+    ],
+    policyStatuses: [
+      {
+        action: InjectivePermissionsV1Beta1Permissions.Action.SEND,
+        isDisabled: false,
+        isSealed: false,
+      },
+    ],
+    policyManagerCapabilities: [
+      {
+        manager: mockFactory.injectiveAddress2,
+        action: InjectivePermissionsV1Beta1Permissions.Action.SEND,
+        canDisable: false,
+        canSeal: false,
+      },
     ],
   },
 }
 
-const protoType = '/injective.permissions.v1beta1.MsgCreateNamespace'
-const protoTypeShort = 'permissions/MsgCreateNamespace'
-const protoParams = {
-  sender: params.sender,
-  namespace: {
-    denom: params.namespace.denom,
-    wasmHook: params.namespace.wasmHook,
-    mintsPaused: params.namespace.mintsPaused,
-    sendsPaused: params.namespace.sendsPaused,
-    burnsPaused: params.namespace.burnsPaused,
-    rolePermissions: params.namespace.rolePermissions.map((rp) => ({
-      role: rp.role,
-      permissions: rp.permissions,
-    })),
-    addressRoles: params.namespace.addressRoles.map((ar) => ({
-      address: ar.address,
-      roles: ar.roles,
-    })),
-  },
-}
-
-const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgCreateNamespace.fromJSON(params)
 
 describe('MsgCreateNamespace', () => {
-  it('generates proper proto', () => {
-    const proto = message.toProto()
-
-    expect(proto).toStrictEqual({
-      ...protoParams,
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      sequence: 0,
+      accountNumber: 3,
+      messages: message,
     })
-  })
 
-  it('generates proper data', () => {
-    const data = message.toData()
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
 
-    expect(data).toStrictEqual({
-      '@type': protoType,
-      ...protoParams,
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: 'v1',
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
-  })
 
-  it('generates proper amino', () => {
-    const amino = message.toAmino()
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
 
-    expect(amino).toStrictEqual({
-      type: protoTypeShort,
-      value: protoParamsAmino,
-    })
-  })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
 
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
-
-    expect(web3).toStrictEqual({
-      '@type': protoType,
-      ...protoParamsAmino,
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

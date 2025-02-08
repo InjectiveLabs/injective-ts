@@ -62,4 +62,23 @@ describe('ChainGrpcAuctionApi', () => {
       )
     }
   })
+
+  test('fetchLastAuctionResult', async () => {
+    try {
+      const response = await chainGrpcAuctionApi.fetchLastAuctionResult()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcAuctionTransformer.LastAuctionResultResponseToLastAuctionResult
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcAuctionApi.fetchLastAuctionResult => ' + (e as any).message,
+      )
+    }
+  })
 })

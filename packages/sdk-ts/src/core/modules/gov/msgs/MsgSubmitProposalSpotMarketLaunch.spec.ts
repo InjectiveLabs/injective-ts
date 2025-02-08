@@ -3,15 +3,19 @@ import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client'
 
+const market = mockFactory.injUsdtSpotMarket
+
 const params: MsgSubmitProposalSpotMarketLaunch['params'] = {
   market: {
-    title: 'INJ/USDT',
+    title: 'INJ/USDT Spot market',
     description: 'Launch of INJ/USDT spot market',
-    ticker: 'INJ/USDT',
-    baseDenom: 'inj',
-    quoteDenom: 'peggy0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    minPriceTickSize: '0.000000000000001',
-    minQuantityTickSize: '1000000000000000',
+    ticker: market.ticker,
+    baseDenom: market.baseDenom,
+    quoteDenom: market.quoteDenom,
+    baseDecimals: market.baseToken.decimals,
+    quoteDecimals: market.quoteToken.decimals,
+    minPriceTickSize: market.minPriceTickSize,
+    minQuantityTickSize: market.minQuantityTickSize,
     makerFeeRate: '-0.00005',
     takerFeeRate: '0.0005',
     minNotional: '1000000',
@@ -33,7 +37,6 @@ describe('MsgSubmitProposalSpotMarketLaunch', () => {
       messages: message,
     })
 
-    // TODO
     it.skip('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 

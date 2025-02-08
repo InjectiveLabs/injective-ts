@@ -1,23 +1,25 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  InjectivePermissionsV1Beta1Tx,
+  InjectivePermissionsV1Beta1Permissions,
+} from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import {
+  PermissionRole,
+  PermissionRoleManager,
+  PermissionPolicyStatus,
+  PermissionPolicyManagerCapability,
+} from './../../../../client/chain/types'
 
 export declare namespace MsgUpdateNamespace {
   export interface Params {
     sender: string
-    namespaceDenom: string
-    wasmHook: {
-      newValue: string
-    }
-    mintsPaused: {
-      newValue: boolean
-    }
-    sendsPaused: {
-      newValue: boolean
-    }
-    burnsPaused: {
-      newValue: boolean
-    }
+    denom: string
+    contractHook?: string
+    rolePermissions: PermissionRole[]
+    roleManagers: PermissionRoleManager[]
+    policyStatuses: PermissionPolicyStatus[]
+    policyManagerCapabilities: PermissionPolicyManagerCapability[]
   }
 
   export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace
@@ -39,18 +41,14 @@ export default class MsgUpdateNamespace extends MsgBase<
 
     const message = InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.create()
     message.sender = params.sender
-    message.namespaceDenom = params.namespaceDenom
-    message.wasmHook = {
-      newValue: params.wasmHook.newValue,
-    }
-    message.mintsPaused = {
-      newValue: params.mintsPaused.newValue,
-    }
-    message.sendsPaused = {
-      newValue: params.sendsPaused.newValue,
-    }
-    message.burnsPaused = {
-      newValue: params.burnsPaused.newValue,
+    message.denom = params.denom
+    message.rolePermissions = params.rolePermissions
+    message.roleManagers = params.roleManagers
+    message.policyStatuses = params.policyStatuses
+    message.policyManagerCapabilities = params.policyManagerCapabilities
+
+    if (params.contractHook) {
+      message.contractHook = { newValue: params.contractHook }
     }
 
     return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.fromPartial(message)
@@ -67,9 +65,28 @@ export default class MsgUpdateNamespace extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
-    const message = {
-      ...snakecaseKeys(proto),
-    }
+
+    const policyStatuses =
+      proto.policyStatuses.map((policyStatus) => ({
+        ...policyStatus,
+        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+          policyStatus.action,
+        ),
+      })) || []
+
+    const policyManagerCapabilities =
+      proto.policyManagerCapabilities.map((policyManagerCapability) => ({
+        ...policyManagerCapability,
+        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+          policyManagerCapability.action,
+        ),
+      })) || []
+
+    const message = snakecaseKeys({
+      ...proto,
+      policyStatuses,
+      policyManagerCapabilities,
+    })
 
     return {
       type: 'permissions/MsgUpdateNamespace',

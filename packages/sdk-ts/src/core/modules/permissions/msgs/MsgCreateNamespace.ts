@@ -1,18 +1,28 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  InjectivePermissionsV1Beta1Tx,
+  InjectivePermissionsV1Beta1Permissions,
+} from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import {
+  PermissionRole,
+  PermissionActorRoles,
+  PermissionRoleManager,
+  PermissionPolicyStatus,
+  PermissionPolicyManagerCapability,
+} from './../../../../client/chain/types'
 
 export declare namespace MsgCreateNamespace {
   export interface Params {
     sender: string
     namespace: {
       denom: string
-      wasmHook: string
-      mintsPaused: boolean
-      sendsPaused: boolean
-      burnsPaused: boolean
-      rolePermissions: { role: string; permissions: number }[]
-      addressRoles: { address: string; roles: string[] }[]
+      contractHook: string
+      rolePermissions: PermissionRole[]
+      actorRoles: PermissionActorRoles[]
+      roleManagers: PermissionRoleManager[]
+      policyStatuses: PermissionPolicyStatus[]
+      policyManagerCapabilities: PermissionPolicyManagerCapability[]
     }
   }
 
@@ -52,9 +62,33 @@ export default class MsgCreateNamespace extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
-    const message = {
-      ...snakecaseKeys(proto),
-    }
+
+    const policyStatuses = (proto.namespace?.policyStatuses || []).map(
+      (policyStatus) => ({
+        ...policyStatus,
+        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+          policyStatus.action,
+        ),
+      }),
+    )
+
+    const policyManagerCapabilities = (
+      proto.namespace?.policyManagerCapabilities || []
+    ).map((policyManagerCapability) => ({
+      ...policyManagerCapability,
+      action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+        policyManagerCapability.action,
+      ),
+    }))
+
+    const message = snakecaseKeys({
+      ...proto,
+      namespace: {
+        ...proto.namespace,
+        policyStatuses,
+        policyManagerCapabilities,
+      },
+    })
 
     return {
       type: 'permissions/MsgCreateNamespace',

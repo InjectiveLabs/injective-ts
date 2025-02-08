@@ -120,6 +120,16 @@ export interface ChainDerivativePosition {
   position?: ChainPosition
 }
 
+export interface ChainDenomDecimal {
+  denom: string
+  decimals: string
+}
+
+export interface ChainDenomMinNotional {
+  denom: string
+  minNotional: string
+}
+
 export type GrpcOrderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo
 export type GrpcSpotMarket = InjectiveExchangeV1Beta1Exchange.SpotMarket
 export type GrpcSpotMarketOrder =
@@ -147,6 +157,9 @@ export type GrpcFeeDiscountAccountInfo =
   InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse
 export type GrpcTradeRewardCampaign =
   InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse
+export type GrpcDenomDecimals = InjectiveExchangeV1Beta1Exchange.DenomDecimals
+export type GrpcDenomMinNotional =
+  InjectiveExchangeV1Beta1Exchange.DenomMinNotional
 
 export type GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType
 export const GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType

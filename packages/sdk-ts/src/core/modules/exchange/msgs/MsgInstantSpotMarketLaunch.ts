@@ -15,6 +15,8 @@ export declare namespace MsgInstantSpotMarketLaunch {
       baseDenom: string
       quoteDenom: string
       minNotional: string
+      baseDecimals: number
+      quoteDecimals: number
       minPriceTickSize: string
       minQuantityTickSize: string
     }
@@ -30,6 +32,8 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
   message.ticker = params.market.ticker
   message.baseDenom = params.market.baseDenom
   message.quoteDenom = params.market.quoteDenom
+  message.baseDecimals = params.market.baseDecimals
+  message.quoteDecimals = params.market.quoteDecimals
   message.minPriceTickSize = params.market.minPriceTickSize
   message.minQuantityTickSize = params.market.minQuantityTickSize
   message.minNotional = params.market.minNotional

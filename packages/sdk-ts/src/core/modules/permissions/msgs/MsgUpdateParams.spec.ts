@@ -1,6 +1,7 @@
-import snakecaseKeys from 'snakecase-keys'
+import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
 import MsgUpdateParams from './MsgUpdateParams.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { IndexerGrpcWeb3GwApi } from './../../../../client'
+import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 
 const params: MsgUpdateParams['params'] = {
   authority: mockFactory.injectiveAddress,
@@ -9,51 +10,37 @@ const params: MsgUpdateParams['params'] = {
   },
 }
 
-const protoType = '/injective.permissions.v1beta1.MsgUpdateParams'
-const protoTypeShort = 'permissions/MsgUpdateParams'
-const protoParams = {
-  authority: params.authority,
-  params: {
-    wasmHookQueryMaxGas: params.params.wasmHookQueryMaxGas,
-  },
-}
-
-const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgUpdateParams.fromJSON(params)
 
 describe('MsgUpdateParams', () => {
-  it('generates proper proto', () => {
-    const proto = message.toProto()
-
-    expect(proto).toStrictEqual({
-      ...protoParams,
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      sequence: 0,
+      accountNumber: 3,
+      messages: message,
     })
-  })
 
-  it('generates proper data', () => {
-    const data = message.toData()
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
 
-    expect(data).toStrictEqual({
-      '@type': protoType,
-      ...protoParams,
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: 'v1',
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
-  })
 
-  it('generates proper amino', () => {
-    const amino = message.toAmino()
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
 
-    expect(amino).toStrictEqual({
-      type: protoTypeShort,
-      value: protoParamsAmino,
-    })
-  })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
 
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
-
-    expect(web3).toStrictEqual({
-      '@type': protoType,
-      ...protoParamsAmino,
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

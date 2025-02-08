@@ -24,6 +24,8 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
       makerFeeRate: string
       takerFeeRate: string
       minNotional: string
+      baseDecimals: number
+      quoteDecimals: number
     }
     proposer: string
     deposit: {
@@ -58,6 +60,8 @@ const createSpotMarketLaunchContent = (
   content.makerFeeRate = params.market.makerFeeRate
   content.takerFeeRate = params.market.takerFeeRate
   content.minNotional = params.market.minNotional
+  content.baseDecimals = params.market.baseDecimals
+  content.quoteDecimals = params.market.quoteDecimals
 
   return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.fromPartial(
     content,
