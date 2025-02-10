@@ -2,6 +2,7 @@ import {
   InjectiveExchangeV1Beta1Query,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
 import { AtomicMarketOrderAccessLevel } from '@injectivelabs/core-proto-ts/cjs/injective/exchange/v1beta1/exchange.js'
 import {
   ChainPosition,
@@ -299,7 +300,9 @@ export class ChainGrpcExchangeTransformer {
   ): ChainDenomMinNotional[] {
     return response.denomMinNotionals.map((denomDecimals) => ({
       denom: denomDecimals.denom,
-      minNotional: denomDecimals.minNotional,
+      minNotional: new BigNumberInBase(denomDecimals.minNotional)
+        .dividedBy(10 ** 18)
+        .toFixed(),
     }))
   }
 }
