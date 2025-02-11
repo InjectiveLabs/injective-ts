@@ -60,8 +60,8 @@ const createSpotMarketLaunchContent = (
   content.makerFeeRate = params.market.makerFeeRate
   content.takerFeeRate = params.market.takerFeeRate
   content.minNotional = params.market.minNotional
-  content.baseDecimals = params.market.baseDecimals
-  content.quoteDecimals = params.market.quoteDecimals
+  content.baseDecimals = Number(params.market.baseDecimals)
+  content.quoteDecimals = Number(params.market.quoteDecimals)
 
   return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.fromPartial(
     content,
@@ -176,32 +176,15 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   }
 
   public toWeb3() {
-    const { params } = this
+    const { value } = this.toAmino()
 
     const messageWithProposalType = {
       content: {
         '@type': '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
-        ...snakecaseKeys({
-          ...this.getContent(),
-          minPriceTickSize: numberToCosmosSdkDecString(
-            params.market.minPriceTickSize,
-          ),
-          minQuantityTickSize: numberToCosmosSdkDecString(
-            params.market.minQuantityTickSize,
-          ),
-          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
-          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
-          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
-          adminInfo: null,
-        }),
+        ...value.content.value,
       },
-      initial_deposit: [
-        {
-          denom: params.deposit.denom,
-          amount: params.deposit.amount,
-        },
-      ],
-      proposer: params.proposer,
+      initial_deposit: value.initial_deposit,
+      proposer: value.proposer,
     }
 
     return {

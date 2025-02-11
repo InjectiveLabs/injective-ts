@@ -32,11 +32,11 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
   message.ticker = params.market.ticker
   message.baseDenom = params.market.baseDenom
   message.quoteDenom = params.market.quoteDenom
-  message.baseDecimals = params.market.baseDecimals
-  message.quoteDecimals = params.market.quoteDecimals
   message.minPriceTickSize = params.market.minPriceTickSize
   message.minQuantityTickSize = params.market.minQuantityTickSize
   message.minNotional = params.market.minNotional
+  message.baseDecimals = Number(params.market.baseDecimals)
+  message.quoteDecimals = Number(params.market.quoteDecimals)
 
   return InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.fromPartial(
     message,
@@ -103,6 +103,8 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
         minNotional: numberToCosmosSdkDecString(
           initialParams.market.minNotional,
         ),
+        baseDecimals: initialParams.market.baseDecimals,
+        quoteDecimals: initialParams.market.quoteDecimals,
       },
     } as MsgInstantSpotMarketLaunch.Params
 
