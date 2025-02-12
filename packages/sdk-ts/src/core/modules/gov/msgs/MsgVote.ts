@@ -47,7 +47,7 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
     const proto = this.toProto()
     const message = {
       ...snakecaseKeys(proto),
-      option: CosmosGovV1Gov.voteOptionToJSON(proto.option),
+      option: proto.option,
     }
 
     return {
@@ -64,6 +64,16 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
       '@type': '/cosmos.gov.v1.MsgVote',
       ...value,
     }
+  }
+
+  public toEip712V2() {
+    const web3Gw = this.toWeb3Gw()
+
+    web3Gw.option = CosmosGovV1Gov.voteOptionToJSON(
+      web3Gw.option,
+    ) as unknown as CosmosGovV1Gov.VoteOption
+
+    return web3Gw
   }
 
   public toDirectSign() {

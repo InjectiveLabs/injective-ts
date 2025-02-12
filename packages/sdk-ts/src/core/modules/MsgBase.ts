@@ -60,7 +60,6 @@ export abstract class MsgBase<
   /**
    * Returns the types of the message for EIP712
    */
-  // todo: check if we need the types
   public toEip712Types(): Map<string, TypedDataField[]> {
     const amino = this.toAmino()
 
@@ -73,7 +72,6 @@ export abstract class MsgBase<
   /**
    * Returns the values of the message for EIP712
    */
-
   public toEip712(): {
     type: string
     value: Record<string, unknown /** TODO */>
@@ -85,6 +83,16 @@ export abstract class MsgBase<
       type,
       value: mapValuesToProperValueType(value, type),
     }
+  }
+
+  /**
+   * Returns the values of the message for EIP712_V2
+   *
+   * Which is the same as the data we are passing to the Web3Gw
+   * to generate EIP712 for us
+   */
+  public toEip712V2() {
+    return this.toWeb3Gw()
   }
 
   public toDirectSignJSON(): string {

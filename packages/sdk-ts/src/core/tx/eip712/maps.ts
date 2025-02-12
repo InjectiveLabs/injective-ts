@@ -1,7 +1,11 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { snakeToPascal } from '@injectivelabs/utils'
-import { isNumber, numberToCosmosSdkDecString } from '../../../utils/numbers.js'
+import {
+  isNumber,
+  numberToCosmosSdkDecString,
+  amountToCosmosSdkDecAmount,
+} from '../../../utils/numbers.js'
 import { TypedDataField } from './types.js'
 
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
@@ -36,6 +40,7 @@ export const objectKeysToEip712Types = ({
     'revision_number',
   ]
   const stringFieldsToOmitIfEmpty = ['cid']
+  const fieldsToOmitIfEmpty = ['admin_info']
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
 
@@ -43,6 +48,10 @@ export const objectKeysToEip712Types = ({
     const propertyValue = snakecaseKeys(object)[property]
 
     if (property === '@type') {
+      continue
+    }
+
+    if (fieldsToOmitIfEmpty.includes(property) && !propertyValue) {
       continue
     }
 
@@ -57,7 +66,7 @@ export const objectKeysToEip712Types = ({
     ) {
       types.push({
         name: property,
-        type: numberTypeToReflectionNumberType(property),
+        type: numberTypeToReflectionNumberType(property, messageType),
       })
     } else if (type === 'string') {
       if (stringFieldsToOmitIfEmpty.includes(property) && !propertyValue) {
@@ -165,7 +174,14 @@ export const objectKeysToEip712Types = ({
  * them in their chain representation from the number value
  * that is available in JavaScript
  */
-export const numberTypeToReflectionNumberType = (property?: string) => {
+export const numberTypeToReflectionNumberType = (
+  property?: string,
+  messageType?: string,
+) => {
+  if (messageType == 'cosmos-sdk/MsgSubmitProposal' && property === 'status') {
+    return 'int32'
+  }
+
   switch (property) {
     case 'order_mask':
       return 'int32'
@@ -177,6 +193,10 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
       return 'uint64'
     case 'order_type':
       return 'int32'
+    case 'admin_permissions':
+      return 'uint32'
+    case 'oracle_scale_factor':
+      return 'uint32'
     case 'oracle_type':
       return 'int32'
     case 'exponent':
@@ -243,20 +263,29 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
     'revision_number',
     'expiry',
   ]
-  const sdkDecKeys = [
-    'min_price_tick_size',
-    'price',
-    'quantity',
-    'margin',
-    'trigger_price',
-    'min_quantity_tick_size',
-  ]
+  const stringToNumberKeysTypeMaps = {
+    'cosmos-sdk/MsgSubmitProposal': ['oracle_scale_factor'],
+  }
+  const sdkDecKeys = ['price', 'quantity', 'margin', 'trigger_price']
   const sdkDecKeyWithTypeMaps = {
     'exchange/MsgIncreasePositionMargin': ['amount'],
   }
   const nullableStringsTypeMaps = {
     'wasmx/MsgExecuteContractCompat': ['funds'],
   }
+  const amountToCosmosSdkDecAmountTypeMaps = {
+    'cosmos-sdk/MsgSubmitProposal': [
+      'initial_margin_ratio',
+      'maintenance_margin_ratio',
+      'min_notional',
+      'min_price_tick_size',
+      'min_quantity_tick_size',
+      'maker_fee_rate',
+      'taker_fee_rate',
+      'relayer_fee_share_rate',
+    ],
+  }
+
   // const dateTypesMap = {
   //   'cosmos-sdk/MsgGrant': ['expiration'],
   // }
@@ -314,6 +343,7 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
             : value.map((item) =>
                 mapValuesToProperValueType(
                   item as Record<string, unknown>,
+                  messageTypeUrl,
                 ),
               ),
         }
@@ -323,19 +353,57 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
         ...result,
         [key]: mapValuesToProperValueType(
           value as Record<string, unknown>,
+          messageTypeUrl,
         ),
       }
     }
 
     if (isNumber(value as string | number)) {
+      // Message Type Specific checks
+      if (messageTypeUrl) {
+        let typeInMap = Object.keys(amountToCosmosSdkDecAmountTypeMaps).find(
+          (key) => key === messageTypeUrl,
+        )
+
+        if (typeInMap) {
+          const cosmosSdkDecKeys =
+            amountToCosmosSdkDecAmountTypeMaps[
+              typeInMap as keyof typeof amountToCosmosSdkDecAmountTypeMaps
+            ]
+
+          if (cosmosSdkDecKeys.includes(key)) {
+            return {
+              ...result,
+              [key]: amountToCosmosSdkDecAmount(value.toString()).toFixed(),
+            }
+          }
+        }
+
+        typeInMap = Object.keys(stringToNumberKeysTypeMaps).find(
+          (key) => key === messageTypeUrl,
+        )
+
+        if (typeInMap) {
+          const stringToNumberKeys =
+            stringToNumberKeysTypeMaps[
+              typeInMap as keyof typeof stringToNumberKeysTypeMaps
+            ]
+
+          if (stringToNumberKeys.includes(key)) {
+            return {
+              ...result,
+              [key]: Number(value),
+            }
+          }
+        }
+      }
+
       if (numberToStringKeys.includes(key)) {
         return {
           ...result,
           [key]: value.toString(),
         }
       }
-
-      // Maybe some other check needed
     }
 
     if (typeof value === 'string') {

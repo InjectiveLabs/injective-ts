@@ -16,7 +16,7 @@ export const prepareEip712 = <T>({
   injectiveAddress = mockFactory.injectiveAddress,
   ethereumAddress = mockFactory.ethereumAddress,
   accountNumber = 1,
-  sequence = 0,
+  sequence = 1,
   timeoutHeight = 999_999_999,
   memo = '',
 }: {

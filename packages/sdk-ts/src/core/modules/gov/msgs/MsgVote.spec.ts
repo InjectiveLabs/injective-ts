@@ -1,8 +1,12 @@
 import MsgVote from './MsgVote.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
-import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
-import { IndexerGrpcWeb3GwApi } from './../../../../client'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgVote['params'] = {
   proposalId: 1,
@@ -21,7 +25,7 @@ const protoParams = {
 }
 const protoParamsAmino = snakecaseKeys({
   ...protoParams,
-  option: 'VOTE_OPTION_NO',
+  option: 3,
 })
 const message = MsgVote.fromJSON(params)
 
@@ -50,33 +54,8 @@ describe('MsgVote', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      MsgValue: [
-        { name: 'proposal_id', type: 'uint64' },
-        { name: 'voter', type: 'string' },
-        { name: 'option', type: 'int32' },
-        { name: 'metadata', type: 'string' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeAmino,
-      value: snakecaseKeys({
-        ...protoParamsAmino,
-        proposal_id: params.proposalId.toString(),
-      }),
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
       '@type': protoType,
@@ -98,7 +77,7 @@ describe('MsgVote', () => {
         endpoints.indexer,
       ).prepareEip712Request({
         ...prepareEip712Request,
-        eip712Version: 'v1',
+        eip712Version: EIP712Version.V1,
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
@@ -109,7 +88,10 @@ describe('MsgVote', () => {
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
-      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })

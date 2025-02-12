@@ -1,8 +1,8 @@
 import MsgSubmitProposalSpotMarketLaunch from './MsgSubmitProposalSpotMarketLaunch.js'
-import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
-import { IndexerGrpcWeb3GwApi } from './../../../../client'
-
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 const params: MsgSubmitProposalSpotMarketLaunch['params'] = {
   market: {
     title: 'INJ/USDT',
@@ -28,20 +28,17 @@ const message = MsgSubmitProposalSpotMarketLaunch.fromJSON(params)
 describe('MsgSubmitProposalSpotMarketLaunch', () => {
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      sequence: 0,
-      accountNumber: 3,
       messages: message,
     })
 
-    // TODO
-    it.skip('EIP712 v1', async () => {
+    it('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
       ).prepareEip712Request({
         ...prepareEip712Request,
-        eip712Version: 'v1',
+        eip712Version: EIP712Version.V1,
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
@@ -52,7 +49,7 @@ describe('MsgSubmitProposalSpotMarketLaunch', () => {
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
-      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
+      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: EIP712Version.V2 })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })

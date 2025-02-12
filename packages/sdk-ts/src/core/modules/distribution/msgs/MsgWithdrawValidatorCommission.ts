@@ -50,7 +50,7 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
     }
 
     return {
-      type: 'cosmos-sdk/MsgWithdrawDelegationReward',
+      type: 'cosmos-sdk/MsgWithdrawValCommission',
       value: message,
     }
   }

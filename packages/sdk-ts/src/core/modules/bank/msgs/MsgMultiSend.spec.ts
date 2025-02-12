@@ -1,5 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgDeposit from './MsgDeposit.js'
+import MsgMultiSend from './MsgMultiSend.js'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import {
   getEip712TypedData,
@@ -8,32 +8,35 @@ import {
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import { EIP712Version } from '@injectivelabs/ts-types'
 
-const params: MsgDeposit['params'] = {
-  proposalId: 1,
-  depositor: mockFactory.injectiveAddress,
-  amount: {
-    amount: new BigNumberInBase(1).toFixed(),
-    denom: 'inj',
-  },
+const params: MsgMultiSend['params'] = {
+  inputs: [
+    {
+      address: mockFactory.injectiveAddress,
+      coins: [{ amount: new BigNumberInBase(1).toFixed(), denom: 'inj' }],
+    },
+  ],
+  outputs: [
+    {
+      address: mockFactory.injectiveAddress2,
+      coins: [{ amount: new BigNumberInBase(1).toFixed(), denom: 'inj' }],
+    },
+  ],
 }
 
-const protoType = '/cosmos.gov.v1beta1.MsgDeposit'
-const protoTypeAmino = 'cosmos-sdk/MsgDeposit'
+const protoType = '/cosmos.bank.v1beta1.MsgMultiSend'
+const protoTypeShort = 'cosmos-sdk/MsgMultiSend'
 const protoParams = {
-  proposalId: params.proposalId.toString(),
-  depositor: params.depositor,
-  amount: [params.amount],
+  inputs: params.inputs,
+  outputs: params.outputs,
 }
-
 const protoParamsAmino = {
-  proposal_id: params.proposalId.toString(),
-  depositor: params.depositor,
-  amount: [params.amount],
+  inputs: params.inputs,
+  outputs: params.outputs,
 }
 
-const message = MsgDeposit.fromJSON(params)
+const message = MsgMultiSend.fromJSON(params)
 
-describe('MsgDeposit', () => {
+describe('MsgMultiSend', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
@@ -53,7 +56,7 @@ describe('MsgDeposit', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
-      type: protoTypeAmino,
+      type: protoTypeShort,
       value: protoParamsAmino,
     })
   })

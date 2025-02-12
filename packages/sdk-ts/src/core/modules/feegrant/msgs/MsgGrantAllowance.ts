@@ -146,6 +146,23 @@ export default class MsgGrantAllowance extends MsgBase<
     }
   }
 
+  public toEip712V2() {
+    const web3Gw = this.toWeb3Gw()
+
+    const messageAdjustedForEip712V2 = {
+      ...web3Gw,
+      allowance: {
+        '@type': web3Gw.allowance['@type'],
+        spend_limit: web3Gw.allowance.spendLimit,
+        expiration: web3Gw.allowance.expiration
+          .toISOString()
+          .replace('.000Z', 'Z'),
+      },
+    }
+
+    return messageAdjustedForEip712V2
+  }
+
   private getTimestamp() {
     const { params } = this
 

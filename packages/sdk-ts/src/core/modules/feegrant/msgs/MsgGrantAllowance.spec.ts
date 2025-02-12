@@ -1,7 +1,14 @@
 import MsgGrantAllowance from './MsgGrantAllowance.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { CosmosFeegrantV1Beta1Feegrant } from '@injectivelabs/core-proto-ts'
 import snakecaseKeys from 'snakecase-keys'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
+
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
@@ -86,51 +93,6 @@ describe('MsgGrantAllowance', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeAllowance: [
-        { name: 'type', type: 'string' },
-        { name: 'value', type: 'TypeAllowanceValue' },
-      ],
-      TypeAllowanceValue: [
-        { name: 'spend_limit', type: 'TypeAllowanceValueSpendLimit[]' },
-        { name: 'expiration', type: 'string' },
-      ],
-      TypeAllowanceValueSpendLimit: [
-        { name: 'denom', type: 'string' },
-        { name: 'amount', type: 'string' },
-      ],
-      MsgValue: [
-        { name: 'granter', type: 'string' },
-        { name: 'grantee', type: 'string' },
-        { name: 'allowance', type: 'TypeAllowance' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeShort,
-      value: snakecaseKeys({
-        ...protoParamsAmino,
-        allowance: {
-          ...protoParamsAmino.allowance,
-          value: {
-            ...protoParamsAmino.allowance.value,
-            expiration:
-              protoParamsAmino.allowance.value.expiration
-                .toJSON()
-                .split('.')[0] + 'Z',
-          },
-        },
-      }),
-    })
-  })
-
   it('generates proper direct sign', () => {
     const directSign = message.toDirectSign()
 
@@ -140,12 +102,44 @@ describe('MsgGrantAllowance', () => {
     })
   })
 
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
       '@type': protoType,
       ...protoParamsWeb3,
+    })
+  })
+
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: message,
+    })
+
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

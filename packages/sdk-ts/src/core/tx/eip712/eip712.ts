@@ -38,6 +38,7 @@ export const getEip712TypedData = ({
     fee,
     types: typesWithMessageTypes,
   })
+
   return {
     ...typesWithFeePayer,
     primaryType: 'Tx',
@@ -62,8 +63,7 @@ export const getEip712TypedDataV2 = ({
   ethereumChainId: EthereumChainId
 }) => {
   const messages = Array.isArray(msgs) ? msgs : [msgs]
-  const eip712Msgs = messages.map((m) => m.toWeb3())
-
+  const eip712Msgs = messages.map((m) => m.toEip712V2())
   const types = getDefaultEip712TypesV2()
 
   return {
