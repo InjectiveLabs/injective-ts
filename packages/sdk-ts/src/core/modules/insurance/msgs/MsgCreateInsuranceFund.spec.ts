@@ -1,7 +1,13 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgCreateInsuranceFund from './MsgCreateInsuranceFund.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 
 const market = mockFactory.injUsdtDerivativeMarket
 
@@ -58,45 +64,44 @@ describe('MsgCreateInsuranceFund', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeInitialDeposit: [
-        { name: 'denom', type: 'string' },
-        { name: 'amount', type: 'string' },
-      ],
-      MsgValue: [
-        { name: 'sender', type: 'string' },
-        { name: 'ticker', type: 'string' },
-        { name: 'quote_denom', type: 'string' },
-        { name: 'oracle_base', type: 'string' },
-        { name: 'oracle_quote', type: 'string' },
-        { name: 'oracle_type', type: 'int32' },
-        { name: 'expiry', type: 'int64' },
-        { name: 'initial_deposit', type: 'TypeInitialDeposit' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeShort,
-      value: snakecaseKeys({
-        ...protoParamsAmino,
-        expiry: '-1',
-      }),
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
       '@type': protoType,
       ...protoParamsAmino,
+    })
+  })
+
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: message,
+    })
+
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

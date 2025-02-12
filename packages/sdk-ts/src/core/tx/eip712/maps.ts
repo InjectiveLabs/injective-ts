@@ -11,6 +11,8 @@ import { TypedDataField } from './types.js'
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
 
 /**
+ *  ONLY USED FOR EIP712_V1
+ *
  * Function used to generate EIP712 types based on a message object
  * and its structure (recursive)
  */
@@ -237,6 +239,8 @@ export const stringTypeToReflectionStringType = (property?: string) => {
 }
 
 /**
+ * ONLY USED FOR EIP712_V1
+ *
  * We need to represent some of the values in a proper format acceptable by the chain.
  *
  * 1. We need to represent some values from a number to string
@@ -284,6 +288,7 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
       'taker_fee_rate',
       'relayer_fee_share_rate',
     ],
+    'cosmos-sdk/MsgEditValidator': ['commission_rate'],
   }
 
   // const dateTypesMap = {

@@ -94,6 +94,20 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     }
   }
 
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      oracle_type: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
+        params.fund.oracleType,
+      ),
+    }
+
+    return messageAdjusted
+  }
+
   public toDirectSign() {
     const proto = this.toProto()
 

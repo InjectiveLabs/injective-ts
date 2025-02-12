@@ -1,7 +1,12 @@
 import MsgEditValidator from './MsgEditValidator.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
-
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 const params: MsgEditValidator['params'] = {
   description: {
     moniker: 'Validator',
@@ -11,8 +16,8 @@ const params: MsgEditValidator['params'] = {
     details: 'Validator Details',
   },
   validatorAddress: mockFactory.validatorAddress,
-  commissionRate: '0.01',
-  minSelfDelegation: '0.01',
+  commissionRate: '10000000000000000',
+  minSelfDelegation: '10000000000000000',
 }
 
 const protoType = '/cosmos.staking.v1beta1.MsgEditValidator'
@@ -51,41 +56,44 @@ describe('MsgEditValidator', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeDescription: [
-        { name: 'moniker', type: 'string' },
-        { name: 'identity', type: 'string' },
-        { name: 'website', type: 'string' },
-        { name: 'security_contact', type: 'string' },
-        { name: 'details', type: 'string' },
-      ],
-      MsgValue: [
-        { name: 'description', type: 'TypeDescription' },
-        { name: 'validator_address', type: 'string' },
-        { name: 'commission_rate', type: 'string' },
-        { name: 'min_self_delegation', type: 'string' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeAmino,
-      value: protoParamsAmino,
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
       '@type': protoType,
       ...protoParamsAmino,
+    })
+  })
+
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: message,
+    })
+
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })
