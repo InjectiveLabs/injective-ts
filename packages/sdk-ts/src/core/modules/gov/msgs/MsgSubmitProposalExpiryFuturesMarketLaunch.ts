@@ -203,7 +203,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
 
     const messageWithProposalType = {

@@ -137,7 +137,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
     const amino = this.toAmino()
     const timestamp = this.getTimestamp()

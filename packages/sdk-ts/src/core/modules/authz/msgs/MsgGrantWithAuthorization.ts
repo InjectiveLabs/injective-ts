@@ -95,7 +95,7 @@ export default class MsgGrantWithAuthorization extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
     const amino = this.toAmino()
     const timestamp = this.getTimestamp()

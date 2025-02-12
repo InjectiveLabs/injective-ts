@@ -26,10 +26,10 @@ import {
   CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
 import {
+  sleep,
   getStdFee,
   BigNumberInBase,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-  sleep,
 } from '@injectivelabs/utils'
 import {
   ThrownException,
@@ -47,7 +47,6 @@ import {
 } from '@injectivelabs/networks'
 import {
   ChainId,
-  EIP712Version,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
@@ -502,7 +501,7 @@ export class MsgBroadcaster {
       txTimeoutOnFeeDelegation,
     } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
-    const web3Msgs = msgs.map((msg) => msg.toWeb3(EIP712Version.V1))
+    const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
     if (!ethereumChainId) {
       throw new GeneralException(new Error('Please provide ethereumChainId'))

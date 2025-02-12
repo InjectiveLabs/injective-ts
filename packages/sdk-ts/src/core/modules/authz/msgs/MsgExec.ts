@@ -79,7 +79,7 @@ export default class MsgExec extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
 
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]

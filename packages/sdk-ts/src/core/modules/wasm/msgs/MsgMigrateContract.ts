@@ -67,7 +67,7 @@ export default class MsgMigrateContract extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

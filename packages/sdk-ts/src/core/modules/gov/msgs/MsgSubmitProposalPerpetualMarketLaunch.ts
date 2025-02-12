@@ -205,7 +205,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
 
     const messageWithProposalType = {

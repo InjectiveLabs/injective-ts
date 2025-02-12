@@ -38,7 +38,16 @@ export abstract class MsgBase<
 
   public abstract toBinary(): Uint8Array
 
-  public abstract toWeb3():
+  /** @deprecated - use toWeb3Gw instead, renamed for clarity */
+  public toWeb3():
+    | ObjectRepresentation
+    | (SnakeCaseKeys<ProtoRepresentation> & {
+        '@type': string
+      }) {
+    return this.toWeb3Gw()
+  }
+
+  public abstract toWeb3Gw():
     | ObjectRepresentation
     | (SnakeCaseKeys<ProtoRepresentation> & {
         '@type': string

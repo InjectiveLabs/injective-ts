@@ -62,7 +62,7 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
