@@ -4,7 +4,10 @@ import {
   CosmosStakingV1Beta1Tx,
   CosmosStakingV1Beta1Staking,
 } from '@injectivelabs/core-proto-ts'
-import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
+import {
+  numberToCosmosSdkDecString,
+  amountToCosmosSdkDecAmount,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgEditValidator {
   export interface Params {
@@ -107,6 +110,22 @@ export default class MsgEditValidator extends MsgBase<
     return {
       '@type': '/cosmos.staking.v1beta1.MsgEditValidator',
       ...value,
+    }
+  }
+
+  public toEip712() {
+    const { type, value } = this.toAmino()
+
+    const messageAdjusted = {
+      ...value,
+      commission_rate: amountToCosmosSdkDecAmount(
+        value.commission_rate,
+      ).toFixed(),
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
     }
   }
 

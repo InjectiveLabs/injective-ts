@@ -1,5 +1,8 @@
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 
@@ -82,6 +85,33 @@ export default class MsgIncreasePositionMargin extends MsgBase<
       '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin',
       ...value,
     }
+  }
+
+  public toEip712() {
+    const amino = this.toAmino()
+    const { type, value } = amino
+
+    const messageAdjusted = {
+      ...value,
+      amount: amountToCosmosSdkDecAmount(value.amount).toFixed(),
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
+    }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      amount: numberToCosmosSdkDecString(params.amount),
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

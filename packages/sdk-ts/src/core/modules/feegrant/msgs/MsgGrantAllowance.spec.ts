@@ -9,7 +9,6 @@ import {
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import { EIP712Version } from '@injectivelabs/ts-types'
 
-
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
 const params: MsgGrantAllowance['params'] = {
@@ -49,7 +48,9 @@ const protoParamsAmino = snakecaseKeys({
     type: 'cosmos-sdk/BasicAllowance',
     value: {
       spendLimit: params.allowance.spendLimit,
-      expiration: new Date(params.allowance.expiration! * 1000),
+      expiration: new Date(params.allowance.expiration! * 1000)
+        .toISOString()
+        .replace('.000Z', 'Z'),
     },
   },
 })
@@ -60,7 +61,9 @@ const protoParamsWeb3 = {
   allowance: {
     '@type': '/cosmos.feegrant.v1beta1.BasicAllowance',
     spendLimit: params.allowance.spendLimit,
-    expiration: new Date(params.allowance.expiration! * 1000),
+    expiration: new Date(params.allowance.expiration! * 1000)
+      .toISOString()
+      .replace('.000Z', 'Z'),
   },
 }
 const message = MsgGrantAllowance.fromJSON(params)

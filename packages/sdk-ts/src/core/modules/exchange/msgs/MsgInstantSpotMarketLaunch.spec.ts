@@ -1,8 +1,12 @@
 import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
-import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
-import { IndexerGrpcWeb3GwApi } from './../../../../client'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 
 const market = mockFactory.injUsdtSpotMarket
 
@@ -58,74 +62,42 @@ describe('MsgInstantSpotMarketLaunch', () => {
       type: protoTypeAmino,
       value: snakecaseKeys({
         ...protoParamsAmino,
-        min_notional: '1.000000000000000000',
-        min_price_tick_size: '0.000000000000001000',
-        min_quantity_tick_size: '1000000000000000.000000000000000000',
+        min_notional: '1',
+        min_price_tick_size: '0.000000000000001',
+        min_quantity_tick_size: '1000000000000000',
       }),
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      MsgValue: [
-        { name: 'sender', type: 'string' },
-        { name: 'ticker', type: 'string' },
-        { name: 'base_denom', type: 'string' },
-        { name: 'quote_denom', type: 'string' },
-        { name: 'min_price_tick_size', type: 'string' },
-        { name: 'min_quantity_tick_size', type: 'string' },
-        { name: 'min_notional', type: 'string' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeAmino,
-      value: snakecaseKeys({
-        ...protoParamsAmino,
-        min_notional: '1.000000000000000000',
-        min_price_tick_size: '0.000000000000001000',
-        min_quantity_tick_size: '1000000000000000.000000000000000000',
-      }),
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
       '@type': protoType,
       ...snakecaseKeys({
         ...protoParamsAmino,
-        min_notional: '1.000000000000000000',
-        min_price_tick_size: '0.000000000000001000',
-        min_quantity_tick_size: '1000000000000000.000000000000000000',
+        min_notional: '1',
+        min_price_tick_size: '0.000000000000001',
+        min_quantity_tick_size: '1000000000000000',
       }),
     })
   })
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      sequence: 0,
-      accountNumber: 3,
       messages: message,
     })
 
-    // TODO
-    it.skip('EIP712 v1', async () => {
+    it('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
       ).prepareEip712Request({
         ...prepareEip712Request,
-        eip712Version: 'v1',
+        eip712Version: EIP712Version.V1,
       })
+
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
@@ -134,7 +106,10 @@ describe('MsgInstantSpotMarketLaunch', () => {
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
-      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })

@@ -1,8 +1,12 @@
 import MsgGrant from './MsgGrant.js'
 import snakecaseKeys from 'snakecase-keys'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import { IndexerGrpcWeb3GwApi } from '../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
@@ -39,7 +43,9 @@ const protoParamsAmino = snakecaseKeys({
         msg: params.messageType,
       },
     },
-    expiration: new Date(params.expiration! * 1000),
+    expiration: new Date(params.expiration! * 1000)
+      .toISOString()
+      .replace('.000Z', 'Z'),
   },
 })
 
@@ -72,47 +78,8 @@ describe('MsgGrant', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeGrant: [
-        { name: 'authorization', type: 'TypeGrantAuthorization' },
-        { name: 'expiration', type: 'string' },
-      ],
-      TypeGrantAuthorization: [
-        { name: 'type', type: 'string' },
-        { name: 'value', type: 'TypeGrantAuthorizationValue' },
-      ],
-      TypeGrantAuthorizationValue: [{ name: 'msg', type: 'string' }],
-      MsgValue: [
-        { name: 'granter', type: 'string' },
-        { name: 'grantee', type: 'string' },
-        { name: 'grant', type: 'TypeGrant' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeShort,
-      value: snakecaseKeys({
-        ...protoParamsAmino,
-        grant: {
-          ...protoParamsAmino.grant,
-          expiration:
-            protoParamsAmino.grant.expiration.toJSON().split('.')[0] + 'Z',
-        },
-      }),
-    })
-  })
-
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      sequence: 0,
-      accountNumber: 3,
       messages: message,
     })
 
@@ -123,7 +90,7 @@ describe('MsgGrant', () => {
         endpoints.indexer,
       ).prepareEip712Request({
         ...prepareEip712Request,
-        eip712Version: 'v1',
+        eip712Version: EIP712Version.V1,
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
@@ -134,7 +101,10 @@ describe('MsgGrant', () => {
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
-      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })

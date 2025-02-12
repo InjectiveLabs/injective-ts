@@ -1,8 +1,5 @@
 import { SnakeCaseKeys } from 'snakecase-keys'
-import {
-  mapValuesToProperValueType,
-  objectKeysToEip712Types,
-} from '../tx/eip712/maps.js'
+import { objectKeysToEip712Types } from '../tx/eip712/maps.js'
 import { TypedDataField } from '../tx/eip712/types.js'
 import { prepareSignBytes } from './utils.js'
 
@@ -72,24 +69,12 @@ export abstract class MsgBase<
   /**
    * Returns the values of the message for EIP712
    */
-  public toEip712(): {
-    type: string
-    value: Record<string, unknown /** TODO */>
-  } {
-    const amino = this.toAmino()
-    const { type, value } = amino
-
-    return {
-      type,
-      value: mapValuesToProperValueType(value, type),
-    }
+  public toEip712() {
+    return this.toAmino()
   }
 
   /**
    * Returns the values of the message for EIP712_V2
-   *
-   * Which is the same as the data we are passing to the Web3Gw
-   * to generate EIP712 for us
    */
   public toEip712V2() {
     return this.toWeb3Gw()

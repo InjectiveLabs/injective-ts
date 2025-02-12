@@ -12,9 +12,10 @@ import { ChainId, Coin, EthereumChainId } from '@injectivelabs/ts-types'
 export const prepareEip712 = <T>({
   messages,
   gas = DEFAULT_GAS_LIMIT,
-  network = Network.Devnet,
+  network = Network.Mainnet,
   injectiveAddress = mockFactory.injectiveAddress,
   ethereumAddress = mockFactory.ethereumAddress,
+  endpoints = {},
   accountNumber = 1,
   sequence = 1,
   timeoutHeight = 999_999_999,
@@ -28,6 +29,7 @@ export const prepareEip712 = <T>({
   sequence?: number
   timeoutHeight?: number
   memo?: string
+  endpoints?: Partial<NetworkEndpoints>
   injectiveAddress?: string
 }): {
   endpoints: NetworkEndpoints
@@ -56,7 +58,7 @@ export const prepareEip712 = <T>({
   }
 } => {
   const chainInfo = getNetworkInfo(network)
-  const endpoints = getNetworkEndpoints(network)
+  const actualEndpoints = { ...getNetworkEndpoints(network), ...endpoints }
   const msgs = Array.isArray(messages) ? messages : [messages]
   const web3Msgs = msgs.map((msg) => msg.toWeb3())
   const { tx, eip712 } = mockFactory.eip712Tx({
@@ -96,5 +98,5 @@ export const prepareEip712 = <T>({
     address: ethereumAddress,
   }
 
-  return { endpoints, eip712Args, prepareEip712Request }
+  return { endpoints: actualEndpoints, eip712Args, prepareEip712Request }
 }

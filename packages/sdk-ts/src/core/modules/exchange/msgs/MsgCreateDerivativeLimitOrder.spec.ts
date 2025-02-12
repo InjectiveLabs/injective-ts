@@ -1,6 +1,12 @@
 import MsgCreateDerivativeLimitOrder from './MsgCreateDerivativeLimitOrder.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgCreateDerivativeLimitOrder['params'] = {
   feeRecipient: mockFactory.injectiveAddress2,
@@ -11,7 +17,7 @@ const params: MsgCreateDerivativeLimitOrder['params'] = {
   price: '1500000',
   quantity: '100',
   subaccountId: mockFactory.subaccountId,
-  cid: '',
+  cid: 'test-cid',
   triggerPrice: '0',
 }
 
@@ -73,61 +79,44 @@ describe('MsgCreateDerivativeLimitOrder', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeOrder: [
-        { name: 'market_id', type: 'string' },
-        { name: 'order_info', type: 'TypeOrderOrderInfo' },
-        { name: 'order_type', type: 'int32' },
-        { name: 'margin', type: 'string' },
-        { name: 'trigger_price', type: 'string' },
-      ],
-      TypeOrderOrderInfo: [
-        { name: 'subaccount_id', type: 'string' },
-        { name: 'fee_recipient', type: 'string' },
-        { name: 'price', type: 'string' },
-        { name: 'quantity', type: 'string' },
-      ],
-      MsgValue: [
-        { name: 'sender', type: 'string' },
-        { name: 'order', type: 'TypeOrder' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    const value = snakecaseKeys(protoParams)
-    const formattedValue = {
-      ...value,
-      order: {
-        ...value.order,
-        margin: '75000000.000000000000000000',
-        order_info: {
-          fee_recipient: params.feeRecipient,
-          price: '1500000.000000000000000000',
-          quantity: '100.000000000000000000',
-          subaccount_id: params.subaccountId,
-        },
-        trigger_price: '0.000000000000000000',
-      },
-    }
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeShort,
-      value: formattedValue,
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
       '@type': protoType,
       ...protoParamsAmino,
+    })
+  })
+
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: message,
+    })
+
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

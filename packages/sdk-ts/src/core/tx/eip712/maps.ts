@@ -11,7 +11,7 @@ import { TypedDataField } from './types.js'
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
 
 /**
- *  ONLY USED FOR EIP712_V1
+ * gONLY USED FOR EIP712_V1
  *
  * Function used to generate EIP712 types based on a message object
  * and its structure (recursive)
@@ -180,8 +180,26 @@ export const numberTypeToReflectionNumberType = (
   property?: string,
   messageType?: string,
 ) => {
-  if (messageType == 'cosmos-sdk/MsgSubmitProposal' && property === 'status') {
-    return 'int32'
+  const msgTypeKey = messageType as keyof typeof messageTypeToNumberTypeMaps
+  const messageTypeToNumberTypeMaps = {
+    'cosmos-sdk/MsgSubmitProposal': {
+      status: 'int32',
+    },
+    'injective/tokenfactory/set-denom-metadata': {
+      decimals: 'uint32',
+    },
+    'injective/tokenfactory/create-denom': {
+      decimals: 'uint32',
+    },
+  }
+
+  if (msgTypeKey && messageTypeToNumberTypeMaps[msgTypeKey] && property) {
+    const type = messageTypeToNumberTypeMaps[msgTypeKey]
+    const typeKey = property as keyof typeof type
+
+    if (type[typeKey]) {
+      return type[typeKey]
+    }
   }
 
   switch (property) {
@@ -252,6 +270,8 @@ export const stringTypeToReflectionStringType = (property?: string) => {
  * 3. For some fields, like 'amount' in the 'MsgIncreasePositionMargin' we have
  * to also specify the Message type to apply the sdk.Dec conversion because there
  * are other amount fields in other messages as well and we don't want to affect them
+ *
+ * @deprecated - it's done within the Msg itself for better clarity
  */
 export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
   object: T,
@@ -288,12 +308,13 @@ export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
       'taker_fee_rate',
       'relayer_fee_share_rate',
     ],
+    'exchange/MsgInstantSpotMarketLaunch': [
+      'min_price_tick_size',
+      'min_quantity_tick_size',
+      'min_notional',
+    ],
     'cosmos-sdk/MsgEditValidator': ['commission_rate'],
   }
-
-  // const dateTypesMap = {
-  //   'cosmos-sdk/MsgGrant': ['expiration'],
-  // }
 
   const nullableStrings = ['uri', 'uri_hash']
 

@@ -102,7 +102,9 @@ export default class MsgGrantAllowance extends MsgBase<
             denom,
             amount,
           })),
-          expiration: new Date(Number(timestamp.seconds) * 1000),
+          expiration: new Date(Number(timestamp.seconds) * 1000)
+            .toISOString()
+            .replace('.000Z', 'Z'),
         },
       },
     })
@@ -136,7 +138,9 @@ export default class MsgGrantAllowance extends MsgBase<
           denom,
           amount,
         })),
-        expiration: new Date(Number(timestamp.seconds) * 1000),
+        expiration: new Date(Number(timestamp.seconds) * 1000)
+          .toISOString()
+          .replace('.000Z', 'Z'),
       },
     }
 
@@ -154,9 +158,7 @@ export default class MsgGrantAllowance extends MsgBase<
       allowance: {
         '@type': web3Gw.allowance['@type'],
         spend_limit: web3Gw.allowance.spendLimit,
-        expiration: web3Gw.allowance.expiration
-          .toISOString()
-          .replace('.000Z', 'Z'),
+        expiration: web3Gw.allowance.expiration,
       },
     }
 

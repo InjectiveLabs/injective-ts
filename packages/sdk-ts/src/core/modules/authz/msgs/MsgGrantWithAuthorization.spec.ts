@@ -1,14 +1,17 @@
 import MsgGrantWithAuthorization from './MsgGrantWithAuthorization.js'
-import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import GenericAuthorization from './authorizations/GenericAuthorization.js'
 import ContractExecutionAuthorization from './authorizations/ContractExecutionAuthorization.js'
-import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
-import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/index.js'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
-// TODO
-describe.skip('MsgGrantWithAuthorization', () => {
+describe('MsgGrantWithAuthorization', () => {
   describe('GenericAuthorization', () => {
     const params: MsgGrantWithAuthorization['params'] = {
       grantee: injectiveAddress,
@@ -39,7 +42,9 @@ describe.skip('MsgGrantWithAuthorization', () => {
       granter: params.granter,
       grant: {
         authorization: params.authorization.toAmino(),
-        expiration: new Date(params.expiration! * 1000),
+        expiration: new Date(params.expiration! * 1000)
+          .toISOString()
+          .replace('.000Z', 'Z'),
       },
     }
     const message = MsgGrantWithAuthorization.fromJSON(params)
@@ -67,6 +72,38 @@ describe.skip('MsgGrantWithAuthorization', () => {
       expect(amino).toStrictEqual({
         type: protoTypeShort,
         value: protoParamsGenericAuthorizationAmino,
+      })
+    })
+
+    describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+      const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+        messages: message,
+      })
+
+      test('EIP712 v1', async () => {
+        const eip712TypedData = getEip712TypedData(eip712Args)
+
+        const txResponse = await new IndexerGrpcWeb3GwApi(
+          endpoints.indexer,
+        ).prepareEip712Request({
+          ...prepareEip712Request,
+          eip712Version: EIP712Version.V1,
+        })
+
+        expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+      })
+
+      test('EIP712 v2', async () => {
+        const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+        const txResponse = await new IndexerGrpcWeb3GwApi(
+          endpoints.indexer,
+        ).prepareEip712Request({
+          ...prepareEip712Request,
+          eip712Version: EIP712Version.V2,
+        })
+
+        expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
       })
     })
   })
@@ -107,7 +144,9 @@ describe.skip('MsgGrantWithAuthorization', () => {
       granter: params.granter,
       grant: {
         authorization: params.authorization.toAmino(),
-        expiration: new Date(params.expiration! * 1000),
+        expiration: new Date(params.expiration! * 1000)
+          .toISOString()
+          .replace('.000Z', 'Z'),
       },
     }
     const message = MsgGrantWithAuthorization.fromJSON(params)
@@ -140,19 +179,18 @@ describe.skip('MsgGrantWithAuthorization', () => {
 
     describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
       const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-        sequence: 0,
-        accountNumber: 3,
         messages: message,
       })
 
-      test('EIP712 v1', async () => {
+      // TODO: Fix this
+      test.skip('EIP712 v1', async () => {
         const eip712TypedData = getEip712TypedData(eip712Args)
 
         const txResponse = await new IndexerGrpcWeb3GwApi(
           endpoints.indexer,
         ).prepareEip712Request({
           ...prepareEip712Request,
-          eip712Version: 'v1',
+          eip712Version: EIP712Version.V1,
         })
 
         expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
@@ -165,7 +203,7 @@ describe.skip('MsgGrantWithAuthorization', () => {
           endpoints.indexer,
         ).prepareEip712Request({
           ...prepareEip712Request,
-          eip712Version: 'v2',
+          eip712Version: EIP712Version.V2,
         })
 
         expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))

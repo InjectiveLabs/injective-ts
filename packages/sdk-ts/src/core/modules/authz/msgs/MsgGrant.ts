@@ -118,7 +118,9 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
           type: 'cosmos-sdk/GenericAuthorization',
           value: { msg: genericAuthorization.msg },
         },
-        expiration: new Date(Number(timestamp.seconds) * 1000),
+        expiration: new Date(Number(timestamp.seconds) * 1000)
+          .toISOString()
+          .replace('.000Z', 'Z'),
       },
     })
 

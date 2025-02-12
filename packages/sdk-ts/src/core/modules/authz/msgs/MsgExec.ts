@@ -75,7 +75,7 @@ export default class MsgExec extends MsgBase<
       value: {
         grantee: params.grantee,
         msgs: msgs.map((msg) => msg.toEip712()),
-      },
+      } as unknown as MsgExec.Object,
     }
   }
 

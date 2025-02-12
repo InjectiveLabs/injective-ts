@@ -1,7 +1,7 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgBid from './MsgBid.js'
 import snakecaseKeys from 'snakecase-keys'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
