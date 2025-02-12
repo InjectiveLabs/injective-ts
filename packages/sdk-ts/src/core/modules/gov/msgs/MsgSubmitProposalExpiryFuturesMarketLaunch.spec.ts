@@ -26,7 +26,7 @@ const params: MsgSubmitProposalExpiryFuturesMarketLaunch['params'] = {
     expiry: -1,
     adminInfo: {
       admin: mockFactory.injectiveAddress,
-      adminPermissions: 0,
+      adminPermissions: 1,
     },
   },
   proposer: mockFactory.injectiveAddress,

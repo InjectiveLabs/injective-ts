@@ -25,7 +25,7 @@ const params: MsgSubmitProposalPerpetualMarketLaunch['params'] = {
     minNotional: '1000000',
     adminInfo: {
       admin: mockFactory.injectiveAddress,
-      adminPermissions: 0,
+      adminPermissions: 1,
     },
   },
   proposer: mockFactory.injectiveAddress,

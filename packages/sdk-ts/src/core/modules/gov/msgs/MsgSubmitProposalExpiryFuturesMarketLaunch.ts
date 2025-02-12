@@ -207,6 +207,49 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     }
   }
 
+  public toEip712() {
+    const { params } = this
+    const amino = this.toAmino()
+    const { value, type } = amino
+
+    const messageAdjusted = {
+      ...value,
+      content: {
+        type: 'exchange/ExpiryFuturesMarketLaunchProposal',
+        value: {
+          ...value.content.value,
+          initial_margin_ratio: amountToCosmosSdkDecAmount(
+            params.market.initialMarginRatio,
+          ).toFixed(),
+          maintenance_margin_ratio: amountToCosmosSdkDecAmount(
+            params.market.maintenanceMarginRatio,
+          ).toFixed(),
+          maker_fee_rate: amountToCosmosSdkDecAmount(
+            params.market.makerFeeRate,
+          ).toFixed(),
+          taker_fee_rate: amountToCosmosSdkDecAmount(
+            params.market.takerFeeRate,
+          ).toFixed(),
+          min_price_tick_size: amountToCosmosSdkDecAmount(
+            params.market.minPriceTickSize,
+          ).toFixed(),
+          min_notional: amountToCosmosSdkDecAmount(
+            params.market.minNotional,
+          ).toFixed(),
+          min_quantity_tick_size: amountToCosmosSdkDecAmount(
+            params.market.minQuantityTickSize,
+          ).toFixed(),
+        },
+      },
+    }
+
+    return {
+      type,
+      value:
+        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>,
+    }
+  }
+
   public toEip712V2() {
     const { params } = this
     const web3gw = this.toWeb3Gw()

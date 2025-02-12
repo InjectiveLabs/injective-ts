@@ -23,7 +23,7 @@ const params: MsgSubmitProposalSpotMarketParamUpdate['params'] = {
     relayerFeeShareRate: '0.0005',
     adminInfo: {
       admin: mockFactory.injectiveAddress,
-      adminPermissions: 0,
+      adminPermissions: 1,
     },
   },
   proposer: mockFactory.injectiveAddress,

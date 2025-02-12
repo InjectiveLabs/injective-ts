@@ -195,6 +195,46 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     }
   }
 
+  public toEip712() {
+    const { params } = this
+    const amino = this.toAmino()
+    const { value, type } = amino
+
+    const messageAdjusted = {
+      ...value,
+      content: {
+        type: 'exchange/SpotMarketParamUpdateProposal',
+        value: {
+          ...value.content.value,
+          relayer_fee_share_rate: amountToCosmosSdkDecAmount(
+            params.market.relayerFeeShareRate,
+          ),
+          maker_fee_rate: amountToCosmosSdkDecAmount(
+            params.market.makerFeeRate,
+          ).toFixed(),
+          taker_fee_rate: amountToCosmosSdkDecAmount(
+            params.market.takerFeeRate,
+          ).toFixed(),
+          min_price_tick_size: amountToCosmosSdkDecAmount(
+            params.market.minPriceTickSize,
+          ).toFixed(),
+          min_notional: amountToCosmosSdkDecAmount(
+            params.market.minNotional,
+          ).toFixed(),
+          min_quantity_tick_size: amountToCosmosSdkDecAmount(
+            params.market.minQuantityTickSize,
+          ).toFixed(),
+        },
+      },
+    }
+
+    return {
+      type,
+      value:
+        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>,
+    }
+  }
+
   public toEip712V2() {
     const { params } = this
     const web3gw = this.toWeb3Gw()

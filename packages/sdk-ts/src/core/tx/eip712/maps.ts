@@ -11,7 +11,7 @@ import { TypedDataField } from './types.js'
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
 
 /**
- * gONLY USED FOR EIP712_V1
+ * ONLY USED FOR EIP712_V1
  *
  * Function used to generate EIP712 types based on a message object
  * and its structure (recursive)
