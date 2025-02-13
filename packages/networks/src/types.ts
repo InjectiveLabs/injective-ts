@@ -12,9 +12,9 @@ export enum Network {
   TestnetOld = 'testnetOld',
   TestnetSentry = 'testnetSentry',
   Testnet = 'testnet',
-  Devnet1 = 'devnet1',
-  Devnet2 = 'devnet2',
-  Devnet3 = 'devnet3',
+  Devnet1 = 'devnet-1',
+  Devnet2 = 'devnet-2',
+  Devnet3 = 'devnet-3',
   Devnet = 'devnet',
   Local = 'local',
 }
