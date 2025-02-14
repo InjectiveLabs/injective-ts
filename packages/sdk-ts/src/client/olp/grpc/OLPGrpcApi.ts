@@ -415,4 +415,40 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchMinMaxRewards({
+    epochId,
+    marketId,
+  }: {
+    epochId: string
+    marketId?: string
+  }) {
+    const request = InjectiveDmmRpc.GetMarketMinMaxRewardsRequest.create()
+
+    request.epochId = epochId
+    request.marketId = marketId
+
+    try {
+      const response =
+        await this.retry<InjectiveDmmRpc.GetMarketMinMaxRewardsResponse>(() =>
+          this.client.GetMarketMinMaxRewards(request),
+        )
+
+      return DmmGrpcTransformer.minMaxRewardsResponseToMinMaxRewards(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'GetMarketMinMaxRewards',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetMarketMinMaxRewards',
+        contextModule: this.module,
+      })
+    }
+  }
 }
