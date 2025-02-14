@@ -198,22 +198,24 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
   }
 
   async fetchOrders(params?: {
+    cid?: string
+    tradeId?: string
     marketId?: string
     marketIds?: string[]
     orderSide?: OrderSide
-    isConditional?: boolean
+    pagination?: PaginationOption
     subaccountId?: string
-    pagination?: PaginationOption,
-    cid?: string
+    isConditional?: boolean
   }) {
     const {
+      cid,
       marketId,
       marketIds,
-      subaccountId,
       orderSide,
-      isConditional,
       pagination,
-      cid,
+      isConditional,
+      subaccountId,
+      tradeId,
     } = params || {}
 
     const request = InjectiveDerivativeExchangeRpc.OrdersRequest.create()
@@ -240,6 +242,10 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
 
     if (cid) {
       request.cid = cid
+    }
+
+    if (tradeId) {
+      request.tradeId = tradeId
     }
 
     if (pagination) {
@@ -285,28 +291,30 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
   }
 
   async fetchOrderHistory(params?: {
-    subaccountId?: string
+    cid?: string
+    state?: OrderState
+    tradeId?: string
     marketId?: string
     marketIds?: string[]
     orderTypes?: OrderSide[]
-    executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
-    isConditional?: boolean
-    state?: OrderState
-    cid?: string,
     pagination?: PaginationOption
+    subaccountId?: string
+    isConditional?: boolean
+    executionTypes?: TradeExecutionType[]
   }) {
     const {
-      subaccountId,
+      cid,
+      state,
+      tradeId,
       marketId,
       marketIds,
-      orderTypes,
-      executionTypes,
       direction,
-      isConditional,
-      state,
       pagination,
-      cid,
+      orderTypes,
+      subaccountId,
+      isConditional,
+      executionTypes,
     } = params || {}
 
     const request = InjectiveDerivativeExchangeRpc.OrdersHistoryRequest.create()
@@ -345,6 +353,10 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
 
     if (cid) {
       request.cid = cid
+    }
+
+    if (tradeId) {
+      request.tradeId = tradeId
     }
 
     if (pagination) {

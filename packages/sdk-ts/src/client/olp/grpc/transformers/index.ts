@@ -21,6 +21,7 @@ import {
   RewardDistribution,
   RewardsEligibility,
   GrpcAccountVolume,
+  MinMaxRewards,
 } from '../types/index.js'
 
 export class DmmGrpcTransformer {
@@ -69,6 +70,7 @@ export class DmmGrpcTransformer {
       totalScore: marketReward.totalScore,
       createdAt: marketReward.createdAt,
       updatedAt: marketReward.updatedAt,
+      miniEpochsReward: marketReward.miniEpochsReward,
     }
   }
 
@@ -286,6 +288,21 @@ export class DmmGrpcTransformer {
       eligibleForCurrentEpoch: response.eligibleForCurrentEpoch,
       estimatedReward: response.estimatedReward,
       updatedAt: response.updatedAt,
+    }
+  }
+
+  static minMaxRewardsResponseToMinMaxRewards(
+    response: InjectiveDmmRpc.GetMarketMinMaxRewardsResponse,
+  ): MinMaxRewards {
+    const formattedMinCurrentEpochRewards: Record<string, string> = {}
+
+    response.minRewards.forEach((item) => {
+      formattedMinCurrentEpochRewards[item.marketId] = item.minReward
+    })
+
+    return {
+      minRewards: formattedMinCurrentEpochRewards,
+      maxReward: response.maxReward,
     }
   }
 }

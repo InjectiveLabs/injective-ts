@@ -1,5 +1,8 @@
 import snakecaseKeys from 'snakecase-keys'
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  InjectivePermissionsV1Beta1Tx,
+  InjectivePermissionsV1Beta1Permissions,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
 import { PermissionRoleActors } from './../../../../client/chain/types'
 
@@ -31,8 +34,30 @@ export default class MsgUpdateActorRoles extends MsgBase<
     const message = InjectivePermissionsV1Beta1Tx.MsgUpdateActorRoles.create()
     message.sender = params.sender
     message.denom = params.denom
-    message.roleActorsToAdd = params.roleActorsToAdd
-    message.roleActorsToRevoke = params.roleActorsToRevoke
+
+    const roleActorsToAdd =
+      params.roleActorsToAdd.map((roleActors) => {
+        const actor = InjectivePermissionsV1Beta1Permissions.RoleActors.create()
+
+        actor.role = roleActors.role
+        actor.actors = roleActors.actors
+
+        return actor
+      }) || []
+
+    message.roleActorsToAdd = roleActorsToAdd
+
+    const roleActorsToRevoke =
+      params.roleActorsToRevoke.map((roleActors) => {
+        const actor = InjectivePermissionsV1Beta1Permissions.RoleActors.create()
+
+        actor.role = roleActors.role
+        actor.actors = roleActors.actors
+
+        return actor
+      }) || []
+
+    message.roleActorsToRevoke = roleActorsToRevoke
 
     return InjectivePermissionsV1Beta1Tx.MsgUpdateActorRoles.fromPartial(
       message,

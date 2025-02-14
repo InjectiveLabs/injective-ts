@@ -4,7 +4,7 @@ Within this section, we will look at how to query the Injective name service con
 
 ## Abstraction Service (deprecated)
 
-<s>You can use our `InjNameService` [abstraction](../../deprecated/sdk-ui-ts/src/service/injNameService.ts) to query the smart contracts with a single method call. Below this example, you can also find the raw implementation on how to query the smart contracts in case you need more flexibility.&#x20;</s>
+~~You can use our `InjNameService`~~ [~~abstraction~~](../../../deprecated/sdk-ui-ts/src/service/injNameService.ts) ~~to query the smart contracts with a single method call. Below this example, you can also find the raw implementation on how to query the smart contracts in case you need more flexibility.~~
 
 <pre class="language-typescript"><code class="lang-typescript">import { getNetworkEndpoints, Network } from '@injectivelabs/network'
 import { InjNameService } from '@injectivelabs/sdk-ui-ts'
@@ -25,7 +25,7 @@ Example code snippets to resolve .inj domain name.
 
 ### Domain Resolution
 
-- Get resolver address
+* Get resolver address
 
 ```ts
 import {
@@ -63,7 +63,7 @@ const resolverAddress =
 console.log(resolverAddress)
 ```
 
-- Get address for .inj domain name.
+* Get address for .inj domain name.
 
 ```ts
 import {
@@ -110,7 +110,7 @@ console.log(injectiveAddress)
 
 ### Reverse Resolution
 
-- Get the primary name for injective address.
+* Get the primary name for injective address.
 
 ```ts
 import {

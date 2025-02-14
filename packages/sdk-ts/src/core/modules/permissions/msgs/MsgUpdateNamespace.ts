@@ -48,8 +48,67 @@ export default class MsgUpdateNamespace extends MsgBase<
     message.policyManagerCapabilities = params.policyManagerCapabilities
 
     if (params.contractHook) {
-      message.contractHook = { newValue: params.contractHook }
+      const contractHook =
+        InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace_SetContractHook.create()
+      contractHook.newValue = params.contractHook
+
+      message.contractHook = contractHook
     }
+
+    const permissions =
+      params.rolePermissions.map((rolePermission) => {
+        const permission = InjectivePermissionsV1Beta1Permissions.Role.create()
+
+        permission.name = rolePermission.name
+        permission.permissions = rolePermission.permissions
+        permission.roleId = rolePermission.roleId
+
+        return permission
+      }) || []
+
+    message.rolePermissions = permissions
+
+    const roleManagers =
+      params.roleManagers.map((roleManager) => {
+        const manager =
+          InjectivePermissionsV1Beta1Permissions.RoleManager.create()
+
+        manager.roles = roleManager.roles
+        manager.manager = roleManager.manager
+
+        return manager
+      }) || []
+
+    message.roleManagers = roleManagers
+
+    const policyStatuses =
+      params.policyStatuses.map((policyStatus) => {
+        const policy =
+          InjectivePermissionsV1Beta1Permissions.PolicyStatus.create()
+
+        policy.action = policyStatus.action
+        policy.isDisabled = policyStatus.isDisabled
+        policy.isSealed = policyStatus.isSealed
+
+        return policy
+      }) || []
+
+    message.policyStatuses = policyStatuses
+
+    const policyManagerCapabilities =
+      params.policyManagerCapabilities.map((capability) => {
+        const policy =
+          InjectivePermissionsV1Beta1Permissions.PolicyManagerCapability.create()
+
+        policy.action = capability.action
+        policy.canDisable = capability.canDisable
+        policy.canSeal = capability.canSeal
+        policy.manager = capability.manager
+
+        return policy
+      }) || []
+
+    message.policyManagerCapabilities = policyManagerCapabilities
 
     return InjectivePermissionsV1Beta1Tx.MsgUpdateNamespace.fromPartial(message)
   }
