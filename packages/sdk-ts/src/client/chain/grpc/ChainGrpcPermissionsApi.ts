@@ -23,102 +23,6 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchAddressesByRole({ denom, role }: { denom: string; role: string }) {
-    const request =
-      InjectivePermissionsV1Beta1Query.QueryAddressesByRoleRequest.create()
-
-    request.denom = denom
-    request.role = role
-
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryAddressesByRoleResponse>(
-          () => this.client.AddressesByRole(request, this.metadata),
-        )
-
-      return ChainGrpcPermissionsTransformer.addressesByRolesResponseToAddressesByRoles(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'AddressesByRole',
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AddressesByRole',
-      })
-    }
-  }
-
-  async fetchAddressRoles({
-    address,
-    denom,
-  }: {
-    address: string
-    denom: string
-  }) {
-    const request =
-      InjectivePermissionsV1Beta1Query.QueryAddressRolesRequest.create()
-
-    request.address = address
-    request.denom = denom
-
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryAddressRolesResponse>(
-          () => this.client.AddressRoles(request, this.metadata),
-        )
-
-      return ChainGrpcPermissionsTransformer.addressRolesResponseToAddressRoles(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'AddressRoles',
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AddressRoles',
-      })
-    }
-  }
-
-  async fetchAllNamespaces() {
-    const request =
-      InjectivePermissionsV1Beta1Query.QueryAllNamespacesRequest.create()
-
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryAllNamespacesResponse>(
-          () => this.client.AllNamespaces(request, this.metadata),
-        )
-
-      return ChainGrpcPermissionsTransformer.allNamespacesResponseToAllNamespaces(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'AllNamespaces',
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AllNamespaces',
-      })
-    }
-  }
-
   async fetchModuleParams() {
     const request = InjectivePermissionsV1Beta1Query.QueryParamsRequest.create()
 
@@ -146,69 +50,360 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchNamespaceByDenom({
-    denom,
-    includeRoles,
-  }: {
-    denom: string
-    includeRoles: boolean
-  }) {
+  async fetchNamespaceDenoms() {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomRequest.create()
-
-    request.denom = denom
-    request.includeRoles = includeRoles
+      InjectivePermissionsV1Beta1Query.QueryNamespaceDenomsRequest.create()
 
     try {
       const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryNamespaceByDenomResponse>(
-          () => this.client.NamespaceByDenom(request, this.metadata),
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryNamespaceDenomsResponse>(
+          () => this.client.NamespaceDenoms(request, this.metadata),
         )
 
-      return ChainGrpcPermissionsTransformer.namespaceByDenomResponceToNamespaceByDenom(
+      return ChainGrpcPermissionsTransformer.nameSpaceDenomsResponseToNameSpaceDenoms(
         response,
       )
     } catch (e: unknown) {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'NamespaceByDenom',
+          context: 'NamespaceDenoms',
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'NamespaceByDenom',
+        context: 'NamespaceDenoms',
       })
     }
   }
 
-  async fetchVouchersForAddress({ address }: { address: string }) {
+  async fetchNamespaces() {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryVouchersForAddressRequest.create()
-
-    request.address = address
+      InjectivePermissionsV1Beta1Query.QueryNamespacesRequest.create()
 
     try {
       const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryVouchersForAddressResponse>(
-          () => this.client.VouchersForAddress(request, this.metadata),
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryNamespacesResponse>(
+          () => this.client.Namespaces(request, this.metadata),
         )
 
-      return ChainGrpcPermissionsTransformer.vouchersForAddressResponseToVouchersForAddress(
+      return ChainGrpcPermissionsTransformer.namespacesResponseToNamespaces(
         response,
       )
     } catch (e: unknown) {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'VouchersForAddress',
+          context: 'Namespaces',
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'VouchersForAddress',
+        context: 'Namespaces',
+      })
+    }
+  }
+
+  async fetchNamespace(denom: string) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryNamespaceRequest.create()
+
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryNamespaceResponse>(
+          () => this.client.Namespace(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.namespaceResponseToNamespaces(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Namespace',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Namespace',
+      })
+    }
+  }
+
+  async fetchActorsByRole({ denom, role }: { denom: string; role: string }) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryActorsByRoleRequest.create()
+
+    request.denom = denom
+    request.role = role
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryActorsByRoleResponse>(
+          () => this.client.ActorsByRole(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.actorsByRoleResponseToActorsByRole(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'ActorsByRole',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'ActorsByRole',
+      })
+    }
+  }
+
+  async fetchRolesByActor({ actor, denom }: { actor: string; denom: string }) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryRolesByActorRequest.create()
+
+    request.actor = actor
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryRolesByActorResponse>(
+          () => this.client.RolesByActor(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.rolesByActorResponseToRolesByActor(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'RolesByActor',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'RolesByActor',
+      })
+    }
+  }
+
+  async fetchRoleManager({
+    denom,
+    manager,
+  }: {
+    denom: string
+    manager: string
+  }) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryRoleManagerRequest.create()
+
+    request.denom = denom
+    request.manager = manager
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryRoleManagerResponse>(
+          () => this.client.RoleManager(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.roleManagerResponseToRoleManager(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'RoleManager',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'RoleManager',
+      })
+    }
+  }
+
+  async fetchRoleManagers() {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryRoleManagersRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryRoleManagersResponse>(
+          () => this.client.RoleManagers(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.roleManagersResponseToRoleManagers(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'RoleManagers',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'RoleManagers',
+      })
+    }
+  }
+
+  async fetchPolicyStatuses() {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryPolicyStatusesRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryPolicyStatusesResponse>(
+          () => this.client.PolicyStatuses(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.policyStatusesResponseToPolicyStatuses(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'PolicyStatuses',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'PolicyStatuses',
+      })
+    }
+  }
+
+  async fetchPolicyManagerCapabilities(denom: string) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryPolicyManagerCapabilitiesRequest.create()
+
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryPolicyManagerCapabilitiesResponse>(
+          () => this.client.PolicyManagerCapabilities(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.policyManagerCapabilitiesResponseToPolicyManagerCapabilities(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'PolicyManagerCapabilities',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'PolicyManagerCapabilities',
+      })
+    }
+  }
+
+  async fetchVoucher({ denom, address }: { denom: string; address: string }) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryVoucherRequest.create()
+
+    request.denom = denom
+    request.address = address
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryVoucherResponse>(
+          () => this.client.Voucher(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.voucherResponseToVoucher(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Voucher',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Voucher',
+      })
+    }
+  }
+
+  async fetchVouchers(denom: string) {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryVouchersRequest.create()
+
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryVouchersResponse>(
+          () => this.client.Vouchers(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.vouchersResponseToVouchers(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'Vouchers',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Vouchers',
+      })
+    }
+  }
+
+  async fetchModuleState() {
+    const request =
+      InjectivePermissionsV1Beta1Query.QueryModuleStateRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectivePermissionsV1Beta1Query.QueryModuleStateResponse>(
+          () => this.client.PermissionsModuleState(request, this.metadata),
+        )
+
+      return ChainGrpcPermissionsTransformer.moduleStateResponseToModuleState(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: e.code,
+          context: 'ModuleState',
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'ModuleState',
       })
     }
   }

@@ -2,28 +2,31 @@ import {
   InjectiveExchangeV1Beta1Query,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
+import { BigNumberInBase } from '@injectivelabs/utils'
 import { AtomicMarketOrderAccessLevel } from '@injectivelabs/core-proto-ts/cjs/injective/exchange/v1beta1/exchange.js'
 import {
+  ChainPosition,
+  PointsMultiplier,
+  ChainDenomDecimal,
+  GrpcChainPosition,
+  CampaignRewardPool,
+  FeeDiscountTierTTL,
   IsOptedOutOfRewards,
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
-  PointsMultiplier,
+  TradeRewardCampaign,
+  ChainDenomMinNotional,
+  GrpcPointsMultiplier,
+  ExchangeModuleParams,
+  GrpcCampaignRewardPool,
+  FeeDiscountAccountInfo,
+  GrpcFeeDiscountTierTTL,
+  GrpcFeeDiscountTierInfo,
+  ChainDerivativePosition,
   TradingRewardCampaignInfo,
   GrpcTradingRewardCampaignInfo,
-  GrpcPointsMultiplier,
-  CampaignRewardPool,
-  GrpcCampaignRewardPool,
-  GrpcTradingRewardCampaignBoostInfo,
   TradingRewardCampaignBoostInfo,
-  GrpcFeeDiscountTierInfo,
-  TradeRewardCampaign,
-  FeeDiscountAccountInfo,
-  FeeDiscountTierTTL,
-  GrpcFeeDiscountTierTTL,
-  ExchangeModuleParams,
-  GrpcChainPosition,
-  ChainPosition,
-  ChainDerivativePosition,
+  GrpcTradingRewardCampaignBoostInfo,
 } from '../types/exchange.js'
 
 /**
@@ -275,5 +278,31 @@ export class ChainGrpcExchangeTransformer {
       grant: response.grant!,
       effectiveGrant: response.effectiveGrant!,
     }
+  }
+
+  static denomMinNotionalResponseToDenomMinNotional(
+    response: InjectiveExchangeV1Beta1Query.QueryDenomMinNotionalResponse,
+  ): string {
+    return response.amount
+  }
+
+  static denomDecimalsResponseToDenomDecimals(
+    response: InjectiveExchangeV1Beta1Query.QueryDenomDecimalsResponse,
+  ): ChainDenomDecimal[] {
+    return response.denomDecimals.map((denomDecimals) => ({
+      denom: denomDecimals.denom,
+      decimals: denomDecimals.decimals,
+    }))
+  }
+
+  static denomMinNotionalsResponseToDenomMinNotionals(
+    response: InjectiveExchangeV1Beta1Query.QueryDenomMinNotionalsResponse,
+  ): ChainDenomMinNotional[] {
+    return response.denomMinNotionals.map((denomDecimals) => ({
+      denom: denomDecimals.denom,
+      minNotional: new BigNumberInBase(denomDecimals.minNotional)
+        .dividedBy(10 ** 18)
+        .toFixed(),
+    }))
   }
 }

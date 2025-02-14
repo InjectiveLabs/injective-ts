@@ -206,42 +206,15 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
   }
 
   public toWeb3() {
-    const { params } = this
+    const { value } = this.toAmino()
 
     const messageWithProposalType = {
       content: {
         '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
-        ...snakecaseKeys({
-          ...this.getContent(),
-          oracleScaleFactor: Number(params.market.oracleScaleFactor),
-          oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-            Number(params.market.oracleType),
-          ),
-          initialMarginRatio: numberToCosmosSdkDecString(
-            params.market.initialMarginRatio,
-          ),
-          maintenanceMarginRatio: numberToCosmosSdkDecString(
-            params.market.maintenanceMarginRatio,
-          ),
-          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
-          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
-          minPriceTickSize: numberToCosmosSdkDecString(
-            params.market.minPriceTickSize,
-          ),
-          minQuantityTickSize: numberToCosmosSdkDecString(
-            params.market.minQuantityTickSize,
-          ),
-          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
-          adminInfo: null,
-        }),
+        ...value.content.value,
       },
-      initial_deposit: [
-        {
-          denom: params.deposit.denom,
-          amount: params.deposit.amount,
-        },
-      ],
-      proposer: params.proposer,
+      initial_deposit: value.initial_deposit,
+      proposer: value.proposer,
     }
 
     return {

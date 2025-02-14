@@ -1,28 +1,23 @@
 import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
+import MsgUpdateActorRoles from './MsgUpdateActorRoles.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client'
-import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch.js'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 
-const market = mockFactory.injUsdtSpotMarket
-
-const params: MsgInstantSpotMarketLaunch['params'] = {
-  proposer: mockFactory.injectiveAddress,
-  market: {
-    minNotional: '1',
-    sender: mockFactory.injectiveAddress,
-    ticker: market.ticker,
-    baseDenom: market.baseDenom,
-    quoteDenom: market.quoteDenom,
-    baseDecimals: market.baseToken.decimals,
-    quoteDecimals: market.quoteToken.decimals,
-    minPriceTickSize: market.minPriceTickSize,
-    minQuantityTickSize: market.minQuantityTickSize,
-  },
+export interface PermissionRoleActors {
+  role: string
+  actors: string[]
 }
 
-const message = MsgInstantSpotMarketLaunch.fromJSON(params)
+const params: MsgUpdateActorRoles['params'] = {
+  sender: mockFactory.injectiveAddress,
+  denom: 'inj',
+  roleActorsToAdd: [{ role: 'admin', actors: ['admin'] }],
+  roleActorsToRevoke: [{ role: 'admin', actors: ['admin'] }],
+}
 
-describe('MsgInstantSpotMarketLaunch', () => {
+const message = MsgUpdateActorRoles.fromJSON(params)
+
+describe('MsgCreateNamespace', () => {
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       sequence: 0,
@@ -30,7 +25,6 @@ describe('MsgInstantSpotMarketLaunch', () => {
       messages: message,
     })
 
-    // TODO
     it('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
@@ -40,6 +34,7 @@ describe('MsgInstantSpotMarketLaunch', () => {
         ...prepareEip712Request,
         eip712Version: 'v1',
       })
+
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 

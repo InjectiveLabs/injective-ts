@@ -27,34 +27,75 @@ describe('ChainGrpcPermissionsApi', () => {
       )
     }
   })
-  test('fetchAddressRoles', async () => {
+
+  test('fetchNamespaceDenoms', async () => {
     try {
-      const response = await chainGrpcPermissionsApi.fetchAddressRoles({
-        address: injectiveAddress,
-        denom: INJ_DENOM,
-      })
+      const response = await chainGrpcPermissionsApi.fetchNamespaceDenoms()
 
       if (response.length === 0) {
-        console.warn('fetchAddressRoles.arrayIsEmpty')
+        console.warn('fetchNamespaceDenoms.arrayIsEmpty')
       }
 
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcPermissionsTransformer.addressRolesResponseToAddressRoles
+            typeof ChainGrpcPermissionsTransformer.nameSpaceDenomsResponseToNameSpaceDenoms
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'chainGrpcPermissionsApi.fetchAddressRoles => ' + (e as any).message,
+        'chainGrpcPermissionsApi.fetchNamespaceDenoms => ' + (e as any).message,
       )
     }
   })
-  test('fetchAddressesByRoles', async () => {
+
+  test('fetchNamespaces', async () => {
     try {
-      const response = await chainGrpcPermissionsApi.fetchAddressesByRole({
+      const response = await chainGrpcPermissionsApi.fetchNamespaces()
+
+      if (response.length === 0) {
+        console.warn('fetchNamespaces.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.namespacesResponseToNamespaces
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchNamespaces => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchNamespace', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchNamespace(INJ_DENOM)
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.namespaceResponseToNamespaces
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchNamespace => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchActorsByRole', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchActorsByRole({
         denom: INJ_DENOM,
         role: 'role',
       })
@@ -63,59 +104,136 @@ describe('ChainGrpcPermissionsApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcPermissionsTransformer.addressesByRolesResponseToAddressesByRoles
+            typeof ChainGrpcPermissionsTransformer.actorsByRoleResponseToActorsByRole
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'chainGrpcPermissionsApi.fetchAddressesByRoles => ' +
-          (e as any).message,
+        'chainGrpcPermissionsApi.fetchActorsByRole => ' + (e as any).message,
       )
     }
   })
-  test('fetchAllNamespaces', async () => {
-    try {
-      const response = await chainGrpcPermissionsApi.fetchAllNamespaces()
 
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof ChainGrpcPermissionsTransformer.allNamespacesResponseToAllNamespaces
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'chainGrpcPermissionsApi.fetchAllNamespaces => ' + (e as any).message,
-      )
-    }
-  })
-  test('fetchNamespaceByDenom', async () => {
+  test('fetchRolesByActor', async () => {
     try {
-      const response = await chainGrpcPermissionsApi.fetchNamespaceByDenom({
+      const response = await chainGrpcPermissionsApi.fetchRolesByActor({
         denom: INJ_DENOM,
-        includeRoles: true,
+        actor: 'actor',
       })
 
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcPermissionsTransformer.namespaceByDenomResponceToNamespaceByDenom
+            typeof ChainGrpcPermissionsTransformer.rolesByActorResponseToRolesByActor
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'chainGrpcPermissionsApi.fetchNamespaceByDenom=> ' + (e as any).message,
+        'chainGrpcPermissionsApi.fetchRolesByActor => ' + (e as any).message,
       )
     }
   })
-  test('fetchVouchersForAddress', async () => {
+
+  test('fetchRoleManager', async () => {
     try {
-      const response = await chainGrpcPermissionsApi.fetchVouchersForAddress({
+      const response = await chainGrpcPermissionsApi.fetchRoleManager({
+        denom: INJ_DENOM,
+        manager: 'manager',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.roleManagerResponseToRoleManager
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchRoleManager => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchRoleManagers', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchRoleManagers()
+
+      if (response.length === 0) {
+        console.warn('fetchRoleManagers.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.roleManagersResponseToRoleManagers
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchRoleManagers => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchPolicyStatuses', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchPolicyStatuses()
+
+      if (response.length === 0) {
+        console.warn('fetchPolicyStatuses.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.policyStatusesResponseToPolicyStatuses
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchPolicyStatuses => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchPolicyManagerCapabilities', async () => {
+    try {
+      const response =
+        await chainGrpcPermissionsApi.fetchPolicyManagerCapabilities(INJ_DENOM)
+
+      if (response.length === 0) {
+        console.warn('fetchPolicyManagerCapabilities.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.policyManagerCapabilitiesResponseToPolicyManagerCapabilities
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchPolicyManagerCapabilities => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchVoucher', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchVoucher({
+        denom: INJ_DENOM,
         address: injectiveAddress,
       })
 
@@ -123,14 +241,55 @@ describe('ChainGrpcPermissionsApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcPermissionsTransformer.vouchersForAddressResponseToVouchersForAddress
+            typeof ChainGrpcPermissionsTransformer.voucherResponseToVoucher
           >
         >(response),
       )
     } catch (e) {
       console.error(
-        'chainGrpcPermissionsApi.fetchVouchersForAddress => ' +
-          (e as any).message,
+        'chainGrpcPermissionsApi.fetchVoucher=> ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchVouchers', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchVouchers(INJ_DENOM)
+
+      if (response.length === 0) {
+        console.warn('fetchVouchers.arrayIsEmpty')
+      }
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.vouchersResponseToVouchers
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchVouchers => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchModuleState', async () => {
+    try {
+      const response = await chainGrpcPermissionsApi.fetchModuleState()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcPermissionsTransformer.moduleStateResponseToModuleState
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcPermissionsApi.fetchModuleState => ' + (e as any).message,
       )
     }
   })
