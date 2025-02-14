@@ -6,6 +6,8 @@ import {
   CosmosStakingV1Beta1Staking,
 } from '@injectivelabs/core-proto-ts'
 import { createAny } from '../../../tx/index.js'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgCreateValidator {
   export interface Params {
@@ -91,9 +93,11 @@ export default class MsgCreateValidator extends MsgBase<
       const commissionRate =
         CosmosStakingV1Beta1Staking.CommissionRates.create()
 
-      commissionRate.rate = commissionRate.rate
-      commissionRate.maxRate = commissionRate.maxRate
-      commissionRate.maxChangeRate = commissionRate.maxChangeRate
+      commissionRate.rate = params.commission.rate
+      commissionRate.maxRate = params.commission.maxRate
+      commissionRate.maxChangeRate = params.commission.maxChangeRate
+
+      message.commission = commissionRate
     }
 
     if (params.minSelfDelegation) {
@@ -146,13 +150,49 @@ export default class MsgCreateValidator extends MsgBase<
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
-    const { value } = amino
+    const { params } = this
+    const { value } = this.toAmino()
+
+    const messageWithPubKeyType = {
+      ...value,
+      pubkey: {
+        '@type': params.pubKey.type,
+        key: params.pubKey.value,
+      },
+    } as unknown as MsgCreateValidator.Object
 
     return {
       '@type': '/cosmos.staking.v1beta1.MsgCreateValidator',
-      ...value,
+      ...messageWithPubKeyType,
     }
+  }
+
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712_v1 is not supported for MsgCreateValidator. Please use EIP712_v2',
+      ),
+    )
+  }
+
+  public toEip712V2() {
+    const web3gw = this.toWeb3Gw()
+    const commission = web3gw.commission as any
+
+    const messageAdjusted = {
+      ...web3gw,
+      commission: web3gw.commission
+        ? {
+            rate: numberToCosmosSdkDecString(commission.rate),
+            max_rate: numberToCosmosSdkDecString(commission.max_rate),
+            max_change_rate: numberToCosmosSdkDecString(
+              commission.max_change_rate,
+            ),
+          }
+        : undefined,
+    }
+
+    return messageAdjusted as unknown as MsgCreateValidator.Object
   }
 
   public toDirectSign() {

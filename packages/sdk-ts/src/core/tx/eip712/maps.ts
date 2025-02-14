@@ -25,6 +25,8 @@ export const objectKeysToEip712Types = ({
     'order_type',
     'oracle_type',
     'round',
+    'expiration_timestamp',
+    'settlement_timestamp',
     'oracle_scale_factor',
     'expiry',
     'option',
@@ -37,7 +39,7 @@ export const objectKeysToEip712Types = ({
     'revision_number',
   ]
   const stringFieldsToOmitIfEmpty = ['cid']
-  const fieldsToOmitIfEmpty = ['admin_info']
+  const fieldsToOmitIfEmpty = ['admin_info', 'order']
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
 
@@ -185,6 +187,16 @@ export const numberTypeToReflectionNumberType = (
     },
     'injective/tokenfactory/create-denom': {
       decimals: 'uint32',
+    },
+    'exchange/MsgAdminUpdateBinaryOptionsMarket': {
+      status: 'int32',
+      expiration_timestamp: 'int64',
+      settlement_timestamp: 'int64',
+    },
+    'exchange/MsgInstantBinaryOptionsMarketLaunch': {
+      status: 'int32',
+      expiration_timestamp: 'int64',
+      settlement_timestamp: 'int64',
     },
   }
 

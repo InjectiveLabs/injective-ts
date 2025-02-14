@@ -7,6 +7,7 @@ import {
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import { EIP712Version } from '@injectivelabs/ts-types'
+
 const params: MsgEditValidator['params'] = {
   description: {
     moniker: 'Validator',
