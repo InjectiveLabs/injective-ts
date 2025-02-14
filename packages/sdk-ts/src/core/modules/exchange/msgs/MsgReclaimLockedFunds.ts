@@ -1,6 +1,6 @@
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgReclaimLockedFunds {
   export interface Params {
@@ -49,28 +49,35 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
+
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      lockedAccountPubKey: Buffer.from(proto.lockedAccountPubKey),
+      signature: Buffer.from(proto.signature),
     }
 
     return {
       type: 'exchange/MsgReclaimLockedFunds',
-      value: {
-        sender: message.sender,
-        locked_account_pub_key: message.locked_account_pub_key,
-        signature: message.signature,
-      },
+      value: message,
     }
   }
 
-  public toWeb3Gw() {
-    const amino = this.toAmino()
-    const { value } = amino
+  public toWeb3Gw(): never {
+    throw new GeneralException(
+      new Error('EIP712 is not supported for MsgReclaimLockedFunds.'),
+    )
+  }
 
-    return {
-      '@type': '/injective.exchange.v1beta1.MsgReclaimLockedFunds',
-      ...value,
-    }
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error('EIP712 is not supported for MsgReclaimLockedFunds.'),
+    )
+  }
+
+  public toEip712V2(): never {
+    throw new GeneralException(
+      new Error('EIP712 is not supported for MsgReclaimLockedFunds.'),
+    )
   }
 
   public toDirectSign() {

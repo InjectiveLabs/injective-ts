@@ -10,7 +10,7 @@ import { EIP712Version } from '@injectivelabs/ts-types'
 const params: MsgReclaimLockedFunds['params'] = {
   sender: mockFactory.injectiveAddress,
   lockedAccountPubKey: mockFactory.subaccountId,
-  signature: new Uint8Array(),
+  signature: new Uint8Array([1, 2, 3]),
 }
 
 const message = MsgReclaimLockedFunds.fromJSON(params)
