@@ -161,6 +161,7 @@ export interface MarketReward {
   totalScore: string
   createdAt?: Date
   updatedAt?: Date
+  miniEpochsReward: string
 }
 export interface EligibleAddress {
   epochId: string
@@ -203,6 +204,11 @@ export interface AccountVolume {
   dailyQualified: boolean
   createdAt?: Date
   updatedAt?: Date
+}
+
+export interface MinMaxRewards {
+  minRewards: Record<string, string>
+  maxReward: string
 }
 
 export type GrpcEpochsV2 = InjectiveDmmRpc.GetEpochsResponse
