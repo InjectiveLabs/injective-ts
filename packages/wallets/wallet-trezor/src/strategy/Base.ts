@@ -31,6 +31,7 @@ import {
   BaseConcreteStrategy,
   ConcreteWalletStrategy,
   SendTransactionOptions,
+  DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
   WalletStrategyEthereumOptions,
@@ -38,7 +39,7 @@ import {
 } from '@injectivelabs/wallet-base'
 import TrezorHW from './hw/index.js'
 import { transformTypedData } from '../utils.js'
-import { TrezorWalletInfo } from '../types.js'
+import { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
 
 type EthereumTransactionEIP1559 = {
   to: string
@@ -68,18 +69,29 @@ const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
   return Chain.Mainnet
 }
 
-export class TrezorWallet
+export default class TrezorBase
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
+  private baseDerivationPath: string
+
   private trezor: TrezorHW
 
   private ethereumOptions: WalletStrategyEthereumOptions
 
   private alchemy: Alchemy | undefined
 
-  constructor(args: ConcreteEthereumWalletStrategyArgs) {
+  private derivationPathType: TrezorDerivationPathType
+
+  constructor(
+    args: ConcreteEthereumWalletStrategyArgs & {
+      derivationPathType: TrezorDerivationPathType
+    },
+  ) {
     super(args)
+
+    this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
+    this.derivationPathType = args.derivationPathType
     this.trezor = new TrezorHW()
     this.ethereumOptions = args.ethereumOptions
   }
@@ -97,10 +109,15 @@ export class TrezorWallet
   }
 
   public async getAddresses(): Promise<string[]> {
+    const { baseDerivationPath, derivationPathType } = this
+
     try {
       await this.trezor.connect()
       const accountManager = await this.trezor.getAccountManager()
-      const wallets = await accountManager.getWallets()
+      const wallets = await accountManager.getWallets(
+        baseDerivationPath,
+        derivationPathType,
+      )
 
       return wallets.map((k) => k.address)
     } catch (e: unknown) {
@@ -389,6 +406,7 @@ export class TrezorWallet
   private async getWalletForAddress(
     address: string,
   ): Promise<TrezorWalletInfo> {
+    const { baseDerivationPath, derivationPathType } = this
     const accountManager = await this.trezor.getAccountManager()
 
     if (!accountManager.hasWalletForAddress(address)) {
@@ -397,7 +415,7 @@ export class TrezorWallet
         i < DEFAULT_ADDRESS_SEARCH_LIMIT / DEFAULT_NUM_ADDRESSES_TO_FETCH;
         i += 1
       ) {
-        await accountManager.getWallets()
+        await accountManager.getWallets(baseDerivationPath, derivationPathType)
 
         if (accountManager.hasWalletForAddress(address)) {
           return (await accountManager.getWalletForAddress(

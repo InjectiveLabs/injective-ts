@@ -14,6 +14,7 @@ export enum Wallet {
   OkxWallet = 'okx-wallet',
   TrustWallet = 'trust-wallet',
   PrivateKey = 'private-key',
+  TrezorBip44 = 'trezor-bip44',
   Cosmostation = 'cosmostation',
   LedgerCosmos = 'ledger-cosmos',
   LedgerLegacy = 'ledger-legacy',

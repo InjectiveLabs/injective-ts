@@ -17,7 +17,7 @@ import { MagicStrategy } from '@injectivelabs/wallet-magic'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
-import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor'
+import { TrezorStrategy, TrezorBip44Strategy } from '@injectivelabs/wallet-trezor'
 import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
@@ -74,7 +74,9 @@ const createStrategy = ({
         wallet: Wallet.TrustWallet,
       })
     case Wallet.Trezor:
-      return new TrezorWalletStrategy(ethWalletArgs)
+      return new TrezorStrategy(ethWalletArgs)
+    case Wallet.TrezorBip44:
+      return new TrezorBip44Strategy(ethWalletArgs)
     case Wallet.Phantom:
       return new EvmWalletStrategy({
         ...ethWalletArgs,
