@@ -2,7 +2,7 @@
 
 The `MsgBroadcast`er abstraction class is a way to broadcast transactions on Injective with ease. With it, you can pass a Message that you want to be packed in a transaction and the signer's address and the transaction will be prepared, signed, and broadcasted.
 
-An example of usage can be found on our [Helix demo repo](https://github.com/InjectiveLabs/injective-helix-demo). As for the messages that you can pass to the `broadcast` methods, you can find examples in the [Core Modules](../core-modules/) section of the docs.
+An example of usage can be found on our [Helix demo repo](https://github.com/InjectiveLabs/injective-helix-demo). As for the messages that you can pass to the `broadcast` methods, you can find examples in the [Core Modules](../core-modules-and-examples/core-modules.md) section of the docs.
 
 ### MsgBroadcaster + Wallet Strategy
 
@@ -84,7 +84,7 @@ export interface MsgBroadcasterTxOptions {
 ````
 
 {% hint style="info" %}
-To override the `endpoints` and use your infrastructure (which is something we recommend), please read more on the [Networks](../readme/networks.md) page on the endpoints you need to provide and how to set them up.&#x20;
+To override the `endpoints` and use your infrastructure (which is something we recommend), please read more on the [Networks](../getting-started/application-concepts/networks.md) page on the endpoints you need to provide and how to set them up.&#x20;
 {% endhint %}
 
 ### MsgBroadcaster with Private Key

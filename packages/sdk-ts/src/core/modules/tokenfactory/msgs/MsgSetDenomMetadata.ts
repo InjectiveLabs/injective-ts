@@ -9,6 +9,7 @@ export declare namespace MsgSetDenomMetadata {
   export interface Params {
     sender: string
     metadata: CosmosBankV1Beta1Bank.Metadata
+    adminBurnDisabled?: boolean
   }
 
   export type Proto = InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata
@@ -49,6 +50,14 @@ export default class MsgSetDenomMetadata extends MsgBase<
     metadata.decimals = params.metadata.decimals
 
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.create()
+
+    if (params.adminBurnDisabled !== undefined) {
+      const adminBurnDisabled =
+        InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata_AdminBurnDisabled.create()
+
+      adminBurnDisabled.shouldDisable = params.adminBurnDisabled
+      message.adminBurnDisabled = adminBurnDisabled
+    }
 
     message.sender = params.sender
     message.metadata = metadata

@@ -9,6 +9,7 @@ export declare namespace MsgCreateDenom {
     decimals?: number
     name?: string
     symbol?: string
+    allowAdminBurn?: boolean
   }
 
   export type Proto = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom
@@ -35,6 +36,10 @@ export default class MsgCreateDenom extends MsgBase<
     message.name = params.name || ''
     message.symbol = params.symbol || ''
     message.decimals = params.decimals || 0
+
+    if (params.allowAdminBurn !== undefined) {
+      message.allowAdminBurn = params.allowAdminBurn
+    }
 
     return InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.fromPartial(message)
   }

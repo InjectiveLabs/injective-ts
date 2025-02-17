@@ -5,8 +5,8 @@ import {
 } from '@injectivelabs/exceptions'
 import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { ChainModule } from '../types/index.js'
 import { ChainGrpcExchangeTransformer } from '../transformers/index.js'
+import { ChainModule } from '../types/index.js'
 
 InjectiveExchangeV1Beta1Query
 
@@ -349,7 +349,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ActiveStakeGrant',
           contextModule: this.module,
         })
@@ -358,6 +358,126 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'ActiveStakeGrant',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
+
+  async fetchDenomDecimal(denom: string) {
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryDenomDecimalRequest.create()
+
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QueryDenomDecimalResponse>(
+          () => this.client.DenomDecimal(request, this.metadata),
+        )
+
+      return response.decimal
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'DenomDecimal',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DenomDecimal',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
+
+  async fetchDenomDecimals() {
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryDenomDecimalsRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QueryDenomDecimalsResponse>(
+          () => this.client.DenomDecimals(request, this.metadata),
+        )
+
+      return ChainGrpcExchangeTransformer.denomDecimalsResponseToDenomDecimals(
+        response,
+      )
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'DenomDecimals',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DenomDecimals',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
+
+  async fetchDenomMinNotional(denom: string) {
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryDenomMinNotionalRequest.create()
+
+    request.denom = denom
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QueryDenomMinNotionalResponse>(
+          () => this.client.DenomMinNotional(request, this.metadata),
+        )
+
+      return response.amount
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'DenomMinNotional',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DenomMinNotional',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
+
+  async fetchDenomMinNotionals() {
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryDenomMinNotionalsRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QueryDenomMinNotionalsResponse>(
+          () => this.client.DenomMinNotionals(request, this.metadata),
+        )
+
+      return ChainGrpcExchangeTransformer.denomMinNotionalsResponseToDenomMinNotionals(
+        response,
+      )
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'DenomMinNotionals',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DenomMinNotionals',
         contextModule: ChainModule.Exchange,
       })
     }

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-base",
   "description": "Base wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.14.41-alpha.0",
+  "version": "1.14.41-alpha.5",
   "sideEffects": false,
   "type": "module",
   "author": {

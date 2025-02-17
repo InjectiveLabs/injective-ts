@@ -1,7 +1,9 @@
-import { MsgBase } from '../../MsgBase.js'
+import {
+  InjectivePermissionsV1Beta1Tx,
+  InjectivePermissionsV1Beta1Params,
+} from '@injectivelabs/core-proto-ts'
 import snakecaseKeys from 'snakecase-keys'
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-
+import { MsgBase } from '../../MsgBase.js'
 export declare namespace MsgUpdateParams {
   export interface Params {
     authority: string
@@ -30,6 +32,11 @@ export default class MsgUpdateParams extends MsgBase<
     const message = InjectivePermissionsV1Beta1Tx.MsgUpdateParams.create()
     message.authority = params.authority
     message.params = params.params
+
+    const messageParams = InjectivePermissionsV1Beta1Params.Params.create()
+    messageParams.wasmHookQueryMaxGas = params.params.wasmHookQueryMaxGas
+
+    message.params = messageParams
 
     return InjectivePermissionsV1Beta1Tx.MsgUpdateParams.fromPartial(message)
   }

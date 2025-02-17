@@ -28,6 +28,8 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
         admin: string
         adminPermissions: number
       }
+      baseDecimals: number
+      quoteDecimals: number
     }
     proposer: string
     deposit: {
@@ -62,6 +64,8 @@ const createSpotMarketLaunchContent = (
   content.makerFeeRate = params.market.makerFeeRate
   content.takerFeeRate = params.market.takerFeeRate
   content.minNotional = params.market.minNotional
+  content.baseDecimals = Number(params.market.baseDecimals)
+  content.quoteDecimals = Number(params.market.quoteDecimals)
 
   if (params.market.adminInfo) {
     const adminInfo = InjectiveExchangeV1Beta1Proposal.AdminInfo.create()

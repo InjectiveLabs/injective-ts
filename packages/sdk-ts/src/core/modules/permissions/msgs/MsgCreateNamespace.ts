@@ -1,18 +1,28 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  InjectivePermissionsV1Beta1Tx,
+  InjectivePermissionsV1Beta1Permissions,
+} from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import {
+  PermissionRole,
+  PermissionActorRoles,
+  PermissionRoleManager,
+  PermissionPolicyStatus,
+  PermissionPolicyManagerCapability,
+} from './../../../../client/chain/types/index.js'
 
 export declare namespace MsgCreateNamespace {
   export interface Params {
     sender: string
     namespace: {
       denom: string
-      wasmHook: string
-      mintsPaused: boolean
-      sendsPaused: boolean
-      burnsPaused: boolean
-      rolePermissions: { role: string; permissions: number }[]
-      addressRoles: { address: string; roles: string[] }[]
+      contractHook: string
+      rolePermissions: PermissionRole[]
+      actorRoles: PermissionActorRoles[]
+      roleManagers: PermissionRoleManager[]
+      policyStatuses: PermissionPolicyStatus[]
+      policyManagerCapabilities: PermissionPolicyManagerCapability[]
     }
   }
 
@@ -36,7 +46,80 @@ export default class MsgCreateNamespace extends MsgBase<
     const message = InjectivePermissionsV1Beta1Tx.MsgCreateNamespace.create()
 
     message.sender = params.sender
-    message.namespace = params.namespace
+
+    const namespace = InjectivePermissionsV1Beta1Permissions.Namespace.create()
+
+    namespace.denom = params.namespace.denom
+    namespace.contractHook = params.namespace.contractHook
+
+    const rolePermissions =
+      params.namespace.rolePermissions.map((rolePermission) => {
+        const permission = InjectivePermissionsV1Beta1Permissions.Role.create()
+
+        permission.name = rolePermission.name
+        permission.roleId = rolePermission.roleId
+        permission.permissions = rolePermission.permissions
+
+        return permission
+      }) || []
+
+    namespace.rolePermissions = rolePermissions
+
+    const actorRoles = params.namespace.actorRoles.map((actorRole) => {
+      const role = InjectivePermissionsV1Beta1Permissions.ActorRoles.create()
+
+      role.roles = actorRole.roles
+      role.actor = actorRole.actor
+
+      return role
+    })
+
+    namespace.actorRoles = actorRoles
+
+    const roleManagers = params.namespace.roleManagers.map((roleManager) => {
+      const role = InjectivePermissionsV1Beta1Permissions.RoleManager.create()
+
+      role.roles = roleManager.roles
+      role.manager = roleManager.manager
+
+      return role
+    })
+
+    namespace.roleManagers = roleManagers
+
+    const policyStatuses = params.namespace.policyStatuses.map(
+      (policyStatus) => {
+        const policy =
+          InjectivePermissionsV1Beta1Permissions.PolicyStatus.create()
+
+        policy.action = policyStatus.action
+        policy.isDisabled = policyStatus.isDisabled
+        policy.isSealed = policyStatus.isSealed
+
+        return policy
+      },
+    )
+
+    namespace.policyStatuses = policyStatuses
+
+    const policyManagerCapabilities =
+      params.namespace.policyManagerCapabilities.map(
+        (policyManagerCapability) => {
+          const capability =
+            InjectivePermissionsV1Beta1Permissions.PolicyManagerCapability.create()
+
+          capability.manager = policyManagerCapability.manager
+          capability.action = policyManagerCapability.action
+          capability.canDisable = policyManagerCapability.canDisable
+          capability.canSeal = policyManagerCapability.canSeal
+
+          return capability
+        },
+      )
+
+    namespace.policyManagerCapabilities = policyManagerCapabilities
+
+    message.namespace = namespace
 
     return InjectivePermissionsV1Beta1Tx.MsgCreateNamespace.fromPartial(message)
   }
@@ -52,9 +135,33 @@ export default class MsgCreateNamespace extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
-    const message = {
-      ...snakecaseKeys(proto),
-    }
+
+    const policyStatuses = (proto.namespace?.policyStatuses || []).map(
+      (policyStatus) => ({
+        ...policyStatus,
+        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+          policyStatus.action,
+        ),
+      }),
+    )
+
+    const policyManagerCapabilities = (
+      proto.namespace?.policyManagerCapabilities || []
+    ).map((policyManagerCapability) => ({
+      ...policyManagerCapability,
+      action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+        policyManagerCapability.action,
+      ),
+    }))
+
+    const message = snakecaseKeys({
+      ...proto,
+      namespace: {
+        ...proto.namespace,
+        policyStatuses,
+        policyManagerCapabilities,
+      },
+    })
 
     return {
       type: 'permissions/MsgCreateNamespace',

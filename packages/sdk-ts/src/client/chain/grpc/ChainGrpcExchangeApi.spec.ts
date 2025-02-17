@@ -212,4 +212,44 @@ describe('ChainGrpcExchangeApi', () => {
       )
     }
   })
+
+  test('fetchDenomDecimals', async () => {
+    try {
+      const response = await chainGrpcExchangeApi.fetchDenomDecimals()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcExchangeTransformer.denomDecimalsResponseToDenomDecimals
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcExchangeApi.denomDecimalsResponseToDenomDecimals => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchDenomMinNotionals', async () => {
+    try {
+      const response = await chainGrpcExchangeApi.fetchDenomMinNotionals()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcExchangeTransformer.denomMinNotionalsResponseToDenomMinNotionals
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcExchangeApi.denomMinNotionalsResponseToDenomMinNotionals => ' +
+          (e as any).message,
+      )
+    }
+  })
 })

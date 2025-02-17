@@ -8,6 +8,7 @@ import {
 export declare namespace MsgMint {
   export interface Params {
     sender: string
+    receiver?: string
     amount: {
       amount: string
       denom: string
@@ -37,6 +38,10 @@ export default class MsgMint extends MsgBase<MsgMint.Params, MsgMint.Proto> {
 
     message.sender = params.sender
     message.amount = coin
+
+    if (params.receiver) {
+      message.receiver = params.receiver
+    }
 
     return InjectiveTokenFactoryV1Beta1Tx.MsgMint.fromPartial(message)
   }

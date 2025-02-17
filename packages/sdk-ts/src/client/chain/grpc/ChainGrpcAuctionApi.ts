@@ -54,6 +54,36 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
     }
   }
 
+  async fetchCurrentBasket() {
+    const request =
+      InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketRequest.create()
+
+    try {
+      const response =
+        await this.retry<InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketResponse>(
+          () => this.client.CurrentAuctionBasket(request, this.metadata),
+        )
+
+      return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'CurrentAuctionBasket',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'CurrentAuctionBasket',
+        contextModule: this.module,
+      })
+    }
+  }
+
   async fetchModuleState() {
     const request =
       InjectiveAuctionV1Beta1Query.QueryModuleStateRequest.create()
@@ -84,17 +114,17 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchCurrentBasket() {
+  async fetchLastAuctionResult() {
     const request =
-      InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketRequest.create()
+      InjectiveAuctionV1Beta1Query.QueryLastAuctionResultRequest.create()
 
     try {
       const response =
-        await this.retry<InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketResponse>(
-          () => this.client.CurrentAuctionBasket(request, this.metadata),
+        await this.retry<InjectiveAuctionV1Beta1Query.QueryLastAuctionResultResponse>(
+          () => this.client.LastAuctionResult(request, this.metadata),
         )
 
-      return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
+      return ChainGrpcAuctionTransformer.LastAuctionResultResponseToLastAuctionResult(
         response,
       )
     } catch (e: unknown) {
@@ -108,7 +138,7 @@ export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'CurrentAuctionBasket',
+        context: 'LastAuctionResult',
         contextModule: this.module,
       })
     }

@@ -4,11 +4,13 @@ import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import { EIP712Version } from '@injectivelabs/ts-types'
 
+const market = mockFactory.injUsdtDerivativeMarket
+
 const params: MsgSubmitProposalPerpetualMarketLaunch['params'] = {
   market: {
     title: 'INJ/USDT PERP',
     description: 'Launch of INJ/USDT PERP perpetual market',
-    ticker: 'INJ/USDT PERP',
+    ticker: market.ticker,
     oracleBase:
       '0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43',
     oracleQuote:
@@ -17,7 +19,7 @@ const params: MsgSubmitProposalPerpetualMarketLaunch['params'] = {
     oracleScaleFactor: 6,
     initialMarginRatio: '0.019231',
     maintenanceMarginRatio: '0.01',
-    quoteDenom: 'peggy0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    quoteDenom: market.quoteDenom,
     makerFeeRate: '-0.00005',
     takerFeeRate: '0.0005',
     minPriceTickSize: '1000000',

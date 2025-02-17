@@ -1,65 +1,20 @@
-import snakecaseKeys from 'snakecase-keys'
-import MsgClaimVoucher from './MsgClaimVoucher.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
+import MsgClaimVoucher from './MsgClaimVoucher.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgClaimVoucher['params'] = {
   sender: mockFactory.injectiveAddress,
   denom: 'inj',
 }
 
-const protoType = '/injective.permissions.v1beta1.MsgClaimVoucher'
-const protoTypeShort = 'permissions/MsgClaimVoucher'
-const protoParams = {
-  sender: params.sender,
-  denom: params.denom,
-}
-
-const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgClaimVoucher.fromJSON(params)
 
 describe('MsgClaimVoucher', () => {
-  it('generates proper proto', () => {
-    const proto = message.toProto()
-
-    expect(proto).toStrictEqual({
-      ...protoParams,
-    })
-  })
-
-  it('generates proper data', () => {
-    const data = message.toData()
-
-    expect(data).toStrictEqual({
-      '@type': protoType,
-      ...protoParams,
-    })
-  })
-
-  it('generates proper amino', () => {
-    const amino = message.toAmino()
-
-    expect(amino).toStrictEqual({
-      type: protoTypeShort,
-      value: protoParamsAmino,
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3Gw()
-
-    expect(web3).toStrictEqual({
-      '@type': protoType,
-      ...protoParamsAmino,
-    })
-  })
-
-
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

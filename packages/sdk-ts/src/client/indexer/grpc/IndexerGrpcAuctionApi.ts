@@ -98,7 +98,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'InjBurntEndpoint',
           contextModule: this.module,
         })

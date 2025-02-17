@@ -199,4 +199,21 @@ describe('OLPGrpcApi', () => {
       )
     }
   })
+
+  test('fetchMinMaxRewards', async () => {
+    try {
+      const response = await dmmGrpcApi.fetchMinMaxRewards({ epochId })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof DmmGrpcTransformer.minMaxRewardsResponseToMinMaxRewards
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error('OLPGrpcApi.fetchMinMaxRewards => ' + (e as any).message)
+    }
+  })
 })

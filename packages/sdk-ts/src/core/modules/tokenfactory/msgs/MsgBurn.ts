@@ -8,6 +8,7 @@ import {
 export declare namespace MsgBurn {
   export interface Params {
     sender: string
+    burnFromAddress?: string
     amount: {
       amount: string
       denom: string
@@ -37,6 +38,10 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
 
     message.sender = params.sender
     message.amount = coin
+
+    if (params.burnFromAddress) {
+      message.burnFromAddress = params.burnFromAddress
+    }
 
     return InjectiveTokenFactoryV1Beta1Tx.MsgBurn.fromPartial(message)
   }

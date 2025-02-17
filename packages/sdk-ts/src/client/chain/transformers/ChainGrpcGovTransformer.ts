@@ -87,8 +87,12 @@ export class ChainGrpcGovTransformer {
 
   static proposalResponseToProposal(
     response: CosmosGovV1Query.QueryProposalResponse,
-  ): Proposal {
+  ): Proposal | undefined {
     const proposal = response.proposal!
+
+    if (!proposal) {
+      return undefined
+    }
 
     return ChainGrpcGovTransformer.grpcProposalToProposal(proposal)
   }
@@ -105,7 +109,7 @@ export class ChainGrpcGovTransformer {
     const pagination = response.pagination
 
     return {
-      proposals: proposals,
+      proposals: proposals.filter((p) => p) as Proposal[],
       pagination: grpcPaginationToPagination(pagination),
     }
   }
@@ -171,9 +175,13 @@ export class ChainGrpcGovTransformer {
     }
   }
 
-  static grpcProposalToProposal(proposal: GrpcProposal): Proposal {
+  static grpcProposalToProposal(proposal: GrpcProposal): Proposal | undefined {
     const finalTallyResult = proposal.finalTallyResult
     const [message] = proposal.messages!
+
+    if (!message) {
+      return
+    }
 
     return {
       proposalId: parseInt(proposal.id, 10),

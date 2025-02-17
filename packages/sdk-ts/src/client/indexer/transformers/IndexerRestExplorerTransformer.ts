@@ -26,20 +26,10 @@ import {
   ContractTransactionExplorerApiResponse,
   ValidatorUptimeFromExplorerApiResponse,
 } from '../types/explorer-rest.js'
-import { TokenType, TokenVerification } from '../../../types/token.js'
 import { isJsonString } from '../../../utils/helpers.js'
+import { TokenType, TokenVerification } from '../../../types/token.js'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
-
-const isValidJson = (value: string) => {
-  try {
-    JSON.parse(value)
-
-    return true
-  } catch (e) {
-    return false
-  }
-}
 
 const getContractTransactionAmount = (
   ApiTransaction: ContractTransactionExplorerApiResponse,
@@ -53,7 +43,7 @@ const getContractTransactionAmount = (
     return ZERO_IN_BASE
   }
 
-  if (typeof msg === 'string' && !isValidJson(msg)) {
+  if (typeof msg === 'string' && !isJsonString(msg)) {
     return ZERO_IN_BASE
   }
 

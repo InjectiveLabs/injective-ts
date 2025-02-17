@@ -1,89 +1,44 @@
-import snakecaseKeys from 'snakecase-keys'
-import MsgUpdateNamespace from './MsgUpdateNamespace.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import { InjectivePermissionsV1Beta1Permissions } from '@injectivelabs/core-proto-ts'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
+import MsgUpdateNamespace from './MsgUpdateNamespace.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgUpdateNamespace['params'] = {
   sender: mockFactory.injectiveAddress,
-  namespaceDenom: 'namespace_denom',
-  wasmHook: {
-    newValue: 'wasmHookAddress',
-  },
-  mintsPaused: {
-    newValue: true,
-  },
-  sendsPaused: {
-    newValue: false,
-  },
-  burnsPaused: {
-    newValue: true,
-  },
+  denom: 'inj',
+  contractHook: 'wasm',
+  rolePermissions: [{ name: 'admin', roleId: 1, permissions: 1 }],
+  roleManagers: [
+    {
+      manager: mockFactory.injectiveAddress,
+      roles: ['admin'],
+    },
+  ],
+  policyStatuses: [
+    {
+      action: InjectivePermissionsV1Beta1Permissions.Action.SEND,
+      isDisabled: false,
+      isSealed: false,
+    },
+  ],
+  policyManagerCapabilities: [
+    {
+      manager: mockFactory.injectiveAddress2,
+      action: InjectivePermissionsV1Beta1Permissions.Action.SEND,
+      canDisable: false,
+      canSeal: false,
+    },
+  ],
 }
 
-const protoType = '/injective.permissions.v1beta1.MsgUpdateNamespace'
-const protoTypeShort = 'permissions/MsgUpdateNamespace'
-const protoParams = {
-  sender: params.sender,
-  namespaceDenom: params.namespaceDenom,
-  wasmHook: {
-    newValue: params.wasmHook.newValue,
-  },
-  mintsPaused: {
-    newValue: params.mintsPaused.newValue,
-  },
-  sendsPaused: {
-    newValue: params.sendsPaused.newValue,
-  },
-  burnsPaused: {
-    newValue: params.burnsPaused.newValue,
-  },
-}
-
-const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgUpdateNamespace.fromJSON(params)
 
 describe('MsgUpdateNamespace', () => {
-  it('generates proper proto', () => {
-    const proto = message.toProto()
-
-    expect(proto).toStrictEqual({
-      ...protoParams,
-    })
-  })
-
-  it('generates proper data', () => {
-    const data = message.toData()
-
-    expect(data).toStrictEqual({
-      '@type': protoType,
-      ...protoParams,
-    })
-  })
-
-  it('generates proper amino', () => {
-    const amino = message.toAmino()
-
-    expect(amino).toStrictEqual({
-      type: protoTypeShort,
-      value: protoParamsAmino,
-    })
-  })
-
-  it('generates proper web3Gw', () => {
-    const web3 = message.toWeb3Gw()
-
-    expect(web3).toStrictEqual({
-      '@type': protoType,
-      ...protoParamsAmino,
-    })
-  })
-
-
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

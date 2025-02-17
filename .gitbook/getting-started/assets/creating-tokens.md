@@ -16,4 +16,4 @@ One special use case for the factory denoms is the `CW20_ADAPTER`. Using this ad
 The denom for a CW20 asset is always in the `factory/{CW20_ADAPTER_CONTRACT_ADDRESS}/{CW20_ASSET_ADDRESS}` where `CW20_ADAPTER_CONTRACT_ADDRESS=inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk` for mainnet.&#x20;
 {% endhint %}
 
-To start creating your denoms, head to our [TokenFactory Core Module page ](../../core-modules/token-factory.md)to see examples.
+To start creating your denoms, head to our [TokenFactory Core Module page ](../../core-modules-and-examples/token-factory.md)to see examples.

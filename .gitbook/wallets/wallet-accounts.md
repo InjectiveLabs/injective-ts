@@ -34,7 +34,7 @@ const address = privateKeyFromMnemonic.toAddress() /* or privateKeyFromHex.toAdd
 console.log({ injectiveAddress: address.toBech32(), ethereumAddress: address.toHex() })
 ```
 
-* Example code snipped on how to derive a public key from a private key:
+* Example code snipped on how to derive a public address from a public key:
 
 ```ts
 import { PublicKey } from '@injectivelabs/sdk-ts'
@@ -45,7 +45,7 @@ const publicKey = PublicKey.fromBase64(pubKey)
 console.log(publicKey.toAddress().toBech32())
 ```
 
-* Example code snipped on how to derive an address from a public key:
+* Example code snipped on how to derive an address from a private key:
 
 ```ts
 import { PublicKey } from '@injectivelabs/sdk-ts'

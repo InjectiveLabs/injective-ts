@@ -4,14 +4,15 @@ import {
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { ChainModule } from '../types/index.js'
-import { ChainGrpcBankTransformer } from '../transformers/index.js'
-import { PaginationOption } from '../../../types/pagination.js'
 import {
   fetchAllWithPagination,
   paginationRequestFromPagination,
 } from '../../../utils/pagination.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainGrpcBankTransformer } from '../transformers/index.js'
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
+import { ChainModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
 
 const MAX_LIMIT_FOR_SUPPLY = 10000
 
@@ -181,7 +182,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
           this.client.SupplyOf(request, this.metadata),
         )
 
-      return ChainGrpcBankTransformer.grpcCoinToCoin(response.amount!)
+      return ChainGrpcCommonTransformer.grpcCoinToCoin(response.amount!)
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -279,9 +280,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
           this.client.DenomOwners(request, this.metadata),
         )
 
-      return ChainGrpcBankTransformer.denomOwnersResponseToDenomOwners(
-        response,
-      )
+      return ChainGrpcBankTransformer.denomOwnersResponseToDenomOwners(response)
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
