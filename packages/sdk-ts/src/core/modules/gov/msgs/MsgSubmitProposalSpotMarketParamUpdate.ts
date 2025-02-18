@@ -28,6 +28,8 @@ const createSpotMarketParamUpdate = (
   content.minQuantityTickSize = params.market.minQuantityTickSize
   content.status = params.market.status
   content.ticker = params.market.ticker
+  content.baseDecimals = params.market.baseDecimals
+  content.quoteDecimals = params.market.quoteDecimals
   content.minNotional = params.market.minNotional
 
   if (params.market.adminInfo) {
@@ -56,6 +58,8 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
       minQuantityTickSize: string
       minNotional: string
       ticker: string
+      baseDecimals: number
+      quoteDecimals: number
       adminInfo?: {
         admin: string
         adminPermissions: number
@@ -208,7 +212,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
           ...value.content.value,
           relayer_fee_share_rate: amountToCosmosSdkDecAmount(
             params.market.relayerFeeShareRate,
-          ),
+          ).toFixed(),
           maker_fee_rate: amountToCosmosSdkDecAmount(
             params.market.makerFeeRate,
           ).toFixed(),

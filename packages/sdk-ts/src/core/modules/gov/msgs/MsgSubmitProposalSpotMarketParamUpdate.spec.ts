@@ -20,6 +20,8 @@ const params: MsgSubmitProposalSpotMarketParamUpdate['params'] = {
     makerFeeRate: '-0.00005',
     minNotional: '1000000',
     takerFeeRate: '0.0005',
+    baseDecimals: 6,
+    quoteDecimals: 6,
     relayerFeeShareRate: '0.0005',
     adminInfo: {
       admin: mockFactory.injectiveAddress,

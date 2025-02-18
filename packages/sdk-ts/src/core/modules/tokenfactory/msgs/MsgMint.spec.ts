@@ -15,6 +15,7 @@ const params: MsgMint['params'] = {
     amount: new BigNumberInBase(1).toFixed(),
     denom: 'inj',
   },
+  receiver: mockFactory.injectiveAddress2,
 }
 
 const protoType = '/injective.tokenfactory.v1beta1.MsgMint'
@@ -22,6 +23,7 @@ const protoTypeAmino = 'injective/tokenfactory/mint'
 const protoParams = {
   sender: params.sender,
   amount: params.amount,
+  receiver: params.receiver,
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)

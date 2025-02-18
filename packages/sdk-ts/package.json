@@ -123,7 +123,7 @@
     "@cosmjs/stargate": "^0.32.3",
     "@ethersproject/bytes": "^5.7.0",
     "@injectivelabs/abacus-proto-ts": "1.13.3",
-    "@injectivelabs/core-proto-ts": "1.13.6",
+    "@injectivelabs/core-proto-ts": "1.14.0",
     "@injectivelabs/exceptions": "^1.14.41-alpha.0",
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",

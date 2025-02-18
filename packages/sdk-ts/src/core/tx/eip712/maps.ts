@@ -32,6 +32,7 @@ export const objectKeysToEip712Types = ({
     'option',
     'proposal_id',
     'creation_height',
+    'wasm_hook_query_max_gas',
   ]
   const stringFieldsWithNumberValue = [
     'timeout_timestamp',
@@ -44,7 +45,7 @@ export const objectKeysToEip712Types = ({
   const types = new Array<TypedDataField>()
 
   for (const property in snakecaseKeys(object)) {
-    const propertyValue = snakecaseKeys(object)[property]
+    let propertyValue = snakecaseKeys(object)[property]
 
     if (property === '@type') {
       continue
@@ -181,6 +182,8 @@ export const numberTypeToReflectionNumberType = (
   const messageTypeToNumberTypeMaps = {
     'cosmos-sdk/MsgSubmitProposal': {
       status: 'int32',
+      base_decimals: 'uint32',
+      quote_decimals: 'uint32',
     },
     'injective/tokenfactory/set-denom-metadata': {
       decimals: 'uint32',
@@ -197,6 +200,10 @@ export const numberTypeToReflectionNumberType = (
       status: 'int32',
       expiration_timestamp: 'int64',
       settlement_timestamp: 'int64',
+    },
+    'exchange/MsgInstantSpotMarketLaunch': {
+      base_decimals: 'uint32',
+      quote_decimals: 'uint32',
     },
   }
 

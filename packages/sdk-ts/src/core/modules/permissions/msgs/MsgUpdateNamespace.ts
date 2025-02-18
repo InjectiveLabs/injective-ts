@@ -9,7 +9,8 @@ import {
   PermissionRoleManager,
   PermissionPolicyStatus,
   PermissionPolicyManagerCapability,
-} from './../../../../client/chain/types/index.js'
+} from './../../../../client/chain/types/permissions.js'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgUpdateNamespace {
   export interface Params {
@@ -125,26 +126,10 @@ export default class MsgUpdateNamespace extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
 
-    const policyStatuses =
-      proto.policyStatuses.map((policyStatus) => ({
-        ...policyStatus,
-        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
-          policyStatus.action,
-        ),
-      })) || []
-
-    const policyManagerCapabilities =
-      proto.policyManagerCapabilities.map((policyManagerCapability) => ({
-        ...policyManagerCapability,
-        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
-          policyManagerCapability.action,
-        ),
-      })) || []
-
     const message = snakecaseKeys({
       ...proto,
-      policyStatuses,
-      policyManagerCapabilities,
+      policyStatuses: proto.policyStatuses || [],
+      policyManagerCapabilities: proto.policyManagerCapabilities || [],
     })
 
     return {
@@ -161,6 +146,44 @@ export default class MsgUpdateNamespace extends MsgBase<
       '@type': '/injective.permissions.v1beta1.MsgUpdateNamespace',
       ...value,
     }
+  }
+
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712_v1 is not supported for MsgUpdateNamespace. Please use EIP712_v2',
+      ),
+    )
+  }
+
+  public toEip712V2() {
+    const web3gw = this.toWeb3Gw()
+
+    const policyStatuses = (web3gw.policy_statuses || []).map(
+      (policyStatus: any) => ({
+        ...policyStatus,
+        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+          policyStatus.action,
+        ),
+      }),
+    )
+
+    const policyManagerCapabilities = (
+      web3gw.policy_manager_capabilities || []
+    ).map((policyManagerCapability: any) => ({
+      ...policyManagerCapability,
+      action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+        policyManagerCapability.action,
+      ),
+    }))
+
+    const messageAdjusted = {
+      ...web3gw,
+      policy_statuses: policyStatuses,
+      policy_manager_capabilities: policyManagerCapabilities,
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

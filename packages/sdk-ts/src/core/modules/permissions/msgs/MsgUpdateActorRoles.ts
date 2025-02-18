@@ -4,7 +4,7 @@ import {
   InjectivePermissionsV1Beta1Permissions,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import { PermissionRoleActors } from './../../../../client/chain/types/index.js'
+import { PermissionRoleActors } from './../../../../client/chain/types/permissions.js'
 
 export declare namespace MsgUpdateActorRoles {
   export interface Params {

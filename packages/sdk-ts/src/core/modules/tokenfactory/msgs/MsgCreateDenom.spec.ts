@@ -14,6 +14,7 @@ const params: MsgCreateDenom['params'] = {
   subdenom: mockFactory.injectiveAddress,
   symbol: 'INJ',
   decimals: 18,
+  allowAdminBurn: true,
 }
 
 const protoType = '/injective.tokenfactory.v1beta1.MsgCreateDenom'
@@ -24,6 +25,7 @@ const protoParams = {
   subdenom: params.subdenom,
   symbol: params.symbol,
   decimals: params.decimals,
+  allowAdminBurn: params.allowAdminBurn,
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)

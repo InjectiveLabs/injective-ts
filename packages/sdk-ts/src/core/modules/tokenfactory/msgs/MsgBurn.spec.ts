@@ -1,6 +1,5 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
 import MsgBurn from './MsgBurn.js'
-import snakecaseKeys from 'snakecase-keys'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import {
   getEip712TypedData,
@@ -9,9 +8,9 @@ import {
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import { EIP712Version } from '@injectivelabs/ts-types'
 
-
 const params: MsgBurn['params'] = {
   sender: mockFactory.injectiveAddress,
+  burnFromAddress: mockFactory.injectiveAddress2,
   amount: {
     amount: new BigNumberInBase(1).toFixed(),
     denom: 'inj',
@@ -23,9 +22,10 @@ const protoTypeAmino = 'injective/tokenfactory/burn'
 const protoParams = {
   sender: params.sender,
   amount: params.amount,
+  burnFromAddress: params.burnFromAddress,
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = params
 const message = MsgBurn.fromJSON(params)
 
 describe('MsgBurn', () => {
@@ -53,30 +53,6 @@ describe('MsgBurn', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeAmount: [
-        { name: 'denom', type: 'string' },
-        { name: 'amount', type: 'string' },
-      ],
-      MsgValue: [
-        { name: 'sender', type: 'string' },
-        { name: 'amount', type: 'TypeAmount' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeAmino,
-      value: protoParamsAmino,
-    })
-  })
-
   it('generates proper web3Gw', () => {
     const web3 = message.toWeb3Gw()
 
@@ -85,7 +61,6 @@ describe('MsgBurn', () => {
       ...protoParamsAmino,
     })
   })
-
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({

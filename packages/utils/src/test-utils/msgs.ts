@@ -12,7 +12,7 @@ import { ChainId, Coin, EthereumChainId } from '@injectivelabs/ts-types'
 export const prepareEip712 = <T>({
   messages,
   gas = DEFAULT_GAS_LIMIT,
-  network = Network.Devnet,
+  network = Network.Mainnet,
   injectiveAddress = mockFactory.injectiveAddress,
   ethereumAddress = mockFactory.ethereumAddress,
   endpoints = {},

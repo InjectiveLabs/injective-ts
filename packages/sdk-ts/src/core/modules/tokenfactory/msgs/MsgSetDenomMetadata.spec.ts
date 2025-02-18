@@ -10,6 +10,7 @@ import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgSetDenomMetadata['params'] = {
   sender: mockFactory.injectiveAddress,
+  adminBurnDisabled: true,
   metadata: {
     symbol: 'TEST',
     display: 'factory/test',
@@ -34,6 +35,9 @@ const protoTypeAmino = 'injective/tokenfactory/set-denom-metadata'
 const protoParams = {
   sender: params.sender,
   metadata: params.metadata,
+  adminBurnDisabled: {
+    shouldDisable: params.adminBurnDisabled,
+  },
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)

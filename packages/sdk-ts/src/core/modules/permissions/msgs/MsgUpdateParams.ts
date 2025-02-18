@@ -4,6 +4,7 @@ import {
 } from '@injectivelabs/core-proto-ts'
 import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase.js'
+
 export declare namespace MsgUpdateParams {
   export interface Params {
     authority: string
