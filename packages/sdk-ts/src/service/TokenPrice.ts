@@ -51,8 +51,14 @@ export class TokenPrice {
     ).reduce((prices, tokenWithPrice) => {
       const id = tokenWithPrice.coingecko_id || tokenWithPrice.denom
 
-      return { ...prices, [id.toLowerCase()]: tokenWithPrice.price.price }
-    }, {})
+      if (prices[id]) {
+        return prices
+      }
+
+      prices[id] = tokenWithPrice.price.price
+
+      return prices
+    }, {} as Record<string, number>)
 
     return tokenPriceMap
   }

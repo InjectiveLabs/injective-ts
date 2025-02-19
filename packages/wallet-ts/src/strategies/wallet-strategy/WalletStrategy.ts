@@ -143,10 +143,15 @@ const createStrategies = (
   args: WalletStrategyArguments,
 ): Record<Wallet, ConcreteWalletStrategy | undefined> => {
   return Object.values(Wallet).reduce(
-    (strategies, wallet) => ({
-      ...strategies,
-      [wallet]: createStrategy({ wallet, args }),
-    }),
+    (strategies, wallet) => {
+      if (strategies[wallet]) {
+        return strategies
+      }
+
+      strategies[wallet] = createStrategy({ wallet, args })
+
+      return strategies
+    },
     {} as Record<Wallet, ConcreteWalletStrategy | undefined>,
   )
 }

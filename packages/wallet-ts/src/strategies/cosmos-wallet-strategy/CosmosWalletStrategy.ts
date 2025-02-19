@@ -49,13 +49,15 @@ const createWallet = ({
 const createWallets = (
   args: CosmosWalletStrategyArguments,
 ): Record<Wallet, ConcreteCosmosWalletStrategy | undefined> =>
-  cosmosWallets.reduce(
-    (strategies, wallet) => ({
-      ...strategies,
-      [wallet]: createWallet({ wallet, args }),
-    }),
-    {} as Record<Wallet, ConcreteCosmosWalletStrategy | undefined>,
-  )
+  cosmosWallets.reduce((strategies, wallet) => {
+    if (strategies[wallet]) {
+      return strategies
+    }
+
+    strategies[wallet] = createWallet({ wallet, args })
+
+    return strategies
+  }, {} as Record<Wallet, ConcreteCosmosWalletStrategy | undefined>)
 
 export default class CosmosWalletStrategy {
   public strategies: Record<Wallet, ConcreteCosmosWalletStrategy | undefined>
@@ -109,7 +111,7 @@ export default class CosmosWalletStrategy {
 
   public async sendTransaction(
     tx: TxRaw | DirectSignResponse,
-    options: SendTransactionOptions
+    options: SendTransactionOptions,
   ): Promise<TxResponse> {
     return this.getStrategy().sendTransaction(tx, options)
   }

@@ -39,10 +39,15 @@ const createAllStrategies = (
   args: CosmosWalletStrategyArguments,
 ): ConcreteStrategiesArg => {
   return Object.values(Wallet).reduce(
-    (strategies, wallet) => ({
-      ...strategies,
-      [wallet]: createStrategy({ args, wallet: wallet as Wallet }),
-    }),
+    (strategies, wallet) => {
+      if (strategies[wallet]) {
+        return strategies
+      }
+
+      strategies[wallet] = createStrategy({ args, wallet: wallet as Wallet })
+
+      return strategies
+    },
     {} as ConcreteStrategiesArg,
   )
 }
