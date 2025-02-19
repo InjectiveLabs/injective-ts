@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-evm@1.14.41-beta.15...@injectivelabs/wallet-evm@1.14.41) (2025-02-19)
+
+**Note:** Version bump only for package @injectivelabs/wallet-evm
+
+
+
+
+
 ## [1.14.40](https://github.com/InjectiveLabs/injective-ts/compare/v1.14.35...v1.14.40) (2025-01-21)
 
 **Note:** Version bump only for package @injectivelabs/wallet-evm
