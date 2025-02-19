@@ -29,6 +29,8 @@ export class TokenFactoryStatic {
       const symbol = token.symbol.toLowerCase()
 
       if (list[symbol]) {
+        list[symbol] = [...list[symbol], token]
+
         return list
       }
 
@@ -76,11 +78,19 @@ export class TokenFactoryStatic {
       return
     }
 
+    if (symbol === 'TRUMP') {
+      console.log({ tokensBySymbol })
+    }
+
     const token = tokensBySymbol.find((token: TokenStatic) => {
       const isType = !type || token.tokenType === type
       const isSource = !source || token.source === source
       const isVerification =
         !verification || token.tokenVerification === verification
+
+      if (symbol === 'TRUMP') {
+        console.log({ isType, isSource, isVerification })
+      }
 
       return isType && isSource && isVerification
     })
