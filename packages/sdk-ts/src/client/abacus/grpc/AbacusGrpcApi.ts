@@ -57,7 +57,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
     request.accountAddress = address
 
     if (daysLimit) {
-      request.daysLimit = daysLimit
+      request.daysLimit = daysLimit.toString()
     }
 
     try {
@@ -93,7 +93,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
     request.accountAddress = address
 
     if (weeksLimit) {
-      request.weeksLimit = weeksLimit
+      request.weeksLimit = weeksLimit.toString()
     }
 
     try {
