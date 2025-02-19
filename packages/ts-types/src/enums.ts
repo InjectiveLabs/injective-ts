@@ -4,8 +4,8 @@ export enum EthereumChainId {
   Rinkeby = 4,
   Goerli = 5,
   Kovan = 42,
-  Sepolia = 11155111,
   Injective = 888,
+  Sepolia = 11155111,
   Ganache = 1337,
   HardHat = 31337,
 }
