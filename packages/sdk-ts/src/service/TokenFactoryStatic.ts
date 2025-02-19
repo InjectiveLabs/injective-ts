@@ -20,13 +20,21 @@ export class TokenFactoryStatic {
         return list
       }
 
-      return { ...list, [denom]: token }
+      list[denom] = token
+
+      return list
     }, {} as Record<string, TokenStatic>)
 
     this.tokensBySymbol = registry.reduce((list, token) => {
       const symbol = token.symbol.toLowerCase()
 
-      return { ...list, [symbol]: [...(list[symbol] || []), token] }
+      if (list[symbol]) {
+        return list
+      }
+
+      list[symbol] = [token]
+
+      return list
     }, {} as Record<string, TokenStatic[]>)
 
     this.tokensByAddress = registry.reduce((list, token) => {
@@ -36,7 +44,13 @@ export class TokenFactoryStatic {
         return list
       }
 
-      return { ...list, [address]: [...(list[address] || []), token] }
+      if (list[address]) {
+        return list
+      }
+
+      list[address] = [token]
+
+      return list
     }, {} as Record<string, TokenStatic[]>)
   }
 
