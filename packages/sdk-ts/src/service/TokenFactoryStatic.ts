@@ -29,6 +29,8 @@ export class TokenFactoryStatic {
       const symbol = token.symbol.toLowerCase()
 
       if (list[symbol]) {
+        list[symbol] = [...list[symbol], token]
+
         return list
       }
 
