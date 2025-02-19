@@ -2809,9 +2809,9 @@
     axios "1.7.7"
     crypto-js "4.2.0"
 
-"@ledgerhq/hw-app-cosmos@^6.30.4":
+"@ledgerhq/hw-app-cosmos@6.30.4":
   version "6.30.4"
-  resolved "https://registry.npmjs.org/@ledgerhq/hw-app-cosmos/-/hw-app-cosmos-6.30.4.tgz#4e583c658da8c0b15b09090e5608f60537a4c635"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-app-cosmos/-/hw-app-cosmos-6.30.4.tgz#4e583c658da8c0b15b09090e5608f60537a4c635"
   integrity sha512-YyX2zKHvCbT8aehLQPE0dNyT1Bl9ZmN0WabpE+RaKvBgmrid6Kp5CypvOTVRrKyv06E3yKlX06yM2EESlILlzA==
   dependencies:
     "@ledgerhq/errors" "^6.19.1"
