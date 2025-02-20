@@ -1,7 +1,7 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
 import { publicToAddress, addHexPrefix } from 'ethereumjs-util'
 import HDNode from 'hdkey'
-import { Eth as EthereumApp } from '@ledgerhq/hw-app-eth'
+import { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../../types.js'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
 

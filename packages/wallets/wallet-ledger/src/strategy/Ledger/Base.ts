@@ -3,7 +3,7 @@ import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import { ledgerService } from '@ledgerhq/hw-app-eth'
+import { ledgerService } from '@bangjelkoski/ledgerhq-hw-app-eth'
 import {
   ErrorType,
   GeneralException,

@@ -5,7 +5,7 @@ import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import { TrezorConnect } from '@trezor/connect-web'
+import { TrezorConnect } from '@bangjelkoski/trezor-connect-web'
 import {
   ErrorType,
   WalletException,

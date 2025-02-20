@@ -1,7 +1,7 @@
-import { TransportWebHID } from '@ledgerhq/hw-transport-webhid'
-import { TransportWebUSB } from '@ledgerhq/hw-transport-webusb'
-import { Eth as EthereumApp } from '@ledgerhq/hw-app-eth'
-import { Transport } from '@ledgerhq/hw-transport'
+import { TransportWebHID } from '@bangjelkoski/ledgerhq-hw-transport-webhid'
+import { TransportWebUSB } from '@bangjelkoski/ledgerhq-hw-transport-webusb'
+import { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'
+import { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
 import { LedgerException } from '@injectivelabs/exceptions'
 import AccountManager from './AccountManager.js'
 
