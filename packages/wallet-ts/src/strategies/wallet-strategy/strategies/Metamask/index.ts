@@ -154,6 +154,23 @@ export default class Metamask
         params: [address, eip712json],
       })
     } catch (e: unknown) {
+      if (
+        (e as any).message.includes(
+          'Ledger: The signature doesnt match the right address',
+        )
+      ) {
+        throw new MetamaskException(
+          new Error(
+            'Please connect directly with Ledger instead through Metamask to sign this transaction',
+          ),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: WalletAction.SignTransaction,
+          },
+        )
+      }
+
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
