@@ -1285,6 +1285,11 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@bangjelkoski/store2@^2.14.3":
+  version "2.14.3"
+  resolved "https://registry.yarnpkg.com/@bangjelkoski/store2/-/store2-2.14.3.tgz#7c052173f843188296bf37fa1889d9da1dcf4cc2"
+  integrity sha512-ZG6ZDOHU5MZ4yxA3yY3gcZYnkcPtPaOwGOJrWD4Drar/u1TTBy1tWnP70atBa6LGm1+Ll1nb2GwS+HyWuFOWkw==
+
 "@bangjelkoski/wallet-connect-ethereum-provider@2.17.2":
   version "2.17.2"
   resolved "https://registry.yarnpkg.com/@bangjelkoski/wallet-connect-ethereum-provider/-/wallet-connect-ethereum-provider-2.17.2.tgz#3c1f584d246e9a997a181a5a78ce080dbd2dc68c"
@@ -14502,7 +14507,7 @@ std-env@^3.7.0:
   resolved "https://registry.npmjs.org/std-env/-/std-env-3.7.0.tgz#c9f7386ced6ecf13360b6c6c55b8aaa4ef7481d2"
   integrity sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==
 
-store2@^2.12.0, store2@^2.14.3:
+store2@^2.12.0:
   version "2.14.3"
   resolved "https://registry.npmjs.org/store2/-/store2-2.14.3.tgz#24077d7ba110711864e4f691d2af941ec533deb5"
   integrity sha512-4QcZ+yx7nzEFiV4BMLnr/pRa5HYzNITX2ri0Zh6sT9EyQHbBHacC6YigllUPU9X3D0f/22QCgfokpKs52YRrUg==
