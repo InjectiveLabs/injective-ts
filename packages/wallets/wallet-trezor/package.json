@@ -67,10 +67,10 @@
     "@metamask/eth-sig-util": "^8.0.0",
     "@trezor/connect-web": "^9.4.5",
     "alchemy-sdk": "^3.4.7",
-    "hdkey": "^2.1.0"
+    "hdkey": "^2.1.0",
+    "patch-package": "^8.0.0"
   },
   "devDependencies": {
-    "patch-package": "^8.0.0",
     "shx": "^0.3.3"
   },
   "resolutions": {
