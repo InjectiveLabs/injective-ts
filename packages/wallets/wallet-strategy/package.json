@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-strategy",
   "description": "Wallet strategy with instantiated wallets",
-  "version": "1.14.41-alpha.14",
+  "version": "1.14.41-alpha.15",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -67,7 +67,7 @@
     "@injectivelabs/wallet-core": "^1.14.41-alpha.14",
     "@injectivelabs/wallet-cosmos": "^1.14.41-alpha.14",
     "@injectivelabs/wallet-cosmostation": "^1.14.41-alpha.14",
-    "@injectivelabs/wallet-evm": "^1.14.41-alpha.14",
+    "@injectivelabs/wallet-evm": "^1.14.41-alpha.15",
     "@injectivelabs/wallet-ledger": "^1.14.41-alpha.14",
     "@injectivelabs/wallet-magic": "^1.14.41-alpha.14",
     "@injectivelabs/wallet-private-key": "^1.14.41-alpha.14",

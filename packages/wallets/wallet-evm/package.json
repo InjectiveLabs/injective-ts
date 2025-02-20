@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-evm",
   "description": "EVM wallet strategies for use with @injectivelabs/wallet-core.",
-  "version": "1.14.41-alpha.14",
+  "version": "1.14.41-alpha.15",
   "sideEffects": false,
   "type": "module",
   "author": {
