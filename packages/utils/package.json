@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/utils",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.14.41-alpha.4",
+  "version": "1.14.41-alpha.5",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -84,8 +84,8 @@
     "axios": "^1.6.4",
     "bignumber.js": "^9.0.1",
     "http-status-codes": "^2.2.0",
-    "store2": "^2.14.3",
-    "patch-package": "^8.0.0"
+    "patch-package": "^8.0.0",
+    "store2": "^2.14.3"
   },
   "devDependencies": {
     "shx": "^0.3.2"
