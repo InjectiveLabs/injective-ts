@@ -216,7 +216,7 @@ export class EvmWallet
       ) {
         throw new MetamaskException(
           new Error(
-            'Please connect directly with Ledger instead through Metamask to sign this transaction',
+            'Please connect directly with Ledger to sign this transaction',
           ),
           {
             code: UnspecifiedErrorCode,
