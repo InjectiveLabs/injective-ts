@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-trezor",
   "description": "Trezor wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.14.41-alpha.11",
+  "version": "1.14.41-alpha.12",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -61,17 +61,17 @@
     "@ethereumjs/common": "3.1.1",
     "@ethereumjs/tx": "^4.1.1",
     "@injectivelabs/exceptions": "^1.14.41-alpha.0",
-    "@injectivelabs/sdk-ts": "^1.14.41-alpha.9",
+    "@injectivelabs/sdk-ts": "^1.14.41-alpha.10",
     "@injectivelabs/ts-types": "^1.14.41-alpha.1",
-    "@injectivelabs/wallet-base": "^1.14.41-alpha.11",
+    "@injectivelabs/wallet-base": "^1.14.41-alpha.12",
     "@metamask/eth-sig-util": "^8.0.0",
     "@trezor/connect-web": "^9.4.5",
     "alchemy-sdk": "^3.4.7",
     "hdkey": "^2.1.0"
   },
   "devDependencies": {
-    "shx": "^0.3.3",
-    "patch-package": "^8.0.0"
+    "patch-package": "^8.0.0",
+    "shx": "^0.3.3"
   },
   "resolutions": {
     "@ethereumjs/common": "3.1.1"
