@@ -65,9 +65,11 @@
     "build:cjs": "tsc --build --force tsconfig.build.json",
     "build:esm": "tsc --build --force tsconfig.build.esm.json",
     "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
-    "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
+    "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json && yarn build:post:patches",
+    "build:post:patches": "node --experimental-fetch ./../../etc/patches/utils.js",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
     "test": "jest",
+    "postinstall": "patch-package",
     "test:watch": "jest --watch",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
@@ -85,7 +87,8 @@
     "store2": "^2.14.3"
   },
   "devDependencies": {
-    "shx": "^0.3.2"
+    "shx": "^0.3.2",
+    "patch-package": "^8.0.0"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
 }

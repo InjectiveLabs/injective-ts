@@ -21,7 +21,7 @@ import {
   Provider,
   EthereumProvider,
   EthereumProviderOptions,
-} from '@walletconnect/ethereum-provider'
+} from '@bangjelkoski/wc-ethereum-provider'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   TxRaw,
