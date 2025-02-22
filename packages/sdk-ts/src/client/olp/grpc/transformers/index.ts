@@ -82,12 +82,12 @@ export class DmmGrpcTransformer {
     return {
       next: response.next,
       addresses: addresses.map(
-        DmmGrpcTransformer.grpcEligibleAddresssesToEligibileAddresses,
+        DmmGrpcTransformer.grpcEligibleAddressesToEligibileAddresses,
       ),
     }
   }
 
-  static grpcEligibleAddresssesToEligibileAddresses(
+  static grpcEligibleAddressesToEligibileAddresses(
     eligibleAddress: GrpcEligibleAddress,
   ): EligibleAddress {
     return {
