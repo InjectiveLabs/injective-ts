@@ -97,8 +97,8 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
           type: e.type,
+          contextCode: e.code,
           context: 'Web3Gateway.PrepareTx',
         })
       }
@@ -175,8 +175,8 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
           type: e.type,
+          contextCode: e.code,
           context: 'Web3Gateway.CosmosPrepareTx',
         })
       }
@@ -244,8 +244,8 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
           type: e.type,
+          contextCode: e.code,
           context: 'Web3Gateway.BroadcastTx',
         })
       }
