@@ -6,7 +6,7 @@ import {
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
 import { BaseAuthorization } from './authorizations/Base.js'
-
+import { GeneralException } from '@injectivelabs/exceptions'
 export declare namespace MsgGrantWithAuthorization {
   export interface Params {
     authorization: BaseAuthorization<unknown, unknown, unknown>
@@ -117,6 +117,14 @@ export default class MsgGrantWithAuthorization extends MsgBase<
       '@type': '/cosmos.authz.v1beta1.MsgGrant',
       ...messageWithAuthorizationType,
     }
+  }
+
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712_v1 is not supported for MsgGrantWithAuthorization. Please use EIP712_v2',
+      ),
+    )
   }
 
   private getTimestamp() {

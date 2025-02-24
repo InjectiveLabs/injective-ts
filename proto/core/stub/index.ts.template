@@ -157,6 +157,7 @@ export * as InjectiveWasmxV1Beta1Query from "./injective/wasmx/v1/query.js";
 export * as InjectiveWasmxV1Beta1Proposal from "./injective/wasmx/v1/proposal.js";
 export * as InjectiveWasmxV1Beta1Tx from "./injective/wasmx/v1/tx.js";
 export * as InjectiveWasmxV1Beta1Wasmx from "./injective/wasmx/v1/wasmx.js";
+export * as InjectiveWasmxV1Beta1Authz from "./injective/wasmx/v1/authz.js";
 export * as CometAbciV1Types from "./cometbft/abci/v1/types.js";
 export * as CometBlocksyncV1Types from "./cometbft/blocksync/v1/types.js";
 export * as CometCryptoV1Keys from "./cometbft/crypto/v1/keys.js";
