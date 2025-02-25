@@ -2,7 +2,7 @@ import { Coin } from '@injectivelabs/ts-types'
 import {
   GoogleProtobufAny,
   CosmwasmWasmV1Authz,
-  InjectiveWasmxV1Beta1Authz
+  InjectiveWasmxV1Beta1Authz,
 } from '@injectivelabs/core-proto-ts'
 import { BaseAuthorization } from './Base.js'
 
@@ -20,7 +20,8 @@ export declare namespace ContractExecutionCompatAuthorization {
 
   export type Any = GoogleProtobufAny.Any
 
-  export type Proto = InjectiveWasmxV1Beta1Authz.ContractExecutionCompatAuthorization
+  export type Proto =
+    InjectiveWasmxV1Beta1Authz.ContractExecutionCompatAuthorization
 
   export type Amino = Object
 }
@@ -94,6 +95,15 @@ export default class ContractExecutionCompatAuthorization extends BaseAuthorizat
         CosmwasmWasmV1Authz.AcceptedMessageKeysFilter.encode(filter).finish()
 
       grant.filter = any
+    } else {
+      const filter = CosmwasmWasmV1Authz.AllowAllMessagesFilter.create()
+
+      const any = GoogleProtobufAny.Any.create()
+      any.typeUrl = '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter'
+      any.value =
+        CosmwasmWasmV1Authz.AllowAllMessagesFilter.encode(filter).finish()
+
+      grant.filter = any
     }
 
     authorization.grants = [grant]
@@ -149,6 +159,10 @@ export default class ContractExecutionCompatAuthorization extends BaseAuthorizat
         type: 'wasm/AcceptedMessageKeysFilter',
         keys: params.filter.acceptedMessagesKeys,
       }
+    } else {
+      grant.filter = {
+        type: 'wasm/AllowAllMessagesFilter',
+      }
     }
 
     return {
@@ -188,6 +202,10 @@ export default class ContractExecutionCompatAuthorization extends BaseAuthorizat
       grant.filter = {
         '@type': '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter',
         keys: params.filter.acceptedMessagesKeys,
+      }
+    } else {
+      grant.filter = {
+        '@type': '/cosmwasm.wasm.v1.AllowAllMessagesFilter',
       }
     }
 
