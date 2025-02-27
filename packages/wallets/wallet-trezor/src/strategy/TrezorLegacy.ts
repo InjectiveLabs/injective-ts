@@ -3,7 +3,7 @@ import { ConcreteEthereumWalletStrategyArgs } from '@injectivelabs/wallet-base'
 import { TrezorDerivationPathType } from '../types.js'
 import TrezorBase from './Base.js'
 
-export class TrezorBip32 extends TrezorBase {
+export class TrezorLegacy extends TrezorBase {
   constructor(args: ConcreteEthereumWalletStrategyArgs) {
     super({
       ...args,

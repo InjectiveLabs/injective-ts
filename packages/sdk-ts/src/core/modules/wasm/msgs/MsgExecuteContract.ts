@@ -119,13 +119,13 @@ export default class MsgExecuteContract extends MsgBase<
     }
   }
 
-  public toEip712(): never {
-    throw new GeneralException(
-      new Error(
-        'EIP712_v1 is not supported for MsgExecuteContract. Please use EIP712_v2',
-      ),
-    )
-  }
+  // public toEip712(): never {
+  //   throw new GeneralException(
+  //     new Error(
+  //       'EIP712_v1 is not supported for MsgExecuteContract. Please use EIP712_v2',
+  //     ),
+  //   )
+  // }
 
   public toDirectSign() {
     const proto = this.toProto()

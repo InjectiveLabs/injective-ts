@@ -3,9 +3,7 @@ import { AccountAddress } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
 import { TrezorWalletInfo, TrezorDerivationPathType } from '../../types.js'
 import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
-import {
-  DEFAULT_NUM_ADDRESSES_TO_FETCH,
-} from '@injectivelabs/wallet-base'
+import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
 
 const addressOfHDKey = (hdKey: HDNode): string => {
   const shouldSanitizePublicKey = true
@@ -61,6 +59,10 @@ export default class AccountManager {
   }): string => {
     if (derivationPathType === TrezorDerivationPathType.Bip44) {
       return `${fullBaseDerivationPath}/${index}'/0/0`
+    }
+
+    if (derivationPathType === TrezorDerivationPathType.Legacy) {
+      return `m/${index}`
     }
 
     return `${fullBaseDerivationPath}/0'/0/${index}`
