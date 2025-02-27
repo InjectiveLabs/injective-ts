@@ -208,7 +208,7 @@ export interface AccountVolume {
 
 export interface MinMaxRewards {
   minRewards: Record<string, string>
-  maxReward: string
+  maxRewards: Record<string, string>
 }
 
 export type GrpcEpochsV2 = InjectiveDmmRpc.GetEpochsResponse

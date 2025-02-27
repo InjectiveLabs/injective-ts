@@ -130,7 +130,7 @@
     "@injectivelabs/indexer-proto-ts": "1.13.6",
     "@injectivelabs/mito-proto-ts": "1.13.2",
     "@injectivelabs/networks": "^1.14.41",
-    "@injectivelabs/olp-proto-ts": "1.13.3",
+    "@injectivelabs/olp-proto-ts": "1.13.4",
     "@injectivelabs/test-utils": "^1.14.41",
     "@injectivelabs/ts-types": "^1.14.41",
     "@injectivelabs/utils": "^1.14.41",

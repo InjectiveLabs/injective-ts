@@ -2240,10 +2240,10 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/olp-proto-ts@1.13.3":
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/olp-proto-ts/-/olp-proto-ts-1.13.3.tgz#8c3c013ff88e63918c494ca255ea54f2ed9192f7"
-  integrity sha512-z2AQOXVYItMlM+qYraPbAzC6uhhJty7qpiI3KVGLCqFfTtICefOh4sa0gzMR/xP5zhS9SoRq0Wu4zuqaDy9UrQ==
+"@injectivelabs/olp-proto-ts@1.13.4":
+  version "1.13.4"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/olp-proto-ts/-/olp-proto-ts-1.13.4.tgz#55201321c01265e5e23d3396d38c5634be00d7b8"
+  integrity sha512-MTltuDrPJ+mu8IonkfwBp11ZJzTw2x+nA3wzrK+T4ZzEs+fBW8SgaCoXKc5COU7IBzg3wB316QwaR1l6MrffXg==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"

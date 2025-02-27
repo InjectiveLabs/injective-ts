@@ -291,18 +291,20 @@ export class DmmGrpcTransformer {
     }
   }
 
-  static minMaxRewardsResponseToMinMaxRewards(
-    response: InjectiveDmmRpc.GetMarketMinMaxRewardsResponse,
+  static marketRewardsRangeResponseToMarketRewardsRange(
+    response: InjectiveDmmRpc.GetMarketRewardsRangeResponse,
   ): MinMaxRewards {
     const formattedMinCurrentEpochRewards: Record<string, string> = {}
+    const formattedMaxCurrentEpochRewards: Record<string, string> = {}
 
-    response.minRewards.forEach((item) => {
-      formattedMinCurrentEpochRewards[item.marketId] = item.minReward
+    response.ranges.forEach((item) => {
+      formattedMinCurrentEpochRewards[item.marketId] = item.min
+      formattedMaxCurrentEpochRewards[item.marketId] = item.max
     })
 
     return {
       minRewards: formattedMinCurrentEpochRewards,
-      maxReward: response.maxReward,
+      maxRewards: formattedMaxCurrentEpochRewards,
     }
   }
 }

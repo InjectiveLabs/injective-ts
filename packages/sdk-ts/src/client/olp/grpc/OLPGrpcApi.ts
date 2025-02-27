@@ -416,37 +416,39 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchMinMaxRewards({
+  async fetchMarketRewardsRange({
     epochId,
     marketId,
   }: {
     epochId: string
     marketId?: string
   }) {
-    const request = InjectiveDmmRpc.GetMarketMinMaxRewardsRequest.create()
+    const request = InjectiveDmmRpc.GetMarketRewardsRangeRequest.create()
 
     request.epochId = epochId
     request.marketId = marketId
 
     try {
       const response =
-        await this.retry<InjectiveDmmRpc.GetMarketMinMaxRewardsResponse>(() =>
-          this.client.GetMarketMinMaxRewards(request),
+        await this.retry<InjectiveDmmRpc.GetMarketRewardsRangeResponse>(() =>
+          this.client.GetMarketRewardRanges(request),
         )
 
-      return DmmGrpcTransformer.minMaxRewardsResponseToMinMaxRewards(response)
+      return DmmGrpcTransformer.marketRewardsRangeResponseToMarketRewardsRange(
+        response,
+      )
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'GetMarketMinMaxRewards',
+          context: 'GetMarketRewardRanges',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'GetMarketMinMaxRewards',
+        context: 'GetMarketRewardRanges',
         contextModule: this.module,
       })
     }
