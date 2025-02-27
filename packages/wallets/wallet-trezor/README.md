@@ -37,9 +37,9 @@ import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor';
 
 const strategyArgs: WalletStrategyArguments = {
   chainId: ChainId.Mainnet,
-  wallet: Wallet.Trezor,
+  wallet: Wallet.TrezorBip32,
   strategies: {
-    [Wallet.Trezor]: new TrezorWalletStrategy({
+    [Wallet.TrezorBip32]: new TrezorWalletStrategy({
       chainId: ChainId.Mainnet,
       ethereumOptions: {
         ethereumChainId: EthereumChainId.Mainnet,
