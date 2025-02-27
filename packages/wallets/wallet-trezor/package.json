@@ -63,7 +63,7 @@
     "@injectivelabs/ts-types": "^1.14.41",
     "@injectivelabs/utils": "^1.14.41",
     "@injectivelabs/wallet-base": "^1.14.42-beta.1",
-    "@trezor/connect-web": "9.2.1",
+    "@trezor/connect-web": "^9.5.0",
     "alchemy-sdk": "^3.4.7",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
