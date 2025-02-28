@@ -2491,16 +2491,6 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/exceptions@^1.14.41":
-  version "1.14.41"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/exceptions/-/exceptions-1.14.41.tgz#fc8ba14646e92f80f50cda213855e0d9ecf210c0"
-  integrity sha512-tY2s6ivb2qgQO4lrsLd3aT7q7Hrn8uPVeN8Vc25FAWwlBmwm7okkLWLGI1jnO8v3oe99OO3be+rvTa/TexN5+g==
-  dependencies:
-    "@injectivelabs/grpc-web" "^0.0.1"
-    "@injectivelabs/ts-types" "^1.14.41"
-    http-status-codes "^2.2.0"
-    shx "^0.3.2"
-
 "@injectivelabs/grpc-web-node-http-transport@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@injectivelabs/grpc-web-node-http-transport/-/grpc-web-node-http-transport-0.0.2.tgz#87c9bbd4db1f70cf18d6a55b54b2cf17d3cf30c0"
@@ -2538,16 +2528,6 @@
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/networks@^1.14.41":
-  version "1.14.41"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/networks/-/networks-1.14.41.tgz#57b12fdcd6a182797646516fa06794ce2581dc22"
-  integrity sha512-UVkzBLpfD1zrnkBNmrtuFxsIgYZSfNJVSyaX979OdGorLt76PKjwgURfg1uatqEgeyU+G/2alRjPlg81bWQ6Ug==
-  dependencies:
-    "@injectivelabs/exceptions" "^1.14.41"
-    "@injectivelabs/ts-types" "^1.14.41"
-    "@injectivelabs/utils" "^1.14.41"
-    shx "^0.3.2"
-
 "@injectivelabs/olp-proto-ts@1.13.4":
   version "1.13.4"
   resolved "https://registry.yarnpkg.com/@injectivelabs/olp-proto-ts/-/olp-proto-ts-1.13.4.tgz#55201321c01265e5e23d3396d38c5634be00d7b8"
@@ -2557,27 +2537,6 @@
     google-protobuf "^3.14.0"
     protobufjs "^7.0.0"
     rxjs "^7.4.0"
-
-"@injectivelabs/ts-types@^1.14.41":
-  version "1.14.41"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/ts-types/-/ts-types-1.14.41.tgz#b3b4373d82fbf0eb488fed25dcd30fb46f4f94af"
-  integrity sha512-W1Es6NmlKKIkSOyIhCfpHzndatzalGIbjHf6jfukUvsb+DVQ9SkZrOEYYSCXZskdJ1OpUoGD0u3UNP99fM6G6g==
-  dependencies:
-    shx "^0.3.2"
-
-"@injectivelabs/utils@^1.14.41":
-  version "1.14.41"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/utils/-/utils-1.14.41.tgz#c96c3a8a160b3296789a69e7d1aa32b33ed96df3"
-  integrity sha512-ZReylpIqknVQ0Dzh0NrReTERDv8hiMaP+RcxKGtb2TIvzl1zve/9otEE4tkuHKPNPD/0F5hKmSTzhP4DdGiMtA==
-  dependencies:
-    "@injectivelabs/exceptions" "^1.14.41"
-    "@injectivelabs/ts-types" "^1.14.41"
-    axios "^1.6.4"
-    bignumber.js "^9.0.1"
-    http-status-codes "^2.2.0"
-    shx "^0.3.2"
-    snakecase-keys "^5.1.2"
-    store2 "^2.12.0"
 
 "@ioredis/commands@^1.1.1":
   version "1.2.0"
@@ -14390,15 +14349,6 @@ snake-case@^3.0.4:
     dot-case "^3.0.4"
     tslib "^2.0.3"
 
-snakecase-keys@^5.1.2:
-  version "5.5.0"
-  resolved "https://registry.npmjs.org/snakecase-keys/-/snakecase-keys-5.5.0.tgz#fbf9ca4a47fcc37c7496d00c6d9e455da9750403"
-  integrity sha512-r3kRtnoPu3FxGJ3fny6PKNnU3pteb29o6qAa0ugzhSseKNWRkw1dw8nIjXMyyKaU9vQxxVIE62Mb3bKbdrgpiw==
-  dependencies:
-    map-obj "^4.1.0"
-    snake-case "^3.0.4"
-    type-fest "^3.12.0"
-
 snakecase-keys@^5.4.1:
   version "5.4.4"
   resolved "https://registry.npmjs.org/snakecase-keys/-/snakecase-keys-5.4.4.tgz#28745b0175863ffc292ad97d96fe4e8e288a87a2"
@@ -14633,11 +14583,6 @@ std-env@^3.7.0:
   version "3.7.0"
   resolved "https://registry.npmjs.org/std-env/-/std-env-3.7.0.tgz#c9f7386ced6ecf13360b6c6c55b8aaa4ef7481d2"
   integrity sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==
-
-store2@^2.12.0:
-  version "2.14.3"
-  resolved "https://registry.npmjs.org/store2/-/store2-2.14.3.tgz#24077d7ba110711864e4f691d2af941ec533deb5"
-  integrity sha512-4QcZ+yx7nzEFiV4BMLnr/pRa5HYzNITX2ri0Zh6sT9EyQHbBHacC6YigllUPU9X3D0f/22QCgfokpKs52YRrUg==
 
 stream-browserify@^3.0.0:
   version "3.0.0"
@@ -15349,11 +15294,6 @@ type-fest@^2.5.2:
   version "2.19.0"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-2.19.0.tgz#88068015bb33036a598b952e55e9311a60fd3a9b"
   integrity sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==
-
-type-fest@^3.12.0:
-  version "3.13.1"
-  resolved "https://registry.npmjs.org/type-fest/-/type-fest-3.13.1.tgz#bb744c1f0678bea7543a2d1ec24e83e68e8c8706"
-  integrity sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==
 
 type-flag@^3.0.0:
   version "3.0.0"

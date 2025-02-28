@@ -35,7 +35,6 @@ jobs:
           lerna clean --yes
           node etc/bootstrapEnv
           yarn install  --ignore-engines
-          yarn bootstrap
           yarn build
 
       - name: 'Setup npm'
