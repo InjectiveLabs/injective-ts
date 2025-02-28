@@ -179,6 +179,7 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
+          contextCode: e.code,
           context: 'Web3Gateway.CosmosPrepareTx',
         })
       }
@@ -248,6 +249,7 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
+          contextCode: e.code,
           context: 'Web3Gateway.BroadcastTx',
         })
       }
@@ -304,6 +306,7 @@ export class IndexerGrpcTransactionApi {
         throw new TransactionException(e.toOriginalError(), {
           code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
+          contextCode: e.code,
           context: 'Web3Gateway.BroadcastCosmosTx',
         })
       }

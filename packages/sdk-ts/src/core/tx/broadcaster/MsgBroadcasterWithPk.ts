@@ -192,7 +192,9 @@ export class MsgBroadcasterWithPk {
         .toNumber()
     }
 
-    const transactionApi = new IndexerGrpcWeb3GwApi(endpoints.indexer)
+    const transactionApi = new IndexerGrpcWeb3GwApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
       message: web3Msgs,

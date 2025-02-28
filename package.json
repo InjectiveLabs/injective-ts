@@ -14,7 +14,7 @@
   },
   "scripts": {
     "postinstall": "node etc/bootstrapEnv",
-    "build": "node etc/bootstrapEnv && patch-package && lerna run build",
+    "build": "node etc/bootstrapEnv && lerna run build",
     "generate:core-proto-ts": "./proto/core/gen.sh",
     "publish:core-proto-ts": "./proto/core/publish.sh",
     "generate:indexer-proto-ts": "./proto/indexer/gen.sh",
@@ -35,7 +35,7 @@
     "build:patch:publish": "yarn build:fresh && yarn patch && yarn lerna:publish",
     "patch": "lerna version patch",
     "clean-up": "lerna run clean && shx rm -rf .build-cache *.log coverage junit.xml",
-    "bootstrap": "yarn clean-up && yarn install && patch-package",
+    "bootstrap": "yarn clean-up && yarn install",
     "test": "jest",
     "test:sdk-ts:core:stargate": "jest ./packages/sdk-ts/src/core/stargate",
     "test:sdk-ts:core:modules": "jest ./packages/sdk-ts/src/core/modules",
