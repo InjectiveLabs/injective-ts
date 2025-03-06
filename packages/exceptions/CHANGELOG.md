@@ -3,305 +3,246 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.41-alpha.1...@injectivelabs/exceptions@1.14.42) (2025-03-06)
+
+**Note:** Version bump only for package @injectivelabs/exceptions
+
 ## [1.14.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.36-beta.5...@injectivelabs/exceptions@1.14.41) (2025-02-19)
-
-
 
 ## 1.14.40 (2025-01-21)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
 
-
-
-
-
 ## [1.14.40](https://github.com/InjectiveLabs/injective-ts/compare/v1.14.35...v1.14.40) (2025-01-21)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
 
-
-
-
-
 ## 1.14.35 (2025-01-20)
 
-
 ### Bug Fixes
 
-* added more message maps ([830ea3c](https://github.com/InjectiveLabs/injective-ts/commit/830ea3c56809be2310036151b369c54cad9b1013))
-* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
-* assset service exception handling ([236916c](https://github.com/InjectiveLabs/injective-ts/commit/236916c888d0abd09fe970a092c0e76172079755))
-* bridge utils ([0961fca](https://github.com/InjectiveLabs/injective-ts/commit/0961fca000f812aa1d0b045764fa9c7dd126187c))
-* build ([c30f86b](https://github.com/InjectiveLabs/injective-ts/commit/c30f86b9e2a18495c3388fa59f945b6de3a4dbf7))
-* build script ([6e8c15f](https://github.com/InjectiveLabs/injective-ts/commit/6e8c15f5d0c0d61e15766abb6217f3fa34cdf791))
-* change log ([e039b61](https://github.com/InjectiveLabs/injective-ts/commit/e039b6173a1037bafb026c71f82cb08a073fad6a))
-* char limit ([713d43a](https://github.com/InjectiveLabs/injective-ts/commit/713d43aaa5ba8c915b5cfb5ef016569577a86b48))
-* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
-* esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
-* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
-* exceltion logging and message parsing ([37c3a70](https://github.com/InjectiveLabs/injective-ts/commit/37c3a7031fa9543bcde79f99d26f7849be7421e8))
-* exception codes added ([f82a1fc](https://github.com/InjectiveLabs/injective-ts/commit/f82a1fcae5d5a9883dff4f15da4eff11e371769a))
-* export ([c3491fa](https://github.com/InjectiveLabs/injective-ts/commit/c3491fa4f400eadd59a232535dd11993ce4a82f4))
-* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
-* imports ([877486d](https://github.com/InjectiveLabs/injective-ts/commit/877486d027440d54d043f5b3b8f8a6f45be6521e))
-* imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
-* ledger cosmos ([d4aef91](https://github.com/InjectiveLabs/injective-ts/commit/d4aef91696df67ac523c04638c981497c74b39e3))
-* linting and initial fetch ofac ([58983fc](https://github.com/InjectiveLabs/injective-ts/commit/58983fc0f02ea6e80b3788a03f4780dc6b85e9e3))
-* lowercase address for hardware wallets ([705ec01](https://github.com/InjectiveLabs/injective-ts/commit/705ec01aec3e15b2a5c42c802fc3c572b7006804))
-* map contract exec message ([3c9ccbc](https://github.com/InjectiveLabs/injective-ts/commit/3c9ccbcff2e4b688aef67b9a3e0f3ea323a9c9fc))
-* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
-* move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
-* msg parsing ([588d97e](https://github.com/InjectiveLabs/injective-ts/commit/588d97e75118be278b980c6655511ac7f0bab66c))
-* naming exceptions ([14a853d](https://github.com/InjectiveLabs/injective-ts/commit/14a853ddae9359998c2a19f92bb67bff73db3091))
-* orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
-* package version ([f861fbf](https://github.com/InjectiveLabs/injective-ts/commit/f861fbf21f5f78d1b840930a67b05c578087a3b8))
-* package version update to prevent publishing error ([4c7ae5c](https://github.com/InjectiveLabs/injective-ts/commit/4c7ae5cf98fc4910fb349201bc693d83ec3f9f66))
-* proper parsing ([f2738eb](https://github.com/InjectiveLabs/injective-ts/commit/f2738ebed9d0f75a29ad439b5a62faddf5baa2cb))
-* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
-* script minor ([adb7c76](https://github.com/InjectiveLabs/injective-ts/commit/adb7c764ad00a0cfa38223cecf9b221873cd31b8))
-* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
-* transaction exceptions ([2083bb8](https://github.com/InjectiveLabs/injective-ts/commit/2083bb80770b5ad954d2249d119ed72113f6b0c2))
-* version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
-* versions ([b7770bf](https://github.com/InjectiveLabs/injective-ts/commit/b7770bf382619115063ecdee2a9bd39b520e70de))
-
+- added more message maps ([830ea3c](https://github.com/InjectiveLabs/injective-ts/commit/830ea3c56809be2310036151b369c54cad9b1013))
+- added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+- assset service exception handling ([236916c](https://github.com/InjectiveLabs/injective-ts/commit/236916c888d0abd09fe970a092c0e76172079755))
+- bridge utils ([0961fca](https://github.com/InjectiveLabs/injective-ts/commit/0961fca000f812aa1d0b045764fa9c7dd126187c))
+- build ([c30f86b](https://github.com/InjectiveLabs/injective-ts/commit/c30f86b9e2a18495c3388fa59f945b6de3a4dbf7))
+- build script ([6e8c15f](https://github.com/InjectiveLabs/injective-ts/commit/6e8c15f5d0c0d61e15766abb6217f3fa34cdf791))
+- change log ([e039b61](https://github.com/InjectiveLabs/injective-ts/commit/e039b6173a1037bafb026c71f82cb08a073fad6a))
+- char limit ([713d43a](https://github.com/InjectiveLabs/injective-ts/commit/713d43aaa5ba8c915b5cfb5ef016569577a86b48))
+- delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+- esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
+- esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+- exceltion logging and message parsing ([37c3a70](https://github.com/InjectiveLabs/injective-ts/commit/37c3a7031fa9543bcde79f99d26f7849be7421e8))
+- exception codes added ([f82a1fc](https://github.com/InjectiveLabs/injective-ts/commit/f82a1fcae5d5a9883dff4f15da4eff11e371769a))
+- export ([c3491fa](https://github.com/InjectiveLabs/injective-ts/commit/c3491fa4f400eadd59a232535dd11993ce4a82f4))
+- fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+- imports ([877486d](https://github.com/InjectiveLabs/injective-ts/commit/877486d027440d54d043f5b3b8f8a6f45be6521e))
+- imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
+- ledger cosmos ([d4aef91](https://github.com/InjectiveLabs/injective-ts/commit/d4aef91696df67ac523c04638c981497c74b39e3))
+- linting and initial fetch ofac ([58983fc](https://github.com/InjectiveLabs/injective-ts/commit/58983fc0f02ea6e80b3788a03f4780dc6b85e9e3))
+- lowercase address for hardware wallets ([705ec01](https://github.com/InjectiveLabs/injective-ts/commit/705ec01aec3e15b2a5c42c802fc3c572b7006804))
+- map contract exec message ([3c9ccbc](https://github.com/InjectiveLabs/injective-ts/commit/3c9ccbcff2e4b688aef67b9a3e0f3ea323a9c9fc))
+- minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+- move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
+- msg parsing ([588d97e](https://github.com/InjectiveLabs/injective-ts/commit/588d97e75118be278b980c6655511ac7f0bab66c))
+- naming exceptions ([14a853d](https://github.com/InjectiveLabs/injective-ts/commit/14a853ddae9359998c2a19f92bb67bff73db3091))
+- orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
+- package version ([f861fbf](https://github.com/InjectiveLabs/injective-ts/commit/f861fbf21f5f78d1b840930a67b05c578087a3b8))
+- package version update to prevent publishing error ([4c7ae5c](https://github.com/InjectiveLabs/injective-ts/commit/4c7ae5cf98fc4910fb349201bc693d83ec3f9f66))
+- proper parsing ([f2738eb](https://github.com/InjectiveLabs/injective-ts/commit/f2738ebed9d0f75a29ad439b5a62faddf5baa2cb))
+- renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+- script minor ([adb7c76](https://github.com/InjectiveLabs/injective-ts/commit/adb7c764ad00a0cfa38223cecf9b221873cd31b8))
+- streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+- transaction exceptions ([2083bb8](https://github.com/InjectiveLabs/injective-ts/commit/2083bb80770b5ad954d2249d119ed72113f6b0c2))
+- version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
+- versions ([b7770bf](https://github.com/InjectiveLabs/injective-ts/commit/b7770bf382619115063ecdee2a9bd39b520e70de))
 
 ### Features
 
-* abacus abstractions ([08dfc49](https://github.com/InjectiveLabs/injective-ts/commit/08dfc494c78fa3fa4bc8feda19c32ff442c63895))
-* add grpc support for ninja api ([0445623](https://github.com/InjectiveLabs/injective-ts/commit/04456234d2efa44a692beeccaf89e38894e71081))
-* add unit test coverage for eip712 messages ([#75](https://github.com/InjectiveLabs/injective-ts/issues/75)) ([cf7e2fd](https://github.com/InjectiveLabs/injective-ts/commit/cf7e2fde727979fcf2187385d72b96efbed6d61a))
-* added bonfida sol domains ([2e67999](https://github.com/InjectiveLabs/injective-ts/commit/2e67999a91854c79c6c260493ac3d629285b2c1d))
-* added context to exceptions ([ccfd06b](https://github.com/InjectiveLabs/injective-ts/commit/ccfd06b84fc1acb542e28f1d39ac251730750afa))
-* added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
-* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
-* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
-* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
-* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
-* added trust wallet ([47bae16](https://github.com/InjectiveLabs/injective-ts/commit/47bae16f3a49f075a5733d5170c315c2f411bef3))
-* bridge-ts initial ([4320b1c](https://github.com/InjectiveLabs/injective-ts/commit/4320b1c256b58caec7a08c33854f0bdde9681c3c))
-* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
-* compact error for reporting ([381dc6d](https://github.com/InjectiveLabs/injective-ts/commit/381dc6d58a171851aa57779e214b4d96c930cd50))
-* contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
-* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
-* cosmostation initial support ([ea941e5](https://github.com/InjectiveLabs/injective-ts/commit/ea941e554121c548af13e0129d2101038c924dde))
-* eip712 v2 ([8eaaeba](https://github.com/InjectiveLabs/injective-ts/commit/8eaaebabe4e715d91a56eafa55366275753d05a2))
-* eip712 verification against chain ([4fd66f7](https://github.com/InjectiveLabs/injective-ts/commit/4fd66f7ff1fc88b5e41dccd4442489748626ba24))
-* exception class name ([2e0bec4](https://github.com/InjectiveLabs/injective-ts/commit/2e0bec44c5b1c9f5ed5a97faa522a5dd90cb7084))
-* exception names ([14592d3](https://github.com/InjectiveLabs/injective-ts/commit/14592d3b2877be893d67b4c401208d42ed29a778))
-* exceptions part 2 ([1919620](https://github.com/InjectiveLabs/injective-ts/commit/191962094f9ec7036c54425e35c6aa476c70ea79))
-* experimental ledger support for keplr ([1afd947](https://github.com/InjectiveLabs/injective-ts/commit/1afd947a3714db9da63be89e862d5525ad15fc01))
-* funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
-* grpc indexer campaign api ([1a2c561](https://github.com/InjectiveLabs/injective-ts/commit/1a2c561bcd128c9a69e6b8938bfaf71bac59a93f))
-* improved wasm error reporting ([70dbe5a](https://github.com/InjectiveLabs/injective-ts/commit/70dbe5a69fd54d26dff01b9bd87313eebeac71cd))
-* initial exceptions setup ([6da9f2e](https://github.com/InjectiveLabs/injective-ts/commit/6da9f2eb2df2fcd2995fc9cd25a615dc607da253))
-* initial grid strategies list impl ([955ac92](https://github.com/InjectiveLabs/injective-ts/commit/955ac923e52be707fda327b4bd99060a4ea6401d))
-* initial monorepo setup with initial set of packages ([99aab6c](https://github.com/InjectiveLabs/injective-ts/commit/99aab6c2a1913ab48ce1cc9558db4843be72ccb5))
-* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
-* map chain error exception by module ([1714e80](https://github.com/InjectiveLabs/injective-ts/commit/1714e80e1bbabc8807bc56ef2d0085bea0a481a2))
-* message map ([fd237b2](https://github.com/InjectiveLabs/injective-ts/commit/fd237b225dc9f82661e1fea2f6559de28798fafa))
-* network improvements and ledger parser ([702d63d](https://github.com/InjectiveLabs/injective-ts/commit/702d63d703b1cb7d008773a153617fcbf38c5793))
-* nonja and bitget wallet ([aebb71f](https://github.com/InjectiveLabs/injective-ts/commit/aebb71f9209636a5c0974d84c1febe04e5d3ed6c))
-* okx wallet ([4771142](https://github.com/InjectiveLabs/injective-ts/commit/477114286300fea826ec68c7ec5962842a6031d8))
-* optimise bundle size ([03bb060](https://github.com/InjectiveLabs/injective-ts/commit/03bb060357d7b89802ec1422ccbc44841acbbeb5))
-* retry on broadcast ([6aaed21](https://github.com/InjectiveLabs/injective-ts/commit/6aaed216e433260f0e2b5683d52b364bf8824db1))
-* sdk-ui-ts ([4c8f902](https://github.com/InjectiveLabs/injective-ts/commit/4c8f90262b0d7cf2df3038c23fda4a9e83bb8c6a))
-* setup indexer grpc account portfolio api and stream ([72d7d85](https://github.com/InjectiveLabs/injective-ts/commit/72d7d85e66e2932b60b3e6215d5cda11b036e6a5))
-* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-* transaction error handling ([d0bc738](https://github.com/InjectiveLabs/injective-ts/commit/d0bc738ab4b99248b81e3387dba5914974ae0c17))
-* tx exception handling ([36dbef7](https://github.com/InjectiveLabs/injective-ts/commit/36dbef7c8abaa5c18dceb3b369473a499ff129ee))
-* ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
-* update supernova folder structure ([a220ecd](https://github.com/InjectiveLabs/injective-ts/commit/a220ecd97f94819ce839ac03facfa1a3c98f5b51))
-* wormhole gw ([1253e57](https://github.com/InjectiveLabs/injective-ts/commit/1253e57341ecae8da67e4132957b7d8dc21a65f4))
-
+- abacus abstractions ([08dfc49](https://github.com/InjectiveLabs/injective-ts/commit/08dfc494c78fa3fa4bc8feda19c32ff442c63895))
+- add grpc support for ninja api ([0445623](https://github.com/InjectiveLabs/injective-ts/commit/04456234d2efa44a692beeccaf89e38894e71081))
+- add unit test coverage for eip712 messages ([#75](https://github.com/InjectiveLabs/injective-ts/issues/75)) ([cf7e2fd](https://github.com/InjectiveLabs/injective-ts/commit/cf7e2fde727979fcf2187385d72b96efbed6d61a))
+- added bonfida sol domains ([2e67999](https://github.com/InjectiveLabs/injective-ts/commit/2e67999a91854c79c6c260493ac3d629285b2c1d))
+- added context to exceptions ([ccfd06b](https://github.com/InjectiveLabs/injective-ts/commit/ccfd06b84fc1acb542e28f1d39ac251730750afa))
+- added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+- added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+- added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+- added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+- added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+- added trust wallet ([47bae16](https://github.com/InjectiveLabs/injective-ts/commit/47bae16f3a49f075a5733d5170c315c2f411bef3))
+- bridge-ts initial ([4320b1c](https://github.com/InjectiveLabs/injective-ts/commit/4320b1c256b58caec7a08c33854f0bdde9681c3c))
+- chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+- compact error for reporting ([381dc6d](https://github.com/InjectiveLabs/injective-ts/commit/381dc6d58a171851aa57779e214b4d96c930cd50))
+- contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+- contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+- cosmostation initial support ([ea941e5](https://github.com/InjectiveLabs/injective-ts/commit/ea941e554121c548af13e0129d2101038c924dde))
+- eip712 v2 ([8eaaeba](https://github.com/InjectiveLabs/injective-ts/commit/8eaaebabe4e715d91a56eafa55366275753d05a2))
+- eip712 verification against chain ([4fd66f7](https://github.com/InjectiveLabs/injective-ts/commit/4fd66f7ff1fc88b5e41dccd4442489748626ba24))
+- exception class name ([2e0bec4](https://github.com/InjectiveLabs/injective-ts/commit/2e0bec44c5b1c9f5ed5a97faa522a5dd90cb7084))
+- exception names ([14592d3](https://github.com/InjectiveLabs/injective-ts/commit/14592d3b2877be893d67b4c401208d42ed29a778))
+- exceptions part 2 ([1919620](https://github.com/InjectiveLabs/injective-ts/commit/191962094f9ec7036c54425e35c6aa476c70ea79))
+- experimental ledger support for keplr ([1afd947](https://github.com/InjectiveLabs/injective-ts/commit/1afd947a3714db9da63be89e862d5525ad15fc01))
+- funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
+- grpc indexer campaign api ([1a2c561](https://github.com/InjectiveLabs/injective-ts/commit/1a2c561bcd128c9a69e6b8938bfaf71bac59a93f))
+- improved wasm error reporting ([70dbe5a](https://github.com/InjectiveLabs/injective-ts/commit/70dbe5a69fd54d26dff01b9bd87313eebeac71cd))
+- initial exceptions setup ([6da9f2e](https://github.com/InjectiveLabs/injective-ts/commit/6da9f2eb2df2fcd2995fc9cd25a615dc607da253))
+- initial grid strategies list impl ([955ac92](https://github.com/InjectiveLabs/injective-ts/commit/955ac923e52be707fda327b4bd99060a4ea6401d))
+- initial monorepo setup with initial set of packages ([99aab6c](https://github.com/InjectiveLabs/injective-ts/commit/99aab6c2a1913ab48ce1cc9558db4843be72ccb5))
+- luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+- map chain error exception by module ([1714e80](https://github.com/InjectiveLabs/injective-ts/commit/1714e80e1bbabc8807bc56ef2d0085bea0a481a2))
+- message map ([fd237b2](https://github.com/InjectiveLabs/injective-ts/commit/fd237b225dc9f82661e1fea2f6559de28798fafa))
+- network improvements and ledger parser ([702d63d](https://github.com/InjectiveLabs/injective-ts/commit/702d63d703b1cb7d008773a153617fcbf38c5793))
+- nonja and bitget wallet ([aebb71f](https://github.com/InjectiveLabs/injective-ts/commit/aebb71f9209636a5c0974d84c1febe04e5d3ed6c))
+- okx wallet ([4771142](https://github.com/InjectiveLabs/injective-ts/commit/477114286300fea826ec68c7ec5962842a6031d8))
+- optimise bundle size ([03bb060](https://github.com/InjectiveLabs/injective-ts/commit/03bb060357d7b89802ec1422ccbc44841acbbeb5))
+- retry on broadcast ([6aaed21](https://github.com/InjectiveLabs/injective-ts/commit/6aaed216e433260f0e2b5683d52b364bf8824db1))
+- sdk-ui-ts ([4c8f902](https://github.com/InjectiveLabs/injective-ts/commit/4c8f90262b0d7cf2df3038c23fda4a9e83bb8c6a))
+- setup indexer grpc account portfolio api and stream ([72d7d85](https://github.com/InjectiveLabs/injective-ts/commit/72d7d85e66e2932b60b3e6215d5cda11b036e6a5))
+- subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+- transaction error handling ([d0bc738](https://github.com/InjectiveLabs/injective-ts/commit/d0bc738ab4b99248b81e3387dba5914974ae0c17))
+- tx exception handling ([36dbef7](https://github.com/InjectiveLabs/injective-ts/commit/36dbef7c8abaa5c18dceb3b369473a499ff129ee))
+- ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
+- update supernova folder structure ([a220ecd](https://github.com/InjectiveLabs/injective-ts/commit/a220ecd97f94819ce839ac03facfa1a3c98f5b51))
+- wormhole gw ([1253e57](https://github.com/InjectiveLabs/injective-ts/commit/1253e57341ecae8da67e4132957b7d8dc21a65f4))
 
 ### Reverts
 
-* faulty version ([6e25b3f](https://github.com/InjectiveLabs/injective-ts/commit/6e25b3f156d964666db8bc7885df653166aac523))
+- faulty version ([6e25b3f](https://github.com/InjectiveLabs/injective-ts/commit/6e25b3f156d964666db8bc7885df653166aac523))
 
-
-
-
-
-#  (2025-01-20)
-
+# (2025-01-20)
 
 ### Bug Fixes
 
-* added more message maps ([830ea3c](https://github.com/InjectiveLabs/injective-ts/commit/830ea3c56809be2310036151b369c54cad9b1013))
-* added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
-* assset service exception handling ([236916c](https://github.com/InjectiveLabs/injective-ts/commit/236916c888d0abd09fe970a092c0e76172079755))
-* bridge utils ([0961fca](https://github.com/InjectiveLabs/injective-ts/commit/0961fca000f812aa1d0b045764fa9c7dd126187c))
-* build ([c30f86b](https://github.com/InjectiveLabs/injective-ts/commit/c30f86b9e2a18495c3388fa59f945b6de3a4dbf7))
-* build script ([6e8c15f](https://github.com/InjectiveLabs/injective-ts/commit/6e8c15f5d0c0d61e15766abb6217f3fa34cdf791))
-* change log ([e039b61](https://github.com/InjectiveLabs/injective-ts/commit/e039b6173a1037bafb026c71f82cb08a073fad6a))
-* char limit ([713d43a](https://github.com/InjectiveLabs/injective-ts/commit/713d43aaa5ba8c915b5cfb5ef016569577a86b48))
-* delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
-* esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
-* esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
-* exceltion logging and message parsing ([37c3a70](https://github.com/InjectiveLabs/injective-ts/commit/37c3a7031fa9543bcde79f99d26f7849be7421e8))
-* exception codes added ([f82a1fc](https://github.com/InjectiveLabs/injective-ts/commit/f82a1fcae5d5a9883dff4f15da4eff11e371769a))
-* export ([c3491fa](https://github.com/InjectiveLabs/injective-ts/commit/c3491fa4f400eadd59a232535dd11993ce4a82f4))
-* fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
-* imports ([877486d](https://github.com/InjectiveLabs/injective-ts/commit/877486d027440d54d043f5b3b8f8a6f45be6521e))
-* imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
-* ledger cosmos ([d4aef91](https://github.com/InjectiveLabs/injective-ts/commit/d4aef91696df67ac523c04638c981497c74b39e3))
-* linting and initial fetch ofac ([58983fc](https://github.com/InjectiveLabs/injective-ts/commit/58983fc0f02ea6e80b3788a03f4780dc6b85e9e3))
-* lowercase address for hardware wallets ([705ec01](https://github.com/InjectiveLabs/injective-ts/commit/705ec01aec3e15b2a5c42c802fc3c572b7006804))
-* map contract exec message ([3c9ccbc](https://github.com/InjectiveLabs/injective-ts/commit/3c9ccbcff2e4b688aef67b9a3e0f3ea323a9c9fc))
-* minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
-* move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
-* msg parsing ([588d97e](https://github.com/InjectiveLabs/injective-ts/commit/588d97e75118be278b980c6655511ac7f0bab66c))
-* naming exceptions ([14a853d](https://github.com/InjectiveLabs/injective-ts/commit/14a853ddae9359998c2a19f92bb67bff73db3091))
-* orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
-* package version ([f861fbf](https://github.com/InjectiveLabs/injective-ts/commit/f861fbf21f5f78d1b840930a67b05c578087a3b8))
-* package version update to prevent publishing error ([4c7ae5c](https://github.com/InjectiveLabs/injective-ts/commit/4c7ae5cf98fc4910fb349201bc693d83ec3f9f66))
-* proper parsing ([f2738eb](https://github.com/InjectiveLabs/injective-ts/commit/f2738ebed9d0f75a29ad439b5a62faddf5baa2cb))
-* renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
-* script minor ([adb7c76](https://github.com/InjectiveLabs/injective-ts/commit/adb7c764ad00a0cfa38223cecf9b221873cd31b8))
-* streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
-* transaction exceptions ([2083bb8](https://github.com/InjectiveLabs/injective-ts/commit/2083bb80770b5ad954d2249d119ed72113f6b0c2))
-* version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
-* versions ([b7770bf](https://github.com/InjectiveLabs/injective-ts/commit/b7770bf382619115063ecdee2a9bd39b520e70de))
-
+- added more message maps ([830ea3c](https://github.com/InjectiveLabs/injective-ts/commit/830ea3c56809be2310036151b369c54cad9b1013))
+- added types for ethereum-utils, fixed bech32 import ([1bec7b4](https://github.com/InjectiveLabs/injective-ts/commit/1bec7b41a7b612f0f5f08292483c2090fc9a84d5))
+- assset service exception handling ([236916c](https://github.com/InjectiveLabs/injective-ts/commit/236916c888d0abd09fe970a092c0e76172079755))
+- bridge utils ([0961fca](https://github.com/InjectiveLabs/injective-ts/commit/0961fca000f812aa1d0b045764fa9c7dd126187c))
+- build ([c30f86b](https://github.com/InjectiveLabs/injective-ts/commit/c30f86b9e2a18495c3388fa59f945b6de3a4dbf7))
+- build script ([6e8c15f](https://github.com/InjectiveLabs/injective-ts/commit/6e8c15f5d0c0d61e15766abb6217f3fa34cdf791))
+- change log ([e039b61](https://github.com/InjectiveLabs/injective-ts/commit/e039b6173a1037bafb026c71f82cb08a073fad6a))
+- char limit ([713d43a](https://github.com/InjectiveLabs/injective-ts/commit/713d43aaa5ba8c915b5cfb5ef016569577a86b48))
+- delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+- esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
+- esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+- exceltion logging and message parsing ([37c3a70](https://github.com/InjectiveLabs/injective-ts/commit/37c3a7031fa9543bcde79f99d26f7849be7421e8))
+- exception codes added ([f82a1fc](https://github.com/InjectiveLabs/injective-ts/commit/f82a1fcae5d5a9883dff4f15da4eff11e371769a))
+- export ([c3491fa](https://github.com/InjectiveLabs/injective-ts/commit/c3491fa4f400eadd59a232535dd11993ce4a82f4))
+- fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+- imports ([877486d](https://github.com/InjectiveLabs/injective-ts/commit/877486d027440d54d043f5b3b8f8a6f45be6521e))
+- imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
+- ledger cosmos ([d4aef91](https://github.com/InjectiveLabs/injective-ts/commit/d4aef91696df67ac523c04638c981497c74b39e3))
+- linting and initial fetch ofac ([58983fc](https://github.com/InjectiveLabs/injective-ts/commit/58983fc0f02ea6e80b3788a03f4780dc6b85e9e3))
+- lowercase address for hardware wallets ([705ec01](https://github.com/InjectiveLabs/injective-ts/commit/705ec01aec3e15b2a5c42c802fc3c572b7006804))
+- map contract exec message ([3c9ccbc](https://github.com/InjectiveLabs/injective-ts/commit/3c9ccbcff2e4b688aef67b9a3e0f3ea323a9c9fc))
+- minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+- move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
+- msg parsing ([588d97e](https://github.com/InjectiveLabs/injective-ts/commit/588d97e75118be278b980c6655511ac7f0bab66c))
+- naming exceptions ([14a853d](https://github.com/InjectiveLabs/injective-ts/commit/14a853ddae9359998c2a19f92bb67bff73db3091))
+- orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
+- package version ([f861fbf](https://github.com/InjectiveLabs/injective-ts/commit/f861fbf21f5f78d1b840930a67b05c578087a3b8))
+- package version update to prevent publishing error ([4c7ae5c](https://github.com/InjectiveLabs/injective-ts/commit/4c7ae5cf98fc4910fb349201bc693d83ec3f9f66))
+- proper parsing ([f2738eb](https://github.com/InjectiveLabs/injective-ts/commit/f2738ebed9d0f75a29ad439b5a62faddf5baa2cb))
+- renamed packages to avoid conflicts ([eca2fca](https://github.com/InjectiveLabs/injective-ts/commit/eca2fca05983a5b7b401ce85294c2f5e08c07011))
+- script minor ([adb7c76](https://github.com/InjectiveLabs/injective-ts/commit/adb7c764ad00a0cfa38223cecf9b221873cd31b8))
+- streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+- transaction exceptions ([2083bb8](https://github.com/InjectiveLabs/injective-ts/commit/2083bb80770b5ad954d2249d119ed72113f6b0c2))
+- version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
+- versions ([b7770bf](https://github.com/InjectiveLabs/injective-ts/commit/b7770bf382619115063ecdee2a9bd39b520e70de))
 
 ### Features
 
-* abacus abstractions ([08dfc49](https://github.com/InjectiveLabs/injective-ts/commit/08dfc494c78fa3fa4bc8feda19c32ff442c63895))
-* add grpc support for ninja api ([0445623](https://github.com/InjectiveLabs/injective-ts/commit/04456234d2efa44a692beeccaf89e38894e71081))
-* add unit test coverage for eip712 messages ([#75](https://github.com/InjectiveLabs/injective-ts/issues/75)) ([cf7e2fd](https://github.com/InjectiveLabs/injective-ts/commit/cf7e2fde727979fcf2187385d72b96efbed6d61a))
-* added bonfida sol domains ([2e67999](https://github.com/InjectiveLabs/injective-ts/commit/2e67999a91854c79c6c260493ac3d629285b2c1d))
-* added context to exceptions ([ccfd06b](https://github.com/InjectiveLabs/injective-ts/commit/ccfd06b84fc1acb542e28f1d39ac251730750afa))
-* added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
-* added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
-* added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
-* added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
-* added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
-* added trust wallet ([47bae16](https://github.com/InjectiveLabs/injective-ts/commit/47bae16f3a49f075a5733d5170c315c2f411bef3))
-* bridge-ts initial ([4320b1c](https://github.com/InjectiveLabs/injective-ts/commit/4320b1c256b58caec7a08c33854f0bdde9681c3c))
-* chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
-* compact error for reporting ([381dc6d](https://github.com/InjectiveLabs/injective-ts/commit/381dc6d58a171851aa57779e214b4d96c930cd50))
-* contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
-* contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
-* cosmostation initial support ([ea941e5](https://github.com/InjectiveLabs/injective-ts/commit/ea941e554121c548af13e0129d2101038c924dde))
-* eip712 v2 ([8eaaeba](https://github.com/InjectiveLabs/injective-ts/commit/8eaaebabe4e715d91a56eafa55366275753d05a2))
-* eip712 verification against chain ([4fd66f7](https://github.com/InjectiveLabs/injective-ts/commit/4fd66f7ff1fc88b5e41dccd4442489748626ba24))
-* exception class name ([2e0bec4](https://github.com/InjectiveLabs/injective-ts/commit/2e0bec44c5b1c9f5ed5a97faa522a5dd90cb7084))
-* exception names ([14592d3](https://github.com/InjectiveLabs/injective-ts/commit/14592d3b2877be893d67b4c401208d42ed29a778))
-* exceptions part 2 ([1919620](https://github.com/InjectiveLabs/injective-ts/commit/191962094f9ec7036c54425e35c6aa476c70ea79))
-* experimental ledger support for keplr ([1afd947](https://github.com/InjectiveLabs/injective-ts/commit/1afd947a3714db9da63be89e862d5525ad15fc01))
-* funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
-* grpc indexer campaign api ([1a2c561](https://github.com/InjectiveLabs/injective-ts/commit/1a2c561bcd128c9a69e6b8938bfaf71bac59a93f))
-* improved wasm error reporting ([70dbe5a](https://github.com/InjectiveLabs/injective-ts/commit/70dbe5a69fd54d26dff01b9bd87313eebeac71cd))
-* initial exceptions setup ([6da9f2e](https://github.com/InjectiveLabs/injective-ts/commit/6da9f2eb2df2fcd2995fc9cd25a615dc607da253))
-* initial grid strategies list impl ([955ac92](https://github.com/InjectiveLabs/injective-ts/commit/955ac923e52be707fda327b4bd99060a4ea6401d))
-* initial monorepo setup with initial set of packages ([99aab6c](https://github.com/InjectiveLabs/injective-ts/commit/99aab6c2a1913ab48ce1cc9558db4843be72ccb5))
-* luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
-* map chain error exception by module ([1714e80](https://github.com/InjectiveLabs/injective-ts/commit/1714e80e1bbabc8807bc56ef2d0085bea0a481a2))
-* message map ([fd237b2](https://github.com/InjectiveLabs/injective-ts/commit/fd237b225dc9f82661e1fea2f6559de28798fafa))
-* network improvements and ledger parser ([702d63d](https://github.com/InjectiveLabs/injective-ts/commit/702d63d703b1cb7d008773a153617fcbf38c5793))
-* nonja and bitget wallet ([aebb71f](https://github.com/InjectiveLabs/injective-ts/commit/aebb71f9209636a5c0974d84c1febe04e5d3ed6c))
-* okx wallet ([4771142](https://github.com/InjectiveLabs/injective-ts/commit/477114286300fea826ec68c7ec5962842a6031d8))
-* optimise bundle size ([03bb060](https://github.com/InjectiveLabs/injective-ts/commit/03bb060357d7b89802ec1422ccbc44841acbbeb5))
-* retry on broadcast ([6aaed21](https://github.com/InjectiveLabs/injective-ts/commit/6aaed216e433260f0e2b5683d52b364bf8824db1))
-* sdk-ui-ts ([4c8f902](https://github.com/InjectiveLabs/injective-ts/commit/4c8f90262b0d7cf2df3038c23fda4a9e83bb8c6a))
-* setup indexer grpc account portfolio api and stream ([72d7d85](https://github.com/InjectiveLabs/injective-ts/commit/72d7d85e66e2932b60b3e6215d5cda11b036e6a5))
-* subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
-* transaction error handling ([d0bc738](https://github.com/InjectiveLabs/injective-ts/commit/d0bc738ab4b99248b81e3387dba5914974ae0c17))
-* tx exception handling ([36dbef7](https://github.com/InjectiveLabs/injective-ts/commit/36dbef7c8abaa5c18dceb3b369473a499ff129ee))
-* ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
-* update supernova folder structure ([a220ecd](https://github.com/InjectiveLabs/injective-ts/commit/a220ecd97f94819ce839ac03facfa1a3c98f5b51))
-* wormhole gw ([1253e57](https://github.com/InjectiveLabs/injective-ts/commit/1253e57341ecae8da67e4132957b7d8dc21a65f4))
-
+- abacus abstractions ([08dfc49](https://github.com/InjectiveLabs/injective-ts/commit/08dfc494c78fa3fa4bc8feda19c32ff442c63895))
+- add grpc support for ninja api ([0445623](https://github.com/InjectiveLabs/injective-ts/commit/04456234d2efa44a692beeccaf89e38894e71081))
+- add unit test coverage for eip712 messages ([#75](https://github.com/InjectiveLabs/injective-ts/issues/75)) ([cf7e2fd](https://github.com/InjectiveLabs/injective-ts/commit/cf7e2fde727979fcf2187385d72b96efbed6d61a))
+- added bonfida sol domains ([2e67999](https://github.com/InjectiveLabs/injective-ts/commit/2e67999a91854c79c6c260493ac3d629285b2c1d))
+- added context to exceptions ([ccfd06b](https://github.com/InjectiveLabs/injective-ts/commit/ccfd06b84fc1acb542e28f1d39ac251730750afa))
+- added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+- added exchange exception ([3afa0c9](https://github.com/InjectiveLabs/injective-ts/commit/3afa0c9e03e9a0cebf98b202928893980239989a))
+- added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+- added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+- added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+- added trust wallet ([47bae16](https://github.com/InjectiveLabs/injective-ts/commit/47bae16f3a49f075a5733d5170c315c2f411bef3))
+- bridge-ts initial ([4320b1c](https://github.com/InjectiveLabs/injective-ts/commit/4320b1c256b58caec7a08c33854f0bdde9681c3c))
+- chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+- compact error for reporting ([381dc6d](https://github.com/InjectiveLabs/injective-ts/commit/381dc6d58a171851aa57779e214b4d96c930cd50))
+- contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+- contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+- cosmostation initial support ([ea941e5](https://github.com/InjectiveLabs/injective-ts/commit/ea941e554121c548af13e0129d2101038c924dde))
+- eip712 v2 ([8eaaeba](https://github.com/InjectiveLabs/injective-ts/commit/8eaaebabe4e715d91a56eafa55366275753d05a2))
+- eip712 verification against chain ([4fd66f7](https://github.com/InjectiveLabs/injective-ts/commit/4fd66f7ff1fc88b5e41dccd4442489748626ba24))
+- exception class name ([2e0bec4](https://github.com/InjectiveLabs/injective-ts/commit/2e0bec44c5b1c9f5ed5a97faa522a5dd90cb7084))
+- exception names ([14592d3](https://github.com/InjectiveLabs/injective-ts/commit/14592d3b2877be893d67b4c401208d42ed29a778))
+- exceptions part 2 ([1919620](https://github.com/InjectiveLabs/injective-ts/commit/191962094f9ec7036c54425e35c6aa476c70ea79))
+- experimental ledger support for keplr ([1afd947](https://github.com/InjectiveLabs/injective-ts/commit/1afd947a3714db9da63be89e862d5525ad15fc01))
+- funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
+- grpc indexer campaign api ([1a2c561](https://github.com/InjectiveLabs/injective-ts/commit/1a2c561bcd128c9a69e6b8938bfaf71bac59a93f))
+- improved wasm error reporting ([70dbe5a](https://github.com/InjectiveLabs/injective-ts/commit/70dbe5a69fd54d26dff01b9bd87313eebeac71cd))
+- initial exceptions setup ([6da9f2e](https://github.com/InjectiveLabs/injective-ts/commit/6da9f2eb2df2fcd2995fc9cd25a615dc607da253))
+- initial grid strategies list impl ([955ac92](https://github.com/InjectiveLabs/injective-ts/commit/955ac923e52be707fda327b4bd99060a4ea6401d))
+- initial monorepo setup with initial set of packages ([99aab6c](https://github.com/InjectiveLabs/injective-ts/commit/99aab6c2a1913ab48ce1cc9558db4843be72ccb5))
+- luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+- map chain error exception by module ([1714e80](https://github.com/InjectiveLabs/injective-ts/commit/1714e80e1bbabc8807bc56ef2d0085bea0a481a2))
+- message map ([fd237b2](https://github.com/InjectiveLabs/injective-ts/commit/fd237b225dc9f82661e1fea2f6559de28798fafa))
+- network improvements and ledger parser ([702d63d](https://github.com/InjectiveLabs/injective-ts/commit/702d63d703b1cb7d008773a153617fcbf38c5793))
+- nonja and bitget wallet ([aebb71f](https://github.com/InjectiveLabs/injective-ts/commit/aebb71f9209636a5c0974d84c1febe04e5d3ed6c))
+- okx wallet ([4771142](https://github.com/InjectiveLabs/injective-ts/commit/477114286300fea826ec68c7ec5962842a6031d8))
+- optimise bundle size ([03bb060](https://github.com/InjectiveLabs/injective-ts/commit/03bb060357d7b89802ec1422ccbc44841acbbeb5))
+- retry on broadcast ([6aaed21](https://github.com/InjectiveLabs/injective-ts/commit/6aaed216e433260f0e2b5683d52b364bf8824db1))
+- sdk-ui-ts ([4c8f902](https://github.com/InjectiveLabs/injective-ts/commit/4c8f90262b0d7cf2df3038c23fda4a9e83bb8c6a))
+- setup indexer grpc account portfolio api and stream ([72d7d85](https://github.com/InjectiveLabs/injective-ts/commit/72d7d85e66e2932b60b3e6215d5cda11b036e6a5))
+- subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+- transaction error handling ([d0bc738](https://github.com/InjectiveLabs/injective-ts/commit/d0bc738ab4b99248b81e3387dba5914974ae0c17))
+- tx exception handling ([36dbef7](https://github.com/InjectiveLabs/injective-ts/commit/36dbef7c8abaa5c18dceb3b369473a499ff129ee))
+- ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
+- update supernova folder structure ([a220ecd](https://github.com/InjectiveLabs/injective-ts/commit/a220ecd97f94819ce839ac03facfa1a3c98f5b51))
+- wormhole gw ([1253e57](https://github.com/InjectiveLabs/injective-ts/commit/1253e57341ecae8da67e4132957b7d8dc21a65f4))
 
 ### Reverts
 
-* faulty version ([6e25b3f](https://github.com/InjectiveLabs/injective-ts/commit/6e25b3f156d964666db8bc7885df653166aac523))
-
-
-
-
+- faulty version ([6e25b3f](https://github.com/InjectiveLabs/injective-ts/commit/6e25b3f156d964666db8bc7885df653166aac523))
 
 ## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.32...@injectivelabs/exceptions@1.14.33) (2024-11-29)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
 
-
-
-
-
 ## [1.14.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.30...@injectivelabs/exceptions@1.14.32) (2024-11-25)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
 
-
-
-
-
 ## [1.14.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.21...@injectivelabs/exceptions@1.14.30) (2024-11-25)
-
 
 ### Bug Fixes
 
-* version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
-
-
-
-
+- version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
 
 ## [1.14.21](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.20...@injectivelabs/exceptions@1.14.21) (2024-11-25)
 
-
 ### Bug Fixes
 
-* esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
-
-
-
-
+- esm import grpc-web ([3cf209f](https://github.com/InjectiveLabs/injective-ts/commit/3cf209f121ca439d025a6cbe6e3d541c1934f27a))
 
 ## [1.14.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.19...@injectivelabs/exceptions@1.14.20) (2024-11-25)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
 
-
-
-
-
 ## [1.14.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.17...@injectivelabs/exceptions@1.14.19) (2024-11-11)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
-
-
-
-
 
 ## [1.14.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.17-beta.2...@injectivelabs/exceptions@1.14.17) (2024-11-11)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
 
-
-
-
-
 ## [1.14.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.16-beta.0...@injectivelabs/exceptions@1.14.16) (2024-10-29)
-
 
 ### Bug Fixes
 
-* imports ([877486d](https://github.com/InjectiveLabs/injective-ts/commit/877486d027440d54d043f5b3b8f8a6f45be6521e))
-* imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
-
-
-
-
+- imports ([877486d](https://github.com/InjectiveLabs/injective-ts/commit/877486d027440d54d043f5b3b8f8a6f45be6521e))
+- imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
 
 ## [1.14.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.15-beta.0...@injectivelabs/exceptions@1.14.15) (2024-10-29)
 
 **Note:** Version bump only for package @injectivelabs/exceptions
-
-
-
-
 
 ## [1.14.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/exceptions@1.14.14-beta.4...@injectivelabs/exceptions@1.14.14) (2024-09-09)
 
