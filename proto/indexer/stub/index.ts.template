@@ -12,3 +12,4 @@ export * as InjectivePortfolioRpc from "./injective_portfolio_rpc.js";
 export * as InjectiveSpotExchangeRpc from "./injective_spot_exchange_rpc.js";
 export * as InjectiveTradingRpc from "./injective_trading_rpc.js";
 export * as InjectiveCampaignRpc from "./injective_campaign_rpc.js";
+export * as InjectiveReferralRpc from "./injective_referral_rpc.js";

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ledger",
   "description": "Ledger wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.14.41-alpha.18",
+  "version": "1.14.42-beta.1",
   "sideEffects": false,
   "type": "module",
   "author": {
