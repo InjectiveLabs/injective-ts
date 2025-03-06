@@ -57,10 +57,10 @@
   },
   "dependencies": {
     "@injectivelabs/ts-types": "^1.14.42",
-    "@injectivelabs/wallet-base": "^1.14.41-alpha.18",
-    "@injectivelabs/wallet-core": "^1.14.41-alpha.19",
-    "@injectivelabs/wallet-cosmos": "^1.14.41-alpha.18",
-    "@injectivelabs/wallet-cosmostation": "^1.14.41-alpha.18"
+    "@injectivelabs/wallet-base": "^1.14.42",
+    "@injectivelabs/wallet-core": "^1.14.42",
+    "@injectivelabs/wallet-cosmos": "^1.14.42",
+    "@injectivelabs/wallet-cosmostation": "^1.14.42"
   },
   "devDependencies": {
     "shx": "^0.3.3"

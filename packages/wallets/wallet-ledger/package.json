@@ -66,7 +66,7 @@
     "@injectivelabs/exceptions": "^1.14.42",
     "@injectivelabs/sdk-ts": "^1.14.43",
     "@injectivelabs/ts-types": "^1.14.42",
-    "@injectivelabs/wallet-base": "^1.14.41-alpha.18",
+    "@injectivelabs/wallet-base": "^1.14.42",
     "alchemy-sdk": "^3.4.7",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
