@@ -21,7 +21,7 @@ export enum ChainErrorModule {
   Wasm = 'chain-wasm',
   WasmX = 'chain-wasmx',
   Tendermint = 'chain-tendermint',
-  Permissions = 'chain-permissions'
+  Permissions = 'chain-permissions',
 }
 
 export enum IndexerErrorModule {
@@ -35,6 +35,7 @@ export enum IndexerErrorModule {
   Mito = 'indexer-mito',
   Dmm = 'dmm',
   OLP = 'olp',
+  Referral = 'referral',
   Oracle = 'indexer-oracle',
   Portfolio = 'indexer-portfolio',
   Spot = 'indexer-spot',
@@ -45,7 +46,7 @@ export enum IndexerErrorModule {
   ChronosMarkets = 'indexer-chronos-markets',
   Campaign = 'indexer-campaign',
   Web3Gw = 'web3-gateway',
-  Abacus = 'abacus'
+  Abacus = 'abacus',
 }
 
 export enum WalletErrorActionModule {
