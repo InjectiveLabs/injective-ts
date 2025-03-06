@@ -6,7 +6,6 @@
     "packages/wallets/*"
   ],
   "version": "independent",
-  "useWorkspaces": true,
   "command": {
     "version": {
       "message": "chore: release"

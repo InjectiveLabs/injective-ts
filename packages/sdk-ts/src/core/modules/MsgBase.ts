@@ -1,8 +1,5 @@
 import { SnakeCaseKeys } from 'snakecase-keys'
-import {
-  mapValuesToProperValueType,
-  objectKeysToEip712Types,
-} from '../tx/eip712/maps.js'
+import { objectKeysToEip712Types } from '../tx/eip712/maps.js'
 import { TypedDataField } from '../tx/eip712/types.js'
 import { prepareSignBytes } from './utils.js'
 
@@ -38,7 +35,16 @@ export abstract class MsgBase<
 
   public abstract toBinary(): Uint8Array
 
-  public abstract toWeb3():
+  /** @deprecated - use toWeb3Gw instead, renamed for clarity */
+  public toWeb3():
+    | ObjectRepresentation
+    | (SnakeCaseKeys<ProtoRepresentation> & {
+        '@type': string
+      }) {
+    return this.toWeb3Gw()
+  }
+
+  public abstract toWeb3Gw():
     | ObjectRepresentation
     | (SnakeCaseKeys<ProtoRepresentation> & {
         '@type': string
@@ -63,17 +69,15 @@ export abstract class MsgBase<
   /**
    * Returns the values of the message for EIP712
    */
-  public toEip712(): {
-    type: string
-    value: Record<string, unknown /** TODO */>
-  } {
-    const amino = this.toAmino()
-    const { type, value } = amino
+  public toEip712() {
+    return this.toAmino()
+  }
 
-    return {
-      type,
-      value: mapValuesToProperValueType(value, type),
-    }
+  /**
+   * Returns the values of the message for EIP712_V2
+   */
+  public toEip712V2() {
+    return this.toWeb3Gw()
   }
 
   public toDirectSignJSON(): string {

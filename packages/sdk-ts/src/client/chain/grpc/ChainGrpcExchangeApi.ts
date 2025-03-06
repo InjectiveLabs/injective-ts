@@ -1,5 +1,6 @@
 import {
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
@@ -39,7 +40,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'QueryExchangeParams',
           contextModule: this.module,
         })
@@ -67,7 +68,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ExchangeModuleState',
           contextModule: this.module,
         })
@@ -97,7 +98,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'FeeDiscountSchedule',
 
           contextModule: this.module,
@@ -130,7 +131,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'FeeDiscountAccountInfo',
           contextModule: this.module,
         })
@@ -160,7 +161,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TradeRewardCampaign',
           contextModule: this.module,
         })
@@ -190,7 +191,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TradeRewardPoints',
           contextModule: this.module,
         })
@@ -227,7 +228,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'PendingTradeRewardPoints',
           contextModule: this.module,
         })
@@ -254,7 +255,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Positions',
           contextModule: this.module,
         })
@@ -284,7 +285,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountTradeNonce',
           contextModule: this.module,
         })
@@ -316,7 +317,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'IsOptedOutOfRewards',
           contextModule: this.module,
         })
@@ -348,7 +349,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ActiveStakeGrant',
           contextModule: this.module,
         })
@@ -378,7 +379,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomDecimal',
           contextModule: this.module,
         })
@@ -408,7 +409,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomDecimals',
           contextModule: this.module,
         })
@@ -438,7 +439,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomMinNotional',
           contextModule: this.module,
         })
@@ -468,7 +469,7 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomMinNotionals',
           contextModule: this.module,
         })

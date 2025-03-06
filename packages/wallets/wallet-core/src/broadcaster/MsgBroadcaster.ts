@@ -8,6 +8,7 @@ import {
   ofacWallets,
   SIGN_EIP712_V2,
   SIGN_EIP712,
+  DirectSignResponse,
   ChainGrpcAuthApi,
   CosmosTxV1Beta1Tx,
   createTxRawEIP712,
@@ -24,12 +25,11 @@ import {
   recoverTypedSignaturePubKey,
   CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
-import type { DirectSignResponse } from '@cosmjs/proto-signing'
 import {
+  sleep,
   getStdFee,
   BigNumberInBase,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-  sleep,
 } from '@injectivelabs/utils'
 import {
   ThrownException,
@@ -45,7 +45,10 @@ import {
   NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import {
+  ChainId,
+  EthereumChainId,
+} from '@injectivelabs/ts-types'
 import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
@@ -166,10 +169,10 @@ export class MsgBroadcaster {
 
     try {
       return isCosmosWallet(walletStrategy.wallet)
-        ? await this.broadcastCosmos(txWithAddresses)
+        ? await this.broadcastDirectSign(txWithAddresses)
         : isEip712V2OnlyWallet(walletStrategy.wallet)
-        ? await this.broadcastWeb3V2(txWithAddresses)
-        : await this.broadcastWeb3(txWithAddresses)
+        ? await this.broadcastEip712V2(txWithAddresses)
+        : await this.broadcastEip712(txWithAddresses)
     } catch (e) {
       const error = e as any
 
@@ -205,8 +208,8 @@ export class MsgBroadcaster {
 
     try {
       return isCosmosWallet(walletStrategy.wallet)
-        ? await this.broadcastCosmos(txWithAddresses)
-        : await this.broadcastWeb3V2(txWithAddresses)
+        ? await this.broadcastDirectSign(txWithAddresses)
+        : await this.broadcastEip712V2(txWithAddresses)
     } catch (e) {
       const error = e as any
 
@@ -243,8 +246,8 @@ export class MsgBroadcaster {
 
     try {
       return isCosmosWallet(walletStrategy.wallet)
-        ? await this.broadcastCosmosWithFeeDelegation(txWithAddresses)
-        : await this.broadcastWeb3WithFeeDelegation(txWithAddresses)
+        ? await this.broadcastDirectSignWithFeeDelegation(txWithAddresses)
+        : await this.broadcastEip712WithFeeDelegation(txWithAddresses)
     } catch (e) {
       const error = e as any
 
@@ -265,7 +268,7 @@ export class MsgBroadcaster {
    * @param tx The transaction that needs to be broadcasted
    * @returns transaction hash
    */
-  private async broadcastWeb3(tx: MsgBroadcasterTxOptionsWithAddresses) {
+  private async broadcastEip712(tx: MsgBroadcasterTxOptionsWithAddresses) {
     const { chainId, txTimeout, endpoints, ethereumChainId, walletStrategy } =
       this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
@@ -377,7 +380,7 @@ export class MsgBroadcaster {
    * @param tx The transaction that needs to be broadcasted
    * @returns transaction hash
    */
-  private async broadcastWeb3V2(tx: MsgBroadcasterTxOptionsWithAddresses) {
+  private async broadcastEip712V2(tx: MsgBroadcasterTxOptionsWithAddresses) {
     const { walletStrategy, chainId, txTimeout, endpoints, ethereumChainId } =
       this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
@@ -486,7 +489,7 @@ export class MsgBroadcaster {
    * @param tx The transaction that needs to be broadcasted
    * @returns transaction hash
    */
-  private async broadcastWeb3WithFeeDelegation(
+  private async broadcastEip712WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ): Promise<TxResponse> {
     const {
@@ -574,7 +577,7 @@ export class MsgBroadcaster {
             throw e
           }
 
-          return await this.broadcastWeb3WithFeeDelegation(tx)
+          return await this.broadcastEip712WithFeeDelegation(tx)
         }
 
         return await this.retryOnException(exception, broadcast)
@@ -591,7 +594,7 @@ export class MsgBroadcaster {
    * @param tx The transaction that needs to be broadcasted
    * @returns transaction hash
    */
-  private async broadcastCosmos(tx: MsgBroadcasterTxOptionsWithAddresses) {
+  private async broadcastDirectSign(tx: MsgBroadcasterTxOptionsWithAddresses) {
     const { walletStrategy, txTimeout, endpoints, chainId } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -830,7 +833,7 @@ export class MsgBroadcaster {
    * @param tx The transaction that needs to be broadcasted
    * @returns transaction hash
    */
-  private async broadcastCosmosWithFeeDelegation(
+  private async broadcastDirectSignWithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
     const {

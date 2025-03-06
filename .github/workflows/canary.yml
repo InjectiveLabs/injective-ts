@@ -10,7 +10,7 @@ jobs:
   publish-canary:
     runs-on: ubuntu-latest
     permissions: write-all
-    if: contains(github.ref_name, 'canary')
+    if: ${{ contains(github.ref_name, 'canary') || contains(github.event.commits[0].message, 'canary') }}
     steps:
       - name: 'Checkout' # Download code from the repository
         uses: actions/checkout@v2 # Public action

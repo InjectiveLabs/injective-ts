@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
@@ -40,7 +41,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
           contextModule: this.module,
         })
@@ -67,7 +68,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Pool',
           contextModule: this.module,
         })
@@ -102,7 +103,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Validators',
           contextModule: this.module,
         })
@@ -131,7 +132,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Validator',
           contextModule: this.module,
         })
@@ -175,7 +176,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ValidatorDelegations',
           contextModule: this.module,
         })
@@ -223,7 +224,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
 
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ValidatorDelegations',
           contextModule: this.module,
         })
@@ -267,7 +268,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ValidatorUnbondingDelegations',
           contextModule: this.module,
         })
@@ -315,7 +316,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
 
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ValidatorUnbondingDelegations',
           contextModule: this.module,
         })
@@ -353,7 +354,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Delegation',
           contextModule: this.module,
         })
@@ -397,7 +398,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Delegations',
           contextModule: this.module,
         })
@@ -445,7 +446,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
 
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Delegation',
           contextModule: this.module,
         })
@@ -489,7 +490,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ValidatorDelegations',
           contextModule: this.module,
         })
@@ -537,7 +538,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
 
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ValidatorDelegations',
           contextModule: this.module,
         })
@@ -581,7 +582,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DelegatorUnbondingDelegations',
           contextModule: this.module,
         })
@@ -629,7 +630,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
 
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DelegatorUnbondingDelegations',
           contextModule: this.module,
         })
@@ -672,7 +673,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Redelegations',
           contextModule: this.module,
         })
@@ -719,7 +720,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
 
       if (e instanceof CosmosStakingV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Redelegations',
           contextModule: this.module,
         })

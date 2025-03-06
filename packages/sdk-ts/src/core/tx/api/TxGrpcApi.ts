@@ -4,9 +4,10 @@ import {
   TxClientBroadcastResponse,
 } from '../types/tx.js'
 import {
-  TransactionException,
-  GrpcUnaryRequestException,
   GeneralException,
+  TransactionException,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import {
   BigNumberInBase,
@@ -76,7 +77,7 @@ export class TxGrpcApi implements TxConcreteApi {
       // Failed to query the transaction on the chain
       if (e instanceof CosmosTxV1Beta1Service.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
         })
       }
 

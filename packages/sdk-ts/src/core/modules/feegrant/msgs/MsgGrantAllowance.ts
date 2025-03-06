@@ -102,7 +102,9 @@ export default class MsgGrantAllowance extends MsgBase<
             denom,
             amount,
           })),
-          expiration: new Date(Number(timestamp.seconds) * 1000),
+          expiration: new Date(Number(timestamp.seconds) * 1000)
+            .toISOString()
+            .replace('.000Z', 'Z'),
         },
       },
     })
@@ -122,7 +124,7 @@ export default class MsgGrantAllowance extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
     const amino = this.toAmino()
     const timestamp = this.getTimestamp()
@@ -136,7 +138,9 @@ export default class MsgGrantAllowance extends MsgBase<
           denom,
           amount,
         })),
-        expiration: new Date(Number(timestamp.seconds) * 1000),
+        expiration: new Date(Number(timestamp.seconds) * 1000)
+          .toISOString()
+          .replace('.000Z', 'Z'),
       },
     }
 
@@ -144,6 +148,21 @@ export default class MsgGrantAllowance extends MsgBase<
       '@type': '/cosmos.feegrant.v1beta1.MsgGrantAllowance',
       ...messageWithAllowance,
     }
+  }
+
+  public toEip712V2() {
+    const web3Gw = this.toWeb3Gw()
+
+    const messageAdjustedForEip712V2 = {
+      ...web3Gw,
+      allowance: {
+        '@type': web3Gw.allowance['@type'],
+        spend_limit: web3Gw.allowance.spendLimit,
+        expiration: web3Gw.allowance.expiration,
+      },
+    }
+
+    return messageAdjustedForEip712V2
   }
 
   private getTimestamp() {

@@ -1,19 +1,15 @@
 /* eslint-disable class-methods-use-this */
 import { AccountAddress } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
-import { addHexPrefix, publicToAddress } from 'ethereumjs-util'
-import { TrezorWalletInfo } from '../../types.js'
-import {
-  DEFAULT_NUM_ADDRESSES_TO_FETCH,
-  DEFAULT_BASE_DERIVATION_PATH,
-} from '@injectivelabs/wallet-base'
+import { TrezorWalletInfo, TrezorDerivationPathType } from '../../types.js'
+import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
+import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
 
 const addressOfHDKey = (hdKey: HDNode): string => {
   const shouldSanitizePublicKey = true
   const derivedPublicKey = hdKey.publicKey
-  const ethereumAddressWithoutPrefix = publicToAddress(
-    derivedPublicKey,
-    shouldSanitizePublicKey,
+  const ethereumAddressWithoutPrefix = Buffer.from(
+    publicKeyToAddress(derivedPublicKey, shouldSanitizePublicKey),
   ).toString('hex')
   const address = addHexPrefix(ethereumAddressWithoutPrefix)
 
@@ -30,7 +26,10 @@ export default class AccountManager {
     this.hdKey = hdKey
   }
 
-  async getWallets(): Promise<TrezorWalletInfo[]> {
+  async getWallets(
+    baseDerivationPath: string,
+    derivationPathType: TrezorDerivationPathType,
+  ): Promise<TrezorWalletInfo[]> {
     const { start, end } = this.getOffset()
 
     /**
@@ -41,28 +40,58 @@ export default class AccountManager {
       await this.getWalletsBasedOnIndex({
         start,
         end,
+        baseDerivationPath,
+        derivationPathType,
       })
     }
 
     return this.wallets.slice(start, end)
   }
 
+  getTrezorDerivationPathBasedOnType = ({
+    fullBaseDerivationPath,
+    derivationPathType,
+    index,
+  }: {
+    fullBaseDerivationPath: string
+    derivationPathType: TrezorDerivationPathType
+    index: number
+  }): string => {
+    if (derivationPathType === TrezorDerivationPathType.Bip44) {
+      return `${fullBaseDerivationPath}/${index}'/0/0`
+    }
+
+    if (derivationPathType === TrezorDerivationPathType.Legacy) {
+      return `m/${index}`
+    }
+
+    return `${fullBaseDerivationPath}/0'/0/${index}`
+  }
+
   private async getWalletsBasedOnIndex({
     start,
     end,
+    baseDerivationPath,
+    derivationPathType,
   }: {
     start: number
     end: number
+    baseDerivationPath: string
+    derivationPathType: TrezorDerivationPathType
   }) {
     for (let index = start; index < end; index += 1) {
-      const path = `m/${index}`
+      const path = this.getTrezorDerivationPathBasedOnType({
+        fullBaseDerivationPath: baseDerivationPath,
+        derivationPathType,
+        index,
+      })
       const hdKey = this.hdKey.derive(path)
       const address = addressOfHDKey(hdKey)
 
       this.wallets.push({
         hdKey,
+        derivationPath: path,
         address: address.toLowerCase(),
-        derivationPath: `${DEFAULT_BASE_DERIVATION_PATH}/0'/0/${index}`,
       })
     }
   }

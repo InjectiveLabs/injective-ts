@@ -1,6 +1,7 @@
 import {
   GeneralException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { OrderSide, OrderState } from '@injectivelabs/ts-types'
@@ -63,7 +64,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Markets',
           contextModule: this.module,
         })
@@ -92,7 +93,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Market',
           contextModule: this.module,
         })
@@ -146,7 +147,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'BinaryOptionsMarkets',
           contextModule: this.module,
         })
@@ -178,7 +179,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'BinaryOptionsMarket',
           contextModule: this.module,
         })
@@ -276,7 +277,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Orders',
           contextModule: this.module,
         })
@@ -389,7 +390,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'OrdersHistory',
           contextModule: this.module,
         })
@@ -461,7 +462,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Positions',
           contextModule: this.module,
         })
@@ -544,7 +545,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Positions',
           contextModule: this.module,
         })
@@ -661,7 +662,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Trades',
           contextModule: this.module,
         })
@@ -724,7 +725,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'FundingPayments',
           contextModule: this.module,
         })
@@ -772,7 +773,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'FundingRates',
           contextModule: this.module,
         })
@@ -824,7 +825,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountOrdersList',
           contextModule: this.module,
         })
@@ -889,7 +890,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountTradesList',
           contextModule: this.module,
         })
@@ -927,7 +928,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'OrderbooksV2',
           contextModule: this.module,
         })
@@ -958,7 +959,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'OrderbookV2',
           contextModule: this.module,
         })

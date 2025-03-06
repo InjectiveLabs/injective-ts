@@ -1,6 +1,7 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
@@ -44,7 +45,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AuctionEndpoint',
           contextModule: this.module,
         })
@@ -70,7 +71,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Auctions',
           contextModule: this.module,
         })
@@ -84,7 +85,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     }
   }
 
-   async fetchInjBurnt() {
+  async fetchInjBurnt() {
     const request: InjectiveAuctionRpc.InjBurntEndpointRequest = {}
 
     try {
@@ -97,7 +98,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'InjBurntEndpoint',
           contextModule: this.module,
         })

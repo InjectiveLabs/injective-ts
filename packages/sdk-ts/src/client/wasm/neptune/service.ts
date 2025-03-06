@@ -206,7 +206,6 @@ export class NeptuneService {
 
       return lendingRates
     } catch (error) {
-      console.error('Error fetching lending rates:', error)
       throw new GeneralException(new Error('Failed to fetch lending rates'))
     }
   }

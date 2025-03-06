@@ -4,6 +4,7 @@ import {
   CosmosBaseV1Beta1Coin,
   InjectiveTokenFactoryV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
+import { TypedDataField } from '../../../tx/index.js'
 
 export declare namespace MsgBurn {
   export interface Params {
@@ -59,15 +60,18 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
     const proto = this.toProto()
     const message = {
       ...snakecaseKeys(proto),
+      burnFromAddress: proto.burnFromAddress,
     }
+
+    const { burn_from_address, ...messageWithoutBurnFromAddress } = message
 
     return {
       type: 'injective/tokenfactory/burn',
-      value: message,
+      value: messageWithoutBurnFromAddress,
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -75,6 +79,38 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
       '@type': '/injective.tokenfactory.v1beta1.MsgBurn',
       ...value,
     }
+  }
+
+  public toEip712Types() {
+    const map = new Map<string, TypedDataField[]>()
+
+    map.set('TypeAmount', [
+      {
+        name: 'denom',
+        type: 'string',
+      },
+      {
+        name: 'amount',
+        type: 'string',
+      },
+    ])
+
+    map.set('MsgValue', [
+      {
+        name: 'sender',
+        type: 'string',
+      },
+      {
+        name: 'amount',
+        type: 'TypeAmount',
+      },
+      {
+        name: 'burnFromAddress',
+        type: 'string',
+      },
+    ])
+
+    return map
   }
 
   public toDirectSign() {

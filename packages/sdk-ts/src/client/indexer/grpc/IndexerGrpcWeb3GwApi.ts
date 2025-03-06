@@ -9,6 +9,7 @@ import {
   ErrorType,
   TransactionException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
 } from '@injectivelabs/exceptions'
 import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
@@ -101,8 +102,9 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
-          context: 'Web3Gateway.PrepareEip712',
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'PrepareEip712',
+          contextModule: 'Web3Gateway',
           type: e.type,
         })
       }

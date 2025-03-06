@@ -28,7 +28,17 @@ const createSpotMarketParamUpdate = (
   content.minQuantityTickSize = params.market.minQuantityTickSize
   content.status = params.market.status
   content.ticker = params.market.ticker
+  content.baseDecimals = params.market.baseDecimals
+  content.quoteDecimals = params.market.quoteDecimals
   content.minNotional = params.market.minNotional
+
+  if (params.market.adminInfo) {
+    const adminInfo = InjectiveExchangeV1Beta1Proposal.AdminInfo.create()
+    adminInfo.admin = params.market.adminInfo.admin
+    adminInfo.adminPermissions = params.market.adminInfo.adminPermissions
+
+    content.adminInfo = adminInfo
+  }
 
   return InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.fromPartial(
     content,
@@ -48,7 +58,12 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
       minQuantityTickSize: string
       minNotional: string
       ticker: string
-      adminInfo?: string
+      baseDecimals: number
+      quoteDecimals: number
+      adminInfo?: {
+        admin: string
+        adminPermissions: number
+      }
       status: InjectiveExchangeV1Beta1Exchange.MarketStatus
     }
     proposer: string
@@ -83,45 +98,44 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   }
 
   public toProto() {
-    const { params } = this
+    const { params: initialParams } = this
+
+    const params = {
+      ...initialParams,
+      market: {
+        ...initialParams.market,
+        relayerFeeShareRate: amountToCosmosSdkDecAmount(
+          initialParams.market.relayerFeeShareRate,
+        ).toFixed(),
+        makerFeeRate: amountToCosmosSdkDecAmount(
+          initialParams.market.makerFeeRate,
+        ).toFixed(),
+        takerFeeRate: amountToCosmosSdkDecAmount(
+          initialParams.market.takerFeeRate,
+        ).toFixed(),
+        minPriceTickSize: amountToCosmosSdkDecAmount(
+          initialParams.market.minPriceTickSize,
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          initialParams.market.minNotional,
+        ).toFixed(),
+        minQuantityTickSize: amountToCosmosSdkDecAmount(
+          initialParams.market.minQuantityTickSize,
+        ).toFixed(),
+      },
+    }
 
     const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
 
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
-    const content = createSpotMarketParamUpdate({
-      ...params,
-      market: {
-        ...params.market,
-        relayerFeeShareRate: amountToCosmosSdkDecAmount(
-          params.market.relayerFeeShareRate,
-        ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
-          params.market.makerFeeRate,
-        ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
-          params.market.takerFeeRate,
-        ).toFixed(),
-        minPriceTickSize: amountToCosmosSdkDecAmount(
-          params.market.minPriceTickSize,
-        ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
-          params.market.minNotional,
-        ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
-          params.market.minQuantityTickSize,
-        ).toFixed(),
-      },
-    })
-
     const contentAny = GoogleProtobufAny.Any.create()
-
     contentAny.typeUrl =
       '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
     contentAny.value =
       InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.encode(
-        content,
+        createSpotMarketParamUpdate(params),
       ).finish()
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
@@ -145,27 +159,11 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   public toAmino() {
     const { params } = this
 
+    const content = createSpotMarketParamUpdate(params)
     const messageWithProposalType = snakecaseKeys({
       content: {
         type: 'exchange/SpotMarketParamUpdateProposal',
-        value: snakecaseKeys({
-          ...this.getContent(),
-          status: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
-            params.market.status,
-          ),
-          minPriceTickSize: numberToCosmosSdkDecString(
-            params.market.minPriceTickSize,
-          ),
-          minQuantityTickSize: numberToCosmosSdkDecString(
-            params.market.minQuantityTickSize,
-          ),
-          relayerFeeShareRate: numberToCosmosSdkDecString(
-            params.market.relayerFeeShareRate,
-          ),
-          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
-          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
-          adminInfo: null,
-        }),
+        value: content,
       },
       initial_deposit: [
         {
@@ -183,45 +181,92 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     }
   }
 
-  public toWeb3() {
-    const { params } = this
+  public toWeb3Gw() {
+    const amino = this.toAmino()
+    const { value } = amino
 
     const messageWithProposalType = {
+      ...value,
       content: {
         '@type': '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
-        ...snakecaseKeys({
-          ...this.getContent(),
-          status: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
-            params.market.status,
-          ),
-          minPriceTickSize: numberToCosmosSdkDecString(
-            params.market.minPriceTickSize,
-          ),
-          minQuantityTickSize: numberToCosmosSdkDecString(
-            params.market.minQuantityTickSize,
-          ),
-          minNotional: numberToCosmosSdkDecString(params.market.minNotional),
-          makerFeeRate: numberToCosmosSdkDecString(params.market.makerFeeRate),
-          takerFeeRate: numberToCosmosSdkDecString(params.market.takerFeeRate),
-          relayerFeeShareRate: numberToCosmosSdkDecString(
-            params.market.relayerFeeShareRate,
-          ),
-          adminInfo: null,
-        }),
+        ...value.content.value,
       },
-      initial_deposit: [
-        {
-          denom: params.deposit.denom,
-          amount: params.deposit.amount,
-        },
-      ],
-      proposer: params.proposer,
     }
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
       ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>),
     }
+  }
+
+  public toEip712() {
+    const { params } = this
+    const amino = this.toAmino()
+    const { value, type } = amino
+
+    const messageAdjusted = {
+      ...value,
+      content: {
+        type: 'exchange/SpotMarketParamUpdateProposal',
+        value: {
+          ...value.content.value,
+          relayer_fee_share_rate: amountToCosmosSdkDecAmount(
+            params.market.relayerFeeShareRate,
+          ).toFixed(),
+          maker_fee_rate: amountToCosmosSdkDecAmount(
+            params.market.makerFeeRate,
+          ).toFixed(),
+          taker_fee_rate: amountToCosmosSdkDecAmount(
+            params.market.takerFeeRate,
+          ).toFixed(),
+          min_price_tick_size: amountToCosmosSdkDecAmount(
+            params.market.minPriceTickSize,
+          ).toFixed(),
+          min_notional: amountToCosmosSdkDecAmount(
+            params.market.minNotional,
+          ).toFixed(),
+          min_quantity_tick_size: amountToCosmosSdkDecAmount(
+            params.market.minQuantityTickSize,
+          ).toFixed(),
+        },
+      },
+    }
+
+    return {
+      type,
+      value:
+        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>,
+    }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+    const content = web3gw.content as unknown as any
+
+    const messageAdjusted = {
+      ...web3gw,
+      content: {
+        ...content,
+        status: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
+          content.status,
+        ),
+        relayer_fee_share_rate: numberToCosmosSdkDecString(
+          params.market.relayerFeeShareRate,
+        ),
+        maker_fee_rate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+        taker_fee_rate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+        min_price_tick_size: numberToCosmosSdkDecString(
+          params.market.minPriceTickSize,
+        ),
+        min_notional: numberToCosmosSdkDecString(params.market.minNotional),
+        min_quantity_tick_size: numberToCosmosSdkDecString(
+          params.market.minQuantityTickSize,
+        ),
+      },
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {
@@ -235,11 +280,5 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
   public toBinary(): Uint8Array {
     return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
-  }
-
-  private getContent() {
-    const { params } = this
-
-    return createSpotMarketParamUpdate(params)
   }
 }

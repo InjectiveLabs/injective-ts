@@ -50,12 +50,12 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
     }
 
     return {
-      type: 'cosmos-sdk/MsgWithdrawDelegationReward',
+      type: 'cosmos-sdk/MsgWithdrawValCommission',
       value: message,
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

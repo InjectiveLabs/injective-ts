@@ -1,4 +1,4 @@
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { IndexerCampaignTransformer } from '../transformers/index.js'
 import { IndexerGrpcCampaignApi } from './IndexerGrpcCampaignApi.js'

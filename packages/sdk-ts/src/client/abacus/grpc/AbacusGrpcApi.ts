@@ -1,6 +1,7 @@
 import {
   IndexerErrorModule,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveAbacusRpc } from '@injectivelabs/abacus-proto-ts'
@@ -35,7 +36,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAbacusRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'PointsStatsLatestForAccount',
           contextModule: this.module,
         })
@@ -56,7 +57,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
     request.accountAddress = address
 
     if (daysLimit) {
-      request.daysLimit = daysLimit
+      request.daysLimit = daysLimit.toString()
     }
 
     try {
@@ -71,7 +72,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAbacusRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'PointsStatsDailyForAccount',
           contextModule: this.module,
         })
@@ -92,7 +93,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
     request.accountAddress = address
 
     if (weeksLimit) {
-      request.weeksLimit = weeksLimit
+      request.weeksLimit = weeksLimit.toString()
     }
 
     try {
@@ -107,7 +108,7 @@ export class AbacusGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveAbacusRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'PointsStatsWeeklyForAccount',
           contextModule: this.module,
         })

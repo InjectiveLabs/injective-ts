@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcAuthApi } from './ChainGrpcAuthApi.js'
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer.js'
 
 const injectiveAddress = mockFactory.injectiveAddress

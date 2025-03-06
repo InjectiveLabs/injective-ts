@@ -3,10 +3,11 @@ import { Wallet } from './../types/enums.js'
 export const isEvmWallet = (wallet: Wallet): boolean =>
   [
     Wallet.Magic,
-    Wallet.Torus,
     Wallet.BitGet,
     Wallet.Ledger,
-    Wallet.Trezor,
+    Wallet.TrezorBip32,
+    Wallet.TrezorLegacy,
+    Wallet.TrezorBip44,
     Wallet.Phantom,
     Wallet.Metamask,
     Wallet.OkxWallet,

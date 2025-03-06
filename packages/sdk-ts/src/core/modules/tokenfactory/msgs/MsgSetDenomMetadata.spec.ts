@@ -1,9 +1,16 @@
 import MsgSetDenomMetadata from './MsgSetDenomMetadata.js'
-import { mockFactory } from '@injectivelabs/test-utils'
 import snakecaseKeys from 'snakecase-keys'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgSetDenomMetadata['params'] = {
   sender: mockFactory.injectiveAddress,
+  adminBurnDisabled: true,
   metadata: {
     symbol: 'TEST',
     display: 'factory/test',
@@ -11,7 +18,7 @@ const params: MsgSetDenomMetadata['params'] = {
     decimals: 18,
     description: 'test description',
     uri: 'https://injective.com',
-    uriHash: '',
+    uriHash: 'test',
     base: 'factory/test',
     denomUnits: [
       {
@@ -28,6 +35,9 @@ const protoTypeAmino = 'injective/tokenfactory/set-denom-metadata'
 const protoParams = {
   sender: params.sender,
   metadata: params.metadata,
+  adminBurnDisabled: {
+    shouldDisable: params.adminBurnDisabled,
+  },
 }
 
 const protoParamsAmino = snakecaseKeys(protoParams)
@@ -58,48 +68,44 @@ describe('MsgSetDenomMetadata', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeMetadata: [
-        { name: 'description', type: 'string' },
-        { name: 'denom_units', type: 'TypeMetadataDenomUnits[]' },
-        { name: 'base', type: 'string' },
-        { name: 'display', type: 'string' },
-        { name: 'name', type: 'string' },
-        { name: 'symbol', type: 'string' },
-        { name: 'uri', type: 'string' },
-        { name: 'uri_hash', type: 'string' },
-        { name: 'decimals', type: 'uint64' },
-      ],
-      TypeMetadataDenomUnits: [
-        { name: 'denom', type: 'string' },
-        { name: 'exponent', type: 'uint32' },
-        { name: 'aliases', type: 'string[]' },
-      ],
-      MsgValue: [
-        { name: 'sender', type: 'string' },
-        { name: 'metadata', type: 'TypeMetadata' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeAmino,
-      value: protoParamsAmino,
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
       '@type': protoType,
       ...protoParamsAmino,
+    })
+  })
+
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: message,
+    })
+
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

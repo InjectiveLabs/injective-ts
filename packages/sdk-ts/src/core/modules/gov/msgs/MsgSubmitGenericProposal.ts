@@ -76,49 +76,46 @@ export default class MsgSubmitGenericProposal extends MsgBase<
 
   public toAmino() {
     const { params } = this
+    const proto = this.toProto()
 
     const messageWithProposalType: any = snakecaseKeys({
+      ...proto,
       messages: params.messages.map((msg) => msg.toAmino()),
-      initial_deposit: [
-        {
-          denom: params.deposit.denom,
-          amount: params.deposit.amount,
-        },
-      ],
-      proposer: params.proposer,
-      metadata: params.metadata || '',
-      title: params.title,
-      summary: params.summary,
-      expedited: params.expedited || false,
     })
 
     return {
-      type: 'cosmos-sdk/MsgSubmitProposal',
+      type: 'cosmos-sdk/v1/MsgSubmitProposal',
       value: messageWithProposalType,
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
+    const amino = this.toAmino()
 
     const messageWithProposalType: any = {
-      messages: params.messages.map((msg) => msg.toWeb3()),
-      initial_Deposit: [
-        {
-          denom: params.deposit.denom,
-          amount: params.deposit.amount,
-        },
-      ],
-      proposer: params.proposer,
-      metadata: params.metadata || '',
-      title: params.title,
-      summary: params.summary,
-      expedited: params.expedited || false,
+      ...amino.value,
+      messages: params.messages.map((msg) => msg.toWeb3Gw()),
     }
 
     return {
       '@type': '/cosmos.gov.v1.MsgSubmitProposal',
       ...messageWithProposalType,
+    }
+  }
+
+  public toEip712() {
+    const { type, value } = this.toAmino()
+
+    const messageAdjusted = { ...value }
+
+    if (!messageAdjusted.expedited) {
+      delete messageAdjusted.expedited
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
     }
   }
 

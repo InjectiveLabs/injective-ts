@@ -88,7 +88,7 @@ const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
 const publicKeyBase64 = hexToBase64(publicKeyHex)
 ```
 
-You can also use our `@injectivelabs/wallet-ts` package to get out-of-the-box wallet provides that will give you abstracted methods which you can use to sign transaction. Refer to the documentation of the package, its really simple to setup and use. **This is the recommended way as you have access to more than one wallet to use in your dApp. The `WalletStrategy` provides more than just signing transaction abstractions.**
+You can also use our `@injectivelabs/wallet-strategy` package to get out-of-the-box wallet provides that will give you abstracted methods which you can use to sign transaction. Refer to the documentation of the package, its really simple to setup and use. **This is the recommended way as you have access to more than one wallet to use in your dApp. The `WalletStrategy` provides more than just signing transaction abstractions.**
 
 ### Broadcasting a transaction
 

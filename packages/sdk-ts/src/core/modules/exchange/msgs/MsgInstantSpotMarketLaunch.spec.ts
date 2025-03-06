@@ -1,5 +1,5 @@
-import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
-import { IndexerGrpcWeb3GwApi } from './../../../../client'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch.js'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 

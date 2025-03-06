@@ -4,7 +4,7 @@ import {
   InjectivePermissionsV1Beta1Permissions,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import { PermissionRoleActors } from './../../../../client/chain/types'
+import { PermissionRoleActors } from './../../../../client/chain/types/permissions.js'
 
 export declare namespace MsgUpdateActorRoles {
   export interface Params {
@@ -86,7 +86,7 @@ export default class MsgUpdateActorRoles extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

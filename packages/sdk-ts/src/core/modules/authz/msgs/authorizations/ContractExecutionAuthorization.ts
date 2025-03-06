@@ -93,6 +93,15 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
         CosmwasmWasmV1Authz.AcceptedMessageKeysFilter.encode(filter).finish()
 
       grant.filter = any
+    } else {
+      const filter = CosmwasmWasmV1Authz.AllowAllMessagesFilter.create()
+
+      const any = GoogleProtobufAny.Any.create()
+      any.typeUrl = '/cosmwasm.wasm.v1.AllowAllMessagesFilter'
+      any.value =
+        CosmwasmWasmV1Authz.AllowAllMessagesFilter.encode(filter).finish()
+
+      grant.filter = any
     }
 
     authorization.grants = [grant]
@@ -148,6 +157,10 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
         type: 'wasm/AcceptedMessageKeysFilter',
         keys: params.filter.acceptedMessagesKeys,
       }
+    } else {
+      grant.filter = {
+        type: 'wasm/AllowAllMessagesFilter',
+      }
     }
 
     return {
@@ -187,6 +200,10 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
       grant.filter = {
         '@type': '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter',
         keys: params.filter.acceptedMessagesKeys,
+      }
+    } else {
+      grant.filter = {
+        '@type': '/cosmwasm.wasm.v1.AllowAllMessagesFilter',
       }
     }
 

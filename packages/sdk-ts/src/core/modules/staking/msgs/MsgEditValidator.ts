@@ -4,6 +4,10 @@ import {
   CosmosStakingV1Beta1Tx,
   CosmosStakingV1Beta1Staking,
 } from '@injectivelabs/core-proto-ts'
+import {
+  numberToCosmosSdkDecString,
+  amountToCosmosSdkDecAmount,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgEditValidator {
   export interface Params {
@@ -99,7 +103,7 @@ export default class MsgEditValidator extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -107,6 +111,33 @@ export default class MsgEditValidator extends MsgBase<
       '@type': '/cosmos.staking.v1beta1.MsgEditValidator',
       ...value,
     }
+  }
+
+  public toEip712() {
+    const { type, value } = this.toAmino()
+
+    const messageAdjusted = {
+      ...value,
+      commission_rate: amountToCosmosSdkDecAmount(
+        value.commission_rate,
+      ).toFixed(),
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
+    }
+  }
+
+  public toEip712V2() {
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      commission_rate: numberToCosmosSdkDecString(web3gw.commission_rate),
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

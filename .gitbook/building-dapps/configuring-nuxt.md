@@ -16,7 +16,7 @@ You can install the @injectivelabs packages using yarn.
 $ yarn add @injectivelabs/sdk-ts @injectivelabs/networks @injectivelabs/ts-types @injectivelabs/utils
 
 ## If you need Wallet Connection
-$ yarn add @injectivelabs/wallet-ts
+$ yarn add @injectivelabs/wallet-strategy
 ```
 
 These are the most commonly used packages from the `injective-ts` monorepo.

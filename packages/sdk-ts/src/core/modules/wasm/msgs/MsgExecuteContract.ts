@@ -4,8 +4,8 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { fromUtf8 } from '../../../../utils/utf8.js'
 import {
-  CosmosBaseV1Beta1Coin,
   CosmwasmWasmV1Tx,
+  CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgExecuteContract {
@@ -109,7 +109,7 @@ export default class MsgExecuteContract extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -118,6 +118,14 @@ export default class MsgExecuteContract extends MsgBase<
       ...value,
     }
   }
+
+  // public toEip712(): never {
+  //   throw new GeneralException(
+  //     new Error(
+  //       'EIP712_v1 is not supported for MsgExecuteContract. Please use EIP712_v2',
+  //     ),
+  //   )
+  // }
 
   public toDirectSign() {
     const proto = this.toProto()

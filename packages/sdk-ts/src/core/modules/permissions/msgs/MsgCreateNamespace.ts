@@ -10,7 +10,8 @@ import {
   PermissionRoleManager,
   PermissionPolicyStatus,
   PermissionPolicyManagerCapability,
-} from './../../../../client/chain/types'
+} from './../../../../client/chain/types/permissions.js'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgCreateNamespace {
   export interface Params {
@@ -135,31 +136,13 @@ export default class MsgCreateNamespace extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
-
-    const policyStatuses = (proto.namespace?.policyStatuses || []).map(
-      (policyStatus) => ({
-        ...policyStatus,
-        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
-          policyStatus.action,
-        ),
-      }),
-    )
-
-    const policyManagerCapabilities = (
-      proto.namespace?.policyManagerCapabilities || []
-    ).map((policyManagerCapability) => ({
-      ...policyManagerCapability,
-      action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
-        policyManagerCapability.action,
-      ),
-    }))
-
     const message = snakecaseKeys({
       ...proto,
       namespace: {
         ...proto.namespace,
-        policyStatuses,
-        policyManagerCapabilities,
+        policyStatuses: proto.namespace?.policyStatuses || [],
+        policyManagerCapabilities:
+          proto.namespace?.policyManagerCapabilities || [],
       },
     })
 
@@ -169,7 +152,7 @@ export default class MsgCreateNamespace extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -177,6 +160,52 @@ export default class MsgCreateNamespace extends MsgBase<
       '@type': '/injective.permissions.v1beta1.MsgCreateNamespace',
       ...value,
     }
+  }
+
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712_v1 is not supported for MsgCreateNamespace. Please use EIP712_v2',
+      ),
+    )
+  }
+
+  public toEip712V2() {
+    const web3gw = this.toWeb3Gw()
+    const namespace = web3gw.namespace as any
+
+    const policyStatuses = (namespace?.policy_statuses || []).map(
+      (policyStatus: any) => ({
+        ...policyStatus,
+        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+          policyStatus.action,
+        ),
+      }),
+    )
+
+    const policyManagerCapabilities = (
+      namespace?.policy_manager_capabilities || []
+    ).map((policyManagerCapability: any) => ({
+      ...policyManagerCapability,
+      action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
+        policyManagerCapability.action,
+      ),
+    }))
+
+    const messageAdjusted = {
+      ...web3gw,
+      namespace: {
+        denom: namespace.denom,
+        contract_hook: namespace.contract_hook,
+        role_permissions: namespace.role_permissions,
+        actor_roles: namespace.actor_roles,
+        role_managers: namespace.role_managers,
+        policy_statuses: policyStatuses,
+        policy_manager_capabilities: policyManagerCapabilities,
+      },
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

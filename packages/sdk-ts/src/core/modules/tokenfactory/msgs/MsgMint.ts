@@ -67,7 +67,7 @@ export default class MsgMint extends MsgBase<MsgMint.Params, MsgMint.Proto> {
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

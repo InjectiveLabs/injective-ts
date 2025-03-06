@@ -85,7 +85,7 @@ export const updateEvmNetwork = async (
         params: [{ chainId: `0x${chainIdToHex}` }],
       }),
       new Promise<void>((resolve) =>
-        provider.on('change', ({ chain }: any) => {
+        provider.on('chainChanged', ({ chain }: any) => {
           if (chain?.id === chainIdToHex) {
             resolve()
           }

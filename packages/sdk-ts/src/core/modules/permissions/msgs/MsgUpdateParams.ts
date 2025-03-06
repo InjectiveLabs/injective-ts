@@ -4,6 +4,7 @@ import {
 } from '@injectivelabs/core-proto-ts'
 import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase.js'
+
 export declare namespace MsgUpdateParams {
   export interface Params {
     authority: string
@@ -62,7 +63,7 @@ export default class MsgUpdateParams extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

@@ -1,7 +1,7 @@
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
-import CosmosApp from '@ledgerhq/hw-app-cosmos'
-import type Transport from '@ledgerhq/hw-transport'
+import { TransportWebUSB } from '@bangjelkoski/ledgerhq-hw-transport-webusb'
+import { TransportWebHID } from '@bangjelkoski/ledgerhq-hw-transport-webhid'
+import { Cosmos as CosmosApp } from '@bangjelkoski/ledgerhq-hw-app-cosmos'
+import { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
 import { LedgerCosmosException } from '@injectivelabs/exceptions'
 import AccountManager from './AccountManager.js'
 

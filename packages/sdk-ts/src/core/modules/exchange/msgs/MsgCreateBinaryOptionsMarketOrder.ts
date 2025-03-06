@@ -1,5 +1,5 @@
 import { MsgBase } from '../../MsgBase.js'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString, amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   InjectiveExchangeV1Beta1Tx,
@@ -109,13 +109,65 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
     return {
       '@type': '/injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
       ...value,
+    }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+    const order = web3gw.order as any
+
+    const messageAdjusted = {
+      ...web3gw,
+      order: {
+        ...order,
+        order_info: {
+          ...order.order_info,
+          price: numberToCosmosSdkDecString(params.price),
+          quantity: numberToCosmosSdkDecString(params.quantity),
+        },
+        margin: numberToCosmosSdkDecString(params.margin),
+        trigger_price: numberToCosmosSdkDecString(params.triggerPrice || '0'),
+        order_type: InjectiveExchangeV1Beta1Exchange.orderTypeToJSON(
+          params.orderType,
+        ),
+      },
+    }
+
+    return messageAdjusted
+  }
+
+  public toEip712() {
+    const { params } = this
+    const amino = this.toAmino()
+    const { value, type } = amino
+
+    const messageAdjusted = {
+      ...value,
+      order: {
+        ...value.order,
+        order_info: {
+          ...value.order?.order_info,
+          price: amountToCosmosSdkDecAmount(params.price).toFixed(),
+          quantity: amountToCosmosSdkDecAmount(params.quantity).toFixed(),
+        },
+        margin: amountToCosmosSdkDecAmount(params.margin).toFixed(),
+        trigger_price: amountToCosmosSdkDecAmount(
+          params.triggerPrice || '0',
+        ).toFixed(),
+      },
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
     }
   }
 

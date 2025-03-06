@@ -1,12 +1,13 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { snakeToPascal } from '@injectivelabs/utils'
-import { isNumber, numberToCosmosSdkDecString } from '../../../utils/numbers.js'
 import { TypedDataField } from './types.js'
 
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
 
 /**
+ * ONLY USED FOR EIP712_V1
+ *
  * Function used to generate EIP712 types based on a message object
  * and its structure (recursive)
  */
@@ -24,11 +25,14 @@ export const objectKeysToEip712Types = ({
     'order_type',
     'oracle_type',
     'round',
+    'expiration_timestamp',
+    'settlement_timestamp',
     'oracle_scale_factor',
     'expiry',
     'option',
     'proposal_id',
     'creation_height',
+    'wasm_hook_query_max_gas',
   ]
   const stringFieldsWithNumberValue = [
     'timeout_timestamp',
@@ -36,13 +40,18 @@ export const objectKeysToEip712Types = ({
     'revision_number',
   ]
   const stringFieldsToOmitIfEmpty = ['cid']
+  const fieldsToOmitIfEmpty = ['admin_info', 'order']
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
 
   for (const property in snakecaseKeys(object)) {
-    const propertyValue = snakecaseKeys(object)[property]
+    let propertyValue = snakecaseKeys(object)[property]
 
     if (property === '@type') {
+      continue
+    }
+
+    if (fieldsToOmitIfEmpty.includes(property) && !propertyValue) {
       continue
     }
 
@@ -57,7 +66,7 @@ export const objectKeysToEip712Types = ({
     ) {
       types.push({
         name: property,
-        type: numberTypeToReflectionNumberType(property),
+        type: numberTypeToReflectionNumberType(property, messageType),
       })
     } else if (type === 'string') {
       if (stringFieldsToOmitIfEmpty.includes(property) && !propertyValue) {
@@ -165,7 +174,48 @@ export const objectKeysToEip712Types = ({
  * them in their chain representation from the number value
  * that is available in JavaScript
  */
-export const numberTypeToReflectionNumberType = (property?: string) => {
+export const numberTypeToReflectionNumberType = (
+  property?: string,
+  messageType?: string,
+) => {
+  const msgTypeKey = messageType as keyof typeof messageTypeToNumberTypeMaps
+  const messageTypeToNumberTypeMaps = {
+    'cosmos-sdk/MsgSubmitProposal': {
+      status: 'int32',
+      base_decimals: 'uint32',
+      quote_decimals: 'uint32',
+    },
+    'injective/tokenfactory/set-denom-metadata': {
+      decimals: 'uint32',
+    },
+    'injective/tokenfactory/create-denom': {
+      decimals: 'uint32',
+    },
+    'exchange/MsgAdminUpdateBinaryOptionsMarket': {
+      status: 'int32',
+      expiration_timestamp: 'int64',
+      settlement_timestamp: 'int64',
+    },
+    'exchange/MsgInstantBinaryOptionsMarketLaunch': {
+      status: 'int32',
+      expiration_timestamp: 'int64',
+      settlement_timestamp: 'int64',
+    },
+    'exchange/MsgInstantSpotMarketLaunch': {
+      base_decimals: 'uint32',
+      quote_decimals: 'uint32',
+    },
+  }
+
+  if (msgTypeKey && messageTypeToNumberTypeMaps[msgTypeKey] && property) {
+    const type = messageTypeToNumberTypeMaps[msgTypeKey]
+    const typeKey = property as keyof typeof type
+
+    if (type[typeKey]) {
+      return type[typeKey]
+    }
+  }
+
   switch (property) {
     case 'order_mask':
       return 'int32'
@@ -177,6 +227,10 @@ export const numberTypeToReflectionNumberType = (property?: string) => {
       return 'uint64'
     case 'order_type':
       return 'int32'
+    case 'admin_permissions':
+      return 'uint32'
+    case 'oracle_scale_factor':
+      return 'uint32'
     case 'oracle_type':
       return 'int32'
     case 'exponent':
@@ -214,165 +268,6 @@ export const stringTypeToReflectionStringType = (property?: string) => {
     default:
       return 'uint64'
   }
-}
-
-/**
- * We need to represent some of the values in a proper format acceptable by the chain.
- *
- * 1. We need to represent some values from a number to string
- * This needs to be done for every number value except for maps (ex: vote option)
- *
- * 2. We need to convert every `sdk.Dec` value from a raw value to shifted by 1e18 value
- * ex: 0.01 -> 0.01000000000000000000, 1 -> 1.000000000000000000
- *
- * 3. For some fields, like 'amount' in the 'MsgIncreasePositionMargin' we have
- * to also specify the Message type to apply the sdk.Dec conversion because there
- * are other amount fields in other messages as well and we don't want to affect them
- */
-export const mapValuesToProperValueType = <T extends Record<string, unknown>>(
-  object: T,
-  messageTypeUrl?: string,
-): T => {
-  const numberToStringKeys = [
-    'proposal_id',
-    'remaining',
-    'round',
-    'oracle_scale_factor',
-    'timeout_timestamp',
-    'revision_height',
-    'revision_number',
-    'expiry',
-  ]
-  const sdkDecKeys = [
-    'min_price_tick_size',
-    'price',
-    'quantity',
-    'margin',
-    'trigger_price',
-    'min_quantity_tick_size',
-  ]
-  const sdkDecKeyWithTypeMaps = {
-    'exchange/MsgIncreasePositionMargin': ['amount'],
-  }
-  const nullableStringsTypeMaps = {
-    'wasmx/MsgExecuteContractCompat': ['funds'],
-  }
-  // const dateTypesMap = {
-  //   'cosmos-sdk/MsgGrant': ['expiration'],
-  // }
-
-  const nullableStrings = ['uri', 'uri_hash']
-
-  return Object.keys(object).reduce((result, key) => {
-    const value = object[key]
-
-    if (!value) {
-      // Message Type Specific checks
-      if (messageTypeUrl) {
-        const typeInMap = Object.keys(nullableStringsTypeMaps).find(
-          (key) => key === messageTypeUrl,
-        )
-
-        if (typeInMap) {
-          const nullableStringKeys =
-            nullableStringsTypeMaps[
-              typeInMap as keyof typeof nullableStringsTypeMaps
-            ]
-
-          if (nullableStringKeys.includes(key)) {
-            return {
-              ...result,
-              [key]: value,
-            }
-          }
-        }
-      }
-
-      if (nullableStrings.includes(key)) {
-        return {
-          ...result,
-          [key]: value,
-        }
-      }
-
-      return result
-    }
-
-    if (typeof value === 'object') {
-      if (value instanceof Date) {
-        return {
-          ...result,
-          [key]: value.toJSON().split('.')[0] + 'Z',
-        }
-      }
-
-      if (Array.isArray(value)) {
-        return {
-          ...result,
-          [key]: value.every((i) => typeof i === 'string')
-            ? value
-            : value.map((item) =>
-                mapValuesToProperValueType(
-                  item as Record<string, unknown>,
-                ),
-              ),
-        }
-      }
-
-      return {
-        ...result,
-        [key]: mapValuesToProperValueType(
-          value as Record<string, unknown>,
-        ),
-      }
-    }
-
-    if (isNumber(value as string | number)) {
-      if (numberToStringKeys.includes(key)) {
-        return {
-          ...result,
-          [key]: value.toString(),
-        }
-      }
-
-      // Maybe some other check needed
-    }
-
-    if (typeof value === 'string') {
-      if (sdkDecKeys.includes(key)) {
-        return {
-          ...result,
-          [key]: numberToCosmosSdkDecString(value),
-        }
-      }
-
-      // Message Type Specific checks
-      if (messageTypeUrl) {
-        const typeInMap = Object.keys(sdkDecKeyWithTypeMaps).find(
-          (key) => key === messageTypeUrl,
-        )
-
-        if (typeInMap) {
-          const sdkDecKeys =
-            sdkDecKeyWithTypeMaps[
-              typeInMap as keyof typeof sdkDecKeyWithTypeMaps
-            ]
-
-          if (sdkDecKeys.includes(key)) {
-            return {
-              ...result,
-              [key]: numberToCosmosSdkDecString(value),
-            }
-          }
-        }
-      }
-    }
-
-    return {
-      ...result,
-      [key]: value,
-    }
-  }, {} as T)
 }
 
 export const getObjectEip712PropertyType = ({

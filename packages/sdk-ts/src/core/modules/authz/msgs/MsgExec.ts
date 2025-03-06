@@ -27,6 +27,8 @@ export default class MsgExec extends MsgBase<
   MsgExec.Object
 > {
   static fromJSON(params: MsgExec.Params): MsgExec {
+    console.log('MsgExec.fromJSON')
+
     return new MsgExec(params)
   }
 
@@ -73,11 +75,11 @@ export default class MsgExec extends MsgBase<
       value: {
         grantee: params.grantee,
         msgs: msgs.map((msg) => msg.toEip712()),
-      },
+      } as unknown as MsgExec.Object,
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
 
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]

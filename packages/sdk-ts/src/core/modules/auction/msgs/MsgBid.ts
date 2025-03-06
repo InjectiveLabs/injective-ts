@@ -73,7 +73,7 @@ export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

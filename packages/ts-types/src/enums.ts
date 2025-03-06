@@ -110,3 +110,8 @@ export enum MsgStatus {
   Success = 'success',
   Fail = 'fail',
 }
+
+export enum EIP712Version {
+  V1 = 'v1',
+  V2 = 'v2',
+}

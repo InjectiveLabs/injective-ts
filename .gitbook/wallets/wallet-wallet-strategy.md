@@ -1,6 +1,6 @@
 # Wallet Strategy
 
-The main purpose of the `@injectivelabs/wallet-ts` is to offer developers a way to have different wallet implementations on Injective. All of these wallets implementations are exposing the same `ConcreteStrategy` interface which means that users can just use these methods without the need to know the underlying implementation for specific wallets as they are abstracted away.
+The main purpose of the `@injectivelabs/wallet-strategy` is to offer developers a way to have different wallet implementations on Injective. All of these wallets implementations are exposing the same `ConcreteStrategy` interface which means that users can just use these methods without the need to know the underlying implementation for specific wallets as they are abstracted away.
 
 To start, you have to make an instance of the `WalletStrategy` class which gives you the ability to use different wallets out of the box. You can switch the current wallet that is used by using the `setWallet` method on the `walletStrategy` instance.
 
@@ -49,7 +49,7 @@ _Note:_ When we wanna use the `sendTransaction` on Ethereum native wallets along
 ### Example usage
 
 ```ts
-import { WalletStrategy } from '@injectivelabs/wallet-ts'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
 import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
 import { TxRaw } from '@injectivelabs/sdk-ts'
 import { Web3Exception } from '@injectivelabs/exceptions'

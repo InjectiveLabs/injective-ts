@@ -1,8 +1,9 @@
 {
   "name": "@injectivelabs/wallet-strategy",
   "description": "Wallet strategy with instantiated wallets",
-  "version": "1.14.42-beta.1",
+  "version": "1.14.42",
   "sideEffects": false,
+  "type": "module",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
@@ -57,38 +58,33 @@
   "dependencies": {
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.14.41",
-    "@injectivelabs/networks": "^1.14.41",
-    "@injectivelabs/sdk-ts": "^1.14.42-beta.1",
-    "@injectivelabs/ts-types": "^1.14.41",
-    "@injectivelabs/utils": "^1.14.41",
-    "@injectivelabs/wallet-base": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-core": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-cosmos": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-cosmostation": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-evm": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-ledger": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-magic": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-private-key": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-trezor": "^1.14.42-beta.1",
-    "@injectivelabs/wallet-wallet-connect": "^1.14.42-beta.1",
+    "@injectivelabs/exceptions": "^1.14.42",
+    "@injectivelabs/networks": "^1.14.42",
+    "@injectivelabs/sdk-ts": "^1.14.43",
+    "@injectivelabs/ts-types": "^1.14.42",
+    "@injectivelabs/utils": "^1.14.42",
+    "@injectivelabs/wallet-base": "^1.14.42",
+    "@injectivelabs/wallet-core": "^1.14.42",
+    "@injectivelabs/wallet-cosmos": "^1.14.42",
+    "@injectivelabs/wallet-cosmostation": "^1.14.42",
+    "@injectivelabs/wallet-evm": "^1.14.42",
+    "@injectivelabs/wallet-ledger": "^1.14.42",
+    "@injectivelabs/wallet-magic": "^1.14.42",
+    "@injectivelabs/wallet-private-key": "^1.14.42",
+    "@injectivelabs/wallet-trezor": "^1.14.42",
+    "@injectivelabs/wallet-wallet-connect": "^1.14.42",
     "alchemy-sdk": "^3.4.7",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
     "ethers": "^6.5.1",
-    "hdkey": "^2.0.1",
-    "long": "^5.2.1",
-    "shx": "^0.3.3"
+    "hdkey": "^2.1.0"
   },
   "devDependencies": {
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
-    "@types/hdkey": "^2.0.1"
-  },
-  "resolutions": {
-    "**/libsodium": "npm:@bangjelkoski/noop",
-    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
+    "@types/hdkey": "^2.0.1",
+    "shx": "^0.3.3"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
 }

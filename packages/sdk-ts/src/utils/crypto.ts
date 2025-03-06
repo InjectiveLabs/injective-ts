@@ -1,27 +1,31 @@
-import SHA256 from 'crypto-js/sha256.js'
-import RIPEMD160 from 'crypto-js/ripemd160.js'
-import Base64 from 'crypto-js/enc-base64.js'
-import * as secp256k1 from 'secp256k1'
+// import CryptoEs from 'crypto-es'
+import CryptoEs from 'crypto-js'
+import { secp256k1 } from '@noble/curves/secp256k1'
+import keccak256 from 'keccak256'
 import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 
 export const hashToHex = (data: string): string => {
-  return SHA256(Base64.parse(data)).toString().toUpperCase()
+  return CryptoEs.SHA256(CryptoEs.enc.Base64.parse(data))
+    .toString()
+    .toUpperCase()
 }
 
 export const sha256 = (data: Uint8Array): Uint8Array => {
-  const dataInUtf8 = Buffer.from(data).toString('utf-8')
+  const wordArray = CryptoEs.lib.WordArray.create(data)
+  const hash = CryptoEs.SHA256(wordArray)
 
-  return Uint8Array.from(Buffer.from(SHA256(dataInUtf8).toString(), 'hex'))
+  return Uint8Array.from(Buffer.from(hash.toString(), 'hex'))
 }
 
 export const ripemd160 = (data: Uint8Array): Uint8Array => {
-  const dataInUtf8 = Buffer.from(data).toString('utf-8')
+  const wordArray = CryptoEs.lib.WordArray.create(data)
+  const hash = CryptoEs.RIPEMD160(wordArray)
 
-  return Uint8Array.from(Buffer.from(RIPEMD160(dataInUtf8).toString(), 'hex'))
+  return Uint8Array.from(Buffer.from(hash.toString(), 'hex'))
 }
 
 export const privateKeyToPublicKey = (privateKey: Uint8Array): Uint8Array => {
-  return secp256k1.publicKeyCreate(privateKey, true)
+  return secp256k1.getPublicKey(privateKey, true)
 }
 
 export const privateKeyHashToPublicKey = (
@@ -31,7 +35,7 @@ export const privateKeyHashToPublicKey = (
     ? privateKeyHash.slice(2)
     : privateKeyHash
 
-  return secp256k1.publicKeyCreate(Buffer.from(privateKey, 'hex'), true)
+  return secp256k1.getPublicKey(Buffer.from(privateKey, 'hex'), true)
 }
 
 export const privateKeyToPublicKeyBase64 = (privateKey: Uint8Array): string => {
@@ -71,17 +75,34 @@ export function hexToUnit8Array(str: string) {
 }
 
 export function decompressPubKey(startsWith02Or03: string) {
-  // if already decompressed an not has trailing 04
   const testBuffer = Buffer.from(startsWith02Or03, 'hex')
 
   if (testBuffer.length === 64) startsWith02Or03 = '04' + startsWith02Or03
 
-  let decompressed = uint8ArrayToHex(
-    secp256k1.publicKeyConvert(hexToUnit8Array(startsWith02Or03), false),
+  const point = secp256k1.ProjectivePoint.fromHex(
+    Buffer.from(testBuffer).toString('hex'),
   )
 
-  // remove trailing 04
-  decompressed = decompressed.substring(2)
+  const decompressed = point.toHex(false)
 
-  return decompressed
+  if (!decompressed.startsWith('04')) return decompressed
+
+  return decompressed.slice(2)
+}
+
+export const publicKeyToAddress = function (
+  pubKey: Uint8Array,
+  sanitize: boolean = false,
+): Uint8Array {
+  if (sanitize && pubKey.length !== 64) {
+    pubKey = secp256k1.ProjectivePoint.fromHex(pubKey)
+      .toRawBytes(false)
+      .slice(1)
+  }
+
+  if (pubKey.length !== 64) {
+    throw new Error('Expected pubKey to be of length 64')
+  }
+
+  return keccak256(Buffer.from(pubKey)).subarray(-20)
 }

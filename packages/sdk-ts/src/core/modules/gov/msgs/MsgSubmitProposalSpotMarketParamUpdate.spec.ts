@@ -1,7 +1,12 @@
 import MsgSubmitProposalSpotMarketParamUpdate from './MsgSubmitProposalSpotMarketParamUpdate.js'
-import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
-import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
-import { GrpcMarketStatusMap, IndexerGrpcWeb3GwApi } from './../../../../client'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
+import { GrpcMarketStatusMap } from './../../../../client/index.js'
 
 const params: MsgSubmitProposalSpotMarketParamUpdate['params'] = {
   market: {
@@ -15,7 +20,13 @@ const params: MsgSubmitProposalSpotMarketParamUpdate['params'] = {
     makerFeeRate: '-0.00005',
     minNotional: '1000000',
     takerFeeRate: '0.0005',
+    baseDecimals: 6,
+    quoteDecimals: 6,
     relayerFeeShareRate: '0.0005',
+    adminInfo: {
+      admin: mockFactory.injectiveAddress,
+      adminPermissions: 1,
+    },
   },
   proposer: mockFactory.injectiveAddress,
   deposit: {
@@ -29,20 +40,17 @@ const message = MsgSubmitProposalSpotMarketParamUpdate.fromJSON(params)
 describe('MsgSubmitProposalSpotMarketParamUpdate', () => {
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      sequence: 0,
-      accountNumber: 3,
       messages: message,
     })
 
-    // TODO
-    it.skip('EIP712 v1', async () => {
+    it('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
       ).prepareEip712Request({
         ...prepareEip712Request,
-        eip712Version: 'v1',
+        eip712Version: EIP712Version.V1,
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
@@ -53,7 +61,10 @@ describe('MsgSubmitProposalSpotMarketParamUpdate', () => {
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
-      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })

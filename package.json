@@ -39,6 +39,7 @@
     "test": "jest",
     "test:sdk-ts:core:stargate": "jest ./packages/sdk-ts/src/core/stargate",
     "test:sdk-ts:core:modules": "jest ./packages/sdk-ts/src/core/modules",
+    "test:sdk-ts:core:account": "jest ./packages/sdk-ts/src/core/account",
     "test:sdk-ts:core": "jest ./packages/sdk-ts/src/core",
     "test:sdk-ts:utils": "jest ./packages/sdk-ts/src/utils",
     "test:sdk-ts:client": "jest ./packages/sdk-ts/src/client",
@@ -70,8 +71,8 @@
     "@babel/preset-env": "^7.19.0",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
-    "@types/jest": "^29.4.0",
-    "@types/node": "^22.9.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.1",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "babel-jest": "^29.4.3",
@@ -89,13 +90,14 @@
     "eslint-plugin-markdown": "^2.2.1",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.2",
-    "jest": "^29.4.3",
+    "jest": "^29.7.0",
     "jest-junit": "^15.0.0",
     "jest-resolve": "^29.7.0",
-    "lerna": "6.6.1",
+    "lerna": "8.1.9",
     "lint-staged": "^11.1.2",
     "live-server": "^1.2.1",
     "markdownlint-cli": "^0.28.1",
+    "patch-package": "^8.0.0",
     "prettier": "^2.4.1",
     "serve": "^12.0.1",
     "shx": "^0.3.4",
@@ -107,11 +109,10 @@
     "tsconfig-paths": "^4.2.0",
     "typedoc": "^0.25.11",
     "typedoc-monorepo-link-types": "^0.0.4",
-    "typescript": "^5.1.1"
+    "typescript": "^5.7.2"
   },
   "resolutions": {
-    "@ethereumjs/tx": "^4.1.1",
-    "**/libsodium": "npm:@bangjelkoski/noop",
-    "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
+    "@solana/web3.js": "1.98.0",
+    "rpc-websockets": "9.0.4"
   }
 }

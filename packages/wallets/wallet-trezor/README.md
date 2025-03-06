@@ -2,8 +2,8 @@
 
 <!-- TODO -->
 
-[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
-[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ts.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ts)
+[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-trezor.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-trezor)
+[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-trezor.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-trezor)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
 _Package to use Trezor Wallets on Injective via the wallet strategy._
@@ -37,9 +37,9 @@ import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor';
 
 const strategyArgs: WalletStrategyArguments = {
   chainId: ChainId.Mainnet,
-  wallet: Wallet.Trezor,
+  wallet: Wallet.TrezorBip32,
   strategies: {
-    [Wallet.Trezor]: new TrezorWalletStrategy({
+    [Wallet.TrezorBip32]: new TrezorWalletStrategy({
       chainId: ChainId.Mainnet,
       ethereumOptions: {
         ethereumChainId: EthereumChainId.Mainnet,

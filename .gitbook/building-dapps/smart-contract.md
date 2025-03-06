@@ -35,15 +35,15 @@ export const ENDPOINTS = getNetworkEndpoints(NETWORK)
 export const chainGrpcWasmApi = new ChainGrpcWasmApi(ENDPOINTS.grpc)
 ```
 
-Then, we also need to setup a wallet connection to allow the user to connect to our DEX and start signing transactions. To make this happen we are going to use our `@injectivelabs/wallet-ts` package which allows users to connect with a various of different wallet providers and use them to sign transactions on Injective.
+Then, we also need to setup a wallet connection to allow the user to connect to our DEX and start signing transactions. To make this happen we are going to use our `@injectivelabs/wallet-strategy` package which allows users to connect with a various of different wallet providers and use them to sign transactions on Injective.
 
-The main purpose of the `@injectivelabs/wallet-ts` is to offer developers a way to have different wallet implementations on Injective. All of these wallets implementations are exposing the same `ConcreteStrategy` interface which means that users can just use these methods without the need to know the underlying implementation for specific wallets as they are abstracted away.
+The main purpose of the `@injectivelabs/wallet-strategy` is to offer developers a way to have different wallet implementations on Injective. All of these wallets implementations are exposing the same `ConcreteStrategy` interface which means that users can just use these methods without the need to know the underlying implementation for specific wallets as they are abstracted away.
 
 To start, you have to make an instance of the WalletStrategy class which gives you the ability to use different wallets out of the box. You can switch the current wallet that is used by using the `setWallet` method on the walletStrategy instance. The default is `Metamask`.
 
 ```ts
 // filename: wallet.ts
-import { WalletStrategy } from '@injectivelabs/wallet-ts'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
 import { Web3Exception } from '@injectivelabs/exceptions'
 
 // These imports are from .env
@@ -92,7 +92,7 @@ import {
   UnspecifiedErrorCode,
   ErrorType,
 } from '@injectivelabs/exceptions'
-import { Wallet } from '@injectivelabs/wallet-ts'
+import { Wallet } from '@injectivelabs/wallet-base'
 import { walletStrategy } from './Wallet.ts'
 
 export const getAddresses = async (wallet: Wallet): Promise<string[]> => {
@@ -213,7 +213,7 @@ Now lets see a full example of this in Vanilla JS (You can find examples for spe
 ```js
 import { ChainGrpcWasmApi, getInjectiveAddress } from "@injectivelabs/sdk-ts";
 import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
-import { WalletStrategy } from "@injectivelabs/wallet-ts";
+import { WalletStrategy } from "@injectivelabs/wallet-strategy";
 import { Web3Exception } from "@injectivelabs/exceptions";
 
 // These imports are from .env

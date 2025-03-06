@@ -1,5 +1,5 @@
 import { verifyMessage, Wallet } from 'ethers'
-import { toUtf8 } from '../../utils'
+import { toUtf8 } from '../../utils/utf8.js'
 import { PrivateKey } from './PrivateKey.js'
 import { generateArbitrarySignDoc } from '../tx/index.js'
 
@@ -128,17 +128,16 @@ describe('PrivateKey', () => {
     const privateKey = PrivateKey.fromHex(pk)
     const publicKey = privateKey.toHex()
 
-    const privKeySignatureArray = privateKey.sign(
+    const ethersVerifiedSigner = verifyMessage(message, ethersSignature)
+    const ethersSignatureVerifiedCorrectly = ethersVerifiedSigner === publicKey
+    expect(ethersSignatureVerifiedCorrectly).toBe(true)
+
+    const privKeySignatureArray = privateKey.signHashed(
       Buffer.from(toUtf8(message), 'utf-8'),
     )
     const privKeySignature = `0x${Buffer.from(privKeySignatureArray).toString(
       'hex',
     )}`
-
-    const ethersVerifiedSigner = verifyMessage(message, ethersSignature)
-    const ethersSignatureVerifiedCorrectly = ethersVerifiedSigner === publicKey
-    expect(ethersSignatureVerifiedCorrectly).toBe(true)
-
     const privKeyVerifiedSigner = verifyMessage(message, privKeySignature)
     const privKeySignatureVerifiedCorrectly =
       privKeyVerifiedSigner === publicKey
