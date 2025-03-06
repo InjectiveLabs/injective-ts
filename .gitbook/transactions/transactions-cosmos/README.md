@@ -98,7 +98,7 @@ const signDoc = /* From the previous step */
 const directSignResponse = await offlineSigner.signDirect(address, signDoc as SignDoc)
 ```
 
-You can also use our `@injectivelabs/wallet-ts` package to get out-of-the-box wallet provides that will give you abstracted methods that you can use to sign transactions. Refer to the documentation of the package, its straightforward to setup and use. **This is the recommended way as you have access to more than one wallet to use in your dApp. The `WalletStrategy` provides more than just signing transaction abstractions.**
+You can also use our `@injectivelabs/wallet-strategy` package to get out-of-the-box wallet provides that will give you abstracted methods that you can use to sign transactions. Refer to the documentation of the package, its straightforward to setup and use. **This is the recommended way as you have access to more than one wallet to use in your dApp. The `WalletStrategy` provides more than just signing transaction abstractions.**
 
 ### Broadcasting a transaction
 

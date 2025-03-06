@@ -24,7 +24,7 @@ To instantiate your MsgBroadcaster, you need to pass it an instance of `BaseWall
 
 ```ts
 import { Wallet } from '@injectivelabs/wallet-base'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 
 const strategyArgs: WalletStrategyArguments = {} /** define the args */
