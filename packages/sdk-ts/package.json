@@ -128,7 +128,7 @@
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
-    "@injectivelabs/indexer-proto-ts": "1.13.6",
+    "@injectivelabs/indexer-proto-ts": "1.13.9",
     "@injectivelabs/mito-proto-ts": "1.13.2",
     "@injectivelabs/networks": "^1.14.43-beta.0",
     "@injectivelabs/olp-proto-ts": "1.13.4",
