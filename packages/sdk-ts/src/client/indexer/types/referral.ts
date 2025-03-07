@@ -1,7 +1,10 @@
-export interface ReferralSampleInterface {
-  id: number
-  name: string
-  endDate: number
-  startDate: number
-  campaigns: string[]
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
+
+export interface ReferralDetails {
+  referrerCode: string
+  referrerAddress: string
+  totalCommission: BigNumberInBase
+  totalTradingVolume: BigNumberInBase
+  invitees: InjectiveReferralRpc.ReferralInvitee[]
 }

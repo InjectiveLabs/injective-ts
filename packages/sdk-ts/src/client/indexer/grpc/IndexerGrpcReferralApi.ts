@@ -34,6 +34,7 @@ export class IndexerGrpcReferralApi extends BaseGrpcConsumer {
         )
 
       return IndexerGrpcReferralTransformer.referrerDetailsResponseToReferrerDetails(
+        address,
         response,
       )
     } catch (e: unknown) {
