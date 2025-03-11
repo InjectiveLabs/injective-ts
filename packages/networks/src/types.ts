@@ -29,6 +29,7 @@ export type NetworkEndpoints = {
   chronos?: string // Chronos Service
   web3gw?: string // Web3Gateway Service
   explorer?: string // Explorer Service
+  chart?: string // Chart Service
 }
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */
