@@ -1,6 +1,6 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
-import { MsgSend } from '@injectivelabs/sdk-ts'
+import MsgSend from '../../modules/bank/msgs/MsgSend.js'
 import { getEip712TypedDataV2 } from './eip712.js'
 
 describe('EIP712V2', () => {

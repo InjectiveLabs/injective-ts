@@ -26,7 +26,7 @@
   "dependencies": {
     "@injectivelabs/grpc-web": "^0.0.1",
     "google-protobuf": "^3.14.0",
-    "protobufjs": "^7.0.0",
+    "protobufjs": "^7.4.0",
     "rxjs": "^7.4.0"
   },
   "devDependencies": {

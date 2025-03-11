@@ -1,7 +1,7 @@
 import MsgSubmitProposalSpotMarketLaunch from './MsgSubmitProposalSpotMarketLaunch.js'
-import { mockFactory, prepareEip712 } from '@injectivelabs/test-utils'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
-import { IndexerGrpcWeb3GwApi } from './../../../../client'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const market = mockFactory.injUsdtSpotMarket
 
