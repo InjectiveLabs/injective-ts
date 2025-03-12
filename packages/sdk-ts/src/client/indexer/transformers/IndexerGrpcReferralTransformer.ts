@@ -24,7 +24,7 @@ export class IndexerGrpcReferralTransformer {
 
   static referrerByCodeResponseToReferrerByCode(
     response: InjectiveReferralRpc.GetReferrerByCodeResponse,
-  ): boolean {
-    return !response?.referrerAddress
+  ): string {
+    return response?.referrerAddress || ''
   }
 }

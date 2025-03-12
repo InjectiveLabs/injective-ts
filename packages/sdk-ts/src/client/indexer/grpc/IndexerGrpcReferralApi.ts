@@ -84,9 +84,9 @@ export class IndexerGrpcReferralApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchReferrerByCode(address: string) {
+  async fetchReferrerByCode(code: string) {
     const request = InjectiveReferralRpc.GetReferrerByCodeRequest.create()
-    request.referralCode = address
+    request.referralCode = code
 
     try {
       const response =
