@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/exceptions",
   "description": "List of exceptions that can be reused throughout Injective's projects.",
-  "version": "1.14.43-beta.1",
+  "version": "1.14.43-beta.2",
   "sideEffects": false,
   "license": "Apache-2.0",
   "type": "module",
