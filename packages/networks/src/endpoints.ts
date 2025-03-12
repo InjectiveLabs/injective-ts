@@ -10,6 +10,7 @@ export const endpointsMainnetSentry: NetworkEndpoints = {
   cacheGrpc: 'https://sentry.chain.grpc-web.injective.network',
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://sentry.exchange.grpc-web.injective.network',
+  chart: 'https://sentry.exchange.grpc-web.injective.network',
 }
 
 export const endpointsMainnet: NetworkEndpoints = {
@@ -26,6 +27,7 @@ export const endpointsStaging: NetworkEndpoints = {
   cacheGrpc: 'https://staging.grpc.injective.network',
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://staging.api.injective.network',
+  chart: 'https://k8s.mainnet.staging.chart.grpc-web.injective.network',
 }
 
 export const endpointsInternal: NetworkEndpoints = {
@@ -38,6 +40,7 @@ export const endpointsInternal: NetworkEndpoints = {
   cacheGrpc: 'https://products.chain.grpc-web.injective.network',
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://products.web3-gateway.injective.network',
+  chart: 'https://products.exchange.grpc-web.injective.network',
 }
 
 export const endpointsTestnetSentry: NetworkEndpoints = {
@@ -159,6 +162,7 @@ export const endpointsMainnetLB: NetworkEndpoints = {
   cacheGrpc: 'https://k8s.global.mainnet.chain.grpc-web.injective.network',
   cacheRest: 'https://k8s.global.mainnet.exchange.grpc-web.injective.network',
   web3gw: 'https://k8s.global.mainnet.exchange.grpc-web.injective.network',
+  chart: 'https://k8s.global.mainnet.chart.grpc-web.injective.network',
 }
 
 /**
