@@ -80,7 +80,6 @@ export default class MsgStoreCode extends MsgBase<
     const amino = this.toAmino()
     const { value } = amino
 
-
     return {
       '@type': '/cosmwasm.wasm.v1.MsgStoreCode',
       ...value,
@@ -102,13 +101,15 @@ export default class MsgStoreCode extends MsgBase<
       ...web3gw,
       instantiate_permission: web3gw.instantiate_permission
         ? {
-            ...web3gw.instantiate_permission,
-            permission: CosmwasmWasmV1Types.accessTypeFromJSON(
+            addresses: web3gw.instantiate_permission.addresses || [],
+            permission: CosmwasmWasmV1Types.accessTypeToJSON(
               web3gw.instantiate_permission.permission,
             ),
           }
         : undefined,
     }
+
+    console.log(messageAdjusted)
 
     return messageAdjusted
   }

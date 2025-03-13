@@ -15,7 +15,6 @@ export enum Wallet {
   PrivateKey = 'private-key',
   TrezorBip32 = 'trezor-bip32',
   TrezorBip44 = 'trezor-bip44',
-  TrezorLegacy = 'trezor-legacy',
   Cosmostation = 'cosmostation',
   LedgerCosmos = 'ledger-cosmos',
   LedgerLegacy = 'ledger-legacy',

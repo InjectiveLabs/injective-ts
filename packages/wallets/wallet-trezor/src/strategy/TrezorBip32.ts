@@ -7,7 +7,7 @@ export class TrezorBip32 extends TrezorBase {
   constructor(args: ConcreteEthereumWalletStrategyArgs) {
     super({
       ...args,
-      derivationPathType: TrezorDerivationPathType.Legacy,
+      derivationPathType: TrezorDerivationPathType.Bip32,
     })
   }
 }

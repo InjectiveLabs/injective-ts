@@ -6,7 +6,6 @@ export const isEvmWallet = (wallet: Wallet): boolean =>
     Wallet.BitGet,
     Wallet.Ledger,
     Wallet.TrezorBip32,
-    Wallet.TrezorLegacy,
     Wallet.TrezorBip44,
     Wallet.Phantom,
     Wallet.Metamask,

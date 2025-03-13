@@ -28,8 +28,7 @@ describe('MsgStoreCode', () => {
       )
     })
 
-    // TODO - Onchain issue, fix that first
-    it.skip('EIP712 v2', async () => {
+    it('EIP712 v2', async () => {
       const eip712TypedData = getEip712TypedDataV2(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(

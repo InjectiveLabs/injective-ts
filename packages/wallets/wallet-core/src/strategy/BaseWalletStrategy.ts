@@ -32,11 +32,23 @@ const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
     return args.wallet
   }
 
-  if (Object.keys(args.strategies || [])?.length) {
-    return Object.keys(args.strategies || [])[0] as Wallet
+  const keys = Object.keys(args.strategies || {})
+
+  if (keys.length === 0) {
+    throw new GeneralException(
+      new Error('No strategies provided to BaseWalletStrategy'),
+    )
   }
 
-  return args.ethereumOptions ? Wallet.Metamask : Wallet.Keplr
+  if (keys.includes(Wallet.Metamask) && args.ethereumOptions) {
+    return Wallet.Metamask
+  }
+
+  if (keys.includes(Wallet.Keplr) && !args.ethereumOptions) {
+    return Wallet.Keplr
+  }
+
+  return keys[0] as Wallet
 }
 
 export default class BaseWalletStrategy implements WalletStrategyInterface {

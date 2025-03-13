@@ -37,7 +37,11 @@ import {
   WalletStrategyEthereumOptions,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import TrezorHW from './hw/index.js'
+import {
+  TrezorTransportInit,
+  TrezorTransportNoInit,
+  BaseTrezorTransport,
+} from './hw/index.js'
 import { transformTypedData } from '../utils.js'
 import { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
 
@@ -75,7 +79,7 @@ export default class TrezorBase
 {
   private baseDerivationPath: string
 
-  private trezor: TrezorHW
+  private trezor: BaseTrezorTransport
 
   private ethereumOptions: WalletStrategyEthereumOptions
 
@@ -92,7 +96,7 @@ export default class TrezorBase
 
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = args.derivationPathType
-    this.trezor = new TrezorHW()
+    this.trezor = new TrezorTransportInit()
     this.ethereumOptions = args.ethereumOptions
   }
 
@@ -105,7 +109,7 @@ export default class TrezorBase
   }
 
   public async disconnect() {
-    this.trezor = new TrezorHW()
+    return Promise.resolve()
   }
 
   public async getAddresses(): Promise<string[]> {

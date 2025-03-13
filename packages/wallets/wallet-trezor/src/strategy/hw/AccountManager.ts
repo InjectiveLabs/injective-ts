@@ -1,9 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import { AccountAddress } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
+import { TrezorException } from '@injectivelabs/exceptions'
 import { TrezorWalletInfo, TrezorDerivationPathType } from '../../types.js'
 import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
+import { TrezorConnect } from '@bangjelkoski/trezor-connect-web'
 
 const addressOfHDKey = (hdKey: HDNode): string => {
   const shouldSanitizePublicKey = true
@@ -19,11 +21,8 @@ const addressOfHDKey = (hdKey: HDNode): string => {
 export default class AccountManager {
   private wallets: TrezorWalletInfo[] = []
 
-  private hdKey: HDNode
-
-  constructor(hdKey: HDNode) {
+  constructor() {
     this.wallets = []
-    this.hdKey = hdKey
   }
 
   async getWallets(
@@ -79,18 +78,43 @@ export default class AccountManager {
     baseDerivationPath: string
     derivationPathType: TrezorDerivationPathType
   }) {
+    const pathsToFetch = []
+
     for (let index = start; index < end; index += 1) {
       const path = this.getTrezorDerivationPathBasedOnType({
         fullBaseDerivationPath: baseDerivationPath,
         derivationPathType,
         index,
       })
-      const hdKey = this.hdKey.derive(path)
+
+      pathsToFetch.push({
+        path,
+        showOnTrezor: false,
+      })
+    }
+
+    const result = await TrezorConnect.ethereumGetPublicKey({
+      bundle: pathsToFetch,
+    })
+
+    if (!result.success) {
+      throw new TrezorException(
+        new Error(
+          (result.payload && result.payload.error) ||
+            'Please make sure your Trezor is connected and unlocked',
+        ),
+      )
+    }
+
+    for (const item of result.payload) {
+      const hdKey = new HDNode()
+      hdKey.publicKey = Buffer.from(item.publicKey, 'hex')
+      hdKey.chainCode = Buffer.from(item.chainCode, 'hex')
       const address = addressOfHDKey(hdKey)
 
       this.wallets.push({
         hdKey,
-        derivationPath: path,
+        derivationPath: item.serializedPath,
         address: address.toLowerCase(),
       })
     }
