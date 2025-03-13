@@ -16,7 +16,7 @@ You can install the @injectivelabs packages using yarn.
 $ yarn add @injectivelabs/sdk-ts @injectivelabs/networks @injectivelabs/ts-types @injectivelabs/utils
 
 ## If you need Wallet Connection
-$ yarn add @injectivelabs/wallet-ts
+$ yarn add @injectivelabs/wallet-strategy
 ```
 
 These are the most commonly used packages from the `injective-ts` monorepo.
@@ -70,19 +70,12 @@ Then, we need to configure the `tsconfig.json` if you are using TypeScript (reco
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "module": "esnext",
+    "module": "NodeNext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": [
-      "@vueuse/nuxt",
-      "@pinia/nuxt",
-    ]
+    "types": ["@vueuse/nuxt", "@pinia/nuxt"]
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    ".output"
-  ],
+  "exclude": ["node_modules", "dist", ".output"]
 }
 ```
 
@@ -92,32 +85,38 @@ Before we boot our application, we need to set everything up in the `nuxt.config
 
 ```ts
 // filename - nuxt.config.ts
-import { nodePolyfills } from "@bangjelkoski/vite-plugin-node-polyfills";
+import { nodePolyfills } from '@bangjelkoski/vite-plugin-node-polyfills'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineNuxtConfig({
   ssr: false, // whether to pre-render your application
-  modules: [ // nuxtjs modules
-    "@pinia/nuxt",
-    "@vueuse/nuxt",
+  modules: [
+    // nuxtjs modules
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
   ],
 
   typescript: {
-    typeCheck: "build", // we recommend build so you do typescript checks only on build type
+    typeCheck: 'build', // we recommend build so you do typescript checks only on build type
   },
 
-  imports: { // automatic imports of store definitions (if you use pinia)
-    dirs: ["store/**"],
+  imports: {
+    // automatic imports of store definitions (if you use pinia)
+    dirs: ['store/**'],
   },
 
-  pinia: { // import pinia definitions
-    autoImports: ["defineStore"],
+  pinia: {
+    // import pinia definitions
+    autoImports: ['defineStore'],
   },
 
-  plugins: [{ // import the buffer plugin we've made
-    src: "./plugins/buffer.client.ts",
-    ssr: false
-  }],
+  plugins: [
+    {
+      // import the buffer plugin we've made
+      src: './plugins/buffer.client.ts',
+      ssr: false,
+    },
+  ],
 
   // We generate only sitemaps for the client side as we don't need a server
   // Note: there is a problem with sitemaps for Vite + Nuxt3
@@ -133,9 +132,10 @@ export default defineNuxtConfig({
 
   // Vite related config
   vite: {
-    plugins: [ // setting up node + crypto polyfils + vite TS path resolution
+    plugins: [
+      // setting up node + crypto polyfils + vite TS path resolution
       tsconfigPaths(),
-      nodePolyfills({ protocolImports: false })
+      nodePolyfills({ protocolImports: false }),
     ],
 
     build: {
@@ -155,10 +155,10 @@ export default defineNuxtConfig({
     // needed for some Vite related issue for the
     // @bangjelkoski/vite-plugin-node-polyfills plugin
     optimizeDeps: {
-      exclude: ["fsevents"],
+      exclude: ['fsevents'],
     },
   },
-});
+})
 ```
 
 There is one optimization that you can to decrease the bundle size - add these resolutions in the `packages.json`

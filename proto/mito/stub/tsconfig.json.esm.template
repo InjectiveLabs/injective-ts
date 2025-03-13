@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "declaration": true,
+    "outDir": "./../esm",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "allowJs": true,
+    "lib": ["dom", "es6", "scripthost", "es2020.bigint"]
+  },
+  "exclude": ["node_modules"]
+}

@@ -1,26 +1,111 @@
 {
   "name": "@injectivelabs/sdk-ts",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
-  "version": "1.14.13",
+  "version": "1.14.44-beta.3",
   "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
+  "type": "module",
   "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./exports": {
+      "react-native": {
+        "import": "./dist/esm/exports.js",
+        "require": "./dist/cjs/exports.js",
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "require": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "import": {
+        "types": "./dist/esm/exports.d.ts",
+        "default": "./dist/esm/exports.js"
+      },
+      "default": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      }
+    },
+    "./graphql": {
+      "react-native": {
+        "import": "./dist/esm/client/gql/index.js",
+        "require": "./dist/cjs/client/gql/index.js",
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/client/gql/index.d.ts",
+        "default": "./dist/esm/client/gql/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/gql/index.d.ts",
+        "default": "./dist/cjs/client/gql/index.js"
+      }
+    },
+    "./cosmjs": {
+      "react-native": {
+        "import": "./dist/esm/cosmjs.js",
+        "require": "./dist/cjs/cosmjs.js",
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      },
+      "require": {
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      },
+      "import": {
+        "types": "./dist/esm/cosmjs.d.ts",
+        "default": "./dist/esm/cosmjs.js"
+      },
+      "default": {
+        "types": "./dist/cjs/cosmjs.d.ts",
+        "default": "./dist/cjs/cosmjs.js"
+      }
+    }
+  },
   "_moduleAliases": {
     "~sdk-ts": "dist"
   },
   "scripts": {
-    "postinstall": "link-module-alias",
-    "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "fetch:ofac": "node --experimental-fetch ./../../etc/ofac.js",
+    "build": "yarn build:cjs && yarn build:esm && yarn build:post",
+    "build:cjs": "tsc --build --force tsconfig.build.json",
+    "build:esm": "tsc --build --force tsconfig.build.esm.json",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
     "test": "jest",
@@ -32,43 +117,42 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.8",
-    "@cosmjs/amino": "^0.32.3",
-    "@cosmjs/proto-signing": "^0.32.3",
-    "@cosmjs/stargate": "^0.32.3",
-    "@ethersproject/bytes": "^5.7.0",
-    "@injectivelabs/core-proto-ts": "^0.0.21",
-    "@injectivelabs/dmm-proto-ts": "1.0.20",
-    "@injectivelabs/exceptions": "^1.14.13",
+    "@apollo/client": "^3.13.1",
+    "@cosmjs/amino": "^0.33.0",
+    "@cosmjs/proto-signing": "^0.33.0",
+    "@cosmjs/stargate": "^0.33.0",
+    "@ethersproject/bytes": "^5.8.0",
+    "@injectivelabs/abacus-proto-ts": "1.14.0",
+    "@injectivelabs/core-proto-ts": "1.14.2",
+    "@injectivelabs/exceptions": "^1.14.43-beta.2",
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
-    "@injectivelabs/indexer-proto-ts": "1.11.42",
-    "@injectivelabs/mito-proto-ts": "1.0.65",
-    "@injectivelabs/networks": "^1.14.13",
-    "@injectivelabs/test-utils": "^1.14.13",
-    "@injectivelabs/ts-types": "^1.14.13",
-    "@injectivelabs/utils": "^1.14.13",
+    "@injectivelabs/indexer-proto-ts": "1.13.9",
+    "@injectivelabs/mito-proto-ts": "1.13.2",
+    "@injectivelabs/networks": "^1.14.43-beta.1",
+    "@injectivelabs/olp-proto-ts": "1.13.4",
+    "@injectivelabs/ts-types": "^1.14.43-beta.0",
+    "@injectivelabs/utils": "^1.14.43-beta.3",
     "@metamask/eth-sig-util": "^4.0.0",
-    "@noble/curves": "^1.4.0",
-    "axios": "^1.6.4",
+    "@noble/curves": "^1.8.1",
+    "@noble/hashes": "^1.7.1",
+    "axios": "^1.8.1",
     "bech32": "^2.0.0",
-    "bip39": "^3.0.4",
+    "bip39": "^3.1.0",
     "cosmjs-types": "^0.9.0",
-    "ethereumjs-util": "^7.1.4",
-    "ethers": "^6.5.1",
-    "google-protobuf": "^3.21.0",
-    "graphql": "^16.3.0",
+    "crypto-js": "^4.2.0",
+    "ethereumjs-util": "^7.1.5",
+    "ethers": "^6.13.5",
+    "google-protobuf": "^3.21.4y",
+    "graphql": "^16.10.0",
     "http-status-codes": "^2.2.0",
-    "js-sha3": "^0.8.0",
-    "jscrypto": "^1.0.3",
     "keccak256": "^1.0.6",
-    "link-module-alias": "^1.2.0",
     "secp256k1": "^4.0.3",
-    "shx": "^0.3.2",
+    "shx": "^0.3.4",
     "snakecase-keys": "^5.4.1"
   },
-  "gitHead": "35bd09035587be3fd170cc48b5c13f231e699a79",
+  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
@@ -80,6 +164,7 @@
     "**/libsodium-wrappers": "npm:@bangjelkoski/noop"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@types/lodash.toarray": "^4.4.7"
   }
 }

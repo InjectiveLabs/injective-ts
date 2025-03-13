@@ -76,18 +76,18 @@ module.exports = {
   // globalTeardown: null,
 
   // A set of global variables that need to be available in all test environments
-  // globals: {},
 
   // An array of directory names to be searched recursively up from the requiring module's location
   moduleDirectories: ['node_modules', '<rootDir>/src'],
 
   // An array of file extensions your modules use
-  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  moduleFileExtensions: ['ts', 'js'],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
     ...pathsToModuleNameMapper(packagePaths, { prefix: '<rootDir>/' }),
     ...pathsToModuleNameMapper(directoryPaths),
+    // '^crypto-es$': 'crypto-js'
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -100,7 +100,7 @@ module.exports = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: 'ts-jest',
+  preset: 'ts-jest/presets/default-esm',
 
   // Run tests from one or more projects
   // projects: null,
@@ -115,7 +115,7 @@ module.exports = {
   // resetModules: false,
 
   // A path to a custom resolver
-  // resolver: null,
+  resolver: `${__dirname}/etc/jest-resolver.js`,
 
   // Automatically restore mock state between every test
   // restoreMocks: false,
@@ -151,7 +151,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: ['/node_modules/'],
+  testPathIgnorePatterns: ['/node_modules/', '/deprecated/'],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -170,12 +170,22 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
+    '^.+\\.ts?$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
     '^.+\\.js?$': 'babel-jest',
   },
 
+  extensionsToTreatAsEsm: ['.ts'],
+
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: ['^.+\\.json$', 'node_modules/(?!(eth-crypto)/)'],
+  transformIgnorePatterns: [
+    '^.+\\.json$',
+    'node_modules/(?!' + ['@noble/secp256k1'].join('|') + ')',
+  ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,

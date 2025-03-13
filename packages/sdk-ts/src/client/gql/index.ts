@@ -1,3 +1,3 @@
-export * from './client'
-export * from './queries'
-export * from './types'
+export * from './client.js'
+export * from './queries.js'
+export * from './types.js'

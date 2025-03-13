@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,
@@ -46,16 +46,18 @@ export default class MsgTransfer extends MsgBase<
     token.amount = params.amount.amount
 
     const message = IbcApplicationsTransferV1Tx.MsgTransfer.create()
-    message.receiver = params.receiver
-    message.sender = params.sender
-    message.sourceChannel = params.channelId
+
     message.sourcePort = params.port
+    message.sourceChannel = params.channelId
     message.token = token
+    message.sender = params.sender
+    message.receiver = params.receiver
 
     if (params.height) {
       const timeoutHeight = IbcCoreClientV1Client.Height.create()
-      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
+
       timeoutHeight.revisionNumber = params.height.revisionNumber.toString()
+      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
 
       message.timeoutHeight = timeoutHeight
     }
@@ -93,7 +95,7 @@ export default class MsgTransfer extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

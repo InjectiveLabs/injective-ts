@@ -2,8 +2,8 @@ import {
   dataToExecData,
   ExecArgBase,
   ExecDataRepresentation,
-} from '../ExecArgBase'
-import { binaryToBase64 } from './../../../../utils/utf8'
+} from '../ExecArgBase.js'
+import { binaryToBase64 } from './../../../../utils/utf8.js'
 
 export declare namespace ExecArgSubmitVaa {
   export interface Params {

@@ -1,5 +1,5 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { IndexerGrpcOracleApi } from './IndexerGrpcOracleApi'
+import { IndexerGrpcOracleApi } from './IndexerGrpcOracleApi.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcOracleApi = new IndexerGrpcOracleApi(endpoints.indexer)

@@ -1,16 +1,18 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { ChainGrpcBankTransformer } from '../transformers'
-import { PaginationOption } from '../../../types/pagination'
 import {
   fetchAllWithPagination,
   paginationRequestFromPagination,
-} from '../../../utils/pagination'
+} from '../../../utils/pagination.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainGrpcBankTransformer } from '../transformers/index.js'
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
+import { ChainModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
 
 const MAX_LIMIT_FOR_SUPPLY = 10000
 
@@ -45,7 +47,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
           contextModule: this.module,
         })
@@ -81,7 +83,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Balance',
           contextModule: this.module,
         })
@@ -116,7 +118,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AllBalances',
           contextModule: this.module,
         })
@@ -148,7 +150,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TotalSupply',
           contextModule: this.module,
         })
@@ -180,11 +182,11 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
           this.client.SupplyOf(request, this.metadata),
         )
 
-      return ChainGrpcBankTransformer.grpcCoinToCoin(response.amount!)
+      return ChainGrpcCommonTransformer.grpcCoinToCoin(response.amount!)
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'fetchSupplyOf',
           contextModule: this.module,
         })
@@ -218,7 +220,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomsMetadata',
           contextModule: this.module,
         })
@@ -247,7 +249,7 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomMetadata',
           contextModule: this.module,
         })
@@ -278,13 +280,11 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
           this.client.DenomOwners(request, this.metadata),
         )
 
-      return ChainGrpcBankTransformer.denomOwnersResponseToDenomOwners(
-        response,
-      )
+      return ChainGrpcBankTransformer.denomOwnersResponseToDenomOwners(response)
     } catch (e: unknown) {
       if (e instanceof CosmosBankV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomOwners',
           contextModule: this.module,
         })

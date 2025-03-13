@@ -1,0 +1,18 @@
+{
+  "type": "module",
+  "scripts": {
+    "gen": "tsc"
+  },
+  "dependencies": {
+    "@injectivelabs/grpc-web": "^0.0.1",
+    "google-protobuf": "^3.14.0",
+    "protobufjs": "^7.4.0",
+    "rxjs": "^7.4.0"
+  },
+  "devDependencies": {
+    "@bufbuild/protobuf": "^2.1.0",
+    "@types/long": "^4.0.2",
+    "@types/node": "^22.9.0",
+    "typescript": "^5.1.1"
+  }
+}

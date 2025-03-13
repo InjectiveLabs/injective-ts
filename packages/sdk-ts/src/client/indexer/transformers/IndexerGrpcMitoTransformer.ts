@@ -1,5 +1,5 @@
-import { Coin } from '@injectivelabs/ts-types'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
+import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
 import {
   MitoIDO,
   MitoGauge,
@@ -31,20 +31,12 @@ import {
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
   MitoIDOClaimedCoins,
-} from '../types/mito'
-import { GrpcCoin } from '../../../types'
+} from '../types/mito.js'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcMitoTransformer {
-  static grpcCoinToCoin(coin: GrpcCoin): Coin {
-    return {
-      denom: coin.denom,
-      amount: coin.amount,
-    }
-  }
-
   static grpcTokenInfoToTokenInfo(tokenInfo: MitoApi.TokenInfo): MitoTokenInfo {
     return {
       denom: tokenInfo.denom,
@@ -196,7 +188,7 @@ export class IndexerGrpcMitoTransformer {
       tidByVault: transfer.tidByVault,
       tidByAccount: transfer.tidByAccount,
       executedAt: parseInt(transfer.executedAt, 10),
-      coins: transfer.coins.map(IndexerGrpcMitoTransformer.grpcCoinToCoin),
+      coins: transfer.coins.map(IndexerCommonTransformer.grpcCoinToCoin),
     }
   }
 
@@ -220,13 +212,13 @@ export class IndexerGrpcMitoTransformer {
       vaultAddress: stakingReward.vaultAddress,
       lockTimestamp: parseInt(stakingReward.lockTimestamp, 10),
       claimableRewards: stakingReward.claimableRewards.map(
-        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
       stakedAmount: stakingReward.stakedAmount
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(stakingReward.stakedAmount)
+        ? IndexerCommonTransformer.grpcCoinToCoin(stakingReward.stakedAmount)
         : undefined,
       lockedAmount: stakingReward.lockedAmount
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(stakingReward.lockedAmount)
+        ? IndexerCommonTransformer.grpcCoinToCoin(stakingReward.lockedAmount)
         : undefined,
     }
   }
@@ -240,7 +232,7 @@ export class IndexerGrpcMitoTransformer {
       endTimestamp: parseInt(gauge.endTimestamp, 10),
       startTimestamp: parseInt(gauge.startTimestamp, 10),
       rewardTokens: gauge.rewardTokens.map(
-        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
     }
   }
@@ -273,10 +265,10 @@ export class IndexerGrpcMitoTransformer {
       numberByAccount: stakingActivity.numberByAccount,
       timestamp: parseInt(stakingActivity.timestamp, 10),
       rewardedTokens: stakingActivity.rewardedTokens.map(
-        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
       stakeAmount: stakingActivity.stakeAmount
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(stakingActivity.stakeAmount)
+        ? IndexerCommonTransformer.grpcCoinToCoin(stakingActivity.stakeAmount)
         : undefined,
     }
   }
@@ -360,9 +352,11 @@ export class IndexerGrpcMitoTransformer {
       capPerAddress: IDO.capPerAddress,
       contractAddress: IDO.contractAddress,
       subscribedAmount: IDO.subscribedAmount,
+      isPermissionless: IDO.isPermissionless,
       isLaunchWithVault: IDO.isLaunchWithVault,
       targetAmountInUsd: IDO.targetAmountInUsd,
       projectTokenAmount: IDO.projectTokenAmount,
+      projectDescription: IDO.projectDescription,
       isAccountWhiteListed: IDO.isAccountWhiteListed,
       isVestingScheduleEnabled: IDO.isVestingScheduleEnabled,
       targetAmountInQuoteDenom: IDO.targetAmountInQuoteDenom,
@@ -395,22 +389,20 @@ export class IndexerGrpcMitoTransformer {
       address: IDOSubscriber.address,
       lastSubscribeTime: parseInt(IDOSubscriber.lastSubscribeTime, 10),
       subscribedCoin: IDOSubscriber.subscribedCoin
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
-            IDOSubscriber.subscribedCoin,
-          )
+        ? IndexerCommonTransformer.grpcCoinToCoin(IDOSubscriber.subscribedCoin)
         : undefined,
       estimateLpAmount: IDOSubscriber.estimateLpAmount
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
+        ? IndexerCommonTransformer.grpcCoinToCoin(
             IDOSubscriber.estimateLpAmount,
           )
         : undefined,
       estimateRefundAmount: IDOSubscriber.estimateRefundAmount
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
+        ? IndexerCommonTransformer.grpcCoinToCoin(
             IDOSubscriber.estimateRefundAmount,
           )
         : undefined,
       estimateTokenReceived: IDOSubscriber.estimateTokenReceived
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
+        ? IndexerCommonTransformer.grpcCoinToCoin(
             IDOSubscriber.estimateTokenReceived,
           )
         : undefined,
@@ -423,7 +415,7 @@ export class IndexerGrpcMitoTransformer {
   ): MitoIDOClaimedCoins {
     return {
       claimedCoins: claimedCoins.claimedCoins.map(
-        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
       updatedAt: parseInt(claimedCoins.updatedAt, 10),
     }
@@ -441,14 +433,14 @@ export class IndexerGrpcMitoTransformer {
       committedAmount: subscription.committedAmount,
       updatedAt: parseInt(subscription.updatedAt, 10),
       claimableCoins: subscription.claimableCoins.map(
-        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
       ownerClaimableCoins: subscription.ownerClaimableCoins.map(
-        IndexerGrpcMitoTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
       claimTxHash: subscription.claimTxHash,
       maxSubscriptionCoin: subscription.maxSubscriptionCoin
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
+        ? IndexerCommonTransformer.grpcCoinToCoin(
             subscription.maxSubscriptionCoin,
           )
         : undefined,
@@ -474,7 +466,7 @@ export class IndexerGrpcMitoTransformer {
       usdValue: IDOSubscriptionActivity.usdValue,
       timestamp: parseInt(IDOSubscriptionActivity.timestamp, 10),
       subscribedCoin: IDOSubscriptionActivity.subscribedCoin
-        ? IndexerGrpcMitoTransformer.grpcCoinToCoin(
+        ? IndexerCommonTransformer.grpcCoinToCoin(
             IDOSubscriptionActivity.subscribedCoin,
           )
         : undefined,

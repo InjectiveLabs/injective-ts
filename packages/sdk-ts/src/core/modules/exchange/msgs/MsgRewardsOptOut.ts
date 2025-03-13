@@ -1,5 +1,5 @@
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgRewardsOptOut {
@@ -25,6 +25,7 @@ export default class MsgRewardsOptOut extends MsgBase<
     const { params } = this
 
     const message = InjectiveExchangeV1Beta1Tx.MsgRewardsOptOut.create()
+
     message.sender = params.sender
 
     return InjectiveExchangeV1Beta1Tx.MsgRewardsOptOut.fromPartial(message)
@@ -51,7 +52,7 @@ export default class MsgRewardsOptOut extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

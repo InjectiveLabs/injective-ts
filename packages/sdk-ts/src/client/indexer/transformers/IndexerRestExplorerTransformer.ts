@@ -1,32 +1,33 @@
 import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
 import {
-  Block,
-  ContractTransactionWithMessages,
-  ExplorerValidator,
-} from '../types/explorer'
-import { TokenType, TokenVerification } from '../../../types/token'
-import {
-  BaseTransaction,
-  BlockFromExplorerApiResponse,
-  ContractExplorerApiResponse,
-  ContractTransactionExplorerApiResponse,
-  CW20BalanceExplorerApiResponse,
-  ExplorerBlockWithTxs,
-  ExplorerTransaction,
-  ExplorerValidatorUptime,
-  TransactionFromExplorerApiResponse,
-  ValidatorUptimeFromExplorerApiResponse,
-  WasmCodeExplorerApiResponse,
-} from '../types/explorer-rest'
-import {
   Contract,
   WasmCode,
+  Transaction,
   CW20Message,
   BankTransfer,
+  ExplorerTransaction,
   ContractTransaction,
+  ExplorerBlockWithTxs,
+  ExplorerValidatorUptime,
   ExplorerCW20BalanceWithToken,
+} from '../types/explorer.js'
+import {
+  Block,
+  ExplorerValidator,
+  ContractTransactionWithMessages,
+} from '../types/explorer.js'
+import {
+  ContractExplorerApiResponse,
+  WasmCodeExplorerApiResponse,
+  BlockFromExplorerApiResponse,
+  CW20BalanceExplorerApiResponse,
+  TransactionFromExplorerApiResponse,
   BankTransferFromExplorerApiResponse,
-} from '../types/explorer'
+  ContractTransactionExplorerApiResponse,
+  ValidatorUptimeFromExplorerApiResponse,
+} from '../types/explorer-rest.js'
+import { isJsonString } from '../../../utils/helpers.js'
+import { TokenType, TokenVerification } from '../../../types/token.js'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
 
@@ -39,6 +40,10 @@ const getContractTransactionAmount = (
   } = ApiTransaction.messages[0]
 
   if (!type.includes('MsgExecuteContract')) {
+    return ZERO_IN_BASE
+  }
+
+  if (typeof msg === 'string' && !isJsonString(msg)) {
     return ZERO_IN_BASE
   }
 
@@ -149,7 +154,7 @@ export class IndexerRestExplorerTransformer {
   }
 
   static baseTransactionToTransaction(
-    transaction: BaseTransaction,
+    transaction: Transaction,
   ): ExplorerTransaction {
     return {
       ...transaction,
@@ -225,6 +230,14 @@ export class IndexerRestExplorerTransformer {
       height: transaction.block_number,
       time: transaction.block_unix_timestamp,
       type: transaction.messages[0].type,
+      logs: transaction.logs,
+      signatures: transaction.signatures,
+      messages: (transaction.messages || [])
+        .filter((m) => m)
+        .map((message) => ({
+          type: message.type,
+          message: message.value,
+        })),
       fee: transaction.gas_fee.amount
         ? new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase()
         : ZERO_IN_BASE,
@@ -240,14 +253,23 @@ export class IndexerRestExplorerTransformer {
         transaction,
       ),
       messages: (transaction.messages || []).map((message) => {
+        if (!isJsonString(message.value.msg)) {
+          return {
+            type: message.type,
+            value: {
+              ...message.value,
+              msg: message.value.msg,
+            },
+          }
+        }
+
+        const msg = message.value.msg as unknown as string
+
         return {
           type: message.type,
           value: {
             ...message.value,
-            msg:
-              typeof message.value.msg === 'string'
-                ? (JSON.parse(message.value.msg) as Record<string, any>)
-                : message.value.msg,
+            msg: JSON.parse(msg),
           },
         }
       }),

@@ -1,11 +1,12 @@
 import {
-  UnspecifiedErrorCode,
-  GrpcUnaryRequestException,
   IndexerErrorModule,
+  UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { DmmGrpcTransformer } from './transformers'
+import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { DmmGrpcTransformer } from './transformers/index.js'
 
 export class OLPGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.OLP
@@ -36,7 +37,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetEpochs',
           contextModule: this.module,
         })
@@ -65,7 +66,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetMarketRewards',
           contextModule: this.module,
         })
@@ -106,7 +107,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetEligibleAddresses',
           contextModule: this.module,
         })
@@ -144,7 +145,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetEpochScores',
           contextModule: this.module,
         })
@@ -188,7 +189,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetEpochScoresHistory',
           contextModule: this.module,
         })
@@ -229,7 +230,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetTotalScores',
           contextModule: this.module,
         })
@@ -276,7 +277,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetTotalScoresHistory',
           contextModule: this.module,
         })
@@ -323,7 +324,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetRewardsDistribution',
           contextModule: this.module,
         })
@@ -359,7 +360,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetAccountVolumes',
           contextModule: this.module,
         })
@@ -402,7 +403,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveDmmRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetRewardsEligibility',
           contextModule: this.module,
         })
@@ -411,6 +412,44 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'GetRewardsEligibility',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchMarketRewardsRange({
+    epochId,
+    marketId,
+  }: {
+    epochId: string
+    marketId?: string
+  }) {
+    const request = InjectiveDmmRpc.GetMarketRewardsRangeRequest.create()
+
+    request.epochId = epochId
+    request.marketId = marketId
+
+    try {
+      const response =
+        await this.retry<InjectiveDmmRpc.GetMarketRewardsRangeResponse>(() =>
+          this.client.GetMarketRewardRanges(request),
+        )
+
+      return DmmGrpcTransformer.marketRewardsRangeResponseToMarketRewardsRange(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'GetMarketRewardRanges',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetMarketRewardRanges',
         contextModule: this.module,
       })
     }

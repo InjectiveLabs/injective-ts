@@ -2,12 +2,12 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { ChainModule, RestApiResponse } from '../types'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { ChainModule, RestApiResponse } from '../types/index.js'
 import {
   BlockLatestRestResponse,
   NodeInfoRestResponse,
-} from './../types/tendermint-rest'
+} from './../types/tendermint-rest.js'
 
 /**
  * @category Chain Rest API
@@ -29,7 +29,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Tendermint,
@@ -57,7 +57,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Tendermint,

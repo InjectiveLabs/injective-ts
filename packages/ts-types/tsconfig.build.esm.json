@@ -1,13 +1,13 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "module": "esnext",
+    "module": "NodeNext",
     "outDir": "./dist/esm",
     "rootDir": "./src",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "tsBuildInfoFile": "../../.build-cache/ts-types.esm.tsbuildinfo"
   }
 }

@@ -1,7 +1,10 @@
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
-import { MsgBase } from '../../MsgBase'
 import snakecaseKeys from 'snakecase-keys'
+import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgInstantSpotMarketLaunch {
   export interface Params {
@@ -11,6 +14,9 @@ export declare namespace MsgInstantSpotMarketLaunch {
       ticker: string
       baseDenom: string
       quoteDenom: string
+      minNotional: string
+      baseDecimals: number
+      quoteDecimals: number
       minPriceTickSize: string
       minQuantityTickSize: string
     }
@@ -23,11 +29,14 @@ const createMessage = (params: MsgInstantSpotMarketLaunch.Params) => {
   const message = InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.create()
 
   message.sender = params.proposer
-  message.quoteDenom = params.market.quoteDenom
   message.ticker = params.market.ticker
   message.baseDenom = params.market.baseDenom
+  message.quoteDenom = params.market.quoteDenom
   message.minPriceTickSize = params.market.minPriceTickSize
   message.minQuantityTickSize = params.market.minQuantityTickSize
+  message.minNotional = params.market.minNotional
+  message.baseDecimals = Number(params.market.baseDecimals)
+  message.quoteDecimals = Number(params.market.quoteDecimals)
 
   return InjectiveExchangeV1Beta1Tx.MsgInstantSpotMarketLaunch.fromPartial(
     message,
@@ -60,6 +69,9 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
         minQuantityTickSize: amountToCosmosSdkDecAmount(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          initialParams.market.minNotional,
+        ).toFixed(),
       },
     } as MsgInstantSpotMarketLaunch.Params
 
@@ -77,9 +89,9 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const proto = createMessage(params)
+
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(createMessage(params)),
     }
 
     return {
@@ -88,7 +100,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -96,6 +108,45 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
       '@type': '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
       ...value,
     }
+  }
+
+  public toEip712() {
+    const amino = this.toAmino()
+    const { type, value } = amino
+
+    const messageAdjusted = {
+      ...value,
+      min_price_tick_size: amountToCosmosSdkDecAmount(
+        value.min_price_tick_size,
+      ).toFixed(),
+      min_quantity_tick_size: amountToCosmosSdkDecAmount(
+        value.min_quantity_tick_size,
+      ).toFixed(),
+      min_notional: amountToCosmosSdkDecAmount(value.min_notional).toFixed(),
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
+    }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      min_price_tick_size: numberToCosmosSdkDecString(
+        params.market.minPriceTickSize,
+      ),
+      min_quantity_tick_size: numberToCosmosSdkDecString(
+        params.market.minQuantityTickSize,
+      ),
+      min_notional: numberToCosmosSdkDecString(params.market.minNotional),
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

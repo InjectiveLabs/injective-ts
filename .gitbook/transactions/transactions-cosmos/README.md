@@ -98,7 +98,7 @@ const signDoc = /* From the previous step */
 const directSignResponse = await offlineSigner.signDirect(address, signDoc as SignDoc)
 ```
 
-You can also use our `@injectivelabs/wallet-ts` package to get out-of-the-box wallet provides that will give you abstracted methods that you can use to sign transactions. Refer to the documentation of the package, its straightforward to setup and use. **This is the recommended way as you have access to more than one wallet to use in your dApp. The `WalletStrategy` provides more than just signing transaction abstractions.**
+You can also use our `@injectivelabs/wallet-strategy` package to get out-of-the-box wallet provides that will give you abstracted methods that you can use to sign transactions. Refer to the documentation of the package, its straightforward to setup and use. **This is the recommended way as you have access to more than one wallet to use in your dApp. The `WalletStrategy` provides more than just signing transaction abstractions.**
 
 ### Broadcasting a transaction
 
@@ -107,7 +107,7 @@ Once we have the signature ready, we need to broadcast the transaction to the In
 ```ts
 import { ChainId } from '@injectivelabs/ts-types'
 import {
-  TxRestClient,
+  TxRestApi,
   CosmosTxV1Beta1Tx,
   BroadcastModeKeplr,
   getTxRawFromTxRawOrDirectSignResponse,
@@ -163,10 +163,10 @@ const txHash = await broadcastTx(ChainId.Mainnet, txRaw)
  * the chain to see when the transaction will be included
  */
 const restEndpoint = 'https://sentry.lcd.injective.network' /* getNetworkEndpoints(Network.MainnetSentry).rest */
-const txRestClient = new TxRestClient(restEndpoint)
+const txRestApi = new TxRestApi(restEndpoint)
 
  /** This will poll querying the transaction and await for it's inclusion in the block */
-const response = await txRestClient.fetchTxPoll(txHash)
+const response = await txRestApi.fetchTxPoll(txHash)
 ```
 
 ### Example (Prepare + Sign + Broadcast)
@@ -178,7 +178,7 @@ import {
   TxRaw,
   MsgSend,
   BaseAccount,
-  TxRestClient,
+  TxRestApi,
   ChainRestAuthApi,
   createTransaction,
   CosmosTxV1Beta1Tx,
@@ -271,7 +271,7 @@ const broadcastTx = async (chainId: string, txRaw: TxRaw) => {
   );
   const txRaw = getTxRawFromTxRawOrDirectSignResponse(directSignResponse);
   const txHash = await broadcastTx(ChainId.Mainnet, txRaw);
-  const response = await new TxRestClient(restEndpoint).fetchTxPoll(txHash);
+  const response = await new TxRestApi(restEndpoint).fetchTxPoll(txHash);
 
   console.log(response);
 })();

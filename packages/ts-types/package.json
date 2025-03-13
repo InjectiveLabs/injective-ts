@@ -1,9 +1,10 @@
 {
   "name": "@injectivelabs/ts-types",
-  "description": "List of types that can be reused throughout Injective's projects.",
-  "version": "1.14.13",
+  "description": "List of types that can be reused throughout Injective.",
+  "version": "1.14.43-beta.0",
   "sideEffects": false,
   "license": "Apache-2.0",
+  "type": "module",
   "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -14,13 +15,36 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
+  },
   "_moduleAliases": {
     "~ts-types": "dist"
   },
   "scripts": {
-    "postinstall": "link-module-alias",
-    "build": "tsc --build --force tsconfig.build.json && tsc --build --force tsconfig.build.esm.json && yarn build:post && link-module-alias",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post && link-module-alias",
+    "build": "yarn build:cjs && yarn build:esm && yarn build:post",
+    "build:cjs": "tsc --build --force tsconfig.build.json",
+    "build:esm": "tsc --build --force tsconfig.build.esm.json",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
     "test": "jest",
@@ -31,9 +55,8 @@
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js"
   },
-  "dependencies": {
-    "link-module-alias": "^1.2.0",
-    "shx": "^0.3.2"
+  "devDependencies": {
+    "shx": "^0.3.4"
   },
-  "gitHead": "00176548701ceed002a45fd690bac43653b88d60"
+  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
 }

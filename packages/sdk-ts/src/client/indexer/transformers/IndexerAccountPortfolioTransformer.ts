@@ -1,5 +1,4 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { GrpcCoin } from '../../../types'
+import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   PositionsWithUPNL,
   AccountPortfolioV2,
@@ -9,9 +8,9 @@ import {
   AccountPortfolioBalances,
   PortfolioSubaccountBalanceV2,
   GrpcPortfolioSubaccountBalanceV2,
-} from '../types/account-portfolio'
-import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
-import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
+} from '../types/account-portfolio.js'
+import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
+import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
 
 export class IndexerGrpcAccountPortfolioTransformer {
   static accountPortfolioResponseToAccountPortfolio(
@@ -35,7 +34,7 @@ export class IndexerGrpcAccountPortfolioTransformer {
     return {
       accountAddress: portfolio.accountAddress,
       bankBalancesList: bankBalancesList.map(
-        IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
       subaccountsList: subaccountList.map(
         IndexerGrpcAccountPortfolioTransformer.grpcSubaccountBalanceToSubaccountBalance,
@@ -65,18 +64,11 @@ export class IndexerGrpcAccountPortfolioTransformer {
     return {
       accountAddress: portfolio.accountAddress,
       bankBalancesList: bankBalancesList.map(
-        IndexerGrpcAccountPortfolioTransformer.grpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
       subaccountsList: subaccountList.map(
         IndexerGrpcAccountPortfolioTransformer.grpcSubaccountBalanceToSubaccountBalance,
       ),
-    }
-  }
-
-  static grpcCoinToCoin(coin: GrpcCoin): Coin {
-    return {
-      amount: coin.amount,
-      denom: coin.denom,
     }
   }
 
@@ -87,9 +79,7 @@ export class IndexerGrpcAccountPortfolioTransformer {
 
     return {
       position: grpcPosition
-        ? IndexerGrpcDerivativeTransformer.grpcPositionToPosition(
-            grpcPosition,
-          )
+        ? IndexerGrpcDerivativeTransformer.grpcPositionToPosition(grpcPosition)
         : undefined,
       unrealizedPnl: positionsWithUPNL.unrealizedPnl,
     }

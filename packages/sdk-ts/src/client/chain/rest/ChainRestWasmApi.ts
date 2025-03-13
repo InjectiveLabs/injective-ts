@@ -2,8 +2,8 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { ChainModule, RestApiResponse } from '../types'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { ChainModule, RestApiResponse } from '../types/index.js'
 
 export type SmartContractStateResponse = unknown
 
@@ -29,7 +29,7 @@ export class ChainRestWasmApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Bank,

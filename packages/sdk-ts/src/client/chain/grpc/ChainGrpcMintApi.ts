@@ -1,14 +1,15 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils'
+import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils/index.js'
 
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer'
-import { ChainModule } from '../types'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
+import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
+import { ChainModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 
 /**
  * @category Chain Grpc API
@@ -41,7 +42,7 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
           contextModule: this.module,
         })
@@ -72,7 +73,7 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Inflation',
           contextModule: this.module,
         })
@@ -103,7 +104,7 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AnnualProvisions',
           contextModule: this.module,
         })

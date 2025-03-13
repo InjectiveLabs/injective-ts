@@ -1,14 +1,13 @@
 import {
   ChronosDerivativeMarketSummaryResponse,
   AllDerivativeMarketSummaryResponse,
-} from '../types/derivatives-rest'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
+} from '../types/derivatives-rest.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import {
   HttpRequestException,
-  HttpRequestMethod,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { IndexerModule } from '../types'
+import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Chronos API
@@ -32,10 +31,9 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${path}?marketId=${marketId}`,
-        method: HttpRequestMethod.Get,
         contextModule: IndexerModule.ChronosDerivative,
       })
     }
@@ -58,10 +56,9 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${path}`,
-        method: HttpRequestMethod.Get,
         contextModule: IndexerModule.ChronosDerivative,
       })
     }

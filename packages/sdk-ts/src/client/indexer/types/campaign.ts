@@ -74,7 +74,28 @@ export interface GuildCampaignSummary {
   endTime: number
 }
 
+export interface CampaignV2 {
+  campaignId: string
+  marketId: string
+  totalScore: string
+  createdAt: string
+  updatedAt: string
+  startDate: string
+  endDate: string
+  isClaimable: boolean
+  roundId: number
+  managerContract: string
+  rewards: Coin[]
+  subaccountIdSuffix: string
+  rewardContract: string
+  type: string
+  version: string
+  name: string
+  description: string
+}
+
 export type GrpcGuild = InjectiveCampaignRpc.Guild
 export type GrpcCampaign = InjectiveCampaignRpc.Campaign
 export type GrpcGuildMember = InjectiveCampaignRpc.GuildMember
 export type GrpcCampaignUser = InjectiveCampaignRpc.CampaignUser
+export type GrpcCampaignV2 = InjectiveCampaignRpc.CampaignV2

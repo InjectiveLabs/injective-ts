@@ -1,7 +1,7 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcExchangeApi } from './ChainGrpcExchangeApi'
-import { mockFactory } from '@injectivelabs/test-utils'
-import { ChainGrpcExchangeTransformer } from '../transformers'
+import { ChainGrpcExchangeApi } from './ChainGrpcExchangeApi.js'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
+import { ChainGrpcExchangeTransformer } from '../transformers/index.js'
 import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 const injectiveAddress = mockFactory.injectiveAddress
@@ -208,6 +208,46 @@ describe('ChainGrpcExchangeApi', () => {
     } catch (e) {
       console.error(
         'chainGrpcExchangeApi.fetchIsOptedOutOfRewards => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchDenomDecimals', async () => {
+    try {
+      const response = await chainGrpcExchangeApi.fetchDenomDecimals()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcExchangeTransformer.denomDecimalsResponseToDenomDecimals
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcExchangeApi.denomDecimalsResponseToDenomDecimals => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchDenomMinNotionals', async () => {
+    try {
+      const response = await chainGrpcExchangeApi.fetchDenomMinNotionals()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcExchangeTransformer.denomMinNotionalsResponseToDenomMinNotionals
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcExchangeApi.denomMinNotionalsResponseToDenomMinNotionals => ' +
           (e as any).message,
       )
     }

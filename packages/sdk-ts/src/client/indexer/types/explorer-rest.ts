@@ -1,31 +1,14 @@
 /* eslint-disable camelcase */
+import { Coin } from '@injectivelabs/ts-types'
 import {
-  BlockWithTxs as BaseBlockWithTxs,
-  Transaction as BaseTransaction,
-  ValidatorUptime,
-} from './explorer'
+  Paging,
+  EventLog,
+  Signature,
+  CosmWasmChecksum,
+  CosmWasmPermission,
+  ValidatorUptimeStatus,
+} from './explorer.js'
 
-export enum AccessTypeCode {
-  AccessTypeUnspecified = 0,
-  AccessTypeNobody = 1,
-  AccessTypeOnlyAddress = 2,
-  AccessTypeEverybody = 3,
-  AccessTypeAnyOfAddresses = 4,
-}
-
-export enum AccessType {
-  AccessTypeUnspecified = 'Unspecified',
-  AccessTypeNobody = 'Nobody',
-  AccessTypeOnlyAddress = 'Only Address',
-  AccessTypeEverybody = 'Everybody',
-  AccessTypeAnyOfAddresses = 'Any of Addresses',
-}
-
-export interface Paging {
-  from: number
-  to: number
-  total: number
-}
 export interface ExplorerApiResponse<T> {
   data: T
 }
@@ -37,28 +20,11 @@ export interface ExplorerApiResponseWithPagination<T> {
   }
 }
 
-export interface EventLogEvent {
-  type: string
-  attributes: Array<{
-    key: string
-    value: string
-  }>
-}
-
-export interface EventLog {
-  events: EventLogEvent[]
-}
-
 export interface TransactionFromExplorerApiResponse {
   id: string
   block_number: number
   block_timestamp: string
-  signatures: Array<{
-    pubkey: string
-    address: string
-    signature: string
-    sequence: number
-  }>
+  signatures: Signature[]
   tx_type: string
   hash: string
   code: number
@@ -107,48 +73,9 @@ export interface ExplorerBlockApiResponse {
   data: BlockFromExplorerApiResponse[]
 }
 
-export interface Message {
-  type: string
-  message: any
-}
-
-export interface ExplorerTransaction extends Omit<BaseTransaction, 'messages'> {
-  memo: string
-  messages: Message[]
-  parsedMessages?: Message[]
-  errorLog?: string
-  logs?: EventLog[]
-  claimIds?: number[]
-}
-
-export interface ExplorerBlockWithTxs extends Omit<BaseBlockWithTxs, 'txs'> {
-  txs: ExplorerTransaction[]
-}
-
-export enum ValidatorUptimeStatus {
-  Proposed = 'proposed',
-  Signed = 'signed',
-  Missed = 'missed',
-}
-
 export interface ValidatorUptimeFromExplorerApiResponse {
   block_number: number
   status: ValidatorUptimeStatus
-}
-
-export interface ExplorerValidatorUptime
-  extends Omit<ValidatorUptime, 'status'> {
-  status: ValidatorUptimeStatus
-}
-
-export interface CosmWasmPermission {
-  access_type: AccessTypeCode
-  address: string
-}
-
-export interface CosmWasmChecksum {
-  algorithm: string
-  hash: string
 }
 
 export interface WasmCodeExplorerApiResponse {
@@ -216,6 +143,8 @@ export interface ContractTransactionExplorerApiResponse {
       }
     },
   ]
+  logs: EventLog[]
+  signatures: Signature[]
 }
 
 export interface CW20BalanceExplorerApiResponse {
@@ -239,4 +168,10 @@ export interface CW20BalanceExplorerApiResponse {
   }
 }
 
-export { BaseTransaction }
+export interface BankTransferFromExplorerApiResponse {
+  sender: string
+  recipient: string
+  amounts: Coin[]
+  block_number: number
+  block_timestamp: string
+}

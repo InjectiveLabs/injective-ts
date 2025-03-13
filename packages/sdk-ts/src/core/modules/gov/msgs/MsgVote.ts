@@ -1,11 +1,11 @@
 import { CosmosGovV1Tx, CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgVote {
   export interface Params {
     proposalId: number
-    metadata: string
+    metadata?: string
     vote: CosmosGovV1Gov.VoteOption
     voter: string
   }
@@ -25,11 +25,11 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
     const { params } = this
 
     const message = CosmosGovV1Tx.MsgVote.create()
-    message.option = params.vote
+
     message.proposalId = params.proposalId.toString()
-    message.metadata = params.metadata
     message.voter = params.voter
-    message.metadata = params.proposalId.toString()
+    message.option = params.vote
+    message.metadata = params.metadata || ''
 
     return message
   }
@@ -47,6 +47,7 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
     const proto = this.toProto()
     const message = {
       ...snakecaseKeys(proto),
+      option: proto.option,
     }
 
     return {
@@ -55,7 +56,7 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -63,6 +64,16 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
       '@type': '/cosmos.gov.v1.MsgVote',
       ...value,
     }
+  }
+
+  public toEip712V2() {
+    const web3Gw = this.toWeb3Gw()
+
+    web3Gw.option = CosmosGovV1Gov.voteOptionToJSON(
+      web3Gw.option,
+    ) as unknown as CosmosGovV1Gov.VoteOption
+
+    return web3Gw
   }
 
   public toDirectSign() {

@@ -4,8 +4,8 @@ export enum EthereumChainId {
   Rinkeby = 4,
   Goerli = 5,
   Kovan = 42,
-  Sepolia = 11155111,
   Injective = 888,
+  Sepolia = 11155111,
   Ganache = 1337,
   HardHat = 31337,
 }
@@ -93,13 +93,25 @@ export enum MsgType {
   MsgValsetConfirm = 'injective.peggy.v1.MsgValsetConfirm',
   MsgValsetUpdatedClaim = 'injective.peggy.v1.MsgValsetUpdatedClaim',
   MsgWithdrawClaim = 'injective.peggy.v1.MsgWithdrawClaim',
+  MsgBlacklistEthereumAddresses = 'injective.peggy.v1.MsgBlacklistEthereumAddresses',
+  MsgRevokeEthereumBlacklist = 'injective.peggy.v1.MsgRevokeEthereumBlacklist',
   MsgBurn = 'injective.tokenfactory.v1beta1.MsgBurn',
   MsgMint = 'injective.tokenfactory.v1beta1.MsgMint',
   MsgCreateDenom = 'injective.tokenfactory.v1beta1.MsgCreateDenom',
   MsgExecuteContractCompat = 'injective.wasmx.v1.MsgExecuteContractCompat',
+  MsgPrivilegedExecuteContract = 'injective.exchange.v1beta1.MsgPrivilegedExecuteContract',
+  MsgRelayProviderPrices = 'injective.oracle.v1beta1.MsgRelayProviderPrices',
+  MsgMultiSend = 'cosmos.bank.v1beta1.MsgMultiSend',
+  MsgSetWithdrawAddress = 'cosmos.distribution.v1beta1.MsgSetWithdrawAddress',
+  MsgWithdrawValidatorCommission = 'cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
 }
 
 export enum MsgStatus {
   Success = 'success',
   Fail = 'fail',
+}
+
+export enum EIP712Version {
+  V1 = 'v1',
+  V2 = 'v2',
 }

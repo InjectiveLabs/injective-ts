@@ -1,11 +1,12 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerGrpcInsuranceFundTransformer } from '../transformers'
-import { IndexerModule } from '../types'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
+import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -56,7 +57,7 @@ export class IndexerGrpcInsuranceFundApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Redemptions',
           contextModule: this.module,
         })
@@ -84,7 +85,7 @@ export class IndexerGrpcInsuranceFundApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Funds',
           contextModule: this.module,
         })

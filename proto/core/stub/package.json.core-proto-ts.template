@@ -1,0 +1,37 @@
+{
+  "name": "@injectivelabs/core-proto-ts",
+  "version": "1.13.0",
+  "description": "Injective Chain API Query client with generated gRPC bindings.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "sideEffects": false,
+  "main": "./cjs/index.js",
+  "module": "./esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InjectiveLabs/injective-core.git"
+  },
+  "keywords": [
+    "injective-core",
+    "grpc",
+    "bindings"
+  ],
+  "author": "Injective Labs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/InjectiveLabs/injective-core/issues"
+  },
+  "homepage": "https://github.com/InjectiveLabs/injective-core#readme",
+  "dependencies": {
+    "@injectivelabs/grpc-web": "^0.0.1",
+    "google-protobuf": "^3.14.0",
+    "protobufjs": "^7.4.0",
+    "rxjs": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/long": "^4.0.2",
+    "@types/node": "^22.9.0",
+    "typescript": "^4.7.4"
+  }
+}

@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,
@@ -33,13 +33,15 @@ export default class MsgUnderwrite extends MsgBase<
     const { params } = this
 
     const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
-    amountCoin.amount = params.amount.amount
+
     amountCoin.denom = params.amount.denom
+    amountCoin.amount = params.amount.amount
 
     const message = InjectiveInsuranceV1Beta1Tx.MsgUnderwrite.create()
-    message.deposit = amountCoin
-    message.marketId = params.marketId
+
     message.sender = params.injectiveAddress
+    message.marketId = params.marketId
+    message.deposit = amountCoin
 
     return message
   }
@@ -65,7 +67,7 @@ export default class MsgUnderwrite extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

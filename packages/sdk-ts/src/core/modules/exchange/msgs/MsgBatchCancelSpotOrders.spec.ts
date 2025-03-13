@@ -1,11 +1,12 @@
-import MsgBatchCancelSpotOrders from './MsgBatchCancelSpotOrders'
-import { mockFactory } from '@injectivelabs/test-utils'
-// import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import MsgBatchCancelSpotOrders from './MsgBatchCancelSpotOrders.js'
 import snakecaseKeys from 'snakecase-keys'
-// import { getEthereumAddress } from '../../../../utils/address'
-// import { IndexerGrpcTransactionApi } from '../../../../client'
-// import { DEFAULT_GAS_LIMIT } from '@injectivelabs/utils'
-// import { EthereumChainId } from '@injectivelabs/ts-types'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgBatchCancelSpotOrders['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
@@ -70,35 +71,8 @@ describe('MsgBatchCancelSpotOrders', () => {
     })
   })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      TypeData: [
-        { name: 'market_id', type: 'string' },
-        { name: 'subaccount_id', type: 'string' },
-        { name: 'order_hash', type: 'string' },
-        { name: 'order_mask', type: 'int32' },
-        { name: 'cid', type: 'string' },
-      ],
-      MsgValue: [
-        { name: 'sender', type: 'string' },
-        { name: 'data', type: 'TypeData[]' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeShort,
-      value: protoParamsAmino,
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
       '@type': protoType,
@@ -106,27 +80,35 @@ describe('MsgBatchCancelSpotOrders', () => {
     })
   })
 
-  // it('generates correct EIP712 compared to the chain', async () => {
-  //   const web3 = message.toWeb3()
-  //   const endpoints = getNetworkEndpoints(Network.TestnetSentry)
-  //   const transactionApi = new IndexerGrpcTransactionApi(
-  //     endpoints.web3gw || endpoints.indexer,
-  //   )
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: message,
+    })
 
-  //   const txResponse = await transactionApi.prepareTxRequest({
-  //     memo: '',
-  //     message: web3,
-  //     address: getEthereumAddress(mockFactory.injectiveAddress),
-  //     chainId: EthereumChainId.Sepolia,
-  //     gasLimit: DEFAULT_GAS_LIMIT,
-  //     estimateGas: false,
-  //   })
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
 
-  //   console.log(txResponse.data)
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
 
-  //   expect(web3).toStrictEqual({
-  //     '@type': protoType,
-  //     ...protoParamsAmino,
-  //   })
-  // })
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+  })
 })

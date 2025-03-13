@@ -1,12 +1,20 @@
-import { fromUtf8 } from '../../../../utils/utf8'
-import { MsgBase } from '../../MsgBase'
+import { fromUtf8 } from '../../../../utils/utf8.js'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
-import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  CosmwasmWasmV1Tx,
+  CosmwasmWasmV1Types,
+} from '@injectivelabs/core-proto-ts'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgStoreCode {
   export interface Params {
     sender: string
     wasmBytes: Uint8Array | string
+    instantiatePermission?: {
+      permission: CosmwasmWasmV1Types.AccessType
+      addresses: string[]
+    }
   }
 
   export type Proto = CosmwasmWasmV1Tx.MsgStoreCode
@@ -34,6 +42,15 @@ export default class MsgStoreCode extends MsgBase<
         ? fromUtf8(params.wasmBytes)
         : params.wasmBytes
 
+    if (params.instantiatePermission) {
+      const accessConfig = CosmwasmWasmV1Types.AccessConfig.create()
+
+      accessConfig.permission = params.instantiatePermission.permission
+      accessConfig.addresses = params.instantiatePermission.addresses
+
+      message.instantiatePermission = accessConfig
+    }
+
     return CosmwasmWasmV1Tx.MsgStoreCode.fromPartial(message)
   }
 
@@ -50,6 +67,7 @@ export default class MsgStoreCode extends MsgBase<
     const proto = this.toProto()
     const message = {
       ...snakecaseKeys(proto),
+      wasm_byte_code: Buffer.from(proto.wasmByteCode).toString('base64'),
     }
 
     return {
@@ -58,7 +76,7 @@ export default class MsgStoreCode extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -66,6 +84,34 @@ export default class MsgStoreCode extends MsgBase<
       '@type': '/cosmwasm.wasm.v1.MsgStoreCode',
       ...value,
     }
+  }
+
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712_v1 is not supported for MsgStoreCode. Please use EIP712_v2',
+      ),
+    )
+  }
+
+  public toEip712V2() {
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      instantiate_permission: web3gw.instantiate_permission
+        ? {
+            addresses: web3gw.instantiate_permission.addresses || [],
+            permission: CosmwasmWasmV1Types.accessTypeToJSON(
+              web3gw.instantiate_permission.permission,
+            ),
+          }
+        : undefined,
+    }
+
+    console.log(messageAdjusted)
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

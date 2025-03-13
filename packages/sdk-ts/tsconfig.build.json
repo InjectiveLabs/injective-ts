@@ -2,31 +2,11 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "rootDir": "./src",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "./dist/cjs",
-    "tsBuildInfoFile": "../../.build-cache/sdk-ts.tsbuildinfo",
+    "tsBuildInfoFile": "../../.build-cache/sdk-ts.tsbuildinfo"
   },
-  "include": [
-    "./src/**/*.ts"
-  ],
-  "exclude": [
-    "./src/**/*.spec.ts",
-    "./src/**/*.test.ts"
-  ],
-  "references": [
-    {
-      "path": "../ts-types/tsconfig.build.json"
-    },
-    {
-      "path": "../exceptions/tsconfig.build.json"
-    },
-    {
-      "path": "../utils/tsconfig.build.json"
-    },
-    {
-      "path": "../test-utils/tsconfig.build.json"
-    },
-    {
-      "path": "../networks/tsconfig.build.json"
-    }
-  ],
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./src/**/*.spec.ts", "./src/**/*.test.ts"]
 }

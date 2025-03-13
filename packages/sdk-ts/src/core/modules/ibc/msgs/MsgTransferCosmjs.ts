@@ -1,6 +1,4 @@
-// import { MsgTransferEncodeObject } from '@cosmjs/stargate'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-import { MsgTransfer as BaseMsgTransferCosmjs } from 'cosmjs-types/ibc/applications/transfer/v1/tx'
+import { MsgTransfer as BaseMsgTransferCosmjs } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
 import {
   CosmosBaseV1Beta1Coin,
   IbcCoreClientV1Client,
@@ -51,11 +49,12 @@ export default class MsgTransferCosmjs {
     token.amount = params.amount.amount
 
     const message = IbcApplicationsTransferV1Tx.MsgTransfer.create()
-    message.receiver = params.receiver
-    message.sender = params.sender
-    message.sourceChannel = params.channelId
+
     message.sourcePort = params.port
+    message.sourceChannel = params.channelId
     message.token = token
+    message.sender = params.sender
+    message.receiver = params.receiver
 
     if (params.height) {
       const timeoutHeight = IbcCoreClientV1Client.Height.create()
@@ -77,20 +76,32 @@ export default class MsgTransferCosmjs {
   }
 
   public toAmino() {
-    const proto = this.toProto()
-    const message = {
-      ...snakecaseKeys(proto),
-    }
+    const { params } = this
+
+    const message = BaseMsgTransferCosmjs.fromPartial({
+      sourcePort: params.port,
+      sourceChannel: params.channelId,
+      sender: params.sender,
+      receiver: params.receiver,
+      token: params.amount,
+      timeoutHeight: params.height
+        ? {
+            revisionHeight: BigInt(params.height.revisionHeight),
+            revisionNumber: BigInt(params.height.revisionNumber),
+          }
+        : undefined,
+      timeoutTimestamp: params.timeout ? BigInt(params.timeout) : undefined,
+    })
 
     return {
-      type: 'cosmos-sdk/MsgTransfer',
+      type: '/ibc.applications.transfer.v1.MsgTransfer',
       value: {
         ...message,
-      } as unknown as SnakeCaseKeys<IbcApplicationsTransferV1Tx.MsgTransfer>,
+      },
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

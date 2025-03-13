@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import {
   DEFAULT_BRIDGE_FEE_AMOUNT,
   DEFAULT_BRIDGE_FEE_DENOM,
@@ -41,10 +41,12 @@ export default class MsgSendToEth extends MsgBase<
     const { params } = this
 
     const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+
     coinAmount.denom = params.amount.denom
     coinAmount.amount = params.amount.amount
 
     const bridgeFee = CosmosBaseV1Beta1Coin.Coin.create()
+
     bridgeFee.denom = params.bridgeFee
       ? params.bridgeFee.denom
       : DEFAULT_BRIDGE_FEE_DENOM
@@ -54,9 +56,10 @@ export default class MsgSendToEth extends MsgBase<
       : DEFAULT_BRIDGE_FEE_AMOUNT
 
     const message = InjectivePeggyV1Beta1Msgs.MsgSendToEth.create()
-    message.amount = coinAmount
+
     message.sender = params.injectiveAddress
     message.ethDest = params.address
+    message.amount = coinAmount
     message.bridgeFee = bridgeFee
 
     return InjectivePeggyV1Beta1Msgs.MsgSendToEth.fromPartial(message)
@@ -83,7 +86,7 @@ export default class MsgSendToEth extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

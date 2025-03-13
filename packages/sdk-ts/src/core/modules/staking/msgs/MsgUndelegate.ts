@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,
@@ -33,13 +33,15 @@ export default class MsgUndelegate extends MsgBase<
     const { params } = this
 
     const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+
     coinAmount.denom = params.amount.denom
     coinAmount.amount = params.amount.amount
 
     const message = CosmosStakingV1Beta1Tx.MsgUndelegate.create()
-    message.amount = coinAmount
+
     message.delegatorAddress = params.injectiveAddress
     message.validatorAddress = params.validatorAddress
+    message.amount = coinAmount
 
     return CosmosStakingV1Beta1Tx.MsgUndelegate.fromPartial(message)
   }
@@ -65,7 +67,7 @@ export default class MsgUndelegate extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

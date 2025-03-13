@@ -1,4 +1,4 @@
-import { InjectiveDmmRpc } from '@injectivelabs/dmm-proto-ts'
+import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
 import {
   GrpcEpochV2,
   EpochV2,
@@ -21,7 +21,8 @@ import {
   RewardDistribution,
   RewardsEligibility,
   GrpcAccountVolume,
-} from '../types'
+  MinMaxRewards,
+} from '../types/index.js'
 
 export class DmmGrpcTransformer {
   static epochsResponseToEpochs(
@@ -69,6 +70,7 @@ export class DmmGrpcTransformer {
       totalScore: marketReward.totalScore,
       createdAt: marketReward.createdAt,
       updatedAt: marketReward.updatedAt,
+      miniEpochsReward: marketReward.miniEpochsReward,
     }
   }
 
@@ -286,6 +288,23 @@ export class DmmGrpcTransformer {
       eligibleForCurrentEpoch: response.eligibleForCurrentEpoch,
       estimatedReward: response.estimatedReward,
       updatedAt: response.updatedAt,
+    }
+  }
+
+  static marketRewardsRangeResponseToMarketRewardsRange(
+    response: InjectiveDmmRpc.GetMarketRewardsRangeResponse,
+  ): MinMaxRewards {
+    const formattedMinCurrentEpochRewards: Record<string, string> = {}
+    const formattedMaxCurrentEpochRewards: Record<string, string> = {}
+
+    response.ranges.forEach((item) => {
+      formattedMinCurrentEpochRewards[item.marketId] = item.min
+      formattedMaxCurrentEpochRewards[item.marketId] = item.max
+    })
+
+    return {
+      minRewards: formattedMinCurrentEpochRewards,
+      maxRewards: formattedMaxCurrentEpochRewards,
     }
   }
 }

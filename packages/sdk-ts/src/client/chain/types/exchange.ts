@@ -89,6 +89,17 @@ export interface ExchangeParams {
   maxDerivativeOrderSideCount: number
   injRewardStakedRequirementThreshold: string
   tradingRewardsVestingDuration: number
+  liquidatorRewardShareRate: string
+  binaryOptionsMarketInstantListingFee?: Coin
+  atomicMarketOrderAccessLevel: string
+  spotAtomicMarketOrderFeeMultiplier: string
+  derivativeAtomicMarketOrderFeeMultiplier: string
+  binaryOptionsAtomicMarketOrderFeeMultiplier: string
+  minimalProtocolFeeRate: string
+  isInstantDerivativeMarketLaunchEnabled: boolean
+  postOnlyModeHeightThreshold: string
+  marginDecreasePriceTimestampThresholdSeconds: string
+  exchangeAdmins: string[]
 }
 
 export interface ExchangeModuleParams extends ExchangeParams {
@@ -107,6 +118,16 @@ export interface ChainDerivativePosition {
   subaccountId: string
   marketId: string
   position?: ChainPosition
+}
+
+export interface ChainDenomDecimal {
+  denom: string
+  decimals: string
+}
+
+export interface ChainDenomMinNotional {
+  denom: string
+  minNotional: string
 }
 
 export type GrpcOrderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo
@@ -136,6 +157,9 @@ export type GrpcFeeDiscountAccountInfo =
   InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse
 export type GrpcTradeRewardCampaign =
   InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse
+export type GrpcDenomDecimals = InjectiveExchangeV1Beta1Exchange.DenomDecimals
+export type GrpcDenomMinNotional =
+  InjectiveExchangeV1Beta1Exchange.DenomMinNotional
 
 export type GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType
 export const GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType

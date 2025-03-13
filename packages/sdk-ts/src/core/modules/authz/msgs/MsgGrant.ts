@@ -1,15 +1,18 @@
-import { MsgBase } from '../../MsgBase'
-import snakecaseKeys from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosAuthzV1Beta1Tx,
   CosmosAuthzV1Beta1Authz,
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
+import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { getGenericAuthorizationFromMessageType } from '../utils'
-import { GrantAuthorizationType } from './../types'
+import { MsgBase } from '../../MsgBase.js'
+import { getGenericAuthorizationFromMessageType } from '../utils.js'
+import { GrantAuthorizationType } from './../types.js'
 
+/**
+ * @deprecated please use MsgGrantWithAuthorization
+ */
 export declare namespace MsgGrant {
   export interface Params {
     /**
@@ -61,8 +64,9 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     grant.expiration = new Date(Number(timestamp.seconds) * 1000)
 
     const message = CosmosAuthzV1Beta1Tx.MsgGrant.create()
-    message.grantee = params.grantee
+
     message.granter = params.granter
+    message.grantee = params.grantee
     message.grant = grant
 
     return CosmosAuthzV1Beta1Tx.MsgGrant.fromJSON(message)
@@ -110,12 +114,13 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     const messageWithAuthorizationType = snakecaseKeys({
       ...message,
       grant: {
-        ...message.grant,
         authorization: {
           type: 'cosmos-sdk/GenericAuthorization',
           value: { msg: genericAuthorization.msg },
         },
-        expiration: new Date(Number(timestamp.seconds) * 1000),
+        expiration: new Date(Number(timestamp.seconds) * 1000)
+          .toISOString()
+          .replace('.000Z', 'Z'),
       },
     })
 
@@ -134,7 +139,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
     const amino = this.toAmino()
     const timestamp = this.getTimestamp()
@@ -170,7 +175,9 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
           '@type': '/cosmos.authz.v1beta1.GenericAuthorization',
           msg: genericAuthorization.msg,
         },
-        expiration: new Date(Number(timestamp.seconds) * 1000),
+        expiration: new Date(Number(timestamp.seconds) * 1000)
+          .toISOString()
+          .replace('.000Z', 'Z'),
       },
     }
 
@@ -180,7 +187,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     }
   }
 
-  private getTimestamp() {
+  public getTimestamp() {
     const { params } = this
 
     if (params.expiration) {
@@ -200,6 +207,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
     )
 
     const timestamp = GoogleProtobufTimestamp.Timestamp.create()
+
     const timestampInSeconds = (
       expiration.getTime() / 1000 +
       (params.expiryInSeconds || 0)

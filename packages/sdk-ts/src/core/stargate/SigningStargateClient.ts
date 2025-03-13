@@ -1,35 +1,35 @@
 import {
+  StdFee,
   encodeSecp256k1Pubkey,
   makeSignDoc as makeSignDocAmino,
-  StdFee,
 } from '@cosmjs/amino'
 import { Int53, Uint53 } from '@cosmjs/math'
 import {
-  EncodeObject,
+  Registry,
+  makeSignDoc,
   encodePubkey,
+  EncodeObject,
+  OfflineSigner,
   isOfflineDirectSigner,
   makeAuthInfoBytes,
-  makeSignDoc,
-  OfflineSigner,
-  Registry,
   TxBodyEncodeObject,
 } from '@cosmjs/proto-signing'
 import {
+  CometClient,
   HttpEndpoint,
   Tendermint37Client,
-  CometClient,
 } from '@cosmjs/tendermint-rpc'
 import { assert, assertDefined } from '@cosmjs/utils'
-import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'
-import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
+import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin.js'
+import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx.js'
 import {
   MsgDelegate,
   MsgUndelegate,
-} from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing'
-import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
-import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx'
-import { Height } from 'cosmjs-types/ibc/core/client/v1/client'
+} from 'cosmjs-types/cosmos/staking/v1beta1/tx.js'
+import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing.js'
+import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx.js'
+import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
+import { Height } from 'cosmjs-types/ibc/core/client/v1/client.js'
 import { AminoConverters, AminoTypes } from '@cosmjs/stargate'
 import { calculateFee, GasPrice } from '@cosmjs/stargate'
 import {
@@ -54,8 +54,8 @@ import {
   defaultRegistryTypes,
   StargateClientOptions,
 } from '@cosmjs/stargate'
-import { StargateClient } from './StargateClient'
-import { getPublicKey } from '../modules'
+import { StargateClient } from './StargateClient.js'
+import { getPublicKey } from '../tx/index.js'
 
 /**
  * Signing information for a single signer that is not included in the transaction.

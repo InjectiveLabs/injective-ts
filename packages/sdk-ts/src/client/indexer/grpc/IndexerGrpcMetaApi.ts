@@ -1,10 +1,11 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -34,7 +35,7 @@ export class IndexerGrpcMetaApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Ping',
           contextModule: this.module,
         })
@@ -60,7 +61,7 @@ export class IndexerGrpcMetaApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Version',
           contextModule: this.module,
         })
@@ -88,7 +89,7 @@ export class IndexerGrpcMetaApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Info',
           contextModule: this.module,
         })

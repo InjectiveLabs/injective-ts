@@ -1,5 +1,5 @@
 import snakecaseKeys from 'snakecase-keys'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import {
   CosmosBankV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
@@ -39,13 +39,15 @@ export default class MsgSend extends MsgBase<MsgSend.Params, MsgSend.Proto> {
       : [params.amount]
     const amountsToSend = amounts.map((amount) => {
       const amountToSend = CosmosBaseV1Beta1Coin.Coin.create()
-      amountToSend.amount = amount.amount
+
       amountToSend.denom = amount.denom
+      amountToSend.amount = amount.amount
 
       return amountToSend
     })
 
     const message = CosmosBankV1Beta1Tx.MsgSend.create()
+
     message.fromAddress = params.srcInjectiveAddress
     message.toAddress = params.dstInjectiveAddress
     message.amount = amountsToSend
@@ -74,7 +76,7 @@ export default class MsgSend extends MsgBase<MsgSend.Params, MsgSend.Proto> {
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

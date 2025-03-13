@@ -1,11 +1,12 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { IndexerGrpcAccountPortfolioTransformer } from '../transformers'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -50,7 +51,7 @@ export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
 
       if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AccountPortfolio',
           contextModule: this.module,
         })
@@ -91,7 +92,7 @@ export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
 
       if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AccountPortfolio',
           contextModule: this.module,
         })

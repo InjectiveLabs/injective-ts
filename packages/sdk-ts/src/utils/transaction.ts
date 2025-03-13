@@ -1,5 +1,5 @@
 import { fromRpcSig, ecrecover } from 'ethereumjs-util'
-import { publicKeyConvert } from 'secp256k1'
+import * as secp256k1 from 'secp256k1'
 import { TypedDataUtils, SignTypedDataVersion } from '@metamask/eth-sig-util'
 
 export const recoverTypedSignaturePubKey = (
@@ -11,7 +11,7 @@ export const recoverTypedSignaturePubKey = (
   const sigParams = fromRpcSig(signature)
   const publicKey = ecrecover(message, sigParams.v, sigParams.r, sigParams.s)
   const prefixedKey = Buffer.concat([compressedPubKeyPrefix, publicKey])
-  const compressedKey = Buffer.from(publicKeyConvert(prefixedKey))
+  const compressedKey = Buffer.from(secp256k1.publicKeyConvert(prefixedKey))
 
   return `0x${compressedKey.toString('hex')}`
 }

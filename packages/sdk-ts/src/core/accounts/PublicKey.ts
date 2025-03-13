@@ -1,9 +1,9 @@
-import { BECH32_PUBKEY_ACC_PREFIX, decompressPubKey } from '../../utils'
+import { BECH32_PUBKEY_ACC_PREFIX, decompressPubKey } from '../../utils/index.js'
 import { bech32 } from 'bech32'
 import { toBuffer } from 'ethereumjs-util'
 import secp256k1 from 'secp256k1'
-import { Address } from './Address'
-import { keccak256 } from 'js-sha3'
+import { Address } from './Address.js'
+import keccak256 from 'keccak256'
 import {
   GoogleProtobufAny,
   InjectiveCryptoV1Beta1Ethsecp256k1Keys,
@@ -30,7 +30,13 @@ export class PublicKey {
     return new PublicKey(publicKey)
   }
 
-  static fromHex(privateKey: string | Uint8Array): PublicKey {
+  static fromHex(pubKey: string): PublicKey {
+    const pubKeyHex = pubKey.startsWith('0x') ? pubKey.slice(2) : pubKey
+
+    return new PublicKey(Buffer.from(pubKeyHex.toString(), 'hex'))
+  }
+
+  static fromPrivateKeyHex(privateKey: string | Uint8Array): PublicKey {
     const isString = typeof privateKey === 'string'
     const privateKeyHex =
       isString && privateKey.startsWith('0x') ? privateKey.slice(2) : privateKey
@@ -67,15 +73,12 @@ export class PublicKey {
   public toAddress(): Address {
     const publicKeyHex = this.toHex()
     const decompressedPublicKey = decompressPubKey(publicKeyHex)
-    const addressBuffer = Buffer.from(
-      keccak256(
-        toBuffer(
-          decompressedPublicKey.startsWith('0x')
-            ? decompressedPublicKey
-            : '0x' + decompressedPublicKey,
-        ),
+    const addressBuffer = keccak256(
+      toBuffer(
+        decompressedPublicKey.startsWith('0x')
+          ? decompressedPublicKey
+          : '0x' + decompressedPublicKey,
       ),
-      'hex',
     ).subarray(-20)
 
     return Address.fromHex(

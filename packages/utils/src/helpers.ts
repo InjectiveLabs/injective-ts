@@ -1,12 +1,11 @@
-import BigNumber from 'bignumber.js'
 import {
   DEFAULT_STD_FEE,
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
-} from './constants'
-import BigNumberInBase from './classes/BigNumber/BigNumberInBase'
-import BigNumberInWei from './classes/BigNumber/BigNumberInWei'
-import { Awaited } from './types'
+} from './constants.js'
+import BigNumberInBase from './classes/BigNumber/BigNumberInBase.js'
+import BigNumberInWei from './classes/BigNumber/BigNumberInWei.js'
+import { Awaited } from './types.js'
 
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))
@@ -78,7 +77,9 @@ export const getStdFeeForToken = (
   const gasPriceScaled = new BigNumberInBase(gasPriceInBase)
     .toWei(token.decimals)
     .toFixed(0)
-  const gasNormalized = new BigNumber(gasLimit || DEFAULT_GAS_LIMIT).toFixed(0)
+  const gasNormalized = new BigNumberInBase(
+    gasLimit || DEFAULT_GAS_LIMIT,
+  ).toFixed(0)
 
   return {
     amount: [
@@ -111,19 +112,19 @@ export const getStdFeeFromObject = (args?: {
     granter,
     feePayer,
   } = args
-  const gasNormalized = new BigNumber(gas).toFixed(0)
-  const gasPriceNormalized = new BigNumber(gasPrice).toFixed(0)
+  const gasNormalized = new BigNumberInBase(gas).toFixed(0)
+  const gasPriceNormalized = new BigNumberInBase(gasPrice).toFixed(0)
 
   return {
     amount: [
       {
         denom: 'inj',
-        amount: new BigNumber(gasNormalized)
+        amount: new BigNumberInBase(gasNormalized)
           .times(gasPriceNormalized)
           .toFixed(),
       },
     ],
-    gas: new BigNumber(gasNormalized).toFixed(),
+    gas: new BigNumberInBase(gasNormalized).toFixed(),
     payer /** for Web3Gateway fee delegation */,
     granter,
     feePayer,

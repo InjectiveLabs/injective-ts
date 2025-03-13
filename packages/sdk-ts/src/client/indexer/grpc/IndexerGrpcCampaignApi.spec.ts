@@ -1,7 +1,7 @@
-import { mockFactory } from '@injectivelabs/test-utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { IndexerCampaignTransformer } from '../transformers'
-import { IndexerGrpcCampaignApi } from './IndexerGrpcCampaignApi'
+import { IndexerCampaignTransformer } from '../transformers/index.js'
+import { IndexerGrpcCampaignApi } from './IndexerGrpcCampaignApi.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const CAMPAIGN_ID = 'spot-grid-inj-usdt-test'
@@ -95,6 +95,30 @@ describe.skip('IndexerGrpcCampaignApi', () => {
     } catch (e) {
       console.error(
         'IndexerGrpcCampaignApi.fetchGuildMembers => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchCampaigns', async () => {
+    try {
+      const response = await indexerGrpcCampaignApi.fetchCampaigns({
+        type: 'reward',
+        active: true,
+        limit: 10,
+        cursor: '',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerCampaignTransformer.CampaignsV2ResponseToCampaigns
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcCampaignApi.fetchCampaigns => ' + (e as any).message,
       )
     }
   })

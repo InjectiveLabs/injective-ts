@@ -1,9 +1,9 @@
-import MsgDelegate from './msgs/MsgDelegate'
-import MsgUndelegate from './msgs/MsgUndelegate'
-import MsgEditValidator from './msgs/MsgEditValidator'
-import MsgCreateValidator from './msgs/MsgCreateValidator'
-import MsgBeginRedelegate from './msgs/MsgBeginRedelegate'
-import MsgCancelUnbondingDelegation from './msgs/MsgCancelUnbondingDelegation'
+import MsgDelegate from './msgs/MsgDelegate.js'
+import MsgUndelegate from './msgs/MsgUndelegate.js'
+import MsgEditValidator from './msgs/MsgEditValidator.js'
+import MsgCreateValidator from './msgs/MsgCreateValidator.js'
+import MsgBeginRedelegate from './msgs/MsgBeginRedelegate.js'
+import MsgCancelUnbondingDelegation from './msgs/MsgCancelUnbondingDelegation.js'
 
 export {
   MsgDelegate,

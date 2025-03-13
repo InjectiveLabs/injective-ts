@@ -1,7 +1,14 @@
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
+import {
+  InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
+} from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
-import { GrpcMarketStatus } from '../../../../client/chain/types'
+import { GrpcMarketStatus } from '../../../../client/chain/types/index.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgAdminUpdateBinaryOptionsMarket {
   export interface Params {
@@ -15,6 +22,22 @@ export declare namespace MsgAdminUpdateBinaryOptionsMarket {
 
   export type Proto =
     InjectiveExchangeV1Beta1Tx.MsgAdminUpdateBinaryOptionsMarket
+}
+
+const createMessage = (params: MsgAdminUpdateBinaryOptionsMarket.Params) => {
+  const message =
+    InjectiveExchangeV1Beta1Tx.MsgAdminUpdateBinaryOptionsMarket.create()
+
+  message.sender = params.sender
+  message.marketId = params.marketId
+  message.settlementPrice = params.settlementPrice
+  message.expirationTimestamp = params.expirationTimestamp
+  message.settlementTimestamp = params.settlementTimestamp
+  message.status = params.status
+
+  return InjectiveExchangeV1Beta1Tx.MsgAdminUpdateBinaryOptionsMarket.fromPartial(
+    message,
+  )
 }
 
 /**
@@ -31,20 +54,16 @@ export default class MsgAdminUpdateBinaryOptionsMarket extends MsgBase<
   }
 
   public toProto() {
-    const { params } = this
+    const { params: initialParams } = this
 
-    const message =
-      InjectiveExchangeV1Beta1Tx.MsgAdminUpdateBinaryOptionsMarket.create()
-    message.sender = params.sender
-    message.marketId = params.marketId
-    message.settlementPrice = params.settlementPrice
-    message.settlementTimestamp = params.settlementTimestamp
-    message.expirationTimestamp = params.expirationTimestamp
-    message.status = params.status
+    const params = {
+      ...initialParams,
+      settlementPrice: amountToCosmosSdkDecAmount(
+        initialParams.settlementPrice,
+      ).toFixed(),
+    } as MsgAdminUpdateBinaryOptionsMarket.Params
 
-    return InjectiveExchangeV1Beta1Tx.MsgAdminUpdateBinaryOptionsMarket.fromPartial(
-      message,
-    )
+    return createMessage(params)
   }
 
   public toData() {
@@ -57,9 +76,9 @@ export default class MsgAdminUpdateBinaryOptionsMarket extends MsgBase<
   }
 
   public toAmino() {
-    const proto = this.toProto()
+    const { params } = this
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(createMessage(params)),
     }
 
     return {
@@ -68,7 +87,7 @@ export default class MsgAdminUpdateBinaryOptionsMarket extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -76,6 +95,38 @@ export default class MsgAdminUpdateBinaryOptionsMarket extends MsgBase<
       '@type': '/injective.exchange.v1beta1.MsgAdminUpdateBinaryOptionsMarket',
       ...value,
     }
+  }
+
+  public toEip712() {
+    const amino = this.toAmino()
+    const { type, value } = amino
+
+    const messageAdjusted = {
+      ...value,
+      settlement_price: amountToCosmosSdkDecAmount(
+        value.settlement_price,
+      ).toFixed(),
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
+    }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      settlement_price: numberToCosmosSdkDecString(params.settlementPrice),
+      status: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
+        params.status,
+      ),
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

@@ -5,7 +5,7 @@ import {
   HttpRequestMethod,
 } from '@injectivelabs/exceptions'
 import { StatusCodes } from 'http-status-codes'
-import HttpClient from './HttpClient'
+import HttpClient from './HttpClient.js'
 
 const getErrorMessage = (error: any, endpoint: string): string => {
   if (!error.response) {
@@ -50,7 +50,6 @@ export default class HttpRestClient {
           throw new HttpRequestException(new Error(error.message), {
             code: StatusCodes.REQUEST_TOO_LONG,
             context: endpoint,
-            method: HttpRequestMethod.Get,
           })
         }
 
@@ -61,16 +60,45 @@ export default class HttpRestClient {
           code: error.response
             ? error.response.status
             : StatusCodes.BAD_REQUEST,
-          method: HttpRequestMethod.Get,
         })
       }
 
       throw new HttpRequestException(new Error((error as any).message), {
         code: UnspecifiedErrorCode,
         context: endpoint,
-        contextModule: HttpRequestMethod.Get,
       })
     }
+  }
+
+  public async retry<TResponse>(
+    httpCall: Function,
+    retries: number = 3,
+    delay: number = 1000,
+  ): Promise<TResponse> {
+    const retryHttpCall = async (attempt = 1): Promise<any> => {
+      try {
+        return (await httpCall()) as TResponse
+      } catch (e: any) {
+        if (e instanceof HttpRequestException) {
+          if (e.code === StatusCodes.REQUEST_TOO_LONG) {
+            throw e
+          }
+        }
+
+        if (attempt >= retries) {
+          throw e
+        }
+
+        return new Promise((resolve) =>
+          setTimeout(
+            () => resolve(retryHttpCall(attempt + 1)),
+            delay * attempt,
+          ),
+        )
+      }
+    }
+
+    return retryHttpCall()
   }
 
   public async post<T>(

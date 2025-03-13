@@ -2,7 +2,7 @@
 
 The `MsgBroadcast`er abstraction class is a way to broadcast transactions on Injective with ease. With it, you can pass a Message that you want to be packed in a transaction and the signer's address and the transaction will be prepared, signed, and broadcasted.
 
-An example of usage can be found on our [Helix demo repo](https://github.com/InjectiveLabs/injective-helix-demo). As for the messages that you can pass to the `broadcast` methods, you can find examples in the [Core Modules](../core-modules/) section of the docs.
+An example of usage can be found on our [Helix demo repo](https://github.com/InjectiveLabs/injective-helix-demo). As for the messages that you can pass to the `broadcast` methods, you can find examples in the [Core Modules](../core-modules-and-examples/core-modules.md) section of the docs.
 
 ### MsgBroadcaster + Wallet Strategy
 
@@ -11,19 +11,35 @@ This MsgBroadcaster is used alongside the Wallet Strategy class for building dec
 To instantiate (and use) the `MsgBroadcaster` class, you can use the following code snippet
 
 ```ts
-import { MsgBroadcaster } from '@injectivelabs/wallet-ts'
+import { ChainId, EthereumChainId } from "@injectivelabs/ts-types"
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { MsgBroadcaster } from '@injectivelabs/wallet-core'
 import { MsgSend } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
 
-export const msgBroadcastClient = new MsgBroadcaster({
-  walletStrategy, /* instantiated wallet strategy */
-  network: NETWORK,
-}) 
+export const alchemyRpcEndpoint = ""
+export const walletStrategy = new WalletStrategy({
+  chainId: ChainId.Mainnet,
+  ethereumOptions: {
+    ethereumChainId: EthereumChainId.Mainnet,
+    rpcUrl: alchemyRpcEndpoint
+  },
+  strategies: {}
+})
+
+export const msgBroadcaster = new MsgBroadcaster({
+  walletStrategy,
+  simulateTx: true,
+  network: Network.Mainnet,
+  endpoints: getNetworkEndpoints(Network.Mainnet),
+  gasBufferCoefficient: 1.1,
+})
 
 // Usage Example
 (async () => {
   const signer = 'inj1...'
-  
+
   const msg = MsgSend.fromJSON({
     amount: {
         denom: 'inj',
@@ -35,7 +51,7 @@ export const msgBroadcastClient = new MsgBroadcaster({
 
   // Prepare + Sign + Broadcast the transaction using the Wallet Strategy
   await msgBroadcastClient.broadcast({
-      injectiveAddress: signer, 
+      injectiveAddress: signer,
       msgs: msg
   })
 })()
@@ -61,18 +77,17 @@ export interface MsgBroadcasterOptions {
   gasBufferCoefficient?: number /** optional - as gas buffer to add to the simulated/hardcoded gas to ensure the transaction is included in a block */
 }
 
-
 export interface MsgBroadcasterTxOptions {
   memo?: string /** MEMO added to the transaction **/
   injectiveAddress: string /** the signer of the transaction **/
   msgs: Msgs | Msgs[] /** the messages to pack into a transaction **/
-  
-  /* 
-  *** overriding the hardcoded gas/simulation - 
-  *** depending on the simulateTx parameter in 
+
+  /*
+  *** overriding the hardcoded gas/simulation -
+  *** depending on the simulateTx parameter in
   *** the MsgBroadcaster constructor
   */
-  gas?: { 
+  gas?: {
     gasPrice?: string
     gas?: number /** gas limit */
     feePayer?: string
@@ -84,7 +99,7 @@ export interface MsgBroadcasterTxOptions {
 ````
 
 {% hint style="info" %}
-To override the `endpoints` and use your infrastructure (which is something we recommend), please read more on the [Networks](../readme/networks.md) page on the endpoints you need to provide and how to set them up.&#x20;
+To override the `endpoints` and use your infrastructure (which is something we recommend), please read more on the [Networks](../getting-started/application-concepts/networks.md) page on the endpoints you need to provide and how to set them up.&#x20;
 {% endhint %}
 
 ### MsgBroadcaster with Private Key
@@ -92,19 +107,18 @@ To override the `endpoints` and use your infrastructure (which is something we r
 This MsgBroadcaster is used with a private key (mostly used for CLI environments). Constructor/broadcast options are quite similar as for the `MsgBroadcaster`.
 
 ```ts
-import { MsgBroadcasterWithPk } from '@injectivelabs/wallet-ts'
-import { MsgSend } from '@injectivelabs/sdk-ts'
+import { MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
 
 export const msgBroadcasterWithPk = new MsgBroadcasterWithPk({
   privateKey: `0x...`, /** private key hash or PrivateKey class from sdk-ts */
   network: NETWORK,
-}) 
+})
 
 // Usage Example
 (async () => {
   const signer = 'inj1...'
-  
+
   const msg = MsgSend.fromJSON({
     amount: {
         denom: 'inj',
@@ -116,7 +130,7 @@ export const msgBroadcasterWithPk = new MsgBroadcasterWithPk({
 
   // Prepare + Sign + Broadcast the transaction using the Wallet Strategy
   await msgBroadcasterWithPk.broadcast({
-      injectiveAddress: signer, 
+      injectiveAddress: signer,
       msgs: msg
   })
 })()

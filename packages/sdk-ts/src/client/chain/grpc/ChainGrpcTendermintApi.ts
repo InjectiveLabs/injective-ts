@@ -1,9 +1,10 @@
 import { CosmosBaseTendermintV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 /**
  * @category Chain Grpc API
@@ -35,7 +36,7 @@ export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosBaseTendermintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TendermintApi.fetchLatestBlock',
           contextModule: this.module,
         })

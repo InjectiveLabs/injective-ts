@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -29,6 +29,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     const { params } = this
 
     const message = InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder.create()
+
     message.sender = params.injectiveAddress
     message.marketId = params.marketId
     message.subaccountId = params.subaccountId
@@ -67,7 +68,7 @@ export default class MsgCancelSpotOrder extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

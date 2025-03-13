@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   InjectiveExchangeV1Beta1Tx,
@@ -36,6 +36,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
 
     const message =
       InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder.create()
+
     message.sender = params.injectiveAddress
     message.marketId = params.marketId
     message.subaccountId = params.subaccountId
@@ -44,12 +45,12 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
       message.orderHash = params.orderHash
     }
 
+    // TODO: Send order.orderMask instead when chain handles order mask properly.
+    message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
+
     if (params.cid) {
       message.cid = params.cid
     }
-
-    // TODO: Send order.orderMask instead when chain handles order mask properly.
-    message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
 
     return message
   }
@@ -75,7 +76,7 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

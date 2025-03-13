@@ -1,8 +1,14 @@
-import { generateArbitrarySignDoc } from '../modules'
-import { PrivateKey } from './PrivateKey'
+import { verifyMessage, Wallet } from 'ethers'
+import { toUtf8 } from '../../utils/utf8.js'
+import { PrivateKey } from './PrivateKey.js'
+import { generateArbitrarySignDoc } from '../tx/index.js'
 
-const pk = 'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3'
+const pk = process.env.TEST_PRIVATE_KEY as string
 const seedPhase = process.env.TEST_SEED_PHASE as string
+
+if (!pk || !seedPhase) {
+  throw new Error('TEST_PRIVATE_KEY or TEST_SEED_PHASE is not set')
+}
 
 describe('PrivateKey', () => {
   it('returns the correct address derived from a mnemonic', () => {
@@ -111,6 +117,31 @@ describe('PrivateKey', () => {
 
   it('returns true when verifying signature for a public key and a cosmos message', () => {
     //
+  })
+
+  it('returns true when checking a pk signature against the signer public key', async () => {
+    const message = 'this is a test message'
+
+    const wallet = new Wallet(pk)
+    const ethersSignature = await wallet.signMessage(message)
+
+    const privateKey = PrivateKey.fromHex(pk)
+    const publicKey = privateKey.toHex()
+
+    const ethersVerifiedSigner = verifyMessage(message, ethersSignature)
+    const ethersSignatureVerifiedCorrectly = ethersVerifiedSigner === publicKey
+    expect(ethersSignatureVerifiedCorrectly).toBe(true)
+
+    const privKeySignatureArray = privateKey.signHashed(
+      Buffer.from(toUtf8(message), 'utf-8'),
+    )
+    const privKeySignature = `0x${Buffer.from(privKeySignatureArray).toString(
+      'hex',
+    )}`
+    const privKeyVerifiedSigner = verifyMessage(message, privKeySignature)
+    const privKeySignatureVerifiedCorrectly =
+      privKeyVerifiedSigner === publicKey
+    expect(privKeySignatureVerifiedCorrectly).toBe(true)
   })
 
   it('returns true when verifying arbitrary message', async () => {

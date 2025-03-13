@@ -1,18 +1,19 @@
-import { ChainGrpcAuctionApi } from './grpc/ChainGrpcAuctionApi'
-import { ChainGrpcBankApi } from './grpc/ChainGrpcBankApi'
-import { ChainGrpcAuthApi } from './grpc/ChainGrpcAuthApi'
-import { ChainGrpcDistributionApi } from './grpc/ChainGrpcDistributionApi'
-import { ChainGrpcExchangeApi } from './grpc/ChainGrpcExchangeApi'
-import { ChainGrpcGovApi } from './grpc/ChainGrpcGovApi'
-import { ChainGrpcIbcApi } from './grpc/ChainGrpcIbcApi'
-import { ChainGrpcInsuranceFundApi } from './grpc/ChainGrpcInsuranceFundApi'
-import { ChainGrpcMintApi } from './grpc/ChainGrpcMintApi'
-import { ChainGrpcOracleApi } from './grpc/ChainGrpcOracleApi'
-import { ChainGrpcPeggyApi } from './grpc/ChainGrpcPeggyApi'
-import { ChainGrpcStakingApi } from './grpc/ChainGrpcStakingApi'
-import { ChainGrpcTokenFactoryApi } from './grpc/ChainGrpcTokenFactoryApi'
-import { ChainGrpcWasmApi } from './grpc/ChainGrpcWasmApi'
-import { ChainGrpcWasmXApi } from './grpc/ChainGrpcWasmXApi'
+import { ChainGrpcAuctionApi } from './grpc/ChainGrpcAuctionApi.js'
+import { ChainGrpcBankApi } from './grpc/ChainGrpcBankApi.js'
+import { ChainGrpcAuthApi } from './grpc/ChainGrpcAuthApi.js'
+import { ChainGrpcDistributionApi } from './grpc/ChainGrpcDistributionApi.js'
+import { ChainGrpcExchangeApi } from './grpc/ChainGrpcExchangeApi.js'
+import { ChainGrpcGovApi } from './grpc/ChainGrpcGovApi.js'
+import { ChainGrpcIbcApi } from './grpc/ChainGrpcIbcApi.js'
+import { ChainGrpcInsuranceFundApi } from './grpc/ChainGrpcInsuranceFundApi.js'
+import { ChainGrpcMintApi } from './grpc/ChainGrpcMintApi.js'
+import { ChainGrpcOracleApi } from './grpc/ChainGrpcOracleApi.js'
+import { ChainGrpcPeggyApi } from './grpc/ChainGrpcPeggyApi.js'
+import { ChainGrpcPermissionsApi } from './grpc/ChainGrpcPermissionsApi.js'
+import { ChainGrpcStakingApi } from './grpc/ChainGrpcStakingApi.js'
+import { ChainGrpcTokenFactoryApi } from './grpc/ChainGrpcTokenFactoryApi.js'
+import { ChainGrpcWasmApi } from './grpc/ChainGrpcWasmApi.js'
+import { ChainGrpcWasmXApi } from './grpc/ChainGrpcWasmXApi.js'
 
 /**
  * @category Chain Grpc API
@@ -41,6 +42,8 @@ export class ChainGrpcClient {
 
   peggy: ChainGrpcPeggyApi
 
+  permissions: ChainGrpcPermissionsApi
+
   staking: ChainGrpcStakingApi
 
   tokenfactory: ChainGrpcTokenFactoryApi
@@ -61,6 +64,7 @@ export class ChainGrpcClient {
     this.mint = new ChainGrpcMintApi(endpoint)
     this.oracle = new ChainGrpcOracleApi(endpoint)
     this.peggy = new ChainGrpcPeggyApi(endpoint)
+    this.permissions = new ChainGrpcPermissionsApi(endpoint)
     this.staking = new ChainGrpcStakingApi(endpoint)
     this.tokenfactory = new ChainGrpcTokenFactoryApi(endpoint)
     this.wasm = new ChainGrpcWasmApi(endpoint)

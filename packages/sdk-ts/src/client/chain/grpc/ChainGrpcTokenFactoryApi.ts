@@ -1,11 +1,12 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveTokenFactoryV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { ChainGrpcTokenFactoryTransformer } from '..'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
+import { ChainGrpcTokenFactoryTransformer } from '../index.js'
 
 /**
  * @category TokenFactory Grpc API
@@ -41,7 +42,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveTokenFactoryV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TokenFactoryDenomsFromCreator',
           contextModule: this.module,
         })
@@ -74,7 +75,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveTokenFactoryV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TokenFactoryDenomsFromCreator',
           contextModule: this.module,
         })
@@ -104,7 +105,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveTokenFactoryV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TokenFactoryParams',
           contextModule: this.module,
         })
@@ -134,7 +135,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveTokenFactoryV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TokenFactoryModuleState',
           contextModule: this.module,
         })

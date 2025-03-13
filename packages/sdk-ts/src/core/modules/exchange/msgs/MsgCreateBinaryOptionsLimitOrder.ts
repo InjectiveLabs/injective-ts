@@ -1,5 +1,8 @@
-import { MsgBase } from '../../MsgBase'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
+import { MsgBase } from '../../MsgBase.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   InjectiveExchangeV1Beta1Tx,
@@ -26,6 +29,7 @@ export declare namespace MsgCreateBinaryOptionsLimitOrder {
 
 const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
   const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+
   orderInfo.subaccountId = params.subaccountId
   orderInfo.feeRecipient = params.feeRecipient
   orderInfo.price = params.price
@@ -37,15 +41,16 @@ const createLimitOrder = (params: MsgCreateBinaryOptionsLimitOrder.Params) => {
 
   const derivativeOrder =
     InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
-  derivativeOrder.marketId = params.marketId
-  derivativeOrder.orderType = params.orderType
-  derivativeOrder.orderInfo = orderInfo
-  derivativeOrder.margin = params.margin
 
+  derivativeOrder.marketId = params.marketId
+  derivativeOrder.orderInfo = orderInfo
+  derivativeOrder.orderType = params.orderType
+  derivativeOrder.margin = params.margin
   derivativeOrder.triggerPrice = params.triggerPrice || '0'
 
   const message =
     InjectiveExchangeV1Beta1Tx.MsgCreateBinaryOptionsLimitOrder.create()
+
   message.sender = params.injectiveAddress
   message.order = derivativeOrder
 
@@ -93,9 +98,9 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const proto = createLimitOrder(params)
+    const order = createLimitOrder(params)
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(order),
     }
 
     return {
@@ -105,7 +110,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -115,6 +120,58 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
     }
   }
 
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+    const order = web3gw.order as any
+
+    const messageAdjusted = {
+      ...web3gw,
+      order: {
+        ...order,
+        order_info: {
+          ...order.order_info,
+          price: numberToCosmosSdkDecString(params.price),
+          quantity: numberToCosmosSdkDecString(params.quantity),
+        },
+        margin: numberToCosmosSdkDecString(params.margin),
+        trigger_price: numberToCosmosSdkDecString(params.triggerPrice || '0'),
+        order_type: InjectiveExchangeV1Beta1Exchange.orderTypeToJSON(
+          params.orderType,
+        ),
+      },
+    }
+
+    return messageAdjusted
+  }
+
+  public toEip712() {
+    const { params } = this
+    const amino = this.toAmino()
+    const { value, type } = amino
+
+    const messageAdjusted = {
+      ...value,
+      order: {
+        ...value.order,
+        order_info: {
+          ...value.order?.order_info,
+          price: amountToCosmosSdkDecAmount(params.price).toFixed(),
+          quantity: amountToCosmosSdkDecAmount(params.quantity).toFixed(),
+        },
+        margin: amountToCosmosSdkDecAmount(params.margin).toFixed(),
+        trigger_price: amountToCosmosSdkDecAmount(
+          params.triggerPrice || '0',
+        ).toFixed(),
+      },
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
+    }
+  }
+  
   public toDirectSign() {
     const proto = this.toProto()
 

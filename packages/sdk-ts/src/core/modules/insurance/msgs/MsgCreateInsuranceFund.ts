@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,
@@ -42,19 +42,21 @@ export default class MsgCreateInsuranceFund extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
-    amountCoin.amount = params.deposit.amount
-    amountCoin.denom = params.deposit.denom
+    const coin = CosmosBaseV1Beta1Coin.Coin.create()
+
+    coin.denom = params.deposit.denom
+    coin.amount = params.deposit.amount
 
     const message = InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.create()
+
+    message.sender = params.injectiveAddress
     message.ticker = params.fund.ticker
     message.quoteDenom = params.fund.quoteDenom
     message.oracleBase = params.fund.oracleBase
     message.oracleQuote = params.fund.oracleQuote
     message.oracleType = params.fund.oracleType
-    message.sender = params.injectiveAddress
-    message.initialDeposit = amountCoin
     message.expiry = (params.fund.expiry ? params.fund.expiry : -1).toString()
+    message.initialDeposit = coin
 
     return InjectiveInsuranceV1Beta1Tx.MsgCreateInsuranceFund.fromPartial(
       message,
@@ -82,7 +84,7 @@ export default class MsgCreateInsuranceFund extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -90,6 +92,20 @@ export default class MsgCreateInsuranceFund extends MsgBase<
       '@type': '/injective.insurance.v1beta1.MsgCreateInsuranceFund',
       ...value,
     }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      oracle_type: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
+        params.fund.oracleType,
+      ),
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

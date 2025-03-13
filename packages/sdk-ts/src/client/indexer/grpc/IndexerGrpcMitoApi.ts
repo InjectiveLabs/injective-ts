@@ -1,12 +1,13 @@
 import {
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { IndexerGrpcMitoTransformer } from '../transformers'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -48,7 +49,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetVault',
           contextModule: this.module,
         })
@@ -94,7 +95,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetVaults',
           contextModule: this.module,
         })
@@ -140,7 +141,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'LPTokenPriceChart',
           contextModule: this.module,
         })
@@ -186,7 +187,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TVLChart',
           contextModule: this.module,
         })
@@ -238,7 +239,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'VaultsByHolderAddress',
           contextModule: this.module,
         })
@@ -285,7 +286,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'LPHolders',
           contextModule: this.module,
         })
@@ -320,7 +321,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Portfolio',
           contextModule: this.module,
         })
@@ -352,7 +353,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Leaderboard',
           contextModule: this.module,
         })
@@ -412,7 +413,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'TransfersHistory',
           contextModule: this.module,
         })
@@ -460,7 +461,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'LeaderboardEpochs',
           contextModule: this.module,
         })
@@ -500,7 +501,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetStakingPools',
           contextModule: this.module,
         })
@@ -554,7 +555,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'StakingHistory',
           contextModule: this.module,
         })
@@ -591,7 +592,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'StakingReward',
           contextModule: this.module,
         })
@@ -619,7 +620,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Missions',
           contextModule: this.module,
         })
@@ -651,7 +652,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'MissionLeaderboard',
           contextModule: this.module,
         })
@@ -689,7 +690,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetIDO',
           contextModule: this.module,
         })
@@ -747,7 +748,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'ListIDOs',
           contextModule: this.module,
         })
@@ -799,7 +800,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetIDOSubscribers',
           contextModule: this.module,
         })
@@ -836,7 +837,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetIDOSubscription',
           contextModule: this.module,
         })
@@ -890,7 +891,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetIDOActivities',
           contextModule: this.module,
         })
@@ -936,7 +937,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetWhitelist',
           contextModule: this.module,
         })
@@ -985,7 +986,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'GetClaimReferences',
           contextModule: this.module,
         })

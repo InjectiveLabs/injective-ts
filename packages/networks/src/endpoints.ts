@@ -1,4 +1,4 @@
-import { NetworkEndpoints } from './types'
+import { NetworkEndpoints } from './types.js'
 
 export const endpointsMainnetSentry: NetworkEndpoints = {
   indexer: 'https://sentry.exchange.grpc-web.injective.network',
@@ -10,6 +10,7 @@ export const endpointsMainnetSentry: NetworkEndpoints = {
   cacheGrpc: 'https://sentry.chain.grpc-web.injective.network',
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://sentry.exchange.grpc-web.injective.network',
+  chart: 'https://sentry.exchange.grpc-web.injective.network',
 }
 
 export const endpointsMainnet: NetworkEndpoints = {
@@ -26,6 +27,7 @@ export const endpointsStaging: NetworkEndpoints = {
   cacheGrpc: 'https://staging.grpc.injective.network',
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://staging.api.injective.network',
+  chart: 'https://k8s.mainnet.staging.chart.grpc-web.injective.network',
 }
 
 export const endpointsInternal: NetworkEndpoints = {
@@ -38,6 +40,7 @@ export const endpointsInternal: NetworkEndpoints = {
   cacheGrpc: 'https://products.chain.grpc-web.injective.network',
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://products.web3-gateway.injective.network',
+  chart: 'https://products.exchange.grpc-web.injective.network',
 }
 
 export const endpointsTestnetSentry: NetworkEndpoints = {
@@ -92,14 +95,26 @@ export const endpointsDevnet2: NetworkEndpoints = {
   web3gw: 'https://devnet-2.api.injective.dev',
 }
 
+export const endpointsDevnet3: NetworkEndpoints = {
+  indexer: 'https://devnet-3.api.injective.dev',
+  grpc: 'https://devnet-3.grpc.injective.dev',
+  rpc: 'https://devnet-3.tm.injective.dev',
+  rest: 'https://devnet-3.lcd.injective.dev',
+  chronos: 'https://devnet-3.api.injective.dev',
+  explorer: 'https://devnet-3.api.injective.dev',
+  cacheGrpc: 'https://devnet-3.grpc.injective.dev',
+  cacheRest: 'https://devnet-3.api.injective.dev',
+  web3gw: 'https://devnet-3.api.injective.dev',
+}
+
 export const endpointsLocal: NetworkEndpoints = {
   indexer: 'https://localhost:4444',
-  grpc: 'http://localhost:9091',
-  rpc: 'http://localhost:9091',
-  rest: 'http://localhost:9091',
-  chronos: 'https://localhost:4445',
-  explorer: 'http://localhost:4446',
-  cacheGrpc: 'http://localhost:9091',
+  grpc: 'http://localhost:10337',
+  rpc: 'http://localhost:9092',
+  rest: 'http://localhost:10337',
+  chronos: 'https://localhost:4442',
+  explorer: 'http://localhost:4443',
+  cacheGrpc: 'http://localhost:10337',
   cacheRest: 'https://localhost:4444',
   web3gw: 'https://localhost:4444',
 }
@@ -147,6 +162,7 @@ export const endpointsMainnetLB: NetworkEndpoints = {
   cacheGrpc: 'https://k8s.global.mainnet.chain.grpc-web.injective.network',
   cacheRest: 'https://k8s.global.mainnet.exchange.grpc-web.injective.network',
   web3gw: 'https://k8s.global.mainnet.exchange.grpc-web.injective.network',
+  chart: 'https://k8s.global.mainnet.chart.grpc-web.injective.network',
 }
 
 /**

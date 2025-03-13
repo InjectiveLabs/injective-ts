@@ -53,14 +53,14 @@ console.log(prepareCosmosTxResponse)
 
 Use `MsgBroadcasterWithPk` to broadcast transactions within a node/CLI environment, which can be found in `@injectivelabs/sdk-ts`.&#x20;
 
-Use `@injectivelabs/wallet-ts`'s `MsgBroadcaster` class for more details on broadcasting a transactions in a browser environment.
+Use `@injectivelabs/wallet-core`'s `MsgBroadcaster` class for more details on broadcasting a transactions in a browser environment.
 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { WalletStrategy } from '@injectivelabs/wallet-ts'
-import { CosmosWalletStrategy, Wallet } from '@injectivelabs/wallet-ts'
+import { WalletStrategy, CosmosWalletStrategy } from '@injectivelabs/wallet-strategy'
+import { Wallet } from '@injectivelabs/wallet-base'
 
 const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)

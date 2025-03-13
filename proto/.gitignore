@@ -1,0 +1,15 @@
+indexer/proto/
+indexer/gen/
+indexer/proto-ts/
+core/gen/
+core/proto/
+core/proto-ts
+olp/gen/
+olp/proto/
+olp/proto-ts
+mito/gen/
+mito/proto/
+mito/proto-ts
+abacus/gen/
+abacus/proto/
+abacus/proto-ts

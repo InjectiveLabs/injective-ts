@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { InjectiveTokenFactoryV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -27,6 +27,7 @@ export default class MsgChangeAdmin extends MsgBase<
     const { params } = this
 
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.create()
+
     message.sender = params.sender
     message.denom = params.denom
     message.newAdmin = params.newAdmin
@@ -55,7 +56,7 @@ export default class MsgChangeAdmin extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

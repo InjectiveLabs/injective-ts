@@ -2,7 +2,7 @@ import {
   CosmosBaseV1Beta1Coin,
   InjectiveExchangeV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgDeposit {
@@ -33,10 +33,12 @@ export default class MsgDeposit extends MsgBase<
     const { params } = this
 
     const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
-    amountCoin.amount = params.amount.amount
+
     amountCoin.denom = params.amount.denom
+    amountCoin.amount = params.amount.amount
 
     const message = InjectiveExchangeV1Beta1Tx.MsgDeposit.create()
+
     message.sender = params.injectiveAddress
     message.subaccountId = params.subaccountId
     message.amount = amountCoin
@@ -65,7 +67,7 @@ export default class MsgDeposit extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

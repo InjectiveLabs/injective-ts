@@ -1,13 +1,14 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { CosmosAuthV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
-import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { paginationRequestFromPagination } from '../../../utils/pagination.js'
+import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer.js'
 
 /**
  * @category Chain Grpc API
@@ -40,7 +41,7 @@ export class ChainGrpcAuthApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
           contextModule: this.module,
         })
@@ -69,7 +70,7 @@ export class ChainGrpcAuthApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Account',
           contextModule: this.module,
         })
@@ -101,7 +102,7 @@ export class ChainGrpcAuthApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Accounts',
           contextModule: this.module,
         })

@@ -1,5 +1,5 @@
-import { ExecPrivilegedArgs } from '../exec-args'
-import { MsgBase } from '../../MsgBase'
+import { ExecPrivilegedArgs } from '../exec-args.js'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -65,7 +65,7 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

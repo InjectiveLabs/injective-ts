@@ -1,10 +1,11 @@
 import snakecaseKeys from 'snakecase-keys'
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import {
-  CosmosFeegrantV1Beta1Tx,
-  CosmosFeegrantV1Beta1Feegrant,
-  GoogleProtobufTimestamp,
   GoogleProtobufAny,
+  CosmosBaseV1Beta1Coin,
+  CosmosFeegrantV1Beta1Tx,
+  GoogleProtobufTimestamp,
+  CosmosFeegrantV1Beta1Feegrant,
 } from '@injectivelabs/core-proto-ts'
 import { Coin } from '@injectivelabs/ts-types'
 
@@ -45,10 +46,21 @@ export default class MsgGrantAllowance extends MsgBase<
 
     const timestamp = this.getTimestamp()
     const basicAllowance = CosmosFeegrantV1Beta1Feegrant.BasicAllowance.create()
-    basicAllowance.spendLimit = params.allowance.spendLimit
+
+    basicAllowance.spendLimit = params.allowance.spendLimit.map(
+      ({ denom, amount }) => {
+        const coin = CosmosBaseV1Beta1Coin.Coin.create()
+
+        coin.denom = denom
+        coin.amount = amount
+
+        return coin
+      },
+    )
     basicAllowance.expiration = new Date(Number(timestamp.seconds) * 1000)
 
     const allowance = GoogleProtobufAny.Any.create()
+
     allowance.typeUrl = basicAllowanceType
     allowance.value = Buffer.from(
       CosmosFeegrantV1Beta1Feegrant.BasicAllowance.encode(
@@ -57,8 +69,9 @@ export default class MsgGrantAllowance extends MsgBase<
     )
 
     const message = CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.create()
-    message.grantee = params.grantee
+
     message.granter = params.granter
+    message.grantee = params.grantee
     message.allowance = allowance
 
     return CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.fromJSON(message)
@@ -85,8 +98,13 @@ export default class MsgGrantAllowance extends MsgBase<
       allowance: {
         type: 'cosmos-sdk/BasicAllowance',
         value: {
-          spendLimit: params.allowance.spendLimit,
-          expiration: new Date(Number(timestamp.seconds) * 1000),
+          spendLimit: params.allowance.spendLimit.map(({ denom, amount }) => ({
+            denom,
+            amount,
+          })),
+          expiration: new Date(Number(timestamp.seconds) * 1000)
+            .toISOString()
+            .replace('.000Z', 'Z'),
         },
       },
     })
@@ -106,7 +124,7 @@ export default class MsgGrantAllowance extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const { params } = this
     const amino = this.toAmino()
     const timestamp = this.getTimestamp()
@@ -116,8 +134,13 @@ export default class MsgGrantAllowance extends MsgBase<
       grantee: amino.value.grantee,
       allowance: {
         '@type': basicAllowanceType,
-        spendLimit: params.allowance.spendLimit,
-        expiration: new Date(Number(timestamp.seconds) * 1000),
+        spendLimit: params.allowance.spendLimit.map(({ denom, amount }) => ({
+          denom,
+          amount,
+        })),
+        expiration: new Date(Number(timestamp.seconds) * 1000)
+          .toISOString()
+          .replace('.000Z', 'Z'),
       },
     }
 
@@ -125,6 +148,21 @@ export default class MsgGrantAllowance extends MsgBase<
       '@type': '/cosmos.feegrant.v1beta1.MsgGrantAllowance',
       ...messageWithAllowance,
     }
+  }
+
+  public toEip712V2() {
+    const web3Gw = this.toWeb3Gw()
+
+    const messageAdjustedForEip712V2 = {
+      ...web3Gw,
+      allowance: {
+        '@type': web3Gw.allowance['@type'],
+        spend_limit: web3Gw.allowance.spendLimit,
+        expiration: web3Gw.allowance.expiration,
+      },
+    }
+
+    return messageAdjustedForEip712V2
   }
 
   private getTimestamp() {

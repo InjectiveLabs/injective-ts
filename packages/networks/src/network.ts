@@ -3,7 +3,7 @@ import {
   localChainInfo,
   mainnetChainInfo,
   testnetChainInfo,
-} from './chainInfos'
+} from './chainInfos.js'
 import {
   endpointsLocal,
   endpointsDevnet,
@@ -12,6 +12,7 @@ import {
   endpointsStaging,
   endpointsDevnet1,
   endpointsDevnet2,
+  endpointsDevnet3,
   endpointsInternal,
   endpointsMainnetLB,
   endpointsTestnetK8s,
@@ -20,8 +21,8 @@ import {
   endpointsMainnetOld,
   endpointsMainnetSentry,
   endpointsTestnetSentry,
-} from './endpoints'
-import { Network, ChainInfo, NetworkEndpoints } from './types'
+} from './endpoints.js'
+import { Network, ChainInfo, NetworkEndpoints } from './types.js'
 
 export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.MainnetLB]: endpointsMainnetLB,
@@ -34,6 +35,7 @@ export const networkEndpoints: Record<Network, NetworkEndpoints> = {
   [Network.Devnet]: endpointsDevnet,
   [Network.Devnet1]: endpointsDevnet1,
   [Network.Devnet2]: endpointsDevnet2,
+  [Network.Devnet3]: endpointsDevnet3,
   [Network.Testnet]: endpointsTestnet,
   [Network.TestnetK8s]: endpointsTestnetK8s,
   [Network.TestnetOld]: endpointsTestnetOld,
@@ -52,6 +54,7 @@ export const chainInfos: Record<Network, ChainInfo> = {
   [Network.Devnet]: devnetChainInfo,
   [Network.Devnet1]: devnetChainInfo,
   [Network.Devnet2]: devnetChainInfo,
+  [Network.Devnet3]: devnetChainInfo,
   [Network.Testnet]: testnetChainInfo,
   [Network.TestnetOld]: testnetChainInfo,
   [Network.TestnetK8s]: testnetChainInfo,

@@ -1,5 +1,5 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { IndexerGrpcMetaApi } from './IndexerGrpcMetaApi'
+import { IndexerGrpcMetaApi } from './IndexerGrpcMetaApi.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcMetaApi = new IndexerGrpcMetaApi(endpoints.indexer)

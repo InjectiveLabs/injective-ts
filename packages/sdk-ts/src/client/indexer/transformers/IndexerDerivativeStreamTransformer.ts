@@ -1,5 +1,5 @@
-import { StreamOperation } from '../../../types'
-import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer'
+import { StreamOperation } from '../../../types/index.js'
+import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
@@ -95,6 +95,19 @@ export class IndexerDerivativeStreamTransformer {
         : undefined,
       operation: response.operationType as StreamOperation,
       marketId: response.marketId,
+      timestamp: response.timestamp,
+    }
+  }
+
+  static positionV2StreamCallback = (
+    response: InjectiveDerivativeExchangeRpc.StreamPositionsV2Response,
+  ) => {
+    const position = response.position
+
+    return {
+      position: position
+        ? IndexerGrpcDerivativeTransformer.grpcPositionV2ToPositionV2(position)
+        : undefined,
       timestamp: response.timestamp,
     }
   }

@@ -3,6 +3,7 @@ export enum TokenType {
   Cw20 = 'cw20',
   Spl = 'spl',
   Erc20 = 'erc20',
+  Lp = 'lp',
   Evm = 'evm',
   Native = 'native',
   Symbol = 'symbol',
@@ -51,6 +52,8 @@ export interface TokenStatic {
   channelId?: string
   baseDenom?: string
   externalLogo?: string
+  marketIds?: string[]
+  overrideSymbol?: string
 }
 
 export interface TokenMeta {

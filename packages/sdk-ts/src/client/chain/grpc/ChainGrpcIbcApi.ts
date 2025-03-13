@@ -1,12 +1,13 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { IbcApplicationsTransferV1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule } from '../types'
-import { PaginationOption } from '../../../types/pagination'
-import { paginationRequestFromPagination } from '../../../utils/pagination'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { paginationRequestFromPagination } from '../../../utils/pagination.js'
 
 /**
  * @category Chain Grpc API
@@ -40,7 +41,7 @@ export class ChainGrpcIbcApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomTrace',
           contextModule: this.module,
         })
@@ -74,7 +75,7 @@ export class ChainGrpcIbcApi extends BaseGrpcConsumer {
     } catch (e: any) {
       if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'DenomTraces',
           contextModule: this.module,
         })

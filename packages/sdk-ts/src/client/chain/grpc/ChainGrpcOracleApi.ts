@@ -1,10 +1,11 @@
 import {
-  GrpcUnaryRequestException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveOracleV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer'
-import { ChainModule, OracleModuleParams } from '../types'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainModule, OracleModuleParams } from '../types/index.js'
 
 /**
  * @category Chain Grpc API
@@ -35,7 +36,7 @@ export class ChainGrpcOracleApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveOracleV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
           contextModule: this.module,
         })

@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { CosmosDistributionV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -28,6 +28,7 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
 
     const message =
       CosmosDistributionV1Beta1Tx.MsgWithdrawValidatorCommission.create()
+
     message.validatorAddress = params.validatorAddress
 
     return message
@@ -49,12 +50,12 @@ export default class MsgWithdrawValidatorCommission extends MsgBase<
     }
 
     return {
-      type: 'cosmos-sdk/MsgWithdrawDelegationReward',
+      type: 'cosmos-sdk/MsgWithdrawValCommission',
       value: message,
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

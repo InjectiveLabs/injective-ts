@@ -35,25 +35,30 @@ const getAssetMicroserviceEndpoint = (network: Network = Network.Mainnet) => {
 }
 
 export class TokenPrice {
-  private restClient: HttpRestClient
+  private client: HttpRestClient
 
   constructor(network: Network) {
-    this.restClient = new HttpRestClient(getAssetMicroserviceEndpoint(network))
+    this.client = new HttpRestClient(getAssetMicroserviceEndpoint(network))
   }
 
   async fetchUsdTokensPriceMap() {
-    const { data } = (await this.restClient.get('denoms?withPrice=true')) as {
+    const response = await this.client.retry<{
       data: Record<string, TokenStaticWithPrice>
-    }
+    }>(() => this.client.get(`denoms?withPrice=true`))
 
-    const tokenPriceMap: Record<string, number> = Object.values(data).reduce(
-      (prices, tokenWithPrice) => {
-        const id = tokenWithPrice.coingecko_id || tokenWithPrice.denom
+    const tokenPriceMap: Record<string, number> = Object.values(
+      response.data,
+    ).reduce((prices, tokenWithPrice) => {
+      const id = tokenWithPrice.coingecko_id || tokenWithPrice.denom
 
-        return { ...prices, [id.toLowerCase()]: tokenWithPrice.price.price }
-      },
-      {},
-    )
+      if (prices[id]) {
+        return prices
+      }
+
+      prices[id] = tokenWithPrice.price.price
+
+      return prices
+    }, {} as Record<string, number>)
 
     return tokenPriceMap
   }

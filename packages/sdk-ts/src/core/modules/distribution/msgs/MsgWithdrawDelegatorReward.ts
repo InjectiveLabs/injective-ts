@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { CosmosDistributionV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -29,6 +29,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
 
     const message =
       CosmosDistributionV1Beta1Tx.MsgWithdrawDelegatorReward.create()
+
     message.delegatorAddress = params.delegatorAddress
     message.validatorAddress = params.validatorAddress
 
@@ -58,7 +59,7 @@ export default class MsgWithdrawDelegatorReward extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

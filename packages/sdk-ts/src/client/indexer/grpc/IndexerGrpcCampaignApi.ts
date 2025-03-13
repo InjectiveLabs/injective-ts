@@ -1,12 +1,13 @@
 import {
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
 import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerCampaignTransformer } from '../transformers'
-import { IndexerModule } from '../types'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerCampaignTransformer } from '../transformers/index.js'
+import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -71,7 +72,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'FetchCampaign',
           contextModule: this.module,
         })
@@ -80,6 +81,65 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'FetchCampaign',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchCampaigns({
+    type,
+    active,
+    limit,
+    cursor,
+    status,
+  }: {
+    type?: string
+    active?: boolean
+    limit?: number
+    cursor?: string
+    status?: string
+  }) {
+    const request = InjectiveCampaignRpc.CampaignsV2Request.create()
+
+    if (type) {
+      request.type = type
+    }
+
+    if (active) {
+      request.active = active
+    }
+
+    if (limit) {
+      request.limit = limit
+    }
+
+    if (cursor) {
+      request.cursor = cursor
+    }
+
+    if (status) {
+      request.status = status
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveCampaignRpc.CampaignsV2Response>(() =>
+          this.client.CampaignsV2(request),
+        )
+
+      return IndexerCampaignTransformer.CampaignsV2ResponseToCampaigns(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'FetchCampaigns',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'FetchCampaigns',
         contextModule: this.module,
       })
     }
@@ -123,7 +183,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveCampaignRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Campaigns',
           contextModule: this.module,
         })
@@ -171,7 +231,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'FetchGuilds',
           contextModule: this.module,
         })
@@ -209,7 +269,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'FetchGuildMember',
           contextModule: this.module,
         })
@@ -268,7 +328,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveMetaRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'FetchGuildMembers',
           contextModule: this.module,
         })

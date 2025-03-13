@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { CosmosAuthzV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -27,8 +27,8 @@ export default class MsgRevoke extends MsgBase<
     const { params } = this
 
     const message = CosmosAuthzV1Beta1Tx.MsgRevoke.create()
-    message.grantee = params.grantee
     message.granter = params.granter
+    message.grantee = params.grantee
     message.msgTypeUrl = params.messageType
 
     return CosmosAuthzV1Beta1Tx.MsgRevoke.fromPartial(message)
@@ -56,7 +56,7 @@ export default class MsgRevoke extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

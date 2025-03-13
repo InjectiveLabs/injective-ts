@@ -1,6 +1,9 @@
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
-import { MsgBase } from '../../MsgBase'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgIncreasePositionMargin {
@@ -19,10 +22,10 @@ const createMessage = (params: MsgIncreasePositionMargin.Params) => {
   const message = InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.create()
 
   message.sender = params.injectiveAddress
-  message.amount = params.amount
-  message.marketId = params.marketId
   message.sourceSubaccountId = params.srcSubaccountId
   message.destinationSubaccountId = params.dstSubaccountId
+  message.marketId = params.marketId
+  message.amount = params.amount
 
   return InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.fromPartial(
     message,
@@ -63,9 +66,9 @@ export default class MsgIncreasePositionMargin extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const proto = createMessage(params)
+    const msg = createMessage(params)
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(msg),
     }
 
     return {
@@ -74,7 +77,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -82,6 +85,33 @@ export default class MsgIncreasePositionMargin extends MsgBase<
       '@type': '/injective.exchange.v1beta1.MsgIncreasePositionMargin',
       ...value,
     }
+  }
+
+  public toEip712() {
+    const amino = this.toAmino()
+    const { type, value } = amino
+
+    const messageAdjusted = {
+      ...value,
+      amount: amountToCosmosSdkDecAmount(value.amount).toFixed(),
+    }
+
+    return {
+      type,
+      value: messageAdjusted,
+    }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      amount: numberToCosmosSdkDecString(params.amount),
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {

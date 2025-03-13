@@ -14,6 +14,7 @@ export enum Network {
   Testnet = 'testnet',
   Devnet1 = 'devnet1',
   Devnet2 = 'devnet2',
+  Devnet3 = 'devnet3',
   Devnet = 'devnet',
   Local = 'local',
 }
@@ -28,6 +29,7 @@ export type NetworkEndpoints = {
   chronos?: string // Chronos Service
   web3gw?: string // Web3Gateway Service
   explorer?: string // Explorer Service
+  chart?: string // Chart Service
 }
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */

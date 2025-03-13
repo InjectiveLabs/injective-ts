@@ -5,13 +5,13 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import { ChainModule, RestApiResponse } from '../types'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { ChainModule, RestApiResponse } from '../types/index.js'
 import {
   BalancesResponse,
   DenomBalance,
   DenomOwnersResponse,
-} from './../types/bank-rest'
+} from './../types/bank-rest.js'
 
 /**
  * @category Chain Rest API
@@ -39,7 +39,7 @@ export class ChainRestBankApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Bank,
@@ -88,7 +88,7 @@ export class ChainRestBankApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Bank,
@@ -117,7 +117,7 @@ export class ChainRestBankApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: ChainModule.Bank,

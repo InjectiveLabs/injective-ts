@@ -1,26 +1,29 @@
-import MsgVote from './msgs/MsgVote'
-import MsgGovDeposit from './msgs/MsgDeposit'
-import MsgSubmitProposalExpiryFuturesMarketLaunch from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch'
-import MsgSubmitProposalPerpetualMarketLaunch from './msgs/MsgSubmitProposalPerpetualMarketLaunch'
-import MsgSubmitProposalSpotMarketLaunch from './msgs/MsgSubmitProposalSpotMarketLaunch'
-import MsgSubmitProposalSpotMarketParamUpdate from './msgs/MsgSubmitProposalSpotMarketParamUpdate'
-import MsgSubmitTextProposal from './msgs/MsgSubmitTextProposal'
+import MsgVote from './msgs/MsgVote.js'
+import MsgGovDeposit from './msgs/MsgDeposit.js'
+import MsgSubmitTextProposal from './msgs/MsgSubmitTextProposal.js'
+import MsgSubmitGenericProposal from './msgs/MsgSubmitGenericProposal.js'
+import MsgSubmitProposalSpotMarketLaunch from './msgs/MsgSubmitProposalSpotMarketLaunch.js'
+import MsgSubmitProposalPerpetualMarketLaunch from './msgs/MsgSubmitProposalPerpetualMarketLaunch.js'
+import MsgSubmitProposalSpotMarketParamUpdate from './msgs/MsgSubmitProposalSpotMarketParamUpdate.js'
+import MsgSubmitProposalExpiryFuturesMarketLaunch from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch.js'
 
 export type MsgSubmitProposal =
-  | MsgSubmitProposalExpiryFuturesMarketLaunch
-  | MsgSubmitProposalPerpetualMarketLaunch
-  | MsgSubmitProposalSpotMarketLaunch
-  | MsgSubmitProposalSpotMarketParamUpdate
   | MsgSubmitTextProposal
+  | MsgSubmitGenericProposal
+  | MsgSubmitProposalSpotMarketLaunch
+  | MsgSubmitProposalPerpetualMarketLaunch
+  | MsgSubmitProposalSpotMarketParamUpdate
+  | MsgSubmitProposalExpiryFuturesMarketLaunch
 
 export {
-  MsgSubmitProposalExpiryFuturesMarketLaunch,
-  MsgSubmitProposalPerpetualMarketLaunch,
-  MsgSubmitProposalSpotMarketLaunch,
-  MsgSubmitProposalSpotMarketParamUpdate,
   MsgSubmitTextProposal,
+  MsgSubmitGenericProposal,
+  MsgSubmitProposalSpotMarketLaunch,
+  MsgSubmitProposalPerpetualMarketLaunch,
+  MsgSubmitProposalSpotMarketParamUpdate,
+  MsgSubmitProposalExpiryFuturesMarketLaunch,
 }
 
-export * from './ProposalContentDecomposer'
+export * from './ProposalContentDecomposer.js'
 
 export { MsgVote, MsgGovDeposit }

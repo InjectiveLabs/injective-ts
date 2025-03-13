@@ -1,39 +1,16 @@
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Proposal,
   InjectiveOracleV1Beta1Oracle,
+  InjectiveExchangeV1Beta1Proposal,
 } from '@injectivelabs/core-proto-ts'
-import { MsgBase } from '../../MsgBase'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers'
-
-const createProposalExpiryFuturesMarketLaunch = (
-  params: MsgSubmitProposalExpiryFuturesMarketLaunch.Params,
-) => {
-  const content =
-    InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.create()
-  content.title = params.market.title
-  content.description = params.market.description
-  content.quoteDenom = params.market.quoteDenom
-  content.ticker = params.market.ticker
-  content.initialMarginRatio = params.market.initialMarginRatio
-  content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
-  content.makerFeeRate = params.market.makerFeeRate
-  content.takerFeeRate = params.market.takerFeeRate
-  content.oracleBase = params.market.oracleBase
-  content.oracleQuote = params.market.oracleQuote
-  content.oracleScaleFactor = params.market.oracleScaleFactor
-  content.oracleType = params.market.oracleType
-  content.expiry = params.market.expiry.toString()
-  content.minPriceTickSize = params.market.minPriceTickSize
-  content.minQuantityTickSize = params.market.minQuantityTickSize
-
-  return InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.fromPartial(
-    content,
-  )
-}
+import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import { MsgBase } from '../../MsgBase.js'
+import {
+  amountToCosmosSdkDecAmount,
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
   export interface Params {
@@ -53,6 +30,11 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
       takerFeeRate: string
       minPriceTickSize: string
       minQuantityTickSize: string
+      minNotional: string
+      adminInfo?: {
+        admin: string
+        adminPermissions: number
+      }
     }
     proposer: string
     deposit: {
@@ -71,6 +53,42 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
   }
 }
 
+const createExpiryFuturesMarketLaunch = (
+  params: MsgSubmitProposalExpiryFuturesMarketLaunch.Params,
+) => {
+  const content =
+    InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.create()
+
+  content.title = params.market.title
+  content.description = params.market.description
+  content.ticker = params.market.ticker
+  content.quoteDenom = params.market.quoteDenom
+  content.oracleBase = params.market.oracleBase
+  content.oracleQuote = params.market.oracleQuote
+  content.oracleScaleFactor = params.market.oracleScaleFactor
+  content.oracleType = params.market.oracleType
+  content.expiry = params.market.expiry.toString()
+  content.initialMarginRatio = params.market.initialMarginRatio
+  content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
+  content.makerFeeRate = params.market.makerFeeRate
+  content.takerFeeRate = params.market.takerFeeRate
+  content.minPriceTickSize = params.market.minPriceTickSize
+  content.minQuantityTickSize = params.market.minQuantityTickSize
+  content.minNotional = params.market.minNotional
+
+  if (params.market.adminInfo) {
+    const adminInfo = InjectiveExchangeV1Beta1Proposal.AdminInfo.create()
+
+    adminInfo.admin = params.market.adminInfo.admin
+    adminInfo.adminPermissions = params.market.adminInfo.adminPermissions
+    content.adminInfo = adminInfo
+  }
+
+  return InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.fromPartial(
+    content,
+  )
+}
+
 /**
  * @category Messages
  */
@@ -86,46 +104,51 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
   }
 
   public toProto() {
-    const { params } = this
+    const { params: initialParams } = this
+
+    const params = {
+      ...initialParams,
+      market: {
+        ...initialParams.market,
+        initialMarginRatio: amountToCosmosSdkDecAmount(
+          initialParams.market.initialMarginRatio,
+        ).toFixed(),
+        maintenanceMarginRatio: amountToCosmosSdkDecAmount(
+          initialParams.market.maintenanceMarginRatio,
+        ).toFixed(),
+        makerFeeRate: amountToCosmosSdkDecAmount(
+          initialParams.market.makerFeeRate,
+        ).toFixed(),
+        takerFeeRate: amountToCosmosSdkDecAmount(
+          initialParams.market.takerFeeRate,
+        ).toFixed(),
+        minQuantityTickSize: amountToCosmosSdkDecAmount(
+          initialParams.market.minQuantityTickSize,
+        ).toFixed(),
+        minNotional: amountToCosmosSdkDecAmount(
+          initialParams.market.minNotional,
+        ).toFixed(),
+      },
+    }
 
     const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+
     depositParams.denom = params.deposit.denom
     depositParams.amount = params.deposit.amount
 
-    const content = createProposalExpiryFuturesMarketLaunch({
-      ...params,
-      market: {
-        ...params.market,
-        initialMarginRatio: amountToCosmosSdkDecAmount(
-          params.market.initialMarginRatio,
-        ).toFixed(),
-        maintenanceMarginRatio: amountToCosmosSdkDecAmount(
-          params.market.maintenanceMarginRatio,
-        ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
-          params.market.makerFeeRate,
-        ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
-          params.market.takerFeeRate,
-        ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
-          params.market.minQuantityTickSize,
-        ).toFixed(),
-      },
-    })
-
     const contentAny = GoogleProtobufAny.Any.create()
-    contentAny.value =
-      InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.encode(
-        content,
-      ).finish()
     contentAny.typeUrl =
       '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal'
+    contentAny.value =
+      InjectiveExchangeV1Beta1Proposal.ExpiryFuturesMarketLaunchProposal.encode(
+        createExpiryFuturesMarketLaunch(params),
+      ).finish()
 
     const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
+
     message.content = contentAny
-    message.proposer = params.proposer
     message.initialDeposit = [depositParams]
+    message.proposer = params.proposer
 
     return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
   }
@@ -142,18 +165,20 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
   public toAmino() {
     const { params } = this
 
+    const content = createExpiryFuturesMarketLaunch(params)
+
     const messageWithProposalType = snakecaseKeys({
-      proposer: params.proposer,
-      initialDeposit: [
+      content: {
+        type: 'exchange/ExpiryFuturesMarketLaunchProposal',
+        value: content,
+      },
+      initial_deposit: [
         {
           denom: params.deposit.denom,
           amount: params.deposit.amount,
         },
       ],
-      content: {
-        type_url: 'exchange/ExpiryFuturesMarketLaunchProposal',
-        value: this.getContent(),
-      },
+      proposer: params.proposer,
     })
 
     return {
@@ -163,21 +188,16 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
     }
   }
 
-  public toWeb3() {
-    const { params } = this
+  public toWeb3Gw() {
+    const amino = this.toAmino()
+    const { value } = amino
 
     const messageWithProposalType = {
-      proposer: params.proposer,
-      initialDeposit: [
-        {
-          denom: params.deposit.denom,
-          amount: params.deposit.amount,
-        },
-      ],
+      ...value,
       content: {
         '@type':
           '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal',
-        ...this.getContent(),
+        ...value.content.value,
       },
     }
 
@@ -185,6 +205,83 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
       ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>),
     }
+  }
+
+  public toEip712() {
+    const { params } = this
+    const amino = this.toAmino()
+    const { value, type } = amino
+
+    const messageAdjusted = {
+      ...value,
+      content: {
+        type: 'exchange/ExpiryFuturesMarketLaunchProposal',
+        value: {
+          ...value.content.value,
+          initial_margin_ratio: amountToCosmosSdkDecAmount(
+            params.market.initialMarginRatio,
+          ).toFixed(),
+          maintenance_margin_ratio: amountToCosmosSdkDecAmount(
+            params.market.maintenanceMarginRatio,
+          ).toFixed(),
+          maker_fee_rate: amountToCosmosSdkDecAmount(
+            params.market.makerFeeRate,
+          ).toFixed(),
+          taker_fee_rate: amountToCosmosSdkDecAmount(
+            params.market.takerFeeRate,
+          ).toFixed(),
+          min_price_tick_size: amountToCosmosSdkDecAmount(
+            params.market.minPriceTickSize,
+          ).toFixed(),
+          min_notional: amountToCosmosSdkDecAmount(
+            params.market.minNotional,
+          ).toFixed(),
+          min_quantity_tick_size: amountToCosmosSdkDecAmount(
+            params.market.minQuantityTickSize,
+          ).toFixed(),
+        },
+      },
+    }
+
+    return {
+      type,
+      value:
+        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>,
+    }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+    const content = web3gw.content as unknown as any
+
+    const messageAdjusted = {
+      ...web3gw,
+      content: {
+        ...content,
+        oracle_type: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
+          content.oracle_type,
+        ),
+        initial_margin_ratio: numberToCosmosSdkDecString(
+          params.market.initialMarginRatio,
+        ),
+        maintenance_margin_ratio: numberToCosmosSdkDecString(
+          params.market.maintenanceMarginRatio,
+        ),
+        maker_fee_rate: numberToCosmosSdkDecString(params.market.makerFeeRate),
+        taker_fee_rate: numberToCosmosSdkDecString(params.market.takerFeeRate),
+        min_price_tick_size: numberToCosmosSdkDecString(
+          params.market.minPriceTickSize,
+        ),
+        min_notional: numberToCosmosSdkDecString(params.market.minNotional),
+        min_quantity_tick_size: numberToCosmosSdkDecString(
+          params.market.minQuantityTickSize,
+        ),
+        admin_info: content.admin_info || null,
+      },
+    }
+
+    return messageAdjusted
   }
 
   public toDirectSign() {
@@ -198,11 +295,5 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
 
   public toBinary(): Uint8Array {
     return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
-  }
-
-  private getContent() {
-    const { params } = this
-
-    return createProposalExpiryFuturesMarketLaunch(params)
   }
 }

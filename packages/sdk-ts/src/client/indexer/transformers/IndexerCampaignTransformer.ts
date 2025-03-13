@@ -1,23 +1,16 @@
-import { Coin } from '@injectivelabs/ts-types'
 import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
-import { grpcPagingToPaging } from '../../..//utils/pagination'
+import { grpcPagingToPaging } from '../../..//utils/pagination.js'
+import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
 import {
   Guild,
   Campaign,
+  CampaignV2,
   GuildMember,
   CampaignUser,
   GuildCampaignSummary,
-} from '../types/campaign'
-import { GrpcCoin } from '../../../types'
+} from '../types/campaign.js'
 
 export class IndexerCampaignTransformer {
-  static GrpcCoinToCoin(coin: GrpcCoin): Coin {
-    return {
-      denom: coin.denom,
-      amount: coin.amount,
-    }
-  }
-
   static GrpcCampaignUserToCampaignUser(
     campaignUser: InjectiveCampaignRpc.CampaignUser,
   ): CampaignUser {
@@ -87,11 +80,9 @@ export class IndexerCampaignTransformer {
       totalTvl: member.totalTvl,
       volumeScorePercentage: member.volumeScorePercentage,
       tvlScorePercentage: member.tvlScorePercentage,
-      tvlReward: member.tvlReward.map(
-        IndexerCampaignTransformer.GrpcCoinToCoin,
-      ),
+      tvlReward: member.tvlReward.map(IndexerCommonTransformer.grpcCoinToCoin),
       volumeReward: member.volumeReward.map(
-        IndexerCampaignTransformer.GrpcCoinToCoin,
+        IndexerCommonTransformer.grpcCoinToCoin,
       ),
     }
   }
@@ -175,6 +166,41 @@ export class IndexerCampaignTransformer {
       guildInfo: response.guildInfo
         ? IndexerCampaignTransformer.GrpcGuildToGuild(response.guildInfo)
         : undefined,
+    }
+  }
+
+  static GrpcCampaignV2ToCampaignV2(
+    campaign: InjectiveCampaignRpc.CampaignV2,
+  ): CampaignV2 {
+    return {
+      campaignId: campaign.campaignId,
+      marketId: campaign.marketId,
+      totalScore: campaign.totalScore,
+      createdAt: campaign.createdAt,
+      updatedAt: campaign.updatedAt,
+      startDate: campaign.startDate,
+      endDate: campaign.endDate,
+      isClaimable: campaign.isClaimable,
+      roundId: campaign.roundId,
+      managerContract: campaign.managerContract,
+      rewards: campaign.rewards.map(IndexerCommonTransformer.grpcCoinToCoin),
+      subaccountIdSuffix: campaign.subaccountIdSuffix,
+      rewardContract: campaign.rewardContract,
+      type: campaign.type,
+      version: campaign.version,
+      name: campaign.name,
+      description: campaign.description,
+    }
+  }
+
+  static CampaignsV2ResponseToCampaigns(
+    response: InjectiveCampaignRpc.CampaignsV2Response,
+  ) {
+    return {
+      campaigns: response.campaigns.map(
+        IndexerCampaignTransformer.GrpcCampaignV2ToCampaignV2,
+      ),
+      cursor: response.cursor,
     }
   }
 }

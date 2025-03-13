@@ -1,4 +1,4 @@
-export { QueryAllRoutes } from './QueryAllRoutes'
-export { QueryOutputQuantity } from './QueryOutputQuantity'
-export { QueryInputQuantity } from './QueryInputQuantity'
-export { QueryRoute } from './QueryRoute'
+export { QueryAllRoutes } from './QueryAllRoutes.js'
+export { QueryOutputQuantity } from './QueryOutputQuantity.js'
+export { QueryInputQuantity } from './QueryInputQuantity.js'
+export { QueryRoute } from './QueryRoute.js'

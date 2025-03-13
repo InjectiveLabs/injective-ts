@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
-import { ExecArgs } from '../exec-args'
-import { MsgBase } from '../../MsgBase'
+import { ExecArgs } from '../exec-args.js'
+import { MsgBase } from '../../MsgBase.js'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { InjectiveWasmxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -82,9 +82,9 @@ export default class MsgExecuteContractCompat extends MsgBase<
     const message = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.create()
     const msg = this.getMsgObject()
 
-    message.msg = JSON.stringify(msg)
     message.sender = params.sender
     message.contract = params.contractAddress
+    message.msg = JSON.stringify(msg)
 
     if (params.funds) {
       const fundsToArray = Array.isArray(params.funds)
@@ -128,7 +128,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

@@ -1,2 +1,2 @@
-export * from './TokenPrice'
-export * from './TokenFactoryStatic'
+export * from './TokenPrice.js'
+export * from './TokenFactoryStatic.js'

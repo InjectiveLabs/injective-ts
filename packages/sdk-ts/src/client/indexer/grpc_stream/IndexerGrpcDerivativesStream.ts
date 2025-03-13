@@ -2,12 +2,12 @@ import {
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
-} from '../../../types'
-import { StreamStatusResponse } from '../types'
-import { PaginationOption } from '../../../types/pagination'
+} from '../../../types/index.js'
+import { StreamStatusResponse } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
 import { OrderSide, OrderState } from '@injectivelabs/ts-types'
-import { IndexerDerivativeStreamTransformer } from '../transformers'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
+import { IndexerDerivativeStreamTransformer } from '../transformers/index.js'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import { Subscription } from 'rxjs'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
@@ -45,6 +45,12 @@ export type DerivativeTradesStreamCallback = (
 export type PositionsStreamCallback = (
   response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.positionStreamCallback
+  >,
+) => void
+
+export type PositionsV2StreamCallback = (
+  response: ReturnType<
+    typeof IndexerDerivativeStreamTransformer.positionV2StreamCallback
   >,
 ) => void
 
@@ -429,6 +435,57 @@ export class IndexerGrpcDerivativesStream {
           IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
             response,
           ),
+        )
+      },
+      error(err) {
+        if (onStatusCallback) {
+          onStatusCallback(err)
+        }
+      },
+      complete() {
+        if (onEndCallback) {
+          onEndCallback()
+        }
+      },
+    })
+
+    return subscription as unknown as Subscription
+  }
+
+  streamDerivativePositionsV2({
+    marketId,
+    subaccountId,
+    callback,
+    address,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketId?: string
+    address?: string
+    subaccountId?: string
+    callback: PositionsV2StreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }): Subscription {
+    const request =
+      InjectiveDerivativeExchangeRpc.StreamPositionsV2Request.create()
+
+    if (marketId) {
+      request.marketId = marketId
+    }
+
+    if (address) {
+      request.accountAddress = address
+    }
+
+    if (subaccountId) {
+      request.subaccountId = subaccountId
+    }
+
+    const subscription = this.client.StreamPositionsV2(request).subscribe({
+      next(response: InjectiveDerivativeExchangeRpc.StreamPositionsV2Response) {
+        callback(
+          IndexerDerivativeStreamTransformer.positionV2StreamCallback(response),
         )
       },
       error(err) {

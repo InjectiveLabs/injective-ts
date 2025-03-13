@@ -240,6 +240,8 @@ export interface MitoIDO {
   marketId: string
   vaultAddress: string
   vestingConfig?: MitoVestingConfigMap
+  projectDescription: string
+  isPermissionless: boolean
 }
 
 export interface MitoIDOSubscriber {

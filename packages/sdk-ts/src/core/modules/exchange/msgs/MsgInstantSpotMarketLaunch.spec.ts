@@ -1,94 +1,56 @@
-import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch'
-import { mockFactory } from '@injectivelabs/test-utils'
-import snakecaseKeys from 'snakecase-keys'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch.js'
+import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 
 const market = mockFactory.injUsdtSpotMarket
 
 const params: MsgInstantSpotMarketLaunch['params'] = {
   proposer: mockFactory.injectiveAddress,
   market: {
+    minNotional: '1',
     sender: mockFactory.injectiveAddress,
     ticker: market.ticker,
     baseDenom: market.baseDenom,
     quoteDenom: market.quoteDenom,
+    baseDecimals: market.baseToken.decimals,
+    quoteDecimals: market.quoteToken.decimals,
     minPriceTickSize: market.minPriceTickSize,
     minQuantityTickSize: market.minQuantityTickSize,
   },
 }
 
-const protoType = '/injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
-const protoTypeAmino = 'exchange/MsgInstantSpotMarketLaunch'
-const protoParams = {
-  ...params.market,
-}
-const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgInstantSpotMarketLaunch.fromJSON(params)
 
 describe('MsgInstantSpotMarketLaunch', () => {
-  it('generates proper proto', () => {
-    const proto = message.toProto()
-
-    expect(proto).toStrictEqual({
-      ...protoParams,
-      minPriceTickSize: '1000',
-      minQuantityTickSize: '1000000000000000000000000000000000',
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      sequence: 0,
+      accountNumber: 3,
+      messages: message,
     })
-  })
 
-  it('generates proper data', () => {
-    const data = message.toData()
+    // TODO
+    it('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
 
-    expect(data).toStrictEqual({
-      '@type': protoType,
-      ...protoParams,
-      minPriceTickSize: '1000',
-      minQuantityTickSize: '1000000000000000000000000000000000',
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: 'v1',
+      })
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
-  })
 
-  it('generates proper amino', () => {
-    const amino = message.toAmino()
+    it('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
 
-    expect(amino).toStrictEqual({
-      type: protoTypeAmino,
-      value: protoParamsAmino,
-    })
-  })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({ ...prepareEip712Request, eip712Version: 'v2' })
 
-  it('generates proper Eip712 types', () => {
-    const eip712Types = message.toEip712Types()
-
-    expect(Object.fromEntries(eip712Types)).toStrictEqual({
-      MsgValue: [
-        { name: 'sender', type: 'string' },
-        { name: 'ticker', type: 'string' },
-        { name: 'base_denom', type: 'string' },
-        { name: 'quote_denom', type: 'string' },
-        { name: 'min_price_tick_size', type: 'string' },
-        { name: 'min_quantity_tick_size', type: 'string' },
-      ],
-    })
-  })
-
-  it('generates proper Eip712 values', () => {
-    const eip712 = message.toEip712()
-
-    expect(eip712).toStrictEqual({
-      type: protoTypeAmino,
-      value: snakecaseKeys({
-        ...protoParamsAmino,
-        min_price_tick_size: '0.000000000000001000',
-        min_quantity_tick_size: '1000000000000000.000000000000000000',
-      }),
-    })
-  })
-
-  it('generates proper web3', () => {
-    const web3 = message.toWeb3()
-
-    expect(web3).toStrictEqual({
-      '@type': protoType,
-      ...protoParamsAmino,
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
 })

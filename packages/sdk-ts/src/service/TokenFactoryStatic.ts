@@ -3,12 +3,13 @@ import {
   TokenSource,
   TokenStatic,
   TokenVerification,
-} from './../types'
+} from './../types/index.js'
 
 export class TokenFactoryStatic {
   public registry: TokenStatic[]
   public tokensByDenom: Record<string, TokenStatic>
   public tokensBySymbol: Record<string, TokenStatic[]>
+  public tokensByAddress: Record<string, TokenStatic[]>
 
   constructor(registry: TokenStatic[]) {
     this.registry = registry
@@ -19,13 +20,39 @@ export class TokenFactoryStatic {
         return list
       }
 
-      return { ...list, [denom]: token }
+      list[denom] = token
+
+      return list
     }, {} as Record<string, TokenStatic>)
 
     this.tokensBySymbol = registry.reduce((list, token) => {
       const symbol = token.symbol.toLowerCase()
 
-      return { ...list, [symbol]: [...(list[symbol] || []), token] }
+      if (list[symbol]) {
+        list[symbol] = [...list[symbol], token]
+
+        return list
+      }
+
+      list[symbol] = [token]
+
+      return list
+    }, {} as Record<string, TokenStatic[]>)
+
+    this.tokensByAddress = registry.reduce((list, token) => {
+      const address = token.address.toLowerCase()
+
+      if (!address) {
+        return list
+      }
+
+      if (list[address]) {
+        return list
+      }
+
+      list[address] = [token]
+
+      return list
     }, {} as Record<string, TokenStatic[]>)
   }
 
@@ -70,9 +97,22 @@ export class TokenFactoryStatic {
     return token || sortedTokens[0]
   }
 
-  getMetaByDenomOrAddress(denom: string): TokenStatic | undefined {
-    const formattedDenom = denom.toLowerCase()
+  getMetaByDenomOrAddress(denomOrAddress: string): TokenStatic | undefined {
+    const formattedDenom = denomOrAddress.toLowerCase()
 
-    return this.tokensByDenom[formattedDenom]
+    if (this.tokensByDenom[formattedDenom]) {
+      return this.tokensByDenom[formattedDenom]
+    }
+
+    if (!this.tokensByAddress[formattedDenom]) {
+      return
+    }
+
+    const verifiedToken = this.tokensByAddress[formattedDenom].find(
+      ({ tokenVerification }) =>
+        tokenVerification === TokenVerification.Verified,
+    )
+
+    return verifiedToken || this.tokensByAddress[formattedDenom][0]
   }
 }

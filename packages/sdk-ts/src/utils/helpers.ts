@@ -86,30 +86,6 @@ export const uint8ArrayToString = (
   return new TextDecoder().decode(string)
 }
 
-export const toPascalCase = (str: string): string => {
-  return `${str}`
-    .toLowerCase()
-    .replace(new RegExp(/[-_]+/, 'g'), ' ')
-    .replace(new RegExp(/[^\w\s]/, 'g'), '')
-    .replace(
-      new RegExp(/\s+(.)(\w*)/, 'g'),
-      (_$1, $2, $3) => `${$2.toUpperCase() + $3}`,
-    )
-    .replace(new RegExp(/\w/), (s) => s.toUpperCase())
-}
-
-export const snakeToPascal = (str: string): string => {
-  return str
-    .split('/')
-    .map((snake) =>
-      snake
-        .split('_')
-        .map((substr) => substr.charAt(0).toUpperCase() + substr.slice(1))
-        .join(''),
-    )
-    .join('/')
-}
-
 export const sortObjectByKeysWithReduce = <T>(obj: T): T => {
   if (typeof obj !== 'object' || obj === null) return obj
 
@@ -173,4 +149,18 @@ export const hexToNumber = (value: string): number => {
   }
 
   return negative ? -1 * Number(num) : Number(num)
+}
+
+export function isJsonString<T>(str: T): boolean {
+  if (typeof str !== 'string') {
+    return false
+  }
+
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+
+  return true
 }

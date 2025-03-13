@@ -1,4 +1,4 @@
-import { PeggyModuleParams } from '../types/peggy'
+import { PeggyModuleParams } from '../types/peggy.js'
 import { InjectivePeggyV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**

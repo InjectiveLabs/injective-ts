@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { InjectiveTokenFactoryV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -6,8 +6,10 @@ export declare namespace MsgCreateDenom {
   export interface Params {
     sender: string
     subdenom: string
+    decimals?: number
     name?: string
     symbol?: string
+    allowAdminBurn?: boolean
   }
 
   export type Proto = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom
@@ -28,10 +30,16 @@ export default class MsgCreateDenom extends MsgBase<
     const { params } = this
 
     const message = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.create()
+
     message.sender = params.sender
     message.subdenom = params.subdenom
     message.name = params.name || ''
     message.symbol = params.symbol || ''
+    message.decimals = params.decimals || 0
+
+    if (params.allowAdminBurn !== undefined) {
+      message.allowAdminBurn = params.allowAdminBurn
+    }
 
     return InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.fromPartial(message)
   }
@@ -57,7 +65,7 @@ export default class MsgCreateDenom extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

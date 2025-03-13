@@ -33,7 +33,7 @@ import {
   DerivativeOrderHistory,
   GrpcDerivativePositionV2,
   PositionV2,
-} from '../types/derivatives'
+} from '../types/derivatives.js'
 import {
   Orderbook,
   PriceLevel,
@@ -41,9 +41,9 @@ import {
   GrpcPriceLevel,
   IndexerTokenMeta,
   OrderbookWithSequence,
-} from '../types/exchange'
-import { TokenType } from '../../../types/token'
-import { grpcPagingToPaging } from '../../../utils/pagination'
+} from '../types/exchange.js'
+import { TokenType } from '../../../types/token.js'
+import { grpcPagingToPaging } from '../../../utils/pagination.js'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 const zeroPositionDelta = () => ({
@@ -298,7 +298,13 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcBinaryOptionsMarketsToBinaryOptionsMarkets(
           markets,
         ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: {
+        to: pagination?.to || 0,
+        from: pagination?.from || 0,
+        total: parseInt(pagination?.total || '0', 10),
+        countBySubaccount: parseInt(pagination?.countBySubaccount || '0', 10),
+        next: pagination?.next || [],
+      },
     }
   }
 
@@ -332,8 +338,9 @@ export class IndexerGrpcDerivativeTransformer {
       makerFeeRate: market.makerFeeRate,
       takerFeeRate: market.takerFeeRate,
       serviceProviderFee: market.serviceProviderFee,
-      minPriceTickSize: market.minPriceTickSize,
-      minQuantityTickSize: market.minQuantityTickSize,
+      minPriceTickSize: new BigNumber(market.minPriceTickSize).toNumber(),
+      minQuantityTickSize: new BigNumber(market.minQuantityTickSize).toNumber(),
+      minNotional: new BigNumber(market.minNotional).toNumber(),
       settlementPrice: market.settlementPrice,
     }
   }
@@ -369,6 +376,7 @@ export class IndexerGrpcDerivativeTransformer {
       serviceProviderFee: market.serviceProviderFee,
       minPriceTickSize: new BigNumber(market.minPriceTickSize).toNumber(),
       minQuantityTickSize: new BigNumber(market.minQuantityTickSize).toNumber(),
+      minNotional: new BigNumber(market.minNotional).toNumber(),
       perpetualMarketInfo:
         IndexerGrpcDerivativeTransformer.grpcPerpetualMarketInfoToPerpetualMarketInfo(
           market.perpetualMarketInfo,

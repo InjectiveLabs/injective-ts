@@ -1,10 +1,10 @@
-import { IndexerGrpcAccountStream } from './grpc_stream/IndexerGrpcAccountStream'
-import { IndexerGrpcAccountPortfolioStream } from './grpc_stream/IndexerGrpcAccountPortfolioStream'
-import { IndexerGrpcAuctionStream } from './grpc_stream/IndexerGrpcAuctionStream'
-import { IndexerGrpcDerivativesStream } from './grpc_stream/IndexerGrpcDerivativesStream'
-import { IndexerGrpcOracleStream } from './grpc_stream/IndexerGrpcOracleStream'
-import { IndexerGrpcSpotStream } from './grpc_stream/IndexerGrpcSpotStream'
-import { IndexerGrpcExplorerStream } from './grpc_stream/IndexerGrpcExplorerStream'
+import { IndexerGrpcAccountStream } from './grpc_stream/IndexerGrpcAccountStream.js'
+import { IndexerGrpcAccountPortfolioStream } from './grpc_stream/IndexerGrpcAccountPortfolioStream.js'
+import { IndexerGrpcAuctionStream } from './grpc_stream/IndexerGrpcAuctionStream.js'
+import { IndexerGrpcDerivativesStream } from './grpc_stream/IndexerGrpcDerivativesStream.js'
+import { IndexerGrpcOracleStream } from './grpc_stream/IndexerGrpcOracleStream.js'
+import { IndexerGrpcSpotStream } from './grpc_stream/IndexerGrpcSpotStream.js'
+import { IndexerGrpcExplorerStream } from './grpc_stream/IndexerGrpcExplorerStream.js'
 
 /**
  * @category Indexer Grpc API

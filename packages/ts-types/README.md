@@ -1,6 +1,6 @@
 # 🌟 Injective Protocol - TypeScript Types
 
-Enums, interfaces and some types in TypeScript for Injective related functionalities.
+Enums, interfaces and some types in TypeScript for Injective project's related functionalities.
 
 ---
 

@@ -1,32 +1,6 @@
-export * from './enums'
-export * from './aliases'
-export * from './transactions'
-export * from './cosmos'
-export * from './trade'
-
-export interface StreamStatusResponse {
-  details: string
-  code: number
-  metadata: any
-}
-
-export enum StreamOperation {
-  Insert = 'insert',
-  Delete = 'delete',
-  Replace = 'replace',
-  Update = 'update',
-  Invalidate = 'invalidate',
-}
-
-export interface PaginationOption {
-  key: string
-  offset?: number
-  skip?: number
-  limit?: number
-  reverse?: boolean
-  countTotal?: boolean
-}
-
-export interface Constructable<T> {
-  new (...args: never): T
-}
+export * from './enums.js'
+export * from './aliases.js'
+export * from './transactions.js'
+export * from './cosmos.js'
+export * from './trade.js'
+export * from './common.js'

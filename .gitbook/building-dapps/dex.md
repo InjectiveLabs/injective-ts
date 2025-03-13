@@ -47,11 +47,12 @@ export const indexerDerivativeStream = new IndexerGrpcDerivativeStream(
 )
 ```
 
-Then, we also need to setup a wallet connection to allow the user to connect to our DEX and start signing transactions. To make this happen we are going to use our `@injectivelabs/wallet-ts` package which allows users to connect with a various of different wallet providers and use them to sign transactions on Injective.
+Then, we also need to setup a wallet connection to allow the user to connect to our DEX and start signing transactions. To make this happen we are going to use our `@injectivelabs/wallet-strategy` package which allows users to connect with a various of different wallet providers and use them to sign transactions on Injective.
 
 ```ts
 // filename: Wallet.ts
-import { WalletStrategy, Wallet } from '@injectivelabs/wallet-ts'
+import { Wallet } from '@injectivelabs/wallet-base'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 const chainId = ChainId.Testnet // The Injective Chain chainId
@@ -74,14 +75,20 @@ Finally, to do the whole transaction flow (prepare + sign + broadcast) on Inject
 
 ```ts
 // filename: MsgBroadcaster.ts
-import { MsgBroadcaster } from '@injectivelabs/wallet-ts'
-import { walletStrategy } from './Wallet.ts'
-import { NETWORK } from './Services.ts'
+import { Wallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { MetamaskStrategy } from '@injectivelabs/wallet-evm'
 
-export const msgBroadcaster = new MsgBroadcaster({
-  walletStrategy,
-  network: NETWORK,
-})
+const strategyArgs: WalletStrategyArguments = {} /** define the args */
+const strategyEthArgs: ConcreteEthereumWalletStrategyArgs = {} /** if the wallet is an Ethereum wallet */
+const strategies = {
+  [Wallet.Metamask]: new MetamaskStrategy(strategyEthArgs)
+}
+
+export const walletStrategy = new BaseWalletStrategy({...strategyArgs, strategies})
+
+const broadcasterArgs: MsgBroadcasterOptions = {} /** define the broadcaster args */
+export const msgBroadcaster = new MsgBroadcaster({...broadcasterArgs, walletStrategy})
 ```
 
 ### Connect to the user's wallet
@@ -97,7 +104,7 @@ import {
   UnspecifiedErrorCode,
   ErrorType,
 } from '@injectivelabs/exceptions'
-import { Wallet } from '@injectivelabs/wallet-ts'
+import { Wallet } from '@injectivelabs/wallet-base'
 import { walletStrategy } from './Wallet.ts'
 
 export const getAddresses = async (wallet: Wallet): Promise<string[]> => {

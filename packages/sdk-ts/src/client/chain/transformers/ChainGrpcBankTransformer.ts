@@ -1,7 +1,8 @@
-import { GrpcCoin, Pagination } from '../../../types'
 import { Coin } from '@injectivelabs/ts-types'
-import { BankModuleParams, Metadata, TotalSupply } from '../types'
-import { grpcPaginationToPagination } from '../../../utils/pagination'
+import { Pagination } from '../../../types/index.js'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import { BankModuleParams, Metadata, TotalSupply } from '../types/index.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
 import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
 
@@ -9,21 +10,10 @@ import { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcBankTransformer {
-  static grpcCoinToCoin(coin: GrpcCoin): Coin {
-    return {
-      denom: coin.denom,
-      amount: coin.amount,
-    }
-  }
-
   static metadataToMetadata(
     metadata: CosmosBankV1Beta1Bank.Metadata,
   ): Metadata {
     return metadata
-  }
-
-  static grpcCoinsToCoins(coins: GrpcCoin[]): Coin[] {
-    return coins.map(ChainGrpcBankTransformer.grpcCoinToCoin)
   }
 
   static moduleParamsResponseToModuleParams(
@@ -62,7 +52,7 @@ export class ChainGrpcBankTransformer {
     const pagination = response.pagination
 
     return {
-      supply: balances.map(ChainGrpcBankTransformer.grpcCoinToCoin),
+      supply: balances.map(ChainGrpcCommonTransformer.grpcCoinToCoin),
       pagination: grpcPaginationToPagination(pagination),
     }
   }
@@ -85,7 +75,7 @@ export class ChainGrpcBankTransformer {
   static balanceResponseToBalance(
     response: CosmosBankV1Beta1Query.QueryBalanceResponse,
   ): Coin {
-    return ChainGrpcBankTransformer.grpcCoinToCoin(response.balance!)
+    return ChainGrpcCommonTransformer.grpcCoinToCoin(response.balance!)
   }
 
   static balancesResponseToBalances(
@@ -98,7 +88,7 @@ export class ChainGrpcBankTransformer {
     const pagination = response.pagination
 
     return {
-      balances: ChainGrpcBankTransformer.grpcCoinsToCoins(balances),
+      balances: balances.map(ChainGrpcCommonTransformer.grpcCoinToCoin),
       pagination: grpcPaginationToPagination(pagination),
     }
   }

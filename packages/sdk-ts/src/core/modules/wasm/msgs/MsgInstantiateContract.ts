@@ -1,10 +1,11 @@
-import { fromUtf8 } from '../../../../utils/utf8'
-import { MsgBase } from '../../MsgBase'
+import { fromUtf8 } from '../../../../utils/utf8.js'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmwasmWasmV1Tx,
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
+import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgInstantiateContract {
   export interface Params {
@@ -79,7 +80,7 @@ export default class MsgInstantiateContract extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 
@@ -87,6 +88,14 @@ export default class MsgInstantiateContract extends MsgBase<
       '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract',
       ...value,
     }
+  }
+
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712_v1 is not supported for MsgInstantiateContract. Please use EIP712_v2',
+      ),
+    )
   }
 
   public toDirectSign() {

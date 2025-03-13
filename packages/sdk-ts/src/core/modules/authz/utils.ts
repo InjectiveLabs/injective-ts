@@ -1,5 +1,5 @@
-import MsgExec from './msgs/MsgExec'
-import { Msgs } from './../msgs'
+import MsgExec from './msgs/MsgExec.js'
+import { Msgs } from './../msgs.js'
 import {
   GoogleProtobufAny,
   CosmosAuthzV1Beta1Authz,

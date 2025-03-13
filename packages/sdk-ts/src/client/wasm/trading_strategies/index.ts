@@ -1,1 +1,1 @@
-export * from './queries'
+export * from './queries/index.js'

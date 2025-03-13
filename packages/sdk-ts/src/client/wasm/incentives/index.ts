@@ -1,3 +1,3 @@
-export * from './types'
-export * from './queries'
-export * from './transformer'
+export * from './types.js'
+export * from './queries/index.js'
+export * from './transformer.js'

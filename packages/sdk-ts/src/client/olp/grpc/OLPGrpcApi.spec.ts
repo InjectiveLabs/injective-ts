@@ -1,6 +1,6 @@
-import { mockFactory } from '@injectivelabs/test-utils'
-import { OLPGrpcApi } from './OLPGrpcApi'
-import { DmmGrpcTransformer } from './transformers'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
+import { OLPGrpcApi } from './OLPGrpcApi.js'
+import { DmmGrpcTransformer } from './transformers/index.js'
 
 const epochId = 'epoch_230418_230515'
 const accountAddress = mockFactory.injectiveAddress
@@ -196,6 +196,25 @@ describe('OLPGrpcApi', () => {
     } catch (e) {
       console.error(
         'OLPGrpcApi.fetchRewardsEligibility => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchMarketRewardsRange', async () => {
+    try {
+      const response = await dmmGrpcApi.fetchMarketRewardsRange({ epochId })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof DmmGrpcTransformer.marketRewardsRangeResponseToMarketRewardsRange
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'OLPGrpcApi.fetchMarketRewardsRange => ' + (e as any).message,
       )
     }
   })

@@ -1,4 +1,4 @@
-import { Network } from './types'
+import { Network } from './types.js'
 
 export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Mainnet]: 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk',
@@ -15,6 +15,7 @@ export const CW20_ADAPTER_CONTRACT_BY_NETWORK = {
   [Network.Devnet]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.Devnet1]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.Devnet2]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
+  [Network.Devnet3]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
   [Network.Local]: 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6',
 }
 
@@ -33,6 +34,7 @@ export const CW20_SWAP_CONTRACT_BY_NETWORK = {
   [Network.Devnet]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
   [Network.Devnet1]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
   [Network.Devnet2]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
+  [Network.Devnet3]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
   [Network.Local]: 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h',
 }
 
@@ -51,6 +53,7 @@ export const INCENTIVES_CONTRACT_BY_NETWORK = {
   [Network.Devnet]: '',
   [Network.Devnet1]: '',
   [Network.Devnet2]: '',
+  [Network.Devnet3]: '',
   [Network.Local]: '',
 }
 
@@ -69,6 +72,7 @@ export const INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK = {
   [Network.Devnet]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
   [Network.Devnet1]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
   [Network.Devnet2]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
+  [Network.Devnet3]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
   [Network.Local]: 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa',
 }
 
@@ -87,6 +91,7 @@ export const INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK = {
   [Network.Devnet]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
   [Network.Devnet1]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
   [Network.Devnet2]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
+  [Network.Devnet3]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
   [Network.Local]: 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v',
 }
 
@@ -119,6 +124,8 @@ export const PEGGY_GRAPH_URL_BY_NETWORK = {
     'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet',
   [Network.Devnet2]:
     'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet',
+  [Network.Devnet3]:
+    'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet',
   [Network.Local]:
     'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet',
 }
@@ -149,5 +156,6 @@ export const ASSET_PRICE_URL_BY_NETWORK = {
   [Network.Devnet]: 'https://devnet.asset.injective.dev/asset-price/v1',
   [Network.Devnet1]: 'https://devnet.api.injective.dev/asset-price/v1',
   [Network.Devnet2]: 'https://devnet.api.injective.dev/asset-price/v1',
+  [Network.Devnet3]: 'https://devnet.api.injective.dev/asset-price/v1',
   [Network.Local]: 'https://devnet.api.injective.dev/asset-price/v1',
 }

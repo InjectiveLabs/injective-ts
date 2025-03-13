@@ -1,4 +1,4 @@
-import { uint8ArrayToString } from '../../../utils'
+import { uint8ArrayToString } from '../../../utils/index.js'
 import {
   Vote,
   Proposal,
@@ -11,10 +11,10 @@ import {
   GrpcGovernanceTallyParams,
   GrpcGovernanceVotingParams,
   GrpcGovernanceDepositParams,
-} from '../types/gov'
-import { Pagination } from '../../../types'
-import { grpcPaginationToPagination } from '../../../utils/pagination'
-import { cosmosSdkDecToBigNumber } from '../../../utils'
+} from '../types/gov.js'
+import { Pagination } from '../../../types/index.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
 import { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
@@ -28,7 +28,8 @@ export class ChainGrpcGovTransformer {
 
     return {
       depositParams: {
-        minDepositList: params?.minDeposit || [],
+        minDeposit: params?.minDeposit || [],
+        expeditedMinDeposit: params?.expeditedMinDeposit || [],
         maxDepositPeriod: parseInt(
           params?.maxDepositPeriod?.seconds || '0',
           10,
@@ -36,11 +37,17 @@ export class ChainGrpcGovTransformer {
       },
       votingParams: {
         votingPeriod: parseInt(params?.votingPeriod?.seconds || '0'),
+        expeditedVotingPeriod: parseInt(
+          params?.expeditedVotingPeriod?.seconds || '0',
+        ),
       },
       tallyParams: {
         quorum: uint8ArrayToString(params?.quorum || '0'),
         threshold: uint8ArrayToString(params?.threshold || '0'),
         vetoThreshold: uint8ArrayToString(params?.vetoThreshold || '0'),
+        expeditedThreshold: uint8ArrayToString(
+          params?.expeditedThreshold || '0',
+        ),
       },
     }
   }
@@ -56,7 +63,8 @@ export class ChainGrpcGovTransformer {
   }): GovModuleStateParams {
     return {
       depositParams: {
-        minDepositList: depositParams?.minDeposit,
+        minDeposit: depositParams?.minDeposit,
+        expeditedMinDeposit: depositParams?.expeditedMinDeposit,
         maxDepositPeriod: parseInt(
           depositParams?.maxDepositPeriod?.seconds || '0',
           10,
@@ -64,19 +72,27 @@ export class ChainGrpcGovTransformer {
       },
       votingParams: {
         votingPeriod: parseInt(votingParams.votingPeriod?.seconds || '0'),
+        expeditedVotingPeriod: parseInt(
+          votingParams.expeditedVotingPeriod?.seconds || '0',
+        ),
       },
       tallyParams: {
         quorum: uint8ArrayToString(tallyParams.quorum),
         threshold: uint8ArrayToString(tallyParams.threshold),
         vetoThreshold: uint8ArrayToString(tallyParams.vetoThreshold),
+        expeditedThreshold: uint8ArrayToString(tallyParams.expeditedThreshold),
       },
     }
   }
 
   static proposalResponseToProposal(
     response: CosmosGovV1Query.QueryProposalResponse,
-  ): Proposal {
+  ): Proposal | undefined {
     const proposal = response.proposal!
+
+    if (!proposal) {
+      return undefined
+    }
 
     return ChainGrpcGovTransformer.grpcProposalToProposal(proposal)
   }
@@ -93,7 +109,7 @@ export class ChainGrpcGovTransformer {
     const pagination = response.pagination
 
     return {
-      proposals: proposals,
+      proposals: proposals.filter((p) => p) as Proposal[],
       pagination: grpcPaginationToPagination(pagination),
     }
   }
@@ -159,9 +175,13 @@ export class ChainGrpcGovTransformer {
     }
   }
 
-  static grpcProposalToProposal(proposal: GrpcProposal): Proposal {
+  static grpcProposalToProposal(proposal: GrpcProposal): Proposal | undefined {
     const finalTallyResult = proposal.finalTallyResult
     const [message] = proposal.messages!
+
+    if (!message) {
+      return
+    }
 
     return {
       proposalId: parseInt(proposal.id, 10),
@@ -177,6 +197,8 @@ export class ChainGrpcGovTransformer {
         ? Math.floor(proposal.submitTime!.getTime() / 1000)
         : 0,
       status: proposal.status,
+      expedited: proposal.expedited,
+      failedReason: proposal.failedReason,
       finalTallyResult:
         ChainGrpcGovTransformer.grpcTallyResultToTallyResult(finalTallyResult),
       depositEndTime: proposal.depositEndTime

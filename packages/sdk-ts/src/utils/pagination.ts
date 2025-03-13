@@ -1,5 +1,5 @@
-import { ExchangePagination, PaginationOption } from '../types/pagination'
-import { Pagination, PagePagination } from '../types/pagination'
+import { ExchangePagination, PaginationOption } from '../types/pagination.js'
+import { Pagination, PagePagination } from '../types/pagination.js'
 import { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 

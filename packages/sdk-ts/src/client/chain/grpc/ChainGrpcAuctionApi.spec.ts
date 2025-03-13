@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcAuctionTransformer } from '../transformers'
-import { ChainGrpcAuctionApi } from './ChainGrpcAuctionApi'
+import { ChainGrpcAuctionTransformer } from '../transformers/index.js'
+import { ChainGrpcAuctionApi } from './ChainGrpcAuctionApi.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcAuctionApi = new ChainGrpcAuctionApi(endpoints.grpc)
@@ -59,6 +59,25 @@ describe('ChainGrpcAuctionApi', () => {
     } catch (e) {
       console.error(
         'ChainGrpcAuctionApi.fetchCurrentBasket => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchLastAuctionResult', async () => {
+    try {
+      const response = await chainGrpcAuctionApi.fetchLastAuctionResult()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof ChainGrpcAuctionTransformer.LastAuctionResultResponseToLastAuctionResult
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'ChainGrpcAuctionApi.fetchLastAuctionResult => ' + (e as any).message,
       )
     }
   })

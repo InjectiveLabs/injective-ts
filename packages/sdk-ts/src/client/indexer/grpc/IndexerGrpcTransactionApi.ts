@@ -5,22 +5,37 @@ import {
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
-import { recoverTypedSignaturePubKey } from '../../../utils/transaction'
-import { IndexerModule } from '../types'
+import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
+import { IndexerModule } from '../types/index.js'
 import {
-  GrpcUnaryRequestException,
-  TransactionException,
+  ErrorType,
   UnspecifiedErrorCode,
+  TransactionException,
+  grpcErrorCodeToErrorCode,
+  GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import {
-  CosmosBaseV1Beta1Coin,
   CosmosTxV1Beta1Tx,
+  CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
+
+interface PrepareTxArgs {
+  address: AccountAddress
+  chainId: EthereumChainId
+  message: any
+  estimateGas?: boolean
+  gasLimit?: number
+  memo?: string | number
+  timeoutHeight?: number
+  feeDenom?: string
+  feePrice?: string
+}
 
 /**
  * @category Indexer Grpc API
+ * @deprecated use IndexerGrpcWeb3GwApi
  */
 export class IndexerGrpcTransactionApi {
   protected module: string = IndexerModule.Transaction
@@ -33,27 +48,18 @@ export class IndexerGrpcTransactionApi {
     )
   }
 
-  async prepareTxRequest({
-    address,
-    chainId,
-    message,
-    memo,
-    estimateGas = true,
-    gasLimit = DEFAULT_GAS_LIMIT,
-    feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
-    feePrice = DEFAULT_BRIDGE_FEE_PRICE,
-    timeoutHeight,
-  }: {
-    address: AccountAddress
-    chainId: EthereumChainId
-    message: any
-    estimateGas?: boolean
-    gasLimit?: number
-    memo?: string | number
-    timeoutHeight?: number
-    feeDenom?: string
-    feePrice?: string
-  }) {
+  async prepareTxRequest(args: PrepareTxArgs) {
+    const {
+      address,
+      chainId,
+      message,
+      memo,
+      estimateGas = true,
+      gasLimit = DEFAULT_GAS_LIMIT,
+      feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
+      feePrice = DEFAULT_BRIDGE_FEE_PRICE,
+      timeoutHeight,
+    } = args
     const txFeeAmount = CosmosBaseV1Beta1Coin.Coin.create()
     txFeeAmount.denom = feeDenom
     txFeeAmount.amount = feePrice
@@ -92,7 +98,7 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'PrepareTx',
           contextModule: 'Web3Gateway',
           type: e.type,
@@ -101,10 +107,17 @@ export class IndexerGrpcTransactionApi {
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'PrepareTx',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.PrepareTx',
+        type: ErrorType.Web3Gateway,
       })
     }
+  }
+
+  async prepareExchangeTxRequest(args: PrepareTxArgs) {
+    return this.prepareTxRequest({
+      ...args,
+      gasLimit: args.gasLimit || DEFAULT_EXCHANGE_LIMIT,
+    })
   }
 
   async prepareCosmosTxRequest({
@@ -164,97 +177,17 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
-          context: 'CosmosPrepareTx',
-          contextModule: 'Web3Gateway',
+          contextCode: e.code,
+          context: 'Web3Gateway.CosmosPrepareTx',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'CosmosPrepareTx',
-        contextModule: 'Web3Gateway',
-      })
-    }
-  }
-
-  async prepareExchangeTxRequest({
-    address,
-    chainId,
-    message,
-    memo,
-    estimateGas = true,
-    gasLimit = DEFAULT_EXCHANGE_LIMIT,
-    feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
-    feePrice = DEFAULT_BRIDGE_FEE_PRICE,
-    timeoutHeight,
-    delegatedFee,
-  }: {
-    address: AccountAddress
-    chainId: EthereumChainId
-    message: any
-    estimateGas?: boolean
-    gasLimit?: number
-    memo?: string | number
-    feeDenom?: string
-    feePrice?: string
-    timeoutHeight?: number
-    delegatedFee?: boolean
-  }) {
-    const txFeeAmount = CosmosBaseV1Beta1Coin.Coin.create()
-    txFeeAmount.denom = feeDenom
-    txFeeAmount.amount = feePrice
-
-    const cosmosTxFee = InjectiveExchangeRpc.CosmosTxFee.create()
-    cosmosTxFee.price = [txFeeAmount]
-
-    if (delegatedFee !== undefined) {
-      cosmosTxFee.delegateFee = delegatedFee
-    }
-
-    if (!estimateGas) {
-      cosmosTxFee.gas = gasLimit.toString()
-    }
-
-    const prepareTxRequest = InjectiveExchangeRpc.PrepareTxRequest.create()
-    prepareTxRequest.chainId = chainId.toString()
-    prepareTxRequest.signerAddress = address
-    prepareTxRequest.fee = cosmosTxFee
-
-    const arrayOfMessages = Array.isArray(message) ? message : [message]
-    const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
-    )
-
-    prepareTxRequest.msgs = messagesList
-
-    if (timeoutHeight !== undefined) {
-      prepareTxRequest.timeoutHeight = timeoutHeight.toString()
-    }
-
-    if (memo) {
-      prepareTxRequest.memo = typeof memo === 'number' ? memo.toString() : memo
-    }
-
-    try {
-      const response = await this.client.PrepareTx(prepareTxRequest)
-
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
-        throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
-          type: e.type,
-          context: 'PrepareTx',
-          contextModule: 'Web3Gateway',
-        })
-      }
-
-      throw new TransactionException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'PrepareTx',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.CosmosPrepareTx',
+        type: ErrorType.Web3Gateway,
       })
     }
   }
@@ -314,17 +247,17 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
-          context: 'BroadcastTx',
-          contextModule: 'Web3Gateway',
+          contextCode: e.code,
+          context: 'Web3Gateway.BroadcastTx',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'BroadcastTx',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.BroadcastTx',
+        type: ErrorType.Web3Gateway,
       })
     }
   }
@@ -371,17 +304,17 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof GrpcUnaryRequestException) {
         throw new TransactionException(e.toOriginalError(), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
-          context: 'BroadcastTx',
-          contextModule: 'Web3Gateway',
+          contextCode: e.code,
+          context: 'Web3Gateway.BroadcastCosmosTx',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'BroadcastTx',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.BroadcastCosmosTx',
+        type: ErrorType.Web3Gateway,
       })
     }
   }
@@ -396,17 +329,16 @@ export class IndexerGrpcTransactionApi {
     } catch (e: unknown) {
       if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
         throw new TransactionException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           type: e.type,
-          context: 'FeePayer',
-          contextModule: 'Web3Gateway',
+          context: 'Web3Gateway.FeePayer',
         })
       }
 
       throw new TransactionException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'FeePayer',
-        contextModule: 'Web3Gateway',
+        context: 'Web3Gateway.FeePayer',
+        type: ErrorType.Web3Gateway,
       })
     }
   }

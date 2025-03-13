@@ -1,4 +1,4 @@
-import { MsgBase } from '../../MsgBase'
+import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -56,7 +56,7 @@ export default class MsgUpdateAdmin extends MsgBase<
     }
   }
 
-  public toWeb3() {
+  public toWeb3Gw() {
     const amino = this.toAmino()
     const { value } = amino
 

@@ -1,36 +1,36 @@
 import { MsgStatus, MsgType } from '@injectivelabs/ts-types'
-import BaseRestConsumer from '../../base/BaseRestConsumer'
-import {
-  Paging,
-  ExplorerTransaction,
-  ExplorerApiResponse,
-  ExplorerBlockWithTxs,
-  ExplorerValidatorUptime,
-  ContractExplorerApiResponse,
-  BlockFromExplorerApiResponse,
-  CW20BalanceExplorerApiResponse,
-  ExplorerApiResponseWithPagination,
-  TransactionFromExplorerApiResponse,
-  ValidatorUptimeFromExplorerApiResponse,
-  ContractTransactionExplorerApiResponse,
-  WasmCodeExplorerApiResponse,
-} from '../types/explorer-rest'
-import {
-  Contract,
-  WasmCode,
-  BankTransfer,
-  ContractTransaction,
-  ExplorerCW20BalanceWithToken,
-  BankTransferFromExplorerApiResponse,
-  ContractTransactionWithMessages,
-} from '../types/explorer'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { IndexerRestExplorerTransformer } from '../transformers'
-import { Block, ExplorerValidator } from '../types/explorer'
-import { IndexerModule } from '../types'
+import {
+  Paging,
+  Contract,
+  WasmCode,
+  BankTransfer,
+  ExplorerTransaction,
+  ContractTransaction,
+  ExplorerBlockWithTxs,
+  ExplorerValidatorUptime,
+  ExplorerCW20BalanceWithToken,
+  ContractTransactionWithMessages,
+} from '../types/explorer.js'
+import {
+  ExplorerApiResponse,
+  ContractExplorerApiResponse,
+  WasmCodeExplorerApiResponse,
+  BlockFromExplorerApiResponse,
+  CW20BalanceExplorerApiResponse,
+  ExplorerApiResponseWithPagination,
+  TransactionFromExplorerApiResponse,
+  BankTransferFromExplorerApiResponse,
+  ValidatorUptimeFromExplorerApiResponse,
+  ContractTransactionExplorerApiResponse,
+} from '../types/explorer-rest.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { Block, ExplorerValidator } from '../types/explorer.js'
+import { IndexerRestExplorerTransformer } from '../transformers/index.js'
+import { IndexerModule } from '../types/index.js'
 
 const explorerEndpointSuffix = 'api/explorer/v1'
 
@@ -62,7 +62,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -103,7 +103,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -146,7 +146,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -214,7 +214,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -291,7 +291,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -315,7 +315,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         contextModule: IndexerModule.Explorer,
       })
@@ -342,7 +342,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -374,7 +374,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -398,7 +398,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -449,7 +449,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -502,7 +502,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -558,7 +558,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -582,7 +582,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -626,7 +626,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -656,7 +656,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -690,7 +690,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,
@@ -742,7 +742,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         throw e
       }
 
-      throw new HttpRequestException(new Error((e as any).message), {
+      throw new HttpRequestException(new Error(e as any), {
         code: UnspecifiedErrorCode,
         context: `${this.endpoint}/${endpoint}`,
         contextModule: IndexerModule.Explorer,

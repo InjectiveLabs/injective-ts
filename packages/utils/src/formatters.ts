@@ -13,3 +13,30 @@ export const formatWalletAddress = (
     address.length,
   )}`
 }
+
+export const toPascalCase = (str: string): string => {
+  return `${str}`
+    .toLowerCase()
+    .replace(new RegExp(/[-_]+/, 'g'), ' ')
+    .replace(new RegExp(/[^\w\s]/, 'g'), '')
+    .replace(
+      new RegExp(/\s+(.)(\w*)/, 'g'),
+      (_$1, $2, $3) => `${$2.toUpperCase() + $3}`,
+    )
+    .replace(new RegExp(/\w/), (s) => s.toUpperCase())
+}
+
+export const snakeToPascal = (str: string): string => {
+  return str
+    .split('/')
+    .map((snake) =>
+      snake
+        .split('_')
+        .map((substr) => substr.charAt(0).toUpperCase() + substr.slice(1))
+        .join(''),
+    )
+    .join('/')
+}
+
+export const capitalize = (str: string): string =>
+  str[0].toUpperCase() + str.slice(1)

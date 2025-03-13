@@ -1,2 +1,2 @@
-export * from './queries'
-export * from './transformer'
+export * from './queries/index.js'
+export * from './transformer.js'

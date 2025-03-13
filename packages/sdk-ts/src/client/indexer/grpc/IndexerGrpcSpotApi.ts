@@ -1,6 +1,7 @@
 import {
   GeneralException,
   UnspecifiedErrorCode,
+  grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import { OrderSide, OrderState } from '@injectivelabs/ts-types'
@@ -9,11 +10,11 @@ import {
   TradeExecutionSide,
   TradeDirection,
   TradeExecutionType,
-} from '../../../types/exchange'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer'
-import { IndexerModule } from '../types'
-import { PaginationOption } from '../../../types/pagination'
-import { IndexerGrpcSpotTransformer } from '../transformers'
+} from '../../../types/exchange.js'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerModule } from '../types/index.js'
+import { PaginationOption } from '../../../types/pagination.js'
+import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -66,7 +67,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Markets',
           contextModule: this.module,
         })
@@ -95,7 +96,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Market',
           contextModule: this.module,
         })
@@ -121,9 +122,18 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     orderSide?: OrderSide
     isConditional?: boolean
     pagination?: PaginationOption
+    cid?: string
+    tradeId?: string
   }) {
-    const { marketId, marketIds, subaccountId, orderSide, pagination } =
-      params || {}
+    const {
+      cid,
+      tradeId,
+      marketId,
+      marketIds,
+      orderSide,
+      pagination,
+      subaccountId,
+    } = params || {}
     const request = InjectiveSpotExchangeRpc.OrdersRequest.create()
 
     if (marketId) {
@@ -142,11 +152,17 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
       request.orderSide = orderSide
     }
 
-    /*
-    if (isConditional !== undefined) {
-      request.isConditional =isConditional
+    if (cid) {
+      request.cid = cid
     }
-    */
+
+    if (tradeId) {
+      request.tradeId = tradeId
+    }
+
+    // if (isConditional !== undefined) {
+    //   request.isConditional = isConditional
+    // }
 
     if (pagination) {
       if (pagination.skip !== undefined) {
@@ -176,7 +192,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Orders',
           contextModule: this.module,
         })
@@ -191,25 +207,29 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
   }
 
   async fetchOrderHistory(params?: {
-    subaccountId?: string
+    cid?: string
+    state?: OrderState
+    tradeId?: string
     marketId?: string
     marketIds?: string[]
-    orderTypes?: OrderSide[]
-    executionTypes?: TradeExecutionType[]
     direction?: TradeDirection
-    isConditional?: boolean
-    state?: OrderState
+    orderTypes?: OrderSide[]
     pagination?: PaginationOption
+    isConditional?: boolean
+    executionTypes?: TradeExecutionType[]
+    subaccountId?: string
   }) {
     const {
-      subaccountId,
+      cid,
+      state,
+      tradeId,
       marketId,
+      direction,
       marketIds,
       orderTypes,
-      executionTypes,
-      direction,
-      state,
       pagination,
+      subaccountId,
+      executionTypes,
     } = params || {}
 
     const request = InjectiveSpotExchangeRpc.OrdersHistoryRequest.create()
@@ -240,6 +260,14 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
 
     if (state) {
       request.state = state
+    }
+
+    if (cid) {
+      request.cid = cid
+    }
+
+    if (tradeId) {
+      request.tradeId = tradeId
     }
 
     /*
@@ -278,7 +306,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'OrdersHistory',
           contextModule: this.module,
         })
@@ -304,6 +332,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     pagination?: PaginationOption
     executionSide?: TradeExecutionSide
     executionTypes?: TradeExecutionType[]
+    cid?: string
   }) {
     const {
       endTime,
@@ -317,6 +346,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
       executionSide,
       executionTypes,
       accountAddress,
+      cid,
     } = params || {}
 
     const request = InjectiveSpotExchangeRpc.TradesRequest.create()
@@ -361,6 +391,10 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
       request.endTime = endTime.toString()
     }
 
+    if (cid) {
+      request.cid = cid
+    }
+
     if (pagination) {
       if (pagination.skip !== undefined) {
         request.skip = pagination.skip.toString()
@@ -389,7 +423,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'Trades',
           contextModule: this.module,
         })
@@ -440,7 +474,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountOrdersList',
           contextModule: this.module,
         })
@@ -504,7 +538,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'SubaccountTradesList',
           contextModule: this.module,
         })
@@ -542,7 +576,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'OrderbooksV2',
           contextModule: this.module,
         })
@@ -573,7 +607,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'OrderbookV2',
           contextModule: this.module,
         })
@@ -628,7 +662,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     } catch (e: unknown) {
       if (e instanceof InjectiveSpotExchangeRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
+          code: grpcErrorCodeToErrorCode(e.code),
           context: 'AtomicSwapHistory',
           contextModule: this.module,
         })

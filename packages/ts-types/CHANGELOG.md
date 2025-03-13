@@ -3,13 +3,183 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.14.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.13-beta.0...@injectivelabs/ts-types@1.14.13) (2024-07-02)
+## [1.14.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.41-alpha.2...@injectivelabs/ts-types@1.14.42) (2025-03-06)
 
 **Note:** Version bump only for package @injectivelabs/ts-types
 
+## [1.14.41](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.34-beta.2...@injectivelabs/ts-types@1.14.41) (2025-02-19)
 
+## 1.14.40 (2025-01-21)
 
+## 1.14.35 (2025-01-20)
 
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## [1.14.40](https://github.com/InjectiveLabs/injective-ts/compare/v1.14.35...v1.14.40) (2025-01-21)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## 1.14.35 (2025-01-20)
+
+### Bug Fixes
+
+- added executionSide prop to trade objects ([#78](https://github.com/InjectiveLabs/injective-ts/issues/78)) ([35da59c](https://github.com/InjectiveLabs/injective-ts/commit/35da59c33c9fb8a198306b4bbcaf27dd407a4fda))
+- added InjectiveChainId enum ([8d9d7a6](https://github.com/InjectiveLabs/injective-ts/commit/8d9d7a65da23db77bba34276e0537faf56e174d5))
+- added msg types ([3db400d](https://github.com/InjectiveLabs/injective-ts/commit/3db400db2c2b900f95f24e96c68be0b9c86e9ad6))
+- bridge utils ([0961fca](https://github.com/InjectiveLabs/injective-ts/commit/0961fca000f812aa1d0b045764fa9c7dd126187c))
+- build ([c30f86b](https://github.com/InjectiveLabs/injective-ts/commit/c30f86b9e2a18495c3388fa59f945b6de3a4dbf7))
+- build script ([6e8c15f](https://github.com/InjectiveLabs/injective-ts/commit/6e8c15f5d0c0d61e15766abb6217f3fa34cdf791))
+- change log ([e039b61](https://github.com/InjectiveLabs/injective-ts/commit/e039b6173a1037bafb026c71f82cb08a073fad6a))
+- delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+- esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+- fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+- imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
+- leap wallet ([9ffd089](https://github.com/InjectiveLabs/injective-ts/commit/9ffd0899b462cb6ca6871a858fcc4a3353845fa3))
+- minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+- missing secret chainId ([641e7b9](https://github.com/InjectiveLabs/injective-ts/commit/641e7b9e88102f153928315aac8d24267d6511a8))
+- move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
+- orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
+- package sizes ([278037d](https://github.com/InjectiveLabs/injective-ts/commit/278037d244b780b30b1036127fe540ac74ca6557))
+- package version ([f861fbf](https://github.com/InjectiveLabs/injective-ts/commit/f861fbf21f5f78d1b840930a67b05c578087a3b8))
+- package version update to prevent publishing error ([4c7ae5c](https://github.com/InjectiveLabs/injective-ts/commit/4c7ae5cf98fc4910fb349201bc693d83ec3f9f66))
+- path import ([ae57777](https://github.com/InjectiveLabs/injective-ts/commit/ae57777119f650c3f819cd0919ee568e646c82a4))
+- script minor ([adb7c76](https://github.com/InjectiveLabs/injective-ts/commit/adb7c764ad00a0cfa38223cecf9b221873cd31b8))
+- streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+- updated package json scripts ([1ca5d9d](https://github.com/InjectiveLabs/injective-ts/commit/1ca5d9dd97e735b71e819498160d94c760f79787))
+- version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
+- versions ([b7770bf](https://github.com/InjectiveLabs/injective-ts/commit/b7770bf382619115063ecdee2a9bd39b520e70de))
+
+### Features
+
+- add crescent ([c902e84](https://github.com/InjectiveLabs/injective-ts/commit/c902e84fe1addf9f7fc01ba2098629a1ef313d69))
+- add unit test coverage for eip712 messages ([#75](https://github.com/InjectiveLabs/injective-ts/issues/75)) ([cf7e2fd](https://github.com/InjectiveLabs/injective-ts/commit/cf7e2fde727979fcf2187385d72b96efbed6d61a))
+- added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+- added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+- added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+- added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+- bridge support for sommelier ([be8646a](https://github.com/InjectiveLabs/injective-ts/commit/be8646ac4aaa2287be5c38aabeb9bf3fc78b6029))
+- bridge-ts initial ([4320b1c](https://github.com/InjectiveLabs/injective-ts/commit/4320b1c256b58caec7a08c33854f0bdde9681c3c))
+- chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+- contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+- contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+- enable keplr on devnet ([021a315](https://github.com/InjectiveLabs/injective-ts/commit/021a3156090398fde4b645bf3aecf5fa3a327b1c))
+- funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
+- ibc gateway support for wormhole ([fbf7d96](https://github.com/InjectiveLabs/injective-ts/commit/fbf7d9600507367687ebe8bebbb00485583c79d3))
+- initial monorepo setup with initial set of packages ([99aab6c](https://github.com/InjectiveLabs/injective-ts/commit/99aab6c2a1913ab48ce1cc9558db4843be72ccb5))
+- luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+- ninji wallet ([6a7cacb](https://github.com/InjectiveLabs/injective-ts/commit/6a7cacb1ea40231b751c8a63a94b4c335b7995a3))
+- optimise bundle size ([03bb060](https://github.com/InjectiveLabs/injective-ts/commit/03bb060357d7b89802ec1422ccbc44841acbbeb5))
+- order history ([#70](https://github.com/InjectiveLabs/injective-ts/issues/70)) ([74dcc0f](https://github.com/InjectiveLabs/injective-ts/commit/74dcc0f1373c3cc13934cee8b70095df17032cb4))
+- peggy upgrade ([b2e658f](https://github.com/InjectiveLabs/injective-ts/commit/b2e658f405dee42c62005c2cc623658068534878))
+- sepholia migration ([2b7823b](https://github.com/InjectiveLabs/injective-ts/commit/2b7823bed6d8ddd2faa979dc71d7360d40e7630d))
+- subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+- tx filters ([1b48cd8](https://github.com/InjectiveLabs/injective-ts/commit/1b48cd81bffe85ee8556826274d9eb92eb67fb1d))
+- ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
+- Wallet Connect - basic integration ([b260f5b](https://github.com/InjectiveLabs/injective-ts/commit/b260f5b7ed39d3cbf0f80b4a6515aa1d5b513731))
+- wormhole gw ([1253e57](https://github.com/InjectiveLabs/injective-ts/commit/1253e57341ecae8da67e4132957b7d8dc21a65f4))
+
+# (2025-01-20)
+
+### Bug Fixes
+
+- added executionSide prop to trade objects ([#78](https://github.com/InjectiveLabs/injective-ts/issues/78)) ([35da59c](https://github.com/InjectiveLabs/injective-ts/commit/35da59c33c9fb8a198306b4bbcaf27dd407a4fda))
+- added InjectiveChainId enum ([8d9d7a6](https://github.com/InjectiveLabs/injective-ts/commit/8d9d7a65da23db77bba34276e0537faf56e174d5))
+- added msg types ([3db400d](https://github.com/InjectiveLabs/injective-ts/commit/3db400db2c2b900f95f24e96c68be0b9c86e9ad6))
+- bridge utils ([0961fca](https://github.com/InjectiveLabs/injective-ts/commit/0961fca000f812aa1d0b045764fa9c7dd126187c))
+- build ([c30f86b](https://github.com/InjectiveLabs/injective-ts/commit/c30f86b9e2a18495c3388fa59f945b6de3a4dbf7))
+- build script ([6e8c15f](https://github.com/InjectiveLabs/injective-ts/commit/6e8c15f5d0c0d61e15766abb6217f3fa34cdf791))
+- change log ([e039b61](https://github.com/InjectiveLabs/injective-ts/commit/e039b6173a1037bafb026c71f82cb08a073fad6a))
+- delegated fee false condition skip ([e88bd25](https://github.com/InjectiveLabs/injective-ts/commit/e88bd251a37e5a8930a13ade37ac588b0e6a81d5))
+- esm imports ([7ba5cf6](https://github.com/InjectiveLabs/injective-ts/commit/7ba5cf69a58a3d4bb677859737089592c081552a))
+- fixed compiling issue with the assert package ([7e8f213](https://github.com/InjectiveLabs/injective-ts/commit/7e8f213d44bca4bb15329ee32cf843a11dc549ae))
+- imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
+- leap wallet ([9ffd089](https://github.com/InjectiveLabs/injective-ts/commit/9ffd0899b462cb6ca6871a858fcc4a3353845fa3))
+- minor ([39b553b](https://github.com/InjectiveLabs/injective-ts/commit/39b553b40cd7623836268651e892e5ed10812828))
+- missing secret chainId ([641e7b9](https://github.com/InjectiveLabs/injective-ts/commit/641e7b9e88102f153928315aac8d24267d6511a8))
+- move dependency to proper package.json ([3e57c96](https://github.com/InjectiveLabs/injective-ts/commit/3e57c96e4a3af096d7e3815f4d3e5b183bd5bdf4))
+- orderMask and twitter link ([0474569](https://github.com/InjectiveLabs/injective-ts/commit/047456994f5233ed099174cd7f96a34f29dfbce8))
+- package sizes ([278037d](https://github.com/InjectiveLabs/injective-ts/commit/278037d244b780b30b1036127fe540ac74ca6557))
+- package version ([f861fbf](https://github.com/InjectiveLabs/injective-ts/commit/f861fbf21f5f78d1b840930a67b05c578087a3b8))
+- package version update to prevent publishing error ([4c7ae5c](https://github.com/InjectiveLabs/injective-ts/commit/4c7ae5cf98fc4910fb349201bc693d83ec3f9f66))
+- path import ([ae57777](https://github.com/InjectiveLabs/injective-ts/commit/ae57777119f650c3f819cd0919ee568e646c82a4))
+- script minor ([adb7c76](https://github.com/InjectiveLabs/injective-ts/commit/adb7c764ad00a0cfa38223cecf9b221873cd31b8))
+- streams callbacks ([4984cdb](https://github.com/InjectiveLabs/injective-ts/commit/4984cdbc7485cd2c9e195aa4cbc83010b79ca920))
+- updated package json scripts ([1ca5d9d](https://github.com/InjectiveLabs/injective-ts/commit/1ca5d9dd97e735b71e819498160d94c760f79787))
+- version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
+- versions ([b7770bf](https://github.com/InjectiveLabs/injective-ts/commit/b7770bf382619115063ecdee2a9bd39b520e70de))
+
+### Features
+
+- add crescent ([c902e84](https://github.com/InjectiveLabs/injective-ts/commit/c902e84fe1addf9f7fc01ba2098629a1ef313d69))
+- add unit test coverage for eip712 messages ([#75](https://github.com/InjectiveLabs/injective-ts/issues/75)) ([cf7e2fd](https://github.com/InjectiveLabs/injective-ts/commit/cf7e2fde727979fcf2187385d72b96efbed6d61a))
+- added description to the packages ([6970b67](https://github.com/InjectiveLabs/injective-ts/commit/6970b67427786cb92ef22e695d4a228e87a5cdf8))
+- added execution side filter for spot market trades ([09ed791](https://github.com/InjectiveLabs/injective-ts/commit/09ed791559a167d5ed19d04c1cb03a7ae6d5e2c8))
+- added oracle streaming ([79a9661](https://github.com/InjectiveLabs/injective-ts/commit/79a9661b52acd4a672dc1f694ef6c1d44c940d61))
+- added timeout height ([c46c2f8](https://github.com/InjectiveLabs/injective-ts/commit/c46c2f8854ad8c23d61fb27c791db11bd438c316))
+- bridge support for sommelier ([be8646a](https://github.com/InjectiveLabs/injective-ts/commit/be8646ac4aaa2287be5c38aabeb9bf3fc78b6029))
+- bridge-ts initial ([4320b1c](https://github.com/InjectiveLabs/injective-ts/commit/4320b1c256b58caec7a08c33854f0bdde9681c3c))
+- chainConsumer add support for MsgInstantSpotMarketLaunch ([4bc6a49](https://github.com/InjectiveLabs/injective-ts/commit/4bc6a49a125e58f2dd5dce2d1e6da8557b64a976))
+- contract packages initial setup completed ([6d47818](https://github.com/InjectiveLabs/injective-ts/commit/6d47818ab3c9973e7138e60fef537d804ed4e5e8))
+- contract packages initial setup completed ([49ccff4](https://github.com/InjectiveLabs/injective-ts/commit/49ccff4b6ab20f3931eaa6cdbf17284ee78e7ad2))
+- enable keplr on devnet ([021a315](https://github.com/InjectiveLabs/injective-ts/commit/021a3156090398fde4b645bf3aecf5fa3a327b1c))
+- funding payments, validator uptime, bridge txs ([e6265d4](https://github.com/InjectiveLabs/injective-ts/commit/e6265d4a1893701284c271e9e9715368a2cd1104))
+- ibc gateway support for wormhole ([fbf7d96](https://github.com/InjectiveLabs/injective-ts/commit/fbf7d9600507367687ebe8bebbb00485583c79d3))
+- initial monorepo setup with initial set of packages ([99aab6c](https://github.com/InjectiveLabs/injective-ts/commit/99aab6c2a1913ab48ce1cc9558db4843be72ccb5))
+- luna and ust ([6e94041](https://github.com/InjectiveLabs/injective-ts/commit/6e9404121cba532b3ff0df3629b9e675c1d7ca1a))
+- ninji wallet ([6a7cacb](https://github.com/InjectiveLabs/injective-ts/commit/6a7cacb1ea40231b751c8a63a94b4c335b7995a3))
+- optimise bundle size ([03bb060](https://github.com/InjectiveLabs/injective-ts/commit/03bb060357d7b89802ec1422ccbc44841acbbeb5))
+- order history ([#70](https://github.com/InjectiveLabs/injective-ts/issues/70)) ([74dcc0f](https://github.com/InjectiveLabs/injective-ts/commit/74dcc0f1373c3cc13934cee8b70095df17032cb4))
+- peggy upgrade ([b2e658f](https://github.com/InjectiveLabs/injective-ts/commit/b2e658f405dee42c62005c2cc623658068534878))
+- sepholia migration ([2b7823b](https://github.com/InjectiveLabs/injective-ts/commit/2b7823bed6d8ddd2faa979dc71d7360d40e7630d))
+- subaccount decoupled from spot to own package ([e017056](https://github.com/InjectiveLabs/injective-ts/commit/e0170563e643cbb1b8d483cc046f6ec2924a14a8))
+- tx filters ([1b48cd8](https://github.com/InjectiveLabs/injective-ts/commit/1b48cd81bffe85ee8556826274d9eb92eb67fb1d))
+- ui common services ([74f5099](https://github.com/InjectiveLabs/injective-ts/commit/74f5099cd603086a713d4fb436ad6a322e45ea25))
+- Wallet Connect - basic integration ([b260f5b](https://github.com/InjectiveLabs/injective-ts/commit/b260f5b7ed39d3cbf0f80b4a6515aa1d5b513731))
+- wormhole gw ([1253e57](https://github.com/InjectiveLabs/injective-ts/commit/1253e57341ecae8da67e4132957b7d8dc21a65f4))
+
+## [1.14.33](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.32...@injectivelabs/ts-types@1.14.33) (2024-11-29)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## [1.14.32](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.30...@injectivelabs/ts-types@1.14.32) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## [1.14.30](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.20...@injectivelabs/ts-types@1.14.30) (2024-11-25)
+
+### Bug Fixes
+
+- version ([24f63c9](https://github.com/InjectiveLabs/injective-ts/commit/24f63c9d175507982ac77ce24e5cbce4cab96804))
+
+## [1.14.20](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.19...@injectivelabs/ts-types@1.14.20) (2024-11-25)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## [1.14.19](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.17...@injectivelabs/ts-types@1.14.19) (2024-11-11)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## [1.14.17](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.16...@injectivelabs/ts-types@1.14.17) (2024-11-11)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## [1.14.16](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.16-beta.0...@injectivelabs/ts-types@1.14.16) (2024-10-29)
+
+### Bug Fixes
+
+- imports ([8c7ef36](https://github.com/InjectiveLabs/injective-ts/commit/8c7ef3689b4016b9eab83f5914255933f59bec4a))
+
+## [1.14.15](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.15-beta.0...@injectivelabs/ts-types@1.14.15) (2024-10-29)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## [1.14.14](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.14-beta.3...@injectivelabs/ts-types@1.14.14) (2024-09-09)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
+
+## [1.14.13](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.13-beta.0...@injectivelabs/ts-types@1.14.13) (2024-07-02)
+
+**Note:** Version bump only for package @injectivelabs/ts-types
 
 ## [1.14.12](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/ts-types@1.14.12-beta.0...@injectivelabs/ts-types@1.14.12) (2024-06-18)
 

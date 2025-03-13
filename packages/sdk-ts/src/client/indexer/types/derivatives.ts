@@ -5,8 +5,8 @@ import {
   TradeExecutionType,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
-import { GrpcOrderType } from '../../chain/types/exchange'
-import { TokenMeta } from './../../../types/token'
+import { GrpcOrderType } from '../../chain/types/exchange.js'
+import { TokenMeta } from './../../../types/token.js'
 import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface PositionDelta {
@@ -63,8 +63,9 @@ export interface BaseDerivativeMarket {
   quoteToken: TokenMeta | undefined
   takerFeeRate: string
   serviceProviderFee: string
-  minPriceTickSize: number | string
-  minQuantityTickSize: number | string
+  minPriceTickSize: number
+  minQuantityTickSize: number
+  minNotional: number
 }
 
 export interface PerpetualMarket extends BaseDerivativeMarket {
@@ -99,8 +100,9 @@ export interface BinaryOptionsMarket
   expirationTimestamp: number
   settlementTimestamp: number
   serviceProviderFee: string
-  minPriceTickSize: string
-  minQuantityTickSize: string
+  minPriceTickSize: number
+  minQuantityTickSize: number
+  minNotional: number
   settlementPrice: string
 }
 

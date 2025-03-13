@@ -2,7 +2,7 @@ import {
   getEthereumAddress,
   getInjectiveAddress,
   getDefaultSubaccountId,
-} from '../../src/utils'
+} from '../../src/utils/index.js'
 
 describe('address helper functions', () => {
   it('getInjectiveAddress returns correct value', () => {
