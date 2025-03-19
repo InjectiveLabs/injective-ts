@@ -18,6 +18,7 @@ export enum TokenVerification {
   Internal = 'internal' /** verified from on-chain data */,
   External = 'external' /** verified on external source */,
   Unverified = 'unverified' /** unverified on any source */,
+  Blacklisted = 'blacklisted' /** blacklisted on any source */,
 }
 
 export enum TokenSource {
@@ -52,7 +53,6 @@ export interface TokenStatic {
   channelId?: string
   baseDenom?: string
   externalLogo?: string
-  marketIds?: string[]
   overrideSymbol?: string
 }
 
