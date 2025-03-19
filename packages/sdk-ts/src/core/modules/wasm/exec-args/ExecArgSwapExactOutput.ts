@@ -8,11 +8,13 @@ export declare namespace ExecArgSwapExactOutput {
   export interface Params {
     targetOutputQuantity: string
     targetDenom: string
+    feeRecipient?: string
   }
 
   export interface Data {
     target_output_quantity: string
     target_denom: string
+    fee_recipient?: string
   }
 }
 
@@ -35,6 +37,9 @@ export default class ExecArgSwapExactOutput extends ExecArgBase<
     return {
       target_output_quantity: params.targetOutputQuantity,
       target_denom: params.targetDenom,
+      ...(params.feeRecipient && {
+        fee_recipient: params.feeRecipient,
+      }),
     }
   }
 
