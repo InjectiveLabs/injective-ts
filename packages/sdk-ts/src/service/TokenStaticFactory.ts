@@ -1,10 +1,10 @@
+import { isCw20ContractAddress } from './../utils/index.js'
 import {
   TokenType,
   TokenSource,
   TokenStatic,
   TokenVerification,
-  isCw20ContractAddress,
-} from '@injectivelabs/sdk-ts'
+} from './../types/index.js'
 
 export class TokenStaticFactory {
   public registry: TokenStatic[]
