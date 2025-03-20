@@ -65,12 +65,7 @@ export class TokenStaticFactory {
 
       if (tokenVerification === TokenVerification.Verified) {
         this.denomVerifiedMap[denom] = token
-      }
-
-      if (
-        tokenVerification === TokenVerification.Unverified ||
-        tokenVerification === TokenVerification.Blacklisted
-      ) {
+      } else {
         this.denomUnverifiedMap[denom] = token
       }
 
@@ -214,6 +209,10 @@ export class TokenStaticFactory {
     } = {},
   ): TokenStatic | undefined {
     const denomOrSymbolTrimmed = denomOrSymbol.trim()
+
+    if (denomOrSymbolTrimmed === 'inj') {
+      return this.denomVerifiedMap[denomOrSymbolTrimmed]
+    }
 
     if (source) {
       return this.getIbcToken(denomOrSymbol, {

@@ -18,7 +18,6 @@ export enum TokenVerification {
   Internal = 'internal' /** verified from on-chain data */,
   External = 'external' /** verified on external source */,
   Unverified = 'unverified' /** unverified on any source */,
-  Blacklisted = 'blacklisted' /** blacklisted on any source */,
 }
 
 export enum TokenSource {
