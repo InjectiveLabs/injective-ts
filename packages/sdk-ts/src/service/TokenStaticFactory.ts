@@ -65,12 +65,9 @@ export class TokenStaticFactory {
 
       if (tokenVerification === TokenVerification.Verified) {
         this.denomVerifiedMap[denom] = token
+        this.symbolTokensMap[symbol.toLowerCase()] = token
       } else {
         this.denomUnverifiedMap[denom] = token
-      }
-
-      if (tokenType === TokenType.Symbol) {
-        this.symbolTokensMap[symbol.toLowerCase()] = token
       }
 
       if (tokenType === TokenType.InsuranceFund) {

@@ -4,9 +4,6 @@
   "packages": ["packages/*", "packages/wallets/*"],
   "version": "independent",
   "command": {
-    "add": {
-      "exact": true
-    },
     "version": {
       "message": "chore: release"
     },

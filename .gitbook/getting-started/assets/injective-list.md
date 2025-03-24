@@ -7,23 +7,17 @@ Here is an example of how to integrate injective-list with the TokenFactoryStati
 1. Download the injective list json file from github:
    https://github.com/InjectiveLabs/injective-lists?tab=readme-ov-file#-usage
 
-2. Use the `TokenFactoryStatic` class from the `sdk-ts` package
+2. Use the `TokenStaticFactory` class from the `sdk-ts` package
 
 ```ts
-import {
-  TokenType,
-  TokenStatic,
-  TokenFactoryStatic,
-} from '@injectivelabs/sdk-ts'
+import { TokenType, TokenStatic, TokenStaticFactory } from '@injectivelabs/sdk-ts'
 import { tokens } from '../data/tokens.json' // json file downloaded from step 1
 
-export const tokenFactoryStatic = new TokenFactoryStatic(
-  tokens as TokenStatic[],
-)
+export const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 
 // After instantiating, we can start using it in our dApp
 const denom = 'peggy0x...'
-const token = tokenFactoryStatic.toToken(denom)
+const token = tokenStaticFactory.toToken(denom)
 
 console.log(token)
 ```
