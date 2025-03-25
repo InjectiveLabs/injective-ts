@@ -53,6 +53,23 @@ export class TokenStaticFactory {
   }
 
   mapRegistry(registry: TokenStatic[]) {
+    this.denomVerifiedMap = {}
+    this.denomBlacklistedMap = {}
+    this.denomUnverifiedMap = {}
+
+    this.cw20AddressVerifiedMap = {}
+    this.cw20AddressUnverifiedMap = {}
+
+    this.factoryTokenDenomVerifiedMap = {}
+    this.factoryTokenDenomUnverifiedMap = {}
+
+    this.ibcDenomsVerifiedMap = {}
+    this.ibcDenomsUnverifiedMap = {}
+    this.ibcBaseDenomsVerifiedMap = {}
+    this.ibcBaseDenomsUnverifiedMap = {}
+    this.symbolTokensMap = {}
+    this.insuranceTokensMap = {}
+
     for (const token of registry) {
       const {
         denom,
