@@ -27,6 +27,7 @@ export declare namespace ExecArgCreateSpotGridStrategy {
       lowerTrailing: string
       lpMode?: boolean
     }
+    feeRecipient?: string
   }
 
   export interface Data {
@@ -44,6 +45,7 @@ export declare namespace ExecArgCreateSpotGridStrategy {
     }
     exit_type?: ExitType
     strategy_type?: StrategyType | TrailingArithmetic | TrailingArithmeticLP
+    fee_recipient?: string
   }
 }
 
@@ -96,6 +98,9 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
           }
         : undefined,
       strategy_type: strategyType,
+      ...(params.feeRecipient && {
+        fee_recipient: params.feeRecipient,
+      }),
     }
   }
 

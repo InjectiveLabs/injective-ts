@@ -52,7 +52,6 @@ export interface TokenStatic {
   channelId?: string
   baseDenom?: string
   externalLogo?: string
-  marketIds?: string[]
   overrideSymbol?: string
 }
 

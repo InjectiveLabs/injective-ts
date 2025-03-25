@@ -15,6 +15,7 @@ export declare namespace ExecArgCreatePerpGridStrategy {
     stopLoss?: string
     takeProfit?: string
     marginRatio: string
+    feeRecipient?: string
   }
 
   export interface Data {
@@ -35,6 +36,7 @@ export declare namespace ExecArgCreatePerpGridStrategy {
         margin_ratio: string
       }
     }
+    fee_recipient?: string
   }
 }
 
@@ -76,6 +78,9 @@ export default class ExecArgCreatePerpGridStrategy extends ExecArgBase<
             exit_price: params.takeProfit,
           }
         : undefined,
+      ...(params.feeRecipient && {
+        fee_recipient: params.feeRecipient,
+      }),
     }
   }
 
