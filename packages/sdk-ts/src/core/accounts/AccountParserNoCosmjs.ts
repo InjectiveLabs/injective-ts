@@ -2,7 +2,7 @@ import { InjectiveTypesV1Beta1Account } from '@injectivelabs/core-proto-ts'
 
 export const accountEthParser = <T>(
   ethAccount: any,
-  pubKeyTypeUrl: '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
+  pubKeyTypeUrl: string = '/injective.crypto.v1beta1.ethsecp256k1.PubKey',
 ): T => {
   const account = InjectiveTypesV1Beta1Account.EthAccount.decode(
     ethAccount.value as Uint8Array,
