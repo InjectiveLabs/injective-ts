@@ -8,7 +8,7 @@ TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
 
 # remote branches/tags
-injective_core_branch=master
+injective_core_branch=release/v1.14.x
 cosmos_sdk_branch=v0.50.x-inj
 wasmd_branch=v0.53.x-inj
 ibc_go_branch=v8.3.x-inj
@@ -52,6 +52,10 @@ buf export https://github.com/cosmos/gogoproto.git --exclude-imports --output=$P
 buf export https://github.com/cometbft/cometbft.git --exclude-imports --output=$PROTO_DIR
 buf export https://github.com/cosmos/ics23.git --exclude-imports --output=$PROTO_DIR
 buf export https://github.com/cosmos/ibc-apps.git --exclude-imports --output=$PROTO_DIR --path=middleware/packet-forward-middleware/proto/packetforward/v1
+
+## explicit copy of google/protobuf/struct.proto
+mkdir -p $PROTO_DIR/google/protobuf
+cp $TS_STUB_DIR/google.struct.proto $PROTO_DIR/google/protobuf/struct.proto
 
 # generate TS proto
 proto_dirs=$(find $PROTO_DIR -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)

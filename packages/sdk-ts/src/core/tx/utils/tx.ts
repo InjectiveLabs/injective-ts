@@ -4,6 +4,7 @@ import { Msgs } from '../../modules/msgs.js'
 import {
   GoogleProtobufAny,
   CosmosTxV1Beta1Tx,
+  GoogleProtobufStruct,
   CosmosBaseV1Beta1Coin,
   InjectiveTypesV1Beta1TxExt,
   CosmosCryptoSecp256k1Keys,
@@ -201,14 +202,23 @@ export const createSignDocFromTransaction = (args: {
 export const createTxRawEIP712 = (
   txRaw: CosmosTxV1Beta1Tx.TxRaw,
   extension: InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx,
+  nonCriticalExtension?: GoogleProtobufAny.Any | GoogleProtobufAny.Any[],
 ) => {
   const body = CosmosTxV1Beta1Tx.TxBody.decode(txRaw.bodyBytes)
   const extensionAny = createAny(
-    InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.encode(extension).finish(),
+    InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.encode(
+      extension,
+    ).finish(),
     '/injective.types.v1beta1.ExtensionOptionsWeb3Tx',
   )
 
   body.extensionOptions = [extensionAny]
+
+  if (nonCriticalExtension) {
+    body.nonCriticalExtensionOptions = Array.isArray(nonCriticalExtension)
+      ? nonCriticalExtension
+      : [nonCriticalExtension]
+  }
 
   txRaw.bodyBytes = CosmosTxV1Beta1Tx.TxBody.encode(body).finish()
 
@@ -224,7 +234,8 @@ export const createWeb3Extension = ({
   feePayer?: string
   feePayerSig?: Uint8Array
 }) => {
-  const web3Extension = InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.create()
+  const web3Extension =
+    InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.create()
   web3Extension.typedDataChainID = ethereumChainId.toString()
 
   if (feePayer) {
@@ -236,6 +247,19 @@ export const createWeb3Extension = ({
   }
 
   return web3Extension
+}
+
+export const createNonCriticalExtensionFromObject = (
+  object: Record<string, unknown>,
+) => {
+  const nonCriticalExtension = GoogleProtobufStruct.Struct.create()
+
+  nonCriticalExtension.fields = object
+
+  return createAny(
+    GoogleProtobufStruct.Struct.encode(nonCriticalExtension).finish(),
+    '/google.protobuf.Struct',
+  )
 }
 
 export const getTransactionPartsFromTxRaw = (
