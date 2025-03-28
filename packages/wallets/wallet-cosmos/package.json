@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-cosmos",
   "description": "Cosmos wallet strategies for use with @injectivelabs/wallet-core.",
-  "version": "1.14.46",
+  "version": "1.14.47",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -59,11 +59,11 @@
     "@cosmjs/launchpad": "0.27.1",
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
-    "@injectivelabs/exceptions": "^1.14.45",
-    "@injectivelabs/sdk-ts": "^1.14.47",
-    "@injectivelabs/ts-types": "^1.14.45",
-    "@injectivelabs/utils": "^1.14.45",
-    "@injectivelabs/wallet-base": "^1.14.46",
+    "@injectivelabs/exceptions": "^1.14.46",
+    "@injectivelabs/sdk-ts": "^1.14.48",
+    "@injectivelabs/ts-types": "^1.14.46",
+    "@injectivelabs/utils": "^1.14.46",
+    "@injectivelabs/wallet-base": "^1.14.47",
     "@keplr-wallet/types": "^0.12.71"
   },
   "devDependencies": {
