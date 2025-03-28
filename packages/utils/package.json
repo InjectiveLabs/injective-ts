@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/utils",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.14.44",
+  "version": "1.14.45",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -77,9 +77,9 @@
   },
   "dependencies": {
     "@bangjelkoski/store2": "^2.14.3",
-    "@injectivelabs/exceptions": "^1.14.44",
-    "@injectivelabs/networks": "^1.14.44",
-    "@injectivelabs/ts-types": "^1.14.44",
+    "@injectivelabs/exceptions": "^1.14.45",
+    "@injectivelabs/networks": "^1.14.45",
+    "@injectivelabs/ts-types": "^1.14.45",
     "axios": "^1.8.1",
     "bignumber.js": "^9.1.2",
     "http-status-codes": "^2.3.0"
