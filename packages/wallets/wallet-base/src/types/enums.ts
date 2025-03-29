@@ -20,6 +20,7 @@ export enum Wallet {
   LedgerLegacy = 'ledger-legacy',
   WalletConnect = 'wallet-connect',
   CosmostationEth = 'cosmostation-eth',
+  Turnkey = 'turnkey',
 }
 
 export enum MagicProvider {

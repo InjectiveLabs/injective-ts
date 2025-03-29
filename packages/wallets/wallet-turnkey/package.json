@@ -1,0 +1,71 @@
+{
+  "name": "@injectivelabs/wallet-turnkey",
+  "description": "Turnkey wallet strategy for use with @injectivelabs/wallet-core.",
+  "version": "1.14.43-beta.3",
+  "sideEffects": false,
+  "type": "module",
+  "author": {
+    "name": "InjectiveLabs",
+    "email": "admin@injectivelabs.org"
+  },
+  "license": "Apache-2.0",
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "_moduleAliases": {
+    "~wallet-turnkey": "dist"
+  },
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "default": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./src/*": "./src/*"
+  },
+  "scripts": {
+    "build": "yarn build:esm && yarn build:cjs && yarn build:post",
+    "build:cjs": "tsc --build --force tsconfig.build.json",
+    "build:esm": "tsc --build --force tsconfig.build.esm.json",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
+    "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
+    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@injectivelabs/exceptions": "^1.14.43-beta.2",
+    "@injectivelabs/sdk-ts": "^1.14.44-beta.3",
+    "@injectivelabs/ts-types": "^1.14.43-beta.0",
+    "@injectivelabs/wallet-base": "^1.14.43-beta.3",
+    "@turnkey/sdk-browser": "^3.0.1",
+    "@turnkey/viem": "^0.6.18",
+    "viem": "^2.24.1"
+  },
+  "devDependencies": {},
+  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
+}
