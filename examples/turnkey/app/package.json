@@ -1,0 +1,27 @@
+{
+  "name": "app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@injectivelabs/networks": "link:../../packages/networks",
+    "@injectivelabs/sdk-ts": "link:../../packages/sdk-ts",
+    "@injectivelabs/wallet-base": "link:../../packages/wallets/wallet-base",
+    "@injectivelabs/wallet-core": "link:../../packages/wallets/wallet-core",
+    "@injectivelabs/wallet-turnkey": "link:../../packages/wallets/wallet-turnkey",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0",
+    "vite-plugin-node-polyfills": "^0.23.0",
+    "vue-tsc": "^2.2.4"
+  }
+}
