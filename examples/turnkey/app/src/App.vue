@@ -3,31 +3,27 @@ import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
 import {
   TurnkeyWallet,
   TurnkeyWalletStrategy,
-  type TurnkeyStatus,
 } from '@injectivelabs/wallet-turnkey/src/index.ts'
 import { injectiveClients } from './injective-clients'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { Wallet } from '@injectivelabs/wallet-base'
 import LoginForm from './components/LoginForm.vue'
 import Connected from './components/Connected.vue'
 import {
-  getEthereumAddress,
-  type Msgs,
-  type TxResponse,
-} from '@injectivelabs/sdk-ts'
+  turnkeyStatus,
+  turnkeyStrategy,
+  address,
+  broadcaster,
+  oidcToken,
+} from './reactives'
+
 const turnkeyAuthIframeContainerId = 'turnkey-auth-iframe-container-id'
-
-const turnkeyStrategy = ref<TurnkeyWalletStrategy | null>(null)
-const broadcaster = ref<MsgBroadcaster | null>(null)
-const turnkeyStatus = ref<TurnkeyStatus | null>(null)
-const address = ref<string | null>(null)
-
 const turnkeyReadyAndLoggedIn = computed(() => {
   return turnkeyStatus.value === 'logged-in' && turnkeyStrategy.value
 })
 
 onMounted(async () => {
-  const _turnkeyStrategy = await TurnkeyWallet.create({
+  const _turnkeyStrategy = new TurnkeyWallet({
     onStatusChange(status) {
       turnkeyStatus.value = status
     },
@@ -46,12 +42,19 @@ onMounted(async () => {
   turnkeyStrategy.value = _turnkeyStrategy
 })
 
+onMounted(async () => {
+  const hashParams = new URLSearchParams(window.location.hash.substring(1))
+  const params = {
+    idToken: hashParams.get('id_token'),
+  }
+
+  oidcToken.value = params.idToken
+})
+
 watch(turnkeyReadyAndLoggedIn, async (_ready) => {
   if (!_ready) {
     return
   }
-
-  console.log('Watching and updating broadcaster')
 
   const _walletStrategy = new BaseWalletStrategy({
     strategies: {
@@ -69,50 +72,19 @@ watch(turnkeyReadyAndLoggedIn, async (_ready) => {
   })
 
   const addresses = await _walletStrategy?.getAddresses()
-  console.log('🪵 | addresses:', addresses)
-  console.log('relevant address: ', addresses[0])
   address.value = addresses[0]
 })
-
-watch(turnkeyStatus, (status) => {
-  console.log('🪵 | turnkeyStatus:', status)
-})
-
-async function sendTx(msgs: Msgs): Promise<TxResponse> {
-  if (!broadcaster.value) {
-    throw new Error('Broadcaster not initialized')
-  }
-
-  if (!address.value) {
-    throw new Error('Address not initialized')
-  }
-
-  const result = await broadcaster.value.broadcastWithFeeDelegation({
-    msgs,
-    injectiveAddress: address.value,
-    ethereumAddress: getEthereumAddress(address.value),
-  })
-
-  console.log('🪵 | result:', result)
-
-  return result
-}
 </script>
 
 <template>
   <h1>Injective + Turnkey</h1>
-  <LoginForm
-    :init-email-o-t-p="turnkeyStrategy.initEmailOTP.bind(turnkeyStrategy)"
-    :confirm-email-o-t-p="turnkeyStrategy.confirmEmailOTP.bind(turnkeyStrategy)"
-    :turnkey-status="turnkeyStatus"
-    v-if="turnkeyStrategy && turnkeyStatus && turnkeyStatus !== 'logged-in'"
-  />
-  <Connected
-    v-if="address && turnkeyStatus === 'logged-in'"
-    :address="address"
-    :send-tx="sendTx"
-    :logout="turnkeyStrategy?.disconnect.bind(turnkeyStrategy)"
-  />
+  <div v-if="turnkeyStatus === 'initializing'">Loading...</div>
+  <div v-else>
+    <LoginForm
+      v-if="turnkeyStrategy && turnkeyStatus && turnkeyStatus !== 'logged-in'"
+    />
+    <Connected v-if="address && turnkeyStatus === 'logged-in'" />
+  </div>
   <div :id="turnkeyAuthIframeContainerId" style="display: none"></div>
 </template>
 

@@ -1,51 +1,82 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import {
-  TurnkeyWallet,
-  type TurnkeyStatus,
-} from '@injectivelabs/wallet-turnkey/src/index.ts'
-
-const { initEmailOTP, confirmEmailOTP, turnkeyStatus } = defineProps<{
-  initEmailOTP: typeof TurnkeyWallet.prototype.initEmailOTP
-  confirmEmailOTP: typeof TurnkeyWallet.prototype.confirmEmailOTP
-  turnkeyStatus: TurnkeyStatus
-}>()
+import { onMounted, ref } from 'vue'
+import { turnkeyStrategy, turnkeyStatus, oidcToken } from '../reactives'
+import { generateGoogleUrl } from '../utils'
 
 const email = ref('')
 const OTP = ref('')
 
+const oauthError = ref('')
+
 function handleEmailSubmit() {
   console.log('email', email.value)
-  initEmailOTP({
+  turnkeyStrategy.value?.enable({
+    provider: 'email',
     email: email.value,
-    endpoint: 'http://localhost:3000/turnkey/init-email-auth',
+    initEmailOTPEndpoint: 'http://localhost:3000/turnkey/init-email-auth',
   })
 }
 
 async function handleOTPSubmit() {
   console.log('OTP', OTP.value)
-  await confirmEmailOTP({
+  await turnkeyStrategy.value?.confirmEmailOTP({
     otpCode: OTP.value,
     endpoint: 'http://localhost:3000/turnkey/verify-email-auth',
   })
 }
 
-function handleSubmit() {
-  if (turnkeyStatus === 'waiting-otp') {
+function handleSubmitClick() {
+  if (turnkeyStatus.value === 'waiting-otp') {
     return handleOTPSubmit()
   }
 
-  if (turnkeyStatus === 'ready') {
+  if (turnkeyStatus.value === 'ready') {
     return handleEmailSubmit()
   }
 
   throw new Error('Turnkey not ready')
 }
+
+async function handleGoogleOAuthClick() {
+  console.log('Google')
+
+  const nonce = await turnkeyStrategy.value?.generateOAuthNonce()
+
+  if (!nonce) {
+    throw new Error('Nonce not found')
+  }
+
+  const url = generateGoogleUrl(nonce)
+
+  console.log('🪵 | handleGoogleSubmit | url:', url)
+  window.location.href = url
+}
+
+onMounted(async () => {
+  // ? Watches for a token response form Google and logs in if its there
+  if (oidcToken.value) {
+    const result = await turnkeyStrategy.value?.enable({
+      provider: 'google',
+      oidcToken: oidcToken.value,
+      oauthLoginEndpoint: 'http://localhost:3000/turnkey/oauth-login',
+    })
+
+    if (!result) {
+      //  tell the use to login with  OTP, store a flag
+      oauthError.value =
+        'An error occurred. Try logging in with your original signup method.'
+    }
+    // Clear all params from URL either way
+    window.history.replaceState({}, '', window.location.pathname)
+    oidcToken.value = ''
+  }
+})
 </script>
 
 <template>
   <div style="gap: 10px; display: flex; flex-direction: column">
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmitClick">
+      <div v-if="oauthError" style="color: red">{{ oauthError }}</div>
       <label>
         <span>Email address </span>
         <input
@@ -66,8 +97,10 @@ function handleSubmit() {
       <button type="submit">Submit</button>
     </form>
     <!-- TODO -->
-    <!-- <div>or</div>
-    <button @click="">Login with Google</button> -->
+    <div v-if="!oauthError && turnkeyStatus !== 'waiting-otp'">
+      <div>or</div>
+      <button @click="handleGoogleOAuthClick">Login with Google</button>
+    </div>
   </div>
 </template>
 

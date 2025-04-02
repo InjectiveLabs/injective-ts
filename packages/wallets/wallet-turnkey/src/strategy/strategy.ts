@@ -31,7 +31,7 @@ import { createAccount } from '@turnkey/viem'
 import { TurnkeySDKBrowserConfig } from '@turnkey/sdk-browser'
 
 export type TurnkeyStatus =
-  | 'init'
+  | 'initializing'
   | 'ready'
   | 'waiting-otp'
   | 'logged-in'
@@ -53,6 +53,21 @@ export type TurnkeyMetadata = TurnkeySDKBrowserConfig & {
   organizationId?: string
 }
 
+type OAuthArgs = {
+  provider: 'google'
+  oidcToken: string
+  oauthLoginEndpoint: string
+}
+
+type EmailArgs = {
+  provider: 'email'
+  email: string
+  initEmailOTPEndpoint: string
+}
+const refreshInterval_ms = 5 * 1000
+
+type TurnkeyEnableArgs = OAuthArgs | EmailArgs
+
 interface TurnkeyArgs extends ConcreteEthereumWalletStrategyArgs {
   metadata?: TurnkeyMetadata
   onStatusChange?: (status: TurnkeyStatus) => void
@@ -67,7 +82,7 @@ export class TurnkeyWallet
   public organizationId?: string
   public turnkey: Turnkey
   public authIframeClient?: TurnkeyIframeClient
-  public status: TurnkeyStatus = 'init'
+  public status: TurnkeyStatus = 'initializing'
   public expiry?: number
   private emailOTPId?: string
   private onStatusChangeCallback?: (status: TurnkeyStatus) => void
@@ -84,7 +99,7 @@ export class TurnkeyWallet
     this.onStatusChangeCallback?.(status)
   }
 
-  private constructor(args: TurnkeyArgs) {
+  constructor(args: TurnkeyArgs) {
     if (!args.metadata?.apiBaseUrl) {
       throw new WalletException(
         new Error(
@@ -105,30 +120,84 @@ export class TurnkeyWallet
     this.metadata = args.metadata
     this.turnkey = new Turnkey(this.metadata)
     this.onStatusChangeCallback = args.onStatusChange
+    this.setStatus('initializing')
+    this.loadClient()
   }
 
-  // TODO: require email for create, make a new connect function for token being passed in and rm localStorage
-  public static async create(args: TurnkeyArgs): Promise<TurnkeyWallet> {
-    const wallet = new TurnkeyWallet(args)
-    await wallet.initializeIframe()
+  private async loadClient(args?: { token?: string }) {
+    let { token } = args || {}
 
-    const session = await wallet.turnkey.getSession()
-    const token = session?.token || args.metadata?.token
-
-    if (token) {
-      await wallet
-        .loadClientAndGetWallets({
-          token,
-        })
-        .catch((e) => {
-          if (e.code === 7) {
-            wallet.setStatus('ready')
-          } else {
-            throw e
-          }
-        })
+    if (!this.authIframeClient) {
+      await this.initializeIframe()
     }
-    return wallet
+
+    if (!this.authIframeClient) {
+      throw new WalletException(new Error('Auth iframe client not initialized'))
+    }
+
+    if (!token) {
+      const currentSession = await this.turnkey.getSession()
+      if (currentSession?.organizationId) {
+        this.organizationId = currentSession.organizationId
+      }
+      token = currentSession?.token
+    }
+
+    if (!token) {
+      this.setStatus('ready')
+      return
+    }
+
+    try {
+      const loginResult = await this.authIframeClient.injectCredentialBundle(
+        token,
+      )
+
+      // If there is no session, we want to force a refresh to enable to browser SDK to handle key storage and proper session management.
+      await this.authIframeClient.refreshSession({
+        sessionType: SessionType.READ_WRITE,
+        targetPublicKey: this.authIframeClient.iframePublicKey,
+        expirationSeconds: '900',
+      })
+
+      const [session, user] = await Promise.all([
+        this.turnkey.getSession(),
+        this.authIframeClient.getWhoami(),
+      ])
+
+      const organizationId =
+        user?.organizationId || session?.organizationId || this.organizationId
+
+      if (loginResult) {
+        this.setStatus('logged-in')
+        this.organizationId = organizationId
+        // TODO: for some reason this is writing the incorrect organizationId
+        if (session && session?.expiry) {
+          this.expiry = session.expiry
+        }
+
+        setTimeout(() => {
+          this.keepSessionAlive()
+        }, refreshInterval_ms)
+
+        return session
+      } else {
+        throw new WalletException(new Error('Login failed'), {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: 'turnkey-wallet-load-client-and-get-wallets',
+        })
+      }
+    } catch (e) {
+      throw new WalletException(
+        new Error('loadCLientAndGetWallets: ' + (e as any).message),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: 'turnkey-wallet-load-client-and-get-wallets',
+        },
+      )
+    }
   }
 
   private async initializeIframe(): Promise<void> {
@@ -160,19 +229,50 @@ export class TurnkeyWallet
       iframeUrl: this.metadata?.iframeUrl || 'https://auth.turnkey.com',
       iframeElementId: turnkeyAuthIframeElementId,
     })
-
-    this.setStatus('ready')
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  async enable(): Promise<boolean> {
+  async enable(args: TurnkeyEnableArgs): Promise<boolean> {
     try {
-      await this.pollUserLoggedInState()
+      await this.initializeIframe()
+      if (args.provider === 'email') {
+        const result = await this.initEmailOTP({
+          email: args.email,
+          endpoint: args.initEmailOTPEndpoint,
+        })
 
-      return Promise.resolve(true)
+        if (result.organizationId) {
+          this.organizationId = result.organizationId
+        }
+
+        if (result.otpId) {
+          this.emailOTPId = result.otpId
+        }
+
+        return true
+      }
+
+      if (args.provider === 'google') {
+        if (!args.oidcToken) {
+          throw new WalletException(new Error('Oidc token is required'))
+        }
+        const result = await this.oauthLogin({
+          endpoint: args.oauthLoginEndpoint,
+          oidcToken: args.oidcToken,
+          providerName: 'google',
+        })
+
+        if (result) {
+          return false
+        }
+
+        return true
+      }
+
+      return false
     } catch (e) {
       throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -264,7 +364,7 @@ export class TurnkeyWallet
         },
       }).then((r) => r.json())
 
-      return this.loadClientAndGetWallets({
+      return this.loadClient({
         token: responseData.token,
       })
     } catch (e) {
@@ -276,53 +376,67 @@ export class TurnkeyWallet
     }
   }
 
-  private async loadClientAndGetWallets(args: { token: string }) {
-    const { token } = args
-
-    if (!this.authIframeClient) {
-      throw new WalletException(new Error('Auth iframe client not initialized'))
-    }
-
+  async generateOAuthNonce() {
     try {
-      const loginResult = await this.authIframeClient.injectCredentialBundle(
-        token,
+      const targetPublicKey = this.authIframeClient?.iframePublicKey
+
+      if (!targetPublicKey) {
+        throw new WalletException(new Error('Target public key not found'))
+      }
+
+      const hash = await crypto.subtle.digest(
+        'SHA-256',
+        new TextEncoder().encode(targetPublicKey),
       )
-
-      let session = await this.turnkey.getSession()
-
-      // If there is no session, we want to force a refresh to enable to browser SDK to handle key storage and proper session management.
-      if (!session) {
-        await this.authIframeClient.refreshSession({
-          sessionType: SessionType.READ_WRITE,
-          targetPublicKey: this.authIframeClient.iframePublicKey,
-          expirationSeconds: '900',
-        })
-
-        session = await this.turnkey.getSession()
-      }
-
-      const organizationId = session?.organizationId || this.organizationId
-
-      if (loginResult) {
-        this.setStatus('logged-in')
-        this.organizationId = organizationId
-        if (session?.expiry) {
-          this.expiry = session.expiry
-        }
-        return session
-      } else {
-        throw new WalletException(new Error('Login failed'), {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: 'turnkey-wallet-load-client-and-get-wallets',
-        })
-      }
+      return Array.from(new Uint8Array(hash))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('')
     } catch (e) {
-      throw new WalletException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: 'turnkey-wallet-load-client-and-get-wallets',
+      throw new WalletException(new Error('turnkey-generate-oauth-nonce'))
+    }
+  }
+
+  async oauthLogin(args: {
+    endpoint: string
+    oidcToken: string
+    providerName: 'google' //TODO: apple
+    expirationSeconds?: number
+  }): Promise<string | void> {
+    try {
+      const targetPublicKey = this.authIframeClient?.iframePublicKey
+
+      if (!targetPublicKey) {
+        throw new WalletException(new Error('Target public key not found'))
+      }
+
+      const { endpoint, oidcToken, providerName } = args
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify({
+          oidcToken,
+          providerName,
+          targetPublicKey,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
+
+      const { credentialBundle, message } = (await response.json()) as {
+        credentialBundle: string | null
+        message: string
+      }
+
+      if (!credentialBundle) {
+        return message
+      }
+
+      await this.loadClient({
+        token: credentialBundle,
+      })
+    } catch (e) {
+      throw new WalletException(new Error('turnkey-oauth-login'))
     }
   }
 
@@ -368,14 +482,15 @@ export class TurnkeyWallet
         })
         .catch((e) => {
           if (e.code === 7) {
-            this.setStatus('init')
+            this.setStatus('ready')
+            this.disconnect()
             throw new WalletException(new Error('User is not logged in'), {
               code: UnspecifiedErrorCode,
               type: ErrorType.WalletError,
               contextModule: WalletAction.GetAccounts,
             })
           } else {
-            this.setStatus('init')
+            this.setStatus('ready')
             throw e
           }
         })
@@ -583,33 +698,35 @@ export class TurnkeyWallet
     )
   }
 
-  private async pollUserLoggedInState(timeout = 60 * 1000): Promise<any> {
-    const POLL_INTERVAL = 3 * 1000
+  /**
+   * @description This is intended to ensure that the user's session
+   * stays active while they are actively on the page. We refresh the session
+   * once per minute.
+   */
+  private async keepSessionAlive() {
+    // TODO: change to 60 seconds
 
-    for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
-      try {
-        const result = await this.turnkey.getCurrentUser()
-
-        if (result) {
-          return result
-        }
-      } catch (e: unknown) {
-        // We throw only if the transaction failed on chain
-        if (e instanceof TransactionException) {
-          throw e
-        }
+    while (this.status === 'logged-in') {
+      if (!this.authIframeClient?.config.organizationId) {
+        return
       }
 
-      await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
-    }
+      if (this.organizationId) {
+        this.authIframeClient.config.organizationId = this.organizationId
+      }
 
-    // Transaction was not included in the block in the desired timeout
-    throw new WalletException(
-      new Error(`User did not verify sign in - timeout of ${timeout}ms`),
-      {
-        context: 'Wallet',
-        contextModule: 'Magic-Wallet-pollUserLoggedInState',
-      },
-    )
+      this.authIframeClient?.refreshSession({
+        sessionType: SessionType.READ_WRITE,
+        targetPublicKey: this.authIframeClient.iframePublicKey,
+        expirationSeconds: '900',
+        organizationId: this.organizationId,
+      })
+
+      const session = await this.turnkey.getSession()
+
+      this.expiry = session?.expiry
+
+      await new Promise((resolve) => setTimeout(resolve, refreshInterval_ms))
+    }
   }
 }

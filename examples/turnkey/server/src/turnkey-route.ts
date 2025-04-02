@@ -3,8 +3,8 @@ import 'dotenv/config'
 import { Hono } from 'hono'
 import { z } from 'zod'
 import {
-  getOrCreateSubOrgIdsForEmail,
-  sendEmailOtp,
+  initEmailOtp,
+  oauthLogin,
   verifyEmailOtp,
 } from './lib/turnkey-server.js'
 
@@ -24,19 +24,11 @@ export const turnkeyRoute = new Hono()
       }),
     ),
     async (c) => {
-      console.log('POST request received')
-      const { suborgID, email } = c.req.valid('json')
+      const { email } = c.req.valid('json')
 
-      const userSubOrgIds = await getOrCreateSubOrgIdsForEmail(email)
-      const relevantSubOrgId = suborgID ?? userSubOrgIds.organizationIds[0]
-
-      const initEmailAuthResponse = await sendEmailOtp(email, relevantSubOrgId)
-      console.log('🪵 | initEmailAuthResponse:', initEmailAuthResponse)
-      console.log('🪵 | userSubOrgIds:', userSubOrgIds)
-
+      const initEmailAuthResponse = await initEmailOtp(email)
       return c.json({
         ...initEmailAuthResponse,
-        organizationId: relevantSubOrgId,
       })
     },
   )
@@ -58,6 +50,25 @@ export const turnkeyRoute = new Hono()
       const result = await verifyEmailOtp(args)
       console.log('🪵 | result:', result)
 
+      return c.json(result)
+    },
+  )
+  .post(
+    '/oauth-login',
+    zValidator(
+      'json',
+      z.object({
+        oidcToken: z.string(),
+        providerName: z.string(),
+        targetPublicKey: z.string(),
+        expirationSeconds: z.number().optional(),
+      }),
+    ),
+    async (c) => {
+      const args = c.req.valid('json')
+      console.log('🪵 | args:', args)
+      const result = await oauthLogin(args)
+      console.log('🪵 | result:', result)
       return c.json(result)
     },
   )
