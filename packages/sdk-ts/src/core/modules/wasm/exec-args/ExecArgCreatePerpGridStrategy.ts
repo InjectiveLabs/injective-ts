@@ -5,6 +5,7 @@ import {
 } from '../ExecArgBase.js'
 
 import { ExitType } from '../types.js'
+
 export declare namespace ExecArgCreatePerpGridStrategy {
   export interface Params {
     subaccountId: string
@@ -43,6 +44,7 @@ export declare namespace ExecArgCreatePerpGridStrategy {
 /**
  * @category Contract Exec Arguments
  */
+/** @deprecated */
 export default class ExecArgCreatePerpGridStrategy extends ExecArgBase<
   ExecArgCreatePerpGridStrategy.Params,
   ExecArgCreatePerpGridStrategy.Data

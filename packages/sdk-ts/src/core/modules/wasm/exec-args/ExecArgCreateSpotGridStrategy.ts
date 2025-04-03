@@ -52,6 +52,7 @@ export declare namespace ExecArgCreateSpotGridStrategy {
 /**
  * @category Contract Exec Arguments
  */
+/** @deprecated */
 export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
   ExecArgCreateSpotGridStrategy.Params,
   ExecArgCreateSpotGridStrategy.Data
