@@ -386,6 +386,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
 
       return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
         response,
+        isConditional,
       )
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {

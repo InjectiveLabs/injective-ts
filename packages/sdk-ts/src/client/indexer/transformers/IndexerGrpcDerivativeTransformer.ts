@@ -154,6 +154,7 @@ export class IndexerGrpcDerivativeTransformer {
 
   static orderHistoryResponseToOrderHistory(
     response: InjectiveDerivativeExchangeRpc.OrdersHistoryResponse,
+    isConditional?: boolean,
   ) {
     const orderHistory = response.orders
     const pagination = response.paging
@@ -162,6 +163,7 @@ export class IndexerGrpcDerivativeTransformer {
       orderHistory:
         IndexerGrpcDerivativeTransformer.grpcOrderHistoryListToOrderHistoryList(
           orderHistory,
+          isConditional,
         ),
       pagination: grpcPagingToPaging(pagination),
     }
@@ -523,8 +525,13 @@ export class IndexerGrpcDerivativeTransformer {
 
   static grpcOrderHistoryListToOrderHistoryList(
     orderHistory: GrpcDerivativeOrderHistory[],
+    isConditional?: boolean,
   ): DerivativeOrderHistory[] {
-    return orderHistory.map((orderHistory) =>
+    const filteredOrderHistory = isConditional
+      ? orderHistory
+      : orderHistory.filter((order) => order.state !== OrderState.Booked)
+
+    return filteredOrderHistory.map((orderHistory) =>
       IndexerGrpcDerivativeTransformer.grpcOrderHistoryToOrderHistory(
         orderHistory,
       ),
