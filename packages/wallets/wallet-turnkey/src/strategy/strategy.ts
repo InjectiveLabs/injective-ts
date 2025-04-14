@@ -12,6 +12,7 @@ import {
   DirectSignResponse,
   AminoSignResponse,
   getInjectiveAddress,
+  sha256,
 } from '@injectivelabs/sdk-ts'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
@@ -29,22 +30,24 @@ import { SessionType, Turnkey, TurnkeyIframeClient } from '@turnkey/sdk-browser'
 import { createAccount } from '@turnkey/viem'
 
 import { TurnkeySDKBrowserConfig } from '@turnkey/sdk-browser'
+import { HttpClient } from '@injectivelabs/utils'
 
-export type TurnkeyStatus =
-  | 'initializing'
-  | 'ready'
-  | 'waiting-otp'
-  | 'logged-in'
-  | 'error'
+export enum TurnkeyStatus {
+  Initializing = 'initializing',
+  Ready = 'ready',
+  WaitingOtp = 'waiting-otp',
+  LoggedIn = 'logged-in',
+  Error = 'error',
+}
 
-export const TURNKEY_TOKEN_KEYS = {
-  TOKEN: 'turnkey-token',
-  ORGANIZATION_ID: 'turnkey-organization-id',
-  TOKEN_EXPIRATION: 'turnkey-token-expiration',
-} as const
+export enum TurnkeyProviders {
+  Google = 'google',
+  Email = 'email',
+}
 
-export type TurnkeyTokenValue =
-  (typeof TURNKEY_TOKEN_KEYS)[keyof typeof TURNKEY_TOKEN_KEYS]
+enum TurnkeyErrorCodes {
+  UserLoggedOut = 7,
+}
 
 export type TurnkeyMetadata = TurnkeySDKBrowserConfig & {
   turnkeyAuthIframeContainerId: string
@@ -64,7 +67,7 @@ type EmailArgs = {
   email: string
   initEmailOTPEndpoint: string
 }
-const refreshInterval_ms = 5 * 1000
+const REFRESH_INTERVAL_MS = 60 * 1000
 
 type TurnkeyEnableArgs = OAuthArgs | EmailArgs
 
@@ -82,7 +85,7 @@ export class TurnkeyWallet
   public organizationId?: string
   public turnkey: Turnkey
   public authIframeClient?: TurnkeyIframeClient
-  public status: TurnkeyStatus = 'initializing'
+  public status: TurnkeyStatus = TurnkeyStatus.Initializing
   public expiry?: number
   private emailOTPId?: string
   private onStatusChangeCallback?: (status: TurnkeyStatus) => void
@@ -120,7 +123,7 @@ export class TurnkeyWallet
     this.metadata = args.metadata
     this.turnkey = new Turnkey(this.metadata)
     this.onStatusChangeCallback = args.onStatusChange
-    this.setStatus('initializing')
+    this.setStatus(TurnkeyStatus.Initializing)
     this.loadClient()
   }
 
@@ -144,7 +147,7 @@ export class TurnkeyWallet
     }
 
     if (!token) {
-      this.setStatus('ready')
+      this.setStatus(TurnkeyStatus.Ready)
       return
     }
 
@@ -169,7 +172,7 @@ export class TurnkeyWallet
         user?.organizationId || session?.organizationId || this.organizationId
 
       if (loginResult) {
-        this.setStatus('logged-in')
+        this.setStatus(TurnkeyStatus.LoggedIn)
         this.organizationId = organizationId
         // TODO: for some reason this is writing the incorrect organizationId
         if (session && session?.expiry) {
@@ -178,7 +181,7 @@ export class TurnkeyWallet
 
         setTimeout(() => {
           this.keepSessionAlive()
-        }, refreshInterval_ms)
+        }, REFRESH_INTERVAL_MS)
 
         return session
       } else {
@@ -238,7 +241,7 @@ export class TurnkeyWallet
   async enable(args: TurnkeyEnableArgs): Promise<boolean> {
     try {
       await this.initializeIframe()
-      if (args.provider === 'email') {
+      if (args.provider === TurnkeyProviders.Email) {
         const result = await this.initEmailOTP({
           email: args.email,
           endpoint: args.initEmailOTPEndpoint,
@@ -255,7 +258,7 @@ export class TurnkeyWallet
         return true
       }
 
-      if (args.provider === 'google') {
+      if (args.provider === TurnkeyProviders.Google) {
         if (!args.oidcToken) {
           throw new WalletException(new Error('Oidc token is required'))
         }
@@ -295,22 +298,23 @@ export class TurnkeyWallet
         invalidateExistingSessions: args.invalidateExistingSessions,
         targetPublicKey: this.authIframeClient?.iframePublicKey,
       }
-      const responseData = await fetch(args.endpoint, {
-        method: 'POST',
-        body: JSON.stringify(bodyData),
+      const client = new HttpClient(args.endpoint, {
         headers: {
           'Content-Type': 'application/json',
         },
-      }).then((r) => r.json())
-
-      const { otpId, organizationId } = responseData as {
-        otpId: string
-        organizationId: string
+      })
+      const response = (await client.post(args.endpoint, bodyData)) as {
+        data?: {
+          otpId: string
+          organizationId: string
+        }
       }
+
+      const { otpId, organizationId } = response?.data || {}
 
       this.organizationId = organizationId
       this.emailOTPId = otpId
-      this.setStatus('waiting-otp')
+      this.setStatus(TurnkeyStatus.WaitingOtp)
 
       return {
         otpId,
@@ -356,16 +360,22 @@ export class TurnkeyWallet
         suborgID: organizationId,
       }
 
-      const responseData = await fetch(endpoint, {
-        method: 'POST',
-        body: JSON.stringify(bodyData),
+      const client = new HttpClient(endpoint, {
         headers: {
           'Content-Type': 'application/json',
         },
-      }).then((r) => r.json())
+      })
+
+      const response = (await client.post(endpoint, bodyData)) as {
+        data?: {
+          token: string
+        }
+      }
+
+      const { token } = response?.data || {}
 
       return this.loadClient({
-        token: responseData.token,
+        token,
       })
     } catch (e) {
       throw new WalletException(new Error((e as any).message), {
@@ -384,11 +394,7 @@ export class TurnkeyWallet
         throw new WalletException(new Error('Target public key not found'))
       }
 
-      const hash = await crypto.subtle.digest(
-        'SHA-256',
-        new TextEncoder().encode(targetPublicKey),
-      )
-      return Array.from(new Uint8Array(hash))
+      return Array.from(sha256(new TextEncoder().encode(targetPublicKey)))
         .map((b) => b.toString(16).padStart(2, '0'))
         .join('')
     } catch (e) {
@@ -411,22 +417,23 @@ export class TurnkeyWallet
 
       const { endpoint, oidcToken, providerName } = args
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        body: JSON.stringify({
-          oidcToken,
-          providerName,
-          targetPublicKey,
-        }),
+      const client = new HttpClient(endpoint, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-
-      const { credentialBundle, message } = (await response.json()) as {
-        credentialBundle: string | null
-        message: string
+      const response = (await client.post(endpoint, {
+        oidcToken,
+        providerName,
+        targetPublicKey,
+      })) as {
+        data?: {
+          credentialBundle: string | null
+          message: string
+        }
       }
+
+      const { credentialBundle, message } = response?.data || {}
 
       if (!credentialBundle) {
         return message
@@ -448,7 +455,7 @@ export class TurnkeyWallet
     }
 
     await this.turnkey.logout()
-    this.setStatus('ready')
+    this.setStatus(TurnkeyStatus.Ready)
   }
 
   async getAddresses(): Promise<string[]> {
@@ -481,8 +488,8 @@ export class TurnkeyWallet
           organizationId: this.organizationId,
         })
         .catch((e) => {
-          if (e.code === 7) {
-            this.setStatus('ready')
+          if (e.code === TurnkeyErrorCodes.UserLoggedOut) {
+            this.setStatus(TurnkeyStatus.Ready)
             this.disconnect()
             throw new WalletException(new Error('User is not logged in'), {
               code: UnspecifiedErrorCode,
@@ -490,7 +497,7 @@ export class TurnkeyWallet
               contextModule: WalletAction.GetAccounts,
             })
           } else {
-            this.setStatus('ready')
+            this.setStatus(TurnkeyStatus.Ready)
             throw e
           }
         })
@@ -726,7 +733,7 @@ export class TurnkeyWallet
 
       this.expiry = session?.expiry
 
-      await new Promise((resolve) => setTimeout(resolve, refreshInterval_ms))
+      await new Promise((resolve) => setTimeout(resolve, REFRESH_INTERVAL_MS))
     }
   }
 }

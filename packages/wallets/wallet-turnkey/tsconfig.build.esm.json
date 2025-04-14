@@ -8,6 +8,6 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "moduleResolution": "NodeNext",
-    "tsBuildInfoFile": "../../../.build-cache/wallet-ledger.esm.tsbuildinfo"
+    "tsBuildInfoFile": "../../../.build-cache/wallet-turnkey.esm.tsbuildinfo"
   }
 }

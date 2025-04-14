@@ -61,6 +61,7 @@
     "@injectivelabs/exceptions": "^1.14.43-beta.2",
     "@injectivelabs/sdk-ts": "^1.14.44-beta.3",
     "@injectivelabs/ts-types": "^1.14.43-beta.0",
+    "@injectivelabs/utils": "^1.14.48",
     "@injectivelabs/wallet-base": "^1.14.43-beta.3",
     "@turnkey/sdk-browser": "^3.0.1",
     "@turnkey/viem": "^0.6.18",
