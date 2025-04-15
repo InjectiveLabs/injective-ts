@@ -56,7 +56,6 @@ describe('MsgCreateDenom', () => {
     })
   })
 
-
   it('generates proper web3Gw', () => {
     const web3 = message.toWeb3Gw()
 
@@ -65,7 +64,6 @@ describe('MsgCreateDenom', () => {
       ...protoParamsAmino,
     })
   })
-
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({

@@ -29,7 +29,7 @@ export class IndexerGrpcOracleApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveOracleRpc.OracleListResponse>(
-        () => this.client.OracleList(request),
+        () => this.client.OracleList(request, this.metadata),
       )
 
       return IndexerGrpcOracleTransformer.oraclesResponseToOracles(response)
@@ -73,7 +73,7 @@ export class IndexerGrpcOracleApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveOracleRpc.PriceResponse>(() =>
-        this.client.Price(request),
+        this.client.Price(request, this.metadata),
       )
 
       return response
@@ -117,7 +117,7 @@ export class IndexerGrpcOracleApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveOracleRpc.PriceResponse>(() =>
-        this.client.Price(request),
+        this.client.Price(request, this.metadata),
       )
 
       return response

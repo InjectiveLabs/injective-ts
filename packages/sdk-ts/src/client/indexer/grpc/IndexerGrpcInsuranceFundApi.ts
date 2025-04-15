@@ -48,7 +48,7 @@ export class IndexerGrpcInsuranceFundApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveInsuranceRpc.RedemptionsResponse>(() =>
-          this.client.Redemptions(request),
+          this.client.Redemptions(request, this.metadata),
         )
 
       return IndexerGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
@@ -76,7 +76,7 @@ export class IndexerGrpcInsuranceFundApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveInsuranceRpc.FundsResponse>(
-        () => this.client.Funds(request),
+        () => this.client.Funds(request, this.metadata),
       )
 
       return IndexerGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(

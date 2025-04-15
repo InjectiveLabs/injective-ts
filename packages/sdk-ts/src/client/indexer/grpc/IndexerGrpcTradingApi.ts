@@ -29,7 +29,7 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveTradingRpc.GetTradingStatsResponse>(() =>
-          this.client.GetTradingStats(request),
+          this.client.GetTradingStats(request, this.metadata),
         )
 
       return response
@@ -148,7 +148,7 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveTradingRpc.ListTradingStrategiesResponse>(
-          () => this.client.ListTradingStrategies(request),
+          () => this.client.ListTradingStrategies(request, this.metadata),
         )
 
       return response

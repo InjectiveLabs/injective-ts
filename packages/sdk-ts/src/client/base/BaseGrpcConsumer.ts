@@ -14,9 +14,12 @@ export default class BaseGrpcConsumer extends GrpcWebImpl {
 
   public setMetadata(map: Record<string, string>) {
     const metadata = new grpc.Metadata()
+
     Object.keys(map).forEach((key) => metadata.set(key, map[key]))
 
     this.metadata = metadata
+
+    return this
   }
 
   public clearMetadata() {

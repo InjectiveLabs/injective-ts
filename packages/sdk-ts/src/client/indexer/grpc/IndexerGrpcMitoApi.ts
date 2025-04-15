@@ -42,7 +42,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetVaultResponse>(() =>
-        this.client.GetVault(request),
+        this.client.GetVault(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.vaultResponseToVault(response)
@@ -88,7 +88,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetVaultsResponse>(() =>
-        this.client.GetVaults(request),
+        this.client.GetVaults(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.vaultsResponseToVaults(response)
@@ -132,7 +132,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.LPTokenPriceChartResponse>(() =>
-        this.client.LPTokenPriceChart(request),
+        this.client.LPTokenPriceChart(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
@@ -178,7 +178,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.TVLChartResponse>(() =>
-        this.client.TVLChart(request),
+        this.client.TVLChart(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
@@ -230,7 +230,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.VaultsByHolderAddressResponse>(
-        () => this.client.VaultsByHolderAddress(request),
+        () => this.client.VaultsByHolderAddress(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.vaultsByHolderAddressResponseToVaultsByHolderAddress(
@@ -279,7 +279,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.LPHoldersResponse>(() =>
-        this.client.LPHolders(request),
+        this.client.LPHolders(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.lpHoldersResponseToLPHolders(response)
@@ -314,7 +314,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.PortfolioResponse>(() =>
-        this.client.Portfolio(request),
+        this.client.Portfolio(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.portfolioResponseToPortfolio(response)
@@ -344,7 +344,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.LeaderboardResponse>(() =>
-        this.client.Leaderboard(request),
+        this.client.Leaderboard(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.leaderboardResponseToLeaderboard(
@@ -404,7 +404,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.TransfersHistoryResponse>(() =>
-        this.client.TransfersHistory(request),
+        this.client.TransfersHistory(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.transferHistoryResponseToTransfer(
@@ -452,7 +452,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.LeaderboardEpochsResponse>(() =>
-        this.client.LeaderboardEpochs(request),
+        this.client.LeaderboardEpochs(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.leaderboardEpochsResponseToLeaderboardEpochs(
@@ -492,7 +492,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetStakingPoolsResponse>(() =>
-        this.client.GetStakingPools(request),
+        this.client.GetStakingPools(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.stakingPoolsResponseToStakingPools(
@@ -546,7 +546,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.StakingHistoryResponse>(() =>
-        this.client.StakingHistory(request),
+        this.client.StakingHistory(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoStakingHistoryResponseTpStakingHistory(
@@ -583,7 +583,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.StakingRewardByAccountResponse>(
-        () => this.client.StakingRewardByAccount(request),
+        () => this.client.StakingRewardByAccount(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.stakingRewardByAccountResponseToStakingRewardByAccount(
@@ -613,7 +613,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.MissionsResponse>(() =>
-        this.client.Missions(request),
+        this.client.Missions(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoMissionsResponseMissions(response)
@@ -643,7 +643,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.MissionLeaderboardResponse>(
-        () => this.client.MissionLeaderboard(request),
+        () => this.client.MissionLeaderboard(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoMissionLeaderboardResponseToMissionLeaderboard(
@@ -683,7 +683,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetIDOResponse>(() =>
-        this.client.GetIDO(request),
+        this.client.GetIDO(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoIDOResponseToIDO(response)
@@ -741,7 +741,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.ListIDOsResponse>(() =>
-        this.client.ListIDOs(request),
+        this.client.ListIDOs(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoListIDOsResponseToIDOs(response)
@@ -791,7 +791,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetIDOSubscribersResponse>(() =>
-        this.client.GetIDOSubscribers(request),
+        this.client.GetIDOSubscribers(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoIDOSubscribersResponseToIDOSubscribers(
@@ -828,7 +828,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetIDOSubscriptionResponse>(
-        () => this.client.GetIDOSubscription(request),
+        () => this.client.GetIDOSubscription(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoIDOSubscriptionResponseToIDOSubscription(
@@ -882,7 +882,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetIDOActivitiesResponse>(() =>
-        this.client.GetIDOActivities(request),
+        this.client.GetIDOActivities(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoIDOActivitiesResponseToIDOActivities(
@@ -928,7 +928,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetWhitelistResponse>(() =>
-        this.client.GetWhitelist(request),
+        this.client.GetWhitelist(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.mitoWhitelistAccountResponseToWhitelistAccount(
@@ -977,7 +977,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetClaimReferencesResponse>(
-        () => this.client.GetClaimReferences(request),
+        () => this.client.GetClaimReferences(request, this.metadata ),
       )
 
       return IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences(

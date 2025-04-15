@@ -30,7 +30,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     request.hash = hash
 
     try {
-      const response = await this.client.GetTxByTxHash(request)
+      const response = await this.client.GetTxByTxHash(request, this.metadata)
 
       return IndexerGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
     } catch (e: unknown) {
@@ -102,7 +102,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExplorerRpc.GetAccountTxsResponse>(() =>
-          this.client.GetAccountTxs(request),
+          this.client.GetAccountTxs(request, this.metadata),
         )
 
       return IndexerGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
@@ -133,7 +133,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExplorerRpc.GetValidatorResponse>(() =>
-          this.client.GetValidator(request),
+          this.client.GetValidator(request, this.metadata),
         )
 
       return IndexerGrpcExplorerTransformer.validatorResponseToValidator(
@@ -164,7 +164,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExplorerRpc.GetValidatorUptimeResponse>(() =>
-          this.client.GetValidatorUptime(request),
+          this.client.GetValidatorUptime(request, this.metadata),
         )
 
       return IndexerGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
@@ -219,7 +219,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExplorerRpc.GetPeggyDepositTxsResponse>(() =>
-          this.client.GetPeggyDepositTxs(request),
+          this.client.GetPeggyDepositTxs(request, this.metadata),
         )
 
       return IndexerGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
@@ -274,7 +274,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExplorerRpc.GetPeggyWithdrawalTxsResponse>(
-          () => this.client.GetPeggyWithdrawalTxs(request),
+          () => this.client.GetPeggyWithdrawalTxs(request, this.metadata),
         )
 
       return IndexerGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
@@ -334,7 +334,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveExplorerRpc.GetBlocksResponse>(
-        () => this.client.GetBlocks(request),
+        () => this.client.GetBlocks(request, this.metadata),
       )
 
       return response
@@ -362,7 +362,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveExplorerRpc.GetBlockResponse>(
-        () => this.client.GetBlock(request),
+        () => this.client.GetBlock(request, this.metadata),
       )
 
       return response
@@ -442,7 +442,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveExplorerRpc.GetTxsResponse>(
-        () => this.client.GetTxs(request),
+        () => this.client.GetTxs(request, this.metadata),
       )
 
       return response
@@ -519,7 +519,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveExplorerRpc.GetIBCTransferTxsResponse>(() =>
-          this.client.GetIBCTransferTxs(request),
+          this.client.GetIBCTransferTxs(request, this.metadata),
         )
 
       return IndexerGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
@@ -547,7 +547,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveExplorerRpc.GetStatsResponse>(
-        () => this.client.GetStats(request),
+        () => this.client.GetStats(request, this.metadata),
       )
 
       return IndexerGrpcExplorerTransformer.getExplorerStatsResponseToExplorerStats(

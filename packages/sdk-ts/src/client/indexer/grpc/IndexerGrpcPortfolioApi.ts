@@ -32,7 +32,7 @@ export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectivePortfolioRpc.AccountPortfolioResponse>(() =>
-          this.client.AccountPortfolio(request),
+          this.client.AccountPortfolio(request, this.metadata),
         )
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
@@ -74,7 +74,7 @@ export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectivePortfolioRpc.AccountPortfolioBalancesResponse>(
-          () => this.client.AccountPortfolioBalances(request),
+          () => this.client.AccountPortfolioBalances(request, this.metadata),
         )
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioBalancesResponseToAccountPortfolioBalances(

@@ -1,8 +1,10 @@
-import { getGrpcTransport } from '../../utils/grpc.js'
+import { getGrpcTransport, grpc, grpcPkg } from '../../utils/grpc.js'
 import { GrpcWebImpl } from './IndexerGrpcWebImpl.js'
 
 export default class BaseIndexerGrpcConsumer extends GrpcWebImpl {
   protected module: string = ''
+
+  protected metadata?: grpcPkg.grpc.Metadata
 
   constructor(endpoint: string) {
     super(endpoint, {
@@ -12,6 +14,20 @@ export default class BaseIndexerGrpcConsumer extends GrpcWebImpl {
 
   public getGrpcWebImpl(endpoint: string) {
     return new BaseIndexerGrpcConsumer(endpoint)
+  }
+
+  public setMetadata(map: Record<string, string>) {
+    const metadata = new grpc.Metadata()
+
+    Object.keys(map).forEach((key) => metadata.set(key, map[key]))
+
+    this.metadata = metadata
+
+    return this
+  }
+
+  public clearMetadata() {
+    this.metadata = undefined
   }
 
   protected retry<TResponse>(

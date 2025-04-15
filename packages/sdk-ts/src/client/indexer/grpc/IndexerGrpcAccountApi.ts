@@ -48,7 +48,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveAccountRpc.RewardsResponse>(
-        () => this.client.Rewards(request),
+        () => this.client.Rewards(request, this.metadata),
       )
 
       return IndexerGrpcAccountTransformer.tradingRewardsResponseToTradingRewards(
@@ -79,7 +79,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAccountRpc.SubaccountsListResponse>(() =>
-          this.client.SubaccountsList(request),
+          this.client.SubaccountsList(request, this.metadata),
         )
 
       return response.subaccounts
@@ -110,7 +110,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAccountRpc.SubaccountBalanceEndpointResponse>(
-          () => this.client.SubaccountBalanceEndpoint(request),
+          () => this.client.SubaccountBalanceEndpoint(request, this.metadata),
         )
 
       return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
@@ -139,7 +139,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAccountRpc.SubaccountBalancesListResponse>(
-          () => this.client.SubaccountBalancesList(request),
+          () => this.client.SubaccountBalancesList(request, this.metadata),
         )
 
       return IndexerGrpcAccountTransformer.balancesResponseToBalances(response)
@@ -200,7 +200,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAccountRpc.SubaccountHistoryResponse>(() =>
-          this.client.SubaccountHistory(request),
+          this.client.SubaccountHistory(request, this.metadata),
         )
 
       return IndexerGrpcAccountTransformer.transferHistoryResponseToTransferHistory(
@@ -247,7 +247,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAccountRpc.SubaccountOrderSummaryResponse>(
-          () => this.client.SubaccountOrderSummary(request),
+          () => this.client.SubaccountOrderSummary(request, this.metadata),
         )
 
       return response
@@ -281,7 +281,7 @@ export class IndexerGrpcAccountApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAccountRpc.OrderStatesResponse>(() =>
-          this.client.OrderStates(request),
+          this.client.OrderStates(request, this.metadata),
         )
 
       return response

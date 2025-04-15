@@ -60,7 +60,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.MarketsResponse>(() =>
-          this.client.Markets(request),
+          this.client.Markets(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.marketsResponseToMarkets(response)
@@ -89,7 +89,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.MarketResponse>(() =>
-          this.client.Market(request),
+          this.client.Market(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.marketResponseToMarket(response)
@@ -185,7 +185,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.OrdersResponse>(() =>
-          this.client.Orders(request),
+          this.client.Orders(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
@@ -297,7 +297,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.OrdersHistoryResponse>(() =>
-          this.client.OrdersHistory(request),
+          this.client.OrdersHistory(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.orderHistoryResponseToOrderHistory(
@@ -416,7 +416,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.TradesResponse>(() =>
-          this.client.Trades(request),
+          this.client.Trades(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
@@ -467,7 +467,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.SubaccountOrdersListResponse>(
-          () => this.client.SubaccountOrdersList(request),
+          () => this.client.SubaccountOrdersList(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
@@ -529,7 +529,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.SubaccountTradesListResponse>(
-          () => this.client.SubaccountTradesList(request),
+          () => this.client.SubaccountTradesList(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(
@@ -567,7 +567,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.OrderbooksV2Response>(() =>
-          this.client.OrderbooksV2(request),
+          this.client.OrderbooksV2(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.orderbooksV2ResponseToOrderbooksV2(
@@ -598,7 +598,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.OrderbookV2Response>(() =>
-          this.client.OrderbookV2(request),
+          this.client.OrderbookV2(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.orderbookV2ResponseToOrderbookV2(
@@ -653,7 +653,7 @@ export class IndexerGrpcSpotApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveSpotExchangeRpc.AtomicSwapHistoryResponse>(
-          () => this.client.AtomicSwapHistory(request),
+          () => this.client.AtomicSwapHistory(request, this.metadata),
         )
 
       return IndexerGrpcSpotTransformer.grpcAtomicSwapHistoryListToAtomicSwapHistoryList(
