@@ -57,7 +57,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.MarketsResponse>(() =>
-          this.client.Markets(request),
+          this.client.Markets(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.marketsResponseToMarkets(response)
