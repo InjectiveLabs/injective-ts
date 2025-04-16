@@ -160,6 +160,14 @@ export type GrpcTradeRewardCampaign =
 export type GrpcDenomDecimals = InjectiveExchangeV1Beta1Exchange.DenomDecimals
 export type GrpcDenomMinNotional =
   InjectiveExchangeV1Beta1Exchange.DenomMinNotional
+export type GrpcChainFullDerivativeMarket =
+  InjectiveExchangeV1Beta1Query.FullDerivativeMarket
+export type GrpcChainFullSpotMarket =
+  InjectiveExchangeV1Beta1Query.FullSpotMarket
+export type GrpcChainDerivativeMarket =
+  InjectiveExchangeV1Beta1Exchange.DerivativeMarket
+export type GrpcChainSpotMarket =
+  InjectiveExchangeV1Beta1Exchange.SpotMarket
 
 export type GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType
 export const GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
