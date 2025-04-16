@@ -31,6 +31,7 @@ import {
   type GrpcChainFullSpotMarket,
   type GrpcChainSpotMarket,
 } from '../types/exchange.js'
+import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
 import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
 import type { SpotMarket } from '../../indexer/types/spot.js'
 
@@ -321,9 +322,7 @@ export class ChainGrpcExchangeTransformer {
     })
   }
 
-  static grpcSpotMarketToSpotMarket(
-    market: GrpcChainSpotMarket,
-  ): SpotMarket {
+  static grpcSpotMarketToSpotMarket(market: GrpcChainSpotMarket): SpotMarket {
     const marketInfo = market
 
     return {
@@ -334,14 +333,24 @@ export class ChainGrpcExchangeTransformer {
       ticker: marketInfo.ticker,
       baseDenom: marketInfo.baseDenom,
       quoteDenom: marketInfo.quoteDenom,
-      makerFeeRate: marketInfo.makerFeeRate,
+      makerFeeRate: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.makerFeeRate,
+      ).toFixed(),
       quoteToken: undefined,
       baseToken: undefined,
-      takerFeeRate: marketInfo.takerFeeRate,
+      takerFeeRate: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.takerFeeRate,
+      ).toFixed(),
       serviceProviderFee: '',
-      minPriceTickSize: Number(marketInfo.minPriceTickSize),
-      minQuantityTickSize: Number(marketInfo.minQuantityTickSize),
-      minNotional: Number(marketInfo.minNotional),
+      minPriceTickSize: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minPriceTickSize,
+      ).toNumber(),
+      minQuantityTickSize: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minQuantityTickSize,
+      ).toNumber(),
+      minNotional: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minNotional,
+      ).toNumber(),
     }
   }
 
@@ -402,24 +411,40 @@ export class ChainGrpcExchangeTransformer {
       ),
       ticker: marketInfo.ticker,
       quoteDenom: marketInfo.quoteDenom,
-      makerFeeRate: marketInfo.makerFeeRate,
-      takerFeeRate: marketInfo.takerFeeRate,
+      makerFeeRate: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.makerFeeRate,
+      ).toFixed(),
+      takerFeeRate: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.takerFeeRate,
+      ).toFixed(),
       serviceProviderFee: '',
       quoteToken: undefined,
-      minPriceTickSize: Number(marketInfo.minPriceTickSize),
-      minQuantityTickSize: Number(marketInfo.minQuantityTickSize),
-      minNotional: Number(marketInfo.minNotional),
-      initialMarginRatio: marketInfo.initialMarginRatio,
-      maintenanceMarginRatio: marketInfo.maintenanceMarginRatio,
+      minPriceTickSize: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minPriceTickSize,
+      ).toNumber(),
+      minQuantityTickSize: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minQuantityTickSize,
+      ).toNumber(),
+      minNotional: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minNotional,
+      ).toNumber(),
+      initialMarginRatio: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.initialMarginRatio,
+      ).toFixed(),
+      maintenanceMarginRatio: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.maintenanceMarginRatio,
+      ).toFixed(),
       isPerpetual: marketInfo.isPerpetual,
       oracleBase: marketInfo.oracleBase,
       oracleQuote: marketInfo.oracleQuote,
       oracleScaleFactor: marketInfo.oracleScaleFactor,
       perpetualMarketInfo: {
-        hourlyFundingRateCap:
-          market.perpetualInfo?.marketInfo?.hourlyFundingRateCap ?? '',
-        hourlyInterestRate:
-          market.perpetualInfo?.marketInfo?.hourlyInterestRate ?? '',
+        hourlyFundingRateCap: denomAmountFromGrpcChainDenomAmount(
+          market.perpetualInfo?.marketInfo?.hourlyFundingRateCap ?? '0',
+        ).toFixed(),
+        hourlyInterestRate: denomAmountFromGrpcChainDenomAmount(
+          market.perpetualInfo?.marketInfo?.hourlyInterestRate ?? '0',
+        ).toFixed(),
         nextFundingTimestamp: parseInt(
           market.perpetualInfo?.marketInfo?.nextFundingTimestamp ?? '',
           10,
@@ -430,10 +455,12 @@ export class ChainGrpcExchangeTransformer {
         ),
       },
       perpetualMarketFunding: {
-        cumulativeFunding:
-          market.perpetualInfo?.fundingInfo?.cumulativeFunding ?? '',
-        cumulativePrice:
-          market.perpetualInfo?.fundingInfo?.cumulativePrice ?? '',
+        cumulativeFunding: denomAmountFromGrpcChainDenomAmount(
+          market.perpetualInfo?.fundingInfo?.cumulativeFunding ?? '0',
+        ).toFixed(),
+        cumulativePrice: denomAmountFromGrpcChainDenomAmount(
+          market.perpetualInfo?.fundingInfo?.cumulativePrice ?? '0',
+        ).toFixed(),
         lastTimestamp: parseInt(
           market.perpetualInfo?.fundingInfo?.lastTimestamp ?? '',
           10,
