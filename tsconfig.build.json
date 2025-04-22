@@ -13,7 +13,7 @@
     "removeComments": false,
     "composite": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "sourceMap": true,
     "esModuleInterop": true,
     "incremental": true,
