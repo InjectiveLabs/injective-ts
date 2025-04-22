@@ -1,33 +1,11 @@
 import { TrezorException } from '@injectivelabs/exceptions'
 import {
-  TypedMessage,
-  MessageTypes,
-  TypedDataUtils,
-  SignTypedDataVersion,
-} from '@metamask/eth-sig-util'
-
-// Sanitization is used for T1 as eth-sig-util does not support BigInt
-// @ts-ignore
-function sanitizeData(data) {
-  switch (Object.prototype.toString.call(data)) {
-    case '[object Object]': {
-      // @ts-ignore
-      const entries = Object.keys(data).map((k) => [k, sanitizeData(data[k])])
-      return Object.fromEntries(entries)
-    }
-
-    case '[object Array]':
-      return data.map((v: any) => sanitizeData(v))
-
-    case '[object BigInt]':
-      return data.toString()
-
-    default:
-      return data
-  }
-}
-
-
+  sanitizeTypedData,
+  type TypedMessageV4,
+  TypedDataUtilsHashStruct,
+  SignTypedDataVersionV4,
+  TypedDataUtilsSanitizeData,
+} from '@injectivelabs/sdk-ts'
 
 /**
  * Calculates the domain_separator_hash and message_hash from an EIP-712 Typed Data object.
@@ -40,7 +18,7 @@ function sanitizeData(data) {
  * @param {boolean} metamask_v4_compat - Set to `true` for compatibility with Metamask's signTypedData_v4 function.
  * @returns {{domain_separator_hash: string, message_hash?: string} & T} The hashes.
  */
-export const transformTypedData = <T extends TypedMessage<MessageTypes>>(
+export const transformTypedData = <T extends TypedMessageV4>(
   data: T,
   metamask_v4_compat: boolean = true,
 ): { domain_separator_hash: string; message_hash?: string } & T => {
@@ -50,14 +28,14 @@ export const transformTypedData = <T extends TypedMessage<MessageTypes>>(
     )
   }
 
-  const version = SignTypedDataVersion.V4
+  const version = SignTypedDataVersionV4
 
   const { types, primaryType, domain, message } =
-    TypedDataUtils.sanitizeData(data)
+    TypedDataUtilsSanitizeData(data)
 
-  const domainSeparatorHash = TypedDataUtils.hashStruct(
+  const domainSeparatorHash = TypedDataUtilsHashStruct(
     'EIP712Domain',
-    sanitizeData(domain),
+    sanitizeTypedData(domain),
     types,
     version,
   ).toString('hex')
@@ -65,9 +43,9 @@ export const transformTypedData = <T extends TypedMessage<MessageTypes>>(
   let messageHash = null
 
   if (primaryType !== 'EIP712Domain') {
-    messageHash = TypedDataUtils.hashStruct(
+    messageHash = TypedDataUtilsHashStruct(
       primaryType as string,
-      sanitizeData(message),
+      sanitizeTypedData(message),
       types,
       version,
     ).toString('hex')

@@ -63,7 +63,6 @@
     "@injectivelabs/sdk-ts": "^1.14.58",
     "@injectivelabs/ts-types": "^1.14.47",
     "@injectivelabs/wallet-base": "^1.14.56",
-    "@metamask/eth-sig-util": "^8.0.0",
     "alchemy-sdk": "^3.4.7",
     "hdkey": "^2.1.0"
   },

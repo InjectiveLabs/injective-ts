@@ -2,7 +2,12 @@
 import CryptoEs from 'crypto-js'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import keccak256 from 'keccak256'
-import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
+import {
+  TypedMessage,
+  MessageTypes,
+  TypedDataUtils,
+  SignTypedDataVersion,
+} from '@metamask/eth-sig-util'
 
 export const hashToHex = (data: string): string => {
   return CryptoEs.SHA256(CryptoEs.enc.Base64.parse(data))
@@ -106,3 +111,41 @@ export const publicKeyToAddress = function (
 
   return keccak256(Buffer.from(pubKey)).subarray(-20)
 }
+
+export const sanitizeTypedData = <
+  T extends
+    | object
+    | any[]
+    | bigint
+    | string
+    | number
+    | boolean
+    | null
+    | undefined,
+>(
+  data: T,
+): T => {
+  switch (Object.prototype.toString.call(data)) {
+    case '[object Object]': {
+      const entries = Object.keys(data as object).map((k) => [
+        k,
+        sanitizeTypedData((data as any)[k]),
+      ])
+      return Object.fromEntries(entries) as T
+    }
+
+    case '[object Array]':
+      return (data as any[]).map((v) => sanitizeTypedData(v)) as T
+
+    case '[object BigInt]':
+      return (data as bigint).toString() as unknown as T
+
+    default:
+      return data
+  }
+}
+
+export const TypedDataUtilsSanitizeData = TypedDataUtils.sanitizeData
+export const TypedDataUtilsHashStruct = TypedDataUtils.hashStruct
+export const SignTypedDataVersionV4 = SignTypedDataVersion.V4
+export type TypedMessageV4 = TypedMessage<MessageTypes>
