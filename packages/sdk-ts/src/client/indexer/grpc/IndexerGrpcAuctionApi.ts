@@ -38,7 +38,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAuctionRpc.AuctionEndpointResponse>(() =>
-          this.client.AuctionEndpoint(request),
+          this.client.AuctionEndpoint(request, this.metadata),
         )
 
       return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
@@ -64,7 +64,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveAuctionRpc.AuctionsResponse>(
-        () => this.client.Auctions(request),
+        () => this.client.Auctions(request, this.metadata),
       )
 
       return IndexerGrpcAuctionTransformer.auctionsResponseToAuctions(response)
@@ -91,7 +91,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveAuctionRpc.InjBurntEndpointResponse>(() =>
-          this.client.InjBurntEndpoint(request),
+          this.client.InjBurntEndpoint(request, this.metadata),
         )
 
       return IndexerGrpcAuctionTransformer.injBurntResponseToInjBurnt(response)

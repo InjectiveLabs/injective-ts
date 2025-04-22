@@ -37,11 +37,7 @@ import {
   WalletStrategyEthereumOptions,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import {
-  TrezorTransportInit,
-  TrezorTransportNoInit,
-  BaseTrezorTransport,
-} from './hw/index.js'
+import { TrezorTransportInit, BaseTrezorTransport } from './hw/index.js'
 import { transformTypedData } from '../utils.js'
 import { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
 

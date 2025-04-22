@@ -482,4 +482,118 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchDerivativeMarkets(status?: string, marketIds?: string[]) {
+    const request =
+      InjectiveExchangeV1Beta1Query.QueryDerivativeMarketsRequest.create()
+
+    if (status) {
+      request.status = status
+    }
+
+    if (marketIds) {
+      request.marketIds = marketIds
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QueryDerivativeMarketsResponse>(
+          () => this.client.DerivativeMarkets(request, this.metadata),
+        )
+
+      return ChainGrpcExchangeTransformer.fullDerivativeMarketsResponseToDerivativeMarkets(
+        response,
+      )
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'DerivativeMarkets',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DerivativeMarkets',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
+
+  async fetchSpotMarkets(status?: string, marketIds?: string[]) {
+    const request =
+      InjectiveExchangeV1Beta1Query.QuerySpotMarketsRequest.create()
+
+    if (status) {
+      request.status = status
+    }
+
+    if (marketIds) {
+      request.marketIds = marketIds
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QuerySpotMarketsResponse>(
+          () => this.client.SpotMarkets(request, this.metadata),
+        )
+
+      return ChainGrpcExchangeTransformer.spotMarketsResponseToSpotMarkets(
+        response,
+      )
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'DerivativeMarkets',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DerivativeMarkets',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
+
+  async fetchFullSpotMarkets(status?: string, marketIds?: string[]) {
+    const request =
+      InjectiveExchangeV1Beta1Query.QuerySpotMarketsRequest.create()
+
+    if (status) {
+      request.status = status
+    }
+
+    if (marketIds) {
+      request.marketIds = marketIds
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveExchangeV1Beta1Query.QueryFullSpotMarketsResponse>(
+          () => this.client.FullSpotMarkets(request, this.metadata),
+        )
+
+      return ChainGrpcExchangeTransformer.fullSpotMarketsResponseToSpotMarkets(
+        response,
+      )
+    } catch (e: any) {
+      if (e instanceof InjectiveExchangeV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'DerivativeMarkets',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'DerivativeMarkets',
+        contextModule: ChainModule.Exchange,
+      })
+    }
+  }
 }

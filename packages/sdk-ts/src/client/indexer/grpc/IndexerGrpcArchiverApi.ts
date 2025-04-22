@@ -38,7 +38,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveArchiverRpc.BalanceResponse>(
-        () => this.client.Balance(request),
+        () => this.client.Balance(request, this.metadata),
       )
 
       return IndexerGrpcArchiverTransformer.grpcHistoricalBalanceResponseToHistoricalBalances(
@@ -75,7 +75,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveArchiverRpc.RpnlResponse>(() =>
-        this.client.Rpnl(request),
+        this.client.Rpnl(request, this.metadata),
       )
 
       return IndexerGrpcArchiverTransformer.grpcHistoricalRPNLResponseToHistoricalRPNL(
@@ -112,7 +112,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveArchiverRpc.VolumesResponse>(
-        () => this.client.Volumes(request),
+        () => this.client.Volumes(request, this.metadata),
       )
 
       return IndexerGrpcArchiverTransformer.grpcHistoricalVolumesResponseToHistoricalVolumes(
@@ -162,7 +162,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveArchiverRpc.PnlLeaderboardResponse>(() =>
-          this.client.PnlLeaderboard(request),
+          this.client.PnlLeaderboard(request, this.metadata),
         )
 
       return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardResponseToPnlLeaderboard(
@@ -212,7 +212,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveArchiverRpc.VolLeaderboardResponse>(() =>
-          this.client.VolLeaderboard(request),
+          this.client.VolLeaderboard(request, this.metadata),
         )
 
       return IndexerGrpcArchiverTransformer.grpcVolLeaderboardResponseToVolLeaderboard(
@@ -260,7 +260,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveArchiverRpc.PnlLeaderboardFixedResolutionResponse>(
-          () => this.client.PnlLeaderboardFixedResolution(request),
+          () => this.client.PnlLeaderboardFixedResolution(request, this.metadata),
         )
 
       return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardFixedResolutionResponseToPnlLeaderboard(
@@ -308,7 +308,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveArchiverRpc.VolLeaderboardFixedResolutionResponse>(
-          () => this.client.VolLeaderboardFixedResolution(request),
+          () => this.client.VolLeaderboardFixedResolution(request, this.metadata),
         )
 
       return IndexerGrpcArchiverTransformer.grpcVolLeaderboardFixedResolutionResponseToVolLeaderboard(
@@ -355,7 +355,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveArchiverRpc.DenomHoldersResponse>(() =>
-          this.client.DenomHolders(request),
+          this.client.DenomHolders(request, this.metadata),
         )
 
       return IndexerGrpcArchiverTransformer.grpcDenomHoldersResponseToDenomHolders(

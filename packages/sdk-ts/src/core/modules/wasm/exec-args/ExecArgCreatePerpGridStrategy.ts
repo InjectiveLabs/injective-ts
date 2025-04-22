@@ -5,6 +5,7 @@ import {
 } from '../ExecArgBase.js'
 
 import { ExitType } from '../types.js'
+
 export declare namespace ExecArgCreatePerpGridStrategy {
   export interface Params {
     subaccountId: string
@@ -15,6 +16,7 @@ export declare namespace ExecArgCreatePerpGridStrategy {
     stopLoss?: string
     takeProfit?: string
     marginRatio: string
+    feeRecipient?: string
   }
 
   export interface Data {
@@ -35,12 +37,14 @@ export declare namespace ExecArgCreatePerpGridStrategy {
         margin_ratio: string
       }
     }
+    fee_recipient?: string
   }
 }
 
 /**
  * @category Contract Exec Arguments
  */
+/** @deprecated */
 export default class ExecArgCreatePerpGridStrategy extends ExecArgBase<
   ExecArgCreatePerpGridStrategy.Params,
   ExecArgCreatePerpGridStrategy.Data
@@ -76,6 +80,9 @@ export default class ExecArgCreatePerpGridStrategy extends ExecArgBase<
             exit_price: params.takeProfit,
           }
         : undefined,
+      ...(params.feeRecipient && {
+        fee_recipient: params.feeRecipient,
+      }),
     }
   }
 

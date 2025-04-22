@@ -1,9 +1,9 @@
 import {
   InjectiveExchangeV1Beta1Query,
   InjectiveExchangeV1Beta1Exchange,
+  InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { AtomicMarketOrderAccessLevel } from '@injectivelabs/core-proto-ts/cjs/injective/exchange/v1beta1/exchange.js'
 import {
   ChainPosition,
   PointsMultiplier,
@@ -27,7 +27,13 @@ import {
   GrpcTradingRewardCampaignInfo,
   TradingRewardCampaignBoostInfo,
   GrpcTradingRewardCampaignBoostInfo,
+  type GrpcChainFullDerivativeMarket,
+  type GrpcChainFullSpotMarket,
+  type GrpcChainSpotMarket,
 } from '../types/exchange.js'
+import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
+import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
+import type { SpotMarket } from '../../indexer/types/spot.js'
 
 /**
  * @category Chain Grpc Transformer
@@ -81,7 +87,9 @@ export class ChainGrpcExchangeTransformer {
             }
           : undefined,
       atomicMarketOrderAccessLevel:
-        AtomicMarketOrderAccessLevel[params.atomicMarketOrderAccessLevel],
+        InjectiveExchangeV1Beta1Exchange.atomicMarketOrderAccessLevelToJSON(
+          params.atomicMarketOrderAccessLevel,
+        ),
       spotAtomicMarketOrderFeeMultiplier:
         params.spotAtomicMarketOrderFeeMultiplier,
       derivativeAtomicMarketOrderFeeMultiplier:
@@ -304,5 +312,160 @@ export class ChainGrpcExchangeTransformer {
         .dividedBy(10 ** 18)
         .toFixed(),
     }))
+  }
+
+  static spotMarketsResponseToSpotMarkets(
+    response: InjectiveExchangeV1Beta1Query.QuerySpotMarketsResponse,
+  ): SpotMarket[] {
+    return response.markets.map((market) => {
+      return ChainGrpcExchangeTransformer.grpcSpotMarketToSpotMarket(market)
+    })
+  }
+
+  static grpcSpotMarketToSpotMarket(market: GrpcChainSpotMarket): SpotMarket {
+    const marketInfo = market
+
+    return {
+      marketId: marketInfo.marketId,
+      marketStatus: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
+        marketInfo.status,
+      ),
+      ticker: marketInfo.ticker,
+      baseDenom: marketInfo.baseDenom,
+      quoteDenom: marketInfo.quoteDenom,
+      makerFeeRate: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.makerFeeRate,
+      ).toFixed(),
+      quoteToken: undefined,
+      baseToken: undefined,
+      takerFeeRate: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.takerFeeRate,
+      ).toFixed(),
+      serviceProviderFee: '',
+      minPriceTickSize: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minPriceTickSize,
+      ).toNumber(),
+      minQuantityTickSize: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minQuantityTickSize,
+      ).toNumber(),
+      minNotional: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minNotional,
+      ).toNumber(),
+    }
+  }
+
+  static fullSpotMarketsResponseToSpotMarkets(
+    response: InjectiveExchangeV1Beta1Query.QueryFullSpotMarketsResponse,
+  ): SpotMarket[] {
+    return response.markets.map((market) => {
+      return ChainGrpcExchangeTransformer.grpcFullSpotMarketToSpotMarket(market)
+    })
+  }
+
+  static grpcFullSpotMarketToSpotMarket(
+    market: GrpcChainFullSpotMarket,
+  ): SpotMarket {
+    const marketInfo = market.market!
+
+    return {
+      marketId: marketInfo.marketId,
+      marketStatus: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
+        marketInfo.status,
+      ),
+      ticker: marketInfo.ticker,
+      baseDenom: marketInfo.baseDenom,
+      quoteDenom: marketInfo.quoteDenom,
+      makerFeeRate: marketInfo.makerFeeRate,
+      quoteToken: undefined,
+      baseToken: undefined,
+      takerFeeRate: marketInfo.takerFeeRate,
+      serviceProviderFee: '',
+      minPriceTickSize: Number(marketInfo.minPriceTickSize),
+      minQuantityTickSize: Number(marketInfo.minQuantityTickSize),
+      minNotional: Number(marketInfo.minNotional),
+    }
+  }
+
+  static fullDerivativeMarketsResponseToDerivativeMarkets(
+    response: InjectiveExchangeV1Beta1Query.QueryDerivativeMarketsResponse,
+  ): DerivativeMarket[] {
+    return response.markets.map((market) => {
+      return ChainGrpcExchangeTransformer.grpcFullDerivativeMarketToDerivativeMarket(
+        market,
+      )
+    })
+  }
+
+  static grpcFullDerivativeMarketToDerivativeMarket(
+    market: GrpcChainFullDerivativeMarket,
+  ): DerivativeMarket {
+    const marketInfo = market.market!
+
+    return {
+      oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
+        marketInfo.oracleType,
+      ),
+      marketId: marketInfo.marketId,
+      marketStatus: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
+        marketInfo.status,
+      ),
+      ticker: marketInfo.ticker,
+      quoteDenom: marketInfo.quoteDenom,
+      makerFeeRate: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.makerFeeRate,
+      ).toFixed(),
+      takerFeeRate: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.takerFeeRate,
+      ).toFixed(),
+      serviceProviderFee: '',
+      quoteToken: undefined,
+      minPriceTickSize: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minPriceTickSize,
+      ).toNumber(),
+      minQuantityTickSize: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minQuantityTickSize,
+      ).toNumber(),
+      minNotional: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.minNotional,
+      ).toNumber(),
+      initialMarginRatio: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.initialMarginRatio,
+      ).toFixed(),
+      maintenanceMarginRatio: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.maintenanceMarginRatio,
+      ).toFixed(),
+      isPerpetual: marketInfo.isPerpetual,
+      oracleBase: marketInfo.oracleBase,
+      oracleQuote: marketInfo.oracleQuote,
+      oracleScaleFactor: marketInfo.oracleScaleFactor,
+      perpetualMarketInfo: {
+        hourlyFundingRateCap: denomAmountFromGrpcChainDenomAmount(
+          market.perpetualInfo?.marketInfo?.hourlyFundingRateCap ?? '0',
+        ).toFixed(),
+        hourlyInterestRate: denomAmountFromGrpcChainDenomAmount(
+          market.perpetualInfo?.marketInfo?.hourlyInterestRate ?? '0',
+        ).toFixed(),
+        nextFundingTimestamp: parseInt(
+          market.perpetualInfo?.marketInfo?.nextFundingTimestamp ?? '',
+          10,
+        ),
+        fundingInterval: parseInt(
+          market.perpetualInfo?.marketInfo?.fundingInterval ?? '',
+          10,
+        ),
+      },
+      perpetualMarketFunding: {
+        cumulativeFunding: denomAmountFromGrpcChainDenomAmount(
+          market.perpetualInfo?.fundingInfo?.cumulativeFunding ?? '0',
+        ).toFixed(),
+        cumulativePrice: denomAmountFromGrpcChainDenomAmount(
+          market.perpetualInfo?.fundingInfo?.cumulativePrice ?? '0',
+        ).toFixed(),
+        lastTimestamp: parseInt(
+          market.perpetualInfo?.fundingInfo?.lastTimestamp ?? '',
+          10,
+        ),
+      },
+    }
   }
 }

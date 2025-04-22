@@ -3,8 +3,7 @@ import { Pagination } from '../../../types/index.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import { BankModuleParams, Metadata, TotalSupply } from '../types/index.js'
 import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
+import { CosmosBankV1Beta1Bank, CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer

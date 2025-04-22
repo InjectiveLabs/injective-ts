@@ -45,10 +45,7 @@ import {
   NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
-import {
-  ChainId,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
@@ -194,6 +191,7 @@ export class MsgBroadcaster {
    */
   async broadcastV2(tx: MsgBroadcasterTxOptions) {
     const { walletStrategy } = this
+
     const txWithAddresses = {
       ...tx,
       ethereumAddress: getEthereumSignerAddress(tx.injectiveAddress),

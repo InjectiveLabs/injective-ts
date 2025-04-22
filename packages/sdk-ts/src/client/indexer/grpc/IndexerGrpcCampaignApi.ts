@@ -65,7 +65,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveCampaignRpc.RankingResponse>(
-        () => this.client.Ranking(request),
+        () => this.client.Ranking(request, this.metadata),
       )
 
       return IndexerCampaignTransformer.CampaignResponseToCampaign(response)
@@ -124,7 +124,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveCampaignRpc.CampaignsV2Response>(() =>
-          this.client.CampaignsV2(request),
+          this.client.CampaignsV2(request, this.metadata),
         )
 
       return IndexerCampaignTransformer.CampaignsV2ResponseToCampaigns(response)
@@ -176,7 +176,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveCampaignRpc.CampaignsResponse>(
-        () => this.client.Campaigns(request),
+        () => this.client.Campaigns(request, this.metadata),
       )
 
       return IndexerCampaignTransformer.RoundsResponseToRounds(response)
@@ -224,7 +224,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveCampaignRpc.ListGuildsResponse>(() =>
-          this.client.ListGuilds(request),
+          this.client.ListGuilds(request, this.metadata),
         )
 
       return IndexerCampaignTransformer.GuildsResponseToGuilds(response)
@@ -260,7 +260,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveCampaignRpc.GetGuildMemberResponse>(() =>
-          this.client.GetGuildMember(request),
+          this.client.GetGuildMember(request, this.metadata),
         )
 
       return IndexerCampaignTransformer.GuildMemberResponseToGuildMember(
@@ -319,7 +319,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveCampaignRpc.ListGuildMembersResponse>(() =>
-          this.client.ListGuildMembers(request),
+          this.client.ListGuildMembers(request, this.metadata),
         )
 
       return IndexerCampaignTransformer.GuildMembersResponseToGuildMembers(

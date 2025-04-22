@@ -47,8 +47,8 @@ jobs:
 
       - name: Version and publish
         run: |
-          lerna version prerelease --preid beta --force-git-tag --no-changelog --yes
-          lerna publish from-git --force-git-tag --dist-tag next --yes --summary-file
+          lerna version patch --force-git-tag --no-changelog --yes
+          lerna publish from-git --force-git-tag --yes --summary-file
 
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}

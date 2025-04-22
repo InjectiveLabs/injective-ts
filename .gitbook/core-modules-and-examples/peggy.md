@@ -9,21 +9,14 @@ This message is used to withdraw funds from the Injective Chain via the [peggy c
 Note that a $10 USD bridge fee will be charged for this transaction to cover for the ethereum gas fee on top of the standard INJ transaction fee.
 
 ```ts
-import {
-  TokenPrice,
-  MsgSendToEth,
-  DenomClientAsync,
-  MsgBroadcasterWithPk,
-} from '@injectivelabs/sdk-ts'
+import { TokenPrice, MsgSendToEth, DenomClientAsync, TokenStaticFactory, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 // refer to https://docs.ts.injective.network/readme/assets/injective-list
 import { tokens } from '../data/tokens.json'
 
-export const tokenFactoryStatic = new TokenFactoryStatic(
-  tokens as TokenStatic[],
-)
+export const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 
 const tokenPriceMap = new TokenPrice(Network.Mainnet)
 const tokenService = new TokenService({
@@ -38,7 +31,7 @@ const denomClient = new DenomClientAsync(Network.Mainnet, {
 })
 
 const tokenSymbol = 'INJ'
-const tokenMeta = tokenFactoryStatic.toToken(tokenSymbol)
+const tokenMeta = tokenStaticFactory.toToken(tokenSymbol)
 
 const amount = 1
 const injectiveAddress = 'inj1...'
@@ -50,12 +43,8 @@ if (!tokenMeta) {
 }
 
 const tokenUsdPrice = tokenPriceMap[tokenMeta.coinGeckoId]
-const amountToFixed = new BigNumberInBase(amount)
-  .toWei(tokenMeta.decimals)
-  .toFixed()
-const bridgeFeeInToken = new BigNumberInBase(ETH_BRIDGE_FEE_IN_USD)
-  .dividedBy(tokenUsdPrice)
-  .toFixed()
+const amountToFixed = new BigNumberInBase(amount).toWei(tokenMeta.decimals).toFixed()
+const bridgeFeeInToken = new BigNumberInBase(ETH_BRIDGE_FEE_IN_USD).dividedBy(tokenUsdPrice).toFixed()
 
 const msg = MsgSendToEth.fromJSON({
   injectiveAddress,

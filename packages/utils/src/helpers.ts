@@ -40,7 +40,7 @@ export const awaitForAll = async <T, S>(
   return result
 }
 
-export const splitArrayToChunks = <T>({
+export const splitArrayToChunksThrow = <T>({
   array,
   chunkSize,
   filter,
@@ -50,9 +50,14 @@ export const splitArrayToChunks = <T>({
   filter?: (item: T) => boolean
 }) => {
   const chunks = []
+  const chunkSizeInNumber = Number(chunkSize)
 
-  for (let i = 0; i < array.length; i += chunkSize) {
-    const chunk = array.slice(i, i + chunkSize)
+  if (isNaN(chunkSizeInNumber)) {
+    throw new Error('Invalid chunk size, must be a valid number')
+  }
+
+  for (let i = 0; i < array.length; i += chunkSizeInNumber) {
+    const chunk = array.slice(i, i + chunkSizeInNumber)
 
     if (filter) {
       chunks.push(chunk.filter(filter))
@@ -62,6 +67,22 @@ export const splitArrayToChunks = <T>({
   }
 
   return chunks
+}
+
+export const splitArrayToChunks = <T>({
+  array,
+  chunkSize,
+  filter,
+}: {
+  array: Array<T>
+  chunkSize: number
+  filter?: (item: T) => boolean
+}) => {
+  try {
+    return splitArrayToChunksThrow({ array, chunkSize, filter })
+  } catch (e: any) {
+    return [array]
+  }
 }
 
 export const getStdFeeForToken = (

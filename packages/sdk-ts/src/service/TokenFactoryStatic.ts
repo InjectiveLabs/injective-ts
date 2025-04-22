@@ -5,6 +5,7 @@ import {
   TokenVerification,
 } from './../types/index.js'
 
+/** @deprecated */
 export class TokenFactoryStatic {
   public registry: TokenStatic[]
   public tokensByDenom: Record<string, TokenStatic>

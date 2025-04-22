@@ -8,11 +8,13 @@ export declare namespace ExecArgSwapMinOutput {
   export interface Params {
     minOutputQuantity: string
     targetDenom: string
+    feeRecipient?: string
   }
 
   export interface Data {
     min_output_quantity: string
     target_denom: string
+    fee_recipient?: string
   }
 }
 
@@ -33,6 +35,9 @@ export default class ExecArgSwapMinOutput extends ExecArgBase<
     return {
       min_output_quantity: params.minOutputQuantity,
       target_denom: params.targetDenom,
+      ...(params.feeRecipient && {
+        fee_recipient: params.feeRecipient,
+      }),
     }
   }
 

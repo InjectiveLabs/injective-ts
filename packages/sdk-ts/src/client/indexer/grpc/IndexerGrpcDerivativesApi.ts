@@ -57,7 +57,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.MarketsResponse>(() =>
-          this.client.Markets(request),
+          this.client.Markets(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.marketsResponseToMarkets(response)
@@ -86,7 +86,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.MarketResponse>(() =>
-          this.client.Market(request),
+          this.client.Market(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.marketResponseToMarket(response)
@@ -138,7 +138,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.BinaryOptionsMarketsResponse>(
-          () => this.client.BinaryOptionsMarkets(request),
+          () => this.client.BinaryOptionsMarkets(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
@@ -170,7 +170,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.BinaryOptionsMarketResponse>(
-          () => this.client.BinaryOptionsMarket(request),
+          () => this.client.BinaryOptionsMarket(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseToBinaryOptionsMarket(
@@ -270,7 +270,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.OrdersResponse>(() =>
-          this.client.Orders(request),
+          this.client.Orders(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
@@ -381,11 +381,12 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.OrdersHistoryResponse>(
-          () => this.client.OrdersHistory(request),
+          () => this.client.OrdersHistory(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
         response,
+        isConditional,
       )
     } catch (e: unknown) {
       if (e instanceof InjectiveDerivativeExchangeRpc.GrpcWebError) {
@@ -453,7 +454,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.PositionsResponse>(() =>
-          this.client.Positions(request),
+          this.client.Positions(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.positionsResponseToPositions(
@@ -536,7 +537,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.PositionsV2Response>(
-          () => this.client.PositionsV2(request),
+          () => this.client.PositionsV2(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.positionsV2ResponseToPositionsV2(
@@ -655,7 +656,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.TradesResponse>(() =>
-          this.client.Trades(request),
+          this.client.Trades(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.tradesResponseToTrades(response)
@@ -716,7 +717,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.FundingPaymentsResponse>(
-          () => this.client.FundingPayments(request),
+          () => this.client.FundingPayments(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.fundingPaymentsResponseToFundingPayments(
@@ -764,7 +765,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.FundingRatesResponse>(
-          () => this.client.FundingRates(request),
+          () => this.client.FundingRates(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.fundingRatesResponseToFundingRates(
@@ -818,7 +819,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.SubaccountOrdersListResponse>(
-          () => this.client.SubaccountOrdersList(request),
+          () => this.client.SubaccountOrdersList(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
@@ -881,7 +882,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.SubaccountTradesListResponse>(
-          () => this.client.SubaccountTradesList(request),
+          () => this.client.SubaccountTradesList(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(
@@ -919,7 +920,7 @@ export class IndexerGrpcDerivativesApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveDerivativeExchangeRpc.OrderbooksV2Response>(
-          () => this.client.OrderbooksV2(request),
+          () => this.client.OrderbooksV2(request, this.metadata),
         )
 
       return IndexerGrpcDerivativeTransformer.orderbooksV2ResponseToOrderbooksV2(

@@ -27,8 +27,6 @@ export default class MsgExec extends MsgBase<
   MsgExec.Object
 > {
   static fromJSON(params: MsgExec.Params): MsgExec {
-    console.log('MsgExec.fromJSON')
-
     return new MsgExec(params)
   }
 
@@ -76,6 +74,18 @@ export default class MsgExec extends MsgBase<
         grantee: params.grantee,
         msgs: msgs.map((msg) => msg.toEip712()),
       } as unknown as MsgExec.Object,
+    }
+  }
+
+  public toEip712V2() {
+    const { params } = this
+
+    const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
+
+    return {
+      '@type': '/cosmos.authz.v1beta1.MsgExec',
+      grantee: params.grantee,
+      msgs: msgs.map((msg: any) => msg.toEip712V2()),
     }
   }
 

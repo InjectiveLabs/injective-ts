@@ -30,7 +30,7 @@ export class IndexerGrpcReferralApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveReferralRpc.GetReferrerDetailsResponse>(() =>
-          this.client.GetReferrerDetails(request),
+          this.client.GetReferrerDetails(request, this.metadata),
         )
 
       return IndexerGrpcReferralTransformer.referrerDetailsResponseToReferrerDetails(
@@ -61,7 +61,7 @@ export class IndexerGrpcReferralApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveReferralRpc.GetInviteeDetailsResponse>(() =>
-          this.client.GetInviteeDetails(request),
+          this.client.GetInviteeDetails(request, this.metadata),
         )
 
       return IndexerGrpcReferralTransformer.inviteeDetailsResponseToInviteeDetails(
@@ -91,7 +91,7 @@ export class IndexerGrpcReferralApi extends BaseGrpcConsumer {
     try {
       const response =
         await this.retry<InjectiveReferralRpc.GetReferrerByCodeResponse>(() =>
-          this.client.GetReferrerByCode(request),
+          this.client.GetReferrerByCode(request, this.metadata),
         )
 
       return IndexerGrpcReferralTransformer.referrerByCodeResponseToReferrerByCode(

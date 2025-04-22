@@ -1,5 +1,6 @@
 import { fromUtf8 } from '../../../../utils/utf8.js'
 import { MsgBase } from '../../MsgBase.js'
+import { toPascalCase } from '@injectivelabs/utils'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmwasmWasmV1Tx,
@@ -65,9 +66,20 @@ export default class MsgStoreCode extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
+
     const message = {
       ...snakecaseKeys(proto),
       wasm_byte_code: Buffer.from(proto.wasmByteCode).toString('base64'),
+      instantiate_permission: proto.instantiatePermission
+        ? {
+            permission: toPascalCase(
+              CosmwasmWasmV1Types.accessTypeToJSON(
+                proto.instantiatePermission.permission,
+              ).replace('ACCESS_TYPE_', ''),
+            ),
+            addresses: proto.instantiatePermission.addresses || [],
+          }
+        : undefined,
     }
 
     return {
@@ -92,26 +104,6 @@ export default class MsgStoreCode extends MsgBase<
         'EIP712_v1 is not supported for MsgStoreCode. Please use EIP712_v2',
       ),
     )
-  }
-
-  public toEip712V2() {
-    const web3gw = this.toWeb3Gw()
-
-    const messageAdjusted = {
-      ...web3gw,
-      instantiate_permission: web3gw.instantiate_permission
-        ? {
-            addresses: web3gw.instantiate_permission.addresses || [],
-            permission: CosmwasmWasmV1Types.accessTypeToJSON(
-              web3gw.instantiate_permission.permission,
-            ),
-          }
-        : undefined,
-    }
-
-    console.log(messageAdjusted)
-
-    return messageAdjusted
   }
 
   public toDirectSign() {

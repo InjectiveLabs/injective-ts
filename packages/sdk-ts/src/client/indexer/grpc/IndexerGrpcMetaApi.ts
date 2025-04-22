@@ -28,7 +28,7 @@ export class IndexerGrpcMetaApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveMetaRpc.PingResponse>(() =>
-        this.client.Ping(request),
+        this.client.Ping(request, this.metadata),
       )
 
       return response
@@ -54,7 +54,7 @@ export class IndexerGrpcMetaApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveMetaRpc.VersionResponse>(() =>
-        this.client.Version(request),
+        this.client.Version(request, this.metadata),
       )
 
       return response
@@ -82,7 +82,7 @@ export class IndexerGrpcMetaApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<InjectiveMetaRpc.InfoResponse>(() =>
-        this.client.Info(request),
+        this.client.Info(request, this.metadata),
       )
 
       return response

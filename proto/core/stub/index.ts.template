@@ -80,6 +80,7 @@ export * as CosmwasmWasmV1Types from "./cosmwasm/wasm/v1/types.js";
 export * as CosmwasmWasmV1Authz from "./cosmwasm/wasm/v1/authz.js";
 export * as GoogleApiHttp from "./google/api/http.js";
 export * as GoogleProtobufAny from "./google/protobuf/any.js";
+export * as GoogleProtobufStruct from "./google/protobuf/struct.js";
 export * as GoogleProtobufDescriptor from "./google/protobuf/descriptor.js";
 export * as GoogleProtobufDuration from "./google/protobuf/duration.js";
 export * as GoogleProtobufTimestamp from "./google/protobuf/timestamp.js";
