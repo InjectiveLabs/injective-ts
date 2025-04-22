@@ -14,7 +14,7 @@
     "composite": true,
     "declaration": true,
     "declarationMap": false,
-    "sourceMap": true,
+    "sourceMap": false,
     "esModuleInterop": true,
     "incremental": true,
     "resolveJsonModule": true,
