@@ -33,4 +33,5 @@ export interface MsgBroadcasterOptions {
   txTimeout?: number // blocks to wait for tx to be included in a block
   walletStrategy: BaseWalletStrategy
   gasBufferCoefficient?: number
+  httpHeaders?: Record<string, string>
 }

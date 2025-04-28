@@ -14,12 +14,12 @@ import {
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   CosmosTxV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 interface PrepareTxArgs {
   address: AccountAddress
@@ -37,14 +37,16 @@ interface PrepareTxArgs {
  * @category Indexer Grpc API
  * @deprecated use IndexerGrpcWeb3GwApi
  */
-export class IndexerGrpcTransactionApi {
+export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
   protected module: string = IndexerModule.Transaction
 
   protected client: InjectiveExchangeRpc.InjectiveExchangeRPCClientImpl
 
   constructor(endpoint: string) {
+    super(endpoint)
+
     this.client = new InjectiveExchangeRpc.InjectiveExchangeRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
+      this.getGrpcWebImpl(endpoint),
     )
   }
 
@@ -92,7 +94,7 @@ export class IndexerGrpcTransactionApi {
     }
 
     try {
-      const response = await this.client.PrepareTx(prepareTxRequest)
+      const response = await this.client.PrepareTx(prepareTxRequest, this.metadata)
 
       return response
     } catch (e: unknown) {
@@ -171,7 +173,10 @@ export class IndexerGrpcTransactionApi {
     }
 
     try {
-      const response = await this.client.PrepareCosmosTx(prepareTxRequest)
+      const response = await this.client.PrepareCosmosTx(
+        prepareTxRequest,
+        this.metadata,
+      )
 
       return response
     } catch (e: unknown) {
@@ -241,7 +246,10 @@ export class IndexerGrpcTransactionApi {
     broadcastTxRequest.msgs = messagesList
 
     try {
-      const response = await this.client.BroadcastTx(broadcastTxRequest)
+      const response = await this.client.BroadcastTx(
+        broadcastTxRequest,
+        this.metadata,
+      )
 
       return response
     } catch (e: unknown) {
@@ -298,7 +306,10 @@ export class IndexerGrpcTransactionApi {
     broadcastTxRequest.tx = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
 
     try {
-      const response = await this.client.BroadcastCosmosTx(broadcastTxRequest)
+      const response = await this.client.BroadcastCosmosTx(
+        broadcastTxRequest,
+        this.metadata,
+      )
 
       return response
     } catch (e: unknown) {
@@ -323,7 +334,7 @@ export class IndexerGrpcTransactionApi {
     const request = InjectiveExchangeRpc.GetFeePayerRequest.create()
 
     try {
-      const response = await this.client.GetFeePayer(request)
+      const response = await this.client.GetFeePayer(request, this.metadata)
 
       return response
     } catch (e: unknown) {

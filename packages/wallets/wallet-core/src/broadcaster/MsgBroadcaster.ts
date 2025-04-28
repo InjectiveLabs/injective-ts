@@ -117,6 +117,8 @@ export class MsgBroadcaster {
 
   public retriesOnError = defaultRetriesConfig()
 
+  public httpHeaders?: Record<string, string>
+
   constructor(options: MsgBroadcasterOptions) {
     const networkInfo = getNetworkInfo(options.network)
 
@@ -134,6 +136,7 @@ export class MsgBroadcaster {
       options.ethereumChainId || networkInfo.ethereumChainId
     this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
     this.walletStrategy = options.walletStrategy
+    this.httpHeaders = options.httpHeaders
   }
 
   setOptions(options: Partial<MsgBroadcasterOptions>) {
@@ -276,16 +279,8 @@ export class MsgBroadcaster {
     }
 
     /** Account Details * */
-    const accountDetails = await new ChainGrpcAuthApi(
-      endpoints.grpc,
-    ).fetchAccount(tx.injectiveAddress)
-    const { baseAccount } = accountDetails
-
-    /** Block Details */
-    const latestBlock = await new ChainGrpcTendermintApi(
-      endpoints.grpc,
-    ).fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
+    const { baseAccount, latestHeight } =
+      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
@@ -379,7 +374,7 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastEip712V2(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { walletStrategy, chainId, txTimeout, endpoints, ethereumChainId } =
+    const { chainId, endpoints, txTimeout, walletStrategy, ethereumChainId } =
       this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -388,16 +383,8 @@ export class MsgBroadcaster {
     }
 
     /** Account Details * */
-    const accountDetails = await new ChainGrpcAuthApi(
-      endpoints.grpc,
-    ).fetchAccount(tx.injectiveAddress)
-    const { baseAccount } = accountDetails
-
-    /** Block Details */
-    const latestBlock = await new ChainGrpcTendermintApi(
-      endpoints.grpc,
-    ).fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
+    const { baseAccount, latestHeight } =
+      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
@@ -494,6 +481,7 @@ export class MsgBroadcaster {
       txTimeout,
       endpoints,
       simulateTx,
+      httpHeaders,
       walletStrategy,
       ethereumChainId,
       txTimeoutOnFeeDelegation,
@@ -508,6 +496,10 @@ export class MsgBroadcaster {
     const transactionApi = new IndexerGrpcWeb3GwApi(
       endpoints.web3gw || endpoints.indexer,
     )
+
+    if (httpHeaders) {
+      transactionApi.setMetadata(httpHeaders)
+    }
 
     let timeoutHeight = undefined
 
@@ -609,17 +601,8 @@ export class MsgBroadcaster {
       }
     }
 
-    /** Account Details * */
-    const accountDetails = await new ChainGrpcAuthApi(
-      endpoints.grpc,
-    ).fetchAccount(tx.injectiveAddress)
-    const { baseAccount } = accountDetails
-
-    /** Block Details */
-    const latestBlock = await new ChainGrpcTendermintApi(
-      endpoints.grpc,
-    ).fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
+    const { baseAccount, latestHeight } =
+      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
@@ -728,17 +711,8 @@ export class MsgBroadcaster {
 
     const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
 
-    /** Account Details * */
-    const accountDetails = await new ChainGrpcAuthApi(
-      endpoints.grpc,
-    ).fetchAccount(tx.injectiveAddress)
-    const { baseAccount } = accountDetails
-
-    /** Block Details */
-    const latestBlock = await new ChainGrpcTendermintApi(
-      endpoints.grpc,
-    ).fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
+    const { baseAccount, latestHeight } =
+      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
 
     const pubKey = await walletStrategy.getPubKey()
@@ -839,6 +813,7 @@ export class MsgBroadcaster {
       chainId,
       txTimeout,
       endpoints,
+      httpHeaders,
       walletStrategy,
       txTimeoutOnFeeDelegation,
     } = this
@@ -873,20 +848,18 @@ export class MsgBroadcaster {
     const feePayer = feePayerPublicKey.toAddress().address
 
     /** Account Details * */
-    const chainGrpcAuthApi = new ChainGrpcAuthApi(endpoints.grpc)
-    const accountDetails = await chainGrpcAuthApi.fetchAccount(
-      tx.injectiveAddress,
-    )
-    const feePayerAccountDetails = await chainGrpcAuthApi.fetchAccount(feePayer)
+    const { baseAccount, latestHeight } =
+      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
 
-    const { baseAccount } = accountDetails
+    const chainGrpcAuthApi = new ChainGrpcAuthApi(endpoints.grpc)
+
+    if (httpHeaders) {
+      chainGrpcAuthApi.setMetadata(httpHeaders)
+    }
+
+    const feePayerAccountDetails = await chainGrpcAuthApi.fetchAccount(feePayer)
     const { baseAccount: feePayerBaseAccount } = feePayerAccountDetails
 
-    /** Block Details */
-    const latestBlock = await new ChainGrpcTendermintApi(
-      endpoints.grpc,
-    ).fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
     const timeoutHeight = new BigNumberInBase(latestHeight).plus(
       txTimeoutOnFeeDelegation ? txTimeout : DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
@@ -931,6 +904,10 @@ export class MsgBroadcaster {
       endpoints.web3gw || endpoints.indexer,
     )
 
+    if (httpHeaders) {
+      transactionApi.setMetadata(httpHeaders)
+    }
+
     const broadcast = async () =>
       await transactionApi.broadcastCosmosTxRequest({
         address: tx.injectiveAddress,
@@ -974,11 +951,16 @@ export class MsgBroadcaster {
       return existingFeePayerPubKey
     }
 
-    const { endpoints } = this
+    const { endpoints, httpHeaders } = this
 
     const transactionApi = new IndexerGrpcWeb3GwApi(
       endpoints.web3gw || endpoints.indexer,
     )
+
+    if (httpHeaders) {
+      transactionApi.setMetadata(httpHeaders)
+    }
+
     const response = await transactionApi.fetchFeePayer()
 
     if (!response.feePayerPubKey) {
@@ -1046,13 +1028,17 @@ export class MsgBroadcaster {
    * Create TxRaw and simulate it
    */
   private async simulateTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
-    const { endpoints } = this
+    const { endpoints, httpHeaders } = this
 
     txRaw.signatures = [new Uint8Array(0)]
 
-    const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
-      txRaw,
-    )
+    const client = new TxGrpcApi(endpoints.grpc)
+
+    if (httpHeaders) {
+      client.setMetadata(httpHeaders)
+    }
+
+    const simulationResponse = await client.simulate(txRaw)
 
     return simulationResponse
   }
@@ -1061,16 +1047,20 @@ export class MsgBroadcaster {
    * Create TxRaw and simulate it
    */
   private async simulateTxWithSigners(args: CreateTransactionWithSignersArgs) {
-    const { endpoints } = this
+    const { endpoints, httpHeaders } = this
     const { txRaw } = createTransactionWithSigners(args)
 
     txRaw.signatures = Array(
       Array.isArray(args.signers) ? args.signers.length : 1,
     ).fill(new Uint8Array(0))
 
-    const simulationResponse = await new TxGrpcApi(endpoints.grpc).simulate(
-      txRaw,
-    )
+    const client = new TxGrpcApi(endpoints.grpc)
+
+    if (httpHeaders) {
+      client.setMetadata(httpHeaders)
+    }
+
+    const simulationResponse = await client.simulate(txRaw)
 
     return simulationResponse
   }
@@ -1109,6 +1099,30 @@ export class MsgBroadcaster {
       }
 
       throw e
+    }
+  }
+
+  private async fetchAccountAndBlockDetails(address: string) {
+    const { endpoints, httpHeaders } = this
+
+    const chainClient = new ChainGrpcAuthApi(endpoints.grpc)
+    const tendermintClient = new ChainGrpcTendermintApi(endpoints.grpc)
+
+    if (httpHeaders) {
+      chainClient.setMetadata(httpHeaders)
+      tendermintClient.setMetadata(httpHeaders)
+    }
+
+    const accountDetails = await chainClient.fetchAccount(address)
+    const { baseAccount } = accountDetails
+
+    const latestBlock = await tendermintClient.fetchLatestBlock()
+    const latestHeight = latestBlock!.header!.height
+
+    return {
+      baseAccount,
+      latestHeight,
+      accountDetails,
     }
   }
 }

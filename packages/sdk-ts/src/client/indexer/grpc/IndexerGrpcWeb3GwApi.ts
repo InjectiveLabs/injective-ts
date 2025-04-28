@@ -96,7 +96,10 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     }
 
     try {
-      const response = await this.client.PrepareEip712(prepareTxRequest)
+      const response = await this.client.PrepareEip712(
+        prepareTxRequest,
+        this.metadata,
+      )
 
       return response
     } catch (e: unknown) {

@@ -21,9 +21,12 @@ import {
   CosmosTxV1Beta1Service,
   CosmosTxV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
+import { grpcPkg, grpc } from '../../../utils/grpc.js'
 
 export class TxGrpcApi implements TxConcreteApi {
   public txService: CosmosTxV1Beta1Service.ServiceClientImpl
+
+  protected metadata?: grpcPkg.grpc.Metadata
 
   public endpoint: string
 
@@ -34,13 +37,27 @@ export class TxGrpcApi implements TxConcreteApi {
     )
   }
 
+  public setMetadata(map: Record<string, string>) {
+    const metadata = new grpc.Metadata()
+
+    Object.keys(map).forEach((key) => metadata.set(key, map[key]))
+
+    this.metadata = metadata
+
+    return this
+  }
+
+  public clearMetadata() {
+    this.metadata = undefined
+  }
+
   public async fetchTx(hash: string): Promise<TxResponse> {
     const request = CosmosTxV1Beta1Service.GetTxRequest.create()
 
     request.hash = hash
 
     try {
-      const response = await this.txService.GetTx(request)
+      const response = await this.txService.GetTx(request, this.metadata)
 
       const txResponse = response.txResponse
 
@@ -141,7 +158,7 @@ export class TxGrpcApi implements TxConcreteApi {
       CosmosTxV1Beta1Tx.TxRaw.encode(txRawClone).finish()
 
     try {
-      const response = await txService.Simulate(simulateRequest)
+      const response = await txService.Simulate(simulateRequest, this.metadata)
 
       const result = {
         ...response.result,
@@ -185,7 +202,10 @@ export class TxGrpcApi implements TxConcreteApi {
     broadcastTxRequest.mode = mode
 
     try {
-      const response = await txService.BroadcastTx(broadcastTxRequest)
+      const response = await txService.BroadcastTx(
+        broadcastTxRequest,
+        this.metadata,
+      )
 
       const txResponse = response.txResponse!
 
@@ -219,7 +239,10 @@ export class TxGrpcApi implements TxConcreteApi {
       CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_BLOCK
 
     try {
-      const response = await txService.BroadcastTx(broadcastTxRequest)
+      const response = await txService.BroadcastTx(
+        broadcastTxRequest,
+        this.metadata,
+      )
 
       const txResponse = response.txResponse
 
