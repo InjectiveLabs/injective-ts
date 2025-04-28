@@ -1,19 +1,19 @@
-# 🌟 Injective Protocol - Ledger Wallet Strategy
+# 🌟 Injective Protocol - Turnkey Wallet Strategy
 
 <!-- TODO -->
 
-[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-ledger.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ledger)
-[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-ledger.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-ledger)
+[![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-turnkey.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-turnkey)
+[![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-turnkey.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-turnkey)
 [![license](https://img.shields.io/npm/l/express.svg)]()
 
-_Package to use Ledger Wallets on Injective via the wallet strategy._
+_Package to use Turnkey Wallet on Injective via the wallet strategy._
 
 ---
 
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-ledger
+yarn add @injectivelabs/wallet-turnkey
 ```
 
 ---
@@ -32,19 +32,28 @@ Here's a brief example of how to use this package to send 1 INJ.:
 ```typescript
 import { Wallet } from '@injectivelabs/wallet-base';
 import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core';
-import { LedgerLive  } from '@injectivelabs/wallet-ledger';
+import { TurnkeyWallet } from '@injectivelabs/wallet-turnkey';
 
 
 const strategyArgs: WalletStrategyArguments = {
   chainId: ChainId.Mainnet,
-  wallet: Wallet.Ledger,
+  wallet: Wallet.Turnkey,
   strategies: {
-    [Wallet.Ledger]: new LedgerLive({
-      chainId: ChainId.Mainnet,
-      ethereumOptions: {
-        ethereumChainId: EthereumChainId.Mainnet,
-      },
-    }),
+        [Wallet.Turnkey]: new TurnkeyWallet({
+        onStatusChange(status) {
+          turnkeyStatus.value = status
+        },
+        chainId: injectiveClients.chainId,
+        ethereumOptions: {
+          ethereumChainId: injectiveClients.ethereumChainId!,
+        },
+        metadata: {
+          turnkeyAuthIframeContainerId,
+          defaultOrganizationId: import.meta.env
+            .VITE_TURNKEY_DEFAULT_ORGANIZATION_ID,
+          apiBaseUrl: 'https://api.turnkey.com',
+        },
+      })
   },
 }
 const walletStrategy = new BaseWalletStrategy(strategyArgs)
@@ -53,6 +62,8 @@ const msgBroadcaster = new MsgBroadcaster({
   walletStrategy,
   simulateTx: true,
   network: Network.Mainnet,
+  ethereumChainId: injectiveClients.ethereumChainId!,
+  endpoints: injectiveClients.endpoints,
 })
 
 const sendTX = async () => {
