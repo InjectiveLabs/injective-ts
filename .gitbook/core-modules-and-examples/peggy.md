@@ -9,7 +9,7 @@ This message is used to withdraw funds from the Injective Chain via the [peggy c
 Note that a $10 USD bridge fee will be charged for this transaction to cover for the ethereum gas fee on top of the standard INJ transaction fee.
 
 ```ts
-import { TokenPrice, MsgSendToEth, DenomClientAsync, TokenStaticFactory, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
+import { TokenPrice, MsgSendToEth, TokenStaticFactory, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
@@ -26,9 +26,6 @@ const tokenService = new TokenService({
 
 const ETH_BRIDGE_FEE_IN_USD = 10
 const endpointsForNetwork = getNetworkEndpoints(Network.Mainnet)
-const denomClient = new DenomClientAsync(Network.Mainnet, {
-  endpoints: endpointsForNetwork,
-})
 
 const tokenSymbol = 'INJ'
 const tokenMeta = tokenStaticFactory.toToken(tokenSymbol)

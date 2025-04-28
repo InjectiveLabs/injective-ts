@@ -116,12 +116,16 @@ This message allows you to propose a new spot market. Ensure that the ticker is 
 
 ```ts
 import {
-  DenomClientAsync,
+  TokenStaticFactory,
   MsgBroadcasterWithPk,
   MsgSubmitProposalSpotMarketLaunch
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase, BigNumberInWei } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+// refer to https://docs.ts.injective.network/readme/assets/injective-list
+import { tokens } from '../data/tokens.json'
+
+const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
@@ -140,14 +144,8 @@ const market = {
   minQuantityTickSize: '0.001'
 }
 
-const denomClient = new DenomClientAsync
-(
-  NETWORK.Testnet,
-  { endpoints: getNetworkEndpoints(Network.Testnet) }
-)
-
-const baseDenom = await denomClient.getDenomToken(market.baseDenom)
-const quoteDenom = await denomClient.getDenomToken(market.quoteDenom)
+const baseDenom = tokenStaticFactory.toToken(market.baseDenom)
+const quoteDenom = tokenStaticFactory.toToken(market.quoteDenom)
 const marketWithDecimals: SpotMarketLaunchProposal = {
   ...market,
   baseTokenDecimals: baseDenom ? baseDenom.decimals : 18,
@@ -194,12 +192,16 @@ This message allows you to propose a new perpetual market. perpetual futures con
 
 ```ts
 import {
-  DenomClientAsync,
+  TokenStaticFactory,
   MsgBroadcasterWithPk,
   MsgSubmitProposalPerpetualMarketLaunch
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+// refer to https://docs.ts.injective.network/readme/assets/injective-list
+import { tokens } from '../data/tokens.json'
+
+const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
@@ -223,12 +225,7 @@ const market = {
   minQuantityTickSize: '0.01'
 }
 
-const denomClient = new DenomClientAsync(
-  NETWORK.Testnet,
-  { endpoints: getNetworkEndpoints(Network.Testnet) }
-)
- const quoteDenom = await denomClient.getDenomToken(market.quoteDenom)
-
+const quoteDenom = await tokenStaticFactory.toToken(market.quoteDenom)
 const marketWithDecimals = {
     ...market,
     quoteTokenDecimals: quoteDenom ? quoteDenom.decimals : 6
@@ -266,12 +263,16 @@ An expiry futures contract is an agreement between two counterparties to buy and
 
 ```ts
 import {
-  DenomClientAsync,
+  TokenStaticFactory,
   MsgBroadcasterWithPk,
   MsgSubmitProposalExpiryFuturesMarketLaunch
 } from "@injectivelabs/sdk-ts";
 import { BigNumberInBase } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+// refer to https://docs.ts.injective.network/readme/assets/injective-list
+import { tokens } from '../data/tokens.json'
+
+const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
@@ -296,11 +297,7 @@ const market = {
   minQuantityTickSize: '0.01'
 }
 
-const denomClient = new DenomClientAsync(
-  NETWORK.Testnet,
-  { endpoints: getNetworkEndpoints(Network.Testnet) }
-)
- const quoteDenom = await denomClient.getDenomToken(market.quoteDenom)
+const quoteDenom = await tokenStaticFactory.toToken(market.quoteDenom)
 
 const marketWithDecimals = {
     ...market,
