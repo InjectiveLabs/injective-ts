@@ -37,10 +37,6 @@ const WalletConnectIds = {
     '5864e2ced7c293ed18ac35e0db085c09ed567d67346ccb6f58a0327a75137489',
 }
 
-interface WalletConnectArgs extends ConcreteEthereumWalletStrategyArgs {
-  metadata?: WalletConnectMetadata
-}
-
 export class WalletConnect
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
@@ -49,10 +45,10 @@ export class WalletConnect
 
   public metadata?: WalletConnectMetadata
 
-  constructor(args: WalletConnectArgs) {
+  constructor(args: ConcreteEthereumWalletStrategyArgs) {
     super(args)
 
-    this.metadata = args.metadata
+    this.metadata = args.options?.metadata?.walletConnect
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -321,7 +317,7 @@ export class WalletConnect
     try {
       this.provider = await EthereumProvider.init({
         projectId: this.metadata.projectId as string,
-        metadata: this.metadata
+        metadata: this
           .metadata as unknown as EthereumProviderOptions['metadata'],
         showQrModal: true,
         optionalChains: this.ethereumChainId

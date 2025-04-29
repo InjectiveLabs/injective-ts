@@ -30,10 +30,9 @@ export type MagicMetadata = {
   rpcEndpoint?: string
 }
 
-export type WalletConnectMetadata = Record<
-  string,
-  string | Record<string, string> | Record<string, string[]>
->
+export type WalletConnectMetadata = {
+  projectId?: string
+}
 
 export interface WalletStrategyEthereumOptions {
   ethereumChainId: EthereumChainId
@@ -51,9 +50,14 @@ export interface SendTransactionOptions {
   }
 }
 
+export interface WalletMetadata {
+  magic?: MagicMetadata
+  walletConnect: WalletConnectMetadata
+}
+
 export interface ConcreteWalletStrategyOptions {
   privateKey?: string
-  metadata?: Record<string, string | Record<string, string>>
+  metadata?: WalletMetadata
 }
 
 export interface ConcreteWalletStrategyArgs {
@@ -135,9 +139,7 @@ export interface WalletStrategyArguments {
 export interface ConcreteWalletStrategy
   extends Omit<
     ConcreteCosmosWalletStrategy,
-    | 'sendTransaction'
-    | 'isChainIdSupported'
-    | 'signAminoTransaction'
+    'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
   > {
   /**
    * Sends Cosmos transaction. Returns a transaction hash
@@ -269,4 +271,4 @@ export interface WalletStrategy {
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
 }
 
-export { StdSignDoc}
+export { StdSignDoc }
