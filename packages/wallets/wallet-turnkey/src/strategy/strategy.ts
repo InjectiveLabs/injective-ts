@@ -174,8 +174,8 @@ export class TurnkeyWallet
       if (loginResult) {
         this.setStatus(TurnkeyStatus.LoggedIn)
         this.organizationId = organizationId
-        // TODO: for some reason this is writing the incorrect organizationId
-        if (session && session?.expiry) {
+
+        if (session?.expiry) {
           this.expiry = session.expiry
         }
 
@@ -460,7 +460,7 @@ export class TurnkeyWallet
 
   async getAddresses(): Promise<string[]> {
     try {
-      if (this.status !== 'logged-in') {
+      if (this.status !== TurnkeyStatus.LoggedIn) {
         throw new WalletException(new Error('User is not logged in'), {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletError,
@@ -569,7 +569,7 @@ export class TurnkeyWallet
     if (!endpoints) {
       throw new WalletException(
         new Error(
-          'You have to pass endpoints.grpc within the options for using Magic wallet',
+          'You have to pass endpoints.grpc within the options for using Turnkey wallet',
         ),
       )
     }
@@ -711,13 +711,13 @@ export class TurnkeyWallet
    * once per minute.
    */
   private async keepSessionAlive() {
-    // TODO: change to 60 seconds
-
-    while (this.status === 'logged-in') {
-      if (!this.authIframeClient?.config.organizationId) {
-        return
-      }
-
+    if (this.status !== TurnkeyStatus.LoggedIn) {
+      return
+    }
+    while (
+      this.status === TurnkeyStatus.LoggedIn &&
+      this.authIframeClient?.config.organizationId
+    ) {
       if (this.organizationId) {
         this.authIframeClient.config.organizationId = this.organizationId
       }
@@ -730,7 +730,6 @@ export class TurnkeyWallet
       })
 
       const session = await this.turnkey.getSession()
-
       this.expiry = session?.expiry
 
       await new Promise((resolve) => setTimeout(resolve, REFRESH_INTERVAL_MS))

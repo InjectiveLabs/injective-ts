@@ -67,6 +67,14 @@
     "@turnkey/viem": "^0.6.18",
     "viem": "^2.24.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "shx": "^0.3.4",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "live-server": "^1.2.1"
+  },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
 }

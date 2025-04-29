@@ -1,7 +1,5 @@
 # 🌟 Injective Protocol - Turnkey Wallet Strategy
 
-<!-- TODO -->
-
 [![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-turnkey.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-turnkey)
 [![npm-version](https://img.shields.io/npm/v/@injectivelabs/wallet-turnkey.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-turnkey)
 [![license](https://img.shields.io/npm/l/express.svg)]()
