@@ -73,6 +73,7 @@
     "@injectivelabs/wallet-private-key": "^1.15.3",
     "@injectivelabs/wallet-trezor": "^1.15.3",
     "@injectivelabs/wallet-wallet-connect": "^1.15.3",
+    "@injectivelabs/wallet-turnkey": "^1.15.3",
     "alchemy-sdk": "^3.4.7",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",

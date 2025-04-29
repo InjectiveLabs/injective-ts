@@ -24,6 +24,7 @@ import {
   ConcreteWalletStrategy,
   SendTransactionOptions,
   ConcreteEthereumWalletStrategyArgs,
+  TurnkeyStatus,
 } from '@injectivelabs/wallet-base'
 import { SessionType, Turnkey, TurnkeyIframeClient } from '@turnkey/sdk-browser'
 
@@ -31,14 +32,7 @@ import { createAccount } from '@turnkey/viem'
 
 import { TurnkeySDKBrowserConfig } from '@turnkey/sdk-browser'
 import { HttpClient } from '@injectivelabs/utils'
-
-export enum TurnkeyStatus {
-  Initializing = 'initializing',
-  Ready = 'ready',
-  WaitingOtp = 'waiting-otp',
-  LoggedIn = 'logged-in',
-  Error = 'error',
-}
+import { TurnkeyMetadata as ITurnkeyMetadata } from '@injectivelabs/wallet-base'
 
 export enum TurnkeyProviders {
   Google = 'google',
@@ -49,12 +43,7 @@ enum TurnkeyErrorCodes {
   UserLoggedOut = 7,
 }
 
-export type TurnkeyMetadata = TurnkeySDKBrowserConfig & {
-  turnkeyAuthIframeContainerId: string
-  turnkeyAuthIframeElementId?: string
-  token?: string
-  organizationId?: string
-}
+export type TurnkeyMetadata = ITurnkeyMetadata & TurnkeySDKBrowserConfig
 
 type OAuthArgs = {
   provider: 'google'
@@ -70,11 +59,6 @@ type EmailArgs = {
 const REFRESH_INTERVAL_MS = 60 * 1000
 
 type TurnkeyEnableArgs = OAuthArgs | EmailArgs
-
-interface TurnkeyArgs extends ConcreteEthereumWalletStrategyArgs {
-  metadata?: TurnkeyMetadata
-  onStatusChange?: (status: TurnkeyStatus) => void
-}
 
 export class TurnkeyWallet
   extends BaseConcreteStrategy
@@ -102,8 +86,8 @@ export class TurnkeyWallet
     this.onStatusChangeCallback?.(status)
   }
 
-  constructor(args: TurnkeyArgs) {
-    if (!args.metadata?.apiBaseUrl) {
+  constructor(args: ConcreteEthereumWalletStrategyArgs) {
+    if (!args.options?.metadata?.turnkey?.apiBaseUrl) {
       throw new WalletException(
         new Error(
           'You have to pass the apiBaseUrl within metadata to use Turnkey wallet',
@@ -111,7 +95,7 @@ export class TurnkeyWallet
       )
     }
 
-    if (!args.metadata.defaultOrganizationId) {
+    if (!args.options?.metadata?.turnkey?.defaultOrganizationId) {
       throw new WalletException(
         new Error(
           'You have to pass the defaultOrganizationId within metadata to use Turnkey wallet',
@@ -120,15 +104,16 @@ export class TurnkeyWallet
     }
 
     super(args)
-    this.metadata = args.metadata
+    this.metadata = args.options?.metadata?.turnkey as TurnkeyMetadata
     this.turnkey = new Turnkey(this.metadata)
-    this.onStatusChangeCallback = args.onStatusChange
+    this.onStatusChangeCallback =
+      args.options?.metadata?.turnkey?.onStatusChange
     this.setStatus(TurnkeyStatus.Initializing)
     this.loadClient()
   }
 
-  private async loadClient(args?: { token?: string }) {
-    let { token } = args || {}
+  private async loadClient(args?: { credentialBundle?: string }) {
+    let { credentialBundle } = args || {}
 
     if (!this.authIframeClient) {
       await this.initializeIframe()
@@ -138,22 +123,22 @@ export class TurnkeyWallet
       throw new WalletException(new Error('Auth iframe client not initialized'))
     }
 
-    if (!token) {
+    if (!credentialBundle) {
       const currentSession = await this.turnkey.getSession()
       if (currentSession?.organizationId) {
         this.organizationId = currentSession.organizationId
       }
-      token = currentSession?.token
+      credentialBundle = currentSession?.token
     }
 
-    if (!token) {
+    if (!credentialBundle) {
       this.setStatus(TurnkeyStatus.Ready)
       return
     }
 
     try {
       const loginResult = await this.authIframeClient.injectCredentialBundle(
-        token,
+        credentialBundle,
       )
 
       // If there is no session, we want to force a refresh to enable to browser SDK to handle key storage and proper session management.
@@ -207,6 +192,7 @@ export class TurnkeyWallet
     const turnkeyAuthIframeElementId =
       this.metadata?.turnkeyAuthIframeElementId ||
       'turnkey-auth-iframe-element-id'
+
     if (!this?.metadata?.turnkeyAuthIframeContainerId) {
       throw new Error('turnkeyAuthIframeContainerId is required')
     }
@@ -372,10 +358,10 @@ export class TurnkeyWallet
         }
       }
 
-      const { token } = response?.data || {}
+      const { token: credentialBundle } = response?.data || {}
 
       return this.loadClient({
-        token,
+        credentialBundle,
       })
     } catch (e) {
       throw new WalletException(new Error((e as any).message), {
@@ -440,7 +426,7 @@ export class TurnkeyWallet
       }
 
       await this.loadClient({
-        token: credentialBundle,
+        credentialBundle,
       })
     } catch (e) {
       throw new WalletException(new Error('turnkey-oauth-login'))

@@ -50,9 +50,28 @@ export interface SendTransactionOptions {
   }
 }
 
+export enum TurnkeyStatus {
+  Initializing = 'initializing',
+  Ready = 'ready',
+  WaitingOtp = 'waiting-otp',
+  LoggedIn = 'logged-in',
+  Error = 'error',
+}
+
+export interface TurnkeyMetadata {
+  defaultOrganizationId: string
+  turnkeyAuthIframeContainerId: string
+  apiBaseUrl: string
+  turnkeyAuthIframeElementId?: string
+  credentialBundle?: string
+  organizationId?: string
+  onStatusChange?: (status: TurnkeyStatus) => void
+}
+
 export interface WalletMetadata {
   magic?: MagicMetadata
-  walletConnect: WalletConnectMetadata
+  turnkey?: TurnkeyMetadata
+  walletConnect?: WalletConnectMetadata
 }
 
 export interface ConcreteWalletStrategyOptions {

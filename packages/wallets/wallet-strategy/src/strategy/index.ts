@@ -16,6 +16,7 @@ import { MagicStrategy } from '@injectivelabs/wallet-magic'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
+import { TurnkeyWalletStrategy } from '@injectivelabs/wallet-turnkey'
 import {
   TrezorBip32Strategy,
   TrezorBip44Strategy,
@@ -123,6 +124,16 @@ const createStrategy = ({
       }
 
       return new MagicStrategy(args as ConcreteEthereumWalletStrategyArgs)
+    case Wallet.Turnkey:
+      if (
+        !args.options?.metadata?.turnkey?.defaultOrganizationId ||
+        !args.options.metadata.turnkey.turnkeyAuthIframeContainerId
+      ) {
+        return undefined
+      }
+      return new TurnkeyWalletStrategy(
+        args as ConcreteEthereumWalletStrategyArgs,
+      )
     default:
       return undefined
   }

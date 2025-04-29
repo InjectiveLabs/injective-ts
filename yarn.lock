@@ -3503,6 +3503,13 @@
   dependencies:
     "@noble/hashes" "1.7.1"
 
+"@noble/curves@1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.8.2.tgz#8f24c037795e22b90ae29e222a856294c1d9ffc7"
+  integrity sha512-vnI7V6lFNe0tLAuJMu+2sX+FcL14TaCWy1qiczg1VwRmPrpQCdq5ESXQMqUc2tluRNf6irBXrWbl1mGN8uaU/g==
+  dependencies:
+    "@noble/hashes" "1.7.2"
+
 "@noble/curves@^1.4.2":
   version "1.7.0"
   resolved "https://registry.npmjs.org/@noble/curves/-/curves-1.7.0.tgz#0512360622439256df892f21d25b388f52505e45"
@@ -3539,6 +3546,11 @@
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.7.1.tgz#5738f6d765710921e7a751e00c20ae091ed8db0f"
   integrity sha512-B8XBPsn4vT/KJAGqDzbwztd+6Yte3P4V7iafm24bxgDe/mlRuK6xmWPuCNrKt2vDafZ8MfJLlchDG/vYafQEjQ==
+
+"@noble/hashes@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.7.2.tgz#d53c65a21658fb02f3303e7ee3ba89d6754c64b4"
+  integrity sha512-biZ0NUSxyjLLqo6KxEJ1b+C2NAx0wtDoFvCaXHGgUkeHzf3Xc1xKumFKREuT7f7DARNZ/slvYUwFG6B0f2b6hQ==
 
 "@noble/hashes@^1", "@noble/hashes@^1.0.0":
   version "1.1.5"
@@ -4710,31 +4722,31 @@
   resolved "https://registry.yarnpkg.com/@turnkey/encoding/-/encoding-0.4.0.tgz#9d06efe6447322bcc9eb4d51b48961054a3c102d"
   integrity sha512-ptLgcpWVt34KTPx0omF2QLJrosW6I//clCJ4G2+yngYFCzrdR0yBchV/BOcfME67mK1v3MmauyXl9AAnQTmB4Q==
 
-"@turnkey/http@2.22.0":
-  version "2.22.0"
-  resolved "https://registry.yarnpkg.com/@turnkey/http/-/http-2.22.0.tgz#89233e44f467dbb289351832f76700d9b550a5d3"
-  integrity sha512-nkzSIiur68PDEXh0E6fPpgrev0qeMfnVjeh/nWePZpS6TwJ7NGw1i4WRqZ1VkQ+ODmCD2ztKMzUhii9b4pzURg==
+"@turnkey/http@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@turnkey/http/-/http-3.1.0.tgz#052f88e837cc0a46efb349774aa25ac43f85c3e0"
+  integrity sha512-kZxwHDCmVc2qc+9p6VnPA/XEo6+1TGjbIoPRhrT7hTN3rpIBAtZt/3SIrSKY+r2pAN2xEgLVPcm2mHlx8aIUEA==
   dependencies:
     "@turnkey/api-key-stamper" "0.4.4"
     "@turnkey/encoding" "0.4.0"
     "@turnkey/webauthn-stamper" "0.5.0"
     cross-fetch "^3.1.5"
 
-"@turnkey/iframe-stamper@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@turnkey/iframe-stamper/-/iframe-stamper-2.3.0.tgz#5b1cfa4a1e8d678711dad67410f5448b6b248a81"
-  integrity sha512-l/8K9Q9vSDulH/bChHT2pn21mSx/6tiXPLIBPGKU9i8t5qFVGfSzr2EMOP8B+hTzjY0c30noXitNo1+ycM5b1g==
+"@turnkey/iframe-stamper@2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@turnkey/iframe-stamper/-/iframe-stamper-2.5.0.tgz#4543458a3ac380c96f239c6c2a997c03bac0bd7b"
+  integrity sha512-XjntbA5CNjxGRH+loceAlVLL9PG9Q4Y7p5zjBm4DeKclhD6lpUl9h8INArMEXIFbfLwLjjS6Q+SmQG4BHvNY6A==
 
-"@turnkey/sdk-browser@3.0.1", "@turnkey/sdk-browser@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@turnkey/sdk-browser/-/sdk-browser-3.0.1.tgz#44052a06e25bc2bb49de0a647d7b8627fd586016"
-  integrity sha512-/jBBX3654k4KViJp1GZL1XNG5vmgjTaGB4olPW4fApGEMw7gBQ763dVVF0UPTjN3X5Ph2eFw7Pe+S669IuIJ0g==
+"@turnkey/sdk-browser@4.1.0", "@turnkey/sdk-browser@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@turnkey/sdk-browser/-/sdk-browser-4.1.0.tgz#d23e81df0d40a69ab957b8ed894433cb1a62c2f1"
+  integrity sha512-CkWXKoVjGjy9N04mmKP27bsA0TVelM20BlDqFDJlBKjDq3/xn8enqvsC4TrnXZNf+2+VWHAT1aJSxE8I1u50qQ==
   dependencies:
     "@turnkey/api-key-stamper" "0.4.4"
     "@turnkey/crypto" "2.3.1"
     "@turnkey/encoding" "0.4.0"
-    "@turnkey/http" "2.22.0"
-    "@turnkey/iframe-stamper" "2.3.0"
+    "@turnkey/http" "3.1.0"
+    "@turnkey/iframe-stamper" "2.5.0"
     "@turnkey/wallet-stamper" "1.0.3"
     "@turnkey/webauthn-stamper" "0.5.0"
     bs58check "^3.0.1"
@@ -4742,27 +4754,28 @@
     cross-fetch "^3.1.5"
     hpke-js "^1.2.7"
 
-"@turnkey/sdk-server@2.6.1":
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/@turnkey/sdk-server/-/sdk-server-2.6.1.tgz#b9fc8054e0e82df8e8317f31ef25b453a0e17cb6"
-  integrity sha512-yO9LTcWwhknLZCu5OK2mx6Jo7NMQlYtuUOzZUeRdNtd0OVIjRsN4m/n1/WjgMSeGoqoQNOnqdcFtEE06CBkvlw==
+"@turnkey/sdk-server@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@turnkey/sdk-server/-/sdk-server-3.1.0.tgz#96470052ffddc10ea053b00870b40eae944a22a2"
+  integrity sha512-Xl4OBKeWpOHaTlqljMTceuc+BQa6shHuqMppPWup0w3urbm5GHBE2D46Nfg8UDzEyol5XY5V2yrPFl1gEWXjMA==
   dependencies:
     "@turnkey/api-key-stamper" "0.4.4"
-    "@turnkey/http" "2.22.0"
+    "@turnkey/http" "3.1.0"
     "@turnkey/wallet-stamper" "1.0.3"
     buffer "^6.0.3"
     cross-fetch "^3.1.5"
     next "^15.2.3"
 
-"@turnkey/viem@^0.6.18":
-  version "0.6.18"
-  resolved "https://registry.yarnpkg.com/@turnkey/viem/-/viem-0.6.18.tgz#1671edcf0bb27b249ee8e0e40eadedd4fb46d6d3"
-  integrity sha512-jHSxiTl0rC5XTYFIsRIDNm4Dubla2jLTa/sWC5oZBTe/+Rf8+TYqJU/i8ZGnedXh7vZbduZQHWAtqw+waGqlkQ==
+"@turnkey/viem@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@turnkey/viem/-/viem-0.9.0.tgz#c2d72bb19f8b33764c62a9d020c9f7534a64da6d"
+  integrity sha512-56oTsHxm/z7lR+stafeCROhRaWwrjKfF8OKnjyLKI6FLQNXhcbNtOICF8rj++WKWPHQgVEDFey3vFNagz7JIwQ==
   dependencies:
+    "@noble/curves" "1.8.0"
     "@turnkey/api-key-stamper" "0.4.4"
-    "@turnkey/http" "2.22.0"
-    "@turnkey/sdk-browser" "3.0.1"
-    "@turnkey/sdk-server" "2.6.1"
+    "@turnkey/http" "3.1.0"
+    "@turnkey/sdk-browser" "4.1.0"
+    "@turnkey/sdk-server" "3.1.0"
     cross-fetch "^4.0.0"
 
 "@turnkey/wallet-stamper@1.0.3":
@@ -16852,13 +16865,27 @@ vary@^1, vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-viem@^2.21.35, viem@^2.24.1:
+viem@^2.21.35:
   version "2.24.1"
   resolved "https://registry.yarnpkg.com/viem/-/viem-2.24.1.tgz#5fe8a78f535aa7b585bef8abd6addb3aa674a4d1"
   integrity sha512-xptFlc081SIPz+ZNDeb0XS/Nn5PU28onq+im+UxEAPCXTIuL1kfw1GTnV8NhbUNoEONnrwcZNqoI0AT0ADF5XQ==
   dependencies:
     "@noble/curves" "1.8.1"
     "@noble/hashes" "1.7.1"
+    "@scure/bip32" "1.6.2"
+    "@scure/bip39" "1.5.4"
+    abitype "1.0.8"
+    isows "1.0.6"
+    ox "0.6.9"
+    ws "8.18.1"
+
+viem@^2.28.1:
+  version "2.28.1"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.28.1.tgz#4aed0247373f3a42e9b017e0cfc7d637f41072de"
+  integrity sha512-7eqGfxAPlMW9u9aE3SMEFPzNYqqU7uFLKUQyd/GwccyW4OAdq7VqJkPIpdULUePN9m3XmfBunA9mswYFp9sUuQ==
+  dependencies:
+    "@noble/curves" "1.8.2"
+    "@noble/hashes" "1.7.2"
     "@scure/bip32" "1.6.2"
     "@scure/bip39" "1.5.4"
     abitype "1.0.8"
