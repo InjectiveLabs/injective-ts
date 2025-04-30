@@ -1,7 +1,6 @@
 import {
   Wallet,
   isEvmWallet,
-  MagicMetadata,
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
@@ -17,7 +16,11 @@ import { MagicStrategy } from '@injectivelabs/wallet-magic'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
-import { TrezorBip32Strategy, TrezorBip44Strategy } from '@injectivelabs/wallet-trezor'
+import { TurnkeyWalletStrategy } from '@injectivelabs/wallet-turnkey'
+import {
+  TrezorBip32Strategy,
+  TrezorBip44Strategy,
+} from '@injectivelabs/wallet-trezor'
 import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
@@ -94,8 +97,8 @@ const createStrategy = ({
       })
     case Wallet.WalletConnect:
       return new WalletConnectStrategy({
+        ...args,
         ...ethWalletArgs,
-        metadata: args.options?.metadata,
       })
     case Wallet.PrivateKey:
       return new PrivateKeyWalletStrategy({
@@ -114,17 +117,23 @@ const createStrategy = ({
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.OWallet })
     case Wallet.Magic:
       if (
-        !args.options?.metadata?.magic ||
-        !(args.options?.metadata.magic as MagicMetadata)?.apiKey ||
-        !(args.options?.metadata.magic as MagicMetadata)?.rpcEndpoint
+        !args.options?.metadata?.magic?.apiKey ||
+        !args.options?.metadata?.magic?.rpcEndpoint
       ) {
         return undefined
       }
 
-      return new MagicStrategy({
-        ...args,
-        metadata: args.options.metadata.magic as MagicMetadata,
-      })
+      return new MagicStrategy(args as ConcreteEthereumWalletStrategyArgs)
+    case Wallet.Turnkey:
+      if (
+        !args.options?.metadata?.turnkey?.defaultOrganizationId ||
+        !args.options.metadata.turnkey.turnkeyAuthIframeContainerId
+      ) {
+        return undefined
+      }
+      return new TurnkeyWalletStrategy(
+        args as ConcreteEthereumWalletStrategyArgs,
+      )
     default:
       return undefined
   }
@@ -133,18 +142,15 @@ const createStrategy = ({
 const createAllStrategies = (
   args: WalletStrategyArguments,
 ): ConcreteStrategiesArg => {
-  return Object.values(Wallet).reduce(
-    (strategies, wallet) => {
-      if (strategies[wallet]) {
-        return strategies
-      }
-
-      strategies[wallet] = createStrategy({ args, wallet: wallet as Wallet })
-
+  return Object.values(Wallet).reduce((strategies, wallet) => {
+    if (strategies[wallet]) {
       return strategies
-    },
-    {} as ConcreteStrategiesArg,
-  )
+    }
+
+    strategies[wallet] = createStrategy({ args, wallet: wallet as Wallet })
+
+    return strategies
+  }, {} as ConcreteStrategiesArg)
 }
 
 export class WalletStrategy extends BaseWalletStrategy {

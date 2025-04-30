@@ -59,4 +59,6 @@ export enum WalletErrorActionModule {
   GetNetworkId = 'get-network-id',
   GetChainId = 'get-chain-id',
   GetEthereumTransactionReceipt = 'get-ethereum-transaction-receipt',
+  TurnkeyInitEmailOTP = 'turnkey-init-email-otp',
+  TurnkeyVerifyEmailOTP = 'turnkey-verify-email-otp',
 }

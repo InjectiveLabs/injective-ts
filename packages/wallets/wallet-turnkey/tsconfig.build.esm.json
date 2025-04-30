@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "outDir": "./dist/esm",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "moduleResolution": "NodeNext",
+    "tsBuildInfoFile": "../../../.build-cache/wallet-turnkey.esm.tsbuildinfo"
+  }
+}

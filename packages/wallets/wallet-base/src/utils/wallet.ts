@@ -15,18 +15,20 @@ export const isEvmWallet = (wallet: Wallet): boolean =>
     Wallet.LedgerLegacy,
     Wallet.WalletConnect,
     Wallet.CosmostationEth,
+    Wallet.Turnkey,
   ].includes(wallet)
 
 export const isCosmosWallet = (wallet: Wallet): boolean => !isEvmWallet(wallet)
 
-export const isEvmBrowserWallet = (wallet: Wallet) => [
-  Wallet.BitGet,
-  Wallet.Phantom,
-  Wallet.Metamask,
-  Wallet.OkxWallet,
-  Wallet.TrustWallet,
-].includes(wallet)
-
+export const isEvmBrowserWallet = (wallet: Wallet) =>
+  [
+    Wallet.BitGet,
+    Wallet.Phantom,
+    Wallet.Metamask,
+    Wallet.OkxWallet,
+    Wallet.TrustWallet,
+    Wallet.Turnkey,
+  ].includes(wallet)
 
 export const isCosmosBrowserWallet = (wallet: Wallet): boolean =>
   [

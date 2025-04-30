@@ -1,0 +1,12 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist/cjs",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "tsBuildInfoFile": "../../../.build-cache/wallet-turnkey.tsbuildinfo"
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./src/**/*.spec.ts", "./src/**/*.test.ts"]
+}

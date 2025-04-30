@@ -26,20 +26,19 @@ import {
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  WalletStrategyArguments,
+  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 
-interface MagicConnectArgs extends WalletStrategyArguments {
-  metadata?: MagicMetadata
-}
-
-export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export class Magic
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   public provider: BrowserEip1993Provider | undefined
   public metadata?: MagicMetadata
   private magicWallet: MagicWallet
 
-  constructor(args: MagicConnectArgs) {
-    if (!args.metadata?.apiKey) {
+  constructor(args: ConcreteEthereumWalletStrategyArgs) {
+    if (!args.options?.metadata?.magic?.apiKey) {
       throw new WalletException(
         new Error(
           'You have to pass the apiKey within metadata to use Magic wallet',
@@ -47,7 +46,7 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
       )
     }
 
-    if (!args.metadata.rpcEndpoint) {
+    if (!args.options.metadata?.magic?.rpcEndpoint) {
       throw new WalletException(
         new Error(
           'You have to pass the rpc url endpoint within metadata to use Magic wallet',
@@ -57,12 +56,12 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
 
     super(args)
 
-    this.metadata = args.metadata
-    this.magicWallet = new MagicWallet(args.metadata.apiKey, {
+    this.metadata = args.options.metadata.magic
+    this.magicWallet = new MagicWallet(args.options.metadata.magic.apiKey, {
       extensions: [
         new OAuthExtension(),
         new CosmosExtension({
-          rpcUrl: args.metadata.rpcEndpoint,
+          rpcUrl: args.options.metadata.magic.rpcEndpoint,
           chain: 'inj',
         }),
       ],
