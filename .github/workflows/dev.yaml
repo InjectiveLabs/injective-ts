@@ -13,15 +13,15 @@ jobs:
     permissions: write-all
 
     steps:
-      - name: Checkout # Download code from the repository
-        uses: actions/checkout@v2 # Public action
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Checkout all branches and tags
+          fetch-depth: 1
 
-      - name: 'Use NodeJS 18' # Setup node using version 14
-        uses: actions/setup-node@v2 # Public action
+      - name: 'Use NodeJS 20'
+        uses: actions/setup-node@v2
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
 
       - name: Setup lerna@6.6.1
         run: yarn global add lerna@6.6.1 --ignore-engines
@@ -61,3 +61,121 @@ jobs:
           GIT_ACTOR: ${{ github.actor }}
           SLACK_API: ${{ secrets.SLACK_API }}
           GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+
+  package-bump-hub:
+    name: 'Package bump hub'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump Hub
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: injectiveLabs/injective-hub
+          repository_branch: dev
+
+  package-bump-helix:
+    name: 'Package bump Helix'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump Helix
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: injectiveLabs/injective-helix
+          repository_branch: dev
+
+  package-bump-bridge:
+    name: 'Package bump Bridge'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump Bridge
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: injectiveLabs/injective-bridge
+          repository_branch: dev
+
+  package-bump-explorer:
+    name: 'Package bump Explorer'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump Explorer
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: injectiveLabs/injective-explorer
+          repository_branch: dev
+
+  package-bump-trading-ui:
+    name: 'Package bump Trading UI'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump Trading UI
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: injectiveLabs/injective-trading-ui
+          repository_branch: master
+
+  package-bump-mito:
+    name: 'Package bump Mito'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump Mito
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: mitoFinance/mito-ui
+          repository_branch: dev
+
+  package-bump-ui-api:
+    name: 'Package bump UI API'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump UI API
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: injectiveLabs/injective-ui-api
+          repository_branch: staging
+
+  package-bump-layer:
+    name: 'Package bump layer'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump layer
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          folder_path: layer
+          repository_url: injectiveLabs/injective-ui
+          repository_branch: master
+
+  package-bump-admin-ui:
+    name: 'Package bump Admin UI'
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+      - name: Package bump Admin UI
+        uses: InjectiveLabs/github-package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: injectiveLabs/injective-admin-ui
+          repository_branch: master
