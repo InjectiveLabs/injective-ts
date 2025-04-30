@@ -187,21 +187,45 @@ export default class LedgerBase
 
     try {
       const ledger = await this.ledger.getInstance()
-      const result = await ledger.signEIP712HashedMessage(
-        derivationPath,
-        bufferToHex(domainHash(object)),
-        bufferToHex(messageHash(object)),
-      )
+      const result = await ledger.signEIP712Message(derivationPath, object)
 
       const combined = `${result.r}${result.s}${result.v.toString(16)}`
 
       return combined.startsWith('0x') ? combined : `0x${combined}`
     } catch (e: unknown) {
-      throw new LedgerException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SignTransaction,
-      })
+      const errorMessage = (e as any).message
+      const isKnownNanoSError =
+        errorMessage.includes('instruction not supported') ||
+        errorMessage.includes('invalid status') ||
+        errorMessage.includes('not supported') ||
+        errorMessage.includes('INS_NOT_SUPPORTED')
+
+      if (!isKnownNanoSError) {
+        throw new LedgerException(new Error(errorMessage), {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.SignTransaction,
+        })
+      }
+
+      try {
+        const ledger = await this.ledger.getInstance()
+        const result = await ledger.signEIP712HashedMessage(
+          derivationPath,
+          bufferToHex(domainHash(object)),
+          bufferToHex(messageHash(object)),
+        )
+
+        const combined = `${result.r}${result.s}${result.v.toString(16)}`
+
+        return combined.startsWith('0x') ? combined : `0x${combined}`
+      } catch (e) {
+        throw new LedgerException(new Error((e as any).message), {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.SignTransaction,
+        })
+      }
     }
   }
 

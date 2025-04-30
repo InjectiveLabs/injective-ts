@@ -23,7 +23,32 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
         RestApiResponse<BlockLatestRestResponse>
       >(() => this.get(endpoint, params))
 
-      return response.data.block
+      return response.data.sdk_block || response.data.block
+    } catch (e) {
+      if (e instanceof HttpRequestException) {
+        throw e
+      }
+
+      throw new HttpRequestException(new Error(e as any), {
+        code: UnspecifiedErrorCode,
+        context: `${this.endpoint}/${endpoint}`,
+        contextModule: ChainModule.Tendermint,
+      })
+    }
+  }
+
+  async fetchBlock(
+    height: number | string,
+    params: Record<string, any> = {},
+  ): Promise<BlockLatestRestResponse['block']> {
+    const endpoint = `cosmos/base/tendermint/v1beta1/blocks/${height}`
+
+    try {
+      const response = await this.retry<
+        RestApiResponse<BlockLatestRestResponse>
+      >(() => this.get(endpoint, params))
+
+      return response.data.sdk_block || response.data.block
     } catch (e) {
       if (e instanceof HttpRequestException) {
         throw e

@@ -33,6 +33,33 @@ export interface BlockLatestRestResponse {
       proposer_address: string
     }
   }
+  sdk_block: {
+    header: {
+      version: {
+        block: string
+        app: string
+      }
+      chain_id: string
+      height: string
+      time: Date
+      last_block_id: {
+        hash: string
+        part_set_header: {
+          total: 0
+          hash: string
+        }
+      }
+      last_commit_hash: string
+      data_hash: string
+      validators_hash: string
+      next_validators_hash: string
+      consensus_hash: string
+      app_hash: string
+      last_results_hash: string
+      evidence_hash: string
+      proposer_address: string
+    }
+  }
 }
 
 export interface NodeInfoRestResponse {

@@ -32,7 +32,7 @@ export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
           () => this.client.GetLatestBlock(request, this.metadata),
         )
 
-      return response.block || response.sdkBlock
+      return response.sdkBlock || response.block
     } catch (e: unknown) {
       if (e instanceof CosmosBaseTendermintV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -45,6 +45,35 @@ export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'TendermintApi.fetchLatestBlock',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchBlock(height: number | string) {
+    const request =
+      CosmosBaseTendermintV1Beta1Query.GetBlockByHeightRequest.create()
+
+    request.height = height.toString()
+    try {
+      const response =
+        await this.retry<CosmosBaseTendermintV1Beta1Query.GetBlockByHeightResponse>(
+          () => this.client.GetBlockByHeight(request, this.metadata),
+        )
+
+      return response.sdkBlock || response.block
+    } catch (e: unknown) {
+      if (e instanceof CosmosBaseTendermintV1Beta1Query.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'TendermintApi.fetchBlock',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'TendermintApi.fetchBlock',
         contextModule: this.module,
       })
     }
