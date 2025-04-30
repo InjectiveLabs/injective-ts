@@ -412,4 +412,136 @@ export class IndexerGrpcExplorerTransformer {
       txsPerSecondInPast100Blocks: response.txsPs100B,
     }
   }
+
+  static getTxsV2ResponseToTxs(
+    response: InjectiveExplorerRpc.GetTxsV2Response,
+  ) {
+    return {
+      data: response.data.map((tx) =>
+        IndexerGrpcExplorerTransformer.grpcTxV2ToTransaction(tx),
+      ),
+      paging: response.paging,
+    }
+  }
+
+  static grpcTxV2ToTransaction(tx: InjectiveExplorerRpc.TxData): any {
+    return {
+      id: tx.id,
+      logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
+      code: tx.code,
+      hash: tx.hash,
+      claimIds: tx.claimIds,
+      errorLog: tx.errorLog,
+      messages: JSON.parse(Buffer.from(tx.messages).toString('utf8')),
+      codespace: tx.codespace,
+      txMsgTypes: JSON.parse(Buffer.from(tx.txMsgTypes).toString('utf8')),
+      signatures: tx.signatures,
+      txNumber: parseInt(tx.txNumber),
+      blockNumber: parseInt(tx.blockNumber),
+      blockTimestamp: parseInt(tx.blockTimestamp),
+      blockUnixTime: parseInt(tx.blockUnixTimestamp),
+    }
+  }
+
+  static getAccountTxsV2ResponseToAccountTxs(
+    response: InjectiveExplorerRpc.GetAccountTxsV2Response,
+  ) {
+    return {
+      data: response.data.map((tx) =>
+        IndexerGrpcExplorerTransformer.grpcAccountTxV2ToTransaction(tx),
+      ),
+      paging: response.paging,
+    }
+  }
+
+  static grpcAccountTxV2ToTransaction(
+    tx: InjectiveExplorerRpc.TxDetailData,
+  ): any {
+    return {
+      id: tx.id,
+      hash: tx.hash,
+      code: tx.code,
+      info: tx.info,
+      memo: tx.memo,
+      txType: tx.txType,
+      gasFee: tx.gasFee,
+      events: tx.events,
+      gasUsed: tx.gasUsed,
+      errorLog: tx.errorLog,
+      txNumber: tx.txNumber,
+      claimIds: tx.claimIds,
+      gasWanted: tx.gasWanted,
+      signatures: tx.signatures,
+      blockNumber: parseInt(tx.blockNumber, 10),
+      blockTimestamp: parseInt(tx.blockTimestamp, 10),
+      blockUnixTimestamp: tx.blockUnixTimestamp,
+      data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
+      messages: JSON.parse(Buffer.from(tx.messages).toString('utf8')),
+      logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
+    }
+  }
+
+  static getBlocksV2ResponseToBlocks(
+    response: InjectiveExplorerRpc.GetBlocksV2Response,
+  ) {
+    return {
+      data: response.data.map((block) =>
+        IndexerGrpcExplorerTransformer.grpcBlockV2ToBlock(block),
+      ),
+      paging: response.paging,
+    }
+  }
+
+  static grpcBlockV2ToBlock(block: InjectiveExplorerRpc.BlockInfo) {
+    return {
+      txs: block.txs,
+      moniker: block.moniker,
+      proposer: block.proposer,
+      blockHash: block.blockHash,
+      parentHash: block.parentHash,
+      height: parseInt(block.height, 10),
+      numTxs: parseInt(block.numTxs, 10),
+      timestamp: parseInt(block.timestamp, 10),
+      numPreCommits: parseInt(block.numPreCommits, 10),
+      blockUnixTimestamp: parseInt(block.blockUnixTimestamp, 10),
+    }
+  }
+
+  static getContractTxsV2ResponseToContractTxs(
+    response: InjectiveExplorerRpc.GetContractTxsV2Response,
+  ) {
+    return {
+      data: response.data.map((tx) =>
+        IndexerGrpcExplorerTransformer.grpcContractTxV2ToTransaction(tx),
+      ),
+      paging: response.paging,
+    }
+  }
+
+  static grpcContractTxV2ToTransaction(
+    tx: InjectiveExplorerRpc.TxDetailData,
+  ): any {
+    return {
+      id: tx.id,
+      hash: tx.hash,
+      code: tx.code,
+      info: tx.info,
+      memo: tx.memo,
+      txType: tx.txType,
+      gasFee: tx.gasFee,
+      events: tx.events,
+      gasUsed: tx.gasUsed,
+      errorLog: tx.errorLog,
+      txNumber: tx.txNumber,
+      claimIds: tx.claimIds,
+      gasWanted: tx.gasWanted,
+      signatures: tx.signatures,
+      blockNumber: parseInt(tx.blockNumber, 10),
+      blockTimestamp: parseInt(tx.blockTimestamp, 10),
+      blockUnixTimestamp: tx.blockUnixTimestamp,
+      data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
+      messages: JSON.parse(Buffer.from(tx.messages).toString('utf8')),
+      logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
+    }
+  }
 }

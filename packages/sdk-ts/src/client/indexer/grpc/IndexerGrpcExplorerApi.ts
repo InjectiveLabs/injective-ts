@@ -569,4 +569,247 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchTxsV2({
+    blockNumber,
+    startTime,
+    endTime,
+    perPage,
+    status,
+    type,
+  }: {
+    blockNumber?: number
+    startTime?: number
+    endTime?: number
+    perPage?: number
+    status?: string
+    type?: string
+  }) {
+    const request = InjectiveExplorerRpc.GetTxsV2Request.create()
+
+    if (blockNumber) {
+      request.blockNumber = blockNumber.toString()
+    }
+
+    if (endTime) {
+      request.endTime = endTime.toString()
+    }
+
+    if (startTime) {
+      request.startTime = startTime.toString()
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (status) {
+      request.status = status
+    }
+
+    if (type) {
+      request.type = type
+    }
+
+    try {
+      const response = await this.retry<InjectiveExplorerRpc.GetTxsV2Response>(
+        () => this.client.GetTxsV2(request, this.metadata),
+      )
+
+      return IndexerGrpcExplorerTransformer.getTxsV2ResponseToTxs(response)
+    } catch (e: unknown) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'GetTxsV2',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetTxsV2',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchAccountTxsV2({
+    address,
+    startTime,
+    endTime,
+    perPage,
+    token,
+    type,
+  }: {
+    address: string
+    startTime?: number
+    endTime?: number
+    perPage?: number
+    token?: string
+    type?: string
+  }) {
+    const request = InjectiveExplorerRpc.GetAccountTxsV2Request.create()
+
+    request.address = address
+
+    if (startTime) {
+      request.startTime = startTime.toString()
+    }
+
+    if (endTime) {
+      request.endTime = endTime.toString()
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    if (type) {
+      request.type = type
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetAccountTxsV2Response>(() =>
+          this.client.GetAccountTxsV2(request, this.metadata),
+        )
+
+      return IndexerGrpcExplorerTransformer.getAccountTxsV2ResponseToAccountTxs(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'GetAccountTxsV2',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetAccountTxsV2',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchBlocksV2({
+    perPage,
+    token,
+  }: {
+    perPage?: number
+    token?: string
+  }) {
+    const request = InjectiveExplorerRpc.GetBlocksV2Request.create({})
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetBlocksV2Response>(() =>
+          this.client.GetBlocksV2(request, this.metadata),
+        )
+
+      return IndexerGrpcExplorerTransformer.getBlocksV2ResponseToBlocks(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'GetBlocksV2',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetBlocksV2',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchContractTxsV2({
+    to,
+    from,
+    token,
+    height,
+    status,
+    perPage,
+    contractAddress,
+  }: {
+    to?: number
+    from?: number
+    token?: string
+    height?: string
+    status?: string
+    perPage?: number
+    contractAddress: string
+  }) {
+    const request = InjectiveExplorerRpc.GetContractTxsV2Request.create()
+
+    request.address = contractAddress
+
+    if (from) {
+      request.from = from.toString()
+    }
+
+    if (to) {
+      request.to = to.toString()
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    if (height) {
+      request.height = height
+    }
+
+    if (status) {
+      request.status = status
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveExplorerRpc.GetContractTxsV2Response>(() =>
+          this.client.GetContractTxsV2(request, this.metadata),
+        )
+
+      return IndexerGrpcExplorerTransformer.getContractTxsV2ResponseToContractTxs(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'GetContractTxsV2',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'GetContractTxsV2',
+        contextModule: this.module,
+      })
+    }
+  }
 }
