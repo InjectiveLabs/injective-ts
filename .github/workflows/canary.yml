@@ -12,15 +12,15 @@ jobs:
     permissions: write-all
     if: ${{ contains(github.ref_name, 'canary') || contains(github.event.commits[0].message, 'canary') }}
     steps:
-      - name: 'Checkout' # Download code from the repository
-        uses: actions/checkout@v2 # Public action
+      - name: 'Checkout'
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Checkout all branches and tags
+          fetch-depth: 1
 
-      - name: 'Use NodeJS 18' # Setup node using version 14
-        uses: actions/setup-node@v2 # Public action
+      - name: 'Use NodeJS 20'
+        uses: actions/setup-node@v2
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
 
       - name: 'Setup lerna@6.6.1'
         run: yarn global add lerna@6.6.1  --ignore-engines
