@@ -248,9 +248,9 @@ describe('IndexerGrpcExplorerApi', () => {
         perPage: 10,
       })
 
-      expect(response).toBeDefined()
+      const { data: txs } = response
 
-      const txs = IndexerGrpcExplorerTransformer.getTxsV2ResponseToTxs(response)
+      expect(response).toBeDefined()
 
       expect(txs).toBeDefined()
       expect(txs).toEqual(expect.objectContaining<typeof txs>(txs))
@@ -276,7 +276,7 @@ describe('IndexerGrpcExplorerApi', () => {
     }
   })
 
-  test.only('fetchBlocksV2', async () => {
+  test('fetchBlocksV2', async () => {
     try {
       const response = await indexerGrpcExplorerApi.fetchBlocksV2({
         perPage: 10,

@@ -576,6 +576,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     endTime,
     perPage,
     status,
+    token,
     type,
   }: {
     blockNumber?: number
@@ -583,9 +584,14 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     endTime?: number
     perPage?: number
     status?: string
+    token?: string
     type?: string
   }) {
     const request = InjectiveExplorerRpc.GetTxsV2Request.create()
+
+    if (token) {
+      request.token = token
+    }
 
     if (blockNumber) {
       request.blockNumber = blockNumber.toString()

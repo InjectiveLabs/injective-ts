@@ -1,3 +1,5 @@
+import { BigNumberInWei, BigNumberInBase } from '@injectivelabs/utils'
+import { isJsonString } from '../../../utils/helpers.js'
 import {
   Block,
   GasFee,
@@ -21,10 +23,51 @@ import {
   GrpcValidatorSlashingEvent,
   ExplorerValidatorDescription,
   GrpcIndexerValidatorDescription,
+  ExplorerTransaction,
+  ContractTransaction,
+  Message,
 } from '../types/explorer.js'
 import { grpcPagingToPaging } from '../../../utils/index.js'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
+const ZERO_IN_BASE = new BigNumberInBase(0)
+
+const getContractTransactionV2Amount = (
+  ApiTransaction: InjectiveExplorerRpc.TxDetailData,
+): BigNumberInBase => {
+  const messages = JSON.parse(
+    Buffer.from(ApiTransaction.messages).toString('utf8'),
+  )
+  const {
+    type,
+    message: { msg },
+  } = messages[0]
+
+  if (!type.includes('MsgExecuteContract')) {
+    return ZERO_IN_BASE
+  }
+
+  if (typeof msg === 'string' && !isJsonString(msg)) {
+    return ZERO_IN_BASE
+  }
+
+  const msgObj = typeof msg === 'string' ? JSON.parse(msg) : msg
+
+  if (!msgObj.transfer) {
+    return ZERO_IN_BASE
+  }
+
+  return new BigNumberInWei(msgObj.transfer.amount).toBase()
+}
+
+const transactionV2MessagesToMessages = (messages: any): Message[] =>
+  JSON.parse(Buffer.from(messages).toString('utf8')).map(
+    (msg: any) =>
+      ({
+        type: msg.type,
+        message: msg.value,
+      } as Message),
+  )
 /**
  * @category Indexer Grpc Transformer
  */
@@ -424,22 +467,32 @@ export class IndexerGrpcExplorerTransformer {
     }
   }
 
-  static grpcTxV2ToTransaction(tx: InjectiveExplorerRpc.TxData): any {
+  static grpcTxV2ToTransaction(
+    tx: InjectiveExplorerRpc.TxData,
+  ): ExplorerTransaction {
     return {
       id: tx.id,
       logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
       code: tx.code,
       hash: tx.hash,
-      claimIds: tx.claimIds,
+      claimIds: tx.claimIds.map((claimId) => parseInt(claimId, 10)),
       errorLog: tx.errorLog,
-      messages: JSON.parse(Buffer.from(tx.messages).toString('utf8')),
+      messages: transactionV2MessagesToMessages(tx.messages),
       codespace: tx.codespace,
-      txMsgTypes: JSON.parse(Buffer.from(tx.txMsgTypes).toString('utf8')),
-      signatures: tx.signatures,
-      txNumber: parseInt(tx.txNumber),
+      txType: JSON.parse(Buffer.from(tx.txMsgTypes).toString('utf8')),
+      signatures: tx.signatures.map((signature) => ({
+        address: signature.address,
+        pubkey: signature.pubkey,
+        signature: signature.signature,
+        sequence: parseInt(signature.sequence, 10),
+      })),
       blockNumber: parseInt(tx.blockNumber),
-      blockTimestamp: parseInt(tx.blockTimestamp),
-      blockUnixTime: parseInt(tx.blockUnixTimestamp),
+      blockTimestamp: tx.blockTimestamp,
+      gasFee: { amounts: [], gasLimit: 0, granter: '', payer: '' },
+      info: '',
+      memo: '',
+      gasUsed: 0,
+      gasWanted: 0,
     }
   }
 
@@ -456,7 +509,7 @@ export class IndexerGrpcExplorerTransformer {
 
   static grpcAccountTxV2ToTransaction(
     tx: InjectiveExplorerRpc.TxDetailData,
-  ): any {
+  ): ExplorerTransaction {
     return {
       id: tx.id,
       hash: tx.hash,
@@ -464,20 +517,32 @@ export class IndexerGrpcExplorerTransformer {
       info: tx.info,
       memo: tx.memo,
       txType: tx.txType,
-      gasFee: tx.gasFee,
+      gasFee: {
+        amounts: (tx.gasFee?.amount || []).map((amount) => ({
+          amount: amount.amount,
+          denom: amount.denom,
+        })),
+        gasLimit: parseInt(tx.gasFee?.gasLimit ?? '0', 10),
+        granter: tx.gasFee?.granter ?? '',
+        payer: tx.gasFee?.payer ?? '',
+      },
       events: tx.events,
-      gasUsed: tx.gasUsed,
+      gasUsed: parseInt(tx.gasUsed, 10),
       errorLog: tx.errorLog,
-      txNumber: tx.txNumber,
-      claimIds: tx.claimIds,
-      gasWanted: tx.gasWanted,
-      signatures: tx.signatures,
+      claimIds: tx.claimIds.map((claimId) => parseInt(claimId, 10)),
+      gasWanted: parseInt(tx.gasWanted, 10),
+      signatures: tx.signatures.map((signature) => ({
+        address: signature.address,
+        pubkey: signature.pubkey,
+        signature: signature.signature,
+        sequence: parseInt(signature.sequence, 10),
+      })),
       blockNumber: parseInt(tx.blockNumber, 10),
-      blockTimestamp: parseInt(tx.blockTimestamp, 10),
-      blockUnixTimestamp: tx.blockUnixTimestamp,
+      blockTimestamp: tx.blockTimestamp,
       data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
-      messages: JSON.parse(Buffer.from(tx.messages).toString('utf8')),
+      messages: transactionV2MessagesToMessages(tx.messages),
       logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
+      codespace: tx.codespace,
     }
   }
 
@@ -492,18 +557,16 @@ export class IndexerGrpcExplorerTransformer {
     }
   }
 
-  static grpcBlockV2ToBlock(block: InjectiveExplorerRpc.BlockInfo) {
+  static grpcBlockV2ToBlock(block: InjectiveExplorerRpc.BlockInfo): Block {
     return {
-      txs: block.txs,
       moniker: block.moniker,
       proposer: block.proposer,
       blockHash: block.blockHash,
+      timestamp: block.timestamp,
       parentHash: block.parentHash,
       height: parseInt(block.height, 10),
       numTxs: parseInt(block.numTxs, 10),
-      timestamp: parseInt(block.timestamp, 10),
       numPreCommits: parseInt(block.numPreCommits, 10),
-      blockUnixTimestamp: parseInt(block.blockUnixTimestamp, 10),
     }
   }
 
@@ -520,28 +583,29 @@ export class IndexerGrpcExplorerTransformer {
 
   static grpcContractTxV2ToTransaction(
     tx: InjectiveExplorerRpc.TxDetailData,
-  ): any {
+  ): ContractTransaction {
+    const messages = transactionV2MessagesToMessages(tx.messages)
+
     return {
-      id: tx.id,
-      hash: tx.hash,
       code: tx.code,
-      info: tx.info,
       memo: tx.memo,
-      txType: tx.txType,
-      gasFee: tx.gasFee,
-      events: tx.events,
-      gasUsed: tx.gasUsed,
-      errorLog: tx.errorLog,
-      txNumber: tx.txNumber,
-      claimIds: tx.claimIds,
-      gasWanted: tx.gasWanted,
-      signatures: tx.signatures,
-      blockNumber: parseInt(tx.blockNumber, 10),
-      blockTimestamp: parseInt(tx.blockTimestamp, 10),
-      blockUnixTimestamp: tx.blockUnixTimestamp,
+      type: tx.txType,
+      signatures: tx.signatures.map((signature) => ({
+        address: signature.address,
+        pubkey: signature.pubkey,
+        signature: signature.signature,
+        sequence: parseInt(signature.sequence, 10),
+      })),
       data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
-      messages: JSON.parse(Buffer.from(tx.messages).toString('utf8')),
+      messages,
       logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
+      height: parseInt(tx.blockNumber, 10),
+      error_log: tx.errorLog,
+      txHash: tx.hash,
+      tx_number: parseInt(tx.txNumber, 10),
+      time: parseInt(tx.blockTimestamp, 10),
+      fee: new BigNumberInWei(tx.gasFee?.amount[0]?.amount || '0').toBase(),
+      amount: getContractTransactionV2Amount(tx),
     }
   }
 }
