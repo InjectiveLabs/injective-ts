@@ -22,7 +22,7 @@ export type TurnkeyOTPCredentialsResponse = {
 }
 
 export type TurnkeyConfirmEmailOTPResponse = {
-  token: string
+  credentialBundle: string
 }
 
 export type TurnkeyOauthLoginResponse = {

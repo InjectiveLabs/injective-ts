@@ -54,23 +54,34 @@ export interface SendTransactionOptions {
 }
 
 export enum TurnkeyStatus {
-  Initializing = 'initializing',
   Ready = 'ready',
-  WaitingOtp = 'waiting-otp',
-  LoggedIn = 'logged-in',
   Error = 'error',
+  LoggedIn = 'logged-in',
+  WaitingOtp = 'waiting-otp',
+  Initializing = 'initializing',
 }
 
 export enum TurnkeyProvider {
   Email = 'email',
   Google = 'google',
+  Apple = 'apple',
+}
+
+export type TurnkeySession = {
+  sessionType: any
+  userId: string
+  organizationId: string
+  expiry: number
+  token: string
 }
 
 export interface TurnkeyMetadata {
   defaultOrganizationId: string
   apiBaseUrl: string
+  apiServerEndpoint: string
   iframeUrl?: string
   email?: string
+  session?: TurnkeySession
   otpId?: string
   oidcToken?: string
   iframeElementId: string

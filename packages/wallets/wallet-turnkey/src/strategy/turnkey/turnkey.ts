@@ -44,7 +44,7 @@ export class TurnkeyWallet {
     }
 
     this.status = TurnkeyStatus.Initializing
-    this.client = new HttpRestClient(metadata.apiBaseUrl)
+    this.client = new HttpRestClient(metadata.apiServerEndpoint)
   }
 
   public setStatus(status: TurnkeyStatus) {
@@ -71,7 +71,7 @@ export class TurnkeyWallet {
     return this.iframeClient as TurnkeyIframeClient
   }
 
-  public async getSession(existingCredentialBundle: string) {
+  public async getSession(existingCredentialBundle?: string) {
     const { metadata } = this
 
     const iframeClient = await this.getIframeClient()
@@ -83,7 +83,10 @@ export class TurnkeyWallet {
     const credentialBundle = existingCredentialBundle || currentSession?.token
 
     if (!credentialBundle) {
-      return
+      return {
+        session: undefined,
+        organizationId,
+      }
     }
 
     try {
@@ -108,7 +111,7 @@ export class TurnkeyWallet {
 
       if (!loginResult) {
         return {
-          session: '',
+          session: undefined,
           organizationId: actualOrganizationId,
         }
       }

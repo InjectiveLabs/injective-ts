@@ -12,7 +12,7 @@ import { type HttpRestClient } from '@injectivelabs/utils'
 import { TURNKEY_OTP_INIT_PATH, TURNKEY_OTP_VERIFY_PATH } from '../consts.js'
 
 export class TurnkeyOtpWallet {
-  static async fetchOTPCredentials(args: {
+  static async initEmailOTP(args: {
     email: string
     subOrgId?: string
     client: HttpRestClient
@@ -22,12 +22,18 @@ export class TurnkeyOtpWallet {
     const { client, iframeClient } = args
 
     try {
+      const targetPublicKey = iframeClient.iframePublicKey
+
+      if (!targetPublicKey) {
+        throw new WalletException(new Error('Target public key not found'))
+      }
+
       const response = await client.$post<TurnkeyOTPCredentialsResponse>(
         TURNKEY_OTP_INIT_PATH,
         {
+          targetPublicKey,
           email: args.email,
           suborgId: args.subOrgId,
-          targetPublicKey: iframeClient.iframePublicKey,
           invalidateExistingSessions: args.invalidateExistingSessions,
         },
       )
@@ -54,6 +60,11 @@ export class TurnkeyOtpWallet {
     try {
       const organizationId = args.organizationId
       const emailOTPId = args.emailOTPId
+      const targetPublicKey = iframeClient.iframePublicKey
+
+      if (!targetPublicKey) {
+        throw new WalletException(new Error('Target public key not found'))
+      }
 
       if (!emailOTPId) {
         throw new WalletException(new Error('Email OTP ID is required'))
@@ -69,7 +80,7 @@ export class TurnkeyOtpWallet {
           otpId: emailOTPId,
           otpCode: args.otpCode,
           suborgID: organizationId,
-          targetPublicKey: iframeClient.iframePublicKey,
+          targetPublicKey,
         },
       )
 

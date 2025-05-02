@@ -46,31 +46,19 @@ export class BaseTurnkeyWalletStrategy
   constructor(
     args: ConcreteEthereumWalletStrategyArgs & {
       provider: TurnkeyProvider
-      apiEndpoint?: string
+      apiServerEndpoint?: string
     },
   ) {
     super(args)
+
     this.turnkeyProvider = args.provider
     this.client = new HttpRestClient(
-      args.apiEndpoint || DEFAULT_TURNKEY_API_ENDPOINT,
+      args.apiServerEndpoint || DEFAULT_TURNKEY_API_ENDPOINT,
     )
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
-  }
-
-  private async getOrganizationId(): Promise<string> {
-    const { metadata } = this
-    const organizationId =
-      metadata?.turnkey?.defaultOrganizationId ||
-      metadata?.turnkey?.organizationId
-
-    if (!organizationId) {
-      throw new WalletException(new Error('Organization ID is required'))
-    }
-
-    return organizationId
   }
 
   async setMetadata(metadata: WalletMetadata) {
@@ -85,6 +73,17 @@ export class BaseTurnkeyWalletStrategy
     this.setStatus(TurnkeyStatus.Initializing)
 
     try {
+      const session = await turnkeyWallet.getSession()
+
+      if (session.session) {
+        // User is already logged in, we don't need to do anything in the next steps
+        if (this.metadata?.turnkey) {
+          this.metadata.turnkey.session = session.session
+        }
+
+        return true
+      }
+
       return !!(await turnkeyWallet.getIframeClient())
     } catch (e) {
       return false
@@ -129,18 +128,23 @@ export class BaseTurnkeyWalletStrategy
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getSessionOrConfirm(_address: AccountAddress): Promise<string> {
     const { turnkeyProvider, metadata, client } = this
+
     const turnkeyWallet = await this.getTurnkeyWallet()
     const iframeClient = await turnkeyWallet.getIframeClient()
+
+    // If the user is already logged in, we don't need to do anything
+    if (metadata?.turnkey?.session) {
+      return ''
+    }
 
     if (turnkeyProvider === TurnkeyProvider.Email) {
       if (!metadata?.turnkey?.email) {
         throw new WalletException(new Error('Email is required'))
       }
 
-      const result = await TurnkeyOtpWallet.fetchOTPCredentials({
+      const result = await TurnkeyOtpWallet.initEmailOTP({
         client,
         iframeClient,
         email: metadata.turnkey.email,
@@ -157,7 +161,9 @@ export class BaseTurnkeyWalletStrategy
       return result.otpId
     }
 
-    if (turnkeyProvider === TurnkeyProvider.Google) {
+    if (
+      [TurnkeyProvider.Google, TurnkeyProvider.Apple].includes(turnkeyProvider)
+    ) {
       if (!metadata?.turnkey?.oidcToken) {
         throw new WalletException(new Error('Oidc token is required'))
       }
@@ -166,7 +172,7 @@ export class BaseTurnkeyWalletStrategy
         client,
         iframeClient,
         oidcToken: metadata.turnkey.oidcToken,
-        providerName: 'google',
+        providerName: turnkeyProvider.toString() as 'google' | 'apple',
       })
 
       return result || ''
@@ -332,6 +338,12 @@ export class BaseTurnkeyWalletStrategy
         throw new WalletException(new Error('Turnkey apiBaseUrl is required'))
       }
 
+      if (!metadata.turnkey.apiServerEndpoint) {
+        throw new WalletException(
+          new Error('Turnkey apiServerEndpoint is required'),
+        )
+      }
+
       if (!metadata.turnkey.defaultOrganizationId) {
         throw new WalletException(
           new Error('Turnkey defaultOrganizationId is required'),
@@ -342,5 +354,18 @@ export class BaseTurnkeyWalletStrategy
     }
 
     return this.turnkeyWallet
+  }
+
+  private async getOrganizationId(): Promise<string> {
+    const { metadata } = this
+    const organizationId =
+      metadata?.turnkey?.organizationId ||
+      metadata?.turnkey?.defaultOrganizationId
+
+    if (!organizationId) {
+      throw new WalletException(new Error('Organization ID is required'))
+    }
+
+    return organizationId
   }
 }

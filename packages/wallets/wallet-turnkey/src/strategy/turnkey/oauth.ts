@@ -33,7 +33,7 @@ export class TurnkeyOauthWallet {
   static async oauthLogin(args: {
     client: HttpRestClient
     oidcToken: string
-    providerName: 'google' //TODO: apple
+    providerName: 'google' | 'apple'
     expirationSeconds?: number
     iframeClient: TurnkeyIframeClient
   }): Promise<string | void> {
