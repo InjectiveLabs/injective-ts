@@ -817,4 +817,5 @@ export type ErrorContextCode =
   | ChainStakingErrorCodes
   | ChainWasmErrorCodes
   | ErrorCode
+  | number
   | typeof UnspecifiedErrorCode

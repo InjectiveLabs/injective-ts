@@ -41,6 +41,7 @@ export class CosmosWalletStrategy
   implements ConcreteWalletStrategy
 {
   public wallet: Wallet
+
   private cosmosWallet: CosmosWallet
 
   constructor(
@@ -49,7 +50,7 @@ export class CosmosWalletStrategy
       endpoints?: { rest: string; rpc: string }
     } & { wallet: Wallet },
   ) {
-    super(args)
+    super({ ...args, chainId: args.chainId as ChainId })
 
     if (!cosmosWallets.includes(args.wallet)) {
       throw new CosmosWalletException(
@@ -60,7 +61,7 @@ export class CosmosWalletStrategy
     }
 
     this.wallet = args.wallet
-    this.chainId = args.chainId || CosmosChainId.Injective
+    this.chainId = args.chainId as ChainId
     this.cosmosWallet = new CosmosWallet({
       wallet: args.wallet,
       chainId: args.chainId,

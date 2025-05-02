@@ -11,6 +11,8 @@ export enum Wallet {
   Phantom = 'phantom',
   Metamask = 'metamask',
   OkxWallet = 'okx-wallet',
+  TurnkeyOtp = 'turnkey-otp',
+  TurnkeyOauth = 'turnkey-oauth',
   TrustWallet = 'trust-wallet',
   PrivateKey = 'private-key',
   TrezorBip32 = 'trezor-bip32',
@@ -20,7 +22,6 @@ export enum Wallet {
   LedgerLegacy = 'ledger-legacy',
   WalletConnect = 'wallet-connect',
   CosmostationEth = 'cosmostation-eth',
-  Turnkey = 'turnkey',
 }
 
 export enum MagicProvider {

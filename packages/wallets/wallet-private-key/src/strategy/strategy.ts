@@ -24,27 +24,14 @@ import {
   BaseConcreteStrategy,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
-
-interface PrivateKeyArgs extends ConcreteEthereumWalletStrategyArgs {
-  privateKey?: string
-}
 
 export class PrivateKeyWallet
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
   private privateKey?: PrivateKeySigner | undefined
-
-  constructor(args: PrivateKeyArgs) {
-    super(args)
-
-    this.privateKey = args.privateKey
-      ? PrivateKeySigner.fromHex(args.privateKey)
-      : undefined
-  }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Other)
@@ -254,13 +241,19 @@ export class PrivateKeyWallet
 
   private getPrivateKey(): PrivateKeySigner {
     if (!this.privateKey) {
-      throw new WalletException(
-        new Error('Please provide private key in the constructor'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletNotInstalledError,
-          contextModule: WalletAction.GetAccounts,
-        },
+      if (!this.metadata?.privateKey?.privateKey) {
+        throw new WalletException(
+          new Error('Please provide private key in the constructor'),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletNotInstalledError,
+            contextModule: WalletAction.GetAccounts,
+          },
+        )
+      }
+
+      this.privateKey = PrivateKeySigner.fromHex(
+        this.metadata.privateKey.privateKey,
       )
     }
 

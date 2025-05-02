@@ -9,12 +9,12 @@ import Status, { StatusType } from './Status.js'
 
 export {
   Status,
+  BigNumber,
   StatusType,
+  HttpClient,
   LocalStorage,
   BigNumberInBase,
   BigNumberInWei,
-  BigNumber,
-  HttpClient,
   HttpRestClient,
   StreamManager,
 }

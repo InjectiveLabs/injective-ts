@@ -1,9 +1,9 @@
 import {
-  HttpClient,
   BigNumberInBase,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+  HttpRestClient,
 } from '@injectivelabs/utils'
 import {
   BroadcastMode,
@@ -14,35 +14,28 @@ import {
 import { TxClient } from '../utils/classes/TxClient.js'
 import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
 import {
-  HttpRequestMethod,
   HttpRequestException,
   TransactionException,
-  UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { TxResponse } from '../types/tx.js'
-import { getErrorMessage } from '../../../utils/helpers.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
  * It is recommended to use TxGrpcClient instead of TxRestApi
  */
 export class TxRestApi implements TxConcreteApi {
-  public httpClient: HttpClient
+  public client: HttpRestClient
 
   constructor(endpoint: string, options?: { timeout?: number }) {
-    this.httpClient = new HttpClient(endpoint, {
-      headers: {
-        Accept: 'application/json',
-      },
+    this.client = new HttpRestClient(endpoint, {
       timeout: options?.timeout || 15000,
     })
   }
 
   public async fetchTx(txHash: string, params: any = {}): Promise<TxResponse> {
     try {
-      const response = await this.getRaw<TxResultResponse>(
+      const response = await this.client.$get<TxResultResponse>(
         `/cosmos/tx/v1beta1/txs/${txHash}`,
         params,
       )
@@ -139,7 +132,7 @@ export class TxRestApi implements TxConcreteApi {
     }
 
     try {
-      const response = await this.postRaw<SimulationResponse>(
+      const response = await this.client.$post<SimulationResponse>(
         '/cosmos/tx/v1beta1/simulate',
         {
           tx_bytes: TxClient.encode(txRawClone),
@@ -243,78 +236,11 @@ export class TxRestApi implements TxConcreteApi {
     txRaw: CosmosTxV1Beta1Tx.TxRaw,
     mode: BroadcastMode = BroadcastMode.Sync,
   ): Promise<T> {
-    const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {
+    const response = await this.client.$post<T>('cosmos/tx/v1beta1/txs', {
       tx_bytes: TxClient.encode(txRaw),
       mode,
     })
 
     return response
-  }
-
-  private async getRaw<T>(
-    endpoint: string,
-    params: URLSearchParams | any = {},
-  ): Promise<T> {
-    try {
-      return await this.httpClient
-        .get<URLSearchParams | any, { data: T }>(endpoint, params)
-        .then((d) => d.data)
-    } catch (e) {
-      const error = e as Error | AxiosError
-
-      if (axios.isAxiosError(error)) {
-        if (error.code === 'ECONNABORTED') {
-          throw new HttpRequestException(new Error(error.message), {
-            code: StatusCodes.REQUEST_TOO_LONG,
-            context: endpoint,
-          })
-        }
-
-        const message = getErrorMessage(error, endpoint)
-
-        throw new HttpRequestException(new Error(message), {
-          context: endpoint,
-          code: error.response
-            ? error.response.status
-            : StatusCodes.BAD_REQUEST,
-        })
-      }
-
-      throw new HttpRequestException(new Error((error as any).message), {
-        context: endpoint,
-        code: UnspecifiedErrorCode,
-      })
-    }
-  }
-
-  private async postRaw<T>(
-    endpoint: string,
-    params: URLSearchParams | any = {},
-  ): Promise<T> {
-    try {
-      return await this.httpClient
-        .post<URLSearchParams | any, { data: T }>(endpoint, params)
-        .then((d) => d.data)
-    } catch (e) {
-      const error = e as Error | AxiosError
-
-      if (axios.isAxiosError(error)) {
-        const message = getErrorMessage(error, endpoint)
-
-        throw new HttpRequestException(new Error(message), {
-          code: error.response
-            ? error.response.status
-            : StatusCodes.BAD_REQUEST,
-          context: endpoint,
-          contextModule: HttpRequestMethod.Post,
-        })
-      }
-
-      throw new HttpRequestException(new Error((error as any).message), {
-        code: UnspecifiedErrorCode,
-        context: endpoint,
-        contextModule: HttpRequestMethod.Post,
-      })
-    }
   }
 }

@@ -1,10 +1,10 @@
 import {
   Wallet,
   isEvmWallet,
+  type WalletMetadata,
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
-  ConcreteWalletStrategyOptions,
   WalletStrategyEthereumOptions,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
@@ -16,7 +16,10 @@ import { MagicStrategy } from '@injectivelabs/wallet-magic'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
-import { TurnkeyWalletStrategy } from '@injectivelabs/wallet-turnkey'
+import {
+  TurnkeyOtpWalletStrategy,
+  TurnkeyOauthWalletStrategy,
+} from '@injectivelabs/wallet-turnkey'
 import {
   TrezorBip32Strategy,
   TrezorBip44Strategy,
@@ -57,6 +60,7 @@ const createStrategy = ({
   }
 
   const ethWalletArgs = {
+    ...args,
     chainId: args.chainId,
     ethereumOptions: args.ethereumOptions as WalletStrategyEthereumOptions,
   } as ConcreteEthereumWalletStrategyArgs
@@ -96,15 +100,13 @@ const createStrategy = ({
         wallet: Wallet.BitGet,
       })
     case Wallet.WalletConnect:
-      return new WalletConnectStrategy({
-        ...args,
-        ...ethWalletArgs,
-      })
+      if (!args.metadata?.walletConnect?.projectId) {
+        return undefined
+      }
+
+      return new WalletConnectStrategy(ethWalletArgs)
     case Wallet.PrivateKey:
-      return new PrivateKeyWalletStrategy({
-        ...ethWalletArgs,
-        privateKey: args.options?.privateKey,
-      })
+      return new PrivateKeyWalletStrategy(ethWalletArgs)
     case Wallet.Keplr:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Keplr })
     case Wallet.Cosmostation:
@@ -116,24 +118,27 @@ const createStrategy = ({
     case Wallet.OWallet:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.OWallet })
     case Wallet.Magic:
-      if (
-        !args.options?.metadata?.magic?.apiKey ||
-        !args.options?.metadata?.magic?.rpcEndpoint
-      ) {
+      if (!args.metadata?.magic?.apiKey || !args.metadata?.magic?.rpcEndpoint) {
         return undefined
       }
 
-      return new MagicStrategy(args as ConcreteEthereumWalletStrategyArgs)
-    case Wallet.Turnkey:
+      return new MagicStrategy(args)
+    case Wallet.TurnkeyOtp:
       if (
-        !args.options?.metadata?.turnkey?.defaultOrganizationId ||
-        !args.options.metadata.turnkey.turnkeyAuthIframeContainerId
+        !args.metadata?.turnkey?.defaultOrganizationId ||
+        !args.metadata?.turnkey?.iframeContainerId
       ) {
         return undefined
       }
-      return new TurnkeyWalletStrategy(
-        args as ConcreteEthereumWalletStrategyArgs,
-      )
+      return new TurnkeyOtpWalletStrategy(ethWalletArgs)
+    case Wallet.TurnkeyOauth:
+      if (
+        !args.metadata?.turnkey?.defaultOrganizationId ||
+        !args.metadata?.turnkey?.iframeContainerId
+      ) {
+        return undefined
+      }
+      return new TurnkeyOauthWalletStrategy(ethWalletArgs)
     default:
       return undefined
   }
@@ -164,26 +169,41 @@ export class WalletStrategy extends BaseWalletStrategy {
   }
 
   /**
+   * This method is used to set the metadata for the wallet strategies.
+   * In some cases we are going to set the metadata dynamically on the fly, and in
+   * some cases we are recreating the wallet strategies from scratch using the new
+   * metadata
+   *
    * Case 1: Private Key is set dynamically
    * If we have a dynamically set private key,
    * we are creating a new PrivateKey strategy
-   * with the specified private key
+   * with the specified private key (passed as metadata)
    *
-   * Case 2: Wallet Connect Metadata set dynamically
+   * Case 2: Similar to Case 1, but for Wallet Connect Metadata
+   *
    */
-  public setOptions(options?: ConcreteWalletStrategyOptions) {
-    if (options?.privateKey) {
-      this.strategies[Wallet.PrivateKey] = createStrategy({
-        args: { ...this.args, options: { privateKey: options.privateKey } },
-        wallet: Wallet.PrivateKey,
-      })
-    }
+  public setMetadata(metadata?: WalletMetadata) {
+    const shouldRecreateStrategyOnMetadataChange = [
+      Wallet.PrivateKey,
+      Wallet.WalletConnect,
+    ]
 
-    if (options?.metadata) {
-      this.strategies[Wallet.WalletConnect] = createStrategy({
-        args: { ...this.args, options: { metadata: options.metadata } },
-        wallet: Wallet.WalletConnect,
-      })
+    for (const wallet of Object.keys(this.strategies)) {
+      const walletEnum = wallet as Wallet
+
+      if (shouldRecreateStrategyOnMetadataChange.includes(walletEnum)) {
+        this.strategies[walletEnum] = createStrategy({
+          args: {
+            ...this.args,
+            metadata: { ...this.args.metadata, ...metadata },
+          },
+          wallet: walletEnum,
+        })
+
+        continue
+      }
+
+      this.strategies[walletEnum]?.setMetadata?.(metadata)
     }
   }
 }

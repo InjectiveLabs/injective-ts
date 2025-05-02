@@ -18,11 +18,11 @@ import {
   ConcreteStrategiesArg,
   SendTransactionOptions,
   ConcreteWalletStrategy,
+  type WalletMetadata,
   onAccountChangeCallback,
   onChainIdChangeCallback,
   WalletStrategyArguments,
   CosmosWalletAbstraction,
-  ConcreteWalletStrategyOptions,
   WalletStrategy as WalletStrategyInterface,
 } from '@injectivelabs/wallet-base'
 import { StdSignDoc } from '@keplr-wallet/types'
@@ -58,12 +58,15 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
 
   public args: WalletStrategyArguments
 
+  public metadata?: WalletMetadata
+
   public wallets?: Wallet[]
 
   constructor(args: WalletStrategyArguments) {
     this.args = args
     this.strategies = args.strategies
     this.wallet = getInitialWallet(args)
+    this.metadata = args.metadata
   }
 
   public getWallet(): Wallet {
@@ -74,8 +77,12 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     this.wallet = wallet
   }
 
-  public setOptions(_options?: ConcreteWalletStrategyOptions) {
-    //
+  /**
+   * When we use setMetadata, we are usually updating the metadata of the
+   * existing strategy.
+   */
+  public setMetadata(metadata?: WalletMetadata) {
+    this.getStrategy().setMetadata?.(metadata)
   }
 
   public getStrategy(): ConcreteWalletStrategy {

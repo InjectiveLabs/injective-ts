@@ -28,19 +28,60 @@ export default class HttpClient {
     return this
   }
 
-  get<T, P>(endpoint: string, params: T = {} as T): Promise<P> {
+  async get<T, P extends Record<string, any>>(
+    endpoint: string,
+    params: P = {} as P,
+  ): Promise<T> {
     return this.client.get(endpoint, { params, ...this.config })
   }
 
-  post<T, P>(endpoint: string, data: T = {} as T): Promise<P> {
+  /**
+   * This functions parses the `data` property from the response
+   * and returns the data as a typed object.
+   */
+  async $get<T, P extends Record<string, any>>(
+    endpoint: string,
+    params: P = {} as P,
+  ): Promise<T> {
+    const response = await this.client.get(endpoint, {
+      params,
+      ...this.config,
+    })
+
+    return 'data' in response ? response.data : response
+  }
+
+  async post<T, P extends Record<string, any>>(
+    endpoint: string,
+    data: P = {} as P,
+  ): Promise<T> {
     return this.client.post(endpoint, data, this.config)
   }
 
-  put<T, P>(endpoint: string, data: T = {} as T): Promise<P> {
+  /**
+   * This functions parses the `data` property from the response
+   * and returns the data as a typed object.
+   */
+  async $post<T, P extends Record<string, any>>(
+    endpoint: string,
+    data: P = {} as P,
+  ): Promise<T> {
+    const response = await this.client.post(endpoint, data, this.config)
+
+    return 'data' in response ? response.data : response
+  }
+
+  async put<T, P extends Record<string, any>>(
+    endpoint: string,
+    data: P = {} as P,
+  ): Promise<T> {
     return this.client.put(endpoint, data, this.config)
   }
 
-  delete<T, P>(endpoint: string, params: T = {} as T): Promise<P> {
+  async delete<T, P extends Record<string, any>>(
+    endpoint: string,
+    params: P = {} as P,
+  ): Promise<T> {
     return this.client.delete(endpoint, { params, ...this.config })
   }
 }

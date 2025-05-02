@@ -19,14 +19,12 @@ import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   StdSignDoc,
   WalletAction,
-  MagicMetadata,
   MagicProvider,
   WalletDeviceType,
   BaseConcreteStrategy,
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 
 export class Magic
@@ -34,39 +32,8 @@ export class Magic
   implements ConcreteWalletStrategy
 {
   public provider: BrowserEip1993Provider | undefined
-  public metadata?: MagicMetadata
-  private magicWallet: MagicWallet
 
-  constructor(args: ConcreteEthereumWalletStrategyArgs) {
-    if (!args.options?.metadata?.magic?.apiKey) {
-      throw new WalletException(
-        new Error(
-          'You have to pass the apiKey within metadata to use Magic wallet',
-        ),
-      )
-    }
-
-    if (!args.options.metadata?.magic?.rpcEndpoint) {
-      throw new WalletException(
-        new Error(
-          'You have to pass the rpc url endpoint within metadata to use Magic wallet',
-        ),
-      )
-    }
-
-    super(args)
-
-    this.metadata = args.options.metadata.magic
-    this.magicWallet = new MagicWallet(args.options.metadata.magic.apiKey, {
-      extensions: [
-        new OAuthExtension(),
-        new CosmosExtension({
-          rpcUrl: args.options.metadata.magic.rpcEndpoint,
-          chain: 'inj',
-        }),
-      ],
-    }) as unknown as MagicWallet
-  }
+  private magicWallet: MagicWallet | undefined
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
@@ -103,30 +70,36 @@ export class Magic
   }
 
   async connectViaEmail(email?: string) {
+    const magicWallet = await this.getMagicWallet()
+
     if (!email) {
       throw new WalletException(
         new Error('You have to pass the email for using Magic wallet'),
       )
     }
 
-    return this.magicWallet.auth.loginWithMagicLink({ email })
+    return magicWallet.auth.loginWithMagicLink({ email })
   }
 
   async connectViaOauth(provider: MagicProvider) {
-    return (this.magicWallet.oauth2 as any).loginWithRedirect({
+    const magicWallet = await this.getMagicWallet()
+
+    return (magicWallet.oauth2 as any).loginWithRedirect({
       provider: provider,
       redirectURI: window.location.origin,
     })
   }
 
   public async disconnect() {
-    const isUserLoggedIn = await this.magicWallet.user.isLoggedIn()
+    const magicWallet = await this.getMagicWallet()
+
+    const isUserLoggedIn = await magicWallet.user.isLoggedIn()
 
     if (!isUserLoggedIn) {
       return
     }
 
-    await this.magicWallet.user.logout()
+    await magicWallet.user.logout()
   }
 
   async getAddresses({
@@ -134,21 +107,21 @@ export class Magic
   }: {
     provider: MagicProvider
   }): Promise<string[]> {
+    const magicWallet = await this.getMagicWallet()
+
     if (!provider) {
       try {
-        await (this.magicWallet.oauth2 as any).getRedirectResult()
+        await (magicWallet.oauth2 as any).getRedirectResult()
       } catch {
         // fail silently
       }
     }
 
     try {
-      const { publicAddress } = await this.magicWallet.user.getInfo()
+      const { publicAddress } = await magicWallet.user.getInfo()
 
       if (!publicAddress?.startsWith('inj')) {
-        const address = await (this.magicWallet.cosmos as any).changeAddress(
-          'inj',
-        )
+        const address = await (magicWallet.cosmos as any).changeAddress('inj')
 
         return [address || '']
       }
@@ -219,7 +192,9 @@ export class Magic
     eip712json: string,
     _address: AccountAddress,
   ): Promise<string> {
-    const signature = await (this.magicWallet.cosmos as any).signTypedData(
+    const magicWallet = await this.getMagicWallet()
+
+    const signature = await (magicWallet.cosmos as any).signTypedData(
       eip712json,
     )
 
@@ -302,11 +277,12 @@ export class Magic
   }
 
   private async pollUserLoggedInState(timeout = 60 * 1000): Promise<any> {
+    const magicWallet = await this.getMagicWallet()
     const POLL_INTERVAL = 3 * 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
-        const result = await this.magicWallet.user.isLoggedIn()
+        const result = await magicWallet.user.isLoggedIn()
 
         if (result) {
           return result
@@ -329,5 +305,39 @@ export class Magic
         contextModule: 'Magic-Wallet-pollUserLoggedInState',
       },
     )
+  }
+
+  private async getMagicWallet(): Promise<MagicWallet> {
+    const { metadata } = this
+
+    if (!this.magicWallet) {
+      if (!metadata?.magic?.apiKey) {
+        throw new WalletException(
+          new Error(
+            'You have to pass the apiKey within metadata to use Magic wallet',
+          ),
+        )
+      }
+
+      if (!metadata?.magic?.rpcEndpoint) {
+        throw new WalletException(
+          new Error(
+            'You have to pass the rpc url endpoint within metadata to use Magic wallet',
+          ),
+        )
+      }
+
+      this.magicWallet = new MagicWallet(metadata.magic.apiKey, {
+        extensions: [
+          new OAuthExtension(),
+          new CosmosExtension({
+            rpcUrl: metadata.magic.rpcEndpoint,
+            chain: 'inj',
+          }),
+        ],
+      }) as unknown as MagicWallet
+    }
+
+    return this.magicWallet
   }
 }

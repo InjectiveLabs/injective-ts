@@ -1,6 +1,5 @@
 import {
   ChainId,
-  CosmosChainId,
   AccountAddress,
   EthereumChainId,
 } from '@injectivelabs/ts-types'
@@ -28,6 +27,10 @@ export type CosmosWalletAbstraction = {
 export type MagicMetadata = {
   apiKey?: string
   rpcEndpoint?: string
+}
+
+export type PrivateKeyMetadata = {
+  privateKey: string
 }
 
 export type WalletConnectMetadata = {
@@ -58,13 +61,23 @@ export enum TurnkeyStatus {
   Error = 'error',
 }
 
+export enum TurnkeyProvider {
+  Email = 'email',
+  Google = 'google',
+}
+
 export interface TurnkeyMetadata {
   defaultOrganizationId: string
-  turnkeyAuthIframeContainerId: string
   apiBaseUrl: string
-  turnkeyAuthIframeElementId?: string
+  iframeUrl?: string
+  email?: string
+  otpId?: string
+  oidcToken?: string
+  iframeElementId: string
+  iframeContainerId: string
   credentialBundle?: string
   organizationId?: string
+  provider?: TurnkeyProvider
   onStatusChange?: (status: TurnkeyStatus) => void
 }
 
@@ -72,22 +85,17 @@ export interface WalletMetadata {
   magic?: MagicMetadata
   turnkey?: TurnkeyMetadata
   walletConnect?: WalletConnectMetadata
-}
-
-export interface ConcreteWalletStrategyOptions {
-  privateKey?: string
-  metadata?: WalletMetadata
+  privateKey?: PrivateKeyMetadata
 }
 
 export interface ConcreteWalletStrategyArgs {
   chainId: ChainId
-  options?: ConcreteWalletStrategyOptions
+  metadata?: WalletMetadata
 }
 
-export interface ConcreteCosmosWalletStrategyArgs {
-  chainId: CosmosChainId | ChainId
+export interface ConcreteCosmosWalletStrategyArgs
+  extends ConcreteWalletStrategyArgs {
   wallet?: Wallet
-  options?: ConcreteWalletStrategyOptions
 }
 
 export interface ConcreteEthereumWalletStrategyArgs
@@ -96,6 +104,9 @@ export interface ConcreteEthereumWalletStrategyArgs
 }
 
 export interface ConcreteCosmosWalletStrategy {
+  metadata?: WalletMetadata
+
+  setMetadata?(metadata?: WalletMetadata): void
   /**
    * The accounts from the wallet (addresses)
    */
@@ -148,7 +159,7 @@ export type ConcreteStrategiesArg = {
 
 export interface WalletStrategyArguments {
   chainId: ChainId
-  options?: ConcreteWalletStrategyOptions
+  metadata?: WalletMetadata
   ethereumOptions?: WalletStrategyEthereumOptions
   disabledWallets?: Wallet[]
   wallet?: Wallet
@@ -245,10 +256,11 @@ export interface WalletStrategy {
   strategies: ConcreteStrategiesArg
   wallet: Wallet
   args: WalletStrategyArguments
+  metadata?: WalletMetadata
 
   getWallet(): Wallet
   setWallet(wallet: Wallet): void
-  setOptions(options?: ConcreteWalletStrategyOptions): void
+  setMetadata(metadata?: WalletMetadata): void
   getStrategy(): ConcreteWalletStrategy
   getAddresses(args?: unknown): Promise<AccountAddress[]>
   getWalletDeviceType(): Promise<WalletDeviceType>

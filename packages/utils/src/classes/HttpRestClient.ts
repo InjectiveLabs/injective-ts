@@ -70,6 +70,44 @@ export default class HttpRestClient {
     }
   }
 
+  /**
+   * This functions parses the `data` property from the response
+   * and returns the data as a typed object.
+   */
+  public async $get<T>(
+    endpoint: string,
+    params: Record<string, any> = {},
+  ): Promise<T> {
+    try {
+      return await this.client.$get(endpoint, params)
+    } catch (e: unknown) {
+      const error = e as Error | AxiosError
+
+      if (axios.isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+          throw new HttpRequestException(new Error(error.message), {
+            code: StatusCodes.REQUEST_TOO_LONG,
+            context: endpoint,
+          })
+        }
+
+        const message = getErrorMessage(error, endpoint)
+
+        throw new HttpRequestException(new Error(message), {
+          context: endpoint,
+          code: error.response
+            ? error.response.status
+            : StatusCodes.BAD_REQUEST,
+        })
+      }
+
+      throw new HttpRequestException(new Error((error as any).message), {
+        code: UnspecifiedErrorCode,
+        context: endpoint,
+      })
+    }
+  }
+
   public async retry<TResponse>(
     httpCall: Function,
     retries: number = 3,
@@ -107,6 +145,46 @@ export default class HttpRestClient {
   ): Promise<T> {
     try {
       return await this.client.post(endpoint, params)
+    } catch (e: unknown) {
+      const error = e as Error | AxiosError
+
+      if (axios.isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+          throw new HttpRequestException(new Error(error.message), {
+            code: StatusCodes.REQUEST_TOO_LONG,
+            method: HttpRequestMethod.Post,
+          })
+        }
+
+        const message = getErrorMessage(error, endpoint)
+
+        throw new HttpRequestException(new Error(message), {
+          code: error.response
+            ? error.response.status
+            : StatusCodes.BAD_REQUEST,
+          context: endpoint,
+          contextModule: HttpRequestMethod.Post,
+        })
+      }
+
+      throw new HttpRequestException(new Error((error as any).message), {
+        code: UnspecifiedErrorCode,
+        context: endpoint,
+        contextModule: HttpRequestMethod.Post,
+      })
+    }
+  }
+
+  /**
+   * This functions parses the `data` property from the response
+   * and returns the data as a typed object.
+   */
+  public async $post<T>(
+    endpoint: string,
+    params: Record<string, any> = {},
+  ): Promise<T> {
+    try {
+      return await this.client.$post(endpoint, params)
     } catch (e: unknown) {
       const error = e as Error | AxiosError
 

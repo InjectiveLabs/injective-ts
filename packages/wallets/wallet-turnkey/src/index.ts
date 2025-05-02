@@ -1,3 +1,4 @@
-export { TurnkeyWallet as TurnkeyWalletStrategy } from './strategy/strategy.js'
+export { TurnkeyOtpWalletStrategy } from './strategy/strategy/otp.js'
+export { TurnkeyOauthWalletStrategy } from './strategy/strategy/oauth.js'
 
-export * from './strategy/strategy.js'
+export * from './strategy/strategy/base.js'

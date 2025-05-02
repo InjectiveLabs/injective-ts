@@ -12,10 +12,8 @@ import {
   WalletDeviceType,
   WalletEventListener,
   BaseConcreteStrategy,
-  WalletConnectMetadata,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import {
   Provider,
@@ -42,14 +40,6 @@ export class WalletConnect
   implements ConcreteWalletStrategy
 {
   public provider: Provider | undefined
-
-  public metadata?: WalletConnectMetadata
-
-  constructor(args: ConcreteEthereumWalletStrategyArgs) {
-    super(args)
-
-    this.metadata = args.options?.metadata?.walletConnect
-  }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
@@ -290,7 +280,7 @@ export class WalletConnect
       return this.provider
     }
 
-    if (!this.metadata) {
+    if (!this.metadata?.walletConnect) {
       throw new WalletException(
         new Error('Please provide metadata for WalletConnect'),
         {
@@ -301,7 +291,7 @@ export class WalletConnect
       )
     }
 
-    if (!this.metadata.projectId) {
+    if (!this.metadata.walletConnect.projectId) {
       throw new WalletException(
         new Error(
           'Please provide projectId alongside the metadata for WalletConnect',
@@ -316,7 +306,7 @@ export class WalletConnect
 
     try {
       this.provider = await EthereumProvider.init({
-        projectId: this.metadata.projectId as string,
+        projectId: this.metadata.walletConnect.projectId as string,
         metadata: this
           .metadata as unknown as EthereumProviderOptions['metadata'],
         showQrModal: true,
