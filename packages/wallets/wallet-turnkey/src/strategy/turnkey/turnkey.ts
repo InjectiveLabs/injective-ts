@@ -56,6 +56,10 @@ export class TurnkeyWallet {
       await this.initFrame()
     }
 
+    if (!this.turnkey) {
+      this.turnkey = new Turnkey(this.metadata)
+    }
+
     return this.turnkey as Turnkey
   }
 
@@ -245,6 +249,7 @@ export class TurnkeyWallet {
       iframeUrl: metadata?.iframeUrl || 'https://auth.turnkey.com',
     })
 
+    this.turnkey = turnkey
     this.iframeClient = iframeClient
   }
 }
