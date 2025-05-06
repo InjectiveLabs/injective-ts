@@ -82,6 +82,7 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
    * existing strategy.
    */
   public setMetadata(metadata?: WalletMetadata) {
+    this.metadata = metadata
     this.getStrategy().setMetadata?.(metadata)
   }
 
