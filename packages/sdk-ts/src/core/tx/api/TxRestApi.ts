@@ -36,7 +36,7 @@ export class TxRestApi implements TxConcreteApi {
   public async fetchTx(txHash: string, params: any = {}): Promise<TxResponse> {
     try {
       const response = await this.client.$get<TxResultResponse>(
-        `/cosmos/tx/v1beta1/txs/${txHash}`,
+        `cosmos/tx/v1beta1/txs/${txHash}`,
         params,
       )
 
@@ -133,7 +133,7 @@ export class TxRestApi implements TxConcreteApi {
 
     try {
       const response = await this.client.$post<SimulationResponse>(
-        '/cosmos/tx/v1beta1/simulate',
+        'cosmos/tx/v1beta1/simulate',
         {
           tx_bytes: TxClient.encode(txRawClone),
         },
