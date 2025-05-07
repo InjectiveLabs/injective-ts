@@ -17,7 +17,6 @@ import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import {
   StdSignDoc,
   WalletAction,
-  TurnkeyStatus,
   TurnkeyProvider,
   WalletDeviceType,
   type WalletMetadata,
@@ -25,11 +24,15 @@ import {
   ConcreteWalletStrategy,
   SendTransactionOptions,
   ConcreteEthereumWalletStrategyArgs,
+  TurnkeyMetadata,
 } from '@injectivelabs/wallet-base'
 import { TurnkeyWallet } from '../turnkey/turnkey.js'
 import { TurnkeyErrorCodes } from '../types.js'
 import { TurnkeyOtpWallet } from '../turnkey/otp.js'
 import { TurnkeyOauthWallet } from '../turnkey/oauth.js'
+import { SessionType } from '@turnkey/sdk-browser'
+import { TurnkeyIframeClient } from 'node_modules/@turnkey/sdk-browser/dist/sdk-client.js'
+import { getAddress } from 'viem'
 
 const DEFAULT_TURNKEY_API_ENDPOINT = 'https://api.ui.injective.network/api/v1'
 
@@ -61,16 +64,20 @@ export class BaseTurnkeyWalletStrategy
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  async setMetadata(metadata: WalletMetadata) {
+  setMetadata(metadata?: { turnkey?: Partial<WalletMetadata['turnkey']> }) {
     if (metadata?.turnkey) {
-      this.metadata = { ...this.metadata, ...metadata.turnkey }
+      this.metadata = {
+        ...this.metadata,
+        turnkey: {
+          ...this.metadata?.turnkey,
+          ...metadata.turnkey,
+        } as TurnkeyMetadata,
+      }
     }
   }
 
   async enable(): Promise<boolean> {
     const turnkeyWallet = await this.getTurnkeyWallet()
-
-    this.setStatus(TurnkeyStatus.Initializing)
 
     try {
       const session = await turnkeyWallet.getSession()
@@ -101,19 +108,69 @@ export class BaseTurnkeyWalletStrategy
     }
 
     await turnkey.logout()
-
-    this.setStatus(TurnkeyStatus.Ready)
   }
 
   async getAddresses(): Promise<string[]> {
     const turnkeyWallet = await this.getTurnkeyWallet()
     const organizationId = await this.getOrganizationId()
 
+    // CHeck if the user is already connected
+
+    const session = await turnkeyWallet.getSession()
+
+    if (!session.session) {
+      const iframeClient = await turnkeyWallet.getIframeClient()
+      // Check the provider type and perform auth step accordingly
+      if (this.turnkeyProvider === TurnkeyProvider.Email) {
+        if (!this.metadata?.turnkey?.otpId) {
+          throw new WalletException(new Error('OTP ID is required'))
+        }
+
+        if (!this.metadata?.turnkey?.otpCode) {
+          throw new WalletException(new Error('OTP code is required'))
+        }
+
+        const result = await TurnkeyOtpWallet.confirmEmailOTP({
+          client: this.client,
+          iframeClient,
+          otpCode: this.metadata?.turnkey?.otpCode,
+          emailOTPId: this.metadata?.turnkey?.otpId,
+          organizationId,
+        })
+
+        // TODO: abstract this logic into the TurnkeyWallet class
+        if (result.credentialBundle) {
+          this.metadata.turnkey.credentialBundle = result.credentialBundle
+          await iframeClient.injectCredentialBundle(result.credentialBundle)
+
+          await iframeClient.refreshSession({
+            sessionType: SessionType.READ_WRITE,
+            targetPublicKey: iframeClient.iframePublicKey,
+            expirationSeconds: '900',
+          })
+        }
+      } else {
+        if (!this.metadata?.turnkey?.oidcToken) {
+          throw new WalletException(new Error('Oidc token is required'))
+        }
+
+        const result = await TurnkeyOauthWallet.oauthLogin({
+          client: this.client,
+          iframeClient,
+          oidcToken: this.metadata?.turnkey?.oidcToken,
+          providerName: this.turnkeyProvider.toString() as 'google' | 'apple',
+        })
+        // TODO: abstract this logic into the TurnkeyWallet class
+        if (result?.credentialBundle) {
+          this.metadata.turnkey.credentialBundle = result.credentialBundle
+          iframeClient.injectCredentialBundle(result.credentialBundle)
+        }
+      }
+    }
+
     try {
       return await turnkeyWallet.getAccounts(organizationId)
     } catch (e: unknown) {
-      this.setStatus(TurnkeyStatus.Ready) // Why are we doing this?
-
       if ((e as any).contextCode === TurnkeyErrorCodes.UserLoggedOut) {
         await this.disconnect()
 
@@ -128,15 +185,30 @@ export class BaseTurnkeyWalletStrategy
     }
   }
 
-  async getSessionOrConfirm(_address: AccountAddress): Promise<string> {
+  async getSessionOrConfirm(): Promise<string> {
     const { turnkeyProvider, metadata, client } = this
 
     const turnkeyWallet = await this.getTurnkeyWallet()
     const iframeClient = await turnkeyWallet.getIframeClient()
 
-    // If the user is already logged in, we don't need to do anything
-    if (metadata?.turnkey?.session) {
-      return ''
+    const session = await turnkeyWallet.getSession()
+
+    if (
+      // If either of these values exist on the metadata, then we want to proceed with the login flow
+      !this.metadata?.turnkey?.email &&
+      !this.metadata?.turnkey?.oidcToken &&
+      session.session?.token
+    ) {
+      await iframeClient.injectCredentialBundle(session.session?.token)
+      this.setMetadata({ turnkey: { organizationId: session.organizationId } })
+
+      await iframeClient.refreshSession({
+        sessionType: SessionType.READ_WRITE,
+        targetPublicKey: iframeClient.iframePublicKey,
+        expirationSeconds: '900',
+      })
+
+      return session.session.token
     }
 
     if (turnkeyProvider === TurnkeyProvider.Email) {
@@ -148,6 +220,7 @@ export class BaseTurnkeyWalletStrategy
         client,
         iframeClient,
         email: metadata.turnkey.email,
+        otpInitPath: metadata.turnkey.otpInitPath,
       })
 
       if (result.organizationId && this.metadata?.turnkey) {
@@ -164,18 +237,38 @@ export class BaseTurnkeyWalletStrategy
     if (
       [TurnkeyProvider.Google, TurnkeyProvider.Apple].includes(turnkeyProvider)
     ) {
-      if (!metadata?.turnkey?.oidcToken) {
-        throw new WalletException(new Error('Oidc token is required'))
+      if (metadata?.turnkey?.oidcToken) {
+        const oauthResult = await TurnkeyOauthWallet.oauthLogin({
+          client,
+          iframeClient,
+          oidcToken: metadata.turnkey.oidcToken,
+          providerName: turnkeyProvider.toString() as 'google' | 'apple',
+          oauthLoginPath: metadata.turnkey.oauthLoginPath,
+        })
+
+        if (oauthResult?.credentialBundle)
+          await iframeClient.injectCredentialBundle(
+            oauthResult.credentialBundle,
+          )
+        await iframeClient.refreshSession({
+          sessionType: SessionType.READ_WRITE,
+          targetPublicKey: iframeClient.iframePublicKey,
+          expirationSeconds: '900',
+        })
+
+        if (oauthResult?.credentialBundle) {
+          const session = await turnkeyWallet.getSession()
+
+          if (this.metadata?.turnkey && session.organizationId) {
+            this.metadata.turnkey.organizationId = session.organizationId
+          }
+          return oauthResult.credentialBundle
+        }
+
+        throw new WalletException(new Error('Oauth result not found'))
+      } else {
+        return await TurnkeyOauthWallet.generateOAuthNonce(iframeClient)
       }
-
-      const result = await TurnkeyOauthWallet.oauthLogin({
-        client,
-        iframeClient,
-        oidcToken: metadata.turnkey.oidcToken,
-        providerName: turnkeyProvider.toString() as 'google' | 'apple',
-      })
-
-      return result || ''
     }
 
     return ''
@@ -231,8 +324,11 @@ export class BaseTurnkeyWalletStrategy
     const turnkeyWallet = await this.getTurnkeyWallet()
     const organizationId = await this.getOrganizationId()
 
+    //? Turnkey expects the case sensitive address and the current impl of getChecksumAddress from sdk-ts doesn't play nice with browser envs
+    const checksumAddress = getAddress(address)
+
     const account = await turnkeyWallet.getOrCreateAndGetAccount(
-      address,
+      checksumAddress,
       organizationId,
     )
 
@@ -318,12 +414,9 @@ export class BaseTurnkeyWalletStrategy
     )
   }
 
-  private async setStatus(status: TurnkeyStatus) {
-    const { metadata } = this
+  async getIframeClient(): Promise<TurnkeyIframeClient> {
     const turnkeyWallet = await this.getTurnkeyWallet()
-
-    turnkeyWallet.setStatus(status)
-    metadata?.turnkey?.onStatusChange?.(status)
+    return turnkeyWallet.getIframeClient()
   }
 
   private async getTurnkeyWallet(): Promise<TurnkeyWallet> {

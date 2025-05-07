@@ -1,4 +1,4 @@
-import { type TurnkeyIframeClient } from '@turnkey/sdk-browser'
+import { SessionType, type TurnkeyIframeClient } from '@turnkey/sdk-browser'
 import {
   ErrorType,
   WalletException,
@@ -18,6 +18,7 @@ export class TurnkeyOtpWallet {
     client: HttpRestClient
     iframeClient: TurnkeyIframeClient
     invalidateExistingSessions?: boolean
+    otpInitPath?: string
   }) {
     const { client, iframeClient } = args
 
@@ -29,7 +30,7 @@ export class TurnkeyOtpWallet {
       }
 
       const response = await client.$post<TurnkeyOTPCredentialsResponse>(
-        TURNKEY_OTP_INIT_PATH,
+        args.otpInitPath || TURNKEY_OTP_INIT_PATH,
         {
           targetPublicKey,
           email: args.email,
@@ -54,6 +55,7 @@ export class TurnkeyOtpWallet {
     client: HttpRestClient
     organizationId?: string
     iframeClient: TurnkeyIframeClient
+    otpVerifyPath?: string
   }) {
     const { client, iframeClient } = args
 
@@ -61,6 +63,7 @@ export class TurnkeyOtpWallet {
       const organizationId = args.organizationId
       const emailOTPId = args.emailOTPId
       const targetPublicKey = iframeClient.iframePublicKey
+      const otpVerifyPath = args.otpVerifyPath || TURNKEY_OTP_VERIFY_PATH
 
       if (!targetPublicKey) {
         throw new WalletException(new Error('Target public key not found'))
@@ -75,7 +78,7 @@ export class TurnkeyOtpWallet {
       }
 
       const response = await client.$post<TurnkeyConfirmEmailOTPResponse>(
-        TURNKEY_OTP_VERIFY_PATH,
+        otpVerifyPath,
         {
           otpId: emailOTPId,
           otpCode: args.otpCode,
@@ -90,6 +93,52 @@ export class TurnkeyOtpWallet {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: 'turnkey-confirm-email-otp',
+      })
+    }
+  }
+
+  // TODO: should be able to remove this
+
+  static async loginUser(args: {
+    client: HttpRestClient
+    iframeClient: TurnkeyIframeClient
+    organizationId: string
+    otpCode: string
+    emailOTPId: string
+    setMetadata: (metadata: { turnkey: { credentialBundle: string } }) => void
+  }) {
+    const {
+      client,
+      iframeClient,
+      organizationId,
+      otpCode,
+      emailOTPId,
+      setMetadata,
+    } = args
+
+    const result = await TurnkeyOtpWallet.confirmEmailOTP({
+      client,
+      iframeClient,
+      otpCode,
+      emailOTPId,
+      organizationId,
+    })
+
+    console.log('🪵 | TurnkeyOtpWallet | result:', result)
+
+    if (result.credentialBundle) {
+      setMetadata({
+        turnkey: {
+          credentialBundle: result.credentialBundle,
+        },
+      })
+
+      await iframeClient.injectCredentialBundle(result.credentialBundle)
+
+      await iframeClient.refreshSession({
+        sessionType: SessionType.READ_WRITE,
+        targetPublicKey: iframeClient.iframePublicKey,
+        expirationSeconds: '900',
       })
     }
   }

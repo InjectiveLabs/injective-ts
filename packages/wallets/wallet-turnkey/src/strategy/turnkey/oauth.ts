@@ -36,8 +36,11 @@ export class TurnkeyOauthWallet {
     providerName: 'google' | 'apple'
     expirationSeconds?: number
     iframeClient: TurnkeyIframeClient
-  }): Promise<string | void> {
+    oauthLoginPath?: string
+  }): Promise<{ credentialBundle: string } | void> {
     const { client, iframeClient } = args
+
+    const path = args.oauthLoginPath || TURNKEY_OAUTH_PATH
 
     try {
       const targetPublicKey = iframeClient.iframePublicKey
@@ -46,22 +49,45 @@ export class TurnkeyOauthWallet {
         throw new WalletException(new Error('Target public key not found'))
       }
 
-      const response = await client.$post<TurnkeyOauthLoginResponse>(
-        TURNKEY_OAUTH_PATH,
-        {
-          targetPublicKey,
-          oidcToken: args.oidcToken,
-          providerName: args.providerName,
-        },
-      )
+      const response = await client.$post<TurnkeyOauthLoginResponse>(path, {
+        targetPublicKey,
+        oidcToken: args.oidcToken,
+        providerName: args.providerName,
+      })
 
-      return response.credentialBundle
+      return response
     } catch (e) {
       throw new WalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: 'turnkey-oauth-login',
       })
+    }
+  }
+
+  // TODO: should be able to remove this
+  static async loginUser(args: {
+    iframeClient: TurnkeyIframeClient
+    client: HttpRestClient
+    oidcToken: string
+    providerName: 'google' | 'apple'
+    setMetadata: (metadata: { turnkey: { credentialBundle: string } }) => void
+  }) {
+    const { client, iframeClient, oidcToken, providerName } = args
+    const result = await TurnkeyOauthWallet.oauthLogin({
+      client,
+      iframeClient,
+      oidcToken,
+      providerName,
+    })
+
+    if (result?.credentialBundle) {
+      args.setMetadata({
+        turnkey: {
+          credentialBundle: result.credentialBundle,
+        },
+      })
+      iframeClient.injectCredentialBundle(result.credentialBundle)
     }
   }
 }

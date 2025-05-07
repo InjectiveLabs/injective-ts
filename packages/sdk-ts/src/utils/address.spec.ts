@@ -2,6 +2,7 @@ import {
   getEthereumAddress,
   getInjectiveAddress,
   getDefaultSubaccountId,
+  getChecksumAddress,
 } from '../../src/utils/index.js'
 
 describe('address helper functions', () => {
@@ -29,6 +30,15 @@ describe('address helper functions', () => {
 
     expect(defaultSubaccountId).toMatch(
       '0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000',
+    )
+  })
+
+  it('getChecksumAddress returns correct value', () => {
+    const ethereumAddress =
+      '0xaf79152ac5df276d9a8e1e2e22822f9713474902'.toLowerCase()
+
+    expect(getChecksumAddress(ethereumAddress)).toMatch(
+      '0xAF79152AC5dF276D9A8e1E2E22822f9713474902',
     )
   })
 })

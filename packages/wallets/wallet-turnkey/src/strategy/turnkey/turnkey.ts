@@ -5,11 +5,7 @@ import {
   GeneralException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import {
-  WalletAction,
-  TurnkeyStatus,
-  TurnkeyMetadata,
-} from '@injectivelabs/wallet-base'
+import { WalletAction, TurnkeyMetadata } from '@injectivelabs/wallet-base'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
 import { HttpRestClient } from '@injectivelabs/utils'
 import { createAccount } from '@turnkey/viem'
@@ -24,31 +20,24 @@ export class TurnkeyWallet {
 
   private metadata: TurnkeyMetadata
 
-  public status: TurnkeyStatus
-
   private accountMap: Record<
     string,
     Awaited<ReturnType<typeof createAccount>>
   > = {}
 
-  private DOMIds: {
-    turnkeyElementDOMId?: string
-    turnkeyContainerDOMId?: string
-  }
-
   constructor(metadata: TurnkeyMetadata) {
     this.metadata = metadata
-    this.DOMIds = {
-      turnkeyElementDOMId: metadata.iframeElementId,
-      turnkeyContainerDOMId: metadata.iframeContainerId,
-    }
 
-    this.status = TurnkeyStatus.Initializing
     this.client = new HttpRestClient(metadata.apiServerEndpoint)
   }
 
-  public setStatus(status: TurnkeyStatus) {
-    this.status = status
+  public static async getTurnkeyInstance(metadata: TurnkeyMetadata) {
+    const { turnkey, iframeClient } = await createTurnkeyIFrame(metadata)
+
+    return {
+      turnkey,
+      iframeClient,
+    }
   }
 
   public async getTurnkey(): Promise<Turnkey> {
@@ -213,43 +202,53 @@ export class TurnkeyWallet {
   }
 
   private async initFrame(): Promise<void> {
-    const { DOMIds, metadata } = this
-    const turnkey = new Turnkey(metadata)
-
-    const turnkeyAuthIframeElementId =
-      DOMIds.turnkeyElementDOMId || 'turnkey-auth-iframe-element-id'
-
-    if (!metadata.iframeContainerId) {
-      throw new GeneralException(new Error('iframeContainerId is required'))
-    }
-
-    if (!turnkey) {
-      throw new GeneralException(new Error('Turnkey is not initialized'))
-    }
-
-    const iframe = document.getElementById(
-      metadata.iframeContainerId,
-    ) as HTMLIFrameElement
-
-    if (!iframe) {
-      throw new GeneralException(new Error('iframe is null'))
-    }
-
-    const existingIframeClient = document.getElementById(
-      turnkeyAuthIframeElementId,
-    )
-
-    if (existingIframeClient) {
-      existingIframeClient.remove()
-    }
-
-    const iframeClient = await turnkey.iframeClient({
-      iframeContainer: iframe,
-      iframeElementId: turnkeyAuthIframeElementId,
-      iframeUrl: metadata?.iframeUrl || 'https://auth.turnkey.com',
-    })
+    const { metadata } = this
+    const { turnkey, iframeClient } = await createTurnkeyIFrame(metadata)
 
     this.turnkey = turnkey
     this.iframeClient = iframeClient
+  }
+}
+
+// TODO: ensure that this returns the exisiting iframeClient and doesn't create a new one
+async function createTurnkeyIFrame(metadata: TurnkeyMetadata) {
+  const turnkey = new Turnkey(metadata)
+
+  const turnkeyAuthIframeElementId =
+    metadata.iframeElementId || 'turnkey-auth-iframe-element-id'
+
+  if (!metadata.iframeContainerId) {
+    throw new GeneralException(new Error('iframeContainerId is required'))
+  }
+
+  if (!turnkey) {
+    throw new GeneralException(new Error('Turnkey is not initialized'))
+  }
+
+  const iframe = document.getElementById(
+    metadata.iframeContainerId,
+  ) as HTMLIFrameElement
+
+  if (!iframe) {
+    throw new GeneralException(new Error('iframe is null'))
+  }
+
+  const existingIframeClient = document.getElementById(
+    turnkeyAuthIframeElementId,
+  )
+
+  if (existingIframeClient) {
+    existingIframeClient.remove()
+  }
+
+  const iframeClient = await turnkey.iframeClient({
+    iframeContainer: iframe,
+    iframeElementId: turnkeyAuthIframeElementId,
+    iframeUrl: metadata?.iframeUrl || 'https://auth.turnkey.com',
+  })
+
+  return {
+    turnkey,
+    iframeClient,
   }
 }

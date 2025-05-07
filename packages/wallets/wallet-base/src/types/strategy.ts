@@ -53,14 +53,6 @@ export interface SendTransactionOptions {
   }
 }
 
-export enum TurnkeyStatus {
-  Ready = 'ready',
-  Error = 'error',
-  LoggedIn = 'logged-in',
-  WaitingOtp = 'waiting-otp',
-  Initializing = 'initializing',
-}
-
 export enum TurnkeyProvider {
   Email = 'email',
   Google = 'google',
@@ -83,13 +75,16 @@ export interface TurnkeyMetadata {
   email?: string
   session?: TurnkeySession
   otpId?: string
+  otpCode?: string
   oidcToken?: string
-  iframeElementId: string
+  iframeElementId?: string
   iframeContainerId: string
   credentialBundle?: string
   organizationId?: string
   provider?: TurnkeyProvider
-  onStatusChange?: (status: TurnkeyStatus) => void
+  otpInitPath?: string
+  otpVerifyPath?: string
+  oauthLoginPath?: string
 }
 
 export interface WalletMetadata {
