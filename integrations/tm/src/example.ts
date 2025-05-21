@@ -1,12 +1,15 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { CometBFTIndexer } from './client/indexer.js'
+import { CometBFTIndexer } from './client/indexer'
 
-const endpoints = [`${getNetworkEndpoints(Network.Mainnet).rpc}/websocket`]
+const endpoint =
+  process.env.TM_ENDPOINT ||
+  `${getNetworkEndpoints(Network.Mainnet).rpc}/websocket`
+const endpoints = [endpoint]
 
 const indexer = new CometBFTIndexer(endpoints)
 
-await indexer.subscribe()
+export function startIndexerSubscription() {
+  return indexer.subscribe()
+}
 
-setInterval(() => {
-  //
-}, 1000)
+startIndexerSubscription()

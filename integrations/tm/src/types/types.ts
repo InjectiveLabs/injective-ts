@@ -1,25 +1,8 @@
+import type { BlockEvent } from './block'
+
 export interface NewBlockEvent {
   type: 'tendermint/event/NewBlock'
-  value: {
-    block: {
-      header: {
-        height: string
-        time: string
-        chain_id: string
-      }
-      data: {
-        txs: {
-          tx: {
-            body: {
-              messages: {
-                type: string
-              }[]
-            }
-          }
-        }[]
-      }
-    }
-  }
+  value: BlockEvent
 }
 
 export interface NewTxEvent {

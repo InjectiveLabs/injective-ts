@@ -1,8 +1,12 @@
-import { WebSocketClient } from './ws.js'
-import { handleNewBlock } from './handlers/blocks.js'
-import { handleNewTx } from './handlers/txs.js'
-import { NewBlockEvent, NewTxEvent, type MessageHandlerArgs } from '../types.js'
-import { logger } from '../logger.js'
+import { WebSocketClient } from './ws'
+import { handleNewBlock } from './handlers/blocks'
+import { handleNewTx } from './handlers/txs'
+import {
+  NewBlockEvent,
+  NewTxEvent,
+  type MessageHandlerArgs,
+} from '../types/types'
+import { logger } from '../logger'
 
 export class CometBFTIndexer {
   private ws: WebSocketClient
@@ -18,6 +22,7 @@ export class CometBFTIndexer {
       this.ws.send({
         jsonrpc: '2.0',
         method: 'subscribe',
+
         id: Math.floor(Math.random() * 1_000_000),
         params: sub,
       })

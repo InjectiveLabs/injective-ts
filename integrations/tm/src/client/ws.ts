@@ -1,6 +1,6 @@
 import WebSocket from 'ws'
-import { logger } from '../logger.js'
-import { MessageHandler } from '../types.js'
+import { logger } from '../logger'
+import { MessageHandler } from '../types/types'
 
 export class WebSocketClient {
   private endpoints: string[]
