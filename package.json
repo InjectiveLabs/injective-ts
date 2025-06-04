@@ -28,7 +28,7 @@
     "build:docs": "pnpm typedoc",
     "lerna:publish:prerelease": "lerna publish --conventional-commits --conventional-prerelease",
     "lerna:publish": "lerna publish patch",
-    "build:watch": "node etc/bootstrapEnv && lerna run build:watch",
+    "build:watch": "node etc/bootstrapEnv && lerna run build:watch --parallel --stream",
     "build:fresh": "pnpm clean-up && pnpm build",
     "build:publish": "pnpm build:fresh && pnpm lerna:publish",
     "build:publish:prerelease": "pnpm build:fresh && pnpm lerna:publish:prerelease",
