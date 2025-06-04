@@ -19,7 +19,11 @@ const strategyArgs: WalletStrategyArguments = {
         ethereumChainId: EthereumChainId.Sepolia,
         rpcUrl: '',
       },
-      privateKey: process.env.TEST_PRIVATE_KEY as string,
+      metadata: {
+        privateKey: {
+          privateKey: process.env.TEST_PRIVATE_KEY as string,
+        },
+      },
     }),
   },
 }

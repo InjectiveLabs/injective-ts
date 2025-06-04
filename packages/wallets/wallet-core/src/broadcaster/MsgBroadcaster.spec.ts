@@ -1,17 +1,23 @@
-import { Network } from '@injectivelabs/networks'
-import { MsgBroadcaster } from './MsgBroadcaster.js'
-import { MsgBroadcasterOptions } from './types.js'
+import {
+  MsgSend,
+  PrivateKey,
+  MsgBroadcasterWithPk,
+} from '@injectivelabs/sdk-ts'
 import {
   Wallet,
   WalletStrategyArguments,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import { Network } from '@injectivelabs/networks'
 import { EthereumChainId } from '@injectivelabs/ts-types'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
+import { MsgBroadcaster } from './MsgBroadcaster.js'
+import { MsgBroadcasterOptions } from './types.js'
 
-const strategyArgs: WalletStrategyArguments = {} /** define the args */
+const strategyArgs: WalletStrategyArguments = {} as any /** define the args */
 const strategyEthArgs: ConcreteEthereumWalletStrategyArgs =
-  {} /** if the wallet is an Ethereum wallet */
+  {} as any /** if the wallet is an Ethereum wallet */
 const strategies = {
   [Wallet.PrivateKey]: new PrivateKeyWalletStrategy(strategyEthArgs),
 }
@@ -19,10 +25,10 @@ const strategies = {
 export const walletStrategy = new BaseWalletStrategy({
   ...strategyArgs,
   strategies,
-})
+}) as any
 
 const broadcasterArgs: MsgBroadcasterOptions =
-  {} /** define the broadcaster args */
+  {} as any /** define the broadcaster args */
 export const msgBroadcaster = new MsgBroadcaster({
   ...broadcasterArgs,
   walletStrategy,

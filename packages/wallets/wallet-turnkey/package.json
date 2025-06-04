@@ -44,10 +44,10 @@
     }
   },
   "scripts": {
-    "build": "yarn build:esm && yarn build:cjs && yarn build:post",
+    "build": "pnpm build:esm && pnpm build:cjs && pnpm build:post",
     "build:cjs": "tsc --build --force tsconfig.build.json",
     "build:esm": "tsc --build --force tsconfig.build.esm.json",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && pnpm build:post",
     "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
     "test": "jest",
@@ -65,7 +65,7 @@
     "@injectivelabs/utils": "^1.16.1-alpha.0",
     "@injectivelabs/wallet-base": "^1.16.1-alpha.0",
     "@turnkey/sdk-browser": "5.2.3",
-    "@turnkey/viem": "^0.9.9",
+    "@turnkey/viem": "0.9.9",
     "viem": "^2.31.3"
   },
   "devDependencies": {

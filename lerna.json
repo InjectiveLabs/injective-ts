@@ -1,7 +1,10 @@
 {
-  "npmClient": "yarn",
+  "npmClient": "pnpm",
   "name": "injective-ts",
-  "packages": ["packages/*", "packages/wallets/*"],
+  "packages": [
+    "packages/*",
+    "packages/wallets/*"
+  ],
   "version": "independent",
   "command": {
     "version": {
