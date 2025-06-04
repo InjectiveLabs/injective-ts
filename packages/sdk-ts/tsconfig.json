@@ -1,3 +1,9 @@
 {
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "isolatedModules": true,
+    "paths": {
+      "@injectivelabs/utils/test-utils": ["../utils/src/test-utils/index.ts"]
+    }
+  }
 }
