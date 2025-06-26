@@ -8,10 +8,10 @@ TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
 
 # remote branches/tags
-injective_core_branch=release/v1.14.x
-cosmos_sdk_branch=v0.50.x-inj
-wasmd_branch=v0.53.x-inj
-ibc_go_branch=v8.3.x-inj
+injective_core_branch=release/v1.15.x
+cosmos_sdk_branch=v0.50.9-devnetify-inj.1
+wasmd_branch=v0.53.2-inj.2
+ibc_go_branch=v8.7.0-inj
 
 # remove old gen
 rm -rf $BUILD_DIR
