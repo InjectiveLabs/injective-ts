@@ -176,6 +176,7 @@ export interface DerivativeTrade extends PositionDelta {
   feeRecipient: string
   isLiquidation: boolean
   payout: string
+  pnl: string
 }
 
 export interface DerivativeLimitOrderParams {
