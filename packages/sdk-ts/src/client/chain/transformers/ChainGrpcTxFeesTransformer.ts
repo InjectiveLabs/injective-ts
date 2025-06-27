@@ -1,4 +1,5 @@
 import { TxFeesEipBaseFee, TxFeesModuleStateParams } from '../types/txFees.js'
+import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
 import { InjectiveTxFeesV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
@@ -15,16 +16,31 @@ export class ChainGrpcTxFeesTransformer {
       highGasTxThreshold: params.highGasTxThreshold,
       minGasPriceForHighGasTx: params.minGasPriceForHighGasTx,
       mempool1559Enabled: params.mempool1559Enabled,
-      minGasPrice: params.minGasPrice,
-      defaultBaseFeeMultiplier: params.defaultBaseFeeMultiplier,
-      maxBaseFeeMultiplier: params.maxBaseFeeMultiplier,
+      minGasPrice: denomAmountFromGrpcChainDenomAmount(
+        params.minGasPrice,
+      ).toFixed(),
+      defaultBaseFeeMultiplier: denomAmountFromGrpcChainDenomAmount(
+        params.defaultBaseFeeMultiplier,
+      ).toFixed(),
+      maxBaseFeeMultiplier: denomAmountFromGrpcChainDenomAmount(
+        params.maxBaseFeeMultiplier,
+      ).toFixed(),
       resetInterval: params.resetInterval,
-      maxBlockChangeRate: params.maxBlockChangeRate,
-      targetBlockSpacePercentRate: params.targetBlockSpacePercentRate,
-      recheckFeeLowBaseFee: params.recheckFeeLowBaseFee,
-      recheckFeeHighBaseFee: params.recheckFeeHighBaseFee,
-      recheckFeeBaseFeeThresholdMultiplier:
+      maxBlockChangeRate: denomAmountFromGrpcChainDenomAmount(
+        params.maxBlockChangeRate,
+      ).toFixed(),
+      targetBlockSpacePercentRate: denomAmountFromGrpcChainDenomAmount(
+        params.targetBlockSpacePercentRate,
+      ).toFixed(),
+      recheckFeeLowBaseFee: denomAmountFromGrpcChainDenomAmount(
+        params.recheckFeeLowBaseFee,
+      ).toFixed(),
+      recheckFeeHighBaseFee: denomAmountFromGrpcChainDenomAmount(
+        params.recheckFeeHighBaseFee,
+      ).toFixed(),
+      recheckFeeBaseFeeThresholdMultiplier: denomAmountFromGrpcChainDenomAmount(
         params.recheckFeeBaseFeeThresholdMultiplier,
+      ).toFixed(),
     }
   }
 
@@ -32,7 +48,11 @@ export class ChainGrpcTxFeesTransformer {
     response: InjectiveTxFeesV1Beta1Query.QueryEipBaseFeeResponse,
   ): TxFeesEipBaseFee {
     return {
-      baseFee: response.baseFee?.baseFee,
+      baseFee: response.baseFee
+        ? denomAmountFromGrpcChainDenomAmount(
+            response.baseFee.baseFee,
+          ).toFixed()
+        : undefined,
     }
   }
 }
