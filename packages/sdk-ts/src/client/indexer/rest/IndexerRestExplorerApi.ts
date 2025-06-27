@@ -413,6 +413,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     limit?: number
     skip?: number
     label?: string
+    token?: string
+    lookup?: string
   }): Promise<{
     paging: Paging
     contracts: Contract[]
@@ -420,7 +422,16 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/contracts`
 
     try {
-      const { assetsOnly, fromNumber, limit, skip, label, codeId } = params || {
+      const {
+        skip,
+        limit,
+        label,
+        token,
+        codeId,
+        lookup,
+        assetsOnly,
+        fromNumber,
+      } = params || {
         limit: 12,
       }
 
@@ -431,9 +442,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           skip,
           limit,
           label,
-          code_id: codeId?.toString(),
+          token,
+          lookup,
           assets_only: assetsOnly,
           from_number: fromNumber,
+          code_id: codeId?.toString(),
         }),
       )
       const { paging, data } = response.data
