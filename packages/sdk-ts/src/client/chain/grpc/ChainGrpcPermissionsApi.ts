@@ -41,14 +41,14 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'Params',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'Params',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -70,15 +70,15 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
       if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
-          context: 'NamespaceByDenoms',
-          contextModule: this.module
+          context: 'NamespaceDenoms',
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'NamespaceDenoms',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -101,14 +101,14 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'Namespaces',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'Namespaces',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -133,14 +133,14 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'Namespace',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'Namespace',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -166,14 +166,14 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'ActorsByRole',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'ActorsByRole',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -199,14 +199,14 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'RolesByActor',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'RolesByActor',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -238,14 +238,14 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'RoleManager',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'RoleManager',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -268,14 +268,14 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'RoleManagers',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'RoleManagers',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -298,7 +298,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'PolicyStatuses',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
@@ -329,14 +329,14 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'PolicyManagerCapabilities',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
         context: 'PolicyManagerCapabilities',
-        contextModule: this.module
+        contextModule: this.module,
       })
     }
   }
@@ -360,7 +360,7 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: grpcErrorCodeToErrorCode(e.code),
           context: 'Voucher',
-          contextModule: this.module
+          contextModule: this.module,
         })
       }
 

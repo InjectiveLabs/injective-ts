@@ -122,7 +122,7 @@
     "@cosmjs/proto-signing": "^0.33.0",
     "@cosmjs/stargate": "^0.33.0",
     "@injectivelabs/abacus-proto-ts": "1.14.0",
-    "@injectivelabs/core-proto-ts": "1.14.3",
+    "@injectivelabs/core-proto-ts": "1.15.0",
     "@injectivelabs/exceptions": "^1.15.32",
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",

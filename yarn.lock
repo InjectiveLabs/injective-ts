@@ -1320,7 +1320,7 @@
     "@ledgerhq/hw-transport" "npm:@bangjelkoski/ledgerhq-hw-transport@^6.31.4-beta.0"
     "@ledgerhq/logs" "^6.12.0"
 
-"@bangjelkoski/ledgerhq-hw-transport@6.31.4-beta.0":
+"@bangjelkoski/ledgerhq-hw-transport@6.31.4-beta.0", "@ledgerhq/hw-transport@npm:@bangjelkoski/ledgerhq-hw-transport@^6.31.4-beta.0":
   version "6.31.4-beta.0"
   resolved "https://registry.yarnpkg.com/@bangjelkoski/ledgerhq-hw-transport/-/ledgerhq-hw-transport-6.31.4-beta.0.tgz#c5a3b49f6b7cc16a9243285a4dd18d8b3a53e94f"
   integrity sha512-AIRuxu8s83mv0cBooO5v+pirZyIEUobl8L9QmXvBlTJybmMmyBgigLuoIcZDlSp4Tc7jnoOlHSpFQkASc+5sNA==
@@ -2447,10 +2447,10 @@
     protobufjs "^7.4.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/core-proto-ts@1.14.3":
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.14.3.tgz#dfe6198aea0bfeab71ac4bb05ad1f566991c5918"
-  integrity sha512-V45Pr3hFD09Rlkai2bWKjntfvgDFvGEBWh5Wy1iRpjnYzeiwnizvaJtyLrAEfZ87d5AD5qtPCNJN5fd27iFa5w==
+"@injectivelabs/core-proto-ts@1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.15.0.tgz#9ceee3fff2aa67481dbecf525e3eda85bb1ca754"
+  integrity sha512-J1Iq42RSfW8M5XDVDF8ACz49RkrP/963Lgyi1Yn9e4P2CZ2kRhJm8KSfH++1+yyLbDCEVdGj4b63TK8DopGsTA==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
@@ -2942,16 +2942,6 @@
   integrity sha512-6c1ir/cXWJm5dCWdq55NPgCJ3UuKuuxRvf//Xs36Bq9BwkV2YaRQhZITAkads83l07NAdR16hkTWqqpwFMaI6A==
   dependencies:
     "@ledgerhq/devices" "^8.4.4"
-    "@ledgerhq/errors" "^6.19.1"
-    "@ledgerhq/logs" "^6.12.0"
-    events "^3.3.0"
-
-"@ledgerhq/hw-transport@npm:@bangjelkoski/ledgerhq-hw-transport@^6.31.4-beta.0":
-  version "6.31.4-beta.0"
-  resolved "https://registry.yarnpkg.com/@bangjelkoski/ledgerhq-hw-transport/-/ledgerhq-hw-transport-6.31.4-beta.0.tgz#c5a3b49f6b7cc16a9243285a4dd18d8b3a53e94f"
-  integrity sha512-AIRuxu8s83mv0cBooO5v+pirZyIEUobl8L9QmXvBlTJybmMmyBgigLuoIcZDlSp4Tc7jnoOlHSpFQkASc+5sNA==
-  dependencies:
-    "@ledgerhq/devices" "8.4.4"
     "@ledgerhq/errors" "^6.19.1"
     "@ledgerhq/logs" "^6.12.0"
     events "^3.3.0"

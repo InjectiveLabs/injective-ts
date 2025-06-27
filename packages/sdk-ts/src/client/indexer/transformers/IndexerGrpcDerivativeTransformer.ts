@@ -597,18 +597,19 @@ export class IndexerGrpcDerivativeTransformer {
       : zeroPositionDelta()
 
     return {
-      orderHash: trade.orderHash,
-      tradeId: trade.tradeId,
       cid: trade.cid,
-      subaccountId: trade.subaccountId,
-      marketId: trade.marketId,
-      executedAt: parseInt(trade.executedAt, 10),
-      tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
-      executionSide: trade.executionSide as TradeExecutionSide,
       fee: trade.fee,
+      pnl: trade.pnl,
+      payout: trade.payout,
+      tradeId: trade.tradeId,
+      marketId: trade.marketId,
+      orderHash: trade.orderHash,
+      subaccountId: trade.subaccountId,
       feeRecipient: trade.feeRecipient,
       isLiquidation: trade.isLiquidation,
-      payout: trade.payout,
+      executedAt: parseInt(trade.executedAt, 10),
+      executionSide: trade.executionSide as TradeExecutionSide,
+      tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
       ...mappedPositionDelta,
     }
   }
