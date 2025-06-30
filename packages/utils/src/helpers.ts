@@ -3,8 +3,8 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
 } from './constants.js'
-import BigNumberInBase from './classes/BigNumber/BigNumberInBase.js'
 import BigNumberInWei from './classes/BigNumber/BigNumberInWei.js'
+import BigNumberInBase from './classes/BigNumber/BigNumberInBase.js'
 import { Awaited } from './types.js'
 
 export const sleep = (timeout: number): Promise<void> =>
@@ -42,8 +42,8 @@ export const awaitForAll = async <T, S>(
 
 export const splitArrayToChunksThrow = <T>({
   array,
-  chunkSize,
   filter,
+  chunkSize,
 }: {
   array: Array<T>
   chunkSize: number
@@ -71,8 +71,8 @@ export const splitArrayToChunksThrow = <T>({
 
 export const splitArrayToChunks = <T>({
   array,
-  chunkSize,
   filter,
+  chunkSize,
 }: {
   array: Array<T>
   chunkSize: number
@@ -127,12 +127,13 @@ export const getStdFeeFromObject = (args?: {
   }
 
   const {
-    gas = DEFAULT_GAS_LIMIT.toString(),
-    gasPrice = DEFAULT_GAS_PRICE,
     payer,
     granter,
     feePayer,
+    gasPrice = DEFAULT_GAS_PRICE,
+    gas = DEFAULT_GAS_LIMIT.toString(),
   } = args
+
   const gasNormalized = new BigNumberInBase(gas).toFixed(0)
   const gasPriceNormalized = new BigNumberInBase(gasPrice).toFixed(0)
 
@@ -145,10 +146,10 @@ export const getStdFeeFromObject = (args?: {
           .toFixed(),
       },
     ],
-    gas: new BigNumberInBase(gasNormalized).toFixed(),
     payer /** for Web3Gateway fee delegation */,
     granter,
     feePayer,
+    gas: new BigNumberInBase(gasNormalized).toFixed(),
   }
 }
 
@@ -174,11 +175,11 @@ export const getStdFee = (
   args?:
     | string
     | {
-        gas?: string | number
         payer?: string
         granter?: string
-        gasPrice?: string | number
         feePayer?: string
+        gas?: string | number
+        gasPrice?: string | number
       },
 ) => {
   if (!args) {
