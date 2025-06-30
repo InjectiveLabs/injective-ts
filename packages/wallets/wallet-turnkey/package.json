@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-turnkey",
   "description": "Turnkey wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.15.36",
+  "version": "1.15.37",
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
@@ -59,11 +59,11 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.15.33",
-    "@injectivelabs/sdk-ts": "^1.15.36",
-    "@injectivelabs/ts-types": "^1.15.34",
-    "@injectivelabs/utils": "^1.15.34",
-    "@injectivelabs/wallet-base": "^1.15.36",
+    "@injectivelabs/exceptions": "^1.15.34",
+    "@injectivelabs/sdk-ts": "^1.15.37",
+    "@injectivelabs/ts-types": "^1.15.35",
+    "@injectivelabs/utils": "^1.15.35",
+    "@injectivelabs/wallet-base": "^1.15.37",
     "@turnkey/sdk-browser": "5.2.3",
     "@turnkey/viem": "^0.9.9",
     "viem": "^2.31.3"
