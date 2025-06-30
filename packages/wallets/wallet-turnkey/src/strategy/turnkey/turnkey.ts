@@ -135,12 +135,10 @@ export class TurnkeyWallet {
         session,
         organizationId: actualOrganizationId,
       }
-    } catch (e: any) {
-      throw new WalletException(new Error(e.message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: 'turnkey-wallet-get-session',
-      })
+    } catch {
+      throw new TurnkeyWalletSessionException(
+        new Error('Session expired. Please login again.'),
+      )
     }
   }
 
@@ -240,6 +238,7 @@ export class TurnkeyWallet {
       bundle: credentialBundle,
       expirationSeconds,
     })
+
     await iframeClient.refreshSession({
       sessionType: SessionType.READ_WRITE,
       targetPublicKey: iframeClient.iframePublicKey,
@@ -248,7 +247,9 @@ export class TurnkeyWallet {
 
     const session = await this.turnkey?.getSession()
     if (!session) {
-      throw new WalletException(new Error('Failed to refresh session'))
+      throw new TurnkeyWalletSessionException(
+        new Error('Session expired. Please login again.'),
+      )
     }
 
     this.organizationId = session.organizationId
