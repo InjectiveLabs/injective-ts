@@ -146,10 +146,10 @@ export const getStdFeeFromObject = (args?: {
           .toFixed(),
       },
     ],
+    gas: new BigNumberInBase(gasNormalized).toFixed(),
     payer /** for Web3Gateway fee delegation */,
     granter,
     feePayer,
-    gas: new BigNumberInBase(gasNormalized).toFixed(),
   }
 }
 

@@ -30,6 +30,7 @@ import {
   sleep,
   getStdFee,
   BigNumberInBase,
+  DEFAULT_GAS_PRICE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
@@ -793,8 +794,6 @@ export class MsgBroadcaster {
     const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
-    // todo: ask bojan if we should simulate tx here
-
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
@@ -1081,7 +1080,8 @@ export class MsgBroadcaster {
         },
   ) {
     const client = new ChainGrpcTxFeesApi(this.endpoints.grpc)
-    const baseFee = (await client.fetchEipBaseFee()).baseFee
+    const baseFee =
+      (await client.fetchEipBaseFee()).baseFee || DEFAULT_GAS_PRICE
 
     if (!args) {
       return getStdFee(baseFee ? { gasPrice: baseFee } : {})
@@ -1090,7 +1090,7 @@ export class MsgBroadcaster {
     if (typeof args === 'string') {
       return getStdFee({
         ...(baseFee && {
-          gasPrice: new BigNumberInBase(baseFee).plus(1).toFixed(),
+          gasPrice: new BigNumberInBase(baseFee).toFixed(),
         }),
         gas: args,
       })
@@ -1099,7 +1099,7 @@ export class MsgBroadcaster {
     return getStdFee({
       ...args,
       ...(baseFee && {
-        gasPrice: new BigNumberInBase(baseFee).plus(1).toFixed(),
+        gasPrice: new BigNumberInBase(baseFee).toFixed(),
       }),
     })
   }
