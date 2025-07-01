@@ -1137,11 +1137,14 @@ export class MsgBroadcaster {
       }
     }
 
-    const stdGasFee = await this.getStdFeeWithDynamicBaseFee({
-      gas: new BigNumberInBase(result.gasInfo.gasUsed)
-        .times(this.gasBufferCoefficient)
-        .toFixed(),
-    })
+    const stdGasFee = {
+      ...(await this.getStdFeeWithDynamicBaseFee({
+        ...getStdFee(args.fee),
+        gas: new BigNumberInBase(result.gasInfo.gasUsed)
+          .times(this.gasBufferCoefficient)
+          .toFixed(),
+      })),
+    }
 
     return {
       ...createTransactionWithSigners({
