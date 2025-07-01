@@ -1080,8 +1080,12 @@ export class MsgBroadcaster {
         },
   ) {
     const client = new ChainGrpcTxFeesApi(this.endpoints.grpc)
-    const baseFee =
-      (await client.fetchEipBaseFee()).baseFee || DEFAULT_GAS_PRICE
+    let baseFee = DEFAULT_GAS_PRICE
+
+    try {
+      const response = await client.fetchEipBaseFee()
+      baseFee = Number(response?.baseFee || DEFAULT_GAS_PRICE)
+    } catch {}
 
     if (!args) {
       return getStdFee(baseFee ? { gasPrice: baseFee } : {})
