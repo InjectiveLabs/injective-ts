@@ -6,29 +6,31 @@ import {
   SIGN_DIRECT,
   hexToBase64,
   ofacWallets,
-  SIGN_EIP712_V2,
   SIGN_EIP712,
-  DirectSignResponse,
+  SIGN_EIP712_V2,
   ChainGrpcAuthApi,
   CosmosTxV1Beta1Tx,
   createTxRawEIP712,
   createTransaction,
+  ChainGrpcTxFeesApi,
+  DirectSignResponse,
   getAminoStdSignDoc,
   getEip712TypedData,
   createWeb3Extension,
   getEip712TypedDataV2,
   IndexerGrpcWeb3GwApi,
   ChainGrpcTendermintApi,
-  createTransactionWithSigners,
-  createTxRawFromSigResponse,
   getGasPriceBasedOnMessage,
+  createTxRawFromSigResponse,
   recoverTypedSignaturePubKey,
+  createTransactionWithSigners,
   CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
 import {
   sleep,
   getStdFee,
   BigNumberInBase,
+  DEFAULT_GAS_PRICE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
@@ -294,11 +296,13 @@ export class MsgBroadcaster {
     let stdFee = getStdFee({ ...tx.gas, gas })
 
     /**
-     * Account has been created on chain
-     * and we can simulate the transaction
+     * Account has not been created on chain
+     * and we cannot simulate the transaction
      * to estimate the gas
      **/
-    if (baseAccount.pubKey) {
+    if (!baseAccount.pubKey) {
+      stdFee = await this.getStdFeeWithDynamicBaseFee(stdFee)
+    } else {
       const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee({
         chainId,
         signMode: SIGN_EIP712,
@@ -400,11 +404,13 @@ export class MsgBroadcaster {
     let stdFee = getStdFee({ ...tx.gas, gas })
 
     /**
-     * Account has been created on chain
-     * and we can simulate the transaction
+     * Account has not been created on chain
+     * and we cannot simulate the transaction
      * to estimate the gas
      **/
-    if (baseAccount.pubKey) {
+    if (!baseAccount.pubKey) {
+      stdFee = await this.getStdFeeWithDynamicBaseFee(stdFee)
+    } else {
       const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee({
         chainId,
         signMode: SIGN_EIP712_V2,
@@ -413,8 +419,8 @@ export class MsgBroadcaster {
         timeoutHeight: timeoutHeight.toNumber(),
         signers: {
           pubKey: baseAccount.pubKey.key,
-          accountNumber: baseAccount.accountNumber,
           sequence: baseAccount.sequence,
+          accountNumber: baseAccount.accountNumber,
         },
         fee: stdFee,
       })
@@ -791,13 +797,13 @@ export class MsgBroadcaster {
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
       msgs,
-      fee: getStdFee({ ...tx.gas, gas }),
+      fee: await this.getStdFeeWithDynamicBaseFee({ ...tx.gas, gas }),
       tx: {
-        memo: tx.memo,
-        accountNumber: baseAccount.accountNumber.toString(),
-        sequence: baseAccount.sequence.toString(),
-        timeoutHeight: timeoutHeight.toFixed(),
         chainId,
+        memo: tx.memo,
+        timeoutHeight: timeoutHeight.toFixed(),
+        sequence: baseAccount.sequence.toString(),
+        accountNumber: baseAccount.accountNumber.toString(),
       },
       ethereumChainId,
     })
@@ -1063,6 +1069,45 @@ export class MsgBroadcaster {
     return response.feePayerPubKey.key
   }
 
+  private async getStdFeeWithDynamicBaseFee(
+    args?:
+      | string
+      | {
+          granter?: string
+          feePayer?: string
+          gasPrice?: string
+          gas?: string | number
+        },
+  ) {
+    const client = new ChainGrpcTxFeesApi(this.endpoints.grpc)
+    let baseFee = DEFAULT_GAS_PRICE
+
+    try {
+      const response = await client.fetchEipBaseFee()
+      baseFee = Number(response?.baseFee || DEFAULT_GAS_PRICE)
+    } catch {}
+
+    if (!args) {
+      return getStdFee(baseFee ? { gasPrice: baseFee } : {})
+    }
+
+    if (typeof args === 'string') {
+      return getStdFee({
+        ...(baseFee && {
+          gasPrice: new BigNumberInBase(baseFee).toFixed(),
+        }),
+        gas: args,
+      })
+    }
+
+    return getStdFee({
+      ...args,
+      ...(baseFee && {
+        gasPrice: new BigNumberInBase(baseFee).toFixed(),
+      }),
+    })
+  }
+
   /**
    * In case we don't want to simulate the transaction
    * we get the gas limit based on the message type.
@@ -1079,7 +1124,7 @@ export class MsgBroadcaster {
     if (!simulateTx) {
       return {
         ...createTransactionWithSigners(args),
-        stdFee: getStdFee(args.fee),
+        stdFee: await this.getStdFeeWithDynamicBaseFee(args.fee),
       }
     }
 
@@ -1088,18 +1133,15 @@ export class MsgBroadcaster {
     if (!result.gasInfo?.gasUsed) {
       return {
         ...createTransactionWithSigners(args),
-        stdFee: getStdFee(args.fee),
+        stdFee: await this.getStdFeeWithDynamicBaseFee(args.fee),
       }
     }
 
-    const stdGasFee = {
-      ...getStdFee({
-        ...getStdFee(args.fee),
-        gas: new BigNumberInBase(result.gasInfo.gasUsed)
-          .times(this.gasBufferCoefficient)
-          .toFixed(),
-      }),
-    }
+    const stdGasFee = await this.getStdFeeWithDynamicBaseFee({
+      gas: new BigNumberInBase(result.gasInfo.gasUsed)
+        .times(this.gasBufferCoefficient)
+        .toFixed(),
+    })
 
     return {
       ...createTransactionWithSigners({
