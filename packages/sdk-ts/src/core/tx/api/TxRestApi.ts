@@ -177,6 +177,16 @@ export class TxRestApi implements TxConcreteApi {
         tx_response: TxInfoResponse
       }>(tx, BroadcastMode.Sync)
 
+      if (!txResponse) {
+        throw new HttpRequestException(
+          new Error('The transaction has failed to be broadcasted'),
+          {
+            context: 'TxRestApi.broadcast',
+            contextModule: 'broadcast',
+          },
+        )
+      }
+      
       if (txResponse.code !== 0) {
         throw new TransactionException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,

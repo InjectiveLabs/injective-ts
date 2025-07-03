@@ -207,7 +207,17 @@ export class TxGrpcApi implements TxConcreteApi {
         this.metadata,
       )
 
-      const txResponse = response.txResponse!
+      const txResponse = response.txResponse
+
+      if (!txResponse) {
+        throw new GrpcUnaryRequestException(
+          new Error(`The transaction has failed to be broadcasted`),
+          {
+            context: 'TxGrpcApi.broadcast',
+            contextModule: 'broadcast',
+          },
+        )
+      }
 
       if (txResponse.code !== 0) {
         throw new TransactionException(new Error(txResponse.rawLog), {
@@ -221,6 +231,10 @@ export class TxGrpcApi implements TxConcreteApi {
       return result
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
+        throw e
+      }
+
+      if (e instanceof GrpcUnaryRequestException) {
         throw e
       }
 

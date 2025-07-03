@@ -367,12 +367,16 @@ export class MsgBroadcaster {
     /** Append Signatures */
     txRawEip712.signatures = [hexToBuff(signature)]
 
-    return walletStrategy.sendTransaction(txRawEip712, {
+    const response = await walletStrategy.sendTransaction(txRawEip712, {
       chainId,
       endpoints,
       txTimeout,
       address: tx.injectiveAddress,
     })
+
+    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**
