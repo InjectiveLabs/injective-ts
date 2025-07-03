@@ -339,8 +339,8 @@ export class TurnkeyWalletStrategy
   ): Promise<Record<string, any>> {
     const options = this.ethereumOptions
 
-    const maxAttempts = 5
-    const interval = 1000
+    const maxAttempts = 10
+    const interval = 3000
     const chainId = ethereumChainId || options.ethereumChainId
     const url = options.rpcUrl || options.rpcUrls?.[chainId]
 
