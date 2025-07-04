@@ -641,7 +641,7 @@ export class IndexerGrpcExplorerTransformer {
       error_log: tx.errorLog,
       height: parseInt(tx.blockNumber, 10),
       tx_number: parseInt(tx.txNumber, 10),
-      time: parseInt(tx.blockTimestamp, 10),
+      time: parseInt(tx.blockUnixTimestamp, 10),
       amount: getContractTransactionV2Amount(tx),
       logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
       data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
