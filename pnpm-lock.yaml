@@ -190,13 +190,8 @@ importers:
         specifier: 1.15.0
         version: 1.15.0
       '@injectivelabs/exceptions':
-<<<<<<< HEAD
         specifier: ^1.15.37
         version: 1.15.39
-=======
-        specifier: workspace:^
-        version: link:../exceptions
->>>>>>> 73dedabc7 (chore: start fixing tests)
       '@injectivelabs/grpc-web':
         specifier: ^0.0.1
         version: 0.0.1(google-protobuf@3.21.4)
@@ -213,30 +208,17 @@ importers:
         specifier: 1.13.2
         version: 1.13.2
       '@injectivelabs/networks':
-<<<<<<< HEAD
         specifier: ^1.15.38
         version: 1.15.40
-=======
-        specifier: workspace:^
-        version: link:../networks
->>>>>>> 73dedabc7 (chore: start fixing tests)
       '@injectivelabs/olp-proto-ts':
         specifier: 1.13.4
         version: 1.13.4
       '@injectivelabs/ts-types':
-<<<<<<< HEAD
         specifier: ^1.15.38
         version: 1.15.40
       '@injectivelabs/utils':
         specifier: ^1.15.38
         version: 1.15.40
-=======
-        specifier: workspace:^
-        version: link:../ts-types
-      '@injectivelabs/utils':
-        specifier: workspace:^
-        version: link:../utils
->>>>>>> 73dedabc7 (chore: start fixing tests)
       '@metamask/eth-sig-util':
         specifier: ^8.2.0
         version: 8.2.0

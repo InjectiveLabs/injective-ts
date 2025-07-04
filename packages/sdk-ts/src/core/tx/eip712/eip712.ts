@@ -7,8 +7,8 @@ import {
   getEip712Domain,
   getEip712DomainV2,
   getDefaultEip712Types,
-  getTypesIncludingFeePayer,
   getDefaultEip712TypesV2,
+  getTypesIncludingFeePayer,
 } from './utils.js'
 import { getEipTxContext } from './utils.js'
 

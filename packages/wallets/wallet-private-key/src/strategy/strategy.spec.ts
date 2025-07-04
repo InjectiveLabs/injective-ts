@@ -50,7 +50,10 @@ describe('MsgBroadcaster', () => {
       },
     })
 
-    const response = await msgBroadcaster.broadcast({ msgs: message })
+    const response = await msgBroadcaster.broadcast({
+      msgs: message,
+      injectiveAddress,
+    })
 
     expect(response.txHash).toBeDefined()
   }, 60000)

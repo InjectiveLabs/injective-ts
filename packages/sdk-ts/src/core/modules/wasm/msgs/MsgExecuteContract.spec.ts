@@ -31,16 +31,11 @@ describe('MsgExecuteContract', () => {
     })
 
     it('EIP712 v1', async () => {
-      const eip712TypedData = getEip712TypedData(eip712Args)
+      const v1SigningFunction = () => getEip712TypedData(eip712Args)
 
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...prepareEip712Request,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+      expect(v1SigningFunction).toThrow(
+        'EIP712_v1 is not supported for MsgExecuteContract. Please use EIP712_v2',
+      )
     })
 
     it('EIP712 v2', async () => {
