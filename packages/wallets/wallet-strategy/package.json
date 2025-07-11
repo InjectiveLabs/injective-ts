@@ -58,6 +58,7 @@
   "dependencies": {
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
+<<<<<<< HEAD
     "@injectivelabs/exceptions": "^1.16.1-alpha.0",
     "@injectivelabs/networks": "^1.16.1-alpha.0",
     "@injectivelabs/sdk-ts": "^1.16.1-alpha.0",
@@ -74,6 +75,24 @@
     "@injectivelabs/wallet-trezor": "^1.16.1-alpha.0",
     "@injectivelabs/wallet-turnkey": "^1.16.1-alpha.0",
     "@injectivelabs/wallet-wallet-connect": "^1.16.1-alpha.0",
+=======
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/networks": "workspace:*",
+    "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/utils": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:../wallet-base",
+    "@injectivelabs/wallet-core": "workspace:../wallet-core",
+    "@injectivelabs/wallet-cosmos": "workspace:*",
+    "@injectivelabs/wallet-cosmostation": "workspace:*",
+    "@injectivelabs/wallet-evm": "workspace:*",
+    "@injectivelabs/wallet-ledger": "workspace:*",
+    "@injectivelabs/wallet-magic": "workspace:*",
+    "@injectivelabs/wallet-private-key": "workspace:*",
+    "@injectivelabs/wallet-trezor": "workspace:../wallet-trezor",
+    "@injectivelabs/wallet-turnkey": "workspace:*",
+    "@injectivelabs/wallet-wallet-connect": "workspace:*",
+>>>>>>> 10388c41a (chore: optimize bundlesize - trezor)
     "alchemy-sdk": "^3.4.7",
     "eip1193-provider": "^1.0.1",
     "eth-sig-util": "^3.0.1",

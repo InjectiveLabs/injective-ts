@@ -1,10 +1,6 @@
 {
   "npmClient": "pnpm",
   "name": "injective-ts",
-  "packages": [
-    "packages/*",
-    "packages/wallets/*"
-  ],
   "version": "independent",
   "command": {
     "version": {

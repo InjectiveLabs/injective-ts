@@ -6,12 +6,6 @@
   "license": "Apache-2.0",
   "author": "@InjectiveLabs",
   "repository": "https://github.com/InjectiveLabs/injective-ts",
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "packages/wallets/*"
-    ]
-  },
   "scripts": {
     "postinstall": "node etc/bootstrapEnv",
     "build": "node etc/bootstrapEnv && lerna run build",
@@ -110,6 +104,12 @@
     "typedoc": "^0.25.11",
     "typedoc-monorepo-link-types": "^0.0.4",
     "typescript": "^5.7.2"
+  },
+  "resolutions": {
+    "rxjs": "7.8.2",
+    "@ethereumjs/tx": "^4.1.1",
+    "@ethereumjs/common": "3.2.0",
+    "@cosmjs/crypto>libsodium-wrappers-sumo": "npm:@bangjelkoski/noop"
   },
   "pnpm": {
     "overrides": {

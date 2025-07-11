@@ -41,9 +41,7 @@ const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   const keys = Object.keys(args.strategies || {})
 
   if (keys.length === 0) {
-    throw new GeneralException(
-      new Error('No strategies provided to BaseWalletStrategy'),
-    )
+    return Wallet.Metamask
   }
 
   if (keys.includes(Wallet.Metamask) && args.ethereumOptions) {
@@ -91,6 +89,8 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
 
   public setWallet(wallet: Wallet) {
     this.wallet = wallet
+
+    this.getStrategy()
   }
 
   public setMetadata(metadata?: WalletMetadata) {

@@ -5,7 +5,6 @@ import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import { addHexPrefix } from 'ethereumjs-util'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import { TrezorConnect } from '@bangjelkoski/trezor-connect-web'
 import {
   ErrorType,
   WalletException,
@@ -37,9 +36,10 @@ import {
   WalletStrategyEthereumOptions,
   ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { TrezorTransportInit, BaseTrezorTransport } from './hw/index.js'
+import { BaseTrezorTransport } from './hw/index.js'
 import { transformTypedData } from '../utils.js'
 import { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
+import { loadTrezorConnect } from './lib.js'
 
 type EthereumTransactionEIP1559 = {
   to: string
@@ -92,7 +92,7 @@ export default class TrezorBase
 
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = args.derivationPathType
-    this.trezor = new TrezorTransportInit()
+    this.trezor = new BaseTrezorTransport()
     this.ethereumOptions = args.ethereumOptions
   }
 
@@ -191,6 +191,8 @@ export default class TrezorBase
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
+    const TrezorConnect = await loadTrezorConnect()
+
     const object = JSON.parse(eip712json)
     const compatibleObject = {
       ...object,
@@ -278,6 +280,8 @@ export default class TrezorBase
     signer: AccountAddress,
     data: string | Uint8Array,
   ): Promise<string> {
+    const TrezorConnect = await loadTrezorConnect()
+
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(signer)
@@ -325,6 +329,8 @@ export default class TrezorBase
     txData: any,
     args: { address: string; ethereumChainId: EthereumChainId },
   ) {
+    const TrezorConnect = await loadTrezorConnect()
+
     const chainId = parseInt(args.ethereumChainId.toString(), 10)
     const alchemy = await this.getAlchemy(args.ethereumChainId)
     const nonce = await alchemy.core.getTransactionCount(args.address)

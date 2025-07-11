@@ -2,7 +2,6 @@ import {
   Wallet,
   isEvmWallet,
   type WalletMetadata,
-  ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
   WalletStrategyEthereumOptions,
@@ -13,6 +12,7 @@ import {
   LedgerLegacyStrategy,
 } from '@injectivelabs/wallet-ledger'
 import { MagicStrategy } from '@injectivelabs/wallet-magic'
+import { GeneralException } from '@injectivelabs/exceptions'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
@@ -48,6 +48,8 @@ const createStrategy = ({
   args: WalletStrategyArguments
   wallet: Wallet
 }): ConcreteWalletStrategy | undefined => {
+  console.log('creating strategy for wallet:', wallet)
+
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
@@ -139,23 +141,9 @@ const createStrategy = ({
   }
 }
 
-const createAllStrategies = (
-  args: WalletStrategyArguments,
-): ConcreteStrategiesArg => {
-  return Object.values(Wallet).reduce((strategies, wallet) => {
-    if (strategies[wallet]) {
-      return strategies
-    }
-
-    strategies[wallet] = createStrategy({ args, wallet: wallet as Wallet })
-
-    return strategies
-  }, {} as ConcreteStrategiesArg)
-}
-
 export class WalletStrategy extends BaseWalletStrategy {
   constructor(args: WalletStrategyArguments) {
-    const strategies = createAllStrategies(args)
+    const strategies = {}
 
     super({
       ...args,
@@ -200,6 +188,27 @@ export class WalletStrategy extends BaseWalletStrategy {
 
       this.strategies[walletEnum]?.setMetadata?.(metadata)
     }
+  }
+
+  public getStrategy(): ConcreteWalletStrategy {
+    if (this.strategies[this.wallet]) {
+      return this.strategies[this.wallet] as ConcreteWalletStrategy
+    }
+
+    const strategy = createStrategy({
+      args: this.args,
+      wallet: this.wallet,
+    })
+
+    if (!strategy) {
+      throw new GeneralException(
+        new Error(`Wallet ${this.wallet} is not enabled/available!`),
+      )
+    }
+
+    this.strategies[this.wallet] = strategy
+
+    return strategy as ConcreteWalletStrategy
   }
 }
 

@@ -2447,10 +2447,17 @@
     protobufjs "^7.4.0"
     rxjs "^7.4.0"
 
+<<<<<<< HEAD
 "@injectivelabs/core-proto-ts@1.16.1":
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.16.1.tgz#9c169d3c8b422daa1efe286557977a955461e426"
   integrity sha512-/6LWwZ/ZcC6/sI21s92cf3/8mgma6xRnBXtsF+708g2SX87WatJuXL8DjZsY1agCCnyw6bLVLtjKAfLQopNkxw==
+=======
+"@injectivelabs/core-proto-ts@1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.15.0.tgz#9ceee3fff2aa67481dbecf525e3eda85bb1ca754"
+  integrity sha512-J1Iq42RSfW8M5XDVDF8ACz49RkrP/963Lgyi1Yn9e4P2CZ2kRhJm8KSfH++1+yyLbDCEVdGj4b63TK8DopGsTA==
+>>>>>>> 10388c41a (chore: optimize bundlesize - trezor)
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
