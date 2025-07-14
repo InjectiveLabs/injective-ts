@@ -3,6 +3,7 @@ import { BigNumberInWei, BigNumberInBase } from '@injectivelabs/utils'
 import {
   Block,
   GasFee,
+  Message,
   GrpcGasFee,
   Transaction,
   BlockWithTxs,
@@ -19,13 +20,12 @@ import {
   BankMsgSendTransaction,
   GrpcBankMsgSendMessage,
   ValidatorSlashingEvent,
+  ExplorerTransaction,
+  ContractTransaction,
   IndexerStreamTransaction,
   GrpcValidatorSlashingEvent,
   ExplorerValidatorDescription,
   GrpcIndexerValidatorDescription,
-  ExplorerTransaction,
-  ContractTransaction,
-  Message,
 } from '../types/explorer.js'
 import { grpcPagingToPaging } from '../../../utils/index.js'
 import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
@@ -60,20 +60,41 @@ const getContractTransactionV2Amount = (
   return new BigNumberInWei(msgObj.transfer.amount).toBase()
 }
 
-const transactionV2MessagesToMessages = (messages: any): Message[] => {
+const parseStringToObjectLikeNoThrow = (
+  object: string | Uint8Array<ArrayBufferLike>,
+  defaultValue: any[] = [],
+): any[] => {
+  if (!object) {
+    return defaultValue
+  }
+
+  if (typeof object === 'string') {
+    try {
+      return JSON.parse(object)
+    } catch (e) {
+      return defaultValue
+    }
+  }
+
   try {
-    return JSON.parse(Buffer.from(messages).toString('utf8')).map(
-      (msg: any) =>
-        ({
-          type: msg.type,
-          message: msg.value,
-        } as Message),
-    )
-  } catch (error) {
-    console.error('Error parsing transaction messages:', error)
-    return [] // Return an empty array in case of error
+    return JSON.parse(Buffer.from(object).toString('utf8'))
+  } catch (e) {
+    return defaultValue
   }
 }
+
+const transactionV2MessagesToMessagesNoThrow = (messages: any): Message[] => {
+  const messagesArray = parseStringToObjectLikeNoThrow(messages)
+
+  return messagesArray.map(
+    (msg: any) =>
+      ({
+        type: msg.type,
+        message: msg.value,
+      } as Message),
+  )
+}
+
 /**
  * @category Indexer Grpc Transformer
  */
@@ -476,17 +497,9 @@ export class IndexerGrpcExplorerTransformer {
   static grpcTxV2ToTransaction(
     tx: InjectiveExplorerRpc.TxData,
   ): ExplorerTransaction {
-    let logs: any[] = []
-    try {
-      const rawLogs = Buffer.from(tx.logs).toString('utf8')
-
-      logs = JSON.parse(rawLogs || '[]')
-    } catch (e) {
-      console.error('Failed to parse logs')
-      logs = []
-    }
-
-    const txType = JSON.parse(Buffer.from(tx.txMsgTypes).toString('utf8'))
+    const logs = parseStringToObjectLikeNoThrow(tx.logs)
+    const txType = parseStringToObjectLikeNoThrow(tx.txMsgTypes)
+    const messages = transactionV2MessagesToMessagesNoThrow(tx.messages)
 
     const signatures = tx.signatures.map((signature) => ({
       address: signature.address,
@@ -496,7 +509,6 @@ export class IndexerGrpcExplorerTransformer {
         try {
           return parseInt(signature.sequence, 10)
         } catch (e) {
-          console.error('Failed to parse signature sequence:', e)
           return 0
         }
       })(),
@@ -506,18 +518,9 @@ export class IndexerGrpcExplorerTransformer {
       try {
         return parseInt(claimId, 10)
       } catch (e) {
-        console.error('Failed to parse claimId:', e)
         return 0
       }
     })
-
-    let messages: Message[] = []
-    try {
-      messages = transactionV2MessagesToMessages(tx.messages)
-    } catch (e) {
-      console.error('Failed to parse messages:', e)
-      messages = []
-    }
 
     const blockNumber = parseInt(tx.blockNumber)
 
@@ -525,7 +528,6 @@ export class IndexerGrpcExplorerTransformer {
       logs,
       info: '',
       memo: '',
-      txType,
       claimIds,
       messages,
       id: tx.id,
@@ -538,6 +540,7 @@ export class IndexerGrpcExplorerTransformer {
       errorLog: tx.errorLog,
       codespace: tx.codespace,
       blockTimestamp: tx.blockTimestamp,
+      txType: Array.isArray(txType) ? txType.join(',') : txType,
       gasFee: { amounts: [], gasLimit: 0, granter: '', payer: '' },
     }
   }
@@ -585,8 +588,8 @@ export class IndexerGrpcExplorerTransformer {
         signature: signature.signature,
         sequence: parseInt(signature.sequence, 10),
       })),
-      messages: transactionV2MessagesToMessages(tx.messages),
-      logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
+      messages: transactionV2MessagesToMessagesNoThrow(tx.messages),
+      logs: parseStringToObjectLikeNoThrow(tx.logs),
       data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
       claimIds: tx.claimIds.map((claimId) => parseInt(claimId, 10)),
     }
@@ -630,7 +633,7 @@ export class IndexerGrpcExplorerTransformer {
   static grpcContractTxV2ToTransaction(
     tx: InjectiveExplorerRpc.TxDetailData,
   ): ContractTransaction {
-    const messages = transactionV2MessagesToMessages(tx.messages)
+    const messages = transactionV2MessagesToMessagesNoThrow(tx.messages)
 
     return {
       messages,

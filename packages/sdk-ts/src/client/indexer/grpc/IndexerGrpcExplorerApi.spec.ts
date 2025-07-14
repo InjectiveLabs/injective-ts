@@ -275,6 +275,25 @@ describe('IndexerGrpcExplorerApi', () => {
     }
   })
 
+  test.only('fetchAccountTxsV2WithBlockDetails', async () => {
+    try {
+      const response = await new IndexerGrpcExplorerApi(
+        getNetworkEndpoints(Network.Testnet).indexer,
+      ).fetchAccountTxsV2({
+        address: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+        perPage: 10,
+        type: 'cosmos.bank.v1beta1.MsgSend,cosmos.bank.v1beta1.MsgMultiSend',
+        startTime: 1752096761985,
+      })
+
+      expect(response).toBeDefined()
+    } catch (e) {
+      console.error(
+        'IndexerGrpcExplorerApi.fetchAccountTxsV2 => ' + (e as any).message,
+      )
+    }
+  })
+
   test('fetchBlocksV2', async () => {
     try {
       const response = await indexerGrpcExplorerApi.fetchBlocksV2({
