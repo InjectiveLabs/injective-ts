@@ -56,26 +56,27 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@bangjelkoski/ledgerhq-hw-app-cosmos": "6.30.4-beta.0",
-    "@bangjelkoski/ledgerhq-hw-app-eth": "6.42.6-beta.0",
-    "@bangjelkoski/ledgerhq-hw-transport": "6.31.4-beta.0",
-    "@bangjelkoski/ledgerhq-hw-transport-webhid": "6.30.0-beta.0",
-    "@bangjelkoski/ledgerhq-hw-transport-webusb": "6.29.4-beta.0",
-    "@ethereumjs/common": "^3.1.1",
-    "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.16.1-alpha.0",
-    "@injectivelabs/sdk-ts": "^1.16.1-alpha.0",
-    "@injectivelabs/ts-types": "^1.16.1-alpha.0",
-    "@injectivelabs/wallet-base": "^1.16.1-alpha.0",
+    "hdkey": "^2.1.0",
     "alchemy-sdk": "^3.4.7",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
-    "hdkey": "^2.1.0"
+    "@ethereumjs/tx": "^4.1.1",
+    "@ethereumjs/common": "^3.1.1",
+    "@bangjelkoski/ledgerhq-hw-app-eth": "6.42.6-beta.0",
+    "@bangjelkoski/ledgerhq-hw-transport": "6.31.4-beta.0",
+    "@bangjelkoski/ledgerhq-hw-app-cosmos": "6.30.4-beta.0",
+    "@bangjelkoski/ledgerhq-hw-transport-webhid": "6.30.0-beta.0",
+    "@bangjelkoski/ledgerhq-hw-transport-webusb": "6.29.4-beta.0",
+    "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*"
   },
   "devDependencies": {
+    "shx": "^0.3.4",
+    "@types/hdkey": "^2.0.1",
     "@types/eth-sig-util": "^2.1.1",
     "@types/ethereumjs-util": "^6.1.0",
-    "@types/hdkey": "^2.0.1",
     "@types/ledgerhq__hw-transport-webusb": "^4.70.1"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"

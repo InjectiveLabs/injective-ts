@@ -10,9 +10,9 @@ import {
 } from '@injectivelabs/sdk-ts'
 import {
   ChainId,
+  EvmChainId,
   CosmosChainId,
   AccountAddress,
-  EthereumChainId,
 } from '@injectivelabs/ts-types'
 import {
   ErrorType,
@@ -138,7 +138,7 @@ export class CosmosWalletStrategy
   // eslint-disable-next-line class-methods-use-this
   async sendEvmTransaction(
     _transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     const { wallet } = this
 
@@ -231,7 +231,7 @@ export class CosmosWalletStrategy
     _address: AccountAddress,
   ): Promise<string> {
     throw new CosmosWalletException(
-      new Error('This wallet does not support signing Ethereum transactions'),
+      new Error('This wallet does not support signing Evm transactions'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,

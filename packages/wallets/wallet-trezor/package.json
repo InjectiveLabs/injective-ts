@@ -56,25 +56,15 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@bangjelkoski/trezor-connect-web": "^9.4.7-beta.1",
-    "@ethereumjs/common": "3.2.0",
-    "@ethereumjs/tx": "^4.1.1",
-    "@injectivelabs/exceptions": "^1.16.1-alpha.0",
-    "@injectivelabs/sdk-ts": "^1.16.1-alpha.0",
-    "@injectivelabs/ts-types": "^1.16.1-alpha.0",
-    "@injectivelabs/wallet-base": "^1.16.1-alpha.0",
-=======
-    "@injectivelabs/sdk-ts": "workspace:*",
-    "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*",
     "hdkey": "^2.1.0",
->>>>>>> 10388c41a (chore: optimize bundlesize - trezor)
     "alchemy-sdk": "^3.4.7",
     "@ethereumjs/tx": "^4.1.1",
     "@ethereumjs/common": "3.2.0",
-    "@bangjelkoski/trezor-connect-web": "^9.4.7-beta.1"
+    "@bangjelkoski/trezor-connect-web": "^9.4.7-beta.1",
+    "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*"
   },
   "devDependencies": {
     "shx": "^0.3.3"

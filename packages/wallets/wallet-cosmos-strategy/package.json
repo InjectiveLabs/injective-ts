@@ -56,11 +56,11 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/ts-types": "^1.16.1-alpha.0",
-    "@injectivelabs/wallet-base": "^1.16.1-alpha.0",
-    "@injectivelabs/wallet-core": "^1.16.1-alpha.0",
-    "@injectivelabs/wallet-cosmos": "^1.16.1-alpha.0",
-    "@injectivelabs/wallet-cosmostation": "^1.16.1-alpha.0"
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*",
+    "@injectivelabs/wallet-core": "workspace:*",
+    "@injectivelabs/wallet-cosmos": "workspace:*",
+    "@injectivelabs/wallet-cosmostation": "workspace:*"
   },
   "devDependencies": {
     "shx": "^0.3.3"

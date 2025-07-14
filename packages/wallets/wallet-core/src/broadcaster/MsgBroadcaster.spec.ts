@@ -6,17 +6,17 @@ import {
 import {
   Wallet,
   WalletStrategyArguments,
-  ConcreteEthereumWalletStrategyArgs,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import { Network } from '@injectivelabs/networks'
-import { EthereumChainId } from '@injectivelabs/ts-types'
+import { EvmChainId } from '@injectivelabs/ts-types'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { MsgBroadcaster } from './MsgBroadcaster.js'
 import { MsgBroadcasterOptions } from './types.js'
 
 const strategyArgs: WalletStrategyArguments = {} as any /** define the args */
-const strategyEthArgs: ConcreteEthereumWalletStrategyArgs =
+const strategyEthArgs: ConcreteEvmWalletStrategyArgs =
   {} as any /** if the wallet is an Ethereum wallet */
 const strategies = {
   [Wallet.PrivateKey]: new PrivateKeyWalletStrategy(strategyEthArgs),
@@ -82,7 +82,7 @@ describe('MsgBroadcaster', () => {
       network,
       privateKey,
       simulateTx: true,
-      ethereumChainId: EthereumChainId.Sepolia,
+      evmChainId: EvmChainId.Sepolia,
     }).broadcastWithFeeDelegation({ msgs: message })
 
     expect(response.txHash).toBeDefined()

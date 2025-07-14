@@ -1,8 +1,4 @@
-import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
   TxResponse,
@@ -37,10 +33,10 @@ export type WalletConnectMetadata = {
   projectId?: string
 }
 
-export interface WalletStrategyEthereumOptions {
-  ethereumChainId: EthereumChainId
+export interface WalletStrategyEvmOptions {
+  evmChainId: EvmChainId
   rpcUrl?: string
-  rpcUrls?: Partial<Record<EthereumChainId, string>>
+  rpcUrls?: Partial<Record<EvmChainId, string>>
 }
 
 export interface SendTransactionOptions {
@@ -98,14 +94,14 @@ export interface ConcreteWalletStrategyArgs {
   metadata?: WalletMetadata
 }
 
+export interface ConcreteEvmWalletStrategyArgs
+  extends ConcreteWalletStrategyArgs {
+  evmOptions: WalletStrategyEvmOptions
+}
+
 export interface ConcreteCosmosWalletStrategyArgs
   extends ConcreteWalletStrategyArgs {
   wallet?: Wallet
-}
-
-export interface ConcreteEthereumWalletStrategyArgs
-  extends ConcreteWalletStrategyArgs {
-  ethereumOptions: WalletStrategyEthereumOptions
 }
 
 export interface ConcreteCosmosWalletStrategy {
@@ -165,7 +161,7 @@ export type ConcreteStrategiesArg = {
 export interface WalletStrategyArguments {
   chainId: ChainId
   metadata?: WalletMetadata
-  ethereumOptions?: WalletStrategyEthereumOptions
+  evmOptions?: WalletStrategyEvmOptions
   disabledWallets?: Wallet[]
   wallet?: Wallet
   strategies: ConcreteStrategiesArg
@@ -208,7 +204,7 @@ export interface ConcreteWalletStrategy
    */
   sendEvmTransaction(
     transaction: unknown,
-    options: { address: string; ethereumChainId: EthereumChainId },
+    options: { address: string; evmChainId: EvmChainId },
   ): Promise<string>
 
   /**
@@ -246,10 +242,7 @@ export interface ConcreteWalletStrategy
 
   getEthereumChainId(): Promise<string>
 
-  getEvmTransactionReceipt(
-    txHash: string,
-    ethereumChainId?: EthereumChainId,
-  ): void
+  getEvmTransactionReceipt(txHash: string, evmChainId?: EvmChainId): void
 
   onAccountChange?(callback: onAccountChangeCallback): Promise<void> | void
 
@@ -281,7 +274,7 @@ export interface WalletStrategy {
   getEthereumChainId(): Promise<string>
   getEvmTransactionReceipt(
     txHash: string,
-    ethereumChainId?: EthereumChainId,
+    evmChainId?: EvmChainId,
   ): Promise<void>
   getSessionOrConfirm(address?: AccountAddress): Promise<string>
   sendTransaction(
@@ -290,7 +283,7 @@ export interface WalletStrategy {
   ): Promise<TxResponse>
   sendEvmTransaction(
     tx: any,
-    options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string>
   signEip712TypedData(
     eip712TypedData: string,

@@ -15,7 +15,7 @@ import {
 } from '@injectivelabs/sdk-ts'
 import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import {
   StdSignDoc,
   WalletAction,
@@ -27,10 +27,7 @@ import {
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
 
-export class Magic
-  extends BaseConcreteStrategy
-  implements ConcreteWalletStrategy
-{
+export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   public provider: BrowserEip1993Provider | undefined
 
   private magicWallet: MagicWallet | undefined
@@ -147,7 +144,7 @@ export class Magic
 
   async sendEvmTransaction(
     _transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     throw new CosmosWalletException(
       new Error(

@@ -2,10 +2,11 @@ import {
   Wallet,
   isEvmWallet,
   type WalletMetadata,
+  ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
-  WalletStrategyEthereumOptions,
-  ConcreteEthereumWalletStrategyArgs,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import {
   LedgerLiveStrategy,
@@ -26,15 +27,15 @@ import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
-  const { ethereumOptions } = args
+  const { evmOptions } = args
 
-  if (!ethereumOptions) {
+  if (!evmOptions) {
     return true
   }
 
-  const { ethereumChainId } = ethereumOptions
+  const { evmChainId } = evmOptions
 
-  if (!ethereumChainId) {
+  if (!evmChainId) {
     return true
   }
 
@@ -61,8 +62,8 @@ const createStrategy = ({
   const ethWalletArgs = {
     ...args,
     chainId: args.chainId,
-    ethereumOptions: args.ethereumOptions as WalletStrategyEthereumOptions,
-  } as ConcreteEthereumWalletStrategyArgs
+    evmOptions: args.evmOptions as WalletStrategyEvmOptions,
+  } as ConcreteEvmWalletStrategyArgs
 
   switch (wallet) {
     case Wallet.Metamask:
@@ -143,7 +144,7 @@ const createStrategy = ({
 
 export class WalletStrategy extends BaseWalletStrategy {
   constructor(args: WalletStrategyArguments) {
-    const strategies = {}
+    const strategies = {} as ConcreteStrategiesArg
 
     super({
       ...args,

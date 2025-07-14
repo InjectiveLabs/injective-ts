@@ -1,9 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import {
   ErrorType,
   LedgerCosmosException,
@@ -25,15 +21,15 @@ import {
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
+  ConcreteWalletStrategy,
+  SendTransactionOptions,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-  ConcreteWalletStrategy,
-  SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
-import { LedgerWalletInfo } from '../../types.js'
-import LedgerHW from './hw/index.js'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
+import LedgerHW from './hw/index.js'
+import { LedgerWalletInfo } from '../../types.js'
 
 export class LedgerCosmos
   extends BaseConcreteStrategy
@@ -91,7 +87,7 @@ export class LedgerCosmos
     _txData: any,
     _options: {
       address: string
-      ethereumChainId: EthereumChainId
+      evmChainId: EvmChainId
     },
   ): Promise<string> {
     throw new CosmosWalletException(
@@ -184,7 +180,7 @@ export class LedgerCosmos
     _address: AccountAddress,
   ): Promise<string> {
     throw new CosmosWalletException(
-      new Error('This wallet does not support signing Ethereum transactions'),
+      new Error('This wallet does not support signing Evm transactions'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,

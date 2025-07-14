@@ -1,20 +1,16 @@
-import {
-  ChainId,
-  CosmosChainId,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId, CosmosChainId } from '@injectivelabs/ts-types'
 import {
   WalletMetadata,
   WalletEventListener,
   ConcreteWalletStrategyArgs,
+  ConcreteEvmWalletStrategyArgs,
   ConcreteCosmosWalletStrategyArgs,
-  ConcreteEthereumWalletStrategyArgs,
 } from './types/index.js'
 
 export default abstract class BaseConcreteStrategy {
   protected chainId: ChainId | CosmosChainId
 
-  protected ethereumChainId?: EthereumChainId
+  protected evmChainId?: EvmChainId
 
   protected listeners: Partial<Record<WalletEventListener, any>> = {}
 
@@ -23,12 +19,12 @@ export default abstract class BaseConcreteStrategy {
   public constructor(
     args:
       | ConcreteWalletStrategyArgs
-      | ConcreteEthereumWalletStrategyArgs
+      | ConcreteEvmWalletStrategyArgs
       | ConcreteCosmosWalletStrategyArgs,
   ) {
-    this.ethereumChainId =
-      'ethereumOptions' in args && args.ethereumOptions
-        ? args.ethereumOptions.ethereumChainId
+    this.evmChainId =
+      'evmOptions' in args && args.evmOptions
+        ? args.evmOptions.evmChainId
         : undefined
     this.chainId = args.chainId
     this.metadata = args.metadata

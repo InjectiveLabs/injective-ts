@@ -56,7 +56,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/ts-types": "^1.16.1-alpha.0"
+    "@injectivelabs/ts-types": "workspace:*"
   },
   "devDependencies": {
     "shx": "^0.3.4"

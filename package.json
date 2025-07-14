@@ -48,6 +48,7 @@
     "format": "pnpm lint --fix",
     "format:md": "pnpm lint:md --fix",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
+    "link:local": "node etc/link-local",
     "commit": "git cz"
   },
   "lint-staged": {
@@ -117,6 +118,5 @@
       "rpc-websockets": "9.0.4",
       "next": "file:./etc/noop"
     }
-  },
-  "packageManager": "pnpm@10.12.4"
+  }
 }

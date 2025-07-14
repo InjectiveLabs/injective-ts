@@ -1,9 +1,9 @@
 /* eslint-disable class-methods-use-this */
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import { ledgerService } from '@bangjelkoski/ledgerhq-hw-app-eth'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import {
   ErrorType,
   LedgerException,
@@ -29,27 +29,27 @@ import {
   BaseConcreteStrategy,
   SendTransactionOptions,
   ConcreteWalletStrategy,
+  WalletStrategyEvmOptions,
   DEFAULT_BASE_DERIVATION_PATH,
+  ConcreteEvmWalletStrategyArgs,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
-  WalletStrategyEthereumOptions,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
 import { domainHash, messageHash } from './utils.js'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
 
-const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
-  if (chainId === EthereumChainId.Goerli) {
+const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
+  if (chainId === EvmChainId.Goerli) {
     return Chain.Goerli
   }
 
-  if (chainId === EthereumChainId.Sepolia) {
+  if (chainId === EvmChainId.Sepolia) {
     return Chain.Sepolia
   }
 
-  if (chainId === EthereumChainId.Kovan) {
+  if (chainId === EvmChainId.Kovan) {
     return Chain.Goerli
   }
 
@@ -66,12 +66,12 @@ export default class LedgerBase
 
   private ledger: LedgerHW
 
-  private ethereumOptions: WalletStrategyEthereumOptions
+  private evmOptions: WalletStrategyEvmOptions
 
   private alchemy: Alchemy | undefined
 
   constructor(
-    args: ConcreteEthereumWalletStrategyArgs & {
+    args: ConcreteEvmWalletStrategyArgs & {
       derivationPathType: LedgerDerivationPathType
     },
   ) {
@@ -80,7 +80,7 @@ export default class LedgerBase
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
     this.derivationPathType = args.derivationPathType
     this.ledger = new LedgerHW()
-    this.ethereumOptions = args.ethereumOptions
+    this.evmOptions = args.evmOptions
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -126,13 +126,13 @@ export default class LedgerBase
     txData: any,
     args: {
       address: string
-      ethereumChainId: EthereumChainId
+      evmChainId: EvmChainId
     },
   ): Promise<string> {
     const signedTransaction = await this.signEvmTransaction(txData, args)
 
     try {
-      const alchemy = await this.getAlchemy(args.ethereumChainId)
+      const alchemy = await this.getAlchemy(args.evmChainId)
       const txReceipt = await alchemy.core.sendTransaction(
         addHexPrefix(signedTransaction.serialize().toString('hex')),
       )
@@ -302,10 +302,10 @@ export default class LedgerBase
 
   private async signEvmTransaction(
     txData: any,
-    args: { address: string; ethereumChainId: EthereumChainId },
+    args: { address: string; evmChainId: EvmChainId },
   ) {
-    const alchemy = await this.getAlchemy(args.ethereumChainId)
-    const chainId = parseInt(args.ethereumChainId.toString(), 10)
+    const alchemy = await this.getAlchemy(args.evmChainId)
+    const chainId = parseInt(args.evmChainId.toString(), 10)
     const nonce = await alchemy.core.getTransactionCount(args.address)
 
     const common = new Common({
@@ -401,26 +401,26 @@ export default class LedgerBase
     }
   }
 
-  private async getAlchemy(ethereumChainId?: EthereumChainId) {
+  private async getAlchemy(evmChainId?: EvmChainId) {
     if (this.alchemy) {
       return this.alchemy
     }
 
-    const options = this.ethereumOptions
+    const options = this.evmOptions
 
-    const chainId = ethereumChainId || options.ethereumChainId
+    const chainId = evmChainId || options.evmChainId
     const url = options.rpcUrl || options.rpcUrls?.[chainId]
 
     if (!url) {
       throw new GeneralException(
-        new Error('Please pass rpcUrl within the ethereumOptions'),
+        new Error('Please pass rpcUrl within the evmOptions'),
       )
     }
 
     this.alchemy = new Alchemy({
       apiKey: getKeyFromRpcUrl(url),
       network:
-        chainId === EthereumChainId.Mainnet
+        chainId === EvmChainId.Mainnet
           ? AlchemyNetwork.ETH_MAINNET
           : AlchemyNetwork.ETH_SEPOLIA,
     })
