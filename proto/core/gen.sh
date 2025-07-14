@@ -8,10 +8,16 @@ TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
 
 # remote branches/tags
-injective_core_branch=release/v1.15.x
-cosmos_sdk_branch=v0.50.9-devnetify-inj.1
-wasmd_branch=v0.53.2-inj.2
-ibc_go_branch=v8.7.0-inj
+injective_core_branch=release/v1.16.x
+cosmos_sdk_branch=v0.50.13-evm-comet1-inj.3
+wasmd_branch=v0.53.2-evm-comet1-inj
+ibc_go_branch=v8.7.0-evm-comet1-inj
+
+# evm branch
+# injective_core_branch=master
+# cosmos_sdk_branch=v0.50.13-evm-comet1-inj.3
+# wasmd_branch=v0.53.2-evm-comet1-inj
+# ibc_go_branch=v8.7.0-evm-comet1-inj
 
 # remove old gen
 rm -rf $BUILD_DIR

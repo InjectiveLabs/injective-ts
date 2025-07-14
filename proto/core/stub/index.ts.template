@@ -7,7 +7,29 @@ export * as InjectiveAuctionV1Beta1Tx from "./injective/auction/v1beta1/tx.js";
 // crypto
 export * as InjectiveCryptoV1Beta1Ethsecp256k1Keys from "./injective/crypto/v1beta1/ethsecp256k1/keys.js";
 
-// exchange
+// erc20
+export * as InjectiveErc20V1Beta1Erc20 from "./injective/erc20/v1beta1/erc20.js";
+export * as InjectiveErc20V1Beta1Events from "./injective/erc20/v1beta1/events.js";
+export * as InjectiveErc20V1Beta1Genesis from "./injective/erc20/v1beta1/genesis.js";
+export * as InjectiveErc20V1Beta1Params from "./injective/erc20/v1beta1/params.js";
+export * as InjectiveErc20V1Beta1Query from "./injective/erc20/v1beta1/query.js";
+export * as InjectiveErc20V1Beta1Tx from "./injective/erc20/v1beta1/tx.js";
+
+// evm
+export * as InjectiveEvmV1AccessTuple from "./injective/evm/v1/access_tuple.js";
+export * as InjectiveEvmV1ChainConfig from "./injective/evm/v1/chain_config.js";
+export * as InjectiveEvmV1ChainEvents from "./injective/evm/v1/events.js";
+export * as InjectiveEvmV1Genesis from "./injective/evm/v1/genesis.js";
+export * as InjectiveEvmV1Log from "./injective/evm/v1/log.js";
+export * as InjectiveEvmV1Params from "./injective/evm/v1/params.js";
+export * as InjectiveEvmV1Query from "./injective/evm/v1/query.js";
+export * as InjectiveEvmV1State from "./injective/evm/v1/state.js";
+export * as InjectiveEvmV1TraceConfig from "./injective/evm/v1/trace_config.js";
+export * as InjectiveEvmV1TransactionLogs from "./injective/evm/v1/transaction_logs.js";
+export * as InjectiveEvmV1TxResult from "./injective/evm/v1/tx_result.js";
+export * as InjectiveEvmV1Tx from "./injective/evm/v1/tx.js";
+
+// exchange v1beta1
 export * as InjectiveExchangeV1Beta1Authz from "./injective/exchange/v1beta1/authz.js";
 export * as InjectiveExchangeV1Beta1Events from "./injective/exchange/v1beta1/events.js";
 export * as InjectiveExchangeV1Beta1Exchange from "./injective/exchange/v1beta1/exchange.js";
@@ -16,10 +38,23 @@ export * as InjectiveExchangeV1Beta1Proposal from "./injective/exchange/v1beta1/
 export * as InjectiveExchangeV1Beta1Query from "./injective/exchange/v1beta1/query.js";
 export * as InjectiveExchangeV1Beta1Tx from "./injective/exchange/v1beta1/tx.js";
 
+// exchange v2
+export * as InjectiveExchangeV2Authz from "./injective/exchange/v2/authz.js";
+export * as InjectiveExchangeV2Events from "./injective/exchange/v2/events.js";
+export * as InjectiveExchangeV2Exchange from "./injective/exchange/v2/exchange.js";
+export * as InjectiveExchangeV2Genesis from "./injective/exchange/v2/genesis.js";
+export * as InjectiveExchangeV2Market from "./injective/exchange/v2/market.js";
+export * as InjectiveExchangeV2Order from "./injective/exchange/v2/order.js";
+export * as InjectiveExchangeV2Orderbook from "./injective/exchange/v2/orderbook.js";
+export * as InjectiveExchangeV2Proposal from "./injective/exchange/v2/proposal.js";
+export * as InjectiveExchangeV2Query from "./injective/exchange/v2/query.js";
+export * as InjectiveExchangeV2Tx from "./injective/exchange/v2/tx.js";
+
 // insurance
+export * as InjectiveInsuranceV1Beta1Events from "./injective/insurance/v1beta1/events.js";
 export * as InjectiveInsuranceV1Beta1Genesis from "./injective/insurance/v1beta1/genesis.js";
-export * as InjectiveInsuranceV1Beta1Query from "./injective/insurance/v1beta1/query.js";
 export * as InjectiveInsuranceV1Beta1Insurance from "./injective/insurance/v1beta1/insurance.js";
+export * as InjectiveInsuranceV1Beta1Query from "./injective/insurance/v1beta1/query.js";
 export * as InjectiveInsuranceV1Beta1Tx from "./injective/insurance/v1beta1/tx.js";
 
 // ocr
@@ -37,16 +72,17 @@ export * as InjectiveOracleV1Beta1Query from "./injective/oracle/v1beta1/query.j
 export * as InjectiveOracleV1Beta1Tx from "./injective/oracle/v1beta1/tx.js";
 
 // peggy
-export * as InjectivePeggyV1Beta1Attestation from "./injective/peggy/v1/attestation.js";
-export * as InjectivePeggyV1Beta1Batch from "./injective/peggy/v1/batch.js";
-export * as InjectivePeggyV1Beta1EthereumSigner from "./injective/peggy/v1/ethereum_signer.js";
-export * as InjectivePeggyV1Beta1Events from "./injective/peggy/v1/events.js";
-export * as InjectivePeggyV1Beta1Genesis from "./injective/peggy/v1/genesis.js";
-export * as InjectivePeggyV1Beta1Msgs from "./injective/peggy/v1/msgs.js";
-export * as InjectivePeggyV1Beta1Params from "./injective/peggy/v1/params.js";
-export * as InjectivePeggyV1Beta1Pool from "./injective/peggy/v1/pool.js";
-export * as InjectivePeggyV1Beta1Query from "./injective/peggy/v1/query.js";
-export * as InjectivePeggyV1Beta1Types from "./injective/peggy/v1/types.js";
+export * as InjectivePeggyV1Attestation from "./injective/peggy/v1/attestation.js";
+export * as InjectivePeggyV1Batch from "./injective/peggy/v1/batch.js";
+export * as InjectivePeggyV1EthereumSigner from "./injective/peggy/v1/ethereum_signer.js";
+export * as InjectivePeggyV1Events from "./injective/peggy/v1/events.js";
+export * as InjectivePeggyV1Genesis from "./injective/peggy/v1/genesis.js";
+export * as InjectivePeggyV1Msgs from "./injective/peggy/v1/msgs.js";
+export * as InjectivePeggyV1Params from "./injective/peggy/v1/params.js";
+export * as InjectivePeggyV1Pool from "./injective/peggy/v1/pool.js";
+export * as InjectivePeggyV1Query from "./injective/peggy/v1/query.js";
+export * as InjectivePeggyV1RateLimit from "./injective/peggy/v1/rate_limit.js";
+export * as InjectivePeggyV1Types from "./injective/peggy/v1/types.js";
 
 // permissions
 export * as InjectivePermissionsV1Beta1Events from "./injective/permissions/v1beta1/events.js";
@@ -56,8 +92,11 @@ export * as InjectivePermissionsV1Beta1Permissions from "./injective/permissions
 export * as InjectivePermissionsV1Beta1Query from "./injective/permissions/v1beta1/query.js";
 export * as InjectivePermissionsV1Beta1Tx from "./injective/permissions/v1beta1/tx.js";
 
-// stream
+// stream v1beta1
 export * as InjectiveStreamV1Beta1Query from "./injective/stream/v1beta1/query.js"
+
+// stream v2
+export * as InjectiveStreamV2Query from "./injective/stream/v2/query.js"
 
 // tokenfactory
 export * as InjectiveTokenFactoryV1Beta1AuthorityMetadata from "./injective/tokenfactory/v1beta1/authorityMetadata.js";
@@ -75,17 +114,18 @@ export * as InjectiveTxFeesV1Beta1Txfees from "./injective/txfees/v1beta1/txfees
 
 // types
 export * as InjectiveTypesV1Beta1Account from "./injective/types/v1beta1/account.js";
+export * as InjectiveTypesV1Beta1Indexer from "./injective/types/v1beta1/indexer.js";
 export * as InjectiveTypesV1Beta1TxExt from "./injective/types/v1beta1/tx_ext.js";
 export * as InjectiveTypesV1TxResponse from "./injective/types/v1beta1/tx_response.js";
 
 // wasmx
-export * as InjectiveWasmxV1Beta1Authz from "./injective/wasmx/v1/authz.js";
-export * as InjectiveWasmxV1Beta1Events from "./injective/wasmx/v1/events.js";
-export * as InjectiveWasmxV1Beta1Genesis from "./injective/wasmx/v1/genesis.js";
-export * as InjectiveWasmxV1Beta1Proposal from "./injective/wasmx/v1/proposal.js";
-export * as InjectiveWasmxV1Beta1Query from "./injective/wasmx/v1/query.js";
-export * as InjectiveWasmxV1Beta1Tx from "./injective/wasmx/v1/tx.js";
-export * as InjectiveWasmxV1Beta1Wasmx from "./injective/wasmx/v1/wasmx.js";
+export * as InjectiveWasmxV1Authz from "./injective/wasmx/v1/authz.js";
+export * as InjectiveWasmxV1Events from "./injective/wasmx/v1/events.js";
+export * as InjectiveWasmxV1Genesis from "./injective/wasmx/v1/genesis.js";
+export * as InjectiveWasmxV1Proposal from "./injective/wasmx/v1/proposal.js";
+export * as InjectiveWasmxV1Query from "./injective/wasmx/v1/query.js";
+export * as InjectiveWasmxV1Tx from "./injective/wasmx/v1/tx.js";
+export * as InjectiveWasmxV1Wasmx from "./injective/wasmx/v1/wasmx.js";
 
 // cosmos/auth
 export * as CosmosAuthV1Beta1Auth from "./cosmos/auth/v1beta1/auth.js";
