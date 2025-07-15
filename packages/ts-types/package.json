@@ -35,6 +35,26 @@
         "types": "./dist/cjs/index.d.ts",
         "default": "./dist/cjs/index.js"
       }
+    },
+    "./exports": {
+      "react-native": {
+        "import": "./dist/esm/exports.js",
+        "require": "./dist/cjs/exports.js",
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "require": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      },
+      "import": {
+        "types": "./dist/esm/exports.d.ts",
+        "default": "./dist/esm/exports.js"
+      },
+      "default": {
+        "types": "./dist/cjs/exports.d.ts",
+        "default": "./dist/cjs/exports.js"
+      }
     }
   },
   "_moduleAliases": {

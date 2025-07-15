@@ -1,9 +1,12 @@
 /* eslint-disable class-methods-use-this */
-import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
-import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import { ledgerService } from '@bangjelkoski/ledgerhq-hw-app-eth'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import {
+  TxRaw,
+  toUtf8,
+  TxGrpcApi,
+  TxResponse,
+  DirectSignResponse,
+  AminoSignResponse,
+} from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   LedgerException,
@@ -12,14 +15,6 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import {
-  toUtf8,
-  TxRaw,
-  TxGrpcApi,
-  TxResponse,
-  DirectSignResponse,
-  AminoSignResponse,
-} from '@injectivelabs/sdk-ts'
 import {
   StdSignDoc,
   TIP_IN_GWEI,
@@ -31,13 +26,18 @@ import {
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
   DEFAULT_BASE_DERIVATION_PATH,
-  ConcreteEvmWalletStrategyArgs,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
+  ConcreteEvmWalletStrategyArgs,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
-import LedgerHW from './hw/index.js'
-import { domainHash, messageHash } from './utils.js'
+import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
+import { Common, Chain, Hardfork } from '@ethereumjs/common'
+import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import LedgerHW from './hw/index.js'
+import { loadLedgerServiceType } from './../lib.js'
+import { domainHash, messageHash } from './utils.js'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
 
 const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
@@ -304,6 +304,8 @@ export default class LedgerBase
     txData: any,
     args: { address: string; evmChainId: EvmChainId },
   ) {
+    const ledgerService = await loadLedgerServiceType()
+
     const alchemy = await this.getAlchemy(args.evmChainId)
     const chainId = parseInt(args.evmChainId.toString(), 10)
     const nonce = await alchemy.core.getTransactionCount(args.address)

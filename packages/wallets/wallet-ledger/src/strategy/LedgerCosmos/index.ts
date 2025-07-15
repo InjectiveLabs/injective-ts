@@ -1,11 +1,10 @@
 /* eslint-disable class-methods-use-this */
-import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import {
   ErrorType,
-  LedgerCosmosException,
-  TransactionException,
-  UnspecifiedErrorCode,
   WalletException,
+  UnspecifiedErrorCode,
+  TransactionException,
+  LedgerCosmosException,
 } from '@injectivelabs/exceptions'
 import {
   TxRaw,
@@ -23,11 +22,12 @@ import {
   BaseConcreteStrategy,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
+  DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
+import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import LedgerHW from './hw/index.js'
 import { LedgerWalletInfo } from '../../types.js'
 

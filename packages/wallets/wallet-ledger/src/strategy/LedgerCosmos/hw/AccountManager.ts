@@ -1,7 +1,7 @@
 import { AccountAddress } from '@injectivelabs/ts-types'
-import { Cosmos as CosmosApp } from '@bangjelkoski/ledgerhq-hw-app-cosmos'
 import { LedgerWalletInfo } from '../../../types.js'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
+import type { Cosmos as CosmosApp } from '@bangjelkoski/ledgerhq-hw-app-cosmos'
 
 export default class AccountManager {
   private wallets: LedgerWalletInfo[] = []
