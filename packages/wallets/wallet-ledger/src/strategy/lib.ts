@@ -19,7 +19,6 @@ let TransportWebUSB: TransportWebUSBType
 let TransportWebHID: TransportWebHIDType
 
 export async function loadEthType(): Promise<typeof EthType> {
-  console.log('Loading EthType...')
   if (!EthType) {
     const module = await import('@bangjelkoski/ledgerhq-hw-app-eth')
     EthType = module.Eth ? module.Eth : (module as any).default.Eth
@@ -29,7 +28,6 @@ export async function loadEthType(): Promise<typeof EthType> {
 }
 
 export async function loadCosmosType(): Promise<typeof CosmosType> {
-  console.log('Loading CosmosType...')
   if (!CosmosType) {
     const module = await import('@bangjelkoski/ledgerhq-hw-app-cosmos')
     CosmosType = module.Cosmos ? module.Cosmos : (module as any).default.Cosmos
@@ -41,7 +39,6 @@ export async function loadCosmosType(): Promise<typeof CosmosType> {
 export async function loadLedgerServiceType(): Promise<
   typeof ledgerServiceType
 > {
-  console.log('Loading ledgerServiceType...')
   if (!ledgerServiceType) {
     const module = await import('@bangjelkoski/ledgerhq-hw-app-eth')
     ledgerServiceType =
@@ -53,7 +50,6 @@ export async function loadLedgerServiceType(): Promise<
 }
 
 export async function loadTransportWebUSB(): Promise<TransportWebUSBType> {
-  console.log('Loading TransportWebUSB...')
   if (!TransportWebUSB) {
     const module = await import('@bangjelkoski/ledgerhq-hw-transport-webusb')
 
@@ -66,7 +62,6 @@ export async function loadTransportWebUSB(): Promise<TransportWebUSBType> {
 }
 
 export async function loadTransportWebHIDType(): Promise<TransportWebHIDType> {
-  console.log('Loading TransportWebHIDType...')
   if (!TransportWebHID) {
     const module = await import('@bangjelkoski/ledgerhq-hw-transport-webhid')
 
