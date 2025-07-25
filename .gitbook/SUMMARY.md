@@ -8,7 +8,7 @@
 * [Technical Concepts](getting-started/technical-concepts.md)
 * [Application Concepts](getting-started/application-concepts/README.md)
   * [Calculations](getting-started/application-concepts/calculations/README.md)
-    * [Min Price Tick Size](getting-started/application-concepts/calculations/min-price-tick-size.md)
+    * [Min Price Tick Size](https://docs.injective.network/developers/concepts/calculation-min-price-tick-size)
     * [Min Quantity Tick Size](getting-started/application-concepts/calculations/min-quantity-tick-size.md)
   * [Networks](getting-started/application-concepts/networks.md)
   * [CosmJs Support](getting-started/application-concepts/getting-started-cosmjs.md)
