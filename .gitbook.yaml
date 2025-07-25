@@ -5,3 +5,5 @@ redirects:
   getting-started/application-concepts/calculations/min-quantity-tick-size: https://docs.injective.network/developers/concepts/calculation-min-quantity-tick-size
   getting-started/application-concepts/networks: https://docs.injective.network/developers/concepts/networks
   getting-started/application-concepts/getting-started-cosmjs: https://docs.injective.network/developers/concepts/cosmjs-support
+  .gitbook/getting-started/assets/creating-tokens: https://docs.injective.network/developers/assets/token-create
+  .gitbook/getting-started/assets/injective-list: https://docs.injective.network/developers/assets/injective-list
