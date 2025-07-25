@@ -1,1 +1,7 @@
 root: ./.gitbook
+
+redirects:
+  getting-started/application-concepts/calculations/min-price-tick-size: https://docs.injective.network/developers/concepts/calculation-min-price-tick-size
+  getting-started/application-concepts/calculations/min-quantity-tick-size: https://docs.injective.network/developers/concepts/calculation-min-quantity-tick-size
+  getting-started/application-concepts/networks: https://docs.injective.network/developers/concepts/networks
+  getting-started/application-concepts/getting-started-cosmjs: https://docs.injective.network/developers/concepts/cosmjs-support
