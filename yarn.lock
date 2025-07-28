@@ -2447,10 +2447,10 @@
     protobufjs "^7.4.0"
     rxjs "^7.4.0"
 
-"@injectivelabs/core-proto-ts@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.16.0.tgz#e46988ddc38ef022daf4c28de4ea876798243a09"
-  integrity sha512-R925SXSwlM8BMU3Kel7TZ1d3noBtLu3O8HxFDkKcYhgL/BK8pv/ru8KcL7Lr1saLtmdprWRV5VKZaiAz9BgYnQ==
+"@injectivelabs/core-proto-ts@1.16.1":
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.16.1.tgz#9c169d3c8b422daa1efe286557977a955461e426"
+  integrity sha512-/6LWwZ/ZcC6/sI21s92cf3/8mgma6xRnBXtsF+708g2SX87WatJuXL8DjZsY1agCCnyw6bLVLtjKAfLQopNkxw==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"
