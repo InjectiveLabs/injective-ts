@@ -2447,17 +2447,10 @@
     protobufjs "^7.4.0"
     rxjs "^7.4.0"
 
-<<<<<<< HEAD
-"@injectivelabs/core-proto-ts@1.15.0":
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.15.0.tgz#9ceee3fff2aa67481dbecf525e3eda85bb1ca754"
-  integrity sha512-J1Iq42RSfW8M5XDVDF8ACz49RkrP/963Lgyi1Yn9e4P2CZ2kRhJm8KSfH++1+yyLbDCEVdGj4b63TK8DopGsTA==
-=======
-"@injectivelabs/core-proto-ts@1.14.4-alpha.2":
-  version "1.14.4-alpha.2"
-  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.14.4-alpha.2.tgz#192140842967a3578d9ceddd98815fa4ca86778d"
-  integrity sha512-UcM72lNkVC6S6tf9EeKBvhO3G0TAPB2fx/jlBF/A57xCWZcyXcv6tsMqtvKYDjA8LplBRsilEAjnQ0z/dVvrvw==
->>>>>>> 9821d445e (feat: v1.16)
+"@injectivelabs/core-proto-ts@1.16.0":
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/@injectivelabs/core-proto-ts/-/core-proto-ts-1.16.0.tgz#e46988ddc38ef022daf4c28de4ea876798243a09"
+  integrity sha512-R925SXSwlM8BMU3Kel7TZ1d3noBtLu3O8HxFDkKcYhgL/BK8pv/ru8KcL7Lr1saLtmdprWRV5VKZaiAz9BgYnQ==
   dependencies:
     "@injectivelabs/grpc-web" "^0.0.1"
     google-protobuf "^3.14.0"

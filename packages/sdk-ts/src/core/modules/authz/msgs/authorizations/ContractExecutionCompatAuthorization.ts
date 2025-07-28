@@ -2,7 +2,7 @@ import { Coin } from '@injectivelabs/ts-types'
 import {
   GoogleProtobufAny,
   CosmwasmWasmV1Authz,
-  InjectiveWasmxV1Beta1Authz,
+  InjectiveWasmxV1Authz,
 } from '@injectivelabs/core-proto-ts'
 import { BaseAuthorization } from './Base.js'
 
@@ -20,8 +20,7 @@ export declare namespace ContractExecutionCompatAuthorization {
 
   export type Any = GoogleProtobufAny.Any
 
-  export type Proto =
-    InjectiveWasmxV1Beta1Authz.ContractExecutionCompatAuthorization
+  export type Proto = InjectiveWasmxV1Authz.ContractExecutionCompatAuthorization
 
   export type Amino = Object
 }
@@ -44,7 +43,7 @@ export default class ContractExecutionCompatAuthorization extends BaseAuthorizat
     const { params } = this
 
     const authorization =
-      InjectiveWasmxV1Beta1Authz.ContractExecutionCompatAuthorization.create()
+      InjectiveWasmxV1Authz.ContractExecutionCompatAuthorization.create()
     const grant = CosmwasmWasmV1Authz.ContractGrant.create()
 
     grant.contract = params.contract
@@ -111,7 +110,7 @@ export default class ContractExecutionCompatAuthorization extends BaseAuthorizat
     const any = GoogleProtobufAny.Any.create()
     any.typeUrl = '/injective.wasmx.v1.ContractExecutionCompatAuthorization'
     any.value =
-      InjectiveWasmxV1Beta1Authz.ContractExecutionCompatAuthorization.encode(
+      InjectiveWasmxV1Authz.ContractExecutionCompatAuthorization.encode(
         authorization,
       ).finish()
 
@@ -120,7 +119,7 @@ export default class ContractExecutionCompatAuthorization extends BaseAuthorizat
 
   public toProto(): ContractExecutionCompatAuthorization.Proto {
     const authorization =
-      InjectiveWasmxV1Beta1Authz.ContractExecutionCompatAuthorization.decode(
+      InjectiveWasmxV1Authz.ContractExecutionCompatAuthorization.decode(
         this.toAny().value,
       )
 
