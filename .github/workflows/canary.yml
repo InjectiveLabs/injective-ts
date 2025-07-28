@@ -17,13 +17,22 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: 'Use NodeJS 20'
-        uses: actions/setup-node@v2
+      - name: 'Use NodeJS 24'
+        uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: '24.4.0'
 
-      - name: 'Setup lerna@6.6.1'
-        run: yarn global add lerna@6.6.1  --ignore-engines
+      - name: 'Install pnpm'
+        run: npm install -g pnpm
+
+      - name: 'Setup pnpm global bin directory'
+        run: |
+          mkdir -p ~/.pnpm-global
+          pnpm config set global-bin-dir ~/.pnpm-global
+          echo "$HOME/.pnpm-global" >> $GITHUB_PATH
+
+      - name: 'Setup lerna@8.2.3'
+        run: pnpm install lerna@8.2.3 -g
 
       - name: Set up Git user
         run: |
@@ -34,11 +43,15 @@ jobs:
         run: |
           lerna clean --yes
           node etc/bootstrapEnv
-          yarn install  --ignore-engines
-          yarn build
+          pnpm install
+          pnpm build
 
       - name: 'Setup npm'
-        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          # Tell Git to ignore this temporary change
+          git update-index --assume-unchanged .npmrc
+
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
