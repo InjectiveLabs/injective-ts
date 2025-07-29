@@ -140,8 +140,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
     depositParams.amount = params.deposit.amount
 
     const contentAny = GoogleProtobufAny.Any.create()
-    contentAny.typeUrl =
-      '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
+    contentAny.typeUrl = '/injective.exchange.v2.PerpetualMarketLaunchProposal'
     contentAny.value =
       InjectiveExchangeV2Proposal.PerpetualMarketLaunchProposal.encode(
         createPerpetualMarketLaunch(params),
@@ -198,7 +197,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
     const messageWithProposalType = {
       ...value,
       content: {
-        '@type': '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
+        '@type': '/injective.exchange.v2.PerpetualMarketLaunchProposal',
         ...value.content.value,
       },
     }
