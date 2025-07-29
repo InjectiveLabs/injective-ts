@@ -15,7 +15,7 @@ import {
 import { getAddress } from 'viem'
 import { sleep, HttpRestClient } from '@injectivelabs/utils'
 import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import { TurnkeyIframeClient } from '@turnkey/sdk-browser'
+import { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 import {
   http,
   LocalAccount,
@@ -98,7 +98,7 @@ export class TurnkeyWalletStrategy
         return true
       }
 
-      return !!(await turnkeyWallet.getIframeClient())
+      return !!(await turnkeyWallet.getIndexedDbClient())
     } catch (e) {
       return false
     }
@@ -107,6 +107,7 @@ export class TurnkeyWalletStrategy
   public async disconnect() {
     const turnkeyWallet = await this.getTurnkeyWallet()
     const turnkey = await turnkeyWallet.getTurnkey()
+    const indexedDbClient = await turnkeyWallet.getIndexedDbClient()
 
     const isUserLoggedIn = await turnkey.getSession()
 
@@ -114,7 +115,7 @@ export class TurnkeyWalletStrategy
       return
     }
 
-    await turnkey.logout()
+    await Promise.allSettled([turnkey.logout(), indexedDbClient.clear()])
   }
 
   async getAddresses(): Promise<string[]> {
@@ -396,9 +397,11 @@ export class TurnkeyWalletStrategy
     )
   }
 
-  async getIframeClient(): Promise<TurnkeyIframeClient> {
+  async getIndexedDbClient(): Promise<TurnkeyIndexedDbClient> {
     const turnkeyWallet = await this.getTurnkeyWallet()
-    return turnkeyWallet.getIframeClient()
+    const indexedDbClient = await turnkeyWallet.getIndexedDbClient()
+
+    return indexedDbClient
   }
 
   private async getTurnkeyWallet(): Promise<TurnkeyWallet> {

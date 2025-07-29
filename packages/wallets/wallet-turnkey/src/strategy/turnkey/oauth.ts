@@ -5,7 +5,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { sha256 } from '@injectivelabs/sdk-ts'
 import type { TurnkeyOauthLoginResponse } from '../types.js'
-import type { TurnkeyIframeClient } from '@turnkey/sdk-browser'
+import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 import { type HttpRestClient } from '@injectivelabs/utils'
 import {
   DEFAULT_TURNKEY_REFRESH_SECONDS,
@@ -13,9 +13,10 @@ import {
 } from '../consts.js'
 
 export class TurnkeyOauthWallet {
-  static async generateOAuthNonce(iframeClient: TurnkeyIframeClient) {
+  static async generateOAuthNonce(indexedDbClient: TurnkeyIndexedDbClient) {
     try {
-      const targetPublicKey = iframeClient.iframePublicKey
+      await indexedDbClient.resetKeyPair()
+      const targetPublicKey = await indexedDbClient.getPublicKey()
 
       if (!targetPublicKey) {
         throw new WalletException(new Error('Target public key not found'))
@@ -38,17 +39,17 @@ export class TurnkeyOauthWallet {
     client: HttpRestClient
     oauthLoginPath?: string
     providerName: 'google' | 'apple'
-    iframeClient: TurnkeyIframeClient
+    indexedDbClient: TurnkeyIndexedDbClient
     expirationSeconds?: number
   }): Promise<
     { organizationId: string; credentialBundle: string } | undefined
   > {
-    const { client, iframeClient, expirationSeconds } = args
+    const { client, indexedDbClient, expirationSeconds } = args
 
     const path = args.oauthLoginPath || TURNKEY_OAUTH_PATH
 
     try {
-      const targetPublicKey = iframeClient.iframePublicKey
+      const targetPublicKey = await indexedDbClient.getPublicKey()
 
       if (!targetPublicKey) {
         throw new WalletException(new Error('Target public key not found'))
