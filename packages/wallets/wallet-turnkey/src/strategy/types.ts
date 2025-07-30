@@ -24,7 +24,6 @@ export type TurnkeyOTPCredentialsResponse = {
 export type TurnkeyConfirmEmailOTPResponse = {
   session: string
   organizationId: string
-  activity: any
 }
 
 export type TurnkeyOauthLoginResponse = {

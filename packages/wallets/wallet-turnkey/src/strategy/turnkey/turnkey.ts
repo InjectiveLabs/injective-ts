@@ -58,7 +58,7 @@ export class TurnkeyWallet {
   }
 
   public static async getTurnkeyInstance(metadata: TurnkeyMetadata) {
-    const { turnkey, indexedDbClient } = await createTurnkeyIFrame(metadata)
+    const { turnkey, indexedDbClient } = await createTurnkeyClient(metadata)
 
     return {
       turnkey,
@@ -235,7 +235,8 @@ export class TurnkeyWallet {
 
     const indexedDbClient = await this.getIndexedDbClient()
     await indexedDbClient.loginWithSession(sessionToken)
-    const session = await this.turnkey?.getSession()
+    const turnkey = await this.getTurnkey()
+    const session = await turnkey.getSession()
 
     // ? We could potentially only refresh the session here if it's a certain amount of time before expiry, bit this keeps everything fresh
     await indexedDbClient.refreshSession({
@@ -393,7 +394,7 @@ export class TurnkeyWallet {
     indexedDbClient: TurnkeyIndexedDbClient
   }> {
     const { metadata } = this
-    const { turnkey, indexedDbClient } = await createTurnkeyIFrame(metadata)
+    const { turnkey, indexedDbClient } = await createTurnkeyClient(metadata)
 
     this.turnkey = turnkey
     this.indexedDbClient = indexedDbClient
@@ -402,7 +403,7 @@ export class TurnkeyWallet {
   }
 }
 
-async function createTurnkeyIFrame(metadata: TurnkeyMetadata) {
+async function createTurnkeyClient(metadata: TurnkeyMetadata) {
   const turnkey = new Turnkey(metadata)
   const indexedDbClient = await turnkey.indexedDbClient()
   await indexedDbClient.init()
