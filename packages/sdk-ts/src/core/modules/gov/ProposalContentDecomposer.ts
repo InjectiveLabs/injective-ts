@@ -3,8 +3,9 @@ import {
   CosmosGovV1Beta1Gov,
   CosmosParamsV1Beta1Params,
   CosmosUpgradeV1Beta1Upgrade,
-  InjectiveExchangeV1Beta1Proposal,
+  InjectiveExchangeV2Proposal,
   InjectiveOracleV1Beta1Proposal,
+  InjectiveExchangeV1Beta1Proposal,
 } from '@injectivelabs/core-proto-ts'
 
 export class ProposalDecomposer {
@@ -45,11 +46,15 @@ export class ProposalDecomposer {
   }
 
   static spotMarketLaunch(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.decode(content)
+    return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.decode(
+      content,
+    )
   }
 
   static exchangeEnableProposal(content: Uint8Array) {
-    return InjectiveExchangeV1Beta1Proposal.ExchangeEnableProposal.decode(content)
+    return InjectiveExchangeV1Beta1Proposal.ExchangeEnableProposal.decode(
+      content,
+    )
   }
 
   static spotMarketUpdate(content: Uint8Array) {
@@ -58,8 +63,14 @@ export class ProposalDecomposer {
     )
   }
 
-  static perpetualMarketLaunch(content: Uint8Array) {
+  static perpetualMarketLaunchV1Beta1(content: Uint8Array) {
     return InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.decode(
+      content,
+    )
+  }
+
+  static perpetualMarketLaunchV2(content: Uint8Array) {
+    return InjectiveExchangeV2Proposal.PerpetualMarketLaunchProposal.decode(
       content,
     )
   }
