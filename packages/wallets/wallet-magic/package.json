@@ -61,9 +61,9 @@
     "@injectivelabs/ts-types": "^1.16.1-alpha.6",
     "@injectivelabs/utils": "^1.16.1-alpha.6",
     "@injectivelabs/wallet-base": "^1.16.1-alpha.6",
-    "@magic-ext/cosmos": "23.9.1",
-    "@magic-ext/oauth2": "9.9.0",
-    "magic-sdk": "28.9.0"
+    "@magic-ext/cosmos": "24.4.0",
+    "@magic-ext/oauth2": "11.4.0",
+    "magic-sdk": "29.4.0"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
   "typedoc": {
