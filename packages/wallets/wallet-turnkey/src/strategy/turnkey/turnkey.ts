@@ -218,7 +218,7 @@ export class TurnkeyWallet {
     const turnkeyAccount = await createAccount({
       organizationId,
       signWith: address,
-      client: indexedDbClient.authClient,
+      client: indexedDbClient as unknown as any,
     })
 
     this.accountMap[address] = turnkeyAccount

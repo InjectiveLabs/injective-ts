@@ -3221,6 +3221,11 @@
     "@emnapi/runtime" "^1.1.0"
     "@tybys/wasm-util" "^0.9.0"
 
+"@noble/ciphers@0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@noble/ciphers/-/ciphers-0.5.3.tgz#48b536311587125e0d0c1535f73ec8375cd76b23"
+  integrity sha512-B0+6IIHiqEs3BPMT0hcRmHvEj2QHOLu+uwt+tqDDeVd0oyVzh7BPrDcPjRnV1PV/5LaknXJJQvOuRGR0zQJz+w==
+
 "@noble/ciphers@1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@noble/ciphers/-/ciphers-1.2.1.tgz#3812b72c057a28b44ff0ad4aff5ca846e5b9cdc9"
@@ -3237,6 +3242,13 @@
   integrity sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==
   dependencies:
     "@noble/hashes" "1.3.2"
+
+"@noble/curves@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.4.0.tgz#f05771ef64da724997f69ee1261b2417a49522d6"
+  integrity sha512-p+4cb332SFCrReJkCYe8Xzm0OWi4Jji5jVdIZRL/PmacmDkFNw6MrrV+gGpiPxLHbV+zKFRywUWbaseT+tZRXg==
+  dependencies:
+    "@noble/hashes" "1.4.0"
 
 "@noble/curves@1.4.2", "@noble/curves@~1.4.0":
   version "1.4.2"
@@ -4500,6 +4512,15 @@
     "@tufjs/canonical-json" "2.0.0"
     minimatch "^9.0.4"
 
+"@turnkey/api-key-stamper@0.4.6":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@turnkey/api-key-stamper/-/api-key-stamper-0.4.6.tgz#0356639ab9e7cb1492abc004628b82e49ef7f728"
+  integrity sha512-zUcbhOunsSD//CIKAbfyX9FWchiHcO/CjOdBKvbB+8w6gk/m4NxchVrYCdqdrtxzPFdRYAdFjcUnN0FBvDKobw==
+  dependencies:
+    "@noble/curves" "^1.3.0"
+    "@turnkey/encoding" "0.5.0"
+    sha256-uint8array "^0.10.7"
+
 "@turnkey/api-key-stamper@0.4.7":
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/@turnkey/api-key-stamper/-/api-key-stamper-0.4.7.tgz#79a22260e89752d9fe8599b6b6934b69b4d43365"
@@ -4508,6 +4529,17 @@
     "@noble/curves" "^1.3.0"
     "@turnkey/encoding" "0.5.0"
     sha256-uint8array "^0.10.7"
+
+"@turnkey/crypto@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@turnkey/crypto/-/crypto-2.4.0.tgz#4231f20aa14290a0a2a415c54787f63a489f0de3"
+  integrity sha512-jh3uE2W8sUvrI0KQsJ8SF/pvTeumhE3YmFoNB7lcqzIfvamNWYCgg3iWoA64W7U3uEzcFtNBefZsWySsVcl2Ew==
+  dependencies:
+    "@noble/ciphers" "0.5.3"
+    "@noble/curves" "1.4.0"
+    "@noble/hashes" "1.4.0"
+    bs58 "6.0.0"
+    bs58check "3.0.1"
 
 "@turnkey/crypto@2.4.1":
   version "2.4.1"
@@ -4520,21 +4552,20 @@
     bs58 "6.0.0"
     bs58check "4.0.0"
 
-"@turnkey/crypto@2.4.3":
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/@turnkey/crypto/-/crypto-2.4.3.tgz#108063df83df043faddccf86445f081602fceb72"
-  integrity sha512-SxikSbMiIoluazHQ4ig3bTKaUrcHvYBujdR4lg9oO54aSfxvBRUjPyXaFe+s5h/fOQ0fG1k4WcMDCADQzXNZdQ==
-  dependencies:
-    "@noble/ciphers" "1.3.0"
-    "@noble/curves" "1.9.0"
-    "@noble/hashes" "1.8.0"
-    bs58 "6.0.0"
-    bs58check "4.0.0"
-
 "@turnkey/encoding@0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@turnkey/encoding/-/encoding-0.5.0.tgz#415d721383c8267a8ca173cef34298a325a6a57d"
   integrity sha512-nRlKRQa6B5/xltGUKN1iKo4h4YC/0iFz0fAuFFZevc+YGDj7ddAP/3HkWmVvLmdoicUgs9rxvWbLRlgqPkbwzQ==
+
+"@turnkey/http@3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@turnkey/http/-/http-3.4.2.tgz#714d010b8d5ea12c8d60ea3a7da44be64fcffbde"
+  integrity sha512-UFJxnEjOSXBmmozsUrBBRMqA9ErCqMen4VkYu+C5cyDAAKgCq01fNEtp+CakD+npd35WbtfevIW5q7JdJ6nP0w==
+  dependencies:
+    "@turnkey/api-key-stamper" "0.4.6"
+    "@turnkey/encoding" "0.5.0"
+    "@turnkey/webauthn-stamper" "0.5.1"
+    cross-fetch "^3.1.5"
 
 "@turnkey/http@3.5.0":
   version "3.5.0"
@@ -4546,20 +4577,18 @@
     "@turnkey/webauthn-stamper" "0.5.1"
     cross-fetch "^3.1.5"
 
-"@turnkey/http@3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@turnkey/http/-/http-3.5.1.tgz#0f7dc7e5c82d143b617ab0a7be3aa2638d3f6e5a"
-  integrity sha512-b32ty7KqKG0wGax+RDZycVLl7UJS+0Xfr9WTTSsiKw4W84gr4Lu/N9ASVhT4M6JkJ9yHfGTp7KG16x/Ab5EeHw==
-  dependencies:
-    "@turnkey/api-key-stamper" "0.4.7"
-    "@turnkey/encoding" "0.5.0"
-    "@turnkey/webauthn-stamper" "0.5.1"
-    cross-fetch "^3.1.5"
-
 "@turnkey/iframe-stamper@2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@turnkey/iframe-stamper/-/iframe-stamper-2.5.0.tgz#4543458a3ac380c96f239c6c2a997c03bac0bd7b"
   integrity sha512-XjntbA5CNjxGRH+loceAlVLL9PG9Q4Y7p5zjBm4DeKclhD6lpUl9h8INArMEXIFbfLwLjjS6Q+SmQG4BHvNY6A==
+
+"@turnkey/indexed-db-stamper@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@turnkey/indexed-db-stamper/-/indexed-db-stamper-1.1.0.tgz#4be648b68627806b6a87f1242866a731b0e5bc78"
+  integrity sha512-tgGtHT7reAqSrO+aOAwfpVIln+N7nk81yKXJ1e1+5qv9PfJQjE8+mMxolinCAIZwIqsaFBtjdjm6NCW+Me7rcw==
+  dependencies:
+    "@turnkey/api-key-stamper" "0.4.6"
+    "@turnkey/encoding" "0.5.0"
 
 "@turnkey/indexed-db-stamper@1.1.1":
   version "1.1.1"
@@ -4568,6 +4597,25 @@
   dependencies:
     "@turnkey/api-key-stamper" "0.4.7"
     "@turnkey/encoding" "0.5.0"
+
+"@turnkey/sdk-browser@5.2.3":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@turnkey/sdk-browser/-/sdk-browser-5.2.3.tgz#275d20df572f2a3f7ddbdcd6781c0f9b16177d11"
+  integrity sha512-FVYwhX/PYAgE5afHY7BV2EOL+YzDV4LlM1bG1mxbILfir1DKmQn1nXy7bD6YWeQJEUI96Vvvw+fbt/wfR2+n+g==
+  dependencies:
+    "@turnkey/api-key-stamper" "0.4.6"
+    "@turnkey/crypto" "2.4.0"
+    "@turnkey/encoding" "0.5.0"
+    "@turnkey/http" "3.4.2"
+    "@turnkey/iframe-stamper" "2.5.0"
+    "@turnkey/indexed-db-stamper" "1.1.0"
+    "@turnkey/sdk-types" "0.2.1"
+    "@turnkey/wallet-stamper" "1.0.4"
+    "@turnkey/webauthn-stamper" "0.5.1"
+    bs58check "3.0.1"
+    buffer "^6.0.3"
+    cross-fetch "^3.1.5"
+    hpke-js "^1.2.7"
 
 "@turnkey/sdk-browser@5.3.0":
   version "5.3.0"
@@ -4584,25 +4632,6 @@
     "@turnkey/wallet-stamper" "1.0.5"
     "@turnkey/webauthn-stamper" "0.5.1"
     bs58check "3.0.1"
-    buffer "^6.0.3"
-    cross-fetch "^3.1.5"
-    hpke-js "^1.2.7"
-
-"@turnkey/sdk-browser@^5.3.4":
-  version "5.3.4"
-  resolved "https://registry.yarnpkg.com/@turnkey/sdk-browser/-/sdk-browser-5.3.4.tgz#5a53e1e3f1664d6b115690cc8eba08f312d3321c"
-  integrity sha512-gSn2W10tp1aCa2vH7SSSAJLyDhRgRb8GelnZkEMg3LrDOSY0lmEp5ySVwvkfAB4UGRq0zb5NcjHa1J3e92NJMw==
-  dependencies:
-    "@turnkey/api-key-stamper" "0.4.7"
-    "@turnkey/crypto" "2.4.3"
-    "@turnkey/encoding" "0.5.0"
-    "@turnkey/http" "3.5.1"
-    "@turnkey/iframe-stamper" "2.5.0"
-    "@turnkey/indexed-db-stamper" "1.1.1"
-    "@turnkey/sdk-types" "0.2.1"
-    "@turnkey/wallet-stamper" "1.0.7"
-    "@turnkey/webauthn-stamper" "0.5.1"
-    bs58check "^4.0.0"
     buffer "^6.0.3"
     cross-fetch "^3.1.5"
     hpke-js "^1.2.7"
@@ -4635,22 +4664,22 @@
     "@turnkey/sdk-server" "4.2.0"
     cross-fetch "^4.0.0"
 
+"@turnkey/wallet-stamper@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@turnkey/wallet-stamper/-/wallet-stamper-1.0.4.tgz#d084593ab14c2abd9d8791fbad0fba856fa81885"
+  integrity sha512-xSkkQh30SzhYFv/2Q0+oARZbReSqzwjxi6j3mbmOn/udDyjYjz9mdV7rm+rN4+iwDD64ZjSIJTK0flotYjIWHw==
+  dependencies:
+    "@turnkey/crypto" "2.4.0"
+    "@turnkey/encoding" "0.5.0"
+  optionalDependencies:
+    viem "^2.21.35"
+
 "@turnkey/wallet-stamper@1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@turnkey/wallet-stamper/-/wallet-stamper-1.0.5.tgz#79019b2adac7a9ed5d260ad6146b7a19fdda8c13"
   integrity sha512-Ibc+3o52IPA9oQWTx/IFtFBXxaR+LNaXprFs19G+Oz+78fmGjnghd3XIa1OFPsyx0gSkmx8Bd0n2wq6lOVCNAQ==
   dependencies:
     "@turnkey/crypto" "2.4.1"
-    "@turnkey/encoding" "0.5.0"
-  optionalDependencies:
-    viem "^2.21.35"
-
-"@turnkey/wallet-stamper@1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@turnkey/wallet-stamper/-/wallet-stamper-1.0.7.tgz#5c36492cf9bf6b45d8d9c5df5de00c3212a02c13"
-  integrity sha512-P3RnoR7rL95puivU0GHVfOp5cxlhKmiOi7tWOlECiGqvPxS4FoU6mCgBVLu21uXVPZLX5FmsZ//AZy+NKdNo+Q==
-  dependencies:
-    "@turnkey/crypto" "2.4.3"
     "@turnkey/encoding" "0.5.0"
   optionalDependencies:
     viem "^2.21.35"
@@ -13289,10 +13318,10 @@ ox@0.6.9:
     abitype "^1.0.6"
     eventemitter3 "5.0.1"
 
-ox@0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/ox/-/ox-0.8.1.tgz#c1328e4c890583b9c19d338126aef4b796d53543"
-  integrity sha512-e+z5epnzV+Zuz91YYujecW8cF01mzmrUtWotJ0oEPym/G82uccs7q0WDHTYL3eiONbTUEvcZrptAKLgTBD3u2A==
+ox@0.8.6:
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/ox/-/ox-0.8.6.tgz#7dd666216ee8cda2eb2e5fef3fe4cb20dec3dcad"
+  integrity sha512-eiKcgiVVEGDtEpEdFi1EGoVVI48j6icXHce9nFwCNM7CKG3uoCXKdr4TPhS00Iy1TR2aWSF1ltPD0x/YgqIL9w==
   dependencies:
     "@adraffy/ens-normalize" "^1.11.0"
     "@noble/ciphers" "^1.3.0"
@@ -16608,10 +16637,10 @@ viem@^2.21.35:
     ox "0.6.9"
     ws "8.18.1"
 
-viem@^2.33.1:
-  version "2.33.1"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.33.1.tgz#47ae1de711a1052f03f0f585be224383de812b03"
-  integrity sha512-++Dkj8HvSOLPMKEs+ZBNNcWbBRlUHcXNWktjIU22hgr6YmbUldV1sPTGLZa6BYRm06WViMjXj6HIsHt8rD+ZKQ==
+viem@^2.33.2:
+  version "2.33.2"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.33.2.tgz#039732775976efb821a2f7c6c6d4cd6029f5af4f"
+  integrity sha512-/720OaM4dHWs8vXwNpyet+PRERhPaW+n/1UVSCzyb9jkmwwVfaiy/R6YfCFb4v+XXbo8s3Fapa3DM5yCRSkulA==
   dependencies:
     "@noble/curves" "1.9.2"
     "@noble/hashes" "1.8.0"
@@ -16619,7 +16648,7 @@ viem@^2.33.1:
     "@scure/bip39" "1.6.0"
     abitype "1.0.8"
     isows "1.0.7"
-    ox "0.8.1"
+    ox "0.8.6"
     ws "8.18.2"
 
 vscode-oniguruma@^1.7.0:
