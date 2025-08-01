@@ -22,7 +22,6 @@ import {
   TURNKEY_OAUTH_PATH,
   TURNKEY_OTP_INIT_PATH,
   TURNKEY_OTP_VERIFY_PATH,
-  DEFAULT_TURNKEY_REFRESH_SECONDS,
 } from '../consts.js'
 import { TurnkeyOtpWallet } from './otp.js'
 import { TurnkeyErrorCodes } from '../types.js'
@@ -34,7 +33,7 @@ export class TurnkeyWallet {
 
   protected turnkey?: Turnkey
 
-  public organizationId: string
+  public userOrganizationId?: string
 
   protected client: HttpRestClient
 
@@ -53,7 +52,6 @@ export class TurnkeyWallet {
 
   constructor(metadata: TurnkeyMetadata) {
     this.metadata = metadata
-    this.organizationId = metadata.organizationId
     this.client = new HttpRestClient(metadata.apiServerEndpoint)
   }
 
@@ -91,34 +89,25 @@ export class TurnkeyWallet {
   }
 
   public async getSession(existingCredentialBundle?: string) {
-    const { metadata } = this
-
-    const indexedDbClient = await this.getIndexedDbClient()
-    const turnkey = await this.getTurnkey()
-
-    const currentSession = await turnkey.getSession()
-    const organizationId =
-      currentSession?.organizationId || metadata.defaultOrganizationId
-    const credentialBundle = existingCredentialBundle || currentSession?.token
-
-    if (!credentialBundle) {
-      return {
-        session: undefined,
-        organizationId,
-      }
-    }
-
     try {
-      // Always refresh the session on page load to keep it long lived
-      await indexedDbClient.refreshSession({
-        sessionType: SessionType.READ_WRITE,
-        expirationSeconds: this.metadata.expirationSeconds,
-      })
+      const { metadata } = this
 
-      const [session, user] = await Promise.all([
-        turnkey.getSession(),
-        indexedDbClient.getWhoami(),
-      ])
+      const indexedDbClient = await this.getIndexedDbClient()
+      const turnkey = await this.getTurnkey()
+      const session = await turnkey.getSession()
+
+      const organizationId =
+        session?.organizationId || metadata.defaultOrganizationId
+      const credentialBundle = existingCredentialBundle || session?.token
+
+      if (!credentialBundle) {
+        return {
+          session: undefined,
+          organizationId,
+        }
+      }
+
+      const user = await indexedDbClient.getWhoami()
 
       const actualOrganizationId =
         user?.organizationId || session?.organizationId || organizationId
@@ -130,7 +119,7 @@ export class TurnkeyWallet {
         }
       }
 
-      this.organizationId = actualOrganizationId
+      this.userOrganizationId = actualOrganizationId
       return {
         session,
         organizationId: actualOrganizationId,
@@ -145,20 +134,20 @@ export class TurnkeyWallet {
   public async getAccounts() {
     const indexedDbClient = await this.getIndexedDbClient()
 
-    if (!this.organizationId) {
+    if (!this.userOrganizationId) {
       return []
     }
 
     try {
       const response = await indexedDbClient.getWallets({
-        organizationId: this.organizationId,
+        organizationId: this.userOrganizationId,
       })
 
       const accounts = await Promise.allSettled(
         response.wallets.map((wallet) =>
           indexedDbClient.getWalletAccounts({
             walletId: wallet.walletId,
-            organizationId: this.organizationId,
+            organizationId: this.userOrganizationId,
           }),
         ),
       )
@@ -196,10 +185,10 @@ export class TurnkeyWallet {
 
   public async getOrCreateAndGetAccount(
     address: string,
-    organizationId: string,
   ): Promise<ReturnType<typeof createAccount>> {
     const { accountMap } = this
     const indexedDbClient = await this.getIndexedDbClient()
+    const organizationId = this.userOrganizationId
 
     if (accountMap[address] || accountMap[address.toLowerCase()]) {
       return accountMap[address] || accountMap[address.toLowerCase()]
@@ -226,44 +215,6 @@ export class TurnkeyWallet {
     return turnkeyAccount
   }
 
-  public async injectAndRefresh(
-    sessionToken: string,
-    options: { expirationSeconds?: string; organizationId?: string },
-  ) {
-    const expirationSeconds =
-      options.expirationSeconds || DEFAULT_TURNKEY_REFRESH_SECONDS
-
-    const indexedDbClient = await this.getIndexedDbClient()
-    await indexedDbClient.loginWithSession(sessionToken)
-    const turnkey = await this.getTurnkey()
-    const session = await turnkey.getSession()
-
-    // ? We could potentially only refresh the session here if it's a certain amount of time before expiry, bit this keeps everything fresh
-    await indexedDbClient.refreshSession({
-      sessionType: SessionType.READ_WRITE,
-      expirationSeconds,
-    })
-
-    if (!session) {
-      throw new TurnkeyWalletSessionException(
-        new Error('Session expired. Please login again.'),
-      )
-    }
-
-    this.organizationId = session.organizationId
-    this.metadata.organizationId = session.organizationId
-
-    // Refresh the session 10 minutes before it expires
-    setTimeout(() => {
-      indexedDbClient.refreshSession({
-        expirationSeconds: session?.expiry,
-        sessionType: SessionType.READ_WRITE,
-      })
-    }, (parseInt(expirationSeconds) - 60 * 10) * 1000)
-
-    return
-  }
-
   public async initOTP(email: string) {
     const indexedDbClient = await this.getIndexedDbClient()
 
@@ -279,7 +230,7 @@ export class TurnkeyWallet {
     }
 
     if (result?.organizationId) {
-      this.organizationId = result.organizationId
+      this.userOrganizationId = result.organizationId
     }
 
     if (result?.otpId) {
@@ -301,11 +252,15 @@ export class TurnkeyWallet {
       throw new WalletException(new Error('Target public key not found'))
     }
 
+    if (!this.userOrganizationId) {
+      throw new WalletException(new Error('Organization ID is required'))
+    }
+
     const result = await TurnkeyOtpWallet.confirmEmailOTP({
       otpCode,
       client: this.client,
       emailOTPId: this.otpId,
-      organizationId: this.organizationId,
+      organizationId: this.userOrganizationId,
       targetPublicKey,
       otpVerifyPath: this.metadata.otpVerifyPath || TURNKEY_OTP_VERIFY_PATH,
     })
@@ -314,10 +269,8 @@ export class TurnkeyWallet {
       throw new WalletException(new Error('Failed to confirm OTP'))
     }
 
-    await this.injectAndRefresh(result.session, {
-      organizationId: result.organizationId,
-      expirationSeconds: this.metadata.expirationSeconds,
-    })
+    await indexedDbClient.loginWithSession(result.session)
+    this.userOrganizationId = result.organizationId
 
     return result
   }
@@ -363,10 +316,8 @@ export class TurnkeyWallet {
       throw new WalletException(new Error('Unexpected OAuth result'))
     }
 
-    await this.injectAndRefresh(oauthResult.credentialBundle, {
-      organizationId: oauthResult.organizationId,
-      expirationSeconds: this.metadata.expirationSeconds,
-    })
+    await indexedDbClient.loginWithSession(oauthResult.credentialBundle)
+    this.userOrganizationId = oauthResult.organizationId
 
     return oauthResult.credentialBundle
   }
@@ -380,7 +331,7 @@ export class TurnkeyWallet {
         sessionType: SessionType.READ_WRITE,
         expirationSeconds: this.metadata.expirationSeconds,
       })
-      this.organizationId = session.organizationId
+      this.userOrganizationId = session.organizationId
       return session.session.token
     }
 

@@ -120,7 +120,6 @@ export class TurnkeyWalletStrategy
 
   async getAddresses(): Promise<string[]> {
     const turnkeyWallet = await this.getTurnkeyWallet()
-    await turnkeyWallet.getSession()
 
     try {
       return await turnkeyWallet.getAccounts()
@@ -156,7 +155,6 @@ export class TurnkeyWalletStrategy
     try {
       const options = this.ethereumOptions
       const turnkeyWallet = await this.getTurnkeyWallet()
-      const organizationId = await this.getOrganizationId()
 
       const chainId = args.ethereumChainId || options.ethereumChainId
       const url = options.rpcUrl || options.rpcUrls?.[args.ethereumChainId]
@@ -173,7 +171,6 @@ export class TurnkeyWalletStrategy
 
       const account = await turnkeyWallet.getOrCreateAndGetAccount(
         getAddress(args.address),
-        organizationId,
       )
 
       const accountClient = createWalletClient({
@@ -246,14 +243,12 @@ export class TurnkeyWalletStrategy
     address: AccountAddress,
   ): Promise<string> {
     const turnkeyWallet = await this.getTurnkeyWallet()
-    const organizationId = await this.getOrganizationId()
 
     //? Turnkey expects the case sensitive address and the current impl of getChecksumAddress from sdk-ts doesn't play nice with browser envs
     const checksumAddress = getAddress(address)
 
     const account = await turnkeyWallet.getOrCreateAndGetAccount(
       checksumAddress,
-      organizationId,
     )
 
     if (!account) {
@@ -422,30 +417,11 @@ export class TurnkeyWalletStrategy
         )
       }
 
-      if (!metadata.turnkey.defaultOrganizationId) {
-        throw new WalletException(
-          new Error('Turnkey defaultOrganizationId is required'),
-        )
-      }
-
       this.turnkeyWallet = new TurnkeyWallet(
         metadata.turnkey as TurnkeyMetadata,
       )
     }
 
     return this.turnkeyWallet
-  }
-
-  private async getOrganizationId(): Promise<string> {
-    const { metadata } = this
-    const organizationId =
-      metadata?.turnkey?.organizationId ||
-      metadata?.turnkey?.defaultOrganizationId
-
-    if (!organizationId) {
-      throw new WalletException(new Error('Organization ID is required'))
-    }
-
-    return organizationId
   }
 }

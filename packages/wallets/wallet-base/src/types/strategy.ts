@@ -70,16 +70,12 @@ export type TurnkeySession = {
 
 export interface TurnkeyMetadata {
   apiBaseUrl: string
-  iframeUrl?: string
   otpInitPath?: string
-  organizationId: string
   otpVerifyPath?: string
   googleClientId?: string
   oauthLoginPath?: string
   session?: TurnkeySession
-  iframeElementId?: string
   apiServerEndpoint: string
-  iframeContainerId: string
   credentialBundle?: string
   googleRedirectUri?: string
   expirationSeconds?: string
