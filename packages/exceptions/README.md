@@ -7,7 +7,7 @@ Providing rich errors and converting some vague error messages thrown from Injec
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/exceptions
+pnpm add @injectivelabs/exceptions
 ```
 
 ---
@@ -33,7 +33,6 @@ Originally released by Injective Labs Inc. under: <br />
 Apache License <br />
 Version 2.0, January 2004 <br />
 http://www.apache.org/licenses/
-
 
 <p>&nbsp;</p>
 <div align="center">

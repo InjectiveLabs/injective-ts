@@ -10,13 +10,13 @@ Follow the Getting Started guide at [Nuxt3 Docs](https://nuxt.com/docs/getting-s
 
 ### 2. Installing @injectivelabs packages
 
-You can install the @injectivelabs packages using yarn.
+You can install the @injectivelabs packages using pnpm.
 
 ```bash
-$ yarn add @injectivelabs/sdk-ts @injectivelabs/networks @injectivelabs/ts-types @injectivelabs/utils
+$ pnpm install @injectivelabs/sdk-ts @injectivelabs/networks @injectivelabs/ts-types @injectivelabs/utils
 
 ## If you need Wallet Connection
-$ yarn add @injectivelabs/wallet-strategy
+$ pnpm install @injectivelabs/wallet-strategy
 ```
 
 These are the most commonly used packages from the `injective-ts` monorepo.
@@ -26,8 +26,8 @@ These are the most commonly used packages from the `injective-ts` monorepo.
 First, add the needed polyfill packages
 
 ```bash
-$ yarn add @bangjelkoski/node-stdlib-browser
-$ yarn add -D @bangjelkoski/vite-plugin-node-polyfills
+$ pnpm install @bangjelkoski/node-stdlib-browser
+$ pnpm install -D @bangjelkoski/vite-plugin-node-polyfills
 ```
 
 Make sure you are using the `vue-tsc@1.8.8` , `nuxt@^3.8.1`, `typescript@^5.0.4` versions.
@@ -37,7 +37,7 @@ Make sure you are using the `vue-tsc@1.8.8` , `nuxt@^3.8.1`, `typescript@^5.0.4`
 One of the main dependencies for any crypto-related decentralized application is Buffer. To make sure we add Buffer to our project, we can install it as a dependency and then make a Nuxt plugin to import it to the global/window object:
 
 ```bash
-$ yarn add buffer
+$ pnpm install buffer
 ```
 
 ```ts
@@ -55,7 +55,7 @@ export default defineNuxtPlugin(() => {
 If you are going to use `pinia` as state management, add it to your packages:
 
 ```bash
-$ yarn add @pinia/nuxt@^0.4.9
+$ pnpm install @pinia/nuxt@^0.4.9
 ```
 
 ### 5. Using `vueuse`
@@ -173,4 +173,4 @@ There is one optimization that you can to decrease the bundle size - add these r
 
 ### 7. Booting our app
 
-Finally, you can start your app locally using `yarn dev` or generate static pages using `yarn generate` which you can deploy to any static page hosting like Netlify, Vercel, etc.
+Finally, you can start your app locally using `pnpm dev` or generate static pages using `pnpm generate` which you can deploy to any static page hosting like Netlify, Vercel, etc.

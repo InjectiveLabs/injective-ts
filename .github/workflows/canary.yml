@@ -51,7 +51,6 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           # Tell Git to ignore this temporary change
           git update-index --assume-unchanged .npmrc
-
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 

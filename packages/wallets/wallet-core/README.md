@@ -13,7 +13,7 @@ _Package to use Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-core
+pnpm add @injectivelabs/wallet-core
 ```
 
 ---
@@ -30,13 +30,13 @@ import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 const strategyArgs: WalletStrategyArguments = {} /** define the args */
 const strategyEthArgs: ConcreteEthereumWalletStrategyArgs = {} /** if the wallet is an Ethereum wallet */
 const strategies = {
-  [Wallet.PrivateKey]: new PrivateKeyWalletStrategy(strategyEthArgs)
+  [Wallet.PrivateKey]: new PrivateKeyWalletStrategy(strategyEthArgs),
 }
 
-export const walletStrategy = new BaseWalletStrategy({...strategyArgs, strategies})
+export const walletStrategy = new BaseWalletStrategy({ ...strategyArgs, strategies })
 
 const broadcasterArgs: MsgBroadcasterOptions = {} /** define the broadcaster args */
-export const msgBroadcaster = new MsgBroadcaster({...broadcasterArgs, walletStrategy})
+export const msgBroadcaster = new MsgBroadcaster({ ...broadcasterArgs, walletStrategy })
 ```
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)

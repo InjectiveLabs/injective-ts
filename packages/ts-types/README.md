@@ -7,7 +7,7 @@ Enums, interfaces and some types in TypeScript for Injective project's related f
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/ts-types
+pnpm add @injectivelabs/ts-types
 ```
 
 ---
@@ -33,7 +33,6 @@ Originally released by Injective Labs Inc. under: <br />
 Apache License <br />
 Version 2.0, January 2004 <br />
 http://www.apache.org/licenses/
-
 
 <p>&nbsp;</p>
 <div align="center">

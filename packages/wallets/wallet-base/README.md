@@ -13,7 +13,7 @@ _Base Package for the Wallet Strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-base
+pnpm add @injectivelabs/wallet-base
 ```
 
 ---
