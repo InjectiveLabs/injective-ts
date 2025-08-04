@@ -133,10 +133,7 @@ const createStrategy = ({
 
       return new MagicStrategy(args)
     case Wallet.Turnkey:
-      if (
-        !args.metadata?.turnkey?.iframeContainerId ||
-        !args.metadata?.turnkey?.defaultOrganizationId
-      ) {
+      if (!args.metadata?.turnkey?.defaultOrganizationId) {
         return undefined
       }
 

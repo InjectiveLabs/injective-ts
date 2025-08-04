@@ -1,15 +1,16 @@
 {
-	"files.insertFinalNewline": true,
-	"files.trimFinalNewlines": true,
-	"files.trimTrailingWhitespace": true,
-	"editor.renderFinalNewline": "on",
-	"cSpell.words": ["chronos"],
-	"[json][jsonc][javascript][javascriptreact][typescript][typescriptreact][vue]": {
-	  "editor.defaultFormatter": "esbenp.prettier-vscode",
-	  "editor.formatOnSave": true,
-	  "editor.codeActionsOnSave": [
-		"source.formatDocument",
-		"source.fixAll.eslint"
-	  ]
-	}
-  }
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.renderFinalNewline": "on",
+  "cSpell.words": ["chronos"],
+  "[json][jsonc][javascript][javascriptreact][typescript][typescriptreact][vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": [
+      "source.formatDocument",
+      "source.fixAll.eslint"
+    ]
+  },
+  "biome.enabled": false
+}
