@@ -1,11 +1,11 @@
 /* eslint-disable class-methods-use-this */
-import { AccountAddress } from '@injectivelabs/ts-types'
 import HDNode from 'hdkey'
+import { AccountAddress } from '@injectivelabs/ts-types'
 import { TrezorException } from '@injectivelabs/exceptions'
-import { TrezorWalletInfo, TrezorDerivationPathType } from '../../types.js'
 import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
-import { TrezorConnect } from '@bangjelkoski/trezor-connect-web'
+import { loadTrezorConnect } from './../lib.js'
+import { TrezorWalletInfo, TrezorDerivationPathType } from '../../types.js'
 
 const addressOfHDKey = (hdKey: HDNode): string => {
   const shouldSanitizePublicKey = true
@@ -78,6 +78,8 @@ export default class AccountManager {
     baseDerivationPath: string
     derivationPathType: TrezorDerivationPathType
   }) {
+    const TrezorConnect = await loadTrezorConnect()
+
     const pathsToFetch = []
 
     for (let index = start; index < end; index += 1) {

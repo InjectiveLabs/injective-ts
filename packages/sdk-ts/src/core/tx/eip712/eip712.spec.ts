@@ -15,7 +15,7 @@ describe('EIP712V2', () => {
       srcInjectiveAddress: mockFactory.injectiveAddress,
       dstInjectiveAddress: mockFactory.injectiveAddress,
     })
-    const ethereumChainId = 5
+    const evmChainId = 5
     const chainId = 'injective-777'
     const timeoutHeight = 1896
     const accountDetails = {
@@ -36,7 +36,7 @@ describe('EIP712V2', () => {
         timeoutHeight: timeoutHeight.toString(),
         chainId,
       },
-      ethereumChainId,
+      evnChainId,
     })
 
     const expectedEip712 = {

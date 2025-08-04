@@ -1,5 +1,5 @@
 import { createAny, createAnyMessage } from './helpers.js'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { Msgs } from '../../modules/msgs.js'
 import {
   GoogleProtobufAny,
@@ -226,17 +226,17 @@ export const createTxRawEIP712 = (
 }
 
 export const createWeb3Extension = ({
-  ethereumChainId,
+  evmChainId,
   feePayer,
   feePayerSig,
 }: {
-  ethereumChainId: EthereumChainId
+  evmChainId: EvmChainId
   feePayer?: string
   feePayerSig?: Uint8Array
 }) => {
   const web3Extension =
     InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.create()
-  web3Extension.typedDataChainID = ethereumChainId.toString()
+  web3Extension.typedDataChainID = evmChainId.toString()
 
   if (feePayer) {
     web3Extension.feePayer = feePayer

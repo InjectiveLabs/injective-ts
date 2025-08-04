@@ -17,7 +17,7 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import {
   Network,
   getNetworkInfo,
@@ -55,7 +55,7 @@ interface MsgBroadcasterWithPkOptions {
     rest: string
   }
   privateKey: string | PrivateKey /* hex or PrivateKey class */
-  ethereumChainId?: EthereumChainId
+  evmChainId?: EvmChainId
   chainId?: ChainId
   simulateTx?: boolean
   loggingEnabled?: boolean
@@ -78,7 +78,7 @@ export class MsgBroadcasterWithPk {
 
   public chainId: ChainId
 
-  public ethereumChainId?: EthereumChainId
+  public evmChainId?: EvmChainId
 
   public privateKey: PrivateKey
 
@@ -102,8 +102,7 @@ export class MsgBroadcasterWithPk {
     this.simulateTx = options.simulateTx || false
     this.chainId = options.chainId || networkInfo.chainId
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
-    this.ethereumChainId =
-      options.ethereumChainId || networkInfo.ethereumChainId
+    this.evmChainId = options.evmChainId || networkInfo.evmChainId
     this.endpoints = { ...endpoints, ...(options.endpoints || {}) }
     this.privateKey =
       options.privateKey instanceof PrivateKey
@@ -147,12 +146,12 @@ export class MsgBroadcasterWithPk {
    */
   async broadcastWithFeeDelegation(transaction: MsgBroadcasterTxOptions) {
     const {
+      endpoints,
+      txTimeout,
       simulateTx,
       privateKey,
-      ethereumChainId,
-      endpoints,
+      evmChainId,
       txTimeoutOnFeeDelegation,
-      txTimeout,
     } = this
 
     const ethereumWallet = this.privateKey.toHex()
@@ -175,7 +174,7 @@ export class MsgBroadcasterWithPk {
 
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
-    if (!ethereumChainId) {
+    if (!evmChainId) {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
@@ -199,7 +198,7 @@ export class MsgBroadcasterWithPk {
       memo: tx.memo,
       message: web3Msgs,
       address: tx.ethereumAddress,
-      chainId: ethereumChainId,
+      chainId: evmChainId,
       gasLimit: getGasPriceBasedOnMessage(msgs),
       estimateGas: simulateTx || false,
       timeoutHeight,
@@ -212,7 +211,7 @@ export class MsgBroadcasterWithPk {
     const response = await transactionApi.broadcastTxRequest({
       txResponse,
       message: web3Msgs,
-      chainId: ethereumChainId,
+      chainId: evmChainId,
       signature: `0x${Buffer.from(signature).toString('hex')}`,
     })
 

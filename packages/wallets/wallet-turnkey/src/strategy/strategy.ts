@@ -12,12 +12,9 @@ import {
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { getAddress } from 'viem'
-import { sleep, HttpRestClient } from '@injectivelabs/utils'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 import {
   http,
+  getAddress,
   LocalAccount,
   createPublicClient,
   createWalletClient,
@@ -32,9 +29,12 @@ import {
   BaseConcreteStrategy,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  WalletStrategyEthereumOptions,
-  ConcreteEthereumWalletStrategyArgs,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import { sleep, HttpRestClient } from '@injectivelabs/utils'
+import { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { DEFAULT_EVM_CHAIN_CONFIG } from './consts.js'
@@ -44,12 +44,12 @@ export class TurnkeyWalletStrategy
   implements ConcreteWalletStrategy
 {
   public turnkeyWallet?: TurnkeyWallet
-  public ethereumOptions: WalletStrategyEthereumOptions
+  public evmOptions: WalletStrategyEvmOptions
 
   public client: HttpRestClient
 
   constructor(
-    args: ConcreteEthereumWalletStrategyArgs & {
+    args: ConcreteEvmWalletStrategyArgs & {
       apiServerEndpoint?: string
     },
   ) {
@@ -63,7 +63,7 @@ export class TurnkeyWalletStrategy
     }
 
     this.client = new HttpRestClient(endpoint)
-    this.ethereumOptions = args.ethereumOptions
+    this.evmOptions = args.evmOptions
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -150,18 +150,18 @@ export class TurnkeyWalletStrategy
 
   async sendEvmTransaction(
     transaction: unknown,
-    args: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    args: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     try {
-      const options = this.ethereumOptions
+      const options = this.evmOptions
       const turnkeyWallet = await this.getTurnkeyWallet()
 
-      const chainId = args.ethereumChainId || options.ethereumChainId
-      const url = options.rpcUrl || options.rpcUrls?.[args.ethereumChainId]
+      const chainId = args.evmChainId || options.evmChainId
+      const url = options.rpcUrl || options.rpcUrls?.[args.evmChainId]
 
       if (!url) {
         throw new WalletException(
-          new Error('Please pass rpcUrl within the ethereumOptions'),
+          new Error('Please pass rpcUrl within the evmOptions'),
           {
             code: UnspecifiedErrorCode,
             context: WalletAction.SendEvmTransaction,
@@ -331,18 +331,18 @@ export class TurnkeyWalletStrategy
 
   async getEvmTransactionReceipt(
     txHash: string,
-    ethereumChainId?: EthereumChainId,
+    evmChainId?: EvmChainId,
   ): Promise<Record<string, any>> {
-    const options = this.ethereumOptions
+    const options = this.evmOptions
 
     const maxAttempts = 10
     const interval = 3000
-    const chainId = ethereumChainId || options.ethereumChainId
+    const chainId = evmChainId || options.evmChainId
     const url = options.rpcUrl || options.rpcUrls?.[chainId]
 
     if (!url) {
       throw new WalletException(
-        new Error('Please pass rpcUrl within the ethereumOptions'),
+        new Error('Please pass rpcUrl within the evmOptions'),
         {
           code: UnspecifiedErrorCode,
           context: WalletAction.GetEvmTransactionReceipt,

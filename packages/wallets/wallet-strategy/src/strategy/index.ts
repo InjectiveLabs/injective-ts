@@ -5,36 +5,37 @@ import {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
-  WalletStrategyEthereumOptions,
-  ConcreteEthereumWalletStrategyArgs,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import {
   LedgerLiveStrategy,
   LedgerLegacyStrategy,
 } from '@injectivelabs/wallet-ledger'
-import { MagicStrategy } from '@injectivelabs/wallet-magic'
-import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
 import {
   TrezorBip32Strategy,
   TrezorBip44Strategy,
 } from '@injectivelabs/wallet-trezor'
+import { MagicStrategy } from '@injectivelabs/wallet-magic'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
 import { TurnkeyWalletStrategy } from '@injectivelabs/wallet-turnkey'
 import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
-  const { ethereumOptions } = args
+  const { evmOptions } = args
 
-  if (!ethereumOptions) {
+  if (!evmOptions) {
     return true
   }
 
-  const { ethereumChainId } = ethereumOptions
+  const { evmChainId } = evmOptions
 
-  if (!ethereumChainId) {
+  if (!evmChainId) {
     return true
   }
 
@@ -45,22 +46,28 @@ const createStrategy = ({
   args,
   wallet,
 }: {
-  args: WalletStrategyArguments
   wallet: Wallet
+  args: WalletStrategyArguments
 }): ConcreteWalletStrategy | undefined => {
+  console.log('creating strategy for wallet:', wallet)
+
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
    */
   if (isEvmWallet(wallet) && ethereumWalletsDisabled(args)) {
+    console.log(
+      'Skipping EVM wallet strategy creation due to disabled EVM options',
+    )
+
     return undefined
   }
 
   const ethWalletArgs = {
     ...args,
     chainId: args.chainId,
-    ethereumOptions: args.ethereumOptions as WalletStrategyEthereumOptions,
-  } as ConcreteEthereumWalletStrategyArgs
+    evmOptions: args.evmOptions as WalletStrategyEvmOptions,
+  } as ConcreteEvmWalletStrategyArgs
 
   switch (wallet) {
     case Wallet.Metamask:
@@ -136,23 +143,9 @@ const createStrategy = ({
   }
 }
 
-const createAllStrategies = (
-  args: WalletStrategyArguments,
-): ConcreteStrategiesArg => {
-  return Object.values(Wallet).reduce((strategies, wallet) => {
-    if (strategies[wallet]) {
-      return strategies
-    }
-
-    strategies[wallet] = createStrategy({ args, wallet: wallet as Wallet })
-
-    return strategies
-  }, {} as ConcreteStrategiesArg)
-}
-
 export class WalletStrategy extends BaseWalletStrategy {
   constructor(args: WalletStrategyArguments) {
-    const strategies = createAllStrategies(args)
+    const strategies = {} as ConcreteStrategiesArg
 
     super({
       ...args,
@@ -197,6 +190,34 @@ export class WalletStrategy extends BaseWalletStrategy {
 
       this.strategies[walletEnum]?.setMetadata?.(metadata)
     }
+  }
+
+  public getStrategy(): ConcreteWalletStrategy {
+    console.log('creating strategy for wallet via getStrategy:', this.wallet)
+
+    if (this.strategies[this.wallet]) {
+      return this.strategies[this.wallet] as ConcreteWalletStrategy
+    }
+
+    const strategy = createStrategy({
+      args: this.args,
+      wallet: this.wallet,
+    })
+
+    console.log(strategy, {
+      args: this.args,
+      wallet: this.wallet,
+    })
+
+    if (!strategy) {
+      throw new GeneralException(
+        new Error(`Wallet ${this.wallet} is not enabled/available!`),
+      )
+    }
+
+    this.strategies[this.wallet] = strategy
+
+    return strategy as ConcreteWalletStrategy
   }
 }
 

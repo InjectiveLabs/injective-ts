@@ -34,10 +34,10 @@ import {
   ConcreteWalletStrategy,
   ConcreteWalletStrategyArgs,
   EIP6963AnnounceProviderEvent,
-  ConcreteEthereumWalletStrategyArgs,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import { sleep, capitalize } from '@injectivelabs/utils'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import {
   getBitGetProvider,
   getPhantomProvider,
@@ -55,7 +55,7 @@ export class EvmWallet
   public evmProviders: Partial<Record<Wallet, BrowserEip1993Provider>> = {}
 
   constructor(
-    args: (ConcreteWalletStrategyArgs | ConcreteEthereumWalletStrategyArgs) & {
+    args: (ConcreteWalletStrategyArgs | ConcreteEvmWalletStrategyArgs) & {
       wallet: Wallet
     },
   ) {
@@ -195,7 +195,7 @@ export class EvmWallet
 
   async sendEvmTransaction(
     transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     const ethereum = await this.getEthereum()
 

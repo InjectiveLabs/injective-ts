@@ -1,22 +1,22 @@
-import { generateMnemonic } from 'bip39'
-import { Wallet, HDNodeWallet, Signature, getBytes, concat } from 'ethers'
 import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
-import { PublicKey } from './PublicKey.js'
-import { Address } from './Address.js'
+import { generateMnemonic } from 'bip39'
+import {
+  CosmosTxV1Beta1Tx,
+  InjectiveTypesV1Beta1TxExt,
+} from '@injectivelabs/core-proto-ts'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { Wallet, HDNodeWallet, Signature, getBytes, concat } from 'ethers'
 import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 import {
   DEFAULT_DERIVATION_PATH,
   recoverTypedSignaturePubKey,
 } from '../../utils/index.js'
-import {
-  CosmosTxV1Beta1Tx,
-  InjectiveTypesV1Beta1TxExt,
-} from '@injectivelabs/core-proto-ts'
+import { Address } from './Address.js'
+import { PublicKey } from './PublicKey.js'
 import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
 import { getEip712TypedData, MsgDecoder } from '../tx/eip712/index.js'
-import { GeneralException } from '@injectivelabs/exceptions'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -346,8 +346,8 @@ export class PrivateKey {
     const getChainIds = () => {
       if (!body.extensionOptions.length) {
         return {
-          ethereumChainId: EthereumChainId.Mainnet,
           chainId: ChainId.Mainnet,
+          EvmChainId: EvmChainId.Mainnet,
         }
       }
 
@@ -357,8 +357,8 @@ export class PrivateKey {
 
       if (!extension) {
         return {
-          ethereumChainId: EthereumChainId.Mainnet,
           chainId: ChainId.Mainnet,
+          EvmChainId: EvmChainId.Mainnet,
         }
       }
 
@@ -367,23 +367,21 @@ export class PrivateKey {
           extension.value,
         )
 
-      const ethereumChainId = Number(
-        decodedExtension.typedDataChainID,
-      ) as EthereumChainId
+      const evmChainId = Number(decodedExtension.typedDataChainID) as EvmChainId
 
       return {
-        ethereumChainId: ethereumChainId,
+        evmChainId: EvmChainId,
         chainId: [
-          EthereumChainId.Goerli,
-          EthereumChainId.Kovan,
-          EthereumChainId.Sepolia,
-        ].includes(ethereumChainId)
+          EvmChainId.Kovan,
+          EvmChainId.Goerli,
+          EvmChainId.Sepolia,
+        ].includes(evmChainId)
           ? ChainId.Testnet
           : ChainId.Mainnet,
       }
     }
 
-    const { ethereumChainId, chainId } = getChainIds()
+    const { evmChainId, chainId } = getChainIds()
     const [signerInfo] = authInfo.signerInfos
     const [signature] = signatures
     const [msg] = body.messages
@@ -399,7 +397,7 @@ export class PrivateKey {
         timeoutHeight: body.timeoutHeight.toString(),
         chainId,
       },
-      ethereumChainId,
+      evmChainId: evmChainId as unknown as EvmChainId,
     })
 
     return this.verifySignature({

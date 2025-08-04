@@ -1,4 +1,4 @@
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
@@ -40,7 +40,7 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     eip712Version = 'v1',
   }: {
     address: AccountAddress
-    chainId: EthereumChainId
+    chainId: EvmChainId
     message: any
     estimateGas?: boolean
     gasLimit?: number

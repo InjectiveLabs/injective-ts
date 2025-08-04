@@ -5,8 +5,8 @@ import {
 } from '@injectivelabs/utils'
 import snakecaseKeys from 'snakecase-keys'
 import {
+  InjectivePeggyV1Msgs,
   CosmosBaseV1Beta1Coin,
-  InjectivePeggyV1Beta1Msgs,
 } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgSendToEth {
@@ -23,7 +23,7 @@ export declare namespace MsgSendToEth {
     injectiveAddress: string
   }
 
-  export type Proto = InjectivePeggyV1Beta1Msgs.MsgSendToEth
+  export type Proto = InjectivePeggyV1Msgs.MsgSendToEth
 }
 
 /**
@@ -55,14 +55,14 @@ export default class MsgSendToEth extends MsgBase<
       ? params.bridgeFee.amount
       : DEFAULT_BRIDGE_FEE_AMOUNT
 
-    const message = InjectivePeggyV1Beta1Msgs.MsgSendToEth.create()
+    const message = InjectivePeggyV1Msgs.MsgSendToEth.create()
 
     message.sender = params.injectiveAddress
     message.ethDest = params.address
     message.amount = coinAmount
     message.bridgeFee = bridgeFee
 
-    return InjectivePeggyV1Beta1Msgs.MsgSendToEth.fromPartial(message)
+    return InjectivePeggyV1Msgs.MsgSendToEth.fromPartial(message)
   }
 
   public toData() {
@@ -106,8 +106,6 @@ export default class MsgSendToEth extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectivePeggyV1Beta1Msgs.MsgSendToEth.encode(
-      this.toProto(),
-    ).finish()
+    return InjectivePeggyV1Msgs.MsgSendToEth.encode(this.toProto()).finish()
   }
 }

@@ -1,9 +1,12 @@
-import { TransportWebUSB } from '@bangjelkoski/ledgerhq-hw-transport-webusb'
-import { TransportWebHID } from '@bangjelkoski/ledgerhq-hw-transport-webhid'
-import { Cosmos as CosmosApp } from '@bangjelkoski/ledgerhq-hw-app-cosmos'
-import { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
 import { LedgerCosmosException } from '@injectivelabs/exceptions'
+import {
+  loadCosmosType,
+  loadTransportWebUSB,
+  loadTransportWebHIDType,
+} from './../../lib.js'
 import AccountManager from './AccountManager.js'
+import type { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
+import type { Cosmos as CosmosApp } from '@bangjelkoski/ledgerhq-hw-app-cosmos'
 
 export default class LedgerTransport {
   private ledger: CosmosApp | null = null
@@ -11,6 +14,9 @@ export default class LedgerTransport {
   private accountManager: AccountManager | null = null
 
   protected static async getTransport(): Promise<Transport> {
+    const TransportWebUSB = await loadTransportWebUSB()
+    const TransportWebHID = await loadTransportWebHIDType()
+
     try {
       if (await TransportWebHID.isSupported()) {
         return await TransportWebHID.create()
@@ -27,6 +33,8 @@ export default class LedgerTransport {
   }
 
   async getInstance(): Promise<CosmosApp> {
+    const CosmosApp = await loadCosmosType()
+
     if (!this.ledger) {
       this.ledger = new CosmosApp((await LedgerTransport.getTransport()) as any)
     }

@@ -1,4 +1,4 @@
-export enum EthereumChainId {
+export enum EvmChainId {
   Mainnet = 1,
   Ropsten = 3,
   Rinkeby = 4,

@@ -20,7 +20,7 @@ import {
   EthereumProvider,
   EthereumProviderOptions,
 } from '@bangjelkoski/wc-ethereum-provider'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import {
   TxRaw,
   toUtf8,
@@ -102,7 +102,7 @@ export class WalletConnect
 
   async sendEvmTransaction(
     transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     const wc = await this.getConnectedWalletConnect()
 
@@ -237,7 +237,7 @@ export class WalletConnect
 
   async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new WalletException(
-      new Error('This wallet does not support awaiting Ethereum transactions'),
+      new Error('This wallet does not support awaiting Evm transactions'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
@@ -310,9 +310,9 @@ export class WalletConnect
         metadata: this
           .metadata as unknown as EthereumProviderOptions['metadata'],
         showQrModal: true,
-        optionalChains: this.ethereumChainId
-          ? [this.ethereumChainId]
-          : [EthereumChainId.Mainnet, EthereumChainId.Sepolia],
+        optionalChains: this.evmChainId
+          ? [this.evmChainId]
+          : [EvmChainId.Mainnet, EvmChainId.Sepolia],
         qrModalOptions: {
           explorerRecommendedWalletIds: [WalletConnectIds.FireBlocks],
           explorerExcludedWalletIds: 'ALL',

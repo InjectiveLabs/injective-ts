@@ -6,6 +6,7 @@ import MsgSubmitProposalSpotMarketLaunch from './msgs/MsgSubmitProposalSpotMarke
 import MsgSubmitProposalPerpetualMarketLaunch from './msgs/MsgSubmitProposalPerpetualMarketLaunch.js'
 import MsgSubmitProposalSpotMarketParamUpdate from './msgs/MsgSubmitProposalSpotMarketParamUpdate.js'
 import MsgSubmitProposalExpiryFuturesMarketLaunch from './msgs/MsgSubmitProposalExpiryFuturesMarketLaunch.js'
+import MsgSubmitProposalPerpetualMarketLaunchV2 from './msgs/MsgSubmitProposalPerpetualMarketLaunchV2.js'
 
 export type MsgSubmitProposal =
   | MsgSubmitTextProposal
@@ -13,6 +14,7 @@ export type MsgSubmitProposal =
   | MsgSubmitProposalSpotMarketLaunch
   | MsgSubmitProposalPerpetualMarketLaunch
   | MsgSubmitProposalSpotMarketParamUpdate
+  | MsgSubmitProposalPerpetualMarketLaunchV2
   | MsgSubmitProposalExpiryFuturesMarketLaunch
 
 export {
@@ -21,6 +23,7 @@ export {
   MsgSubmitProposalSpotMarketLaunch,
   MsgSubmitProposalPerpetualMarketLaunch,
   MsgSubmitProposalSpotMarketParamUpdate,
+  MsgSubmitProposalPerpetualMarketLaunchV2,
   MsgSubmitProposalExpiryFuturesMarketLaunch,
 }
 

@@ -1,4 +1,4 @@
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_EXCHANGE_LIMIT,
@@ -23,7 +23,7 @@ import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 interface PrepareTxArgs {
   address: AccountAddress
-  chainId: EthereumChainId
+  chainId: EvmChainId
   message: any
   estimateGas?: boolean
   gasLimit?: number
@@ -94,7 +94,10 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
     }
 
     try {
-      const response = await this.client.PrepareTx(prepareTxRequest, this.metadata)
+      const response = await this.client.PrepareTx(
+        prepareTxRequest,
+        this.metadata,
+      )
 
       return response
     } catch (e: unknown) {
@@ -210,7 +213,7 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
     txResponse,
   }: {
     signature: string
-    chainId: EthereumChainId
+    chainId: EvmChainId
     useCorrectEIP712Hash?: boolean
     txResponse: InjectiveExchangeRpc.PrepareTxResponse
     message: Record<string, any>

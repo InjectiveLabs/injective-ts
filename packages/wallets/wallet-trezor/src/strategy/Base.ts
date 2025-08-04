@@ -1,27 +1,21 @@
 /* eslint-disable camelcase */
 /* eslint-disable class-methods-use-this */
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
-import { addHexPrefix } from 'ethereumjs-util'
-import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import { TrezorConnect } from '@bangjelkoski/trezor-connect-web'
-import {
-  ErrorType,
-  WalletException,
-  TrezorException,
-  GeneralException,
-  TransactionException,
-  UnspecifiedErrorCode,
-} from '@injectivelabs/exceptions'
 import {
   TxRaw,
   toUtf8,
   TxGrpcApi,
   TxResponse,
-  DirectSignResponse,
   AminoSignResponse,
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
+import {
+  ErrorType,
+  WalletException,
+  TrezorException,
+  GeneralException,
+  UnspecifiedErrorCode,
+  TransactionException,
+} from '@injectivelabs/exceptions'
 import {
   StdSignDoc,
   TIP_IN_GWEI,
@@ -29,16 +23,22 @@ import {
   getKeyFromRpcUrl,
   WalletDeviceType,
   BaseConcreteStrategy,
-  ConcreteWalletStrategy,
   SendTransactionOptions,
+  ConcreteWalletStrategy,
+  WalletStrategyEvmOptions,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
+  ConcreteEvmWalletStrategyArgs,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-  WalletStrategyEthereumOptions,
-  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { TrezorTransportInit, BaseTrezorTransport } from './hw/index.js'
+import { addHexPrefix } from 'ethereumjs-util'
+import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
+import { Common, Chain, Hardfork } from '@ethereumjs/common'
+import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import { loadTrezorConnect } from './lib.js'
 import { transformTypedData } from '../utils.js'
+import { BaseTrezorTransport } from './hw/index.js'
 import { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
 
 type EthereumTransactionEIP1559 = {
@@ -53,16 +53,16 @@ type EthereumTransactionEIP1559 = {
   maxPriorityFeePerGas: string
 }
 
-const getNetworkFromChainId = (chainId: EthereumChainId): Chain => {
-  if (chainId === EthereumChainId.Goerli) {
+const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
+  if (chainId === EvmChainId.Goerli) {
     return Chain.Goerli
   }
 
-  if (chainId === EthereumChainId.Sepolia) {
+  if (chainId === EvmChainId.Sepolia) {
     return Chain.Sepolia
   }
 
-  if (chainId === EthereumChainId.Kovan) {
+  if (chainId === EvmChainId.Kovan) {
     return Chain.Goerli
   }
 
@@ -77,23 +77,23 @@ export default class TrezorBase
 
   private trezor: BaseTrezorTransport
 
-  private ethereumOptions: WalletStrategyEthereumOptions
+  private evmOptions: WalletStrategyEvmOptions
 
   private alchemy: Alchemy | undefined
 
   private derivationPathType: TrezorDerivationPathType
 
   constructor(
-    args: ConcreteEthereumWalletStrategyArgs & {
+    args: ConcreteEvmWalletStrategyArgs & {
       derivationPathType: TrezorDerivationPathType
     },
   ) {
     super(args)
 
-    this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
+    this.evmOptions = args.evmOptions
+    this.trezor = new BaseTrezorTransport()
     this.derivationPathType = args.derivationPathType
-    this.trezor = new TrezorTransportInit()
-    this.ethereumOptions = args.ethereumOptions
+    this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -139,12 +139,12 @@ export default class TrezorBase
 
   async sendEvmTransaction(
     txData: any,
-    args: { address: string; ethereumChainId: EthereumChainId },
+    args: { address: string; evmChainId: EvmChainId },
   ): Promise<string> {
     const signedTransaction = await this.signEvmTransaction(txData, args)
 
     try {
-      const alchemy = await this.getAlchemy(args.ethereumChainId)
+      const alchemy = await this.getAlchemy(args.evmChainId)
       const txReceipt = await alchemy.core.sendTransaction(
         addHexPrefix(signedTransaction.serialize().toString('hex')),
       )
@@ -191,6 +191,8 @@ export default class TrezorBase
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
+    const TrezorConnect = await loadTrezorConnect()
+
     const object = JSON.parse(eip712json)
     const compatibleObject = {
       ...object,
@@ -278,6 +280,8 @@ export default class TrezorBase
     signer: AccountAddress,
     data: string | Uint8Array,
   ): Promise<string> {
+    const TrezorConnect = await loadTrezorConnect()
+
     try {
       await this.trezor.connect()
       const { derivationPath } = await this.getWalletForAddress(signer)
@@ -323,10 +327,12 @@ export default class TrezorBase
 
   private async signEvmTransaction(
     txData: any,
-    args: { address: string; ethereumChainId: EthereumChainId },
+    args: { address: string; evmChainId: EvmChainId },
   ) {
-    const chainId = parseInt(args.ethereumChainId.toString(), 10)
-    const alchemy = await this.getAlchemy(args.ethereumChainId)
+    const TrezorConnect = await loadTrezorConnect()
+
+    const chainId = parseInt(args.evmChainId.toString(), 10)
+    const alchemy = await this.getAlchemy(args.evmChainId)
     const nonce = await alchemy.core.getTransactionCount(args.address)
 
     const common = new Common({
@@ -427,14 +433,14 @@ export default class TrezorBase
     )) as TrezorWalletInfo
   }
 
-  private async getAlchemy(ethereumChainId?: EthereumChainId) {
+  private async getAlchemy(evmChainId?: EvmChainId) {
     if (this.alchemy) {
       return this.alchemy
     }
 
-    const options = this.ethereumOptions
+    const options = this.evmOptions
 
-    const chainId = ethereumChainId || options.ethereumChainId
+    const chainId = evmChainId || options.evmChainId
     const url = options.rpcUrl || options.rpcUrls?.[chainId]
 
     if (!url) {
@@ -446,7 +452,7 @@ export default class TrezorBase
     this.alchemy = new Alchemy({
       apiKey: getKeyFromRpcUrl(url),
       network:
-        chainId === EthereumChainId.Mainnet
+        chainId === EvmChainId.Mainnet
           ? AlchemyNetwork.ETH_MAINNET
           : AlchemyNetwork.ETH_SEPOLIA,
     })

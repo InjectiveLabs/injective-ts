@@ -24,8 +24,6 @@ const message = MsgUpdateActorRoles.fromJSON(params)
 describe('MsgCreateNamespace', () => {
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      sequence: 0,
-      accountNumber: 3,
       messages: message,
     })
 

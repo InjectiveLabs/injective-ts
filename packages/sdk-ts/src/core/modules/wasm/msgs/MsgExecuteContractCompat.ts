@@ -2,7 +2,7 @@ import snakecaseKeys from 'snakecase-keys'
 import { ExecArgs } from '../exec-args.js'
 import { MsgBase } from '../../MsgBase.js'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { InjectiveWasmxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { InjectiveWasmxV1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgExecuteContractCompat {
   export interface Params {
@@ -52,10 +52,10 @@ export declare namespace MsgExecuteContractCompat {
     msg?: Record<string, any>
   }
 
-  export type Proto = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat
+  export type Proto = InjectiveWasmxV1Tx.MsgExecuteContractCompat
 
   export type Object = Omit<
-    InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat,
+    InjectiveWasmxV1Tx.MsgExecuteContractCompat,
     'msg'
   > & {
     msg: string
@@ -79,7 +79,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.create()
+    const message = InjectiveWasmxV1Tx.MsgExecuteContractCompat.create()
     const msg = this.getMsgObject()
 
     message.sender = params.sender
@@ -100,7 +100,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
       message.funds = '0'
     }
 
-    return InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.fromPartial(message)
+    return InjectiveWasmxV1Tx.MsgExecuteContractCompat.fromPartial(message)
   }
 
   public toData() {
@@ -148,7 +148,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveWasmxV1Beta1Tx.MsgExecuteContractCompat.encode(
+    return InjectiveWasmxV1Tx.MsgExecuteContractCompat.encode(
       this.toProto(),
     ).finish()
   }

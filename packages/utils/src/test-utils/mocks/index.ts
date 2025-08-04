@@ -1,4 +1,4 @@
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
 const ethereumAddress = '0xaf79152ac5df276d9a8e1e2e22822f9713474902'
 const injectiveAddress = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
@@ -97,14 +97,14 @@ export const mockFactory = {
 
   eip712Tx: ({
     chainId = ChainId.Devnet,
-    ethereumChainId = EthereumChainId.Sepolia,
+    evmChainId = EvmChainId.Sepolia,
     accountNumber = 1,
     sequence = 0,
     timeoutHeight = 999999999,
     memo = '',
   }: {
     chainId?: ChainId
-    ethereumChainId?: EthereumChainId
+    evmChainId?: EvmChainId
     accountNumber?: number
     sequence?: number
     timeoutHeight?: number
@@ -114,7 +114,7 @@ export const mockFactory = {
       memo,
       chainId,
       sequence,
-      ethereumChainId,
+      evmChainId,
       accountNumber,
       timeoutHeight,
     },
@@ -123,7 +123,7 @@ export const mockFactory = {
       chainId,
       sequence,
       accountNumber,
-      ethereumChainId,
+      evmChainId,
       timeoutHeight,
     },
   }),
