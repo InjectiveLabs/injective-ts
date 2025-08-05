@@ -1,6 +1,6 @@
 import { ConcreteException } from '../base.js'
 import { ErrorContext, ErrorType } from '../types/index.js'
-import { mapMetamaskMessage } from '../utils/maps.js'
+import { mapErrorMessage } from '../utils/maps.js'
 
 const removeMetamaskFromErrorString = (message: string): string =>
   message
@@ -20,7 +20,16 @@ export class MetamaskException extends ConcreteException {
   public parse(): void {
     const { message } = this
 
-    this.setMessage(mapMetamaskMessage(removeMetamaskFromErrorString(message)))
+    if (
+      message
+        .trim()
+        .toLowerCase()
+        .includes('missing or invalid parameters'.toLowerCase())
+    ) {
+      this.setMessage('Please make sure you are using Metamask Wallet')
+    } else {
+      this.setMessage(mapErrorMessage(removeMetamaskFromErrorString(message)))
+    }
 
     this.setName(MetamaskException.errorClass)
   }

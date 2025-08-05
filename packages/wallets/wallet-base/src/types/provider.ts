@@ -3,6 +3,7 @@ import { type EIP1193Provider } from 'eip1193-provider'
 export interface BrowserEip1993Provider extends EIP1193Provider {
   removeAllListeners(): void
   isTrust: boolean
+  isRabby: boolean
   isRainbow: boolean
   isPhantom: boolean
   isMetaMask: boolean
@@ -12,6 +13,7 @@ export interface BrowserEip1993Provider extends EIP1193Provider {
 
 export interface WindowWithEip1193Provider extends Window {
   rainbow: BrowserEip1993Provider
+  rabby: BrowserEip1993Provider
   ethereum: BrowserEip1993Provider
   okxwallet: BrowserEip1993Provider
   providers: BrowserEip1993Provider[]

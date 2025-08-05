@@ -14,25 +14,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Using Node from .nvmrc
+        uses: useblacksmith/setup-node@v5
         with:
-          fetch-depth: 1
+          node-version-file: '.nvmrc'
 
-      - name: 'Use NodeJS 24'
-        uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: '24.4.0'
-
-      - name: 'Install pnpm'
-        run: npm install -g pnpm
-
-      - name: 'Setup pnpm global bin directory'
-        run: |
-          mkdir -p ~/.pnpm-global
-          pnpm config set global-bin-dir ~/.pnpm-global
-          echo "$HOME/.pnpm-global" >> $GITHUB_PATH
-
-      - name: 'Setup lerna@8.2.3'
-        run: pnpm install lerna@8.2.3 -g
+          version: latest
 
       - name: Set up Git user
         run: |

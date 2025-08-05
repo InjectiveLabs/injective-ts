@@ -39,6 +39,7 @@ import {
 import { sleep, capitalize } from '@injectivelabs/utils'
 import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import {
+  getRabbyProvider,
   getBitGetProvider,
   getPhantomProvider,
   getRainbowProvider,
@@ -78,6 +79,10 @@ export class EvmWallet
 
           if (walletName === Wallet.Metamask.toLowerCase()) {
             this.evmProviders[Wallet.Metamask] = event.detail.provider
+          }
+
+          if (walletName === Wallet.Rabby.toLowerCase()) {
+            this.evmProviders[Wallet.Rabby] = event.detail.provider
           }
 
           if (walletName === Wallet.Rainbow.toLowerCase()) {
@@ -413,6 +418,8 @@ export class EvmWallet
     const backUpProvider =
       this.wallet === Wallet.Metamask
         ? await getMetamaskProvider()
+        : this.wallet === Wallet.Rabby
+        ? await getRabbyProvider()
         : this.wallet === Wallet.Phantom
         ? await getPhantomProvider()
         : this.wallet === Wallet.BitGet

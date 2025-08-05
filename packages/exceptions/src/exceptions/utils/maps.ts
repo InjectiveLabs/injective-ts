@@ -1,13 +1,13 @@
 import {
+  ErrorContext,
+  ErrorContextCode,
+  UnspecifiedErrorCode,
+  TransactionChainErrorModule,
+} from '../types/index.js'
+import {
   chainErrorMessagesMap,
   chainModuleCodeErrorMessagesMap,
 } from '../messages.js'
-import {
-  ErrorContext,
-  ErrorContextCode,
-  TransactionChainErrorModule,
-  UnspecifiedErrorCode,
-} from '../types/index.js'
 
 export const parseErrorMessage = (message: string): string => {
   const firstParse = message.split('message index: 0:')
@@ -161,7 +161,7 @@ export const mapFailedTransactionMessage = (
   }
 }
 
-export const mapMetamaskMessage = (message: string): string => {
+export const mapErrorMessage = (message: string): string => {
   const parsedMessage = message.trim().toLowerCase()
 
   if (parsedMessage.includes('User denied message signature'.toLowerCase())) {
@@ -173,15 +173,7 @@ export const mapMetamaskMessage = (message: string): string => {
   }
 
   if (parsedMessage.toLowerCase().includes('provided chain'.toLowerCase())) {
-    return 'Your Metamask selected network is incorrect'
-  }
-
-  if (
-    parsedMessage
-      .toLowerCase()
-      .includes('missing or invalid parameters'.toLowerCase())
-  ) {
-    return 'Please make sure you are using Metamask'
+    return 'Your selected network is incorrect'
   }
 
   if (

@@ -75,19 +75,11 @@ const createStrategy = ({
         ...ethWalletArgs,
         wallet: Wallet.Metamask,
       })
-    case Wallet.Ledger:
-      return new LedgerLiveStrategy(ethWalletArgs)
-    case Wallet.LedgerLegacy:
-      return new LedgerLegacyStrategy(ethWalletArgs)
     case Wallet.TrustWallet:
       return new EvmWalletStrategy({
         ...ethWalletArgs,
         wallet: Wallet.TrustWallet,
       })
-    case Wallet.TrezorBip32:
-      return new TrezorBip32Strategy(ethWalletArgs)
-    case Wallet.TrezorBip44:
-      return new TrezorBip44Strategy(ethWalletArgs)
     case Wallet.Phantom:
       return new EvmWalletStrategy({
         ...ethWalletArgs,
@@ -108,36 +100,57 @@ const createStrategy = ({
         ...ethWalletArgs,
         wallet: Wallet.Rainbow,
       })
-    case Wallet.WalletConnect:
-      if (!args.metadata?.walletConnect?.projectId) {
-        return undefined
-      }
+    case Wallet.Rabby:
+      return new EvmWalletStrategy({
+        ...ethWalletArgs,
+        wallet: Wallet.Rabby,
+      })
 
-      return new WalletConnectStrategy(ethWalletArgs)
-    case Wallet.PrivateKey:
-      return new PrivateKeyWalletStrategy(ethWalletArgs)
     case Wallet.Keplr:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Keplr })
-    case Wallet.Cosmostation:
-      return new CosmostationWalletStrategy({ ...args })
     case Wallet.Leap:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Leap })
     case Wallet.Ninji:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Ninji })
     case Wallet.OWallet:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.OWallet })
-    case Wallet.Magic:
-      if (!args.metadata?.magic?.apiKey || !args.metadata?.magic?.rpcEndpoint) {
-        return undefined
-      }
 
-      return new MagicStrategy(args)
+    case Wallet.Cosmostation:
+      return new CosmostationWalletStrategy({ ...args })
+
+    case Wallet.Ledger:
+      return new LedgerLiveStrategy(ethWalletArgs)
+    case Wallet.LedgerLegacy:
+      return new LedgerLegacyStrategy(ethWalletArgs)
+
+    case Wallet.TrezorBip32:
+      return new TrezorBip32Strategy(ethWalletArgs)
+    case Wallet.TrezorBip44:
+      return new TrezorBip44Strategy(ethWalletArgs)
+    case Wallet.PrivateKey:
+      return new PrivateKeyWalletStrategy(ethWalletArgs)
+
     case Wallet.Turnkey:
       if (!args.metadata?.turnkey?.defaultOrganizationId) {
         return undefined
       }
 
       return new TurnkeyWalletStrategy(ethWalletArgs)
+
+    case Wallet.Magic:
+      if (!args.metadata?.magic?.apiKey || !args.metadata?.magic?.rpcEndpoint) {
+        return undefined
+      }
+
+      return new MagicStrategy(args)
+
+    case Wallet.WalletConnect:
+      if (!args.metadata?.walletConnect?.projectId) {
+        return undefined
+      }
+
+      return new WalletConnectStrategy(ethWalletArgs)
+
     default:
       return undefined
   }

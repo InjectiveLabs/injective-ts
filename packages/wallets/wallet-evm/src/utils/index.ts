@@ -6,6 +6,7 @@ import {
 import { capitalize } from '@injectivelabs/utils'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import { WalletException } from '@injectivelabs/exceptions'
+import { getRabbyProvider } from '../strategy/utils/rabby.js'
 import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
 import { getBitGetProvider } from '../strategy/utils/bitget.js'
 import { getPhantomProvider } from '../strategy/utils/phantom.js'
@@ -26,6 +27,10 @@ export const getEvmProvider = async (
 
     if (wallet === Wallet.Metamask) {
       provider = (await getMetamaskProvider()) as BrowserEip1993Provider
+    }
+
+    if (wallet === Wallet.Rabby) {
+      provider = (await getRabbyProvider()) as BrowserEip1993Provider
     }
 
     if (wallet === Wallet.BitGet) {
