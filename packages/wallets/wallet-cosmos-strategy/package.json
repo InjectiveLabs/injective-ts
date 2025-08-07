@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-cosmos-strategy",
   "description": "Wallet Cosmos Strategy with instantiated wallets",
-  "version": "1.16.2",
+  "version": "1.16.3",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -56,11 +56,11 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/ts-types": "^1.16.2",
-    "@injectivelabs/wallet-base": "^1.16.2",
-    "@injectivelabs/wallet-core": "^1.16.2",
-    "@injectivelabs/wallet-cosmos": "^1.16.2",
-    "@injectivelabs/wallet-cosmostation": "^1.16.2"
+    "@injectivelabs/ts-types": "^1.16.3",
+    "@injectivelabs/wallet-base": "^1.16.3",
+    "@injectivelabs/wallet-core": "^1.16.3",
+    "@injectivelabs/wallet-cosmos": "^1.16.3",
+    "@injectivelabs/wallet-cosmostation": "^1.16.3"
   },
   "devDependencies": {
     "shx": "^0.3.3"
