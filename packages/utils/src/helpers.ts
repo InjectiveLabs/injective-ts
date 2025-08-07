@@ -1,10 +1,9 @@
 import {
-  DEFAULT_STD_FEE,
+  getDefaultStdFee,
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
 } from './constants.js'
-import BigNumberInWei from './classes/BigNumber/BigNumberInWei.js'
-import BigNumberInBase from './classes/BigNumber/BigNumberInBase.js'
+import { default as BigNumber, toWei, toBase } from './classes/BigNumber.js'
 import { Awaited } from './types.js'
 
 export const sleep = (timeout: number): Promise<void> =>
@@ -93,25 +92,18 @@ export const getStdFeeForToken = (
   gasPrice?: string,
   gasLimit?: string,
 ) => {
-  const gasPriceInBase =
-    gasPrice || new BigNumberInWei(DEFAULT_GAS_PRICE).toBase()
-  const gasPriceScaled = new BigNumberInBase(gasPriceInBase)
-    .toWei(token.decimals)
-    .toFixed(0)
-  const gasNormalized = new BigNumberInBase(
-    gasLimit || DEFAULT_GAS_LIMIT,
-  ).toFixed(0)
+  const gasPriceInBase = gasPrice || toBase(DEFAULT_GAS_PRICE, 18)
+  const gasPriceScaled = toWei(gasPriceInBase, token.decimals).toFixed(0)
+  const gasNormalized = new BigNumber(gasLimit || DEFAULT_GAS_LIMIT).toFixed(0)
 
   return {
     amount: [
       {
         denom: token.denom,
-        amount: new BigNumberInBase(gasPriceScaled)
-          .times(gasNormalized)
-          .toFixed(),
+        amount: new BigNumber(gasPriceScaled).times(gasNormalized).toFixed(),
       },
     ],
-    gas: gasNormalized,
+    gas: (gasLimit || DEFAULT_GAS_LIMIT).toString(),
   }
 }
 
@@ -123,52 +115,43 @@ export const getStdFeeFromObject = (args?: {
   feePayer?: string
 }) => {
   if (!args) {
-    return DEFAULT_STD_FEE
+    return getDefaultStdFee()
   }
 
-  const {
-    payer,
-    granter,
-    feePayer,
-    gasPrice = DEFAULT_GAS_PRICE,
-    gas = DEFAULT_GAS_LIMIT.toString(),
-  } = args
-
-  const gasNormalized = new BigNumberInBase(gas).toFixed(0)
-  const gasPriceNormalized = new BigNumberInBase(gasPrice).toFixed(0)
+  const gasPriceInBase = args.gasPrice || toBase(DEFAULT_GAS_PRICE, 18)
+  const gasPriceScaled = toWei(gasPriceInBase, 18).toFixed(0)
 
   return {
     amount: [
       {
         denom: 'inj',
-        amount: new BigNumberInBase(gasNormalized)
-          .times(gasPriceNormalized)
-          .toFixed(),
+        amount: new BigNumber(args.gas || DEFAULT_GAS_LIMIT)
+          .times(gasPriceScaled)
+          .toFixed(0),
       },
     ],
-    gas: new BigNumberInBase(gasNormalized).toFixed(),
-    payer /** for Web3Gateway fee delegation */,
-    granter,
-    feePayer,
+    gas: new BigNumber(args.gas || DEFAULT_GAS_LIMIT).toFixed(),
+    payer: args.payer || '',
+    granter: args.granter || '',
+    feePayer: args.feePayer || '',
   }
 }
 
-export const getDefaultStdFee = () => DEFAULT_STD_FEE
-
 export const getStdFeeFromString = (gasPrice: string) => {
-  const matchResult = gasPrice.match(/^([0-9.]+)([a-zA-Z][a-zA-Z0-9/:._-]*)$/)
+  const gasPriceInBase = toBase(gasPrice, 18)
+  const gasPriceScaled = toWei(gasPriceInBase, 18).toFixed(0)
 
-  if (!matchResult) {
-    throw new Error('Invalid gas price string')
+  return {
+    amount: [
+      {
+        denom: 'inj',
+        amount: new BigNumber(DEFAULT_GAS_LIMIT)
+          .times(gasPriceScaled)
+          .toFixed(0),
+      },
+    ],
+    gas: DEFAULT_GAS_LIMIT.toString(),
   }
-
-  const [_, amount] = matchResult
-  const gas = new BigNumberInBase(amount)
-    .toWei()
-    .dividedBy(DEFAULT_GAS_PRICE)
-    .toFixed(0)
-
-  return getStdFeeFromObject({ gas, gasPrice: DEFAULT_GAS_PRICE })
 }
 
 export const getStdFee = (
@@ -183,7 +166,7 @@ export const getStdFee = (
       },
 ) => {
   if (!args) {
-    return DEFAULT_STD_FEE
+    return getDefaultStdFee()
   }
 
   if (typeof args === 'string') {

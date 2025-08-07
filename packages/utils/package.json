@@ -73,7 +73,9 @@
     "coverage": "jest --coverage",
     "coverage:show": "live-server coverage",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "check:deps": "node circular-dependency-check.js",
+    "analyze:deps": "node dependency-analysis.js"
   },
   "dependencies": {
     "@bangjelkoski/store2": "^2.14.3",
