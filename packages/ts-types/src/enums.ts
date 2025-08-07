@@ -52,7 +52,9 @@ export enum MsgType {
   MsgBeginRedelegate = 'cosmos.staking.v1beta1.MsgBeginRedelegate',
   MsgCreateValidator = 'cosmos.staking.v1beta1.MsgCreateValidator',
   MsgCancelUnbondingDelegation = 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation',
+  MsgTransferDelegation = 'cosmos.staking.v1beta1.MsgTransferDelegation',
 
+  // Wasm
   MsgStoreCode = 'cosmwasm.wasm.v1.MsgStoreCode',
   MsgUpdateAdmin = 'cosmwasm.wasm.v1.MsgUpdateAdmin',
   MsgExecuteContract = 'cosmwasm.wasm.v1.MsgExecuteContract',
@@ -190,7 +192,7 @@ export enum MsgType {
   MsgDerivativeMarketParamUpdateV2 = 'injective.exchange.v2.MsgDerivativeMarketParamUpdate',
   MsgTradingRewardCampaignLaunchV2 = 'injective.exchange.v2.MsgTradingRewardCampaignLaunch',
   MsgTradingRewardCampaignUpdateV2 = 'injective.exchange.v2.MsgTradingRewardCampaignUpdate',
-  MsgInstantPerpetualMarketLaunchV2 = 'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
+  // MsgInstantPerpetualMarketLaunchV2 = 'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
   MsgCreateBinaryOptionsLimitOrderV2 = 'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder',
   MsgAdminUpdateBinaryOptionsMarketV2 = 'injective.exchange.v2.MsgAdminUpdateBinaryOptionsMarket',
   MsgBatchCancelBinaryOptionsOrdersV2 = 'injective.exchange.v2.MsgBatchCancelBinaryOptionsOrders',
