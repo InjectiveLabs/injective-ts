@@ -49,17 +49,11 @@ const createStrategy = ({
   wallet: Wallet
   args: WalletStrategyArguments
 }): ConcreteWalletStrategy | undefined => {
-  console.log('creating strategy for wallet:', wallet)
-
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
    */
   if (isEvmWallet(wallet) && ethereumWalletsDisabled(args)) {
-    console.log(
-      'Skipping EVM wallet strategy creation due to disabled EVM options',
-    )
-
     return undefined
   }
 
@@ -206,18 +200,11 @@ export class WalletStrategy extends BaseWalletStrategy {
   }
 
   public getStrategy(): ConcreteWalletStrategy {
-    console.log('creating strategy for wallet via getStrategy:', this.wallet)
-
     if (this.strategies[this.wallet]) {
       return this.strategies[this.wallet] as ConcreteWalletStrategy
     }
 
     const strategy = createStrategy({
-      args: this.args,
-      wallet: this.wallet,
-    })
-
-    console.log(strategy, {
       args: this.args,
       wallet: this.wallet,
     })

@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-turnkey",
   "description": "Turnkey wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.16.2-alpha.1",
+  "version": "1.16.4",
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

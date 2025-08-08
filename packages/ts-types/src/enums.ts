@@ -8,7 +8,8 @@ export enum EvmChainId {
   Sepolia = 11155111,
   Ganache = 1337,
   HardHat = 31337,
-  DevnetEvm = 1778,
+  MainnetEvm = 1776,
+  DevnetEvm = 1337,
   TestnetEvm = 1439,
 }
 
@@ -51,8 +52,10 @@ export enum MsgType {
   MsgEditValidator = 'cosmos.staking.v1beta1.MsgEditValidator',
   MsgBeginRedelegate = 'cosmos.staking.v1beta1.MsgBeginRedelegate',
   MsgCreateValidator = 'cosmos.staking.v1beta1.MsgCreateValidator',
+  MsgTransferDelegation = 'cosmos.staking.v1beta1.MsgTransferDelegation',
   MsgCancelUnbondingDelegation = 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation',
 
+  // Wasm
   MsgStoreCode = 'cosmwasm.wasm.v1.MsgStoreCode',
   MsgUpdateAdmin = 'cosmwasm.wasm.v1.MsgUpdateAdmin',
   MsgExecuteContract = 'cosmwasm.wasm.v1.MsgExecuteContract',
@@ -190,7 +193,7 @@ export enum MsgType {
   MsgDerivativeMarketParamUpdateV2 = 'injective.exchange.v2.MsgDerivativeMarketParamUpdate',
   MsgTradingRewardCampaignLaunchV2 = 'injective.exchange.v2.MsgTradingRewardCampaignLaunch',
   MsgTradingRewardCampaignUpdateV2 = 'injective.exchange.v2.MsgTradingRewardCampaignUpdate',
-  MsgInstantPerpetualMarketLaunchV2 = 'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
+  // MsgInstantPerpetualMarketLaunchV2 = 'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
   MsgCreateBinaryOptionsLimitOrderV2 = 'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder',
   MsgAdminUpdateBinaryOptionsMarketV2 = 'injective.exchange.v2.MsgAdminUpdateBinaryOptionsMarket',
   MsgBatchCancelBinaryOptionsOrdersV2 = 'injective.exchange.v2.MsgBatchCancelBinaryOptionsOrders',

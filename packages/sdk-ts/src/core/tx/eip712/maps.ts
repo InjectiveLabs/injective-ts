@@ -571,6 +571,8 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'cosmos-sdk/MsgUndelegate'
     case 'cosmos.staking.v1beta1.MsgBeginRedelegate':
       return 'cosmos-sdk/MsgBeginRedelegate'
+    case 'cosmos.staking.v1beta1.MsgTransferDelegation':
+      return 'cosmos-sdk/MsgTransferDelegation'
     case 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation':
       return 'cosmos-sdk/MsgCancelUnbondingDelegation'
     case 'cosmos.staking.v1beta1.MsgUpdateParams':
