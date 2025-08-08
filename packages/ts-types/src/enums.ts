@@ -52,8 +52,8 @@ export enum MsgType {
   MsgEditValidator = 'cosmos.staking.v1beta1.MsgEditValidator',
   MsgBeginRedelegate = 'cosmos.staking.v1beta1.MsgBeginRedelegate',
   MsgCreateValidator = 'cosmos.staking.v1beta1.MsgCreateValidator',
-  MsgCancelUnbondingDelegation = 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation',
   MsgTransferDelegation = 'cosmos.staking.v1beta1.MsgTransferDelegation',
+  MsgCancelUnbondingDelegation = 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation',
 
   // Wasm
   MsgStoreCode = 'cosmwasm.wasm.v1.MsgStoreCode',
