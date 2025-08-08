@@ -180,7 +180,13 @@ export class WalletStrategy extends BaseWalletStrategy {
       Wallet.WalletConnect,
     ]
 
-    for (const wallet of Object.keys(this.strategies)) {
+    const strategiesWithPlaceholders = {
+      ...this.strategies,
+      [Wallet.PrivateKey]: undefined,
+      [Wallet.WalletConnect]: undefined,
+    }
+
+    for (const wallet of Object.keys(strategiesWithPlaceholders)) {
       const walletEnum = wallet as Wallet
 
       if (shouldRecreateStrategyOnMetadataChange.includes(walletEnum)) {
