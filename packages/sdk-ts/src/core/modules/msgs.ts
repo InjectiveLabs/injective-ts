@@ -36,6 +36,7 @@ import MsgUnderwrite from './insurance/msgs/MsgUnderwrite.js'
 import MsgSendToEth from './peggy/msgs/MsgSendToEth.js'
 import MsgDelegate from './staking/msgs/MsgDelegate.js'
 import MsgUndelegate from './staking/msgs/MsgUndelegate.js'
+import MsgTransferDelegation from './staking/msgs/MsgTransferDelegation.js'
 import MsgEditValidator from './staking/msgs/MsgEditValidator.js'
 import MsgCreateValidator from './staking/msgs/MsgCreateValidator.js'
 import MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate.js'
@@ -95,6 +96,7 @@ export type Msgs =
   | MsgDelegate
   | MsgUndelegate
   | MsgBeginRedelegate
+  | MsgTransferDelegation
   | MsgCancelUnbondingDelegation
   | MsgExecuteContract
   | MsgExecuteContractCompat
