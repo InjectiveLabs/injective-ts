@@ -153,19 +153,29 @@ export class MsgBroadcaster {
       options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
   }
 
-  async verifyEvmChainId() {
+  async getEvmChainId(): Promise<EthereumChainId | undefined> {
     const { walletStrategy } = this
+
     if (!isEvmBrowserWallet(walletStrategy.wallet)) {
-      return
+      return this.ethereumChainId
     }
 
-    const mainnetEvmIds = [EthereumChainId.Mainnet]
+    const mainnetEvmIds = [EthereumChainId.Mainnet, EthereumChainId.MainnetEvm]
     const testnetEvmIds = [EthereumChainId.Sepolia, EthereumChainId.TestnetEvm]
     const devnetEvmIds = [EthereumChainId.Sepolia, EthereumChainId.DevnetEvm]
 
     try {
       const chainId = await walletStrategy.getEthereumChainId()
+
+      if (!chainId) {
+        return this.ethereumChainId
+      }
+
       const evmChainId = parseInt(chainId, 16) as EthereumChainId
+
+      if (isNaN(evmChainId)) {
+        return this.ethereumChainId
+      }
 
       if (
         (isMainnet(this.options.network) &&
@@ -181,10 +191,10 @@ export class MsgBroadcaster {
         )
       }
 
-      if (this.ethereumChainId !== evmChainId) {
-        this.ethereumChainId = evmChainId
-      }
-    } catch {}
+      return evmChainId
+    } catch (e: any) {
+      throw new WalletException(e)
+    }
   }
 
   /**
@@ -317,15 +327,14 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastEip712(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { chainId, txTimeout, endpoints, ethereumChainId, walletStrategy } =
-      this
+    const { chainId, txTimeout, endpoints, walletStrategy } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
+
+    const ethereumChainId = await this.getEvmChainId()
 
     if (!ethereumChainId) {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
-
-    await this.verifyEvmChainId()
 
     /** Account Details * */
     const { baseAccount, latestHeight } =
@@ -431,15 +440,14 @@ export class MsgBroadcaster {
   private async broadcastEip712V2(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ): Promise<TxResponse> {
-    const { chainId, endpoints, txTimeout, walletStrategy, ethereumChainId } =
-      this
+    const { chainId, endpoints, txTimeout, walletStrategy } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
+
+    const ethereumChainId = await this.getEvmChainId()
 
     if (!ethereumChainId) {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
-
-    await this.verifyEvmChainId()
 
     /** Account Details * */
     const { baseAccount, latestHeight } =
@@ -560,17 +568,16 @@ export class MsgBroadcaster {
       simulateTx,
       httpHeaders,
       walletStrategy,
-      ethereumChainId,
       txTimeoutOnFeeDelegation,
     } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
+    const ethereumChainId = await this.getEvmChainId()
+
     if (!ethereumChainId) {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
-
-    await this.verifyEvmChainId()
 
     const transactionApi = new IndexerGrpcWeb3GwApi(
       endpoints.web3gw || endpoints.indexer,

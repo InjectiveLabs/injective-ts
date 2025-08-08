@@ -8,7 +8,8 @@ export enum EthereumChainId {
   Sepolia = 11155111,
   Ganache = 1337,
   HardHat = 31337,
-  DevnetEvm = 1778,
+  MainnetEvm = 1776,
+  DevnetEvm = 1337,
   TestnetEvm = 1439,
 }
 
