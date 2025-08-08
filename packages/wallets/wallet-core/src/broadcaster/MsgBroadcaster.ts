@@ -35,6 +35,7 @@ import {
 } from '@injectivelabs/utils'
 import {
   ThrownException,
+  WalletException,
   GeneralException,
   isThrownException,
   UnspecifiedErrorCode,
@@ -43,6 +44,8 @@ import {
   TransactionChainErrorModule,
 } from '@injectivelabs/exceptions'
 import {
+  isTestnet,
+  isMainnet,
   getNetworkInfo,
   NetworkEndpoints,
   getNetworkEndpoints,
@@ -59,6 +62,7 @@ import {
   Wallet,
   isCosmosWallet,
   WalletDeviceType,
+  isEvmBrowserWallet,
   isEip712V2OnlyWallet,
   createEip712StdSignDoc,
   isCosmosAminoOnlyWallet,
@@ -147,6 +151,40 @@ export class MsgBroadcaster {
     this.txTimeout = options.txTimeout || this.txTimeout
     this.txTimeoutOnFeeDelegation =
       options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
+  }
+
+  async verifyEvmChainId() {
+    const { walletStrategy } = this
+    if (!isEvmBrowserWallet(walletStrategy.wallet)) {
+      return
+    }
+
+    const mainnetEvmIds = [EthereumChainId.Mainnet]
+    const testnetEvmIds = [EthereumChainId.Sepolia, EthereumChainId.TestnetEvm]
+    const devnetEvmIds = [EthereumChainId.Sepolia, EthereumChainId.DevnetEvm]
+
+    try {
+      const chainId = await walletStrategy.getEthereumChainId()
+      const evmChainId = parseInt(chainId, 16) as EthereumChainId
+
+      if (
+        (isMainnet(this.options.network) &&
+          !mainnetEvmIds.includes(evmChainId)) ||
+        (isTestnet(this.options.network) &&
+          !testnetEvmIds.includes(evmChainId)) ||
+        (!isMainnet(this.options.network) &&
+          !isTestnet(this.options.network) &&
+          !devnetEvmIds.includes(evmChainId))
+      ) {
+        throw new WalletException(
+          new Error('Your selected network is incorrect'),
+        )
+      }
+
+      if (this.ethereumChainId !== evmChainId) {
+        this.ethereumChainId = evmChainId
+      }
+    } catch {}
   }
 
   /**
@@ -287,6 +325,8 @@ export class MsgBroadcaster {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
 
+    await this.verifyEvmChainId()
+
     /** Account Details * */
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
@@ -398,6 +438,8 @@ export class MsgBroadcaster {
     if (!ethereumChainId) {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
+
+    await this.verifyEvmChainId()
 
     /** Account Details * */
     const { baseAccount, latestHeight } =
@@ -527,6 +569,8 @@ export class MsgBroadcaster {
     if (!ethereumChainId) {
       throw new GeneralException(new Error('Please provide ethereumChainId'))
     }
+
+    await this.verifyEvmChainId()
 
     const transactionApi = new IndexerGrpcWeb3GwApi(
       endpoints.web3gw || endpoints.indexer,
