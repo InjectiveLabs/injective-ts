@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-cosmos",
   "description": "Cosmos wallet strategies for use with @injectivelabs/wallet-core.",
-  "version": "1.16.5",
+  "version": "1.16.6-alpha.0",
   "sideEffects": false,
   "type": "module",
   "author": {
