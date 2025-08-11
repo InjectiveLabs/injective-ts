@@ -1,24 +1,39 @@
 import { ErrorCode, ErrorContextCode } from './codes.js'
 
-export enum HttpRequestMethod {
-  Get = 'GET',
-  Post = 'POST',
-  Options = 'OPTIONS',
-}
+export type HttpRequestMethod = 'GET' | 'POST' | 'OPTIONS'
 
-export enum ErrorType {
-  Unspecified = 'unspecified',
-  ChainError = 'chain-error',
-  ExecutionError = 'execution-error',
-  NotFoundError = 'not-found-error',
-  ValidationError = 'validation-error',
-  WalletError = 'wallet-error',
-  WalletNotInstalledError = 'wallet-not-installed-error',
-  GrpcUnaryRequest = 'grpc-unary-request',
-  HttpRequest = 'http-request',
-  Web3 = 'web3',
-  Web3Gateway = 'web3-gateway',
-}
+export const HttpRequestMethod = {
+  Get: 'GET',
+  Post: 'POST',
+  Options: 'OPTIONS',
+} as const
+
+export type ErrorType =
+  | 'unspecified'
+  | 'chain-error'
+  | 'execution-error'
+  | 'not-found-error'
+  | 'validation-error'
+  | 'wallet-error'
+  | 'wallet-not-installed-error'
+  | 'grpc-unary-request'
+  | 'http-request'
+  | 'web3'
+  | 'web3-gateway'
+
+export const ErrorType = {
+  Unspecified: 'unspecified',
+  ChainError: 'chain-error',
+  ExecutionError: 'execution-error',
+  NotFoundError: 'not-found-error',
+  ValidationError: 'validation-error',
+  WalletError: 'wallet-error',
+  WalletNotInstalledError: 'wallet-not-installed-error',
+  GrpcUnaryRequest: 'grpc-unary-request',
+  HttpRequest: 'http-request',
+  Web3: 'web3',
+  Web3Gateway: 'web3-gateway',
+} as const
 
 export interface ErrorContext {
   code?: ErrorCode
