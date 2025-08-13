@@ -69,6 +69,7 @@ export interface BaseDerivativeMarket {
 }
 
 export interface PerpetualMarket extends BaseDerivativeMarket {
+  reduceMarginRatio: string
   initialMarginRatio: string
   maintenanceMarginRatio: string
   isPerpetual: boolean
