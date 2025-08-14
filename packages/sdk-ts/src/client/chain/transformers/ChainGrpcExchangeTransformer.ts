@@ -428,6 +428,9 @@ export class ChainGrpcExchangeTransformer {
       minNotional: denomAmountFromGrpcChainDenomAmount(
         marketInfo.minNotional,
       ).toNumber(),
+      reduceMarginRatio: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.reduceMarginRatio,
+      ).toFixed(),
       initialMarginRatio: denomAmountFromGrpcChainDenomAmount(
         marketInfo.initialMarginRatio,
       ).toFixed(),
