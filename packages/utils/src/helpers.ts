@@ -3,7 +3,11 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
 } from './constants.js'
-import { default as BigNumber, toWei, toBase } from './classes/BigNumber.js'
+import {
+  toChainFormat,
+  toHumanReadable,
+  default as BigNumber,
+} from './classes/BigNumber.js'
 import { Awaited } from './types.js'
 
 export const sleep = (timeout: number): Promise<void> =>
@@ -92,8 +96,10 @@ export const getStdFeeForToken = (
   gasPrice?: string,
   gasLimit?: string,
 ) => {
-  const gasPriceInBase = gasPrice || toBase(DEFAULT_GAS_PRICE, 18)
-  const gasPriceScaled = toWei(gasPriceInBase, token.decimals).toFixed(0)
+  const gasPriceInBase = gasPrice || toHumanReadable(DEFAULT_GAS_PRICE, 18)
+  const gasPriceScaled = toChainFormat(gasPriceInBase, token.decimals).toFixed(
+    0,
+  )
   const gasNormalized = new BigNumber(gasLimit || DEFAULT_GAS_LIMIT).toFixed(0)
 
   return {
@@ -118,8 +124,8 @@ export const getStdFeeFromObject = (args?: {
     return getDefaultStdFee()
   }
 
-  const gasPriceInBase = args.gasPrice || toBase(DEFAULT_GAS_PRICE, 18)
-  const gasPriceScaled = toWei(gasPriceInBase, 18).toFixed(0)
+  const gasPriceInBase = args.gasPrice || toHumanReadable(DEFAULT_GAS_PRICE, 18)
+  const gasPriceScaled = toChainFormat(gasPriceInBase, 18).toFixed(0)
 
   return {
     amount: [
@@ -138,8 +144,8 @@ export const getStdFeeFromObject = (args?: {
 }
 
 export const getStdFeeFromString = (gasPrice: string) => {
-  const gasPriceInBase = toBase(gasPrice, 18)
-  const gasPriceScaled = toWei(gasPriceInBase, 18).toFixed(0)
+  const gasPriceInBase = toHumanReadable(gasPrice, 18)
+  const gasPriceScaled = toChainFormat(gasPriceInBase, 18).toFixed(0)
 
   return {
     amount: [

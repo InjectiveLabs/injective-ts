@@ -2,22 +2,21 @@ import typescript from '@rollup/plugin-typescript'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 export default {
-  input: 'test-import.ts', // Use the test import file
+  input: 'bundle-analysis/test-import.ts', // Use the test import file
   output: {
-    file: 'dist/bundle.js',
+    file: 'bundle-analysis/dist/bundle.js',
     format: 'esm',
   },
   external: [],
   plugins: [
     typescript({
-      tsconfig: '../packages/exceptions/tsconfig.build.esm.json',
-      rootDir: '../packages/exceptions/src',
-      outDir: 'dist',
+      tsconfig: './packages/utils/tsconfig.build.esm.json',
+      rootDir: 'src',
+      outDir: 'bundle-analysis/dist',
       declaration: false,
     }),
     visualizer({
-      filename: 'report.html',
+      filename: 'bundle-analysis/report.html',
     }),
   ],
 } as any
-q
