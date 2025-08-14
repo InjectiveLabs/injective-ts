@@ -4,7 +4,7 @@ export default {
   ...baseConfig,
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.build.esm.json',
+      tsConfig: 'tsconfig.jest.json',
     },
   },
 }

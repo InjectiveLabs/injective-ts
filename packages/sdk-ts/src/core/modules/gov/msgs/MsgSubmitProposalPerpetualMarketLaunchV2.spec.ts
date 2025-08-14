@@ -16,7 +16,7 @@ const params: MsgSubmitProposalPerpetualMarketLaunchV2['params'] = {
     oracleQuote:
       '0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b',
     oracleType: 9,
-    oracleScaleFactor: 0,
+    oracleScaleFactor: 6,
     initialMarginRatio: '0.019231',
     maintenanceMarginRatio: '0.01',
     quoteDenom: market.quoteDenom,
