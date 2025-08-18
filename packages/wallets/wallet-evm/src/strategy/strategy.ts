@@ -38,6 +38,7 @@ import {
 } from '@injectivelabs/wallet-base'
 import { sleep, capitalize } from '@injectivelabs/utils'
 import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import { EIP1193Provider } from 'eip1193-provider'
 import {
   getRabbyProvider,
   getBitGetProvider,
@@ -406,6 +407,10 @@ export class EvmWallet
     }
 
     ethereum.on('accountsChanged', callback)
+  }
+
+  getEip1193Provider(): Promise<EIP1193Provider> {
+    return this.getEthereum()
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {

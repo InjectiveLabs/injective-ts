@@ -30,15 +30,18 @@ import {
   ConcreteEvmWalletStrategyArgs,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
+
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import { EIP1193Provider } from 'eip1193-provider'
 import LedgerHW from './hw/index.js'
 import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
+import { LedgerEip1193Provider } from './Eip1193Provider.js'
 
 const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
   if (chainId === EvmChainId.Goerli) {
@@ -70,6 +73,8 @@ export default class LedgerBase
 
   private alchemy: Alchemy | undefined
 
+  private eip1193Provider: EIP1193Provider | undefined
+
   constructor(
     args: ConcreteEvmWalletStrategyArgs & {
       derivationPathType: LedgerDerivationPathType
@@ -81,6 +86,11 @@ export default class LedgerBase
     this.derivationPathType = args.derivationPathType
     this.ledger = new LedgerHW()
     this.evmOptions = args.evmOptions
+
+    this.eip1193Provider = new LedgerEip1193Provider(this.ledger, {
+      chainId: args.evmOptions.evmChainId.toString(),
+      derivationPath: this.baseDerivationPath,
+    })
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -401,6 +411,18 @@ export default class LedgerBase
         contextModule: WalletAction.GetAccounts,
       })
     }
+  }
+
+  public async getEip1193Provider(): Promise<EIP1193Provider> {
+    if (!this.eip1193Provider) {
+      throw new WalletException(
+        new Error(
+          'EIP1193 provider not found. Please check your wallet strategy.',
+        ),
+      )
+    }
+
+    return this.eip1193Provider
   }
 
   private async getAlchemy(evmChainId?: EvmChainId) {

@@ -33,6 +33,7 @@ import {
 } from '@injectivelabs/wallet-base'
 import { capitalize } from '@injectivelabs/utils'
 import { CosmosWallet } from './../wallet.js'
+import { OfflineSigner } from '@cosmjs/proto-signing'
 
 const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
 
@@ -322,6 +323,10 @@ export class CosmosWalletStrategy
     const { wallet, cosmosWallet } = this
 
     return !cosmosWallet ? new CosmosWallet({ chainId, wallet }) : cosmosWallet
+  }
+
+  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
+    return this.getCosmosWallet(chainId as any).getOfflineSigner()
   }
 
   private getCurrentCosmosWallet(): CosmosWallet {
