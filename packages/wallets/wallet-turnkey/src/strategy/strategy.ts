@@ -20,6 +20,7 @@ import {
   createWalletClient,
   PrepareTransactionRequestParameters,
 } from 'viem'
+
 import {
   StdSignDoc,
   WalletAction,
@@ -31,6 +32,7 @@ import {
   SendTransactionOptions,
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
+  Eip1193Provider,
 } from '@injectivelabs/wallet-base'
 import { sleep, HttpRestClient } from '@injectivelabs/utils'
 import { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
@@ -38,6 +40,8 @@ import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { DEFAULT_EVM_CHAIN_CONFIG } from './consts.js'
+import * as viemChains from 'viem/chains'
+import { extractChain } from 'viem'
 
 export class TurnkeyWalletStrategy
   extends BaseConcreteStrategy
@@ -107,6 +111,7 @@ export class TurnkeyWalletStrategy
   public async disconnect() {
     const turnkeyWallet = await this.getTurnkeyWallet()
     const turnkey = await turnkeyWallet.getTurnkey()
+
     const indexedDbClient = await turnkeyWallet.getIndexedDbClient()
 
     const isUserLoggedIn = await turnkey.getSession()
@@ -423,5 +428,38 @@ export class TurnkeyWalletStrategy
     }
 
     return this.turnkeyWallet
+  }
+
+  public async getEip1193Provider(): Promise<Eip1193Provider> {
+    const turnkeyWallet = await this.getTurnkeyWallet()
+
+    const addresses = await turnkeyWallet.getAccounts()
+
+    const account = await turnkeyWallet.getOrCreateAndGetAccount(
+      getAddress(addresses[0]),
+    )
+
+    const chain = extractChain({
+      id: this.evmOptions.evmChainId,
+      chains: Object.values(viemChains) as viemChains.Chain[],
+    })
+
+    const walletClient = createWalletClient({
+      account,
+      chain,
+      transport: http(),
+    })
+
+    return {
+      request: walletClient.request.bind(
+        walletClient,
+      ) as Eip1193Provider['request'],
+      on: (_event: string, _listener: (...args: any[]) => void) => {
+        console.log('Not implemented')
+      },
+      removeListener: (_event: string, _listener: (...args: any[]) => void) => {
+        console.log('Not implemented')
+      },
+    }
   }
 }

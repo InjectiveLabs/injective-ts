@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "@cosmjs/proto-signing": "^0.32.3",
+    "@cosmostation/cosmos-client": "^0.0.5",
     "@cosmostation/extension-client": "^0.1.15",
     "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",

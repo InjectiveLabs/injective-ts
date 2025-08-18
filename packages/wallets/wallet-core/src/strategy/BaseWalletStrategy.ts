@@ -19,11 +19,12 @@ import {
   WalletStrategyArguments,
   CosmosWalletAbstraction,
   WalletStrategy as WalletStrategyInterface,
+  Eip1193Provider,
 } from '@injectivelabs/wallet-base'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import { StdSignDoc } from '@keplr-wallet/types'
-import { EIP1193Provider } from 'eip1193-provider'
+
 import {
   WalletStrategyEmitter,
   WalletStrategyEmitterEvents,
@@ -298,7 +299,7 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     return strategy.getCosmosWallet(chainId)
   }
 
-  public async getEip1193Provider(): Promise<EIP1193Provider> {
+  public async getEip1193Provider(): Promise<Eip1193Provider> {
     if (this.getStrategy().getEip1193Provider) {
       return this.getStrategy().getEip1193Provider!()
     }
@@ -310,9 +311,9 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     )
   }
 
-  public async getOfflineSigner(): Promise<OfflineSigner> {
+  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
     if (this.getStrategy().getOfflineSigner) {
-      return this.getStrategy().getOfflineSigner!()
+      return this.getStrategy().getOfflineSigner!(chainId)
     }
 
     throw new WalletException(

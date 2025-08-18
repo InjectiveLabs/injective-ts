@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
+import { Eip1193Provider, isEvmBrowserWallet } from '@injectivelabs/wallet-base'
 import {
   TxRaw,
   toUtf8,
@@ -38,7 +38,7 @@ import {
 } from '@injectivelabs/wallet-base'
 import { sleep, capitalize } from '@injectivelabs/utils'
 import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
-import { EIP1193Provider } from 'eip1193-provider'
+
 import {
   getRabbyProvider,
   getBitGetProvider,
@@ -409,8 +409,8 @@ export class EvmWallet
     ethereum.on('accountsChanged', callback)
   }
 
-  getEip1193Provider(): Promise<EIP1193Provider> {
-    return this.getEthereum()
+  async getEip1193Provider(): Promise<Eip1193Provider> {
+    return this.getEthereum() as unknown as Eip1193Provider
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {

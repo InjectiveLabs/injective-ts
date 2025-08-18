@@ -7,11 +7,17 @@ import type {
 } from '@injectivelabs/sdk-ts'
 import { StdSignDoc } from '@keplr-wallet/types'
 import { WalletDeviceType, Wallet } from './enums.js'
-import { EIP1193Provider } from 'eip1193-provider'
+
 import { OfflineSigner } from '@cosmjs/proto-signing'
 
 export type onAccountChangeCallback = (account: string | string[]) => void
 export type onChainIdChangeCallback = () => void
+
+export type Eip1193Provider = {
+  request: (args: { method: string; params: any[] }) => Promise<any>
+  on: (event: string, listener: (...args: any[]) => void) => void
+  removeListener: (event: string, listener: (...args: any[]) => void) => void
+}
 
 export type CosmosWalletAbstraction = {
   enableGasCheck?(chainId: ChainId): Promise<void> | void
@@ -252,7 +258,7 @@ export interface ConcreteWalletStrategy
 
   getWalletClient?<T>(): Promise<T>
 
-  getEip1193Provider?(): Promise<EIP1193Provider>
+  getEip1193Provider?(): Promise<Eip1193Provider>
 
   getOfflineSigner?(chainId: string): Promise<OfflineSigner>
 }

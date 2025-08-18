@@ -1,10 +1,10 @@
-import { EIP1193Provider } from 'eip1193-provider'
+import { Eip1193Provider } from '@injectivelabs/wallet-base'
 import { DEFAULT_BASE_DERIVATION_PATH } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
 import { Client, createClient, extractChain, http } from 'viem'
 import * as viemChains from 'viem/chains'
 
-export class LedgerEip1193Provider implements EIP1193Provider {
+export class LedgerEip1193Provider implements Eip1193Provider {
   private readonly ledger: LedgerHW
   private readonly derivationPath: string
 

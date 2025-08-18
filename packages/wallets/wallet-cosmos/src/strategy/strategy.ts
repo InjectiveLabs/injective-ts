@@ -326,7 +326,7 @@ export class CosmosWalletStrategy
   }
 
   public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
-    return this.getCosmosWallet(chainId as any).getOfflineSigner()
+    return await this.getCosmosWallet(chainId as any).getOfflineSigner()
   }
 
   private getCurrentCosmosWallet(): CosmosWallet {
