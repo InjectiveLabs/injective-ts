@@ -13,7 +13,7 @@ _Package to use Wallet Connect Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-wallet-connect
+pnpm add @injectivelabs/wallet-wallet-connect
 ```
 
 ---
@@ -23,6 +23,7 @@ yarn add @injectivelabs/wallet-wallet-connect
 Injective's wallet packages are intended to make it easy for developers to choose exactly what wallets - and subsequent dependencies - they want to include in their projects.
 
 Keep in mind to include specific wallet images in your public directory, right now we only have:
+
 - Fireblocks (path: `wallet-connect/fireblocks.webp`)
 
 Regardless of which wallet package(s) you choose to use you must also have `@injectivelabs/wallet-core` and `@injectivelabs/wallet-base` installed. These contain all of the types and core wallet functionality, with the separate wallet packages only providing the necessary dependencies and implementations for their specific wallets.
@@ -30,9 +31,9 @@ Regardless of which wallet package(s) you choose to use you must also have `@inj
 Here's a brief example of how to use this package to send 1 INJ.:
 
 ```typescript
-import { Wallet } from '@injectivelabs/wallet-base';
-import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core';
-import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect';
+import { Wallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
 
 const strategyArgs: WalletStrategyArguments = {
   chainId: ChainId.Mainnet,

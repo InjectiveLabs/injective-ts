@@ -11,7 +11,7 @@ _Package to use Turnkey Wallet on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-turnkey
+pnpm add @injectivelabs/wallet-turnkey
 ```
 
 ---
@@ -28,30 +28,28 @@ dependencies and implementations for their specific wallets.
 Here's a brief example of how to use this package to send 1 INJ.:
 
 ```typescript
-import { Wallet } from '@injectivelabs/wallet-base';
-import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core';
-import { TurnkeyWallet } from '@injectivelabs/wallet-turnkey';
-
+import { Wallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { TurnkeyWallet } from '@injectivelabs/wallet-turnkey'
 
 const strategyArgs: WalletStrategyArguments = {
   chainId: ChainId.Mainnet,
   wallet: Wallet.Turnkey,
   strategies: {
-        [Wallet.Turnkey]: new TurnkeyWallet({
-        onStatusChange(status) {
-          turnkeyStatus.value = status
-        },
-        chainId: injectiveClients.chainId,
-        ethereumOptions: {
-          ethereumChainId: injectiveClients.ethereumChainId!,
-        },
-        metadata: {
-          turnkeyAuthIframeContainerId,
-          defaultOrganizationId: import.meta.env
-            .VITE_TURNKEY_DEFAULT_ORGANIZATION_ID,
-          apiBaseUrl: 'https://api.turnkey.com',
-        },
-      })
+    [Wallet.Turnkey]: new TurnkeyWallet({
+      onStatusChange(status) {
+        turnkeyStatus.value = status
+      },
+      chainId: injectiveClients.chainId,
+      ethereumOptions: {
+        ethereumChainId: injectiveClients.ethereumChainId!,
+      },
+      metadata: {
+        turnkeyAuthIframeContainerId,
+        defaultOrganizationId: import.meta.env.VITE_TURNKEY_DEFAULT_ORGANIZATION_ID,
+        apiBaseUrl: 'https://api.turnkey.com',
+      },
+    }),
   },
 }
 const walletStrategy = new BaseWalletStrategy(strategyArgs)
@@ -65,21 +63,21 @@ const msgBroadcaster = new MsgBroadcaster({
 })
 
 const sendTX = async () => {
-    const injectiveAddress = 'someInjectiveAddress'
+  const injectiveAddress = 'someInjectiveAddress'
 
-    const message = MsgSend.fromJSON({
-      srcInjectiveAddress: injectiveAddress,
-      dstInjectiveAddress: injectiveAddress,
-      amount: {
-        amount: '1',
-        denom: 'inj',
-      },
-    })
+  const message = MsgSend.fromJSON({
+    srcInjectiveAddress: injectiveAddress,
+    dstInjectiveAddress: injectiveAddress,
+    amount: {
+      amount: '1',
+      denom: 'inj',
+    },
+  })
 
-    return await msgBroadcaster.broadcast({ msgs: message })
-  }
+  return await msgBroadcaster.broadcast({ msgs: message })
+}
 
-  const result = await sendTX()
+const result = await sendTX()
 ```
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)

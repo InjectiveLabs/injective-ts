@@ -5,36 +5,37 @@ import {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
-  WalletStrategyEthereumOptions,
-  ConcreteEthereumWalletStrategyArgs,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import {
   LedgerLiveStrategy,
   LedgerLegacyStrategy,
 } from '@injectivelabs/wallet-ledger'
-import { MagicStrategy } from '@injectivelabs/wallet-magic'
-import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
 import {
   TrezorBip32Strategy,
   TrezorBip44Strategy,
 } from '@injectivelabs/wallet-trezor'
+import { MagicStrategy } from '@injectivelabs/wallet-magic'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
 import { TurnkeyWalletStrategy } from '@injectivelabs/wallet-turnkey'
 import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
-  const { ethereumOptions } = args
+  const { evmOptions } = args
 
-  if (!ethereumOptions) {
+  if (!evmOptions) {
     return true
   }
 
-  const { ethereumChainId } = ethereumOptions
+  const { evmChainId } = evmOptions
 
-  if (!ethereumChainId) {
+  if (!evmChainId) {
     return true
   }
 
@@ -45,8 +46,8 @@ const createStrategy = ({
   args,
   wallet,
 }: {
-  args: WalletStrategyArguments
   wallet: Wallet
+  args: WalletStrategyArguments
 }): ConcreteWalletStrategy | undefined => {
   /**
    * If we only want to use Cosmos Native Wallets
@@ -59,8 +60,8 @@ const createStrategy = ({
   const ethWalletArgs = {
     ...args,
     chainId: args.chainId,
-    ethereumOptions: args.ethereumOptions as WalletStrategyEthereumOptions,
-  } as ConcreteEthereumWalletStrategyArgs
+    evmOptions: args.evmOptions as WalletStrategyEvmOptions,
+  } as ConcreteEvmWalletStrategyArgs
 
   switch (wallet) {
     case Wallet.Metamask:
@@ -68,19 +69,11 @@ const createStrategy = ({
         ...ethWalletArgs,
         wallet: Wallet.Metamask,
       })
-    case Wallet.Ledger:
-      return new LedgerLiveStrategy(ethWalletArgs)
-    case Wallet.LedgerLegacy:
-      return new LedgerLegacyStrategy(ethWalletArgs)
     case Wallet.TrustWallet:
       return new EvmWalletStrategy({
         ...ethWalletArgs,
         wallet: Wallet.TrustWallet,
       })
-    case Wallet.TrezorBip32:
-      return new TrezorBip32Strategy(ethWalletArgs)
-    case Wallet.TrezorBip44:
-      return new TrezorBip44Strategy(ethWalletArgs)
     case Wallet.Phantom:
       return new EvmWalletStrategy({
         ...ethWalletArgs,
@@ -101,61 +94,65 @@ const createStrategy = ({
         ...ethWalletArgs,
         wallet: Wallet.Rainbow,
       })
-    case Wallet.WalletConnect:
-      if (!args.metadata?.walletConnect?.projectId) {
-        return undefined
-      }
+    case Wallet.Rabby:
+      return new EvmWalletStrategy({
+        ...ethWalletArgs,
+        wallet: Wallet.Rabby,
+      })
 
-      return new WalletConnectStrategy(ethWalletArgs)
-    case Wallet.PrivateKey:
-      return new PrivateKeyWalletStrategy(ethWalletArgs)
     case Wallet.Keplr:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Keplr })
-    case Wallet.Cosmostation:
-      return new CosmostationWalletStrategy({ ...args })
     case Wallet.Leap:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Leap })
     case Wallet.Ninji:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Ninji })
     case Wallet.OWallet:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.OWallet })
+
+    case Wallet.Cosmostation:
+      return new CosmostationWalletStrategy({ ...args })
+
+    case Wallet.Ledger:
+      return new LedgerLiveStrategy(ethWalletArgs)
+    case Wallet.LedgerLegacy:
+      return new LedgerLegacyStrategy(ethWalletArgs)
+
+    case Wallet.TrezorBip32:
+      return new TrezorBip32Strategy(ethWalletArgs)
+    case Wallet.TrezorBip44:
+      return new TrezorBip44Strategy(ethWalletArgs)
+    case Wallet.PrivateKey:
+      return new PrivateKeyWalletStrategy(ethWalletArgs)
+
+    case Wallet.Turnkey:
+      if (!args.metadata?.turnkey?.defaultOrganizationId) {
+        return undefined
+      }
+
+      return new TurnkeyWalletStrategy(ethWalletArgs)
+
     case Wallet.Magic:
       if (!args.metadata?.magic?.apiKey || !args.metadata?.magic?.rpcEndpoint) {
         return undefined
       }
 
       return new MagicStrategy(args)
-    case Wallet.Turnkey:
-      if (
-        !args.metadata?.turnkey?.iframeContainerId ||
-        !args.metadata?.turnkey?.defaultOrganizationId
-      ) {
+
+    case Wallet.WalletConnect:
+      if (!args.metadata?.walletConnect?.projectId) {
         return undefined
       }
 
-      return new TurnkeyWalletStrategy(ethWalletArgs)
+      return new WalletConnectStrategy(ethWalletArgs)
+
     default:
       return undefined
   }
 }
 
-const createAllStrategies = (
-  args: WalletStrategyArguments,
-): ConcreteStrategiesArg => {
-  return Object.values(Wallet).reduce((strategies, wallet) => {
-    if (strategies[wallet]) {
-      return strategies
-    }
-
-    strategies[wallet] = createStrategy({ args, wallet: wallet as Wallet })
-
-    return strategies
-  }, {} as ConcreteStrategiesArg)
-}
-
 export class WalletStrategy extends BaseWalletStrategy {
   constructor(args: WalletStrategyArguments) {
-    const strategies = createAllStrategies(args)
+    const strategies = {} as ConcreteStrategiesArg
 
     super({
       ...args,
@@ -183,7 +180,13 @@ export class WalletStrategy extends BaseWalletStrategy {
       Wallet.WalletConnect,
     ]
 
-    for (const wallet of Object.keys(this.strategies)) {
+    const strategiesWithPlaceholders = {
+      ...this.strategies,
+      [Wallet.PrivateKey]: undefined,
+      [Wallet.WalletConnect]: undefined,
+    }
+
+    for (const wallet of Object.keys(strategiesWithPlaceholders)) {
       const walletEnum = wallet as Wallet
 
       if (shouldRecreateStrategyOnMetadataChange.includes(walletEnum)) {
@@ -200,6 +203,27 @@ export class WalletStrategy extends BaseWalletStrategy {
 
       this.strategies[walletEnum]?.setMetadata?.(metadata)
     }
+  }
+
+  public getStrategy(): ConcreteWalletStrategy {
+    if (this.strategies[this.wallet]) {
+      return this.strategies[this.wallet] as ConcreteWalletStrategy
+    }
+
+    const strategy = createStrategy({
+      args: this.args,
+      wallet: this.wallet,
+    })
+
+    if (!strategy) {
+      throw new GeneralException(
+        new Error(`Wallet ${this.wallet} is not enabled/available!`),
+      )
+    }
+
+    this.strategies[this.wallet] = strategy
+
+    return strategy as ConcreteWalletStrategy
   }
 }
 

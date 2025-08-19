@@ -13,7 +13,7 @@ _Package to use Trezor Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-trezor
+pnpm add @injectivelabs/wallet-trezor
 ```
 
 ---
@@ -30,10 +30,9 @@ dependencies and implementations for their specific wallets.
 Here's a brief example of how to use this package to send 1 INJ.:
 
 ```typescript
-import { Wallet } from '@injectivelabs/wallet-base';
-import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core';
-import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor';
-
+import { Wallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { TrezorWalletStrategy } from '@injectivelabs/wallet-trezor'
 
 const strategyArgs: WalletStrategyArguments = {
   chainId: ChainId.Mainnet,
@@ -56,21 +55,21 @@ const msgBroadcaster = new MsgBroadcaster({
 })
 
 const sendTX = async () => {
-    const injectiveAddress = 'someInjectiveAddress'
+  const injectiveAddress = 'someInjectiveAddress'
 
-    const message = MsgSend.fromJSON({
-      srcInjectiveAddress: injectiveAddress,
-      dstInjectiveAddress: injectiveAddress,
-      amount: {
-        amount: '1',
-        denom: 'inj',
-      },
-    })
+  const message = MsgSend.fromJSON({
+    srcInjectiveAddress: injectiveAddress,
+    dstInjectiveAddress: injectiveAddress,
+    amount: {
+      amount: '1',
+      denom: 'inj',
+    },
+  })
 
-    return await msgBroadcaster.broadcast({ msgs: message })
-  }
+  return await msgBroadcaster.broadcast({ msgs: message })
+}
 
-  const result = await sendTX()
+const result = await sendTX()
 ```
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)

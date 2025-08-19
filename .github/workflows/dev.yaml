@@ -14,16 +14,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
 
-      - name: 'Use NodeJS 20'
-        uses: actions/setup-node@v2
+      - name: Using Node from .nvmrc
+        uses: useblacksmith/setup-node@v5
         with:
-          node-version: '20.17.0'
+          node-version-file: '.nvmrc'
 
-      - name: Setup lerna@6.6.1
-        run: yarn global add lerna@6.6.1 --ignore-engines
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
 
       - name: Set up Git user
         run: |
@@ -34,13 +34,14 @@ jobs:
         run: |
           lerna clean --yes
           node etc/bootstrapEnv
-          yarn install --ignore-engines
-          yarn build
+          pnpm install
+          pnpm build
 
-      - name: Setup npm
+      - name: 'Setup npm'
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-          npm whoami
+          # Tell Git to ignore this temporary change
+          git update-index --assume-unchanged .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 

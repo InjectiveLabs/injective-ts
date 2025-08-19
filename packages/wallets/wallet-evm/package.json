@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-evm",
   "description": "EVM wallet strategies for use with @injectivelabs/wallet-core.",
-  "version": "1.16.7",
+  "version": "1.16.8-alpha.0",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -41,10 +41,10 @@
     }
   },
   "scripts": {
-    "build": "yarn build:cjs && yarn build:esm && yarn build:post",
+    "build": "pnpm build:cjs && pnpm build:esm && pnpm build:post",
     "build:cjs": "tsc --build --force tsconfig.build.json",
     "build:esm": "tsc --build --force tsconfig.build.esm.json",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && pnpm build:post",
     "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
     "test": "jest",
@@ -56,12 +56,12 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "^1.16.7",
-    "@injectivelabs/networks": "^1.16.7",
-    "@injectivelabs/sdk-ts": "^1.16.7",
-    "@injectivelabs/ts-types": "^1.16.7",
-    "@injectivelabs/utils": "^1.16.7",
-    "@injectivelabs/wallet-base": "^1.16.7"
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/networks": "workspace:*",
+    "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/utils": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*"
   },
   "devDependencies": {
     "shx": "^0.3.3"

@@ -1,12 +1,12 @@
-import { Network } from '@injectivelabs/networks'
 import {
   MsgBroadcaster,
   BaseWalletStrategy,
   MsgBroadcasterOptions,
 } from '@injectivelabs/wallet-core'
-import { Wallet, WalletStrategyArguments } from '@injectivelabs/wallet-base'
+import { Network } from '@injectivelabs/networks'
 import { MsgSend, PrivateKey } from '@injectivelabs/sdk-ts'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { Wallet, WalletStrategyArguments } from '@injectivelabs/wallet-base'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 
 const strategyArgs: WalletStrategyArguments = {
@@ -15,11 +15,15 @@ const strategyArgs: WalletStrategyArguments = {
   strategies: {
     [Wallet.PrivateKey]: new PrivateKeyWalletStrategy({
       chainId: ChainId.Devnet,
-      ethereumOptions: {
-        ethereumChainId: EthereumChainId.Sepolia,
+      evmOptions: {
+        evmChainId: EvmChainId.Sepolia,
         rpcUrl: '',
       },
-      privateKey: process.env.TEST_PRIVATE_KEY as string,
+      metadata: {
+        privateKey: {
+          privateKey: process.env.TEST_PRIVATE_KEY as string,
+        },
+      },
     }),
   },
 }
@@ -46,7 +50,10 @@ describe('MsgBroadcaster', () => {
       },
     })
 
-    const response = await msgBroadcaster.broadcast({ msgs: message })
+    const response = await msgBroadcaster.broadcast({
+      msgs: message,
+      injectiveAddress,
+    })
 
     expect(response.txHash).toBeDefined()
   }, 60000)

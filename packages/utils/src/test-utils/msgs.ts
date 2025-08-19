@@ -7,7 +7,7 @@ import {
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import { mockFactory } from './mocks/index.js'
-import { ChainId, Coin, EthereumChainId } from '@injectivelabs/ts-types'
+import { ChainId, Coin, EvmChainId } from '@injectivelabs/ts-types'
 
 export const prepareEip712 = <T>({
   messages,
@@ -39,21 +39,21 @@ export const prepareEip712 = <T>({
       memo: string
       chainId: ChainId
       sequence: string
-      ethereumChainId: EthereumChainId
+      evmChainId: EvmChainId
       accountNumber: string
       timeoutHeight: string
     }
-    ethereumChainId: EthereumChainId
+    evmChainId: EvmChainId
     fee: { amount: Coin[]; gas: string; payer: string }
   }
   prepareEip712Request: {
-    chainId: EthereumChainId
+    chainId: EvmChainId
     message: any[]
     address: string
     memo: string
     sequence: number
     accountNumber: number
-    ethereumChainId: EthereumChainId
+    evmChainId: EvmChainId
     timeoutHeight: number
   }
 } => {
@@ -61,6 +61,7 @@ export const prepareEip712 = <T>({
   const actualEndpoints = { ...getNetworkEndpoints(network), ...endpoints }
   const msgs = Array.isArray(messages) ? messages : [messages]
   const web3Msgs = msgs.map((msg) => msg.toWeb3())
+
   const { tx, eip712 } = mockFactory.eip712Tx({
     ...chainInfo,
     accountNumber,
@@ -68,6 +69,7 @@ export const prepareEip712 = <T>({
     timeoutHeight,
     memo,
   })
+
   const eip712Args = {
     msgs,
     fee: {
@@ -88,11 +90,12 @@ export const prepareEip712 = <T>({
       timeoutHeight: timeoutHeight.toString(),
       accountNumber: accountNumber.toString(),
     },
-    ethereumChainId: eip712.ethereumChainId,
+    evmChainId: eip712.evmChainId,
   }
+
   const prepareEip712Request = {
     ...eip712,
-    chainId: eip712.ethereumChainId,
+    chainId: eip712.evmChainId,
     message: web3Msgs,
     gasLimit: gas,
     address: ethereumAddress,

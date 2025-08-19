@@ -1,5 +1,6 @@
-export { getOkxWalletProvider } from './Okx.js'
+export { getRabbyProvider } from './rabby.js'
 export { getBitGetProvider } from './bitget.js'
+export { getOkxWalletProvider } from './Okx.js'
 export { getPhantomProvider } from './phantom.js'
 export { getRainbowProvider } from './rainbow.js'
 export { getMetamaskProvider } from './metamask.js'

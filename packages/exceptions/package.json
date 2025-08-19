@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/exceptions",
   "description": "List of exceptions that can be reused throughout Injective's projects.",
-  "version": "1.16.7",
+  "version": "1.16.6-alpha.1",
   "sideEffects": false,
   "license": "Apache-2.0",
   "type": "module",
@@ -41,10 +41,10 @@
     }
   },
   "scripts": {
-    "build": "yarn build:cjs && yarn build:esm && yarn build:post",
+    "build": "pnpm build:cjs && pnpm build:esm && pnpm build:post",
     "build:cjs": "tsc --build --force tsconfig.build.json",
     "build:esm": "tsc --build --force tsconfig.build.esm.json",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
+    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && pnpm build:post",
     "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
     "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
     "test": "jest",

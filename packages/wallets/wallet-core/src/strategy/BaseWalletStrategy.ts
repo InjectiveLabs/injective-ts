@@ -6,12 +6,6 @@ import {
   DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
-import { GeneralException, WalletException } from '@injectivelabs/exceptions'
-import {
   Wallet,
   isEvmWallet,
   isCosmosWallet,
@@ -26,6 +20,8 @@ import {
   CosmosWalletAbstraction,
   WalletStrategy as WalletStrategyInterface,
 } from '@injectivelabs/wallet-base'
+import { GeneralException, WalletException } from '@injectivelabs/exceptions'
+import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import { StdSignDoc } from '@keplr-wallet/types'
 import {
   WalletStrategyEmitter,
@@ -41,16 +37,14 @@ const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   const keys = Object.keys(args.strategies || {})
 
   if (keys.length === 0) {
-    throw new GeneralException(
-      new Error('No strategies provided to BaseWalletStrategy'),
-    )
-  }
-
-  if (keys.includes(Wallet.Metamask) && args.ethereumOptions) {
     return Wallet.Metamask
   }
 
-  if (keys.includes(Wallet.Keplr) && !args.ethereumOptions) {
+  if (keys.includes(Wallet.Metamask) && args.evmOptions) {
+    return Wallet.Metamask
+  }
+
+  if (keys.includes(Wallet.Keplr) && !args.evmOptions) {
     return Wallet.Keplr
   }
 
@@ -91,9 +85,12 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
 
   public setWallet(wallet: Wallet) {
     this.wallet = wallet
+
+    this.getStrategy()
   }
 
   public setMetadata(metadata?: WalletMetadata) {
+    console.log('Setting metadata', metadata)
     this.metadata = metadata
     this.getStrategy().setMetadata?.(metadata)
   }
@@ -138,9 +135,9 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
 
   public async getEvmTransactionReceipt(
     txHash: string,
-    ethereumChainId?: EthereumChainId,
+    evmChainId?: EvmChainId,
   ): Promise<void> {
-    return this.getStrategy().getEvmTransactionReceipt(txHash, ethereumChainId)
+    return this.getStrategy().getEvmTransactionReceipt(txHash, evmChainId)
   }
 
   public async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
@@ -170,8 +167,8 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
   public async sendEvmTransaction(
     tx: any /* TODO */,
     options: {
+      evmChainId: EvmChainId
       address: AccountAddress /* Ethereum address */
-      ethereumChainId: EthereumChainId
     },
   ): Promise<string> {
     return this.getStrategy().sendEvmTransaction(tx, options)

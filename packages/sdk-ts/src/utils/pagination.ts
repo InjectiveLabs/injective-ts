@@ -137,19 +137,11 @@ export const fetchAllWithPagination = async <
 >(
   args: T,
   method: (args: T) => Promise<Q>,
+  result: Array<unknown> = [],
 ): Promise<Q> => {
-  let result = [] as Array<unknown>
   let response = await method(args)
 
   if (!args) {
-    return response
-  }
-
-  const paginationOption = (
-    args as { pagination: PaginationOption | undefined }
-  ).pagination
-
-  if (!paginationOption) {
     return response
   }
 
@@ -158,13 +150,16 @@ export const fetchAllWithPagination = async <
     (key) => key !== 'pagination',
   ) as keyof typeof response
 
-  while (response.pagination.next) {
-    result.push(response[valueKey])
+  result.push(...(response[valueKey] as Array<unknown>))
 
-    response = await method({
-      ...args,
-      pagination: { ...paginationOption, key: response.pagination.next },
-    })
+  const paginationOption = args as PaginationOption
+
+  if (response.pagination.next) {
+    return fetchAllWithPagination(
+      { ...paginationOption, key: response.pagination.next } as T,
+      method,
+      result,
+    )
   }
 
   return { [valueKey]: result, pagination: response.pagination } as Q

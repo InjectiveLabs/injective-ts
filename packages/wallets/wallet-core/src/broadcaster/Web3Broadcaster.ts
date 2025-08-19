@@ -1,5 +1,5 @@
-import { EthereumChainId } from '@injectivelabs/ts-types'
 import { Network } from '@injectivelabs/networks'
+import { EvmChainId } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
 import BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
@@ -13,7 +13,7 @@ interface SendTransactionOptions {
     data: any
   }
   address: string
-  ethereumChainId?: EthereumChainId
+  evmChainId?: EvmChainId
 }
 
 /**
@@ -23,29 +23,29 @@ interface SendTransactionOptions {
 export class Web3Broadcaster {
   private walletStrategy: BaseWalletStrategy
 
-  private ethereumChainId: EthereumChainId
+  private evmChainId: EvmChainId
 
   constructor({
     walletStrategy,
-    ethereumChainId,
+    evmChainId,
   }: {
     walletStrategy: BaseWalletStrategy
-    ethereumChainId: EthereumChainId
+    evmChainId: EvmChainId
     network: Network
   }) {
+    this.evmChainId = evmChainId
     this.walletStrategy = walletStrategy
-    this.ethereumChainId = ethereumChainId
   }
 
   async sendTransaction(args: SendTransactionOptions) {
-    const { walletStrategy, ethereumChainId } = this
+    const { evmChainId, walletStrategy } = this
 
     try {
-      const chainId = args.ethereumChainId || ethereumChainId
+      const chainId = args.evmChainId || evmChainId
 
       const txHash = await walletStrategy.sendEvmTransaction(args.tx, {
+        evmChainId: chainId,
         address: args.address,
-        ethereumChainId: chainId,
       })
 
       await walletStrategy.getEvmTransactionReceipt(txHash, chainId)

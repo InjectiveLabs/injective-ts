@@ -50,7 +50,7 @@ import {
   NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
@@ -118,7 +118,7 @@ export class MsgBroadcaster {
 
   public txTimeoutOnFeeDelegation: boolean = false
 
-  public ethereumChainId?: EthereumChainId
+  public evmChainId?: EvmChainId
 
   public gasBufferCoefficient: number = 1.2
 
@@ -139,8 +139,7 @@ export class MsgBroadcaster {
         : true
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.2
     this.chainId = options.chainId || networkInfo.chainId
-    this.ethereumChainId =
-      options.ethereumChainId || networkInfo.ethereumChainId
+    this.evmChainId = options.evmChainId || networkInfo.evmChainId
     this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
     this.walletStrategy = options.walletStrategy
     this.httpHeaders = options.httpHeaders
@@ -153,28 +152,28 @@ export class MsgBroadcaster {
       options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
   }
 
-  async getEvmChainId(): Promise<EthereumChainId | undefined> {
+  async getEvmChainId(): Promise<EvmChainId | undefined> {
     const { walletStrategy } = this
 
     if (!isEvmBrowserWallet(walletStrategy.wallet)) {
-      return this.ethereumChainId
+      return this.evmChainId
     }
 
-    const mainnetEvmIds = [EthereumChainId.Mainnet, EthereumChainId.MainnetEvm]
-    const testnetEvmIds = [EthereumChainId.Sepolia, EthereumChainId.TestnetEvm]
-    const devnetEvmIds = [EthereumChainId.Sepolia, EthereumChainId.DevnetEvm]
+    const mainnetEvmIds = [EvmChainId.Mainnet, EvmChainId.MainnetEvm]
+    const testnetEvmIds = [EvmChainId.Sepolia, EvmChainId.TestnetEvm]
+    const devnetEvmIds = [EvmChainId.Sepolia, EvmChainId.DevnetEvm]
 
     try {
       const chainId = await walletStrategy.getEthereumChainId()
 
       if (!chainId) {
-        return this.ethereumChainId
+        return this.evmChainId
       }
 
-      const evmChainId = parseInt(chainId, 16) as EthereumChainId
+      const evmChainId = parseInt(chainId, 16) as EvmChainId
 
       if (isNaN(evmChainId)) {
-        return this.ethereumChainId
+        return this.evmChainId
       }
 
       if (
@@ -330,10 +329,10 @@ export class MsgBroadcaster {
     const { chainId, txTimeout, endpoints, walletStrategy } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
-    const ethereumChainId = await this.getEvmChainId()
+    const evmChainId = await this.getEvmChainId()
 
-    if (!ethereumChainId) {
-      throw new GeneralException(new Error('Please provide ethereumChainId'))
+    if (!evmChainId) {
+      throw new GeneralException(new Error('Please provide evmChainId'))
     }
 
     /** Account Details * */
@@ -380,7 +379,7 @@ export class MsgBroadcaster {
         timeoutHeight: timeoutHeight.toFixed(),
         chainId,
       },
-      ethereumChainId,
+      evmChainId,
     })
 
     /** Signing on Ethereum */
@@ -409,7 +408,7 @@ export class MsgBroadcaster {
     })
 
     const web3Extension = createWeb3Extension({
-      ethereumChainId,
+      evmChainId,
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
@@ -443,10 +442,10 @@ export class MsgBroadcaster {
     const { chainId, endpoints, txTimeout, walletStrategy } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
-    const ethereumChainId = await this.getEvmChainId()
+    const evmChainId = await this.getEvmChainId()
 
-    if (!ethereumChainId) {
-      throw new GeneralException(new Error('Please provide ethereumChainId'))
+    if (!evmChainId) {
+      throw new GeneralException(new Error('Please provide evmChainId'))
     }
 
     /** Account Details * */
@@ -497,7 +496,7 @@ export class MsgBroadcaster {
         timeoutHeight: timeoutHeight.toFixed(),
         chainId,
       },
-      ethereumChainId,
+      evmChainId,
     })
 
     walletStrategy.emit(
@@ -533,7 +532,7 @@ export class MsgBroadcaster {
     })
 
     const web3Extension = createWeb3Extension({
-      ethereumChainId,
+      evmChainId,
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
@@ -573,10 +572,10 @@ export class MsgBroadcaster {
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
-    const ethereumChainId = await this.getEvmChainId()
+    const evmChainId = await this.getEvmChainId()
 
-    if (!ethereumChainId) {
-      throw new GeneralException(new Error('Please provide ethereumChainId'))
+    if (!evmChainId) {
+      throw new GeneralException(new Error('Please provide evmChainId'))
     }
 
     const transactionApi = new IndexerGrpcWeb3GwApi(
@@ -610,7 +609,7 @@ export class MsgBroadcaster {
       memo: tx.memo,
       message: web3Msgs,
       address: tx.ethereumAddress,
-      chainId: ethereumChainId,
+      chainId: evmChainId,
       gasLimit: getGasPriceBasedOnMessage(msgs),
       estimateGas: simulateTx,
     })
@@ -629,7 +628,7 @@ export class MsgBroadcaster {
         signature,
         message: web3Msgs,
         txResponse: prepareTxResponse,
-        chainId: ethereumChainId,
+        chainId: evmChainId,
       })
 
     try {
@@ -813,9 +812,9 @@ export class MsgBroadcaster {
       chainId,
       txTimeout,
       endpoints,
+      evmChainId,
       simulateTx,
       walletStrategy,
-      ethereumChainId,
     } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -836,8 +835,8 @@ export class MsgBroadcaster {
       }
     }
 
-    if (!ethereumChainId) {
-      throw new GeneralException(new Error('Please provide ethereumChainId'))
+    if (!evmChainId) {
+      throw new GeneralException(new Error('Please provide evmChainId'))
     }
 
     const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
@@ -860,7 +859,7 @@ export class MsgBroadcaster {
         sequence: baseAccount.sequence.toString(),
         accountNumber: baseAccount.accountNumber.toString(),
       },
-      ethereumChainId,
+      evmChainId,
     })
 
     const aminoSignResponse = await cosmosWallet.signEIP712CosmosTx({
@@ -897,7 +896,7 @@ export class MsgBroadcaster {
 
     /** Preparing the transaction for client broadcasting */
     const web3Extension = createWeb3Extension({
-      ethereumChainId,
+      evmChainId,
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 

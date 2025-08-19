@@ -3,6 +3,7 @@ import { Wallet } from './../types/enums.js'
 export const isEvmWallet = (wallet: Wallet): boolean =>
   [
     Wallet.Magic,
+    Wallet.Rabby,
     Wallet.BitGet,
     Wallet.Ledger,
     Wallet.Phantom,
@@ -23,6 +24,7 @@ export const isCosmosWallet = (wallet: Wallet): boolean => !isEvmWallet(wallet)
 
 export const isEvmBrowserWallet = (wallet: Wallet) =>
   [
+    Wallet.Rabby,
     Wallet.BitGet,
     Wallet.Rainbow,
     Wallet.Phantom,

@@ -34,11 +34,12 @@ import {
   ConcreteWalletStrategy,
   ConcreteWalletStrategyArgs,
   EIP6963AnnounceProviderEvent,
-  ConcreteEthereumWalletStrategyArgs,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import { sleep, capitalize } from '@injectivelabs/utils'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import {
+  getRabbyProvider,
   getBitGetProvider,
   getPhantomProvider,
   getRainbowProvider,
@@ -55,7 +56,7 @@ export class EvmWallet
   public evmProviders: Partial<Record<Wallet, BrowserEip1993Provider>> = {}
 
   constructor(
-    args: (ConcreteWalletStrategyArgs | ConcreteEthereumWalletStrategyArgs) & {
+    args: (ConcreteWalletStrategyArgs | ConcreteEvmWalletStrategyArgs) & {
       wallet: Wallet
     },
   ) {
@@ -78,6 +79,10 @@ export class EvmWallet
 
           if (walletName === Wallet.Metamask.toLowerCase()) {
             this.evmProviders[Wallet.Metamask] = event.detail.provider
+          }
+
+          if (walletName === Wallet.Rabby.toLowerCase()) {
+            this.evmProviders[Wallet.Rabby] = event.detail.provider
           }
 
           if (walletName === Wallet.Rainbow.toLowerCase()) {
@@ -195,7 +200,7 @@ export class EvmWallet
 
   async sendEvmTransaction(
     transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     const ethereum = await this.getEthereum()
 
@@ -413,6 +418,8 @@ export class EvmWallet
     const backUpProvider =
       this.wallet === Wallet.Metamask
         ? await getMetamaskProvider()
+        : this.wallet === Wallet.Rabby
+        ? await getRabbyProvider()
         : this.wallet === Wallet.Phantom
         ? await getPhantomProvider()
         : this.wallet === Wallet.BitGet

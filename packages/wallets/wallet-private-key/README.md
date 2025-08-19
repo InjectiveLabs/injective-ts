@@ -13,7 +13,7 @@ _Package to use Private Wallet on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-evm
+pnpm add @injectivelabs/wallet-evm
 ```
 
 ---

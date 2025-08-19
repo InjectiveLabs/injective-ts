@@ -2,6 +2,7 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcBankApi } from './ChainGrpcBankApi.js'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { ChainGrpcBankTransformer } from '../transformers/index.js'
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
 
 const injectiveAddress = mockFactory.injectiveAddress
@@ -87,7 +88,7 @@ describe('ChainGrpcBankApi', () => {
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
-          ReturnType<typeof ChainGrpcBankTransformer.grpcCoinToCoin>
+          ReturnType<typeof ChainGrpcCommonTransformer.grpcCoinToCoin>
         >(response),
       )
     } catch (e) {

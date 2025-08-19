@@ -1,4 +1,4 @@
-import { EthereumChainId } from '@injectivelabs/ts-types'
+import { EvmChainId } from '@injectivelabs/ts-types'
 import {
   BigNumberInBase,
   DEFAULT_GAS_LIMIT,
@@ -6,24 +6,24 @@ import {
 } from '@injectivelabs/utils'
 import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
 
-export const getEip712Domain = (ethereumChainId: EthereumChainId) => {
+export const getEip712Domain = (evmChainId: EvmChainId) => {
   return {
     domain: {
       name: 'Injective Web3',
       version: '1.0.0',
-      chainId: '0x' + new BigNumberInBase(ethereumChainId).toString(16),
+      chainId: '0x' + new BigNumberInBase(evmChainId).toString(16),
       salt: '0',
       verifyingContract: 'cosmos',
     },
   }
 }
 
-export const getEip712DomainV2 = (ethereumChainId: EthereumChainId) => {
+export const getEip712DomainV2 = (evmChainId: EvmChainId) => {
   return {
     domain: {
       name: 'Injective Web3',
       version: '1.0.0',
-      chainId: '0x' + new BigNumberInBase(ethereumChainId).toString(16),
+      chainId: '0x' + new BigNumberInBase(evmChainId).toString(16),
       verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
       salt: '0',
     },

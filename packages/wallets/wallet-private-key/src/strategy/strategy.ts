@@ -1,14 +1,9 @@
 /* eslint-disable class-methods-use-this */
 import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
-import {
   AminoSignResponse,
   DirectSignResponse,
-  PrivateKey as PrivateKeySigner,
   getInjectiveSignerAddress,
+  PrivateKey as PrivateKeySigner,
 } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
@@ -26,6 +21,7 @@ import {
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
 import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
+import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
 export class PrivateKeyWallet
   extends BaseConcreteStrategy
@@ -70,10 +66,10 @@ export class PrivateKeyWallet
 
   async sendEvmTransaction(
     _transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     throw new WalletException(
-      new Error('This wallet does not support sending Ethereum transactions'),
+      new Error('This wallet does not support sending Evm transactions'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
@@ -205,8 +201,8 @@ export class PrivateKeyWallet
     try {
       return Promise.resolve(
         (this.chainId === ChainId.Mainnet
-          ? EthereumChainId.Mainnet
-          : EthereumChainId.Sepolia
+          ? EvmChainId.Mainnet
+          : EvmChainId.Sepolia
         ).toString(16),
       )
     } catch (e: unknown) {

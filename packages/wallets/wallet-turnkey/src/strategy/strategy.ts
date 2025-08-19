@@ -12,12 +12,9 @@ import {
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { getAddress } from 'viem'
-import { sleep, HttpRestClient } from '@injectivelabs/utils'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import { TurnkeyIframeClient } from '@turnkey/sdk-browser'
 import {
   http,
+  getAddress,
   LocalAccount,
   createPublicClient,
   createWalletClient,
@@ -32,9 +29,12 @@ import {
   BaseConcreteStrategy,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  WalletStrategyEthereumOptions,
-  ConcreteEthereumWalletStrategyArgs,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import { sleep, HttpRestClient } from '@injectivelabs/utils'
+import { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
+import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { DEFAULT_EVM_CHAIN_CONFIG } from './consts.js'
@@ -44,12 +44,12 @@ export class TurnkeyWalletStrategy
   implements ConcreteWalletStrategy
 {
   public turnkeyWallet?: TurnkeyWallet
-  public ethereumOptions: WalletStrategyEthereumOptions
+  public evmOptions: WalletStrategyEvmOptions
 
   public client: HttpRestClient
 
   constructor(
-    args: ConcreteEthereumWalletStrategyArgs & {
+    args: ConcreteEvmWalletStrategyArgs & {
       apiServerEndpoint?: string
     },
   ) {
@@ -63,7 +63,7 @@ export class TurnkeyWalletStrategy
     }
 
     this.client = new HttpRestClient(endpoint)
-    this.ethereumOptions = args.ethereumOptions
+    this.evmOptions = args.evmOptions
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -98,7 +98,7 @@ export class TurnkeyWalletStrategy
         return true
       }
 
-      return !!(await turnkeyWallet.getIframeClient())
+      return !!(await turnkeyWallet.getIndexedDbClient())
     } catch (e) {
       return false
     }
@@ -107,6 +107,7 @@ export class TurnkeyWalletStrategy
   public async disconnect() {
     const turnkeyWallet = await this.getTurnkeyWallet()
     const turnkey = await turnkeyWallet.getTurnkey()
+    const indexedDbClient = await turnkeyWallet.getIndexedDbClient()
 
     const isUserLoggedIn = await turnkey.getSession()
 
@@ -114,12 +115,11 @@ export class TurnkeyWalletStrategy
       return
     }
 
-    await turnkey.logout()
+    await Promise.allSettled([turnkey.logout(), indexedDbClient.clear()])
   }
 
   async getAddresses(): Promise<string[]> {
     const turnkeyWallet = await this.getTurnkeyWallet()
-    await turnkeyWallet.getSession()
 
     try {
       return await turnkeyWallet.getAccounts()
@@ -150,19 +150,18 @@ export class TurnkeyWalletStrategy
 
   async sendEvmTransaction(
     transaction: unknown,
-    args: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    args: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     try {
-      const options = this.ethereumOptions
+      const options = this.evmOptions
       const turnkeyWallet = await this.getTurnkeyWallet()
-      const organizationId = await this.getOrganizationId()
 
-      const chainId = args.ethereumChainId || options.ethereumChainId
-      const url = options.rpcUrl || options.rpcUrls?.[args.ethereumChainId]
+      const chainId = args.evmChainId || options.evmChainId
+      const url = options.rpcUrl || options.rpcUrls?.[args.evmChainId]
 
       if (!url) {
         throw new WalletException(
-          new Error('Please pass rpcUrl within the ethereumOptions'),
+          new Error('Please pass rpcUrl within the evmOptions'),
           {
             code: UnspecifiedErrorCode,
             context: WalletAction.SendEvmTransaction,
@@ -172,7 +171,6 @@ export class TurnkeyWalletStrategy
 
       const account = await turnkeyWallet.getOrCreateAndGetAccount(
         getAddress(args.address),
-        organizationId,
       )
 
       const accountClient = createWalletClient({
@@ -245,14 +243,12 @@ export class TurnkeyWalletStrategy
     address: AccountAddress,
   ): Promise<string> {
     const turnkeyWallet = await this.getTurnkeyWallet()
-    const organizationId = await this.getOrganizationId()
 
     //? Turnkey expects the case sensitive address and the current impl of getChecksumAddress from sdk-ts doesn't play nice with browser envs
     const checksumAddress = getAddress(address)
 
     const account = await turnkeyWallet.getOrCreateAndGetAccount(
       checksumAddress,
-      organizationId,
     )
 
     if (!account) {
@@ -335,18 +331,18 @@ export class TurnkeyWalletStrategy
 
   async getEvmTransactionReceipt(
     txHash: string,
-    ethereumChainId?: EthereumChainId,
+    evmChainId?: EvmChainId,
   ): Promise<Record<string, any>> {
-    const options = this.ethereumOptions
+    const options = this.evmOptions
 
     const maxAttempts = 10
     const interval = 3000
-    const chainId = ethereumChainId || options.ethereumChainId
+    const chainId = evmChainId || options.evmChainId
     const url = options.rpcUrl || options.rpcUrls?.[chainId]
 
     if (!url) {
       throw new WalletException(
-        new Error('Please pass rpcUrl within the ethereumOptions'),
+        new Error('Please pass rpcUrl within the evmOptions'),
         {
           code: UnspecifiedErrorCode,
           context: WalletAction.GetEvmTransactionReceipt,
@@ -396,9 +392,11 @@ export class TurnkeyWalletStrategy
     )
   }
 
-  async getIframeClient(): Promise<TurnkeyIframeClient> {
+  async getIndexedDbClient(): Promise<TurnkeyIndexedDbClient> {
     const turnkeyWallet = await this.getTurnkeyWallet()
-    return turnkeyWallet.getIframeClient()
+    const indexedDbClient = await turnkeyWallet.getIndexedDbClient()
+
+    return indexedDbClient
   }
 
   private async getTurnkeyWallet(): Promise<TurnkeyWallet> {
@@ -419,30 +417,11 @@ export class TurnkeyWalletStrategy
         )
       }
 
-      if (!metadata.turnkey.defaultOrganizationId) {
-        throw new WalletException(
-          new Error('Turnkey defaultOrganizationId is required'),
-        )
-      }
-
       this.turnkeyWallet = new TurnkeyWallet(
         metadata.turnkey as TurnkeyMetadata,
       )
     }
 
     return this.turnkeyWallet
-  }
-
-  private async getOrganizationId(): Promise<string> {
-    const { metadata } = this
-    const organizationId =
-      metadata?.turnkey?.organizationId ||
-      metadata?.turnkey?.defaultOrganizationId
-
-    if (!organizationId) {
-      throw new WalletException(new Error('Organization ID is required'))
-    }
-
-    return organizationId
   }
 }

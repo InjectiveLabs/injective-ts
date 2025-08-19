@@ -13,7 +13,7 @@ _Package to use All Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-cosmos-strategy
+pnpm add @injectivelabs/wallet-cosmos-strategy
 ```
 
 ---
