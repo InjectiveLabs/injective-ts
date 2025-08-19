@@ -1,8 +1,8 @@
 root: ./
 
 structure:
-  readme: ./README.md
-  summary: ./SUMMARY.md
+  readme: ./
+  summary: ./SUMMARY
 
 redirects:
   getting-started/application-concepts/calculations/min-price-tick-size: https://docs.injective.network/developers/concepts/calculation-min-price-tick-size
@@ -11,3 +11,86 @@ redirects:
   getting-started/application-concepts/getting-started-cosmjs: https://docs.injective.network/developers/concepts/cosmjs-support
   getting-started/assets/creating-tokens: https://docs.injective.network/developers/assets/token-create
   getting-started/assets/injective-list: https://docs.injective.network/developers/assets/injective-list
+  building-dapps/building-dapps: https://docs.injective.network/developers/dapps/
+  building-dapps/configuring-nuxt: https://docs.injective.network/developers/dapps/configure-nuxt
+  building-dapps/configuring-react: https://docs.injective.network/developers/dapps/configure-react
+  getting-started/running-examples: https://docs.injective.network/developers/dapps/run-examples
+  building-dapps/dapps-examples: https://docs.injective.network/developers/dapps/example-applications
+  building-dapps/smart-contract: https://docs.injective.network/developers/dapps/example-smart-contract
+  building-dapps/dex: https://docs.injective.network/developers/dapps/example-dex
+  building-dapps/bridge: https://docs.injective.network/developers/dapps/example-bridge
+  building-dapps/dapps-examples/simple-html-example-with-webpack: https://docs.injective.network/developers/dapps/example-webpack
+  wallets/wallet: https://docs.injective.network/developers-native/wallets/
+  wallets/wallet-accounts: https://docs.injective.network/developers-native/wallets/accounts
+  wallets/wallet-connections: https://docs.injective.network/developers-native/wallets/connections
+  wallets/wallet-wallet-strategy: https://docs.injective.network/developers-native/wallets/strategy
+  wallets/offchain-arbitrary-data: https://docs.injective.network/developers-native/wallets/offchain-data
+  transactions/transactions: https://docs.injective.network/developers-native/transactions/
+  transactions/transactions-cosmos: https://docs.injective.network/developers-native/transactions/cosmos
+  transactions/transactions-cosmos/ledger-through-keplr-wallet: https://docs.injective.network/developers-native/transactions/cosmos-ledger-keplr
+  transactions/ethereum: https://docs.injective.network/developers-native/transactions/ethereum
+  transactions/ethereum-ledger: https://docs.injective.network/developers-native/transactions/ethereum-ledger
+  transactions/msgbroadcaster: https://docs.injective.network/developers-native/transactions/msgbroadcaster
+  transactions/private-key: https://docs.injective.network/developers-native/transactions/private-key
+  transactions/web3-gateway: https://docs.injective.network/developers-native/transactions/web3-gateway
+  bridges/bridge: https://docs.injective.network/developers-native/bridges/
+  bridges/ethereum: https://docs.injective.network/developers-native/bridges/ethereum
+  smart-contracts/contracts: https://docs.injective.network/developers-cosmwasm/smart-contracts/
+  smart-contracts/contracts/injective-name-service: https://docs.injective.network/developers-cosmwasm/smart-contracts/injective-name-service
+  smart-contracts/contracts/neptune-service: https://docs.injective.network/developers-cosmwasm/smart-contracts/neptune-service
+  smart-contracts/contracts/cw20-convert-and-market-order-example: https://docs.injective.network/developers-cosmwasm/smart-contracts/cw20-convert-market-order
+  core-modules-and-examples/core-modules: https://docs.injective.network/developers-native/examples/
+  core-modules-and-examples/auction: https://docs.injective.network/developers-native/examples/auction
+  core-modules-and-examples/authz: https://docs.injective.network/developers-native/examples/authz
+  core-modules-and-examples/bank: https://docs.injective.network/developers-native/examples/bank
+  core-modules-and-examples/distribution: https://docs.injective.network/developers-native/examples/distribution
+  core-modules-and-examples/exchange: https://docs.injective.network/developers-native/examples/exchange
+  core-modules-and-examples/feegrant: https://docs.injective.network/developers-native/examples/feegrant
+  core-modules-and-examples/governance: https://docs.injective.network/developers-native/examples/governance
+  core-modules-and-examples/ibc: https://docs.injective.network/developers-native/examples/ibc
+  core-modules-and-examples/insurance: https://docs.injective.network/developers-native/examples/insurance
+  core-modules-and-examples/peggy: https://docs.injective.network/developers-native/examples/peggy
+  core-modules-and-examples/permissions: https://docs.injective.network/developers-native/examples/permissions
+  core-modules-and-examples/staking: https://docs.injective.network/developers-native/examples/staking
+  core-modules-and-examples/token-factory: https://docs.injective.network/developers-native/examples/token-factory
+  core-modules-and-examples/wasm: https://docs.injective.network/developers-native/examples/wasm
+  querying/querying-chain: https://docs.injective.network/developers-native/query-chain/
+  querying/querying-chain/querying-chain-auction-module: https://docs.injective.network/developers-native/query-chain/auction
+  querying/querying-chain/querying-chain-auth-module: https://docs.injective.network/developers-native/query-chain/auth
+  querying/querying-chain/querying-chain-bank-module: https://docs.injective.network/developers-native/query-chain/auction
+  querying/querying-chain/querying-chain-distribution: https://docs.injective.network/developers-native/query-chain/distribution
+  querying/querying-chain/querying-chain-exchange: https://docs.injective.network/developers-native/query-chain/exchange
+  querying/querying-chain/querying-chain-governance: https://docs.injective.network/developers-native/query-chain/governance
+  querying/querying-chain/querying-chain-ibc: https://docs.injective.network/developers-native/query-chain/ibc
+  querying/querying-chain/querying-chain-mint: https://docs.injective.network/developers-native/query-chain/mint
+  querying/querying-chain/querying-chain-insurance-funds: https://docs.injective.network/developers-native/query-chain/insurance-funds
+  querying/querying-chain/querying-chain-oracle: https://docs.injective.network/developers-native/query-chain/oracle
+  querying/querying-chain/querying-chain-peggy: https://docs.injective.network/developers-native/query-chain/peggy
+  querying/querying-chain/querying-chain-permissions: https://docs.injective.network/developers-native/query-chain/permissions
+  querying/querying-chain/querying-chain-staking: https://docs.injective.network/developers-native/query-chain/staking
+  querying/querying-chain/querying-chain-tendermint: https://docs.injective.network/developers-native/query-chain/tendermint
+  querying/querying-chain/querying-chain-wasm: https://docs.injective.network/developers-native/query-chain/wasm
+  querying/querying-chain/querying-chain-wasmx: https://docs.injective.network/developers-native/query-chain/wasmx
+  querying/querying-chain/token-factory: https://docs.injective.network/developers-native/query-chain/token-factory
+  querying/querying-api: https://docs.injective.network/developers-native/query-indexer/
+  querying/querying-api/querying-indexer-account: https://docs.injective.network/developers-native/query-indexer/account
+  querying/querying-api/querying-indexer-auction: https://docs.injective.network/developers-native/query-indexer/auction
+  querying/querying-api/querying-indexer-derivatives: https://docs.injective.network/developers-native/query-indexer/derivatives
+  querying/querying-api/querying-indexer-explorer: https://docs.injective.network/developers-native/query-indexer/explorer
+  querying/querying-api/querying-indexer-insurance-funds: https://docs.injective.network/developers-native/query-indexer/insurance-funds
+  querying/querying-api/querying-indexer-markets: https://docs.injective.network/developers-native/query-indexer/markets
+  querying/querying-api/querying-indexer-leaderboard: https://docs.injective.network/developers-native/query-indexer/leaderboard
+  querying/querying-api/querying-indexer-mito: https://docs.injective.network/developers-native/query-indexer/mito
+  querying/querying-api/querying-indexer-oracle: https://docs.injective.network/developers-native/query-indexer/oracle
+  querying/querying-api/querying-indexer-portfolio: https://docs.injective.network/developers-native/query-indexer/portfolio
+  querying/querying-api/querying-indexer-spot: https://docs.injective.network/developers-native/query-indexer/spot
+  querying/querying-api/querying-indexer-transaction: https://docs.injective.network/developers-native/query-indexer/transaction
+  querying/querying-api/streaming: https://docs.injective.network/developers-native/query-indexer-stream/
+  querying/querying-api/streaming/streaming-indexer-account: https://docs.injective.network/developers-native/query-indexer-stream/account
+  querying/querying-api/streaming/streaming-indexer-auction: https://docs.injective.network/developers-native/query-indexer-stream/auction
+  querying/querying-api/streaming/streaming-indexer-derivatives: https://docs.injective.network/developers-native/query-indexer-stream/derivatives
+  querying/querying-api/streaming/streaming-indexer-oracle: https://docs.injective.network/developers-native/query-indexer-stream/oracle
+  querying/querying-api/streaming/streaming-indexer-portfolio: https://docs.injective.network/developers-native/query-indexer-stream/portfolio
+  querying/querying-api/streaming/streaming-indexer-spot: https://docs.injective.network/developers-native/query-indexer-stream/spot
+  querying/querying-api/streaming/streaming-indexer-explorer: https://docs.injective.network/developers-native/query-indexer-stream/explorer
+  querying/querying-ethereum: https://docs.injective.network/developers-native/query-ethereum/
