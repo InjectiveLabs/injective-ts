@@ -25,6 +25,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
 
   async fetchVault({ vaultAddress }: { vaultAddress: string }) {
     const request = InjectiveMegaVaultRpc.GetVaultRequest.create()
+
     request.vaultAddress = vaultAddress
 
     try {
@@ -33,7 +34,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       )
 
       return IndexerGrpcMegaVaultTransformer.getVaultResponseToVault(response)
-    } catch (e: any) {
+    } catch (e: unknown) {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
@@ -58,6 +59,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
     userAddress: string
   }) {
     const request = InjectiveMegaVaultRpc.GetUserRequest.create()
+
     request.vaultAddress = vaultAddress
     request.userAddress = userAddress
 
@@ -205,6 +207,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
   }) {
     const request =
       InjectiveMegaVaultRpc.GetOperatorRedemptionBucketsRequest.create()
+
     request.vaultAddress = vaultAddress
     request.operatorAddress = operatorAddress
 
