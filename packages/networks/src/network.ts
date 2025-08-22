@@ -95,9 +95,13 @@ export const isMainnet = (network: Network) =>
   ].includes(network)
 
 export const isDevnet = (network: Network) =>
-  [Network.Devnet, Network.Devnet1, Network.Devnet2, Network.Local].includes(
-    network,
-  )
+  [
+    Network.Devnet,
+    Network.Devnet1,
+    Network.Devnet2,
+    Network.Devnet3,
+    Network.Local,
+  ].includes(network)
 
 export const isTestnet = (network: Network) =>
   [
