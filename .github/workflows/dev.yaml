@@ -72,7 +72,6 @@ jobs:
         uses: InjectiveLabs/github-package-bump@master
         with:
           gh_token: ${{ secrets.GH_TOKEN }}
-          folder_path: layer
           repository_url: injectiveLabs/injective-ui
           repository_branch: master
 
