@@ -1,11 +1,11 @@
 import { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import { IndexerModule } from '../types/index.js'
-import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
 import {
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
+import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -38,14 +38,14 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'GetVault',
+          context: 'fetchVault',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'GetVault',
+        context: 'fetchVault',
         contextModule: this.module,
       })
     }
@@ -55,8 +55,8 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
     vaultAddress,
     userAddress,
   }: {
-    vaultAddress: string
     userAddress: string
+    vaultAddress: string
   }) {
     const request = InjectiveMegaVaultRpc.GetUserRequest.create()
 
@@ -73,31 +73,31 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'GetUser',
+          context: 'fetchVaultUser',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'GetUser',
+        context: 'fetchVaultUser',
         contextModule: this.module,
       })
     }
   }
 
   async fetchVaultSubscriptions({
-    vaultAddress,
-    userAddress,
+    token,
     status,
     perPage,
-    token,
+    userAddress,
+    vaultAddress,
   }: {
-    vaultAddress: string
-    userAddress: string
+    token?: string
     status?: string
     perPage?: number
-    token?: string
+    userAddress: string
+    vaultAddress: string
   }) {
     const request = InjectiveMegaVaultRpc.ListSubscriptionsRequest.create()
 
@@ -129,31 +129,31 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'ListSubscriptions',
+          context: 'fetchVaultSubscriptions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'ListSubscriptions',
+        context: 'fetchVaultSubscriptions',
         contextModule: this.module,
       })
     }
   }
 
   async fetchVaultRedemptions({
-    vaultAddress,
-    userAddress,
+    token,
     status,
     perPage,
-    token,
+    userAddress,
+    vaultAddress,
   }: {
-    vaultAddress: string
-    userAddress: string
+    token?: string
     status?: string
     perPage?: number
-    token?: string
+    vaultAddress: string
+    userAddress: string
   }) {
     const request = InjectiveMegaVaultRpc.ListRedemptionsRequest.create()
 
@@ -185,14 +185,14 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'ListRedemptions',
+          context: 'fetchVaultRedemptions',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'ListRedemptions',
+        context: 'fetchVaultRedemptions',
         contextModule: this.module,
       })
     }
@@ -225,26 +225,26 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'GetOperatorRedemptionBuckets',
+          context: 'fetchOperatorRedemptionBuckets',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'GetOperatorRedemptionBuckets',
+        context: 'fetchOperatorRedemptionBuckets',
         contextModule: this.module,
       })
     }
   }
 
   async fetchVaultTvlHistory({
-    vaultAddress,
     since,
+    vaultAddress,
     maxDataPoints,
   }: {
-    vaultAddress: string
     since: number
+    vaultAddress: string
     maxDataPoints?: number
   }) {
     const request = InjectiveMegaVaultRpc.TvlHistoryRequest.create()
@@ -269,26 +269,26 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'TvlHistory',
+          context: 'fetchVaultTvlHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'TvlHistory',
+        context: 'fetchVaultTvlHistory',
         contextModule: this.module,
       })
     }
   }
 
   async fetchVaultPnlHistory({
-    vaultAddress,
     since,
+    vaultAddress,
     maxDataPoints,
   }: {
-    vaultAddress: string
     since: number
+    vaultAddress: string
     maxDataPoints?: number
   }) {
     const request = InjectiveMegaVaultRpc.PnlHistoryRequest.create()
@@ -313,14 +313,14 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
           code: e.code,
-          context: 'PnlHistory',
+          context: 'fetchVaultPnlHistory',
           contextModule: this.module,
         })
       }
 
       throw new GrpcUnaryRequestException(e as Error, {
         code: UnspecifiedErrorCode,
-        context: 'PnlHistory',
+        context: 'fetchVaultPnlHistory',
         contextModule: this.module,
       })
     }

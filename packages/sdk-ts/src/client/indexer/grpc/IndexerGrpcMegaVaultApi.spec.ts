@@ -1,7 +1,7 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
 import { IndexerGrpcMegaVaultApi } from './IndexerGrpcMegaVaultApi.js'
+import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.Devnet1)
@@ -36,8 +36,8 @@ describe('IndexerGrpcMegaVaultApi', () => {
   test('fetchVaultUser', async () => {
     try {
       const response = await indexerGrpcMegaVaultApi.fetchVaultUser({
-        vaultAddress: mockVaultAddress,
         userAddress: injectiveAddress,
+        vaultAddress: mockVaultAddress,
       })
 
       expect(response).toBeDefined()
@@ -58,10 +58,10 @@ describe('IndexerGrpcMegaVaultApi', () => {
   test('fetchVaultSubscriptions', async () => {
     try {
       const response = await indexerGrpcMegaVaultApi.fetchVaultSubscriptions({
-        vaultAddress: mockVaultAddress,
-        userAddress: injectiveAddress,
-        status: 'active',
         perPage: 10,
+        status: 'active',
+        userAddress: injectiveAddress,
+        vaultAddress: mockVaultAddress,
       })
 
       expect(response).toBeDefined()
@@ -83,10 +83,10 @@ describe('IndexerGrpcMegaVaultApi', () => {
   test('fetchVaultRedemptions', async () => {
     try {
       const response = await indexerGrpcMegaVaultApi.fetchVaultRedemptions({
-        vaultAddress: mockVaultAddress,
-        userAddress: injectiveAddress,
-        status: 'pending',
         perPage: 10,
+        status: 'pending',
+        userAddress: injectiveAddress,
+        vaultAddress: mockVaultAddress,
       })
 
       expect(response).toBeDefined()
@@ -133,9 +133,9 @@ describe('IndexerGrpcMegaVaultApi', () => {
     try {
       const since = Date.now() - 7 * 24 * 60 * 60 * 1000 // 7 days ago
       const response = await indexerGrpcMegaVaultApi.fetchVaultTvlHistory({
-        vaultAddress: mockVaultAddress,
         since,
         maxDataPoints: 100,
+        vaultAddress: mockVaultAddress,
       })
 
       expect(response).toBeDefined()
@@ -157,9 +157,9 @@ describe('IndexerGrpcMegaVaultApi', () => {
     try {
       const since = Date.now() - 7 * 24 * 60 * 60 * 1000 // 7 days ago
       const response = await indexerGrpcMegaVaultApi.fetchVaultPnlHistory({
-        vaultAddress: mockVaultAddress,
         since,
         maxDataPoints: 100,
+        vaultAddress: mockVaultAddress,
       })
 
       expect(response).toBeDefined()
