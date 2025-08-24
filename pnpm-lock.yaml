@@ -213,12 +213,17 @@ importers:
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
       '@injectivelabs/indexer-proto-ts':
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: 1.13.18
         version: 1.13.18
 =======
         specifier: 1.13.16-alpha.1
         version: 1.13.16-alpha.1
 >>>>>>> 1e11939fa (feat: megavault)
+=======
+        specifier: 1.13.16-alpha.2
+        version: 1.13.16-alpha.2
+>>>>>>> 8d5db7d57 (fix: getvault not working because of outdated proto)
       '@injectivelabs/mito-proto-ts':
         specifier: 1.13.2
         version: 1.13.2
@@ -2105,6 +2110,7 @@ packages:
       google-protobuf: ^3.14.0
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   '@injectivelabs/indexer-proto-ts@1.13.18':
     resolution:
       {
@@ -2114,6 +2120,10 @@ packages:
   '@injectivelabs/indexer-proto-ts@1.13.16-alpha.1':
     resolution: {integrity: sha512-aBBTrCpg1FX6RQOZQi4B9v5pCA1xG229qbLkc87ueQB3+C0bqERXW1e16/ECm3Mkk0wp/j40GhQMhYFf83vt7w==}
 >>>>>>> 1e11939fa (feat: megavault)
+=======
+  '@injectivelabs/indexer-proto-ts@1.13.16-alpha.2':
+    resolution: {integrity: sha512-vgqDxwBfcSoWKncxf+7ogRCjx19ch3s3skcw8STMCr6l4Fayw10+8n7Nh22otpXT+OlYTggkxo7ZIDVxbO5osQ==}
+>>>>>>> 8d5db7d57 (fix: getvault not working because of outdated proto)
 
   '@injectivelabs/mito-proto-ts@1.13.2':
     resolution: {integrity: sha512-D4qEDB4OgaV1LoYNg6FB+weVcLMu5ea0x/W/p+euIVly3qia44GmAicIbQhrkqTs2o2c+1mbK1c4eOzFxQcwhg==}
@@ -11601,10 +11611,14 @@ snapshots:
       google-protobuf: 3.21.4
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   '@injectivelabs/indexer-proto-ts@1.13.18':
 =======
   '@injectivelabs/indexer-proto-ts@1.13.16-alpha.1':
 >>>>>>> 1e11939fa (feat: megavault)
+=======
+  '@injectivelabs/indexer-proto-ts@1.13.16-alpha.2':
+>>>>>>> 8d5db7d57 (fix: getvault not working because of outdated proto)
     dependencies:
       '@injectivelabs/grpc-web': 0.0.1(google-protobuf@3.21.4)
       google-protobuf: 3.21.4
