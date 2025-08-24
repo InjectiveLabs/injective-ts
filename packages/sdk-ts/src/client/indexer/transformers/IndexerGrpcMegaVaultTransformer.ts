@@ -10,7 +10,9 @@ import type {
   MegaVaultAprStats,
   MegaVaultOperator,
   MegaVaultPnlStats,
+  MegaVaultTargetApr,
   MegaVaultUserStats,
+  MegaVaultIncentives,
   MegaVaultRedemption,
   MegaVaultVolatility,
   MegaVaultMaxDrawdown,
@@ -18,10 +20,12 @@ import type {
   GrpcMegaVaultPnlStats,
   GrpcMegaVaultOperator,
   MegaVaultSubscription,
+  GrpcMegaVaultTargetApr,
   GrpcMegaVaultUserStats,
   MegaVaultHistoricalPnL,
   MegaVaultHistoricalTVL,
   MegaVaultUnrealizedPnl,
+  GrpcMegaVaultIncentives,
   GrpcMegaVaultRedemption,
   GrpcMegaVaultVaultStats,
   GrpcMegaVaultVolatility,
@@ -55,6 +59,16 @@ export class IndexerGrpcMegaVaultTransformer {
       operators: vault.operators.map(
         IndexerGrpcMegaVaultTransformer.grpcOperatorToOperator,
       ),
+      incentives: vault.incentives
+        ? IndexerGrpcMegaVaultTransformer.grpcIncentiveToIncentive(
+            vault.incentives,
+          )
+        : undefined,
+      targetApr: vault.targetApr
+        ? IndexerGrpcMegaVaultTransformer.grpcTargetAprToTargetApr(
+            vault.targetApr,
+          )
+        : undefined,
       stats: vault.stats
         ? IndexerGrpcMegaVaultTransformer.grpcVaultStatsToVaultStats(
             vault.stats,
@@ -126,12 +140,6 @@ export class IndexerGrpcMegaVaultTransformer {
     )
   }
 
-  static grpcOperatorsToOperators(
-    operators: GrpcMegaVaultOperator[],
-  ): MegaVaultOperator[] {
-    return operators.map(IndexerGrpcMegaVaultTransformer.grpcOperatorToOperator)
-  }
-
   static grpcOperatorToOperator(
     operator: GrpcMegaVaultOperator,
   ): MegaVaultOperator {
@@ -144,6 +152,29 @@ export class IndexerGrpcMegaVaultTransformer {
     }
   }
 
+  static grpcIncentiveToIncentive(
+    incentive: GrpcMegaVaultIncentives,
+  ): MegaVaultIncentives {
+    return {
+      address: incentive.address,
+      amount: incentive.amount,
+      updatedAt: incentive.updatedAt,
+      updatedHeight: incentive.updatedHeight,
+    }
+  }
+
+  static grpcTargetAprToTargetApr(
+    targetApr: GrpcMegaVaultTargetApr,
+  ): MegaVaultTargetApr {
+    return {
+      apr: targetApr.apr,
+      upperThreshold: targetApr.upperThreshold,
+      lowerThreshold: targetApr.lowerThreshold,
+      updatedHeight: targetApr.updatedHeight,
+      updatedAt: targetApr.updatedAt,
+    }
+  }
+
   static grpcVaultStatsToVaultStats(
     stats: GrpcMegaVaultVaultStats,
   ): MegaVaultStats {
@@ -151,6 +182,7 @@ export class IndexerGrpcMegaVaultTransformer {
       totalSubscribedAmount: stats.totalSubscribedAmount,
       totalRedeemedAmount: stats.totalRedeemedAmount,
       currentAmount: stats.currentAmount,
+      currentAmountWithoutIncentives: stats.currentAmountWithoutIncentives,
       currentLpAmount: stats.currentLpAmount,
       currentLpPrice: stats.currentLpPrice,
       pnl: stats.pnl

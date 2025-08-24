@@ -16,9 +16,18 @@ export interface MegaVault {
   lpDenom: string
   quoteDenom: string
   operators: MegaVaultOperator[]
+  incentives: MegaVaultIncentives | undefined
+  targetApr: MegaVaultTargetApr | undefined
   stats: MegaVaultStats | undefined
   createdHeight: string
   createdAt: string
+  updatedHeight: string
+  updatedAt: string
+}
+
+export interface MegaVaultIncentives {
+  address: string
+  amount: string
   updatedHeight: string
   updatedAt: string
 }
@@ -27,6 +36,7 @@ export interface MegaVaultStats {
   totalSubscribedAmount: string
   totalRedeemedAmount: string
   currentAmount: string
+  currentAmountWithoutIncentives: string
   currentLpAmount: string
   currentLpPrice: string
   pnl: MegaVaultPnlStats | undefined
@@ -133,12 +143,22 @@ export interface MegaVaultHistoricalPnL {
   v: string
 }
 
+export interface MegaVaultTargetApr {
+  apr: string
+  upperThreshold: string
+  lowerThreshold: string
+  updatedHeight: string
+  updatedAt: string
+}
+
 export type GrpcMegaVaultApr = InjectiveMegaVaultRpc.Apr
 export type GrpcMegaVaultPnl = InjectiveMegaVaultRpc.Pnl
 export type GrpcMegaVaultAprStats = InjectiveMegaVaultRpc.AprStats
 export type GrpcMegaVaultPnlStats = InjectiveMegaVaultRpc.PnlStats
 export type GrpcMegaVaultOperator = InjectiveMegaVaultRpc.Operator
+export type GrpcMegaVaultTargetApr = InjectiveMegaVaultRpc.TargetApr
 export type GrpcMegaVaultUserStats = InjectiveMegaVaultRpc.UserStats
+export type GrpcMegaVaultIncentives = InjectiveMegaVaultRpc.Incentives
 export type GrpcMegaVaultVaultStats = InjectiveMegaVaultRpc.VaultStats
 export type GrpcMegaVaultVolatility = InjectiveMegaVaultRpc.Volatility
 export type GrpcMegaVaultRedemption = InjectiveMegaVaultRpc.Redemption
