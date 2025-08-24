@@ -1,6 +1,6 @@
 import { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
 
-export interface MVOperator {
+export interface MegaVaultOperator {
   address: string
   totalAmount: string
   totalLiquidAmount: string
@@ -15,7 +15,7 @@ export interface MegaVault {
   admin: string
   lpDenom: string
   quoteDenom: string
-  operators: MVOperator[]
+  operators: MegaVaultOperator[]
   stats: MegaVaultStats | undefined
   createdHeight: string
   createdAt: string
@@ -29,69 +29,67 @@ export interface MegaVaultStats {
   currentAmount: string
   currentLpAmount: string
   currentLpPrice: string
-  pnl: MVPnlStats | undefined
-  volatility: MVVolatilityStats | undefined
-  apr: MVAprStats | undefined
-  maxDrawdown: MVMaxDrawdown | undefined
+  pnl: MegaVaultPnlStats | undefined
+  volatility: MegaVaultVolatilityStats | undefined
+  apr: MegaVaultAprStats | undefined
+  maxDrawdown: MegaVaultMaxDrawdown | undefined
 }
 
-export interface MVPnlStats {
-  unrealized: MVUnrealizedPnl | undefined
-  allTime: MVPnl | undefined
+export interface MegaVaultPnlStats {
+  unrealized: MegaVaultUnrealizedPnl | undefined
+  allTime: MegaVaultPnl | undefined
 }
 
-export interface MVUnrealizedPnl {
+export interface MegaVaultUnrealizedPnl {
   value: string
   percentage: string
 }
 
-export interface MVPnl {
+export interface MegaVaultPnl {
   value: string
   percentage: string
   totalAmountSubscribed: string
   totalAmountRedeemed: string
   currentAmount: string
 }
-export interface MVMaxDrawdown {
+export interface MegaVaultMaxDrawdown {
   value: string
   latestPnLPeak: string
 }
 
-export interface MVVolatilityStats {
-  /** 30-days volatility */
-  thirtyDays: MVVolatility | undefined
+export interface MegaVaultVolatilityStats {
+  thirtyDays: MegaVaultVolatility | undefined
 }
 
-export interface MVVolatility {
-  /** Volatility value */
+export interface MegaVaultVolatility {
   value: string
 }
 
-export interface MVAprStats {
-  thirtyDays: MVApr | undefined
+export interface MegaVaultAprStats {
+  thirtyDays: MegaVaultApr | undefined
 }
 
-export interface MVApr {
+export interface MegaVaultApr {
   value: string
   originalLpPrice: string
   currentLpPrice: string
 }
 
-export interface MVUser {
+export interface MegaVaultUser {
   address: string
   contractAddress: string
-  stats: MVUserStats | undefined
+  stats: MegaVaultUserStats | undefined
   updatedHeight: string
   updatedAt: string
 }
 
-export interface MVUserStats {
+export interface MegaVaultUserStats {
   currentAmount: string
   currentLpAmount: string
-  pnl: MVPnlStats | undefined
+  pnl: MegaVaultPnlStats | undefined
 }
 
-export interface MVSubscription {
+export interface MegaVaultSubscription {
   contractAddress: string
   user: string
   index: string
@@ -104,7 +102,7 @@ export interface MVSubscription {
   executedAt: string
 }
 
-export interface MVRedemption {
+export interface MegaVaultRedemption {
   contractAddress: string
   user: string
   index: string
@@ -118,19 +116,19 @@ export interface MVRedemption {
   executedAt: string
 }
 
-export interface MVOperatorRedemptionBucket {
+export interface MegaVaultOperatorRedemptionBucket {
   bucket: string
   lpAmountToRedeem: string
   neededAmount: string
   missingLiquidity: string
 }
 
-export interface MVHistoricalTVL {
+export interface MegaVaultHistoricalTVL {
   t: number
   v: string
 }
 
-export interface MVHistoricalPnL {
+export interface MegaVaultHistoricalPnL {
   t: number
   v: string
 }

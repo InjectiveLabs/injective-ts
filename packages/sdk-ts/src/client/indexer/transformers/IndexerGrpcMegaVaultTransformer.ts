@@ -1,12 +1,12 @@
 import { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
 import type {
-  MVUser,
   MegaVault,
-  MVRedemption,
-  MVSubscription,
-  MVHistoricalPnL,
-  MVHistoricalTVL,
-  MVOperatorRedemptionBucket,
+  MegaVaultUser,
+  MegaVaultRedemption,
+  MegaVaultSubscription,
+  MegaVaultHistoricalPnL,
+  MegaVaultHistoricalTVL,
+  MegaVaultOperatorRedemptionBucket,
 } from '../types/index.js'
 
 export class IndexerGrpcMegaVaultTransformer {
@@ -34,7 +34,7 @@ export class IndexerGrpcMegaVaultTransformer {
 
   static getUserResponseToUser(
     response: InjectiveMegaVaultRpc.GetUserResponse,
-  ): MVUser | undefined {
+  ): MegaVaultUser | undefined {
     const user = response.user
     if (!user) return undefined
 
@@ -49,7 +49,7 @@ export class IndexerGrpcMegaVaultTransformer {
 
   static listSubscriptionsResponseToSubscriptions(
     response: InjectiveMegaVaultRpc.ListSubscriptionsResponse,
-  ): MVSubscription[] {
+  ): MegaVaultSubscription[] {
     return response.subscriptions.map((subscription) => ({
       contractAddress: subscription.contractAddress,
       user: subscription.user,
@@ -66,7 +66,7 @@ export class IndexerGrpcMegaVaultTransformer {
 
   static listRedemptionsResponseToRedemptions(
     response: InjectiveMegaVaultRpc.ListRedemptionsResponse,
-  ): MVRedemption[] {
+  ): MegaVaultRedemption[] {
     return response.redemptions.map((redemption) => ({
       contractAddress: redemption.contractAddress,
       user: redemption.user,
@@ -84,7 +84,7 @@ export class IndexerGrpcMegaVaultTransformer {
 
   static getOperatorRedemptionBucketsResponseToOperatorRedemptionBuckets(
     response: InjectiveMegaVaultRpc.GetOperatorRedemptionBucketsResponse,
-  ): MVOperatorRedemptionBucket[] {
+  ): MegaVaultOperatorRedemptionBucket[] {
     return response.buckets.map((bucket) => ({
       bucket: bucket.bucket,
       lpAmountToRedeem: bucket.lpAmountToRedeem,
@@ -95,7 +95,7 @@ export class IndexerGrpcMegaVaultTransformer {
 
   static tvlHistoryResponseToTvlHistory(
     response: InjectiveMegaVaultRpc.TvlHistoryResponse,
-  ): MVHistoricalTVL[] {
+  ): MegaVaultHistoricalTVL[] {
     return response.history.map((history) => ({
       t: history.t,
       v: history.v,
@@ -104,7 +104,7 @@ export class IndexerGrpcMegaVaultTransformer {
 
   static pnlHistoryResponseToPnlHistory(
     response: InjectiveMegaVaultRpc.PnlHistoryResponse,
-  ): MVHistoricalPnL[] {
+  ): MegaVaultHistoricalPnL[] {
     return response.history.map((history) => ({
       t: history.t,
       v: history.v,
