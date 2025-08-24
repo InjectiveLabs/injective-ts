@@ -22,7 +22,7 @@ describe('IndexerGrpcMegaVaultApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMegaVaultTransformer.getVaultResponseToVault
+            typeof IndexerGrpcMegaVaultTransformer.vaultResponseToVault
           >
         >(response),
       )
@@ -43,9 +43,7 @@ describe('IndexerGrpcMegaVaultApi', () => {
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcMegaVaultTransformer.getUserResponseToUser
-          >
+          ReturnType<typeof IndexerGrpcMegaVaultTransformer.userResponseToUser>
         >(response),
       )
     } catch (e) {
@@ -68,7 +66,7 @@ describe('IndexerGrpcMegaVaultApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMegaVaultTransformer.listSubscriptionsResponseToSubscriptions
+            typeof IndexerGrpcMegaVaultTransformer.subscriptionsResponseToSubscriptions
           >
         >(response),
       )
@@ -93,7 +91,7 @@ describe('IndexerGrpcMegaVaultApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMegaVaultTransformer.listRedemptionsResponseToRedemptions
+            typeof IndexerGrpcMegaVaultTransformer.redemptionsResponseToRedemptions
           >
         >(response),
       )
@@ -117,7 +115,7 @@ describe('IndexerGrpcMegaVaultApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof IndexerGrpcMegaVaultTransformer.getOperatorRedemptionBucketsResponseToOperatorRedemptionBuckets
+            typeof IndexerGrpcMegaVaultTransformer.operatorRedemptionBucketsResponseToOperatorRedemptionBuckets
           >
         >(response),
       )

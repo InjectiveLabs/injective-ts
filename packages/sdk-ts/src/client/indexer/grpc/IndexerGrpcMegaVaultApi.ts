@@ -33,7 +33,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
         () => this.client.GetVault(request, this.metadata),
       )
 
-      return IndexerGrpcMegaVaultTransformer.getVaultResponseToVault(response)
+      return IndexerGrpcMegaVaultTransformer.vaultResponseToVault(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -68,7 +68,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
         () => this.client.GetUser(request, this.metadata),
       )
 
-      return IndexerGrpcMegaVaultTransformer.getUserResponseToUser(response)
+      return IndexerGrpcMegaVaultTransformer.userResponseToUser(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -122,7 +122,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
           this.client.ListSubscriptions(request, this.metadata),
         )
 
-      return IndexerGrpcMegaVaultTransformer.listSubscriptionsResponseToSubscriptions(
+      return IndexerGrpcMegaVaultTransformer.subscriptionsResponseToSubscriptions(
         response,
       )
     } catch (e: unknown) {
@@ -178,7 +178,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
           this.client.ListRedemptions(request, this.metadata),
         )
 
-      return IndexerGrpcMegaVaultTransformer.listRedemptionsResponseToRedemptions(
+      return IndexerGrpcMegaVaultTransformer.redemptionsResponseToRedemptions(
         response,
       )
     } catch (e: unknown) {
@@ -218,7 +218,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
             this.client.GetOperatorRedemptionBuckets(request, this.metadata),
         )
 
-      return IndexerGrpcMegaVaultTransformer.getOperatorRedemptionBucketsResponseToOperatorRedemptionBuckets(
+      return IndexerGrpcMegaVaultTransformer.operatorRedemptionBucketsResponseToOperatorRedemptionBuckets(
         response,
       )
     } catch (e: unknown) {

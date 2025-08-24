@@ -133,11 +133,20 @@ export interface MegaVaultHistoricalPnL {
   v: string
 }
 
-export type GrpcUser = InjectiveMegaVaultRpc.User
-export type GrpcVault = InjectiveMegaVaultRpc.Vault
-export type GrpcRedemption = InjectiveMegaVaultRpc.Redemption
-export type GrpcSubscription = InjectiveMegaVaultRpc.Subscription
-export type GrpcHistoricalPnL = InjectiveMegaVaultRpc.HistoricalPnL
-export type GrpcHistoricalTVL = InjectiveMegaVaultRpc.HistoricalTVL
-export type GrpcOperatorRedemptionBucket =
+export type GrpcMegaVaultApr = InjectiveMegaVaultRpc.Apr
+export type GrpcMegaVaultPnl = InjectiveMegaVaultRpc.Pnl
+export type GrpcMegaVaultAprStats = InjectiveMegaVaultRpc.AprStats
+export type GrpcMegaVaultPnlStats = InjectiveMegaVaultRpc.PnlStats
+export type GrpcMegaVaultOperator = InjectiveMegaVaultRpc.Operator
+export type GrpcMegaVaultUserStats = InjectiveMegaVaultRpc.UserStats
+export type GrpcMegaVaultVaultStats = InjectiveMegaVaultRpc.VaultStats
+export type GrpcMegaVaultVolatility = InjectiveMegaVaultRpc.Volatility
+export type GrpcMegaVaultRedemption = InjectiveMegaVaultRpc.Redemption
+export type GrpcMegaVaultMaxDrawdown = InjectiveMegaVaultRpc.MaxDrawdown
+export type GrpcMegaVaultSubscription = InjectiveMegaVaultRpc.Subscription
+export type GrpcMegaVaultHistoricalPnL = InjectiveMegaVaultRpc.HistoricalPnL
+export type GrpcMegaVaultHistoricalTVL = InjectiveMegaVaultRpc.HistoricalTVL
+export type GrpcMegaVaultUnrealizedPnl = InjectiveMegaVaultRpc.UnrealizedPnl
+export type GrpcMegaVaultVolatilityStats = InjectiveMegaVaultRpc.VolatilityStats
+export type GrpcMegaVaultOperatorRedemptionBucket =
   InjectiveMegaVaultRpc.RedemptionBucket
