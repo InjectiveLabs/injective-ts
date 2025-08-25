@@ -111,7 +111,6 @@ export class TurnkeyWalletStrategy
   public async disconnect() {
     const turnkeyWallet = await this.getTurnkeyWallet()
     const turnkey = await turnkeyWallet.getTurnkey()
-
     const indexedDbClient = await turnkeyWallet.getIndexedDbClient()
 
     const isUserLoggedIn = await turnkey.getSession()

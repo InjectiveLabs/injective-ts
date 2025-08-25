@@ -31,7 +31,6 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
   Eip1193Provider,
 } from '@injectivelabs/wallet-base'
-
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'

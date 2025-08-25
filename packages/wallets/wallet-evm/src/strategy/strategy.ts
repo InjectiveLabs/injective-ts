@@ -38,7 +38,6 @@ import {
 } from '@injectivelabs/wallet-base'
 import { sleep, capitalize } from '@injectivelabs/utils'
 import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
-
 import {
   getRabbyProvider,
   getBitGetProvider,

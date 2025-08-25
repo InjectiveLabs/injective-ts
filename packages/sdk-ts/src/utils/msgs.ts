@@ -26,16 +26,16 @@ export const getGasPriceBasedOnMessage = (msgs: Msgs[]): number => {
       .toNumber()
   }
 
-  if (messageType.includes('wasm')) {
-    return new BigNumberInBase(DEFAULT_GAS_LIMIT)
-      .times(1.5)
+  if (messageType.includes('exchange')) {
+    return new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
       .times(messages.length)
       .decimalPlaces(0)
       .toNumber()
   }
 
-  if (messageType.includes('exchange')) {
-    return new BigNumberInBase(DEFAULT_EXCHANGE_LIMIT)
+  if (messageType.includes('wasm')) {
+    return new BigNumberInBase(DEFAULT_GAS_LIMIT)
+      .times(1.5)
       .times(messages.length)
       .decimalPlaces(0)
       .toNumber()
