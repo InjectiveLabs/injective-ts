@@ -151,6 +151,17 @@ export interface MegaVaultTargetApr {
   updatedAt: string
 }
 
+export enum MegaVaultRedemptionStatus {
+  Pending = 'pending',
+  Executed = 'executed',
+  Executing = 'executing',
+}
+
+export enum MegaVaultSubscriptionStatus {
+  Pending = 'pending',
+  Executed = 'executed',
+}
+
 export type GrpcMegaVaultApr = InjectiveMegaVaultRpc.Apr
 export type GrpcMegaVaultPnl = InjectiveMegaVaultRpc.Pnl
 export type GrpcMegaVaultAprStats = InjectiveMegaVaultRpc.AprStats
