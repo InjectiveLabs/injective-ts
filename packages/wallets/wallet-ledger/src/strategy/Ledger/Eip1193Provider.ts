@@ -92,7 +92,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       case 'eth_chainId':
         return `0x${this.client.chain?.id?.toString(16)}`
       case 'wallet_switchEthereumChain':
-        return this.setChainId(args.params[0]?.chainId || '0x1')
+        return this.setChainId(args.params[0]?.chainId || '0x1') // TODO: fallback to wallet strategy chainid
 
       default:
         return this.client.request({

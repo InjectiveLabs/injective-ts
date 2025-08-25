@@ -315,6 +315,8 @@ export interface WalletStrategy {
   onChainIdChange(callback: onChainIdChangeCallback): Promise<void>
   disconnect(): Promise<void>
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
+  getEip1193Provider?(): Promise<Eip1193Provider>
+  getOfflineSigner?(chainId: string): Promise<OfflineSigner>
 }
 
 export { StdSignDoc }

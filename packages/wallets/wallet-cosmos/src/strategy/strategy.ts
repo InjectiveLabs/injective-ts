@@ -211,10 +211,17 @@ export class CosmosWalletStrategy
     address: AccountAddress
   }) {
     const cosmosWallet = this.getCurrentCosmosWallet()
-    const signer = await cosmosWallet.getOfflineSigner()
+    const signer = await cosmosWallet.getOfflineSigner(this.chainId)
     const signDoc = createSignDocFromTransaction(transaction)
 
     try {
+      if (!('signDirect' in signer)) {
+        throw new CosmosWalletException(new Error('signDirect not available'), {
+          code: UnspecifiedErrorCode,
+          context: WalletAction.SendTransaction,
+        })
+      }
+
       return await signer.signDirect(
         transaction.address,
         createCosmosSignDocFromSignDoc(signDoc),
@@ -326,7 +333,12 @@ export class CosmosWalletStrategy
   }
 
   public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
-    return await this.getCosmosWallet(chainId as any).getOfflineSigner()
+    const cosmosWallet = await this.getCosmosWallet(chainId as any)
+    if (!cosmosWallet) {
+      throw new Error('no cosmos wallet')
+    }
+
+    return await cosmosWallet.getOfflineSigner(chainId)
   }
 
   private getCurrentCosmosWallet(): CosmosWallet {
