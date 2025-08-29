@@ -9,5 +9,5 @@ echo "current package version: $v"
 v1="${v%.*}.$((${v##*.}+1))"
 echo "new package version: $v1"
 
-npm version $v1
+npm version 1.13.16-alpha.3
 npm publish
