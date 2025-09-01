@@ -68,16 +68,15 @@ class CustomEip1193Provider implements Eip1193Provider {
     return chain
   }
 
-  on(event: string, listener: (...args: any[]) => void) {
-    console.log('Not implemented', event, listener)
+  on(_event: string, _listener: (...args: any[]) => void) {
+    throw new Error('Not implemented')
   }
 
-  removeListener(...args: any[]) {
-    console.log('Not implemented', args)
+  removeListener(..._args: any[]) {
+    throw new Error('Not implemented!')
   }
 
   async request(args: { method: string; params?: any[] }) {
-    console.log('request', args)
     if (args.method === 'eth_requestAccounts') {
       return this.requestAccounts()
     }
