@@ -72,8 +72,6 @@ export default class LedgerBase
 
   private alchemy: Alchemy | undefined
 
-  private eip1193Provider: Eip1193Provider | undefined
-
   constructor(
     args: ConcreteEvmWalletStrategyArgs & {
       derivationPathType: LedgerDerivationPathType
@@ -85,11 +83,6 @@ export default class LedgerBase
     this.derivationPathType = args.derivationPathType
     this.ledger = new LedgerHW()
     this.evmOptions = args.evmOptions
-
-    this.eip1193Provider = new LedgerEip1193Provider(this.ledger, {
-      chainId: args.evmOptions.evmChainId.toString(),
-      derivationPath: this.baseDerivationPath,
-    })
   }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -139,6 +132,8 @@ export default class LedgerBase
     },
   ): Promise<string> {
     const signedTransaction = await this.signEvmTransaction(txData, args)
+
+    signedTransaction.serialize()
 
     try {
       const alchemy = await this.getAlchemy(args.evmChainId)
@@ -350,11 +345,13 @@ export default class LedgerBase
         {},
         {},
       )
+
       const txSig = await ledger.signTransaction(
         derivationPath,
         encodedMessageHex,
         resolution,
       )
+
       const signedTxData = {
         ...eip1559TxData,
         v: `0x${txSig.v}`,
@@ -413,15 +410,10 @@ export default class LedgerBase
   }
 
   public async getEip1193Provider(): Promise<Eip1193Provider> {
-    if (!this.eip1193Provider) {
-      throw new WalletException(
-        new Error(
-          'EIP1193 provider not found. Please check your wallet strategy.',
-        ),
-      )
-    }
-
-    return this.eip1193Provider
+    return new LedgerEip1193Provider(this.ledger, {
+      chainId: this.evmOptions.evmChainId.toString(),
+      derivationPath: this.baseDerivationPath,
+    })
   }
 
   private async getAlchemy(evmChainId?: EvmChainId) {

@@ -190,6 +190,8 @@ export class TurnkeyWallet {
     const indexedDbClient = await this.getIndexedDbClient()
     const organizationId = this.userOrganizationId
 
+    console.log('accountMap', accountMap)
+
     if (accountMap[address] || accountMap[address.toLowerCase()]) {
       return accountMap[address] || accountMap[address.toLowerCase()]
     }
@@ -203,6 +205,8 @@ export class TurnkeyWallet {
     if (!address) {
       throw new WalletException(new Error('Account address not found'))
     }
+
+    console.log('address', address)
 
     const turnkeyAccount = await createAccount({
       organizationId,
