@@ -14,6 +14,7 @@ import {
   BaseConcreteStrategy,
   ConcreteWalletStrategy,
   SendTransactionOptions,
+  Eip1193Provider,
 } from '@injectivelabs/wallet-base'
 import {
   Provider,
@@ -344,6 +345,12 @@ export class WalletConnect
         },
       )
     }
+  }
+
+  async getEip1193Provider(): Promise<Eip1193Provider> {
+    const provider = await this.getWalletConnect()
+
+    return provider as unknown as Eip1193Provider
   }
 
   private async getConnectedWalletConnect(): Promise<Provider> {

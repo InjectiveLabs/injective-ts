@@ -120,11 +120,13 @@ export class CosmosWallet {
     }
   }
 
-  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
+  public async getOfflineSigner(chainId?: string): Promise<OfflineSigner> {
     const { wallet } = this
 
     try {
-      return this.getCosmos().getOfflineSigner(chainId) as OfflineSigner
+      return this.getCosmos().getOfflineSigner(
+        chainId || this.chainId,
+      ) as OfflineSigner
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         contextModule: wallet,
