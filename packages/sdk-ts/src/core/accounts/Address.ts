@@ -1,11 +1,11 @@
 import { bech32 } from '@scure/base'
-import { Address as EthereumUtilsAddress } from 'ethereumjs-util'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 import {
   BECH32_ADDR_ACC_PREFIX,
   BECH32_ADDR_CONS_PREFIX,
   BECH32_ADDR_VAL_PREFIX,
 } from '../../utils/constants.js'
+import { toBytes } from 'viem'
 
 /**
  * @category Utility Classes
@@ -41,9 +41,7 @@ export class Address {
         bech32.fromWords(bech32.decode(bech as `${string}1${string}`).words),
       ).toString('hex')
       const addressInHex = address.startsWith('0x') ? address : `0x${address}`
-      const addressBuffer = EthereumUtilsAddress.fromString(
-        addressInHex.toString(),
-      ).toBuffer()
+      const addressBuffer = toBytes(addressInHex.toString())
       const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
       return new Address(bech32Address)
@@ -66,9 +64,7 @@ export class Address {
     prefix: string = BECH32_ADDR_ACC_PREFIX,
   ): Address {
     const addressHex = hex.startsWith('0x') ? hex : `0x${hex}`
-    const addressBuffer = EthereumUtilsAddress.fromString(
-      addressHex.toString(),
-    ).toBuffer()
+    const addressBuffer = toBytes(addressHex.toString())
     const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
     return new Address(bech32Address)
@@ -82,7 +78,7 @@ export class Address {
   toBech32(prefix: string = BECH32_ADDR_ACC_PREFIX): string {
     const address = this.toHex()
     const addressHex = address.startsWith('0x') ? address : `0x${address}`
-    const addressBuffer = EthereumUtilsAddress.fromString(addressHex).toBuffer()
+    const addressBuffer = toBytes(addressHex)
 
     return bech32.encode(prefix, bech32.toWords(addressBuffer))
   }

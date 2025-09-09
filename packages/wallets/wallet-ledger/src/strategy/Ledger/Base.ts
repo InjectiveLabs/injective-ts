@@ -1,6 +1,5 @@
 
 import { EvmChainId } from '@injectivelabs/ts-types'
-import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import {
@@ -26,6 +25,8 @@ import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
+import { toHex, keccak256, serializeTransaction } from 'viem';
+
 import LedgerHW from './hw/index.js'
 import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
@@ -138,9 +139,7 @@ export default class LedgerBase
 
     try {
       const alchemy = await this.getAlchemy(args.evmChainId)
-      const txReceipt = await alchemy.core.sendTransaction(
-        addHexPrefix(signedTransaction.serialize().toString('hex')),
-      )
+      const txReceipt = await alchemy.core.sendTransaction(signedTransaction)
 
       return txReceipt.hash
     } catch (e: unknown) {
@@ -214,8 +213,8 @@ export default class LedgerBase
         const ledger = await this.ledger.getInstance()
         const result = await ledger.signEIP712HashedMessage(
           derivationPath,
-          bufferToHex(domainHash(object)),
-          bufferToHex(messageHash(object)),
+          toHex(domainHash(object)),
+          toHex(messageHash(object)),
         )
 
         const combined = `${result.r}${result.s}${result.v.toString(16)}`
@@ -308,35 +307,29 @@ export default class LedgerBase
   private async signEvmTransaction(
     txData: any,
     args: { address: string; evmChainId: EvmChainId },
-  ) {
+  ): Promise<string> {
     const ledgerService = await loadLedgerServiceType()
 
     const alchemy = await this.getAlchemy(args.evmChainId)
     const chainId = parseInt(args.evmChainId.toString(), 10) as EvmChainId
     const nonce = await alchemy.core.getTransactionCount(args.address)
 
-    const common = new Common({
-      chain: getNetworkFromChainId(chainId),
-      hardfork: Hardfork.London,
-    })
-
     const eip1559TxData = {
-      from: txData.from,
-      data: txData.data,
-      to: txData.to,
-      nonce: addHexPrefix(nonce.toString(16)),
-      gas: addHexPrefix(txData.gas),
-      gasLimit: addHexPrefix(txData.gas),
-      maxFeePerGas: addHexPrefix(txData.gasPrice || txData.maxFeePerGas),
-      maxPriorityFeePerGas: addHexPrefix(
-        txData.maxPriorityFeePerGas || TIP_IN_GWEI.toString(16),
-      ),
+      type: 'eip1559' as const,
+      chainId,
+      nonce,
+      to: txData.to as `0x${string}`,
+      value: BigInt(txData.value || 0),
+      data: txData.data as `0x${string}`,
+      gas: BigInt(txData.gas),
+      maxFeePerGas: BigInt(txData.gasPrice || txData.maxFeePerGas),
+      maxPriorityFeePerGas: BigInt(txData.maxPriorityFeePerGas || TIP_IN_GWEI),
     }
 
-    const tx = FeeMarketEIP1559Transaction.fromTxData(eip1559TxData, { common })
-    const msg = tx.getMessageToSign(false)
-    // const encodedMessage = msg
-    const encodedMessageHex = msg.toString('hex')
+    // Serialize the transaction to get the message hash for signing
+    const serializedTx = serializeTransaction(eip1559TxData)
+    const messageHash = keccak256(serializedTx)
+    const encodedMessageHex = messageHash.slice(2) // Remove 0x prefix
 
     try {
       const ledger = await this.ledger.getInstance()
@@ -351,16 +344,15 @@ export default class LedgerBase
         encodedMessageHex,
         resolution,
       )
+
       const signedTxData = {
         ...eip1559TxData,
-        v: `0x${txSig.v}`,
-        r: `0x${txSig.r}`,
-        s: `0x${txSig.s}`,
+        v: BigInt(`0x${txSig.v}`),
+        r: `0x${txSig.r}` as `0x${string}`,
+        s: `0x${txSig.s}` as `0x${string}`,
       }
 
-      return FeeMarketEIP1559Transaction.fromTxData(signedTxData, {
-        common,
-      })
+      return serializeTransaction(signedTxData)
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

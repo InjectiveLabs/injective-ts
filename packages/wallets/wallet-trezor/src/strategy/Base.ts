@@ -1,8 +1,4 @@
-import { addHexPrefix } from 'ethereumjs-util'
-import { EvmChainId } from '@injectivelabs/ts-types'
-import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import {
+ import {
   toUtf8,
   TxGrpcApi
 } from '@injectivelabs/sdk-ts'
@@ -28,21 +24,20 @@ import {
 import { loadTrezorConnect } from './lib.js'
 import { transformTypedData } from '../utils.js'
 import { BaseTrezorTransport } from './hw/index.js'
-import type { AccountAddress} from '@injectivelabs/ts-types';
+import { toHex, serializeTransaction } from 'viem'
+import { type AccountAddress, EvmChainId} from '@injectivelabs/ts-types';
 import type { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
 import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse
-} from '@injectivelabs/sdk-ts';
+  DirectSignResponse} from '@injectivelabs/sdk-ts';
 import type {
   StdSignDoc,
   SendTransactionOptions,
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs
-} from '@injectivelabs/wallet-base';
+  ConcreteEvmWalletStrategyArgs} from '@injectivelabs/wallet-base';
 
 type EthereumTransactionEIP1559 = {
   to: string
@@ -54,22 +49,6 @@ type EthereumTransactionEIP1559 = {
   chainId: number
   maxFeePerGas: string
   maxPriorityFeePerGas: string
-}
-
-const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
-  if (chainId === EvmChainId.Goerli) {
-    return Chain.Goerli
-  }
-
-  if (chainId === EvmChainId.Sepolia) {
-    return Chain.Sepolia
-  }
-
-  if (chainId === EvmChainId.Kovan) {
-    return Chain.Goerli
-  }
-
-  return Chain.Mainnet
 }
 
 export default class TrezorBase
@@ -148,9 +127,7 @@ export default class TrezorBase
 
     try {
       const alchemy = await this.getAlchemy(args.evmChainId)
-      const txReceipt = await alchemy.core.sendTransaction(
-        addHexPrefix(signedTransaction.serialize().toString('hex')),
-      )
+      const txReceipt = await alchemy.core.sendTransaction(signedTransaction)
 
       return txReceipt.hash
     } catch (e: unknown) {
@@ -262,7 +239,7 @@ export default class TrezorBase
     )
   }
 
-
+  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -321,7 +298,7 @@ export default class TrezorBase
     return Promise.resolve(txHash)
   }
 
-
+  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),
@@ -331,37 +308,23 @@ export default class TrezorBase
   private async signEvmTransaction(
     txData: any,
     args: { address: string; evmChainId: EvmChainId },
-  ) {
+  ): Promise<string> {
     const TrezorConnect = await loadTrezorConnect()
 
     const chainId = parseInt(args.evmChainId.toString(), 10)
     const alchemy = await this.getAlchemy(args.evmChainId)
     const nonce = await alchemy.core.getTransactionCount(args.address)
 
-    const common = new Common({
-      chain: getNetworkFromChainId(chainId),
-      hardfork: Hardfork.London,
-    })
-
-    const eip1559TxData = {
-      from: txData.from,
-      data: txData.data,
+    // Create transaction data for Trezor API (still needs hex strings)
+    const trezorTxData = {
       to: txData.to,
-      nonce: addHexPrefix(nonce.toString(16)),
-      gas: addHexPrefix(txData.gas),
-      gasLimit: addHexPrefix(txData.gas),
-      maxFeePerGas: addHexPrefix(txData.gasPrice || txData.maxFeePerGas),
-      maxPriorityFeePerGas: addHexPrefix(
-        txData.maxPriorityFeePerGas || TIP_IN_GWEI.toString(16),
-      ),
-    }
-    const tx = FeeMarketEIP1559Transaction.fromTxData(eip1559TxData, {
-      common,
-    })
-
-    const transaction = {
-      ...tx.toJSON(),
+      value: toHex(txData.value || 0),
+      gasLimit: toHex(txData.gas),
+      nonce: toHex(nonce),
+      data: txData.data || '0x',
       chainId,
+      maxFeePerGas: toHex(txData.gasPrice || txData.maxFeePerGas),
+      maxPriorityFeePerGas: toHex(txData.maxPriorityFeePerGas || TIP_IN_GWEI),
     } as EthereumTransactionEIP1559
 
     try {
@@ -369,7 +332,7 @@ export default class TrezorBase
       const { derivationPath } = await this.getWalletForAddress(args.address)
       const response = await TrezorConnect.ethereumSignTransaction({
         path: derivationPath,
-        transaction,
+        transaction: trezorTxData,
       })
 
       if (!response.success) {
@@ -386,16 +349,25 @@ export default class TrezorBase
         )
       }
 
-      const signedTxData = {
-        ...eip1559TxData,
-        v: `${response.payload.v}`,
-        r: `${response.payload.r}`,
-        s: `${response.payload.s}`,
+      // Create viem-compatible transaction data for serialization
+      const viemTxData = {
+        type: 'eip1559' as const,
+        chainId,
+        nonce,
+        to: txData.to as `0x${string}`,
+        value: BigInt(txData.value || 0),
+        data: (txData.data || '0x') as `0x${string}`,
+        gas: BigInt(txData.gas),
+        maxFeePerGas: BigInt(txData.gasPrice || txData.maxFeePerGas),
+        maxPriorityFeePerGas: BigInt(
+          txData.maxPriorityFeePerGas || TIP_IN_GWEI,
+        ),
+        v: BigInt(response.payload.v),
+        r: response.payload.r as `0x${string}`,
+        s: response.payload.s as `0x${string}`,
       }
 
-      return FeeMarketEIP1559Transaction.fromTxData(signedTxData, {
-        common,
-      })
+      return serializeTransaction(viemTxData)
     } catch (e: unknown) {
       if (e instanceof TrezorException) {
         throw e

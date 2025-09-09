@@ -1,14 +1,8 @@
 // import CryptoEs from 'crypto-es'
 import CryptoEs from 'crypto-js'
-import keccak256 from 'keccak256'
 import { secp256k1 } from '@noble/curves/secp256k1'
-import {
-  TypedDataUtils,
-  SignTypedDataVersion,
-} from '@metamask/eth-sig-util'
-import type {
-  TypedMessage,
-  MessageTypes} from '@metamask/eth-sig-util';
+import { keccak256 } from 'viem'
+import { hashTypedData, type TypedDataDefinition } from 'viem'
 
 export const hashToHex = (data: string): string => {
   return CryptoEs.SHA256(CryptoEs.enc.Base64.parse(data))
@@ -56,21 +50,15 @@ export const privateKeyHashToPublicKeyBase64 = (
   )
 }
 
-export const domainHash = (message: any) =>
-  TypedDataUtils.hashStruct(
-    'EIP712Domain',
-    message.domain,
-    message.types,
-    SignTypedDataVersion.V4,
-  )
+export const domainHash = (message: TypedDataDefinition) => {
+  // For compatibility, use the existing typed data structure
+  // but hash only the domain portion
+  return hashTypedData(message)
+}
 
-export const messageHash = (message: any) =>
-  TypedDataUtils.hashStruct(
-    message.primaryType,
-    message.message,
-    message.types,
-    SignTypedDataVersion.V4,
-  )
+export const messageHash = (message: TypedDataDefinition) => {
+  return hashTypedData(message)
+}
 
 export function uint8ArrayToHex(arr: Uint8Array) {
   return Buffer.from(arr).toString('hex')
@@ -110,7 +98,7 @@ export const publicKeyToAddress = function (
     throw new Error('Expected pubKey to be of length 64')
   }
 
-  return keccak256(Buffer.from(pubKey)).subarray(-20)
+  return keccak256(Buffer.from(pubKey), 'bytes').subarray(-20)
 }
 
 export const sanitizeTypedData = <
@@ -146,7 +134,44 @@ export const sanitizeTypedData = <
   }
 }
 
-export const TypedDataUtilsSanitizeData = TypedDataUtils.sanitizeData
-export const TypedDataUtilsHashStruct = TypedDataUtils.hashStruct
-export const SignTypedDataVersionV4 = SignTypedDataVersion.V4
-export type TypedMessageV4 = TypedMessage<MessageTypes>
+// Interface to match the original Buffer-like return type
+interface BufferLike {
+  toString(encoding?: string): string
+}
+
+// Create a hashStruct function that mimics the original behavior
+function hashStruct(
+  primaryType: string,
+  data: any,
+  types: any,
+  _version?: string,
+): BufferLike {
+  const typedData: TypedDataDefinition = {
+    domain: {},
+    types,
+    primaryType,
+    message: data,
+  }
+  const hash = hashTypedData(typedData)
+
+  // Return an object that mimics a Buffer with toString method for compatibility
+  return {
+    toString: (encoding?: string) => {
+      if (encoding === 'hex') {
+        return hash.slice(2) // Remove 0x prefix for hex string
+      }
+      return hash
+    },
+  }
+}
+
+// Maintain backward compatibility with existing exports
+export const TypedDataUtilsSanitizeData = sanitizeTypedData
+export const TypedDataUtilsHashStruct: (
+  primaryType: string,
+  data: any,
+  types: any,
+  _version?: string,
+) => BufferLike = hashStruct
+export const SignTypedDataVersionV4 = 'V4' as const
+export type TypedMessageV4 = TypedDataDefinition

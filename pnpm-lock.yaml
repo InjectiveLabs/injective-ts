@@ -226,9 +226,6 @@ importers:
       '@injectivelabs/utils':
         specifier: workspace:*
         version: link:../utils
-      '@metamask/eth-sig-util':
-        specifier: ^8.2.0
-        version: 8.2.0
       '@noble/curves':
         specifier: ^1.8.1
         version: 1.9.1
@@ -250,9 +247,6 @@ importers:
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
-      ethereumjs-util:
-        specifier: ^7.1.5
-        version: 7.1.5
       ethers:
         specifier: ^6.13.5
         version: 6.13.5(bufferutil@4.0.7)(utf-8-validate@5.0.10)
@@ -265,9 +259,6 @@ importers:
       http-status-codes:
         specifier: ^2.2.0
         version: 2.3.0
-      keccak256:
-        specifier: ^1.0.6
-        version: 1.0.6
       rxjs:
         specifier: 7.8.2
         version: 7.8.2
@@ -280,6 +271,9 @@ importers:
       snakecase-keys:
         specifier: ^5.4.1
         version: 5.4.4
+      viem:
+        specifier: ^2.33.2
+        version: 2.33.2(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
       '@types/crypto-js':
         specifier: ^4.2.2
@@ -287,6 +281,9 @@ importers:
       '@types/lodash.toarray':
         specifier: ^4.4.7
         version: 4.4.7
+      '@types/secp256k1':
+        specifier: ^4.0.6
+        version: 4.0.6
 
   packages/ts-types:
     devDependencies:
@@ -501,12 +498,6 @@ importers:
       '@bangjelkoski/ledgerhq-hw-transport-webusb':
         specifier: 6.29.4-beta.0
         version: 6.29.4-beta.0
-      '@ethereumjs/common':
-        specifier: 3.2.0
-        version: 3.2.0
-      '@ethereumjs/tx':
-        specifier: ^4.1.1
-        version: 4.2.0
       '@injectivelabs/exceptions':
         specifier: workspace:*
         version: link:../../exceptions
@@ -522,25 +513,10 @@ importers:
       alchemy-sdk:
         specifier: ^3.4.7
         version: 3.4.7(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      eth-sig-util:
-        specifier: ^3.0.1
-        version: 3.0.1
-      ethereumjs-util:
-        specifier: ^7.1.0
-        version: 7.1.5
-      hdkey:
-        specifier: ^2.1.0
-        version: 2.1.0
+      viem:
+        specifier: ^2.33.2
+        version: 2.33.2(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
-      '@types/eth-sig-util':
-        specifier: ^2.1.1
-        version: 2.1.1
-      '@types/ethereumjs-util':
-        specifier: ^6.1.0
-        version: 6.1.0
-      '@types/hdkey':
-        specifier: ^2.0.1
-        version: 2.0.1
       '@types/ledgerhq__hw-transport-webusb':
         specifier: ^4.70.1
         version: 4.70.1
@@ -600,12 +576,6 @@ importers:
 
   packages/wallets/wallet-strategy:
     dependencies:
-      '@ethereumjs/common':
-        specifier: 3.2.0
-        version: 3.2.0
-      '@ethereumjs/tx':
-        specifier: ^4.1.1
-        version: 4.2.0
       '@injectivelabs/exceptions':
         specifier: workspace:*
         version: link:../../exceptions
@@ -660,25 +630,16 @@ importers:
       eip1193-provider:
         specifier: ^1.0.1
         version: 1.0.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      eth-sig-util:
-        specifier: ^3.0.1
-        version: 3.0.1
-      ethereumjs-util:
-        specifier: ^7.1.0
-        version: 7.1.5
       ethers:
         specifier: ^6.5.1
         version: 6.13.5(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       hdkey:
         specifier: ^2.1.0
         version: 2.1.0
+      viem:
+        specifier: ^2.33.2
+        version: 2.33.2(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
-      '@types/eth-sig-util':
-        specifier: ^2.1.1
-        version: 2.1.1
-      '@types/ethereumjs-util':
-        specifier: ^6.1.0
-        version: 6.1.0
       '@types/hdkey':
         specifier: ^2.0.1
         version: 2.0.1
@@ -691,12 +652,6 @@ importers:
       '@bangjelkoski/trezor-connect-web':
         specifier: ^9.4.7-beta.1
         version: 9.4.7-beta.1(@babel/core@7.28.0)(bufferutil@4.0.7)(encoding@0.1.13)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      '@ethereumjs/common':
-        specifier: 3.2.0
-        version: 3.2.0
-      '@ethereumjs/tx':
-        specifier: ^4.1.1
-        version: 4.2.0
       '@injectivelabs/exceptions':
         specifier: workspace:*
         version: link:../../exceptions
@@ -712,9 +667,9 @@ importers:
       alchemy-sdk:
         specifier: ^3.4.7
         version: 3.4.7(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      hdkey:
-        specifier: ^2.1.0
-        version: 2.1.0
+      viem:
+        specifier: ^2.33.2
+        version: 2.33.2(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
       shx:
         specifier: ^0.3.3
@@ -1750,22 +1705,6 @@ packages:
   '@magic-sdk/types@24.19.0':
     resolution: {integrity: sha512-rA1yRLDJ6+5LN76c9TOS6ThuaiGJEGosv/1zq7ckKpD1Wi37wtYzSAoHK0s033ZtlTAH6+6VuKZIXDag/oS/jQ==}
 
-  '@metamask/abi-utils@3.0.0':
-    resolution: {integrity: sha512-a/l0DiSIr7+CBYVpHygUa3ztSlYLFCQMsklLna+t6qmNY9+eIO5TedNxhyIyvaJ+4cN7TLy0NQFbp9FV3X2ktg==}
-    engines: {node: ^18.18 || ^20.14 || >=22}
-
-  '@metamask/eth-sig-util@8.2.0':
-    resolution: {integrity: sha512-LZDglIh4gYGw9Myp+2aIwKrj6lIJpMC4e0m7wKJU+BxLLBFcrTgKrjdjstXGVWvuYG3kutlh9J+uNBRPJqffWQ==}
-    engines: {node: ^18.18 || ^20.14 || >=22}
-
-  '@metamask/superstruct@3.1.0':
-    resolution: {integrity: sha512-N08M56HdOgBfRKkrgCMZvQppkZGcArEop3kixNEtVbJKm6P9Cfg0YkI6X0s1g78sNrj2fWUwvJADdZuzJgFttA==}
-    engines: {node: '>=16.0.0'}
-
-  '@metamask/utils@11.4.0':
-    resolution: {integrity: sha512-dqsi65DAyprs91wo/D0yTST2Sry9h2krf1NADBJb9L3NTJn1py0w+C8K4jVVSh0XTrrj0/MF/t6XldGsidfypA==}
-    engines: {node: ^18.18 || ^20.14 || >=22}
-
   '@mobily/ts-belt@3.13.1':
     resolution: {integrity: sha512-K5KqIhPI/EoCTbA6CGbrenM9s41OouyK8A03fGJJcla/zKucsgLbz8HNbeseoLarRPgyWJsUyCYqFhI7t3Ra9Q==}
     engines: {node: '>= 10.*'}
@@ -2697,12 +2636,6 @@ packages:
   '@types/babel__traverse@7.28.0':
     resolution: {integrity: sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==}
 
-  '@types/bn.js@4.11.6':
-    resolution: {integrity: sha512-pqr857jrp2kPuO9uRjZ3PwnJTjoQy+fcdxvBTvHm6dkmEL9q+hDD/2j/0ELOBPtPnS8LjCX0gI9nbl8lVkadpg==}
-
-  '@types/bn.js@5.1.1':
-    resolution: {integrity: sha512-qNrYbZqMx0uJAfKnKclPh+dTwK33KfLHYqtyODwd5HnXOjnkhc4qgn3BrK6RWyGZm5+sIFE7Q7Vz6QQtJB7w7g==}
-
   '@types/connect@3.4.35':
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
 
@@ -2712,18 +2645,8 @@ packages:
   '@types/crypto-js@4.2.2':
     resolution: {integrity: sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ==}
 
-  '@types/debug@4.1.12':
-    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
-
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
-
-  '@types/eth-sig-util@2.1.1':
-    resolution: {integrity: sha512-vYP1UD19i0532+eQY7vXHfAKCzAQiI6aoLvomqu+ZewzUX/jvDSr41JGl8zQ9dMbfiHPDhMFY26bScCyZ7vzlg==}
-
-  '@types/ethereumjs-util@6.1.0':
-    resolution: {integrity: sha512-5N0RJldhKCKwDksdnuNHbEJuwO5pjEdtwdHj/kZLxaS84s5R1NLgYfAuDF/VZ4whYABJJvv+o0O8TXLm+F/Byw==}
-    deprecated: This is a stub types definition. ethereumjs-util provides its own type definitions, so you do not need this installed.
 
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
@@ -2770,9 +2693,6 @@ packages:
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
 
-  '@types/ms@0.7.34':
-    resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
-
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
 
@@ -2791,14 +2711,11 @@ packages:
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
 
-  '@types/pbkdf2@3.1.0':
-    resolution: {integrity: sha512-Cf63Rv7jCQ0LaL8tNXmEyqTHuIJxRdlS5vMh1mj5voN4+QFhVZnlZruezqpWYDiJ8UTzhP0VmeLXCmBk66YrMQ==}
-
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
 
-  '@types/secp256k1@4.0.3':
-    resolution: {integrity: sha512-Da66lEIFeIz9ltsdMZcpQvmrmmoqrfju8pm1BH8WbYjZSwUgCwXLb9C+9XYogwBITnbsSaMdVPb2ekf7TV+03w==}
+  '@types/secp256k1@4.0.6':
+    resolution: {integrity: sha512-hHxJU6PAEUn0TP4S/ZOzuTUvJWuZ6eIKeNKb5RBpODvSl6hp1Wrw4s7ATY50rklRCScUDpHzVA/DQdSjJ3UoYQ==}
 
   '@types/semver@7.7.0':
     resolution: {integrity: sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==}
@@ -3528,9 +3445,6 @@ packages:
   browser-headers@0.4.1:
     resolution: {integrity: sha512-CA9hsySZVo9371qEHjHZtYxV2cFtVj5Wj/ZHi8ooEsrtm4vOnl9Y9HmyYWk9q+05d7K3rdoAE0j3MVEFVvtQtg==}
 
-  browserify-aes@1.2.0:
-    resolution: {integrity: sha512-+7CHXqGuspUn/Sl5aO7Ea0xWGAtETPXNSAjHo48JfLdPWcMng33Xe4znFvQweqc/uzk5zSOI3H52CYnjCfb5hA==}
-
   browserslist@4.24.4:
     resolution: {integrity: sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -3568,9 +3482,6 @@ packages:
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
-
-  buffer-xor@1.0.3:
-    resolution: {integrity: sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ==}
 
   buffer@5.6.0:
     resolution: {integrity: sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==}
@@ -4613,32 +4524,11 @@ packages:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
 
-  eth-sig-util@3.0.1:
-    resolution: {integrity: sha512-0Us50HiGGvZgjtWTyAI/+qTzYPMLy5Q451D0Xy68bxq1QMWdoOddDwGvsqcFT27uohKgalM9z/yxplyt+mY2iQ==}
-    deprecated: Deprecated in favor of '@metamask/eth-sig-util'
-
-  ethereum-cryptography@0.1.3:
-    resolution: {integrity: sha512-w8/4x1SGGzc+tO97TASLja6SLd3fRIK2tLVcV2Gx4IB21hE19atll5Cq9o3d0ZmAYC/8aw0ipieTSiekAea4SQ==}
-
   ethereum-cryptography@2.2.1:
     resolution: {integrity: sha512-r/W8lkHSiTLxUxW8Rf3u4HGB0xQweG2RyETjywylKZSzLWoWAijRz8WCuOtJ6wah+avllXBqZuk29HCCvhEIRg==}
 
   ethereum-multicall@2.26.0:
     resolution: {integrity: sha512-7PslfFiHPUrA0zQpMgZdftUBNyVWuHVBwnRtDOr6Eam8O/OwucqP+OHZZDE7qdrWzi4Jrji8IMw2ZUFv/wbs8Q==}
-
-  ethereumjs-abi@0.6.8:
-    resolution: {integrity: sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA==}
-    deprecated: This library has been deprecated and usage is discouraged.
-
-  ethereumjs-util@5.2.1:
-    resolution: {integrity: sha512-v3kT+7zdyCm1HIqWlLNrHGqHGLpGYIhjeHxQjnDXjLT2FyGJDsd3LWMYUo7pAFRrk86CR3nUJfhC81CCoJNNGQ==}
-
-  ethereumjs-util@6.2.1:
-    resolution: {integrity: sha512-W2Ktez4L01Vexijrm5EB6w7dg4n/TgpoYU4avuT5T3Vmnw/eCRtiBrJfQYS/DCSvDIOLn2k57GcHdeBcgVxAqw==}
-
-  ethereumjs-util@7.1.5:
-    resolution: {integrity: sha512-SDl5kKrQAudFBUe5OJM9Ac6WmMyYmXX/6sTmLZ3ffG2eY6ZIGBes3pEDxNN6V72WyOw4CPD5RomKdsa8DAAwLg==}
-    engines: {node: '>=10.0.0'}
 
   ethers@5.7.2:
     resolution: {integrity: sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==}
@@ -4646,10 +4536,6 @@ packages:
   ethers@6.13.5:
     resolution: {integrity: sha512-+knKNieu5EKRThQJWwqaJ10a6HE9sSehGeqWN65//wE7j47ZpFhKAnHB/JJFibwwg61I/koxaPsXbXpD/skNOQ==}
     engines: {node: '>=14.0.0'}
-
-  ethjs-util@0.1.6:
-    resolution: {integrity: sha512-CUnVOQq7gSpDHZVVrQW8ExxUETWrnrvXYvYz55wOU8Uj4VCgw56XC2B/fVqQN+f7gmrnRHSLVnFAwsCuNwji8w==}
-    engines: {node: '>=6.5.0', npm: '>=3'}
 
   event-emitter@0.3.5:
     resolution: {integrity: sha512-D9rRn9y7kLPnJ+hMq7S/nhvoKwwvVJahBi2BPmx3bvbsEdK3W9ii8cBSGjP+72/LnM4n6fo3+dkCX5FeTQruXA==}
@@ -4666,9 +4552,6 @@ packages:
   events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
     engines: {node: '>=0.8.x'}
-
-  evp_bytestokey@1.0.3:
-    resolution: {integrity: sha512-/f2Go4TognH/KvCISP7OUsHn85hT9nUkxxA9BEWxFn+Oj9o8ZNLm/40hdlgSLyuOimsrTKLUMEorQexp/aPQeA==}
 
   execa@0.7.0:
     resolution: {integrity: sha512-RztN09XglpYI7aBBrJCPW95jEH7YF1UEPOoX9yDhUTPdp7mK+CQvnLTuD10BNXZ3byLTu2uehZ8EcKT/4CGiFw==}
@@ -5536,10 +5419,6 @@ packages:
     resolution: {integrity: sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==}
     engines: {node: '>=0.10.0'}
 
-  is-hex-prefixed@1.0.0:
-    resolution: {integrity: sha512-WvtOiug1VFrE9v1Cydwm+FnXd3+w9GaeVUss5W4v/SLy3UW00vP+6iNF2SdnfiBoLy4bTqVdkftNGTUeOFVsbA==}
-    engines: {node: '>=6.5.0', npm: '>=3'}
-
   is-hexadecimal@1.0.4:
     resolution: {integrity: sha512-gyPJuv83bHMpocVYoqof5VDiZveEoGoFL8m3BXNb2VW8Xs+rz9kqO8LOQ5DH6EsuvilT1ApazU0pyl+ytbPtlw==}
 
@@ -6017,9 +5896,6 @@ packages:
 
   just-diff@6.0.2:
     resolution: {integrity: sha512-S59eriX5u3/QhMNq3v/gm8Kd0w8OS6Tz2FS1NG4blv+z0MuQcBRJyFWjdovM0Rad4/P4aUPFtnkNjMjyMlMSYA==}
-
-  keccak256@1.0.6:
-    resolution: {integrity: sha512-8GLiM01PkdJVGUhR1e6M/AvWnSqYS0HaERI+K/QtStGDGlSTx2B1zTqZk4Zlqu5TxHJNTxWAdP9Y+WI50OApUw==}
 
   keccak@3.0.4:
     resolution: {integrity: sha512-3vKuW0jV8J3XNTzvfyicFR5qvxrSAGl7KIhvgOu5cmWwM7tZRj3fMbj/pfIf4be7aznbc+prBWGjywox/g2Y6Q==}
@@ -6990,10 +6866,6 @@ packages:
   pause-stream@0.0.11:
     resolution: {integrity: sha512-e3FBlXLmN/D1S+zHzanP4E/4Z60oFAa3O051qt1pxa7DEJWKAyil6upYVXCWadEnuoqa4Pkc9oUx9zsxYeRv8A==}
 
-  pbkdf2@3.1.2:
-    resolution: {integrity: sha512-iuh7L6jA7JEGu2WxDwtQP1ddOpaJNC4KlDEFfdQajSGgGPNi4OyDc2R7QnbY2bR9QjBVGwgvTdNJZoE7RaxUMA==}
-    engines: {node: '>=0.12'}
-
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -7052,10 +6924,6 @@ packages:
   pngjs@5.0.0:
     resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
     engines: {node: '>=10.13.0'}
-
-  pony-cause@2.1.11:
-    resolution: {integrity: sha512-M7LhCsdNbNgiLYiP4WjsfLUuFmCfnjdF6jKe2R9NKl4WFN+HZPGHJZ9lnLP7f9ZnKe3U9nuWD0szirmj+migUg==}
-    engines: {node: '>=12.0.0'}
 
   posix-character-classes@0.1.1:
     resolution: {integrity: sha512-xTgYBc3fuo7Yt7JbiuFxSYGToMoz8fLoE6TC9Wx1P/u+LfeThMOAqmuyECnlBaaJb+u1m9hHiXUEtwW4OzfUJg==}
@@ -7203,9 +7071,6 @@ packages:
 
   radix3@1.1.0:
     resolution: {integrity: sha512-pNsHDxbGORSvuSScqNJ+3Km6QAVqk8CfsCBIEoDgpqLrkD2f3QM4I7d1ozJJ172OmIcoUcerZaNWqtLkRXTV3A==}
-
-  randombytes@2.1.0:
-    resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
 
   range-parser@1.2.0:
     resolution: {integrity: sha512-kA5WQoNVo4t9lNx2kQNFCxKeBl5IbbSNBl1M/tLkw9WCn+hxNBAW5Qh8gdhs63CJnhjJ2zQWFoqPJP2sK1AV5A==}
@@ -7452,10 +7317,6 @@ packages:
     resolution: {integrity: sha512-OQk+Syl2JfxKxV2KuF/kBMtnh012I5tNnziP3G4WDGCGSIAgeqkOgkR59IQ0YDNrs1YW8GbApxrdMSRi/QClcA==}
     engines: {node: '>=10.13.0', yarn: ^1.15.2}
     deprecated: 'ripple-lib is deprecated. Please migrate to xrpl.js using this migration guide: https://xrpl.org/xrpljs2-migration-guide.html'
-
-  rlp@2.2.7:
-    resolution: {integrity: sha512-d5gdPmgQ0Z+AklL2NVXr/IoSjNZFfTVvQWzL/AM2AOcSzYP2xjlb0AC8YyCLc41MSNf6P6QVtjgPdmVtzb+4lQ==}
-    hasBin: true
 
   rollup-plugin-visualizer@6.0.3:
     resolution: {integrity: sha512-ZU41GwrkDcCpVoffviuM9Clwjy5fcUxlz0oMoTXTYsK+tcIFzbdacnrr2n8TXcHxbGKKXtOdjxM2HUS4HjkwIw==}
@@ -7932,10 +7793,6 @@ packages:
     resolution: {integrity: sha512-dOESqjYr96iWYylGObzd39EuNTa5VJxyvVAEm5Jnh7KGo75V43Hk1odPQkNDyXNmUR6k+gEiDVXnjB8HJ3crXw==}
     engines: {node: '>=12'}
 
-  strip-hex-prefix@1.0.0:
-    resolution: {integrity: sha512-q8d4ue7JGEiVcypji1bALTos+0pWtyGlivAWyPuTkHzuTCJqrK9sWxYQZUq6Nq3cuyv3bm734IhHvHtGGURU6A==}
-    engines: {node: '>=6.5.0', npm: '>=3'}
-
   strip-indent@3.0.0:
     resolution: {integrity: sha512-laJTa3Jb+VQpaC6DseHhF7dXVqHTfJPCRDaEbid/drOhgitgYku/letMUqOXFoWV0zIIUbjpdH2t+tYj4bQMRQ==}
     engines: {node: '>=8'}
@@ -8214,12 +8071,6 @@ packages:
   tuf-js@2.2.1:
     resolution: {integrity: sha512-GwIJau9XaA8nLVbUXsN3IlFi7WmQ48gBUrl3FTkkL/XLu/POhBzfmX9hd33FNMX1qAsfl6ozO1iMmW9NC8YniA==}
     engines: {node: ^16.14.0 || >=18.0.0}
-
-  tweetnacl-util@0.15.1:
-    resolution: {integrity: sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==}
-
-  tweetnacl@1.0.3:
-    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -8521,10 +8372,6 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
-    hasBin: true
-
-  uuid@9.0.1:
-    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
 
   v8-compile-cache-lib@3.0.1:
@@ -10715,41 +10562,6 @@ snapshots:
 
   '@magic-sdk/types@24.19.0': {}
 
-  '@metamask/abi-utils@3.0.0':
-    dependencies:
-      '@metamask/superstruct': 3.1.0
-      '@metamask/utils': 11.4.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@metamask/eth-sig-util@8.2.0':
-    dependencies:
-      '@ethereumjs/rlp': 4.0.1
-      '@ethereumjs/util': 8.1.0
-      '@metamask/abi-utils': 3.0.0
-      '@metamask/utils': 11.4.0
-      '@scure/base': 1.1.9
-      ethereum-cryptography: 2.2.1
-      tweetnacl: 1.0.3
-    transitivePeerDependencies:
-      - supports-color
-
-  '@metamask/superstruct@3.1.0': {}
-
-  '@metamask/utils@11.4.0':
-    dependencies:
-      '@ethereumjs/tx': 4.2.0
-      '@metamask/superstruct': 3.1.0
-      '@noble/hashes': 1.8.0
-      '@scure/base': 1.2.6
-      '@types/debug': 4.1.12
-      debug: 4.4.1(supports-color@8.1.1)
-      pony-cause: 2.1.11
-      semver: 7.7.2
-      uuid: 9.0.1
-    transitivePeerDependencies:
-      - supports-color
-
   '@mobily/ts-belt@3.13.1': {}
 
   '@motionone/animation@10.17.0':
@@ -11937,17 +11749,9 @@ snapshots:
     dependencies:
       '@babel/types': 7.28.2
 
-  '@types/bn.js@4.11.6':
-    dependencies:
-      '@types/node': 22.13.10
-
-  '@types/bn.js@5.1.1':
-    dependencies:
-      '@types/node': 22.13.10
-
   '@types/connect@3.4.35':
     dependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.17.0
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
@@ -11956,19 +11760,7 @@ snapshots:
 
   '@types/crypto-js@4.2.2': {}
 
-  '@types/debug@4.1.12':
-    dependencies:
-      '@types/ms': 0.7.34
-
   '@types/estree@1.0.8': {}
-
-  '@types/eth-sig-util@2.1.1':
-    dependencies:
-      '@types/node': 22.13.10
-
-  '@types/ethereumjs-util@6.1.0':
-    dependencies:
-      ethereumjs-util: 7.1.5
 
   '@types/graceful-fs@4.1.9':
     dependencies:
@@ -12020,8 +11812,6 @@ snapshots:
 
   '@types/minimist@1.2.5': {}
 
-  '@types/ms@0.7.34': {}
-
   '@types/node@12.20.55': {}
 
   '@types/node@22.13.10':
@@ -12040,15 +11830,11 @@ snapshots:
 
   '@types/parse-json@4.0.2': {}
 
-  '@types/pbkdf2@3.1.0':
-    dependencies:
-      '@types/node': 22.13.10
-
   '@types/resolve@1.20.2': {}
 
-  '@types/secp256k1@4.0.3':
+  '@types/secp256k1@4.0.6':
     dependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.17.0
 
   '@types/semver@7.7.0': {}
 
@@ -12070,15 +11856,15 @@ snapshots:
 
   '@types/ws@7.4.7':
     dependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.17.0
 
   '@types/ws@8.5.13':
     dependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.17.0
 
   '@types/ws@8.5.3':
     dependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.17.0
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -12780,6 +12566,11 @@ snapshots:
       typescript: 5.8.3
       zod: 3.24.2
 
+  abitype@1.0.8(typescript@5.9.2)(zod@3.24.2):
+    optionalDependencies:
+      typescript: 5.9.2
+      zod: 3.24.2
+
   accepts@1.3.8:
     dependencies:
       mime-types: 2.1.35
@@ -13320,15 +13111,6 @@ snapshots:
 
   browser-headers@0.4.1: {}
 
-  browserify-aes@1.2.0:
-    dependencies:
-      buffer-xor: 1.0.3
-      cipher-base: 1.0.4
-      create-hash: 1.2.0
-      evp_bytestokey: 1.0.3
-      inherits: 2.0.4
-      safe-buffer: 5.2.1
-
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001702
@@ -13380,8 +13162,6 @@ snapshots:
       node-int64: 0.4.0
 
   buffer-from@1.1.2: {}
-
-  buffer-xor@1.0.3: {}
 
   buffer@5.6.0:
     dependencies:
@@ -14640,31 +14420,6 @@ snapshots:
 
   etag@1.8.1: {}
 
-  eth-sig-util@3.0.1:
-    dependencies:
-      ethereumjs-abi: 0.6.8
-      ethereumjs-util: 5.2.1
-      tweetnacl: 1.0.3
-      tweetnacl-util: 0.15.1
-
-  ethereum-cryptography@0.1.3:
-    dependencies:
-      '@types/pbkdf2': 3.1.0
-      '@types/secp256k1': 4.0.3
-      blakejs: 1.2.1
-      browserify-aes: 1.2.0
-      bs58check: 2.1.2
-      create-hash: 1.2.0
-      create-hmac: 1.1.7
-      hash.js: 1.1.7
-      keccak: 3.0.4
-      pbkdf2: 3.1.2
-      randombytes: 2.1.0
-      safe-buffer: 5.2.1
-      scrypt-js: 3.0.1
-      secp256k1: 4.0.3
-      setimmediate: 1.0.5
-
   ethereum-cryptography@2.2.1:
     dependencies:
       '@noble/curves': 1.4.2
@@ -14679,39 +14434,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-
-  ethereumjs-abi@0.6.8:
-    dependencies:
-      bn.js: 4.12.0
-      ethereumjs-util: 6.2.1
-
-  ethereumjs-util@5.2.1:
-    dependencies:
-      bn.js: 4.12.0
-      create-hash: 1.2.0
-      elliptic: 6.6.1
-      ethereum-cryptography: 0.1.3
-      ethjs-util: 0.1.6
-      rlp: 2.2.7
-      safe-buffer: 5.2.1
-
-  ethereumjs-util@6.2.1:
-    dependencies:
-      '@types/bn.js': 4.11.6
-      bn.js: 4.12.0
-      create-hash: 1.2.0
-      elliptic: 6.6.1
-      ethereum-cryptography: 0.1.3
-      ethjs-util: 0.1.6
-      rlp: 2.2.7
-
-  ethereumjs-util@7.1.5:
-    dependencies:
-      '@types/bn.js': 5.1.1
-      bn.js: 5.2.1
-      create-hash: 1.2.0
-      ethereum-cryptography: 0.1.3
-      rlp: 2.2.7
 
   ethers@5.7.2(bufferutil@4.0.7)(utf-8-validate@5.0.10):
     dependencies:
@@ -14762,11 +14484,6 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  ethjs-util@0.1.6:
-    dependencies:
-      is-hex-prefixed: 1.0.0
-      strip-hex-prefix: 1.0.0
-
   event-emitter@0.3.5:
     dependencies:
       d: 1.0.1
@@ -14787,11 +14504,6 @@ snapshots:
   eventemitter3@5.0.1: {}
 
   events@3.3.0: {}
-
-  evp_bytestokey@1.0.3:
-    dependencies:
-      md5.js: 1.3.5
-      safe-buffer: 5.2.1
 
   execa@0.7.0:
     dependencies:
@@ -15798,8 +15510,6 @@ snapshots:
     dependencies:
       is-extglob: 2.1.1
 
-  is-hex-prefixed@1.0.0: {}
-
   is-hexadecimal@1.0.4: {}
 
   is-inside-container@1.0.0:
@@ -16534,12 +16244,6 @@ snapshots:
   just-diff-apply@5.5.0: {}
 
   just-diff@6.0.2: {}
-
-  keccak256@1.0.6:
-    dependencies:
-      bn.js: 5.2.1
-      buffer: 6.0.3
-      keccak: 3.0.4
 
   keccak@3.0.4:
     dependencies:
@@ -17631,6 +17335,21 @@ snapshots:
     transitivePeerDependencies:
       - zod
 
+  ox@0.8.6(typescript@5.9.2)(zod@3.24.2):
+    dependencies:
+      '@adraffy/ens-normalize': 1.11.0
+      '@noble/ciphers': 1.3.0
+      '@noble/curves': 1.9.2
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.0.8(typescript@5.9.2)(zod@3.24.2)
+      eventemitter3: 5.0.1
+    optionalDependencies:
+      typescript: 5.9.2
+    transitivePeerDependencies:
+      - zod
+
   p-finally@1.0.0: {}
 
   p-limit@1.3.0:
@@ -17811,14 +17530,6 @@ snapshots:
     dependencies:
       through: 2.3.8
 
-  pbkdf2@3.1.2:
-    dependencies:
-      create-hash: 1.2.0
-      create-hmac: 1.1.7
-      ripemd160: 2.0.2
-      safe-buffer: 5.2.1
-      sha.js: 2.4.11
-
   picocolors@1.1.1: {}
 
   picomatch@2.3.1: {}
@@ -17875,8 +17586,6 @@ snapshots:
       queue-lit: 1.5.2
 
   pngjs@5.0.0: {}
-
-  pony-cause@2.1.11: {}
 
   posix-character-classes@0.1.1: {}
 
@@ -18006,10 +17715,6 @@ snapshots:
   quick-lru@4.0.1: {}
 
   radix3@1.1.0: {}
-
-  randombytes@2.1.0:
-    dependencies:
-      safe-buffer: 5.2.1
 
   range-parser@1.2.0: {}
 
@@ -18282,10 +17987,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-
-  rlp@2.2.7:
-    dependencies:
-      bn.js: 5.2.1
 
   rollup-plugin-visualizer@6.0.3(rollup@4.46.2):
     dependencies:
@@ -18904,10 +18605,6 @@ snapshots:
 
   strip-final-newline@3.0.0: {}
 
-  strip-hex-prefix@1.0.0:
-    dependencies:
-      is-hex-prefixed: 1.0.0
-
   strip-indent@3.0.0:
     dependencies:
       min-indent: 1.0.1
@@ -19218,10 +18915,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  tweetnacl-util@0.15.1: {}
-
-  tweetnacl@1.0.3: {}
-
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
@@ -19478,8 +19171,6 @@ snapshots:
 
   uuid@8.3.2: {}
 
-  uuid@9.0.1: {}
-
   v8-compile-cache-lib@3.0.1: {}
 
   v8-to-istanbul@9.3.0:
@@ -19520,6 +19211,23 @@ snapshots:
       ws: 8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)
     optionalDependencies:
       typescript: 5.8.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+
+  viem@2.33.2(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2):
+    dependencies:
+      '@noble/curves': 1.9.2
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.0.8(typescript@5.9.2)(zod@3.24.2)
+      isows: 1.0.7(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
+      ox: 0.8.6(typescript@5.9.2)(zod@3.24.2)
+      ws: 8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.9.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate

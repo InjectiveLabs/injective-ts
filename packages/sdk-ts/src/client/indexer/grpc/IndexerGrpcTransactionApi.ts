@@ -220,7 +220,19 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
     message: Record<string, any>
   }) {
     const parsedTypedData = JSON.parse(txResponse.data)
-    const publicKeyHex = recoverTypedSignaturePubKey(parsedTypedData, signature)
+    let publicKeyHex: string
+    try {
+      publicKeyHex = await recoverTypedSignaturePubKey(
+        parsedTypedData,
+        signature,
+      )
+    } catch (e: any) {
+      throw new TransactionException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'Web3Gateway.RecoverTypedSignaturePubKey',
+        type: ErrorType.Web3Gateway,
+      })
+    }
 
     const cosmosPubKey = InjectiveExchangeRpc.CosmosPubKey.create()
     cosmosPubKey.type = txResponse.pubKeyType

@@ -1,6 +1,5 @@
-import keccak256 from 'keccak256'
 import { bech32 } from '@scure/base'
-import { Address } from 'ethereumjs-util'
+import { keccak256, toBytes } from 'viem'
 
 /**
  * Get injective address from Ethereum hex address
@@ -9,7 +8,7 @@ import { Address } from 'ethereumjs-util'
  * @returns string
  */
 export const getInjectiveAddress = (ethAddress: string): string => {
-  const addressBuffer = Address.fromString(ethAddress.toString()).toBuffer()
+  const addressBuffer = toBytes(ethAddress.toString())
 
   return bech32.encode('inj', bech32.toWords(addressBuffer))
 }
@@ -90,9 +89,10 @@ export const getAddressFromInjectiveAddress = (address: string): string => {
 
 export const getChecksumAddress = (ethAddress: string) => {
   const lowercasedAddress = ethAddress.toLowerCase().replace('0x', '')
-  const addressHash = keccak256(lowercasedAddress)
-    .toString('hex')
-    .replace('0x', '')
+  const addressHash = keccak256(lowercasedAddress as `0x${string}`).replace(
+    '0x',
+    '',
+  )
 
   let checksumAddress = '0x'
 

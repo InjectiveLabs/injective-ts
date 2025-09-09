@@ -1,4 +1,8 @@
-import type HDNode from 'hdkey'
+// Browser-compatible HDNode-like interface (replaces hdkey dependency)
+export interface HDNodeLike {
+  publicKey: Buffer
+  chainCode: Buffer
+}
 
 export type LedgerDerivationPathType = 'ledger-live' | 'ledger-mew'
 
@@ -11,7 +15,7 @@ export interface LedgerWalletInfo {
   address: string
   baseDerivationPath: string
   derivationPath: string
-  hdKey?: HDNode
+  hdKey?: HDNodeLike
   publicKey?: string
 }
 

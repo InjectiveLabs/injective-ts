@@ -152,7 +152,7 @@ export class SigningStargateClient extends StargateClient {
     signer: OfflineSigner,
     options: SigningStargateClientOptions,
   ) {
-    super(tmClient, options)
+    super(tmClient as any, options)
     const {
       registry = new Registry(defaultRegistryTypes),
       aminoTypes = new AminoTypes(createDefaultAminoConverters()),

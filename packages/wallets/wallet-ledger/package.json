@@ -61,21 +61,14 @@
     "@bangjelkoski/ledgerhq-hw-transport": "6.31.4-beta.0",
     "@bangjelkoski/ledgerhq-hw-transport-webhid": "6.30.0-beta.0",
     "@bangjelkoski/ledgerhq-hw-transport-webusb": "6.29.4-beta.0",
-    "@ethereumjs/common": "^3.1.1",
-    "@ethereumjs/tx": "^4.1.1",
     "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*",
     "alchemy-sdk": "^3.4.7",
-    "eth-sig-util": "^3.0.1",
-    "ethereumjs-util": "^7.1.0",
-    "hdkey": "^2.1.0"
+    "viem": "^2.33.2"
   },
   "devDependencies": {
-    "@types/eth-sig-util": "^2.1.1",
-    "@types/ethereumjs-util": "^6.1.0",
-    "@types/hdkey": "^2.0.1",
     "@types/ledgerhq__hw-transport-webusb": "^4.70.1",
     "shx": "^0.3.4"
   },

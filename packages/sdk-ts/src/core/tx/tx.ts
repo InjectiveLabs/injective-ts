@@ -1,4 +1,4 @@
-import keccak256 from 'keccak256'
+import { keccak256 } from 'viem'
 import { BigNumberInBase } from '@injectivelabs/utils'
 import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
@@ -91,7 +91,7 @@ export const createTransactionWithSigners = ({
   const signDocBytes = CosmosTxV1Beta1Tx.SignDoc.encode(signDoc).finish()
 
   const toSignBytes = Buffer.from(signDocBytes)
-  const toSignHash = keccak256(Buffer.from(signDocBytes))
+  const toSignHash = keccak256(Buffer.from(signDocBytes), 'bytes')
 
   const txRaw = CosmosTxV1Beta1Tx.TxRaw.create()
   txRaw.authInfoBytes = authInfoBytes
