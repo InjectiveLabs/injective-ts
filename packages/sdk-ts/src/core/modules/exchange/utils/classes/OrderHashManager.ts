@@ -1,4 +1,3 @@
-import keccak256 from 'keccak256'
 import { BigNumber } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { getNetworkEndpoints } from '@injectivelabs/networks'
@@ -11,6 +10,7 @@ import type { Network } from '@injectivelabs/networks';
 import type MsgCreateSpotLimitOrder from '../../msgs/MsgCreateSpotLimitOrder.js'
 import type MsgCreateDerivativeLimitOrder from '../../msgs/MsgCreateDerivativeLimitOrder.js'
 
+import { keccak256 } from 'viem'
 
 interface OrderInfo {
   subaccountId: string
@@ -421,8 +421,8 @@ export class OrderHashManager {
     const bytesToHash = Buffer.concat([
       Buffer.from('19', 'hex'),
       Buffer.from('01', 'hex'),
-      domainHash(eip712),
-      messageHash(eip712),
+      Buffer.from(domainHash(eip712)),
+      Buffer.from(messageHash(eip712)),
     ])
 
     try {

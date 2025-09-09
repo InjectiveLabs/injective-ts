@@ -80,7 +80,7 @@ import type {
   CreateTransactionWithSignersArgs
 } from '@injectivelabs/sdk-ts';
 
-const getEthereumWalletPubKey = <T>({
+const getEthereumWalletPubKey = async <T>({
   pubKey,
   eip712TypedData,
   signature,
@@ -93,7 +93,13 @@ const getEthereumWalletPubKey = <T>({
     return pubKey
   }
 
-  return hexToBase64(recoverTypedSignaturePubKey(eip712TypedData, signature))
+  const recoveredPubKey = await recoverTypedSignaturePubKey(
+    // TODO: fix type
+    eip712TypedData as any,
+    signature,
+  )
+
+  return hexToBase64(recoveredPubKey)
 }
 
 const defaultRetriesConfig = () => ({
@@ -397,7 +403,7 @@ export class MsgBroadcaster {
       tx.ethereumAddress,
     )
 
-    const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
+    const pubKeyOrSignatureDerivedPubKey = await getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
       signature,
@@ -518,7 +524,7 @@ export class MsgBroadcaster {
       tx.ethereumAddress,
     )
 
-    const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
+    const pubKeyOrSignatureDerivedPubKey = await getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
       signature,

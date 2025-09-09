@@ -1,4 +1,8 @@
-import type HDNode from 'hdkey'
+// Browser-compatible HDNode-like interface (replaces hdkey dependency)
+export interface HDNodeLike {
+  publicKey: Buffer
+  chainCode: Buffer
+}
 
 export type TrezorDerivationPathType = 'bip32' | 'bip44' | 'legacy'
 
@@ -10,6 +14,6 @@ export const TrezorDerivationPathType = {
 
 export interface TrezorWalletInfo {
   address: string
-  hdKey: HDNode
+  hdKey: HDNodeLike
   derivationPath: string
 }
