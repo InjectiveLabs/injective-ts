@@ -11,7 +11,8 @@ import type { Msgs } from '../../modules/msgs.js'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type {
   GoogleProtobufAny,
-  CosmosTxSigningV1Beta1Signing} from '@injectivelabs/core-proto-ts';
+  CosmosTxSigningV1Beta1Signing
+} from '@injectivelabs/core-proto-ts';
 
 export const getPublicKey = ({
   chainId,

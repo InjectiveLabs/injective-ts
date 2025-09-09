@@ -1,5 +1,11 @@
 import { loadTrezorConnect } from '../../lib.js'
 import AccountManager from './../AccountManager.js'
+import { loadTrezorConnect } from '../../lib.js'
+
+const TREZOR_CONNECT_MANIFEST = {
+  email: 'contact@injectivelabs.org',
+  appUrl: 'https://injectivelabs.org',
+}
 
 const TREZOR_CONNECT_MANIFEST = {
   email: 'contact@injectivelabs.org',

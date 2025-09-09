@@ -1,4 +1,4 @@
- 
+
 import { Magic as MagicWallet } from 'magic-sdk'
 import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
@@ -22,12 +22,14 @@ import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
   DirectSignResponse,
-  AminoSignResponse} from '@injectivelabs/sdk-ts';
+  AminoSignResponse
+} from '@injectivelabs/sdk-ts';
 import type {
   StdSignDoc,
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
-  SendTransactionOptions} from '@injectivelabs/wallet-base';
+  SendTransactionOptions
+} from '@injectivelabs/wallet-base';
 
 export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrategy {
   public provider: BrowserEip1993Provider | undefined
@@ -135,7 +137,7 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     }
   }
 
-   
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -200,7 +202,7 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     return `0x${signature}`
   }
 
-   
+
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -266,7 +268,7 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     )
   }
 
-   
+
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

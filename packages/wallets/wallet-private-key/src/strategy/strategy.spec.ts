@@ -8,7 +8,8 @@ import {
   BaseWalletStrategy
 } from '@injectivelabs/wallet-core'
 import type {
-  MsgBroadcasterOptions} from '@injectivelabs/wallet-core';
+  MsgBroadcasterOptions
+} from '@injectivelabs/wallet-core';
 import type { WalletStrategyArguments } from '@injectivelabs/wallet-base';
 
 const strategyArgs: WalletStrategyArguments = {

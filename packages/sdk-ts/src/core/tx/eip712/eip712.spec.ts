@@ -36,7 +36,7 @@ describe('EIP712V2', () => {
         timeoutHeight: timeoutHeight.toString(),
         chainId,
       },
-      evnChainId,
+      evmChainId,
     })
 
     const expectedEip712 = {

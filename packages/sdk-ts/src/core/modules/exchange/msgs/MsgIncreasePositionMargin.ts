@@ -47,6 +47,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
 
   public toProto() {
     const { params: initialParams } = this
+
     const params = {
       ...initialParams,
       amount: amountToCosmosSdkDecAmount(initialParams.amount).toFixed(),

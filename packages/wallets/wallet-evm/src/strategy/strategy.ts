@@ -1,4 +1,4 @@
- 
+
 import { sleep, capitalize } from '@injectivelabs/utils'
 import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
 import {
@@ -192,7 +192,7 @@ export class EvmWallet
     }
   }
 
-   
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -300,7 +300,7 @@ export class EvmWallet
     )
   }
 
-   
+
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -382,7 +382,7 @@ export class EvmWallet
     }
   }
 
-   
+
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

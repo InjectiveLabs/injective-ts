@@ -35,6 +35,7 @@ import type MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer.js'
 import type MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders.js'
 import type MsgLiquidatePosition from './exchange/msgs/MsgLiquidatePosition.js'
 import type MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract.js'
+import type MsgTransferDelegation from './staking/msgs/MsgTransferDelegation.js'
 import type MsgRequestRedemption from './insurance/msgs/MsgRequestRedemption.js'
 import type MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds.js'
 import type MsgSetDenomMetadata from './tokenfactory/msgs/MsgSetDenomMetadata.js'
@@ -95,6 +96,7 @@ export type Msgs =
   | MsgDelegate
   | MsgUndelegate
   | MsgBeginRedelegate
+  | MsgTransferDelegation
   | MsgCancelUnbondingDelegation
   | MsgExecuteContract
   | MsgExecuteContractCompat

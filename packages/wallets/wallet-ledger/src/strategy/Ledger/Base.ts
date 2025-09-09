@@ -1,4 +1,4 @@
- 
+
 import { EvmChainId } from '@injectivelabs/ts-types'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
@@ -34,14 +34,16 @@ import type { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
 import type {
   TxRaw,
   TxResponse,
-  DirectSignResponse,
-  AminoSignResponse} from '@injectivelabs/sdk-ts';
+  AminoSignResponse,
+  DirectSignResponse
+} from '@injectivelabs/sdk-ts';
 import type {
   StdSignDoc,
   SendTransactionOptions,
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs} from '@injectivelabs/wallet-base';
+  ConcreteEvmWalletStrategyArgs
+} from '@injectivelabs/wallet-base';
 
 const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
   if (chainId === EvmChainId.Goerli) {
@@ -243,7 +245,7 @@ export default class LedgerBase
     )
   }
 
-   
+
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -296,7 +298,7 @@ export default class LedgerBase
     return Promise.resolve(txHash)
   }
 
-   
+
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),
@@ -310,7 +312,7 @@ export default class LedgerBase
     const ledgerService = await loadLedgerServiceType()
 
     const alchemy = await this.getAlchemy(args.evmChainId)
-    const chainId = parseInt(args.evmChainId.toString(), 10)
+    const chainId = parseInt(args.evmChainId.toString(), 10) as EvmChainId
     const nonce = await alchemy.core.getTransactionCount(args.address)
 
     const common = new Common({

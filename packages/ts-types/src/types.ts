@@ -8,7 +8,8 @@ export type EvmChainId =
   | 11155111
   | 1337
   | 31337
-  | 1778
+  | 1776
+  | 1337
   | 1439
 
 export const EvmChainId = {
@@ -21,7 +22,8 @@ export const EvmChainId = {
   Sepolia: 11155111,
   Ganache: 1337,
   HardHat: 31337,
-  DevnetEvm: 1778,
+  MainnetEvm: 1776,
+  DevnetEvm: 1337,
   TestnetEvm: 1439,
 } as const
 
@@ -483,8 +485,8 @@ export const MsgType = {
     'injective.exchange.v2.MsgTradingRewardCampaignLaunch',
   MsgTradingRewardCampaignUpdateV2:
     'injective.exchange.v2.MsgTradingRewardCampaignUpdate',
-  MsgInstantPerpetualMarketLaunchV2:
-    'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
+  // MsgInstantPerpetualMarketLaunchV2:
+  //   'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
   MsgCreateBinaryOptionsLimitOrderV2:
     'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder',
   MsgAdminUpdateBinaryOptionsMarketV2:

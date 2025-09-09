@@ -1,4 +1,4 @@
- 
+
 import {
   TxGrpcApi
 } from '@injectivelabs/sdk-ts'
@@ -30,18 +30,21 @@ import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 import type {
   LocalAccount,
-  PrepareTransactionRequestParameters} from 'viem';
+  PrepareTransactionRequestParameters
+} from 'viem';
 import type {
   TxRaw,
   AminoSignResponse,
-  DirectSignResponse} from '@injectivelabs/sdk-ts';
+  DirectSignResponse
+} from '@injectivelabs/sdk-ts';
 import type {
   StdSignDoc,
   TurnkeyMetadata,
   ConcreteWalletStrategy,
   SendTransactionOptions,
   WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs} from '@injectivelabs/wallet-base';
+  ConcreteEvmWalletStrategyArgs
+} from '@injectivelabs/wallet-base';
 
 export class TurnkeyWalletStrategy
   extends BaseConcreteStrategy
@@ -278,7 +281,7 @@ export class TurnkeyWalletStrategy
     return signature
   }
 
-   
+
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -389,7 +392,7 @@ export class TurnkeyWalletStrategy
     )
   }
 
-   
+
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

@@ -1,4 +1,3 @@
- 
 import HDNode from 'hdkey'
 import { TrezorException } from '@injectivelabs/exceptions'
 import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'

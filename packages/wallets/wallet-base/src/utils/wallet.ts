@@ -28,7 +28,6 @@ export const isEvmBrowserWallet = (wallet: Wallet) =>
     Wallet.BitGet,
     Wallet.Rainbow,
     Wallet.Phantom,
-    Wallet.Turnkey,
     Wallet.Metamask,
     Wallet.OkxWallet,
     Wallet.TrustWallet,

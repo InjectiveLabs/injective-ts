@@ -57,7 +57,7 @@ export const getEvmProvider = async (
     }
 
     return provider
-  } catch (e) {
+  } catch {
     throw new WalletException(
       new Error(`Please install ${capitalize(wallet)} Extension`),
     )
@@ -95,7 +95,7 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
         }),
       ),
     ])
-  } catch (e) {
+  } catch {
     throw new WalletException(
       new Error(`Please update your ${capitalize(wallet)} network`),
     )

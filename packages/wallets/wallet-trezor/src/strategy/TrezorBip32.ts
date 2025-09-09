@@ -1,4 +1,4 @@
- 
+
 import TrezorBase from './Base.js'
 import { TrezorDerivationPathType } from '../types.js'
 import type { ConcreteEvmWalletStrategyArgs } from '@injectivelabs/wallet-base'

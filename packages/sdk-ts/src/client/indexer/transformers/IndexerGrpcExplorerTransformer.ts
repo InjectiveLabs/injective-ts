@@ -86,8 +86,9 @@ const parseStringToObjectLikeNoThrow = (
 
 const transactionV2MessagesToMessagesNoThrow = (messages: any): Message[] => {
   const messagesArray = parseStringToObjectLikeNoThrow(messages)
+  const nonNullMessages = messagesArray.filter((msg) => !!msg)
 
-  return messagesArray.map(
+  return nonNullMessages.map(
     (msg: any) =>
       ({
         type: msg.type,

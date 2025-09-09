@@ -8,7 +8,8 @@ import {
 import type {
   ErrorContext,
   ErrorContextCode,
-  TransactionChainErrorModule} from '../types/index.js';
+  TransactionChainErrorModule
+} from '../types/index.js';
 
 export const parseErrorMessage = (message: string): string => {
   const firstParse = message.split('message index: 0:')

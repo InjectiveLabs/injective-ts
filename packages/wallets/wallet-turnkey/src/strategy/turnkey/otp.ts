@@ -1,4 +1,3 @@
-import { type HttpRestClient } from '@injectivelabs/utils'
 import {
   ErrorType,
   WalletException,
@@ -13,6 +12,7 @@ import {
   TURNKEY_OTP_INIT_PATH,
   TURNKEY_OTP_VERIFY_PATH,
 } from '../consts.js'
+import type { HttpRestClient } from '@injectivelabs/utils'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 
 export class TurnkeyOtpWallet {

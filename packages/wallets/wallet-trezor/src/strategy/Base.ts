@@ -1,5 +1,3 @@
- 
- 
 import { addHexPrefix } from 'ethereumjs-util'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
@@ -36,13 +34,15 @@ import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse} from '@injectivelabs/sdk-ts';
+  DirectSignResponse
+} from '@injectivelabs/sdk-ts';
 import type {
   StdSignDoc,
   SendTransactionOptions,
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs} from '@injectivelabs/wallet-base';
+  ConcreteEvmWalletStrategyArgs
+} from '@injectivelabs/wallet-base';
 
 type EthereumTransactionEIP1559 = {
   to: string
@@ -262,7 +262,7 @@ export default class TrezorBase
     )
   }
 
-   
+
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -321,7 +321,7 @@ export default class TrezorBase
     return Promise.resolve(txHash)
   }
 
-   
+
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

@@ -1,4 +1,4 @@
- 
+
 import { makeSignDoc } from '@cosmjs/proto-signing'
 import {
   CosmosChainId
@@ -114,7 +114,7 @@ export class Cosmostation
     )
   }
 
-   
+
   async sendEvmTransaction(
     _transaction: unknown,
     _options: { address: AccountAddress; evmChainId: EvmChainId },

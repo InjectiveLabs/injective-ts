@@ -1,4 +1,4 @@
- 
+
 import LedgerBase from './Base.js'
 import { LedgerDerivationPathType } from '../../types.js'
 import type { ConcreteEvmWalletStrategyArgs } from '@injectivelabs/wallet-base'

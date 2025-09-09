@@ -1,5 +1,4 @@
 import { sha256 } from '@injectivelabs/sdk-ts'
-import { type HttpRestClient } from '@injectivelabs/utils'
 import {
   ErrorType,
   WalletException,
@@ -9,6 +8,7 @@ import {
   DEFAULT_TURNKEY_REFRESH_SECONDS,
   TURNKEY_OAUTH_PATH,
 } from '../consts.js'
+import type { HttpRestClient } from '@injectivelabs/utils'
 import type { TurnkeyOauthLoginResponse } from '../types.js'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 

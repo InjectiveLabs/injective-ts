@@ -1,4 +1,4 @@
- 
+
 import { capitalize } from '@injectivelabs/utils'
 import {
   waitTxBroadcasted,
@@ -30,11 +30,13 @@ import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse} from '@injectivelabs/sdk-ts';
+  DirectSignResponse
+} from '@injectivelabs/sdk-ts';
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,
-  SendTransactionOptions} from '@injectivelabs/wallet-base';
+  SendTransactionOptions
+} from '@injectivelabs/wallet-base';
 
 const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
 
@@ -137,7 +139,7 @@ export class CosmosWalletStrategy
     )
   }
 
-   
+
   async sendEvmTransaction(
     _transaction: unknown,
     _options: { address: AccountAddress; evmChainId: EvmChainId },

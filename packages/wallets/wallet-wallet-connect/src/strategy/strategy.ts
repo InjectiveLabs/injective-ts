@@ -333,7 +333,7 @@ export class WalletConnect
       })
 
       return this.provider as Provider
-    } catch (e) {
+    } catch {
       throw new WalletException(
         new Error('WalletConnect not supported for this wallet'),
         {

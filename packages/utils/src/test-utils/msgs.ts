@@ -7,7 +7,8 @@ import { mockFactory } from './mocks/index.js'
 import BigNumber from '../classes/BigNumber.js'
 import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '../constants.js'
 import type {
-  NetworkEndpoints} from '@injectivelabs/networks';
+  NetworkEndpoints
+} from '@injectivelabs/networks';
 import type { Coin, ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
 export const prepareEip712 = <T>({

@@ -30,7 +30,8 @@ import type {
   onChainIdChangeCallback,
   WalletStrategyArguments,
   CosmosWalletAbstraction,
-  WalletStrategy as WalletStrategyInterface} from '@injectivelabs/wallet-base';
+  WalletStrategy as WalletStrategyInterface
+} from '@injectivelabs/wallet-base';
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {

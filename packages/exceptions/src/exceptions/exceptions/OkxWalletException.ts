@@ -1,7 +1,7 @@
 import { ErrorType } from '../types/index.js'
 import { ConcreteException } from '../base.js'
 import { mapErrorMessage } from '../utils/maps.js'
-import type { ErrorContext} from '../types/index.js';
+import type { ErrorContext } from '../types/index.js';
 
 const removeOkxWalletFromErrorString = (message: string): string =>
   message

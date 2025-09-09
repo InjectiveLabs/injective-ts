@@ -17,7 +17,8 @@ import {
   recoverTypedSignaturePubKey,
 } from '../../utils/index.js'
 import type {
-  CosmosTxV1Beta1Tx} from '@injectivelabs/core-proto-ts';
+  CosmosTxV1Beta1Tx
+} from '@injectivelabs/core-proto-ts';
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.

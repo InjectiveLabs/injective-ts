@@ -26,9 +26,11 @@ import {
   TURNKEY_OTP_VERIFY_PATH,
 } from '../consts.js'
 import type {
-  TurnkeyMetadata} from '@injectivelabs/wallet-base';
+  TurnkeyMetadata
+} from '@injectivelabs/wallet-base';
 import type {
-  TurnkeyIndexedDbClient} from '@turnkey/sdk-browser';
+  TurnkeyIndexedDbClient
+} from '@turnkey/sdk-browser';
 
 export class TurnkeyWallet {
   private otpId?: string

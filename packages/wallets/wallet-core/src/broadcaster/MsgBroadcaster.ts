@@ -1,4 +1,7 @@
+import { EvmChainId } from '@injectivelabs/ts-types'
 import {
+  isTestnet,
+  isMainnet,
   getNetworkInfo,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
@@ -10,6 +13,7 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
+  WalletException,
   GeneralException,
   isThrownException,
   UnspecifiedErrorCode,
@@ -21,6 +25,7 @@ import {
   Wallet,
   isCosmosWallet,
   WalletDeviceType,
+  isEvmBrowserWallet,
   isEip712V2OnlyWallet,
   createEip712StdSignDoc,
   isCosmosAminoOnlyWallet,
@@ -56,20 +61,24 @@ import {
   WalletStrategyEmitterEventType
 } from './types.js'
 import type {
-  NetworkEndpoints} from '@injectivelabs/networks';
+  NetworkEndpoints
+} from '@injectivelabs/networks';
 import type {
-  ThrownException} from '@injectivelabs/exceptions';
-import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+  ThrownException
+} from '@injectivelabs/exceptions';
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type { ChainId as ChainIdType, EvmChainId as EvmChainIdType } from '@injectivelabs/ts-types'
 import type {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
-  MsgBroadcasterTxOptionsWithAddresses} from './types.js';
+  MsgBroadcasterTxOptionsWithAddresses
+} from './types.js';
 import type {
   TxResponse,
   CosmosTxV1Beta1Tx,
   DirectSignResponse,
-  CreateTransactionWithSignersArgs} from '@injectivelabs/sdk-ts';
+  CreateTransactionWithSignersArgs
+} from '@injectivelabs/sdk-ts';
 
 const getEthereumWalletPubKey = <T>({
   pubKey,
@@ -110,7 +119,7 @@ export class MsgBroadcaster {
 
   public endpoints: NetworkEndpoints
 
-  public chainId: ChainId
+  public chainId: ChainIdType
 
   public txTimeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT
 
@@ -118,7 +127,7 @@ export class MsgBroadcaster {
 
   public txTimeoutOnFeeDelegation: boolean = false
 
-  public evmChainId?: EvmChainId
+  public evmChainId?: EvmChainIdType
 
   public gasBufferCoefficient: number = 1.2
 
@@ -150,6 +159,50 @@ export class MsgBroadcaster {
     this.txTimeout = options.txTimeout || this.txTimeout
     this.txTimeoutOnFeeDelegation =
       options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
+  }
+
+  async getEvmChainId(): Promise<EvmChainId | undefined> {
+    const { walletStrategy } = this
+
+    if (!isEvmBrowserWallet(walletStrategy.wallet)) {
+      return this.evmChainId
+    }
+
+    const mainnetEvmIds = [EvmChainId.Mainnet, EvmChainId.MainnetEvm] as EvmChainId[]
+    const testnetEvmIds = [EvmChainId.Sepolia, EvmChainId.TestnetEvm] as EvmChainId[]
+    const devnetEvmIds = [EvmChainId.Sepolia, EvmChainId.DevnetEvm] as EvmChainId[]
+
+    try {
+      const chainId = await walletStrategy.getEthereumChainId()
+
+      if (!chainId) {
+        return this.evmChainId
+      }
+
+      const evmChainId = parseInt(chainId, 16) as EvmChainId
+
+      if (isNaN(evmChainId)) {
+        return this.evmChainId
+      }
+
+      if (
+        (isMainnet(this.options.network) &&
+          !mainnetEvmIds.includes(evmChainId)) ||
+        (isTestnet(this.options.network) &&
+          !testnetEvmIds.includes(evmChainId)) ||
+        (!isMainnet(this.options.network) &&
+          !isTestnet(this.options.network) &&
+          !devnetEvmIds.includes(evmChainId))
+      ) {
+        throw new WalletException(
+          new Error('Your selected network is incorrect'),
+        )
+      }
+
+      return evmChainId
+    } catch (e: any) {
+      throw new WalletException(e)
+    }
   }
 
   /**
@@ -282,8 +335,10 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastEip712(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const { chainId, txTimeout, endpoints, evmChainId, walletStrategy } = this
+    const { chainId, txTimeout, endpoints, walletStrategy } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
+
+    const evmChainId = await this.getEvmChainId()
 
     if (!evmChainId) {
       throw new GeneralException(new Error('Please provide evmChainId'))
@@ -393,8 +448,10 @@ export class MsgBroadcaster {
   private async broadcastEip712V2(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ): Promise<TxResponse> {
-    const { chainId, endpoints, txTimeout, walletStrategy, evmChainId } = this
+    const { chainId, endpoints, txTimeout, walletStrategy } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
+
+    const evmChainId = await this.getEvmChainId()
 
     if (!evmChainId) {
       throw new GeneralException(new Error('Please provide evmChainId'))
@@ -516,7 +573,6 @@ export class MsgBroadcaster {
     const {
       txTimeout,
       endpoints,
-      evmChainId,
       simulateTx,
       httpHeaders,
       walletStrategy,
@@ -524,6 +580,8 @@ export class MsgBroadcaster {
     } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
+
+    const evmChainId = await this.getEvmChainId()
 
     if (!evmChainId) {
       throw new GeneralException(new Error('Please provide evmChainId'))
