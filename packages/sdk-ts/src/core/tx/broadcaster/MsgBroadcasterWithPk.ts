@@ -1,7 +1,21 @@
-import { PrivateKey } from '../../accounts/index.js'
-import { Msgs } from '../../modules/msgs.js'
+import { GeneralException } from '@injectivelabs/exceptions'
+import {
+  Network,
+  getNetworkInfo,
+  getNetworkEndpoints
+} from '@injectivelabs/networks'
+import {
+  getStdFee,
+  DEFAULT_STD_FEE,
+  BigNumberInBase,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+} from '@injectivelabs/utils'
 import { createTransaction } from '../tx.js'
 import { TxGrpcApi } from '../api/TxGrpcApi.js'
+import { ofacWallets } from '../../../json/index.js'
+import { PrivateKey } from '../../accounts/index.js'
+import { IndexerGrpcWeb3GwApi } from '../../../client/index.js'
+import { getGasPriceBasedOnMessage } from '../../../utils/msgs.js'
 import {
   ChainGrpcAuthApi,
   ChainGrpcTendermintApi,
@@ -10,26 +24,13 @@ import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
 } from '../../../client/chain/rest/index.js'
-import {
-  getStdFee,
-  DEFAULT_STD_FEE,
-  BigNumberInBase,
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-} from '@injectivelabs/utils'
-import { GeneralException } from '@injectivelabs/exceptions'
-import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import {
-  Network,
-  getNetworkInfo,
-  getNetworkEndpoints,
-  NetworkEndpoints,
-} from '@injectivelabs/networks'
-import { getGasPriceBasedOnMessage } from '../../../utils/msgs.js'
-import { CreateTransactionArgs } from '../types/index.js'
-import { IndexerGrpcWeb3GwApi } from '../../../client/index.js'
-import { AccountDetails } from '../../../types/auth.js'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { ofacWallets } from '../../../json/index.js'
+import type { Msgs } from '../../modules/msgs.js'
+import type { AccountDetails } from '../../../types/auth.js'
+import type { CreateTransactionArgs } from '../types/index.js'
+import type {
+  NetworkEndpoints} from '@injectivelabs/networks';
+import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import type { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]

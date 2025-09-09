@@ -1,6 +1,7 @@
+import { ErrorType } from '../types/index.js'
 import { ConcreteException } from '../base.js'
-import { ErrorContext, ErrorType } from '../types/index.js'
 import { isCommonLockedError } from '../utils/helpers.js'
+import type { ErrorContext} from '../types/index.js';
 
 export class LedgerCosmosException extends ConcreteException {
   public static errorClass: string = 'LedgerCosmosException'

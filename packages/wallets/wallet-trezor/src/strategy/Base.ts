@@ -1,13 +1,14 @@
-/* eslint-disable camelcase */
-/* eslint-disable class-methods-use-this */
+ 
+ 
+import { addHexPrefix } from 'ethereumjs-util'
+import { EvmChainId } from '@injectivelabs/ts-types'
+import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
+import { Common, Chain, Hardfork } from '@ethereumjs/common'
 import {
-  TxRaw,
   toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  AminoSignResponse,
-  DirectSignResponse,
+  TxGrpcApi
 } from '@injectivelabs/sdk-ts'
+import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import {
   ErrorType,
   WalletException,
@@ -17,29 +18,31 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
-  StdSignDoc,
   TIP_IN_GWEI,
   WalletAction,
   getKeyFromRpcUrl,
   WalletDeviceType,
   BaseConcreteStrategy,
-  SendTransactionOptions,
-  ConcreteWalletStrategy,
-  WalletStrategyEvmOptions,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
-  ConcreteEvmWalletStrategyArgs,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
-import { addHexPrefix } from 'ethereumjs-util'
-import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import { loadTrezorConnect } from './lib.js'
 import { transformTypedData } from '../utils.js'
 import { BaseTrezorTransport } from './hw/index.js'
-import { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
+import type { AccountAddress} from '@injectivelabs/ts-types';
+import type { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse} from '@injectivelabs/sdk-ts';
+import type {
+  StdSignDoc,
+  SendTransactionOptions,
+  ConcreteWalletStrategy,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs} from '@injectivelabs/wallet-base';
 
 type EthereumTransactionEIP1559 = {
   to: string
@@ -259,7 +262,7 @@ export default class TrezorBase
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -318,7 +321,7 @@ export default class TrezorBase
     return Promise.resolve(txHash)
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

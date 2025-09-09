@@ -1,10 +1,15 @@
-/* eslint-disable class-methods-use-this */
+ 
+import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import {
-  AminoSignResponse,
-  DirectSignResponse,
   getInjectiveSignerAddress,
   PrivateKey as PrivateKeySigner,
 } from '@injectivelabs/sdk-ts'
+import {
+  WalletAction,
+  WalletDeviceType,
+  BaseConcreteStrategy
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -12,16 +17,14 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import {
+import type { AccountAddress } from '@injectivelabs/ts-types';
+import type { TxRaw, TxResponse ,
+  AminoSignResponse,
+  DirectSignResponse} from '@injectivelabs/sdk-ts'
+import type {
   StdSignDoc,
-  WalletAction,
-  WalletDeviceType,
-  BaseConcreteStrategy,
   ConcreteWalletStrategy,
-  SendTransactionOptions,
-} from '@injectivelabs/wallet-base'
-import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
-import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+  SendTransactionOptions} from '@injectivelabs/wallet-base';
 
 export class PrivateKeyWallet
   extends BaseConcreteStrategy
@@ -55,7 +58,7 @@ export class PrivateKeyWallet
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -150,7 +153,7 @@ export class PrivateKeyWallet
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -218,7 +221,7 @@ export class PrivateKeyWallet
     throw new WalletException(new Error('Not supported'))
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   async getPubKey(): Promise<string> {
     const pk = this.getPrivateKey()
 

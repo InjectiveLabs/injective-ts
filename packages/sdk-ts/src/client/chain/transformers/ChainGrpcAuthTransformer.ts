@@ -1,12 +1,14 @@
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { uint8ArrayToString } from '../../../utils/index.js'
-import { Account, AuthModuleParams } from '../types/auth.js'
 import {
-  GoogleProtobufAny,
-  CosmosAuthV1Beta1Query,
   InjectiveTypesV1Beta1Account,
   InjectiveCryptoV1Beta1Ethsecp256k1Keys,
 } from '@injectivelabs/core-proto-ts'
+import { uint8ArrayToString } from '../../../utils/index.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import type { Account, AuthModuleParams } from '../types/auth.js'
+import type {
+  GoogleProtobufAny,
+  CosmosAuthV1Beta1Query} from '@injectivelabs/core-proto-ts';
+
 
 /**
  * @category Chain Grpc Transformer

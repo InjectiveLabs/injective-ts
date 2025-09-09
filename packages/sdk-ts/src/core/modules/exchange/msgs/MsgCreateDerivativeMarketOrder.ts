@@ -1,10 +1,12 @@
-import { MsgBase } from '../../MsgBase.js'
-import { numberToCosmosSdkDecString, amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import {
   InjectiveExchangeV1Beta1Tx,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import { numberToCosmosSdkDecString, amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
+import type { SnakeCaseKeys } from 'snakecase-keys';
+
 
 export declare namespace MsgCreateDerivativeMarketOrder {
   export interface Params {

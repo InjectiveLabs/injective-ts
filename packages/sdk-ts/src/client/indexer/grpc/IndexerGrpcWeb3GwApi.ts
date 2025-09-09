@@ -1,19 +1,19 @@
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
+import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
-import { IndexerModule } from '../types/index.js'
 import {
   ErrorType,
   TransactionException,
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
 } from '@injectivelabs/exceptions'
-import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
+import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
+import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 
 /**
  * @category Indexer Grpc API

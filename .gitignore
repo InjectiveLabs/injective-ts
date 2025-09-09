@@ -197,3 +197,4 @@ typings/
 .yarn
 .DS_Store
 packages/**/patches
+bundle-analysis/

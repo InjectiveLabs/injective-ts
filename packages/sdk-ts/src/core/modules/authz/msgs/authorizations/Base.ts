@@ -1,4 +1,4 @@
-import { GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
+import type { GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
 
 export abstract class BaseAuthorization<Params, Proto, DataRepresentation> {
   params: Params

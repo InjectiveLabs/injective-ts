@@ -1,6 +1,8 @@
-export enum TurnkeyErrorCodes {
-  UserLoggedOut = 7,
-}
+export type TurnkeyErrorCodes = 7
+
+export const TurnkeyErrorCodes = {
+  UserLoggedOut: 7,
+} as const
 
 export type TurnkeyOAuthArgs = {
   provider: 'google'

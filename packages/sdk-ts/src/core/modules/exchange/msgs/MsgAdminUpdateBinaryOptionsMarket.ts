@@ -1,14 +1,14 @@
+import snakecaseKeys from 'snakecase-keys'
 import {
   InjectiveExchangeV1Beta1Tx,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
-import { GrpcMarketStatus } from '../../../../client/chain/types/index.js'
 import {
   amountToCosmosSdkDecAmount,
   numberToCosmosSdkDecString,
 } from '../../../../utils/numbers.js'
+import type { GrpcMarketStatus } from '../../../../client/chain/types/index.js'
 
 export declare namespace MsgAdminUpdateBinaryOptionsMarket {
   export interface Params {

@@ -1,5 +1,5 @@
-import type BigNumberInWei from './BigNumberInWei.js'
 import BigNumber from './BigNumber.js'
+import type BigNumberInWei from './BigNumberInWei.js'
 
 /**
  * @deprecated - use toHumanReadable instead

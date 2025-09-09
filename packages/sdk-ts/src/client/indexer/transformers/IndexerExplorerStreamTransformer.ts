@@ -1,6 +1,6 @@
-import { IndexerGrpcExplorerTransformer } from './IndexerGrpcExplorerTransformer.js'
 import { StreamOperation } from '../../../types/index.js'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import { IndexerGrpcExplorerTransformer } from './IndexerGrpcExplorerTransformer.js'
+import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer

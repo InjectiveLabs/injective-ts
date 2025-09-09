@@ -1,16 +1,16 @@
+import { sha256 } from '@injectivelabs/sdk-ts'
+import { type HttpRestClient } from '@injectivelabs/utils'
 import {
   ErrorType,
   WalletException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import { sha256 } from '@injectivelabs/sdk-ts'
-import type { TurnkeyOauthLoginResponse } from '../types.js'
-import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
-import { type HttpRestClient } from '@injectivelabs/utils'
 import {
   DEFAULT_TURNKEY_REFRESH_SECONDS,
   TURNKEY_OAUTH_PATH,
 } from '../consts.js'
+import type { TurnkeyOauthLoginResponse } from '../types.js'
+import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 
 export class TurnkeyOauthWallet {
   static async generateOAuthNonce(indexedDbClient: TurnkeyIndexedDbClient) {

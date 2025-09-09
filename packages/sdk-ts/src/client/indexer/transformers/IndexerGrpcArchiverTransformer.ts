@@ -1,4 +1,5 @@
-import {
+import type { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   AccountStats,
   DenomHolders,
   HistoricalRPNL,
@@ -8,7 +9,6 @@ import {
   HistoricalBalance,
   HistoricalVolumes,
 } from '../types/archiver.js'
-import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer

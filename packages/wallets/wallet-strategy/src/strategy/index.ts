@@ -1,21 +1,3 @@
-import {
-  Wallet,
-  isEvmWallet,
-  type WalletMetadata,
-  ConcreteStrategiesArg,
-  ConcreteWalletStrategy,
-  WalletStrategyArguments,
-  WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs,
-} from '@injectivelabs/wallet-base'
-import {
-  LedgerLiveStrategy,
-  LedgerLegacyStrategy,
-} from '@injectivelabs/wallet-ledger'
-import {
-  TrezorBip32Strategy,
-  TrezorBip44Strategy,
-} from '@injectivelabs/wallet-trezor'
 import { MagicStrategy } from '@injectivelabs/wallet-magic'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
@@ -25,6 +7,26 @@ import { TurnkeyWalletStrategy } from '@injectivelabs/wallet-turnkey'
 import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
+import {
+  Wallet,
+  isEvmWallet,
+  type WalletMetadata,
+} from '@injectivelabs/wallet-base'
+import {
+  LedgerLiveStrategy,
+  LedgerLegacyStrategy,
+} from '@injectivelabs/wallet-ledger'
+import {
+  TrezorBip32Strategy,
+  TrezorBip44Strategy,
+} from '@injectivelabs/wallet-trezor'
+import type {
+  ConcreteStrategiesArg,
+  ConcreteWalletStrategy,
+  WalletStrategyArguments,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
+} from '@injectivelabs/wallet-base'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { evmOptions } = args

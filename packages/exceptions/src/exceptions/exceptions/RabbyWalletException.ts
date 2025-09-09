@@ -1,6 +1,7 @@
+import { ErrorType } from '../types/index.js'
 import { ConcreteException } from '../base.js'
 import { mapErrorMessage } from '../utils/maps.js'
-import { ErrorContext, ErrorType } from '../types/index.js'
+import type { ErrorContext} from '../types/index.js';
 
 const removeRabbyWalletFromErrorString = (message: string): string =>
   message

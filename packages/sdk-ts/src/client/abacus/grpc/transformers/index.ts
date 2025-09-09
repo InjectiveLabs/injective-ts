@@ -1,4 +1,4 @@
-import { InjectiveAbacusRpc } from '@injectivelabs/abacus-proto-ts'
+import type { InjectiveAbacusRpc } from '@injectivelabs/abacus-proto-ts'
 
 export class AbacusGrpcTransformer {
   static grpcPointsStatsDailyToPointsStatsDaily(

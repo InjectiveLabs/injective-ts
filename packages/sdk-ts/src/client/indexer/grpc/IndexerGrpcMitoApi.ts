@@ -1,12 +1,12 @@
+import { MitoApi } from '@injectivelabs/mito-proto-ts'
+import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
-import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 
 /**

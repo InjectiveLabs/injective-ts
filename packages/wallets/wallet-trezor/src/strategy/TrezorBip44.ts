@@ -1,7 +1,7 @@
-/* eslint-disable class-methods-use-this */
-import { ConcreteEvmWalletStrategyArgs } from '@injectivelabs/wallet-base'
-import { TrezorDerivationPathType } from '../types.js'
+ 
 import TrezorBase from './Base.js'
+import { TrezorDerivationPathType } from '../types.js'
+import type { ConcreteEvmWalletStrategyArgs } from '@injectivelabs/wallet-base'
 
 export class TrezorBip44 extends TrezorBase {
   constructor(args: ConcreteEvmWalletStrategyArgs) {

@@ -1,9 +1,9 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,
   InjectiveInsuranceV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgUnderwrite {
   export interface Params {

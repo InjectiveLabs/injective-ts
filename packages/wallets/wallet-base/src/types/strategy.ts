@@ -1,12 +1,16 @@
-import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type { StdSignDoc } from '@keplr-wallet/types'
+import type { WalletDeviceType, Wallet } from './enums.js'
+import type {
+  ChainId,
+  EvmChainId,
+  AccountAddress,
+} from '@injectivelabs/ts-types'
 import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
   DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
-import { StdSignDoc } from '@keplr-wallet/types'
-import { WalletDeviceType, Wallet } from './enums.js'
 
 export type onAccountChangeCallback = (account: string | string[]) => void
 export type onChainIdChangeCallback = () => void
@@ -50,11 +54,13 @@ export interface SendTransactionOptions {
   }
 }
 
-export enum TurnkeyProvider {
-  Email = 'email',
-  Google = 'google',
-  Apple = 'apple',
-}
+export type TurnkeyProvider = 'email' | 'google' | 'apple'
+
+export const TurnkeyProvider = {
+  Email: 'email',
+  Google: 'google',
+  Apple: 'apple',
+} as const
 
 export type TurnkeySession = {
   sessionType: any
@@ -305,4 +311,4 @@ export interface WalletStrategy {
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
 }
 
-export { StdSignDoc }
+export type { StdSignDoc }

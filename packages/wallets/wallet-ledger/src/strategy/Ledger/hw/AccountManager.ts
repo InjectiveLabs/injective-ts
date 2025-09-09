@@ -1,8 +1,9 @@
 import HDNode from 'hdkey'
-import { AccountAddress } from '@injectivelabs/ts-types'
 import { publicToAddress, addHexPrefix } from 'ethereumjs-util'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
-import { LedgerDerivationPathType, LedgerWalletInfo } from '../../../types.js'
+import { LedgerDerivationPathType } from '../../../types.js'
+import type { LedgerWalletInfo } from '../../../types.js';
+import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'
 
 const addressOfHDKey = (hdKey: HDNode): string => {

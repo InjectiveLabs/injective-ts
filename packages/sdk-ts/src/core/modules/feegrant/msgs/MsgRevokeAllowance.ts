@@ -1,6 +1,8 @@
-import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import { CosmosFeegrantV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import type { SnakeCaseKeys } from 'snakecase-keys';
+
 
 export declare namespace MsgRevokeAllowance {
   export interface Params {

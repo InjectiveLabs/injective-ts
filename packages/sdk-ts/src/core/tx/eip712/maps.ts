@@ -1,7 +1,7 @@
-import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { snakeToPascal } from '@injectivelabs/utils'
-import { TypedDataField } from './types.js'
+import { GeneralException } from '@injectivelabs/exceptions'
+import type { TypedDataField } from './types.js'
 
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
 

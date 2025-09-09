@@ -1,23 +1,25 @@
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
   Network,
   isMainnet,
-  NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import { getDenom } from './helper.js'
-import { ChainGrpcWasmApi } from '../../chain/index.js'
-import { QueryGetPrices, QueryGetAllLendingRates } from './queries/index.js'
-import { NeptuneQueryTransformer } from './transformer.js'
-import ExecArgNeptuneDeposit from '../../../core/modules/wasm/exec-args/ExecArgNeptuneDeposit.js'
-import ExecArgNeptuneWithdraw from '../../../core/modules/wasm/exec-args/ExecArgNeptuneWithdraw.js'
-import MsgExecuteContractCompat from '../../../core/modules/wasm/msgs/MsgExecuteContractCompat.js'
-import { GeneralException } from '@injectivelabs/exceptions'
 import { NEPTUNE_PRICE_CONTRACT } from './index.js'
+import { ChainGrpcWasmApi } from '../../chain/index.js'
+import { NeptuneQueryTransformer } from './transformer.js'
 import {
-  AssetInfo,
-  AssetInfoWithPrice,
   NEPTUNE_USDT_CW20_CONTRACT,
 } from './types.js'
+import { QueryGetPrices, QueryGetAllLendingRates } from './queries/index.js'
+import ExecArgNeptuneDeposit from '../../../core/modules/wasm/exec-args/ExecArgNeptuneDeposit.js'
+import MsgExecuteContractCompat from '../../../core/modules/wasm/msgs/MsgExecuteContractCompat.js'
+import ExecArgNeptuneWithdraw from '../../../core/modules/wasm/exec-args/ExecArgNeptuneWithdraw.js'
+import type {
+  NetworkEndpoints} from '@injectivelabs/networks';
+import type {
+  AssetInfo,
+  AssetInfoWithPrice} from './types.js';
 
 const NEPTUNE_USDT_MARKET_CONTRACT =
   'inj1nc7gjkf2mhp34a6gquhurg8qahnw5kxs5u3s4u'

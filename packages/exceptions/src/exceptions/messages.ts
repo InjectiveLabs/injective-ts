@@ -1,5 +1,4 @@
 import {
-  ErrorContextCode,
   ChainOcrErrorCodes,
   ChainGovErrorCodes,
   ChainBankErrorCodes,
@@ -17,6 +16,8 @@ import {
   TransactionChainErrorModule,
   ChainExchangeModuleErrorCode,
 } from './types/index.js'
+import type {
+  ErrorContextCode} from './types/index.js';
 
 const auctionErrorMap = {
   [ChainAuctionErrorCodes.ErrBidInvalid]:

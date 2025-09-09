@@ -1,6 +1,7 @@
 {
   "name": "@injectivelabs/injective-ts",
   "version": "0.0.1",
+  "type": "module",
   "main": "index.js",
   "private": "true",
   "license": "Apache-2.0",
@@ -42,14 +43,16 @@
     "coverage:unit": "pnpm test:unit --coverage",
     "coverage:integration": "pnpm test:integration --coverage",
     "coverage:show": "live-server coverage",
-    "lint": "eslint -c './.eslintrc.js' './packages/**/*.{ts,js}'",
+    "lint": "eslint './packages/**/*.{ts,js}'",
     "lint:ci": "pnpm lint . --format junit",
     "lint:md": "markdownlint --ignore node_modules --ignore .git",
+    "lint:type-imports": "node scripts/lint-type-imports.js",
     "format": "pnpm lint --fix",
     "format:md": "pnpm lint:md --fix",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
     "link:local": "node etc/link-local",
-    "commit": "git cz"
+    "commit": "git cz",
+    "test-import-size": "node bundle-size/index.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,d.ts}": [
@@ -60,10 +63,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
-    "@babel/plugin-proposal-optional-chaining": "^7.20.7",
-    "@babel/plugin-transform-modules-commonjs": "^7.21.2",
-    "@babel/preset-env": "^7.19.0",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@rollup/plugin-commonjs": "^28.0.6",
@@ -71,14 +70,13 @@
     "@rollup/plugin-typescript": "^12.1.4",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.1",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "babel-jest": "^29.4.3",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
     "commitizen": "^4.2.4",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^16.0.3",
-    "eslint": "^7.32.0",
+    "eslint": "^9.35.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -112,17 +110,15 @@
     "typedoc-monorepo-link-types": "^0.0.4",
     "typescript": "^5.7.2"
   },
-  "resolutions": {
-    "rxjs": "7.8.2",
-    "@ethereumjs/tx": "^4.1.1",
-    "@ethereumjs/common": "3.2.0",
-    "@cosmjs/crypto>libsodium-wrappers-sumo": "npm:@bangjelkoski/noop"
-  },
   "pnpm": {
     "overrides": {
-      "@solana/web3.js": "1.98.0",
+      "rxjs": "7.8.2",
       "rpc-websockets": "9.0.4",
-      "next": "file:./etc/noop"
+      "next": "file:./etc/noop",
+      "@ethereumjs/tx": "^4.1.1",
+      "@solana/web3.js": "1.98.0",
+      "@ethereumjs/common": "3.2.0",
+      "@cosmjs/crypto>libsodium-wrappers-sumo": "npm:@bangjelkoski/noop"
     }
   }
 }

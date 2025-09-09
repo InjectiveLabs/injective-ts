@@ -1,6 +1,5 @@
 import { Network } from '@injectivelabs/networks'
-import { Address } from '../../../../accounts/Address.js'
-import { OrderHashManager } from './OrderHashManager.js'
+import { BigNumberInBase } from '@injectivelabs/utils'
 import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
 import {
   derivativeMarginToChainMargin,
@@ -9,9 +8,10 @@ import {
   spotQuantityToChainQuantity,
   derivativeQuantityToChainQuantity,
 } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgCreateDerivativeLimitOrder from '../../../exchange/msgs/MsgCreateDerivativeLimitOrder.js'
+import { OrderHashManager } from './OrderHashManager.js'
+import { Address } from '../../../../accounts/Address.js'
 import MsgCreateSpotLimitOrder from '../../../exchange/msgs/MsgCreateSpotLimitOrder.js'
+import MsgCreateDerivativeLimitOrder from '../../../exchange/msgs/MsgCreateDerivativeLimitOrder.js'
 
 const address = Address.fromBech32('inj1hkhdaj2a2clmq5jq6mspsggqs32vynpk228q3r')
 const orderHashManager = new OrderHashManager({

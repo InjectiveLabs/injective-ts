@@ -1,5 +1,9 @@
 import { uint8ArrayToString } from '../../../utils/index.js'
-import {
+import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import type { Pagination } from '../../../types/index.js'
+import type { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
+import type {
   Vote,
   Proposal,
   GrpcVote,
@@ -12,10 +16,7 @@ import {
   GrpcGovernanceVotingParams,
   GrpcGovernanceDepositParams,
 } from '../types/gov.js'
-import { Pagination } from '../../../types/index.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
-import { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
+
 
 /**
  * @category Chain Grpc Transformer

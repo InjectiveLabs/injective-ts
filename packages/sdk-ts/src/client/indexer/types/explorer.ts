@@ -1,29 +1,40 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import { TokenStatic } from '../../../types/token.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { TokenStatic } from '../../../types/token.js'
+import type { BigNumberInBase } from '@injectivelabs/utils'
+import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
-export enum AccessTypeCode {
-  AccessTypeUnspecified = 0,
-  AccessTypeNobody = 1,
-  AccessTypeOnlyAddress = 2,
-  AccessTypeEverybody = 3,
-  AccessTypeAnyOfAddresses = 4,
-}
+export type AccessTypeCode = 0 | 1 | 2 | 3 | 4
 
-export enum AccessType {
-  AccessTypeUnspecified = 'Unspecified',
-  AccessTypeNobody = 'Nobody',
-  AccessTypeOnlyAddress = 'Only Address',
-  AccessTypeEverybody = 'Everybody',
-  AccessTypeAnyOfAddresses = 'Any of Addresses',
-}
+export const AccessTypeCode = {
+  AccessTypeUnspecified: 0,
+  AccessTypeNobody: 1,
+  AccessTypeOnlyAddress: 2,
+  AccessTypeEverybody: 3,
+  AccessTypeAnyOfAddresses: 4,
+} as const
 
-export enum ValidatorUptimeStatus {
-  Proposed = 'proposed',
-  Signed = 'signed',
-  Missed = 'missed',
-}
+export type AccessType =
+  | 'Unspecified'
+  | 'Nobody'
+  | 'Only Address'
+  | 'Everybody'
+  | 'Any of Addresses'
+
+export const AccessType = {
+  AccessTypeUnspecified: 'Unspecified',
+  AccessTypeNobody: 'Nobody',
+  AccessTypeOnlyAddress: 'Only Address',
+  AccessTypeEverybody: 'Everybody',
+  AccessTypeAnyOfAddresses: 'Any of Addresses',
+} as const
+
+export type ValidatorUptimeStatus = 'proposed' | 'signed' | 'missed'
+
+export const ValidatorUptimeStatus = {
+  Proposed: 'proposed',
+  Signed: 'signed',
+  Missed: 'missed',
+} as const
 
 export interface Paging {
   from: number

@@ -1,12 +1,14 @@
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import {
+  CosmosTxV1Beta1Tx,
+  CosmosBaseV1Beta1Coin,
+} from '@injectivelabs/core-proto-ts'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
-import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
-import { IndexerModule } from '../types/index.js'
 import {
   ErrorType,
   UnspecifiedErrorCode,
@@ -14,12 +16,11 @@ import {
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import {
-  CosmosTxV1Beta1Tx,
-  CosmosBaseV1Beta1Coin,
-} from '@injectivelabs/core-proto-ts'
+import { IndexerModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
+import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+
 
 interface PrepareTxArgs {
   address: AccountAddress

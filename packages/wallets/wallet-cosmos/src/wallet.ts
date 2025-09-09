@@ -1,15 +1,8 @@
-/* eslint-disable class-methods-use-this */
-import type {
-  Keplr,
-  StdSignDoc,
-  AminoSignResponse,
-  OfflineAminoSigner,
-} from '@keplr-wallet/types'
-import {
-  ChainId,
-  CosmosChainId,
-  TestnetCosmosChainId,
-} from '@injectivelabs/ts-types'
+ 
+import { capitalize } from '@injectivelabs/utils'
+import { SigningStargateClient } from '@cosmjs/stargate'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   GeneralException,
@@ -18,11 +11,19 @@ import {
   CosmosWalletException,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
-import { capitalize } from '@injectivelabs/utils'
-import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
-import { SigningStargateClient, StdFee } from '@cosmjs/stargate'
+import type { StdFee } from '@cosmjs/stargate';
 import type { EncodeObject, OfflineDirectSigner } from '@cosmjs/proto-signing'
+import type {
+  ChainId,
+  CosmosChainId,
+  TestnetCosmosChainId,
+} from '@injectivelabs/ts-types'
+import type {
+  Keplr,
+  StdSignDoc,
+  AminoSignResponse,
+  OfflineAminoSigner,
+} from '@keplr-wallet/types'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
   keplr?: Keplr

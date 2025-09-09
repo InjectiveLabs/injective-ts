@@ -1,8 +1,9 @@
 import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
-import { Coin } from '@injectivelabs/ts-types'
-import { DistributionModuleParams } from '../types/distribution.js'
-import { ValidatorRewards } from '../types/distribution.js'
-import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { ValidatorRewards } from '../types/distribution.js'
+import type { DistributionModuleParams } from '../types/distribution.js'
+import type { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
+
 
 /**
  * @category Chain Grpc Transformer

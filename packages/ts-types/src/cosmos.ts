@@ -3,7 +3,7 @@ export interface Coin {
   amount: string
 }
 
-export type CosmosChainIdType =
+export type CosmosChainId =
   | 'injective-1'
   | 'cosmoshub-4'
   | 'juno-1'
@@ -59,7 +59,7 @@ export const CosmosChainId = {
   Fetch: 'fetchhub-4',
 } as const
 
-export type TestnetCosmosChainIdType =
+export type TestnetCosmosChainId =
   | 'injective-888'
   | 'theta-testnet-001'
   | 'evmos_9000-4'
@@ -72,7 +72,7 @@ export const TestnetCosmosChainId = {
   Xion: 'xion-testnet-1',
 } as const
 
-export type DevnetCosmosChainIdType = 'injective-777'
+export type DevnetCosmosChainId = 'injective-777'
 
 export const DevnetCosmosChainId = {
   Injective: 'injective-777',

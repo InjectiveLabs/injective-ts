@@ -1,10 +1,10 @@
-import { EvmChainId } from '@injectivelabs/ts-types'
 import {
   BigNumberInBase,
   DEFAULT_GAS_LIMIT,
   DEFAULT_STD_FEE,
 } from '@injectivelabs/utils'
-import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
 
 export const getEip712Domain = (evmChainId: EvmChainId) => {
   return {

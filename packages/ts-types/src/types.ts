@@ -1,4 +1,4 @@
-export type EvmChainIdType =
+export type EvmChainId =
   | 1
   | 3
   | 4
@@ -25,7 +25,7 @@ export const EvmChainId = {
   TestnetEvm: 1439,
 } as const
 
-export type ChainIdType = 'injective-1' | 'injective-888' | 'injective-777'
+export type ChainId = 'injective-1' | 'injective-888' | 'injective-777'
 
 export const ChainId = {
   Mainnet: 'injective-1',
@@ -33,7 +33,7 @@ export const ChainId = {
   Devnet: 'injective-777',
 } as const
 
-export type MsgTypeType =
+export type MsgType =
   // Authz
   | 'cosmos.authz.v1beta1.MsgExec'
   | 'cosmos.authz.v1beta1.MsgGrant'
@@ -591,14 +591,14 @@ export const MsgType = {
   MsgTxFeesUpdateParams: 'injective.txfees.v1beta1.MsgUpdateParams',
 } as const
 
-export type MsgStatusType = 'success' | 'fail'
+export type MsgStatus = 'success' | 'fail'
 
 export const MsgStatus = {
   Success: 'success',
   Fail: 'fail',
 } as const
 
-export type EIP712VersionType = 'v1' | 'v2'
+export type EIP712Version = 'v1' | 'v2'
 
 export const EIP712Version = {
   V1: 'v1',

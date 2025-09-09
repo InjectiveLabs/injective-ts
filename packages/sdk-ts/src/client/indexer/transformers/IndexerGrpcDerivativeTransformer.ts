@@ -1,12 +1,24 @@
-import {
-  OrderSide,
-  OrderState,
-  TradeDirection,
-  TradeExecutionSide,
-  TradeExecutionType,
-} from '@injectivelabs/ts-types'
 import { BigNumber } from '@injectivelabs/utils'
 import {
+  OrderState,
+  TradeDirection
+} from '@injectivelabs/ts-types'
+import { TokenType } from '../../../types/token.js'
+import { grpcPagingToPaging } from '../../../utils/pagination.js'
+import type { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
+  OrderSide,
+  TradeExecutionSide,
+  TradeExecutionType} from '@injectivelabs/ts-types';
+import type {
+  Orderbook,
+  PriceLevel,
+  GrpcTokenMeta,
+  GrpcPriceLevel,
+  IndexerTokenMeta,
+  OrderbookWithSequence,
+} from '../types/exchange.js'
+import type {
   GrpcDerivativeMarketInfo,
   GrpcDerivativeLimitOrder,
   GrpcDerivativeTrade,
@@ -34,17 +46,7 @@ import {
   GrpcDerivativePositionV2,
   PositionV2,
 } from '../types/derivatives.js'
-import {
-  Orderbook,
-  PriceLevel,
-  GrpcTokenMeta,
-  GrpcPriceLevel,
-  IndexerTokenMeta,
-  OrderbookWithSequence,
-} from '../types/exchange.js'
-import { TokenType } from '../../../types/token.js'
-import { grpcPagingToPaging } from '../../../utils/pagination.js'
-import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,

@@ -1,8 +1,9 @@
 import {
   dataToExecData,
-  ExecPrivilegedArgBase,
-  ExecDataRepresentation,
+  ExecPrivilegedArgBase
 } from '../ExecPrivilegedArgBase.js'
+import type {
+  ExecDataRepresentation} from '../ExecPrivilegedArgBase.js';
 
 export declare namespace ExecPrivilegedArgOffChainVaultSubscribe {
   export interface Params {

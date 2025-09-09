@@ -1,6 +1,6 @@
-import { StreamOperation } from '../../../types/index.js'
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
-import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type { StreamOperation } from '../../../types/index.js'
+import type { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer

@@ -1,3 +1,4 @@
+import snakecaseKeys from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -5,12 +6,12 @@ import {
   InjectiveExchangeV2Proposal,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase.js'
 import {
   amountToCosmosSdkDecAmount,
   numberToCosmosSdkDecString,
 } from '../../../../utils/numbers.js'
+import type { SnakeCaseKeys } from 'snakecase-keys';
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
   export interface Params {

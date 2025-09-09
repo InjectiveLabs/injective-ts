@@ -1,12 +1,12 @@
+import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcExchangeTransformer } from '../transformers/index.js'
-import { ChainModule } from '../types/index.js'
 
 InjectiveExchangeV1Beta1Query
 

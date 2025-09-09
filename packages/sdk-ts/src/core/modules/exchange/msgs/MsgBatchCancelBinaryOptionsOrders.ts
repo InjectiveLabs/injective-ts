@@ -1,9 +1,11 @@
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-import { MsgBase } from '../../MsgBase.js'
+import snakecaseKeys from 'snakecase-keys'
 import {
   InjectiveExchangeV1Beta1Tx,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import type { SnakeCaseKeys } from 'snakecase-keys';
+
 
 export declare namespace MsgBatchCancelBinaryOptionsOrders {
   export interface Params {

@@ -1,12 +1,14 @@
-import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
-export enum TransferType {
-  Internal = 'internal',
-  External = 'external',
-  Withdraw = 'withdraw',
-  Deposit = 'deposit',
-}
+export type TransferType = 'internal' | 'external' | 'withdraw' | 'deposit'
+
+export const TransferType = {
+  Internal: 'internal',
+  External: 'external',
+  Withdraw: 'withdraw',
+  Deposit: 'deposit',
+} as const
 
 export interface SubaccountTransfer {
   transferType: TransferType

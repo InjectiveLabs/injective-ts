@@ -1,8 +1,9 @@
 import {
   ExecArgBase,
-  dataToExecData,
-  ExecDataRepresentation,
+  dataToExecData
 } from '../ExecArgBase.js'
+import type {
+  ExecDataRepresentation} from '../ExecArgBase.js';
 
 export declare namespace ExecArgNeptuneDeposit {
   export interface Params {}

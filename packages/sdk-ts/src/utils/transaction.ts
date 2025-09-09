@@ -1,5 +1,5 @@
-import { fromRpcSig, ecrecover } from 'ethereumjs-util'
 import * as secp256k1 from 'secp256k1'
+import { fromRpcSig, ecrecover } from 'ethereumjs-util'
 import { TypedDataUtils, SignTypedDataVersion } from '@metamask/eth-sig-util'
 
 export const recoverTypedSignaturePubKey = (

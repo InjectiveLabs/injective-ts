@@ -1,3 +1,14 @@
+import { createAccount } from '@turnkey/viem'
+import { HttpRestClient } from '@injectivelabs/utils'
+import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
+import {
+  SessionType,
+  Turnkey
+} from '@turnkey/sdk-browser'
+import {
+  WalletAction,
+  TurnkeyProvider,
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -5,28 +16,19 @@ import {
   UnspecifiedErrorCode,
   TurnkeyWalletSessionException,
 } from '@injectivelabs/exceptions'
-import {
-  WalletAction,
-  TurnkeyMetadata,
-  TurnkeyProvider,
-} from '@injectivelabs/wallet-base'
-import { createAccount } from '@turnkey/viem'
-import { HttpRestClient } from '@injectivelabs/utils'
-import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
-import {
-  SessionType,
-  Turnkey,
-  TurnkeyIndexedDbClient,
-} from '@turnkey/sdk-browser'
+import { TurnkeyOtpWallet } from './otp.js'
+import { TurnkeyErrorCodes } from '../types.js'
+import { TurnkeyOauthWallet } from './oauth.js'
+import { generateGoogleUrl } from '../../utils.js'
 import {
   TURNKEY_OAUTH_PATH,
   TURNKEY_OTP_INIT_PATH,
   TURNKEY_OTP_VERIFY_PATH,
 } from '../consts.js'
-import { TurnkeyOtpWallet } from './otp.js'
-import { TurnkeyErrorCodes } from '../types.js'
-import { TurnkeyOauthWallet } from './oauth.js'
-import { generateGoogleUrl } from '../../utils.js'
+import type {
+  TurnkeyMetadata} from '@injectivelabs/wallet-base';
+import type {
+  TurnkeyIndexedDbClient} from '@turnkey/sdk-browser';
 
 export class TurnkeyWallet {
   private otpId?: string

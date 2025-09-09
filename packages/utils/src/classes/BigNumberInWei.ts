@@ -1,5 +1,5 @@
-import type BigNumberInBase from './BigNumber.js'
 import BigNumber from './BigNumber.js'
+import type BigNumberInBase from './BigNumberInBase.js'
 
 /**
  * @deprecated - use toChainFormat instead

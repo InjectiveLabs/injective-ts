@@ -1,8 +1,9 @@
 import {
   dataToExecData,
-  ExecArgBase,
-  ExecDataRepresentation,
+  ExecArgBase
 } from '../ExecArgBase.js'
+import type {
+  ExecDataRepresentation} from '../ExecArgBase.js';
 
 export declare namespace ExecArgCW20AdapterRedeemAndTransfer {
   export interface Params {

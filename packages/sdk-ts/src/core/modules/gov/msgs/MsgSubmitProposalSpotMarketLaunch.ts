@@ -1,4 +1,4 @@
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -10,6 +10,7 @@ import {
   amountToCosmosSdkDecAmount,
   numberToCosmosSdkDecString,
 } from '../../../../utils/numbers.js'
+import type { SnakeCaseKeys } from 'snakecase-keys';
 
 export declare namespace MsgSubmitProposalSpotMarketLaunch {
   export interface Params {

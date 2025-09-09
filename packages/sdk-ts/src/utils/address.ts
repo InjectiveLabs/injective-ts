@@ -1,6 +1,6 @@
+import keccak256 from 'keccak256'
 import { bech32 } from '@scure/base'
 import { Address } from 'ethereumjs-util'
-import keccak256 from 'keccak256'
 
 /**
  * Get injective address from Ethereum hex address

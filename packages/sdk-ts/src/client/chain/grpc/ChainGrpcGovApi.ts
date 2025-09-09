@@ -1,14 +1,15 @@
+import { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { CosmosGovV1Gov, CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainModule } from '../types/index.js'
-import { PaginationOption } from '../../../types/pagination.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { paginationRequestFromPagination } from '../../../utils/pagination.js'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer.js'
+import type { CosmosGovV1Gov} from '@injectivelabs/core-proto-ts';
+import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
  * @category Chain Grpc API

@@ -1,15 +1,14 @@
+import { BigNumberInBase } from '@injectivelabs/utils'
+import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils/index.js'
-
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils/index.js'
+import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
 
 /**
  * @category Chain Grpc API

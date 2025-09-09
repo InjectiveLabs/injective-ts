@@ -1,4 +1,4 @@
-export type TradeExecutionTypeType =
+export type TradeExecutionType =
   | 'market'
   | 'limitFill'
   | 'limitMatchRestingOrder'
@@ -11,14 +11,14 @@ export const TradeExecutionType = {
   LimitMatchNewOrder: 'limitMatchNewOrder',
 } as const
 
-export type TradeExecutionSideType = 'maker' | 'taker'
+export type TradeExecutionSide = 'maker' | 'taker'
 
 export const TradeExecutionSide = {
   Maker: 'maker',
   Taker: 'taker',
 } as const
 
-export type TradeDirectionType = 'buy' | 'sell' | 'long' | 'short'
+export type TradeDirection = 'buy' | 'sell' | 'long' | 'short'
 
 export const TradeDirection = {
   Buy: 'buy',
@@ -27,7 +27,7 @@ export const TradeDirection = {
   Short: 'short',
 } as const
 
-export type OrderStateType =
+export type OrderState =
   | 'unfilled'
   | 'booked'
   | 'partial_filled'
@@ -46,7 +46,7 @@ export const OrderState = {
   Triggered: 'triggered',
 } as const
 
-export type OrderSideType =
+export type OrderSide =
   | 'unspecified'
   | 'buy'
   | 'sell'

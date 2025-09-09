@@ -1,39 +1,73 @@
-export enum TokenType {
-  Ibc = 'ibc',
-  Cw20 = 'cw20',
-  Spl = 'spl',
-  Erc20 = 'erc20',
-  Lp = 'lp',
-  Evm = 'evm',
-  Native = 'native',
-  Symbol = 'symbol',
-  TokenFactory = 'tokenFactory',
-  InsuranceFund = 'insuranceFund',
-  Unknown = 'unknown',
-}
+export type TokenType =
+  | 'ibc'
+  | 'cw20'
+  | 'spl'
+  | 'erc20'
+  | 'lp'
+  | 'evm'
+  | 'native'
+  | 'symbol'
+  | 'tokenFactory'
+  | 'insuranceFund'
+  | 'unknown'
 
-export enum TokenVerification {
-  Verified = 'verified' /** verified on token-metadata package */,
-  Submitted = 'submitted' /** submitted on token-metadata package but not verified */,
-  Internal = 'internal' /** verified from on-chain data */,
-  External = 'external' /** verified on external source */,
-  Unverified = 'unverified' /** unverified on any source */,
-}
+export const TokenType = {
+  Ibc: 'ibc',
+  Cw20: 'cw20',
+  Spl: 'spl',
+  Erc20: 'erc20',
+  Lp: 'lp',
+  Evm: 'evm',
+  Native: 'native',
+  Symbol: 'symbol',
+  TokenFactory: 'tokenFactory',
+  InsuranceFund: 'insuranceFund',
+  Unknown: 'unknown',
+} as const
 
-export enum TokenSource {
-  Aptos = 'aptos',
-  Solana = 'solana',
-  Cosmos = 'cosmos',
-  Ethereum = 'ethereum',
-  EthereumWh = 'ethereum-wormhole',
-  Polygon = 'polygon',
-  Klaytn = 'klaytn',
-  Arbitrum = 'arbitrum',
-  Sui = 'sui',
-  Ibc = 'ibc',
-  BinanceSmartChain = 'binance-smart-chain',
-  Axelar = 'axelar',
-}
+export type TokenVerification =
+  | 'verified'
+  | 'submitted'
+  | 'internal'
+  | 'external'
+  | 'unverified'
+
+export const TokenVerification = {
+  Verified: 'verified',
+  Submitted: 'submitted',
+  Internal: 'internal',
+  External: 'external',
+  Unverified: 'unverified',
+} as const
+
+export type TokenSource =
+  | 'aptos'
+  | 'solana'
+  | 'cosmos'
+  | 'ethereum'
+  | 'ethereum-wormhole'
+  | 'polygon'
+  | 'klaytn'
+  | 'arbitrum'
+  | 'sui'
+  | 'ibc'
+  | 'binance-smart-chain'
+  | 'axelar'
+
+export const TokenSource = {
+  Aptos: 'aptos',
+  Solana: 'solana',
+  Cosmos: 'cosmos',
+  Ethereum: 'ethereum',
+  EthereumWh: 'ethereum-wormhole',
+  Polygon: 'polygon',
+  Klaytn: 'klaytn',
+  Arbitrum: 'arbitrum',
+  Sui: 'sui',
+  Ibc: 'ibc',
+  BinanceSmartChain: 'binance-smart-chain',
+  Axelar: 'axelar',
+} as const
 
 export interface TokenStatic {
   name: string

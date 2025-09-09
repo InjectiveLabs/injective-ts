@@ -1,9 +1,8 @@
-import {
+import type {
   CosmosTxV1Beta1Tx,
   CometCryptoV1Keys,
 } from '@injectivelabs/core-proto-ts'
 
-/* eslint-disable camelcase */
 export interface RestSignerInfo {
   public_key: CometCryptoV1Keys.PublicKey | null
   mode_info: CosmosTxV1Beta1Tx.ModeInfo
@@ -63,17 +62,24 @@ export interface TxInfo {
   timestamp: string
 }
 
-export enum BroadcastMode {
-  Sync = 'BROADCAST_MODE_SYNC',
-  Async = 'BROADCAST_MODE_ASYNC',
-  Block = 'BROADCAST_MODE_BLOCK',
-}
+export type BroadcastMode =
+  | 'BROADCAST_MODE_SYNC'
+  | 'BROADCAST_MODE_ASYNC'
+  | 'BROADCAST_MODE_BLOCK'
 
-export enum BroadcastModeKeplr {
-  Sync = 'sync',
-  Async = 'async',
-  Block = 'block',
-}
+export const BroadcastMode = {
+  Sync: 'BROADCAST_MODE_SYNC',
+  Async: 'BROADCAST_MODE_ASYNC',
+  Block: 'BROADCAST_MODE_BLOCK',
+} as const
+
+export type BroadcastModeKeplr = 'sync' | 'async' | 'block'
+
+export const BroadcastModeKeplr = {
+  Sync: 'sync',
+  Async: 'async',
+  Block: 'block',
+} as const
 
 export interface TxResultResponse {
   tx: RestTx

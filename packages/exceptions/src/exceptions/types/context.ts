@@ -1,4 +1,4 @@
-import { ErrorCode, ErrorContextCode } from './codes.js'
+import type { ErrorCode, ErrorContextCode } from './codes.js'
 
 export type HttpRequestMethod = 'GET' | 'POST' | 'OPTIONS'
 

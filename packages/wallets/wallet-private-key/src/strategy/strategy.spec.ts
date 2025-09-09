@@ -1,13 +1,15 @@
-import {
-  MsgBroadcaster,
-  BaseWalletStrategy,
-  MsgBroadcasterOptions,
-} from '@injectivelabs/wallet-core'
 import { Network } from '@injectivelabs/networks'
+import { Wallet } from '@injectivelabs/wallet-base'
 import { MsgSend, PrivateKey } from '@injectivelabs/sdk-ts'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import { Wallet, WalletStrategyArguments } from '@injectivelabs/wallet-base'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
+import {
+  MsgBroadcaster,
+  BaseWalletStrategy
+} from '@injectivelabs/wallet-core'
+import type {
+  MsgBroadcasterOptions} from '@injectivelabs/wallet-core';
+import type { WalletStrategyArguments } from '@injectivelabs/wallet-base';
 
 const strategyArgs: WalletStrategyArguments = {
   chainId: ChainId.Devnet,

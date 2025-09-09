@@ -1,4 +1,4 @@
-import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 
 export type GrpcOracle = InjectiveOracleRpc.Oracle
 

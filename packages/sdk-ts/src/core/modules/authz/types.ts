@@ -1,4 +1,8 @@
-export enum GrantAuthorizationType {
-  GenericAuthorization = 'GenericAuthorization',
-  ContractExecutionAuthorization = 'ContractExecutionAuthorization',
-}
+export type GrantAuthorizationType =
+  | 'GenericAuthorization'
+  | 'ContractExecutionAuthorization'
+
+export const GrantAuthorizationType = {
+  GenericAuthorization: 'GenericAuthorization',
+  ContractExecutionAuthorization: 'ContractExecutionAuthorization',
+} as const

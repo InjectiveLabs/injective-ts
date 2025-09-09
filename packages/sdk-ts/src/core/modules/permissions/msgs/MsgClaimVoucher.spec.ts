@@ -1,10 +1,10 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgClaimVoucher from './MsgClaimVoucher.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
-import MsgClaimVoucher from './MsgClaimVoucher.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const params: MsgClaimVoucher['params'] = {

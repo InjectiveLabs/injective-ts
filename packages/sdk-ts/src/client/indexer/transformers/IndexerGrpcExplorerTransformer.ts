@@ -1,6 +1,8 @@
-import { isJsonString } from '../../../utils/helpers.js'
 import { BigNumberInWei, BigNumberInBase } from '@injectivelabs/utils'
-import {
+import { isJsonString } from '../../../utils/helpers.js'
+import { grpcPagingToPaging } from '../../../utils/index.js'
+import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   Block,
   GasFee,
   Message,
@@ -27,8 +29,7 @@ import {
   ExplorerValidatorDescription,
   GrpcIndexerValidatorDescription,
 } from '../types/explorer.js'
-import { grpcPagingToPaging } from '../../../utils/index.js'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
 

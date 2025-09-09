@@ -1,6 +1,6 @@
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import { IndexerGrpcMitoTransformer } from './IndexerGrpcMitoTransformer.js'
-import { StreamOperation } from '../../../types/index.js'
+import type { MitoApi } from '@injectivelabs/mito-proto-ts'
+import type { StreamOperation } from '../../../types/index.js'
 
 /**
  * @category Indexer Stream Transformer

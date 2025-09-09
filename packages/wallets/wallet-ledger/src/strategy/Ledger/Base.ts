@@ -1,12 +1,13 @@
-/* eslint-disable class-methods-use-this */
+ 
+import { EvmChainId } from '@injectivelabs/ts-types'
+import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
+import { Common, Chain, Hardfork } from '@ethereumjs/common'
+import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import {
-  TxRaw,
   toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  DirectSignResponse,
-  AminoSignResponse,
+  TxGrpcApi
 } from '@injectivelabs/sdk-ts'
+import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import {
   ErrorType,
   LedgerException,
@@ -16,29 +17,31 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
-  StdSignDoc,
   TIP_IN_GWEI,
   WalletAction,
   getKeyFromRpcUrl,
   WalletDeviceType,
   BaseConcreteStrategy,
-  SendTransactionOptions,
-  ConcreteWalletStrategy,
-  WalletStrategyEvmOptions,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
-  ConcreteEvmWalletStrategyArgs,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
-import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
-import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import LedgerHW from './hw/index.js'
 import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
-import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
+import type { AccountAddress} from '@injectivelabs/ts-types';
+import type { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
+import type {
+  TxRaw,
+  TxResponse,
+  DirectSignResponse,
+  AminoSignResponse} from '@injectivelabs/sdk-ts';
+import type {
+  StdSignDoc,
+  SendTransactionOptions,
+  ConcreteWalletStrategy,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs} from '@injectivelabs/wallet-base';
 
 const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
   if (chainId === EvmChainId.Goerli) {
@@ -240,7 +243,7 @@ export default class LedgerBase
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -293,7 +296,7 @@ export default class LedgerBase
     return Promise.resolve(txHash)
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

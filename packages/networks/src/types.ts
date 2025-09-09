@@ -1,4 +1,4 @@
-import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
 export type Network =
   | 'mainnetK8s'

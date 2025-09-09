@@ -1,13 +1,14 @@
 // import CryptoEs from 'crypto-es'
 import CryptoEs from 'crypto-js'
-import { secp256k1 } from '@noble/curves/secp256k1'
 import keccak256 from 'keccak256'
+import { secp256k1 } from '@noble/curves/secp256k1'
 import {
-  TypedMessage,
-  MessageTypes,
   TypedDataUtils,
   SignTypedDataVersion,
 } from '@metamask/eth-sig-util'
+import type {
+  TypedMessage,
+  MessageTypes} from '@metamask/eth-sig-util';
 
 export const hashToHex = (data: string): string => {
   return CryptoEs.SHA256(CryptoEs.enc.Base64.parse(data))

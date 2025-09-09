@@ -1,8 +1,6 @@
-import {
-  GoogleProtobufAny,
-  CosmosFeegrantV1Beta1Feegrant,
-} from '@injectivelabs/core-proto-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
+import { CosmosFeegrantV1Beta1Feegrant } from '@injectivelabs/core-proto-ts'
+import type { GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
 
 export type AllowedMsgAllowance = Omit<
   CosmosFeegrantV1Beta1Feegrant.AllowedMsgAllowance,
@@ -19,11 +17,16 @@ export type Allowance =
   | AllowedMsgAllowance
   | undefined
 
-export enum AllowanceTypes {
-  BasicAllowance = 'spendLimit',
-  PeriodicAllowance = 'periodSpendLimit',
-  AllowedMsgAllowance = 'allowedMessages',
-}
+export type AllowanceTypes =
+  | 'spendLimit'
+  | 'periodSpendLimit'
+  | 'allowedMessages'
+
+export const AllowanceTypes = {
+  BasicAllowance: 'spendLimit',
+  PeriodicAllowance: 'periodSpendLimit',
+  AllowedMsgAllowance: 'allowedMessages',
+} as const
 
 function isBasicAllowance(
   allowance: Allowance,

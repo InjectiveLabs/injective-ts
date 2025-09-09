@@ -1,5 +1,5 @@
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import { ChainInfo } from './types.js'
+import type { ChainInfo } from './types.js'
 
 const INJ_DENOM = 'inj'
 

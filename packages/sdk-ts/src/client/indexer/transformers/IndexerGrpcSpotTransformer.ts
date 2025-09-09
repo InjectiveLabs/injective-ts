@@ -1,12 +1,23 @@
-import {
+import { BigNumber } from '@injectivelabs/utils'
+import { TokenType } from '../../../types/token.js'
+import { grpcPagingToPaging } from '../../../utils/pagination.js'
+import type { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   OrderSide,
   OrderState,
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
 } from '@injectivelabs/ts-types'
-import { BigNumber } from '@injectivelabs/utils'
-import {
+import type {
+  Orderbook,
+  PriceLevel,
+  GrpcTokenMeta,
+  GrpcPriceLevel,
+  IndexerTokenMeta,
+  OrderbookWithSequence,
+} from '../types/exchange.js'
+import type {
   AtomicSwap,
   SpotTrade,
   SpotMarket,
@@ -18,17 +29,6 @@ import {
   GrpcSpotOrderHistory,
   GrpcAtomicSwap,
 } from '../types/spot.js'
-import {
-  Orderbook,
-  PriceLevel,
-  GrpcTokenMeta,
-  GrpcPriceLevel,
-  IndexerTokenMeta,
-  OrderbookWithSequence,
-} from '../types/exchange.js'
-import { TokenType } from '../../../types/token.js'
-import { grpcPagingToPaging } from '../../../utils/pagination.js'
-import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 const zeroPriceLevel = () => ({
   price: '0',

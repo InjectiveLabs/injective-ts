@@ -1,22 +1,23 @@
-import secp256k1 from 'secp256k1'
 import keccak256 from 'keccak256'
+import secp256k1 from 'secp256k1'
 import { generateMnemonic } from 'bip39'
-import {
-  CosmosTxV1Beta1Tx,
-  InjectiveTypesV1Beta1TxExt,
-} from '@injectivelabs/core-proto-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { Wallet, HDNodeWallet, Signature, getBytes, concat } from 'ethers'
-import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 import {
-  DEFAULT_DERIVATION_PATH,
-  recoverTypedSignaturePubKey,
-} from '../../utils/index.js'
+  InjectiveTypesV1Beta1TxExt,
+} from '@injectivelabs/core-proto-ts'
+import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 import { Address } from './Address.js'
 import { PublicKey } from './PublicKey.js'
 import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
 import { getEip712TypedData, MsgDecoder } from '../tx/eip712/index.js'
+import {
+  DEFAULT_DERIVATION_PATH,
+  recoverTypedSignaturePubKey,
+} from '../../utils/index.js'
+import type {
+  CosmosTxV1Beta1Tx} from '@injectivelabs/core-proto-ts';
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.

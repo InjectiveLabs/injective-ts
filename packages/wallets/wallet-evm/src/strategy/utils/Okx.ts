@@ -1,5 +1,5 @@
 import { isServerSide } from '@injectivelabs/sdk-ts'
-import {
+import type {
   BrowserEip1993Provider,
   WindowWithEip1193Provider,
 } from '@injectivelabs/wallet-base'

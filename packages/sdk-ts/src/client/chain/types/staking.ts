@@ -1,4 +1,4 @@
-import { CosmosStakingV1Beta1Staking } from '@injectivelabs/core-proto-ts'
+import type { CosmosStakingV1Beta1Staking } from '@injectivelabs/core-proto-ts'
 
 export interface StakingModuleParams
   extends Omit<GrpcStakingParams, 'unbondingTime'> {
@@ -41,11 +41,13 @@ export interface Pool {
   bondedTokens: string
 }
 
-export enum BondStatus {
-  UnBonded = 'UnBonded',
-  UnBonding = 'UnBonding',
-  Bonded = 'Bonded',
-}
+export type BondStatus = 'UnBonded' | 'UnBonding' | 'Bonded'
+
+export const BondStatus = {
+  UnBonded: 'UnBonded',
+  UnBonding: 'UnBonding',
+  Bonded: 'Bonded',
+} as const
 
 export interface ValidatorDescription {
   moniker: string

@@ -1,9 +1,15 @@
 import { BigNumberInWei } from '@injectivelabs/utils'
 import {
+  BondStatus
+} from '../types/staking.js'
+import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import type { Pagination } from '../../../types/index.js'
+import type { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type {
   GrpcValidator,
   GrpcValidatorCommission,
   GrpcValidatorDescription,
-  BondStatus,
   Validator,
   ValidatorCommission,
   ValidatorDescription,
@@ -11,12 +17,7 @@ import {
   UnBondingDelegation,
   ReDelegation,
   Pool,
-  StakingModuleParams,
-} from '../types/staking.js'
-import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { Pagination } from '../../../types/index.js'
-import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
+  StakingModuleParams} from '../types/staking.js';
 
 /**
  * @category Chain Grpc Transformer

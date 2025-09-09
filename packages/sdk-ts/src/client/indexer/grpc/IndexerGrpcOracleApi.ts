@@ -1,11 +1,11 @@
+import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer.js'
 
 /**

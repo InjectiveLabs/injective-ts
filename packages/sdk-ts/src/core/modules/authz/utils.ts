@@ -1,9 +1,9 @@
-import MsgExec from './msgs/MsgExec.js'
-import { Msgs } from './../msgs.js'
 import {
   GoogleProtobufAny,
   CosmosAuthzV1Beta1Authz,
 } from '@injectivelabs/core-proto-ts'
+import MsgExec from './msgs/MsgExec.js'
+import type { Msgs } from './../msgs.js'
 
 export const msgsOrMsgExecMsgs = (
   msgs: Msgs | Msgs[],

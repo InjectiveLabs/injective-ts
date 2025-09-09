@@ -1,11 +1,12 @@
-/* eslint-disable class-methods-use-this */
+ 
 import HDNode from 'hdkey'
-import { AccountAddress } from '@injectivelabs/ts-types'
 import { TrezorException } from '@injectivelabs/exceptions'
 import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
 import { loadTrezorConnect } from './../lib.js'
-import { TrezorWalletInfo, TrezorDerivationPathType } from '../../types.js'
+import { TrezorDerivationPathType } from '../../types.js'
+import type { TrezorWalletInfo} from '../../types.js';
+import type { AccountAddress } from '@injectivelabs/ts-types'
 
 const addressOfHDKey = (hdKey: HDNode): string => {
   const shouldSanitizePublicKey = true

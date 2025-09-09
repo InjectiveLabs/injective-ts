@@ -1,5 +1,5 @@
-import { isTestnet, isDevnet } from './network.js'
 import { Network } from './types.js'
+import { isTestnet, isDevnet } from './network.js'
 
 export const CW20_CODE_IDS_BY_NETWORK = (
   network: Network = Network.Mainnet,

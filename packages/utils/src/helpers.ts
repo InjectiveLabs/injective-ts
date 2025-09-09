@@ -8,7 +8,7 @@ import {
   toHumanReadable,
   default as BigNumber,
 } from './classes/BigNumber.js'
-import { Awaited } from './types.js'
+import type { Awaited } from './types.js'
 
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))

@@ -1,4 +1,10 @@
-/* eslint-disable class-methods-use-this */
+ 
+import { CosmosWalletException } from '@injectivelabs/exceptions'
+import {
+  toUtf8,
+  TxGrpcApi,
+  sortObjectByKeys
+} from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   WalletException,
@@ -7,29 +13,25 @@ import {
   LedgerCosmosException,
 } from '@injectivelabs/exceptions'
 import {
-  TxRaw,
-  toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  sortObjectByKeys,
-  AminoSignResponse,
-  DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
-import {
-  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
-  ConcreteWalletStrategy,
-  SendTransactionOptions,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
-import { CosmosWalletException } from '@injectivelabs/exceptions'
-import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import LedgerHW from './hw/index.js'
-import { LedgerWalletInfo } from '../../types.js'
+import type { LedgerWalletInfo } from '../../types.js'
+import type { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse} from '@injectivelabs/sdk-ts';
+import type {
+  StdSignDoc,
+  ConcreteWalletStrategy,
+  SendTransactionOptions} from '@injectivelabs/wallet-base';
 
 export class LedgerCosmos
   extends BaseConcreteStrategy

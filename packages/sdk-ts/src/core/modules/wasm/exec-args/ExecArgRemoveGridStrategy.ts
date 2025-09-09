@@ -1,8 +1,9 @@
 import {
   dataToExecData,
-  ExecArgBase,
-  ExecDataRepresentation,
+  ExecArgBase
 } from '../ExecArgBase.js'
+import type {
+  ExecDataRepresentation} from '../ExecArgBase.js';
 
 export declare namespace ExecArgRemoveGridStrategy {
   export interface Params {

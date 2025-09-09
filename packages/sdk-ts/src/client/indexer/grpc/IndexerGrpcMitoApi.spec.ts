@@ -1,6 +1,6 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 import { IndexerGrpcMitoApi } from './IndexerGrpcMitoApi.js'
+import type { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const vaultAddress = 'inj1zwv6feuzhy6a9wekh96cd57lsarmqlwxvdl4nk'

@@ -1,13 +1,14 @@
-import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import {
   CosmosStakingV1Beta1Tx,
   CosmosStakingV1Beta1Staking,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
 import {
   numberToCosmosSdkDecString,
   amountToCosmosSdkDecAmount,
 } from '../../../../utils/numbers.js'
+import type { SnakeCaseKeys } from 'snakecase-keys';
 
 export declare namespace MsgEditValidator {
   export interface Params {

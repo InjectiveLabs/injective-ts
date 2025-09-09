@@ -1,31 +1,7 @@
 import {
-  TxGrpcApi,
-  hexToBuff,
-  PublicKey,
-  TxResponse,
-  SIGN_DIRECT,
-  hexToBase64,
-  ofacWallets,
-  SIGN_EIP712,
-  SIGN_EIP712_V2,
-  ChainGrpcAuthApi,
-  CosmosTxV1Beta1Tx,
-  createTxRawEIP712,
-  createTransaction,
-  ChainGrpcTxFeesApi,
-  DirectSignResponse,
-  getAminoStdSignDoc,
-  getEip712TypedData,
-  createWeb3Extension,
-  getEip712TypedDataV2,
-  IndexerGrpcWeb3GwApi,
-  ChainGrpcTendermintApi,
-  getGasPriceBasedOnMessage,
-  createTxRawFromSigResponse,
-  recoverTypedSignaturePubKey,
-  createTransactionWithSigners,
-  CreateTransactionWithSignersArgs,
-} from '@injectivelabs/sdk-ts'
+  getNetworkInfo,
+  getNetworkEndpoints,
+} from '@injectivelabs/networks'
 import {
   sleep,
   getStdFee,
@@ -34,7 +10,6 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
-  ThrownException,
   GeneralException,
   isThrownException,
   UnspecifiedErrorCode,
@@ -42,19 +17,6 @@ import {
   TransactionException,
   TransactionChainErrorModule,
 } from '@injectivelabs/exceptions'
-import {
-  getNetworkInfo,
-  NetworkEndpoints,
-  getNetworkEndpoints,
-} from '@injectivelabs/networks'
-import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import {
-  MsgBroadcasterOptions,
-  MsgBroadcasterTxOptions,
-  WalletStrategyEmitterEventType,
-  MsgBroadcasterTxOptionsWithAddresses,
-} from './types.js'
-import { checkIfTxRunOutOfGas } from '../utils/index.js'
 import {
   Wallet,
   isCosmosWallet,
@@ -65,7 +27,49 @@ import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
 } from '@injectivelabs/wallet-base'
-import BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import {
+  TxGrpcApi,
+  hexToBuff,
+  PublicKey,
+  SIGN_DIRECT,
+  hexToBase64,
+  ofacWallets,
+  SIGN_EIP712,
+  SIGN_EIP712_V2,
+  ChainGrpcAuthApi,
+  createTxRawEIP712,
+  createTransaction,
+  ChainGrpcTxFeesApi,
+  getAminoStdSignDoc,
+  getEip712TypedData,
+  createWeb3Extension,
+  getEip712TypedDataV2,
+  IndexerGrpcWeb3GwApi,
+  ChainGrpcTendermintApi,
+  getGasPriceBasedOnMessage,
+  createTxRawFromSigResponse,
+  recoverTypedSignaturePubKey,
+  createTransactionWithSigners
+} from '@injectivelabs/sdk-ts'
+import { checkIfTxRunOutOfGas } from '../utils/index.js'
+import {
+  WalletStrategyEmitterEventType
+} from './types.js'
+import type {
+  NetworkEndpoints} from '@injectivelabs/networks';
+import type {
+  ThrownException} from '@injectivelabs/exceptions';
+import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type {
+  MsgBroadcasterOptions,
+  MsgBroadcasterTxOptions,
+  MsgBroadcasterTxOptionsWithAddresses} from './types.js';
+import type {
+  TxResponse,
+  CosmosTxV1Beta1Tx,
+  DirectSignResponse,
+  CreateTransactionWithSignersArgs} from '@injectivelabs/sdk-ts';
 
 const getEthereumWalletPubKey = <T>({
   pubKey,

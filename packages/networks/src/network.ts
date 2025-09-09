@@ -1,3 +1,4 @@
+import { Network } from './types.js'
 import {
   getLocalChainInfo,
   getDevnetChainInfo,
@@ -20,8 +21,7 @@ import {
   getEndpointsTestnetSentry,
   getEndpointsMainnetSentry,
 } from './endpoints.js'
-import { Network, ChainInfo, NetworkEndpoints } from './types.js'
-import type { Network as NetworkType } from './types.js'
+import type { Network as NetworkType , ChainInfo, NetworkEndpoints } from './types.js'
 
 export const getNetworkEndpoints = (network: Network): NetworkEndpoints => {
   switch (network) {

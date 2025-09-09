@@ -4,7 +4,7 @@ export interface StreamStatusResponse {
   metadata: any
 }
 
-export type StreamOperationType =
+export type StreamOperation =
   | 'insert'
   | 'delete'
   | 'replace'

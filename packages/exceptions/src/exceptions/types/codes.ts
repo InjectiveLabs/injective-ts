@@ -1,5 +1,5 @@
 import type { grpc } from '@injectivelabs/grpc-web'
-import { StatusCodes } from 'http-status-codes'
+import type { StatusCodes } from 'http-status-codes'
 
 export type GrpcErrorCode =
   | 0

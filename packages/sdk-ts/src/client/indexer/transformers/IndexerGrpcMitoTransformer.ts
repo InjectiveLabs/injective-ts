@@ -1,6 +1,6 @@
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
-import {
+import type { MitoApi } from '@injectivelabs/mito-proto-ts'
+import type {
   MitoIDO,
   MitoGauge,
   MitoVault,

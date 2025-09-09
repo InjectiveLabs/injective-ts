@@ -1,13 +1,15 @@
+import snakecaseKeys from 'snakecase-keys'
+import {
+  InjectiveExchangeV1Beta1Exchange,
+  InjectiveExchangeV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
 import {
   numberToCosmosSdkDecString,
   amountToCosmosSdkDecAmount,
 } from '../../../../utils/numbers.js'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-import {
-  InjectiveExchangeV1Beta1Exchange,
-  InjectiveExchangeV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import type { SnakeCaseKeys } from 'snakecase-keys';
+
 
 export declare namespace MsgCreateSpotLimitOrder {
   export interface Params {

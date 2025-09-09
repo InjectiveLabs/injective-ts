@@ -1,14 +1,16 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import keccak256 from 'keccak256'
 import { BigNumber } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
+import { getNetworkEndpoints } from '@injectivelabs/networks'
+import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
 import { Address } from '../../../../accounts/Address.js'
-import { ChainGrpcExchangeApi } from '../../../../../client/chain/grpc/ChainGrpcExchangeApi.js'
 import { domainHash, messageHash } from '../../../../../utils/crypto.js'
 import { numberToCosmosSdkDecString } from '../../../../../utils/numbers.js'
-import keccak256 from 'keccak256'
-import MsgCreateSpotLimitOrder from '../../msgs/MsgCreateSpotLimitOrder.js'
-import MsgCreateDerivativeLimitOrder from '../../msgs/MsgCreateDerivativeLimitOrder.js'
-import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
+import { ChainGrpcExchangeApi } from '../../../../../client/chain/grpc/ChainGrpcExchangeApi.js'
+import type { Network } from '@injectivelabs/networks';
+import type MsgCreateSpotLimitOrder from '../../msgs/MsgCreateSpotLimitOrder.js'
+import type MsgCreateDerivativeLimitOrder from '../../msgs/MsgCreateDerivativeLimitOrder.js'
+
 
 interface OrderInfo {
   subaccountId: string

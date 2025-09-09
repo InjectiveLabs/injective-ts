@@ -1,5 +1,5 @@
-import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
 
 export const isServerSide = () => typeof window === 'undefined'
 

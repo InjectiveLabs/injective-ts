@@ -1,10 +1,19 @@
+import { BigNumberInBase } from '@injectivelabs/utils'
 import {
-  InjectiveExchangeV1Beta1Query,
   InjectiveExchangeV1Beta1Exchange,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
 import {
+  type GrpcChainFullDerivativeMarket,
+  type GrpcChainFullSpotMarket,
+  type GrpcChainSpotMarket,
+} from '../types/exchange.js'
+import type { SpotMarket } from '../../indexer/types/spot.js'
+import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
+import type {
+  InjectiveExchangeV1Beta1Query} from '@injectivelabs/core-proto-ts';
+import type {
   ChainPosition,
   PointsMultiplier,
   ChainDenomDecimal,
@@ -26,14 +35,8 @@ import {
   TradingRewardCampaignInfo,
   GrpcTradingRewardCampaignInfo,
   TradingRewardCampaignBoostInfo,
-  GrpcTradingRewardCampaignBoostInfo,
-  type GrpcChainFullDerivativeMarket,
-  type GrpcChainFullSpotMarket,
-  type GrpcChainSpotMarket,
-} from '../types/exchange.js'
-import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
-import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
-import type { SpotMarket } from '../../indexer/types/spot.js'
+  GrpcTradingRewardCampaignBoostInfo} from '../types/exchange.js';
+
 
 /**
  * @category Chain Grpc Transformer

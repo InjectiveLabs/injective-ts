@@ -1,19 +1,10 @@
-/* eslint-disable class-methods-use-this */
+ 
+import { capitalize } from '@injectivelabs/utils'
 import {
-  TxRaw,
-  TxResponse,
   waitTxBroadcasted,
-  AminoSignResponse,
-  DirectSignResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
-import {
-  ChainId,
-  EvmChainId,
-  CosmosChainId,
-  AccountAddress,
-} from '@injectivelabs/ts-types'
 import {
   ErrorType,
   UnspecifiedErrorCode,
@@ -22,17 +13,28 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   Wallet,
-  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
   BaseConcreteStrategy,
-  ConcreteWalletStrategy,
-  SendTransactionOptions,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
-import { capitalize } from '@injectivelabs/utils'
 import { CosmosWallet } from './../wallet.js'
+import type {
+  ChainId,
+  EvmChainId,
+  CosmosChainId,
+  AccountAddress,
+} from '@injectivelabs/ts-types'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse} from '@injectivelabs/sdk-ts';
+import type {
+  StdSignDoc,
+  ConcreteWalletStrategy,
+  SendTransactionOptions} from '@injectivelabs/wallet-base';
 
 const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
 
@@ -135,7 +137,7 @@ export class CosmosWalletStrategy
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
+   
   async sendEvmTransaction(
     _transaction: unknown,
     _options: { address: AccountAddress; evmChainId: EvmChainId },

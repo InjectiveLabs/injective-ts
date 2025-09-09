@@ -1,9 +1,9 @@
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcBankApi } from './ChainGrpcBankApi.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { ChainGrpcBankTransformer } from '../transformers/index.js'
-import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
-import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
+import type { ChainGrpcBankTransformer } from '../transformers/index.js'
+import type { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
+import type { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)

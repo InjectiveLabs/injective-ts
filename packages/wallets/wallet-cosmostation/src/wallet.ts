@@ -1,14 +1,14 @@
-import {
-  ChainId,
-  CosmosChainId,
-  TestnetCosmosChainId,
-} from '@injectivelabs/ts-types'
+import { cosmos, InstallError } from '@cosmostation/extension-client'
 import {
   ErrorType,
   UnspecifiedErrorCode,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { cosmos, InstallError } from '@cosmostation/extension-client'
+import type {
+  ChainId,
+  CosmosChainId,
+  TestnetCosmosChainId,
+} from '@injectivelabs/ts-types'
 
 export class CosmostationWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId

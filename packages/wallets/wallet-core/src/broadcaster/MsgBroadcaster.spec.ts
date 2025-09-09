@@ -1,19 +1,20 @@
+import { Network } from '@injectivelabs/networks'
+import { EvmChainId } from '@injectivelabs/ts-types'
+import {
+  Wallet
+} from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import {
   MsgSend,
   PrivateKey,
   MsgBroadcasterWithPk,
 } from '@injectivelabs/sdk-ts'
-import {
-  Wallet,
-  WalletStrategyArguments,
-  ConcreteEvmWalletStrategyArgs,
-} from '@injectivelabs/wallet-base'
-import { Network } from '@injectivelabs/networks'
-import { EvmChainId } from '@injectivelabs/ts-types'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { MsgBroadcaster } from './MsgBroadcaster.js'
-import { MsgBroadcasterOptions } from './types.js'
+import type { MsgBroadcasterOptions } from './types.js'
+import type {
+  WalletStrategyArguments,
+  ConcreteEvmWalletStrategyArgs} from '@injectivelabs/wallet-base';
 
 const strategyArgs: WalletStrategyArguments = {} as any /** define the args */
 const strategyEthArgs: ConcreteEvmWalletStrategyArgs =

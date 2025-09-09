@@ -1,6 +1,6 @@
-import { BaseWasmQuery } from '../../BaseWasmQuery.js';
 import { toBase64 } from '../../../../utils/index.js';
-import { AssetInfo } from '../types.js';
+import { BaseWasmQuery } from '../../BaseWasmQuery.js';
+import type { AssetInfo } from '../types.js';
 
 export declare namespace QueryGetAllLendingRates {
   export interface Params {
