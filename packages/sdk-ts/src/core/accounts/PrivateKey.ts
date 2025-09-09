@@ -15,6 +15,7 @@ import { getEip712TypedData, MsgDecoder } from '../tx/eip712/index.js'
 import {
   DEFAULT_DERIVATION_PATH,
   recoverTypedSignaturePubKey,
+  TypedDataUtilsSanitizeData,
 } from '../../utils/index.js'
 import type {
   CosmosTxV1Beta1Tx
@@ -383,13 +384,15 @@ export class PrivateKey {
 
       const evmChainId = Number(decodedExtension.typedDataChainID) as EvmChainId
 
-      return {
-        evmChainId: EvmChainId,
-        chainId: [
+      const testnetChainIds: EvmChainId[] = [
           EvmChainId.Kovan,
           EvmChainId.Goerli,
           EvmChainId.Sepolia,
-        ].includes(evmChainId)
+      ]
+
+      return {
+        evmChainId: EvmChainId,
+        chainId: testnetChainIds.includes(evmChainId)
           ? ChainId.Testnet
           : ChainId.Mainnet,
       }
