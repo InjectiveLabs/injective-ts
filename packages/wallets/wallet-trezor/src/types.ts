@@ -4,13 +4,13 @@ export interface HDNodeLike {
   chainCode: Buffer
 }
 
-export type TrezorDerivationPathType = 'bip32' | 'bip44' | 'legacy'
-
 export const TrezorDerivationPathType = {
   Bip32: 'bip32',
   Bip44: 'bip44',
   Legacy: 'legacy',
 } as const
+
+export type TrezorDerivationPathType = typeof TrezorDerivationPathType[keyof typeof TrezorDerivationPathType]
 
 export interface TrezorWalletInfo {
   address: string

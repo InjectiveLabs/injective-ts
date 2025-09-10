@@ -6,8 +6,8 @@ import {
 } from '@injectivelabs/networks'
 import {
   getStdFee,
-  DEFAULT_STD_FEE,
   BigNumberInBase,
+  getDefaultStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import { createTransaction } from '../tx.js'
@@ -252,11 +252,10 @@ export class MsgBroadcasterWithPk {
 
     /** Block Details */
     const timeoutHeight = await this.getTimeoutHeight()
-
     /** Prepare the Transaction * */
     const { txRaw } = createTransaction({
       memo: tx.memo || '',
-      fee: DEFAULT_STD_FEE,
+      fee: getDefaultStdFee(),
       message: tx.msgs as Msgs[],
       timeoutHeight: timeoutHeight.toNumber(),
       pubKey: publicKey.toBase64(),

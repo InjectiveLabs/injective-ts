@@ -3,33 +3,6 @@ export interface Coin {
   amount: string
 }
 
-export type CosmosChainId =
-  | 'injective-1'
-  | 'cosmoshub-4'
-  | 'juno-1'
-  | 'osmosis-1'
-  | 'columbus-5'
-  | 'chihuahua-1'
-  | 'axelar-dojo-1'
-  | 'evmos_9001-2'
-  | 'core-1'
-  | 'secret-4'
-  | 'stride-1'
-  | 'crescent-1'
-  | 'sommelier-3'
-  | 'canto_7700-1'
-  | 'kava_2222-10'
-  | 'Oraichain'
-  | 'noble-1'
-  | 'celestia'
-  | 'migaloo-1'
-  | 'kaiyo-1'
-  | 'wormchain'
-  | 'andromeda-1'
-  | 'ssc-1'
-  | 'neutron-1'
-  | 'fetchhub-4'
-
 export const CosmosChainId = {
   Injective: 'injective-1',
   Cosmoshub: 'cosmoshub-4',
@@ -59,11 +32,7 @@ export const CosmosChainId = {
   Fetch: 'fetchhub-4',
 } as const
 
-export type TestnetCosmosChainId =
-  | 'injective-888'
-  | 'theta-testnet-001'
-  | 'evmos_9000-4'
-  | 'xion-testnet-1'
+export type CosmosChainId = typeof CosmosChainId[keyof typeof CosmosChainId]
 
 export const TestnetCosmosChainId = {
   Injective: 'injective-888',
@@ -72,10 +41,12 @@ export const TestnetCosmosChainId = {
   Xion: 'xion-testnet-1',
 } as const
 
-export type DevnetCosmosChainId = 'injective-777'
+export type TestnetCosmosChainId = typeof TestnetCosmosChainId[keyof typeof TestnetCosmosChainId]
 
 export const DevnetCosmosChainId = {
   Injective: 'injective-777',
   Injective1: 'injective-777',
   Injective2: 'injective-777',
 } as const
+
+export type DevnetCosmosChainId = typeof DevnetCosmosChainId[keyof typeof DevnetCosmosChainId]

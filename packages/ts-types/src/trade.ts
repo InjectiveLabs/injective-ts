@@ -1,9 +1,3 @@
-export type TradeExecutionType =
-  | 'market'
-  | 'limitFill'
-  | 'limitMatchRestingOrder'
-  | 'limitMatchNewOrder'
-
 export const TradeExecutionType = {
   Market: 'market',
   LimitFill: 'limitFill',
@@ -11,14 +5,14 @@ export const TradeExecutionType = {
   LimitMatchNewOrder: 'limitMatchNewOrder',
 } as const
 
-export type TradeExecutionSide = 'maker' | 'taker'
+export type TradeExecutionType = typeof TradeExecutionType[keyof typeof TradeExecutionType]
 
 export const TradeExecutionSide = {
   Maker: 'maker',
   Taker: 'taker',
 } as const
 
-export type TradeDirection = 'buy' | 'sell' | 'long' | 'short'
+export type TradeExecutionSide = typeof TradeExecutionSide[keyof typeof TradeExecutionSide]
 
 export const TradeDirection = {
   Buy: 'buy',
@@ -27,14 +21,7 @@ export const TradeDirection = {
   Short: 'short',
 } as const
 
-export type OrderState =
-  | 'unfilled'
-  | 'booked'
-  | 'partial_filled'
-  | 'partially_filled'
-  | 'filled'
-  | 'canceled'
-  | 'triggered'
+export type TradeDirection = typeof TradeDirection[keyof typeof TradeDirection]
 
 export const OrderState = {
   Unfilled: 'unfilled',
@@ -46,19 +33,7 @@ export const OrderState = {
   Triggered: 'triggered',
 } as const
 
-export type OrderSide =
-  | 'unspecified'
-  | 'buy'
-  | 'sell'
-  | 'stop_buy'
-  | 'stop_sell'
-  | 'take_buy'
-  | 'take_sell'
-  | 'buy_po'
-  | 'sell_po'
-  | 'buy_atomic'
-  | 'sell_atomic'
-  | 'unrecognized'
+export type OrderState = typeof OrderState[keyof typeof OrderState]
 
 export const OrderSide = {
   Unspecified: 'unspecified',
@@ -74,3 +49,5 @@ export const OrderSide = {
   SellAtomic: 'sell_atomic',
   Unrecognized: 'unrecognized',
 } as const
+
+export type OrderSide = typeof OrderSide[keyof typeof OrderSide]

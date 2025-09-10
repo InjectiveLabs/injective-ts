@@ -1,36 +1,12 @@
 import { WalletErrorActionModule } from '@injectivelabs/exceptions'
 
-export type BroadcastMode = 'block' | 'sync' | 'async'
-
 export const BroadcastMode = {
   Block: 'block',
   Sync: 'sync',
   Async: 'async',
 } as const
 
-export type Wallet =
-  | 'leap'
-  | 'keplr'
-  | 'ninji'
-  | 'magic'
-  | 'rabby'
-  | 'ledger'
-  | 'BitGet'
-  | 'owallet'
-  | 'phantom'
-  | 'rainbow'
-  | 'turnkey'
-  | 'metamask'
-  | 'okx-wallet'
-  | 'private-key'
-  | 'trust-wallet'
-  | 'trezor-bip32'
-  | 'trezor-bip44'
-  | 'cosmostation'
-  | 'ledger-cosmos'
-  | 'ledger-legacy'
-  | 'wallet-connect'
-  | 'cosmostation-eth'
+export type BroadcastMode = typeof BroadcastMode[keyof typeof BroadcastMode]
 
 export const Wallet = {
   Leap: 'leap',
@@ -57,14 +33,7 @@ export const Wallet = {
   CosmostationEth: 'cosmostation-eth',
 } as const
 
-export type MagicProvider =
-  | 'email'
-  | 'apple'
-  | 'github'
-  | 'google'
-  | 'discord'
-  | 'twitter'
-  | 'facebook'
+export type Wallet = typeof Wallet[keyof typeof Wallet]
 
 export const MagicProvider = {
   Email: 'email',
@@ -76,7 +45,7 @@ export const MagicProvider = {
   Facebook: 'facebook',
 } as const
 
-export type WalletDeviceType = 'mobile' | 'other' | 'browser' | 'hardware'
+export type MagicProvider = typeof MagicProvider[keyof typeof MagicProvider]
 
 export const WalletDeviceType = {
   Mobile: 'mobile',
@@ -85,11 +54,13 @@ export const WalletDeviceType = {
   Hardware: 'hardware',
 } as const
 
-export type WalletEventListener = 'account-change' | 'chain-id-change'
+export type WalletDeviceType = typeof WalletDeviceType[keyof typeof WalletDeviceType]
 
 export const WalletEventListener = {
   AccountChange: 'account-change',
   ChainIdChange: 'chain-id-change',
 } as const
+
+export type WalletEventListener = typeof WalletEventListener[keyof typeof WalletEventListener]
 
 export const WalletAction = { ...WalletErrorActionModule }

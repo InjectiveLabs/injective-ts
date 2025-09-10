@@ -32,6 +32,7 @@ import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
 } from '@injectivelabs/wallet-base'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
 import {
   TxGrpcApi,
   hexToBuff,
@@ -711,7 +712,7 @@ export class MsgBroadcaster {
      * When using Ledger with Keplr/Leap we have
      * to send EIP712 to sign on Keplr/Leap
      */
-    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
+    if (([Wallet.Keplr, Wallet.Leap] as WalletType[]).includes(walletStrategy.getWallet())) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
@@ -837,7 +838,7 @@ export class MsgBroadcaster {
      * We can only use this method
      * when Ledger is connected through Keplr
      */
-    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
+    if (([Wallet.Keplr, Wallet.Leap] as WalletType[]).includes(walletStrategy.getWallet())) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
@@ -983,7 +984,7 @@ export class MsgBroadcaster {
     }
 
     const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
-    const canDisableCosmosGasCheck = [Wallet.Keplr, Wallet.OWallet].includes(
+    const canDisableCosmosGasCheck = ([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(
       walletStrategy.wallet,
     )
     const feePayerPubKey = await this.fetchFeePayerPubKey(

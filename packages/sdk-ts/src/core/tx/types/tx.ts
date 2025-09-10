@@ -53,12 +53,12 @@ export interface TxConcreteApi {
   simulate(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<TxClientSimulateResponse>
 }
 
-export type TxClientMode = 'grpc' | 'rest'
-
 export const TxClientMode = {
   gRpc: 'grpc',
   rest: 'rest',
 } as const
+
+export type TxClientMode = typeof TxClientMode[keyof typeof TxClientMode]
 
 export type MsgArg = {
   type: string

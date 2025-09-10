@@ -1,11 +1,5 @@
 import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
 
-export type TradeExecutionType =
-  | 'market'
-  | 'limitFill'
-  | 'limitMatchRestingOrder'
-  | 'limitMatchNewOrder'
-
 export const TradeExecutionType = {
   Market: 'market',
   LimitFill: 'limitFill',
@@ -13,14 +7,14 @@ export const TradeExecutionType = {
   LimitMatchNewOrder: 'limitMatchNewOrder',
 } as const
 
-export type TradeExecutionSide = 'maker' | 'taker'
+export type TradeExecutionType = typeof TradeExecutionType[keyof typeof TradeExecutionType]
 
 export const TradeExecutionSide = {
   Maker: 'maker',
   Taker: 'taker',
 } as const
 
-export type TradeDirection = 'buy' | 'sell' | 'long' | 'short'
+export type TradeExecutionSide = typeof TradeExecutionSide[keyof typeof TradeExecutionSide]
 
 export const TradeDirection = {
   Buy: 'buy',
@@ -28,6 +22,8 @@ export const TradeDirection = {
   Long: 'long',
   Short: 'short',
 } as const
+
+export type TradeDirection = typeof TradeDirection[keyof typeof TradeDirection]
 
 export type OrderMask = InjectiveExchangeV1Beta1Exchange.OrderMask
 export const OrderMaskMap = InjectiveExchangeV1Beta1Exchange.OrderMask

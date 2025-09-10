@@ -144,21 +144,19 @@ export const getStdFeeFromObject = (args?: {
 }
 
 export const getStdFeeFromString = (gasPrice: string) => {
-  const gasPriceInBase = toHumanReadable(gasPrice, 18)
-  const gasPriceScaled = toChainFormat(gasPriceInBase, 18).toFixed(0)
+  const matchResult = gasPrice.match(/^([0-9.]+)([a-zA-Z][a-zA-Z0-9/:._-]*)$/)
 
-  return {
-    amount: [
-      {
-        denom: 'inj',
-        amount: new BigNumber(DEFAULT_GAS_LIMIT)
-          .times(gasPriceScaled)
-          .toFixed(0),
-      },
-    ],
-    gas: DEFAULT_GAS_LIMIT.toString(),
+  if (!matchResult) {
+    throw new Error('Invalid gas price string')
   }
+
+  const [_, amount] = matchResult
+  const gas = toChainFormat(amount).dividedBy(DEFAULT_GAS_PRICE).toFixed(0)
+
+  return getStdFeeFromObject({ gas, gasPrice: DEFAULT_GAS_PRICE })
 }
+
+
 
 export const getStdFee = (
   args?:

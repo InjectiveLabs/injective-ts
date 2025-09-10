@@ -1,23 +1,5 @@
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
-export type Network =
-  | 'mainnetK8s'
-  | 'mainnetLB'
-  | 'mainnet'
-  | 'mainnetSentry'
-  | 'mainnetOld'
-  | 'staging'
-  | 'internal' // @deprecated
-  | 'testnetK8s'
-  | 'testnetOld'
-  | 'testnetSentry'
-  | 'testnet'
-  | 'devnet1'
-  | 'devnet2'
-  | 'devnet3'
-  | 'devnet'
-  | 'local'
-
 export const Network = {
   MainnetK8s: 'mainnetK8s',
   MainnetLB: 'mainnetLB',
@@ -36,6 +18,8 @@ export const Network = {
   Devnet: 'devnet',
   Local: 'local',
 } as const
+
+export type Network = typeof Network[keyof typeof Network]
 
 export type NetworkEndpoints = {
   indexer: string // Indexer API

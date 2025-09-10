@@ -11,14 +11,6 @@ import {
   Wallet,
   isEvmWallet,
   type WalletMetadata,
-<<<<<<< HEAD
-=======
-  ConcreteStrategiesArg,
-  ConcreteWalletStrategy,
-  WalletStrategyArguments,
-  WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs,
->>>>>>> dev
 } from '@injectivelabs/wallet-base'
 import {
   LedgerLiveStrategy,
@@ -28,7 +20,7 @@ import {
   TrezorBip32Strategy,
   TrezorBip44Strategy,
 } from '@injectivelabs/wallet-trezor'
-<<<<<<< HEAD
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
 import type {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
@@ -36,17 +28,6 @@ import type {
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-=======
-import { MagicStrategy } from '@injectivelabs/wallet-magic'
-import { GeneralException } from '@injectivelabs/exceptions'
-import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
-import { TurnkeyWalletStrategy } from '@injectivelabs/wallet-turnkey'
-import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
-import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
-import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
->>>>>>> dev
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { evmOptions } = args
@@ -206,7 +187,7 @@ export class WalletStrategy extends BaseWalletStrategy {
     const shouldRecreateStrategyOnMetadataChange = [
       Wallet.PrivateKey,
       Wallet.WalletConnect,
-    ]
+    ] as WalletType[]
 
     const strategiesWithPlaceholders = {
       ...this.strategies,
@@ -234,11 +215,6 @@ export class WalletStrategy extends BaseWalletStrategy {
   }
 
   public getStrategy(): ConcreteWalletStrategy {
-<<<<<<< HEAD
-    console.log('creating strategy for wallet via getStrategy:', this.wallet)
-
-=======
->>>>>>> dev
     if (this.strategies[this.wallet]) {
       return this.strategies[this.wallet] as ConcreteWalletStrategy
     }
@@ -248,14 +224,6 @@ export class WalletStrategy extends BaseWalletStrategy {
       wallet: this.wallet,
     })
 
-<<<<<<< HEAD
-    console.log(strategy, {
-      args: this.args,
-      wallet: this.wallet,
-    })
-
-=======
->>>>>>> dev
     if (!strategy) {
       throw new GeneralException(
         new Error(`Wallet ${this.wallet} is not enabled/available!`),

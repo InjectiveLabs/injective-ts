@@ -3,8 +3,6 @@ import type { TokenStatic } from '../../../types/token.js'
 import type { BigNumberInBase } from '@injectivelabs/utils'
 import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
-export type AccessTypeCode = 0 | 1 | 2 | 3 | 4
-
 export const AccessTypeCode = {
   AccessTypeUnspecified: 0,
   AccessTypeNobody: 1,
@@ -13,12 +11,7 @@ export const AccessTypeCode = {
   AccessTypeAnyOfAddresses: 4,
 } as const
 
-export type AccessType =
-  | 'Unspecified'
-  | 'Nobody'
-  | 'Only Address'
-  | 'Everybody'
-  | 'Any of Addresses'
+export type AccessTypeCode = typeof AccessTypeCode[keyof typeof AccessTypeCode]
 
 export const AccessType = {
   AccessTypeUnspecified: 'Unspecified',
@@ -28,13 +21,15 @@ export const AccessType = {
   AccessTypeAnyOfAddresses: 'Any of Addresses',
 } as const
 
-export type ValidatorUptimeStatus = 'proposed' | 'signed' | 'missed'
+export type AccessType = typeof AccessType[keyof typeof AccessType]
 
 export const ValidatorUptimeStatus = {
   Proposed: 'proposed',
   Signed: 'signed',
   Missed: 'missed',
 } as const
+
+export type ValidatorUptimeStatus = typeof ValidatorUptimeStatus[keyof typeof ValidatorUptimeStatus]
 
 export interface Paging {
   from: number

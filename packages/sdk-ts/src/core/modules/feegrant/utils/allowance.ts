@@ -17,16 +17,13 @@ export type Allowance =
   | AllowedMsgAllowance
   | undefined
 
-export type AllowanceTypes =
-  | 'spendLimit'
-  | 'periodSpendLimit'
-  | 'allowedMessages'
-
 export const AllowanceTypes = {
   BasicAllowance: 'spendLimit',
   PeriodicAllowance: 'periodSpendLimit',
   AllowedMsgAllowance: 'allowedMessages',
 } as const
+
+export type AllowanceTypes = typeof AllowanceTypes[keyof typeof AllowanceTypes]
 
 function isBasicAllowance(
   allowance: Allowance,

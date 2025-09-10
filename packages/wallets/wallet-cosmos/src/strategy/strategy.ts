@@ -20,6 +20,7 @@ import {
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
 import { CosmosWallet } from './../wallet.js'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base';
 import type {
   ChainId,
   EvmChainId,
@@ -38,7 +39,7 @@ import type {
   SendTransactionOptions
 } from '@injectivelabs/wallet-base';
 
-const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
+const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet] as WalletType[]
 
 export class CosmosWalletStrategy
   extends BaseConcreteStrategy
@@ -98,7 +99,7 @@ export class CosmosWalletStrategy
         )
       }
 
-      if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+      if (([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
         window.removeEventListener(
           'keplr_keystorechange',
           this.listeners[WalletEventListener.AccountChange],
@@ -313,7 +314,7 @@ export class CosmosWalletStrategy
       window.ninji.on('accountsChanged', listener)
     }
 
-    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       window.addEventListener('keplr_keystorechange', listener)
     }
 

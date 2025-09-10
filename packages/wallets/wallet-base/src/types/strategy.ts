@@ -54,13 +54,13 @@ export interface SendTransactionOptions {
   }
 }
 
-export type TurnkeyProvider = 'email' | 'google' | 'apple'
-
 export const TurnkeyProvider = {
   Email: 'email',
   Google: 'google',
   Apple: 'apple',
 } as const
+
+export type TurnkeyProvider = typeof TurnkeyProvider[keyof typeof TurnkeyProvider]
 
 export type TurnkeySession = {
   sessionType: any

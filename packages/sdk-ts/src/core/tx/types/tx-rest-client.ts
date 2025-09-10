@@ -62,24 +62,21 @@ export interface TxInfo {
   timestamp: string
 }
 
-export type BroadcastMode =
-  | 'BROADCAST_MODE_SYNC'
-  | 'BROADCAST_MODE_ASYNC'
-  | 'BROADCAST_MODE_BLOCK'
-
 export const BroadcastMode = {
   Sync: 'BROADCAST_MODE_SYNC',
   Async: 'BROADCAST_MODE_ASYNC',
   Block: 'BROADCAST_MODE_BLOCK',
 } as const
 
-export type BroadcastModeKeplr = 'sync' | 'async' | 'block'
+export type BroadcastMode = typeof BroadcastMode[keyof typeof BroadcastMode]
 
 export const BroadcastModeKeplr = {
   Sync: 'sync',
   Async: 'async',
   Block: 'block',
 } as const
+
+export type BroadcastModeKeplr = typeof BroadcastModeKeplr[keyof typeof BroadcastModeKeplr]
 
 export interface TxResultResponse {
   tx: RestTx

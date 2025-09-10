@@ -1,16 +1,3 @@
-export type TokenType =
-  | 'ibc'
-  | 'cw20'
-  | 'spl'
-  | 'erc20'
-  | 'lp'
-  | 'evm'
-  | 'native'
-  | 'symbol'
-  | 'tokenFactory'
-  | 'insuranceFund'
-  | 'unknown'
-
 export const TokenType = {
   Ibc: 'ibc',
   Cw20: 'cw20',
@@ -25,12 +12,7 @@ export const TokenType = {
   Unknown: 'unknown',
 } as const
 
-export type TokenVerification =
-  | 'verified'
-  | 'submitted'
-  | 'internal'
-  | 'external'
-  | 'unverified'
+export type TokenType = typeof TokenType[keyof typeof TokenType]
 
 export const TokenVerification = {
   Verified: 'verified',
@@ -40,19 +22,7 @@ export const TokenVerification = {
   Unverified: 'unverified',
 } as const
 
-export type TokenSource =
-  | 'aptos'
-  | 'solana'
-  | 'cosmos'
-  | 'ethereum'
-  | 'ethereum-wormhole'
-  | 'polygon'
-  | 'klaytn'
-  | 'arbitrum'
-  | 'sui'
-  | 'ibc'
-  | 'binance-smart-chain'
-  | 'axelar'
+export type TokenVerification = typeof TokenVerification[keyof typeof TokenVerification]
 
 export const TokenSource = {
   Aptos: 'aptos',
@@ -68,6 +38,8 @@ export const TokenSource = {
   BinanceSmartChain: 'binance-smart-chain',
   Axelar: 'axelar',
 } as const
+
+export type TokenSource = typeof TokenSource[keyof typeof TokenSource]
 
 export interface TokenStatic {
   name: string

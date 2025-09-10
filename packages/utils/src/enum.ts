@@ -1,10 +1,3 @@
-export type StatusType =
-  | 'idle'
-  | 'loading'
-  | 'completed'
-  | 'error'
-  | 'confirmed'
-
 export const StatusType = {
   Idle: 'idle',
   Loading: 'loading',
@@ -12,3 +5,5 @@ export const StatusType = {
   Error: 'error',
   Confirmed: 'confirmed',
 } as const
+
+export type StatusType = typeof StatusType[keyof typeof StatusType]

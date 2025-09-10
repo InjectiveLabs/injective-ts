@@ -10,13 +10,6 @@ export interface Coin {
   amount: string
 }
 
-export type StreamOperation =
-  | 'insert'
-  | 'delete'
-  | 'replace'
-  | 'update'
-  | 'invalidate'
-
 export const StreamOperation = {
   Insert: 'insert',
   Delete: 'delete',
@@ -24,6 +17,8 @@ export const StreamOperation = {
   Update: 'update',
   Invalidate: 'invalidate',
 } as const
+
+export type StreamOperation = typeof StreamOperation[keyof typeof StreamOperation]
 
 export type GrpcCoin = CosmosBaseV1Beta1Coin.Coin
 export type TxRaw = CosmosTxV1Beta1Tx.TxRaw

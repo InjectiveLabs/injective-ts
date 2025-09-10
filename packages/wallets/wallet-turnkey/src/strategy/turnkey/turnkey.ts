@@ -2,8 +2,8 @@ import { createAccount } from '@turnkey/viem'
 import { HttpRestClient } from '@injectivelabs/utils'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
 import {
+  Turnkey,
   SessionType,
-  Turnkey
 } from '@turnkey/sdk-browser'
 import {
   WalletAction,
@@ -280,15 +280,16 @@ export class TurnkeyWallet {
   }
 
   public async initOAuth(
-    provider: TurnkeyProvider.Google | TurnkeyProvider.Apple,
+    provider: TurnkeyProvider,
   ) {
+    if (provider === TurnkeyProvider.Apple) {
+      throw new WalletException(
+        new Error('Apple sign in option is currently not supported'),
+      )
+    }
+
     const indexedDbClient = await this.getIndexedDbClient()
     const nonce = await TurnkeyOauthWallet.generateOAuthNonce(indexedDbClient)
-
-    if (provider === TurnkeyProvider.Apple) {
-      // TODO: implement the ability to generate Apple OAuth URL
-      return nonce
-    }
 
     if (!this.metadata?.googleClientId || !this.metadata?.googleRedirectUri) {
       throw new WalletException(
@@ -303,9 +304,15 @@ export class TurnkeyWallet {
   }
 
   public async confirmOAuth(
-    provider: TurnkeyProvider.Google | TurnkeyProvider.Apple,
+    provider: TurnkeyProvider,
     oidcToken: string,
   ) {
+    if (provider === TurnkeyProvider.Apple) {
+      throw new WalletException(
+        new Error('Apple sign in option is currently not supported'),
+      )
+    }
+
     const indexedDbClient = await this.getIndexedDbClient()
 
     const oauthResult = await TurnkeyOauthWallet.oauthLogin({

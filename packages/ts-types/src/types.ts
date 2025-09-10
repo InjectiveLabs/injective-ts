@@ -1,17 +1,3 @@
-export type EvmChainId =
-  | 1
-  | 3
-  | 4
-  | 5
-  | 42
-  | 888
-  | 11155111
-  | 1337
-  | 31337
-  | 1776
-  | 1337
-  | 1439
-
 export const EvmChainId = {
   Mainnet: 1,
   Ropsten: 3,
@@ -27,7 +13,7 @@ export const EvmChainId = {
   TestnetEvm: 1439,
 } as const
 
-export type ChainId = 'injective-1' | 'injective-888' | 'injective-777'
+export type EvmChainId = typeof EvmChainId[keyof typeof EvmChainId]
 
 export const ChainId = {
   Mainnet: 'injective-1',
@@ -35,239 +21,8 @@ export const ChainId = {
   Devnet: 'injective-777',
 } as const
 
-export type MsgType =
-  // Authz
-  | 'cosmos.authz.v1beta1.MsgExec'
-  | 'cosmos.authz.v1beta1.MsgGrant'
-  | 'cosmos.authz.v1beta1.MsgRevoke'
-  // Bank
-  | 'cosmos.bank.v1beta1.MsgSend'
-  | 'cosmos.bank.v1beta1.MsgMultiSend'
-  // Distribution
-  | 'cosmos.distribution.v1beta1.MsgSetWithdrawAddress'
-  | 'cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward'
-  | 'cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission'
-  // Feegrant
-  | 'cosmos.feegrant.v1beta1.MsgGrantAllowance'
-  | 'cosmos.feegrant.v1beta1.MsgRevokeAllowance'
-  // Governance
-  | 'cosmos.gov.v1beta1.MsgVote'
-  | 'cosmos.gov.v1beta1.MsgDeposit'
-  | 'cosmos.gov.v1beta1.MsgSubmitProposal'
-  // Slashing
-  | 'cosmos.slashing.v1beta1.MsgUnjail'
-  // Staking
-  | 'cosmos.staking.v1beta1.MsgDelegate'
-  | 'cosmos.staking.v1beta1.MsgUndelegate'
-  | 'cosmos.staking.v1beta1.MsgEditValidator'
-  | 'cosmos.staking.v1beta1.MsgBeginRedelegate'
-  | 'cosmos.staking.v1beta1.MsgCreateValidator'
-  | 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation'
-  | 'cosmwasm.wasm.v1.MsgStoreCode'
-  | 'cosmwasm.wasm.v1.MsgUpdateAdmin'
-  | 'cosmwasm.wasm.v1.MsgExecuteContract'
-  | 'cosmwasm.wasm.v1.MsgMigrateContract'
-  | 'cosmwasm.wasm.v1.MsgInstantiateContract'
-  | 'cosmwasm.wasm.v1.MsgInstantiateContract2'
-  // Transfer
-  | 'ibc.applications.transfer.v1.MsgTransfer'
-  // Channel
-  | 'ibc.core.channel.v1.MsgTimeout'
-  | 'ibc.core.channel.v1.MsgRecvPacket'
-  | 'ibc.core.channel.v1.MsgChannelOpenAck'
-  | 'ibc.core.channel.v1.MsgChannelOpenTry'
-  | 'ibc.core.channel.v1.MsgAcknowledgement'
-  | 'ibc.core.channel.v1.MsgChannelOpenInit'
-  | 'ibc.core.channel.v1.MsgChannelOpenConfirm'
-  // Client
-  | 'ibc.core.client.v1.MsgCreateClient'
-  | 'ibc.core.client.v1.MsgUpdateClient'
-  // Connection
-  | 'ibc.core.connection.v1.MsgConnectionOpenAck'
-  | 'ibc.core.connection.v1.MsgConnectionOpenTry'
-  | 'ibc.core.connection.v1.MsgConnectionOpenInit'
-  | 'ibc.core.connection.v1.MsgConnectionOpenConfirm'
-  // Auction
-  | 'injective.auction.v1beta1.MsgBid'
-  | 'injective.auction.v1beta1.MsgUpdateParams'
-  // ERC20
-  | 'injective.erc20.v1beta1.MsgUpdateParams'
-  | 'injective.erc20.v1beta1.MsgCreateTokenPair'
-  | 'injective.erc20.v1beta1.MsgDeleteTokenPair'
-  // EVM
-  | 'injective.evm.v1.LegacyTx'
-  | 'injective.evm.v1.AccessListTx'
-  | 'injective.evm.v1.DynamicFeeTx'
-  | 'injective.evm.v1.MsgEthereumTx'
-  | 'injective.evm.v1.MsgUpdateParams'
-  | 'injective.evm.v1.ExtensionOptionsEthereumTx'
-  // Exchange
-  | 'injective.exchange.v1beta1.OrderData'
-  | 'injective.exchange.v1beta1.MsgDeposit'
-  | 'injective.exchange.v1beta1.MsgSignDoc'
-  | 'injective.exchange.v1beta1.MsgSignData'
-  | 'injective.exchange.v1beta1.MsgWithdraw'
-  | 'injective.exchange.v1beta1.MsgRewardsOptOut'
-  | 'injective.exchange.v1beta1.MsgCancelSpotOrder'
-  | 'injective.exchange.v1beta1.MsgUpdateParams'
-  | 'injective.exchange.v1beta1.MsgExternalTransfer'
-  | 'injective.exchange.v1beta1.MsgUpdateSpotMarket'
-  | 'injective.exchange.v1beta1.MsgBatchUpdateOrders'
-  | 'injective.exchange.v1beta1.MsgLiquidatePosition'
-  | 'injective.exchange.v1beta1.MsgActivateStakeGrant'
-  | 'injective.exchange.v1beta1.MsgReclaimLockedFunds'
-  | 'injective.exchange.v1beta1.MsgSubaccountTransfer'
-  | 'injective.exchange.v1beta1.SpotMarketOrderResults'
-  | 'injective.exchange.v1beta1.MsgAuthorizeStakeGrants'
-  | 'injective.exchange.v1beta1.MsgCreateSpotLimitOrder'
-  | 'injective.exchange.v1beta1.MsgBatchCancelSpotOrders'
-  | 'injective.exchange.v1beta1.MsgCancelDerivativeOrder'
-  | 'injective.exchange.v1beta1.MsgCreateSpotMarketOrder'
-  | 'injective.exchange.v1beta1.MsgEmergencySettleMarket'
-  | 'injective.exchange.v1beta1.MsgDecreasePositionMargin'
-  | 'injective.exchange.v1beta1.MsgIncreasePositionMargin'
-  | 'injective.exchange.v1beta1.MsgUpdateDerivativeMarket'
-  | 'injective.exchange.v1beta1.MsgInstantSpotMarketLaunch'
-  | 'injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder'
-  | 'injective.exchange.v1beta1.DerivativeMarketOrderResults'
-  | 'injective.exchange.v1beta1.MsgBatchExchangeModification'
-  | 'injective.exchange.v1beta1.MsgPrivilegedExecuteContract'
-  | 'injective.exchange.v1beta1.MsgBatchCreateSpotLimitOrders'
-  | 'injective.exchange.v1beta1.MsgCreateDerivativeLimitOrder'
-  | 'injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders'
-  | 'injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder'
-  | 'injective.exchange.v1beta1.MsgInstantPerpetualMarketLaunch'
-  | 'injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder'
-  | 'injective.exchange.v1beta1.MsgAdminUpdateBinaryOptionsMarket'
-  | 'injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders'
-  | 'injective.exchange.v1beta1.MsgInstantExpiryFuturesMarketLaunch'
-  | 'injective.exchange.v1beta1.MsgBatchCreateDerivativeLimitOrders'
-  | 'injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch'
-  // Exchange V2
-  | 'injective.exchange.v2.OrderData'
-  | 'injective.exchange.v2.MsgDeposit'
-  | 'injective.exchange.v2.MsgSignDoc'
-  | 'injective.exchange.v2.MsgSignData'
-  | 'injective.exchange.v2.MsgWithdraw'
-  | 'injective.exchange.v2.MsgFeeDiscount'
-  | 'injective.exchange.v2.MsgUpdateParams'
-  | 'injective.exchange.v2.MsgRewardsOptOut'
-  | 'injective.exchange.v2.MsgExchangeEnable'
-  | 'injective.exchange.v2.MsgCancelSpotOrder'
-  | 'injective.exchange.v2.MsgExternalTransfer'
-  | 'injective.exchange.v2.MsgSpotMarketLaunch'
-  | 'injective.exchange.v2.MsgUpdateSpotMarket'
-  | 'injective.exchange.v2.MsgBatchUpdateOrders'
-  | 'injective.exchange.v2.MsgLiquidatePosition'
-  | 'injective.exchange.v2.MsgActivateStakeGrant'
-  | 'injective.exchange.v2.MsgReclaimLockedFunds'
-  | 'injective.exchange.v2.MsgSubaccountTransfer'
-  | 'injective.exchange.v2.SpotMarketOrderResults'
-  | 'injective.exchange.v2.MsgAuthorizeStakeGrants'
-  | 'injective.exchange.v2.MsgCreateSpotLimitOrder'
-  | 'injective.exchange.v2.MsgBatchCancelSpotOrders'
-  | 'injective.exchange.v2.MsgCancelDerivativeOrder'
-  | 'injective.exchange.v2.MsgCreateSpotMarketOrder'
-  | 'injective.exchange.v2.MsgEmergencySettleMarket'
-  | 'injective.exchange.v2.MsgPerpetualMarketLaunch'
-  | 'injective.exchange.v2.MsgSpotMarketParamUpdate'
-  | 'injective.exchange.v2.MsgDecreasePositionMargin'
-  | 'injective.exchange.v2.MsgIncreasePositionMargin'
-  | 'injective.exchange.v2.MsgMarketForcedSettlement'
-  | 'injective.exchange.v2.MsgUpdateDerivativeMarket'
-  | 'injective.exchange.v2.MsgBatchCommunityPoolSpend'
-  | 'injective.exchange.v2.MsgInstantSpotMarketLaunch'
-  | 'injective.exchange.v2.MsgCancelBinaryOptionsOrder'
-  | 'injective.exchange.v2.DerivativeMarketOrderResults'
-  | 'injective.exchange.v2.MsgBatchExchangeModification'
-  | 'injective.exchange.v2.MsgBinaryOptionsMarketLaunch'
-  | 'injective.exchange.v2.MsgExpiryFuturesMarketLaunch'
-  | 'injective.exchange.v2.MsgPrivilegedExecuteContract'
-  | 'injective.exchange.v2.MsgBatchCreateSpotLimitOrders'
-  | 'injective.exchange.v2.MsgCreateDerivativeLimitOrder'
-  | 'injective.exchange.v2.MsgBatchCancelDerivativeOrders'
-  | 'injective.exchange.v2.MsgCreateDerivativeMarketOrder'
-  | 'injective.exchange.v2.MsgDerivativeMarketParamUpdate'
-  | 'injective.exchange.v2.MsgTradingRewardCampaignLaunch'
-  | 'injective.exchange.v2.MsgTradingRewardCampaignUpdate'
-  | 'injective.exchange.v2.MsgInstantPerpetualMarketLaunch'
-  | 'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder'
-  | 'injective.exchange.v2.MsgAdminUpdateBinaryOptionsMarket'
-  | 'injective.exchange.v2.MsgBatchCancelBinaryOptionsOrders'
-  | 'injective.exchange.v2.MsgBinaryOptionsMarketParamUpdate'
-  | 'injective.exchange.v2.MsgCreateBinaryOptionsMarketOrder'
-  | 'injective.exchange.v2.MsgBatchCreateDerivativeLimitOrders'
-  | 'injective.exchange.v2.MsgInstantBinaryOptionsMarketLaunch'
-  | 'injective.exchange.v2.MsgInstantExpiryFuturesMarketLaunch'
-  | 'injective.exchange.v2.MsgTradingRewardPendingPointsUpdate'
-  | 'injective.exchange.v2.MsgAtomicMarketOrderFeeMultiplierSchedule'
-  // Insurance
-  | 'injective.insurance.v1beta1.MsgUnderwrite'
-  | 'injective.insurance.v1beta1.MsgUpdateParams'
-  | 'injective.insurance.v1beta1.MsgRequestRedemption'
-  | 'injective.insurance.v1beta1.MsgCreateInsuranceFund'
-  // Oracle
-  | 'injective.oracle.v1beta1.MsgRelayBandRates'
-  | 'injective.oracle.v1beta1.MsgRelayPythPrices'
-  | 'injective.oracle.v1beta1.MsgUpdateParams'
-  | 'injective.oracle.v1beta1.MsgRelayStorkPrices'
-  | 'injective.oracle.v1beta1.MsgRelayProviderPrices'
-  | 'injective.oracle.v1beta1.MsgRelayPriceFeedPrice'
-  | 'injective.oracle.v1beta1.MsgRequestBandIBCRates'
-  | 'injective.oracle.v1beta1.MsgRelayCoinbaseMessages'
-  // OCR
-  | 'injective.ocr.v1beta1.MsgTransmit'
-  | 'injective.ocr.v1beta1.MsgSetPayees'
-  | 'injective.ocr.v1beta1.MsgCreateFeed'
-  | 'injective.ocr.v1beta1.MsgUpdateFeed'
-  | 'injective.ocr.v1beta1.MsgUpdateParams'
-  | 'injective.ocr.v1beta1.MsgAcceptPayeeship'
-  | 'injective.ocr.v1beta1.MsgTransferPayeeship'
-  | 'injective.ocr.v1beta1.MsgFundFeedRewardPool'
-  | 'injective.ocr.v1beta1.MsgWithdrawFeedRewardPool'
-  // Peggy (Bridge)
-  | 'injective.peggy.v1.MsgSendToEth'
-  | 'injective.peggy.v1.MsgConfirmBatch'
-  | 'injective.peggy.v1.MsgDepositClaim'
-  | 'injective.peggy.v1.MsgRequestBatch'
-  | 'injective.peggy.v1.MsgValsetConfirm'
-  | 'injective.peggy.v1.MsgWithdrawClaim'
-  | 'injective.peggy.v1.MsgERC20DeployedClaim'
-  | 'injective.peggy.v1.MsgValsetUpdatedClaim'
-  | 'injective.peggy.v1.MsgRevokeEthereumBlacklist'
-  | 'injective.peggy.v1.MsgSetOrchestratorAddresses'
-  | 'injective.peggy.v1.MsgBlacklistEthereumAddresses'
-  // Permissions
-  | 'injective.permissions.v1beta1.MsgClaimVoucher'
-  | 'injective.permissions.v1beta1.MsgCreateNamespace'
-  | 'injective.permissions.v1beta1.MsgDeleteNamespace'
-  | 'injective.permissions.v1beta1.MsgUpdateNamespace'
-  | 'injective.permissions.v1beta1.MsgUpdateActorRoles'
-  | 'injective.permissions.v1beta1.MsgUpdateParams'
-  | 'injective.permissions.v1beta1.MsgUpdateNamespaceRoles'
-  | 'injective.permissions.v1beta1.MsgRevokeNamespaceRoles'
-  | 'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetWasmHook'
-  | 'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetMintsPaused'
-  | 'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetSendsPaused'
-  | 'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetBurnsPaused'
-  | 'injective.permissions.v1beta1.MsgUpdateNamespace.SetContractHook'
-  // TokenFactory
-  | 'injective.tokenfactory.v1beta1.MsgBurn'
-  | 'injective.tokenfactory.v1beta1.MsgMint'
-  | 'injective.tokenfactory.v1beta1.MsgCreateDenom'
-  | 'injective.tokenfactory.v1beta1.MsgChangeAdmin'
-  | 'injective.tokenfactory.v1beta1.MsgSetDenomMetadata'
-  | 'injective.tokenfactory.v1beta1.MsgUpdateParams'
-  | 'injective.tokenfactory.v1beta1.MsgSetDenomMetadata.AdminBurnDisabled'
-  // Wasmx
-  | 'injective.wasmx.v1.MsgUpdateContract'
-  | 'injective.wasmx.v1.MsgUpdateParams'
-  | 'injective.wasmx.v1.MsgActivateContract'
-  | 'injective.wasmx.v1.MsgRegisterContract'
-  | 'injective.wasmx.v1.MsgDeactivateContract'
-  | 'injective.wasmx.v1.MsgExecuteContractCompat'
-  // TxFees
-  | 'injective.txfees.v1beta1.MsgUpdateParams'
+export type ChainId = typeof ChainId[keyof typeof ChainId]
+
 
 export const MsgType = {
   // Authz
@@ -593,16 +348,18 @@ export const MsgType = {
   MsgTxFeesUpdateParams: 'injective.txfees.v1beta1.MsgUpdateParams',
 } as const
 
-export type MsgStatus = 'success' | 'fail'
+export type MsgType = typeof MsgType[keyof typeof MsgType]
 
 export const MsgStatus = {
   Success: 'success',
   Fail: 'fail',
 } as const
 
-export type EIP712Version = 'v1' | 'v2'
+export type MsgStatus = typeof MsgStatus[keyof typeof MsgStatus]
 
 export const EIP712Version = {
   V1: 'v1',
   V2: 'v2',
 } as const
+
+export type EIP712Version = typeof EIP712Version[keyof typeof EIP712Version]

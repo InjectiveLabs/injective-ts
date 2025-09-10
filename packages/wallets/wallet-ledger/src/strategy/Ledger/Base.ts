@@ -1,11 +1,9 @@
-
 import { EvmChainId } from '@injectivelabs/ts-types'
-import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import {
   toUtf8,
   TxGrpcApi
 } from '@injectivelabs/sdk-ts'
+import { toHex, keccak256, serializeTransaction } from 'viem';
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import {
   ErrorType,
@@ -25,8 +23,6 @@ import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
-import { toHex, keccak256, serializeTransaction } from 'viem';
-
 import LedgerHW from './hw/index.js'
 import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
@@ -45,22 +41,6 @@ import type {
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs
 } from '@injectivelabs/wallet-base';
-
-const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
-  if (chainId === EvmChainId.Goerli) {
-    return Chain.Goerli
-  }
-
-  if (chainId === EvmChainId.Sepolia) {
-    return Chain.Sepolia
-  }
-
-  if (chainId === EvmChainId.Kovan) {
-    return Chain.Goerli
-  }
-
-  return Chain.Mainnet
-}
 
 export default class LedgerBase
   extends BaseConcreteStrategy

@@ -1,6 +1,6 @@
 import { keccak256 } from 'viem'
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import { getDefaultStdFee } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import {
@@ -52,7 +52,7 @@ export const createTransactionWithSigners = ({
   message,
   timeoutHeight,
   memo = '',
-  fee = DEFAULT_STD_FEE,
+  fee = getDefaultStdFee(),
   signMode = SIGN_DIRECT,
 }: CreateTransactionWithSignersArgs): CreateTransactionResult => {
   const actualSigners = Array.isArray(signers) ? signers : [signers]

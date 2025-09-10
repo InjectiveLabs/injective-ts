@@ -1,7 +1,7 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
 import {
-  InjectiveExchangeV1Beta1Exchange,
   InjectiveOracleV1Beta1Oracle,
+  InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
 import {
@@ -12,7 +12,8 @@ import {
 import type { SpotMarket } from '../../indexer/types/spot.js'
 import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
 import type {
-  InjectiveExchangeV1Beta1Query} from '@injectivelabs/core-proto-ts';
+  InjectiveExchangeV1Beta1Query
+} from '@injectivelabs/core-proto-ts';
 import type {
   ChainPosition,
   PointsMultiplier,

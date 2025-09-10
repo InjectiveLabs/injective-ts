@@ -1,25 +1,6 @@
 import type { grpc } from '@injectivelabs/grpc-web'
 import type { StatusCodes } from 'http-status-codes'
 
-export type GrpcErrorCode =
-  | 0
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-
 export const GrpcErrorCode = {
   OK: 0,
   Canceled: 1,
@@ -40,28 +21,13 @@ export const GrpcErrorCode = {
   Unauthenticated: 16,
 } as const
 
+export type GrpcErrorCode = typeof GrpcErrorCode[keyof typeof GrpcErrorCode]
+
 export const grpcErrorCodeToErrorCode = <T extends number>(
   grpcErrorCode: T,
 ): GrpcErrorCode => {
   return grpcErrorCode as GrpcErrorCode
 }
-
-export type TransactionChainErrorModule =
-  | 'auction'
-  | 'sdk'
-  | 'staking'
-  | 'bank'
-  | 'distribution'
-  | 'gov'
-  | 'exchange'
-  | 'insurance'
-  | 'ocr'
-  | 'oracle'
-  | 'peggy'
-  | 'tokenfactory'
-  | 'wasmx'
-  | 'wasm'
-  | 'authz'
 
 export const TransactionChainErrorModule = {
   Auction: 'auction',
@@ -81,47 +47,7 @@ export const TransactionChainErrorModule = {
   AuthZ: 'authz',
 } as const
 
-export type ChainCosmosErrorCode =
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
-  | 22
-  | 23
-  | 24
-  | 25
-  | 26
-  | 27
-  | 28
-  | 29
-  | 30
-  | 31
-  | 32
-  | 33
-  | 34
-  | 35
-  | 36
-  | 37
-  | 38
-  | 39
-  | 40
-  | 41
+export type TransactionChainErrorModule = typeof TransactionChainErrorModule[keyof typeof TransactionChainErrorModule]
 
 export const ChainCosmosErrorCode = {
   // ErrTxDecode is returned if we cannot parse a transaction
@@ -206,105 +132,7 @@ export const ChainCosmosErrorCode = {
   ErrInvalidGasLimit: 41,
 } as const
 
-export type ChainExchangeModuleErrorCode =
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
-  | 22
-  | 23
-  | 24
-  | 25
-  | 26
-  | 27
-  | 28
-  | 29
-  | 30
-  | 31
-  | 32
-  | 33
-  | 34
-  | 35
-  | 36
-  | 37
-  | 38
-  | 39
-  | 40
-  | 41
-  | 42
-  | 43
-  | 44
-  | 45
-  | 46
-  | 47
-  | 48
-  | 49
-  | 50
-  | 51
-  | 52
-  | 53
-  | 54
-  | 55
-  | 56
-  | 57
-  | 58
-  | 59
-  | 60
-  | 61
-  | 62
-  | 63
-  | 64
-  | 65
-  | 66
-  | 67
-  | 68
-  | 69
-  | 70
-  | 71
-  | 72
-  | 73
-  | 74
-  | 75
-  | 76
-  | 77
-  | 78
-  | 79
-  | 80
-  | 81
-  | 82
-  | 83
-  | 84
-  | 85
-  | 86
-  | 87
-  | 88
-  | 89
-  | 90
-  | 91
-  | 92
-  | 93
-  | 94
-  | 95
-  | 96
-  | 97
-  | 98
+export type ChainCosmosErrorCode = typeof ChainCosmosErrorCode[keyof typeof ChainCosmosErrorCode]
 
 export const ChainExchangeModuleErrorCode = {
   //  failed to validate order
@@ -504,7 +332,7 @@ export const ChainExchangeModuleErrorCode = {
   ErrInvalidCid: 98,
 } as const
 
-export type ChainAuctionErrorCodes = 1 | 2
+export type ChainExchangeModuleErrorCode = typeof ChainExchangeModuleErrorCode[keyof typeof ChainExchangeModuleErrorCode]
 
 export const ChainAuctionErrorCodes = {
   // invalid bid denom
@@ -513,7 +341,7 @@ export const ChainAuctionErrorCodes = {
   ErrBidRound: 2,
 } as const
 
-export type ChainAuthZErrorCodes = 2 | 3 | 4 | 5 | 6 | 7 | 9 | 12
+export type ChainAuctionErrorCodes = typeof ChainAuctionErrorCodes[keyof typeof ChainAuctionErrorCodes]
 
 export const ChainAuthZErrorCodes = {
   // ErrNoAuthorizationFound error if there is no authorization found given a grant key
@@ -534,19 +362,7 @@ export const ChainAuthZErrorCodes = {
   ErrNegativeMaxTokens: 12,
 } as const
 
-export type ChainInsuranceErrorCodes =
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
+export type ChainAuthZErrorCodes = typeof ChainAuthZErrorCodes[keyof typeof ChainAuthZErrorCodes]
 
 export const ChainInsuranceErrorCodes = {
   // insurance fund already exists
@@ -575,30 +391,7 @@ export const ChainInsuranceErrorCodes = {
   ErrInvalidShareDenom: 12,
 } as const
 
-export type ChainOcrErrorCodes =
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 19
-  | 20
-  | 21
-  | 22
-  | 23
-  | 24
+export type ChainInsuranceErrorCodes = typeof ChainInsuranceErrorCodes[keyof typeof ChainInsuranceErrorCodes]
 
 export const ChainOcrErrorCodes = {
   // stale report
@@ -649,40 +442,7 @@ export const ChainOcrErrorCodes = {
   ErrFeedConfigNotFound: 24,
 } as const
 
-export type ChainOracleErrorCodes =
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
-  | 22
-  | 23
-  | 24
-  | 25
-  | 26
-  | 27
-  | 28
-  | 29
-  | 30
-  | 31
-  | 32
-  | 33
+export type ChainOcrErrorCodes = typeof ChainOcrErrorCodes[keyof typeof ChainOcrErrorCodes]
 
 export const ChainOracleErrorCodes = {
   // relayer address is empty
@@ -753,21 +513,7 @@ export const ChainOracleErrorCodes = {
   ErrOraclePriceNotFound: 33,
 } as const
 
-export type ChainPeggyErrorCodes =
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
+export type ChainOracleErrorCodes = typeof ChainOracleErrorCodes[keyof typeof ChainOracleErrorCodes]
 
 export const ChainPeggyErrorCodes = {
   // internal
@@ -800,19 +546,7 @@ export const ChainPeggyErrorCodes = {
   ErrInvalidEthDestination: 14,
 } as const
 
-export type ChainTokenFactoryErrorCodes =
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
+export type ChainPeggyErrorCodes = typeof ChainPeggyErrorCodes[keyof typeof ChainPeggyErrorCodes]
 
 export const ChainTokenFactoryErrorCodes = {
   // attempting to create a denom that already exists (has bank metadata)
@@ -841,7 +575,7 @@ export const ChainTokenFactoryErrorCodes = {
   ErrAmountNotPositive: 13,
 } as const
 
-export type ChainWasmXErrorCodes = 1 | 2 | 3 | 4 | 5 | 6 | 7
+export type ChainTokenFactoryErrorCodes = typeof ChainTokenFactoryErrorCodes[keyof typeof ChainTokenFactoryErrorCodes]
 
 export const ChainWasmXErrorCodes = {
   // invalid gas limit
@@ -860,48 +594,7 @@ export const ChainWasmXErrorCodes = {
   ErrInvalidCodeId: 7,
 } as const
 
-export type ChainStakingErrorCodes =
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
-  | 22
-  | 23
-  | 24
-  | 25
-  | 26
-  | 27
-  | 28
-  | 29
-  | 30
-  | 31
-  | 32
-  | 33
-  | 34
-  | 35
-  | 36
-  | 37
-  | 38
-  | 39
-  | 40
-  | 41
-  | 42
+export type ChainWasmXErrorCodes = typeof ChainWasmXErrorCodes[keyof typeof ChainWasmXErrorCodes]
 
 export const ChainStakingErrorCodes = {
   // "empty validator address"
@@ -988,27 +681,7 @@ export const ChainStakingErrorCodes = {
   ErrUnbondingOnHoldRefCountNegative: 42,
 } as const
 
-export type ChainGovErrorCodes =
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
+export type ChainStakingErrorCodes = typeof ChainStakingErrorCodes[keyof typeof ChainStakingErrorCodes]
 
 export const ChainGovErrorCodes = {
   //  "unknown proposal"
@@ -1053,19 +726,7 @@ export const ChainGovErrorCodes = {
   ErrInvalidProposal: 21,
 } as const
 
-export type ChainDistributionErrorCodes =
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
+export type ChainGovErrorCodes = typeof ChainGovErrorCodes[keyof typeof ChainGovErrorCodes]
 
 export const ChainDistributionErrorCodes = {
   //  "delegator address is empty"
@@ -1094,7 +755,7 @@ export const ChainDistributionErrorCodes = {
   ErrNoDelegationExists: 13,
 } as const
 
-export type ChainBankErrorCodes = 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+export type ChainDistributionErrorCodes = typeof ChainDistributionErrorCodes[keyof typeof ChainDistributionErrorCodes]
 
 export const ChainBankErrorCodes = {
   // "no inputs to send transaction"
@@ -1115,27 +776,7 @@ export const ChainBankErrorCodes = {
   ErrMultipleSenders: 9,
 } as const
 
-export type ChainWasmErrorCodes =
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
+export type ChainBankErrorCodes = typeof ChainBankErrorCodes[keyof typeof ChainBankErrorCodes]
 
 export const ChainWasmErrorCodes = {
   // ErrCreateFailed error for wasm code that has already been uploaded or failed
@@ -1179,6 +820,8 @@ export const ChainWasmErrorCodes = {
   // ErrInvalidEvent error if an attribute/event from the contract is invalid
   ErrInvalidEvent: 21,
 } as const
+
+export type ChainWasmErrorCodes = typeof ChainWasmErrorCodes[keyof typeof ChainWasmErrorCodes]
 
 export type IndexerApiErrorCode = number
 

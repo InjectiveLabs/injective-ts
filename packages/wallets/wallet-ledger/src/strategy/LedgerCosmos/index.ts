@@ -21,12 +21,16 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
-import type {
-  TxRaw
-} from '@injectivelabs/sdk-ts';
 import type { LedgerWalletInfo } from '../../types.js'
 import type { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse
+} from '@injectivelabs/sdk-ts';
+import type {
+  StdSignDoc,
   ConcreteWalletStrategy,
   SendTransactionOptions
 } from '@injectivelabs/wallet-base';

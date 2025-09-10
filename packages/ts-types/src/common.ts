@@ -4,13 +4,6 @@ export interface StreamStatusResponse {
   metadata: any
 }
 
-export type StreamOperation =
-  | 'insert'
-  | 'delete'
-  | 'replace'
-  | 'update'
-  | 'invalidate'
-
 export const StreamOperation = {
   Insert: 'insert',
   Delete: 'delete',
@@ -18,6 +11,8 @@ export const StreamOperation = {
   Update: 'update',
   Invalidate: 'invalidate',
 } as const
+
+export type StreamOperation = typeof StreamOperation[keyof typeof StreamOperation]
 
 export interface PaginationOption {
   key: string

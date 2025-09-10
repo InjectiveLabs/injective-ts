@@ -37,16 +37,6 @@ export interface MsgBroadcasterOptions {
   httpHeaders?: Record<string, string>
 }
 
-export type WalletStrategyEmitterEventType =
-  | 'transaction-fail'
-  | 'transaction-signed'
-  | 'transaction-sign-start'
-  | 'transaction-broadcast-end'
-  | 'wallet-strategy-disconnect'
-  | 'transaction-broadcast-start'
-  | 'transaction-preparation-end'
-  | 'transaction-preparation-start'
-
 export const WalletStrategyEmitterEventType = {
   TransactionFail: 'transaction-fail',
   TransactionSigned: 'transaction-signed',
@@ -57,6 +47,8 @@ export const WalletStrategyEmitterEventType = {
   TransactionPreparationEnd: 'transaction-preparation-end',
   TransactionPreparationStart: 'transaction-preparation-start',
 } as const
+
+export type WalletStrategyEmitterEventType = typeof WalletStrategyEmitterEventType[keyof typeof WalletStrategyEmitterEventType]
 
 export type WalletStrategyEmitterEvents = {
   [WalletStrategyEmitterEventType.TransactionFail]: Record<string, any>

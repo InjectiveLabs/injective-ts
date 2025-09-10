@@ -67,7 +67,7 @@ const createPerpetualMarketLaunch = (
   content.oracleBase = params.market.oracleBase
   content.oracleQuote = params.market.oracleQuote
   content.oracleScaleFactor = params.market.oracleScaleFactor
-  content.oracleType = Number(params.market.oracleType)
+  content.oracleType = Number(params.market.oracleType) as InjectiveOracleV1Beta1Oracle.OracleType
   content.initialMarginRatio = params.market.initialMarginRatio
   content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
   content.makerFeeRate = params.market.makerFeeRate
@@ -268,7 +268,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
       content: {
         ...content,
         oracle_type: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-          Number(content.oracle_type),
+          Number(content.oracle_type) as InjectiveOracleV1Beta1Oracle.OracleType,
         ),
         initial_margin_ratio: numberToCosmosSdkDecString(
           params.market.initialMarginRatio,

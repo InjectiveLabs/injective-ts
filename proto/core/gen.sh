@@ -74,6 +74,7 @@ for dir in $proto_dirs; do
     --ts_proto_opt="esModuleInterop=true" \
     --ts_proto_opt="forceLong=string" \
     --ts_proto_opt="env=both" \
+    --ts_proto_opt="enumsAsLiterals=true" \
     --ts_proto_opt="useExactTypes=false" \
     --ts_proto_opt="outputClientImpl=grpc-web" \
     --ts_proto_out="$TS_OUTPUT_DIR/proto" \

@@ -5,12 +5,12 @@ export type ListTradingStrategiesResponse =
 
 export type TradingStrategy = InjectiveTradingRpc.TradingStrategy
 
-export type MarketType = 'spot' | 'derivative'
-
 export const MarketType = {
   Spot: 'spot',
   Derivative: 'derivative',
 } as const
+
+export type MarketType = typeof MarketType[keyof typeof MarketType]
 
 export type GridStrategyType = 'geometric' | 'arithmetic' | 'perpetual'
 // Trailing Arithmetic

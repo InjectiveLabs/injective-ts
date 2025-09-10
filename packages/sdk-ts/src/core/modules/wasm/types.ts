@@ -1,18 +1,18 @@
-export type ExitType = 'default' | 'quote' | 'base'
-
 export const ExitType = {
   Default: 'default',
   Quote: 'quote',
   Base: 'base',
 } as const
 
-export type StrategyType = 'arithmetic' | 'trailing_arithmetic_lp' | 'geometric'
+export type ExitType = typeof ExitType[keyof typeof ExitType]
 
 export const StrategyType = {
   Arithmetic: 'arithmetic',
   ArithmeticLP: 'trailing_arithmetic_lp',
   Geometric: 'geometric',
 } as const
+
+export type StrategyType = typeof StrategyType[keyof typeof StrategyType]
 
 export type TrailingArithmetic = {
   trailing_arithmetic: {
