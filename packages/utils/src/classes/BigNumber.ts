@@ -14,7 +14,7 @@ export const toBigNumber = (value: BigNumber | string | number): BigNumber => {
 }
 
 /**
- * Converts a value to Wei (multiplies by 10^decimals)
+ * Converts a value to Wei (multiplies by 10^decimals) default to 18 decimals
  */
 // parseUnits
 export const toChainFormat = (
@@ -27,7 +27,7 @@ export const toChainFormat = (
 }
 
 /**
- * Converts a value from Wei to Base (divides by 10^decimals)
+ * Converts a value from Wei to Base (divides by 10^decimals) default to 18 decimals
  */
 // formatUnits
 export const toHumanReadable = (

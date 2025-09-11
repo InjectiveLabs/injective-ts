@@ -1,12 +1,12 @@
 import snakecaseKeys from 'snakecase-keys'
 import {
-  InjectiveExchangeV1Beta1Exchange,
   InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
+import { toChainFormat } from '@injectivelabs/utils'
 import { MsgBase } from '../../MsgBase.js'
 import {
   numberToCosmosSdkDecString,
-  amountToCosmosSdkDecAmount,
 } from '../../../../utils/numbers.js'
 
 export declare namespace MsgLiquidatePosition {
@@ -84,16 +84,16 @@ export default class MsgLiquidatePosition extends MsgBase<
       order: initialParams.order
         ? {
             ...initialParams.order,
-            price: amountToCosmosSdkDecAmount(
+            price: toChainFormat(
               initialParams.order.price,
             ).toFixed(),
-            margin: amountToCosmosSdkDecAmount(
+            margin: toChainFormat(
               initialParams.order.margin,
             ).toFixed(),
-            triggerPrice: amountToCosmosSdkDecAmount(
+            triggerPrice: toChainFormat(
               initialParams.order.triggerPrice || 0,
             ).toFixed(),
-            quantity: amountToCosmosSdkDecAmount(
+            quantity: toChainFormat(
               initialParams.order.quantity,
             ).toFixed(),
           }
@@ -176,11 +176,11 @@ export default class MsgLiquidatePosition extends MsgBase<
             ...order,
             order_info: {
               ...order?.order_info,
-              price: amountToCosmosSdkDecAmount(order.order_info.price).toFixed(),
-              quantity: amountToCosmosSdkDecAmount(order.order_info.quantity).toFixed(),
+              price: toChainFormat(order.order_info.price).toFixed(),
+              quantity: toChainFormat(order.order_info.quantity).toFixed(),
             },
-            margin: amountToCosmosSdkDecAmount(order.margin).toFixed(),
-            trigger_price: amountToCosmosSdkDecAmount(
+            margin: toChainFormat(order.margin).toFixed(),
+            trigger_price: toChainFormat(
               order.trigger_price || '0',
             ).toFixed(),
           }

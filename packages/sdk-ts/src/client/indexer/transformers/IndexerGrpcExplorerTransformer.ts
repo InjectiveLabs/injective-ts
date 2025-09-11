@@ -35,7 +35,7 @@ const ZERO_IN_BASE = new BigNumberInBase(0)
 
 const getContractTransactionV2Amount = (
   ApiTransaction: InjectiveExplorerRpc.TxDetailData,
-): BigNumberInBase => {
+): BigNumber => {
   const messages = JSON.parse(
     Buffer.from(ApiTransaction.messages).toString('utf8'),
   )

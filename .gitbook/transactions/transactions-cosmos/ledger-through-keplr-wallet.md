@@ -45,21 +45,21 @@ What we need to do now is generate the `eip712` and the `signDoc`, pass them to 
 Based on the overview above, let's now showcase a full example of how to implement signing transactions on Injective using Ledger + Keplr. Keep in mind that the example below takes into consideration that you are using the [Msgs](https://github.com/InjectiveLabs/injective-ts/blob/master/packages/sdk-ts/src/core/modules/msgs.ts#L60) interface exported from the `@injectivelabs/sdk-ts` package.
 
 ````typescript
-import { 
- ChainRestAuthApi,
- BaseAccount,
- createTransaction,
- createWeb3Extension,
- SIGN_AMINO,
+import {
  TxGrpcApi,
+ SIGN_AMINO,
+ BaseAccount,
+ ChainRestAuthApi,
+ createTransaction,
  createTxRawEIP712,
+ getEip712TypedData
+ createWeb3Extension,
  ChainRestTendermintApi,
  getGasPriceBasedOnMessage,
- getEip712TypedData
 } from '@injectivelabs/sdk-ts'
-import { getNetworkEndpoints, NetworkEndpoints, Network } from '@injectivelabs/networks'
+import { toBigNumber, getStdFee } from '@injectivelabs/utils'
 import { GeneralException, TransactionException } from '@injectivelabs/exceptions'
-import { BigNumberInBase, getStdFee } from '@injectivelabs/utils'
+import { getNetworkEndpoints, NetworkEndpoints, Network } from '@injectivelabs/networks'
 
 export interface Options {
   ethereumChainId: number /* 1 for Injective mainnet, 5 for Injective testnet */
@@ -123,9 +123,9 @@ export const experimentalBroadcastKeplrWithLedger = async (
   const { endpoints, chainId, ethereumChainId } = options
   const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
   const DEFAULT_BLOCK_TIMEOUT_HEIGHT = 60
-  
+
   /**
-   * You choose to perform a check if 
+   * You choose to perform a check if
    * the user is indeed connected with Ledger + Keplr
    */
   if (/* your condition here */) {
@@ -148,7 +148,7 @@ export const experimentalBroadcastKeplrWithLedger = async (
   const chainRestTendermintApi = new ChainRestTendermintApi(endpoints.rest)
   const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
   const latestHeight = latestBlock.header.height
-  const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+  const timeoutHeight = toBigNumber(latestHeight).plus(
     DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   )
 
@@ -171,7 +171,7 @@ export const experimentalBroadcastKeplrWithLedger = async (
   })
 
   const aminoSignResponse = await window.keplr.experimentalSignEIP712CosmosTx_v0(
-    chainId, 
+    chainId,
     tx.injectiveAddress,
     eip712TypedData,
     createEip712StdSignDoc({

@@ -6,9 +6,9 @@ import {
   InjectiveExchangeV2Proposal,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
+import { toChainFormat } from '@injectivelabs/utils'
 import { MsgBase } from '../../MsgBase.js'
 import {
-  amountToCosmosSdkDecAmount,
   numberToCosmosSdkDecString,
 } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys';
@@ -111,28 +111,28 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
       ...initialParams,
       market: {
         ...initialParams.market,
-        initialMarginRatio: amountToCosmosSdkDecAmount(
+        initialMarginRatio: toChainFormat(
           initialParams.market.initialMarginRatio,
         ).toFixed(),
-        maintenanceMarginRatio: amountToCosmosSdkDecAmount(
+        maintenanceMarginRatio: toChainFormat(
           initialParams.market.maintenanceMarginRatio,
         ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
+        makerFeeRate: toChainFormat(
           initialParams.market.makerFeeRate,
         ).toFixed(),
-        minPriceTickSize: amountToCosmosSdkDecAmount(
+        minPriceTickSize: toChainFormat(
           initialParams.market.minPriceTickSize,
         ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
+        takerFeeRate: toChainFormat(
           initialParams.market.takerFeeRate,
         ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
+        minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
+        minNotional: toChainFormat(
           initialParams.market.minNotional,
         ).toFixed(),
-        reduceMarginRatio: amountToCosmosSdkDecAmount(
+        reduceMarginRatio: toChainFormat(
           initialParams.market.reduceMarginRatio,
         ).toFixed(),
       },
@@ -223,28 +223,28 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
         type: 'exchange/PerpetualMarketLaunchProposal',
         value: {
           ...value.content.value,
-          initial_margin_ratio: amountToCosmosSdkDecAmount(
+          initial_margin_ratio: toChainFormat(
             params.market.initialMarginRatio,
           ).toFixed(),
-          maintenance_margin_ratio: amountToCosmosSdkDecAmount(
+          maintenance_margin_ratio: toChainFormat(
             params.market.maintenanceMarginRatio,
           ).toFixed(),
-          maker_fee_rate: amountToCosmosSdkDecAmount(
+          maker_fee_rate: toChainFormat(
             params.market.makerFeeRate,
           ).toFixed(),
-          taker_fee_rate: amountToCosmosSdkDecAmount(
+          taker_fee_rate: toChainFormat(
             params.market.takerFeeRate,
           ).toFixed(),
-          min_price_tick_size: amountToCosmosSdkDecAmount(
+          min_price_tick_size: toChainFormat(
             params.market.minPriceTickSize,
           ).toFixed(),
-          min_notional: amountToCosmosSdkDecAmount(
+          min_notional: toChainFormat(
             params.market.minNotional,
           ).toFixed(),
-          min_quantity_tick_size: amountToCosmosSdkDecAmount(
+          min_quantity_tick_size: toChainFormat(
             params.market.minQuantityTickSize,
           ).toFixed(),
-          reduce_margin_ratio: amountToCosmosSdkDecAmount(
+          reduce_margin_ratio: toChainFormat(
             params.market.reduceMarginRatio,
           ).toFixed(),
         },

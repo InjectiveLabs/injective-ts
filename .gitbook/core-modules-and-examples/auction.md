@@ -13,7 +13,7 @@ import {
   MsgBroadcasterWithPk,
 } from '@injectivelabs/sdk-ts'
 import { ChainId } from '@injectivelabs/ts-types'
-import { INJ_DENOM, BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 
 const endpointsForNetwork = getNetworkEndpoints(Network.Mainnet)
@@ -22,8 +22,8 @@ const auctionApi = new ChainGrpcAuctionApi(endpointsForNetwork.grpc)
 const injectiveAddress = 'inj1...'
 /* format amount for bid, note that bid amount has to be higher than the current highest bid */
 const amount = {
-  denom: INJ_DENOM,
-  amount: new BigNumberInBase(1).toWei(),
+  denom: 'inj',
+  amount: toChainFormat(1),
 }
 
 const latestAuctionModuleState = await auctionApi.fetchModuleState()
@@ -76,7 +76,7 @@ import {
   MsgExternalTransfer,
   MsgBroadcasterWithPk,
 } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const denomClient = new DenomClient(Network.Mainnet)
@@ -91,7 +91,7 @@ const tokenDenom = `peggy${tokenMeta.erc20.address}`
 /* format amount to add to the burn auction pool */
 const amount = {
   denom: tokenDenom,
-  amount: new BigNumberInBase(1).toWei(tokenMeta.decimals).toFixed(),
+  amount: toChainFormat(1, tokenMeta.decimals).toFixed(),
 }
 
 /* create message in proto format */

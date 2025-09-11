@@ -10,7 +10,7 @@ Note that calculating the formula for calculating a spot and quote market price 
     Using INJ/USDT market which has 18 base decimals and 6 quote decimals as an example, here's how we convert the value to the chain format:
 
 ```js
-const chainFormat = new BigNumberInBase(10)
+const chainFormat = toBigNumber(10)
   .pow(quoteDecimal - baseDecimal)
   .times(value)
   .toFixed()
@@ -20,7 +20,7 @@ const chainFormat = new BigNumberInBase(10)
    Using INJ/USDT market which has 18 base decimals and 6 quote decimals as an example, here's how we convert the value to the UI human readable format:
 
 ```js
-const humanReadableFormat = new BigNumber(value)
+const humanReadableFormat = toBigNumber(value)
   .shiftedBy(baseDecimals - quoteDecimals)
   .toFixed()
 ```
@@ -31,7 +31,7 @@ const humanReadableFormat = new BigNumber(value)
     Using INJ/USDT perp market which has 6 quote decimals as an example, here's how we convert the value to the chain format:
 
 ```js
-const chainFormat = new BigNumberInBase(10)
+const chainFormat = toBigNumber(10)
   .pow(-quoteDecimal)
   .times(value)
   .toFixed()
@@ -41,7 +41,7 @@ const chainFormat = new BigNumberInBase(10)
    Using INJ/USDT perp market which has 6 quote decimals as an example, here's how we convert the value to the UI human readable format:
 
 ```js
-const humanReadableFormat = new BigNumber(value)
+const humanReadableFormat = toBigNumber(value)
   .shiftedBy(-quoteDecimals)
   .toFixed()
 ```

@@ -66,17 +66,16 @@ There is a bridgeFee included in these transactions to incentivize Validators to
 Here is an example implementation that prepares the transaction, uses a privateKey to sign it and finally, broadcasts it to Injective:
 
 ```ts
-import { getNetworkInfo, Network } from '@injectivelabs/networks'
 import {
   TxClient,
   PrivateKey,
-  TxRestClient,
   MsgSendToEth,
-  DEFAULT_STD_FEE,
+  TxRestClient,
   ChainRestAuthApi,
   createTransaction,
 } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { getNetworkInfo, Network } from '@injectivelabs/networks'
+import { toChainFormat, getDefaultStdFee } from '@injectivelabs/utils'
 
 /** MsgSendToEth Example */
 ;(async () => {
@@ -95,11 +94,11 @@ import { BigNumberInBase } from '@injectivelabs/utils'
 
   /** Prepare the Message */
   const amount = {
-    amount: new BigNumberInBase(0.01).toWei().toFixed(),
+    amount: toChainFormat(0.01).toFixed(),
     denom: 'inj',
   }
   const bridgeFee = {
-    amount: new BigNumberInBase(0.01).toWei().toFixed(),
+    amount: toChainFormat(0.01).toFixed(),
     denom: 'inj',
   }
 
@@ -113,7 +112,7 @@ import { BigNumberInBase } from '@injectivelabs/utils'
   /** Prepare the Transaction **/
   const { signBytes, txRaw } = createTransaction({
     message: msg,
-    fee: DEFAULT_STD_FEE,
+    fee: getDefaultStdFee(),
     pubKey: publicKey,
     sequence: parseInt(accountDetails.account.base_account.sequence, 10),
     accountNumber: parseInt(

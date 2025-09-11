@@ -17,11 +17,11 @@ import {
   MsgGovDeposit
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
+import { toChainFormat } from "@injectivelabs/utils";
 
 const INJ_DENOM = 'inj'
-const amount = new BigNumberInBase(1).toWei().toFixed()
+const amount = toChainFormat(1).toFixed()
 const proposalId = 12345
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
@@ -81,16 +81,16 @@ Propose any action on Injective. TextProposal defines a standard text proposal w
 
 ```ts
 import {
+  MsgBroadcasterWithPk,
   MsgSubmitTextProposal,
-  MsgBroadcasterWithPk
 } from "@injectivelabs/sdk-ts";
 import { Network } from "@injectivelabs/networks";
-import { BigNumberInBase } from "@injectivelabs/utils";
+import { toChainFormat } from "@injectivelabs/utils";
 
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
 const INJ_DENOM = 'inj'
-const amount = new BigNumberInBase(1).toWei().toFixed()
+const amount = toChainFormat(1).toFixed()
 
 const message = MsgSubmitTextProposal.fromJSON({
   title: 'Title of Proposal',
@@ -120,7 +120,7 @@ import {
   MsgBroadcasterWithPk,
   MsgSubmitProposalSpotMarketLaunch
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase, BigNumberInWei } from "@injectivelabs/utils";
+import { toChainFormat, BigNumberInWei } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 // refer to https://docs.ts.injective.network/readme/assets/injective-list
 import { tokens } from '../data/tokens.json'
@@ -130,7 +130,7 @@ const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
 const INJ_DENOM = 'inj'
-const amount = new BigNumberInBase(1).toWei().toFixed()
+const amount = toChainFormat(1).toFixed()
 
 const market = {
   baseDenom: 'inj', // for example
@@ -154,18 +154,16 @@ const marketWithDecimals: SpotMarketLaunchProposal = {
 
 const marketWithTickSizes = {
   ...market,
-  minPriceTickSize: new BigNumberInWei(
-    marketWithDecimals.minPriceTickSize
-  )
-  .toBase(
+  minPriceTickSize: toChainFormat(
+    marketWithDecimals.minPriceTickSize,
     marketWithDecimals.baseTokenDecimals -
       marketWithDecimals.quoteTokenDecimals
   )
   .toFixed(),
-  minQuantityTickSize: new BigNumberInBase(
-    marketWithDecimals.minQuantityTickSize
+  minQuantityTickSize: toChainFormat(
+    marketWithDecimals.minQuantityTickSize,
+    marketWithDecimals.baseTokenDecimals
   )
-  .toWei(marketWithDecimals.baseTokenDecimals)
   .toFixed()
 }
 
@@ -196,7 +194,7 @@ import {
   MsgBroadcasterWithPk,
   MsgSubmitProposalPerpetualMarketLaunch
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
+import { toChainFormat } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 // refer to https://docs.ts.injective.network/readme/assets/injective-list
 import { tokens } from '../data/tokens.json'
@@ -206,7 +204,7 @@ const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
 const INJ_DENOM = 'inj'
-const amount = new BigNumberInBase(1).toWei().toFixed()
+const amount = toChainFormat(1).toFixed()
 
 const market = {
   title: 'INJ/USDT Perpetual Market Launch',
@@ -233,10 +231,10 @@ const marketWithDecimals = {
 
 const marketWithTickSizes = {
   ...market,
-  minPriceTickSize: new BigNumberInBase(
-    marketWithDecimals.minPriceTickSize
+  minPriceTickSize: toChainFormat(
+    marketWithDecimals.minPriceTickSize,
+    marketWithDecimals.quoteTokenDecimals
   )
-    .toWei(marketWithDecimals.quoteTokenDecimals)
     .toFixed()
 }
 
@@ -267,7 +265,7 @@ import {
   MsgBroadcasterWithPk,
   MsgSubmitProposalExpiryFuturesMarketLaunch
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
+import { toChainFormat } from "@injectivelabs/utils";
 import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
 // refer to https://docs.ts.injective.network/readme/assets/injective-list
 import { tokens } from '../data/tokens.json'
@@ -277,7 +275,7 @@ const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
 const INJ_DENOM = 'inj'
-const amount = new BigNumberInBase(1).toWei().toFixed()
+const amount = toChainFormat(1).toFixed()
 
 const market = {
   title: 'INJ/USDT Futures Market Launch',
@@ -306,10 +304,10 @@ const marketWithDecimals = {
 
 const marketWithTickSizes = {
   ...market,
-  minPriceTickSize: new BigNumberInBase(
-    marketWithDecimals.minPriceTickSize
+  minPriceTickSize: toChainFormat(
+    marketWithDecimals.minPriceTickSize,
+    marketWithDecimals.quoteTokenDecimals
   )
-    .toWei(marketWithDecimals.quoteTokenDecimals)
     .toFixed()
 }
 
@@ -318,7 +316,7 @@ const message = MsgSubmitProposalExpiryFuturesMarketLaunch.fromJSON({
   proposer: injectiveAddress,
   deposit: {
     denom: INJ_DENOM,
-    amount: deposit.toWei().toFixed()
+    amount
   }
 })
 
@@ -339,14 +337,14 @@ import {
   MsgBroadcasterWithPk,
   MsgSubmitProposalSpotMarketParamUpdate
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
-import {  Network } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
+import { toChainFormat } from "@injectivelabs/utils";
 import { MarketStatusMap } from '@injectivelabs/chain-api';
 
 const injectiveAddress = "inj...";
 const privateKey = "0x...";
 const INJ_DENOM = 'inj'
-const amount = new BigNumberInBase(1).toWei().toFixed()
+const amount = toChainFormat(1).toFixed()
 
 const market = {
   title: 'INJ/USDT Spot Market Launch',

@@ -1,4 +1,4 @@
-import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
+import { toHumanReadable } from '@injectivelabs/utils'
 import type { Coin } from '@injectivelabs/ts-types'
 import type { ValidatorRewards } from '../types/distribution.js'
 import type { DistributionModuleParams } from '../types/distribution.js'
@@ -15,7 +15,7 @@ export class ChainGrpcDistributionTransformer {
     const params = response.params!
 
     return {
-      communityTax: cosmosSdkDecToBigNumber(params.communityTax).toFixed(),
+      communityTax: toHumanReadable(params.communityTax).toFixed(),
       baseProposerReward: params.baseProposerReward,
       bonusProposerReward: params.bonusProposerReward,
       withdrawAddrEnabled: params.withdrawAddrEnabled,
@@ -29,7 +29,7 @@ export class ChainGrpcDistributionTransformer {
 
     return grpcRewards.map((grpcReward) => {
       return {
-        amount: cosmosSdkDecToBigNumber(grpcReward.amount).toFixed(),
+        amount: toHumanReadable(grpcReward.amount).toFixed(),
         denom: grpcReward.denom,
       }
     })
@@ -42,7 +42,7 @@ export class ChainGrpcDistributionTransformer {
 
     return grpcRewards.map((grpcReward) => {
       const rewards = grpcReward.reward.map((reward) => ({
-        amount: cosmosSdkDecToBigNumber(reward.amount).toFixed(),
+        amount: toHumanReadable(reward.amount).toFixed(),
         denom: reward.denom,
       }))
 

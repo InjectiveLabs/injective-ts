@@ -13,15 +13,15 @@ Let's explore (and provide examples) the messages that the Bank module exports a
 This message is used to send coins from one address to another. Any TokenFactory token and Peggy token can be used here. To transfer CW20 tokens, see the `MsgExecuteContract` section [here](https://docs.ts.injective.network/core-modules/wasm#msgexecutecontract-transfer).
 
 ```ts
-import { MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
 const amount = {
   denom: 'inj',
-  amount: new BigNumberInBase(1).toWei()
+  amount: toChainFormat(1)
 }
 const msg = MsgSend.fromJSON({
   amount,
@@ -44,9 +44,9 @@ console.log(txHash)
 This message is used to send to multiple recipients from multiple senders.&#x20;
 
 ```typescript
-import { MsgMultiSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgMultiSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -57,9 +57,9 @@ const records = [/** add records here */] as {
     amount: string; /* in a human readable number */
 }[];
 const totalToSend = records.reduce((acc, record) => {
-  return acc.plus(new BigNumberInBase(record.amount).toWei(decimals));
-}, new BigNumberInWei(0));
-  
+  return acc.plus(toChainFormat(record.amount, decimals));
+}, toChainFormat(0));
+
 const msg = MsgMultiSend.fromJSON({
   inputs: [
     {
@@ -77,8 +77,7 @@ const msg = MsgMultiSend.fromJSON({
       address: record.address,
       coins: [
         {
-          amount: new BigNumberInBase(record.amount)
-            .toWei(decimals)
+          amount: toChainFormat(record.amount, decimals)
             .toFixed(),
           denom,
         },

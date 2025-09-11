@@ -1,10 +1,10 @@
 import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
 import {
   InjectiveExchangeV1Beta1Tx,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import { amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys';
 
 
@@ -296,11 +296,11 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       const orderData = params.spotOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
-          price: amountToCosmosSdkDecAmount(args.price).toFixed(),
-          triggerPrice: amountToCosmosSdkDecAmount(
+          price: toChainFormat(args.price).toFixed(),
+          triggerPrice: toChainFormat(
             args.triggerPrice || 0,
           ).toFixed(),
-          quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
+          quantity: toChainFormat(args.quantity).toFixed(),
         }
 
         return createSpotOrder({
@@ -320,12 +320,12 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       const orderData = params.derivativeOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
-          price: amountToCosmosSdkDecAmount(args.price).toFixed(),
-          margin: amountToCosmosSdkDecAmount(args.margin).toFixed(),
-          triggerPrice: amountToCosmosSdkDecAmount(
+          price: toChainFormat(args.price).toFixed(),
+          margin: toChainFormat(args.margin).toFixed(),
+          triggerPrice: toChainFormat(
             args.triggerPrice || 0,
           ).toFixed(),
-          quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
+          quantity: toChainFormat(args.quantity).toFixed(),
         }
 
         return createDerivativeOrder({
@@ -380,12 +380,12 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       const orderData = params.binaryOptionsOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
-          price: amountToCosmosSdkDecAmount(args.price).toFixed(),
-          margin: amountToCosmosSdkDecAmount(args.margin).toFixed(),
-          triggerPrice: amountToCosmosSdkDecAmount(
+          price: toChainFormat(args.price).toFixed(),
+          margin: toChainFormat(args.margin).toFixed(),
+          triggerPrice: toChainFormat(
             args.triggerPrice || 0,
           ).toFixed(),
-          quantity: amountToCosmosSdkDecAmount(args.quantity).toFixed(),
+          quantity: toChainFormat(args.quantity).toFixed(),
         }
 
         return createBinaryOptionOrder({

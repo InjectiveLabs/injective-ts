@@ -1,6 +1,6 @@
-// Test import for utils functionality
-import { getNetworkInfo } from './../dist/esm/index.js'
+// Test import for utils-specific functionality
+import { getNetworkInfo } from '../dist/esm/index.js'
 
-// Test just the utils functions
-const networkInfo = getNetworkInfo('testnet')
-console.log('Utils loaded:', networkInfo.chainId)
+// Test just the utils function
+const network = getNetworkInfo('mainnet')
+console.log('Utils function loaded:', network.chainId)

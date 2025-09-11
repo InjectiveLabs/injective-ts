@@ -6,9 +6,9 @@ import {
   InjectiveExchangeV1Beta1Proposal,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
+import { toChainFormat } from '@injectivelabs/utils'
 import { MsgBase } from '../../MsgBase.js'
 import {
-  amountToCosmosSdkDecAmount,
   numberToCosmosSdkDecString,
 } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys';
@@ -105,22 +105,22 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
       ...initialParams,
       market: {
         ...initialParams.market,
-        relayerFeeShareRate: amountToCosmosSdkDecAmount(
+        relayerFeeShareRate: toChainFormat(
           initialParams.market.relayerFeeShareRate,
         ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
+        makerFeeRate: toChainFormat(
           initialParams.market.makerFeeRate,
         ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
+        takerFeeRate: toChainFormat(
           initialParams.market.takerFeeRate,
         ).toFixed(),
-        minPriceTickSize: amountToCosmosSdkDecAmount(
+        minPriceTickSize: toChainFormat(
           initialParams.market.minPriceTickSize,
         ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
+        minNotional: toChainFormat(
           initialParams.market.minNotional,
         ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
+        minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
       },
@@ -211,22 +211,22 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
         type: 'exchange/SpotMarketParamUpdateProposal',
         value: {
           ...value.content.value,
-          relayer_fee_share_rate: amountToCosmosSdkDecAmount(
+          relayer_fee_share_rate: toChainFormat(
             params.market.relayerFeeShareRate,
           ).toFixed(),
-          maker_fee_rate: amountToCosmosSdkDecAmount(
+          maker_fee_rate: toChainFormat(
             params.market.makerFeeRate,
           ).toFixed(),
-          taker_fee_rate: amountToCosmosSdkDecAmount(
+          taker_fee_rate: toChainFormat(
             params.market.takerFeeRate,
           ).toFixed(),
-          min_price_tick_size: amountToCosmosSdkDecAmount(
+          min_price_tick_size: toChainFormat(
             params.market.minPriceTickSize,
           ).toFixed(),
-          min_notional: amountToCosmosSdkDecAmount(
+          min_notional: toChainFormat(
             params.market.minNotional,
           ).toFixed(),
-          min_quantity_tick_size: amountToCosmosSdkDecAmount(
+          min_quantity_tick_size: toChainFormat(
             params.market.minQuantityTickSize,
           ).toFixed(),
         },

@@ -1,5 +1,5 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import { toChainFormat, getDefaultStdFee } from '@injectivelabs/utils'
 import { getEip712TypedDataV2 } from './eip712.js'
 import MsgSend from '../../modules/bank/msgs/MsgSend.js'
 
@@ -7,7 +7,7 @@ describe('EIP712V2', () => {
   test('generating proper EI712 v2', () => {
     const amount = {
       denom: 'inj',
-      amount: new BigNumberInBase(0.01).toWei().toFixed(),
+      amount: toChainFormat(0.01).toFixed(),
     }
 
     const msg = MsgSend.fromJSON({
@@ -26,7 +26,7 @@ describe('EIP712V2', () => {
     const eip712TypedData = getEip712TypedDataV2({
       msgs: [msg],
       fee: {
-        ...DEFAULT_STD_FEE,
+        ...getDefaultStdFee(),
         feePayer: 'inj18j2myhaf2at75kwwaqxfstk4q28n4am45nlfg7',
       },
       tx: {

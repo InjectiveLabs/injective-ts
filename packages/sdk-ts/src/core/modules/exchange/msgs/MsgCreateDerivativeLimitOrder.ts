@@ -6,8 +6,8 @@ import {
 import { MsgBase } from '../../MsgBase.js'
 import {
   numberToCosmosSdkDecString,
-  amountToCosmosSdkDecAmount,
 } from '../../../../utils/numbers.js'
+import { toChainFormat } from '@injectivelabs/utils'
 import type { SnakeCaseKeys } from 'snakecase-keys';
 
 
@@ -76,12 +76,12 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
 
     const params = {
       ...initialParams,
-      price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
-      margin: amountToCosmosSdkDecAmount(initialParams.margin).toFixed(),
-      triggerPrice: amountToCosmosSdkDecAmount(
+      price: toChainFormat(initialParams.price).toFixed(),
+      margin: toChainFormat(initialParams.margin).toFixed(),
+      triggerPrice: toChainFormat(
         initialParams.triggerPrice || 0,
       ).toFixed(),
-      quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
+      quantity: toChainFormat(initialParams.quantity).toFixed(),
     } as MsgCreateDerivativeLimitOrder.Params
 
     return createLimitOrder(params)
@@ -156,11 +156,11 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
         ...value.order,
         order_info: {
           ...value.order?.order_info,
-          price: amountToCosmosSdkDecAmount(params.price).toFixed(),
-          quantity: amountToCosmosSdkDecAmount(params.quantity).toFixed(),
+          price: toChainFormat(params.price).toFixed(),
+          quantity: toChainFormat(params.quantity).toFixed(),
         },
-        margin: amountToCosmosSdkDecAmount(params.margin).toFixed(),
-        trigger_price: amountToCosmosSdkDecAmount(
+        margin: toChainFormat(params.margin).toFixed(),
+        trigger_price: toChainFormat(
           params.triggerPrice || '0',
         ).toFixed(),
       },

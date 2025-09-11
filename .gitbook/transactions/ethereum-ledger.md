@@ -54,13 +54,14 @@ What is of importance for us for this particular implementation are the `toEip71
 So, let’s see a quick code snippet of the usage of these methods and how we can generate EIP712 typedData from a message:
 
 ```ts
-import { MsgSend, DEFAULT_STD_FEE } from '@injectivelabs/sdk-ts'
 import {
-   getEip712TypedData,
+  getEip712TypedData,
    Eip712ConvertTxArgs,
    Eip712ConvertFeeArgs
 } from '@injectivelabs/sdk-ts/dist/core/eip712'
-import { EtherumChainId } from '@injectivelabs/ts-types'
+import { MsgSend } from '@injectivelabs/sdk-ts'
+import { toChainFormat, getDefaultStdFee } from '@injectivelabs/utils'
+import { EvmChainId } from '@injectivelabs/ts-types'
 
 /** More details on these two interfaces later on */
 const txArgs: Eip712ConvertTxArgs = {
@@ -69,13 +70,13 @@ const txArgs: Eip712ConvertTxArgs = {
   timeoutHeight: timeoutHeight.toFixed(),
   chainId: chainId,
 }
-const txFeeArgs: Eip712ConvertFeeArgs = DEFAULT_STD_FEE
+const txFeeArgs: Eip712ConvertFeeArgs = getDefaultStdFee()
 const injectiveAddress = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
 const amount = {
-  amount: new BigNumberInBase(0.01).toWei().toFixed(),
   denom: "inj",
+  amount: toChainFormat(0.01).toFixed(),
 };
-const ethereumChainId = EthereumChainId.Mainnet
+const evmChainId = EvmChainId.Mainnet
 
 const msg = MsgSend.fromJSON({
   amount,
@@ -88,7 +89,7 @@ const eip712TypedData = getEip712Tx({
   msgs: msg,
   tx: txArgs,
   fee: txFeeArgs
-  ethereumChainId: ethereumChainId,
+  evmChainId,
 })
 
 return eip712TypedData;
@@ -138,16 +139,19 @@ Now that we have the signature, we can prepare the transaction using the default
 
 ```ts
 import {
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
+  SIGN_AMINO,
   BaseAccount,
-  DEFAULT_STD_FEE,
+  ChainRestAuthApi,
   createTransaction,
   createTxRawEIP712,
   createWeb3Extension,
-  SIGN_AMINO
+  ChainRestTendermintApi,
 } from '@injectivelabs/sdk-ts'
-import { DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import {
+  toBigNumber,
+  getDefaultStdFee,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT
+} from '@injectivelabs/utils'
 
 const msg: MsgSend /* from Step 1 */
 
@@ -167,7 +171,7 @@ const chainRestTendermintApi = new ChainRestTendermintApi(
 )
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
-const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+const timeoutHeight = toBigNumber(latestHeight).plus(
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 )
 
@@ -175,7 +179,7 @@ const { txRaw } = createTransaction({
   message: msgs,
   memo: '',
   signMode: SIGN_AMINO,
-  fee: DEFAULT_STD_FEE,
+  fee: getDefaultStdFee(),
   pubKey: publicKeyBase64,
   sequence: baseAccount.sequence,
   timeoutHeight: timeoutHeight.toNumber(),
@@ -204,26 +208,25 @@ Let’s see an example codebase containing all of the steps above
 
 ```ts
 import {
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
-  BaseAccount,
-  DEFAULT_STD_FEE
   TxRestApi,
+  SIGN_AMINO
+  BaseAccount,
+  ChainRestAuthApi,
   createTransaction,
   createTxRawEIP712,
   createWeb3Extension,
-  SIGN_AMINO
+  ChainRestTendermintApi,
 } from '@injectivelabs/sdk-ts'
 import { TypedDataUtils } from 'eth-sig-util'
-import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import EthereumApp from '@ledgerhq/hw-app-eth'
+import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import {
    getEip712TypedData,
    Eip712ConvertTxArgs,
    Eip712ConvertFeeArgs
 } from '@injectivelabs/sdk-ts/dist/core/eip712'
 import { EtherumChainId, CosmosChainId } from '@injectivelabs/ts-types'
-import { BigNumberInBase, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import { toChainFormat, getDefaultStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
 
 const domainHash = (message: any) =>
 TypedDataUtils.hashStruct('EIP712Domain', message.domain, message.types, true)
@@ -289,10 +292,10 @@ const txArgs: Eip712ConvertTxArgs = {
   timeoutHeight: timeoutHeight.toString(),
   chainId: chainId,
 }
-const txFeeArgs: Eip712ConvertFeeArgs = DEFAULT_STD_FEE
+const txFeeArgs: Eip712ConvertFeeArgs = getDefaultStdFee()
 const injectiveAddress = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
 const amount = {
-  amount: new BigNumberInBase(0.01).toWei().toFixed(),
+  amount: toChainFormat(0.01).toFixed(),
   denom: "inj",
 };
 
@@ -318,7 +321,7 @@ const { txRaw } = createTransaction({
   message: msg,
   memo: '',
   signMode: SIGN_AMINO,
-  fee: DEFAULT_STD_FEE,
+  fee: getDefaultStdFee(),
   pubKey: publicKeyBase64,
   sequence: accountDetails.sequence,
   timeoutHeight: timeoutHeight.toNumber(),

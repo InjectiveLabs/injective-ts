@@ -1,12 +1,12 @@
 import snakecaseKeys from 'snakecase-keys'
 import {
-  InjectiveExchangeV1Beta1Exchange,
   InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
+import { toChainFormat } from '@injectivelabs/utils'
 import { MsgBase } from '../../MsgBase.js'
 import {
   numberToCosmosSdkDecString,
-  amountToCosmosSdkDecAmount,
 } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys';
 
@@ -72,11 +72,11 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
 
     const params = {
       ...initialParams,
-      price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
-      triggerPrice: amountToCosmosSdkDecAmount(
+      price: toChainFormat(initialParams.price).toFixed(),
+      triggerPrice: toChainFormat(
         initialParams.triggerPrice || 0,
       ).toFixed(),
-      quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
+      quantity: toChainFormat(initialParams.quantity).toFixed(),
     } as MsgCreateSpotLimitOrder.Params
 
     return createLimitOrder(params)
@@ -150,10 +150,10 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
         ...value.order,
         order_info: {
           ...value.order?.order_info,
-          price: amountToCosmosSdkDecAmount(params.price).toFixed(),
-          quantity: amountToCosmosSdkDecAmount(params.quantity).toFixed(),
+          price: toChainFormat(params.price).toFixed(),
+          quantity: toChainFormat(params.quantity).toFixed(),
         },
-        trigger_price: amountToCosmosSdkDecAmount(
+        trigger_price: toChainFormat(
           params.triggerPrice || '0',
         ).toFixed(),
       },
