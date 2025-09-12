@@ -30,11 +30,6 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
 
-      - name: Echo all commit messages
-        run: |
-          echo "All commit messages:"
-          echo '${{ toJson(github.event.commits) }}'
-
       - name: Build dependencies
         run: |
           lerna clean --yes
