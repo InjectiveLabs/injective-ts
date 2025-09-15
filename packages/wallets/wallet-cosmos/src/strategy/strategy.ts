@@ -332,13 +332,15 @@ export class CosmosWalletStrategy
     return !cosmosWallet ? new CosmosWallet({ chainId, wallet }) : cosmosWallet
   }
 
-  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
-    const cosmosWallet = await this.getCosmosWallet(chainId as any)
+  public async getOfflineSigner(chainId?: string): Promise<OfflineSigner> {
+    const cosmosWallet = await this.getCosmosWallet(
+      (chainId as ChainId) || this.chainId,
+    )
     if (!cosmosWallet) {
       throw new Error('no cosmos wallet')
     }
 
-    return await cosmosWallet.getOfflineSigner(chainId)
+    return await cosmosWallet.getOfflineSigner(chainId || this.chainId)
   }
 
   private getCurrentCosmosWallet(): CosmosWallet {

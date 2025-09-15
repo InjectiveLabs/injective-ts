@@ -73,8 +73,6 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
     const serializedTransaction = serializeTransaction(txData)
 
-    console.log('serializedTransaction', serializedTransaction)
-
     const ledgerService = await loadLedgerServiceType()
 
     const resolution = await ledgerService.resolveTransaction(
@@ -83,15 +81,11 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       {},
     )
 
-    console.log('resolution', resolution)
-
     const signature = await ledgerInstance.signTransaction(
       this.derivationPath,
       serializedTransaction.substring(2),
       resolution,
     )
-
-    console.log(signature)
 
     const signedTransaction = serializeTransaction(txData, {
       r: signature.r as `0x${string}`,
@@ -122,8 +116,6 @@ export class LedgerEip1193Provider implements Eip1193Provider {
   }
 
   async request(args: { method: string; params: any[] }): Promise<any> {
-    console.log(args)
-
     if (args.method === 'eth_requestAccounts') {
       const address = await this.getAddress()
 
@@ -170,8 +162,6 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
       const estimate = await client.estimateGas(data)
 
-      console.log({ estimate })
-
       return `0x${estimate.toString(16)}`
     }
 
@@ -206,17 +196,11 @@ export class LedgerEip1193Provider implements Eip1193Provider {
         ...args.params[0],
       })
 
-      console.log('preparedTransaction', preparedTransaction)
-
       const signedTransaction = await this.signTransaction(preparedTransaction)
-
-      console.log('signedTransaction', signedTransaction)
 
       const tx = await walletClient.sendRawTransaction({
         serializedTransaction: signedTransaction as `0x${string}`,
       })
-
-      console.log('tx', tx)
 
       return tx
     }
