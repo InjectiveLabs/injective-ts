@@ -19,15 +19,18 @@ import {
   WalletStrategyArguments,
   CosmosWalletAbstraction,
   WalletStrategy as WalletStrategyInterface,
+  Eip1193Provider,
 } from '@injectivelabs/wallet-base'
 import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import { StdSignDoc } from '@keplr-wallet/types'
+
 import {
   WalletStrategyEmitter,
   WalletStrategyEmitterEvents,
   WalletStrategyEmitterEventType,
 } from '../broadcaster/types.js'
+import { OfflineSigner } from '@cosmjs/proto-signing'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -294,5 +297,27 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     }
 
     return strategy.getCosmosWallet(chainId)
+  }
+
+  public async getEip1193Provider(): Promise<Eip1193Provider> {
+    if (this.getStrategy().getEip1193Provider) {
+      return this.getStrategy().getEip1193Provider!()
+    }
+
+    throw new WalletException(
+      new Error(
+        'EIP1193 provider not found. Please check your wallet strategy.',
+      ),
+    )
+  }
+
+  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
+    if (this.getStrategy().getOfflineSigner) {
+      return this.getStrategy().getOfflineSigner!(chainId)
+    }
+
+    throw new WalletException(
+      new Error('Offline signer not found. Please check your wallet strategy.'),
+    )
   }
 }

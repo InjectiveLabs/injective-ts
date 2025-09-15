@@ -22,7 +22,8 @@ import { capitalize } from '@injectivelabs/utils'
 import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 import { SigningStargateClient, StdFee } from '@cosmjs/stargate'
-import type { EncodeObject, OfflineDirectSigner } from '@cosmjs/proto-signing'
+import type { EncodeObject } from '@cosmjs/proto-signing'
+import { OfflineSigner } from '@cosmjs/proto-signing'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
   keplr?: Keplr
@@ -119,14 +120,13 @@ export class CosmosWallet {
     }
   }
 
-  public async getOfflineSigner(): Promise<OfflineDirectSigner> {
-    const { chainId, wallet } = this
-    const cosmosWallet = await this.getCosmosWallet()
+  public async getOfflineSigner(chainId?: string): Promise<OfflineSigner> {
+    const { wallet } = this
 
     try {
-      return cosmosWallet.getOfflineSigner(
-        chainId,
-      ) as unknown as OfflineDirectSigner
+      return this.getCosmos().getOfflineSigner(
+        chainId || this.chainId,
+      ) as OfflineSigner
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         contextModule: wallet,

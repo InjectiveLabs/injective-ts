@@ -32,6 +32,8 @@ import { InstallError, Cosmos } from '@cosmostation/extension-client'
 import { makeSignDoc } from '@cosmjs/proto-signing'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
 import { CosmostationWallet } from './../wallet.js'
+import { OfflineSigner } from '@cosmjs/proto-signing'
+import { getOfflineSigner } from '@cosmostation/cosmos-client'
 
 const getChainNameFromChainId = (chainId: CosmosChainId | ChainId) => {
   const [chainName] = chainId.split('-')
@@ -297,6 +299,10 @@ export class Cosmostation
         context: WalletAction.GetEvmTransactionReceipt,
       },
     )
+  }
+
+  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
+    return (await getOfflineSigner(chainId)) as unknown as OfflineSigner
   }
 
   private async getCosmostationWallet(): Promise<Cosmos> {

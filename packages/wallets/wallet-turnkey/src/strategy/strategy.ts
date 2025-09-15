@@ -4,6 +4,7 @@ import {
   TxGrpcApi,
   AminoSignResponse,
   DirectSignResponse,
+  getEthereumAddress,
 } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
@@ -20,6 +21,7 @@ import {
   createWalletClient,
   PrepareTransactionRequestParameters,
 } from 'viem'
+
 import {
   StdSignDoc,
   WalletAction,
@@ -31,6 +33,7 @@ import {
   SendTransactionOptions,
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
+  Eip1193Provider,
 } from '@injectivelabs/wallet-base'
 import { sleep, HttpRestClient } from '@injectivelabs/utils'
 import { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
@@ -38,6 +41,7 @@ import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { DEFAULT_EVM_CHAIN_CONFIG } from './consts.js'
+import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
 
 export class TurnkeyWalletStrategy
   extends BaseConcreteStrategy
@@ -423,5 +427,24 @@ export class TurnkeyWalletStrategy
     }
 
     return this.turnkeyWallet
+  }
+
+  public async getEip1193Provider(): Promise<Eip1193Provider> {
+    const turnkeyWallet = await this.getTurnkeyWallet()
+    const addresses = await turnkeyWallet.getAccounts()
+
+    //? Turnkey expects the case sensitive address and the current impl of getChecksumAddress from sdk-ts doesn't play nice with browser envs
+    const checksumAddress = getAddress(getEthereumAddress(addresses[0]))
+
+    const account = await turnkeyWallet.getOrCreateAndGetAccount(
+      checksumAddress,
+    )
+
+    const eip1193Provider = await getEip1193ProviderForTurnkey(
+      account,
+      String(this.evmOptions.evmChainId),
+    )
+
+    return eip1193Provider
   }
 }
