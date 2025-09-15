@@ -33,6 +33,7 @@ import {
 } from '@injectivelabs/wallet-base'
 import { capitalize } from '@injectivelabs/utils'
 import { CosmosWallet } from './../wallet.js'
+import { OfflineSigner } from '@cosmjs/proto-signing'
 
 const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
 
@@ -210,10 +211,17 @@ export class CosmosWalletStrategy
     address: AccountAddress
   }) {
     const cosmosWallet = this.getCurrentCosmosWallet()
-    const signer = await cosmosWallet.getOfflineSigner()
+    const signer = await cosmosWallet.getOfflineSigner(this.chainId)
     const signDoc = createSignDocFromTransaction(transaction)
 
     try {
+      if (!('signDirect' in signer)) {
+        throw new CosmosWalletException(new Error('signDirect not available'), {
+          code: UnspecifiedErrorCode,
+          context: WalletAction.SendTransaction,
+        })
+      }
+
       return await signer.signDirect(
         transaction.address,
         createCosmosSignDocFromSignDoc(signDoc),
@@ -322,6 +330,17 @@ export class CosmosWalletStrategy
     const { wallet, cosmosWallet } = this
 
     return !cosmosWallet ? new CosmosWallet({ chainId, wallet }) : cosmosWallet
+  }
+
+  public async getOfflineSigner(chainId?: string): Promise<OfflineSigner> {
+    const cosmosWallet = await this.getCosmosWallet(
+      (chainId as ChainId) || this.chainId,
+    )
+    if (!cosmosWallet) {
+      throw new Error('no cosmos wallet')
+    }
+
+    return await cosmosWallet.getOfflineSigner(chainId || this.chainId)
   }
 
   private getCurrentCosmosWallet(): CosmosWallet {

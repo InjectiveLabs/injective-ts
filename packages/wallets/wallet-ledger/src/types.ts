@@ -1,3 +1,4 @@
+import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
 import type HDNode from 'hdkey'
 
 export enum LedgerDerivationPathType {
@@ -18,3 +19,8 @@ export enum WalletLedger {
   LedgerCosmos = 'ledger-cosmos',
   LedgerLegacy = 'ledger-legacy',
 }
+
+export type SignTransactionFunctionType = (
+  txData: any,
+  args: { address: string; evmChainId: any },
+) => Promise<FeeMarketEIP1559Transaction>

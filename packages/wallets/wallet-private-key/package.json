@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-private-key",
   "description": "Private key wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.16.10",
+  "version": "1.16.11-alpha.1",
   "sideEffects": false,
   "type": "module",
   "author": {
