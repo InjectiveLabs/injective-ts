@@ -10,7 +10,7 @@ jobs:
   publish-canary:
     runs-on: ubuntu-latest
     permissions: write-all
-    if: ${{ contains(github.event.commits[0].message, 'canary') }}
+    if: ${{ contains(github.event.head_commit.message, 'canary') }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
