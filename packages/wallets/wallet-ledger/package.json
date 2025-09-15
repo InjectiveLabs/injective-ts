@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-ledger",
   "description": "Ledger wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.16.10",
+  "version": "1.16.11-alpha.1",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -70,7 +70,8 @@
     "alchemy-sdk": "^3.4.7",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.0",
-    "hdkey": "^2.1.0"
+    "hdkey": "^2.1.0",
+    "viem": "^2.33.2"
   },
   "devDependencies": {
     "@types/eth-sig-util": "^2.1.1",

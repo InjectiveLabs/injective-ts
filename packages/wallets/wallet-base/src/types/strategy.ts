@@ -8,8 +8,16 @@ import type {
 import { StdSignDoc } from '@keplr-wallet/types'
 import { WalletDeviceType, Wallet } from './enums.js'
 
+import { OfflineSigner } from '@cosmjs/proto-signing'
+
 export type onAccountChangeCallback = (account: string | string[]) => void
 export type onChainIdChangeCallback = () => void
+
+export type Eip1193Provider = {
+  request: (args: { method: string; params: any[] }) => Promise<any>
+  on: (event: string, listener: (...args: any[]) => void) => void
+  removeListener: (event: string, listener: (...args: any[]) => void) => void
+}
 
 export type CosmosWalletAbstraction = {
   enableGasCheck?(chainId: ChainId): Promise<void> | void
@@ -249,6 +257,10 @@ export interface ConcreteWalletStrategy
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
 
   getWalletClient?<T>(): Promise<T>
+
+  getEip1193Provider?(): Promise<Eip1193Provider>
+
+  getOfflineSigner?(chainId: string): Promise<OfflineSigner>
 }
 
 export interface WalletStrategy {
@@ -303,6 +315,8 @@ export interface WalletStrategy {
   onChainIdChange(callback: onChainIdChangeCallback): Promise<void>
   disconnect(): Promise<void>
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
+  getEip1193Provider?(): Promise<Eip1193Provider>
+  getOfflineSigner?(chainId: string): Promise<OfflineSigner>
 }
 
 export { StdSignDoc }

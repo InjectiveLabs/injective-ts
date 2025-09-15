@@ -29,6 +29,7 @@ import {
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   ConcreteEvmWalletStrategyArgs,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
+  Eip1193Provider,
 } from '@injectivelabs/wallet-base'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import { Common, Chain, Hardfork } from '@ethereumjs/common'
@@ -39,6 +40,7 @@ import LedgerHW from './hw/index.js'
 import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
 import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
+import { LedgerEip1193Provider } from './Eip1193Provider.js'
 
 const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
   if (chainId === EvmChainId.Goerli) {
@@ -130,6 +132,8 @@ export default class LedgerBase
     },
   ): Promise<string> {
     const signedTransaction = await this.signEvmTransaction(txData, args)
+
+    signedTransaction.serialize()
 
     try {
       const alchemy = await this.getAlchemy(args.evmChainId)
@@ -341,11 +345,13 @@ export default class LedgerBase
         {},
         {},
       )
+
       const txSig = await ledger.signTransaction(
         derivationPath,
         encodedMessageHex,
         resolution,
       )
+
       const signedTxData = {
         ...eip1559TxData,
         v: `0x${txSig.v}`,
@@ -401,6 +407,13 @@ export default class LedgerBase
         contextModule: WalletAction.GetAccounts,
       })
     }
+  }
+
+  public async getEip1193Provider(): Promise<Eip1193Provider> {
+    return new LedgerEip1193Provider(this.ledger, {
+      chainId: this.evmOptions.evmChainId.toString(),
+      derivationPath: this.baseDerivationPath,
+    })
   }
 
   private async getAlchemy(evmChainId?: EvmChainId) {
