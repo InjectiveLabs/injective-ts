@@ -8,6 +8,7 @@ import MsgLiquidatePosition from './msgs/MsgLiquidatePosition.js'
 import MsgBatchUpdateOrders from './msgs/MsgBatchUpdateOrders.js'
 import MsgReclaimLockedFunds from './msgs/MsgReclaimLockedFunds.js'
 import MsgCreateSpotLimitOrder from './msgs/MsgCreateSpotLimitOrder.js'
+import MsgAuthorizeStakeGrants from './msgs/MsgAuthorizeStakeGrants.js'
 import MsgBatchCancelSpotOrders from './msgs/MsgBatchCancelSpotOrders.js'
 import MsgCancelDerivativeOrder from './msgs/MsgCancelDerivativeOrder.js'
 import MsgCreateSpotMarketOrder from './msgs/MsgCreateSpotMarketOrder.js'
@@ -22,7 +23,7 @@ import MsgCreateBinaryOptionsMarketOrder from './msgs/MsgCreateBinaryOptionsMark
 import MsgInstantBinaryOptionsMarketLaunch from './msgs/MsgInstantBinaryOptionsMarketLaunch.js'
 import MsgBatchCancelBinaryOptionsOrders from './msgs/MsgBatchCancelBinaryOptionsOrders.js'
 import MsgAdminUpdateBinaryOptionsMarket from './msgs/MsgAdminUpdateBinaryOptionsMarket.js'
-import MsgAuthorizeStakeGrants from './msgs/MsgAuthorizeStakeGrants.js'
+import MsgSetDelegationTransferReceivers from './msgs/MsgSetDelegationTransferReceivers.js'
 
 export {
   MsgDeposit,
@@ -49,6 +50,7 @@ export {
   MsgAdminUpdateBinaryOptionsMarket,
   MsgCreateBinaryOptionsMarketOrder,
   MsgBatchCancelBinaryOptionsOrders,
+  MsgSetDelegationTransferReceivers,
   MsgInstantBinaryOptionsMarketLaunch,
 }
 

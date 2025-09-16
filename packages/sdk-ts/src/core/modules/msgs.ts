@@ -27,6 +27,7 @@ import MsgDeposit from './exchange/msgs/MsgDeposit.js'
 import MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin.js'
 import MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch.js'
 import MsgWithdraw from './exchange/msgs/MsgWithdraw.js'
+import MsgSetDelegationTransferReceivers from './exchange/msgs/MsgSetDelegationTransferReceivers.js'
 import MsgGovDeposit from './gov/msgs/MsgDeposit.js'
 import MsgVote from './gov/msgs/MsgVote.js'
 import MsgTransfer from './ibc/msgs/MsgTransfer.js'
@@ -97,6 +98,7 @@ export type Msgs =
   | MsgUndelegate
   | MsgBeginRedelegate
   | MsgTransferDelegation
+  | MsgSetDelegationTransferReceivers
   | MsgCancelUnbondingDelegation
   | MsgExecuteContract
   | MsgExecuteContractCompat
@@ -158,3 +160,4 @@ export type ExchangeMsgs =
   | MsgLiquidatePosition
   | MsgAuthorizeStakeGrants
   | MsgAdminUpdateBinaryOptionsMarket
+  | MsgSetDelegationTransferReceivers

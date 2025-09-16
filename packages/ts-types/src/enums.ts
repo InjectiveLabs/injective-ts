@@ -195,6 +195,7 @@ export enum MsgType {
   MsgTradingRewardCampaignUpdateV2 = 'injective.exchange.v2.MsgTradingRewardCampaignUpdate',
   // MsgInstantPerpetualMarketLaunchV2 = 'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
   MsgCreateBinaryOptionsLimitOrderV2 = 'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder',
+  MsgSetDelegationTransferReceivers = 'injective.exchange.v2.MsgSetDelegationTransferReceivers',
   MsgAdminUpdateBinaryOptionsMarketV2 = 'injective.exchange.v2.MsgAdminUpdateBinaryOptionsMarket',
   MsgBatchCancelBinaryOptionsOrdersV2 = 'injective.exchange.v2.MsgBatchCancelBinaryOptionsOrders',
   MsgBinaryOptionsMarketParamUpdateV2 = 'injective.exchange.v2.MsgBinaryOptionsMarketParamUpdate',

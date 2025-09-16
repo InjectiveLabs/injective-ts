@@ -446,6 +446,10 @@ export const protoTypeToAminoType = (type: string): string => {
     case 'injective.exchange.v1beta1.BatchUpdateOrdersAuthz':
       return 'exchange/BatchUpdateOrdersAuthz'
 
+    // Exchange v2
+    case 'injective.exchange.v2.MsgSetDelegationTransferReceivers':
+      return 'exchange/MsgSetDelegationTransferReceivers'
+
     // Auction
     case 'injective.auction.v1beta1.MsgBid':
       return 'auction/MsgBid'
