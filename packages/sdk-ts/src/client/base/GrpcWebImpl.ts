@@ -1,5 +1,7 @@
-import { grpc, grpcPkg } from './../../utils/grpc.js'
 import { BrowserHeaders } from 'browser-headers'
+import { grpc } from './../../utils/grpc.js'
+import type { grpcPkg } from './../../utils/grpc.js'
+
 
 interface UnaryMethodDefinitionR
   extends grpcPkg.grpc.UnaryMethodDefinition<any, any> {

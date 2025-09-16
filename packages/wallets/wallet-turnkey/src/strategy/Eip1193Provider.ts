@@ -1,12 +1,13 @@
-import { Eip1193Provider } from '@injectivelabs/wallet-base'
+import * as viemChains from 'viem/chains'
 import {
   extractChain,
-  LocalAccount,
   createWalletClient,
   http,
   createPublicClient,
 } from 'viem'
-import * as viemChains from 'viem/chains'
+import type {
+  LocalAccount } from 'viem';
+import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 
 export const getEip1193ProviderForTurnkey = async (
   account: LocalAccount,

@@ -1,4 +1,7 @@
-import {
+import { fromUtf8 } from '../../../utils/index.js'
+import { grpcPaginationToPagination } from './../../../utils/pagination.js'
+import type { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
+import type {
   TokenInfo,
   ContractInfo,
   MarketingInfo,
@@ -11,9 +14,7 @@ import {
   GrpcContractCodeHistoryEntry,
   ContractAccountsBalanceWithPagination,
 } from '../types/wasm.js'
-import { fromUtf8 } from '../../../utils/index.js'
-import { grpcPaginationToPagination } from './../../../utils/pagination.js'
-import { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
+
 
 /**
  * @category Chain Grpc Transformer

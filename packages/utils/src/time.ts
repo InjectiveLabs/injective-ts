@@ -1,11 +1,11 @@
-import { BigNumberInBase, BigNumber } from './classes/index.js'
+import BigNumber from './classes/BigNumber.js'
 
-export const SECONDS_IN_A_DAY: BigNumber = new BigNumber(60 * 60 * 24)
+export const getSecondsInDay = (): BigNumber => new BigNumber(60 * 60 * 24)
 
 export const convertTimestampToMilliseconds = (
   timestamp: number | string,
 ): number => {
-  const timestampInBigNumber = new BigNumberInBase(timestamp)
+  const timestampInBigNumber = new BigNumber(timestamp)
 
   if (timestamp.toString().length > 13) {
     return timestampInBigNumber
@@ -31,20 +31,18 @@ export const getUTCDateFromTimestamp = (timestamp: number) => {
 }
 
 export const tomorrow = (): BigNumber =>
-  new BigNumberInBase(Math.floor(new Date().valueOf() / 1000) + 3600 * 24)
+  new BigNumber(Math.floor(new Date().valueOf() / 1000) + 3600 * 24)
 
 export const todayInSeconds = (): number => Math.floor(Date.now() / 1000)
 
 export const past24Hours = (): number =>
-  new BigNumberInBase(todayInSeconds()).minus(SECONDS_IN_A_DAY).toNumber()
+  new BigNumber(todayInSeconds()).minus(getSecondsInDay()).toNumber()
 
 export const pastDays = (day = 1): number =>
-  new BigNumberInBase(todayInSeconds())
-    .minus(SECONDS_IN_A_DAY.times(day))
-    .toNumber()
+  new BigNumber(todayInSeconds()).minus(getSecondsInDay().times(day)).toNumber()
 
 export const getEndDateStringFromTimeInSeconds = (
-  timeInSeconds: BigNumberInBase,
+  timeInSeconds: BigNumber,
 ): string => {
   const currentDate = new Date(timeInSeconds.toNumber() * 1000)
 

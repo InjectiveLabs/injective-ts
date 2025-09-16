@@ -1,8 +1,8 @@
-import { EventEmitter } from 'eventemitter3'
-import { Msgs } from '@injectivelabs/sdk-ts'
-import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import { Network, NetworkEndpoints } from '@injectivelabs/networks'
-import BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type { EventEmitter } from 'eventemitter3'
+import type { Msgs } from '@injectivelabs/sdk-ts'
+import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type { Network, NetworkEndpoints } from '@injectivelabs/networks'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
@@ -37,16 +37,18 @@ export interface MsgBroadcasterOptions {
   httpHeaders?: Record<string, string>
 }
 
-export enum WalletStrategyEmitterEventType {
-  TransactionFail = 'transaction-fail',
-  TransactionSigned = 'transaction-signed',
-  TransactionSignStart = 'transaction-sign-start',
-  TransactionBroadcastEnd = 'transaction-broadcast-end',
-  WalletStrategyDisconnect = 'wallet-strategy-disconnect',
-  TransactionBroadcastStart = 'transaction-broadcast-start',
-  TransactionPreparationEnd = 'transaction-preparation-end',
-  TransactionPreparationStart = 'transaction-preparation-start',
-}
+export const WalletStrategyEmitterEventType = {
+  TransactionFail: 'transaction-fail',
+  TransactionSigned: 'transaction-signed',
+  TransactionSignStart: 'transaction-sign-start',
+  TransactionBroadcastEnd: 'transaction-broadcast-end',
+  WalletStrategyDisconnect: 'wallet-strategy-disconnect',
+  TransactionBroadcastStart: 'transaction-broadcast-start',
+  TransactionPreparationEnd: 'transaction-preparation-end',
+  TransactionPreparationStart: 'transaction-preparation-start',
+} as const
+
+export type WalletStrategyEmitterEventType = typeof WalletStrategyEmitterEventType[keyof typeof WalletStrategyEmitterEventType]
 
 export type WalletStrategyEmitterEvents = {
   [WalletStrategyEmitterEventType.TransactionFail]: Record<string, any>

@@ -1,21 +1,3 @@
-import {
-  Wallet,
-  isEvmWallet,
-  type WalletMetadata,
-  ConcreteStrategiesArg,
-  ConcreteWalletStrategy,
-  WalletStrategyArguments,
-  WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs,
-} from '@injectivelabs/wallet-base'
-import {
-  LedgerLiveStrategy,
-  LedgerLegacyStrategy,
-} from '@injectivelabs/wallet-ledger'
-import {
-  TrezorBip32Strategy,
-  TrezorBip44Strategy,
-} from '@injectivelabs/wallet-trezor'
 import { MagicStrategy } from '@injectivelabs/wallet-magic'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
@@ -25,6 +7,27 @@ import { TurnkeyWalletStrategy } from '@injectivelabs/wallet-turnkey'
 import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
+import {
+  Wallet,
+  isEvmWallet,
+  type WalletMetadata,
+} from '@injectivelabs/wallet-base'
+import {
+  LedgerLiveStrategy,
+  LedgerLegacyStrategy,
+} from '@injectivelabs/wallet-ledger'
+import {
+  TrezorBip32Strategy,
+  TrezorBip44Strategy,
+} from '@injectivelabs/wallet-trezor'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  ConcreteStrategiesArg,
+  ConcreteWalletStrategy,
+  WalletStrategyArguments,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
+} from '@injectivelabs/wallet-base'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { evmOptions } = args
@@ -49,11 +52,17 @@ const createStrategy = ({
   wallet: Wallet
   args: WalletStrategyArguments
 }): ConcreteWalletStrategy | undefined => {
+  console.log('creating strategy for wallet:', wallet)
+
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
    */
   if (isEvmWallet(wallet) && ethereumWalletsDisabled(args)) {
+    console.log(
+      'Skipping EVM wallet strategy creation due to disabled EVM options',
+    )
+
     return undefined
   }
 
@@ -178,7 +187,7 @@ export class WalletStrategy extends BaseWalletStrategy {
     const shouldRecreateStrategyOnMetadataChange = [
       Wallet.PrivateKey,
       Wallet.WalletConnect,
-    ]
+    ] as WalletType[]
 
     const strategiesWithPlaceholders = {
       ...this.strategies,

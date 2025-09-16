@@ -13,13 +13,14 @@ import {
   MsgSend,
   PrivateKey,
   BaseAccount,
-  DEFAULT_STD_FEE,
   ChainRestAuthApi,
   createTransaction,
   ChainRestTendermintApi,
 } from '@injectivelabs/sdk-ts'
 import {
-  DEFAULT_STD_FEE,
+  toBigNumber,
+  toChainFormat,
+  getDefaultStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
@@ -33,8 +34,9 @@ const pubKey = privateKey.toPublicKey().toBase64()
 const chainId = 'injective-1' /* ChainId.Mainnet */
 const restEndpoint =
   'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+
 const amount = {
-  amount: new BigNumberInBase(0.01).toWei().toFixed(),
+  amount: toChainFormat(0.01).toFixed(),
   denom: 'inj',
 }
 
@@ -50,7 +52,7 @@ const accountDetails = baseAccount.toAccountDetails()
 const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
-const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+const timeoutHeight = toBigNumber(latestHeight).plus(
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 )
 
@@ -65,7 +67,7 @@ const msg = MsgSend.fromJSON({
 const { txRaw, signBytes } = createTransaction({
   pubKey,
   chainId,
-  fee: DEFAULT_STD_FEE,
+  fee: getDefaultStdFee(),
   message: msgs,
   sequence: baseAccount.sequence,
   timeoutHeight: timeoutHeight.toNumber(),
@@ -137,7 +139,6 @@ if (txResponse.code !== 0) {
 Let's have a look at the whole flow (using Keplr as a signing wallet)
 
 ```ts
-import { getNetworkInfo, Network } from '@injectivelabs/networks'
 import {
   TxClient,
   PrivateKey,
@@ -146,7 +147,8 @@ import {
   createTransaction,
 } from '@injectivelabs/sdk-ts'
 import { MsgSend } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import { getNetworkInfo, Network } from '@injectivelabs/networks'
+import { toChainFormat, getDefaultStdFee } from '@injectivelabs/utils'
 
 /** MsgSend Example */
 ;(async () => {
@@ -164,7 +166,7 @@ import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
 
   /** Prepare the Message */
   const amount = {
-    amount: new BigNumberInBase(0.01).toWei().toFixed(),
+    amount: toChainFormat(0.01).toFixed(),
     denom: 'inj',
   }
 
@@ -178,7 +180,7 @@ import { BigNumberInBase, DEFAULT_STD_FEE } from '@injectivelabs/utils'
   const { signBytes, txRaw } = createTransaction({
     message: msg,
     memo: '',
-    fee: DEFAULT_STD_FEE,
+    fee: getDefaultStdFee(),
     pubKey: publicKey,
     sequence: parseInt(accountDetails.account.base_account.sequence, 10),
     accountNumber: parseInt(
@@ -227,15 +229,15 @@ You can use the `MsgBroadcasterWithPk` class from the `@injectivelabs/sdk-ts` pa
 **This abstraction allows you to sign transactions in a Node/CLI environment.**&#x20;
 
 ```ts
-import { MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
 const amount = {
   denom: 'inj',
-  amount: new BigNumberInBase(1).toWei().toFixed(),
+  amount: toChainFormat(1).toFixed(),
 }
 const msg = MsgSend.fromJSON({
   amount,

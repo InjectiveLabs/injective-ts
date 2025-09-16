@@ -1,16 +1,30 @@
 import { EventEmitter } from 'eventemitter3'
+import { GeneralException, WalletException } from '@injectivelabs/exceptions'
 import {
+  Wallet,
+  isEvmWallet,
+  isCosmosWallet,
+  type WalletMetadata
+} from '@injectivelabs/wallet-base'
+import {
+  WalletStrategyEmitterEventType,
+} from '../broadcaster/types.js'
+import type { StdSignDoc } from '@keplr-wallet/types'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import type {
+  WalletStrategyEmitter,
+  WalletStrategyEmitterEvents } from '../broadcaster/types.js'
+import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
   DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
-import {
-  Wallet,
-  isEvmWallet,
-  isCosmosWallet,
+import type {
+  Eip1193Provider,
   WalletDeviceType,
-  type WalletMetadata,
   ConcreteStrategiesArg,
   SendTransactionOptions,
   ConcreteWalletStrategy,
@@ -19,18 +33,7 @@ import {
   WalletStrategyArguments,
   CosmosWalletAbstraction,
   WalletStrategy as WalletStrategyInterface,
-  Eip1193Provider,
 } from '@injectivelabs/wallet-base'
-import { GeneralException, WalletException } from '@injectivelabs/exceptions'
-import { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
-import { StdSignDoc } from '@keplr-wallet/types'
-
-import {
-  WalletStrategyEmitter,
-  WalletStrategyEmitterEvents,
-  WalletStrategyEmitterEventType,
-} from '../broadcaster/types.js'
-import { OfflineSigner } from '@cosmjs/proto-signing'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {

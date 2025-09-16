@@ -1,10 +1,10 @@
-import { EvmChainId } from '@injectivelabs/ts-types'
 import {
   BigNumberInBase,
+  getDefaultStdFee,
   DEFAULT_GAS_LIMIT,
-  DEFAULT_STD_FEE,
 } from '@injectivelabs/utils'
-import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
 
 export const getEip712Domain = (evmChainId: EvmChainId) => {
   return {
@@ -92,14 +92,16 @@ export const getEip712Fee = (
     feePayer?: string
   }
 } => {
+  const defaultStdFee = getDefaultStdFee()
+
   if (!params) {
     return {
-      fee: DEFAULT_STD_FEE,
+      fee: defaultStdFee,
     }
   }
 
   const { amount, gas, feePayer } = {
-    amount: params.amount || DEFAULT_STD_FEE.amount,
+    amount: params.amount || defaultStdFee.amount,
     gas: params.gas || DEFAULT_GAS_LIMIT.toFixed(),
     feePayer: params.feePayer,
   }
@@ -122,21 +124,23 @@ export const getEip712FeeV2 = (
     payer?: string
   }
 } => {
+  const defaultStdFee = getDefaultStdFee()
+
   if (!params) {
     return {
       fee: {
         amount: [
           {
-            denom: DEFAULT_STD_FEE.amount[0].denom,
-            amount: DEFAULT_STD_FEE.amount[0].amount,
+            denom: defaultStdFee.amount[0].denom,
+            amount: defaultStdFee.amount[0].amount,
           },
         ],
-        gas: Number(DEFAULT_STD_FEE.gas),
+        gas: Number(defaultStdFee.gas),
       },
     }
   }
 
-  const amountFromParams = (params.amount || DEFAULT_STD_FEE.amount)[0]
+  const amountFromParams = (params.amount || defaultStdFee.amount)[0]
   const { amount, gas, payer } = {
     amount: [
       {

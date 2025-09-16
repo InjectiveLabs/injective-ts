@@ -9,5 +9,5 @@ echo "current package version: $v"
 v1="${v%.*}.$((${v##*.}+1))"
 echo "new package version: $v1"
 
-npm version $v1
-npm publish
+npm version 1.16.2-alpha.1
+npm publish --tag alpha

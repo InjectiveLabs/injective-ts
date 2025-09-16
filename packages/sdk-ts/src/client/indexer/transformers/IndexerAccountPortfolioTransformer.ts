@@ -1,5 +1,7 @@
-import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
-import {
+import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
+import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
+import type { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   PositionsWithUPNL,
   AccountPortfolioV2,
   SubaccountDepositV2,
@@ -9,8 +11,6 @@ import {
   PortfolioSubaccountBalanceV2,
   GrpcPortfolioSubaccountBalanceV2,
 } from '../types/account-portfolio.js'
-import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
-import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
 
 export class IndexerGrpcAccountPortfolioTransformer {
   static accountPortfolioResponseToAccountPortfolio(

@@ -1,8 +1,9 @@
-import { StreamStatusResponse } from '../types/index.js'
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 import { ExplorerStreamTransformer } from '../transformers/index.js'
 import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
-import { Subscription } from 'rxjs'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import type { Subscription } from 'rxjs'
+import type { StreamStatusResponse } from '../types/index.js'
+
 
 export type BlocksStreamCallback = (
   response: ReturnType<typeof ExplorerStreamTransformer.blocksStreamCallback>,

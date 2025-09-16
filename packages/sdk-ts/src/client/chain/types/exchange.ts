@@ -1,9 +1,9 @@
-import {
-  InjectiveExchangeV1Beta1Exchange,
+import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
+import type { Coin } from '@injectivelabs/ts-types'
+import type {
   InjectiveExchangeV1Beta1Query,
   InjectiveExchangeV1Beta1Genesis,
 } from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
 
 export interface DepositProposalParams {
   amount: string
@@ -166,8 +166,7 @@ export type GrpcChainFullSpotMarket =
   InjectiveExchangeV1Beta1Query.FullSpotMarket
 export type GrpcChainDerivativeMarket =
   InjectiveExchangeV1Beta1Exchange.DerivativeMarket
-export type GrpcChainSpotMarket =
-  InjectiveExchangeV1Beta1Exchange.SpotMarket
+export type GrpcChainSpotMarket = InjectiveExchangeV1Beta1Exchange.SpotMarket
 
 export type GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType
 export const GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType

@@ -1,0 +1,200 @@
+[
+  {
+    "file": "sdk-ts/test-import-size/client-indexer.ts",
+    "size": 157518,
+    "sizeKB": 153.83,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/index.ts",
+    "size": 140352,
+    "sizeKB": 137.06,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/mixed-imports.ts",
+    "size": 114157,
+    "sizeKB": 111.48,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/utils-only.ts",
+    "size": 109651,
+    "sizeKB": 107.08,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/tx-module.ts",
+    "size": 109584,
+    "sizeKB": 107.02,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/client-chain.ts",
+    "size": 82045,
+    "sizeKB": 80.12,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/proto-dependencies.ts",
+    "size": 35195,
+    "sizeKB": 34.37,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/core-staking.ts",
+    "size": 26061,
+    "sizeKB": 25.45,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "wallet-turnkey/test-import-size/index.ts",
+    "size": 25358,
+    "sizeKB": 24.76,
+    "package": "wallet-turnkey"
+  },
+  {
+    "file": "wallet-evm/test-import-size/index.ts",
+    "size": 20516,
+    "sizeKB": 20.04,
+    "package": "wallet-evm"
+  },
+  {
+    "file": "sdk-ts/test-import-size/client-indexer-single.ts",
+    "size": 20258,
+    "sizeKB": 19.78,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/core-exchange.ts",
+    "size": 19195,
+    "sizeKB": 18.75,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/client-chain-grpc-only.ts",
+    "size": 17774,
+    "sizeKB": 17.36,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/core-bank.ts",
+    "size": 17598,
+    "sizeKB": 17.19,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "sdk-ts/test-import-size/minimal-import.ts",
+    "size": 15353,
+    "sizeKB": 14.99,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "networks/test-import-size/index.ts",
+    "size": 11523,
+    "sizeKB": 11.25,
+    "package": "networks"
+  },
+  {
+    "file": "networks/test-import-size/utils-only.ts",
+    "size": 10716,
+    "sizeKB": 10.46,
+    "package": "networks"
+  },
+  {
+    "file": "wallet-cosmos/test-import-size/index.ts",
+    "size": 10655,
+    "sizeKB": 10.41,
+    "package": "wallet-cosmos"
+  },
+  {
+    "file": "wallet-cosmostation/test-import-size/index.ts",
+    "size": 9785,
+    "sizeKB": 9.56,
+    "package": "wallet-cosmostation"
+  },
+  {
+    "file": "wallet-strategy/test-import-size/index.ts",
+    "size": 6789,
+    "sizeKB": 6.63,
+    "package": "wallet-strategy"
+  },
+  {
+    "file": "wallet-private-key/test-import-size/index.ts",
+    "size": 6244,
+    "sizeKB": 6.1,
+    "package": "wallet-private-key"
+  },
+  {
+    "file": "exceptions/test-import-size/index.ts",
+    "size": 5224,
+    "sizeKB": 5.1,
+    "package": "exceptions"
+  },
+  {
+    "file": "sdk-ts/test-import-size/client-chain-rest-only.ts",
+    "size": 4983,
+    "sizeKB": 4.87,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "wallet-base/test-import-size/index.ts",
+    "size": 814,
+    "sizeKB": 0.79,
+    "package": "wallet-base"
+  },
+  {
+    "file": "utils/test-import-size/index.ts",
+    "size": 778,
+    "sizeKB": 0.76,
+    "package": "utils"
+  },
+  {
+    "file": "networks/test-import-size/network-only.ts",
+    "size": 671,
+    "sizeKB": 0.66,
+    "package": "networks"
+  },
+  {
+    "file": "ts-types/test-import-size/index.ts",
+    "size": 248,
+    "sizeKB": 0.24,
+    "package": "ts-types"
+  },
+  {
+    "file": "sdk-ts/test-import-size/types-only.ts",
+    "size": 163,
+    "sizeKB": 0.16,
+    "package": "sdk-ts"
+  },
+  {
+    "file": "wallet-core/test-import-size/index.ts",
+    "size": 0,
+    "sizeKB": 0,
+    "package": "wallet-core"
+  },
+  {
+    "file": "wallet-cosmos-strategy/test-import-size/index.ts",
+    "size": 0,
+    "sizeKB": 0,
+    "package": "wallet-cosmos-strategy"
+  },
+  {
+    "file": "wallet-ledger/test-import-size/index.ts",
+    "size": 0,
+    "sizeKB": 0,
+    "package": "wallet-ledger"
+  },
+  {
+    "file": "wallet-magic/test-import-size/index.ts",
+    "size": 0,
+    "sizeKB": 0,
+    "package": "wallet-magic"
+  },
+  {
+    "file": "wallet-wallet-connect/test-import-size/index.ts",
+    "size": 0,
+    "sizeKB": 0,
+    "package": "wallet-wallet-connect"
+  }
+]

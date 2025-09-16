@@ -1,7 +1,7 @@
-import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
 import { grpcPagingToPaging } from '../../..//utils/pagination.js'
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
-import {
+import type { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   Guild,
   Campaign,
   CampaignV2,

@@ -1,6 +1,6 @@
 import { CosmostationWalletStrategy as BaseCosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
-import { ChainId, CosmosChainId } from '@injectivelabs/ts-types'
-import { Wallet } from '@injectivelabs/wallet-base'
+import type { Wallet } from '@injectivelabs/wallet-base'
+import type { ChainId, CosmosChainId } from '@injectivelabs/ts-types'
 
 export class CosmostationWalletStrategy extends BaseCosmostationWalletStrategy {
   constructor(

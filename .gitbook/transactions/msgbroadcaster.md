@@ -11,12 +11,12 @@ This MsgBroadcaster is used alongside the Wallet Strategy class for building dec
 To instantiate (and use) the `MsgBroadcaster` class, you can use the following code snippet
 
 ```ts
+import { MsgSend } from '@injectivelabs/sdk-ts'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
-import { MsgBroadcaster } from '@injectivelabs/wallet-core'
-import { MsgSend } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { WalletStrategy } from '@injectivelabs/wallet-strategy'
 
 export const alchemyRpcEndpoint = ''
 export const walletStrategy = new WalletStrategy({
@@ -42,7 +42,7 @@ export const msgBroadcaster = new MsgBroadcaster({
     const msg = MsgSend.fromJSON({
       amount: {
         denom: 'inj',
-        amount: new BigNumberInBase(0.01).toWei().toFixed(),
+        amount: toChainFormat(0.01).toFixed(),
       },
       srcInjectiveAddress: signer,
       dstInjectiveAddress: 'inj1...',
@@ -107,8 +107,8 @@ To override the `endpoints` and use your infrastructure (which is something we r
 This MsgBroadcaster is used with a private key (mostly used for CLI environments). Constructor/broadcast options are quite similar as for the `MsgBroadcaster`.
 
 ```ts
+import { toChainFormat } from '@injectivelabs/utils'
 import { MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 
 export const msgBroadcasterWithPk = new MsgBroadcasterWithPk({
   privateKey: `0x...` /** private key hash or PrivateKey class from sdk-ts */,
@@ -121,7 +121,7 @@ export const msgBroadcasterWithPk = new MsgBroadcasterWithPk({
     const msg = MsgSend.fromJSON({
       amount: {
         denom: 'inj',
-        amount: new BigNumberInBase(0.01).toWei().toFixed(),
+        amount: toChainFormat(0.01).toFixed(),
       },
       srcInjectiveAddress: signer,
       dstInjectiveAddress: 'inj1...',

@@ -147,7 +147,7 @@ import {
   MsgBroadcasterWithPk,
   MsgExecuteContractCompat,
 } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -156,7 +156,7 @@ const denom = 'peggy0xdAC17F958D2ee523a2206206994597C13D831ec7' // USDT denom
 const amountInUsdt = '100'
 
 // Convert the amount to the smallest unit (USDT has 6 decimals)
-const amount = new BigNumberInBase(amountInUsdt).toWei(6).toFixed()
+const amount = toChainFormat(amountInUsdt, 6).toFixed()
 
 const depositMsg = neptuneService.createDepositMsg({
   denom,
@@ -184,16 +184,16 @@ import {
   MsgBroadcasterWithPk,
   MsgExecuteContractCompat,
 } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 
 const privateKey = '0x...' // Your private key
 const injectiveAddress = 'inj1...' // Your Injective address
 
 // Define the amount to withdraw (e.g., 100 nUSDT)
-const amountInNusdt = '100'
+const amountInUsdt = '100'
 
 // Convert the amount to the smallest unit (nUSDT has 6 decimals)
-const amount = new BigNumberInBase(amountInNusdt).toWei(6).toFixed()
+const amount = toChainFormat(amountInUsdt, 6).toFixed()
 
 const withdrawMsg = neptuneService.createWithdrawMsg({
   amount,

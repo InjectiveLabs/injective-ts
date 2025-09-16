@@ -1,10 +1,10 @@
+import { ExitType } from '../types.js'
 import {
   dataToExecData,
-  ExecArgBase,
-  ExecDataRepresentation,
+  ExecArgBase
 } from '../ExecArgBase.js'
-
-import { ExitType } from '../types.js'
+import type {
+  ExecDataRepresentation } from '../ExecArgBase.js'
 
 export declare namespace ExecArgCreatePerpGridStrategy {
   export interface Params {

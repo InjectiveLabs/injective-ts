@@ -13,16 +13,16 @@ Let's explore (and provide examples) the Messages that the Exchange module expor
 This Message is used to send coins from the Bank module to a wallet's subaccount
 
 ```ts
-import { MsgDeposit, MsgBroadcasterWithPk, getEthereumAddress } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgDeposit, MsgBroadcasterWithPk, getEthereumAddress } from '@injectivelabs/sdk-ts'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
 
 const amount = {
   denom: 'inj',
-  amount: new BigNumberInBase(1).toWei()
+  amount: toChainFormat(1)
 }
 
 const ethereumAddress = getEthereumAddress(injectiveAddress)
@@ -51,16 +51,16 @@ console.log(txHash)
 This Message is used to send coins from the wallet's subaccount back to the users Bank funds
 
 ```ts
-import { MsgWithdraw, MsgBroadcasterWithPk, getEthereumAddress } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgWithdraw, MsgBroadcasterWithPk, getEthereumAddress } from '@injectivelabs/sdk-ts'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
 
 const amount = {
   denom: 'inj',
-  amount: new BigNumberInBase(1).toWei()
+  amount: toChainFormat(1)
 }
 
 const ethereumAddress = getEthereumAddress(injectiveAddress)
@@ -90,12 +90,12 @@ This Message is used to create a spot limit order
 
 ```ts
 import {
-  MsgCreateSpotLimitOrder,
-  MsgBroadcasterWithPk,
   getEthereumAddress,
+  MsgBroadcasterWithPk,
+  MsgCreateSpotLimitOrder,
   getSpotMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase, spotPriceToChainPriceToFixed, spotQuantityToChainQuantityToFixed } from '@injectivelabs/utils'
+import { spotPriceToChainPriceToFixed, spotQuantityToChainQuantityToFixed } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const privateKey = '0x...'
@@ -156,13 +156,13 @@ This Message is used to create a spot market order
 
 ```ts
 import {
-  MsgCreateSpotMarketOrder,
-  MsgBroadcasterWithPk,
   getEthereumAddress,
+  MsgBroadcasterWithPk,
+  MsgCreateSpotMarketOrder,
   getSpotMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase, spotPriceToChainPriceToFixed, spotQuantityToChainQuantityToFixed } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { spotPriceToChainPriceToFixed, spotQuantityToChainQuantityToFixed } from '@injectivelabs/utils'
 
 const privateKey = '0x...'
 const injectiveAddress = 'inj1...'
@@ -221,13 +221,12 @@ This Message is used to create a derivative limit order
 
 ```ts
 import {
-  MsgCreateDerivativeLimitOrder,
-  MsgBroadcasterWithPk,
   getEthereumAddress,
+  MsgBroadcasterWithPk,
+  MsgCreateDerivativeLimitOrder,
   getDerivativeMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
 import {
-  BigNumberInBase,
   derivativePriceToChainPriceToFixed,
   derivativeQuantityToChainQuantityToFixed,
   derivativeMarginToChainMarginToFixed
@@ -291,13 +290,12 @@ This Message is used to create a derivative market order
 
 ```ts
 import {
-  MsgCreateDerivativeMarketOrder,
-  MsgBroadcasterWithPk,
   getEthereumAddress,
+  MsgBroadcasterWithPk,
+  MsgCreateDerivativeMarketOrder,
   getDerivativeMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
 import {
-  BigNumberInBase,
   derivativePriceToChainPriceToFixed,
   derivativeQuantityToChainQuantityToFixed,
   derivativeMarginToChainMarginToFixed
@@ -372,10 +370,9 @@ import {
   getDerivativeMarketTensMultiplier
 } from '@injectivelabs/sdk-ts'
 import {
-  BigNumberInBase,
   derivativePriceToChainPriceToFixed,
+  derivativeMarginToChainMarginToFixed,
   derivativeQuantityToChainQuantityToFixed,
-  derivativeMarginToChainMarginToFixed
 } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
@@ -601,7 +598,7 @@ import {
   MsgExternalTransfer,
   MsgBroadcasterWithPk,
 } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const denomClient = new DenomClient(Network.Testnet)
@@ -616,7 +613,7 @@ const tokenDenom = `inj`
 /* format amount to add to the burn auction pool */
 const amount = {
   denom: tokenDenom,
-  amount: new BigNumberInBase(1).toWei(tokenMeta.decimals).toFixed(),
+  amount: toChainFormat(1, tokenMeta.decimals).toFixed(),
 }
 
 /* create message in proto format */

@@ -1,8 +1,9 @@
-import { StreamStatusResponse } from '../types/index.js'
-import { IndexerAccountPortfolioStreamTransformer } from '../transformers/index.js'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
-import { Subscription } from 'rxjs'
 import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
+import { IndexerAccountPortfolioStreamTransformer } from '../transformers/index.js'
+import type { Subscription } from 'rxjs'
+import type { StreamStatusResponse } from '../types/index.js'
+
 
 export type AccountPortfolioStreamCallback = (
   response: ReturnType<

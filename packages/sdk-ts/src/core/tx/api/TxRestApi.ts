@@ -1,3 +1,12 @@
+import axios from 'axios'
+import { StatusCodes } from 'http-status-codes'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  HttpRequestMethod,
+  HttpRequestException,
+  TransactionException,
+  UnspecifiedErrorCode,
+} from '@injectivelabs/exceptions'
 import {
   HttpClient,
   BigNumberInBase,
@@ -5,25 +14,19 @@ import {
   DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
+import { TxClient } from '../utils/classes/TxClient.js'
+import { getErrorMessage } from '../../../utils/helpers.js'
 import {
-  BroadcastMode,
+  BroadcastMode
+} from '../types/tx-rest-client.js'
+import type { AxiosError } from 'axios'
+import type { TxResponse } from '../types/tx.js'
+import type { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
+import type {
   TxInfoResponse,
   TxResultResponse,
-  SimulationResponse,
-} from '../types/tx-rest-client.js'
-import { TxClient } from '../utils/classes/TxClient.js'
-import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
-import {
-  HttpRequestMethod,
-  HttpRequestException,
-  TransactionException,
-  UnspecifiedErrorCode,
-} from '@injectivelabs/exceptions'
-import axios, { AxiosError } from 'axios'
-import { StatusCodes } from 'http-status-codes'
-import { TxResponse } from '../types/tx.js'
-import { getErrorMessage } from '../../../utils/helpers.js'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+  SimulationResponse } from '../types/tx-rest-client.js'
+
 
 /**
  * It is recommended to use TxGrpcClient instead of TxRestApi
@@ -186,7 +189,7 @@ export class TxRestApi implements TxConcreteApi {
           },
         )
       }
-      
+
       if (txResponse.code !== 0) {
         throw new TransactionException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,

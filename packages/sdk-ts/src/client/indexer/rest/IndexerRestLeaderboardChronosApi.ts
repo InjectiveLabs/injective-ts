@@ -1,9 +1,9 @@
-import { ChronosLeaderboardResponse } from '../types/leaderboard-rest.js'
-import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import type { ChronosLeaderboardResponse } from '../types/leaderboard-rest.js'
 
 /**
  * @category Indexer Chronos API

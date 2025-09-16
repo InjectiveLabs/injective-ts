@@ -1,16 +1,17 @@
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import {
   Wallet,
-  isCosmosWallet,
-  ConcreteStrategiesArg,
-  ConcreteWalletStrategy,
-  WalletStrategyArguments,
+  isCosmosWallet
 } from '@injectivelabs/wallet-base'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import {
   CosmosWalletStrategy,
   CosmostationWalletStrategy,
 } from './strategies/index.js'
-import { CosmosWalletStrategyArguments } from './types.js'
+import type { CosmosWalletStrategyArguments } from './types.js'
+import type {
+  ConcreteStrategiesArg,
+  ConcreteWalletStrategy,
+  WalletStrategyArguments } from '@injectivelabs/wallet-base'
 
 const createStrategy = ({
   args,

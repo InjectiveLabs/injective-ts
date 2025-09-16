@@ -1,8 +1,8 @@
+import snakecaseKeys from 'snakecase-keys'
 import {
   InjectivePermissionsV1Beta1Tx,
   InjectivePermissionsV1Beta1Params,
 } from '@injectivelabs/core-proto-ts'
-import snakecaseKeys from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgUpdateParams {

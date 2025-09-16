@@ -10,18 +10,18 @@ In this example, we will transfer ATOM from Injective to CosmosHub
 
 ```ts
 import {
+  MsgTransfer,
   ChainGrpcBankApi,
+  MsgBroadcasterWithPk,
   ChainRestTendermintApi,
   makeTimeoutTimestampInNs,
-  MsgBroadcasterWithPk,
-  MsgTransfer,
 } from '@injectivelabs/sdk-ts'
 import {
   TokenService,
   UiBankTransformer,
   cosmosChainTokenMetaMap,
 } from '@injectivelabs/sdk-ui-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toBigNumber, toChainFormat } from '@injectivelabs/utils'
 import { ChainId, CosmosChainId } from '@injectivelabs/ts-types'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { IbcToken, Token } from '@injectivelabs/token-metadata'
@@ -65,9 +65,8 @@ const canonicalDenomHash = atomDenomFromSupply.denom
 /* format amount for transfer */
 const amount = {
   denom: canonicalDenomHash,
-  amount: new BigNumberInBase(0.001)
-    .toWei(atomDenomFromSupply.decimals)
-    .toString(),
+  amount: new toChainFormat(0.001, atomDenomFromSupply.decimals)
+    .toFixed()
 }
 
 const injectiveAddress = 'inj...'
@@ -81,7 +80,7 @@ const tendermintRestApi = new ChainRestTendermintApi(endpointsForNetwork.rest)
 /* Block details from the origin chain */
 const latestBlock = await tendermintRestApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
-const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+const timeoutHeight = toBigNumber(latestHeight).plus(
   30, // default block timeout height
 )
 

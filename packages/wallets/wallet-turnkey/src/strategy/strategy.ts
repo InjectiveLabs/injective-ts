@@ -1,11 +1,21 @@
-/* eslint-disable class-methods-use-this */
+
 import {
-  TxRaw,
-  TxGrpcApi,
-  AminoSignResponse,
-  DirectSignResponse,
-  getEthereumAddress,
+  TxGrpcApi
 } from '@injectivelabs/sdk-ts'
+import { getEthereumAddress } from '@injectivelabs/sdk-ts'
+import { sleep, HttpRestClient } from '@injectivelabs/utils'
+import {
+  http,
+  getAddress,
+  createPublicClient,
+  createWalletClient
+} from 'viem'
+import {
+  WalletAction,
+  WalletDeviceType,
+  type WalletMetadata,
+  BaseConcreteStrategy
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -13,35 +23,31 @@ import {
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import {
-  http,
-  getAddress,
-  LocalAccount,
-  createPublicClient,
-  createWalletClient,
-  PrepareTransactionRequestParameters,
-} from 'viem'
-
-import {
-  StdSignDoc,
-  WalletAction,
-  TurnkeyMetadata,
-  WalletDeviceType,
-  type WalletMetadata,
-  BaseConcreteStrategy,
-  ConcreteWalletStrategy,
-  SendTransactionOptions,
-  WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs,
-  Eip1193Provider,
-} from '@injectivelabs/wallet-base'
-import { sleep, HttpRestClient } from '@injectivelabs/utils'
-import { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { DEFAULT_EVM_CHAIN_CONFIG } from './consts.js'
 import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
+import type {
+  LocalAccount,
+  PrepareTransactionRequestParameters
+} from 'viem'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse
+} from '@injectivelabs/sdk-ts'
+import type {
+  StdSignDoc,
+  Eip1193Provider,
+  TurnkeyMetadata,
+  ConcreteWalletStrategy,
+  SendTransactionOptions,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs
+} from '@injectivelabs/wallet-base'
 
 export class TurnkeyWalletStrategy
   extends BaseConcreteStrategy
@@ -103,7 +109,7 @@ export class TurnkeyWalletStrategy
       }
 
       return !!(await turnkeyWallet.getIndexedDbClient())
-    } catch (e) {
+    } catch {
       return false
     }
   }
@@ -262,7 +268,7 @@ export class TurnkeyWalletStrategy
     let parsedData
     try {
       parsedData = JSON.parse(eip712json)
-    } catch (e) {
+    } catch {
       throw new WalletException(
         new Error('Failed to parse EIP-712 data: Invalid JSON format'),
         {
@@ -278,7 +284,7 @@ export class TurnkeyWalletStrategy
     return signature
   }
 
-  // eslint-disable-next-line class-methods-use-this
+
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -389,7 +395,7 @@ export class TurnkeyWalletStrategy
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
+
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

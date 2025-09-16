@@ -1,5 +1,5 @@
-import { ChainId, EvmChainId, CosmosChainId } from '@injectivelabs/ts-types'
-import {
+import type { ChainId, EvmChainId, CosmosChainId } from '@injectivelabs/ts-types'
+import type {
   WalletMetadata,
   WalletEventListener,
   ConcreteWalletStrategyArgs,

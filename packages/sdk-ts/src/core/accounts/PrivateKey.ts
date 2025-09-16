@@ -1,22 +1,25 @@
 import secp256k1 from 'secp256k1'
-import keccak256 from 'keccak256'
 import { generateMnemonic } from 'bip39'
-import {
-  CosmosTxV1Beta1Tx,
-  InjectiveTypesV1Beta1TxExt,
-} from '@injectivelabs/core-proto-ts'
+import { keccak256, toBytes, hashTypedData } from 'viem'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { Wallet, HDNodeWallet, Signature, getBytes, concat } from 'ethers'
-import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 import {
-  DEFAULT_DERIVATION_PATH,
-  recoverTypedSignaturePubKey,
-} from '../../utils/index.js'
+  InjectiveTypesV1Beta1TxExt,
+} from '@injectivelabs/core-proto-ts'
 import { Address } from './Address.js'
 import { PublicKey } from './PublicKey.js'
 import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
 import { getEip712TypedData, MsgDecoder } from '../tx/eip712/index.js'
+import {
+  DEFAULT_DERIVATION_PATH,
+  recoverTypedSignaturePubKey,
+  TypedDataUtilsSanitizeData,
+} from '../../utils/index.js'
+import type { TypedDataDefinition } from 'viem'
+import type {
+  CosmosTxV1Beta1Tx
+} from '@injectivelabs/core-proto-ts'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -163,7 +166,7 @@ export class PrivateKey {
       ? wallet.privateKey.slice(2)
       : wallet.privateKey
     const privateKey = Uint8Array.from(Buffer.from(privateKeyHex, 'hex'))
-    const { signature } = secp256k1.ecdsaSign(msgHash, privateKey)
+    const { signature } = secp256k1.ecdsaSign(toBytes(msgHash), privateKey)
 
     return signature
   }
@@ -201,22 +204,34 @@ export class PrivateKey {
 
   /**
    * Sign the given typed data using the edcsa sign_deterministic function.
-   * @param {Buffer} eip712Data: the typed data that will be hashed and signed, a Buffer made of bytes
+   * @param {TypedDataDefinition | any} eip712Data: the typed data that will be hashed and signed
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  signTypedData(eip712Data: any): Uint8Array {
+  async signTypedData(
+    eip712Data: TypedDataDefinition | any,
+  ): Promise<Uint8Array> {
     const { wallet } = this
 
     const privateKeyHex = wallet.privateKey.startsWith('0x')
       ? wallet.privateKey.slice(2)
       : wallet.privateKey
-    const signature = signTypedData({
-      privateKey: Buffer.from(privateKeyHex, 'hex'),
-      data: eip712Data,
-      version: SignTypedDataVersion.V4,
-    })
 
-    return Buffer.from(signature.replace('0x', ''), 'hex')
+    // Use viem's hashTypedData but with sanitized data to match @metamask/eth-sig-util behavior
+    const sanitizedData = TypedDataUtilsSanitizeData(eip712Data)
+    const msgHashBytes = hashTypedData(sanitizedData)
+
+    const privateKey = Uint8Array.from(Buffer.from(privateKeyHex, 'hex'))
+    const { signature, recid } = secp256k1.ecdsaSign(
+      toBytes(msgHashBytes),
+      privateKey,
+    )
+
+    // Append recovery ID to match @metamask/eth-sig-util format
+    const signatureWithRecovery = new Uint8Array(signature.length + 1)
+    signatureWithRecovery.set(signature)
+    signatureWithRecovery[signature.length] = recid + 27 // EIP155 recovery ID format
+
+    return signatureWithRecovery
   }
 
   /**
@@ -246,7 +261,7 @@ export class PrivateKey {
    * @param {any} eip712: the EIP712 typed data to verify against
    * @param {string} publicKey: the public key to verify against in hex
    * */
-  public static verifySignature({
+  public static async verifySignature({
     signature,
     eip712,
     publicKey,
@@ -254,12 +269,12 @@ export class PrivateKey {
     signature: string /* in hex */
     eip712: any
     publicKey: string /* in hex */
-  }): boolean {
+  }): Promise<boolean> {
     const publicKeyInHex = publicKey.startsWith('0x')
       ? publicKey
       : `0x${publicKey}`
 
-    const recoveredPubKey = recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKey = await recoverTypedSignaturePubKey(eip712, signature)
     const recoveredPubKeyInHex = recoveredPubKey.startsWith('0x')
       ? recoveredPubKey
       : `0x${recoveredPubKey}`
@@ -285,15 +300,15 @@ export class PrivateKey {
    * @param {any} eip712: the EIP712 typed data to verify against
    * @param {string} publicKey: the public key to verify against in hex
    * */
-  public verifyThisPkSignature({
+  public async verifyThisPkSignature({
     signature,
     eip712,
   }: {
     signature: string /* in hex */
     eip712: any
-  }): boolean {
+  }): Promise<boolean> {
     const publicKeyInHex = `0x${this.toPublicKey().toHex()}`
-    const recoveredPubKey = recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKey = await recoverTypedSignaturePubKey(eip712, signature)
     const recoveredPubKeyInHex = recoveredPubKey.startsWith('0x')
       ? recoveredPubKey
       : `0x${recoveredPubKey}`
@@ -319,7 +334,7 @@ export class PrivateKey {
    * @param {CosmosTxV1Beta1Tx.TxRaw} txRaw: the signature to verify in hex
    * @param {object} signer: the public key and the account number to verify against
    **/
-  public static verifyCosmosSignature({
+  public static async verifyCosmosSignature({
     txRaw,
     signer,
   }: {
@@ -328,7 +343,7 @@ export class PrivateKey {
       accountNumber: number | string
       publicKey: string /* in base64 */
     }
-  }): boolean {
+  }): Promise<boolean> {
     const { body, authInfo, signatures } = getTransactionPartsFromTxRaw(txRaw)
 
     if (authInfo.signerInfos.length > 1 || signatures.length > 1) {
@@ -369,13 +384,15 @@ export class PrivateKey {
 
       const evmChainId = Number(decodedExtension.typedDataChainID) as EvmChainId
 
-      return {
-        evmChainId: EvmChainId,
-        chainId: [
+      const testnetChainIds: EvmChainId[] = [
           EvmChainId.Kovan,
           EvmChainId.Goerli,
           EvmChainId.Sepolia,
-        ].includes(evmChainId)
+      ]
+
+      return {
+        evmChainId: EvmChainId,
+        chainId: testnetChainIds.includes(evmChainId)
           ? ChainId.Testnet
           : ChainId.Mainnet,
       }
@@ -400,7 +417,7 @@ export class PrivateKey {
       evmChainId: evmChainId as unknown as EvmChainId,
     })
 
-    return this.verifySignature({
+    return await this.verifySignature({
       eip712: eip712TypedData,
       signature: Buffer.from(signature).toString('hex'),
       publicKey: Buffer.from(signer.publicKey, 'base64').toString('hex'),
@@ -426,10 +443,12 @@ export class PrivateKey {
     signDoc: Buffer
     publicKey: string /* in hex */
   }): boolean {
+    const sigHex = signature.startsWith('0x') ? signature : `0x${signature}`
+    const pubHex = publicKey.startsWith('0x') ? publicKey : `0x${publicKey}`
     return secp256k1.ecdsaVerify(
-      Buffer.from(signature, 'hex'),
-      keccak256(signDoc),
-      Buffer.from(publicKey, 'hex'),
+      toBytes(sigHex as `0x${string}`),
+      toBytes(keccak256(signDoc)),
+      toBytes(pubHex as `0x${string}`),
     )
   }
 }

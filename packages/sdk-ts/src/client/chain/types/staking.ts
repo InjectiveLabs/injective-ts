@@ -1,4 +1,4 @@
-import { CosmosStakingV1Beta1Staking } from '@injectivelabs/core-proto-ts'
+import type { CosmosStakingV1Beta1Staking } from '@injectivelabs/core-proto-ts'
 
 export interface StakingModuleParams
   extends Omit<GrpcStakingParams, 'unbondingTime'> {
@@ -9,11 +9,11 @@ export interface Delegation {
   delegation: {
     delegatorAddress: string
     validatorAddress: string
-    shares: string // BigNumberInWei
+    shares: string
   }
   balance: {
     denom: string
-    amount: string // BigNumberInBase
+    amount: string
   }
 }
 
@@ -24,7 +24,7 @@ export interface ReDelegation {
     completionTime: number
     destinationValidatorAddress: string
   }
-  balance: string // BigNumberInBase
+  balance: string
 }
 
 export interface UnBondingDelegation {
@@ -32,8 +32,8 @@ export interface UnBondingDelegation {
   validatorAddress: string
   creationHeight: number
   completionTime: number
-  initialBalance: string // BigNumberInWei
-  balance: string // BigNumberInWei
+  initialBalance: string
+  balance: string
 }
 
 export interface Pool {
@@ -41,11 +41,13 @@ export interface Pool {
   bondedTokens: string
 }
 
-export enum BondStatus {
-  UnBonded = 'UnBonded',
-  UnBonding = 'UnBonding',
-  Bonded = 'Bonded',
-}
+export type BondStatus = 'UnBonded' | 'UnBonding' | 'Bonded'
+
+export const BondStatus = {
+  UnBonded: 'UnBonded',
+  UnBonding: 'UnBonding',
+  Bonded: 'Bonded',
+} as const
 
 export interface ValidatorDescription {
   moniker: string

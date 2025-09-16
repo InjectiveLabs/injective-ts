@@ -1,10 +1,10 @@
 import { LedgerCosmosException } from '@injectivelabs/exceptions'
+import AccountManager from './AccountManager.js'
 import {
   loadCosmosType,
   loadTransportWebUSB,
   loadTransportWebHIDType,
 } from './../../lib.js'
-import AccountManager from './AccountManager.js'
 import type { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
 import type { Cosmos as CosmosApp } from '@bangjelkoski/ledgerhq-hw-app-cosmos'
 

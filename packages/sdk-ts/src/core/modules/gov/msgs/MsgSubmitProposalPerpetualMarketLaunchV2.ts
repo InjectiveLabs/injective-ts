@@ -1,3 +1,5 @@
+import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -5,12 +7,11 @@ import {
   InjectiveExchangeV2Proposal,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
 import { MsgBase } from '../../MsgBase.js'
 import {
-  amountToCosmosSdkDecAmount,
   numberToCosmosSdkDecString,
 } from '../../../../utils/numbers.js'
+import type { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
   export interface Params {
@@ -66,7 +67,7 @@ const createPerpetualMarketLaunch = (
   content.oracleBase = params.market.oracleBase
   content.oracleQuote = params.market.oracleQuote
   content.oracleScaleFactor = params.market.oracleScaleFactor
-  content.oracleType = Number(params.market.oracleType)
+  content.oracleType = Number(params.market.oracleType) as InjectiveOracleV1Beta1Oracle.OracleType
   content.initialMarginRatio = params.market.initialMarginRatio
   content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
   content.makerFeeRate = params.market.makerFeeRate
@@ -110,28 +111,28 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
       ...initialParams,
       market: {
         ...initialParams.market,
-        initialMarginRatio: amountToCosmosSdkDecAmount(
+        initialMarginRatio: toChainFormat(
           initialParams.market.initialMarginRatio,
         ).toFixed(),
-        maintenanceMarginRatio: amountToCosmosSdkDecAmount(
+        maintenanceMarginRatio: toChainFormat(
           initialParams.market.maintenanceMarginRatio,
         ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
+        makerFeeRate: toChainFormat(
           initialParams.market.makerFeeRate,
         ).toFixed(),
-        minPriceTickSize: amountToCosmosSdkDecAmount(
+        minPriceTickSize: toChainFormat(
           initialParams.market.minPriceTickSize,
         ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
+        takerFeeRate: toChainFormat(
           initialParams.market.takerFeeRate,
         ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
+        minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
+        minNotional: toChainFormat(
           initialParams.market.minNotional,
         ).toFixed(),
-        reduceMarginRatio: amountToCosmosSdkDecAmount(
+        reduceMarginRatio: toChainFormat(
           initialParams.market.reduceMarginRatio,
         ).toFixed(),
       },
@@ -222,28 +223,28 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
         type: 'exchange/PerpetualMarketLaunchProposal',
         value: {
           ...value.content.value,
-          initial_margin_ratio: amountToCosmosSdkDecAmount(
+          initial_margin_ratio: toChainFormat(
             params.market.initialMarginRatio,
           ).toFixed(),
-          maintenance_margin_ratio: amountToCosmosSdkDecAmount(
+          maintenance_margin_ratio: toChainFormat(
             params.market.maintenanceMarginRatio,
           ).toFixed(),
-          maker_fee_rate: amountToCosmosSdkDecAmount(
+          maker_fee_rate: toChainFormat(
             params.market.makerFeeRate,
           ).toFixed(),
-          taker_fee_rate: amountToCosmosSdkDecAmount(
+          taker_fee_rate: toChainFormat(
             params.market.takerFeeRate,
           ).toFixed(),
-          min_price_tick_size: amountToCosmosSdkDecAmount(
+          min_price_tick_size: toChainFormat(
             params.market.minPriceTickSize,
           ).toFixed(),
-          min_notional: amountToCosmosSdkDecAmount(
+          min_notional: toChainFormat(
             params.market.minNotional,
           ).toFixed(),
-          min_quantity_tick_size: amountToCosmosSdkDecAmount(
+          min_quantity_tick_size: toChainFormat(
             params.market.minQuantityTickSize,
           ).toFixed(),
-          reduce_margin_ratio: amountToCosmosSdkDecAmount(
+          reduce_margin_ratio: toChainFormat(
             params.market.reduceMarginRatio,
           ).toFixed(),
         },
@@ -267,7 +268,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
       content: {
         ...content,
         oracle_type: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-          Number(content.oracle_type),
+          Number(content.oracle_type) as InjectiveOracleV1Beta1Oracle.OracleType,
         ),
         initial_margin_ratio: numberToCosmosSdkDecString(
           params.market.initialMarginRatio,

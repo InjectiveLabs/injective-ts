@@ -1,8 +1,9 @@
-import { StreamStatusResponse } from '../types/index.js'
+import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import { IndexerGrpcMitoStreamTransformer } from '../transformers/index.js'
 import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
-import { Subscription } from 'rxjs'
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
+import type { Subscription } from 'rxjs'
+import type { StreamStatusResponse } from '../types/index.js'
+
 
 export type TransfersStreamCallback = (
   response: ReturnType<

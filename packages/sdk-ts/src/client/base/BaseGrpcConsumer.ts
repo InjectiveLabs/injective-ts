@@ -1,5 +1,6 @@
-import { getGrpcTransport, grpc, grpcPkg } from '../../utils/grpc.js'
 import { GrpcWebImpl } from './GrpcWebImpl.js'
+import { getGrpcTransport, grpc } from '../../utils/grpc.js'
+import type { grpcPkg } from '../../utils/grpc.js'
 
 export default class BaseGrpcConsumer extends GrpcWebImpl {
   protected module: string = ''

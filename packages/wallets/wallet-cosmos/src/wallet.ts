@@ -1,15 +1,8 @@
-/* eslint-disable class-methods-use-this */
-import type {
-  Keplr,
-  StdSignDoc,
-  AminoSignResponse,
-  OfflineAminoSigner,
-} from '@keplr-wallet/types'
-import {
-  ChainId,
-  CosmosChainId,
-  TestnetCosmosChainId,
-} from '@injectivelabs/ts-types'
+
+import { capitalize } from '@injectivelabs/utils'
+import { SigningStargateClient } from '@cosmjs/stargate'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   GeneralException,
@@ -18,12 +11,22 @@ import {
   CosmosWalletException,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
-import { capitalize } from '@injectivelabs/utils'
-import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
-import { SigningStargateClient, StdFee } from '@cosmjs/stargate'
+import type { StdFee } from '@cosmjs/stargate'
 import type { EncodeObject } from '@cosmjs/proto-signing'
-import { OfflineSigner } from '@cosmjs/proto-signing'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  ChainId,
+  CosmosChainId,
+  TestnetCosmosChainId,
+} from '@injectivelabs/ts-types'
+import type {
+  Keplr,
+  StdSignDoc,
+  AminoSignResponse,
+  OfflineAminoSigner,
+  BroadcastMode as BroadcastModeType,
+} from '@keplr-wallet/types'
 
 const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
   keplr?: Keplr
@@ -137,7 +140,7 @@ export class CosmosWallet {
   public async getOfflineAminoSigner(): Promise<OfflineAminoSigner> {
     const { chainId, wallet } = this
 
-    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (!([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       throw new CosmosWalletException(
         new Error(
           `getOfflineAminoSigner is not support on ${capitalize(wallet)}`,
@@ -174,7 +177,7 @@ export class CosmosWallet {
       const result = await cosmosWallet.sendTx(
         chainId,
         CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-        BroadcastMode.Sync,
+        BroadcastMode.Sync as BroadcastModeType,
       )
 
       if (!result || result.length === 0) {
@@ -214,7 +217,7 @@ export class CosmosWallet {
       const result = await cosmosWallet.sendTx(
         chainId,
         CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-        BroadcastMode.Block,
+        BroadcastMode.Block as BroadcastModeType,
       )
 
       if (!result || result.length === 0) {
@@ -245,7 +248,7 @@ export class CosmosWallet {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (!([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       throw new CosmosWalletException(
         new Error(
           `signAndBroadcastAminoUsingCosmjs is not support on ${capitalize(
@@ -336,7 +339,7 @@ export class CosmosWallet {
 
     try {
       return !!(await cosmos.getKey(chainId))
-    } catch (e) {
+    } catch {
       throw new CosmosWalletException(
         new Error(
           `${capitalize(wallet)} doesn't support ${
@@ -397,7 +400,7 @@ export class CosmosWallet {
     const { wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (!([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       throw new CosmosWalletException(
         new Error(`disableGasCheck is not support on ${capitalize(wallet)}`),
       )
@@ -417,7 +420,7 @@ export class CosmosWallet {
     const { wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (!([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       throw new CosmosWalletException(
         new Error(`EnableGasCheck is not support on ${capitalize(wallet)}`),
       )

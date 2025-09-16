@@ -1,8 +1,8 @@
 import { Network } from '@injectivelabs/networks'
-import { PrivateKey } from '../../accounts/PrivateKey.js'
-import { MsgSend } from '../../modules/bank/index.js'
-import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk.js'
 import { EvmChainId } from '@injectivelabs/ts-types'
+import { MsgSend } from '../../modules/bank/index.js'
+import { PrivateKey } from '../../accounts/PrivateKey.js'
+import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk.js'
 
 // TODO
 describe.skip('MsgBroadcasterWithPk', () => {

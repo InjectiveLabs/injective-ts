@@ -1,5 +1,5 @@
-import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface IndexerBid {
   bidder: string

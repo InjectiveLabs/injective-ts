@@ -1,13 +1,13 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgSubmitGenericProposal from './MsgSubmitGenericProposal.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import { MsgSend } from '../../bank/index.js'
+import MsgSubmitGenericProposal from './MsgSubmitGenericProposal.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
-import { MsgSend } from '../../bank/index.js'
 
 const params: MsgSubmitGenericProposal['params'] = {
   title: 'Test Proposal',

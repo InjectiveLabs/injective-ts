@@ -1,29 +1,35 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import { TokenStatic } from '../../../types/token.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { TokenStatic } from '../../../types/token.js'
+import type { BigNumberInBase } from '@injectivelabs/utils'
+import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
-export enum AccessTypeCode {
-  AccessTypeUnspecified = 0,
-  AccessTypeNobody = 1,
-  AccessTypeOnlyAddress = 2,
-  AccessTypeEverybody = 3,
-  AccessTypeAnyOfAddresses = 4,
-}
+export const AccessTypeCode = {
+  AccessTypeUnspecified: 0,
+  AccessTypeNobody: 1,
+  AccessTypeOnlyAddress: 2,
+  AccessTypeEverybody: 3,
+  AccessTypeAnyOfAddresses: 4,
+} as const
 
-export enum AccessType {
-  AccessTypeUnspecified = 'Unspecified',
-  AccessTypeNobody = 'Nobody',
-  AccessTypeOnlyAddress = 'Only Address',
-  AccessTypeEverybody = 'Everybody',
-  AccessTypeAnyOfAddresses = 'Any of Addresses',
-}
+export type AccessTypeCode = typeof AccessTypeCode[keyof typeof AccessTypeCode]
 
-export enum ValidatorUptimeStatus {
-  Proposed = 'proposed',
-  Signed = 'signed',
-  Missed = 'missed',
-}
+export const AccessType = {
+  AccessTypeUnspecified: 'Unspecified',
+  AccessTypeNobody: 'Nobody',
+  AccessTypeOnlyAddress: 'Only Address',
+  AccessTypeEverybody: 'Everybody',
+  AccessTypeAnyOfAddresses: 'Any of Addresses',
+} as const
+
+export type AccessType = typeof AccessType[keyof typeof AccessType]
+
+export const ValidatorUptimeStatus = {
+  Proposed: 'proposed',
+  Signed: 'signed',
+  Missed: 'missed',
+} as const
+
+export type ValidatorUptimeStatus = typeof ValidatorUptimeStatus[keyof typeof ValidatorUptimeStatus]
 
 export interface Paging {
   from: number

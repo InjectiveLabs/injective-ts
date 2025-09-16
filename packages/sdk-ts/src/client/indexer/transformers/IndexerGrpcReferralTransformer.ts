@@ -1,6 +1,6 @@
 import { BigNumberInBase } from '@injectivelabs/utils'
-import { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
-import { ReferralDetails } from '../types/index.js'
+import type { ReferralDetails } from '../types/index.js'
+import type { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
 
 export class IndexerGrpcReferralTransformer {
   static referrerDetailsResponseToReferrerDetails(
