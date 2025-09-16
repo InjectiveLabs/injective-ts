@@ -1,7 +1,8 @@
 import { Wallet } from './../types/enums.js'
+import type { Wallet as WalletType } from './../types/enums.js'
 
 export const isEvmWallet = (wallet: Wallet): boolean =>
-  [
+  ([
     Wallet.Magic,
     Wallet.Rabby,
     Wallet.BitGet,
@@ -18,37 +19,37 @@ export const isEvmWallet = (wallet: Wallet): boolean =>
     Wallet.LedgerLegacy,
     Wallet.WalletConnect,
     Wallet.CosmostationEth,
-  ].includes(wallet)
+  ] as WalletType[]).includes(wallet)
 
 export const isCosmosWallet = (wallet: Wallet): boolean => !isEvmWallet(wallet)
 
 export const isEvmBrowserWallet = (wallet: Wallet) =>
-  [
+  ([
     Wallet.Rabby,
     Wallet.BitGet,
-    Wallet.Rainbow,
     Wallet.Phantom,
+    Wallet.Rainbow,
     Wallet.Metamask,
     Wallet.OkxWallet,
     Wallet.TrustWallet,
-  ].includes(wallet)
+  ] as WalletType[]).includes(wallet)
 
 export const isCosmosBrowserWallet = (wallet: Wallet): boolean =>
-  [
+  ([
     Wallet.Leap,
-    Wallet.Ninji,
     Wallet.Keplr,
+    Wallet.Ninji,
     Wallet.OWallet,
     Wallet.Cosmostation,
-  ].includes(wallet)
+  ] as WalletType[]).includes(wallet)
 
 export const isEip712V2OnlyWallet = (wallet: Wallet): boolean =>
-  [
+  ([
     Wallet.Magic,
-    Wallet.Metamask,
     Wallet.Phantom,
+    Wallet.Metamask,
     Wallet.WalletConnect,
-  ].includes(wallet)
+  ] as WalletType[]).includes(wallet)
 
 export const isCosmosAminoOnlyWallet = (wallet: Wallet): boolean =>
-  [Wallet.LedgerCosmos].includes(wallet)
+  ([Wallet.LedgerCosmos] as WalletType[]).includes(wallet)

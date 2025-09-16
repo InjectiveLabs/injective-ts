@@ -1,5 +1,12 @@
 import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
-import {
+import { isJsonString } from '../../../utils/helpers.js'
+import { TokenType, TokenVerification } from '../../../types/token.js'
+import type {
+  Block,
+  ExplorerValidator,
+  ContractTransactionWithMessages,
+} from '../types/explorer.js'
+import type {
   Contract,
   WasmCode,
   Transaction,
@@ -11,12 +18,7 @@ import {
   ExplorerValidatorUptime,
   ExplorerCW20BalanceWithToken,
 } from '../types/explorer.js'
-import {
-  Block,
-  ExplorerValidator,
-  ContractTransactionWithMessages,
-} from '../types/explorer.js'
-import {
+import type {
   ContractExplorerApiResponse,
   WasmCodeExplorerApiResponse,
   BlockFromExplorerApiResponse,
@@ -26,8 +28,6 @@ import {
   ContractTransactionExplorerApiResponse,
   ValidatorUptimeFromExplorerApiResponse,
 } from '../types/explorer-rest.js'
-import { isJsonString } from '../../../utils/helpers.js'
-import { TokenType, TokenVerification } from '../../../types/token.js'
 
 const ZERO_IN_BASE = new BigNumberInBase(0)
 

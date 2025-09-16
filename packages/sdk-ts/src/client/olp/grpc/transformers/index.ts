@@ -1,5 +1,5 @@
-import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
-import {
+import type { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
+import type {
   GrpcEpochV2,
   EpochV2,
   MarketReward,

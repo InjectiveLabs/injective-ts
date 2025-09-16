@@ -1,7 +1,9 @@
-import type BigNumberInBase from './BigNumberInBase.js'
 import BigNumber from './BigNumber.js'
-import { bigNumberWeiToBase } from './utils.js'
+import type BigNumberInBase from './BigNumberInBase.js'
 
+/**
+ * @deprecated - use toChainFormat instead
+ */
 export default class BigNumberInWei extends BigNumber {
   static make(number: BigNumber.Value): BigNumberInWei {
     return new BigNumberInWei(number)
@@ -36,6 +38,8 @@ export default class BigNumberInWei extends BigNumber {
   }
 
   toBase(decimals = 18): BigNumberInBase {
-    return bigNumberWeiToBase(this, decimals)
+    return new BigNumber(this).dividedBy(
+      new BigNumber(10).pow(decimals),
+    ) as BigNumberInBase
   }
 }

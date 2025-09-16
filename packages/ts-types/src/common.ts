@@ -4,13 +4,15 @@ export interface StreamStatusResponse {
   metadata: any
 }
 
-export enum StreamOperation {
-  Insert = 'insert',
-  Delete = 'delete',
-  Replace = 'replace',
-  Update = 'update',
-  Invalidate = 'invalidate',
-}
+export const StreamOperation = {
+  Insert: 'insert',
+  Delete: 'delete',
+  Replace: 'replace',
+  Update: 'update',
+  Invalidate: 'invalidate',
+} as const
+
+export type StreamOperation = typeof StreamOperation[keyof typeof StreamOperation]
 
 export interface PaginationOption {
   key: string

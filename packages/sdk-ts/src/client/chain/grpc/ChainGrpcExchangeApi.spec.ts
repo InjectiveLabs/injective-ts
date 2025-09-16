@@ -1,8 +1,8 @@
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcExchangeApi } from './ChainGrpcExchangeApi.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { ChainGrpcExchangeTransformer } from '../transformers/index.js'
-import { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type { ChainGrpcExchangeTransformer } from '../transformers/index.js'
+import type { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const subaccountId = mockFactory.subaccountId

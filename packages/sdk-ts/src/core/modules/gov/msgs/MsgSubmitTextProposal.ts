@@ -1,4 +1,4 @@
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
 import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
@@ -6,6 +6,7 @@ import {
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
+import type { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitTextProposal {
   export interface Params {

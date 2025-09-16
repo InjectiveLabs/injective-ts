@@ -1,9 +1,9 @@
+import { InjectivePermissionsV1Beta1Permissions as PermissionProto } from '@injectivelabs/core-proto-ts'
+import type { Coin } from '@injectivelabs/ts-types'
 import type {
   InjectivePermissionsV1Beta1Params,
   InjectivePermissionsV1Beta1Permissions,
 } from '@injectivelabs/core-proto-ts'
-import { InjectivePermissionsV1Beta1Permissions as PermissionProto } from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
 
 export interface PermissionParams {
   wasmHookQueryMaxGas: string

@@ -1,14 +1,18 @@
-export enum ExitType {
-  Default = 'default',
-  Quote = 'quote',
-  Base = 'base',
-}
+export const ExitType = {
+  Default: 'default',
+  Quote: 'quote',
+  Base: 'base',
+} as const
 
-export enum StrategyType {
-  Arithmetic = 'arithmetic',
-  ArithmeticLP = 'trailing_arithmetic_lp',
-  Geometric = 'geometric',
-}
+export type ExitType = typeof ExitType[keyof typeof ExitType]
+
+export const StrategyType = {
+  Arithmetic: 'arithmetic',
+  ArithmeticLP: 'trailing_arithmetic_lp',
+  Geometric: 'geometric',
+} as const
+
+export type StrategyType = typeof StrategyType[keyof typeof StrategyType]
 
 export type TrailingArithmetic = {
   trailing_arithmetic: {

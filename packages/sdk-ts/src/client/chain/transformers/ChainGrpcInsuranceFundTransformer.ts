@@ -1,6 +1,6 @@
-import { InsuranceFund, InsuranceModuleParams } from '../types/insurance.js'
-import { GrpcInsuranceFund } from '../types/insurance.js'
-import { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type { GrpcInsuranceFund } from '../types/insurance.js'
+import type { InsuranceFund, InsuranceModuleParams } from '../types/insurance.js'
+import type { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer

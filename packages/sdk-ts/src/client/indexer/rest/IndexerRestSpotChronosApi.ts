@@ -2,12 +2,12 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import {
+import { IndexerModule } from '../types/index.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import type {
   ChronosSpotMarketSummaryResponse,
   AllSpotMarketSummaryResponse,
 } from '../types/spot-rest.js'
-import BaseRestConsumer from '../../base/BaseRestConsumer.js'
-import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Chronos API

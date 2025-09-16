@@ -1,12 +1,13 @@
-/* eslint-disable class-methods-use-this */
+
 import {
-  Exception,
   ErrorType,
+  UnspecifiedErrorCode
+} from './types/index.js'
+import type {
+  Exception,
   ErrorContext,
   ErrorCode,
-  UnspecifiedErrorCode,
-  ErrorContextCode,
-} from './types/index.js'
+  ErrorContextCode } from './types/index.js'
 
 /**
  * we have to define it here as
@@ -130,7 +131,7 @@ export abstract class ConcreteException extends Error implements Exception {
   public setStack(stack: string) {
     try {
       this.stack = stack
-    } catch (e) {
+    } catch {
       // throw nothing here
     }
   }

@@ -1,4 +1,4 @@
-export * from './types.js'
+export type * from './types.js'
 export * from './maps.js'
 export * from './utils.js'
 export * from './eip712.js'

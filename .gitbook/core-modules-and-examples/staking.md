@@ -15,12 +15,12 @@ import {
   MsgBeginRedelegate,
   MsgBroadcasterWithPk
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
+import { toBigNumber } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
-const amount = new BigNumberInBase(5);
+const amount = toBigNumber(5);
 const denom = "inj";
 const destinationValidatorAddress = "inj1...";
 const sourceValidatorAddress = "inj1...";
@@ -50,13 +50,13 @@ console.log(txHash);
 This Message is used to Delegate INJ to a validator.
 
 ```ts
-import { MsgDelegate, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
+import { toBigNumber } from "@injectivelabs/utils";
+import { MsgDelegate, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
-const amount = new BigNumberInBase(5);
+const amount = toBigNumber(5);
 const validatorAddress = "inj1...";
 
 const msg = MsgDelegate.fromJSON({
@@ -83,13 +83,13 @@ console.log(txHash);
 This message is used to cancel unbonding from a validator, reset the bonding period, and delegate back to the previous validator.
 
 ```ts
-import { MsgCancelUnbondingDelegation, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
+import { toBigNumber } from "@injectivelabs/utils";
+import { MsgCancelUnbondingDelegation, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
 
 const delegatorAddress = "inj1...";
 const privateKey = "0x...";
-const amount = new BigNumberInBase(5);
+const amount = toBigNumber(5);
 const validatorAddress = "inj1...";
 const creationHeight = "123456"; // the height at which the unbonding was initiated
 

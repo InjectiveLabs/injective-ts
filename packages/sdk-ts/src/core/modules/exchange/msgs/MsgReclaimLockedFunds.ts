@@ -1,6 +1,6 @@
+import { GeneralException } from '@injectivelabs/exceptions'
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgReclaimLockedFunds {
   export interface Params {

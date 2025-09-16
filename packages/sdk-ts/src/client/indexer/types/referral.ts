@@ -1,5 +1,5 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
+import type { BigNumberInBase } from '@injectivelabs/utils'
+import type { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface ReferralDetails {
   referrerCode: string

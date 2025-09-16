@@ -16,7 +16,6 @@ Keep in mind that that the `admin` of the token can change the supply (mint or b
 
 ```ts
 import { MsgCreateDenom } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1...'
@@ -44,7 +43,6 @@ Minting of a specific denom is only allowed for the current admin. Note, the cur
 
 ```ts
 import { MsgMint } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1...'
@@ -76,7 +74,6 @@ Burning of a specific denom is only allowed for the current admin. Note, the cur
 
 ```ts
 import { MsgBurn } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1...'
@@ -110,7 +107,6 @@ Setting of metadata for a specific denom is only allowed for the admin of the de
 import {
   MsgSetDenomMetadata,
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
@@ -168,7 +164,6 @@ The admin of the denom has the ability to mint new supply or burn existing one. 
 
 ```ts
 import { MsgChangeAdmin } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1...'

@@ -1,8 +1,9 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { ChainGrpcPermissionsApi } from './ChainGrpcPermissionsApi.js'
 import { INJ_DENOM } from '@injectivelabs/utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { ChainGrpcPermissionsApi } from './ChainGrpcPermissionsApi.js'
+import type { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
+
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcPermissionsApi = new ChainGrpcPermissionsApi(endpoints.grpc)

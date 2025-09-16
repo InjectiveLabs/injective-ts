@@ -1,9 +1,12 @@
-import { BigNumberInWei } from '@injectivelabs/utils'
-import {
+import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
+import { BondStatus } from '../types/staking.js'
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import type { Pagination } from '../../../types/index.js'
+import type { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type {
   GrpcValidator,
   GrpcValidatorCommission,
   GrpcValidatorDescription,
-  BondStatus,
   Validator,
   ValidatorCommission,
   ValidatorDescription,
@@ -11,12 +14,7 @@ import {
   UnBondingDelegation,
   ReDelegation,
   Pool,
-  StakingModuleParams,
-} from '../types/staking.js'
-import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { Pagination } from '../../../types/index.js'
-import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
+  StakingModuleParams } from '../types/staking.js'
 
 /**
  * @category Chain Grpc Transformer
@@ -72,13 +70,13 @@ export class ChainGrpcStakingTransformer {
       delegation: {
         delegatorAddress: delegation ? delegation.delegatorAddress : '',
         validatorAddress: delegation ? delegation.validatorAddress : '',
-        shares: cosmosSdkDecToBigNumber(
+        shares: toHumanReadable(
           delegation ? delegation.shares : 0,
         ).toFixed(),
       },
       balance: {
         denom: balance ? balance.denom : '',
-        amount: new BigNumberInWei(balance ? balance.amount : 0).toFixed(),
+        amount: toBigNumber(balance ? balance.amount : 0).toFixed(),
       },
     }
   }
@@ -96,13 +94,13 @@ export class ChainGrpcStakingTransformer {
         delegation: {
           delegatorAddress: delegation ? delegation.delegatorAddress : '',
           validatorAddress: delegation ? delegation.validatorAddress : '',
-          shares: cosmosSdkDecToBigNumber(
+          shares: toHumanReadable(
             delegation ? delegation.shares : 0,
           ).toFixed(),
         },
         balance: {
           denom: balance ? balance.denom : '',
-          amount: new BigNumberInWei(balance ? balance.amount : 0).toFixed(),
+          amount: toBigNumber(balance ? balance.amount : 0).toFixed(),
         },
       }
     })
@@ -134,8 +132,8 @@ export class ChainGrpcStakingTransformer {
             : '',
           creationHeight: parseInt(entry.creationHeight, 10),
           completionTime: Math.floor(entry.completionTime!.getTime() / 1000),
-          initialBalance: new BigNumberInWei(entry.initialBalance).toFixed(),
-          balance: new BigNumberInWei(entry.balance).toFixed(),
+          initialBalance: toBigNumber(entry.initialBalance).toFixed(),
+          balance: toBigNumber(entry.balance).toFixed(),
         }))
 
         return [...unbondingDelegations, ...mappedEntries]
@@ -180,7 +178,7 @@ export class ChainGrpcStakingTransformer {
                   destinationValidatorAddress:
                     grpcRedelegation?.validatorDstAddress || '',
                 },
-                balance: new BigNumberInWei(entry.balance).toFixed(),
+                balance: toBigNumber(entry.balance).toFixed(),
               },
             ]
           },
@@ -205,8 +203,8 @@ export class ChainGrpcStakingTransformer {
       status: ChainGrpcStakingTransformer.grpcValidatorStatusToStatus(
         validator.status,
       ),
-      tokens: cosmosSdkDecToBigNumber(validator.tokens).toFixed(),
-      delegatorShares: cosmosSdkDecToBigNumber(
+      tokens: toHumanReadable(validator.tokens).toFixed(),
+      delegatorShares: toHumanReadable(
         validator.delegatorShares,
       ).toFixed(),
       description:
@@ -236,8 +234,8 @@ export class ChainGrpcStakingTransformer {
     }
 
     return {
-      notBondedTokens: cosmosSdkDecToBigNumber(pool.notBondedTokens).toFixed(),
-      bondedTokens: cosmosSdkDecToBigNumber(pool.bondedTokens).toFixed(),
+      notBondedTokens: toHumanReadable(pool.notBondedTokens).toFixed(),
+      bondedTokens: toHumanReadable(pool.bondedTokens).toFixed(),
     }
   }
 
@@ -260,13 +258,13 @@ export class ChainGrpcStakingTransformer {
 
     return {
       commissionRates: {
-        rate: cosmosSdkDecToBigNumber(
+        rate: toHumanReadable(
           commissionRates ? commissionRates.rate : '0',
         ).toFixed(),
-        maxRate: cosmosSdkDecToBigNumber(
+        maxRate: toHumanReadable(
           commissionRates ? commissionRates.maxRate : '0',
         ).toFixed(),
-        maxChangeRate: cosmosSdkDecToBigNumber(
+        maxChangeRate: toHumanReadable(
           commissionRates ? commissionRates.maxChangeRate : '0',
         ).toFixed(),
       },

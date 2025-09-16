@@ -1,5 +1,5 @@
-import MsgReclaimLockedFunds from './MsgReclaimLockedFunds.js'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgReclaimLockedFunds from './MsgReclaimLockedFunds.js'
 
 const params: MsgReclaimLockedFunds['params'] = {
   sender: mockFactory.injectiveAddress,

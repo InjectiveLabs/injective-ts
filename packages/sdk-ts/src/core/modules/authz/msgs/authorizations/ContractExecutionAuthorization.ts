@@ -1,9 +1,9 @@
-import { Coin } from '@injectivelabs/ts-types'
 import {
   GoogleProtobufAny,
   CosmwasmWasmV1Authz,
 } from '@injectivelabs/core-proto-ts'
 import { BaseAuthorization } from './Base.js'
+import type { Coin } from '@injectivelabs/ts-types'
 
 export declare namespace ContractExecutionAuthorization {
   export interface Params {

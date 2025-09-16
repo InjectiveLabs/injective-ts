@@ -1,12 +1,12 @@
+import { InjectiveTxFeesV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveTxFeesV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcTxFeesTransformer } from '../transformers/index.js'
-import { ChainModule } from '../types/index.js'
 
 /**
  * @category Chain Grpc API

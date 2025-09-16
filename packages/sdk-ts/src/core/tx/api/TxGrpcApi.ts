@@ -1,8 +1,7 @@
 import {
-  TxConcreteApi,
-  TxClientBroadcastOptions,
-  TxClientBroadcastResponse,
-} from '../types/tx.js'
+  CosmosTxV1Beta1Service,
+  CosmosTxV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 import {
   GeneralException,
   TransactionException,
@@ -15,13 +14,15 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
-import { TxResponse } from '../types/tx.js'
+import { grpc } from '../../../utils/grpc.js'
 import BaseGrpcWebConsumer from '../../../client/base/BaseGrpcWebConsumer.js'
-import {
-  CosmosTxV1Beta1Service,
-  CosmosTxV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
-import { grpcPkg, grpc } from '../../../utils/grpc.js'
+import type { TxResponse } from '../types/tx.js'
+import type { grpcPkg } from '../../../utils/grpc.js'
+import type {
+  TxConcreteApi,
+  TxClientBroadcastOptions,
+  TxClientBroadcastResponse,
+} from '../types/tx.js'
 
 export class TxGrpcApi implements TxConcreteApi {
   public txService: CosmosTxV1Beta1Service.ServiceClientImpl

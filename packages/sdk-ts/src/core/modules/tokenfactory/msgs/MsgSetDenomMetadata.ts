@@ -1,9 +1,9 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmosBankV1Beta1Bank,
   InjectiveTokenFactoryV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgSetDenomMetadata {
   export interface Params {

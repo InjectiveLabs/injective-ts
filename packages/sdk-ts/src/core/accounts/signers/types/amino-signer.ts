@@ -1,4 +1,4 @@
-import {
+import type {
   Algo as CosmjsAlgo,
   AccountData as CosmjsAccountData,
   OfflineAminoSigner as CosmjsOfflineAminoSigner,

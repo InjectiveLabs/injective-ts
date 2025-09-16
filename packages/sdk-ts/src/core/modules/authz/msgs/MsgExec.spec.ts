@@ -1,6 +1,6 @@
-import MsgExec from './MsgExec.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { BigNumberInBase } from '@injectivelabs/utils'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
+import MsgExec from './MsgExec.js'
 import MsgSend from '../../bank/msgs/MsgSend.js'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory

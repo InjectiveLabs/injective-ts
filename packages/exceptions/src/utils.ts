@@ -1,5 +1,5 @@
-import { Exception } from './exceptions/types/index.js'
-import { ThrownException } from './types.js'
+import type { ThrownException } from './types.js'
+import type { Exception } from './exceptions/types/index.js'
 
 export const THROWN_EXCEPTIONS = [
   'Web3Exception',

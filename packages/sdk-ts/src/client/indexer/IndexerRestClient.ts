@@ -1,6 +1,6 @@
-import { IndexerRestDerivativesChronosApi } from './rest/IndexerRestDerivativesChronosApi.js'
 import { IndexerRestExplorerApi } from './rest/IndexerRestExplorerApi.js'
 import { IndexerRestSpotChronosApi } from './rest/IndexerRestSpotChronosApi.js'
+import { IndexerRestDerivativesChronosApi } from './rest/IndexerRestDerivativesChronosApi.js'
 
 /**
  * @category Indexer Grpc API

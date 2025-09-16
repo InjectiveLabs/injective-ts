@@ -1,13 +1,13 @@
-import {
-  amountToCosmosSdkDecAmount,
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
 import {
   InjectiveExchangeV1Beta1Tx,
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import {
+  numberToCosmosSdkDecString,
+} from '../../../../utils/numbers.js'
 
 export declare namespace MsgInstantBinaryOptionsMarketLaunch {
   export interface Params {
@@ -79,19 +79,19 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
       ...initialParams,
       market: {
         ...initialParams.market,
-        minPriceTickSize: amountToCosmosSdkDecAmount(
+        minPriceTickSize: toChainFormat(
           initialParams.market.minPriceTickSize,
         ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
+        makerFeeRate: toChainFormat(
           initialParams.market.makerFeeRate,
         ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
+        takerFeeRate: toChainFormat(
           initialParams.market.takerFeeRate,
         ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
+        minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
+        minNotional: toChainFormat(
           initialParams.market.minNotional,
         ).toFixed(),
       },
@@ -140,17 +140,17 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      min_price_tick_size: amountToCosmosSdkDecAmount(
+      min_price_tick_size: toChainFormat(
         value.min_price_tick_size,
       ).toFixed(),
-      min_quantity_tick_size: amountToCosmosSdkDecAmount(
+      min_quantity_tick_size: toChainFormat(
         value.min_quantity_tick_size,
       ).toFixed(),
-      min_notional: amountToCosmosSdkDecAmount(value.min_notional).toFixed(),
-      taker_fee_rate: amountToCosmosSdkDecAmount(
+      min_notional: toChainFormat(value.min_notional).toFixed(),
+      taker_fee_rate: toChainFormat(
         value.taker_fee_rate,
       ).toFixed(),
-      maker_fee_rate: amountToCosmosSdkDecAmount(
+      maker_fee_rate: toChainFormat(
         value.maker_fee_rate,
       ).toFixed(),
     }

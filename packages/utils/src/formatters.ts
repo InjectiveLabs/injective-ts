@@ -1,4 +1,4 @@
-import { AccountAddress } from '@injectivelabs/ts-types'
+import type { AccountAddress } from '@injectivelabs/ts-types'
 
 export const formatWalletAddress = (
   address: AccountAddress,

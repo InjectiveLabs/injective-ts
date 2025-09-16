@@ -1,6 +1,6 @@
+import snakecaseKeys from 'snakecase-keys'
 import { CosmosGovV1Tx, CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgVote {
   export interface Params {

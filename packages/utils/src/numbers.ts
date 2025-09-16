@@ -1,10 +1,13 @@
-import BigNumber from './classes/BigNumber/BigNumber.js'
+import BigNumber from './classes/BigNumber.js'
 
-const $BigNumber = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
+export const getBigNumberWithRounding = () =>
+  BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
 
 export const getSignificantDecimalsFromNumber = (
   number: BigNumber | number | string,
 ): number => {
+  const $BigNumber = getBigNumberWithRounding()
+
   if (Math.floor(new $BigNumber(number).toNumber()) === number) {
     return 0
   }

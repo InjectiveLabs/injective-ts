@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcTxFeesTransformer } from '../transformers/index.js'
 import { ChainGrpcTxFeesApi } from './ChainGrpcTxFeesApi.js'
+import type { ChainGrpcTxFeesTransformer } from '../transformers/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcTxFeesApi = new ChainGrpcTxFeesApi(endpoints.grpc)

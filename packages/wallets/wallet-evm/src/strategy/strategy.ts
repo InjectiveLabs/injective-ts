@@ -1,19 +1,21 @@
-/* eslint-disable class-methods-use-this */
-import { Eip1193Provider, isEvmBrowserWallet } from '@injectivelabs/wallet-base'
+
+import { sleep, capitalize } from '@injectivelabs/utils'
+import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
 import {
-  TxRaw,
   toUtf8,
   TxGrpcApi,
-  TxResponse,
-  isServerSide,
-  AminoSignResponse,
-  DirectSignResponse,
+  isServerSide
 } from '@injectivelabs/sdk-ts'
 import {
+  Wallet,
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+  BaseConcreteStrategy
+} from '@injectivelabs/wallet-base'
+import {
   ErrorType,
-  ErrorContext,
   WalletException,
-  ThrownException,
   BitGetException,
   MetamaskException,
   OkxWalletException,
@@ -23,22 +25,6 @@ import {
   RainbowWalletException,
 } from '@injectivelabs/exceptions'
 import {
-  Wallet,
-  StdSignDoc,
-  WalletAction,
-  WalletDeviceType,
-  WalletEventListener,
-  BaseConcreteStrategy,
-  SendTransactionOptions,
-  BrowserEip1993Provider,
-  ConcreteWalletStrategy,
-  ConcreteWalletStrategyArgs,
-  EIP6963AnnounceProviderEvent,
-  ConcreteEvmWalletStrategyArgs,
-} from '@injectivelabs/wallet-base'
-import { sleep, capitalize } from '@injectivelabs/utils'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
-import {
   getRabbyProvider,
   getBitGetProvider,
   getPhantomProvider,
@@ -47,6 +33,25 @@ import {
   getOkxWalletProvider,
   getTrustWalletProvider,
 } from './utils/index.js'
+import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type {
+  ErrorContext,
+  ThrownException } from '@injectivelabs/exceptions'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse } from '@injectivelabs/sdk-ts'
+import type {
+  StdSignDoc,
+  Eip1193Provider,
+  SendTransactionOptions,
+  BrowserEip1993Provider,
+  ConcreteWalletStrategy,
+  ConcreteWalletStrategyArgs,
+  EIP6963AnnounceProviderEvent,
+  ConcreteEvmWalletStrategyArgs
+} from '@injectivelabs/wallet-base'
 
 export class EvmWallet
   extends BaseConcreteStrategy
@@ -189,7 +194,7 @@ export class EvmWallet
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -297,7 +302,7 @@ export class EvmWallet
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
+
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -379,7 +384,7 @@ export class EvmWallet
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
+
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

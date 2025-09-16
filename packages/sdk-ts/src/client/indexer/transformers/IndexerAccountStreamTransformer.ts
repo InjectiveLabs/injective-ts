@@ -1,6 +1,6 @@
-import { IndexerGrpcAccountTransformer } from './IndexerGrpcAccountTransformer.js'
 import { StreamOperation } from '../../../types/index.js'
-import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
+import { IndexerGrpcAccountTransformer } from './IndexerGrpcAccountTransformer.js'
+import type { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer

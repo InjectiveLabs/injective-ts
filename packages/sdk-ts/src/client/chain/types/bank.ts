@@ -1,5 +1,5 @@
-import { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
 
 export interface BankModuleParams {
   sendEnabledList: Array<SendEnabled>

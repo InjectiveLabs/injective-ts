@@ -47,9 +47,9 @@ In some scenarios, depending on the smart contract's function we have to transfe
 Below is an example of how we can send the `MsgExecuteContract` using an `test` contract function.
 
 ```ts
-import { MsgExecuteContract, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { INJ_DENOM } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgExecuteContract, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 
 const injectiveAddress = 'inj1...'
 const contractAddress = 'cw...'
@@ -62,7 +62,7 @@ const msg = MsgExecuteContract.fromJSON({
     funds: [
       {
         denom: 'inj',
-        amount: new BigNumberInBase(1).toWei().toFixed(),
+        amount: toChainFormat(1).toFixed(),
       },
     ],
   },
@@ -91,8 +91,8 @@ import {
   MsgBroadcasterWithPk,
   MsgExecuteContractCompat,
 } from '@injectivelabs/sdk-ts'
-import { INJ_DENOM } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
 
 const injectiveAddress = 'inj1...'
 const contractAddress = 'cw...'
@@ -104,8 +104,8 @@ const msg = MsgExecuteContractCompat.fromJSON({
     action: 'test',
     funds: [
       {
-        denom: INJ_DENOM,
-        amount: new BigNumberInBase(1).toWei().toFixed(),
+        denom: 'inj',
+        amount: toChainFormat(1).toFixed(),
       },
     ],
   },

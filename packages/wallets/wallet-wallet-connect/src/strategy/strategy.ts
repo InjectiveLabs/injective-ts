@@ -1,4 +1,12 @@
-/* eslint-disable class-methods-use-this */
+import { EvmChainId } from '@injectivelabs/ts-types'
+import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
+import { EthereumProvider } from '@bangjelkoski/wc-ethereum-provider'
+import {
+  WalletAction,
+  WalletEventListener,
+  WalletDeviceType,
+  BaseConcreteStrategy,
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -6,30 +14,23 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import {
-  StdSignDoc,
-  WalletAction,
-  WalletDeviceType,
-  WalletEventListener,
-  BaseConcreteStrategy,
-  ConcreteWalletStrategy,
-  SendTransactionOptions,
-  Eip1193Provider,
-} from '@injectivelabs/wallet-base'
-import {
+import type { AccountAddress } from '@injectivelabs/ts-types'
+import type {
   Provider,
-  EthereumProvider,
   EthereumProviderOptions,
 } from '@bangjelkoski/wc-ethereum-provider'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
-import {
+import type {
   TxRaw,
-  toUtf8,
-  TxGrpcApi,
   TxResponse,
-  DirectSignResponse,
   AminoSignResponse,
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
+import type {
+  StdSignDoc,
+  Eip1193Provider,
+  ConcreteWalletStrategy,
+  SendTransactionOptions,
+} from '@injectivelabs/wallet-base'
 
 const WalletConnectIds = {
   FireBlocks:
@@ -183,7 +184,6 @@ export class WalletConnect
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -247,7 +247,6 @@ export class WalletConnect
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),
@@ -335,7 +334,7 @@ export class WalletConnect
       })
 
       return this.provider as Provider
-    } catch (e) {
+    } catch {
       throw new WalletException(
         new Error('WalletConnect not supported for this wallet'),
         {

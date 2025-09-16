@@ -1,11 +1,11 @@
+import { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
+import { IndexerModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcReferralTransformer } from '../transformers/index.js'
-import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API

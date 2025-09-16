@@ -1,10 +1,11 @@
 import {
-  GoogleProtobufAny,
   InjectiveExchangeV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
-import { Msgs } from '../../modules/msgs.js'
-import { MsgIncreasePositionMargin, MsgSignData } from '../../modules/exchange/index.js'
 import { getInjectiveAddress } from '../../../utils/index.js'
+import { MsgIncreasePositionMargin, MsgSignData } from '../../modules/exchange/index.js'
+import type { Msgs } from '../../modules/msgs.js'
+import type {
+  GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
 
 export class MsgDecoder {
   static decode(message: GoogleProtobufAny.Any): Msgs {

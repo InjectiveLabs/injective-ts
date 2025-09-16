@@ -1,10 +1,13 @@
-import { MsgBase } from '../../MsgBase.js'
-import { numberToCosmosSdkDecString, amountToCosmosSdkDecAmount } from '../../../../utils/numbers.js'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
+import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
 import {
   InjectiveExchangeV1Beta1Tx,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
+import type { SnakeCaseKeys } from 'snakecase-keys'
+
 
 export declare namespace MsgCreateBinaryOptionsMarketOrder {
   export interface Params {
@@ -75,12 +78,12 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
     const { params: initialParams } = this
     const params = {
       ...initialParams,
-      price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
-      margin: amountToCosmosSdkDecAmount(initialParams.margin).toFixed(),
-      triggerPrice: amountToCosmosSdkDecAmount(
+      price: toChainFormat(initialParams.price).toFixed(),
+      margin: toChainFormat(initialParams.margin).toFixed(),
+      triggerPrice: toChainFormat(
         initialParams.triggerPrice || 0,
       ).toFixed(),
-      quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
+      quantity: toChainFormat(initialParams.quantity).toFixed(),
     } as MsgCreateBinaryOptionsMarketOrder.Params
 
     return createMarketOrder(params)
@@ -155,11 +158,11 @@ export default class MsgCreateBinaryOptionsMarketOrder extends MsgBase<
         ...value.order,
         order_info: {
           ...value.order?.order_info,
-          price: amountToCosmosSdkDecAmount(params.price).toFixed(),
-          quantity: amountToCosmosSdkDecAmount(params.quantity).toFixed(),
+          price: toChainFormat(params.price).toFixed(),
+          quantity: toChainFormat(params.quantity).toFixed(),
         },
-        margin: amountToCosmosSdkDecAmount(params.margin).toFixed(),
-        trigger_price: amountToCosmosSdkDecAmount(
+        margin: toChainFormat(params.margin).toFixed(),
+        trigger_price: toChainFormat(
           params.triggerPrice || '0',
         ).toFixed(),
       },
