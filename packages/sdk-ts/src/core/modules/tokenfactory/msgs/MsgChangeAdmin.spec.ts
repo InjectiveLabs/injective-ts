@@ -8,7 +8,6 @@ import {
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-
 const params: MsgChangeAdmin['params'] = {
   sender: mockFactory.injectiveAddress,
   denom: 'inj',
@@ -59,7 +58,6 @@ describe('MsgChangeAdmin', () => {
       ...protoParamsAmino,
     })
   })
-
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({

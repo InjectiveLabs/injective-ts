@@ -4,7 +4,6 @@ import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import MsgSubmitProposalExpiryFuturesMarketLaunch from './MsgSubmitProposalExpiryFuturesMarketLaunch.js'
 
-
 const params: MsgSubmitProposalExpiryFuturesMarketLaunch['params'] = {
   market: {
     title: 'INJ/USDT PERP',

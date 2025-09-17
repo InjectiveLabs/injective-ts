@@ -13,7 +13,7 @@ export const EvmChainId = {
   TestnetEvm: 1439,
 } as const
 
-export type EvmChainId = typeof EvmChainId[keyof typeof EvmChainId]
+export type EvmChainId = (typeof EvmChainId)[keyof typeof EvmChainId]
 
 export const ChainId = {
   Mainnet: 'injective-1',
@@ -21,8 +21,7 @@ export const ChainId = {
   Devnet: 'injective-777',
 } as const
 
-export type ChainId = typeof ChainId[keyof typeof ChainId]
-
+export type ChainId = (typeof ChainId)[keyof typeof ChainId]
 
 export const MsgType = {
   // Authz
@@ -348,18 +347,18 @@ export const MsgType = {
   MsgTxFeesUpdateParams: 'injective.txfees.v1beta1.MsgUpdateParams',
 } as const
 
-export type MsgType = typeof MsgType[keyof typeof MsgType]
+export type MsgType = (typeof MsgType)[keyof typeof MsgType]
 
 export const MsgStatus = {
   Success: 'success',
   Fail: 'fail',
 } as const
 
-export type MsgStatus = typeof MsgStatus[keyof typeof MsgStatus]
+export type MsgStatus = (typeof MsgStatus)[keyof typeof MsgStatus]
 
 export const EIP712Version = {
   V1: 'v1',
   V2: 'v2',
 } as const
 
-export type EIP712Version = typeof EIP712Version[keyof typeof EIP712Version]
+export type EIP712Version = (typeof EIP712Version)[keyof typeof EIP712Version]

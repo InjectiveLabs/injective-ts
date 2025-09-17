@@ -13,7 +13,6 @@ import type {
   PermissionPolicyManagerCapability,
 } from './../../../../client/chain/types/permissions.js'
 
-
 export declare namespace MsgCreateNamespace {
   export interface Params {
     sender: string

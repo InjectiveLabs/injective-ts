@@ -6,7 +6,8 @@ export const HttpRequestMethod = {
   Options: 'OPTIONS',
 } as const
 
-export type HttpRequestMethod = typeof HttpRequestMethod[keyof typeof HttpRequestMethod]
+export type HttpRequestMethod =
+  (typeof HttpRequestMethod)[keyof typeof HttpRequestMethod]
 
 export const ErrorType = {
   Unspecified: 'unspecified',
@@ -22,7 +23,7 @@ export const ErrorType = {
   Web3Gateway: 'web3-gateway',
 } as const
 
-export type ErrorType = typeof ErrorType[keyof typeof ErrorType]
+export type ErrorType = (typeof ErrorType)[keyof typeof ErrorType]
 
 export interface ErrorContext {
   code?: ErrorCode

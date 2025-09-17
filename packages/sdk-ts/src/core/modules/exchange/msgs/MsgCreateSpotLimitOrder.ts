@@ -5,11 +5,8 @@ import {
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
-
 
 export declare namespace MsgCreateSpotLimitOrder {
   export interface Params {
@@ -73,9 +70,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
     const params = {
       ...initialParams,
       price: toChainFormat(initialParams.price).toFixed(),
-      triggerPrice: toChainFormat(
-        initialParams.triggerPrice || 0,
-      ).toFixed(),
+      triggerPrice: toChainFormat(initialParams.triggerPrice || 0).toFixed(),
       quantity: toChainFormat(initialParams.quantity).toFixed(),
     } as MsgCreateSpotLimitOrder.Params
 
@@ -153,9 +148,7 @@ export default class MsgCreateSpotLimitOrder extends MsgBase<
           price: toChainFormat(params.price).toFixed(),
           quantity: toChainFormat(params.quantity).toFixed(),
         },
-        trigger_price: toChainFormat(
-          params.triggerPrice || '0',
-        ).toFixed(),
+        trigger_price: toChainFormat(params.triggerPrice || '0').toFixed(),
       },
     }
 

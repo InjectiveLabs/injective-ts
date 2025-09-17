@@ -1,20 +1,12 @@
-
-import {
-  TxGrpcApi
-} from '@injectivelabs/sdk-ts'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { getEthereumAddress } from '@injectivelabs/sdk-ts'
 import { sleep, HttpRestClient } from '@injectivelabs/utils'
-import {
-  http,
-  getAddress,
-  createPublicClient,
-  createWalletClient
-} from 'viem'
+import { http, getAddress, createPublicClient, createWalletClient } from 'viem'
 import {
   WalletAction,
   WalletDeviceType,
   type WalletMetadata,
-  BaseConcreteStrategy
+  BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
@@ -30,14 +22,11 @@ import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
-import type {
-  LocalAccount,
-  PrepareTransactionRequestParameters
-} from 'viem'
+import type { LocalAccount, PrepareTransactionRequestParameters } from 'viem'
 import type {
   TxRaw,
   AminoSignResponse,
-  DirectSignResponse
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
@@ -46,7 +35,7 @@ import type {
   ConcreteWalletStrategy,
   SendTransactionOptions,
   WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 
 export class TurnkeyWalletStrategy
@@ -284,7 +273,6 @@ export class TurnkeyWalletStrategy
     return signature
   }
 
-
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -394,7 +382,6 @@ export class TurnkeyWalletStrategy
       `Failed to retrieve transaction receipt for txHash: ${txHash}`,
     )
   }
-
 
   async getPubKey(): Promise<string> {
     throw new WalletException(

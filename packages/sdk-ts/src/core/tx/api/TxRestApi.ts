@@ -9,24 +9,22 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   HttpClient,
-  BigNumberInBase,
+  toBigNumber,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import { TxClient } from '../utils/classes/TxClient.js'
+import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
-import {
-  BroadcastMode
-} from '../types/tx-rest-client.js'
 import type { AxiosError } from 'axios'
 import type { TxResponse } from '../types/tx.js'
 import type { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
 import type {
   TxInfoResponse,
   TxResultResponse,
-  SimulationResponse } from '../types/tx-rest-client.js'
-
+  SimulationResponse,
+} from '../types/tx-rest-client.js'
 
 /**
  * It is recommended to use TxGrpcClient instead of TxRestApi
@@ -171,7 +169,7 @@ export class TxRestApi implements TxConcreteApi {
   ): Promise<TxResponse> {
     const timeout =
       options?.timeout ||
-      new BigNumberInBase(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
+      toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
 

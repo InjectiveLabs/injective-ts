@@ -4,7 +4,6 @@ import type { ValidatorRewards } from '../types/distribution.js'
 import type { DistributionModuleParams } from '../types/distribution.js'
 import type { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
-
 /**
  * @category Chain Grpc Transformer
  */

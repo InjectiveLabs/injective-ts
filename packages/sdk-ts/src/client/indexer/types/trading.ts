@@ -10,7 +10,7 @@ export const MarketType = {
   Derivative: 'derivative',
 } as const
 
-export type MarketType = typeof MarketType[keyof typeof MarketType]
+export type MarketType = (typeof MarketType)[keyof typeof MarketType]
 
 export type GridStrategyType = 'geometric' | 'arithmetic' | 'perpetual'
 // Trailing Arithmetic

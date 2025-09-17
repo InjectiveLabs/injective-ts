@@ -1,10 +1,10 @@
-import { Network } from "./types.js";
+import { Network } from './types.js'
 import {
   getLocalChainInfo,
   getDevnetChainInfo,
   getMainnetChainInfo,
   getTestnetChainInfo,
-} from "./chainInfos.js";
+} from './chainInfos.js'
 import {
   getEndpointsLocal,
   getEndpointsDevnet,
@@ -20,49 +20,49 @@ import {
   getEndpointsMainnetK8s,
   getEndpointsTestnetSentry,
   getEndpointsMainnetSentry,
-} from "./endpoints.js";
+} from './endpoints.js'
 import type {
   Network as NetworkType,
   ChainInfo,
   NetworkEndpoints,
-} from "./types.js";
+} from './types.js'
 
 export const getNetworkEndpoints = (network: Network): NetworkEndpoints => {
   switch (network) {
     case Network.MainnetLB:
-      return getEndpointsMainnetLB();
+      return getEndpointsMainnetLB()
     case Network.MainnetK8s:
-      return getEndpointsMainnetK8s();
+      return getEndpointsMainnetK8s()
     case Network.MainnetSentry:
     case Network.Mainnet:
-      return getEndpointsMainnetSentry();
+      return getEndpointsMainnetSentry()
     case Network.MainnetOld:
-      return getEndpointsMainnetOld();
+      return getEndpointsMainnetOld()
     case Network.Staging:
-      return getEndpointsStaging();
+      return getEndpointsStaging()
     case Network.Internal:
-      return getEndpointsInternal();
+      return getEndpointsInternal()
     case Network.Devnet:
-      return getEndpointsDevnet();
+      return getEndpointsDevnet()
     case Network.Devnet1:
-      return getEndpointsDevnet1();
+      return getEndpointsDevnet1()
     case Network.Devnet2:
-      return getEndpointsDevnet2();
+      return getEndpointsDevnet2()
     case Network.Devnet3:
-      return getEndpointsDevnet3();
+      return getEndpointsDevnet3()
     case Network.TestnetK8s:
-      return getEndpointsTestnetK8s();
+      return getEndpointsTestnetK8s()
     case Network.TestnetOld:
-      return getEndpointsTestnetOld();
+      return getEndpointsTestnetOld()
     case Network.TestnetSentry:
     case Network.Testnet:
-      return getEndpointsTestnetSentry();
+      return getEndpointsTestnetSentry()
     case Network.Local:
-      return getEndpointsLocal();
+      return getEndpointsLocal()
     default:
-      throw new Error(`Unknown network: ${network}`);
+      throw new Error(`Unknown network: ${network}`)
   }
-};
+}
 
 /**
  * @deprecated - use getNetworkChainInfo instead
@@ -70,30 +70,30 @@ export const getNetworkEndpoints = (network: Network): NetworkEndpoints => {
  * @returns
  */
 export const getChainInfoForNetwork = (network: NetworkType): ChainInfo =>
-  getNetworkChainInfo(network);
+  getNetworkChainInfo(network)
 
 export const getNetworkChainInfo = (network: Network): ChainInfo => {
   if (network === Network.Local) {
-    return getLocalChainInfo();
+    return getLocalChainInfo()
   }
 
   if (isTestnet(network)) {
-    return getTestnetChainInfo();
+    return getTestnetChainInfo()
   }
 
   if (isDevnet(network)) {
-    return getDevnetChainInfo();
+    return getDevnetChainInfo()
   }
 
-  return getMainnetChainInfo();
-};
+  return getMainnetChainInfo()
+}
 
 export const getNetworkInfo = (
-  network: Network
+  network: Network,
 ): ChainInfo & NetworkEndpoints => ({
   ...getNetworkChainInfo(network),
   ...getNetworkEndpoints(network),
-});
+})
 
 export const isMainnet = (network: NetworkType) =>
   (
@@ -106,7 +106,7 @@ export const isMainnet = (network: NetworkType) =>
       Network.Internal,
       Network.MainnetLB,
     ] as NetworkType[]
-  ).includes(network);
+  ).includes(network)
 
 export const isDevnet = (network: Network) =>
   (
@@ -117,7 +117,7 @@ export const isDevnet = (network: Network) =>
       Network.Devnet3,
       Network.Local,
     ] as NetworkType[]
-  ).includes(network);
+  ).includes(network)
 
 export const isTestnet = (network: Network) =>
   (
@@ -127,7 +127,7 @@ export const isTestnet = (network: Network) =>
       Network.TestnetK8s,
       Network.TestnetSentry,
     ] as NetworkType[]
-  ).includes(network);
+  ).includes(network)
 
 export const isTestnetOrDevnet = (network: Network) =>
-  isDevnet(network) || isTestnet(network);
+  isDevnet(network) || isTestnet(network)

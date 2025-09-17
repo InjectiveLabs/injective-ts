@@ -1,5 +1,5 @@
 import {
-  BigNumberInBase,
+  toBigNumber,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
@@ -11,7 +11,7 @@ export const waitTxBroadcasted = (
   txHash: string,
   options: { endpoints: { grpc?: string; rest: string }; txTimeout?: number },
 ): Promise<TxResponse> => {
-  const timeout = new BigNumberInBase(
+  const timeout = toBigNumber(
     options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   )
     .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)

@@ -1,5 +1,5 @@
 import snakecaseKeys from 'snakecase-keys'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgUnderwrite from './MsgUnderwrite.js'
@@ -13,7 +13,7 @@ const params: MsgUnderwrite['params'] = {
   marketId: mockFactory.derivativeMarketId,
   injectiveAddress: mockFactory.injectiveAddress,
   amount: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
 }

@@ -7,7 +7,6 @@ import {
 import { MsgBase } from '../../MsgBase.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
-
 interface SpotOrderToCreate {
   orderType: InjectiveExchangeV1Beta1Exchange.OrderType
   triggerPrice?: string
@@ -297,9 +296,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         const paramsFromArgs = {
           ...args,
           price: toChainFormat(args.price).toFixed(),
-          triggerPrice: toChainFormat(
-            args.triggerPrice || 0,
-          ).toFixed(),
+          triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
           quantity: toChainFormat(args.quantity).toFixed(),
         }
 
@@ -322,9 +319,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           ...args,
           price: toChainFormat(args.price).toFixed(),
           margin: toChainFormat(args.margin).toFixed(),
-          triggerPrice: toChainFormat(
-            args.triggerPrice || 0,
-          ).toFixed(),
+          triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
           quantity: toChainFormat(args.quantity).toFixed(),
         }
 
@@ -382,9 +377,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           ...args,
           price: toChainFormat(args.price).toFixed(),
           margin: toChainFormat(args.margin).toFixed(),
-          triggerPrice: toChainFormat(
-            args.triggerPrice || 0,
-          ).toFixed(),
+          triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
           quantity: toChainFormat(args.quantity).toFixed(),
         }
 

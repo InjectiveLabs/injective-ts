@@ -4,7 +4,6 @@ import { MsgBase } from '../../MsgBase.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 import type { ExecPrivilegedArgs } from '../exec-args.js'
 
-
 export declare namespace MsgPrivilegedExecuteContract {
   export interface Params {
     sender: string

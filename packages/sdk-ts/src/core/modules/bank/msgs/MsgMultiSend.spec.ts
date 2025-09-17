@@ -1,4 +1,4 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgMultiSend from './MsgMultiSend.js'
@@ -12,13 +12,13 @@ const params: MsgMultiSend['params'] = {
   inputs: [
     {
       address: mockFactory.injectiveAddress,
-      coins: [{ amount: new BigNumberInBase(1).toFixed(), denom: 'inj' }],
+      coins: [{ amount: toChainFormat(1).toFixed(), denom: 'inj' }],
     },
   ],
   outputs: [
     {
       address: mockFactory.injectiveAddress2,
-      coins: [{ amount: new BigNumberInBase(1).toFixed(), denom: 'inj' }],
+      coins: [{ amount: toChainFormat(1).toFixed(), denom: 'inj' }],
     },
   ],
 }

@@ -1,6 +1,9 @@
 import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
 import type { InjectiveTxFeesV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import type { TxFeesEipBaseFee, TxFeesModuleStateParams } from '../types/txFees.js'
+import type {
+  TxFeesEipBaseFee,
+  TxFeesModuleStateParams,
+} from '../types/txFees.js'
 
 /**
  * @category Chain Grpc Transformer

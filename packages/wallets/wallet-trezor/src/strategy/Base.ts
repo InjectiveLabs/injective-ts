@@ -1,9 +1,6 @@
- import { toHex, serializeTransaction } from 'viem'
+import { toHex, serializeTransaction } from 'viem'
 import { EvmChainId } from '@injectivelabs/ts-types'
-import {
-  toUtf8,
-  TxGrpcApi
-} from '@injectivelabs/sdk-ts'
+import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import {
   ErrorType,
@@ -27,19 +24,22 @@ import { loadTrezorConnect } from './lib.js'
 import { transformTypedData } from '../utils.js'
 import { BaseTrezorTransport } from './hw/index.js'
 import type { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
-import type { AccountAddress, EvmChainId as EvmChainIdType } from '@injectivelabs/ts-types'
+import type {
+  AccountAddress,
+  EvmChainId as EvmChainIdType,
+} from '@injectivelabs/ts-types'
 import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
   SendTransactionOptions,
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 
 type EthereumTransactionEIP1559 = {
@@ -242,7 +242,6 @@ export default class TrezorBase
     )
   }
 
-
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -300,7 +299,6 @@ export default class TrezorBase
   async getEvmTransactionReceipt(txHash: string): Promise<string> {
     return Promise.resolve(txHash)
   }
-
 
   async getPubKey(): Promise<string> {
     throw new WalletException(

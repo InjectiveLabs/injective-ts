@@ -1,6 +1,6 @@
 import type { Coin } from '@injectivelabs/ts-types'
+import type { BigNumber } from '@injectivelabs/utils'
 import type { TokenStatic } from '../../../types/token.js'
-import type { BigNumberInBase } from '@injectivelabs/utils'
 import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
 export const AccessTypeCode = {
@@ -11,7 +11,8 @@ export const AccessTypeCode = {
   AccessTypeAnyOfAddresses: 4,
 } as const
 
-export type AccessTypeCode = typeof AccessTypeCode[keyof typeof AccessTypeCode]
+export type AccessTypeCode =
+  (typeof AccessTypeCode)[keyof typeof AccessTypeCode]
 
 export const AccessType = {
   AccessTypeUnspecified: 'Unspecified',
@@ -21,7 +22,7 @@ export const AccessType = {
   AccessTypeAnyOfAddresses: 'Any of Addresses',
 } as const
 
-export type AccessType = typeof AccessType[keyof typeof AccessType]
+export type AccessType = (typeof AccessType)[keyof typeof AccessType]
 
 export const ValidatorUptimeStatus = {
   Proposed: 'proposed',
@@ -29,7 +30,8 @@ export const ValidatorUptimeStatus = {
   Missed: 'missed',
 } as const
 
-export type ValidatorUptimeStatus = typeof ValidatorUptimeStatus[keyof typeof ValidatorUptimeStatus]
+export type ValidatorUptimeStatus =
+  (typeof ValidatorUptimeStatus)[keyof typeof ValidatorUptimeStatus]
 
 export interface Paging {
   from: number
@@ -346,8 +348,8 @@ export interface ContractTransaction {
   type: string
   code: number
   messages: Message[]
-  amount: BigNumberInBase
-  fee: BigNumberInBase
+  amount: BigNumber
+  fee: BigNumber
   height: number
   time: number
   data: string

@@ -1,10 +1,5 @@
-
 import { CosmosWalletException } from '@injectivelabs/exceptions'
-import {
-  toUtf8,
-  TxGrpcApi,
-  sortObjectByKeys
-} from '@injectivelabs/sdk-ts'
+import { toUtf8, TxGrpcApi, sortObjectByKeys } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   WalletException,
@@ -22,17 +17,21 @@ import {
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
 import type { LedgerWalletInfo } from '../../types.js'
-import type { ChainId, EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type {
+  ChainId,
+  EvmChainId,
+  AccountAddress,
+} from '@injectivelabs/ts-types'
 import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,
-  SendTransactionOptions
+  SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
 
 export class LedgerCosmos

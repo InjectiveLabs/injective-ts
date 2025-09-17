@@ -67,7 +67,8 @@ export const TurnkeyProvider = {
   Apple: 'apple',
 } as const
 
-export type TurnkeyProvider = typeof TurnkeyProvider[keyof typeof TurnkeyProvider]
+export type TurnkeyProvider =
+  (typeof TurnkeyProvider)[keyof typeof TurnkeyProvider]
 
 export type TurnkeySession = {
   sessionType: any

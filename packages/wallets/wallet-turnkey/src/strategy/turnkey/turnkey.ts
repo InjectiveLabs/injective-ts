@@ -1,14 +1,8 @@
 import { createAccount } from '@turnkey/viem'
 import { HttpRestClient } from '@injectivelabs/utils'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
-import {
-  Turnkey,
-  SessionType,
-} from '@turnkey/sdk-browser'
-import {
-  WalletAction,
-  TurnkeyProvider,
-} from '@injectivelabs/wallet-base'
+import { Turnkey, SessionType } from '@turnkey/sdk-browser'
+import { WalletAction, TurnkeyProvider } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -25,12 +19,8 @@ import {
   TURNKEY_OTP_INIT_PATH,
   TURNKEY_OTP_VERIFY_PATH,
 } from '../consts.js'
-import type {
-  TurnkeyMetadata
-} from '@injectivelabs/wallet-base'
-import type {
-  TurnkeyIndexedDbClient
-} from '@turnkey/sdk-browser'
+import type { TurnkeyMetadata } from '@injectivelabs/wallet-base'
+import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 
 export class TurnkeyWallet {
   private otpId?: string
@@ -279,9 +269,7 @@ export class TurnkeyWallet {
     return result
   }
 
-  public async initOAuth(
-    provider: TurnkeyProvider,
-  ) {
+  public async initOAuth(provider: TurnkeyProvider) {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -303,10 +291,7 @@ export class TurnkeyWallet {
     })
   }
 
-  public async confirmOAuth(
-    provider: TurnkeyProvider,
-    oidcToken: string,
-  ) {
+  public async confirmOAuth(provider: TurnkeyProvider, oidcToken: string) {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),

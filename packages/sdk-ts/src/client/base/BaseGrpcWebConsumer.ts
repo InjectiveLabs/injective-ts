@@ -10,7 +10,7 @@ export default class BaseGrpcWebConsumer extends GrpcWebImpl {
   constructor(endpoint: string) {
     super(endpoint, {
       transport: getGrpcTransport(),
-      setCookieMetadata: true
+      setCookieMetadata: true,
     })
   }
 

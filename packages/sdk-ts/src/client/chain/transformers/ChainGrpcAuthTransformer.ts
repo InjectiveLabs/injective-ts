@@ -7,8 +7,8 @@ import { grpcPaginationToPagination } from '../../../utils/pagination.js'
 import type { Account, AuthModuleParams } from '../types/auth.js'
 import type {
   GoogleProtobufAny,
-  CosmosAuthV1Beta1Query } from '@injectivelabs/core-proto-ts'
-
+  CosmosAuthV1Beta1Query,
+} from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer

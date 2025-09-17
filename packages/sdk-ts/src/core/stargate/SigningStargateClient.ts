@@ -2,13 +2,9 @@ import { Int53, Uint53 } from '@cosmjs/math'
 import { AminoTypes } from '@cosmjs/stargate'
 import { calculateFee } from '@cosmjs/stargate'
 import { assert, assertDefined } from '@cosmjs/utils'
-import {
-  defaultRegistryTypes
-} from '@cosmjs/stargate'
+import { defaultRegistryTypes } from '@cosmjs/stargate'
+import { Tendermint37Client } from '@cosmjs/tendermint-rpc'
 import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx.js'
-import {
-  Tendermint37Client,
-} from '@cosmjs/tendermint-rpc'
 import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing.js'
 import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
 import {
@@ -25,7 +21,7 @@ import {
   makeSignDoc,
   encodePubkey,
   isOfflineDirectSigner,
-  makeAuthInfoBytes
+  makeAuthInfoBytes,
 } from '@cosmjs/proto-signing'
 import {
   createAuthzAminoConverters,
@@ -39,22 +35,18 @@ import {
 } from '@cosmjs/stargate'
 import { getPublicKey } from '../tx/index.js'
 import { StargateClient } from './StargateClient.js'
-import type {
-  StdFee } from '@cosmjs/amino'
+import type { StdFee } from '@cosmjs/amino'
 import type { GasPrice } from '@cosmjs/stargate'
 import type { AminoConverters } from '@cosmjs/stargate'
 import type { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin.js'
 import type { Height } from 'cosmjs-types/ibc/core/client/v1/client.js'
-import type {
-  CometClient,
-  HttpEndpoint } from '@cosmjs/tendermint-rpc'
-import type {
-  DeliverTxResponse,
-  StargateClientOptions } from '@cosmjs/stargate'
+import type { CometClient, HttpEndpoint } from '@cosmjs/tendermint-rpc'
+import type { DeliverTxResponse, StargateClientOptions } from '@cosmjs/stargate'
 import type {
   EncodeObject,
   OfflineSigner,
-  TxBodyEncodeObject } from '@cosmjs/proto-signing'
+  TxBodyEncodeObject,
+} from '@cosmjs/proto-signing'
 import type {
   MsgDelegateEncodeObject,
   MsgSendEncodeObject,

@@ -1,4 +1,4 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { MsgSend } from '../../bank/index.js'
@@ -20,13 +20,13 @@ const params: MsgSubmitGenericProposal['params'] = {
       srcInjectiveAddress: mockFactory.injectiveAddress,
       dstInjectiveAddress: mockFactory.injectiveAddress,
       amount: {
-        amount: new BigNumberInBase(1).toFixed(),
+        amount: toChainFormat(1).toFixed(),
         denom: 'inj',
       },
     }),
   ],
   deposit: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
 }

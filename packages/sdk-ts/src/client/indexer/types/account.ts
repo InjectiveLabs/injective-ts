@@ -8,7 +8,7 @@ export const TransferType = {
   Deposit: 'deposit',
 } as const
 
-export type TransferType = typeof TransferType[keyof typeof TransferType]
+export type TransferType = (typeof TransferType)[keyof typeof TransferType]
 
 export interface SubaccountTransfer {
   transferType: TransferType

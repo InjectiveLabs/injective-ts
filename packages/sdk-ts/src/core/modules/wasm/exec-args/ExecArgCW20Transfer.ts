@@ -1,9 +1,5 @@
-import {
-  dataToExecData,
-  ExecArgBase
-} from '../ExecArgBase.js'
-import type {
-  ExecDataRepresentation } from '../ExecArgBase.js'
+import { dataToExecData, ExecArgBase } from '../ExecArgBase.js'
+import type { ExecDataRepresentation } from '../ExecArgBase.js'
 
 /**
  * When we execute the `transfer` action on

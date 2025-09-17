@@ -9,7 +9,8 @@ export const LedgerDerivationPathType = {
   LedgerMew: 'ledger-mew',
 } as const
 
-export type LedgerDerivationPathType = typeof LedgerDerivationPathType[keyof typeof LedgerDerivationPathType]
+export type LedgerDerivationPathType =
+  (typeof LedgerDerivationPathType)[keyof typeof LedgerDerivationPathType]
 
 export interface LedgerWalletInfo {
   address: string
@@ -25,4 +26,4 @@ export const WalletLedger = {
   LedgerLegacy: 'ledger-legacy',
 } as const
 
-export type WalletLedger = typeof WalletLedger[keyof typeof WalletLedger]
+export type WalletLedger = (typeof WalletLedger)[keyof typeof WalletLedger]

@@ -5,9 +5,7 @@ import {
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgInstantBinaryOptionsMarketLaunch {
   export interface Params {
@@ -91,9 +89,7 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
         minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: toChainFormat(
-          initialParams.market.minNotional,
-        ).toFixed(),
+        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
       },
     } as MsgInstantBinaryOptionsMarketLaunch.Params
 
@@ -140,19 +136,13 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      min_price_tick_size: toChainFormat(
-        value.min_price_tick_size,
-      ).toFixed(),
+      min_price_tick_size: toChainFormat(value.min_price_tick_size).toFixed(),
       min_quantity_tick_size: toChainFormat(
         value.min_quantity_tick_size,
       ).toFixed(),
       min_notional: toChainFormat(value.min_notional).toFixed(),
-      taker_fee_rate: toChainFormat(
-        value.taker_fee_rate,
-      ).toFixed(),
-      maker_fee_rate: toChainFormat(
-        value.maker_fee_rate,
-      ).toFixed(),
+      taker_fee_rate: toChainFormat(value.taker_fee_rate).toFixed(),
+      maker_fee_rate: toChainFormat(value.maker_fee_rate).toFixed(),
     }
 
     return {

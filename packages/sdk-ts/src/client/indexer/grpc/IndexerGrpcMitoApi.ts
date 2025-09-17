@@ -977,7 +977,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetClaimReferencesResponse>(
-        () => this.client.GetClaimReferences(request, this.metadata ),
+        () => this.client.GetClaimReferences(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences(

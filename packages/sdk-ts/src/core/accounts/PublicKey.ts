@@ -12,7 +12,6 @@ import {
   decompressPubKey,
 } from '../../utils/index.js'
 
-
 /**
  * @category Crypto Utility Classes
  */

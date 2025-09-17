@@ -3,4 +3,5 @@ export const GrantAuthorizationType = {
   ContractExecutionAuthorization: 'ContractExecutionAuthorization',
 } as const
 
-export type GrantAuthorizationType = typeof GrantAuthorizationType[keyof typeof GrantAuthorizationType]
+export type GrantAuthorizationType =
+  (typeof GrantAuthorizationType)[keyof typeof GrantAuthorizationType]

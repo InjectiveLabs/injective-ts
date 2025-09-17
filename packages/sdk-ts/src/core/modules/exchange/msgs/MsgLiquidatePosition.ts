@@ -5,9 +5,7 @@ import {
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgLiquidatePosition {
   export interface Params {
@@ -84,18 +82,12 @@ export default class MsgLiquidatePosition extends MsgBase<
       order: initialParams.order
         ? {
             ...initialParams.order,
-            price: toChainFormat(
-              initialParams.order.price,
-            ).toFixed(),
-            margin: toChainFormat(
-              initialParams.order.margin,
-            ).toFixed(),
+            price: toChainFormat(initialParams.order.price).toFixed(),
+            margin: toChainFormat(initialParams.order.margin).toFixed(),
             triggerPrice: toChainFormat(
               initialParams.order.triggerPrice || 0,
             ).toFixed(),
-            quantity: toChainFormat(
-              initialParams.order.quantity,
-            ).toFixed(),
+            quantity: toChainFormat(initialParams.order.quantity).toFixed(),
           }
         : undefined,
     } as MsgLiquidatePosition.Params
@@ -180,9 +172,7 @@ export default class MsgLiquidatePosition extends MsgBase<
               quantity: toChainFormat(order.order_info.quantity).toFixed(),
             },
             margin: toChainFormat(order.margin).toFixed(),
-            trigger_price: toChainFormat(
-              order.trigger_price || '0',
-            ).toFixed(),
+            trigger_price: toChainFormat(order.trigger_price || '0').toFixed(),
           }
         : undefined,
     }

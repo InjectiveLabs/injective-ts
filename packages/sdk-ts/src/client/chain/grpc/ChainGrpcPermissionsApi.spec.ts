@@ -4,7 +4,6 @@ import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { ChainGrpcPermissionsApi } from './ChainGrpcPermissionsApi.js'
 import type { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
 
-
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcPermissionsApi = new ChainGrpcPermissionsApi(endpoints.grpc)
 const injectiveAddress = mockFactory.injectiveAddress

@@ -1,11 +1,7 @@
 import { binaryToBase64 } from './../../../../utils/utf8.js'
-import {
-  dataToExecData,
-  ExecArgBase
-} from '../ExecArgBase.js'
+import { dataToExecData, ExecArgBase } from '../ExecArgBase.js'
 import type { ChainId } from '@injectivelabs/ts-types'
-import type {
-  ExecDataRepresentation } from '../ExecArgBase.js'
+import type { ExecDataRepresentation } from '../ExecArgBase.js'
 
 export declare namespace ExecArgInitiateTransfer {
   export interface Params {

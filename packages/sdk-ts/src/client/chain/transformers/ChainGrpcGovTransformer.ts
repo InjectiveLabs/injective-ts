@@ -17,7 +17,6 @@ import type {
   GrpcGovernanceDepositParams,
 } from '../types/gov.js'
 
-
 /**
  * @category Chain Grpc Transformer
  */

@@ -8,8 +8,6 @@ import { MsgBase } from '../../MsgBase.js'
 import { fromUtf8 } from '../../../../utils/utf8.js'
 import type { ExecArgs } from '../exec-args.js'
 
-
-
 export declare namespace MsgExecuteContract {
   export interface Params {
     /* Keep in mind that funds have to be lexicographically sorted by denom */

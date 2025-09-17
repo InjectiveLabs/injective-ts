@@ -19,7 +19,7 @@ export const Network = {
   Local: 'local',
 } as const
 
-export type Network = typeof Network[keyof typeof Network]
+export type Network = (typeof Network)[keyof typeof Network]
 
 export type NetworkEndpoints = {
   indexer: string // Indexer API

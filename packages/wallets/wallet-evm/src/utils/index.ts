@@ -1,9 +1,6 @@
 import { capitalize } from '@injectivelabs/utils'
 import { WalletException } from '@injectivelabs/exceptions'
-import {
-  Wallet,
-  isEvmBrowserWallet
-} from '@injectivelabs/wallet-base'
+import { Wallet, isEvmBrowserWallet } from '@injectivelabs/wallet-base'
 import { getRabbyProvider } from '../strategy/utils/rabby.js'
 import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
 import { getBitGetProvider } from '../strategy/utils/bitget.js'
@@ -11,8 +8,7 @@ import { getPhantomProvider } from '../strategy/utils/phantom.js'
 import { getMetamaskProvider } from '../strategy/utils/metamask.js'
 import { getTrustWalletProvider } from '../strategy/utils/trustWallet.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
-import type {
-  BrowserEip1993Provider } from '@injectivelabs/wallet-base'
+import type { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 
 export const getEvmProvider = async (
   wallet: Wallet,

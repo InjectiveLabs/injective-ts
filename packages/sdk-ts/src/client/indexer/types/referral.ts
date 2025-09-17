@@ -1,10 +1,10 @@
-import type { BigNumberInBase } from '@injectivelabs/utils'
+import type { BigNumber } from '@injectivelabs/utils'
 import type { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface ReferralDetails {
   referrerCode: string
   referrerAddress: string
-  totalCommission: BigNumberInBase
-  totalTradingVolume: BigNumberInBase
+  totalCommission: BigNumber
+  totalTradingVolume: BigNumber
   invitees: InjectiveReferralRpc.ReferralInvitee[]
 }

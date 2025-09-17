@@ -1,17 +1,12 @@
-import {
-  StrategyType
-} from '../types.js'
-import {
-  dataToExecData,
-  ExecArgBase
-} from '../ExecArgBase.js'
-import type {
-  ExecDataRepresentation } from '../ExecArgBase.js'
+import { StrategyType } from '../types.js'
+import { dataToExecData, ExecArgBase } from '../ExecArgBase.js'
+import type { ExecDataRepresentation } from '../ExecArgBase.js'
 import type {
   ExitType,
   ExitConfig,
   TrailingArithmetic,
-  TrailingArithmeticLP } from '../types.js'
+  TrailingArithmeticLP,
+} from '../types.js'
 
 export declare namespace ExecArgCreateSpotGridStrategy {
   export interface Params {

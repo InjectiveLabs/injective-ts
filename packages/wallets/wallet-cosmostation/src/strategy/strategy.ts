@@ -1,8 +1,5 @@
-
 import { makeSignDoc } from '@cosmjs/proto-signing'
-import {
-  CosmosChainId
-} from '@injectivelabs/ts-types'
+import { CosmosChainId } from '@injectivelabs/ts-types'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
 import { InstallError } from '@cosmostation/extension-client'
 import { getOfflineSigner } from '@cosmostation/cosmos-client'
@@ -30,16 +27,16 @@ import type { Cosmos } from '@cosmostation/extension-client'
 import type {
   ChainId,
   EvmChainId,
-  AccountAddress
+  AccountAddress,
 } from '@injectivelabs/ts-types'
 import type {
   StdSignDoc,
-  ConcreteWalletStrategy
+  ConcreteWalletStrategy,
 } from '@injectivelabs/wallet-base'
 import type {
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 
 const getChainNameFromChainId = (chainId: CosmosChainId | ChainId) => {
@@ -118,7 +115,6 @@ export class Cosmostation
       ).toString('hex')}`,
     )
   }
-
 
   async sendEvmTransaction(
     _transaction: unknown,

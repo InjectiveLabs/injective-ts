@@ -46,7 +46,7 @@ describe('MsgCreateNamespace', () => {
 
     it('EIP712 v1', async () => {
       expect(() => message.toEip712()).toThrow(
-      'EIP712_v1 is not supported for MsgCreateNamespace. Please use EIP712_v2',
+        'EIP712_v1 is not supported for MsgCreateNamespace. Please use EIP712_v2',
       )
     })
 

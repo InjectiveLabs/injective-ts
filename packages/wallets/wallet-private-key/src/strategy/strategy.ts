@@ -1,4 +1,3 @@
-
 import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import {
@@ -8,7 +7,7 @@ import {
 import {
   WalletAction,
   WalletDeviceType,
-  BaseConcreteStrategy
+  BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
@@ -22,12 +21,12 @@ import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,
-  SendTransactionOptions
+  SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
 
 export class PrivateKeyWallet
@@ -61,7 +60,6 @@ export class PrivateKeyWallet
       })
     }
   }
-
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
@@ -157,7 +155,6 @@ export class PrivateKeyWallet
     )
   }
 
-
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -224,7 +221,6 @@ export class PrivateKeyWallet
   async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new WalletException(new Error('Not supported'))
   }
-
 
   async getPubKey(): Promise<string> {
     const pk = this.getPrivateKey()

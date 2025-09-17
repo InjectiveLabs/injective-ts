@@ -4,7 +4,7 @@ import {
   MsgUndelegate,
   MsgBeginRedelegate,
   MsgCreateValidator,
-  MsgEditValidator
+  MsgEditValidator,
 } from '../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle
@@ -13,5 +13,5 @@ console.log('Core Staking module loaded:', {
   MsgUndelegate: MsgUndelegate.name,
   MsgBeginRedelegate: MsgBeginRedelegate.name,
   MsgCreateValidator: MsgCreateValidator.name,
-  MsgEditValidator: MsgEditValidator.name
+  MsgEditValidator: MsgEditValidator.name,
 })

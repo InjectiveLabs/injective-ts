@@ -4,7 +4,6 @@ import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import MsgSubmitProposalPerpetualMarketLaunch from './MsgSubmitProposalPerpetualMarketLaunch.js'
 
-
 const market = mockFactory.injUsdtDerivativeMarket
 
 const params: MsgSubmitProposalPerpetualMarketLaunch['params'] = {

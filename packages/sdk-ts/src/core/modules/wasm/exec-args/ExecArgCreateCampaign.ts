@@ -1,11 +1,6 @@
-import {
-  dataToExecData,
-  ExecArgBase
-} from '../ExecArgBase.js'
+import { dataToExecData, ExecArgBase } from '../ExecArgBase.js'
 import type { Coin } from '@injectivelabs/ts-types'
-import type {
-  ExecDataRepresentation } from '../ExecArgBase.js'
-
+import type { ExecDataRepresentation } from '../ExecArgBase.js'
 
 export declare namespace ExecArgCreateCampaign {
   export interface Params {

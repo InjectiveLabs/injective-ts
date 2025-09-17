@@ -12,7 +12,6 @@ import type {
   TradeExecutionType,
 } from '../../../types/index.js'
 
-
 export type MarketsStreamCallback = (
   response: InjectiveSpotExchangeRpc.StreamMarketsResponse,
 ) => void

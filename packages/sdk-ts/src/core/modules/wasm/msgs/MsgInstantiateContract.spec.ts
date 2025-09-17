@@ -4,7 +4,6 @@ import MsgInstantiateContract from './MsgInstantiateContract.js'
 import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-
 const params: MsgInstantiateContract['params'] = {
   sender: mockFactory.injectiveAddress,
   admin: mockFactory.injectiveAddress,

@@ -5,8 +5,7 @@ import {
   http,
   createPublicClient,
 } from 'viem'
-import type {
-  LocalAccount } from 'viem';
+import type { LocalAccount } from 'viem'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 
 export const getEip1193ProviderForTurnkey = async (

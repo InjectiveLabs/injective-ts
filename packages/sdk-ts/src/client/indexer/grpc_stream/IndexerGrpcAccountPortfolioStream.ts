@@ -4,7 +4,6 @@ import { IndexerAccountPortfolioStreamTransformer } from '../transformers/index.
 import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../types/index.js'
 
-
 export type AccountPortfolioStreamCallback = (
   response: ReturnType<
     typeof IndexerAccountPortfolioStreamTransformer.accountPortfolioStreamCallback

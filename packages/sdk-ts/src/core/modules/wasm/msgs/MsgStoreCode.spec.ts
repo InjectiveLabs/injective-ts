@@ -5,7 +5,6 @@ import MsgStoreCode from './MsgStoreCode.js'
 import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-
 const params: MsgStoreCode['params'] = {
   sender: mockFactory.injectiveAddress,
   wasmBytes: new Uint8Array([1, 2, 3]),

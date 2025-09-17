@@ -8,8 +8,7 @@ import {
 import { MsgBase } from '../../MsgBase.js'
 import { GrantAuthorizationType } from './../types.js'
 import { getGenericAuthorizationFromMessageType } from '../utils.js'
-import type {
-  GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
+import type { GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
 
 /**
  * @deprecated please use MsgGrantWithAuthorization

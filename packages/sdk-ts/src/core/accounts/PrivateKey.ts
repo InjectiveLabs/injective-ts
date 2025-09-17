@@ -3,10 +3,8 @@ import { generateMnemonic } from 'bip39'
 import { keccak256, toBytes, hashTypedData } from 'viem'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { InjectiveTypesV1Beta1TxExt } from '@injectivelabs/core-proto-ts'
 import { Wallet, HDNodeWallet, Signature, getBytes, concat } from 'ethers'
-import {
-  InjectiveTypesV1Beta1TxExt,
-} from '@injectivelabs/core-proto-ts'
 import { Address } from './Address.js'
 import { PublicKey } from './PublicKey.js'
 import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
@@ -17,9 +15,7 @@ import {
   TypedDataUtilsSanitizeData,
 } from '../../utils/index.js'
 import type { TypedDataDefinition } from 'viem'
-import type {
-  CosmosTxV1Beta1Tx
-} from '@injectivelabs/core-proto-ts'
+import type { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -385,9 +381,9 @@ export class PrivateKey {
       const evmChainId = Number(decodedExtension.typedDataChainID) as EvmChainId
 
       const testnetChainIds: EvmChainId[] = [
-          EvmChainId.Kovan,
-          EvmChainId.Goerli,
-          EvmChainId.Sepolia,
+        EvmChainId.Kovan,
+        EvmChainId.Goerli,
+        EvmChainId.Sepolia,
       ]
 
       return {

@@ -8,9 +8,7 @@ import {
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
@@ -124,9 +122,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
         minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: toChainFormat(
-          initialParams.market.minNotional,
-        ).toFixed(),
+        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
       },
     }
 
@@ -222,18 +218,12 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
           maintenance_margin_ratio: toChainFormat(
             params.market.maintenanceMarginRatio,
           ).toFixed(),
-          maker_fee_rate: toChainFormat(
-            params.market.makerFeeRate,
-          ).toFixed(),
-          taker_fee_rate: toChainFormat(
-            params.market.takerFeeRate,
-          ).toFixed(),
+          maker_fee_rate: toChainFormat(params.market.makerFeeRate).toFixed(),
+          taker_fee_rate: toChainFormat(params.market.takerFeeRate).toFixed(),
           min_price_tick_size: toChainFormat(
             params.market.minPriceTickSize,
           ).toFixed(),
-          min_notional: toChainFormat(
-            params.market.minNotional,
-          ).toFixed(),
+          min_notional: toChainFormat(params.market.minNotional).toFixed(),
           min_quantity_tick_size: toChainFormat(
             params.market.minQuantityTickSize,
           ).toFixed(),

@@ -1,15 +1,12 @@
-
 import { Magic as MagicWallet } from 'magic-sdk'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
-import {
-  TxGrpcApi
-} from '@injectivelabs/sdk-ts'
 import {
   WalletAction,
   MagicProvider,
   WalletDeviceType,
-  BaseConcreteStrategy
+  BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
@@ -22,16 +19,19 @@ import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
   DirectSignResponse,
-  AminoSignResponse
+  AminoSignResponse,
 } from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
-  SendTransactionOptions
+  SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
 
-export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export class Magic
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   public provider: BrowserEip1993Provider | undefined
 
   private magicWallet: MagicWallet | undefined
@@ -137,7 +137,6 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     }
   }
 
-
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -201,7 +200,6 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
 
     return `0x${signature}`
   }
-
 
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
@@ -267,7 +265,6 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
       },
     )
   }
-
 
   async getPubKey(): Promise<string> {
     throw new WalletException(

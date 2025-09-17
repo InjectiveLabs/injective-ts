@@ -6,9 +6,7 @@ import {
 import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
 import type { SpotMarket } from '../../indexer/types/spot.js'
 import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
-import type {
-  InjectiveExchangeV1Beta1Query
-} from '@injectivelabs/core-proto-ts'
+import type { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import type {
   GrpcChainSpotMarket,
   GrpcChainFullSpotMarket,
@@ -36,9 +34,8 @@ import type {
   TradingRewardCampaignInfo,
   GrpcTradingRewardCampaignInfo,
   TradingRewardCampaignBoostInfo,
-  GrpcTradingRewardCampaignBoostInfo
+  GrpcTradingRewardCampaignBoostInfo,
 } from '../types/exchange.js'
-
 
 /**
  * @category Chain Grpc Transformer

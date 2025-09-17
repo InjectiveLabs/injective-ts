@@ -8,7 +8,6 @@ import {
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
 const params: MsgGrant['params'] = {

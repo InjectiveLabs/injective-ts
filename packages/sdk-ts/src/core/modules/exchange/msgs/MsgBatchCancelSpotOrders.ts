@@ -6,7 +6,6 @@ import {
 import { MsgBase } from '../../MsgBase.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
-
 export declare namespace MsgBatchCancelSpotOrders {
   export interface Params {
     injectiveAddress: string

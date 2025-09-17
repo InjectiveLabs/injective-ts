@@ -14,7 +14,8 @@ import type {
   UnBondingDelegation,
   ReDelegation,
   Pool,
-  StakingModuleParams } from '../types/staking.js'
+  StakingModuleParams,
+} from '../types/staking.js'
 
 /**
  * @category Chain Grpc Transformer
@@ -70,9 +71,7 @@ export class ChainGrpcStakingTransformer {
       delegation: {
         delegatorAddress: delegation ? delegation.delegatorAddress : '',
         validatorAddress: delegation ? delegation.validatorAddress : '',
-        shares: toHumanReadable(
-          delegation ? delegation.shares : 0,
-        ).toFixed(),
+        shares: toHumanReadable(delegation ? delegation.shares : 0).toFixed(),
       },
       balance: {
         denom: balance ? balance.denom : '',
@@ -94,9 +93,7 @@ export class ChainGrpcStakingTransformer {
         delegation: {
           delegatorAddress: delegation ? delegation.delegatorAddress : '',
           validatorAddress: delegation ? delegation.validatorAddress : '',
-          shares: toHumanReadable(
-            delegation ? delegation.shares : 0,
-          ).toFixed(),
+          shares: toHumanReadable(delegation ? delegation.shares : 0).toFixed(),
         },
         balance: {
           denom: balance ? balance.denom : '',
@@ -204,9 +201,7 @@ export class ChainGrpcStakingTransformer {
         validator.status,
       ),
       tokens: toHumanReadable(validator.tokens).toFixed(),
-      delegatorShares: toHumanReadable(
-        validator.delegatorShares,
-      ).toFixed(),
+      delegatorShares: toHumanReadable(validator.delegatorShares).toFixed(),
       description:
         ChainGrpcStakingTransformer.grpcValidatorDescriptionToDescription(
           validator.description,

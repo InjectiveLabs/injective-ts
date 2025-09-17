@@ -6,4 +6,4 @@ export const StatusType = {
   Confirmed: 'confirmed',
 } as const
 
-export type StatusType = typeof StatusType[keyof typeof StatusType]
+export type StatusType = (typeof StatusType)[keyof typeof StatusType]

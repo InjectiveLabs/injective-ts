@@ -5,9 +5,7 @@ import {
   CosmosStakingV1Beta1Staking,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgEditValidator {
@@ -119,9 +117,7 @@ export default class MsgEditValidator extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      commission_rate: toChainFormat(
-        value.commission_rate,
-      ).toFixed(),
+      commission_rate: toChainFormat(value.commission_rate).toFixed(),
     }
 
     return {

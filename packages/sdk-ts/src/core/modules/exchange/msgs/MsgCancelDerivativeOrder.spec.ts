@@ -8,7 +8,6 @@ import {
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-
 const params: MsgCancelDerivativeOrder['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
   marketId: mockFactory.injUsdtDerivativeMarket.marketId,
@@ -25,7 +24,7 @@ const protoParams = {
   orderHash: params.orderHash,
   subaccountId: params.subaccountId,
   orderMask: 1,
-  cid: params.cid
+  cid: params.cid,
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
 

@@ -3,7 +3,6 @@ import { CosmosAuthzV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
-
 export declare namespace MsgRevoke {
   export interface Params {
     messageType: string

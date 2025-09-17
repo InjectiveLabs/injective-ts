@@ -8,7 +8,7 @@ import {
 import {
   sleep,
   getStdFee,
-  BigNumberInBase,
+  toBigNumber,
   DEFAULT_GAS_PRICE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
@@ -54,31 +54,28 @@ import {
   getGasPriceBasedOnMessage,
   createTxRawFromSigResponse,
   recoverTypedSignaturePubKey,
-  createTransactionWithSigners
+  createTransactionWithSigners,
 } from '@injectivelabs/sdk-ts'
 import { checkIfTxRunOutOfGas } from '../utils/index.js'
-import {
-  WalletStrategyEmitterEventType
-} from './types.js'
-import type {
-  NetworkEndpoints
-} from '@injectivelabs/networks'
-import type {
-  ThrownException
-} from '@injectivelabs/exceptions'
+import { WalletStrategyEmitterEventType } from './types.js'
+import type { NetworkEndpoints } from '@injectivelabs/networks'
+import type { ThrownException } from '@injectivelabs/exceptions'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
-import type { ChainId as ChainIdType, EvmChainId as EvmChainIdType } from '@injectivelabs/ts-types'
+import type {
+  ChainId as ChainIdType,
+  EvmChainId as EvmChainIdType,
+} from '@injectivelabs/ts-types'
 import type {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
-  MsgBroadcasterTxOptionsWithAddresses
+  MsgBroadcasterTxOptionsWithAddresses,
 } from './types.js'
 import type {
   TxResponse,
   CosmosTxV1Beta1Tx,
   DirectSignResponse,
-  CreateTransactionWithSignersArgs
+  CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
 
 const getEthereumWalletPubKey = async <T>({
@@ -175,9 +172,18 @@ export class MsgBroadcaster {
       return this.evmChainId
     }
 
-    const mainnetEvmIds = [EvmChainId.Mainnet, EvmChainId.MainnetEvm] as EvmChainId[]
-    const testnetEvmIds = [EvmChainId.Sepolia, EvmChainId.TestnetEvm] as EvmChainId[]
-    const devnetEvmIds = [EvmChainId.Sepolia, EvmChainId.DevnetEvm] as EvmChainId[]
+    const mainnetEvmIds = [
+      EvmChainId.Mainnet,
+      EvmChainId.MainnetEvm,
+    ] as EvmChainId[]
+    const testnetEvmIds = [
+      EvmChainId.Sepolia,
+      EvmChainId.TestnetEvm,
+    ] as EvmChainId[]
+    const devnetEvmIds = [
+      EvmChainId.Sepolia,
+      EvmChainId.DevnetEvm,
+    ] as EvmChainId[]
 
     try {
       const chainId = await walletStrategy.getEthereumChainId()
@@ -354,7 +360,7 @@ export class MsgBroadcaster {
     /** Account Details * */
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
     let stdFee = getStdFee({ ...tx.gas, gas })
@@ -467,7 +473,7 @@ export class MsgBroadcaster {
     /** Account Details * */
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
     let stdFee = getStdFee({ ...tx.gas, gas })
@@ -611,9 +617,7 @@ export class MsgBroadcaster {
 
       const latestHeight = latestBlock!.header!.height
 
-      timeoutHeight = new BigNumberInBase(latestHeight)
-        .plus(txTimeout)
-        .toNumber()
+      timeoutHeight = toBigNumber(latestHeight).plus(txTimeout).toNumber()
     }
 
     walletStrategy.emit(
@@ -712,7 +716,11 @@ export class MsgBroadcaster {
      * When using Ledger with Keplr/Leap we have
      * to send EIP712 to sign on Keplr/Leap
      */
-    if (([Wallet.Keplr, Wallet.Leap] as WalletType[]).includes(walletStrategy.getWallet())) {
+    if (
+      ([Wallet.Keplr, Wallet.Leap] as WalletType[]).includes(
+        walletStrategy.getWallet(),
+      )
+    ) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
@@ -723,7 +731,7 @@ export class MsgBroadcaster {
 
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeout)
 
     const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
       ? SIGN_EIP712
@@ -838,7 +846,11 @@ export class MsgBroadcaster {
      * We can only use this method
      * when Ledger is connected through Keplr
      */
-    if (([Wallet.Keplr, Wallet.Leap] as WalletType[]).includes(walletStrategy.getWallet())) {
+    if (
+      ([Wallet.Keplr, Wallet.Leap] as WalletType[]).includes(
+        walletStrategy.getWallet(),
+      )
+    ) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
@@ -859,7 +871,7 @@ export class MsgBroadcaster {
 
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeout)
 
     const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
@@ -984,9 +996,9 @@ export class MsgBroadcaster {
     }
 
     const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
-    const canDisableCosmosGasCheck = ([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(
-      walletStrategy.wallet,
-    )
+    const canDisableCosmosGasCheck = (
+      [Wallet.Keplr, Wallet.OWallet] as WalletType[]
+    ).includes(walletStrategy.wallet)
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )
@@ -1006,7 +1018,7 @@ export class MsgBroadcaster {
     const feePayerAccountDetails = await chainGrpcAuthApi.fetchAccount(feePayer)
     const { baseAccount: feePayerBaseAccount } = feePayerAccountDetails
 
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+    const timeoutHeight = toBigNumber(latestHeight).plus(
       txTimeoutOnFeeDelegation ? txTimeout : DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
@@ -1164,7 +1176,7 @@ export class MsgBroadcaster {
     if (typeof args === 'string') {
       return getStdFee({
         ...(baseFee && {
-          gasPrice: new BigNumberInBase(baseFee).toFixed(),
+          gasPrice: toBigNumber(baseFee).toFixed(),
         }),
         gas: args,
       })
@@ -1173,7 +1185,7 @@ export class MsgBroadcaster {
     return getStdFee({
       ...args,
       ...(baseFee && {
-        gasPrice: new BigNumberInBase(baseFee).toFixed(),
+        gasPrice: toBigNumber(baseFee).toFixed(),
       }),
     })
   }
@@ -1210,7 +1222,7 @@ export class MsgBroadcaster {
     const stdGasFee = {
       ...(await this.getStdFeeWithDynamicBaseFee({
         ...getStdFee(args.fee),
-        gas: new BigNumberInBase(result.gasInfo.gasUsed)
+        gas: toBigNumber(result.gasInfo.gasUsed)
           .times(this.gasBufferCoefficient)
           .toFixed(),
       })),

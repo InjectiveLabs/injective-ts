@@ -6,7 +6,7 @@ export const BroadcastMode = {
   Async: 'async',
 } as const
 
-export type BroadcastMode = typeof BroadcastMode[keyof typeof BroadcastMode]
+export type BroadcastMode = (typeof BroadcastMode)[keyof typeof BroadcastMode]
 
 export const Wallet = {
   Leap: 'leap',
@@ -33,7 +33,7 @@ export const Wallet = {
   CosmostationEth: 'cosmostation-eth',
 } as const
 
-export type Wallet = typeof Wallet[keyof typeof Wallet]
+export type Wallet = (typeof Wallet)[keyof typeof Wallet]
 
 export const MagicProvider = {
   Email: 'email',
@@ -45,7 +45,7 @@ export const MagicProvider = {
   Facebook: 'facebook',
 } as const
 
-export type MagicProvider = typeof MagicProvider[keyof typeof MagicProvider]
+export type MagicProvider = (typeof MagicProvider)[keyof typeof MagicProvider]
 
 export const WalletDeviceType = {
   Mobile: 'mobile',
@@ -54,13 +54,15 @@ export const WalletDeviceType = {
   Hardware: 'hardware',
 } as const
 
-export type WalletDeviceType = typeof WalletDeviceType[keyof typeof WalletDeviceType]
+export type WalletDeviceType =
+  (typeof WalletDeviceType)[keyof typeof WalletDeviceType]
 
 export const WalletEventListener = {
   AccountChange: 'account-change',
   ChainIdChange: 'chain-id-change',
 } as const
 
-export type WalletEventListener = typeof WalletEventListener[keyof typeof WalletEventListener]
+export type WalletEventListener =
+  (typeof WalletEventListener)[keyof typeof WalletEventListener]
 
 export const WalletAction = { ...WalletErrorActionModule }

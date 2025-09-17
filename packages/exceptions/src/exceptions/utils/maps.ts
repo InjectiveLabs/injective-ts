@@ -1,6 +1,4 @@
-import {
-  UnspecifiedErrorCode
-} from '../types/index.js'
+import { UnspecifiedErrorCode } from '../types/index.js'
 import {
   chainErrorMessagesMap,
   chainModuleCodeErrorMessagesMap,
@@ -8,7 +6,7 @@ import {
 import type {
   ErrorContext,
   ErrorContextCode,
-  TransactionChainErrorModule
+  TransactionChainErrorModule,
 } from '../types/index.js'
 
 export const parseErrorMessage = (message: string): string => {

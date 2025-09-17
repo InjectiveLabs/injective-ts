@@ -9,7 +9,7 @@ import {
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import {
-  BigNumberInBase,
+  toBigNumber,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
@@ -193,7 +193,7 @@ export class TxGrpcApi implements TxConcreteApi {
       options?.mode || CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_SYNC
     const timeout =
       options?.timeout ||
-      new BigNumberInBase(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
+      toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
 

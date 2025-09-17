@@ -1,11 +1,11 @@
-
 import { Observable } from 'rxjs'
 import { share } from 'rxjs/operators'
 import { BrowserHeaders } from 'browser-headers'
 import { grpc } from '../../utils/grpc.js'
 import type { grpcPkg } from '../../utils/grpc.js'
 
-interface UnaryMethodDefinitionR extends grpcPkg.grpc.UnaryMethodDefinition<any, any> {
+interface UnaryMethodDefinitionR
+  extends grpcPkg.grpc.UnaryMethodDefinition<any, any> {
   requestStream: any
   responseStream: any
 }

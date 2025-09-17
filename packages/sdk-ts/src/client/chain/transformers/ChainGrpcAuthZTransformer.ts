@@ -1,11 +1,10 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  CosmosAuthzV1Beta1Authz
-} from '@injectivelabs/core-proto-ts'
+import { CosmosAuthzV1Beta1Authz } from '@injectivelabs/core-proto-ts'
 import { grpcPaginationToPagination } from '../../../utils/pagination.js'
 import type {
   GoogleProtobufAny,
-  CosmosAuthzV1Beta1Query } from '@injectivelabs/core-proto-ts'
+  CosmosAuthzV1Beta1Query,
+} from '@injectivelabs/core-proto-ts'
 import type {
   GrantAuthorizationWithDecodedAuthorization,
   GrantWithDecodedAuthorization,

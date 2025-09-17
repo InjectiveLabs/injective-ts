@@ -156,8 +156,6 @@ export const getStdFeeFromString = (gasPrice: string) => {
   return getStdFeeFromObject({ gas, gasPrice: DEFAULT_GAS_PRICE })
 }
 
-
-
 export const getStdFee = (
   args?:
     | string

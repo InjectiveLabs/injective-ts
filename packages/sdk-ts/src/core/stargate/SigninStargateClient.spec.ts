@@ -6,7 +6,6 @@ import { InjectiveDirectEthSecp256k1Wallet } from '../accounts/signers/index.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { InjectiveOfflineSigner } from '../accounts/signers/types/index.js'
 
-
 describe('SigningStargateClient', () => {
   it('can sign and broadcast a transaction', async () => {
     const privateKey = PrivateKey.fromHex(

@@ -2,9 +2,7 @@ import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgInstantSpotMarketLaunch {
   export interface Params {
@@ -69,9 +67,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
         minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: toChainFormat(
-          initialParams.market.minNotional,
-        ).toFixed(),
+        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
       },
     } as MsgInstantSpotMarketLaunch.Params
 
@@ -116,9 +112,7 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      min_price_tick_size: toChainFormat(
-        value.min_price_tick_size,
-      ).toFixed(),
+      min_price_tick_size: toChainFormat(value.min_price_tick_size).toFixed(),
       min_quantity_tick_size: toChainFormat(
         value.min_quantity_tick_size,
       ).toFixed(),

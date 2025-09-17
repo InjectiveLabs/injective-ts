@@ -8,7 +8,6 @@ import type {
   CosmosBankV1Beta1Query,
 } from '@injectivelabs/core-proto-ts'
 
-
 /**
  * @category Chain Grpc Transformer
  */

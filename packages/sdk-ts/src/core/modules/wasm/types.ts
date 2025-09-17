@@ -4,7 +4,7 @@ export const ExitType = {
   Base: 'base',
 } as const
 
-export type ExitType = typeof ExitType[keyof typeof ExitType]
+export type ExitType = (typeof ExitType)[keyof typeof ExitType]
 
 export const StrategyType = {
   Arithmetic: 'arithmetic',
@@ -12,7 +12,7 @@ export const StrategyType = {
   Geometric: 'geometric',
 } as const
 
-export type StrategyType = typeof StrategyType[keyof typeof StrategyType]
+export type StrategyType = (typeof StrategyType)[keyof typeof StrategyType]
 
 export type TrailingArithmetic = {
   trailing_arithmetic: {

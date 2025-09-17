@@ -7,14 +7,16 @@ export const TradeExecutionType = {
   LimitMatchNewOrder: 'limitMatchNewOrder',
 } as const
 
-export type TradeExecutionType = typeof TradeExecutionType[keyof typeof TradeExecutionType]
+export type TradeExecutionType =
+  (typeof TradeExecutionType)[keyof typeof TradeExecutionType]
 
 export const TradeExecutionSide = {
   Maker: 'maker',
   Taker: 'taker',
 } as const
 
-export type TradeExecutionSide = typeof TradeExecutionSide[keyof typeof TradeExecutionSide]
+export type TradeExecutionSide =
+  (typeof TradeExecutionSide)[keyof typeof TradeExecutionSide]
 
 export const TradeDirection = {
   Buy: 'buy',
@@ -23,7 +25,8 @@ export const TradeDirection = {
   Short: 'short',
 } as const
 
-export type TradeDirection = typeof TradeDirection[keyof typeof TradeDirection]
+export type TradeDirection =
+  (typeof TradeDirection)[keyof typeof TradeDirection]
 
 export type OrderMask = InjectiveExchangeV1Beta1Exchange.OrderMask
 export const OrderMaskMap = InjectiveExchangeV1Beta1Exchange.OrderMask

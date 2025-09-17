@@ -48,7 +48,8 @@ export const WalletStrategyEmitterEventType = {
   TransactionPreparationStart: 'transaction-preparation-start',
 } as const
 
-export type WalletStrategyEmitterEventType = typeof WalletStrategyEmitterEventType[keyof typeof WalletStrategyEmitterEventType]
+export type WalletStrategyEmitterEventType =
+  (typeof WalletStrategyEmitterEventType)[keyof typeof WalletStrategyEmitterEventType]
 
 export type WalletStrategyEmitterEvents = {
   [WalletStrategyEmitterEventType.TransactionFail]: Record<string, any>

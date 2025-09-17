@@ -12,7 +12,6 @@ import type {
   TradeExecutionType,
 } from '../../../types/index.js'
 
-
 export type DerivativeOrderbookV2StreamCallback = (
   response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.orderbookV2StreamCallback

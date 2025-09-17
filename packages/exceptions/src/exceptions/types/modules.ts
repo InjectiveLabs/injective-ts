@@ -4,7 +4,8 @@ export const ContractErrorModule = {
   PeggyOld: 'peggy-old-contract',
 } as const
 
-export type ContractErrorModule = typeof ContractErrorModule[keyof typeof ContractErrorModule]
+export type ContractErrorModule =
+  (typeof ContractErrorModule)[keyof typeof ContractErrorModule]
 
 export const ChainErrorModule = {
   Auction: 'chain-auction',
@@ -27,7 +28,8 @@ export const ChainErrorModule = {
   TxFees: 'chain-tx-fees',
 } as const
 
-export type ChainErrorModule = typeof ChainErrorModule[keyof typeof ChainErrorModule]
+export type ChainErrorModule =
+  (typeof ChainErrorModule)[keyof typeof ChainErrorModule]
 
 export const IndexerErrorModule = {
   Account: 'indexer-account',
@@ -54,7 +56,8 @@ export const IndexerErrorModule = {
   Abacus: 'abacus',
 } as const
 
-export type IndexerErrorModule = typeof IndexerErrorModule[keyof typeof IndexerErrorModule]
+export type IndexerErrorModule =
+  (typeof IndexerErrorModule)[keyof typeof IndexerErrorModule]
 
 export const WalletErrorActionModule = {
   GetChainId: 'get-chain-id',
@@ -68,4 +71,5 @@ export const WalletErrorActionModule = {
   GetEvmTransactionReceipt: 'get-evm-transaction-receipt',
 } as const
 
-export type WalletErrorActionModule = typeof WalletErrorActionModule[keyof typeof WalletErrorActionModule]
+export type WalletErrorActionModule =
+  (typeof WalletErrorActionModule)[keyof typeof WalletErrorActionModule]

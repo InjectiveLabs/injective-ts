@@ -7,7 +7,6 @@ import {
 import { MsgBase } from '../../MsgBase.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
-
 export declare namespace MsgTransfer {
   export interface Params {
     amount: {

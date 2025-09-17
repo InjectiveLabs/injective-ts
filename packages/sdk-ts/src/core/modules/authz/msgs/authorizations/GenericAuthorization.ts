@@ -1,11 +1,8 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  CosmosAuthzV1Beta1Authz,
-} from '@injectivelabs/core-proto-ts'
+import { CosmosAuthzV1Beta1Authz } from '@injectivelabs/core-proto-ts'
 import { BaseAuthorization } from './Base.js'
 import { getGenericAuthorizationFromMessageType } from '../../utils.js'
-import type {
-  GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
+import type { GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
 
 export declare namespace GenericAuthorization {
   export interface Params {

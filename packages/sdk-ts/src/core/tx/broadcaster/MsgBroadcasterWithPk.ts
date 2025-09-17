@@ -2,11 +2,11 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import {
   Network,
   getNetworkInfo,
-  getNetworkEndpoints
+  getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import {
   getStdFee,
-  BigNumberInBase,
+  toBigNumber,
   getDefaultStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
@@ -27,8 +27,7 @@ import {
 import type { Msgs } from '../../modules/msgs.js'
 import type { AccountDetails } from '../../../types/auth.js'
 import type { CreateTransactionArgs } from '../types/index.js'
-import type {
-  NetworkEndpoints } from '@injectivelabs/networks'
+import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
@@ -187,9 +186,7 @@ export class MsgBroadcasterWithPk {
       ).fetchLatestBlock()
       const latestHeight = latestBlock!.header!.height
 
-      timeoutHeight = new BigNumberInBase(latestHeight)
-        .plus(txTimeout)
-        .toNumber()
+      timeoutHeight = toBigNumber(latestHeight).plus(txTimeout).toNumber()
     }
 
     const transactionApi = new IndexerGrpcWeb3GwApi(
@@ -298,7 +295,7 @@ export class MsgBroadcasterWithPk {
 
     const stdGasFee = getStdFee({
       ...args.fee,
-      gas: new BigNumberInBase(result.gasInfo.gasUsed)
+      gas: toBigNumber(result.gasInfo.gasUsed)
         .times(gasBufferCoefficient)
         .toFixed(),
     })
@@ -431,7 +428,7 @@ export class MsgBroadcasterWithPk {
       ).fetchLatestBlock()
       const latestHeight = latestBlock!.header!.height
 
-      return new BigNumberInBase(latestHeight).plus(txTimeout)
+      return toBigNumber(latestHeight).plus(txTimeout)
     }
 
     const latestBlock = await new ChainGrpcTendermintApi(
@@ -439,7 +436,7 @@ export class MsgBroadcasterWithPk {
     ).fetchLatestBlock()
     const latestHeight = latestBlock!.header!.height
 
-    return new BigNumberInBase(latestHeight).plus(txTimeout)
+    return toBigNumber(latestHeight).plus(txTimeout)
   }
 
   private async broadcastTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {

@@ -12,7 +12,7 @@ export const TokenType = {
   Unknown: 'unknown',
 } as const
 
-export type TokenType = typeof TokenType[keyof typeof TokenType]
+export type TokenType = (typeof TokenType)[keyof typeof TokenType]
 
 export const TokenVerification = {
   Verified: 'verified',
@@ -22,7 +22,8 @@ export const TokenVerification = {
   Unverified: 'unverified',
 } as const
 
-export type TokenVerification = typeof TokenVerification[keyof typeof TokenVerification]
+export type TokenVerification =
+  (typeof TokenVerification)[keyof typeof TokenVerification]
 
 export const TokenSource = {
   Aptos: 'aptos',
@@ -39,7 +40,7 @@ export const TokenSource = {
   Axelar: 'axelar',
 } as const
 
-export type TokenSource = typeof TokenSource[keyof typeof TokenSource]
+export type TokenSource = (typeof TokenSource)[keyof typeof TokenSource]
 
 export interface TokenStatic {
   name: string

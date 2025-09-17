@@ -1,11 +1,6 @@
 import { isCw20ContractAddress } from './../utils/index.js'
-import {
-  TokenType,
-  TokenVerification,
-} from './../types/index.js'
-import type {
-  TokenSource,
-  TokenStatic } from './../types/index.js'
+import { TokenType, TokenVerification } from './../types/index.js'
+import type { TokenSource, TokenStatic } from './../types/index.js'
 
 export class TokenStaticFactory {
   public registry: TokenStatic[]

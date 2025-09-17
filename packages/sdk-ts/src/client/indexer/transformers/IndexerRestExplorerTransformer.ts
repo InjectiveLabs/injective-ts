@@ -1,6 +1,7 @@
-import { BigNumberInBase, BigNumberInWei } from '@injectivelabs/utils'
+import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import { isJsonString } from '../../../utils/helpers.js'
 import { TokenType, TokenVerification } from '../../../types/token.js'
+import type { BigNumber } from '@injectivelabs/utils'
 import type {
   Block,
   ExplorerValidator,
@@ -29,11 +30,11 @@ import type {
   ValidatorUptimeFromExplorerApiResponse,
 } from '../types/explorer-rest.js'
 
-const ZERO_IN_BASE = new BigNumberInBase(0)
+const ZERO_IN_BASE = toBigNumber(0)
 
 const getContractTransactionAmount = (
   ApiTransaction: ContractTransactionExplorerApiResponse,
-): BigNumberInBase => {
+): BigNumber => {
   const {
     type,
     value: { msg },
@@ -53,7 +54,7 @@ const getContractTransactionAmount = (
     return ZERO_IN_BASE
   }
 
-  return new BigNumberInWei(msgObj.transfer.amount).toBase()
+  return toHumanReadable(msgObj.transfer.amount)
 }
 
 const parseCW20Message = (jsonObject: string): CW20Message | undefined => {
@@ -239,7 +240,7 @@ export class IndexerRestExplorerTransformer {
           message: message.value,
         })),
       fee: transaction.gas_fee.amount
-        ? new BigNumberInWei(transaction.gas_fee.amount[0].amount).toBase()
+        ? toHumanReadable(transaction.gas_fee.amount[0].amount)
         : ZERO_IN_BASE,
       amount: getContractTransactionAmount(transaction),
     }

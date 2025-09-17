@@ -1,5 +1,5 @@
 import { keccak256 } from 'viem'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toBigNumber } from '@injectivelabs/utils'
 import { getDefaultStdFee } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
@@ -225,7 +225,7 @@ export const createTransactionForAddressAndMsg = async (
   /** Block Details */
   const latestBlock = await tendermintRestApi.fetchLatestBlock()
   const latestHeight = latestBlock.header.height
-  const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+  const timeoutHeight = toBigNumber(latestHeight).plus(
     DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   )
 

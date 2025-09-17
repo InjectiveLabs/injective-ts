@@ -32,10 +32,16 @@ const spotOrder = {
   orderInfo: {
     subaccountId: subaccountId,
     price: toChainFormat(
-      spotInfo.price, toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
+      spotInfo.price,
+      toBigNumber(spotInfo.quoteDecimals)
+        .minus(spotInfo.baseDecimals)
+        .toNumber(),
     ).toFixed(),
     quantity: toChainFormat(
-      spotInfo.quantity, toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
+      spotInfo.quantity,
+      toBigNumber(spotInfo.quoteDecimals)
+        .minus(spotInfo.baseDecimals)
+        .toNumber(),
     ).toFixed(),
     feeRecipient: address.bech32Address,
   },
@@ -49,10 +55,12 @@ const spotMsg = MsgCreateSpotLimitOrder.fromJSON({
   marketId: marketId,
   feeRecipient: address.bech32Address,
   price: toChainFormat(
-    spotInfo.price, toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
+    spotInfo.price,
+    toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
   ).toFixed(),
   quantity: toChainFormat(
-    spotInfo.quantity, toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
+    spotInfo.quantity,
+    toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
   ).toFixed(),
   orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
 })
@@ -64,18 +72,15 @@ const derivativeOrder = {
       derivativeInfo.price,
       derivativeInfo.quoteDecimals,
     ).toFixed(),
-    quantity: toBigNumber(
-      derivativeInfo.quantity,
-    ).toFixed(),
+    quantity: toBigNumber(derivativeInfo.quantity).toFixed(),
     feeRecipient: address.bech32Address,
   },
   margin: toChainFormat(
     toBigNumber(derivativeInfo.price)
       .times(derivativeInfo.quantity)
       .div(derivativeInfo.leverage),
-    derivativeInfo.quoteDecimals
-    )
-  .toFixed(),
+    derivativeInfo.quoteDecimals,
+  ).toFixed(),
   marketId: marketId,
   orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
 }
@@ -89,9 +94,7 @@ const derivativeMsg = MsgCreateDerivativeLimitOrder.fromJSON({
     derivativeInfo.quoteDecimals,
   ).toFixed(),
   triggerPrice: '0',
-  quantity: toBigNumber(
-    derivativeInfo.quantity,
-  ).toFixed(),
+  quantity: toBigNumber(derivativeInfo.quantity).toFixed(),
   margin: toChainFormat(
     toBigNumber(derivativeInfo.price)
       .times(derivativeInfo.quantity)

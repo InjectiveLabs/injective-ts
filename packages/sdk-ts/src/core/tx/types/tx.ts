@@ -58,7 +58,7 @@ export const TxClientMode = {
   rest: 'rest',
 } as const
 
-export type TxClientMode = typeof TxClientMode[keyof typeof TxClientMode]
+export type TxClientMode = (typeof TxClientMode)[keyof typeof TxClientMode]
 
 export type MsgArg = {
   type: string

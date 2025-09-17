@@ -9,7 +9,7 @@ import {
   IndexerGrpcOracleApi,
   IndexerGrpcAccountPortfolioApi,
   IndexerGrpcSpotApi,
-  IndexerGrpcTransactionApi
+  IndexerGrpcTransactionApi,
 } from '../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle
@@ -23,5 +23,5 @@ console.log('Client Indexer module loaded:', {
   IndexerGrpcOracleApi: IndexerGrpcOracleApi.name,
   IndexerGrpcAccountPortfolioApi: IndexerGrpcAccountPortfolioApi.name,
   IndexerGrpcSpotApi: IndexerGrpcSpotApi.name,
-  IndexerGrpcTransactionApi: IndexerGrpcTransactionApi.name
+  IndexerGrpcTransactionApi: IndexerGrpcTransactionApi.name,
 })

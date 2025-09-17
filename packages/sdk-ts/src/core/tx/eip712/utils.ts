@@ -1,5 +1,5 @@
 import {
-  BigNumberInBase,
+  toBigNumber,
   getDefaultStdFee,
   DEFAULT_GAS_LIMIT,
 } from '@injectivelabs/utils'
@@ -11,7 +11,7 @@ export const getEip712Domain = (evmChainId: EvmChainId) => {
     domain: {
       name: 'Injective Web3',
       version: '1.0.0',
-      chainId: '0x' + new BigNumberInBase(evmChainId).toString(16),
+      chainId: '0x' + toBigNumber(evmChainId).toString(16),
       salt: '0',
       verifyingContract: 'cosmos',
     },
@@ -23,7 +23,7 @@ export const getEip712DomainV2 = (evmChainId: EvmChainId) => {
     domain: {
       name: 'Injective Web3',
       version: '1.0.0',
-      chainId: '0x' + new BigNumberInBase(evmChainId).toString(16),
+      chainId: '0x' + toBigNumber(evmChainId).toString(16),
       verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
       salt: '0',
     },

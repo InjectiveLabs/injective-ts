@@ -1,17 +1,12 @@
-
 import { sleep, capitalize } from '@injectivelabs/utils'
 import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
-import {
-  toUtf8,
-  TxGrpcApi,
-  isServerSide
-} from '@injectivelabs/sdk-ts'
+import { toUtf8, TxGrpcApi, isServerSide } from '@injectivelabs/sdk-ts'
 import {
   Wallet,
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
-  BaseConcreteStrategy
+  BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
@@ -34,14 +29,13 @@ import {
   getTrustWalletProvider,
 } from './utils/index.js'
 import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
-import type {
-  ErrorContext,
-  ThrownException } from '@injectivelabs/exceptions'
+import type { ErrorContext, ThrownException } from '@injectivelabs/exceptions'
 import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse } from '@injectivelabs/sdk-ts'
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
   Eip1193Provider,
@@ -50,7 +44,7 @@ import type {
   ConcreteWalletStrategy,
   ConcreteWalletStrategyArgs,
   EIP6963AnnounceProviderEvent,
-  ConcreteEvmWalletStrategyArgs
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 
 export class EvmWallet
@@ -194,7 +188,6 @@ export class EvmWallet
     }
   }
 
-
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -302,7 +295,6 @@ export class EvmWallet
     )
   }
 
-
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -383,7 +375,6 @@ export class EvmWallet
       })
     }
   }
-
 
   async getPubKey(): Promise<string> {
     throw new WalletException(

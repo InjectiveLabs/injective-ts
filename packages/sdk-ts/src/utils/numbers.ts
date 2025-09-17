@@ -22,9 +22,7 @@ export const formatNumberToAllowableDecimals = (
   allowableDecimals: number,
   roundingMode?: BigNumber.RoundingMode,
 ): string => {
-  const decimalPlacesInValue = toBigNumber(
-    getExactDecimalsFromNumber(value),
-  )
+  const decimalPlacesInValue = toBigNumber(getExactDecimalsFromNumber(value))
   const valueToString = value.toString()
 
   if (decimalPlacesInValue.lte(0)) {
@@ -34,10 +32,7 @@ export const formatNumberToAllowableDecimals = (
   const decimalMoreThanAllowance = decimalPlacesInValue.gte(allowableDecimals)
 
   return decimalMoreThanAllowance
-    ? toBigNumber(valueToString).toFixed(
-        allowableDecimals,
-        roundingMode,
-      )
+    ? toBigNumber(valueToString).toFixed(allowableDecimals, roundingMode)
     : valueToString
 }
 
@@ -528,7 +523,8 @@ export const spotPriceToChainPriceToFixed = ({
     : value
 
   const number = toChainFormat(
-    flooredValue, toBigNumber(quoteDecimals).minus(baseDecimals).toNumber(),
+    flooredValue,
+    toBigNumber(quoteDecimals).minus(baseDecimals).toNumber(),
   )
 
   if (decimalPlaces === undefined) {
@@ -657,10 +653,7 @@ export const spotQuantityFromChainQuantityToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = toHumanReadable(
-    value,
-    baseDecimals,
-  )
+  const number = toHumanReadable(value, baseDecimals)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()

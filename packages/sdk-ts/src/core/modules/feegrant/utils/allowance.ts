@@ -23,7 +23,8 @@ export const AllowanceTypes = {
   AllowedMsgAllowance: 'allowedMessages',
 } as const
 
-export type AllowanceTypes = typeof AllowanceTypes[keyof typeof AllowanceTypes]
+export type AllowanceTypes =
+  (typeof AllowanceTypes)[keyof typeof AllowanceTypes]
 
 function isBasicAllowance(
   allowance: Allowance,

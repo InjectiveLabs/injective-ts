@@ -1,6 +1,7 @@
-import { BigNumberInWei, BigNumberInBase } from '@injectivelabs/utils'
+import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import { isJsonString } from '../../../utils/helpers.js'
 import { grpcPagingToPaging } from '../../../utils/index.js'
+import type { BigNumber } from '@injectivelabs/utils'
 import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 import type {
   Block,
@@ -30,12 +31,11 @@ import type {
   GrpcIndexerValidatorDescription,
 } from '../types/explorer.js'
 
-
-const ZERO_IN_BASE = new BigNumberInBase(0)
+const ZERO_IN_BASE = toBigNumber(0)
 
 const getContractTransactionV2Amount = (
   ApiTransaction: InjectiveExplorerRpc.TxDetailData,
-): BigNumberInBase => {
+): BigNumber => {
   const messages = JSON.parse(
     Buffer.from(ApiTransaction.messages).toString('utf8'),
   )
@@ -58,7 +58,7 @@ const getContractTransactionV2Amount = (
     return ZERO_IN_BASE
   }
 
-  return new BigNumberInWei(msgObj.transfer.amount).toBase()
+  return toHumanReadable(msgObj.transfer.amount)
 }
 
 const parseStringToObjectLikeNoThrow = (
@@ -650,7 +650,7 @@ export class IndexerGrpcExplorerTransformer {
       amount: getContractTransactionV2Amount(tx),
       logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
       data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
-      fee: new BigNumberInWei(tx.gasFee?.amount[0]?.amount || '0').toBase(),
+      fee: toHumanReadable(tx.gasFee?.amount[0]?.amount || '0'),
       signatures: tx.signatures.map((signature) => ({
         address: signature.address,
         pubkey: signature.pubkey,

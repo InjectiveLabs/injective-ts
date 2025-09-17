@@ -7,26 +7,18 @@ import {
 import { getDenom } from './helper.js'
 import { NEPTUNE_PRICE_CONTRACT } from './index.js'
 import { ChainGrpcWasmApi } from '../../chain/index.js'
+import { NEPTUNE_USDT_CW20_CONTRACT } from './types.js'
 import { NeptuneQueryTransformer } from './transformer.js'
-import {
-  NEPTUNE_USDT_CW20_CONTRACT,
-} from './types.js'
 import { QueryGetPrices, QueryGetAllLendingRates } from './queries/index.js'
 import ExecArgNeptuneDeposit from '../../../core/modules/wasm/exec-args/ExecArgNeptuneDeposit.js'
 import MsgExecuteContractCompat from '../../../core/modules/wasm/msgs/MsgExecuteContractCompat.js'
 import ExecArgNeptuneWithdraw from '../../../core/modules/wasm/exec-args/ExecArgNeptuneWithdraw.js'
-import type {
-  NetworkEndpoints
-} from '@injectivelabs/networks'
-import type {
-  AssetInfo,
-  AssetInfoWithPrice
-} from './types.js'
+import type { NetworkEndpoints } from '@injectivelabs/networks'
+import type { AssetInfo, AssetInfoWithPrice } from './types.js'
 
 const NEPTUNE_USDT_MARKET_CONTRACT =
   'inj1nc7gjkf2mhp34a6gquhurg8qahnw5kxs5u3s4u'
-const NEPTUNE_INTEREST_CONTRACT =
-  'inj1ftech0pdjrjawltgejlmpx57cyhsz6frdx2dhq'
+const NEPTUNE_INTEREST_CONTRACT = 'inj1ftech0pdjrjawltgejlmpx57cyhsz6frdx2dhq'
 
 export class NeptuneService {
   private client: ChainGrpcWasmApi

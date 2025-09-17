@@ -8,7 +8,6 @@ import {
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-
 const params: MsgCancelBinaryOptionsOrder['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
   marketId: mockFactory.injUsdtDerivativeMarket.marketId,
@@ -64,7 +63,7 @@ describe('MsgCancelBinaryOptionsOrder', () => {
       ...protoParamsAmino,
     })
   })
-  
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

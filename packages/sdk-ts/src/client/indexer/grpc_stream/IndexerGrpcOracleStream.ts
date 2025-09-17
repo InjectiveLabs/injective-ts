@@ -4,7 +4,6 @@ import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStr
 import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../types/index.js'
 
-
 export type OraclePriceStreamCallback = (
   response: ReturnType<
     typeof IndexerOracleStreamTransformer.pricesStreamCallback

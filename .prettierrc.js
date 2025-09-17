@@ -5,4 +5,4 @@ export default {
   tabWidth: 2,
   trailingComma: 'all',
   endOfLine: 'lf',
-};
+}

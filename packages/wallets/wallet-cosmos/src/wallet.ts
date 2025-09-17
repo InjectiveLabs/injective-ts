@@ -1,4 +1,3 @@
-
 import { capitalize } from '@injectivelabs/utils'
 import { SigningStargateClient } from '@cosmjs/stargate'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'

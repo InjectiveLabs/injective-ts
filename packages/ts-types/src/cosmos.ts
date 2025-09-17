@@ -32,7 +32,7 @@ export const CosmosChainId = {
   Fetch: 'fetchhub-4',
 } as const
 
-export type CosmosChainId = typeof CosmosChainId[keyof typeof CosmosChainId]
+export type CosmosChainId = (typeof CosmosChainId)[keyof typeof CosmosChainId]
 
 export const TestnetCosmosChainId = {
   Injective: 'injective-888',
@@ -41,7 +41,8 @@ export const TestnetCosmosChainId = {
   Xion: 'xion-testnet-1',
 } as const
 
-export type TestnetCosmosChainId = typeof TestnetCosmosChainId[keyof typeof TestnetCosmosChainId]
+export type TestnetCosmosChainId =
+  (typeof TestnetCosmosChainId)[keyof typeof TestnetCosmosChainId]
 
 export const DevnetCosmosChainId = {
   Injective: 'injective-777',
@@ -49,4 +50,5 @@ export const DevnetCosmosChainId = {
   Injective2: 'injective-777',
 } as const
 
-export type DevnetCosmosChainId = typeof DevnetCosmosChainId[keyof typeof DevnetCosmosChainId]
+export type DevnetCosmosChainId =
+  (typeof DevnetCosmosChainId)[keyof typeof DevnetCosmosChainId]

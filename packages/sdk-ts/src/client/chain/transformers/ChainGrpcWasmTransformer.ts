@@ -15,7 +15,6 @@ import type {
   ContractAccountsBalanceWithPagination,
 } from '../types/wasm.js'
 
-
 /**
  * @category Chain Grpc Transformer
  */

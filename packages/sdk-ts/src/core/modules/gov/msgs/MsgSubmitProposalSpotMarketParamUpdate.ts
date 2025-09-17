@@ -8,9 +8,7 @@ import {
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
 const createSpotMarketParamUpdate = (
@@ -117,9 +115,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
         minPriceTickSize: toChainFormat(
           initialParams.market.minPriceTickSize,
         ).toFixed(),
-        minNotional: toChainFormat(
-          initialParams.market.minNotional,
-        ).toFixed(),
+        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
         minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
@@ -214,18 +210,12 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
           relayer_fee_share_rate: toChainFormat(
             params.market.relayerFeeShareRate,
           ).toFixed(),
-          maker_fee_rate: toChainFormat(
-            params.market.makerFeeRate,
-          ).toFixed(),
-          taker_fee_rate: toChainFormat(
-            params.market.takerFeeRate,
-          ).toFixed(),
+          maker_fee_rate: toChainFormat(params.market.makerFeeRate).toFixed(),
+          taker_fee_rate: toChainFormat(params.market.takerFeeRate).toFixed(),
           min_price_tick_size: toChainFormat(
             params.market.minPriceTickSize,
           ).toFixed(),
-          min_notional: toChainFormat(
-            params.market.minNotional,
-          ).toFixed(),
+          min_notional: toChainFormat(params.market.minNotional).toFixed(),
           min_quantity_tick_size: toChainFormat(
             params.market.minQuantityTickSize,
           ).toFixed(),

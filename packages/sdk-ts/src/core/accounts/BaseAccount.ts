@@ -1,6 +1,9 @@
 import { Address } from './Address.js'
 import type { AccountDetails } from '../../types/auth.js'
-import type { AccountResponse, BaseAccountRestResponse } from '../../client/chain/index.js'
+import type {
+  AccountResponse,
+  BaseAccountRestResponse,
+} from '../../client/chain/index.js'
 
 /**
  * @category Utility Classes

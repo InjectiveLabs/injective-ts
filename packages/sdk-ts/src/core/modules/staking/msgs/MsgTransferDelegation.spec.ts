@@ -1,5 +1,5 @@
 import snakecaseKeys from 'snakecase-keys'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgTransferDelegation from './MsgTransferDelegation.js'
@@ -14,7 +14,7 @@ const params: MsgTransferDelegation['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
   receiverAddress: mockFactory.injectiveAddress2,
   amount: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
 }

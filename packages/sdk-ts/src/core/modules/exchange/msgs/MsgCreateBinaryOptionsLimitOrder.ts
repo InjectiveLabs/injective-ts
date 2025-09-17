@@ -5,11 +5,8 @@ import {
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
-
 
 export declare namespace MsgCreateBinaryOptionsLimitOrder {
   export interface Params {
@@ -80,9 +77,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
       ...initialParams,
       price: toChainFormat(initialParams.price).toFixed(),
       margin: toChainFormat(initialParams.margin).toFixed(),
-      triggerPrice: toChainFormat(
-        initialParams.triggerPrice || 0,
-      ).toFixed(),
+      triggerPrice: toChainFormat(initialParams.triggerPrice || 0).toFixed(),
       quantity: toChainFormat(initialParams.quantity).toFixed(),
     } as MsgCreateBinaryOptionsLimitOrder.Params
 
@@ -162,9 +157,7 @@ export default class MsgCreateBinaryOptionsLimitOrder extends MsgBase<
           quantity: toChainFormat(params.quantity).toFixed(),
         },
         margin: toChainFormat(params.margin).toFixed(),
-        trigger_price: toChainFormat(
-          params.triggerPrice || '0',
-        ).toFixed(),
+        trigger_price: toChainFormat(params.triggerPrice || '0').toFixed(),
       },
     }
 

@@ -68,7 +68,7 @@ export const BroadcastMode = {
   Block: 'BROADCAST_MODE_BLOCK',
 } as const
 
-export type BroadcastMode = typeof BroadcastMode[keyof typeof BroadcastMode]
+export type BroadcastMode = (typeof BroadcastMode)[keyof typeof BroadcastMode]
 
 export const BroadcastModeKeplr = {
   Sync: 'sync',
@@ -76,7 +76,8 @@ export const BroadcastModeKeplr = {
   Block: 'block',
 } as const
 
-export type BroadcastModeKeplr = typeof BroadcastModeKeplr[keyof typeof BroadcastModeKeplr]
+export type BroadcastModeKeplr =
+  (typeof BroadcastModeKeplr)[keyof typeof BroadcastModeKeplr]
 
 export interface TxResultResponse {
   tx: RestTx

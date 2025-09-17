@@ -1,8 +1,5 @@
 import { EvmChainId } from '@injectivelabs/ts-types'
-import {
-  toUtf8,
-  TxGrpcApi
-} from '@injectivelabs/sdk-ts'
+import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { toHex, keccak256, serializeTransaction } from 'viem'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import {
@@ -33,7 +30,7 @@ import type {
   TxRaw,
   TxResponse,
   AminoSignResponse,
-  DirectSignResponse
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
@@ -41,7 +38,7 @@ import type {
   SendTransactionOptions,
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
-  ConcreteEvmWalletStrategyArgs
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 
 export default class LedgerBase
@@ -226,7 +223,6 @@ export default class LedgerBase
     )
   }
 
-
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -278,7 +274,6 @@ export default class LedgerBase
   async getEvmTransactionReceipt(txHash: string): Promise<string> {
     return Promise.resolve(txHash)
   }
-
 
   async getPubKey(): Promise<string> {
     throw new WalletException(

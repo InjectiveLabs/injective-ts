@@ -2,6 +2,8 @@ import typescript from '@typescript-eslint/eslint-plugin'
 import typescriptParser from '@typescript-eslint/parser'
 import importPlugin from 'eslint-plugin-import'
 import perfectionist from 'eslint-plugin-perfectionist'
+import prettier from 'eslint-plugin-prettier'
+import prettierConfig from 'eslint-config-prettier'
 import noEnumRule from './scripts/eslint-rules/no-enum.js'
 
 export default [
@@ -32,6 +34,7 @@ export default [
       '@typescript-eslint': typescript,
       import: importPlugin,
       perfectionist: perfectionist,
+      prettier: prettier,
       custom: {
         rules: {
           'no-enum': noEnumRule,
@@ -107,6 +110,8 @@ export default [
       'custom/no-enum': 'error',
       // Enforce spacing inside object/type brackets
       'object-curly-spacing': ['error', 'always'],
+      // Prettier integration
+      'prettier/prettier': 'error',
     },
     settings: {
       'import/resolver': {
@@ -119,14 +124,23 @@ export default [
   },
   // Base configuration for JavaScript files
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['**/*.{js,jsx,cjs}'],
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
     },
+  },
+  // Base configuration for CommonJS files
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'commonjs',
+    },
     plugins: {
       import: importPlugin,
       perfectionist: perfectionist,
+      prettier: prettier,
     },
     rules: {
       // Sort imports by groups and line length within each group
@@ -155,6 +169,8 @@ export default [
       'no-use-before-define': 'off',
       // Enforce spacing inside object brackets
       'object-curly-spacing': ['error', 'always'],
+      // Prettier integration
+      'prettier/prettier': 'error',
     },
     settings: {
       'import/resolver': {
@@ -173,4 +189,6 @@ export default [
       'no-console': 'off',
     },
   },
+  // Prettier config to disable conflicting rules
+  prettierConfig,
 ]

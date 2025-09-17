@@ -1,9 +1,6 @@
-import {
-  CosmwasmWasmV1Types,
-} from '@injectivelabs/core-proto-ts'
+import { CosmwasmWasmV1Types } from '@injectivelabs/core-proto-ts'
 import type { Pagination } from './../../../types/pagination.js'
-import type {
-  CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
+import type { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
 
 export interface AbsoluteTxPosition {
   blockHeight: number

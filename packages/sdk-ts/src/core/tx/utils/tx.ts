@@ -4,14 +4,14 @@ import {
   GoogleProtobufStruct,
   CosmosBaseV1Beta1Coin,
   InjectiveTypesV1Beta1TxExt,
-  CosmosCryptoSecp256k1Keys
+  CosmosCryptoSecp256k1Keys,
 } from '@injectivelabs/core-proto-ts'
 import { createAny, createAnyMessage } from './helpers.js'
 import type { Msgs } from '../../modules/msgs.js'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type {
   GoogleProtobufAny,
-  CosmosTxSigningV1Beta1Signing
+  CosmosTxSigningV1Beta1Signing,
 } from '@injectivelabs/core-proto-ts'
 
 export const getPublicKey = ({

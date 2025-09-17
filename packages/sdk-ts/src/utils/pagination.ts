@@ -1,7 +1,10 @@
 import { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
 import type { Pagination, PagePagination } from '../types/pagination.js'
 import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import type { ExchangePagination, PaginationOption } from '../types/pagination.js'
+import type {
+  ExchangePagination,
+  PaginationOption,
+} from '../types/pagination.js'
 
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,

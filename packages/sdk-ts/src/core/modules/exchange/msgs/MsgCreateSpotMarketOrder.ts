@@ -8,7 +8,6 @@ import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
-
 export declare namespace MsgCreateSpotMarketOrder {
   export interface Params {
     marketId: string
@@ -72,9 +71,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     const params = {
       ...initialParams,
       price: toChainFormat(initialParams.price).toFixed(),
-      triggerPrice: toChainFormat(
-        initialParams.triggerPrice || 0,
-      ).toFixed(),
+      triggerPrice: toChainFormat(initialParams.triggerPrice || 0).toFixed(),
       quantity: toChainFormat(initialParams.quantity).toFixed(),
     } as MsgCreateSpotMarketOrder.Params
 
@@ -152,9 +149,7 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
           price: toChainFormat(params.price).toFixed(),
           quantity: toChainFormat(params.quantity).toFixed(),
         },
-        trigger_price: toChainFormat(
-          params.triggerPrice || '0',
-        ).toFixed(),
+        trigger_price: toChainFormat(params.triggerPrice || '0').toFixed(),
       },
     }
 

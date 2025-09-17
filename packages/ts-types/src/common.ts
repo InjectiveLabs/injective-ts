@@ -12,7 +12,8 @@ export const StreamOperation = {
   Invalidate: 'invalidate',
 } as const
 
-export type StreamOperation = typeof StreamOperation[keyof typeof StreamOperation]
+export type StreamOperation =
+  (typeof StreamOperation)[keyof typeof StreamOperation]
 
 export interface PaginationOption {
   key: string

@@ -4,7 +4,6 @@ import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../types/index.js'
 
-
 export type BalanceStreamCallback = (
   response: ReturnType<
     typeof IndexerAccountStreamTransformer.balanceStreamCallback

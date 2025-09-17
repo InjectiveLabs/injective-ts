@@ -4,18 +4,17 @@ import {
   Wallet,
   isEvmWallet,
   isCosmosWallet,
-  type WalletMetadata
+  type WalletMetadata,
 } from '@injectivelabs/wallet-base'
-import {
-  WalletStrategyEmitterEventType,
-} from '../broadcaster/types.js'
+import { WalletStrategyEmitterEventType } from '../broadcaster/types.js'
 import type { StdSignDoc } from '@keplr-wallet/types'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type {
   WalletStrategyEmitter,
-  WalletStrategyEmitterEvents } from '../broadcaster/types.js'
+  WalletStrategyEmitterEvents,
+} from '../broadcaster/types.js'
 import type {
   TxRaw,
   TxResponse,

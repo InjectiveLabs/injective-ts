@@ -18,7 +18,8 @@ export const StreamOperation = {
   Invalidate: 'invalidate',
 } as const
 
-export type StreamOperation = typeof StreamOperation[keyof typeof StreamOperation]
+export type StreamOperation =
+  (typeof StreamOperation)[keyof typeof StreamOperation]
 
 export type GrpcCoin = CosmosBaseV1Beta1Coin.Coin
 export type TxRaw = CosmosTxV1Beta1Tx.TxRaw

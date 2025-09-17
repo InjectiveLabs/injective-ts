@@ -5,14 +5,16 @@ export const TradeExecutionType = {
   LimitMatchNewOrder: 'limitMatchNewOrder',
 } as const
 
-export type TradeExecutionType = typeof TradeExecutionType[keyof typeof TradeExecutionType]
+export type TradeExecutionType =
+  (typeof TradeExecutionType)[keyof typeof TradeExecutionType]
 
 export const TradeExecutionSide = {
   Maker: 'maker',
   Taker: 'taker',
 } as const
 
-export type TradeExecutionSide = typeof TradeExecutionSide[keyof typeof TradeExecutionSide]
+export type TradeExecutionSide =
+  (typeof TradeExecutionSide)[keyof typeof TradeExecutionSide]
 
 export const TradeDirection = {
   Buy: 'buy',
@@ -21,7 +23,8 @@ export const TradeDirection = {
   Short: 'short',
 } as const
 
-export type TradeDirection = typeof TradeDirection[keyof typeof TradeDirection]
+export type TradeDirection =
+  (typeof TradeDirection)[keyof typeof TradeDirection]
 
 export const OrderState = {
   Unfilled: 'unfilled',
@@ -33,7 +36,7 @@ export const OrderState = {
   Triggered: 'triggered',
 } as const
 
-export type OrderState = typeof OrderState[keyof typeof OrderState]
+export type OrderState = (typeof OrderState)[keyof typeof OrderState]
 
 export const OrderSide = {
   Unspecified: 'unspecified',
@@ -50,4 +53,4 @@ export const OrderSide = {
   Unrecognized: 'unrecognized',
 } as const
 
-export type OrderSide = typeof OrderSide[keyof typeof OrderSide]
+export type OrderSide = (typeof OrderSide)[keyof typeof OrderSide]

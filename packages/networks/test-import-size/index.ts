@@ -1,5 +1,9 @@
 // Test import for bundle analysis
-import { Network, getCw20AdapterContractForNetwork, getNetworkInfo } from './../dist/esm/index.js'
+import {
+  Network,
+  getCw20AdapterContractForNetwork,
+  getNetworkInfo,
+} from './../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle
 const network = getNetworkInfo(Network.Mainnet)

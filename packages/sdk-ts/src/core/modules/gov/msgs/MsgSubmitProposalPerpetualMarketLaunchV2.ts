@@ -8,9 +8,7 @@ import {
   InjectiveOracleV1Beta1Oracle,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
@@ -67,7 +65,9 @@ const createPerpetualMarketLaunch = (
   content.oracleBase = params.market.oracleBase
   content.oracleQuote = params.market.oracleQuote
   content.oracleScaleFactor = params.market.oracleScaleFactor
-  content.oracleType = Number(params.market.oracleType) as InjectiveOracleV1Beta1Oracle.OracleType
+  content.oracleType = Number(
+    params.market.oracleType,
+  ) as InjectiveOracleV1Beta1Oracle.OracleType
   content.initialMarginRatio = params.market.initialMarginRatio
   content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
   content.makerFeeRate = params.market.makerFeeRate
@@ -129,9 +129,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
         minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: toChainFormat(
-          initialParams.market.minNotional,
-        ).toFixed(),
+        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
         reduceMarginRatio: toChainFormat(
           initialParams.market.reduceMarginRatio,
         ).toFixed(),
@@ -229,18 +227,12 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           maintenance_margin_ratio: toChainFormat(
             params.market.maintenanceMarginRatio,
           ).toFixed(),
-          maker_fee_rate: toChainFormat(
-            params.market.makerFeeRate,
-          ).toFixed(),
-          taker_fee_rate: toChainFormat(
-            params.market.takerFeeRate,
-          ).toFixed(),
+          maker_fee_rate: toChainFormat(params.market.makerFeeRate).toFixed(),
+          taker_fee_rate: toChainFormat(params.market.takerFeeRate).toFixed(),
           min_price_tick_size: toChainFormat(
             params.market.minPriceTickSize,
           ).toFixed(),
-          min_notional: toChainFormat(
-            params.market.minNotional,
-          ).toFixed(),
+          min_notional: toChainFormat(params.market.minNotional).toFixed(),
           min_quantity_tick_size: toChainFormat(
             params.market.minQuantityTickSize,
           ).toFixed(),
@@ -268,7 +260,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
       content: {
         ...content,
         oracle_type: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-          Number(content.oracle_type) as InjectiveOracleV1Beta1Oracle.OracleType,
+          Number(
+            content.oracle_type,
+          ) as InjectiveOracleV1Beta1Oracle.OracleType,
         ),
         initial_margin_ratio: numberToCosmosSdkDecString(
           params.market.initialMarginRatio,

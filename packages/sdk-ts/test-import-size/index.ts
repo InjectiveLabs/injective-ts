@@ -10,7 +10,7 @@ import {
   IndexerGrpcAccountApi,
 
   // Utils
-  MsgBroadcasterWithPk
+  MsgBroadcasterWithPk,
 } from '../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle
@@ -20,5 +20,5 @@ console.log('SDK-TS package loaded:', {
   ChainRestBankApi: ChainRestBankApi.name,
   ChainGrpcBankApi: ChainGrpcBankApi.name,
   IndexerGrpcAccountApi: IndexerGrpcAccountApi.name,
-  MsgBroadcasterWithPk: MsgBroadcasterWithPk.name
+  MsgBroadcasterWithPk: MsgBroadcasterWithPk.name,
 })

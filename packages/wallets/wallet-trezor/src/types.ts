@@ -10,7 +10,8 @@ export const TrezorDerivationPathType = {
   Legacy: 'legacy',
 } as const
 
-export type TrezorDerivationPathType = typeof TrezorDerivationPathType[keyof typeof TrezorDerivationPathType]
+export type TrezorDerivationPathType =
+  (typeof TrezorDerivationPathType)[keyof typeof TrezorDerivationPathType]
 
 export interface TrezorWalletInfo {
   address: string
