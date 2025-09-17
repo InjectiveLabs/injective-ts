@@ -1,8 +1,9 @@
 // import CryptoEs from 'crypto-es'
 import CryptoEs from 'crypto-js'
 import { keccak256 } from 'viem'
+import { hashTypedData } from 'viem'
 import { secp256k1 } from '@noble/curves/secp256k1'
-import { hashTypedData, type TypedDataDefinition } from 'viem'
+import type { TypedDataDefinition } from 'viem'
 
 export const hashToHex = (data: string): string => {
   return CryptoEs.SHA256(CryptoEs.enc.Base64.parse(data))
@@ -50,14 +51,26 @@ export const privateKeyHashToPublicKeyBase64 = (
   )
 }
 
+// Hash only the domain portion
 export const domainHash = (message: TypedDataDefinition) => {
-  // For compatibility, use the existing typed data structure
-  // but hash only the domain portion
-  return hashTypedData(message)
+  const domainTypedData: TypedDataDefinition = {
+    domain: message.domain,
+    types: message.types,
+    primaryType: 'EIP712Domain',
+    message: {},
+  }
+  return hashTypedData(domainTypedData)
 }
 
+// Hash only the message portion
 export const messageHash = (message: TypedDataDefinition) => {
-  return hashTypedData(message)
+  const messageTypedData: TypedDataDefinition = {
+    domain: {},
+    types: message.types,
+    primaryType: message.primaryType,
+    message: message.message,
+  }
+  return hashTypedData(messageTypedData)
 }
 
 export function uint8ArrayToHex(arr: Uint8Array) {
@@ -146,15 +159,35 @@ function hashStruct(
   types: any,
   _version?: string,
 ): BufferLike {
-  const typedData: TypedDataDefinition = {
-    domain: {},
-    types,
-    primaryType,
-    message: data,
+  if (!data) {
+    throw new Error('Invalid data: data is empty')
   }
+
+  // For EIP-712, we need to create a complete structure
+  // The original implementation would hash just the specific part
+  let typedData: TypedDataDefinition
+
+  if (primaryType === 'EIP712Domain') {
+    // For domain hash, we only need the domain data
+    typedData = {
+      domain: data,
+      types: { EIP712Domain: types.EIP712Domain },
+      primaryType: 'EIP712Domain',
+      message: {},
+    }
+  } else {
+    // For message hash, we need the complete structure
+    // Use the domain data if it's available in types
+    typedData = {
+      domain: types.domain || {},
+      types,
+      primaryType,
+      message: data,
+    }
+  }
+
   const hash = hashTypedData(typedData)
 
-  // Return an object that mimics a Buffer with toString method for compatibility
   return {
     toString: (encoding?: string) => {
       if (encoding === 'hex') {

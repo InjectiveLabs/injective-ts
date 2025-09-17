@@ -52,8 +52,6 @@ const createStrategy = ({
   wallet: Wallet
   args: WalletStrategyArguments
 }): ConcreteWalletStrategy | undefined => {
-  console.log('creating strategy for wallet:', wallet)
-
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
