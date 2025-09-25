@@ -4,6 +4,7 @@ import {
   DEFAULT_GAS_PRICE,
 } from './constants.js'
 import {
+  toBigNumber,
   toChainFormat,
   toHumanReadable,
   default as BigNumber,
@@ -124,22 +125,28 @@ export const getStdFeeFromObject = (args?: {
     return getDefaultStdFee()
   }
 
-  const gasPriceInBase = args.gasPrice || toHumanReadable(DEFAULT_GAS_PRICE, 18)
-  const gasPriceScaled = toChainFormat(gasPriceInBase, 18).toFixed(0)
+  const {
+    payer,
+    granter,
+    feePayer,
+    gasPrice = DEFAULT_GAS_PRICE,
+    gas = DEFAULT_GAS_LIMIT.toString(),
+  } = args
+
+  const gasNormalized = toBigNumber(gas).toFixed(0)
+  const gasPriceNormalized = toBigNumber(gasPrice).toFixed(0)
 
   return {
     amount: [
       {
         denom: 'inj',
-        amount: new BigNumber(args.gas || DEFAULT_GAS_LIMIT)
-          .times(gasPriceScaled)
-          .toFixed(0),
+        amount: toBigNumber(gasNormalized).times(gasPriceNormalized).toFixed(),
       },
     ],
-    gas: new BigNumber(args.gas || DEFAULT_GAS_LIMIT).toFixed(),
-    payer: args.payer || '',
-    granter: args.granter || '',
-    feePayer: args.feePayer || '',
+    gas: toBigNumber(gasNormalized).toFixed(),
+    payer /** for Web3Gateway fee delegation */,
+    granter,
+    feePayer,
   }
 }
 
@@ -151,7 +158,7 @@ export const getStdFeeFromString = (gasPrice: string) => {
   }
 
   const [_, amount] = matchResult
-  const gas = toChainFormat(amount).dividedBy(DEFAULT_GAS_PRICE).toFixed(0)
+  const gas = toChainFormat(amount, 18).dividedBy(DEFAULT_GAS_PRICE).toFixed(0)
 
   return getStdFeeFromObject({ gas, gasPrice: DEFAULT_GAS_PRICE })
 }
