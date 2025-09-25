@@ -20,4 +20,6 @@ export type TotalInjBurnt = number
 
 export type GrpcIndexerBid = InjectiveAuctionRpc.Bid
 export type GrpcAuction = InjectiveAuctionRpc.Auction
+export type GrpcAccountAuction = InjectiveAuctionRpc.AccountAuctionV2
 export type StreamBidsResponse = InjectiveAuctionRpc.StreamBidsResponse
+export type GrpcAccountAuctionClaimedAssets = InjectiveAuctionRpc.ClaimedAssets
