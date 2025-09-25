@@ -52,9 +52,17 @@ export interface AccountStats {
   volume: number
 }
 
+export interface SpotAverageEntry {
+  marketId: string
+  averageEntryPrice: string
+  quantity: string
+  usdValue: string
+}
+
 export type GrpcHistoricalRPNL = InjectiveArchiverRpc.HistoricalRPNL
 export type GrpcLeaderboardRow = InjectiveArchiverRpc.LeaderboardRow
 export type GrpcDenomHolders = InjectiveArchiverRpc.DenomHoldersResponse
+export type GrpcSpotAverageEntry = InjectiveArchiverRpc.SpotAverageEntry
 export type GrpcHistoricalBalance = InjectiveArchiverRpc.HistoricalBalance
 export type GrpcHistoricalVolumes = InjectiveArchiverRpc.HistoricalVolumes
 export type GrpcPnlLeaderboard =

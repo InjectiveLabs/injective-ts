@@ -5,6 +5,7 @@ import {
   LeaderboardRow,
   PnlLeaderboard,
   VolLeaderboard,
+  SpotAverageEntry,
   HistoricalBalance,
   HistoricalVolumes,
 } from '../types/archiver.js'
@@ -175,6 +176,17 @@ export class IndexerGrpcArchiverTransformer {
     return {
       pnl: response.pnl,
       volume: response.volume,
+    }
+  }
+
+  static grpcSpotAverageEntryToSpotAverageEntry(
+    averageEntry: InjectiveArchiverRpc.SpotAverageEntry,
+  ): SpotAverageEntry {
+    return {
+      marketId: averageEntry.marketId,
+      averageEntryPrice: averageEntry.averageEntryPrice,
+      quantity: averageEntry.quantity,
+      usdValue: averageEntry.usdValue,
     }
   }
 }
