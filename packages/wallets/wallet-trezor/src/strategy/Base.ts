@@ -11,7 +11,6 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
-  TIP_IN_GWEI,
   WalletAction,
   getKeyFromRpcUrl,
   WalletDeviceType,
@@ -130,9 +129,12 @@ export default class TrezorBase
 
     try {
       const alchemy = await this.getAlchemy(args.evmChainId)
-      const txReceipt = await alchemy.core.sendTransaction(signedTransaction)
+      const provider = await alchemy.config.getProvider()
+      const txHash = await provider.send('eth_sendRawTransaction', [
+        signedTransaction,
+      ])
 
-      return txReceipt.hash
+      return txHash
     } catch (e: unknown) {
       throw new TrezorException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -316,16 +318,33 @@ export default class TrezorBase
     const alchemy = await this.getAlchemy(args.evmChainId)
     const nonce = await alchemy.core.getTransactionCount(args.address)
 
-    // Create transaction data for Trezor API (still needs hex strings)
+    // Handle hex string values properly (with or without 0x prefix)
+    const parseHexValue = (value: string | number | bigint) => {
+      if (typeof value === 'string') {
+        const hexValue = value.startsWith('0x') ? value : `0x${value}`
+        return BigInt(hexValue)
+      }
+      return BigInt(value)
+    }
+
+    // Convert to BigInt first, then to hex for Trezor
+    const valueBigInt = parseHexValue(txData.value || '0x0')
+    const gasBigInt = parseHexValue(txData.gas)
+    const maxFeePerGasBigInt = parseHexValue(txData.maxFeePerGas)
+    const maxPriorityFeePerGasBigInt = parseHexValue(
+      txData.maxPriorityFeePerGas,
+    )
+
+    // Create transaction data for Trezor API (needs hex strings)
     const trezorTxData = {
       to: txData.to,
-      value: toHex(txData.value || 0),
-      gasLimit: toHex(txData.gas),
+      value: toHex(valueBigInt),
+      gasLimit: toHex(gasBigInt),
       nonce: toHex(nonce),
       data: txData.data || '0x',
       chainId,
-      maxFeePerGas: toHex(txData.gasPrice || txData.maxFeePerGas),
-      maxPriorityFeePerGas: toHex(txData.maxPriorityFeePerGas || TIP_IN_GWEI),
+      maxFeePerGas: toHex(maxFeePerGasBigInt),
+      maxPriorityFeePerGas: toHex(maxPriorityFeePerGasBigInt),
     } as EthereumTransactionEIP1559
 
     try {
@@ -356,13 +375,11 @@ export default class TrezorBase
         chainId,
         nonce,
         to: txData.to as `0x${string}`,
-        value: BigInt(txData.value || 0),
+        value: valueBigInt,
         data: (txData.data || '0x') as `0x${string}`,
-        gas: BigInt(txData.gas),
-        maxFeePerGas: BigInt(txData.gasPrice || txData.maxFeePerGas),
-        maxPriorityFeePerGas: BigInt(
-          txData.maxPriorityFeePerGas || TIP_IN_GWEI,
-        ),
+        gas: gasBigInt,
+        maxFeePerGas: maxFeePerGasBigInt,
+        maxPriorityFeePerGas: maxPriorityFeePerGasBigInt,
         v: BigInt(response.payload.v),
         r: response.payload.r as `0x${string}`,
         s: response.payload.s as `0x${string}`,

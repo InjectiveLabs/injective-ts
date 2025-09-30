@@ -1,6 +1,6 @@
 import { EvmChainId } from '@injectivelabs/ts-types'
 import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
-import { toHex, keccak256, serializeTransaction } from 'viem'
+import { toHex, serializeTransaction } from 'viem'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import {
   ErrorType,
@@ -11,7 +11,6 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
-  TIP_IN_GWEI,
   WalletAction,
   getKeyFromRpcUrl,
   WalletDeviceType,
@@ -118,9 +117,12 @@ export default class LedgerBase
 
     try {
       const alchemy = await this.getAlchemy(args.evmChainId)
-      const txReceipt = await alchemy.core.sendTransaction(signedTransaction)
+      const provider = await alchemy.config.getProvider()
+      const txHash = await provider.send('eth_sendRawTransaction', [
+        signedTransaction,
+      ])
 
-      return txReceipt.hash
+      return txHash
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -291,35 +293,47 @@ export default class LedgerBase
     const chainId = parseInt(args.evmChainId.toString(), 10) as EvmChainId
     const nonce = await alchemy.core.getTransactionCount(args.address)
 
+    const parseHexValue = (value: string | number | bigint) => {
+      if (typeof value === 'string') {
+        const hexValue = value.startsWith('0x') ? value : `0x${value}`
+
+        return BigInt(hexValue)
+      }
+
+      return BigInt(value)
+    }
+
     const eip1559TxData = {
       type: 'eip1559' as const,
       chainId,
       nonce,
       to: txData.to as `0x${string}`,
-      value: BigInt(txData.value || 0),
+      value: parseHexValue(txData.value || '0x0'),
       data: txData.data as `0x${string}`,
-      gas: BigInt(txData.gas),
-      maxFeePerGas: BigInt(txData.gasPrice || txData.maxFeePerGas),
-      maxPriorityFeePerGas: BigInt(txData.maxPriorityFeePerGas || TIP_IN_GWEI),
+      gas: parseHexValue(txData.gas),
+      maxFeePerGas: parseHexValue(txData.maxFeePerGas),
+      maxPriorityFeePerGas: parseHexValue(txData.maxPriorityFeePerGas),
     }
 
-    // Serialize the transaction to get the message hash for signing
+    // Serialize the transaction
     const serializedTx = serializeTransaction(eip1559TxData)
-    const messageHash = keccak256(serializedTx)
-    const encodedMessageHex = messageHash.slice(2) // Remove 0x prefix
+    const serializedTxHex = serializedTx.slice(2) // Remove 0x prefix
 
     try {
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(args.address)
+
+      // Resolve transaction for Ledger display
       const resolution = await ledgerService.resolveTransaction(
-        encodedMessageHex,
+        serializedTxHex,
         {},
         {},
       )
 
+      // Sign the transaction with Ledger
       const txSig = await ledger.signTransaction(
         derivationPath,
-        encodedMessageHex,
+        serializedTxHex,
         resolution,
       )
 
