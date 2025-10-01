@@ -350,30 +350,29 @@ export class EvmWallet
   async getEvmTransactionReceipt(txHash: string): Promise<string> {
     const ethereum = await this.getEthereum()
 
-    const interval = 1000
-    const transactionReceiptRetry = async () => {
-      const receipt = (await ethereum.request({
-        method: 'eth_getTransactionReceipt',
-        params: [txHash],
-      })) as string
+    const interval = 3000
+    const maxAttempts = 10
+    let attempts = 0
 
-      if (!receipt) {
-        await sleep(interval)
-        await transactionReceiptRetry()
-      }
+    while (attempts < maxAttempts) {
+      attempts++
+      await sleep(interval)
 
-      return receipt
+      try {
+        const receipt = await ethereum.request({
+          method: 'eth_getTransactionReceipt',
+          params: [txHash],
+        })
+
+        if (receipt) {
+          return txHash
+        }
+      } catch {}
     }
 
-    try {
-      return await transactionReceiptRetry()
-    } catch (e: unknown) {
-      throw this.EvmWalletException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetEvmTransactionReceipt,
-      })
-    }
+    throw new Error(
+      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+    )
   }
 
   async getPubKey(): Promise<string> {

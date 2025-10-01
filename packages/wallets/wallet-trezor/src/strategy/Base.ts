@@ -1,3 +1,4 @@
+import { sleep } from '@injectivelabs/utils'
 import { toHex, serializeTransaction } from 'viem'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
@@ -298,8 +299,35 @@ export default class TrezorBase
     return alchemyProvider.network.chainId.toString()
   }
 
-  async getEvmTransactionReceipt(txHash: string): Promise<string> {
-    return Promise.resolve(txHash)
+  async getEvmTransactionReceipt(
+    txHash: string,
+    evmChainId?: EvmChainId,
+  ): Promise<string> {
+    const alchemy = await this.getAlchemy(evmChainId)
+    const provider = await alchemy.config.getProvider()
+
+    const interval = 3000
+    const maxAttempts = 10
+    let attempts = 0
+
+    while (attempts < maxAttempts) {
+      attempts++
+      await sleep(interval)
+
+      try {
+        const receipt = await provider.send('eth_getTransactionReceipt', [
+          txHash,
+        ])
+
+        if (receipt) {
+          return txHash
+        }
+      } catch {}
+    }
+
+    throw new Error(
+      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+    )
   }
 
   async getPubKey(): Promise<string> {
