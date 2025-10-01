@@ -186,8 +186,38 @@ export class TurnkeyWalletStrategy
         transport: http(url),
       })
 
+      const parseHexValue = (value: string | number | bigint) => {
+        if (typeof value === 'string') {
+          const hexValue = value.startsWith('0x') ? value : `0x${value}`
+
+          return BigInt(hexValue)
+        }
+
+        return BigInt(value)
+      }
+
+      const txData = transaction as any
+      const processedTransaction = { ...txData }
+
+      const hexFields = [
+        'value',
+        'gas',
+        'gasLimit',
+        'gasPrice',
+        'maxFeePerGas',
+        'maxPriorityFeePerGas',
+      ]
+
+      for (const field of hexFields) {
+        if (processedTransaction[field] !== undefined) {
+          processedTransaction[field] = parseHexValue(
+            processedTransaction[field],
+          )
+        }
+      }
+
       const preparedTransaction = await accountClient.prepareTransactionRequest(
-        transaction as PrepareTransactionRequestParameters,
+        processedTransaction as PrepareTransactionRequestParameters,
       )
 
       delete preparedTransaction.account

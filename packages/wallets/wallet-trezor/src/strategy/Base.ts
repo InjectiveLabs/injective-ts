@@ -350,8 +350,10 @@ export default class TrezorBase
     const parseHexValue = (value: string | number | bigint) => {
       if (typeof value === 'string') {
         const hexValue = value.startsWith('0x') ? value : `0x${value}`
+
         return BigInt(hexValue)
       }
+
       return BigInt(value)
     }
 
