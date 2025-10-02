@@ -1,4 +1,5 @@
-import { store, StoreAPI } from '@bangjelkoski/store2'
+import { store } from '@bangjelkoski/store2'
+import type { StoreAPI } from '@bangjelkoski/store2'
 
 export default class LocalStorage {
   private storage: StoreAPI

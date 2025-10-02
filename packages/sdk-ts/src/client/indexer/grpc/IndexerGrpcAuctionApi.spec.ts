@@ -1,6 +1,6 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
 import { IndexerGrpcAuctionApi } from './IndexerGrpcAuctionApi.js'
+import type { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const indexerGrpcAuctionApi = new IndexerGrpcAuctionApi(endpoints.indexer)

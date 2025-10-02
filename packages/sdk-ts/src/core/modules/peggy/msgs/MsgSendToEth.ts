@@ -1,13 +1,13 @@
-import { MsgBase } from '../../MsgBase.js'
-import {
-  DEFAULT_BRIDGE_FEE_AMOUNT,
-  DEFAULT_BRIDGE_FEE_DENOM,
-} from '@injectivelabs/utils'
 import snakecaseKeys from 'snakecase-keys'
 import {
   InjectivePeggyV1Msgs,
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
+import {
+  DEFAULT_BRIDGE_FEE_AMOUNT,
+  DEFAULT_BRIDGE_FEE_DENOM,
+} from '@injectivelabs/utils'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgSendToEth {
   export interface Params {

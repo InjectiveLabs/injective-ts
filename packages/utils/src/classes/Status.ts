@@ -1,15 +1,9 @@
-export enum StatusType {
-  Idle = 'idle',
-  Loading = 'loading',
-  Completed = 'completed',
-  Error = 'error',
-  Confirmed = 'confirmed',
-}
+import { StatusType } from '../enum.js'
 
 export default class Status {
   public status: string
 
-  constructor(status = StatusType.Idle) {
+  constructor(status: StatusType = StatusType.Idle) {
     this.status = status
   }
 

@@ -1,5 +1,5 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { GrpcCoin } from '../../../types/index.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { GrpcCoin } from '../../../types/index.js'
 
 export class IndexerCommonTransformer {
   static grpcCoinToCoin(coin: GrpcCoin): Coin {

@@ -1,5 +1,15 @@
-const { pathsToModuleNameMapper } = require('ts-jest')
-const { compilerOptions } = require('./tsconfig')
+import { readFileSync } from 'fs'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+import { pathsToModuleNameMapper } from 'ts-jest'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const tsconfig = JSON.parse(
+  readFileSync(join(__dirname, 'tsconfig.json'), 'utf8'),
+)
+const { compilerOptions } = tsconfig
 
 const packagePaths = Object.keys(compilerOptions.paths).reduce(
   (result, key) => {
@@ -25,7 +35,7 @@ const directoryPaths = Object.keys(compilerOptions.paths).reduce(
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
-module.exports = {
+export default {
   testTimeout: 30000,
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -115,7 +125,7 @@ module.exports = {
   // resetModules: false,
 
   // A path to a custom resolver
-  resolver: `${__dirname}/etc/jest-resolver.js`,
+  resolver: `${__dirname}/etc/jest-resolver.cjs`,
 
   // Automatically restore mock state between every test
   // restoreMocks: false,
@@ -174,9 +184,14 @@ module.exports = {
       'ts-jest',
       {
         useESM: true,
+        tsconfig: {
+          module: 'ESNext',
+          moduleResolution: 'Node',
+          allowSyntheticDefaultImports: true,
+          esModuleInterop: true,
+        },
       },
     ],
-    '^.+\\.js?$': 'babel-jest',
   },
 
   extensionsToTreatAsEsm: ['.ts'],

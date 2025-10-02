@@ -1,12 +1,12 @@
-import MsgPrivilegedExecuteContract from './MsgPrivilegedExecuteContract.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgPrivilegedExecuteContract from './MsgPrivilegedExecuteContract.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
-import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 import ExecPrivilegedArgVaultRedeem from '../exec-priv-args/ExecPrivilegedArgVaultRedeem.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const params: MsgPrivilegedExecuteContract['params'] = {
   sender: mockFactory.injectiveAddress,

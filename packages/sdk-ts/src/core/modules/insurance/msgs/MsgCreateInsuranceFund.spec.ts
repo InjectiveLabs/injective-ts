@@ -1,13 +1,13 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgCreateInsuranceFund from './MsgCreateInsuranceFund.js'
-import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
+import { EIP712Version } from '@injectivelabs/ts-types'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgCreateInsuranceFund from './MsgCreateInsuranceFund.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const market = mockFactory.injUsdtDerivativeMarket
 
@@ -20,7 +20,7 @@ const params: MsgCreateInsuranceFund['params'] = {
     oracleType: 2,
   },
   deposit: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
   injectiveAddress: mockFactory.injectiveAddress,

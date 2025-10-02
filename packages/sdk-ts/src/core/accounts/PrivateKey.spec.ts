@@ -34,7 +34,7 @@ describe('PrivateKey', () => {
     )
   })
 
-  it('returns true when verifying signature for a particular EIP712', () => {
+  it('returns true when verifying signature for a particular EIP712', async () => {
     const expectedSignature =
       'e75db7f206927afd916b1423ed04fca37d2ac19662b220edc7d14f164b3af8f4727bb0f5b1f1372fd25675aebed92a5467cc55d2f38774a794a14bc59212c7d41c'
     const eip712 = {
@@ -66,12 +66,12 @@ describe('PrivateKey', () => {
       },
     }
     const privateKey = PrivateKey.fromHex(pk)
-    const signature = privateKey.signTypedData(eip712)
+    const signature = await privateKey.signTypedData(eip712)
 
     expect(Buffer.from(signature).toString('hex')).toEqual(expectedSignature)
   })
 
-  it('returns true when verifying signature for a public key and eip712', () => {
+  it('returns true when verifying signature for a public key and eip712', async () => {
     const signature =
       '0xe75db7f206927afd916b1423ed04fca37d2ac19662b220edc7d14f164b3af8f4727bb0f5b1f1372fd25675aebed92a5467cc55d2f38774a794a14bc59212c7d41c'
     const publicKey =
@@ -106,7 +106,7 @@ describe('PrivateKey', () => {
     }
 
     expect(
-      PrivateKey.verifySignature({
+      await PrivateKey.verifySignature({
         eip712,
         signature,
         publicKey: publicKey,
@@ -124,14 +124,15 @@ describe('PrivateKey', () => {
 
     const wallet = new Wallet(pk)
     const privateKey = PrivateKey.fromHex(pk)
-    
+
     const ethersSignature = await wallet.signMessage(message)
     const ethersVerifiedSigner = verifyMessage(message, ethersSignature)
-    const ethersSignatureVerifiedCorrectly = ethersVerifiedSigner.toLowerCase() === wallet.address.toLowerCase()
+    const ethersSignatureVerifiedCorrectly =
+      ethersVerifiedSigner.toLowerCase() === wallet.address.toLowerCase()
     expect(ethersSignatureVerifiedCorrectly).toBe(true)
 
     const privKeySignatureArray = privateKey.signHashed(
-      Buffer.from(messageHash.slice(2), 'hex')
+      Buffer.from(messageHash.slice(2), 'hex'),
     )
     const privKeySignature = `0x${Buffer.from(privKeySignatureArray).toString(
       'hex',

@@ -1,9 +1,9 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getDefaultSubaccountId } from '../../../utils/address.js'
 import { INJ_DENOM } from '@injectivelabs/utils'
-import { IndexerGrpcAccountTransformer } from '../transformers/index.js'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { getDefaultSubaccountId } from '../../../utils/address.js'
 import { IndexerGrpcAccountApi } from './IndexerGrpcAccountApi.js'
+import type { IndexerGrpcAccountTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const subaccountId = getDefaultSubaccountId(injectiveAddress)

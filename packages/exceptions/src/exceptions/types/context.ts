@@ -1,24 +1,29 @@
-import { ErrorCode, ErrorContextCode } from './codes.js'
+import type { ErrorCode, ErrorContextCode } from './codes.js'
 
-export enum HttpRequestMethod {
-  Get = 'GET',
-  Post = 'POST',
-  Options = 'OPTIONS',
-}
+export const HttpRequestMethod = {
+  Get: 'GET',
+  Post: 'POST',
+  Options: 'OPTIONS',
+} as const
 
-export enum ErrorType {
-  Unspecified = 'unspecified',
-  ChainError = 'chain-error',
-  ExecutionError = 'execution-error',
-  NotFoundError = 'not-found-error',
-  ValidationError = 'validation-error',
-  WalletError = 'wallet-error',
-  WalletNotInstalledError = 'wallet-not-installed-error',
-  GrpcUnaryRequest = 'grpc-unary-request',
-  HttpRequest = 'http-request',
-  Web3 = 'web3',
-  Web3Gateway = 'web3-gateway',
-}
+export type HttpRequestMethod =
+  (typeof HttpRequestMethod)[keyof typeof HttpRequestMethod]
+
+export const ErrorType = {
+  Unspecified: 'unspecified',
+  ChainError: 'chain-error',
+  ExecutionError: 'execution-error',
+  NotFoundError: 'not-found-error',
+  ValidationError: 'validation-error',
+  WalletError: 'wallet-error',
+  WalletNotInstalledError: 'wallet-not-installed-error',
+  GrpcUnaryRequest: 'grpc-unary-request',
+  HttpRequest: 'http-request',
+  Web3: 'web3',
+  Web3Gateway: 'web3-gateway',
+} as const
+
+export type ErrorType = (typeof ErrorType)[keyof typeof ErrorType]
 
 export interface ErrorContext {
   code?: ErrorCode

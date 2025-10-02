@@ -1,8 +1,8 @@
-import { StreamStatusResponse } from '../types/index.js'
+import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 import { IndexerAccountStreamTransformer } from '../transformers/index.js'
 import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
-import { Subscription } from 'rxjs'
-import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
+import type { Subscription } from 'rxjs'
+import type { StreamStatusResponse } from '../types/index.js'
 
 export type BalanceStreamCallback = (
   response: ReturnType<

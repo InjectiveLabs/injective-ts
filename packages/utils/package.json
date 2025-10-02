@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/utils",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
-  "version": "1.16.12",
+  "version": "1.16.13-alpha.6",
   "sideEffects": false,
   "type": "module",
   "author": {
@@ -73,7 +73,9 @@
     "coverage": "jest --coverage",
     "coverage:show": "live-server coverage",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "check:deps": "node circular-dependency-check.js",
+    "analyze:deps": "node dependency-analysis.js"
   },
   "dependencies": {
     "@bangjelkoski/store2": "^2.14.3",

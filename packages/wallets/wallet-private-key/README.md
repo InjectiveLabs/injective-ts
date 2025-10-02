@@ -30,9 +30,9 @@ dependencies and implementations for their specific wallets.
 Here's a brief example of how to use this package to send 1 INJ.:
 
 ```typescript
-import { Wallet } from '@injectivelabs/wallet-base';
-import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core';
-import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key';
+import { Wallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 
 
 const strategyArgs: WalletStrategyArguments = {

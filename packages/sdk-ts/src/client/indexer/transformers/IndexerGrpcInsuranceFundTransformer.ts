@@ -1,12 +1,12 @@
-import {
+import type { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
+import type {
   IndexerInsuranceFund,
   GrpcIndexerInsuranceFund,
   GrpcIndexerRedemptionSchedule,
   Redemption,
   RedemptionStatus,
 } from '../types/insurance-funds.js'
-import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
-import { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer

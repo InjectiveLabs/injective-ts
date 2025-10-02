@@ -1,10 +1,12 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { MitoApi } from '@injectivelabs/mito-proto-ts'
 
-export enum MitoGaugeStatus {
-  Active = 'active',
-  Live = 'live',
-}
+export type MitoGaugeStatus = 'active' | 'live'
+
+export const MitoGaugeStatus = {
+  Active: 'active',
+  Live: 'live',
+} as const
 
 export interface MitoHolders {
   holderAddress: string

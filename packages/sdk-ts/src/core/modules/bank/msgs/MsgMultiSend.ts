@@ -1,10 +1,10 @@
 import snakecaseKeys from 'snakecase-keys'
-import { MsgBase } from '../../MsgBase.js'
 import {
   CosmosBankV1Beta1Tx,
   CosmosBankV1Beta1Bank,
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgMultiSend {
   export interface Params {

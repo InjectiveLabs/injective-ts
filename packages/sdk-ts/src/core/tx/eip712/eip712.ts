@@ -1,6 +1,4 @@
-import { Msgs } from '../../modules/msgs.js'
-import { EvmChainId } from '@injectivelabs/ts-types'
-import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
+import { getEipTxContext } from './utils.js'
 import {
   getEip712Fee,
   getEipTxDetails,
@@ -10,7 +8,9 @@ import {
   getDefaultEip712TypesV2,
   getTypesIncludingFeePayer,
 } from './utils.js'
-import { getEipTxContext } from './utils.js'
+import type { Msgs } from '../../modules/msgs.js'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
 
 export const getEip712TypedData = ({
   msgs,

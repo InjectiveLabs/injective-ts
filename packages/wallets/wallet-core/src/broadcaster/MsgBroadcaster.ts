@@ -1,40 +1,18 @@
+import { EvmChainId } from '@injectivelabs/ts-types'
 import {
-  TxGrpcApi,
-  hexToBuff,
-  PublicKey,
-  TxResponse,
-  SIGN_DIRECT,
-  hexToBase64,
-  ofacWallets,
-  SIGN_EIP712,
-  SIGN_EIP712_V2,
-  ChainGrpcAuthApi,
-  CosmosTxV1Beta1Tx,
-  createTxRawEIP712,
-  createTransaction,
-  ChainGrpcTxFeesApi,
-  DirectSignResponse,
-  getAminoStdSignDoc,
-  getEip712TypedData,
-  createWeb3Extension,
-  getEip712TypedDataV2,
-  IndexerGrpcWeb3GwApi,
-  ChainGrpcTendermintApi,
-  getGasPriceBasedOnMessage,
-  createTxRawFromSigResponse,
-  recoverTypedSignaturePubKey,
-  createTransactionWithSigners,
-  CreateTransactionWithSignersArgs,
-} from '@injectivelabs/sdk-ts'
+  isTestnet,
+  isMainnet,
+  getNetworkInfo,
+  getNetworkEndpoints,
+} from '@injectivelabs/networks'
 import {
   sleep,
   getStdFee,
-  BigNumberInBase,
+  toBigNumber,
   DEFAULT_GAS_PRICE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import {
-  ThrownException,
   WalletException,
   GeneralException,
   isThrownException,
@@ -43,21 +21,6 @@ import {
   TransactionException,
   TransactionChainErrorModule,
 } from '@injectivelabs/exceptions'
-import {
-  isTestnet,
-  isMainnet,
-  getNetworkInfo,
-  NetworkEndpoints,
-  getNetworkEndpoints,
-} from '@injectivelabs/networks'
-import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import {
-  MsgBroadcasterOptions,
-  MsgBroadcasterTxOptions,
-  WalletStrategyEmitterEventType,
-  MsgBroadcasterTxOptionsWithAddresses,
-} from './types.js'
-import { checkIfTxRunOutOfGas } from '../utils/index.js'
 import {
   Wallet,
   isCosmosWallet,
@@ -69,9 +32,53 @@ import {
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
 } from '@injectivelabs/wallet-base'
-import BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import {
+  TxGrpcApi,
+  hexToBuff,
+  PublicKey,
+  SIGN_DIRECT,
+  hexToBase64,
+  ofacWallets,
+  SIGN_EIP712,
+  SIGN_EIP712_V2,
+  ChainGrpcAuthApi,
+  createTxRawEIP712,
+  createTransaction,
+  ChainGrpcTxFeesApi,
+  getAminoStdSignDoc,
+  getEip712TypedData,
+  createWeb3Extension,
+  getEip712TypedDataV2,
+  IndexerGrpcWeb3GwApi,
+  ChainGrpcTendermintApi,
+  getGasPriceBasedOnMessage,
+  createTxRawFromSigResponse,
+  recoverTypedSignaturePubKey,
+  createTransactionWithSigners,
+} from '@injectivelabs/sdk-ts'
+import { checkIfTxRunOutOfGas } from '../utils/index.js'
+import { WalletStrategyEmitterEventType } from './types.js'
+import type { NetworkEndpoints } from '@injectivelabs/networks'
+import type { ThrownException } from '@injectivelabs/exceptions'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type {
+  ChainId as ChainIdType,
+  EvmChainId as EvmChainIdType,
+} from '@injectivelabs/ts-types'
+import type {
+  MsgBroadcasterOptions,
+  MsgBroadcasterTxOptions,
+  MsgBroadcasterTxOptionsWithAddresses,
+} from './types.js'
+import type {
+  TxResponse,
+  CosmosTxV1Beta1Tx,
+  DirectSignResponse,
+  CreateTransactionWithSignersArgs,
+} from '@injectivelabs/sdk-ts'
 
-const getEthereumWalletPubKey = <T>({
+const getEthereumWalletPubKey = async <T>({
   pubKey,
   eip712TypedData,
   signature,
@@ -84,7 +91,13 @@ const getEthereumWalletPubKey = <T>({
     return pubKey
   }
 
-  return hexToBase64(recoverTypedSignaturePubKey(eip712TypedData, signature))
+  const recoveredPubKey = await recoverTypedSignaturePubKey(
+    // TODO: fix type
+    eip712TypedData as any,
+    signature,
+  )
+
+  return hexToBase64(recoveredPubKey)
 }
 
 const defaultRetriesConfig = () => ({
@@ -110,7 +123,7 @@ export class MsgBroadcaster {
 
   public endpoints: NetworkEndpoints
 
-  public chainId: ChainId
+  public chainId: ChainIdType
 
   public txTimeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT
 
@@ -118,7 +131,7 @@ export class MsgBroadcaster {
 
   public txTimeoutOnFeeDelegation: boolean = false
 
-  public evmChainId?: EvmChainId
+  public evmChainId?: EvmChainIdType
 
   public gasBufferCoefficient: number = 1.2
 
@@ -159,9 +172,18 @@ export class MsgBroadcaster {
       return this.evmChainId
     }
 
-    const mainnetEvmIds = [EvmChainId.Mainnet, EvmChainId.MainnetEvm]
-    const testnetEvmIds = [EvmChainId.Sepolia, EvmChainId.TestnetEvm]
-    const devnetEvmIds = [EvmChainId.Sepolia, EvmChainId.DevnetEvm]
+    const mainnetEvmIds = [
+      EvmChainId.Mainnet,
+      EvmChainId.MainnetEvm,
+    ] as EvmChainId[]
+    const testnetEvmIds = [
+      EvmChainId.Sepolia,
+      EvmChainId.TestnetEvm,
+    ] as EvmChainId[]
+    const devnetEvmIds = [
+      EvmChainId.Sepolia,
+      EvmChainId.DevnetEvm,
+    ] as EvmChainId[]
 
     try {
       const chainId = await walletStrategy.getEthereumChainId()
@@ -338,7 +360,7 @@ export class MsgBroadcaster {
     /** Account Details * */
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
     let stdFee = getStdFee({ ...tx.gas, gas })
@@ -388,7 +410,7 @@ export class MsgBroadcaster {
       tx.ethereumAddress,
     )
 
-    const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
+    const pubKeyOrSignatureDerivedPubKey = await getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
       signature,
@@ -451,7 +473,7 @@ export class MsgBroadcaster {
     /** Account Details * */
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeout)
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
     let stdFee = getStdFee({ ...tx.gas, gas })
@@ -509,7 +531,7 @@ export class MsgBroadcaster {
       tx.ethereumAddress,
     )
 
-    const pubKeyOrSignatureDerivedPubKey = getEthereumWalletPubKey({
+    const pubKeyOrSignatureDerivedPubKey = await getEthereumWalletPubKey({
       pubKey: baseAccount.pubKey?.key,
       eip712TypedData,
       signature,
@@ -595,9 +617,7 @@ export class MsgBroadcaster {
 
       const latestHeight = latestBlock!.header!.height
 
-      timeoutHeight = new BigNumberInBase(latestHeight)
-        .plus(txTimeout)
-        .toNumber()
+      timeoutHeight = toBigNumber(latestHeight).plus(txTimeout).toNumber()
     }
 
     walletStrategy.emit(
@@ -696,7 +716,11 @@ export class MsgBroadcaster {
      * When using Ledger with Keplr/Leap we have
      * to send EIP712 to sign on Keplr/Leap
      */
-    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
+    if (
+      ([Wallet.Keplr, Wallet.Leap] as WalletType[]).includes(
+        walletStrategy.getWallet(),
+      )
+    ) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
@@ -707,7 +731,7 @@ export class MsgBroadcaster {
 
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeout)
 
     const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
       ? SIGN_EIP712
@@ -822,7 +846,11 @@ export class MsgBroadcaster {
      * We can only use this method
      * when Ledger is connected through Keplr
      */
-    if ([Wallet.Keplr, Wallet.Leap].includes(walletStrategy.getWallet())) {
+    if (
+      ([Wallet.Keplr, Wallet.Leap] as WalletType[]).includes(
+        walletStrategy.getWallet(),
+      )
+    ) {
       const walletDeviceType = await walletStrategy.getWalletDeviceType()
       const isLedgerConnected = walletDeviceType === WalletDeviceType.Hardware
 
@@ -843,7 +871,7 @@ export class MsgBroadcaster {
 
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(txTimeout)
+    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeout)
 
     const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
@@ -968,9 +996,9 @@ export class MsgBroadcaster {
     }
 
     const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
-    const canDisableCosmosGasCheck = [Wallet.Keplr, Wallet.OWallet].includes(
-      walletStrategy.wallet,
-    )
+    const canDisableCosmosGasCheck = (
+      [Wallet.Keplr, Wallet.OWallet] as WalletType[]
+    ).includes(walletStrategy.wallet)
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )
@@ -990,7 +1018,7 @@ export class MsgBroadcaster {
     const feePayerAccountDetails = await chainGrpcAuthApi.fetchAccount(feePayer)
     const { baseAccount: feePayerBaseAccount } = feePayerAccountDetails
 
-    const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+    const timeoutHeight = toBigNumber(latestHeight).plus(
       txTimeoutOnFeeDelegation ? txTimeout : DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
 
@@ -1148,7 +1176,7 @@ export class MsgBroadcaster {
     if (typeof args === 'string') {
       return getStdFee({
         ...(baseFee && {
-          gasPrice: new BigNumberInBase(baseFee).toFixed(),
+          gasPrice: toBigNumber(baseFee).toFixed(),
         }),
         gas: args,
       })
@@ -1157,7 +1185,7 @@ export class MsgBroadcaster {
     return getStdFee({
       ...args,
       ...(baseFee && {
-        gasPrice: new BigNumberInBase(baseFee).toFixed(),
+        gasPrice: toBigNumber(baseFee).toFixed(),
       }),
     })
   }
@@ -1194,7 +1222,7 @@ export class MsgBroadcaster {
     const stdGasFee = {
       ...(await this.getStdFeeWithDynamicBaseFee({
         ...getStdFee(args.fee),
-        gas: new BigNumberInBase(result.gasInfo.gasUsed)
+        gas: toBigNumber(result.gasInfo.gasUsed)
           .times(this.gasBufferCoefficient)
           .toFixed(),
       })),

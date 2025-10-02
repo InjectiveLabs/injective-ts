@@ -1,9 +1,9 @@
-import MsgStoreCode from './MsgStoreCode.js'
-import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
-import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { CosmwasmWasmV1Types } from '@injectivelabs/core-proto-ts'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgStoreCode from './MsgStoreCode.js'
+import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const params: MsgStoreCode['params'] = {
   sender: mockFactory.injectiveAddress,

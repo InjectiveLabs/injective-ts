@@ -1,6 +1,6 @@
-import { Msgs } from '../../modules/msgs.js'
-import { StdFee } from '@cosmjs/amino'
-import {
+import type { StdFee } from '@cosmjs/amino'
+import type { Msgs } from '../../modules/msgs.js'
+import type {
   CosmosTxV1Beta1Tx,
   CosmosTxV1Beta1Service,
   CosmosTxSigningV1Beta1Signing,
@@ -53,10 +53,12 @@ export interface TxConcreteApi {
   simulate(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<TxClientSimulateResponse>
 }
 
-export enum TxClientMode {
-  gRpc = 'grpc',
-  rest = 'rest',
-}
+export const TxClientMode = {
+  gRpc: 'grpc',
+  rest: 'rest',
+} as const
+
+export type TxClientMode = (typeof TxClientMode)[keyof typeof TxClientMode]
 
 export type MsgArg = {
   type: string

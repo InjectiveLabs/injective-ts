@@ -12,15 +12,15 @@ This Message is used to create an Insurance Fund
 
 ```ts
 import {
-  MsgCreateInsuranceFund,
   MsgBroadcasterWithPk,
+  MsgCreateInsuranceFund,
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
+import { toBigNumber } from "@injectivelabs/utils";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
-const amount = new BigNumberInBase(5);
+const amount = toBigNumber(5);
 const fund = {
   ticker: "BTC/USDT",
   quoteDenom: "peggy0x...",
@@ -57,12 +57,12 @@ import {
   MsgRequestRedemption,
   MsgBroadcasterWithPk,
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
+import { toBigNumber } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
-const amount = new BigNumberInBase(5);
+const amount = toBigNumber(5);
 const denom = "share1"; // the insurance fund denom (share{id})
 const marketId = "0x....";
 
@@ -90,13 +90,13 @@ console.log(txHash);
 This Message is used to underwrite to an insurance fund.
 
 ```ts
-import { MsgUnderwrite, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
+import { toBigNumber } from "@injectivelabs/utils";
+import { MsgUnderwrite, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
 
 const injectiveAddress = "inj1...";
 const privateKey = "0x...";
-const amount = new BigNumberInBase(5);
+const amount = toBigNumber(5);
 const denom = "peggy0x...";
 const marketId = "0x...";
 

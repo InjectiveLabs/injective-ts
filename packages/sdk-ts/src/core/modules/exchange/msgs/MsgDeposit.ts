@@ -1,9 +1,9 @@
+import snakecaseKeys from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,
   InjectiveExchangeV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgDeposit {
   export interface Params {

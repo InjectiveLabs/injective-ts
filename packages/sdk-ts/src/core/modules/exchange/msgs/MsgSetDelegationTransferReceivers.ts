@@ -1,6 +1,6 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { InjectiveExchangeV2Tx } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgSetDelegationTransferReceivers {
   export interface Params {

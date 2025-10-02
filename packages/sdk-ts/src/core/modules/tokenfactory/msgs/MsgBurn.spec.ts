@@ -1,18 +1,18 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgBurn from './MsgBurn.js'
+import { toChainFormat } from '@injectivelabs/utils'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgBurn from './MsgBurn.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgBurn['params'] = {
   sender: mockFactory.injectiveAddress,
   burnFromAddress: mockFactory.injectiveAddress2,
   amount: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
 }

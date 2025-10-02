@@ -20,7 +20,6 @@ Keep in mind that that the `admin` of the token can change the supply (mint or b
 
 ```ts
 import { MsgCreateDenom } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1...'
@@ -50,7 +49,6 @@ Minting of a specific denom is only allowed for the current admin. Note, the cur
 
 ```ts
 import { MsgMint } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1...'
@@ -82,7 +80,6 @@ The admin can burn the supply of the token factory. Everyone else can use this m
 
 ```ts
 import { MsgBurn } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1...'
@@ -116,7 +113,6 @@ Setting of metadata for a specific denom is only allowed for the admin of the de
 import {
   MsgSetDenomMetadata,
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";
@@ -173,9 +169,8 @@ console.log(txHash);
 The admin of the denom can mint new supply or burn existing one. It's recommended to change the admin to the zero address as to not allow changing the token's supply.
 
 ```ts
-import { MsgChangeAdmin } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
+import { MsgChangeAdmin } from '@injectivelabs/sdk-ts'
 
 const injectiveAddress = 'inj1...'
 const privateKey = '0x...'
@@ -207,7 +202,6 @@ Here is a full example on how to create a new token, mint new tokens and set tok
 import {
   MsgSetDenomMetadata,
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
 import { Network } from "@injectivelabs/networks";
 
 const injectiveAddress = "inj1...";

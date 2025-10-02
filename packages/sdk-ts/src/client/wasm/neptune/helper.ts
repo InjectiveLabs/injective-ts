@@ -1,4 +1,4 @@
-import { AssetInfo } from './types.js'
+import type { AssetInfo } from './types.js'
 
 export function getDenom(assetInfo: AssetInfo): string | undefined {
   if ('native_token' in assetInfo) {

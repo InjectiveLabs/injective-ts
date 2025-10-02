@@ -1,29 +1,30 @@
-import {
-  HttpClient,
-  BigNumberInBase,
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-  DEFAULT_BLOCK_TIME_IN_SECONDS,
-  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-} from '@injectivelabs/utils'
-import {
-  BroadcastMode,
-  TxInfoResponse,
-  TxResultResponse,
-  SimulationResponse,
-} from '../types/tx-rest-client.js'
-import { TxClient } from '../utils/classes/TxClient.js'
-import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
+import axios from 'axios'
+import { StatusCodes } from 'http-status-codes'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import {
   HttpRequestMethod,
   HttpRequestException,
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import axios, { AxiosError } from 'axios'
-import { StatusCodes } from 'http-status-codes'
-import { TxResponse } from '../types/tx.js'
+import {
+  HttpClient,
+  toBigNumber,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_BLOCK_TIME_IN_SECONDS,
+  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+} from '@injectivelabs/utils'
+import { TxClient } from '../utils/classes/TxClient.js'
+import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import type { AxiosError } from 'axios'
+import type { TxResponse } from '../types/tx.js'
+import type { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
+import type {
+  TxInfoResponse,
+  TxResultResponse,
+  SimulationResponse,
+} from '../types/tx-rest-client.js'
 
 /**
  * It is recommended to use TxGrpcClient instead of TxRestApi
@@ -168,7 +169,7 @@ export class TxRestApi implements TxConcreteApi {
   ): Promise<TxResponse> {
     const timeout =
       options?.timeout ||
-      new BigNumberInBase(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
+      toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
 
@@ -186,7 +187,7 @@ export class TxRestApi implements TxConcreteApi {
           },
         )
       }
-      
+
       if (txResponse.code !== 0) {
         throw new TransactionException(new Error(txResponse.raw_log), {
           contextCode: txResponse.code,

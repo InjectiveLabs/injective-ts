@@ -1,8 +1,8 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { InjectivePermissionsV1Beta1Permissions } from '@injectivelabs/core-proto-ts'
-import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import MsgCreateNamespace from './MsgCreateNamespace.js'
+import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const params: MsgCreateNamespace['params'] = {
@@ -46,7 +46,7 @@ describe('MsgCreateNamespace', () => {
 
     it('EIP712 v1', async () => {
       expect(() => message.toEip712()).toThrow(
-      'EIP712_v1 is not supported for MsgCreateNamespace. Please use EIP712_v2',
+        'EIP712_v1 is not supported for MsgCreateNamespace. Please use EIP712_v2',
       )
     })
 

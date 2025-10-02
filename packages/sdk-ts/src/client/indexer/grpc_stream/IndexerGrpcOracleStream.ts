@@ -1,8 +1,8 @@
-import { StreamStatusResponse } from '../types/index.js'
-import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer.js'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
-import { Subscription } from 'rxjs'
 import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
+import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer.js'
+import type { Subscription } from 'rxjs'
+import type { StreamStatusResponse } from '../types/index.js'
 
 export type OraclePriceStreamCallback = (
   response: ReturnType<

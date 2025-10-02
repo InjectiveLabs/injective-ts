@@ -1,11 +1,11 @@
-import { fromUtf8 } from '../../../../utils/utf8.js'
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
   CosmwasmWasmV1Tx,
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
-import { GeneralException } from '@injectivelabs/exceptions'
+import { MsgBase } from '../../MsgBase.js'
+import { fromUtf8 } from '../../../../utils/utf8.js'
 
 export declare namespace MsgInstantiateContract {
   export interface Params {

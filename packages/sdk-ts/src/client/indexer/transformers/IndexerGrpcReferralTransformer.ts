@@ -1,6 +1,6 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
-import { ReferralDetails } from '../types/index.js'
+import { toBigNumber } from '@injectivelabs/utils'
+import type { ReferralDetails } from '../types/index.js'
+import type { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
 
 export class IndexerGrpcReferralTransformer {
   static referrerDetailsResponseToReferrerDetails(
@@ -11,8 +11,8 @@ export class IndexerGrpcReferralTransformer {
       referrerAddress: address,
       invitees: response.invitees,
       referrerCode: response.referrerCode,
-      totalCommission: new BigNumberInBase(response.totalCommission),
-      totalTradingVolume: new BigNumberInBase(response.totalTradingVolume),
+      totalCommission: toBigNumber(response.totalCommission),
+      totalTradingVolume: toBigNumber(response.totalTradingVolume),
     }
   }
 

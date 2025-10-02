@@ -20,7 +20,7 @@ import {
   createTransaction,
   ChainRestTendermintApi,
 } from "@injectivelabs/sdk-ts";
-import { BigNumberInBase } from "@injectivelabs/utils";
+import { toChainFormat, toBigNumber } from "@injectivelabs/utils";
 import { getStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from "@injectivelabs/utils";
 
 (async () => {
@@ -29,7 +29,7 @@ import { getStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from "@injectivelabs/utils";
   const restEndpoint =
     "https://sentry.lcd.injective.network"; /* getNetworkEndpoints(Network.MainnetSentry).rest */
   const amount = {
-    amount: new BigNumberInBase(0.01).toWei().toFixed(),
+    amount: toChainFormat(0.01).toFixed(),
     denom: "inj",
   };
 
@@ -44,7 +44,7 @@ import { getStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from "@injectivelabs/utils";
   const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint);
   const latestBlock = await chainRestTendermintApi.fetchLatestBlock();
   const latestHeight = latestBlock.header.height;
-  const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+  const timeoutHeight = toBigNumber(latestHeight).plus(
     DEFAULT_BLOCK_TIMEOUT_HEIGHT
   );
 
@@ -188,7 +188,7 @@ import {
 } from "@injectivelabs/sdk-ts";
 import { getStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from "@injectivelabs/utils";
 import { ChainId } from "@injectivelabs/ts-types";
-import { BigNumberInBase } from "@injectivelabs/utils";
+import { toBigNumber, toChainFormat } from "@injectivelabs/utils";
 import { TransactionException } from "@injectivelabs/exceptions";
 import { SignDoc } from "@keplr-wallet/types";
 
@@ -228,7 +228,7 @@ const broadcastTx = async (chainId: string, txRaw: TxRaw) => {
   const restEndpoint =
     "https://sentry.lcd.injective.network"; /* getNetworkEndpoints(Network.MainnetSentry).rest */
   const amount = {
-    amount: new BigNumberInBase(0.01).toWei().toFixed(),
+    amount: toChainFormat(0.01).toFixed(),
     denom: "inj",
   };
 
@@ -243,7 +243,7 @@ const broadcastTx = async (chainId: string, txRaw: TxRaw) => {
   const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint);
   const latestBlock = await chainRestTendermintApi.fetchLatestBlock();
   const latestHeight = latestBlock.header.height;
-  const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+  const timeoutHeight = toBigNumber(latestHeight).plus(
     DEFAULT_BLOCK_TIMEOUT_HEIGHT
   );
 

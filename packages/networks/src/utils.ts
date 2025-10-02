@@ -1,14 +1,5 @@
-import {
-  ASSET_PRICE_URL_BY_NETWORK,
-  PEGGY_GRAPH_URL_BY_NETWORK,
-  CW20_SWAP_CONTRACT_BY_NETWORK,
-  INCENTIVES_CONTRACT_BY_NETWORK,
-  CW20_ADAPTER_CONTRACT_BY_NETWORK,
-  INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK,
-  INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK,
-} from './constants.js'
-import { isTestnet } from './network.js'
 import { Network } from './types.js'
+import { isTestnet, isDevnet } from './network.js'
 
 export const CW20_CODE_IDS_BY_NETWORK = (
   network: Network = Network.Mainnet,
@@ -23,51 +14,103 @@ export const CW20_CODE_IDS_BY_NETWORK = (
 export const getCw20AdapterContractForNetwork = (
   network: Network = Network.Mainnet,
 ) => {
-  return CW20_ADAPTER_CONTRACT_BY_NETWORK[network] !== undefined
-    ? CW20_ADAPTER_CONTRACT_BY_NETWORK[network]
-    : CW20_ADAPTER_CONTRACT_BY_NETWORK[Network.Mainnet]
+  if (isDevnet(network)) {
+    return 'inj1uukt3kqela4vsllvrqnrgllkna5wn3cm588w6k'
+  }
+
+  if (isTestnet(network)) {
+    return 'inj1hdvy6tl89llqy3ze8lv6mz5qh66sx9enn0jxg6'
+  }
+
+  // mainnet
+  return 'inj14ejqjyq8um4p3xfqj74yld5waqljf88f9eneuk'
 }
 
 export const getCw20SwapContractForNetwork = (
   network: Network = Network.Mainnet,
 ) => {
-  return CW20_SWAP_CONTRACT_BY_NETWORK[network] !== undefined
-    ? CW20_SWAP_CONTRACT_BY_NETWORK[network]
-    : CW20_SWAP_CONTRACT_BY_NETWORK[Network.Mainnet]
+  if (isDevnet(network)) {
+    return 'inj177yh38g3ctu7cemxpa3c2kvwh2yslfxfmfa66h'
+  }
+
+  if (isTestnet(network)) {
+    return 'inj14d7h5j6ddq6pqppl65z24w7xrtmpcrqjxj8d43'
+  }
+
+  if (network === Network.Staging) {
+    return 'inj12yj3mtjarujkhcp6lg3klxjjfrx2v7v8yswgp9'
+  }
+
+  // mainnet
+  return 'inj1psk3468yr9teahgz73amwvpfjehnhczvkrhhqx'
 }
 
 export const getIncentivesContractForNetwork = (
   network: Network = Network.Mainnet,
 ) => {
-  return INCENTIVES_CONTRACT_BY_NETWORK[network] !== undefined
-    ? INCENTIVES_CONTRACT_BY_NETWORK[network]
-    : INCENTIVES_CONTRACT_BY_NETWORK[Network.Mainnet]
+  if (isDevnet(network)) {
+    return ''
+  }
+
+  if (isTestnet(network)) {
+    return 'inj16twru668nsl7tqzahxd9q033swhr6a5xuslpkt'
+  }
+
+  // mainnet
+  return ''
 }
 
 export const getInjNameRegistryContractForNetwork = (
   network: Network = Network.Mainnet,
 ) => {
-  return INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK[network] !== undefined
-    ? INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK[network]
-    : INJ_NAME_REGISTRY_CONTRACT_BY_NETWORK[Network.Mainnet]
+  if (isDevnet(network)) {
+    return 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa'
+  }
+
+  if (isTestnet(network)) {
+    return 'inj1aw59rkpd9afp2ws6rx23nz5mrvq8dlckeslwfa'
+  }
+
+  // mainnet
+  return 'inj1hm8vs8sr2h9nk0x66vctfs528wrp6k3gtgg275'
 }
 
 export const getInjNameReverseResolverContractForNetwork = (
   network: Network = Network.Mainnet,
 ) => {
-  return INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK[network] !== undefined
-    ? INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK[network]
-    : INJ_NAME_REVERSE_RESOLVER_CONTRACT_BY_NETWORK[Network.Mainnet]
+  if (isDevnet(network)) {
+    return 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v'
+  }
+
+  if (isTestnet(network)) {
+    return 'inj1knf6puyscuuqqhgqglskfc0k99d4885qw5uv7v'
+  }
+
+  return 'inj1x9m0hceug9qylcyrrtwqtytslv2jrph433thgu'
 }
 
 export const getPeggyGraphQlEndpointForNetwork = (network: Network): string => {
-  return PEGGY_GRAPH_URL_BY_NETWORK[network] !== undefined
-    ? PEGGY_GRAPH_URL_BY_NETWORK[network]
-    : PEGGY_GRAPH_URL_BY_NETWORK[Network.Mainnet]
+  if (isDevnet(network)) {
+    return 'https://api.thegraph.com/subgraphs/name/injectivelabsdev/injective-peggo-devnet'
+  }
+
+  if (isTestnet(network)) {
+    return 'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-goerli'
+  }
+
+  // mainnet
+  return 'https://api.thegraph.com/subgraphs/name/injectivelabs/injective-peggo-mainnet'
 }
 
 export const getAssetPriceServiceForNetwork = (network: Network): string => {
-  return ASSET_PRICE_URL_BY_NETWORK[network] !== undefined
-    ? ASSET_PRICE_URL_BY_NETWORK[network]
-    : ASSET_PRICE_URL_BY_NETWORK[Network.Mainnet]
+  if (isDevnet(network)) {
+    return 'https://devnet.asset.injective.dev/asset-price/v1'
+  }
+
+  if (isTestnet(network)) {
+    return 'https://k8s.testnet.asset.injective.network/asset-price/v1'
+  }
+
+  // mainnet
+  return 'https://k8s.mainnet.asset.injective.network/asset-price/v1'
 }

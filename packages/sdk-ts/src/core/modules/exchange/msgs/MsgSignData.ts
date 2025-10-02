@@ -1,6 +1,6 @@
+import snakecaseKeys from 'snakecase-keys'
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
 import { getEthereumAddress, toUtf8 } from '../../../../utils/index.js'
 
 export declare namespace MsgSignData {

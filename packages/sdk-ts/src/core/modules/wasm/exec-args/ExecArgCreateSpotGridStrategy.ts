@@ -1,12 +1,9 @@
-import {
-  dataToExecData,
-  ExecArgBase,
-  ExecDataRepresentation,
-} from '../ExecArgBase.js'
-import {
+import { StrategyType } from '../types.js'
+import { dataToExecData, ExecArgBase } from '../ExecArgBase.js'
+import type { ExecDataRepresentation } from '../ExecArgBase.js'
+import type {
   ExitType,
   ExitConfig,
-  StrategyType,
   TrailingArithmetic,
   TrailingArithmeticLP,
 } from '../types.js'

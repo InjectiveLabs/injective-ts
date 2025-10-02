@@ -1,19 +1,19 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgWithdraw from './MsgWithdraw.js'
 import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgWithdraw from './MsgWithdraw.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgWithdraw['params'] = {
   subaccountId: mockFactory.subaccountId,
   injectiveAddress: mockFactory.injectiveAddress,
   amount: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
 }

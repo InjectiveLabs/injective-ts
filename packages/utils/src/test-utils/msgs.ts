@@ -1,13 +1,13 @@
-import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '../constants.js'
-import { BigNumberInBase } from '../classes/index.js'
 import {
   Network,
   getNetworkInfo,
-  NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import { mockFactory } from './mocks/index.js'
-import { ChainId, Coin, EvmChainId } from '@injectivelabs/ts-types'
+import BigNumber from '../classes/BigNumber.js'
+import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '../constants.js'
+import type { NetworkEndpoints } from '@injectivelabs/networks'
+import type { Coin, ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
 export const prepareEip712 = <T>({
   messages,
@@ -76,7 +76,7 @@ export const prepareEip712 = <T>({
       amount: [
         {
           denom: 'inj',
-          amount: new BigNumberInBase(gas.toString())
+          amount: new BigNumber(gas.toString())
             .times(DEFAULT_GAS_PRICE)
             .toFixed(),
         },

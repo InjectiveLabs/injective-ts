@@ -1,6 +1,6 @@
-import { WasmContractQueryResponse } from '../types.js'
 import { toUtf8 } from '../../../utils/index.js'
-import { AssetInfo, PriceResponse, LendingRateResponse } from './types.js'
+import type { WasmContractQueryResponse } from '../types.js'
+import type { AssetInfo, PriceResponse, LendingRateResponse } from './types.js'
 
 export class NeptuneQueryTransformer {
   static contractPricesResponseToPrices(

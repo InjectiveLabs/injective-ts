@@ -1,9 +1,12 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { Pagination } from '../../../types/index.js'
-import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import { BankModuleParams, Metadata, TotalSupply } from '../types/index.js'
 import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { CosmosBankV1Beta1Bank, CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { Pagination } from '../../../types/index.js'
+import type { BankModuleParams, Metadata, TotalSupply } from '../types/index.js'
+import type {
+  CosmosBankV1Beta1Bank,
+  CosmosBankV1Beta1Query,
+} from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer

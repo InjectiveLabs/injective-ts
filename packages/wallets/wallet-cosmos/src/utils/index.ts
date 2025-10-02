@@ -1,11 +1,11 @@
-import type { Keplr as CosmosBrowserWallet } from '@keplr-wallet/types'
-import { ChainId } from '@injectivelabs/ts-types'
 import { PublicKey } from '@injectivelabs/sdk-ts'
-import { Wallet } from '@injectivelabs/wallet-base'
 import { capitalize } from '@injectivelabs/utils'
+import { Wallet } from '@injectivelabs/wallet-base'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
 import { CosmosWallet } from './../wallet.js'
 import { cosmosWallets } from './../data/index.js'
+import type { ChainId } from '@injectivelabs/ts-types'
+import type { Keplr as CosmosBrowserWallet } from '@keplr-wallet/types'
 
 export const isCosmosWalletInstalled = (wallet: Wallet) => {
   const $window = (typeof window !== 'undefined' ? window : {}) as Window & {

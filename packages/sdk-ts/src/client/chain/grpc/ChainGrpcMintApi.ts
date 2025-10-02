@@ -1,15 +1,14 @@
+import { toHumanReadable } from '@injectivelabs/utils'
+import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils/index.js'
-
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
 import { ChainModule } from '../types/index.js'
+import { uint8ArrayToString } from '../../../utils/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
 
 /**
  * @category Chain Grpc API
@@ -66,9 +65,7 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
         )
 
       return {
-        inflation: cosmosSdkDecToBigNumber(
-          new BigNumberInBase(uint8ArrayToString(response.inflation)),
-        ).toFixed(),
+        inflation: toHumanReadable(uint8ArrayToString(response.inflation)),
       }
     } catch (e: unknown) {
       if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
@@ -97,8 +94,8 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
         )
 
       return {
-        annualProvisions: cosmosSdkDecToBigNumber(
-          new BigNumberInBase(uint8ArrayToString(response.annualProvisions)),
+        annualProvisions: toHumanReadable(
+          uint8ArrayToString(response.annualProvisions),
         ).toFixed(),
       }
     } catch (e: unknown) {
