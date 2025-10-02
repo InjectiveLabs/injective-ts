@@ -45,6 +45,13 @@ export interface ErrorContext {
    * for example why the transaction has failed
    * */
   contextCode?: ErrorContextCode
+
+  /**
+   * If true, skip parsing the error message and use the raw message
+   * Useful when you want to preserve the original error message without
+   * any transformation or mapping
+   */
+  skipParsing?: boolean
 }
 
 export interface Exception {

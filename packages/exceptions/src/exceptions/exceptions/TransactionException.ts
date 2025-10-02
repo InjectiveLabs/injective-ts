@@ -11,12 +11,21 @@ export class TransactionException extends ConcreteException {
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
-
     this.type = ErrorType.ChainError
   }
 
   public parse(): void {
     const { message, context, contextModule, contextCode } = this
+
+    // If skipParsing is true, just use the raw message
+    if (this.skipParsing) {
+      this.setContext(context || 'Unknown')
+      this.setMessage(message)
+      this.setOriginalMessage(message)
+      this.setName(TransactionException.errorClass)
+
+      return
+    }
 
     const {
       code,

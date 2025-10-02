@@ -7,6 +7,7 @@ import MsgExternalTransfer from './msgs/MsgExternalTransfer.js'
 import MsgBatchUpdateOrders from './msgs/MsgBatchUpdateOrders.js'
 import MsgLiquidatePosition from './msgs/MsgLiquidatePosition.js'
 import MsgReclaimLockedFunds from './msgs/MsgReclaimLockedFunds.js'
+import MsgUpdateSpotMarketV2 from './msgs/MsgUpdateSpotMarketV2.js'
 import MsgCreateSpotLimitOrder from './msgs/MsgCreateSpotLimitOrder.js'
 import MsgAuthorizeStakeGrants from './msgs/MsgAuthorizeStakeGrants.js'
 import MsgBatchCancelSpotOrders from './msgs/MsgBatchCancelSpotOrders.js'
@@ -34,6 +35,7 @@ export {
   MsgExternalTransfer,
   MsgLiquidatePosition,
   MsgBatchUpdateOrders,
+  MsgUpdateSpotMarketV2,
   MsgReclaimLockedFunds,
   MsgAuthorizeStakeGrants,
   MsgCreateSpotLimitOrder,

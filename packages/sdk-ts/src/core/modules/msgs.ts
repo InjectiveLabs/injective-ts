@@ -39,6 +39,7 @@ import type MsgTransferDelegation from './staking/msgs/MsgTransferDelegation.js'
 import type MsgRequestRedemption from './insurance/msgs/MsgRequestRedemption.js'
 import type MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds.js'
 import type MsgSetDenomMetadata from './tokenfactory/msgs/MsgSetDenomMetadata.js'
+import type MsgUpdateSpotMarketV2 from './exchange/msgs/MsgUpdateSpotMarketV2.js'
 import type MsgExecuteContractCompat from './wasm/msgs/MsgExecuteContractCompat.js'
 import type MsgCreateInsuranceFund from './insurance/msgs/MsgCreateInsuranceFund.js'
 import type MsgAuthorizeStakeGrants from './exchange/msgs/MsgAuthorizeStakeGrants.js'
@@ -129,6 +130,7 @@ export type Msgs =
   | MsgSignData
   | MsgGrantWithAuthorization
   | MsgAuthorizeStakeGrants
+  | MsgUpdateSpotMarketV2
 
 /**
  * @category Messages
@@ -161,3 +163,4 @@ export type ExchangeMsgs =
   | MsgAuthorizeStakeGrants
   | MsgAdminUpdateBinaryOptionsMarket
   | MsgSetDelegationTransferReceivers
+  | MsgUpdateSpotMarketV2

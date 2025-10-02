@@ -78,8 +78,14 @@ export abstract class ConcreteException extends Error implements Exception {
    */
   public originalMessage: string = ''
 
+  /**
+   * Flag to skip parsing the error message
+   */
+  protected skipParsing: boolean = false
+
   constructor(error: Error, context?: ErrorContext) {
     super(error.message)
+    this.skipParsing = context?.skipParsing || false
     this.parseError(error)
     this.parseContext(context)
     this.parse()

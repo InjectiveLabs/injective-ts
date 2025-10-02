@@ -179,8 +179,11 @@ export class TxGrpcApi implements TxConcreteApi {
         result: result,
         gasInfo: gasInfo,
       }
-    } catch (e: unknown) {
-      throw new TransactionException(new Error(e as any))
+    } catch (e: any) {
+      throw new TransactionException(e as Error, {
+        context: 'TxGrpcApi.simulate',
+        skipParsing: true,
+      })
     }
   }
 
