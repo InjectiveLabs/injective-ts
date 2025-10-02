@@ -32,6 +32,7 @@ export const MsgType = {
   // Bank
   MsgSend: 'cosmos.bank.v1beta1.MsgSend',
   MsgMultiSend: 'cosmos.bank.v1beta1.MsgMultiSend',
+  MsgBankUpdateParams: 'cosmos.bank.v1beta1.MsgUpdateParams',
 
   // Distribution
   MsgSetWithdrawAddress: 'cosmos.distribution.v1beta1.MsgSetWithdrawAddress',
@@ -39,6 +40,8 @@ export const MsgType = {
     'cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
   MsgWithdrawValidatorCommission:
     'cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
+  MsgFundCommunityPool: 'cosmos.distribution.v1beta1.MsgFundCommunityPool',
+  MsgDistributionUpdateParams: 'cosmos.distribution.v1beta1.MsgUpdateParams',
 
   // Feegrant
   MsgGrantAllowance: 'cosmos.feegrant.v1beta1.MsgGrantAllowance',
@@ -47,7 +50,10 @@ export const MsgType = {
   // Governance
   MsgVote: 'cosmos.gov.v1beta1.MsgVote',
   MsgDepositCosmos: 'cosmos.gov.v1beta1.MsgDeposit',
+  MsgVoteWeighted: 'cosmos.gov.v1beta1.MsgVoteWeighted',
   MsgSubmitProposal: 'cosmos.gov.v1beta1.MsgSubmitProposal',
+  MsgVoteV1: 'cosmos.gov.v1.MsgVote',
+  MsgDepositV1: 'cosmos.gov.v1.MsgDeposit',
 
   // Slashing
   MsgUnjail: 'cosmos.slashing.v1beta1.MsgUnjail',
@@ -60,6 +66,8 @@ export const MsgType = {
   MsgCreateValidator: 'cosmos.staking.v1beta1.MsgCreateValidator',
   MsgCancelUnbondingDelegation:
     'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation',
+  MsgTransferDelegation: 'cosmos.staking.v1beta1.MsgTransferDelegation',
+  MsgStakingUpdateParams: 'cosmos.staking.v1beta1.MsgUpdateParams',
 
   MsgStoreCode: 'cosmwasm.wasm.v1.MsgStoreCode',
   MsgUpdateAdmin: 'cosmwasm.wasm.v1.MsgUpdateAdmin',
@@ -164,6 +172,8 @@ export const MsgType = {
     'injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder',
   MsgAdminUpdateBinaryOptionsMarket:
     'injective.exchange.v1beta1.MsgAdminUpdateBinaryOptionsMarket',
+  MsgCreateBinaryOptionsMarketOrder:
+    'injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
   MsgBatchCancelBinaryOptionsOrders:
     'injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders',
   MsgInstantExpiryFuturesMarketLaunch:
@@ -172,6 +182,60 @@ export const MsgType = {
     'injective.exchange.v1beta1.MsgBatchCreateDerivativeLimitOrders',
   MsgInstantBinaryOptionsMarketLaunch:
     'injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
+
+  // Exchange v1beta1 - Proposals
+  MsgBatchExchangeModificationProposal:
+    'injective.exchange.v1beta1.BatchExchangeModificationProposal',
+  MsgSpotMarketParamUpdateProposal:
+    'injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
+  MsgSpotMarketLaunchProposal:
+    'injective.exchange.v1beta1.SpotMarketLaunchProposal',
+  MsgPerpetualMarketLaunchProposal:
+    'injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
+  MsgExpiryFuturesMarketLaunchProposal:
+    'injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal',
+  MsgDerivativeMarketParamUpdateProposal:
+    'injective.exchange.v1beta1.DerivativeMarketParamUpdateProposal',
+  MsgMarketForcedSettlementProposal:
+    'injective.exchange.v1beta1.MarketForcedSettlementProposal',
+  MsgUpdateDenomDecimalsProposal:
+    'injective.exchange.v1beta1.UpdateDenomDecimalsProposal',
+  MsgTradingRewardCampaignLaunchProposal:
+    'injective.exchange.v1beta1.TradingRewardCampaignLaunchProposal',
+  MsgTradingRewardCampaignUpdateProposal:
+    'injective.exchange.v1beta1.TradingRewardCampaignUpdateProposal',
+  MsgTradingRewardPendingPointsUpdateProposal:
+    'injective.exchange.v1beta1.TradingRewardPendingPointsUpdateProposal',
+  MsgFeeDiscountProposal: 'injective.exchange.v1beta1.FeeDiscountProposal',
+  MsgBatchCommunityPoolSpendProposal:
+    'injective.exchange.v1beta1.BatchCommunityPoolSpendProposal',
+  MsgBinaryOptionsMarketParamUpdateProposal:
+    'injective.exchange.v1beta1.BinaryOptionsMarketParamUpdateProposal',
+  MsgBinaryOptionsMarketLaunchProposal:
+    'injective.exchange.v1beta1.BinaryOptionsMarketLaunchProposal',
+
+  // Exchange v1beta1 - Authz
+  MsgCreateSpotLimitOrderAuthz:
+    'injective.exchange.v1beta1.CreateSpotLimitOrderAuthz',
+  MsgCreateSpotMarketOrderAuthz:
+    'injective.exchange.v1beta1.CreateSpotMarketOrderAuthz',
+  MsgBatchCreateSpotLimitOrdersAuthz:
+    'injective.exchange.v1beta1.BatchCreateSpotLimitOrdersAuthz',
+  MsgCancelSpotOrderAuthz: 'injective.exchange.v1beta1.CancelSpotOrderAuthz',
+  MsgBatchCancelSpotOrdersAuthz:
+    'injective.exchange.v1beta1.BatchCancelSpotOrdersAuthz',
+  MsgCreateDerivativeLimitOrderAuthz:
+    'injective.exchange.v1beta1.CreateDerivativeLimitOrderAuthz',
+  MsgCreateDerivativeMarketOrderAuthz:
+    'injective.exchange.v1beta1.CreateDerivativeMarketOrderAuthz',
+  MsgBatchCreateDerivativeLimitOrdersAuthz:
+    'injective.exchange.v1beta1.BatchCreateDerivativeLimitOrdersAuthz',
+  MsgCancelDerivativeOrderAuthz:
+    'injective.exchange.v1beta1.CancelDerivativeOrderAuthz',
+  MsgBatchCancelDerivativeOrdersAuthz:
+    'injective.exchange.v1beta1.BatchCancelDerivativeOrdersAuthz',
+  MsgBatchUpdateOrdersAuthz:
+    'injective.exchange.v1beta1.BatchUpdateOrdersAuthz',
 
   // Exchange V2
   OrderDataV2: 'injective.exchange.v2.OrderData',
@@ -261,6 +325,8 @@ export const MsgType = {
     'injective.exchange.v2.MsgTradingRewardPendingPointsUpdate',
   MsgAtomicMarketOrderFeeMultiplierScheduleV2:
     'injective.exchange.v2.MsgAtomicMarketOrderFeeMultiplierSchedule',
+  MsgSetDelegationTransferReceivers:
+    'injective.exchange.v2.MsgSetDelegationTransferReceivers',
 
   // Insurance
   MsgUnderwrite: 'injective.insurance.v1beta1.MsgUnderwrite',
@@ -302,6 +368,15 @@ export const MsgType = {
   MsgSetOrchestratorAddresses: 'injective.peggy.v1.MsgSetOrchestratorAddresses',
   MsgBlacklistEthereumAddresses:
     'injective.peggy.v1.MsgBlacklistEthereumAddresses',
+  MsgCancelSendToEth: 'injective.peggy.v1beta1.MsgCancelSendToEth',
+  MsgSubmitBadSignatureEvidence:
+    'injective.peggy.v1beta1.MsgSubmitBadSignatureEvidence',
+
+  // Peggy - Proposals
+  MsgBlacklistEthereumAddressesProposal:
+    'injective.peggy.v1beta1.BlacklistEthereumAddressesProposal',
+  MsgRevokeEthereumBlacklistProposal:
+    'injective.peggy.v1beta1.RevokeEthereumBlacklistProposal',
 
   // Permissions
   MsgClaimVoucher: 'injective.permissions.v1beta1.MsgClaimVoucher',
@@ -342,6 +417,12 @@ export const MsgType = {
   MsgRegisterContract: 'injective.wasmx.v1.MsgRegisterContract',
   MsgDeactivateContract: 'injective.wasmx.v1.MsgDeactivateContract',
   MsgExecuteContractCompat: 'injective.wasmx.v1.MsgExecuteContractCompat',
+
+  // WasmX - Proposals
+  MsgContractRegistrationRequestProposal:
+    'injective.wasmx.v1beta1.ContractRegistrationRequestProposal',
+  MsgBatchContractRegistrationRequestProposal:
+    'injective.wasmx.v1beta1.BatchContractRegistrationRequestProposal',
 
   // TxFees
   MsgTxFeesUpdateParams: 'injective.txfees.v1beta1.MsgUpdateParams',
