@@ -4,7 +4,7 @@ import { InjectiveExchangeV2Tx } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
-export declare namespace MsgUpdateSpotMarketV2 {
+export declare namespace MsgUpdateDerivativeMarketV2 {
   export interface Params {
     admin: string
     marketId: string
@@ -12,13 +12,16 @@ export declare namespace MsgUpdateSpotMarketV2 {
     newMinNotional?: string
     newMinPriceTickSize?: string
     newMinQuantityTickSize?: string
+    newInitialMarginRatio?: string
+    newMaintenanceMarginRatio?: string
+    newReduceMarginRatio?: string
   }
 
-  export type Proto = InjectiveExchangeV2Tx.MsgUpdateSpotMarket
+  export type Proto = InjectiveExchangeV2Tx.MsgUpdateDerivativeMarket
 }
 
-const createMessage = (params: MsgUpdateSpotMarketV2.Params) => {
-  const message = InjectiveExchangeV2Tx.MsgUpdateSpotMarket.create()
+const createMessage = (params: MsgUpdateDerivativeMarketV2.Params) => {
+  const message = InjectiveExchangeV2Tx.MsgUpdateDerivativeMarket.create()
 
   message.admin = params.admin
   message.marketId = params.marketId
@@ -26,19 +29,24 @@ const createMessage = (params: MsgUpdateSpotMarketV2.Params) => {
   message.newMinNotional = params.newMinNotional || '0'
   message.newMinPriceTickSize = params.newMinPriceTickSize || '0'
   message.newMinQuantityTickSize = params.newMinQuantityTickSize || '0'
+  message.newInitialMarginRatio = params.newInitialMarginRatio || '0'
+  message.newMaintenanceMarginRatio = params.newMaintenanceMarginRatio || '0'
+  message.newReduceMarginRatio = params.newReduceMarginRatio || '0'
 
-  return InjectiveExchangeV2Tx.MsgUpdateSpotMarket.fromPartial(message)
+  return InjectiveExchangeV2Tx.MsgUpdateDerivativeMarket.fromPartial(message)
 }
 
 /**
  * @category Messages
  */
-export default class MsgUpdateSpotMarketV2 extends MsgBase<
-  MsgUpdateSpotMarketV2.Params,
-  MsgUpdateSpotMarketV2.Proto
+export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
+  MsgUpdateDerivativeMarketV2.Params,
+  MsgUpdateDerivativeMarketV2.Proto
 > {
-  static fromJSON(params: MsgUpdateSpotMarketV2.Params): MsgUpdateSpotMarketV2 {
-    return new MsgUpdateSpotMarketV2(params)
+  static fromJSON(
+    params: MsgUpdateDerivativeMarketV2.Params,
+  ): MsgUpdateDerivativeMarketV2 {
+    return new MsgUpdateDerivativeMarketV2(params)
   }
 
   public toProto() {
@@ -55,7 +63,16 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
       newMinPriceTickSize: toChainFormat(
         initialParams.newMinPriceTickSize || '0',
       ).toFixed(),
-    } as MsgUpdateSpotMarketV2.Params
+      newInitialMarginRatio: toChainFormat(
+        initialParams.newInitialMarginRatio || '0',
+      ).toFixed(),
+      newMaintenanceMarginRatio: toChainFormat(
+        initialParams.newMaintenanceMarginRatio || '0',
+      ).toFixed(),
+      newReduceMarginRatio: toChainFormat(
+        initialParams.newReduceMarginRatio || '0',
+      ).toFixed(),
+    } as MsgUpdateDerivativeMarketV2.Params
 
     return createMessage(params)
   }
@@ -64,7 +81,7 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.exchange.v2.MsgUpdateSpotMarket',
+      '@type': '/injective.exchange.v2.MsgUpdateDerivativeMarket',
       ...proto,
     }
   }
@@ -77,7 +94,7 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgUpdateSpotMarket',
+      type: 'exchange/MsgUpdateDerivativeMarket',
       value: message,
     }
   }
@@ -87,7 +104,7 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
     const { value } = amino
 
     return {
-      '@type': '/injective.exchange.v2.MsgUpdateSpotMarket',
+      '@type': '/injective.exchange.v2.MsgUpdateDerivativeMarket',
       ...value,
     }
   }
@@ -121,6 +138,15 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
       new_min_notional: numberToCosmosSdkDecString(
         params.newMinNotional || '0',
       ),
+      new_initial_margin_ratio: numberToCosmosSdkDecString(
+        params.newInitialMarginRatio || '0',
+      ),
+      new_maintenance_margin_ratio: numberToCosmosSdkDecString(
+        params.newMaintenanceMarginRatio || '0',
+      ),
+      new_reduce_margin_ratio: numberToCosmosSdkDecString(
+        params.newReduceMarginRatio || '0',
+      ),
     }
 
     return messageAdjusted
@@ -130,13 +156,13 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: '/injective.exchange.v2.MsgUpdateSpotMarket',
+      type: '/injective.exchange.v2.MsgUpdateDerivativeMarket',
       message: proto,
     }
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV2Tx.MsgUpdateSpotMarket.encode(
+    return InjectiveExchangeV2Tx.MsgUpdateDerivativeMarket.encode(
       this.toProto(),
     ).finish()
   }
