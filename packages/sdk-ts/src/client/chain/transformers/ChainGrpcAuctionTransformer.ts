@@ -1,4 +1,9 @@
-import {
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type {
+  InjectiveAuctionV1Beta1Genesis,
+  InjectiveAuctionV1Beta1Query,
+} from '@injectivelabs/core-proto-ts'
+import type {
   AuctionBid,
   GrpcAuctionBid,
   AuctionModuleState,
@@ -7,11 +12,6 @@ import {
   AuctionLastAuctionResult,
   GrpcAuctionLastAuctionResult,
 } from '../types/auction.js'
-import {
-  InjectiveAuctionV1Beta1Genesis,
-  InjectiveAuctionV1Beta1Query,
-} from '@injectivelabs/core-proto-ts'
-import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 
 /**
  * @category Chain Grpc Transformer

@@ -1,43 +1,56 @@
-export enum TradeExecutionType {
-  Market = 'market',
-  LimitFill = 'limitFill',
-  LimitMatchRestingOrder = 'limitMatchRestingOrder',
-  LimitMatchNewOrder = 'limitMatchNewOrder',
-}
+export const TradeExecutionType = {
+  Market: 'market',
+  LimitFill: 'limitFill',
+  LimitMatchRestingOrder: 'limitMatchRestingOrder',
+  LimitMatchNewOrder: 'limitMatchNewOrder',
+} as const
 
-export enum TradeExecutionSide {
-  Maker = 'maker',
-  Taker = 'taker',
-}
+export type TradeExecutionType =
+  (typeof TradeExecutionType)[keyof typeof TradeExecutionType]
 
-export enum TradeDirection {
-  Buy = 'buy',
-  Sell = 'sell',
-  Long = 'long',
-  Short = 'short',
-}
+export const TradeExecutionSide = {
+  Maker: 'maker',
+  Taker: 'taker',
+} as const
 
-export enum OrderState {
-  Unfilled = 'unfilled',
-  Booked = 'booked',
-  PartialFilled = 'partial_filled',
-  PartiallyFilled = 'partially_filled',
-  Filled = 'filled',
-  Canceled = 'canceled',
-  Triggered = 'triggered',
-}
+export type TradeExecutionSide =
+  (typeof TradeExecutionSide)[keyof typeof TradeExecutionSide]
 
-export enum OrderSide {
-  Unspecified = 'unspecified',
-  Buy = 'buy',
-  Sell = 'sell',
-  StopBuy = 'stop_buy',
-  StopSell = 'stop_sell',
-  TakeBuy = 'take_buy',
-  TakeSell = 'take_sell',
-  BuyPO = 'buy_po',
-  SellPO = 'sell_po',
-  BuyAtomic = 'buy_atomic',
-  SellAtomic = 'sell_atomic',
-  Unrecognized = 'unrecognized',
-}
+export const TradeDirection = {
+  Buy: 'buy',
+  Sell: 'sell',
+  Long: 'long',
+  Short: 'short',
+} as const
+
+export type TradeDirection =
+  (typeof TradeDirection)[keyof typeof TradeDirection]
+
+export const OrderState = {
+  Unfilled: 'unfilled',
+  Booked: 'booked',
+  PartialFilled: 'partial_filled',
+  PartiallyFilled: 'partially_filled',
+  Filled: 'filled',
+  Canceled: 'canceled',
+  Triggered: 'triggered',
+} as const
+
+export type OrderState = (typeof OrderState)[keyof typeof OrderState]
+
+export const OrderSide = {
+  Unspecified: 'unspecified',
+  Buy: 'buy',
+  Sell: 'sell',
+  StopBuy: 'stop_buy',
+  StopSell: 'stop_sell',
+  TakeBuy: 'take_buy',
+  TakeSell: 'take_sell',
+  BuyPO: 'buy_po',
+  SellPO: 'sell_po',
+  BuyAtomic: 'buy_atomic',
+  SellAtomic: 'sell_atomic',
+  Unrecognized: 'unrecognized',
+} as const
+
+export type OrderSide = (typeof OrderSide)[keyof typeof OrderSide]

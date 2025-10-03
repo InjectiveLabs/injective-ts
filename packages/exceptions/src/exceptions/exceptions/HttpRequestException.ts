@@ -1,5 +1,6 @@
 import { ConcreteException } from '../base.js'
-import { ErrorContext, ErrorType, HttpRequestMethod } from '../types/index.js'
+import { ErrorType, HttpRequestMethod } from '../types/index.js'
+import type { ErrorContext } from '../types/index.js'
 
 export class HttpRequestException extends ConcreteException {
   public static errorClass: string = 'HttpRequestException'

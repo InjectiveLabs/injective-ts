@@ -1,12 +1,21 @@
-import { TypedDataUtils } from 'eth-sig-util'
+import { hashTypedData, type TypedDataDefinition } from 'viem'
 
-export const domainHash = (message: any) =>
-  TypedDataUtils.hashStruct('EIP712Domain', message.domain, message.types, true)
+export const domainHash = (message: any) => {
+  const typedData: TypedDataDefinition = {
+    domain: message.domain,
+    types: message.types,
+    primaryType: 'EIP712Domain',
+    message: message.domain,
+  }
+  return hashTypedData(typedData)
+}
 
-export const messageHash = (message: any) =>
-  TypedDataUtils.hashStruct(
-    message.primaryType,
-    message.message,
-    message.types,
-    true,
-  )
+export const messageHash = (message: any) => {
+  const typedData: TypedDataDefinition = {
+    domain: message.domain,
+    types: message.types,
+    primaryType: message.primaryType,
+    message: message.message,
+  }
+  return hashTypedData(typedData)
+}

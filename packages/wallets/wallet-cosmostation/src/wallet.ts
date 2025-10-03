@@ -1,14 +1,14 @@
-import {
-  ChainId,
-  CosmosChainId,
-  TestnetCosmosChainId,
-} from '@injectivelabs/ts-types'
+import { cosmos, InstallError } from '@cosmostation/extension-client'
 import {
   ErrorType,
   UnspecifiedErrorCode,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { cosmos, InstallError } from '@cosmostation/extension-client'
+import type {
+  ChainId,
+  CosmosChainId,
+  TestnetCosmosChainId,
+} from '@injectivelabs/ts-types'
 
 export class CosmostationWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
@@ -32,7 +32,7 @@ export class CosmostationWallet {
       return !!supportedChainIds.official.find(
         (chainId) => chainId === actualChainId,
       )
-    } catch (e) {
+    } catch {
       throw new CosmosWalletException(
         new Error(
           `Cosmostation doesn't support ${

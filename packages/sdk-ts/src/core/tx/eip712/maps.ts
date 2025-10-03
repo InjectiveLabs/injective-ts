@@ -1,7 +1,7 @@
-import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { snakeToPascal } from '@injectivelabs/utils'
-import { TypedDataField } from './types.js'
+import { GeneralException } from '@injectivelabs/exceptions'
+import type { TypedDataField } from './types.js'
 
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
 
@@ -422,6 +422,8 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'exchange/BinaryOptionsMarketLaunchProposal'
     case 'injective.exchange.v1beta1.MsgTransferAndExecute':
       return 'exchange/MsgTransferAndExecute'
+    case 'injective.exchange.v2.MsgUpdateSpotMarket':
+      return 'exchange/MsgUpdateSpotMarket'
 
     case 'injective.exchange.v1beta1.CreateSpotLimitOrderAuthz':
       return 'exchange/CreateSpotLimitOrderAuthz'

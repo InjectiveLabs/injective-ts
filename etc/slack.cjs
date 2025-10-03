@@ -107,6 +107,14 @@ const main = async () => {
   }
 
   try {
+    // Check if the summary file exists first
+    if (!fs.existsSync('./lerna-publish-summary.json')) {
+      console.log(
+        'No lerna-publish-summary.json found. This typically means no packages were published (they may have already been published).',
+      )
+      return
+    }
+
     const content = JSON.parse(
       fs.readFileSync('./lerna-publish-summary.json', {
         encoding: 'utf8',
@@ -116,6 +124,7 @@ const main = async () => {
     publishedItems = content.map(formatPublishedItem)
 
     if (!publishedItems || publishedItems.length === 0) {
+      console.log('No packages were published according to the summary file.')
       return
     }
   } catch (e) {

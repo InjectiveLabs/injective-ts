@@ -1,8 +1,8 @@
-import MsgSubmitProposalPerpetualMarketLaunchV2 from './MsgSubmitProposalPerpetualMarketLaunchV2.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
+import MsgSubmitProposalPerpetualMarketLaunchV2 from './MsgSubmitProposalPerpetualMarketLaunchV2.js'
 
 const market = mockFactory.injUsdtDerivativeMarket
 

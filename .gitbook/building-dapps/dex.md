@@ -212,7 +212,7 @@ Finally, let's make some transactions. For this example, we are going to:
 
 ```ts
 // filename: Transactions.ts
-import { BigNumberInWei } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import {
   MsgSend,
   MsgCreateSpotLimitOrder,
@@ -230,7 +230,7 @@ export const makeMsgSend = ({
 }) => {
   const amount = {
     denom,
-    amount: new BigNumberInBase(amount).toWei(/** denom's decimals */)
+    amount: toChainFormat(amount, /** denom's decimals */)
   }
 
   return MsgSend.fromJSON({

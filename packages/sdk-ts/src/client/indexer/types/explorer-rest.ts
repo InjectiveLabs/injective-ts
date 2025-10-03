@@ -1,6 +1,5 @@
-/* eslint-disable camelcase */
-import { Coin } from '@injectivelabs/ts-types'
-import {
+import type { Coin } from '@injectivelabs/ts-types'
+import type {
   Paging,
   EventLog,
   Signature,

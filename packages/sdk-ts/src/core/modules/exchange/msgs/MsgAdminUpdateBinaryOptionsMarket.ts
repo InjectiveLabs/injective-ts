@@ -1,14 +1,12 @@
+import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
 import {
   InjectiveExchangeV1Beta1Tx,
   InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
-import { GrpcMarketStatus } from '../../../../client/chain/types/index.js'
-import {
-  amountToCosmosSdkDecAmount,
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
+import type { GrpcMarketStatus } from '../../../../client/chain/types/index.js'
 
 export declare namespace MsgAdminUpdateBinaryOptionsMarket {
   export interface Params {
@@ -58,9 +56,7 @@ export default class MsgAdminUpdateBinaryOptionsMarket extends MsgBase<
 
     const params = {
       ...initialParams,
-      settlementPrice: amountToCosmosSdkDecAmount(
-        initialParams.settlementPrice,
-      ).toFixed(),
+      settlementPrice: toChainFormat(initialParams.settlementPrice).toFixed(),
     } as MsgAdminUpdateBinaryOptionsMarket.Params
 
     return createMessage(params)
@@ -103,9 +99,7 @@ export default class MsgAdminUpdateBinaryOptionsMarket extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      settlement_price: amountToCosmosSdkDecAmount(
-        value.settlement_price,
-      ).toFixed(),
+      settlement_price: toChainFormat(value.settlement_price).toFixed(),
     }
 
     return {

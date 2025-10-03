@@ -1,18 +1,31 @@
+import { ErrorType } from '../types/index.js'
 import { ConcreteException } from '../base.js'
-import { ErrorContext, ErrorType } from '../types/index.js'
-import { mapFailedTransactionMessage, parseErrorMessage } from '../utils/maps.js'
+import {
+  mapFailedTransactionMessage,
+  parseErrorMessage,
+} from '../utils/maps.js'
+import type { ErrorContext } from '../types/index.js'
 
 export class TransactionException extends ConcreteException {
   public static errorClass: string = 'TransactionException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
-
     this.type = ErrorType.ChainError
   }
 
   public parse(): void {
     const { message, context, contextModule, contextCode } = this
+
+    // If skipParsing is true, just use the raw message
+    if (this.skipParsing) {
+      this.setContext(context || 'Unknown')
+      this.setMessage(message)
+      this.setOriginalMessage(message)
+      this.setName(TransactionException.errorClass)
+
+      return
+    }
 
     const {
       code,

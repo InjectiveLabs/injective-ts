@@ -1,12 +1,8 @@
-/* eslint-disable class-methods-use-this */
-import {
-  TxRaw,
-  toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  DirectSignResponse,
-  AminoSignResponse,
-} from '@injectivelabs/sdk-ts'
+import { sleep } from '@injectivelabs/utils'
+import { toHex, serializeTransaction } from 'viem'
+import { EvmChainId } from '@injectivelabs/ts-types'
+import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
+import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
 import {
   ErrorType,
   LedgerException,
@@ -16,47 +12,34 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
-  StdSignDoc,
-  TIP_IN_GWEI,
   WalletAction,
   getKeyFromRpcUrl,
   WalletDeviceType,
   BaseConcreteStrategy,
-  SendTransactionOptions,
-  ConcreteWalletStrategy,
-  WalletStrategyEvmOptions,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
-  ConcreteEvmWalletStrategyArgs,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
-  Eip1193Provider,
 } from '@injectivelabs/wallet-base'
-import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
-import { Common, Chain, Hardfork } from '@ethereumjs/common'
-import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
 import LedgerHW from './hw/index.js'
 import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
-import { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
 import { LedgerEip1193Provider } from './Eip1193Provider.js'
-
-const getNetworkFromChainId = (chainId: EvmChainId): Chain => {
-  if (chainId === EvmChainId.Goerli) {
-    return Chain.Goerli
-  }
-
-  if (chainId === EvmChainId.Sepolia) {
-    return Chain.Sepolia
-  }
-
-  if (chainId === EvmChainId.Kovan) {
-    return Chain.Goerli
-  }
-
-  return Chain.Mainnet
-}
+import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts'
+import type {
+  StdSignDoc,
+  Eip1193Provider,
+  SendTransactionOptions,
+  ConcreteWalletStrategy,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
+} from '@injectivelabs/wallet-base'
 
 export default class LedgerBase
   extends BaseConcreteStrategy
@@ -133,15 +116,14 @@ export default class LedgerBase
   ): Promise<string> {
     const signedTransaction = await this.signEvmTransaction(txData, args)
 
-    signedTransaction.serialize()
-
     try {
       const alchemy = await this.getAlchemy(args.evmChainId)
-      const txReceipt = await alchemy.core.sendTransaction(
-        addHexPrefix(signedTransaction.serialize().toString('hex')),
-      )
+      const provider = await alchemy.config.getProvider()
+      const txHash = await provider.send('eth_sendRawTransaction', [
+        signedTransaction,
+      ])
 
-      return txReceipt.hash
+      return txHash
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -213,8 +195,8 @@ export default class LedgerBase
         const ledger = await this.ledger.getInstance()
         const result = await ledger.signEIP712HashedMessage(
           derivationPath,
-          bufferToHex(domainHash(object)),
-          bufferToHex(messageHash(object)),
+          toHex(domainHash(object)),
+          toHex(messageHash(object)),
         )
 
         const combined = `${result.r}${result.s}${result.v.toString(16)}`
@@ -244,7 +226,6 @@ export default class LedgerBase
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -293,11 +274,37 @@ export default class LedgerBase
     return alchemyProvider.network.chainId.toString()
   }
 
-  async getEvmTransactionReceipt(txHash: string): Promise<string> {
-    return Promise.resolve(txHash)
+  async getEvmTransactionReceipt(
+    txHash: string,
+    evmChainId?: EvmChainId,
+  ): Promise<string> {
+    const alchemy = await this.getAlchemy(evmChainId)
+    const provider = await alchemy.config.getProvider()
+
+    const interval = 3000
+    const maxAttempts = 10
+    let attempts = 0
+
+    while (attempts < maxAttempts) {
+      attempts++
+      await sleep(interval)
+
+      try {
+        const receipt = await provider.send('eth_getTransactionReceipt', [
+          txHash,
+        ])
+
+        if (receipt) {
+          return txHash
+        }
+      } catch {}
+    }
+
+    throw new Error(
+      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+    )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),
@@ -307,61 +314,65 @@ export default class LedgerBase
   private async signEvmTransaction(
     txData: any,
     args: { address: string; evmChainId: EvmChainId },
-  ) {
+  ): Promise<string> {
     const ledgerService = await loadLedgerServiceType()
 
     const alchemy = await this.getAlchemy(args.evmChainId)
-    const chainId = parseInt(args.evmChainId.toString(), 10)
+    const chainId = parseInt(args.evmChainId.toString(), 10) as EvmChainId
     const nonce = await alchemy.core.getTransactionCount(args.address)
 
-    const common = new Common({
-      chain: getNetworkFromChainId(chainId),
-      hardfork: Hardfork.London,
-    })
+    const parseHexValue = (value: string | number | bigint) => {
+      if (typeof value === 'string') {
+        const hexValue = value.startsWith('0x') ? value : `0x${value}`
 
-    const eip1559TxData = {
-      from: txData.from,
-      data: txData.data,
-      to: txData.to,
-      nonce: addHexPrefix(nonce.toString(16)),
-      gas: addHexPrefix(txData.gas),
-      gasLimit: addHexPrefix(txData.gas),
-      maxFeePerGas: addHexPrefix(txData.gasPrice || txData.maxFeePerGas),
-      maxPriorityFeePerGas: addHexPrefix(
-        txData.maxPriorityFeePerGas || TIP_IN_GWEI.toString(16),
-      ),
+        return BigInt(hexValue)
+      }
+
+      return BigInt(value)
     }
 
-    const tx = FeeMarketEIP1559Transaction.fromTxData(eip1559TxData, { common })
-    const msg = tx.getMessageToSign(false)
-    // const encodedMessage = msg
-    const encodedMessageHex = msg.toString('hex')
+    const eip1559TxData = {
+      type: 'eip1559' as const,
+      chainId,
+      nonce,
+      to: txData.to as `0x${string}`,
+      value: parseHexValue(txData.value || '0x0'),
+      data: txData.data as `0x${string}`,
+      gas: parseHexValue(txData.gas),
+      maxFeePerGas: parseHexValue(txData.maxFeePerGas),
+      maxPriorityFeePerGas: parseHexValue(txData.maxPriorityFeePerGas),
+    }
+
+    // Serialize the transaction
+    const serializedTx = serializeTransaction(eip1559TxData)
+    const serializedTxHex = serializedTx.slice(2) // Remove 0x prefix
 
     try {
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(args.address)
+
+      // Resolve transaction for Ledger display
       const resolution = await ledgerService.resolveTransaction(
-        encodedMessageHex,
+        serializedTxHex,
         {},
         {},
       )
 
+      // Sign the transaction with Ledger
       const txSig = await ledger.signTransaction(
         derivationPath,
-        encodedMessageHex,
+        serializedTxHex,
         resolution,
       )
 
       const signedTxData = {
         ...eip1559TxData,
-        v: `0x${txSig.v}`,
-        r: `0x${txSig.r}`,
-        s: `0x${txSig.s}`,
+        v: BigInt(`0x${txSig.v}`),
+        r: `0x${txSig.r}` as `0x${string}`,
+        s: `0x${txSig.s}` as `0x${string}`,
       }
 
-      return FeeMarketEIP1559Transaction.fromTxData(signedTxData, {
-        common,
-      })
+      return serializeTransaction(signedTxData)
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

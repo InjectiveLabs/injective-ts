@@ -1,4 +1,4 @@
-import {
+import type {
   InjectiveTxFeesV1Beta1Txfees,
   InjectiveTxFeesV1Beta1Query,
 } from '@injectivelabs/core-proto-ts'

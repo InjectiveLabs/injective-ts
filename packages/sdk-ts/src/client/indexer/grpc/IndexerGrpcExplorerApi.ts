@@ -1,11 +1,11 @@
+import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
 
 /**

@@ -60,7 +60,7 @@ When a grantee wants to execute a transaction on behalf of a granter, they must 
 
 ```ts
 import { MsgExec, MsgSend, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import { toChainFormat } from '@injectivelabs/utils'
 import { Network } from '@injectivelabs/networks'
 
 const privateKeyOfGrantee = '0x...'
@@ -70,7 +70,7 @@ const granter = 'inj...'
 const msgs = MsgSend.fromJSON({
     amount: {
         denom: 'inj',
-        amount: new BigNumberInBase(0.01).toWei().toFixed()
+        amount: toChainFormat(0.01).toFixed()
     },
     srcInjectiveAddress: granter,
     dstInjectiveAddress: 'inj1...',

@@ -1,7 +1,7 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { IndexerGrpcInsuranceFundApi } from './IndexerGrpcInsuranceFundApi.js'
+import type { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)

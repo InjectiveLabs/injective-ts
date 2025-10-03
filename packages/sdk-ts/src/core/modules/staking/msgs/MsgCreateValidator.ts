@@ -1,12 +1,12 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
   CosmosBaseV1Beta1Coin,
   CosmosStakingV1Beta1Tx,
   CosmosStakingV1Beta1Staking,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
 import { createAny } from '../../../tx/index.js'
-import { GeneralException } from '@injectivelabs/exceptions'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgCreateValidator {

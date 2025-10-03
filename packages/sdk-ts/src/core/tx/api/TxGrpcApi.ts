@@ -1,8 +1,7 @@
 import {
-  TxConcreteApi,
-  TxClientBroadcastOptions,
-  TxClientBroadcastResponse,
-} from '../types/tx.js'
+  CosmosTxV1Beta1Service,
+  CosmosTxV1Beta1Tx,
+} from '@injectivelabs/core-proto-ts'
 import {
   GeneralException,
   TransactionException,
@@ -10,18 +9,20 @@ import {
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import {
-  BigNumberInBase,
+  toBigNumber,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
-import { TxResponse } from '../types/tx.js'
+import { grpc } from '../../../utils/grpc.js'
 import BaseGrpcWebConsumer from '../../../client/base/BaseGrpcWebConsumer.js'
-import {
-  CosmosTxV1Beta1Service,
-  CosmosTxV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
-import { grpcPkg, grpc } from '../../../utils/grpc.js'
+import type { TxResponse } from '../types/tx.js'
+import type { grpcPkg } from '../../../utils/grpc.js'
+import type {
+  TxConcreteApi,
+  TxClientBroadcastOptions,
+  TxClientBroadcastResponse,
+} from '../types/tx.js'
 
 export class TxGrpcApi implements TxConcreteApi {
   public txService: CosmosTxV1Beta1Service.ServiceClientImpl
@@ -178,8 +179,11 @@ export class TxGrpcApi implements TxConcreteApi {
         result: result,
         gasInfo: gasInfo,
       }
-    } catch (e: unknown) {
-      throw new TransactionException(new Error(e as any))
+    } catch (e: any) {
+      throw new TransactionException(e as Error, {
+        context: 'TxGrpcApi.simulate',
+        skipParsing: true,
+      })
     }
   }
 
@@ -192,7 +196,7 @@ export class TxGrpcApi implements TxConcreteApi {
       options?.mode || CosmosTxV1Beta1Service.BroadcastMode.BROADCAST_MODE_SYNC
     const timeout =
       options?.timeout ||
-      new BigNumberInBase(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
+      toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
 

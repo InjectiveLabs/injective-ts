@@ -1,5 +1,5 @@
-import { hashToHex } from '../../../../utils/crypto.js'
 import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { hashToHex } from '../../../../utils/crypto.js'
 
 export class TxClient {
   /**

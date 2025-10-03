@@ -1,11 +1,12 @@
+import { InjectiveOracleV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveOracleV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { ChainModule, OracleModuleParams } from '../types/index.js'
+import type { OracleModuleParams } from '../types/index.js'
 
 /**
  * @category Chain Grpc API

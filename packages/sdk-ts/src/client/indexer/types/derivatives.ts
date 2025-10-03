@@ -1,13 +1,13 @@
-import {
+import type { TokenMeta } from './../../../types/token.js'
+import type { GrpcOrderType } from '../../chain/types/exchange.js'
+import type { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   OrderState,
   OrderSide,
   TradeDirection,
   TradeExecutionType,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
-import { GrpcOrderType } from '../../chain/types/exchange.js'
-import { TokenMeta } from './../../../types/token.js'
-import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface PositionDelta {
   tradeDirection: TradeDirection

@@ -1,12 +1,12 @@
+import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
-import { ChainModule } from '../types/index.js'
 
 /**
  * @category Chain Grpc API

@@ -1,13 +1,16 @@
-import { BECH32_PUBKEY_ACC_PREFIX, decompressPubKey } from '../../utils/index.js'
-import { bech32 } from '@scure/base'
-import { toBuffer } from 'ethereumjs-util'
+import { keccak256 } from 'viem'
 import secp256k1 from 'secp256k1'
-import { Address } from './Address.js'
-import keccak256 from 'keccak256'
+import { bech32 } from '@scure/base'
+import { toBytes as toBuffer } from 'viem'
 import {
   GoogleProtobufAny,
   InjectiveCryptoV1Beta1Ethsecp256k1Keys,
 } from '@injectivelabs/core-proto-ts'
+import { Address } from './Address.js'
+import {
+  BECH32_PUBKEY_ACC_PREFIX,
+  decompressPubKey,
+} from '../../utils/index.js'
 
 /**
  * @category Crypto Utility Classes
@@ -79,6 +82,7 @@ export class PublicKey {
           ? decompressedPublicKey
           : '0x' + decompressedPublicKey,
       ),
+      'bytes',
     ).subarray(-20)
 
     return Address.fromHex(

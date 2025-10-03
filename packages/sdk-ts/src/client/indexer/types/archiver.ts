@@ -1,4 +1,4 @@
-import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface HistoricalBalance {
   t: number[]

@@ -1,5 +1,5 @@
-import { PeggyModuleParams } from '../types/peggy.js'
-import { InjectivePeggyV1Query } from '@injectivelabs/core-proto-ts'
+import type { PeggyModuleParams } from '../types/peggy.js'
+import type { InjectivePeggyV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer

@@ -1,5 +1,5 @@
 import { CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
 
 export interface GovModuleStateParams {
   votingParams: {
@@ -74,4 +74,4 @@ export type ProposalStatus = CosmosGovV1Gov.ProposalStatus
 export const VoteOptionMap = CosmosGovV1Gov.VoteOption
 export const ProposalStatusMap = CosmosGovV1Gov.ProposalStatus
 
-export { ProposalStatus as GrpcProposalStatus }
+export type { ProposalStatus as GrpcProposalStatus }

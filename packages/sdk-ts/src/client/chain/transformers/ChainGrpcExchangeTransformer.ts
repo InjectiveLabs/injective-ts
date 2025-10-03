@@ -1,10 +1,18 @@
+import { toHumanReadable } from '@injectivelabs/utils'
 import {
-  InjectiveExchangeV1Beta1Query,
-  InjectiveExchangeV1Beta1Exchange,
   InjectiveOracleV1Beta1Oracle,
+  InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import {
+import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
+import type { SpotMarket } from '../../indexer/types/spot.js'
+import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
+import type { InjectiveExchangeV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type {
+  GrpcChainSpotMarket,
+  GrpcChainFullSpotMarket,
+  GrpcChainFullDerivativeMarket,
+} from '../types/exchange.js'
+import type {
   ChainPosition,
   PointsMultiplier,
   ChainDenomDecimal,
@@ -27,13 +35,7 @@ import {
   GrpcTradingRewardCampaignInfo,
   TradingRewardCampaignBoostInfo,
   GrpcTradingRewardCampaignBoostInfo,
-  type GrpcChainFullDerivativeMarket,
-  type GrpcChainFullSpotMarket,
-  type GrpcChainSpotMarket,
 } from '../types/exchange.js'
-import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
-import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
-import type { SpotMarket } from '../../indexer/types/spot.js'
 
 /**
  * @category Chain Grpc Transformer
@@ -308,9 +310,7 @@ export class ChainGrpcExchangeTransformer {
   ): ChainDenomMinNotional[] {
     return response.denomMinNotionals.map((denomDecimals) => ({
       denom: denomDecimals.denom,
-      minNotional: new BigNumberInBase(denomDecimals.minNotional)
-        .dividedBy(10 ** 18)
-        .toFixed(),
+      minNotional: toHumanReadable(denomDecimals.minNotional).toFixed(),
     }))
   }
 

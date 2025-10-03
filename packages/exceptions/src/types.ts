@@ -1,4 +1,4 @@
-import {
+import type {
   Web3Exception,
   WalletException,
   TrezorException,

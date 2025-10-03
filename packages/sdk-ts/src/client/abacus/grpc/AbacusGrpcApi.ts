@@ -1,10 +1,10 @@
+import { InjectiveAbacusRpc } from '@injectivelabs/abacus-proto-ts'
 import {
   IndexerErrorModule,
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveAbacusRpc } from '@injectivelabs/abacus-proto-ts'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { AbacusGrpcTransformer } from './transformers/index.js'
 

@@ -10,7 +10,7 @@ export type AssetInfo =
       }
     }
 
-export type AssetInfoWithPrice = {assetInfo: AssetInfo, price: string }
+export type AssetInfoWithPrice = { assetInfo: AssetInfo; price: string }
 
 export type PriceResponse = Array<[AssetInfo, { price: string }]>
 export type LendingRateResponse = Array<[AssetInfo, string]>

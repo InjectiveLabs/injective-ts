@@ -1,4 +1,13 @@
-/* eslint-disable class-methods-use-this */
+import { Magic as MagicWallet } from 'magic-sdk'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts'
+import { OAuthExtension } from '@magic-ext/oauth2'
+import { CosmosExtension } from '@magic-ext/cosmos'
+import {
+  WalletAction,
+  MagicProvider,
+  WalletDeviceType,
+  BaseConcreteStrategy,
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -6,28 +15,23 @@ import {
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { Magic as MagicWallet } from 'magic-sdk'
-import {
+import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type {
   TxRaw,
-  TxGrpcApi,
   DirectSignResponse,
   AminoSignResponse,
 } from '@injectivelabs/sdk-ts'
-import { OAuthExtension } from '@magic-ext/oauth2'
-import { CosmosExtension } from '@magic-ext/cosmos'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
-import {
+import type {
   StdSignDoc,
-  WalletAction,
-  MagicProvider,
-  WalletDeviceType,
-  BaseConcreteStrategy,
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
 
-export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export class Magic
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   public provider: BrowserEip1993Provider | undefined
 
   private magicWallet: MagicWallet | undefined
@@ -133,7 +137,6 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -198,7 +201,6 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     return `0x${signature}`
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -264,7 +266,6 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),

@@ -11,14 +11,13 @@ Using our custom abstraction for the Messages which allows the developer to get 
 ```ts
 import {
   MsgSend,
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
   BaseAccount,
-  DEFAULT_STD_FEE,
+  ChainRestAuthApi,
   getEip712TypedData,
+  ChainRestTendermintApi,
 } from '@injectivelabs/sdk-ts'
 import {
-  DEFAULT_STD_FEE,
+  getDefaultStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
 import { ChainId } from '@injectivelabs/ts-types'
@@ -29,7 +28,7 @@ const chainId = 'injective-1' /* ChainId.Mainnet */
 const restEndpoint =
   'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const amount = {
-  amount: new BigNumberInBase(0.01).toWei().toFixed(),
+  amount: toChainFormat(0.01).toFixed(),
   denom: 'inj',
 }
 
@@ -45,7 +44,7 @@ const accountDetails = baseAccount.toAccountDetails()
 const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
-const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+const timeoutHeight = toBigNumber(latestHeight).plus(
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 )
 
@@ -107,7 +106,7 @@ const { txRaw } = createTransaction({
   message: msgs,
   memo: memo,
   signMode: SIGN_AMINO,
-  fee: DEFAULT_STD_FEE,
+  fee: getDefaultStdFee(),
   pubKey: publicKeyBase64 /* From previous step */,
   sequence: baseAccount.sequence,
   timeoutHeight: timeoutHeight.toNumber(),
@@ -147,22 +146,23 @@ Let's have a look at the whole flow (using Metamask as a signing wallet)
 ```ts
 import {
   MsgSend,
-  ChainRestAuthApi,
-  ChainRestTendermintApi,
+  TxRestApi,
+  SIGN_AMINO,
   BaseAccount,
+  hexToBase64,
+  ChainRestAuthApi,
+  createTransaction,
+  createTxRawEIP712,
   getEip712TypedData,
   getEthereumAddress,
-  recoverTypedSignaturePubKey,
-  hexToBase64,
-  createTransaction,
-  SIGN_AMINO,
   createWeb3Extension,
-  createTxRawEIP712,
-  TxRestApi,
+  ChainRestTendermintApi,
+  recoverTypedSignaturePubKey,
 } from "@injectivelabs/sdk-ts";
 import {
-  BigNumberInBase,
-  DEFAULT_STD_FEE,
+  toBigNumber,
+  toChainFormat,
+  getDefaultStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from "@injectivelabs/utils";
 import { ChainId } from "@injectivelabs/ts-types";
@@ -174,7 +174,7 @@ const chainId = "injective-1"; /* ChainId.Mainnet */
 const ethereumChainId = 1; /* ChainId.EthereumMainnet */
 const restEndpoint = getNetworkEndpoints(Network.MainnetSentry).rest;
 const amount = {
-  amount: new BigNumberInBase(0.01).toWei().toFixed(),
+  amount: toChainFormat(0.01).toFixed(),
   denom: "inj",
 };
 
@@ -190,7 +190,7 @@ const accountDetails = baseAccount.toAccountDetails();
 const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint);
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock();
 const latestHeight = latestBlock.header.height;
-const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+const timeoutHeight = toBigNumber(latestHeight).plus(
   DEFAULT_BLOCK_TIMEOUT_HEIGHT
 );
 
@@ -228,7 +228,7 @@ const { txRaw } = createTransaction({
   message: [msg],
   memo: '',
   signMode: SIGN_AMINO,
-  fee: DEFAULT_STD_FEE,
+  fee: getDefaultStdFee(),
   pubKey: publicKeyBase64,
   sequence: baseAccount.sequence,
   timeoutHeight: timeoutHeight.toNumber(),

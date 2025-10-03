@@ -1,5 +1,5 @@
-import { MinModuleParams } from '../types/mint.js'
-import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type { MinModuleParams } from '../types/mint.js'
+import type { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer

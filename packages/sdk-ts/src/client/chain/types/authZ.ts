@@ -1,4 +1,4 @@
-import {
+import type {
   CosmosAuthzV1Beta1Authz,
   InjectiveExchangeV1Beta1Authz,
 } from '@injectivelabs/core-proto-ts'

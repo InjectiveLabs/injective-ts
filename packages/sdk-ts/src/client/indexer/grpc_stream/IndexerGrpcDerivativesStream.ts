@@ -1,16 +1,16 @@
-import {
+import { GeneralException } from '@injectivelabs/exceptions'
+import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import { IndexerDerivativeStreamTransformer } from '../transformers/index.js'
+import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
+import type { Subscription } from 'rxjs'
+import type { StreamStatusResponse } from '../types/index.js'
+import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
+import type { PaginationOption } from '../../../types/pagination.js'
+import type {
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
 } from '../../../types/index.js'
-import { StreamStatusResponse } from '../types/index.js'
-import { PaginationOption } from '../../../types/pagination.js'
-import { OrderSide, OrderState } from '@injectivelabs/ts-types'
-import { IndexerDerivativeStreamTransformer } from '../transformers/index.js'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
-import { Subscription } from 'rxjs'
-import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import { GeneralException } from '@injectivelabs/exceptions'
 
 export type DerivativeOrderbookV2StreamCallback = (
   response: ReturnType<

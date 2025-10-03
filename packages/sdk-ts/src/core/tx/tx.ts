@@ -1,5 +1,14 @@
-import keccak256 from 'keccak256'
-import { DEFAULT_STD_FEE } from '@injectivelabs/utils'
+import { keccak256 } from 'viem'
+import { toBigNumber } from '@injectivelabs/utils'
+import { getDefaultStdFee } from '@injectivelabs/utils'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import {
+  getStdFeeFromString,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+} from '@injectivelabs/utils'
+import { BaseAccount } from '../accounts/index.js'
+import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client/index.js'
 import {
   createAuthInfo,
   createBody,
@@ -8,22 +17,13 @@ import {
   createSigners,
   SIGN_DIRECT,
 } from './utils/index.js'
-import {
+import type { Msgs } from '../modules/msgs.js'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
+import type {
   CreateTransactionArgs,
   CreateTransactionResult,
   CreateTransactionWithSignersArgs,
 } from './types/index.js'
-import { DirectSignResponse } from '@cosmjs/proto-signing'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { Msgs } from '../modules/msgs.js'
-import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  getStdFeeFromString,
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-} from '@injectivelabs/utils'
-import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client/index.js'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import { BaseAccount } from '../accounts/index.js'
 
 /**
  * @typedef {Object} CreateTransactionWithSignersArgs
@@ -52,7 +52,7 @@ export const createTransactionWithSigners = ({
   message,
   timeoutHeight,
   memo = '',
-  fee = DEFAULT_STD_FEE,
+  fee = getDefaultStdFee(),
   signMode = SIGN_DIRECT,
 }: CreateTransactionWithSignersArgs): CreateTransactionResult => {
   const actualSigners = Array.isArray(signers) ? signers : [signers]
@@ -91,7 +91,7 @@ export const createTransactionWithSigners = ({
   const signDocBytes = CosmosTxV1Beta1Tx.SignDoc.encode(signDoc).finish()
 
   const toSignBytes = Buffer.from(signDocBytes)
-  const toSignHash = keccak256(Buffer.from(signDocBytes))
+  const toSignHash = keccak256(Buffer.from(signDocBytes), 'bytes')
 
   const txRaw = CosmosTxV1Beta1Tx.TxRaw.create()
   txRaw.authInfoBytes = authInfoBytes
@@ -225,7 +225,7 @@ export const createTransactionForAddressAndMsg = async (
   /** Block Details */
   const latestBlock = await tendermintRestApi.fetchLatestBlock()
   const latestHeight = latestBlock.header.height
-  const timeoutHeight = new BigNumberInBase(latestHeight).plus(
+  const timeoutHeight = toBigNumber(latestHeight).plus(
     DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   )
 

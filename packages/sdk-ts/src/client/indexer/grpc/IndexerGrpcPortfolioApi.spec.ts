@@ -1,8 +1,8 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 // import { INJ_DENOM } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
 import { IndexerGrpcAccountPortfolioApi } from './IndexerGrpcPortfolioApi.js'
+import type { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)

@@ -1,5 +1,5 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { InjectiveAuctionV1Beta1Auction } from '@injectivelabs/core-proto-ts'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { InjectiveAuctionV1Beta1Auction } from '@injectivelabs/core-proto-ts'
 
 export interface AuctionParams {
   auctionPeriod: number

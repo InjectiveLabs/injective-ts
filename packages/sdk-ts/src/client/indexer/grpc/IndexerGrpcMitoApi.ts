@@ -1,12 +1,12 @@
+import { MitoApi } from '@injectivelabs/mito-proto-ts'
+import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
-import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 
 /**
@@ -977,7 +977,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
 
     try {
       const response = await this.retry<MitoApi.GetClaimReferencesResponse>(
-        () => this.client.GetClaimReferences(request, this.metadata ),
+        () => this.client.GetClaimReferences(request, this.metadata),
       )
 
       return IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences(

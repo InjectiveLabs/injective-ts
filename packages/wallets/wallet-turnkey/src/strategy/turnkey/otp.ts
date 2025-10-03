@@ -1,4 +1,3 @@
-import { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 import {
   ErrorType,
   WalletException,
@@ -8,12 +7,13 @@ import {
   type TurnkeyConfirmEmailOTPResponse,
   type TurnkeyOTPCredentialsResponse,
 } from './../types.js'
-import { type HttpRestClient } from '@injectivelabs/utils'
 import {
   DEFAULT_TURNKEY_REFRESH_SECONDS,
   TURNKEY_OTP_INIT_PATH,
   TURNKEY_OTP_VERIFY_PATH,
 } from '../consts.js'
+import type { HttpRestClient } from '@injectivelabs/utils'
+import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 
 export class TurnkeyOtpWallet {
   static async initEmailOTP(args: {

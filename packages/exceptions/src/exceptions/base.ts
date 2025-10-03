@@ -1,10 +1,8 @@
-/* eslint-disable class-methods-use-this */
-import {
+import { ErrorType, UnspecifiedErrorCode } from './types/index.js'
+import type {
   Exception,
-  ErrorType,
   ErrorContext,
   ErrorCode,
-  UnspecifiedErrorCode,
   ErrorContextCode,
 } from './types/index.js'
 
@@ -80,8 +78,14 @@ export abstract class ConcreteException extends Error implements Exception {
    */
   public originalMessage: string = ''
 
+  /**
+   * Flag to skip parsing the error message
+   */
+  protected skipParsing: boolean = false
+
   constructor(error: Error, context?: ErrorContext) {
     super(error.message)
+    this.skipParsing = context?.skipParsing || false
     this.parseError(error)
     this.parseContext(context)
     this.parse()
@@ -130,7 +134,7 @@ export abstract class ConcreteException extends Error implements Exception {
   public setStack(stack: string) {
     try {
       this.stack = stack
-    } catch (e) {
+    } catch {
       // throw nothing here
     }
   }

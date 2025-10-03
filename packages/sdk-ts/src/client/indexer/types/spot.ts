@@ -1,15 +1,15 @@
-import {
+import type { PriceLevel } from './exchange.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { TokenMeta } from './../../../types/token.js'
+import type { GrpcOrderType } from '../../chain/types/exchange.js'
+import type { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   OrderSide,
   OrderState,
   TradeDirection,
   TradeExecutionType,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
-import { GrpcOrderType } from '../../chain/types/exchange.js'
-import { PriceLevel } from './exchange.js'
-import { TokenMeta } from './../../../types/token.js'
-import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
 
 export interface SpotMarket {
   marketId: string

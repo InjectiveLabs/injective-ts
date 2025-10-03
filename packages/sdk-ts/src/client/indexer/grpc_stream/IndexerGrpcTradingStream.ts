@@ -1,7 +1,7 @@
-import { Subscription } from 'rxjs'
 import { InjectiveTradingRpc } from '@injectivelabs/indexer-proto-ts'
-import { StreamStatusResponse } from '../types/index.js'
 import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
+import type { Subscription } from 'rxjs'
+import type { StreamStatusResponse } from '../types/index.js'
 
 /**
  * @category Indexer Grid Strategy Grpc Stream

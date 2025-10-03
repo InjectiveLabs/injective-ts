@@ -1,9 +1,9 @@
-import { MsgBase } from '../../MsgBase.js'
-import type { Msgs } from '../../msgs.js'
 import {
   CosmosAuthzV1Beta1Tx,
   GoogleProtobufAny,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import type { Msgs } from '../../msgs.js'
 
 export declare namespace MsgExec {
   export interface Params {

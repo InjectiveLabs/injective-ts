@@ -1,17 +1,17 @@
 import snakecaseKeys from 'snakecase-keys'
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
   InjectivePermissionsV1Beta1Tx,
   InjectivePermissionsV1Beta1Permissions,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
+import type {
   PermissionRole,
   PermissionActorRoles,
   PermissionRoleManager,
   PermissionPolicyStatus,
   PermissionPolicyManagerCapability,
 } from './../../../../client/chain/types/permissions.js'
-import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgCreateNamespace {
   export interface Params {

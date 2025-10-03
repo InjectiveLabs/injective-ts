@@ -1,5 +1,5 @@
-import { grpc, getGrpcTransport } from '../../utils/grpc.js'
 import { GrpcWebImpl } from './IndexerGrpcWebImpl.js'
+import { grpc, getGrpcTransport } from '../../utils/grpc.js'
 
 /**
  * @hidden

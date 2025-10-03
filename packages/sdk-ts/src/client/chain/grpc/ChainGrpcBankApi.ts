@@ -1,18 +1,18 @@
+import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { ChainModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { ChainGrpcBankTransformer } from '../transformers/index.js'
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import {
   fetchAllWithPagination,
   paginationRequestFromPagination,
 } from '../../../utils/pagination.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { ChainGrpcBankTransformer } from '../transformers/index.js'
-import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
-import { ChainModule } from '../types/index.js'
-import { PaginationOption } from '../../../types/pagination.js'
+import type { PaginationOption } from '../../../types/pagination.js'
 
 const MAX_LIMIT_FOR_SUPPLY = 10000
 

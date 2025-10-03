@@ -1,12 +1,13 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
   CosmosAuthzV1Beta1Tx,
   CosmosAuthzV1Beta1Authz,
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
-import { BaseAuthorization } from './authorizations/Base.js'
-import { GeneralException } from '@injectivelabs/exceptions'
+import { MsgBase } from '../../MsgBase.js'
+import type { BaseAuthorization } from './authorizations/Base.js'
+
 export declare namespace MsgGrantWithAuthorization {
   export interface Params {
     authorization: BaseAuthorization<unknown, unknown, unknown>

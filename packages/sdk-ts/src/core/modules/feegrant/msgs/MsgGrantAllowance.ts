@@ -1,5 +1,4 @@
 import snakecaseKeys from 'snakecase-keys'
-import { MsgBase } from '../../MsgBase.js'
 import {
   GoogleProtobufAny,
   CosmosBaseV1Beta1Coin,
@@ -7,7 +6,8 @@ import {
   GoogleProtobufTimestamp,
   CosmosFeegrantV1Beta1Feegrant,
 } from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import { MsgBase } from '../../MsgBase.js'
+import type { Coin } from '@injectivelabs/ts-types'
 
 const basicAllowanceType = '/cosmos.feegrant.v1beta1.BasicAllowance'
 export declare namespace MsgGrantAllowance {

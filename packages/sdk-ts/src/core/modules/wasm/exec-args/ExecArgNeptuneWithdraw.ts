@@ -1,9 +1,6 @@
-import {
-  ExecArgBase,
-  dataToExecData,
-  ExecDataRepresentation,
-} from '../ExecArgBase.js'
 import { toBase64 } from '../../../../utils/utf8.js'
+import { ExecArgBase, dataToExecData } from '../ExecArgBase.js'
+import type { ExecDataRepresentation } from '../ExecArgBase.js'
 
 export declare namespace ExecArgNeptuneWithdraw {
   export interface Params {

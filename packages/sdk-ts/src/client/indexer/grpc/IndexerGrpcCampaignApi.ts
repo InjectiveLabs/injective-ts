@@ -1,13 +1,13 @@
+import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
+import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
+import { IndexerModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerCampaignTransformer } from '../transformers/index.js'
-import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API

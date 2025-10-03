@@ -1,11 +1,11 @@
+import { InjectiveWasmxV1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { InjectiveWasmxV1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 
 /**
  * @category Chain Grpc API

@@ -1,5 +1,5 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface Campaign {
   campaignId: string
