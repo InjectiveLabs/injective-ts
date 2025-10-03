@@ -1,7 +1,5 @@
-import {
-  InjectiveInsuranceV1Beta1Insurance,
-  InjectiveOracleV1Beta1Oracle,
-} from '@injectivelabs/core-proto-ts'
+import { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
+import type { InjectiveInsuranceV1Beta1Insurance } from '@injectivelabs/core-proto-ts'
 
 export interface InsuranceModuleParams {
   defaultRedemptionNoticePeriodDuration: number

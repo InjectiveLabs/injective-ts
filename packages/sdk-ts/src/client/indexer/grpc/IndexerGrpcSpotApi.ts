@@ -1,20 +1,20 @@
+import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import {
   GeneralException,
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { OrderSide, OrderState } from '@injectivelabs/ts-types'
-import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
-import {
+import { IndexerModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
+import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
+import type { PaginationOption } from '../../../types/pagination.js'
+import type {
   TradeExecutionSide,
   TradeDirection,
   TradeExecutionType,
 } from '../../../types/exchange.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import { IndexerModule } from '../types/index.js'
-import { PaginationOption } from '../../../types/pagination.js'
-import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API

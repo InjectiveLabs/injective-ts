@@ -7,9 +7,10 @@ PROTO_DIR=$ROOT_DIR/proto
 TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
 
+# https://github.com/InjectiveLabs/injective-core/blob/release/v1.16.x/go.mod
 # remote branches/tags
 injective_core_branch=release/v1.16.x
-cosmos_sdk_branch=v0.50.13-evm-comet1-inj.3
+cosmos_sdk_branch=v0.50.13-evm-comet1-inj.6
 wasmd_branch=v0.53.3-evm-comet1-inj
 ibc_go_branch=v8.7.0-evm-comet1-inj
 
@@ -74,6 +75,7 @@ for dir in $proto_dirs; do
     --ts_proto_opt="esModuleInterop=true" \
     --ts_proto_opt="forceLong=string" \
     --ts_proto_opt="env=both" \
+    --ts_proto_opt="enumsAsLiterals=true" \
     --ts_proto_opt="useExactTypes=false" \
     --ts_proto_opt="outputClientImpl=grpc-web" \
     --ts_proto_out="$TS_OUTPUT_DIR/proto" \

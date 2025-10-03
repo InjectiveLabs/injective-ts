@@ -1,7 +1,7 @@
-import { Network } from '@injectivelabs/networks'
-import { EvmChainId } from '@injectivelabs/ts-types'
 import { Web3Exception } from '@injectivelabs/exceptions'
-import BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type { Network } from '@injectivelabs/networks'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
 interface SendTransactionOptions {
   tx: {

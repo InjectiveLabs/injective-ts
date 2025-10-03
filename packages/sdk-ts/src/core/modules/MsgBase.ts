@@ -1,7 +1,7 @@
-import { SnakeCaseKeys } from 'snakecase-keys'
-import { objectKeysToEip712Types } from '../tx/eip712/maps.js'
-import { TypedDataField } from '../tx/eip712/types.js'
 import { prepareSignBytes } from './utils.js'
+import { objectKeysToEip712Types } from '../tx/eip712/maps.js'
+import type { SnakeCaseKeys } from 'snakecase-keys'
+import type { TypedDataField } from '../tx/eip712/types.js'
 
 /**
  * @category Messages

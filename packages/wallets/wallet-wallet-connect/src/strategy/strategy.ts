@@ -1,4 +1,12 @@
-/* eslint-disable class-methods-use-this */
+import { EvmChainId } from '@injectivelabs/ts-types'
+import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
+import { EthereumProvider } from '@bangjelkoski/wc-ethereum-provider'
+import {
+  WalletAction,
+  WalletEventListener,
+  WalletDeviceType,
+  BaseConcreteStrategy,
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -6,29 +14,23 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import {
+import type { AccountAddress } from '@injectivelabs/ts-types'
+import type {
+  Provider,
+  EthereumProviderOptions,
+} from '@bangjelkoski/wc-ethereum-provider'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts'
+import type {
   StdSignDoc,
-  WalletAction,
-  WalletDeviceType,
-  WalletEventListener,
-  BaseConcreteStrategy,
+  Eip1193Provider,
   ConcreteWalletStrategy,
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
-import {
-  Provider,
-  EthereumProvider,
-  EthereumProviderOptions,
-} from '@bangjelkoski/wc-ethereum-provider'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
-import {
-  TxRaw,
-  toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  DirectSignResponse,
-  AminoSignResponse,
-} from '@injectivelabs/sdk-ts'
 
 const WalletConnectIds = {
   FireBlocks:
@@ -182,7 +184,6 @@ export class WalletConnect
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -246,7 +247,6 @@ export class WalletConnect
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),
@@ -334,7 +334,7 @@ export class WalletConnect
       })
 
       return this.provider as Provider
-    } catch (e) {
+    } catch {
       throw new WalletException(
         new Error('WalletConnect not supported for this wallet'),
         {
@@ -344,6 +344,12 @@ export class WalletConnect
         },
       )
     }
+  }
+
+  async getEip1193Provider(): Promise<Eip1193Provider> {
+    const provider = await this.getWalletConnect()
+
+    return provider as unknown as Eip1193Provider
   }
 
   private async getConnectedWalletConnect(): Promise<Provider> {

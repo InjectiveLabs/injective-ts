@@ -1,8 +1,8 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { InjectivePermissionsV1Beta1Permissions } from '@injectivelabs/core-proto-ts'
-import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import MsgUpdateNamespace from './MsgUpdateNamespace.js'
+import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const params: MsgUpdateNamespace['params'] = {

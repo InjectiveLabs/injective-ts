@@ -1,5 +1,9 @@
+import { toHumanReadable } from '@injectivelabs/utils'
 import { uint8ArrayToString } from '../../../utils/index.js'
-import {
+import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import type { Pagination } from '../../../types/index.js'
+import type { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
+import type {
   Vote,
   Proposal,
   GrpcVote,
@@ -12,10 +16,6 @@ import {
   GrpcGovernanceVotingParams,
   GrpcGovernanceDepositParams,
 } from '../types/gov.js'
-import { Pagination } from '../../../types/index.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
-import { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
@@ -126,7 +126,7 @@ export class ChainGrpcGovTransformer {
         depositor: deposit.depositor,
         amounts: deposit.amount.map((coin) => ({
           denom: coin.denom,
-          amount: cosmosSdkDecToBigNumber(coin.amount).toFixed(),
+          amount: toHumanReadable(coin.amount).toFixed(),
         })),
       }
     })
@@ -206,7 +206,7 @@ export class ChainGrpcGovTransformer {
         : 0,
       totalDeposits: proposal.totalDeposit.map((coin) => ({
         denom: coin.denom,
-        amount: cosmosSdkDecToBigNumber(coin.amount).toFixed(),
+        amount: toHumanReadable(coin.amount).toFixed(),
       })),
       votingStartTime: proposal.votingStartTime
         ? Math.floor(proposal.votingStartTime.getTime() / 1000)

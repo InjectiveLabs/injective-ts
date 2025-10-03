@@ -1,4 +1,6 @@
-import {
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type {
   PermissionRole,
   PermissionNamespace,
   PermissionActorRoles,
@@ -15,8 +17,6 @@ import {
   GrpcPermissionAddressVoucher,
   GrpcPermissionPolicyStatusManagerCapability,
 } from '../types/permissions.js'
-import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer

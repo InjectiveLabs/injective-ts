@@ -1,44 +1,28 @@
+import { Int53, Uint53 } from '@cosmjs/math'
+import { AminoTypes } from '@cosmjs/stargate'
+import { calculateFee } from '@cosmjs/stargate'
+import { assert, assertDefined } from '@cosmjs/utils'
+import { defaultRegistryTypes } from '@cosmjs/stargate'
+import { Tendermint37Client } from '@cosmjs/tendermint-rpc'
+import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx.js'
+import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing.js'
+import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
 import {
-  StdFee,
   encodeSecp256k1Pubkey,
   makeSignDoc as makeSignDocAmino,
 } from '@cosmjs/amino'
-import { Int53, Uint53 } from '@cosmjs/math'
-import {
-  Registry,
-  makeSignDoc,
-  encodePubkey,
-  EncodeObject,
-  OfflineSigner,
-  isOfflineDirectSigner,
-  makeAuthInfoBytes,
-  TxBodyEncodeObject,
-} from '@cosmjs/proto-signing'
-import {
-  CometClient,
-  HttpEndpoint,
-  Tendermint37Client,
-} from '@cosmjs/tendermint-rpc'
-import { assert, assertDefined } from '@cosmjs/utils'
-import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin.js'
 import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx.js'
 import {
   MsgDelegate,
   MsgUndelegate,
 } from 'cosmjs-types/cosmos/staking/v1beta1/tx.js'
-import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing.js'
-import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx.js'
-import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
-import { Height } from 'cosmjs-types/ibc/core/client/v1/client.js'
-import { AminoConverters, AminoTypes } from '@cosmjs/stargate'
-import { calculateFee, GasPrice } from '@cosmjs/stargate'
 import {
-  MsgDelegateEncodeObject,
-  MsgSendEncodeObject,
-  MsgTransferEncodeObject,
-  MsgUndelegateEncodeObject,
-  MsgWithdrawDelegatorRewardEncodeObject,
-} from '@cosmjs/stargate'
+  Registry,
+  makeSignDoc,
+  encodePubkey,
+  isOfflineDirectSigner,
+  makeAuthInfoBytes,
+} from '@cosmjs/proto-signing'
 import {
   createAuthzAminoConverters,
   createBankAminoConverters,
@@ -49,13 +33,27 @@ import {
   createStakingAminoConverters,
   createVestingAminoConverters,
 } from '@cosmjs/stargate'
-import {
-  DeliverTxResponse,
-  defaultRegistryTypes,
-  StargateClientOptions,
-} from '@cosmjs/stargate'
-import { StargateClient } from './StargateClient.js'
 import { getPublicKey } from '../tx/index.js'
+import { StargateClient } from './StargateClient.js'
+import type { StdFee } from '@cosmjs/amino'
+import type { GasPrice } from '@cosmjs/stargate'
+import type { AminoConverters } from '@cosmjs/stargate'
+import type { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin.js'
+import type { Height } from 'cosmjs-types/ibc/core/client/v1/client.js'
+import type { CometClient, HttpEndpoint } from '@cosmjs/tendermint-rpc'
+import type { DeliverTxResponse, StargateClientOptions } from '@cosmjs/stargate'
+import type {
+  EncodeObject,
+  OfflineSigner,
+  TxBodyEncodeObject,
+} from '@cosmjs/proto-signing'
+import type {
+  MsgDelegateEncodeObject,
+  MsgSendEncodeObject,
+  MsgTransferEncodeObject,
+  MsgUndelegateEncodeObject,
+  MsgWithdrawDelegatorRewardEncodeObject,
+} from '@cosmjs/stargate'
 
 /**
  * Signing information for a single signer that is not included in the transaction.
@@ -146,7 +144,7 @@ export class SigningStargateClient extends StargateClient {
     signer: OfflineSigner,
     options: SigningStargateClientOptions,
   ) {
-    super(tmClient, options)
+    super(tmClient as any, options)
     const {
       registry = new Registry(defaultRegistryTypes),
       aminoTypes = new AminoTypes(createDefaultAminoConverters()),

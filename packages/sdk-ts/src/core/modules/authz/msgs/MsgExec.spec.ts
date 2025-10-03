@@ -1,6 +1,6 @@
-import MsgExec from './MsgExec.js'
+import { toChainFormat } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { BigNumberInBase } from '@injectivelabs/utils'
+import MsgExec from './MsgExec.js'
 import MsgSend from '../../bank/msgs/MsgSend.js'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
@@ -12,7 +12,7 @@ const params = {
       dstInjectiveAddress: injectiveAddress,
       srcInjectiveAddress: injectiveAddress2,
       amount: {
-        amount: new BigNumberInBase(1).toFixed(),
+        amount: toChainFormat(1).toFixed(),
         denom: 'inj',
       },
     }),

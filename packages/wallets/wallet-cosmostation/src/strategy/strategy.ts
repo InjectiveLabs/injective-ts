@@ -1,18 +1,14 @@
-/* eslint-disable class-methods-use-this */
+import { makeSignDoc } from '@cosmjs/proto-signing'
+import { CosmosChainId } from '@injectivelabs/ts-types'
+import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import { InstallError } from '@cosmostation/extension-client'
+import { getOfflineSigner } from '@cosmostation/cosmos-client'
+import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
 import {
   toUtf8,
-  TxResponse,
-  AminoSignResponse,
-  DirectSignResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
-import {
-  ChainId,
-  EvmChainId,
-  CosmosChainId,
-  AccountAddress,
-} from '@injectivelabs/ts-types'
 import {
   ErrorType,
   UnspecifiedErrorCode,
@@ -20,18 +16,28 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
-  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
-  ConcreteWalletStrategy,
   type ConcreteCosmosWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
-import { InstallError, Cosmos } from '@cosmostation/extension-client'
-import { makeSignDoc } from '@cosmjs/proto-signing'
-import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
 import { CosmostationWallet } from './../wallet.js'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { Cosmos } from '@cosmostation/extension-client'
+import type {
+  ChainId,
+  EvmChainId,
+  AccountAddress,
+} from '@injectivelabs/ts-types'
+import type {
+  StdSignDoc,
+  ConcreteWalletStrategy,
+} from '@injectivelabs/wallet-base'
+import type {
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts'
 
 const getChainNameFromChainId = (chainId: CosmosChainId | ChainId) => {
   const [chainName] = chainId.split('-')
@@ -110,7 +116,6 @@ export class Cosmostation
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async sendEvmTransaction(
     _transaction: unknown,
     _options: { address: AccountAddress; evmChainId: EvmChainId },
@@ -297,6 +302,10 @@ export class Cosmostation
         context: WalletAction.GetEvmTransactionReceipt,
       },
     )
+  }
+
+  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
+    return (await getOfflineSigner(chainId)) as unknown as OfflineSigner
   }
 
   private async getCosmostationWallet(): Promise<Cosmos> {

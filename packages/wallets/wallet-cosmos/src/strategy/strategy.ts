@@ -1,19 +1,9 @@
-/* eslint-disable class-methods-use-this */
+import { capitalize } from '@injectivelabs/utils'
 import {
-  TxRaw,
-  TxResponse,
   waitTxBroadcasted,
-  AminoSignResponse,
-  DirectSignResponse,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts'
-import {
-  ChainId,
-  EvmChainId,
-  CosmosChainId,
-  AccountAddress,
-} from '@injectivelabs/ts-types'
 import {
   ErrorType,
   UnspecifiedErrorCode,
@@ -22,19 +12,39 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   Wallet,
-  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
   BaseConcreteStrategy,
-  ConcreteWalletStrategy,
-  SendTransactionOptions,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
-import { capitalize } from '@injectivelabs/utils'
 import { CosmosWallet } from './../wallet.js'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  ChainId,
+  EvmChainId,
+  CosmosChainId,
+  AccountAddress,
+} from '@injectivelabs/ts-types'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts'
+import type {
+  StdSignDoc,
+  ConcreteWalletStrategy,
+  SendTransactionOptions,
+} from '@injectivelabs/wallet-base'
 
-const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
+const cosmosWallets = [
+  Wallet.Leap,
+  Wallet.Ninji,
+  Wallet.Keplr,
+  Wallet.OWallet,
+] as WalletType[]
 
 export class CosmosWalletStrategy
   extends BaseConcreteStrategy
@@ -94,7 +104,7 @@ export class CosmosWalletStrategy
         )
       }
 
-      if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+      if (([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
         window.removeEventListener(
           'keplr_keystorechange',
           this.listeners[WalletEventListener.AccountChange],
@@ -135,7 +145,6 @@ export class CosmosWalletStrategy
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async sendEvmTransaction(
     _transaction: unknown,
     _options: { address: AccountAddress; evmChainId: EvmChainId },
@@ -210,10 +219,17 @@ export class CosmosWalletStrategy
     address: AccountAddress
   }) {
     const cosmosWallet = this.getCurrentCosmosWallet()
-    const signer = await cosmosWallet.getOfflineSigner()
+    const signer = await cosmosWallet.getOfflineSigner(this.chainId)
     const signDoc = createSignDocFromTransaction(transaction)
 
     try {
+      if (!('signDirect' in signer)) {
+        throw new CosmosWalletException(new Error('signDirect not available'), {
+          code: UnspecifiedErrorCode,
+          context: WalletAction.SendTransaction,
+        })
+      }
+
       return await signer.signDirect(
         transaction.address,
         createCosmosSignDocFromSignDoc(signDoc),
@@ -309,7 +325,7 @@ export class CosmosWalletStrategy
       window.ninji.on('accountsChanged', listener)
     }
 
-    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       window.addEventListener('keplr_keystorechange', listener)
     }
 
@@ -322,6 +338,17 @@ export class CosmosWalletStrategy
     const { wallet, cosmosWallet } = this
 
     return !cosmosWallet ? new CosmosWallet({ chainId, wallet }) : cosmosWallet
+  }
+
+  public async getOfflineSigner(chainId?: string): Promise<OfflineSigner> {
+    const cosmosWallet = await this.getCosmosWallet(
+      (chainId as ChainId) || this.chainId,
+    )
+    if (!cosmosWallet) {
+      throw new Error('no cosmos wallet')
+    }
+
+    return await cosmosWallet.getOfflineSigner(chainId || this.chainId)
   }
 
   private getCurrentCosmosWallet(): CosmosWallet {

@@ -10,7 +10,7 @@ jobs:
   publish-canary:
     runs-on: ubuntu-latest
     permissions: write-all
-    if: ${{ contains(github.event.commits[0].message, 'canary') }}
+    if: ${{ contains(github.event.head_commit.message, 'canary') }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
           lerna publish from-git --force-git-tag --dist-tag alpha --yes --summary-file
 
       - name: 'Broadcast published versions on Slack'
-        run: node etc/slack --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
+        run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
         env:
           GIT_ACTOR: ${{ github.actor }}
           SLACK_API: ${{ secrets.SLACK_API }}

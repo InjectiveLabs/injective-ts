@@ -1,19 +1,16 @@
-/* eslint-disable class-methods-use-this */
+import { sleep, capitalize } from '@injectivelabs/utils'
 import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
+import { toUtf8, TxGrpcApi, isServerSide } from '@injectivelabs/sdk-ts'
 import {
-  TxRaw,
-  toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  isServerSide,
-  AminoSignResponse,
-  DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+  Wallet,
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+  BaseConcreteStrategy,
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
-  ErrorContext,
   WalletException,
-  ThrownException,
   BitGetException,
   MetamaskException,
   OkxWalletException,
@@ -23,22 +20,6 @@ import {
   RainbowWalletException,
 } from '@injectivelabs/exceptions'
 import {
-  Wallet,
-  StdSignDoc,
-  WalletAction,
-  WalletDeviceType,
-  WalletEventListener,
-  BaseConcreteStrategy,
-  SendTransactionOptions,
-  BrowserEip1993Provider,
-  ConcreteWalletStrategy,
-  ConcreteWalletStrategyArgs,
-  EIP6963AnnounceProviderEvent,
-  ConcreteEvmWalletStrategyArgs,
-} from '@injectivelabs/wallet-base'
-import { sleep, capitalize } from '@injectivelabs/utils'
-import { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
-import {
   getRabbyProvider,
   getBitGetProvider,
   getPhantomProvider,
@@ -47,6 +28,24 @@ import {
   getOkxWalletProvider,
   getTrustWalletProvider,
 } from './utils/index.js'
+import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type { ErrorContext, ThrownException } from '@injectivelabs/exceptions'
+import type {
+  TxRaw,
+  TxResponse,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts'
+import type {
+  StdSignDoc,
+  Eip1193Provider,
+  SendTransactionOptions,
+  BrowserEip1993Provider,
+  ConcreteWalletStrategy,
+  ConcreteWalletStrategyArgs,
+  EIP6963AnnounceProviderEvent,
+  ConcreteEvmWalletStrategyArgs,
+} from '@injectivelabs/wallet-base'
 
 export class EvmWallet
   extends BaseConcreteStrategy
@@ -189,7 +188,6 @@ export class EvmWallet
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${Buffer.from(
@@ -297,7 +295,6 @@ export class EvmWallet
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -353,33 +350,31 @@ export class EvmWallet
   async getEvmTransactionReceipt(txHash: string): Promise<string> {
     const ethereum = await this.getEthereum()
 
-    const interval = 1000
-    const transactionReceiptRetry = async () => {
-      const receipt = (await ethereum.request({
-        method: 'eth_getTransactionReceipt',
-        params: [txHash],
-      })) as string
+    const interval = 3000
+    const maxAttempts = 10
+    let attempts = 0
 
-      if (!receipt) {
-        await sleep(interval)
-        await transactionReceiptRetry()
-      }
+    while (attempts < maxAttempts) {
+      attempts++
+      await sleep(interval)
 
-      return receipt
+      try {
+        const receipt = await ethereum.request({
+          method: 'eth_getTransactionReceipt',
+          params: [txHash],
+        })
+
+        if (receipt) {
+          return txHash
+        }
+      } catch {}
     }
 
-    try {
-      return await transactionReceiptRetry()
-    } catch (e: unknown) {
-      throw this.EvmWalletException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetEvmTransactionReceipt,
-      })
-    }
+    throw new Error(
+      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+    )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),
@@ -406,6 +401,10 @@ export class EvmWallet
     }
 
     ethereum.on('accountsChanged', callback)
+  }
+
+  async getEip1193Provider(): Promise<Eip1193Provider> {
+    return this.getEthereum() as unknown as Eip1193Provider
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {

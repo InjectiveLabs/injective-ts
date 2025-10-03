@@ -1,12 +1,12 @@
-import { ExecArgs } from '../exec-args.js'
-import { MsgBase } from '../../MsgBase.js'
-import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
-import { fromUtf8 } from '../../../../utils/utf8.js'
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
   CosmwasmWasmV1Tx,
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import { fromUtf8 } from '../../../../utils/utf8.js'
+import type { ExecArgs } from '../exec-args.js'
 
 export declare namespace MsgExecuteContract {
   export interface Params {

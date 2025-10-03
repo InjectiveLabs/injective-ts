@@ -1,10 +1,8 @@
 import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
 import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  amountToCosmosSdkDecAmount,
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgInstantSpotMarketLaunch {
   export interface Params {
@@ -63,15 +61,13 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
       ...initialParams,
       market: {
         ...initialParams.market,
-        minPriceTickSize: amountToCosmosSdkDecAmount(
+        minPriceTickSize: toChainFormat(
           initialParams.market.minPriceTickSize,
         ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
+        minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
-          initialParams.market.minNotional,
-        ).toFixed(),
+        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
       },
     } as MsgInstantSpotMarketLaunch.Params
 
@@ -116,13 +112,11 @@ export default class MsgInstantSpotMarketLaunch extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      min_price_tick_size: amountToCosmosSdkDecAmount(
-        value.min_price_tick_size,
-      ).toFixed(),
-      min_quantity_tick_size: amountToCosmosSdkDecAmount(
+      min_price_tick_size: toChainFormat(value.min_price_tick_size).toFixed(),
+      min_quantity_tick_size: toChainFormat(
         value.min_quantity_tick_size,
       ).toFixed(),
-      min_notional: amountToCosmosSdkDecAmount(value.min_notional).toFixed(),
+      min_notional: toChainFormat(value.min_notional).toFixed(),
     }
 
     return {

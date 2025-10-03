@@ -1,8 +1,8 @@
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcIbcApi } from './ChainGrpcIbcApi.js'
 import { sha256 } from '../../../utils/crypto.js'
 import { fromUtf8 } from '../../../utils/utf8.js'
-import { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
+import { ChainGrpcIbcApi } from './ChainGrpcIbcApi.js'
+import type { IbcApplicationsTransferV1Transfer } from '@injectivelabs/core-proto-ts'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcIbcApi = new ChainGrpcIbcApi(endpoints.grpc)

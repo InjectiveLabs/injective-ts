@@ -1,10 +1,10 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import {
   CosmosBaseV1Beta1Coin,
   InjectiveTokenFactoryV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
-import { TypedDataField } from '../../../tx/index.js'
+import { MsgBase } from '../../MsgBase.js'
+import type { TypedDataField } from '../../../tx/index.js'
 
 export declare namespace MsgBurn {
   export interface Params {
@@ -63,6 +63,7 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
       burnFromAddress: proto.burnFromAddress,
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { burn_from_address, ...messageWithoutBurnFromAddress } = message
 
     return {

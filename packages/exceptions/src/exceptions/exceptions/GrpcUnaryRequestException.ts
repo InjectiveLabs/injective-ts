@@ -1,5 +1,6 @@
 import { ConcreteException } from '../base.js'
-import { ErrorContext, ErrorType, GRPC_REQUEST_FAILED } from '../types/index.js'
+import { ErrorType, GRPC_REQUEST_FAILED } from '../types/index.js'
+import type { ErrorContext } from '../types/index.js'
 
 export class GrpcUnaryRequestException extends ConcreteException {
   public static errorClass: string = 'GrpcUnaryRequestException'

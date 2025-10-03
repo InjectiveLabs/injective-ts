@@ -1,18 +1,18 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgMint from './MsgMint.js'
 import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgMint from './MsgMint.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgMint['params'] = {
   sender: mockFactory.injectiveAddress,
   amount: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
   receiver: mockFactory.injectiveAddress2,
@@ -62,7 +62,6 @@ describe('MsgMint', () => {
       ...protoParamsAmino,
     })
   })
-
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({

@@ -1,39 +1,46 @@
-export enum TokenType {
-  Ibc = 'ibc',
-  Cw20 = 'cw20',
-  Spl = 'spl',
-  Erc20 = 'erc20',
-  Lp = 'lp',
-  Evm = 'evm',
-  Native = 'native',
-  Symbol = 'symbol',
-  TokenFactory = 'tokenFactory',
-  InsuranceFund = 'insuranceFund',
-  Unknown = 'unknown',
-}
+export const TokenType = {
+  Ibc: 'ibc',
+  Cw20: 'cw20',
+  Spl: 'spl',
+  Erc20: 'erc20',
+  Lp: 'lp',
+  Evm: 'evm',
+  Native: 'native',
+  Symbol: 'symbol',
+  TokenFactory: 'tokenFactory',
+  InsuranceFund: 'insuranceFund',
+  Unknown: 'unknown',
+} as const
 
-export enum TokenVerification {
-  Verified = 'verified' /** verified on token-metadata package */,
-  Submitted = 'submitted' /** submitted on token-metadata package but not verified */,
-  Internal = 'internal' /** verified from on-chain data */,
-  External = 'external' /** verified on external source */,
-  Unverified = 'unverified' /** unverified on any source */,
-}
+export type TokenType = (typeof TokenType)[keyof typeof TokenType]
 
-export enum TokenSource {
-  Aptos = 'aptos',
-  Solana = 'solana',
-  Cosmos = 'cosmos',
-  Ethereum = 'ethereum',
-  EthereumWh = 'ethereum-wormhole',
-  Polygon = 'polygon',
-  Klaytn = 'klaytn',
-  Arbitrum = 'arbitrum',
-  Sui = 'sui',
-  Ibc = 'ibc',
-  BinanceSmartChain = 'binance-smart-chain',
-  Axelar = 'axelar',
-}
+export const TokenVerification = {
+  Verified: 'verified',
+  Submitted: 'submitted',
+  Internal: 'internal',
+  External: 'external',
+  Unverified: 'unverified',
+} as const
+
+export type TokenVerification =
+  (typeof TokenVerification)[keyof typeof TokenVerification]
+
+export const TokenSource = {
+  Aptos: 'aptos',
+  Solana: 'solana',
+  Cosmos: 'cosmos',
+  Ethereum: 'ethereum',
+  EthereumWh: 'ethereum-wormhole',
+  Polygon: 'polygon',
+  Klaytn: 'klaytn',
+  Arbitrum: 'arbitrum',
+  Sui: 'sui',
+  Ibc: 'ibc',
+  BinanceSmartChain: 'binance-smart-chain',
+  Axelar: 'axelar',
+} as const
+
+export type TokenSource = (typeof TokenSource)[keyof typeof TokenSource]
 
 export interface TokenStatic {
   name: string

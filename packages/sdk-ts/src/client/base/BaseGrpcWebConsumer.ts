@@ -1,5 +1,5 @@
-import { getGrpcTransport } from '../../utils/grpc.js'
 import { GrpcWebImpl } from './GrpcWebImpl.js'
+import { getGrpcTransport } from '../../utils/grpc.js'
 
 /**
  * @hidden
@@ -10,7 +10,7 @@ export default class BaseGrpcWebConsumer extends GrpcWebImpl {
   constructor(endpoint: string) {
     super(endpoint, {
       transport: getGrpcTransport(),
-      setCookieMetadata: true
+      setCookieMetadata: true,
     })
   }
 

@@ -1,10 +1,8 @@
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import {
-  amountToCosmosSdkDecAmount,
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
+import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgIncreasePositionMargin {
   export interface Params {
@@ -50,7 +48,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
 
     const params = {
       ...initialParams,
-      amount: amountToCosmosSdkDecAmount(initialParams.amount).toFixed(),
+      amount: toChainFormat(initialParams.amount).toFixed(),
     } as MsgIncreasePositionMargin.Params
 
     return createMessage(params)
@@ -94,7 +92,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      amount: amountToCosmosSdkDecAmount(value.amount).toFixed(),
+      amount: toChainFormat(value.amount).toFixed(),
     }
 
     return {

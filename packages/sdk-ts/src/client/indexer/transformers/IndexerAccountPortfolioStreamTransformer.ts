@@ -1,4 +1,4 @@
-import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer

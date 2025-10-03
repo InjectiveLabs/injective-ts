@@ -1,8 +1,8 @@
 import {
   dataToExecData,
   ExecPrivilegedArgBase,
-  ExecDataRepresentation,
 } from '../ExecPrivilegedArgBase.js'
+import type { ExecDataRepresentation } from '../ExecPrivilegedArgBase.js'
 
 // ult_subaccount_id`:
 

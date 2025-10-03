@@ -1,9 +1,9 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { getDefaultSubaccountId } from '../../../utils/address.js'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
-import { SpotMarket } from '../types/index.js'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { IndexerGrpcSpotApi } from './IndexerGrpcSpotApi.js'
+import { getDefaultSubaccountId } from '../../../utils/address.js'
+import type { SpotMarket } from '../types/index.js'
+import type { IndexerGrpcSpotTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)

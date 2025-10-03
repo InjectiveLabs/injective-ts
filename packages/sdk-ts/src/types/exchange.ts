@@ -1,23 +1,32 @@
 import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
 
-export enum TradeExecutionType {
-  Market = 'market',
-  LimitFill = 'limitFill',
-  LimitMatchRestingOrder = 'limitMatchRestingOrder',
-  LimitMatchNewOrder = 'limitMatchNewOrder',
-}
+export const TradeExecutionType = {
+  Market: 'market',
+  LimitFill: 'limitFill',
+  LimitMatchRestingOrder: 'limitMatchRestingOrder',
+  LimitMatchNewOrder: 'limitMatchNewOrder',
+} as const
 
-export enum TradeExecutionSide {
-  Maker = 'maker',
-  Taker = 'taker',
-}
+export type TradeExecutionType =
+  (typeof TradeExecutionType)[keyof typeof TradeExecutionType]
 
-export enum TradeDirection {
-  Buy = 'buy',
-  Sell = 'sell',
-  Long = 'long',
-  Short = 'short',
-}
+export const TradeExecutionSide = {
+  Maker: 'maker',
+  Taker: 'taker',
+} as const
+
+export type TradeExecutionSide =
+  (typeof TradeExecutionSide)[keyof typeof TradeExecutionSide]
+
+export const TradeDirection = {
+  Buy: 'buy',
+  Sell: 'sell',
+  Long: 'long',
+  Short: 'short',
+} as const
+
+export type TradeDirection =
+  (typeof TradeDirection)[keyof typeof TradeDirection]
 
 export type OrderMask = InjectiveExchangeV1Beta1Exchange.OrderMask
 export const OrderMaskMap = InjectiveExchangeV1Beta1Exchange.OrderMask

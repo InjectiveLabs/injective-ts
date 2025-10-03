@@ -1,9 +1,9 @@
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { getDefaultSubaccountId } from '../../../utils/address.js'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { IndexerGrpcDerivativeTransformer } from '../transformers/index.js'
-import { DerivativeMarket } from '../types/index.js'
 import { IndexerGrpcDerivativesApi } from './IndexerGrpcDerivativesApi.js'
+import type { DerivativeMarket } from '../types/index.js'
+import type { IndexerGrpcDerivativeTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)

@@ -1,6 +1,6 @@
-import { ChainId } from '@injectivelabs/ts-types'
 import { getStdFee } from '@injectivelabs/utils'
-import { Msgs } from '@injectivelabs/sdk-ts'
+import type { Msgs } from '@injectivelabs/sdk-ts'
+import type { ChainId } from '@injectivelabs/ts-types'
 
 export const createEip712StdSignDoc = ({
   memo,

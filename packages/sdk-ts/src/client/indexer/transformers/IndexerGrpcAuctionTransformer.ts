@@ -1,6 +1,6 @@
-import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
-import {
+import type { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   Auction,
   IndexerBid,
   GrpcAuction,

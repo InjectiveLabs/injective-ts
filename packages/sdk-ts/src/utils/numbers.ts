@@ -1,8 +1,10 @@
 import {
   BigNumber,
-  BigNumberInBase,
-  getSignificantDecimalsFromNumber,
+  toBigNumber,
+  toChainFormat,
+  toHumanReadable,
   getExactDecimalsFromNumber,
+  getSignificantDecimalsFromNumber,
 } from '@injectivelabs/utils'
 
 const $BigNumber = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN })
@@ -20,9 +22,7 @@ export const formatNumberToAllowableDecimals = (
   allowableDecimals: number,
   roundingMode?: BigNumber.RoundingMode,
 ): string => {
-  const decimalPlacesInValue = new BigNumberInBase(
-    getExactDecimalsFromNumber(value),
-  )
+  const decimalPlacesInValue = toBigNumber(getExactDecimalsFromNumber(value))
   const valueToString = value.toString()
 
   if (decimalPlacesInValue.lte(0)) {
@@ -32,10 +32,7 @@ export const formatNumberToAllowableDecimals = (
   const decimalMoreThanAllowance = decimalPlacesInValue.gte(allowableDecimals)
 
   return decimalMoreThanAllowance
-    ? new BigNumberInBase(valueToString).toFixed(
-        allowableDecimals,
-        roundingMode,
-      )
+    ? toBigNumber(valueToString).toFixed(allowableDecimals, roundingMode)
     : valueToString
 }
 
@@ -44,19 +41,19 @@ export const formatNumberToAllowableTensMultiplier = (
   tensMultiplier: number,
   roundingMode?: BigNumber.RoundingMode,
 ): string => {
-  const valueToBn = new BigNumberInBase(value)
+  const valueToBn = toBigNumber(value)
 
   if (tensMultiplier === 0) {
     return valueToBn.toFixed(0, roundingMode)
   }
 
-  const tensMul = new BigNumberInBase(10).pow(tensMultiplier)
+  const tensMul = toBigNumber(10).pow(tensMultiplier)
 
   if (valueToBn.lte(tensMul)) {
     return tensMul.toFixed(0, roundingMode)
   }
 
-  return new BigNumberInBase(valueToBn.div(tensMul).toFixed(0, roundingMode))
+  return toBigNumber(valueToBn.div(tensMul).toFixed(0, roundingMode))
     .multipliedBy(tensMul)
     .toFixed(0)
 }
@@ -69,12 +66,12 @@ export const formatAmountToAllowableAmount = (
     ? formatNumberToAllowableDecimals(
         value,
         -tensMultiplier,
-        BigNumberInBase.ROUND_DOWN,
+        BigNumber.ROUND_DOWN,
       )
     : formatNumberToAllowableTensMultiplier(
         value,
         tensMultiplier,
-        BigNumberInBase.ROUND_DOWN,
+        BigNumber.ROUND_DOWN,
       )
 }
 
@@ -102,7 +99,7 @@ export const formatAmountToAllowableDecimals = (
   return formatNumberToAllowableDecimals(
     value,
     allowableDecimals,
-    BigNumberInBase.ROUND_DOWN,
+    BigNumber.ROUND_DOWN,
   )
 }
 
@@ -132,6 +129,8 @@ export const denomAmountFromGrpcChainDenomAmount = (
 ) => new $BigNumber(value).dividedBy(new $BigNumber(10).pow(18))
 
 /**
+ * @deprecated use toChainFormat from injectivelabs/utils instead
+ *
  * On chain amounts broadcasted to a sentry directly using the
  * gRPC API should be passed with an extra decimal point
  * 18 places from the beginning, so we need to add it
@@ -142,6 +141,8 @@ export const denomAmountToGrpcChainDenomAmount = (
 ) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(18))
 
 /**
+ * @deprecated use toChainFormat from injectivelabs/utils instead
+ *
  * On chain amounts (based on the cosmosSdk.Dec type)
  * broadcasted to a sentry directly using the
  * gRPC API should be passed with an extra decimal point
@@ -153,6 +154,8 @@ export const amountToCosmosSdkDecAmount = (
 ) => new $BigNumber(value).multipliedBy(new $BigNumber(10).pow(18))
 
 /**
+ * * @deprecated use toChainFormat from injectivelabs/utils instead
+ *
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -181,7 +184,7 @@ export const denomAmountToChainDenomAmountToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const valueToBn = new BigNumberInBase(value).toFixed()
+  const valueToBn = toBigNumber(value).toFixed()
   const flooredValue = tensMultiplier
     ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
     : value
@@ -199,6 +202,8 @@ export const denomAmountToChainDenomAmountToFixed = ({
 }
 
 /**
+ * @deprecated use toHumanReadable from injectivelabs/utils instead
+ *
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -221,11 +226,11 @@ export const denomAmountFromChainDenomAmountToFixed = ({
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
-  decimals?: number | string
+  decimals?: number
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = denomAmountFromChainDenomAmount({ value, decimals })
+  const number = toHumanReadable(value, decimals)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -235,6 +240,8 @@ export const denomAmountFromChainDenomAmountToFixed = ({
 }
 
 /**
+ * @deprecated use toChainFormat from injectivelabs/utils instead
+ *
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -263,7 +270,7 @@ export const derivativeMarginToChainMarginToFixed = ({
   value: number | string | BigNumber
   quoteDecimals?: number | string
 }) => {
-  const valueToBn = new BigNumberInBase(value).toFixed()
+  const valueToBn = toBigNumber(value).toFixed()
   const flooredValue = tensMultiplier
     ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
     : value
@@ -281,6 +288,8 @@ export const derivativeMarginToChainMarginToFixed = ({
 }
 
 /**
+ * @deprecated use toHumanReadable from injectivelabs/utils instead
+ *
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -303,11 +312,11 @@ export const derivativeMarginFromChainMarginToFixed = ({
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
-  quoteDecimals?: number | string
+  quoteDecimals?: number
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = derivativeMarginFromChainMargin({ value, quoteDecimals })
+  const number = toHumanReadable(value, quoteDecimals)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -317,6 +326,7 @@ export const derivativeMarginFromChainMarginToFixed = ({
 }
 
 /**
+ * @deprecated use toChainFormat from injectivelabs/utils instead
  * Amount that the chain requires is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -341,19 +351,16 @@ export const derivativePriceToChainPriceToFixed = ({
 }: {
   value: number | string | BigNumber
   tensMultiplier?: number
-  quoteDecimals?: number | string
+  quoteDecimals?: number
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const valueToBn = new BigNumberInBase(value).toFixed()
+  const valueToBn = toBigNumber(value).toFixed()
   const flooredValue = tensMultiplier
     ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
     : value
 
-  const number = derivativePriceToChainPrice({
-    value: flooredValue,
-    quoteDecimals,
-  })
+  const number = toChainFormat(flooredValue, quoteDecimals)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -363,6 +370,8 @@ export const derivativePriceToChainPriceToFixed = ({
 }
 
 /**
+ * @deprecated use toHumanReadable from injectivelabs/utils instead
+ *
  * Amount that the chain returns is in the x * 10^(quoteDecimals) format
  * where x is a human readable number
  */
@@ -385,11 +394,11 @@ export const derivativePriceFromChainPriceToFixed = ({
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
-  quoteDecimals?: number | string
+  quoteDecimals?: number
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = derivativePriceFromChainPrice({ value, quoteDecimals })
+  const number = toHumanReadable(value, quoteDecimals)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -399,6 +408,7 @@ export const derivativePriceFromChainPriceToFixed = ({
 }
 
 /**
+ * @deprecated use toBigNumber from injectivelabs/utils instead
  * Amount that the chain requires is in the x format
  * where x is a human readable number
  */
@@ -423,7 +433,7 @@ export const derivativeQuantityToChainQuantityToFixed = ({
   tensMultiplier?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const valueToBn = new BigNumberInBase(value).toFixed()
+  const valueToBn = toBigNumber(value).toFixed()
   const flooredValue = tensMultiplier
     ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
     : value
@@ -438,6 +448,7 @@ export const derivativeQuantityToChainQuantityToFixed = ({
 }
 
 /**
+ * @deprecated
  * Amount that the chain requires is in the x format
  * where x is a human readable number
  */
@@ -460,7 +471,7 @@ export const derivativeQuantityFromChainQuantityToFixed = ({
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = derivativeQuantityFromChainQuantity({ value })
+  const number = new $BigNumber(value)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -470,6 +481,7 @@ export const derivativeQuantityFromChainQuantityToFixed = ({
 }
 
 /**
+ * @deprecated use toChainFormat from injectivelabs/utils instead
  * Amount that the chain requires is in the x / 10^(quoteDecimals - baseDecimals) format
  * where x is a human readable number
  */
@@ -505,16 +517,15 @@ export const spotPriceToChainPriceToFixed = ({
   tensMultiplier?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const valueToBn = new BigNumberInBase(value).toFixed()
+  const valueToBn = toBigNumber(value).toFixed()
   const flooredValue = tensMultiplier
     ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
     : value
 
-  const number = spotPriceToChainPrice({
-    value: flooredValue,
-    baseDecimals,
-    quoteDecimals,
-  })
+  const number = toChainFormat(
+    flooredValue,
+    toBigNumber(quoteDecimals).minus(baseDecimals).toNumber(),
+  )
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -524,6 +535,8 @@ export const spotPriceToChainPriceToFixed = ({
 }
 
 /**
+ * @deprecated use toHumanReadable from injectivelabs/utils instead
+ *
  * Amount that the chain returns is in the x / 10^(quoteDecimals - baseDecimals) format
  * where x is a human readable number
  */
@@ -552,12 +565,12 @@ export const spotPriceFromChainPriceToFixed = ({
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
-  quoteDecimals?: number | string
-  baseDecimals?: number | string
+  quoteDecimals?: number
+  baseDecimals?: number
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = spotPriceFromChainPrice({ value, baseDecimals, quoteDecimals })
+  const number = toHumanReadable(value, quoteDecimals - baseDecimals)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -567,6 +580,8 @@ export const spotPriceFromChainPriceToFixed = ({
 }
 
 /**
+ * @deprecated use toChainFormat from injectivelabs/utils instead
+ *
  * Amount that the chain requires is in the x * 10^(baseDecimals) format
  * where x is a human readable number
  */
@@ -591,19 +606,16 @@ export const spotQuantityToChainQuantityToFixed = ({
 }: {
   value: number | string | BigNumber
   tensMultiplier?: number
-  baseDecimals?: number | string
+  baseDecimals?: number
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const valueToBn = new BigNumberInBase(value).toFixed()
+  const valueToBn = toBigNumber(value).toFixed()
   const flooredValue = tensMultiplier
     ? formatPriceToAllowablePrice(valueToBn, tensMultiplier)
     : value
 
-  const number = spotQuantityToChainQuantity({
-    value: flooredValue,
-    baseDecimals,
-  })
+  const number = toChainFormat(flooredValue, baseDecimals)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -613,6 +625,8 @@ export const spotQuantityToChainQuantityToFixed = ({
 }
 
 /**
+ * @deprecated use toHumanReadable from injectivelabs/utils instead
+ *
  * Amount that the chain returns is in the x * 10^(baseDecimals) format
  * where x is a human readable number
  */
@@ -635,14 +649,11 @@ export const spotQuantityFromChainQuantityToFixed = ({
   roundingMode = BigNumber.ROUND_DOWN,
 }: {
   value: number | string | BigNumber
-  baseDecimals?: number | string
+  baseDecimals?: number
   decimalPlaces?: number
   roundingMode?: BigNumber.RoundingMode
 }) => {
-  const number = spotQuantityFromChainQuantity({
-    value,
-    baseDecimals,
-  })
+  const number = toHumanReadable(value, baseDecimals)
 
   if (decimalPlaces === undefined) {
     return number.toFixed()
@@ -651,6 +662,9 @@ export const spotQuantityFromChainQuantityToFixed = ({
   return number.toFixed(getSignificantDecimalsFromNumber(number), roundingMode)
 }
 
+/**
+ * @deprecated use toHumanReadable from injectivelabs/utils instead
+ */
 export const cosmosSdkDecToBigNumber = (
   number: string | number | BigNumber,
 ): BigNumber => new BigNumber(number).dividedBy(new BigNumber(10).pow(18))
@@ -688,10 +702,6 @@ export const getTensMultiplier = (number: number | string): number => {
   const [, zerosInTheNumber] = numberToBn.toFixed().split('1')
 
   return zerosInTheNumber.length
-}
-
-export const getTriggerPrice = (triggerPrice?: number | string) => {
-  return triggerPrice ? amountToCosmosSdkDecAmount(triggerPrice).toFixed() : ''
 }
 
 export { getSignificantDecimalsFromNumber, getExactDecimalsFromNumber }

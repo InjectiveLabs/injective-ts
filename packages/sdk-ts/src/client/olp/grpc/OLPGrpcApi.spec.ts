@@ -1,6 +1,6 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { OLPGrpcApi } from './OLPGrpcApi.js'
-import { DmmGrpcTransformer } from './transformers/index.js'
+import type { DmmGrpcTransformer } from './transformers/index.js'
 
 const epochId = 'epoch_230418_230515'
 const accountAddress = mockFactory.injectiveAddress

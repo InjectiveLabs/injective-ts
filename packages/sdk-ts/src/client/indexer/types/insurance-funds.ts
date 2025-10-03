@@ -1,5 +1,5 @@
-import { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
-import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
 
 export interface IndexerInsuranceFund {
   depositDenom: string
@@ -16,10 +16,12 @@ export interface IndexerInsuranceFund {
   expiry: number
 }
 
-export enum RedemptionStatus {
-  Pending = 'pending',
-  Disbursed = 'disbursed',
-}
+export type RedemptionStatus = 'pending' | 'disbursed'
+
+export const RedemptionStatus = {
+  Pending: 'pending',
+  Disbursed: 'disbursed',
+} as const
 
 export interface Redemption {
   redemptionId: number

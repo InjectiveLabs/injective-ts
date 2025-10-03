@@ -1,5 +1,5 @@
-import { Account } from '@cosmjs/stargate'
 import { InjectiveTypesV1Beta1Account } from '@injectivelabs/core-proto-ts'
+import type { Account } from '@cosmjs/stargate'
 
 export const accountParser = (ethAccount: any): Account => {
   const account = InjectiveTypesV1Beta1Account.EthAccount.decode(

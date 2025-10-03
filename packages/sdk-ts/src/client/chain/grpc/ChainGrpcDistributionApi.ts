@@ -1,13 +1,14 @@
+import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import {
   UnspecifiedErrorCode,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
-import { Coin } from '@injectivelabs/ts-types'
-import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { ValidatorRewards, ChainModule } from '../types/index.js'
 import { ChainGrpcDistributionTransformer } from '../transformers/index.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { ValidatorRewards } from '../types/index.js'
 
 /**
  * @category Chain Grpc API

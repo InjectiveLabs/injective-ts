@@ -1,14 +1,14 @@
+import snakecaseKeys from 'snakecase-keys'
+import { GeneralException } from '@injectivelabs/exceptions'
 import {
-  GoogleProtobufAny,
   CosmosAuthzV1Beta1Tx,
   CosmosAuthzV1Beta1Authz,
   GoogleProtobufTimestamp,
 } from '@injectivelabs/core-proto-ts'
-import snakecaseKeys from 'snakecase-keys'
-import { GeneralException } from '@injectivelabs/exceptions'
 import { MsgBase } from '../../MsgBase.js'
-import { getGenericAuthorizationFromMessageType } from '../utils.js'
 import { GrantAuthorizationType } from './../types.js'
+import { getGenericAuthorizationFromMessageType } from '../utils.js'
+import type { GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
 
 /**
  * @deprecated please use MsgGrantWithAuthorization

@@ -1,10 +1,10 @@
 import { LedgerException } from '@injectivelabs/exceptions'
+import AccountManager from './AccountManager.js'
 import {
   loadEthType,
   loadTransportWebUSB,
   loadTransportWebHIDType,
 } from '../../lib.js'
-import AccountManager from './AccountManager.js'
 import type { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
 import type { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'
 

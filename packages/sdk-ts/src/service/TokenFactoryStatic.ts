@@ -1,9 +1,5 @@
-import {
-  TokenType,
-  TokenSource,
-  TokenStatic,
-  TokenVerification,
-} from './../types/index.js'
+import { TokenVerification } from './../types/index.js'
+import type { TokenType, TokenSource, TokenStatic } from './../types/index.js'
 
 /** @deprecated */
 export class TokenFactoryStatic {

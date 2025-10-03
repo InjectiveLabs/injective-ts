@@ -1,6 +1,9 @@
+import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import { isJsonString } from '../../../utils/helpers.js'
-import { BigNumberInWei, BigNumberInBase } from '@injectivelabs/utils'
-import {
+import { grpcPagingToPaging } from '../../../utils/index.js'
+import type { BigNumber } from '@injectivelabs/utils'
+import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
   Block,
   GasFee,
   Message,
@@ -27,14 +30,12 @@ import {
   ExplorerValidatorDescription,
   GrpcIndexerValidatorDescription,
 } from '../types/explorer.js'
-import { grpcPagingToPaging } from '../../../utils/index.js'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
 
-const ZERO_IN_BASE = new BigNumberInBase(0)
+const ZERO_IN_BASE = toBigNumber(0)
 
 const getContractTransactionV2Amount = (
   ApiTransaction: InjectiveExplorerRpc.TxDetailData,
-): BigNumberInBase => {
+): BigNumber => {
   const messages = JSON.parse(
     Buffer.from(ApiTransaction.messages).toString('utf8'),
   )
@@ -57,7 +58,7 @@ const getContractTransactionV2Amount = (
     return ZERO_IN_BASE
   }
 
-  return new BigNumberInWei(msgObj.transfer.amount).toBase()
+  return toHumanReadable(msgObj.transfer.amount)
 }
 
 const parseStringToObjectLikeNoThrow = (
@@ -71,14 +72,14 @@ const parseStringToObjectLikeNoThrow = (
   if (typeof object === 'string') {
     try {
       return JSON.parse(object)
-    } catch (e) {
+    } catch {
       return defaultValue
     }
   }
 
   try {
     return JSON.parse(Buffer.from(object).toString('utf8'))
-  } catch (e) {
+  } catch {
     return defaultValue
   }
 }
@@ -509,7 +510,7 @@ export class IndexerGrpcExplorerTransformer {
       sequence: (() => {
         try {
           return parseInt(signature.sequence, 10)
-        } catch (e) {
+        } catch {
           return 0
         }
       })(),
@@ -518,7 +519,7 @@ export class IndexerGrpcExplorerTransformer {
     const claimIds = tx.claimIds.map((claimId) => {
       try {
         return parseInt(claimId, 10)
-      } catch (e) {
+      } catch {
         return 0
       }
     })
@@ -649,7 +650,7 @@ export class IndexerGrpcExplorerTransformer {
       amount: getContractTransactionV2Amount(tx),
       logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
       data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
-      fee: new BigNumberInWei(tx.gasFee?.amount[0]?.amount || '0').toBase(),
+      fee: toHumanReadable(tx.gasFee?.amount[0]?.amount || '0'),
       signatures: tx.signatures.map((signature) => ({
         address: signature.address,
         pubkey: signature.pubkey,

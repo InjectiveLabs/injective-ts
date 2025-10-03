@@ -1,6 +1,6 @@
-import { MsgBase } from '../../MsgBase.js'
 import snakecaseKeys from 'snakecase-keys'
 import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
+import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgUpdateAdmin {
   export interface Params {
