@@ -1,23 +1,26 @@
 import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import MsgUpdateSpotMarket from './MsgUpdateSpotMarket.js'
+import MsgUpdateDerivativeMarketV2 from './MsgUpdateDerivativeMarketV2.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-const params: MsgUpdateSpotMarket['params'] = {
+const params: MsgUpdateDerivativeMarketV2['params'] = {
   admin: mockFactory.injectiveAddress,
   marketId: mockFactory.injUsdtDerivativeMarket.marketId,
   newMinPriceTickSize: '0.0000001',
   newMinNotional: '0',
   newMinQuantityTickSize: '10',
+  newInitialMarginRatio: '0.05',
+  newMaintenanceMarginRatio: '0.05',
+  newReduceMarginRatio: '0.05',
 }
 
-const protoType = '/injective.exchange.v1beta1.MsgUpdateSpotMarket'
-const protoTypeShort = 'exchange/MsgUpdateSpotMarket'
+const protoType = '/injective.exchange.v2.MsgUpdateDerivativeMarket'
+const protoTypeShort = 'exchange/MsgUpdateDerivativeMarket'
 const protoParams = {
   admin: params.admin,
   marketId: params.marketId,
@@ -25,16 +28,24 @@ const protoParams = {
   newMinQuantityTickSize: '10',
   newMinNotional: '0',
   newTicker: '',
+  newInitialMarginRatio: '0.05',
+  newMaintenanceMarginRatio: '0.05',
+  newReduceMarginRatio: '0.05',
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
-const message = MsgUpdateSpotMarket.fromJSON(params)
+const message = MsgUpdateDerivativeMarketV2.fromJSON(params)
 
-describe('MsgUpdateSpotMarket', () => {
+describe('MsgUpdateDerivativeMarketV2', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
     expect(proto).toStrictEqual({
       ...protoParams,
+      newMinPriceTickSize: '100000000000',
+      newMinQuantityTickSize: '10000000000000000000',
+      newInitialMarginRatio: '50000000000000000',
+      newMaintenanceMarginRatio: '50000000000000000',
+      newReduceMarginRatio: '50000000000000000',
     })
   })
 
@@ -44,6 +55,11 @@ describe('MsgUpdateSpotMarket', () => {
     expect(data).toStrictEqual({
       '@type': protoType,
       ...protoParams,
+      newMinPriceTickSize: '100000000000',
+      newMinQuantityTickSize: '10000000000000000000',
+      newInitialMarginRatio: '50000000000000000',
+      newMaintenanceMarginRatio: '50000000000000000',
+      newReduceMarginRatio: '50000000000000000',
     })
   })
 
