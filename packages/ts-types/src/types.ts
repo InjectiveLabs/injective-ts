@@ -303,8 +303,8 @@ export const MsgType = {
     'injective.exchange.v2.MsgTradingRewardCampaignLaunch',
   MsgTradingRewardCampaignUpdateV2:
     'injective.exchange.v2.MsgTradingRewardCampaignUpdate',
-  // MsgInstantPerpetualMarketLaunchV2:
-  //   'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
+  MsgInstantPerpetualMarketLaunchV2:
+    'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
   MsgCreateBinaryOptionsLimitOrderV2:
     'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder',
   MsgAdminUpdateBinaryOptionsMarketV2:
