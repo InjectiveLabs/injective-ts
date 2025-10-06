@@ -1,6 +1,6 @@
-import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
-import { IndexerGrpcArchiverTransformer } from './IndexerGrpcArchiverTransformer.js'
 import { StreamOperation } from '../../../types/index.js'
+import { IndexerGrpcArchiverTransformer } from './IndexerGrpcArchiverTransformer.js'
+import type { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer
