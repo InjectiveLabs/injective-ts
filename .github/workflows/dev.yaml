@@ -161,19 +161,19 @@ jobs:
           repository_url: mitoFinance/mito-ui
           repository_branch: dev
 
-  package-bump-ui-api:
-    name: 'Package bump UI API'
-    runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+  # package-bump-ui-api:
+  #   name: 'Package bump UI API'
+  #   runs-on: ubuntu-latest
+  #   needs: package-bump-layer
+  #   if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
 
-    steps:
-      - name: Package bump UI API
-        uses: InjectiveLabs/github-fe/actions/package-bump@master
-        with:
-          gh_token: ${{ secrets.GH_TOKEN }}
-          repository_url: injectiveLabs/injective-ui-api
-          repository_branch: staging
+  #   steps:
+  #     - name: Package bump UI API
+  #       uses: InjectiveLabs/github-fe/actions/package-bump@master
+  #       with:
+  #         gh_token: ${{ secrets.GH_TOKEN }}
+  #         repository_url: injectiveLabs/injective-ui-api
+  #         repository_branch: staging
 
   package-bump-admin-ui:
     name: 'Package bump Admin UI'
@@ -189,16 +189,16 @@ jobs:
           repository_url: InjectiveLabs/injective-admin-ui
           repository_branch: dev
 
-  # package-bump-authz-ui:
-  #   name: 'Package bump Authz UI'
-  #   runs-on: ubuntu-latest
-  #   needs: package-bump-layer
-  #   if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+  package-bump-authz-ui:
+    name: 'Package bump Authz UI'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
 
-  #   steps:
-  #     - name: Package bump Authz UI
-  #       uses: InjectiveLabs/github-fe/actions/package-bump@master
-  #       with:
-  #         gh_token: ${{ secrets.GH_TOKEN }}
-  #         repository_url: injectiveLabs/injective-authz-ui
-  #         repository_branch: master
+    steps:
+      - name: Package bump Authz UI
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          repository_url: injectiveLabs/injective-authz-ui
+          repository_branch: master
