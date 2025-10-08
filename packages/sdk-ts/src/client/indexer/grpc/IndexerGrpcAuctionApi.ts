@@ -111,4 +111,127 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchAuctionsV2({
+    token,
+    endTime,
+    perPage = 5,
+  }: {
+    token?: string
+    endTime?: string
+    perPage?: number
+  }) {
+    const request = InjectiveAuctionRpc.AuctionsHistoryV2Request.create()
+
+    request.perPage = perPage
+
+    if (endTime) {
+      request.endTime = endTime
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveAuctionRpc.AuctionsHistoryV2Response>(() =>
+          this.client.AuctionsHistoryV2(request, this.metadata),
+        )
+
+      return IndexerGrpcAuctionTransformer.auctionsV2ResponseToAuctionsV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'AuctionsV2',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AuctionsV2',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchAuctionV2(round: number | string = -1) {
+    const request = InjectiveAuctionRpc.AuctionV2Request.create()
+
+    if (round) {
+      request.round = round.toString()
+    }
+
+    try {
+      const response = await this.retry<InjectiveAuctionRpc.AuctionV2Response>(
+        () => this.client.AuctionV2(request, this.metadata),
+      )
+
+      return IndexerGrpcAuctionTransformer.auctionV2ResponseToAuctionV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'AuctionV2',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AuctionV2',
+        contextModule: this.module,
+      })
+    }
+  }
+
+  async fetchAccountAuctionsV2({
+    token,
+    address,
+    perPage = 5,
+  }: {
+    token?: string
+    address: string
+    perPage?: number
+  }) {
+    const request = InjectiveAuctionRpc.AccountAuctionsV2Request.create()
+
+    request.address = address
+    request.perPage = perPage
+
+    if (token) {
+      request.token = token.toString()
+    }
+
+    try {
+      const response =
+        await this.retry<InjectiveAuctionRpc.AccountAuctionsV2Response>(() =>
+          this.client.AccountAuctionsV2(request, this.metadata),
+        )
+
+      return IndexerGrpcAuctionTransformer.accountAuctionsV2ResponseToAccountAuctionsV2(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'AccountAuctionsV2',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AccountAuctionsV2',
+        contextModule: this.module,
+      })
+    }
+  }
 }

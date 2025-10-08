@@ -60,4 +60,22 @@ export class IndexerGrpcAuctionTransformer {
   ): TotalInjBurnt {
     return Number(response.totalInjBurnt)
   }
+
+  static auctionsV2ResponseToAuctionsV2(
+    response: InjectiveAuctionRpc.AuctionsHistoryV2Response,
+  ): InjectiveAuctionRpc.AuctionsHistoryV2Response {
+    return response
+  }
+
+  static auctionV2ResponseToAuctionV2(
+    response: InjectiveAuctionRpc.AuctionV2Response,
+  ): InjectiveAuctionRpc.AuctionV2Response {
+    return response
+  }
+
+  static accountAuctionsV2ResponseToAccountAuctionsV2(
+    response: InjectiveAuctionRpc.AccountAuctionsV2Response,
+  ): InjectiveAuctionRpc.AccountAuctionsV2Response {
+    return response
+  }
 }
