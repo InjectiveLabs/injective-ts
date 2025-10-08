@@ -1,4 +1,4 @@
-import { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
 import type {
   MegaVault,
   MegaVaultApr,
@@ -45,39 +45,41 @@ export class IndexerGrpcMegaVaultTransformer {
     response: InjectiveMegaVaultRpc.GetVaultResponse,
   ): MegaVault | undefined {
     const vault = response.vault
+
     if (!vault) {
       return
     }
 
     return {
-      contractAddress: vault.contractAddress,
-      contractName: vault.contractName,
-      contractVersion: vault.contractVersion,
       admin: vault.admin,
       lpDenom: vault.lpDenom,
+      createdAt: vault.createdAt,
+      updatedAt: vault.updatedAt,
       quoteDenom: vault.quoteDenom,
-      operators: vault.operators.map(
-        IndexerGrpcMegaVaultTransformer.grpcOperatorToOperator,
-      ),
-      incentives: vault.incentives
-        ? IndexerGrpcMegaVaultTransformer.grpcIncentiveToIncentive(
-            vault.incentives,
-          )
-        : undefined,
-      targetApr: vault.targetApr
-        ? IndexerGrpcMegaVaultTransformer.grpcTargetAprToTargetApr(
-            vault.targetApr,
-          )
-        : undefined,
+      contractName: vault.contractName,
+      createdHeight: vault.createdHeight,
+      updatedHeight: vault.updatedHeight,
+      contractAddress: vault.contractAddress,
+      contractVersion: vault.contractVersion,
       stats: vault.stats
         ? IndexerGrpcMegaVaultTransformer.grpcVaultStatsToVaultStats(
             vault.stats,
           )
         : undefined,
-      createdHeight: vault.createdHeight,
-      createdAt: vault.createdAt,
-      updatedHeight: vault.updatedHeight,
-      updatedAt: vault.updatedAt,
+      operators: vault.operators.map(
+        IndexerGrpcMegaVaultTransformer.grpcOperatorToOperator,
+      ),
+      targetApr: vault.targetApr
+        ? IndexerGrpcMegaVaultTransformer.grpcTargetAprToTargetApr(
+            vault.targetApr,
+          )
+        : undefined,
+
+      incentives: vault.incentives
+        ? IndexerGrpcMegaVaultTransformer.grpcIncentiveToIncentive(
+            vault.incentives,
+          )
+        : undefined,
     }
   }
 
@@ -91,12 +93,12 @@ export class IndexerGrpcMegaVaultTransformer {
 
     return {
       address: user.address,
+      updatedAt: user.updatedAt,
+      updatedHeight: user.updatedHeight,
       contractAddress: user.contractAddress,
       stats: user.stats
         ? IndexerGrpcMegaVaultTransformer.grpcUserStatsToUserStats(user.stats)
         : undefined,
-      updatedHeight: user.updatedHeight,
-      updatedAt: user.updatedAt,
     }
   }
 
@@ -145,10 +147,10 @@ export class IndexerGrpcMegaVaultTransformer {
   ): MegaVaultOperator {
     return {
       address: operator.address,
-      totalAmount: operator.totalAmount,
-      totalLiquidAmount: operator.totalLiquidAmount,
       updatedAt: operator.updatedAt,
+      totalAmount: operator.totalAmount,
       updatedHeight: operator.updatedHeight,
+      totalLiquidAmount: operator.totalLiquidAmount,
     }
   }
 
@@ -168,10 +170,10 @@ export class IndexerGrpcMegaVaultTransformer {
   ): MegaVaultTargetApr {
     return {
       apr: targetApr.apr,
+      updatedAt: targetApr.updatedAt,
       upperThreshold: targetApr.upperThreshold,
       lowerThreshold: targetApr.lowerThreshold,
       updatedHeight: targetApr.updatedHeight,
-      updatedAt: targetApr.updatedAt,
     }
   }
 
@@ -179,12 +181,15 @@ export class IndexerGrpcMegaVaultTransformer {
     stats: GrpcMegaVaultVaultStats,
   ): MegaVaultStats {
     return {
-      totalSubscribedAmount: stats.totalSubscribedAmount,
-      totalRedeemedAmount: stats.totalRedeemedAmount,
       currentAmount: stats.currentAmount,
-      currentAmountWithoutIncentives: stats.currentAmountWithoutIncentives,
-      currentLpAmount: stats.currentLpAmount,
       currentLpPrice: stats.currentLpPrice,
+      currentLpAmount: stats.currentLpAmount,
+      totalRedeemedAmount: stats.totalRedeemedAmount,
+      totalSubscribedAmount: stats.totalSubscribedAmount,
+      currentAmountWithoutIncentives: stats.currentAmountWithoutIncentives,
+      apr: stats.apr
+        ? IndexerGrpcMegaVaultTransformer.grpcAprStatsToAprStats(stats.apr)
+        : undefined,
       pnl: stats.pnl
         ? IndexerGrpcMegaVaultTransformer.grpcPnlStatsToPnlStats(stats.pnl)
         : undefined,
@@ -192,9 +197,6 @@ export class IndexerGrpcMegaVaultTransformer {
         ? IndexerGrpcMegaVaultTransformer.grpcVolatilityStatsToVolatilityStats(
             stats.volatility,
           )
-        : undefined,
-      apr: stats.apr
-        ? IndexerGrpcMegaVaultTransformer.grpcAprStatsToAprStats(stats.apr)
         : undefined,
       maxDrawdown: stats.maxDrawdown
         ? IndexerGrpcMegaVaultTransformer.grpcMaxDrawdownToMaxDrawdown(
@@ -206,13 +208,13 @@ export class IndexerGrpcMegaVaultTransformer {
 
   static grpcPnlStatsToPnlStats(pnl: GrpcMegaVaultPnlStats): MegaVaultPnlStats {
     return {
+      allTime: pnl.allTime
+        ? IndexerGrpcMegaVaultTransformer.grpcPnlToPnl(pnl.allTime)
+        : undefined,
       unrealized: pnl.unrealized
         ? IndexerGrpcMegaVaultTransformer.grpcUnrealizedPnlToUnrealizedPnl(
             pnl.unrealized,
           )
-        : undefined,
-      allTime: pnl.allTime
-        ? IndexerGrpcMegaVaultTransformer.grpcPnlToPnl(pnl.allTime)
         : undefined,
     }
   }
@@ -230,9 +232,9 @@ export class IndexerGrpcMegaVaultTransformer {
     return {
       value: pnl.value,
       percentage: pnl.percentage,
-      totalAmountSubscribed: pnl.totalAmountSubscribed,
-      totalAmountRedeemed: pnl.totalAmountRedeemed,
       currentAmount: pnl.currentAmount,
+      totalAmountRedeemed: pnl.totalAmountRedeemed,
+      totalAmountSubscribed: pnl.totalAmountSubscribed,
     }
   }
 
@@ -276,8 +278,8 @@ export class IndexerGrpcMegaVaultTransformer {
   static grpcAprToApr(apr: GrpcMegaVaultApr): MegaVaultApr {
     return {
       value: apr.value,
-      originalLpPrice: apr.originalLpPrice,
       currentLpPrice: apr.currentLpPrice,
+      originalLpPrice: apr.originalLpPrice,
     }
   }
 
@@ -305,16 +307,16 @@ export class IndexerGrpcMegaVaultTransformer {
     subscription: GrpcMegaVaultSubscription,
   ): MegaVaultSubscription {
     return {
-      contractAddress: subscription.contractAddress,
       user: subscription.user,
       index: subscription.index,
-      lpAmount: subscription.lpAmount,
       amount: subscription.amount,
       status: subscription.status,
-      createdHeight: subscription.createdHeight,
+      lpAmount: subscription.lpAmount,
       createdAt: subscription.createdAt,
-      executedHeight: subscription.executedHeight,
       executedAt: subscription.executedAt,
+      createdHeight: subscription.createdHeight,
+      executedHeight: subscription.executedHeight,
+      contractAddress: subscription.contractAddress,
     }
   }
 
@@ -322,17 +324,17 @@ export class IndexerGrpcMegaVaultTransformer {
     redemption: GrpcMegaVaultRedemption,
   ): MegaVaultRedemption {
     return {
-      contractAddress: redemption.contractAddress,
       user: redemption.user,
+      dueAt: redemption.dueAt,
       index: redemption.index,
-      lpAmount: redemption.lpAmount,
       amount: redemption.amount,
       status: redemption.status,
-      dueAt: redemption.dueAt,
-      createdHeight: redemption.createdHeight,
+      lpAmount: redemption.lpAmount,
       createdAt: redemption.createdAt,
-      executedHeight: redemption.executedHeight,
       executedAt: redemption.executedAt,
+      createdHeight: redemption.createdHeight,
+      executedHeight: redemption.executedHeight,
+      contractAddress: redemption.contractAddress,
     }
   }
 
@@ -341,8 +343,8 @@ export class IndexerGrpcMegaVaultTransformer {
   ): MegaVaultOperatorRedemptionBucket {
     return {
       bucket: bucket.bucket,
-      lpAmountToRedeem: bucket.lpAmountToRedeem,
       neededAmount: bucket.neededAmount,
+      lpAmountToRedeem: bucket.lpAmountToRedeem,
       missingLiquidity: bucket.missingLiquidity,
     }
   }

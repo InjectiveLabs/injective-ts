@@ -1,4 +1,4 @@
-import { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
 
 export interface MegaVaultOperator {
   address: string
@@ -9,45 +9,45 @@ export interface MegaVaultOperator {
 }
 
 export interface MegaVault {
-  contractAddress: string
-  contractName: string
-  contractVersion: string
   admin: string
   lpDenom: string
+  createdAt: string
+  updatedAt: string
   quoteDenom: string
+  contractName: string
+  createdHeight: string
+  updatedHeight: string
+  contractAddress: string
+  contractVersion: string
   operators: MegaVaultOperator[]
+  stats: MegaVaultStats | undefined
   incentives: MegaVaultIncentives | undefined
   targetApr: MegaVaultTargetApr | undefined
-  stats: MegaVaultStats | undefined
-  createdHeight: string
-  createdAt: string
-  updatedHeight: string
-  updatedAt: string
 }
 
 export interface MegaVaultIncentives {
-  address: string
   amount: string
-  updatedHeight: string
+  address: string
   updatedAt: string
+  updatedHeight: string
 }
 
 export interface MegaVaultStats {
-  totalSubscribedAmount: string
-  totalRedeemedAmount: string
   currentAmount: string
-  currentAmountWithoutIncentives: string
-  currentLpAmount: string
   currentLpPrice: string
-  pnl: MegaVaultPnlStats | undefined
-  volatility: MegaVaultVolatilityStats | undefined
+  currentLpAmount: string
+  totalRedeemedAmount: string
+  totalSubscribedAmount: string
   apr: MegaVaultAprStats | undefined
+  pnl: MegaVaultPnlStats | undefined
+  currentAmountWithoutIncentives: string
   maxDrawdown: MegaVaultMaxDrawdown | undefined
+  volatility: MegaVaultVolatilityStats | undefined
 }
 
 export interface MegaVaultPnlStats {
-  unrealized: MegaVaultUnrealizedPnl | undefined
   allTime: MegaVaultPnl | undefined
+  unrealized: MegaVaultUnrealizedPnl | undefined
 }
 
 export interface MegaVaultUnrealizedPnl {
@@ -58,9 +58,9 @@ export interface MegaVaultUnrealizedPnl {
 export interface MegaVaultPnl {
   value: string
   percentage: string
-  totalAmountSubscribed: string
-  totalAmountRedeemed: string
   currentAmount: string
+  totalAmountRedeemed: string
+  totalAmountSubscribed: string
 }
 export interface MegaVaultMaxDrawdown {
   value: string
@@ -81,16 +81,16 @@ export interface MegaVaultAprStats {
 
 export interface MegaVaultApr {
   value: string
-  originalLpPrice: string
   currentLpPrice: string
+  originalLpPrice: string
 }
 
 export interface MegaVaultUser {
   address: string
+  updatedAt: string
+  updatedHeight: string
   contractAddress: string
   stats: MegaVaultUserStats | undefined
-  updatedHeight: string
-  updatedAt: string
 }
 
 export interface MegaVaultUserStats {
@@ -100,36 +100,36 @@ export interface MegaVaultUserStats {
 }
 
 export interface MegaVaultSubscription {
-  contractAddress: string
   user: string
   index: string
-  lpAmount: string
   amount: string
   status: string
-  createdHeight: string
+  lpAmount: string
   createdAt: string
-  executedHeight: string
   executedAt: string
+  createdHeight: string
+  executedHeight: string
+  contractAddress: string
 }
 
 export interface MegaVaultRedemption {
-  contractAddress: string
   user: string
   index: string
-  lpAmount: string
+  dueAt: string
   amount: string
   status: string
-  dueAt: string
-  createdHeight: string
+  lpAmount: string
   createdAt: string
-  executedHeight: string
   executedAt: string
+  createdHeight: string
+  executedHeight: string
+  contractAddress: string
 }
 
 export interface MegaVaultOperatorRedemptionBucket {
   bucket: string
-  lpAmountToRedeem: string
   neededAmount: string
+  lpAmountToRedeem: string
   missingLiquidity: string
 }
 
@@ -145,22 +145,26 @@ export interface MegaVaultHistoricalPnL {
 
 export interface MegaVaultTargetApr {
   apr: string
+  updatedAt: string
+  updatedHeight: string
   upperThreshold: string
   lowerThreshold: string
-  updatedHeight: string
-  updatedAt: string
 }
 
-export enum MegaVaultRedemptionStatus {
-  Pending = 'pending',
-  Executed = 'executed',
-  Executing = 'executing',
-}
+export type MegaVaultRedemptionStatus = 'pending' | 'executed' | 'executing'
 
-export enum MegaVaultSubscriptionStatus {
-  Pending = 'pending',
-  Executed = 'executed',
-}
+const MegaVaultRedemptionStatus = {
+  Pending: 'pending',
+  Executed: 'executed',
+  Executing: 'executing',
+} as const
+
+export type MegaVaultSubscriptionStatus = 'pending' | 'executed'
+
+const MegaVaultSubscriptionStatus = {
+  Pending: 'pending',
+  Executed: 'executed',
+} as const
 
 export type GrpcMegaVaultApr = InjectiveMegaVaultRpc.Apr
 export type GrpcMegaVaultPnl = InjectiveMegaVaultRpc.Pnl
