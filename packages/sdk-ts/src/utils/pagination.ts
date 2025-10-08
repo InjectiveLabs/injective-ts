@@ -1,115 +1,35 @@
-import { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
-import type { Pagination, PagePagination } from '../types/pagination.js'
+import { ChainGrpcCommonTransformer } from '../client/chain/transformers/ChainGrpcCommonTransformer.js'
 import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import type { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
 import type {
-  ExchangePagination,
+  Pagination,
   PaginationOption,
+  ExchangePagination,
 } from '../types/pagination.js'
 
+/**
+ * @deprecated Use ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest instead
+ */
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
 ): CosmosBaseQueryV1Beta1Pagination.PageRequest | undefined => {
-  const paginationForRequest =
-    CosmosBaseQueryV1Beta1Pagination.PageRequest.create()
-
-  if (!pagination) {
-    return
-  }
-
-  if (pagination.key) {
-    paginationForRequest.key = Buffer.from(pagination.key, 'base64')
-  }
-
-  if (pagination.limit !== undefined) {
-    paginationForRequest.limit = pagination.limit.toString()
-  }
-
-  if (pagination.offset !== undefined) {
-    paginationForRequest.offset = pagination.offset.toString()
-  }
-
-  if (pagination.reverse !== undefined) {
-    paginationForRequest.reverse = pagination.reverse
-  }
-
-  if (pagination.countTotal !== undefined) {
-    paginationForRequest.countTotal = pagination.countTotal
-  }
-
-  return paginationForRequest
+  return ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 }
 
-export const generatePagination = (
-  pagination: Pagination | PagePagination | undefined,
-) => {
-  if (!pagination) {
-    return
-  }
-
-  if (!pagination.next) {
-    return
-  }
-
-  return {
-    pagination: {
-      key: pagination.next,
-    },
-  }
-}
-
+/**
+ * @deprecated Use ChainGrpcCommonTransformer.paginationUint8ArrayToString instead
+ */
 export const paginationUint8ArrayToString = (key: any) => {
-  if (!key) {
-    return ''
-  }
-
-  if (key.constructor !== Uint8Array) {
-    return key as string
-  }
-
-  return Buffer.from(key).toString('base64')
+  return ChainGrpcCommonTransformer.paginationUint8ArrayToString(key)
 }
 
-export const pageResponseToPagination = ({
-  newPagination,
-  oldPagination,
-}: {
-  oldPagination: PagePagination | undefined
-  newPagination?: Pagination | undefined
-}): PagePagination => {
-  if (!newPagination) {
-    return {
-      prev: null,
-      current: null,
-      next: null,
-    }
-  }
-
-  const next = paginationUint8ArrayToString(newPagination.next)
-
-  if (!oldPagination) {
-    return {
-      prev: null,
-      current: null,
-      next,
-    }
-  }
-
-  return {
-    prev: oldPagination.current,
-    current: oldPagination.next,
-    next,
-  }
-}
-
+/**
+ * @deprecated Use ChainGrpcCommonTransformer.grpcPaginationToPagination instead
+ */
 export const grpcPaginationToPagination = (
   pagination: CosmosBaseQueryV1Beta1Pagination.PageResponse | undefined,
 ): Pagination => {
-  return {
-    total: pagination
-      ? parseInt(paginationUint8ArrayToString(pagination.total), 10)
-      : 0,
-    next: pagination ? paginationUint8ArrayToString(pagination.nextKey) : '',
-  }
+  return ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination)
 }
 
 export const grpcPagingToPaging = (

@@ -6,8 +6,8 @@ import {
 } from '@injectivelabs/exceptions'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { paginationRequestFromPagination } from '../../../utils/pagination.js'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer.js'
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
 import type { PaginationOption } from '../../../types/pagination.js'
 
@@ -75,7 +75,8 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
 
     request.proposalStatus = status
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -144,7 +145,8 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
 
     request.proposalId = proposalId.toString()
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -184,7 +186,8 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
 
     request.proposalId = proposalId.toString()
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest

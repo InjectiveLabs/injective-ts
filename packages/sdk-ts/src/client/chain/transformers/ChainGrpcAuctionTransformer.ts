@@ -1,7 +1,7 @@
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type {
-  InjectiveAuctionV1Beta1Genesis,
   InjectiveAuctionV1Beta1Query,
+  InjectiveAuctionV1Beta1Genesis,
 } from '@injectivelabs/core-proto-ts'
 import type {
   AuctionBid,

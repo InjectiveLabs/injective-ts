@@ -1,6 +1,6 @@
 import { toHumanReadable } from '@injectivelabs/utils'
 import { uint8ArrayToString } from '../../../utils/index.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type { Pagination } from '../../../types/index.js'
 import type { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
 import type {
@@ -110,7 +110,8 @@ export class ChainGrpcGovTransformer {
 
     return {
       proposals: proposals.filter((p) => p) as Proposal[],
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination),
     }
   }
 
@@ -133,7 +134,8 @@ export class ChainGrpcGovTransformer {
 
     return {
       deposits: deposits,
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination),
     }
   }
 
@@ -152,7 +154,9 @@ export class ChainGrpcGovTransformer {
   } {
     return {
       votes: response.votes.map(ChainGrpcGovTransformer.grpcVoteToVote),
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 

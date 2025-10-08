@@ -1,6 +1,6 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import { CosmosAuthzV1Beta1Authz } from '@injectivelabs/core-proto-ts'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type {
   GoogleProtobufAny,
   CosmosAuthzV1Beta1Query,
@@ -44,7 +44,9 @@ export class ChainGrpcAuthZTransformer {
     response: CosmosAuthzV1Beta1Query.QueryGrantsResponse,
   ) {
     return {
-      pagination: grpcPaginationToPagination(response.pagination!),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination!,
+      ),
       grants: response.grants.map(ChainGrpcAuthZTransformer.grpcGrantToGrant),
     }
   }
@@ -53,7 +55,9 @@ export class ChainGrpcAuthZTransformer {
     response: CosmosAuthzV1Beta1Query.QueryGranteeGrantsResponse,
   ) {
     return {
-      pagination: grpcPaginationToPagination(response.pagination!),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination!,
+      ),
       grants: response.grants.map(
         ChainGrpcAuthZTransformer.grpcGrantAuthorizationToGrantAuthorization,
       ),
@@ -64,7 +68,9 @@ export class ChainGrpcAuthZTransformer {
     response: CosmosAuthzV1Beta1Query.QueryGranterGrantsResponse,
   ) {
     return {
-      pagination: grpcPaginationToPagination(response.pagination!),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination!,
+      ),
       grants: response.grants.map(
         ChainGrpcAuthZTransformer.grpcGrantAuthorizationToGrantAuthorization,
       ),

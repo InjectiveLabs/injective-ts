@@ -1,5 +1,5 @@
 import { StreamOperation } from '@injectivelabs/ts-types'
-import type { IndexerBid } from '../types/index.js'
+import type { IndexerAuctionBid } from '../types/index.js'
 import type { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
@@ -13,7 +13,7 @@ export class IndexerAuctionStreamTransformer {
       bidder: response.bidder,
       bidAmount: response.bidAmount,
       bidTimestamp: parseInt(response.timestamp, 10),
-    } as IndexerBid,
+    } as IndexerAuctionBid,
     operation: StreamOperation.Insert,
   })
 }

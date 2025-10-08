@@ -6,8 +6,8 @@ import {
 } from '@injectivelabs/exceptions'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { paginationRequestFromPagination } from '../../../utils/pagination.js'
 import { ChainGrpcAuthZTransformer } from '../transformers/ChainGrpcAuthZTransformer.js'
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
@@ -51,7 +51,8 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
       request.msgTypeUrl = msgTypeUrl
     }
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -88,7 +89,8 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
       request.granter = granter
     }
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -127,7 +129,8 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
       request.grantee = grantee
     }
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
