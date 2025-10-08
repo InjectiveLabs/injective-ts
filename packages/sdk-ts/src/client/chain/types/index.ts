@@ -19,6 +19,7 @@ export type * from './distribution.js'
 export type * from './tokenfactory.js'
 export type * from './tendermint-rest.js'
 export * from './permissions.js'
+export type * from './erc20.js'
 
 export interface RestApiResponse<T> {
   data: T

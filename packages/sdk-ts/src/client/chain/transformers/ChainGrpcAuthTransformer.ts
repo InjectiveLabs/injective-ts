@@ -3,7 +3,7 @@ import {
   InjectiveCryptoV1Beta1Ethsecp256k1Keys,
 } from '@injectivelabs/core-proto-ts'
 import { uint8ArrayToString } from '../../../utils/index.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type { Account, AuthModuleParams } from '../types/auth.js'
 import type {
   GoogleProtobufAny,
@@ -65,7 +65,9 @@ export class ChainGrpcAuthTransformer {
     response: CosmosAuthV1Beta1Query.QueryAccountsResponse,
   ) {
     return {
-      pagination: grpcPaginationToPagination(response.pagination!),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination!,
+      ),
       accounts: response.accounts.map(
         ChainGrpcAuthTransformer.grpcAccountToAccount,
       ),

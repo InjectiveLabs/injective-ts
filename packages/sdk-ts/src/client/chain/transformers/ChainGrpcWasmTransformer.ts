@@ -1,5 +1,5 @@
 import { fromUtf8 } from '../../../utils/index.js'
-import { grpcPaginationToPagination } from './../../../utils/pagination.js'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
 import type {
   TokenInfo,
@@ -64,7 +64,9 @@ export class ChainGrpcWasmTransformer {
       tokenInfo: JSON.parse(tokenInfoValue || '{}') as TokenInfo,
       contractInfo: JSON.parse(contractInfoValue || '{}') as ContractInfo,
       marketingInfo: JSON.parse(marketingInfoValue || '{}') as MarketingInfo,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 
@@ -113,7 +115,9 @@ export class ChainGrpcWasmTransformer {
       tokenInfo: JSON.parse(tokenInfoValue || '{}') as TokenInfo,
       contractInfo: JSON.parse(contractInfoValue || '{}') as ContractInfo,
       marketingInfo: JSON.parse(marketingInfoValue || '{}') as MarketingInfo,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 
@@ -174,7 +178,9 @@ export class ChainGrpcWasmTransformer {
       entriesList: response.entries.map(
         ChainGrpcWasmTransformer.grpcContractCodeHistoryEntryToContractCodeHistoryEntry,
       ),
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 
@@ -185,7 +191,9 @@ export class ChainGrpcWasmTransformer {
       codeInfosList: response.codeInfos.map(
         ChainGrpcWasmTransformer.grpcCodeInfoResponseToCodeInfoResponse,
       ),
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 
@@ -205,7 +213,9 @@ export class ChainGrpcWasmTransformer {
   ) {
     return {
       contractsList: response.contracts,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 }

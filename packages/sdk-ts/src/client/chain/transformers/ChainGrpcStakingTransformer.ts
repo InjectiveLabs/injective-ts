@@ -1,6 +1,6 @@
 import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import { BondStatus } from '../types/staking.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type { Pagination } from '../../../types/index.js'
 import type { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import type {
@@ -56,7 +56,9 @@ export class ChainGrpcStakingTransformer {
 
     return {
       validators,
-      pagination: grpcPaginationToPagination(response.pagination!),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination!,
+      ),
     }
   }
 
@@ -104,7 +106,9 @@ export class ChainGrpcStakingTransformer {
 
     return {
       delegations,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 
@@ -140,7 +144,9 @@ export class ChainGrpcStakingTransformer {
 
     return {
       unbondingDelegations,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 
@@ -189,7 +195,9 @@ export class ChainGrpcStakingTransformer {
 
     return {
       redelegations,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+        response.pagination,
+      ),
     }
   }
 

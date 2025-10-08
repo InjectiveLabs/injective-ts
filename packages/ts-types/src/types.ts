@@ -166,8 +166,6 @@ export const MsgType = {
     'injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
   MsgCreateDerivativeMarketOrder:
     'injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder',
-  MsgInstantPerpetualMarketLaunch:
-    'injective.exchange.v1beta1.MsgInstantPerpetualMarketLaunch',
   MsgCreateBinaryOptionsLimitOrder:
     'injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder',
   MsgAdminUpdateBinaryOptionsMarket:
@@ -176,8 +174,6 @@ export const MsgType = {
     'injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
   MsgBatchCancelBinaryOptionsOrders:
     'injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders',
-  MsgInstantExpiryFuturesMarketLaunch:
-    'injective.exchange.v1beta1.MsgInstantExpiryFuturesMarketLaunch',
   MsgBatchCreateDerivativeLimitOrders:
     'injective.exchange.v1beta1.MsgBatchCreateDerivativeLimitOrders',
   MsgInstantBinaryOptionsMarketLaunch:
@@ -253,6 +249,7 @@ export const MsgType = {
   MsgUpdateSpotMarketV2: 'injective.exchange.v2.MsgUpdateSpotMarket',
   MsgBatchUpdateOrdersV2: 'injective.exchange.v2.MsgBatchUpdateOrders',
   MsgLiquidatePositionV2: 'injective.exchange.v2.MsgLiquidatePosition',
+  MsgCancelPostOnlyModeV2: 'injective.exchange.v2.MsgCancelPostOnlyMode',
   MsgActivateStakeGrantV2: 'injective.exchange.v2.MsgActivateStakeGrant',
   MsgReclaimLockedFundsV2: 'injective.exchange.v2.MsgReclaimLockedFunds',
   MsgSubaccountTransferV2: 'injective.exchange.v2.MsgSubaccountTransfer',

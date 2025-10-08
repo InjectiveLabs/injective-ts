@@ -8,7 +8,7 @@ import { ChainModule } from '../types/index.js'
 import { toBase64 } from '../../../utils/utf8.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcWasmTransformer } from '../transformers/index.js'
-import { paginationRequestFromPagination } from '../../../utils/pagination.js'
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
@@ -38,7 +38,8 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
 
     request.address = contractAddress
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -81,7 +82,8 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
 
     request.address = contractAddress
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -256,7 +258,8 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
   async fetchContractCodes(pagination?: PaginationOption) {
     const request = CosmwasmWasmV1Query.QueryCodesRequest.create()
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -325,7 +328,8 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
 
     request.codeId = codeId.toString()
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest

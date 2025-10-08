@@ -7,11 +7,8 @@ import {
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcBankTransformer } from '../transformers/index.js'
+import { fetchAllWithPagination } from '../../../utils/pagination.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
-import {
-  fetchAllWithPagination,
-  paginationRequestFromPagination,
-} from '../../../utils/pagination.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 const MAX_LIMIT_FOR_SUPPLY = 10000
@@ -102,7 +99,8 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
 
     request.address = address
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -134,7 +132,8 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
 
   async fetchTotalSupply(pagination?: PaginationOption) {
     const request = CosmosBankV1Beta1Query.QueryTotalSupplyRequest.create()
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -202,7 +201,8 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
 
   async fetchDenomsMetadata(pagination?: PaginationOption) {
     const request = CosmosBankV1Beta1Query.QueryDenomsMetadataRequest.create()
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
@@ -268,7 +268,8 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
 
     request.denom = denom
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest

@@ -1,4 +1,3 @@
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type { Coin } from '@injectivelabs/ts-types'
 import type { Pagination } from '../../../types/index.js'
@@ -40,7 +39,8 @@ export class ChainGrpcBankTransformer {
 
     return {
       denomOwners,
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination),
     }
   }
 
@@ -55,7 +55,8 @@ export class ChainGrpcBankTransformer {
 
     return {
       supply: balances.map(ChainGrpcCommonTransformer.grpcCoinToCoin),
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination),
     }
   }
 
@@ -70,7 +71,8 @@ export class ChainGrpcBankTransformer {
 
     return {
       metadatas: metadatas.map(ChainGrpcBankTransformer.metadataToMetadata),
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination),
     }
   }
 
@@ -91,7 +93,8 @@ export class ChainGrpcBankTransformer {
 
     return {
       balances: balances.map(ChainGrpcCommonTransformer.grpcCoinToCoin),
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination),
     }
   }
 }

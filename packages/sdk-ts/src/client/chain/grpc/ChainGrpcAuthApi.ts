@@ -6,8 +6,8 @@ import {
 } from '@injectivelabs/exceptions'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { paginationRequestFromPagination } from '../../../utils/pagination.js'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer.js'
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
@@ -86,7 +86,8 @@ export class ChainGrpcAuthApi extends BaseGrpcConsumer {
 
   async fetchAccounts(pagination?: PaginationOption) {
     const request = CosmosAuthV1Beta1Query.QueryAccountsRequest.create()
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
