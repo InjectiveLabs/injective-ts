@@ -94,7 +94,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
           this.client.InjBurntEndpoint(request, this.metadata),
         )
 
-      return IndexerGrpcAuctionTransformer.injBurntResponseToInjBurnt(response)
+      return Number(response.totalInjBurnt)
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
@@ -112,7 +112,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchAuctionsV2({
+  async fetchAuctionsHistoryV2({
     token,
     endTime,
     perPage = 5,
@@ -139,7 +139,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
           this.client.AuctionsHistoryV2(request, this.metadata),
         )
 
-      return IndexerGrpcAuctionTransformer.auctionsV2ResponseToAuctionsV2(
+      return IndexerGrpcAuctionTransformer.auctionsHistoryV2ResponseToAuctionHistory(
         response,
       )
     } catch (e: unknown) {
@@ -171,9 +171,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
         () => this.client.AuctionV2(request, this.metadata),
       )
 
-      return IndexerGrpcAuctionTransformer.auctionV2ResponseToAuctionV2(
-        response,
-      )
+      return IndexerGrpcAuctionTransformer.grpcAuctionV2ToAuctionV2(response)
     } catch (e: unknown) {
       if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
         throw new GrpcUnaryRequestException(new Error(e.toString()), {
