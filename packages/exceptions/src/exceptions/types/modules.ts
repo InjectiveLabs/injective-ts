@@ -10,6 +10,7 @@ export type ContractErrorModule =
 export const ChainErrorModule = {
   Gov: 'chain-gov',
   Ibc: 'chain-ibc',
+  Evm: 'chain-evm',
   Auth: 'chain-auth',
   Bank: 'chain-bank',
   Mint: 'chain-mint',

@@ -36,15 +36,4 @@ export class ChainGrpcErc20Transformer {
       ),
     }
   }
-  // static eipBaseFeeResponseToEipBaseFee(
-  //   response: InjectiveTxFeesV1Beta1Query.QueryEipBaseFeeResponse,
-  // ): TxFeesEipBaseFee {
-  //   return {
-  //     baseFee: response.baseFee
-  //       ? denomAmountFromGrpcChainDenomAmount(
-  //           response.baseFee.baseFee,
-  //         ).toFixed()
-  //       : undefined,
-  //   }
-  // }
 }

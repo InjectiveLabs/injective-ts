@@ -1,7 +1,7 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { IndexerGrpcMegaVaultApi } from './IndexerGrpcMegaVaultApi.js'
-import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
+import type { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.Devnet1)

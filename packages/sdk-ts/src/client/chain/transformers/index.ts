@@ -1,4 +1,5 @@
 export * from './ChainGrpcGovTransformer.js'
+export * from './ChainGrpcEvmTransformer.js'
 export * from './ChainGrpcAuthTransformer.js'
 export * from './ChainGrpcBankTransformer.js'
 export * from './ChainGrpcMintTransformer.js'

@@ -3,9 +3,9 @@ import {
   UnspecifiedErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
+import { IndexerModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
-import { IndexerModule } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API

@@ -45,6 +45,7 @@ import type MsgSetDelegationTransferReceivers from './exchange/msgs/MsgSetDelega
 
 // exchange v2
 import type MsgUpdateSpotMarketV2 from './exchange/msgs/MsgUpdateSpotMarketV2.js'
+import type MsgCancelPostOnlyModeV2 from './exchange/msgs/MsgCancelPostOnlyModeV2.js'
 import type MsgUpdateDerivativeMarketV2 from './exchange/msgs/MsgUpdateDerivativeMarketV2.js'
 
 // feegrant
@@ -134,7 +135,10 @@ export type ExchangeV1Msgs =
   | MsgCreateBinaryOptionsMarketOrder
   | MsgSetDelegationTransferReceivers
 
-export type ExchangeV2Msgs = MsgUpdateSpotMarketV2 | MsgUpdateDerivativeMarketV2
+export type ExchangeV2Msgs =
+  | MsgUpdateSpotMarketV2
+  | MsgCancelPostOnlyModeV2
+  | MsgUpdateDerivativeMarketV2
 
 export type FeegrantMsgs = MsgGrantAllowance | MsgRevokeAllowance
 

@@ -1,42 +1,31 @@
 import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import MsgUpdateSpotMarketV2 from './MsgUpdateSpotMarketV2.js'
+import MsgCancelPostOnlyModeV2 from './MsgCancelPostOnlyModeV2.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-const params: MsgUpdateSpotMarketV2['params'] = {
-  admin: mockFactory.injectiveAddress,
-  marketId: mockFactory.injUsdtDerivativeMarket.marketId,
-  newMinPriceTickSize: '0.0000001',
-  newMinNotional: '0',
-  newMinQuantityTickSize: '10',
+const params: MsgCancelPostOnlyModeV2['params'] = {
+  sender: mockFactory.injectiveAddress,
 }
 
-const protoType = '/injective.exchange.v2.MsgUpdateSpotMarket'
-const protoTypeShort = 'exchange/MsgUpdateSpotMarket'
+const protoType = '/injective.exchange.v2.MsgCancelPostOnlyMode'
+const protoTypeShort = 'exchange/MsgCancelPostOnlyMode'
 const protoParams = {
-  admin: params.admin,
-  marketId: params.marketId,
-  newMinPriceTickSize: '0.0000001',
-  newMinQuantityTickSize: '10',
-  newMinNotional: '0',
-  newTicker: '',
+  sender: params.sender,
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
-const message = MsgUpdateSpotMarketV2.fromJSON(params)
+const message = MsgCancelPostOnlyModeV2.fromJSON(params)
 
-describe('MsgUpdateSpotMarketV2', () => {
+describe('MsgCancelPostOnlyModeV2V2', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
     expect(proto).toStrictEqual({
       ...protoParams,
-      newMinPriceTickSize: '100000000000',
-      newMinQuantityTickSize: '10000000000000000000',
     })
   })
 
@@ -46,8 +35,6 @@ describe('MsgUpdateSpotMarketV2', () => {
     expect(data).toStrictEqual({
       '@type': protoType,
       ...protoParams,
-      newMinPriceTickSize: '100000000000',
-      newMinQuantityTickSize: '10000000000000000000',
     })
   })
 
@@ -74,7 +61,6 @@ describe('MsgUpdateSpotMarketV2', () => {
       messages: message,
     })
 
-    // TODO: invalid Go type math.LegacyDec for field injective.exchange.v1beta1.MsgUpdateSpotMarket.amount
     it.skip('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
