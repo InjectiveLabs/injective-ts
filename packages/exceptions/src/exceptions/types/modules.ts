@@ -49,6 +49,7 @@ export const IndexerErrorModule = {
   Explorer: 'indexer-explorer',
   Campaign: 'indexer-campaign',
   Portfolio: 'indexer-portfolio',
+  MegaVault: 'indexer-mega-vault',
   Derivatives: 'indexer-derivatives',
   Transaction: 'indexer-transaction',
   ChronosSpot: 'indexer-chronos-spot',
