@@ -1,5 +1,5 @@
+import { serializeTransaction } from 'viem'
 import { sleep } from '@injectivelabs/utils'
-import { toHex, serializeTransaction } from 'viem'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
@@ -195,8 +195,8 @@ export default class LedgerBase
         const ledger = await this.ledger.getInstance()
         const result = await ledger.signEIP712HashedMessage(
           derivationPath,
-          toHex(domainHash(object)),
-          toHex(messageHash(object)),
+          domainHash(object),
+          messageHash(object),
         )
 
         const combined = `${result.r}${result.s}${result.v.toString(16)}`

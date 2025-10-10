@@ -1,21 +1,26 @@
-import { hashTypedData, type TypedDataDefinition } from 'viem'
+import { hashDomain, hashStruct } from 'viem'
 
-export const domainHash = (message: any) => {
-  const typedData: TypedDataDefinition = {
-    domain: message.domain,
-    types: message.types,
-    primaryType: 'EIP712Domain',
-    message: message.domain,
-  }
-  return hashTypedData(typedData)
+type TypeDefinition = Record<string, Array<{ name: string; type: string }>>
+
+interface EIP712Message {
+  types: TypeDefinition
+  domain: Record<string, any>
+  primaryType: string
+  message: Record<string, any>
 }
 
-export const messageHash = (message: any) => {
-  const typedData: TypedDataDefinition = {
-    domain: message.domain,
+/**
+ * Used mainly for Ledger Nano S
+ */
+
+export const domainHash = (message: EIP712Message): `0x${string}` => {
+  return hashDomain({ domain: message.domain, types: message.types })
+}
+
+export const messageHash = (message: EIP712Message): `0x${string}` => {
+  return hashStruct({
+    data: message.message,
     types: message.types,
     primaryType: message.primaryType,
-    message: message.message,
-  }
-  return hashTypedData(typedData)
+  })
 }
