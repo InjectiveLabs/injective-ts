@@ -1,89 +1,129 @@
 import {
-  keccak256,
   toBytes,
+  keccak256,
   encodeAbiParameters,
   parseAbiParameters,
 } from 'viem'
 
-// Helper to encode EIP-712 struct according to spec
-function hashStruct(primaryType: string, data: any, types: any): `0x${string}` {
-  return keccak256(encodeData(primaryType, data, types))
+type TypeDefinition = Record<string, Array<{ name: string; type: string }>>
+
+interface EIP712Message {
+  types: TypeDefinition
+  domain: Record<string, any>
+  primaryType: string
+  message: Record<string, any>
 }
 
-// Helper to encode type definition according to EIP-712
-function encodeType(primaryType: string, types: any): string {
-  // Get dependencies
-  let deps = findTypeDependencies(primaryType, types)
-  deps = deps.filter((t) => t !== primaryType)
-  deps = [primaryType].concat(deps.sort())
-
-  let result = ''
-  for (const type of deps) {
-    const fields = types[type]
-    if (!fields) continue
-
-    result += type + '('
-    result += fields.map((f: any) => `${f.type} ${f.name}`).join(',')
-    result += ')'
-  }
-  return result
-}
-
-// Helper to find type dependencies
 function findTypeDependencies(
   primaryType: string,
-  types: any,
-  results: Set<string> = new Set(),
+  types: TypeDefinition,
+  results = new Set<string>(),
 ): string[] {
+  // Already processed or type doesn't exist
   if (results.has(primaryType) || !types[primaryType]) {
     return Array.from(results)
   }
 
   results.add(primaryType)
 
+  // Check each field for custom types
   for (const field of types[primaryType]) {
-    const fieldType = field.type.replace(/\[\]$/, '') // Remove array suffix
-    if (types[fieldType]) {
-      findTypeDependencies(fieldType, types, results)
+    const baseType = field.type.replace(/\[\]$/, '') // Remove array suffix
+    if (types[baseType]) {
+      findTypeDependencies(baseType, types, results)
     }
   }
 
   return Array.from(results)
 }
 
-// Helper to encode data according to EIP-712
-function encodeData(primaryType: string, data: any, types: any): `0x${string}` {
+function formatTypeSignature(
+  typeName: string,
+  fields: Array<{ name: string; type: string }>,
+): string {
+  const fieldStrings = fields.map((f) => `${f.type} ${f.name}`)
+
+  return `${typeName}(${fieldStrings.join(',')})`
+}
+
+function encodeType(primaryType: string, types: TypeDefinition): string {
+  // Get all dependencies and sort them (primary type first, rest alphabetically)
+  const dependencies = findTypeDependencies(primaryType, types)
+    .filter((t) => t !== primaryType)
+    .sort()
+
+  const orderedTypes = [primaryType, ...dependencies]
+
+  return orderedTypes
+    .map((typeName) => {
+      const fields = types[typeName]
+
+      return fields ? formatTypeSignature(typeName, fields) : ''
+    })
+    .filter(Boolean) // Remove empty strings
+    .join('')
+}
+
+function hashType(primaryType: string, types: TypeDefinition): `0x${string}` {
+  return keccak256(toBytes(encodeType(primaryType, types)))
+}
+
+function encodeFieldValue(
+  fieldType: string,
+  value: any,
+  types: TypeDefinition,
+): { encodedType: string; encodedValue: any } {
+  if (fieldType === 'string') {
+    return {
+      encodedType: 'bytes32',
+      encodedValue: keccak256(toBytes(value)),
+    }
+  }
+
+  if (fieldType === 'bytes') {
+    return {
+      encodedType: 'bytes32',
+      encodedValue: keccak256(
+        typeof value === 'string' ? toBytes(value) : value,
+      ),
+    }
+  }
+
+  if (types[fieldType]) {
+    return {
+      encodedType: 'bytes32',
+      encodedValue: hashStruct(fieldType, value, types),
+    }
+  }
+
+  if (fieldType.endsWith(']')) {
+    throw new Error(`Array type "${fieldType}" is not supported`)
+  }
+
+  return {
+    encodedType: fieldType,
+    encodedValue: value,
+  }
+}
+
+function encodeData(
+  primaryType: string,
+  data: Record<string, any>,
+  types: TypeDefinition,
+): `0x${string}` {
   const encodedTypes: string[] = ['bytes32']
   const encodedValues: any[] = [hashType(primaryType, types)]
 
   for (const field of types[primaryType]) {
-    let value = data[field.name]
-    if (value === undefined || value === null) {
-      value = ''
-    }
+    const value = data[field.name] ?? ''
+    const { encodedType, encodedValue } = encodeFieldValue(
+      field.type,
+      value,
+      types,
+    )
 
-    const type = field.type
-
-    if (type === 'string') {
-      encodedTypes.push('bytes32')
-      encodedValues.push(keccak256(toBytes(value)))
-    } else if (type === 'bytes') {
-      encodedTypes.push('bytes32')
-      encodedValues.push(
-        keccak256(typeof value === 'string' ? toBytes(value) : value),
-      )
-    } else if (types[type]) {
-      // It's a struct type
-      encodedTypes.push('bytes32')
-      encodedValues.push(hashStruct(type, value, types))
-    } else if (type.endsWith(']')) {
-      // It's an array type
-      throw new Error('Arrays not fully supported yet')
-    } else {
-      // It's a primitive type
-      encodedTypes.push(type)
-      encodedValues.push(value)
-    }
+    encodedTypes.push(encodedType)
+    encodedValues.push(encodedValue)
   }
 
   return encodeAbiParameters(
@@ -92,15 +132,22 @@ function encodeData(primaryType: string, data: any, types: any): `0x${string}` {
   )
 }
 
-// Helper to hash type definition
-function hashType(primaryType: string, types: any): `0x${string}` {
-  return keccak256(toBytes(encodeType(primaryType, types)))
+function hashStruct(
+  primaryType: string,
+  data: Record<string, any>,
+  types: TypeDefinition,
+): `0x${string}` {
+  return keccak256(encodeData(primaryType, data, types))
 }
 
-export const domainHash = (message: any): `0x${string}` => {
+/**
+ * Used mainly for Ledger Nano S
+ */
+
+export const domainHash = (message: EIP712Message): `0x${string}` => {
   return hashStruct('EIP712Domain', message.domain, message.types)
 }
 
-export const messageHash = (message: any): `0x${string}` => {
+export const messageHash = (message: EIP712Message): `0x${string}` => {
   return hashStruct(message.primaryType, message.message, message.types)
 }
