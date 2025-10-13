@@ -367,6 +367,9 @@ export class MsgBroadcaster {
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+    const txTimeoutTimeInSeconds =
+      txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
+    const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
     let stdFee = getStdFee({ ...tx.gas, gas })
@@ -414,6 +417,7 @@ export class MsgBroadcaster {
     const signature = await walletStrategy.signEip712TypedData(
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
+      { txTimeout: txTimeoutTimeInSeconds },
     )
 
     const pubKeyOrSignatureDerivedPubKey = await getEthereumWalletPubKey({
@@ -454,7 +458,7 @@ export class MsgBroadcaster {
 
     return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
       response.txHash,
-      txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
+      txTimeoutTimeInMilliSeconds,
     )
   }
 
@@ -488,6 +492,9 @@ export class MsgBroadcaster {
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+    const txTimeoutTimeInSeconds =
+      txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
+    const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
     let stdFee = getStdFee({ ...tx.gas, gas })
@@ -543,6 +550,7 @@ export class MsgBroadcaster {
     const signature = await walletStrategy.signEip712TypedData(
       JSON.stringify(eip712TypedData),
       tx.ethereumAddress,
+      { txTimeout: txTimeoutTimeInSeconds },
     )
 
     const pubKeyOrSignatureDerivedPubKey = await getEthereumWalletPubKey({
@@ -586,7 +594,7 @@ export class MsgBroadcaster {
 
     return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
       response.txHash,
-      txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
+      txTimeoutTimeInMilliSeconds,
     )
   }
 
@@ -625,6 +633,10 @@ export class MsgBroadcaster {
       transactionApi.setMetadata(httpHeaders)
     }
 
+    const txTimeoutTimeInSeconds =
+      txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
+    const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
+
     let timeoutHeight = undefined
 
     if (txTimeoutOnFeeDelegation) {
@@ -660,6 +672,7 @@ export class MsgBroadcaster {
     const signature = await walletStrategy.signEip712TypedData(
       prepareTxResponse.data,
       tx.ethereumAddress,
+      { txTimeout: txTimeoutTimeInSeconds },
     )
 
     const broadcast = async () =>
@@ -683,7 +696,7 @@ export class MsgBroadcaster {
 
       return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
         response.txHash,
-        txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
+        txTimeoutTimeInMilliSeconds,
       )
     } catch (e) {
       const error = e as any
@@ -759,6 +772,9 @@ export class MsgBroadcaster {
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+    const txTimeoutTimeInSeconds =
+      txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
+    const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
     const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
       ? SIGN_EIP712
@@ -826,7 +842,7 @@ export class MsgBroadcaster {
 
       return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
         response.txHash,
-        txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
+        txTimeoutTimeInMilliSeconds,
       )
     }
 
@@ -852,7 +868,7 @@ export class MsgBroadcaster {
 
     return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
       response.txHash,
-      txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
+      txTimeoutTimeInMilliSeconds,
     )
   }
 
@@ -1056,6 +1072,9 @@ export class MsgBroadcaster {
         ? txTimeoutInBlocks
         : DEFAULT_BLOCK_TIMEOUT_HEIGHT,
     )
+    const txTimeoutTimeInSeconds =
+      txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
+    const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
     const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
@@ -1138,7 +1157,7 @@ export class MsgBroadcaster {
 
       return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
         response.txHash,
-        txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
+        txTimeoutTimeInMilliSeconds,
       )
     } catch (e) {
       const error = e as any

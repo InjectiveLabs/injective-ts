@@ -12,6 +12,7 @@ import { TrustWalletException } from './TrustWalletException.js'
 import { CosmosWalletException } from './CosmosWalletException.js'
 import { LedgerCosmosException } from './LedgerCosmosException.js'
 import { RainbowWalletException } from './RainbowWalletException.js'
+import { WalletConnectException } from './WalletConnectException.js'
 import { GrpcUnaryRequestException } from './GrpcUnaryRequestException.js'
 import { TurnkeyWalletSessionException } from './TurnkeyWalletSessionException.js'
 
@@ -30,6 +31,7 @@ export {
   LedgerCosmosException,
   CosmosWalletException,
   RainbowWalletException,
+  WalletConnectException,
   GrpcUnaryRequestException,
   TurnkeyWalletSessionException,
 }

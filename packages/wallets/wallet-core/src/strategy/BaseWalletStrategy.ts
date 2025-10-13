@@ -182,6 +182,7 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
   public async signEip712TypedData(
     eip712TypedData: string,
     address: AccountAddress,
+    options: { txTimeout?: number } = {},
   ): Promise<string> {
     if (isCosmosWallet(this.wallet)) {
       throw new WalletException(
@@ -199,6 +200,7 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     const response = await this.getStrategy().signEip712TypedData(
       eip712TypedData,
       address,
+      options,
     )
 
     this.emit(WalletStrategyEmitterEventType.TransactionSigned)

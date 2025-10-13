@@ -3,16 +3,16 @@ import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { EthereumProvider } from '@bangjelkoski/wc-ethereum-provider'
 import {
   WalletAction,
-  WalletEventListener,
   WalletDeviceType,
+  WalletEventListener,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
-  MetamaskException,
   UnspecifiedErrorCode,
   TransactionException,
+  WalletConnectException,
 } from '@injectivelabs/exceptions'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type {
@@ -88,7 +88,7 @@ export class WalletConnect
         method: 'eth_requestAccounts',
       })
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new WalletConnectException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
@@ -114,7 +114,7 @@ export class WalletConnect
         params: [transaction],
       })
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new WalletConnectException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SendEvmTransaction,
@@ -153,16 +153,22 @@ export class WalletConnect
   async signEip712TypedData(
     eip712json: string,
     address: AccountAddress,
+    options: { txTimeout?: number } = {},
   ): Promise<string> {
     const wc = await this.getConnectedWalletConnect()
 
+    console.log('signEip712TypedData', options?.txTimeout)
+
     try {
-      return await wc.request({
-        method: 'eth_signTypedData_v4',
-        params: [address, eip712json],
-      })
+      return await wc.request(
+        {
+          method: 'eth_signTypedData_v4',
+          params: [address, eip712json],
+        },
+        options?.txTimeout || undefined,
+      )
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new WalletConnectException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,
@@ -214,7 +220,7 @@ export class WalletConnect
 
       return signature
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new WalletConnectException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignArbitrary,
@@ -228,7 +234,7 @@ export class WalletConnect
     try {
       return wc.request({ method: 'eth_chainId' })
     } catch (e: unknown) {
-      throw new MetamaskException(new Error((e as any).message), {
+      throw new WalletConnectException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetChainId,

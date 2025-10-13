@@ -15,6 +15,7 @@ export const THROWN_EXCEPTIONS = [
   'TrustWalletException',
   'LedgerCosmosException',
   'CosmosWalletException',
+  'WalletConnectException',
   'GrpcUnaryRequestException',
   'TurnkeyWalletSessionException',
 ]

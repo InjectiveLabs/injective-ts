@@ -246,7 +246,11 @@ export interface ConcreteWalletStrategy
    * @param eip712TypedData
    * @param address - ethereum address
    */
-  signEip712TypedData(eip712TypedData: string, address: string): Promise<string>
+  signEip712TypedData(
+    eip712TypedData: string,
+    address: string,
+    options?: { txTimeout?: number },
+  ): Promise<string>
 
   signArbitrary(signer: string, data: string | Uint8Array): Promise<string>
 
@@ -302,6 +306,7 @@ export interface WalletStrategy {
   signEip712TypedData(
     eip712TypedData: string,
     address: AccountAddress,
+    options?: { txTimeout?: number },
   ): Promise<string>
   signAminoCosmosTransaction(transaction: {
     signDoc: StdSignDoc
