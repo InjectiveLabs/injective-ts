@@ -17,6 +17,12 @@ export const DEFAULT_BRIDGE_FEE_AMOUNT = '200000000000000'
 
 export const DEFAULT_BLOCK_TIMEOUT_HEIGHT = 120
 export const DEFAULT_BLOCK_TIME_IN_SECONDS = 0.7
+
+/**
+ * Default timeout for transaction block inclusion polling.
+ *
+ * Calculation: 120 blocks × 0.7 seconds/block = 84 seconds = 84,000ms
+ */
 export const DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS = Math.floor(
   DEFAULT_BLOCK_TIMEOUT_HEIGHT * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
 )

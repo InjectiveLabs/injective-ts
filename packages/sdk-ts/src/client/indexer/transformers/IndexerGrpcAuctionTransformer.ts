@@ -63,6 +63,7 @@ export class IndexerGrpcAuctionTransformer {
       basket: grpcAuction.basket.map(
         IndexerGrpcAuctionTransformer.grpcAuctionCoinPricesToAuctionCoinPrices,
       ),
+      contract: grpcAuction.contract,
       winningBidAmount: grpcAuction.winningBidAmount,
       round: parseInt(grpcAuction.round, 10),
       endTimestamp: parseInt(grpcAuction.endTimestamp, 10),
