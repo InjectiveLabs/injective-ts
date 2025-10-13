@@ -48,7 +48,7 @@ describe('MsgBroadcaster', () => {
       },
     })
 
-    const response = await msgBroadcaster.broadcast({
+    const response = await msgBroadcaster.broadcastV2({
       msgs: message,
       injectiveAddress,
     })

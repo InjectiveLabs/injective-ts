@@ -70,7 +70,7 @@ const sendTX = async () => {
     },
   })
 
-  return await msgBroadcaster.broadcast({ msgs: message })
+  return await msgBroadcaster.broadcastV2({ msgs: message })
 }
 
 const result = await sendTX()

@@ -46,7 +46,8 @@ const strategyArgs: WalletStrategyArguments = {
       },
       metadata: {
         turnkeyAuthIframeContainerId,
-        defaultOrganizationId: import.meta.env.VITE_TURNKEY_DEFAULT_ORGANIZATION_ID,
+        defaultOrganizationId: import.meta.env
+          .VITE_TURNKEY_DEFAULT_ORGANIZATION_ID,
         apiBaseUrl: 'https://api.turnkey.com',
       },
     }),
@@ -74,7 +75,7 @@ const sendTX = async () => {
     },
   })
 
-  return await msgBroadcaster.broadcast({ msgs: message })
+  return await msgBroadcaster.broadcastV2({ msgs: message })
 }
 
 const result = await sendTX()

@@ -112,7 +112,7 @@ export class TxGrpcApi implements TxConcreteApi {
 
   public async fetchTxPoll(
     txHash: string,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   ): Promise<TxResponse> {
     const POLL_INTERVAL = DEFAULT_BLOCK_TIME_IN_SECONDS * 1000
 
