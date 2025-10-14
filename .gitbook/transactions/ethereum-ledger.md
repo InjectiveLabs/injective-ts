@@ -55,7 +55,7 @@ So, let’s see a quick code snippet of the usage of these methods and how we ca
 
 ```ts
 import {
-  getEip712TypedData,
+   getEip712TypedDataV2,
    Eip712ConvertTxArgs,
    Eip712ConvertFeeArgs
 } from '@injectivelabs/sdk-ts/dist/core/eip712'
@@ -85,7 +85,7 @@ const msg = MsgSend.fromJSON({
 });
 
 /** The EIP712 TypedData that can be used for signing **/
-const eip712TypedData = getEip712Tx({
+const eip712TypedData = getEip712TypedDataV2({
   msgs: msg,
   tx: txArgs,
   fee: txFeeArgs
@@ -138,42 +138,26 @@ return signature;
 Now that we have the signature, we can prepare the transaction using the default cosmos approach.
 
 ```ts
-import {
-  SIGN_AMINO,
-  BaseAccount,
-  ChainRestAuthApi,
-  createTransaction,
-  createTxRawEIP712,
-  createWeb3Extension,
-  ChainRestTendermintApi,
-} from '@injectivelabs/sdk-ts'
-import {
-  toBigNumber,
-  getDefaultStdFee,
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT
-} from '@injectivelabs/utils'
+import { SIGN_AMINO, BaseAccount, ChainRestAuthApi, createTransaction, createTxRawEIP712, createWeb3Extension, ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
+import { toBigNumber, getDefaultStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
 const msg: MsgSend /* from Step 1 */
 
+const chainId = ChainId.Mainnet
+const evmChainId = EvmChainId.Mainnet
+
 /** Account Details **/
-const chainRestAuthApi = new ChainRestAuthApi(
-  lcdEndpoint,
-)
-const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-  injectiveAddress,
-)
+const chainRestAuthApi = new ChainRestAuthApi(lcdEndpoint)
+const accountDetailsResponse = await chainRestAuthApi.fetchAccount(injectiveAddress)
 const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
 const accountDetails = baseAccount.toAccountDetails()
 
 /** Block Details */
-const chainRestTendermintApi = new ChainRestTendermintApi(
-  lcdEndpoint,
-)
+const chainRestTendermintApi = new ChainRestTendermintApi(lcdEndpoint)
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
-const timeoutHeight = toBigNumber(latestHeight).plus(
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-)
+const timeoutHeight = toBigNumber(latestHeight).plus(DEFAULT_BLOCK_TIMEOUT_HEIGHT)
 
 const { txRaw } = createTransaction({
   message: msgs,
@@ -184,10 +168,10 @@ const { txRaw } = createTransaction({
   sequence: baseAccount.sequence,
   timeoutHeight: timeoutHeight.toNumber(),
   accountNumber: baseAccount.accountNumber,
-  chainId: chainId,
+  chainId,
 })
 const web3Extension = createWeb3Extension({
-  ethereumChainId,
+  evmChainId,
 })
 const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
@@ -221,11 +205,11 @@ import { TypedDataUtils } from 'eth-sig-util'
 import EthereumApp from '@ledgerhq/hw-app-eth'
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util'
 import {
-   getEip712TypedData,
+   getEip712TypedDataV2,
    Eip712ConvertTxArgs,
    Eip712ConvertFeeArgs
 } from '@injectivelabs/sdk-ts/dist/core/eip712'
-import { EtherumChainId, CosmosChainId } from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { toChainFormat, getDefaultStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
 
 const domainHash = (message: any) =>
@@ -281,8 +265,8 @@ const getTimeoutHeight = () => {
 }
 
 const address = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
-const chainId = CosmosChainId.Injective
-const ethereumChainId = EthereumChainId.Mainnet
+const chainId = ChainId.Injective
+const evmChainId = EvmChainId.Mainnet
 const accountDetails = getAccountDetails()
 const timeoutHeight = getTimeoutHeight
 
@@ -290,7 +274,7 @@ const txArgs: Eip712ConvertTxArgs = {
   accountNumber: accountDetails.accountNumber.toString(),
   sequence: accountDetails.sequence.toString(),
   timeoutHeight: timeoutHeight.toString(),
-  chainId: chainId,
+  chainId,
 }
 const txFeeArgs: Eip712ConvertFeeArgs = getDefaultStdFee()
 const injectiveAddress = 'inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku'
@@ -306,11 +290,11 @@ const msg = MsgSend.fromJSON({
 });
 
 /** The EIP712 TypedData that can be used for signing **/
-const eip712TypedData = getEip712Tx({
+const eip712TypedData = getEip712TypedDataV2({
   msgs: msg,
   tx: txArgs,
+  evmChainId,
   fee: txFeeArgs
-  ethereumChainId: ethereumChainId,
 })
 
 /** Signing on Ethereum */
@@ -326,10 +310,10 @@ const { txRaw } = createTransaction({
   sequence: accountDetails.sequence,
   timeoutHeight: timeoutHeight.toNumber(),
   accountNumber: accountDetails.accountNumber,
-  chainId: chainId,
+  chainId,
 })
 const web3Extension = createWeb3Extension({
-  ethereumChainId,
+  evmChainId,
 })
 const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 

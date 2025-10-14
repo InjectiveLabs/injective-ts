@@ -11,23 +11,20 @@ Let's explore (and provide examples) the Messages that the Insurance module expo
 This Message is used to create an Insurance Fund
 
 ```ts
-import {
-  MsgBroadcasterWithPk,
-  MsgCreateInsuranceFund,
-} from "@injectivelabs/sdk-ts";
-import { Network } from "@injectivelabs/networks";
-import { toBigNumber } from "@injectivelabs/utils";
+import { MsgBroadcasterWithPk, MsgCreateInsuranceFund } from '@injectivelabs/sdk-ts'
+import { Network } from '@injectivelabs/networks'
+import { toBigNumber } from '@injectivelabs/utils'
 
-const injectiveAddress = "inj1...";
-const privateKey = "0x...";
-const amount = toBigNumber(5);
+const injectiveAddress = 'inj1...'
+const privateKey = '0x...'
+const amount = toBigNumber(5)
 const fund = {
-  ticker: "BTC/USDT",
-  quoteDenom: "peggy0x...",
-  oracleBase: "BTC",
-  oracleQuote: "USDT",
+  ticker: 'BTC/USDT',
+  quoteDenom: 'peggy0x...',
+  oracleBase: 'BTC',
+  oracleQuote: 'USDT',
   oracleType: 10, // BANDIBC
-};
+}
 
 const msg = MsgCreateInsuranceFund.fromJSON({
   fund,
@@ -36,16 +33,16 @@ const msg = MsgCreateInsuranceFund.fromJSON({
     denom: fund.quoteDenom,
     amount: amount.toWei(6 /* 6 because USDT has 6 decimals */).toFixed(),
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
 ### MsgRequestRedemption
@@ -53,36 +50,33 @@ console.log(txHash);
 This Message is used to request redemption.
 
 ```ts
-import {
-  MsgRequestRedemption,
-  MsgBroadcasterWithPk,
-} from "@injectivelabs/sdk-ts";
-import { toBigNumber } from "@injectivelabs/utils";
-import { Network } from "@injectivelabs/networks";
+import { MsgRequestRedemption, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
+import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
 
-const injectiveAddress = "inj1...";
-const privateKey = "0x...";
-const amount = toBigNumber(5);
-const denom = "share1"; // the insurance fund denom (share{id})
-const marketId = "0x....";
+const marketId = '0x....'
+const privateKey = '0x...'
+const injectiveAddress = 'inj1...'
+const amount = toChainFormat(5).toFixed()
+const denom = 'share1' // the insurance fund denom (share{id})
 
 const msg = MsgRequestRedemption.fromJSON({
   marketId,
   injectiveAddress,
   amount: {
     denom,
-    amount: amount.toWei().toFixed(),
+    amount,
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
 ### MsgUnderwrite
@@ -90,15 +84,15 @@ console.log(txHash);
 This Message is used to underwrite to an insurance fund.
 
 ```ts
-import { Network } from "@injectivelabs/networks";
-import { toBigNumber } from "@injectivelabs/utils";
-import { MsgUnderwrite, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
+import { Network } from '@injectivelabs/networks'
+import { toBigNumber } from '@injectivelabs/utils'
+import { MsgUnderwrite, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 
-const injectiveAddress = "inj1...";
-const privateKey = "0x...";
-const amount = toBigNumber(5);
-const denom = "peggy0x...";
-const marketId = "0x...";
+const injectiveAddress = 'inj1...'
+const privateKey = '0x...'
+const amount = toBigNumber(5)
+const denom = 'peggy0x...'
+const marketId = '0x...'
 
 const msg = MsgUnderwrite.fromJSON({
   marketId,
@@ -107,14 +101,14 @@ const msg = MsgUnderwrite.fromJSON({
     denom,
     amount: amount.toWei(6 /* 6 because USDT has 6 decimals */).toFixed(),
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```

@@ -14,25 +14,28 @@ To instantiate (and use) the `MsgBroadcaster` class, you can use the following c
 import { MsgSend } from '@injectivelabs/sdk-ts'
 import { toChainFormat } from '@injectivelabs/utils'
 import { MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { WalletStrategy } from '@injectivelabs/wallet-strategy'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
-export const alchemyRpcEndpoint = ''
+const chainId = ChainId.Testnet // The Injective Testnet Chain ID
+const evmChainId = EvmChainId.TestnetEvm // The Injective Evm Testnet Chain ID
+
+export const alchemyRpcEndpoint = `https://eth-goerli.alchemyapi.io/v2/${process.env.APP_ALCHEMY_SEPOLIA_KEY}`
+
 export const walletStrategy = new WalletStrategy({
-  chainId: ChainId.Mainnet,
-  ethereumOptions: {
+  chainId,
+  evmOptions: {
+    evmChainId,
     rpcUrl: alchemyRpcEndpoint,
-    ethereumChainId: EthereumChainId.Mainnet,
   },
-  strategies: {},
 })
 
 export const msgBroadcaster = new MsgBroadcaster({
   walletStrategy,
   simulateTx: true,
-  network: Network.Mainnet,
-  endpoints: getNetworkEndpoints(Network.Mainnet),
+  network: Network.Testnet,
+  endpoints: getNetworkEndpoints(Network.Testnet),
   gasBufferCoefficient: 1.1,
 })(
   // Usage Example
@@ -63,7 +66,7 @@ We allow to override some of the options passed to the constructor of `MsgBroadc
 
 ````typescript
 import { Msgs } from '@injectivelabs/sdk-ts'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { Network, NetworkEndpoints } from '@injectivelabs/networks'
 import type { WalletStrategy } from '../strategies'
 

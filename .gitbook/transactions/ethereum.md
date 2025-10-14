@@ -9,24 +9,15 @@ First of, we need to prepare the transaction for signing. To use Ethereum native
 Using our custom abstraction for the Messages which allows the developer to get EIP712 TypedData straight from the proto file of the particular message.
 
 ```ts
-import {
-  MsgSend,
-  BaseAccount,
-  ChainRestAuthApi,
-  getEip712TypedData,
-  ChainRestTendermintApi,
-} from '@injectivelabs/sdk-ts'
-import {
-  getDefaultStdFee,
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-} from '@injectivelabs/utils'
-import { ChainId } from '@injectivelabs/ts-types'
+import { MsgSend, BaseAccount, ChainRestAuthApi, getEip712TypedData, ChainRestTendermintApi } from '@injectivelabs/sdk-ts'
+import { DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
 const injectiveAddress = 'inj1'
-const chainId = 'injective-1' /* ChainId.Mainnet */
-const restEndpoint =
-  'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+const chainId = ChainId.Mainnet
+const evmChainId = EvmChainId.Mainnet
+const restEndpoint = 'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const amount = {
   amount: toChainFormat(0.01).toFixed(),
   denom: 'inj',
@@ -34,9 +25,7 @@ const amount = {
 
 /** Account Details **/
 const chainRestAuthApi = new ChainRestAuthApi(restEndpoint)
-const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-  injectiveAddress,
-)
+const accountDetailsResponse = await chainRestAuthApi.fetchAccount(injectiveAddress)
 const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
 const accountDetails = baseAccount.toAccountDetails()
 
@@ -44,9 +33,7 @@ const accountDetails = baseAccount.toAccountDetails()
 const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
 const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
 const latestHeight = latestBlock.header.height
-const timeoutHeight = toBigNumber(latestHeight).plus(
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-)
+const timeoutHeight = toBigNumber(latestHeight).plus(DEFAULT_BLOCK_TIMEOUT_HEIGHT)
 
 /** Preparing the transaction */
 const msg = MsgSend.fromJSON({
@@ -64,7 +51,7 @@ const eip712TypedData = getEip712TypedData({
     timeoutHeight: timeoutHeight.toFixed(),
     chainId: chainId,
   },
-  ethereumChainId: ethereumChainId,
+  evmChainId,
 })
 ```
 
@@ -76,10 +63,7 @@ Once we have prepared the EIP712 typed data, we proceed to signing.
 /** Use your preferred approach to sign EIP712 TypedData, example with Metamask */
 const signature = await window.ethereum.request({
   method: 'eth_signTypedData_v4',
-  params: [
-    ethereumAddress,
-    JSON.stringify(eip712TypedData /* from previous step */),
-  ],
+  params: [ethereumAddress, JSON.stringify(eip712TypedData /* from previous step */)],
 })
 
 /** Get Public Key of the signer */
@@ -94,13 +78,13 @@ You can also use our `@injectivelabs/wallet-strategy` package to get out-of-the-
 Once we have the signature ready, we need to broadcast the transaction to the Injective chain itself. After getting the signature from the second step, we need to include that signature in the signed transaction and broadcast it to the chain.
 
 ```ts
-import { ChainId } from '@injectivelabs/ts-types'
+import { getDefaultStdFee } from '@injectivelabs/utils'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { createTransaction, TxRestApi } from '@injectivelabs/sdk-ts'
-import {
-  SIGN_AMINO,
-  Network,
-  getNetworkEndpoints,
-} from '@injectivelabs/networks'
+import { Network, SIGN_AMINO, getNetworkEndpoints } from '@injectivelabs/networks'
+
+const chainId = ChainId.Mainnet
+const evmChainId = EvmChainId.Mainnet
 
 const { txRaw } = createTransaction({
   message: msgs,
@@ -111,10 +95,10 @@ const { txRaw } = createTransaction({
   sequence: baseAccount.sequence,
   timeoutHeight: timeoutHeight.toNumber(),
   accountNumber: baseAccount.accountNumber,
-  chainId: chainId,
+  chainId,
 })
 const web3Extension = createWeb3Extension({
-  ethereumChainId,
+  evmChainId,
 })
 const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
@@ -122,8 +106,7 @@ const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 txRawEip712.signatures = [signatureBuff /* From previous step */]
 
 /** Broadcast the Transaction */
-const restEndpoint =
-  'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
+const restEndpoint = 'https://lcd.injective.network' /* getNetworkEndpoints(Network.Mainnet).rest */
 const txRestApi = new TxRestApi(restEndpoint)
 
 const txHash = await txRestApi.broadcast(txRawEip712)
@@ -144,62 +127,39 @@ const response = await txRestApi.fetchTxPoll(txHash)
 Let's have a look at the whole flow (using Metamask as a signing wallet)
 
 ```ts
-import {
-  MsgSend,
-  TxRestApi,
-  SIGN_AMINO,
-  BaseAccount,
-  hexToBase64,
-  ChainRestAuthApi,
-  createTransaction,
-  createTxRawEIP712,
-  getEip712TypedData,
-  getEthereumAddress,
-  createWeb3Extension,
-  ChainRestTendermintApi,
-  recoverTypedSignaturePubKey,
-} from "@injectivelabs/sdk-ts";
-import {
-  toBigNumber,
-  toChainFormat,
-  getDefaultStdFee,
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-} from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
+import { MsgSend, TxRestApi, SIGN_AMINO, BaseAccount, hexToBase64, ChainRestAuthApi, createTransaction, createTxRawEIP712, getEip712TypedData, getEthereumAddress, createWeb3Extension, ChainRestTendermintApi, recoverTypedSignaturePubKey } from '@injectivelabs/sdk-ts'
+import { toBigNumber, toChainFormat, getDefaultStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from '@injectivelabs/utils'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 
-const injectiveAddress = "inj1";
+const injectiveAddress = 'inj1'
+const chainId = ChainId.Mainnet
+const evmChainId = EvmChainId.Mainnet
 const ethereumAddress = getEthereumAddress(injectiveAddress)
-const chainId = "injective-1"; /* ChainId.Mainnet */
-const ethereumChainId = 1; /* ChainId.EthereumMainnet */
-const restEndpoint = getNetworkEndpoints(Network.MainnetSentry).rest;
+const restEndpoint = getNetworkEndpoints(Network.MainnetSentry).rest
 const amount = {
   amount: toChainFormat(0.01).toFixed(),
-  denom: "inj",
-};
+  denom: 'inj',
+}
 
 /** Account Details **/
-const chainRestAuthApi = new ChainRestAuthApi(restEndpoint);
-const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
-  injectiveAddress
-);
-const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse);
-const accountDetails = baseAccount.toAccountDetails();
+const chainRestAuthApi = new ChainRestAuthApi(restEndpoint)
+const accountDetailsResponse = await chainRestAuthApi.fetchAccount(injectiveAddress)
+const baseAccount = BaseAccount.fromRestApi(accountDetailsResponse)
+const accountDetails = baseAccount.toAccountDetails()
 
 /** Block Details */
-const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint);
-const latestBlock = await chainRestTendermintApi.fetchLatestBlock();
-const latestHeight = latestBlock.header.height;
-const timeoutHeight = toBigNumber(latestHeight).plus(
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT
-);
+const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint)
+const latestBlock = await chainRestTendermintApi.fetchLatestBlock()
+const latestHeight = latestBlock.header.height
+const timeoutHeight = toBigNumber(latestHeight).plus(DEFAULT_BLOCK_TIMEOUT_HEIGHT)
 
 /** Preparing the transaction */
 const msg = MsgSend.fromJSON({
   amount,
   srcInjectiveAddress: injectiveAddress,
   dstInjectiveAddress: injectiveAddress,
-});
+})
 
 /** EIP712 for signing on Ethereum wallets */
 const eip712TypedData = getEip712TypedData({
@@ -210,19 +170,19 @@ const eip712TypedData = getEip712TypedData({
     timeoutHeight: timeoutHeight.toFixed(),
     chainId: chainId,
   },
-  ethereumChainId: ethereumChainId,
-});
+  evmChainId,
+})
 
 /** Use your preferred approach to sign EIP712 TypedData, example with Metamask */
 const signature = await window.ethereum.request({
-  method: "eth_signTypedData_v4",
+  method: 'eth_signTypedData_v4',
   params: [ethereumAddress, JSON.stringify(eip712TypedData)],
-});
+})
 
 /** Get Public Key of the signer */
-const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature);
-const publicKeyBase64 = hexToBase64(publicKeyHex);
-const signatureBuff = Buffer.from(signature.replace('0x', ''), "hex");
+const publicKeyHex = recoverTypedSignaturePubKey(eip712TypedData, signature)
+const publicKeyBase64 = hexToBase64(publicKeyHex)
+const signatureBuff = Buffer.from(signature.replace('0x', ''), 'hex')
 
 const { txRaw } = createTransaction({
   message: [msg],
@@ -234,20 +194,20 @@ const { txRaw } = createTransaction({
   timeoutHeight: timeoutHeight.toNumber(),
   accountNumber: baseAccount.accountNumber,
   chainId: chainId,
-});
+})
 const web3Extension = createWeb3Extension({
-  ethereumChainId,
-});
-const txRawEip712 = createTxRawEIP712(txRaw, web3Extension);
+  evmChainId,
+})
+const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
 /** Append Signatures */
-txRawEip712.signatures = [signatureBuff];
+txRawEip712.signatures = [signatureBuff]
 
 /** Broadcast the Transaction */
-const txRestApi = new TxRestApi(restEndpoint);
+const txRestApi = new TxRestApi(restEndpoint)
 
-const txResponse = await txRestApi.broadcast(txRawEip712);
-const response = await txRestApi.fetchTxPoll(txResponse.txHash);
+const txResponse = await txRestApi.broadcast(txRawEip712)
+const response = await txRestApi.fetchTxPoll(txResponse.txHash)
 ```
 
 ### Example with WalletStrategy (Prepare + Sign + Broadcast)

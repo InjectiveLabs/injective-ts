@@ -11,19 +11,16 @@ Let's explore (and provide examples) the Messages that the Staking module export
 This Message is used to Redelegate staked INJ from one validator to another.
 
 ```ts
-import {
-  MsgBeginRedelegate,
-  MsgBroadcasterWithPk
-} from "@injectivelabs/sdk-ts";
-import { toBigNumber } from "@injectivelabs/utils";
-import { Network } from "@injectivelabs/networks";
+import { MsgBeginRedelegate, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
+import { toChainFormat } from '@injectivelabs/utils'
+import { Network } from '@injectivelabs/networks'
 
-const injectiveAddress = "inj1...";
-const privateKey = "0x...";
-const amount = toBigNumber(5);
-const denom = "inj";
-const destinationValidatorAddress = "inj1...";
-const sourceValidatorAddress = "inj1...";
+const denom = 'inj'
+const privateKey = '0x...'
+const injectiveAddress = 'inj1...'
+const sourceValidatorAddress = 'inj1...'
+const destinationValidatorAddress = 'inj1...'
+const amount = toChainFormat(5).toFixed()
 
 const msg = MsgBeginRedelegate.fromJSON({
   injectiveAddress,
@@ -31,18 +28,18 @@ const msg = MsgBeginRedelegate.fromJSON({
   srcValidatorAddress: sourceValidatorAddress,
   amount: {
     denom,
-    amount: amount.toWei().toFixed(),
+    amount,
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
 ### MsgDelegate
@@ -50,32 +47,33 @@ console.log(txHash);
 This Message is used to Delegate INJ to a validator.
 
 ```ts
-import { Network } from "@injectivelabs/networks";
-import { toBigNumber } from "@injectivelabs/utils";
-import { MsgDelegate, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
+import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgDelegate, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 
-const injectiveAddress = "inj1...";
-const privateKey = "0x...";
-const amount = toBigNumber(5);
-const validatorAddress = "inj1...";
+const denom = 'inj'
+const injectiveAddress = 'inj1...'
+const privateKey = '0x...'
+const amount = toChainFormat(5).toFixed()
+const validatorAddress = 'inj1...'
 
 const msg = MsgDelegate.fromJSON({
   injectiveAddress,
   validatorAddress,
   amount: {
-    denom: INJ_DENOM,
-    amount: amount.toWei().toFixed(),
+    denom,
+    amount,
   },
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```
 
 ### MsgCancelUnbondingDelegation
@@ -83,32 +81,33 @@ console.log(txHash);
 This message is used to cancel unbonding from a validator, reset the bonding period, and delegate back to the previous validator.
 
 ```ts
-import { Network } from "@injectivelabs/networks";
-import { toBigNumber } from "@injectivelabs/utils";
-import { MsgCancelUnbondingDelegation, MsgBroadcasterWithPk } from "@injectivelabs/sdk-ts";
+import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
+import { MsgCancelUnbondingDelegation, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
 
-const delegatorAddress = "inj1...";
-const privateKey = "0x...";
-const amount = toBigNumber(5);
-const validatorAddress = "inj1...";
-const creationHeight = "123456"; // the height at which the unbonding was initiated
+const denom = 'inj'
+const privateKey = '0x...'
+const delegatorAddress = 'inj1...'
+const validatorAddress = 'inj1...'
+const creationHeight = '123456' // the height at which the unbonding was initiated
+const amount = toChainFormat(5).toFixed()
 
 const msg = MsgCancelUnbondingDelegation.fromJSON({
   delegatorAddress,
   validatorAddress,
   amount: {
-    denom: INJ_DENOM,
-    amount: amount.toWei().toFixed(),
+    denom,
+    amount,
   },
   creationHeight,
-});
+})
 
 const txHash = await new MsgBroadcasterWithPk({
-privateKey,
-network: Network.Testnet
+  privateKey,
+  network: Network.Testnet,
 }).broadcast({
-msgs: msg
-});
+  msgs: msg,
+})
 
-console.log(txHash);
+console.log(txHash)
 ```

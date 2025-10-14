@@ -9,18 +9,8 @@ Application to application communication in IBC is conducted over channels, whic
 In this example, we will transfer ATOM from Injective to CosmosHub
 
 ```ts
-import {
-  MsgTransfer,
-  ChainGrpcBankApi,
-  MsgBroadcasterWithPk,
-  ChainRestTendermintApi,
-  makeTimeoutTimestampInNs,
-} from '@injectivelabs/sdk-ts'
-import {
-  TokenService,
-  UiBankTransformer,
-  cosmosChainTokenMetaMap,
-} from '@injectivelabs/sdk-ui-ts'
+import { MsgTransfer, ChainGrpcBankApi, MsgBroadcasterWithPk, ChainRestTendermintApi, makeTimeoutTimestampInNs } from '@injectivelabs/sdk-ts'
+import { TokenService, UiBankTransformer, cosmosChainTokenMetaMap } from '@injectivelabs/sdk-ui-ts'
 import { toBigNumber, toChainFormat } from '@injectivelabs/utils'
 import { ChainId, CosmosChainId } from '@injectivelabs/ts-types'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
@@ -40,33 +30,22 @@ const bankService = new ChainGrpcBankApi(endpointsForNetwork.grpc)
 // fetch ibc assets in bank module and format to token
 const { supply } = await bankService.fetchTotalSupply()
 const uiSupply = UiBankTransformer.supplyToUiSupply(supply)
-const ibcSupplyWithToken = (await tokenService.getIbcSupplyWithToken(
-  uiSupply.ibcBankSupply,
-)) as IbcToken[]
+const ibcSupplyWithToken = (await tokenService.getIbcSupplyWithToken(uiSupply.ibcBankSupply)) as IbcToken[]
 
 /* get metadata for canonical denoms available for transfer between chains */
 const cosmosHubBaseDenom = 'uatom'
 const tokenMeta = cosmosChainTokenMetaMap[destinationChainId]
-const atomToken = (
-  Array.isArray(tokenMeta)
-    ? tokenMeta.find((token) => token.denom === cosmosHubBaseDenom)
-    : tokenMeta
-) as Token
+const atomToken = (Array.isArray(tokenMeta) ? tokenMeta.find((token) => token.denom === cosmosHubBaseDenom) : tokenMeta) as Token
 
 /* find the ibd denom hash for the canonical denom */
 const injectiveToCosmosHubChannelId = 'channel-1'
-const atomDenomFromSupply = ibcSupplyWithToken.find(
-  ({ channelId, baseDenom }) =>
-    channelId === injectiveToCosmosHubChannelId &&
-    baseDenom === atomToken.denom,
-) as IbcToken
+const atomDenomFromSupply = ibcSupplyWithToken.find(({ channelId, baseDenom }) => channelId === injectiveToCosmosHubChannelId && baseDenom === atomToken.denom) as IbcToken
 const canonicalDenomHash = atomDenomFromSupply.denom
 
 /* format amount for transfer */
 const amount = {
   denom: canonicalDenomHash,
-  amount: new toChainFormat(0.001, atomDenomFromSupply.decimals)
-    .toFixed()
+  amount: toChainFormat(0.001, atomDenomFromSupply.decimals).toFixed(),
 }
 
 const injectiveAddress = 'inj...'

@@ -62,8 +62,8 @@ import { GeneralException, TransactionException } from '@injectivelabs/exception
 import { getNetworkEndpoints, NetworkEndpoints, Network } from '@injectivelabs/networks'
 
 export interface Options {
-  ethereumChainId: number /* 1 for Injective mainnet, 5 for Injective testnet */
-  chainId: string; /* Injective chain id */
+  evmChainId: EvmChainId /* Evm chain id */
+  chainId: ChainId; /* Injective chain id */
   endpoints: NetworkEndpoints /* can be fetched from @injectivelabs/networks based on the Network */
 }
 
@@ -120,7 +120,7 @@ export const experimentalBroadcastKeplrWithLedger = async (
   tx: Transaction,
   options: Options
 ) => {
-  const { endpoints, chainId, ethereumChainId } = options
+  const { endpoints, chainId, evmChainId } = options
   const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
   const DEFAULT_BLOCK_TIMEOUT_HEIGHT = 60
 
@@ -167,7 +167,7 @@ export const experimentalBroadcastKeplrWithLedger = async (
       timeoutHeight: timeoutHeight.toFixed(),
       chainId,
     },
-    ethereumChainId,
+    evmChainId,
   })
 
   const aminoSignResponse = await window.keplr.experimentalSignEIP712CosmosTx_v0(
@@ -206,7 +206,7 @@ export const experimentalBroadcastKeplrWithLedger = async (
 
   /** Preparing the transaction for client broadcasting */
   const web3Extension = createWeb3Extension({
-    ethereumChainId,
+    evmChainId,
   })
   const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 

@@ -20,15 +20,15 @@ import {
 import { Network } from "@injectivelabs/networks";
 import { toChainFormat } from "@injectivelabs/utils";
 
-const INJ_DENOM = 'inj'
-const amount = toChainFormat(1).toFixed()
+const denom = 'inj'
 const proposalId = 12345
-const injectiveAddress = "inj...";
 const privateKey = "0x...";
+const injectiveAddress = "inj...";
+const amount = toChainFormat(1).toFixed()
 
 const message = MsgGovDeposit.fromJSON({
   amount: {
-    denom: INJ_DENOM,
+    denom,
     amount
   },
   proposalId,
@@ -49,30 +49,27 @@ const txHash = await new MsgBroadcasterWithPk({
 After the proposal is properly funded, voting can commence. You can vote "Yes", "No", "Abstain", or "No with Veto".
 
 ```ts
-import {
-  MsgVote,
-  MsgBroadcasterWithPk
-} from "@injectivelabs/sdk-ts";
-import { Network } from "@injectivelabs/networks";
+import { MsgVote, MsgBroadcasterWithPk } from '@injectivelabs/sdk-ts'
+import { Network } from '@injectivelabs/networks'
 import { VoteOption } from '@injectivelabs/sdk-ts'
 
-const injectiveAddress = "inj...";
-const privateKey = "0x...";
+const injectiveAddress = 'inj...'
+const privateKey = '0x...'
 const proposalId = 12345
-const vote =  VoteOption.VOTE_OPTION_YES
+const vote = VoteOption.VOTE_OPTION_YES
 
 const message = MsgVote.fromJSON({
   vote,
   proposalId,
-  voter: injectiveAddress
+  voter: injectiveAddress,
 })
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: message
-});
+  msgs: message,
+})
 ```
 
 ### MsgSubmitTextProposal
@@ -80,16 +77,13 @@ const txHash = await new MsgBroadcasterWithPk({
 Propose any action on Injective. TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 
 ```ts
-import {
-  MsgBroadcasterWithPk,
-  MsgSubmitTextProposal,
-} from "@injectivelabs/sdk-ts";
-import { Network } from "@injectivelabs/networks";
-import { toChainFormat } from "@injectivelabs/utils";
+import { MsgBroadcasterWithPk, MsgSubmitTextProposal } from '@injectivelabs/sdk-ts'
+import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
 
-const injectiveAddress = "inj...";
-const privateKey = "0x...";
-const INJ_DENOM = 'inj'
+const denom = 'inj'
+const privateKey = '0x...'
+const injectiveAddress = 'inj...'
 const amount = toChainFormat(1).toFixed()
 
 const message = MsgSubmitTextProposal.fromJSON({
@@ -97,17 +91,17 @@ const message = MsgSubmitTextProposal.fromJSON({
   description: 'Description of Proposal',
   proposer: injectiveAddress,
   deposit: {
-    denom: INJ_DENOM,
-    amount
-  }
+    denom,
+    amount,
+  },
 })
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: message
-});
+  msgs: message,
+})
 ```
 
 ### MsgSubmitProposalSpotMarketLaunch
@@ -115,33 +109,29 @@ const txHash = await new MsgBroadcasterWithPk({
 This message allows you to propose a new spot market. Ensure that the ticker is accurate and provide the base asset denom followed by the quote asset denom. Base denom refers to the asset you would like to trade and quote denom refers to the asset by which your base asset is denominated. For instance, in the INJ/USDT market you would buy or sell INJ using USDT.
 
 ```ts
-import {
-  TokenStaticFactory,
-  MsgBroadcasterWithPk,
-  MsgSubmitProposalSpotMarketLaunch
-} from "@injectivelabs/sdk-ts";
-import { toChainFormat, BigNumberInWei } from "@injectivelabs/utils";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { TokenStaticFactory, MsgBroadcasterWithPk, MsgSubmitProposalSpotMarketLaunch } from '@injectivelabs/sdk-ts'
+import { toChainFormat } from '@injectivelabs/utils'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 // refer to https://docs.ts.injective.network/readme/assets/injective-list
 import { tokens } from '../data/tokens.json'
 
 const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 
-const injectiveAddress = "inj...";
-const privateKey = "0x...";
-const INJ_DENOM = 'inj'
+const denom = 'inj'
+const privateKey = '0x...'
+const injectiveAddress = 'inj...'
 const amount = toChainFormat(1).toFixed()
 
 const market = {
   baseDenom: 'inj', // for example
-  quoteDenom: "peggy0x...",
+  quoteDenom: 'peggy0x...',
   makerFeeRate: '0.001',
   takerFeeRate: '0.002',
   title: 'INJ/USDT Spot Market Launch',
   description: 'This proposal will launch the INJ/USDT Spot Market with maker and taker fees 0.001% and 0.002% respectively',
   ticker: 'INJ/USDT',
   minPriceTickSize: '0.001',
-  minQuantityTickSize: '0.001'
+  minQuantityTickSize: '0.001',
 }
 
 const baseDenom = tokenStaticFactory.toToken(market.baseDenom)
@@ -149,39 +139,30 @@ const quoteDenom = tokenStaticFactory.toToken(market.quoteDenom)
 const marketWithDecimals: SpotMarketLaunchProposal = {
   ...market,
   baseTokenDecimals: baseDenom ? baseDenom.decimals : 18,
-  quoteTokenDecimals: quoteDenom ? quoteDenom.decimals : 6
+  quoteTokenDecimals: quoteDenom ? quoteDenom.decimals : 6,
 }
 
 const marketWithTickSizes = {
   ...market,
-  minPriceTickSize: toChainFormat(
-    marketWithDecimals.minPriceTickSize,
-    marketWithDecimals.baseTokenDecimals -
-      marketWithDecimals.quoteTokenDecimals
-  )
-  .toFixed(),
-  minQuantityTickSize: toChainFormat(
-    marketWithDecimals.minQuantityTickSize,
-    marketWithDecimals.baseTokenDecimals
-  )
-  .toFixed()
+  minPriceTickSize: toChainFormat(marketWithDecimals.minPriceTickSize, marketWithDecimals.baseTokenDecimals - marketWithDecimals.quoteTokenDecimals).toFixed(),
+  minQuantityTickSize: toChainFormat(marketWithDecimals.minQuantityTickSize, marketWithDecimals.baseTokenDecimals).toFixed(),
 }
 
 const message = MsgSubmitProposalSpotMarketLaunch.fromJSON({
   market: marketWithTickSizes,
   proposer: injectiveAddress,
   deposit: {
-    denom: INJ_DENOM,
-    amount
-  }
+    denom,
+    amount,
+  },
 })
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: message
-});
+  msgs: message,
+})
 ```
 
 ### MsgSubmitProposalPerpetualMarketLaunch
@@ -189,21 +170,17 @@ const txHash = await new MsgBroadcasterWithPk({
 This message allows you to propose a new perpetual market. perpetual futures contracts, or perps, are derivative futures contracts that allow users to buy or sell the value of an underlying base asset without actually owning it. This is the message you can use to create a perp market for a specified token pair.
 
 ```ts
-import {
-  TokenStaticFactory,
-  MsgBroadcasterWithPk,
-  MsgSubmitProposalPerpetualMarketLaunch
-} from "@injectivelabs/sdk-ts";
-import { toChainFormat } from "@injectivelabs/utils";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { TokenStaticFactory, MsgBroadcasterWithPk, MsgSubmitProposalPerpetualMarketLaunch } from '@injectivelabs/sdk-ts'
+import { toChainFormat } from '@injectivelabs/utils'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 // refer to https://docs.ts.injective.network/readme/assets/injective-list
 import { tokens } from '../data/tokens.json'
 
 const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 
-const injectiveAddress = "inj...";
-const privateKey = "0x...";
-const INJ_DENOM = 'inj'
+const denom = 'inj'
+const privateKey = '0x...'
+const injectiveAddress = 'inj...'
 const amount = toChainFormat(1).toFixed()
 
 const market = {
@@ -220,39 +197,35 @@ const market = {
   makerFeeRate: '0.01',
   takerFeeRate: '0.02',
   minPriceTickSize: '0.01',
-  minQuantityTickSize: '0.01'
+  minQuantityTickSize: '0.01',
 }
 
 const quoteDenom = await tokenStaticFactory.toToken(market.quoteDenom)
 const marketWithDecimals = {
-    ...market,
-    quoteTokenDecimals: quoteDenom ? quoteDenom.decimals : 6
-  }
+  ...market,
+  quoteTokenDecimals: quoteDenom ? quoteDenom.decimals : 6,
+}
 
 const marketWithTickSizes = {
   ...market,
-  minPriceTickSize: toChainFormat(
-    marketWithDecimals.minPriceTickSize,
-    marketWithDecimals.quoteTokenDecimals
-  )
-    .toFixed()
+  minPriceTickSize: toChainFormat(marketWithDecimals.minPriceTickSize, marketWithDecimals.quoteTokenDecimals).toFixed(),
 }
 
 const message = MsgSubmitProposalPerpetualMarketLaunch.fromJSON({
   market: marketWithTickSizes,
   proposer: injectiveAddress,
   deposit: {
-    denom: INJ_DENOM,
-    amount
-  }
+    denom,
+    amount,
+  },
 })
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: message
-});
+  msgs: message,
+})
 ```
 
 ### MsgSubmitProposalExpiryFuturesMarketLaunch
@@ -260,21 +233,17 @@ const txHash = await new MsgBroadcasterWithPk({
 An expiry futures contract is an agreement between two counterparties to buy and sell a specific amount of an underlying base asset at a specific future price, which is set to expire at a specified date in the future. This is the message you can use to create a futures market for a specified token pair.
 
 ```ts
-import {
-  TokenStaticFactory,
-  MsgBroadcasterWithPk,
-  MsgSubmitProposalExpiryFuturesMarketLaunch
-} from "@injectivelabs/sdk-ts";
-import { toChainFormat } from "@injectivelabs/utils";
-import { getNetworkEndpoints, Network } from "@injectivelabs/networks";
+import { TokenStaticFactory, MsgBroadcasterWithPk, MsgSubmitProposalExpiryFuturesMarketLaunch } from '@injectivelabs/sdk-ts'
+import { toChainFormat } from '@injectivelabs/utils'
+import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 // refer to https://docs.ts.injective.network/readme/assets/injective-list
 import { tokens } from '../data/tokens.json'
 
 const tokenStaticFactory = new TokenStaticFactory(tokens as TokenStatic[])
 
-const injectiveAddress = "inj...";
-const privateKey = "0x...";
-const INJ_DENOM = 'inj'
+const denom = 'inj'
+const privateKey = '0x...'
+const injectiveAddress = 'inj...'
 const amount = toChainFormat(1).toFixed()
 
 const market = {
@@ -292,40 +261,36 @@ const market = {
   makerFeeRate: '0.01',
   takerFeeRate: '0.02',
   minPriceTickSize: '0.01',
-  minQuantityTickSize: '0.01'
+  minQuantityTickSize: '0.01',
 }
 
 const quoteDenom = await tokenStaticFactory.toToken(market.quoteDenom)
 
 const marketWithDecimals = {
-    ...market,
-    quoteTokenDecimals: quoteDenom ? quoteDenom.decimals : 6
-  }
+  ...market,
+  quoteTokenDecimals: quoteDenom ? quoteDenom.decimals : 6,
+}
 
 const marketWithTickSizes = {
   ...market,
-  minPriceTickSize: toChainFormat(
-    marketWithDecimals.minPriceTickSize,
-    marketWithDecimals.quoteTokenDecimals
-  )
-    .toFixed()
+  minPriceTickSize: toChainFormat(marketWithDecimals.minPriceTickSize, marketWithDecimals.quoteTokenDecimals).toFixed(),
 }
 
 const message = MsgSubmitProposalExpiryFuturesMarketLaunch.fromJSON({
   market: marketWithTickSizes,
   proposer: injectiveAddress,
   deposit: {
-    denom: INJ_DENOM,
-    amount
-  }
+    denom,
+    amount,
+  },
 })
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: message
-});
+  msgs: message,
+})
 ```
 
 ### MsgSubmitProposalSpotMarketParamUpdate
@@ -333,17 +298,14 @@ const txHash = await new MsgBroadcasterWithPk({
 This message can be used to update the params of a spot market.
 
 ```ts
-import {
-  MsgBroadcasterWithPk,
-  MsgSubmitProposalSpotMarketParamUpdate
-} from "@injectivelabs/sdk-ts";
-import { Network } from "@injectivelabs/networks";
-import { toChainFormat } from "@injectivelabs/utils";
+import { MsgBroadcasterWithPk, MsgSubmitProposalSpotMarketParamUpdate } from '@injectivelabs/sdk-ts'
+import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
 import { MarketStatusMap } from '@injectivelabs/chain-api'
 
-const injectiveAddress = "inj...";
-const privateKey = "0x...";
-const INJ_DENOM = 'inj'
+const denom = 'inj'
+const privateKey = '0x...'
+const injectiveAddress = 'inj...'
 const amount = toChainFormat(1).toFixed()
 
 const market = {
@@ -355,22 +317,22 @@ const market = {
   relayerFeeShareRate: '0.4', // 40%, the percent of tsx fees that go to the relayers
   minPriceTickSize: '0.002',
   minQuantityTickSize: '0.002',
-  status: MarketStatusMap.Active
+  status: MarketStatusMap.Active,
 }
 
 const message = MsgSubmitProposalSpotMarketParamUpdate.fromJSON({
   market,
   proposer: injectiveAddress,
   deposit: {
-    denom: INJ_DENOM,
-    amount
-  }
+    denom,
+    amount,
+  },
 })
 
 const txHash = await new MsgBroadcasterWithPk({
   privateKey,
-  network: Network.Testnet
+  network: Network.Testnet,
 }).broadcast({
-  msgs: message
-});
+  msgs: message,
+})
 ```

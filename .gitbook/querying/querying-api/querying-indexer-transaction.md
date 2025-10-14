@@ -9,13 +9,13 @@ Example code snippets to query the indexer for transaction module related data. 
 ```ts
 import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { EthereumChainId } from '@injectivelabs/ts-types'
+import { EvmChainId } from '@injectivelabs/ts-types'
 
 const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
 
 const address = '0x...' // ethereum address
-const chainId = EthereumChainId.Goerli
+const chainId = EvmChainId.Sepolia
 const message = { ... } as Msgs
 const memo = '...'
 
@@ -56,32 +56,27 @@ Use `MsgBroadcasterWithPk` to broadcast transactions within a node/CLI environme
 Use `@injectivelabs/wallet-core`'s `MsgBroadcaster` class for more details on broadcasting a transactions in a browser environment.
 
 ```ts
-import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { WalletStrategy, CosmosWalletStrategy } from '@injectivelabs/wallet-strategy'
-import { Wallet } from '@injectivelabs/wallet-base'
+import { Msgs, IndexerGrpcTransactionApi } from '@injectivelabs/sdk-ts'
 
 const endpoints = getNetworkEndpoints(Network.Testnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(endpoints.indexer)
 
-const chainId = ChainId.Testnet // The Injective Chain chainId
-const ethereumChainId = EthereumChainId.Goerli // The Ethereum Chain ID
+const chainId = ChainId.Testnet // The Injective Testnet Chain ID
+const evmChainId = EvmChainId.TestnetEvm // The Injective Evm Testnet Chain ID
 
-export const alchemyRpcEndpoint = `https://eth-goerli.alchemyapi.io/v2/${process.env.APP_ALCHEMY_GOERLI_KEY}`
+export const alchemyRpcEndpoint = `https://eth-goerli.alchemyapi.io/v2/${process.env.APP_ALCHEMY_SEPOLIA_KEY}`
 
-const rpcUrl = `https://eth-goerli.alchemyapi.io/v2/${process.env.APP_ALCHEMY_GOERLI_KEY}`
-
-const wsRpcUrl = `wss://eth-goerli.ws.alchemyapi.io/v2/${process.env.APP_ALCHEMY_GOERLI_KEY}`
-
-const alchemyKey =  process.env.APP_ALCHEMY_GOERLI_KEY as string
+const alchemyKey =  process.env.APP_ALCHEMY_SEPOLIA_KEY as string
 
 const walletStrategy = new WalletStrategy({
-  chainId: CHAIN_ID,
-  ethereumOptions: {
-    rpcUrl,
-    ethereumChainId: ETHEREUM_CHAIN_ID,
-  }
+  chainId,
+  evmOptions: {
+    evmChainId,
+    rpcUrl: alchemyRpcEndpoint,
+  },
 })
 
 const address = '0x...' // ethereum address

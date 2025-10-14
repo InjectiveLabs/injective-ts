@@ -31,16 +31,16 @@ Let's have a look at the methods that `WalletStrategy` strategy exposes and what
 The arguments passed to the WalletStrategy have the following interface:
 
 ```ts
-export interface WalletStrategyEthereumOptions {
+export interface WalletStrategyEvmOptions {
   rpcUrl: string // rpc url needed **ONLY** the Ethereum native methods on the strategies
-  ethereumChainId: EthereumChainId // needed if you are signing EIP712 typed data using the Wallet Strategies
+  evmChainId: EvmChainId // needed if you are signing EIP712 typed data using the Wallet Strategies
 }
 
 export interface EthereumWalletStrategyArgs {
   chainId: ChainId // the Injective chain id
-  ethereumOptions?: WalletStrategyEthereumOptions // optional, needed only if you are using Ethereum native wallets
+  evmOptions?: WalletStrategyEvmOptions // optional, needed only if you are using Ethereum native wallets
   disabledWallets?: Wallet[] // optional, needed if you wanna disable some wallets for being instantiated
-  wallet?: Wallet // optional, the initial wallet selected (defaults to Metamask if `ethereumOptions` are passed and Keplr if they are not)
+  wallet?: Wallet // optional, the initial wallet selected (defaults to Metamask if `evmOptions` are passed and Keplr if they are not)
 }
 ```
 
@@ -49,19 +49,22 @@ _Note:_ When we wanna use the `sendTransaction` on Ethereum native wallets along
 ### Example usage
 
 ```ts
-import { WalletStrategy } from '@injectivelabs/wallet-strategy'
-import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
 import { TxRaw } from '@injectivelabs/sdk-ts'
 import { Web3Exception } from '@injectivelabs/exceptions'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
 
-export const alchemyRpcEndpoint = `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`
+const chainId = ChainId.Testnet // The Injective Testnet Chain ID
+const evmChainId = EvmChainId.TestnetEvm // The Injective Evm Testnet Chain ID
+
+export const alchemyRpcEndpoint = `https://eth-goerli.alchemyapi.io/v2/${process.env.APP_ALCHEMY_SEPOLIA_KEY}`
 
 export const walletStrategy = new WalletStrategy({
-  chainId: ChainId.Mainnet,
-  ethereumOptions: {
-    ethereumChainId: EthereumChainId.Mainnet,
+  chainId,
+  evmOptions: {
+    evmChainId,
     rpcUrl: alchemyRpcEndpoint,
-  }
+  },
 })
 
 // Get wallet's addresses

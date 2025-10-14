@@ -43,27 +43,30 @@ To start, you have to make an instance of the WalletStrategy class which gives y
 
 ```ts
 // filename: wallet.ts
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { WalletStrategy } from '@injectivelabs/wallet-strategy'
-import { Web3Exception } from '@injectivelabs/exceptions'
 
-// These imports are from .env
-import { CHAIN_ID, IS_TESTNET, ETHEREUM_CHAIN_ID, alchemyRpcEndpoint, alchemyWsRpcEndpoint } from '/constants'
+const chainId = ChainId.Testnet // The Injective Testnet Chain ID
+const evmChainId = EvmChainId.TestnetEvm // The Injective Evm Testnet Chain ID
+
+export const alchemyRpcEndpoint = `https://eth-goerli.alchemyapi.io/v2/${process.env.APP_ALCHEMY_SEPOLIA_KEY}`
 
 export const walletStrategy = new WalletStrategy({
-  chainId: CHAIN_ID,
-  ethereumOptions: {
-    ethereumChainId: ETHEREUM_CHAIN_ID,
+  chainId,
+  evmOptions: {
+    evmChainId,
     rpcUrl: alchemyRpcEndpoint,
   },
 })
 ```
 
-If we don't want to use Ethereum native wallets, just omit the `ethereumOptions` within the `WalletStrategy` constructor.
+If we don't want to use Ethereum native wallets, just omit the `evmOptions` within the `WalletStrategy` constructor.
 
 Finally, to do the whole transaction flow (prepare + sign + broadcast) on Injective we are going to use the MsgBroadcaster class.
 
 ```js
 import { Network } from '@injectivelabs/networks'
+
 export const NETWORK = Network.Testnet
 
 export const msgBroadcastClient = new MsgBroadcaster({
@@ -80,8 +83,8 @@ Note: We can switch between the "active" wallet within the `WalletStrategy` usin
 
 ```ts
 // filename: WalletConnection.ts
-import { WalletException, UnspecifiedErrorCode, ErrorType } from '@injectivelabs/exceptions'
 import { Wallet } from '@injectivelabs/wallet-base'
+import { WalletException, UnspecifiedErrorCode, ErrorType } from '@injectivelabs/exceptions'
 import { walletStrategy } from './Wallet.ts'
 
 export const getAddresses = async (wallet: Wallet): Promise<string[]> => {
@@ -193,90 +196,83 @@ console.log(response)
 
 Now lets see a full example of this in Vanilla JS (You can find examples for specific frameworks like Nuxt And Next [HERE](https://github.com/InjectiveLabs/injective-simple-sc-counter-ui))
 
-```js
-import { ChainGrpcWasmApi, getInjectiveAddress } from "@injectivelabs/sdk-ts";
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks";
-import { WalletStrategy } from "@injectivelabs/wallet-strategy";
-import { Web3Exception } from "@injectivelabs/exceptions";
+```ts
+import { Web3Exception } from '@injectivelabs/exceptions'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { ChainGrpcWasmApi, getInjectiveAddress } from '@injectivelabs/sdk-ts'
 
-// These imports are from .env
-import {
-  CHAIN_ID,
-  ETHEREUM_CHAIN_ID,
-  IS_TESTNET,
-  alchemyRpcEndpoint,
-  alchemyWsRpcEndpoint,
-} from "/constants";
+const chainId = ChainId.Testnet // The Injective Testnet Chain ID
+const evmChainId = EvmChainId.TestnetEvm // The Injective Evm Testnet Chain ID
 
-const NETWORK = Network.Testnet;
-const ENDPOINTS = getNetworkEndpoints(NETWORK);
+export const alchemyRpcEndpoint = `https://eth-goerli.alchemyapi.io/v2/${process.env.APP_ALCHEMY_SEPOLIA_KEY}`
 
-const chainGrpcWasmApi = new ChainGrpcWasmApi(ENDPOINTS.grpc);
+const NETWORK = Network.Testnet
+const ENDPOINTS = getNetworkEndpoints(NETWORK)
 
-const walletStrategy = new WalletStrategy({
-  chainId: CHAIN_ID,
-  ethereumOptions: {
-    ethereumChainId: ETHEREUM_CHAIN_ID,
+const chainGrpcWasmApi = new ChainGrpcWasmApi(ENDPOINTS.grpc)
+
+export const walletStrategy = new WalletStrategy({
+  chainId,
+  evmOptions: {
+    evmChainId,
     rpcUrl: alchemyRpcEndpoint,
   },
-});
+})
 
 export const getAddresses = async (): Promise<string[]> => {
-  const addresses = await walletStrategy.getAddresses();
+  const addresses = await walletStrategy.getAddresses()
 
   if (addresses.length === 0) {
-    throw new Web3Exception(
-      new Error("There are no addresses linked in this wallet.")
-    );
+    throw new Web3Exception(new Error('There are no addresses linked in this wallet.'))
   }
 
-  return addresses;
-};
+  return addresses
+}
 
 const msgBroadcastClient = new MsgBroadcaster({
   walletStrategy,
   network: NETWORK,
-});
+})
 
-const [address] = await getAddresses();
-const injectiveAddress = getInjectiveAddress(getInjectiveAddress);
+const [address] = await getAddresses()
+const injectiveAddress = getInjectiveAddress(getInjectiveAddress)
 
 async function fetchCount() {
   const response = (await chainGrpcWasmApi.fetchSmartContractState(
     COUNTER_CONTRACT_ADDRESS, // The address of the contract
-      toBase64({ get_count: {} }) // We need to convert our query to Base64
-    )) as { data: string };
+    toBase64({ get_count: {} }), // We need to convert our query to Base64
+  )) as { data: string }
 
-  const { count } = fromBase64(response.data) as { count: number }; // we need to convert the response from Base64
+  const { count } = fromBase64(response.data) as { count: number } // we need to convert the response from Base64
 
   console.log(count)
 }
 
-async function increment(){
-    const msg = MsgExecuteContractCompat.fromJSON({
+async function increment() {
+  const msg = MsgExecuteContractCompat.fromJSON({
     contractAddress: COUNTER_CONTRACT_ADDRESS,
     sender: injectiveAddress,
     msg: {
-        increment: {},
-        },
-    });
+      increment: {},
+    },
+  })
 
-    // Signing and broadcasting the message
+  // Signing and broadcasting the message
 
-    await msgBroadcastClient.broadcast({
-        msgs: msg,
-        injectiveAddress: injectiveAddress,
-    });
+  await msgBroadcastClient.broadcast({
+    msgs: msg,
+    injectiveAddress: injectiveAddress,
+  })
 }
 
 async function main() {
-    await fetchCount() // this will log: {count: 5}
-    await increment() // this opens up your wallet to sign the transaction and broadcast it
-    await fetchCount() // the count now is 6. log: {count: 6}
+  await fetchCount() // this will log: {count: 5}
+  await increment() // this opens up your wallet to sign the transaction and broadcast it
+  await fetchCount() // the count now is 6. log: {count: 6}
 }
 
 main()
-
 ```
 
 ### Final Thoughts
