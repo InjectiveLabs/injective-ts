@@ -212,8 +212,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
       '@injectivelabs/indexer-proto-ts':
-        specifier: 1.13.21
-        version: 1.13.21
+        specifier: 1.13.22
+        version: 1.13.22
       '@injectivelabs/mito-proto-ts':
         specifier: 1.13.2
         version: 1.13.2
@@ -1526,8 +1526,8 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-  '@injectivelabs/indexer-proto-ts@1.13.21':
-    resolution: {integrity: sha512-MeqbnrtBICj1KNYj2vn06SvV8Pt6ZHoTMBlRe1bPzy2xp2BNHx3KxvFHv7vDBOiR7mT4hmVZHz6XhvAn7OEqfQ==}
+  '@injectivelabs/indexer-proto-ts@1.13.22':
+    resolution: {integrity: sha512-bxuruEUDTa+gf+QUcAoVcAx9Wdr59p+0Mr7Y8qv9+ThrNl4uYCeevDbUjG9VuoVx1vcTucifl2ttGhUNlxRrRg==}
 
   '@injectivelabs/mito-proto-ts@1.13.2':
     resolution: {integrity: sha512-D4qEDB4OgaV1LoYNg6FB+weVcLMu5ea0x/W/p+euIVly3qia44GmAicIbQhrkqTs2o2c+1mbK1c4eOzFxQcwhg==}
@@ -10285,7 +10285,7 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.4
 
-  '@injectivelabs/indexer-proto-ts@1.13.21':
+  '@injectivelabs/indexer-proto-ts@1.13.22':
     dependencies:
       '@injectivelabs/grpc-web': 0.0.1(google-protobuf@3.21.4)
       google-protobuf: 3.21.4

@@ -232,4 +232,33 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
       })
     }
   }
+
+  async fetchAuctionStats() {
+    const request: InjectiveAuctionRpc.AuctionsStatsRequest = {}
+
+    try {
+      const response =
+        await this.retry<InjectiveAuctionRpc.AuctionsStatsResponse>(() =>
+          this.client.AuctionsStats(request, this.metadata),
+        )
+
+      return IndexerGrpcAuctionTransformer.auctionStatsResponseToAuctionStats(
+        response,
+      )
+    } catch (e: unknown) {
+      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
+        throw new GrpcUnaryRequestException(new Error(e.toString()), {
+          code: grpcErrorCodeToErrorCode(e.code),
+          context: 'AuctionStats',
+          contextModule: this.module,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(e as Error, {
+        code: UnspecifiedErrorCode,
+        context: 'AuctionStats',
+        contextModule: this.module,
+      })
+    }
+  }
 }
