@@ -119,4 +119,23 @@ describe('IndexerGrpcAuctionApi', () => {
       )
     }
   })
+
+  test('fetchAuctionStats', async () => {
+    try {
+      const response = await indexerGrpcAuctionApi.fetchAuctionStats()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcAuctionTransformer.auctionStatsResponseToAuctionStats
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcAuctionApi.fetchAuctionStats => ' + (e as any).message,
+      )
+    }
+  })
 })
