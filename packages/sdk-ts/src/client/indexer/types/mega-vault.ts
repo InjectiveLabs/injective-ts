@@ -6,8 +6,6 @@ export interface MegaVaultOperator {
   totalLiquidAmount: string
   updatedHeight: string
   updatedAt: string
-  percentage: string
-  subaccountId: string
 }
 
 export interface MegaVault {
