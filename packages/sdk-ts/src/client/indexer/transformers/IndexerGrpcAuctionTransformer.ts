@@ -4,6 +4,7 @@ import type {
   AuctionV2,
   AuctionCoin,
   GrpcAuction,
+  AuctionsStats,
   GrpcAuctionV2,
   GrpcAuctionCoin,
   AccountAuctionV2,
@@ -65,6 +66,7 @@ export class IndexerGrpcAuctionTransformer {
       ),
       contract: grpcAuction.contract,
       winningBidAmount: grpcAuction.winningBidAmount,
+      winningBidAmountUsd: grpcAuction.winningBidAmountUsd,
       round: parseInt(grpcAuction.round, 10),
       endTimestamp: parseInt(grpcAuction.endTimestamp, 10),
       updatedAt: parseInt(grpcAuction.updatedAt, 10),
@@ -127,6 +129,15 @@ export class IndexerGrpcAuctionTransformer {
         response.auction!,
       ),
       bids: response.bids.map(IndexerGrpcAuctionTransformer.grpcBidToBid),
+    }
+  }
+
+  static auctionStatsResponseToAuctionStats(
+    response: InjectiveAuctionRpc.AuctionsStatsResponse,
+  ): AuctionsStats {
+    return {
+      totalBurnt: response.totalBurnt,
+      totalBurntInUsd: response.totalUsdValue,
     }
   }
 }

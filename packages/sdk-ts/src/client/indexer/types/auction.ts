@@ -47,6 +47,7 @@ export interface AuctionV2 {
   winner: string
   basket: AuctionCoinPrices[]
   winningBidAmount: string
+  winningBidAmountUsd: string
   round: number
   endTimestamp: number
   updatedAt: number
@@ -59,6 +60,11 @@ export interface AccountAuctionV2 {
   amountDeposited: string
   isClaimable: boolean
   claimedAssets: AuctionCoinPrices[]
+}
+
+export interface AuctionsStats {
+  totalBurnt: string
+  totalBurntInUsd: string
 }
 
 export type GrpcAuction = InjectiveAuctionRpc.Auction
