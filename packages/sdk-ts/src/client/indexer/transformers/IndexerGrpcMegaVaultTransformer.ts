@@ -148,7 +148,9 @@ export class IndexerGrpcMegaVaultTransformer {
     return {
       address: operator.address,
       updatedAt: operator.updatedAt,
+      percentage: operator.percentage,
       totalAmount: operator.totalAmount,
+      subaccountId: operator.subaccountId,
       updatedHeight: operator.updatedHeight,
       totalLiquidAmount: operator.totalLiquidAmount,
     }
