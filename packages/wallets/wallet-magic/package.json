@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-magic",
   "description": "Magic wallet strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.16.22",
+  "version": "1.16.23",
   "sideEffects": false,
   "type": "module",
   "author": {
