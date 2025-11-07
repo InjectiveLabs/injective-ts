@@ -12,8 +12,8 @@ import {
 import {
   ErrorType,
   UnspecifiedErrorCode,
-  CosmosWalletException,
   TransactionException,
+  CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import {
   WalletAction,

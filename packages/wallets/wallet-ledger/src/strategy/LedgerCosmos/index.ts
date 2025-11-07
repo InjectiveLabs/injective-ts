@@ -16,7 +16,6 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
-import type { LedgerWalletInfo } from '../../types.js'
 import type {
   ChainId,
   EvmChainId,
@@ -33,6 +32,7 @@ import type {
   ConcreteWalletStrategy,
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
+import type { LedgerWalletInfo } from '../../types.js'
 
 export class LedgerCosmos
   extends BaseConcreteStrategy

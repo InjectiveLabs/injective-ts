@@ -1,6 +1,6 @@
 import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer.js'
-import type { StreamOperation } from '../../../types/index.js'
 import type { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type { StreamOperation } from '../../../types/index.js'
 
 /**
  * @category Indexer Stream Transformer

@@ -1,5 +1,5 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveAccountsRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 
 export const TransferType = {
   Internal: 'internal',
@@ -56,10 +56,10 @@ export interface TradingReward {
   distributedAt: number
 }
 
-export type GrpcTradingReward = InjectiveAccountRpc.Reward
-export type GrpcAccountPortfolio = InjectiveAccountRpc.AccountPortfolio
-export type GrpcSubaccountDeposit = InjectiveAccountRpc.SubaccountDeposit
-export type GrpcSubaccountBalance = InjectiveAccountRpc.SubaccountBalance
-export type GrpcSubaccountPortfolio = InjectiveAccountRpc.SubaccountPortfolio
+export type GrpcTradingReward = InjectiveAccountsRpcPb.Reward
+export type GrpcAccountPortfolio = InjectiveAccountsRpcPb.AccountPortfolio
+export type GrpcSubaccountDeposit = InjectiveAccountsRpcPb.SubaccountDeposit
+export type GrpcSubaccountBalance = InjectiveAccountsRpcPb.SubaccountBalance
+export type GrpcSubaccountPortfolio = InjectiveAccountsRpcPb.SubaccountPortfolio
 export type GrpcSubaccountBalanceTransfer =
-  InjectiveAccountRpc.SubaccountBalanceTransfer
+  InjectiveAccountsRpcPb.SubaccountBalanceTransfer

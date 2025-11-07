@@ -1,6 +1,6 @@
 import { toBigNumber } from '@injectivelabs/utils'
-import type { ReferralDetails } from '../types/index.js'
 import type { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
+import type { ReferralDetails } from '../types/index.js'
 
 export class IndexerGrpcReferralTransformer {
   static referrerDetailsResponseToReferrerDetails(

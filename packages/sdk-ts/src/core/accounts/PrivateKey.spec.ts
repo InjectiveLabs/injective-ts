@@ -1,4 +1,4 @@
-import { verifyMessage, Wallet, hashMessage } from 'ethers'
+import { Wallet, hashMessage, verifyMessage } from 'ethers'
 import { PrivateKey } from './PrivateKey.js'
 import { generateArbitrarySignDoc } from '../tx/index.js'
 

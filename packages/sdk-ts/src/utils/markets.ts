@@ -1,5 +1,5 @@
 import { BigNumber } from '@injectivelabs/utils'
-import { getExactDecimalsFromNumber, getTensMultiplier } from './numbers.js'
+import { getTensMultiplier, getExactDecimalsFromNumber } from './numbers.js'
 
 export const getDerivativeMarketTensMultiplier = ({
   quoteDecimals,

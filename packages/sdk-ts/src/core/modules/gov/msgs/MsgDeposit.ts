@@ -1,7 +1,7 @@
 import snakeCaseKeys from 'snakecase-keys'
 import {
-  CosmosBaseV1Beta1Coin,
   CosmosGovV1Tx,
+  CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
 

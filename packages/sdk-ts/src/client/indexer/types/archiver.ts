@@ -1,4 +1,4 @@
-import type { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveArchiverRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 
 export interface HistoricalBalance {
   t: number[]
@@ -59,15 +59,15 @@ export interface SpotAverageEntry {
   usdValue: string
 }
 
-export type GrpcHistoricalRPNL = InjectiveArchiverRpc.HistoricalRPNL
-export type GrpcLeaderboardRow = InjectiveArchiverRpc.LeaderboardRow
-export type GrpcDenomHolders = InjectiveArchiverRpc.DenomHoldersResponse
-export type GrpcSpotAverageEntry = InjectiveArchiverRpc.SpotAverageEntry
-export type GrpcHistoricalBalance = InjectiveArchiverRpc.HistoricalBalance
-export type GrpcHistoricalVolumes = InjectiveArchiverRpc.HistoricalVolumes
+export type GrpcHistoricalRPNL = InjectiveArchiverRpcPb.HistoricalRPNL
+export type GrpcLeaderboardRow = InjectiveArchiverRpcPb.LeaderboardRow
+export type GrpcDenomHolders = InjectiveArchiverRpcPb.DenomHoldersResponse
+export type GrpcSpotAverageEntry = InjectiveArchiverRpcPb.SpotAverageEntry
+export type GrpcHistoricalBalance = InjectiveArchiverRpcPb.HistoricalBalance
+export type GrpcHistoricalVolumes = InjectiveArchiverRpcPb.HistoricalVolumes
 export type GrpcPnlLeaderboard =
-  | InjectiveArchiverRpc.PnlLeaderboardResponse
-  | InjectiveArchiverRpc.PnlLeaderboardFixedResolutionResponse
+  | InjectiveArchiverRpcPb.PnlLeaderboardResponse
+  | InjectiveArchiverRpcPb.PnlLeaderboardFixedResolutionResponse
 export type GrpcVolLeaderboard =
-  | InjectiveArchiverRpc.VolLeaderboardResponse
-  | InjectiveArchiverRpc.VolLeaderboardFixedResolutionResponse
+  | InjectiveArchiverRpcPb.VolLeaderboardResponse
+  | InjectiveArchiverRpcPb.VolLeaderboardFixedResolutionResponse

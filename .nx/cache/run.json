@@ -1,0 +1,208 @@
+{
+  "run": {
+    "command": "cli run build",
+    "startTime": "2025-11-27T08:46:41.223Z",
+    "endTime": "2025-11-27T08:46:41.414Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "@injectivelabs/ts-types:build",
+      "target": "build",
+      "projectName": "@injectivelabs/ts-types",
+      "hash": "14262432667679543707",
+      "startTime": "2025-11-27T08:46:41.259Z",
+      "endTime": "2025-11-27T08:46:41.265Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/exceptions:build",
+      "target": "build",
+      "projectName": "@injectivelabs/exceptions",
+      "hash": "16721021306370487306",
+      "startTime": "2025-11-27T08:46:41.259Z",
+      "endTime": "2025-11-27T08:46:41.269Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/networks:build",
+      "target": "build",
+      "projectName": "@injectivelabs/networks",
+      "hash": "7025597417971478954",
+      "startTime": "2025-11-27T08:46:41.274Z",
+      "endTime": "2025-11-27T08:46:41.281Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/utils:build",
+      "target": "build",
+      "projectName": "@injectivelabs/utils",
+      "hash": "10001071294083797001",
+      "startTime": "2025-11-27T08:46:41.285Z",
+      "endTime": "2025-11-27T08:46:41.292Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/sdk-ts:build",
+      "target": "build",
+      "projectName": "@injectivelabs/sdk-ts",
+      "hash": "16376155754687397684",
+      "startTime": "2025-11-27T08:46:41.296Z",
+      "endTime": "2025-11-27T08:46:41.305Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-base:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-base",
+      "hash": "9453152734885736368",
+      "startTime": "2025-11-27T08:46:41.308Z",
+      "endTime": "2025-11-27T08:46:41.313Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-cosmos:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-cosmos",
+      "hash": "8799746823683611223",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.325Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-core:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-core",
+      "hash": "1700867920229906923",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.329Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-cosmostation:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-cosmostation",
+      "hash": "18139079005514478855",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.333Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-turnkey:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-turnkey",
+      "hash": "14114404275315229211",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.337Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-trezor:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-trezor",
+      "hash": "15427644375994057050",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.342Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-ledger:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-ledger",
+      "hash": "4551490578657574626",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.346Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-wallet-connect:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-wallet-connect",
+      "hash": "9716848486334645562",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.351Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-magic:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-magic",
+      "hash": "12341820902965587806",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.356Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-evm:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-evm",
+      "hash": "17180995918978453506",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.360Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-private-key:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-private-key",
+      "hash": "14232735055175852514",
+      "startTime": "2025-11-27T08:46:41.318Z",
+      "endTime": "2025-11-27T08:46:41.364Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-cosmos-strategy:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-cosmos-strategy",
+      "hash": "857416541676270509",
+      "startTime": "2025-11-27T08:46:41.376Z",
+      "endTime": "2025-11-27T08:46:41.402Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "@injectivelabs/wallet-strategy:build",
+      "target": "build",
+      "projectName": "@injectivelabs/wallet-strategy",
+      "hash": "11557222501817539385",
+      "startTime": "2025-11-27T08:46:41.398Z",
+      "endTime": "2025-11-27T08:46:41.407Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    }
+  ]
+}

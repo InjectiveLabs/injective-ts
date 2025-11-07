@@ -1,0 +1,23 @@
+
+> @injectivelabs/wallet-strategy@1.16.34 build /Users/leeruianthomas/Public/injective/injective-ts/packages/wallets/wallet-strategy
+> pnpm type-check && tsdown
+
+
+> @injectivelabs/wallet-strategy@1.16.34 type-check /Users/leeruianthomas/Public/injective/injective-ts/packages/wallets/wallet-strategy
+> tsc --noEmit
+
+[34mℹ[39m tsdown [2mv0.16.7[22m powered by rolldown [2mv1.0.0-beta.51[22m
+[34mℹ[39m Using tsdown config: [4m/Users/leeruianthomas/Public/injective/injective-ts/packages/wallets/wallet-strategy/tsdown.config.ts[24m
+[34mℹ[39m entry: [34msrc/index.ts[39m
+[34mℹ[39m target: [34mes2018[39m
+[34mℹ[39m tsconfig: [34mtsconfig.json[39m
+[34mℹ[39m Build start
+[34mℹ[39m Cleaning 8 files
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[1mindex.cjs[22m  [2m8.23 kB[22m [2m│ gzip: 1.73 kB[22m
+[34mℹ[39m [33m[CJS][39m 1 files, total: 8.23 kB
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[1mindex.js[22m    [2m6.45 kB[22m [2m│ gzip: 1.65 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[32m[1mindex.d.ts[22m[39m  [2m1.09 kB[22m [2m│ gzip: 0.47 kB[22m
+[34mℹ[39m [34m[ESM][39m 2 files, total: 7.54 kB
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[32m[1mindex.d.cts[22m[39m  [2m1.09 kB[22m [2m│ gzip: 0.47 kB[22m
+[34mℹ[39m [33m[CJS][39m 1 files, total: 1.09 kB
+[32m✔[39m Build complete in [32m1379ms[39m

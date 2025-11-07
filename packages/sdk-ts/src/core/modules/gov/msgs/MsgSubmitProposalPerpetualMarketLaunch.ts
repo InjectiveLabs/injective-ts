@@ -4,8 +4,8 @@ import {
   GoogleProtobufAny,
   CosmosGovV1Beta1Tx,
   CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Proposal,
   InjectiveOracleV1Beta1Oracle,
+  InjectiveExchangeV1Beta1Proposal,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'

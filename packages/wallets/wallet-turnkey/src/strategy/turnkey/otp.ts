@@ -4,16 +4,16 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import {
-  type TurnkeyConfirmEmailOTPResponse,
-  type TurnkeyOTPCredentialsResponse,
-} from './../types.js'
-import {
-  DEFAULT_TURNKEY_REFRESH_SECONDS,
   TURNKEY_OTP_INIT_PATH,
   TURNKEY_OTP_VERIFY_PATH,
+  DEFAULT_TURNKEY_REFRESH_SECONDS,
 } from '../consts.js'
 import type { HttpRestClient } from '@injectivelabs/utils'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
+import type {
+  TurnkeyOTPCredentialsResponse,
+  TurnkeyConfirmEmailOTPResponse,
+} from './../types.js'
 
 export class TurnkeyOtpWallet {
   static async initEmailOTP(args: {

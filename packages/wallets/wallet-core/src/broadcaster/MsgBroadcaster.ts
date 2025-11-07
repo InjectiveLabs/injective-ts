@@ -62,22 +62,22 @@ import { WalletStrategyEmitterEventType } from './types.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ThrownException } from '@injectivelabs/exceptions'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
-import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type {
   ChainId as ChainIdType,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
-import type {
-  MsgBroadcasterOptions,
-  MsgBroadcasterTxOptions,
-  MsgBroadcasterTxOptionsWithAddresses,
-} from './types.js'
 import type {
   TxResponse,
   CosmosTxV1Beta1Tx,
   DirectSignResponse,
   CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type {
+  MsgBroadcasterOptions,
+  MsgBroadcasterTxOptions,
+  MsgBroadcasterTxOptionsWithAddresses,
+} from './types.js'
 
 const getEthereumWalletPubKey = async <T>({
   pubKey,

@@ -2,9 +2,9 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "module": "commonjs",
+    "module": "ES2020",
     "outDir": "./dist/cjs",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "tsBuildInfoFile": "../../.build-cache/sdk-ts.tsbuildinfo"
   },
   "include": [

@@ -2,9 +2,9 @@
 import {
   MsgDelegate,
   MsgUndelegate,
+  MsgEditValidator,
   MsgBeginRedelegate,
   MsgCreateValidator,
-  MsgEditValidator,
 } from '../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle

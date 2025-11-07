@@ -2,8 +2,8 @@
 import {
   ChainRestBankApi,
   ChainGrpcBankApi,
-  ChainGrpcExchangeApi,
   ChainGrpcStakingApi,
+  ChainGrpcExchangeApi,
 } from '../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle

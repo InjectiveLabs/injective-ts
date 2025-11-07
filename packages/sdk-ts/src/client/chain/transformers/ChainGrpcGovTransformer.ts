@@ -1,8 +1,8 @@
 import { toHumanReadable } from '@injectivelabs/utils'
 import { uint8ArrayToString } from '../../../utils/index.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type * as CosmosGovV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.mjs'
 import type { Pagination } from '../../../types/index.js'
-import type { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
 import type {
   Vote,
   Proposal,
@@ -22,31 +22,28 @@ import type {
  */
 export class ChainGrpcGovTransformer {
   static moduleParamsResponseToModuleParams(
-    response: CosmosGovV1Query.QueryParamsResponse,
+    response: CosmosGovV1QueryPb.QueryParamsResponse,
   ): GovModuleStateParams {
     const params = response.params
 
     return {
       depositParams: {
-        minDeposit: params?.minDeposit || [],
-        expeditedMinDeposit: params?.expeditedMinDeposit || [],
-        maxDepositPeriod: parseInt(
-          params?.maxDepositPeriod?.seconds || '0',
-          10,
-        ),
+        minDeposit: params?.minDeposit ?? [],
+        expeditedMinDeposit: params?.expeditedMinDeposit ?? [],
+        maxDepositPeriod: Number(params?.maxDepositPeriod?.seconds ?? 0n),
       },
       votingParams: {
-        votingPeriod: parseInt(params?.votingPeriod?.seconds || '0'),
-        expeditedVotingPeriod: parseInt(
-          params?.expeditedVotingPeriod?.seconds || '0',
+        votingPeriod: Number(params?.votingPeriod?.seconds ?? 0n),
+        expeditedVotingPeriod: Number(
+          params?.expeditedVotingPeriod?.seconds ?? 0n,
         ),
       },
       tallyParams: {
-        quorum: uint8ArrayToString(params?.quorum || '0'),
-        threshold: uint8ArrayToString(params?.threshold || '0'),
-        vetoThreshold: uint8ArrayToString(params?.vetoThreshold || '0'),
+        quorum: uint8ArrayToString(params?.quorum ?? '0'),
+        threshold: uint8ArrayToString(params?.threshold ?? '0'),
+        vetoThreshold: uint8ArrayToString(params?.vetoThreshold ?? '0'),
         expeditedThreshold: uint8ArrayToString(
-          params?.expeditedThreshold || '0',
+          params?.expeditedThreshold ?? '0',
         ),
       },
     }
@@ -65,15 +62,14 @@ export class ChainGrpcGovTransformer {
       depositParams: {
         minDeposit: depositParams?.minDeposit,
         expeditedMinDeposit: depositParams?.expeditedMinDeposit,
-        maxDepositPeriod: parseInt(
-          depositParams?.maxDepositPeriod?.seconds || '0',
-          10,
+        maxDepositPeriod: Number(
+          depositParams?.maxDepositPeriod?.seconds ?? 0n,
         ),
       },
       votingParams: {
-        votingPeriod: parseInt(votingParams.votingPeriod?.seconds || '0'),
-        expeditedVotingPeriod: parseInt(
-          votingParams.expeditedVotingPeriod?.seconds || '0',
+        votingPeriod: Number(votingParams.votingPeriod?.seconds ?? 0n),
+        expeditedVotingPeriod: Number(
+          votingParams.expeditedVotingPeriod?.seconds ?? 0n,
         ),
       },
       tallyParams: {
@@ -86,37 +82,35 @@ export class ChainGrpcGovTransformer {
   }
 
   static proposalResponseToProposal(
-    response: CosmosGovV1Query.QueryProposalResponse,
+    response: CosmosGovV1QueryPb.QueryProposalResponse,
   ): Proposal | undefined {
-    const proposal = response.proposal!
-
-    if (!proposal) {
+    if (!response.proposal) {
       return undefined
     }
 
-    return ChainGrpcGovTransformer.grpcProposalToProposal(proposal)
+    return ChainGrpcGovTransformer.grpcProposalToProposal(response.proposal)
   }
 
   static proposalsResponseToProposals(
-    response: CosmosGovV1Query.QueryProposalsResponse,
+    response: CosmosGovV1QueryPb.QueryProposalsResponse,
   ): {
     proposals: Proposal[]
     pagination: Pagination
   } {
-    const proposals = response.proposals.map((p) =>
-      ChainGrpcGovTransformer.grpcProposalToProposal(p),
-    )
+    const proposals = response.proposals
+      .map((p) => ChainGrpcGovTransformer.grpcProposalToProposal(p))
+      .filter((p) => p !== undefined)
     const pagination = response.pagination
 
     return {
-      proposals: proposals.filter((p) => p) as Proposal[],
+      proposals,
       pagination:
-        ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination),
+        ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(pagination),
     }
   }
 
   static depositsResponseToDeposits(
-    response: CosmosGovV1Query.QueryDepositsResponse,
+    response: CosmosGovV1QueryPb.QueryDepositsResponse,
   ): {
     deposits: ProposalDeposit[]
     pagination: Pagination
@@ -125,43 +119,47 @@ export class ChainGrpcGovTransformer {
     const deposits = response.deposits.map((deposit) => {
       return {
         depositor: deposit.depositor,
-        amounts: deposit.amount.map((coin) => ({
-          denom: coin.denom,
-          amount: toHumanReadable(coin.amount).toFixed(),
-        })),
+        amounts: deposit.amount.map(
+          (coin: { denom: string; amount: string }) => ({
+            denom: coin.denom,
+            amount: toHumanReadable(coin.amount).toFixed(),
+          }),
+        ),
       }
     })
 
     return {
-      deposits: deposits,
+      deposits,
       pagination:
-        ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination),
+        ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(pagination),
     }
   }
 
   static grpcVoteToVote(vote: GrpcVote): Vote {
     return {
-      proposalId: parseInt(vote.proposalId, 10),
+      proposalId: Number(vote.proposalId),
       voter: vote.voter,
       metadata: vote.metadata,
       options: vote.options,
     }
   }
 
-  static votesResponseToVotes(response: CosmosGovV1Query.QueryVotesResponse): {
+  static votesResponseToVotes(
+    response: CosmosGovV1QueryPb.QueryVotesResponse,
+  ): {
     votes: Vote[]
     pagination: Pagination
   } {
     return {
       votes: response.votes.map(ChainGrpcGovTransformer.grpcVoteToVote),
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination,
       ),
     }
   }
 
   static tallyResultResponseToTallyResult(
-    response: CosmosGovV1Query.QueryTallyResultResponse,
+    response: CosmosGovV1QueryPb.QueryTallyResultResponse,
   ): TallyResult {
     const result = response.tally
 
@@ -172,23 +170,23 @@ export class ChainGrpcGovTransformer {
     result: GrpcTallyResult | undefined,
   ): TallyResult {
     return {
-      yesCount: result ? result.yesCount : '0',
-      abstainCount: result ? result.abstainCount : '0',
-      noCount: result ? result.noCount : '0',
-      noWithVetoCount: result ? result.noWithVetoCount : '0',
+      yesCount: result?.yesCount ?? '0',
+      abstainCount: result?.abstainCount ?? '0',
+      noCount: result?.noCount ?? '0',
+      noWithVetoCount: result?.noWithVetoCount ?? '0',
     }
   }
 
   static grpcProposalToProposal(proposal: GrpcProposal): Proposal | undefined {
     const finalTallyResult = proposal.finalTallyResult
-    const [message] = proposal.messages!
+    const [message] = proposal.messages ?? []
 
     if (!message) {
-      return
+      return undefined
     }
 
     return {
-      proposalId: parseInt(proposal.id, 10),
+      proposalId: Number(proposal.id),
       title: proposal.title,
       summary: proposal.summary,
       proposer: proposal.proposer,
@@ -198,7 +196,10 @@ export class ChainGrpcGovTransformer {
       },
       type: message.typeUrl,
       submitTime: proposal.submitTime
-        ? Math.floor(proposal.submitTime!.getTime() / 1000)
+        ? Math.floor(
+            Number(proposal.submitTime.seconds) +
+              Number(proposal.submitTime.nanos) / 1_000_000_000,
+          )
         : 0,
       status: proposal.status,
       expedited: proposal.expedited,
@@ -206,17 +207,26 @@ export class ChainGrpcGovTransformer {
       finalTallyResult:
         ChainGrpcGovTransformer.grpcTallyResultToTallyResult(finalTallyResult),
       depositEndTime: proposal.depositEndTime
-        ? Math.floor(proposal.depositEndTime.getTime() / 1000)
+        ? Math.floor(
+            Number(proposal.depositEndTime.seconds) +
+              Number(proposal.depositEndTime.nanos) / 1_000_000_000,
+          )
         : 0,
       totalDeposits: proposal.totalDeposit.map((coin) => ({
         denom: coin.denom,
         amount: toHumanReadable(coin.amount).toFixed(),
       })),
       votingStartTime: proposal.votingStartTime
-        ? Math.floor(proposal.votingStartTime.getTime() / 1000)
+        ? Math.floor(
+            Number(proposal.votingStartTime.seconds) +
+              Number(proposal.votingStartTime.nanos) / 1_000_000_000,
+          )
         : 0,
       votingEndTime: proposal.votingEndTime
-        ? Math.floor(proposal.votingEndTime.getTime() / 1000)
+        ? Math.floor(
+            Number(proposal.votingEndTime.seconds) +
+              Number(proposal.votingEndTime.nanos) / 1_000_000_000,
+          )
         : 0,
     }
   }

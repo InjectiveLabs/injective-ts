@@ -1,7 +1,7 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcStakingApi } from './ChainGrpcStakingApi.js'
 import { ChainGrpcDistributionApi } from './ChainGrpcDistributionApi.js'
-import type { Delegation, Validator } from '../types/index.js'
+import type { Validator, Delegation } from '../types/index.js'
 import type { ChainGrpcDistributionTransformer } from '../transformers/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)

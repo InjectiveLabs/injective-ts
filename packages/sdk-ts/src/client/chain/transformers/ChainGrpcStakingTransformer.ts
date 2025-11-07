@@ -1,20 +1,22 @@
 import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import { BondStatus } from '../types/staking.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type * as CosmosStakingV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/query_pb.mjs'
 import type { Pagination } from '../../../types/index.js'
-import type { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import type {
+  Pool,
+  Validator,
+  Delegation,
+  ReDelegation,
   GrpcValidator,
+  ValidatorCommission,
+  UnBondingDelegation,
+  StakingModuleParams,
+  ValidatorDescription,
   GrpcValidatorCommission,
   GrpcValidatorDescription,
-  Validator,
-  ValidatorCommission,
-  ValidatorDescription,
-  Delegation,
-  UnBondingDelegation,
-  ReDelegation,
-  Pool,
-  StakingModuleParams,
+  GrpcUnbondingDelegationEntry,
+  GrpcReDelegationEntryResponse,
 } from '../types/staking.js'
 
 /**
@@ -22,22 +24,22 @@ import type {
  */
 export class ChainGrpcStakingTransformer {
   static moduleParamsResponseToModuleParams(
-    response: CosmosStakingV1Beta1Query.QueryParamsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryParamsResponse,
   ): StakingModuleParams {
-    const params = response.params!
+    const params = response.params
 
     return {
-      unbondingTime: parseInt(params.unbondingTime!.seconds, 10),
-      minCommissionRate: params.minCommissionRate,
-      maxValidators: params.maxValidators,
-      maxEntries: params.maxEntries,
-      historicalEntries: params.historicalEntries,
-      bondDenom: params.bondDenom,
+      unbondingTime: Number(params!.unbondingTime!.seconds),
+      minCommissionRate: params!.minCommissionRate,
+      maxValidators: params!.maxValidators,
+      maxEntries: params!.maxEntries,
+      historicalEntries: params!.historicalEntries,
+      bondDenom: params!.bondDenom,
     }
   }
 
   static validatorResponseToValidator(
-    response: CosmosStakingV1Beta1Query.QueryValidatorResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryValidatorResponse,
   ): Validator {
     return ChainGrpcStakingTransformer.grpcValidatorToValidator(
       response.validator!,
@@ -45,7 +47,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static validatorsResponseToValidators(
-    response: CosmosStakingV1Beta1Query.QueryValidatorsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryValidatorsResponse,
   ): {
     validators: Validator[]
     pagination: Pagination
@@ -56,14 +58,14 @@ export class ChainGrpcStakingTransformer {
 
     return {
       validators,
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination!,
       ),
     }
   }
 
   static delegationResponseToDelegation(
-    response: CosmosStakingV1Beta1Query.QueryDelegationResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryDelegationResponse,
   ): Delegation {
     const grpcDelegation = response.delegationResponse!
     const delegation = grpcDelegation.delegation
@@ -83,7 +85,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static delegationsResponseToDelegations(
-    response: CosmosStakingV1Beta1Query.QueryDelegatorDelegationsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryDelegatorDelegationsResponse,
   ): { delegations: Delegation[]; pagination: Pagination } {
     const grpcDelegations = response.delegationResponses
 
@@ -106,14 +108,14 @@ export class ChainGrpcStakingTransformer {
 
     return {
       delegations,
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination,
       ),
     }
   }
 
   static unBondingDelegationsResponseToUnBondingDelegations(
-    response: CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryDelegatorUnbondingDelegationsResponse,
   ): {
     unbondingDelegations: UnBondingDelegation[]
     pagination: Pagination
@@ -121,21 +123,29 @@ export class ChainGrpcStakingTransformer {
     const grpcUnbondingDelegations = response.unbondingResponses
 
     const unbondingDelegations = grpcUnbondingDelegations.reduce(
-      (unbondingDelegations, grpcUnBondingDelegation) => {
+      (
+        unbondingDelegations: UnBondingDelegation[],
+        grpcUnBondingDelegation,
+      ) => {
         const entries = grpcUnBondingDelegation.entries
 
-        const mappedEntries = entries.map((entry) => ({
-          delegatorAddress: grpcUnBondingDelegation
-            ? grpcUnBondingDelegation.delegatorAddress
-            : '',
-          validatorAddress: grpcUnBondingDelegation
-            ? grpcUnBondingDelegation.validatorAddress
-            : '',
-          creationHeight: parseInt(entry.creationHeight, 10),
-          completionTime: Math.floor(entry.completionTime!.getTime() / 1000),
-          initialBalance: toBigNumber(entry.initialBalance).toFixed(),
-          balance: toBigNumber(entry.balance).toFixed(),
-        }))
+        const mappedEntries = entries.map(
+          (entry: GrpcUnbondingDelegationEntry) => ({
+            delegatorAddress: grpcUnBondingDelegation
+              ? grpcUnBondingDelegation.delegatorAddress
+              : '',
+            validatorAddress: grpcUnBondingDelegation
+              ? grpcUnBondingDelegation.validatorAddress
+              : '',
+            creationHeight: parseInt(entry.creationHeight.toString(), 10),
+            // Handle V2 timestamp conversion - completionTime is a Timestamp object with seconds property
+            completionTime: entry.completionTime
+              ? Number(entry.completionTime.seconds)
+              : 0,
+            initialBalance: toBigNumber(entry.initialBalance).toFixed(),
+            balance: toBigNumber(entry.balance).toFixed(),
+          }),
+        )
 
         return [...unbondingDelegations, ...mappedEntries]
       },
@@ -144,36 +154,34 @@ export class ChainGrpcStakingTransformer {
 
     return {
       unbondingDelegations,
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination,
       ),
     }
   }
 
   static reDelegationsResponseToReDelegations(
-    response: CosmosStakingV1Beta1Query.QueryRedelegationsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryRedelegationsResponse,
   ): { redelegations: ReDelegation[]; pagination: Pagination } {
     const grpcReDelegations = response.redelegationResponses
 
     const redelegations = grpcReDelegations.reduce(
-      (uiReDelegator, grpcReDelegationCurrent) => {
-        const grpcRedelegation = grpcReDelegationCurrent.redelegation!
+      (uiReDelegator: ReDelegation[], grpcReDelegationCurrent) => {
+        const grpcRedelegation = grpcReDelegationCurrent.redelegation
 
         if (!grpcRedelegation) {
           return uiReDelegator
         }
 
         const uiRedelegations = grpcReDelegationCurrent.entries.reduce(
-          (acc, entry) => {
+          (acc: ReDelegation[], entry: GrpcReDelegationEntryResponse) => {
             return [
               ...acc,
               {
                 delegation: {
-                  completionTime: entry.redelegationEntry
-                    ? Math.floor(
-                        entry.redelegationEntry.completionTime!.getTime() /
-                          1000,
-                      )
+                  // Handle V2 timestamp conversion - completionTime is a Timestamp object with seconds property
+                  completionTime: entry.redelegationEntry?.completionTime
+                    ? Number(entry.redelegationEntry.completionTime.seconds)
                     : 0,
                   delegatorAddress: grpcRedelegation.delegatorAddress || '',
                   sourceValidatorAddress:
@@ -195,7 +203,7 @@ export class ChainGrpcStakingTransformer {
 
     return {
       redelegations,
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination,
       ),
     }
@@ -214,7 +222,7 @@ export class ChainGrpcStakingTransformer {
         ChainGrpcStakingTransformer.grpcValidatorDescriptionToDescription(
           validator.description,
         ),
-      unbondingHeight: parseInt(validator.unbondingHeight, 10),
+      unbondingHeight: Number(validator.unbondingHeight),
       unbondingTime: validator.unbondingTime,
       commission:
         ChainGrpcStakingTransformer.grpcValidatorCommissionToCommission(
@@ -225,7 +233,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static poolResponseToPool(
-    response: CosmosStakingV1Beta1Query.QueryPoolResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryPoolResponse,
   ): Pool {
     const pool = response.pool
 
@@ -271,7 +279,11 @@ export class ChainGrpcStakingTransformer {
           commissionRates ? commissionRates.maxChangeRate : '0',
         ).toFixed(),
       },
-      updateTime: commission ? commission.updateTime! : new Date(),
+      updateTime: commission
+        ? commission.updateTime
+          ? new Date(Number(commission.updateTime.seconds) * 1000)
+          : new Date()
+        : new Date(),
     }
   }
 

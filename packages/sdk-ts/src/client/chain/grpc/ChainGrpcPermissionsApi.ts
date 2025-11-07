@@ -1,214 +1,111 @@
-import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectivePermissionsV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/query_pb.mjs'
+import { QueryClient as InjectivePermissionsV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 import { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
+export class ChainGrpcPermissionsApi extends BaseGrpcConsumerV2 {
   protected module: string = ChainModule.Permissions
-
-  protected client: InjectivePermissionsV1Beta1Query.QueryClientImpl
+  private client: InjectivePermissionsV1Beta1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectivePermissionsV1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectivePermissionsV1Beta1QueryClient(this.transport)
   }
 
   async fetchModuleParams() {
-    const request = InjectivePermissionsV1Beta1Query.QueryParamsRequest.create()
+    const request =
+      InjectivePermissionsV1Beta1QueryPb.QueryParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryParamsResponse>(
-          () => this.client.Params(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryParamsRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryParamsResponse
+    >(request, this.client.params.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.moduleParamsResponseToModuleParams(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Params',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Params',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.moduleParamsResponseToModuleParams(
+      response,
+    )
   }
 
   async fetchNamespaceDenoms() {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryNamespaceDenomsRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespaceDenomsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryNamespaceDenomsResponse>(
-          () => this.client.NamespaceDenoms(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespaceDenomsRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespaceDenomsResponse
+    >(request, this.client.namespaceDenoms.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.nameSpaceDenomsResponseToNameSpaceDenoms(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'NamespaceDenoms',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'NamespaceDenoms',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.nameSpaceDenomsResponseToNameSpaceDenoms(
+      response,
+    )
   }
 
   async fetchNamespaces() {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryNamespacesRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespacesRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryNamespacesResponse>(
-          () => this.client.Namespaces(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespacesRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespacesResponse
+    >(request, this.client.namespaces.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.namespacesResponseToNamespaces(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Namespaces',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Namespaces',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.namespacesResponseToNamespaces(
+      response,
+    )
   }
 
   async fetchNamespace(denom: string) {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryNamespaceRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespaceRequest.create()
 
     request.denom = denom
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryNamespaceResponse>(
-          () => this.client.Namespace(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespaceRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryNamespaceResponse
+    >(request, this.client.namespace.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.namespaceResponseToNamespaces(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Namespace',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Namespace',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.namespaceResponseToNamespaces(
+      response,
+    )
   }
 
   async fetchActorsByRole({ denom, role }: { denom: string; role: string }) {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryActorsByRoleRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryActorsByRoleRequest.create()
 
     request.denom = denom
     request.role = role
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryActorsByRoleResponse>(
-          () => this.client.ActorsByRole(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryActorsByRoleRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryActorsByRoleResponse
+    >(request, this.client.actorsByRole.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.actorsByRoleResponseToActorsByRole(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'ActorsByRole',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'ActorsByRole',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.actorsByRoleResponseToActorsByRole(
+      response,
+    )
   }
 
   async fetchRolesByActor({ actor, denom }: { actor: string; denom: string }) {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryRolesByActorRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryRolesByActorRequest.create()
 
     request.actor = actor
     request.denom = denom
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryRolesByActorResponse>(
-          () => this.client.RolesByActor(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryRolesByActorRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryRolesByActorResponse
+    >(request, this.client.rolesByActor.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.rolesByActorResponseToRolesByActor(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'RolesByActor',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'RolesByActor',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.rolesByActorResponseToRolesByActor(
+      response,
+    )
   }
 
   async fetchRoleManager({
@@ -219,216 +116,105 @@ export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
     manager: string
   }) {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryRoleManagerRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryRoleManagerRequest.create()
 
     request.denom = denom
     request.manager = manager
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryRoleManagerResponse>(
-          () => this.client.RoleManager(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryRoleManagerRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryRoleManagerResponse
+    >(request, this.client.roleManager.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.roleManagerResponseToRoleManager(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'RoleManager',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'RoleManager',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.roleManagerResponseToRoleManager(
+      response,
+    )
   }
 
   async fetchRoleManagers() {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryRoleManagersRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryRoleManagersRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryRoleManagersResponse>(
-          () => this.client.RoleManagers(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryRoleManagersRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryRoleManagersResponse
+    >(request, this.client.roleManagers.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.roleManagersResponseToRoleManagers(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'RoleManagers',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'RoleManagers',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.roleManagersResponseToRoleManagers(
+      response,
+    )
   }
 
   async fetchPolicyStatuses() {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryPolicyStatusesRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryPolicyStatusesRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryPolicyStatusesResponse>(
-          () => this.client.PolicyStatuses(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryPolicyStatusesRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryPolicyStatusesResponse
+    >(request, this.client.policyStatuses.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.policyStatusesResponseToPolicyStatuses(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PolicyStatuses',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'PolicyStatuses',
-      })
-    }
+    return ChainGrpcPermissionsTransformer.policyStatusesResponseToPolicyStatuses(
+      response,
+    )
   }
 
   async fetchPolicyManagerCapabilities(denom: string) {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryPolicyManagerCapabilitiesRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryPolicyManagerCapabilitiesRequest.create()
 
     request.denom = denom
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryPolicyManagerCapabilitiesResponse>(
-          () => this.client.PolicyManagerCapabilities(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryPolicyManagerCapabilitiesRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryPolicyManagerCapabilitiesResponse
+    >(request, this.client.policyManagerCapabilities.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.policyManagerCapabilitiesResponseToPolicyManagerCapabilities(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PolicyManagerCapabilities',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'PolicyManagerCapabilities',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.policyManagerCapabilitiesResponseToPolicyManagerCapabilities(
+      response,
+    )
   }
 
   async fetchVoucher({ denom, address }: { denom: string; address: string }) {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryVoucherRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryVoucherRequest.create()
 
     request.denom = denom
     request.address = address
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryVoucherResponse>(
-          () => this.client.Voucher(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryVoucherRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryVoucherResponse
+    >(request, this.client.voucher.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.voucherResponseToVoucher(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Voucher',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Voucher',
-      })
-    }
+    return ChainGrpcPermissionsTransformer.voucherResponseToVoucher(response)
   }
 
   async fetchVouchers(denom: string) {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryVouchersRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryVouchersRequest.create()
 
     request.denom = denom
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryVouchersResponse>(
-          () => this.client.Vouchers(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryVouchersRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryVouchersResponse
+    >(request, this.client.vouchers.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.vouchersResponseToVouchers(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'VouchersForAddress',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'VouchersForAddress',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPermissionsTransformer.vouchersResponseToVouchers(response)
   }
 
   async fetchModuleState() {
     const request =
-      InjectivePermissionsV1Beta1Query.QueryModuleStateRequest.create()
+      InjectivePermissionsV1Beta1QueryPb.QueryModuleStateRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectivePermissionsV1Beta1Query.QueryModuleStateResponse>(
-          () => this.client.PermissionsModuleState(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePermissionsV1Beta1QueryPb.QueryModuleStateRequest,
+      InjectivePermissionsV1Beta1QueryPb.QueryModuleStateResponse
+    >(request, this.client.permissionsModuleState.bind(this.client))
 
-      return ChainGrpcPermissionsTransformer.moduleStateResponseToModuleState(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePermissionsV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'ModuleState',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'ModuleState',
-      })
-    }
+    return ChainGrpcPermissionsTransformer.moduleStateResponseToModuleState(
+      response,
+    )
   }
 }

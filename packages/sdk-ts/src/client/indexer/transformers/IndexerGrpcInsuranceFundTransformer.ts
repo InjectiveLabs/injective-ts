@@ -1,11 +1,11 @@
 import type { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
 import type { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
 import type {
+  Redemption,
+  RedemptionStatus,
   IndexerInsuranceFund,
   GrpcIndexerInsuranceFund,
   GrpcIndexerRedemptionSchedule,
-  Redemption,
-  RedemptionStatus,
 } from '../types/insurance-funds.js'
 
 /**

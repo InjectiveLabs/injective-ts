@@ -7,8 +7,8 @@ import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type { RestApiResponse } from '../types/index.js'
 import type {
   AccountResponse,
-  CosmosAccountRestResponse,
   BaseAccountRestResponse,
+  CosmosAccountRestResponse,
 } from './../types/auth-rest.js'
 
 /**

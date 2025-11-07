@@ -3,8 +3,8 @@ import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import { IndexerSpotStreamTransformer } from '../transformers/index.js'
 import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
 import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
+import type { StreamStatusResponse } from '../types/index.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 import type {
   TradeDirection,

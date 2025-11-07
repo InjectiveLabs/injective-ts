@@ -1,6 +1,6 @@
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { getDefaultSubaccountId } from '../../../utils/address.js'
 import { IndexerGrpcAccountApi } from './IndexerGrpcAccountApi.js'
 import type { IndexerGrpcAccountTransformer } from '../transformers/index.js'
@@ -131,11 +131,11 @@ describe('IndexerGrpcAccountApi', () => {
         subaccountId,
       })
 
-      if (response.spotOrdersTotal.length === 0) {
+      if (response.spotOrdersTotal === 0n) {
         console.warn('fetchSubaccountHistory.spotOrdersTotalEmpty')
       }
 
-      if (response.derivativeOrdersTotal.length === 0) {
+      if (response.derivativeOrdersTotal === 0n) {
         console.warn('fetchSubaccountHistory.derivativeOrdersTotalEmpty')
       }
 

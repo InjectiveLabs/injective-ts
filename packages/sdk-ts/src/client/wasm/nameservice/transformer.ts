@@ -1,4 +1,4 @@
-import { binaryToBase64, fromBase64 } from '../../../utils/index.js'
+import { fromBase64, binaryToBase64 } from '../../../utils/index.js'
 import type { WasmContractQueryResponse } from '../types.js'
 
 export class InjNameServiceQueryTransformer {

@@ -13,7 +13,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
-import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
 /**
  * @category Indexer Grpc API

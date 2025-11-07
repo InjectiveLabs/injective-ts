@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import {
+  HttpRequestMethod,
   HttpRequestException,
   UnspecifiedErrorCode,
-  HttpRequestMethod,
 } from '@injectivelabs/exceptions'
 import HttpClient from './HttpClient.js'
 import type { AxiosError, AxiosRequestConfig } from 'axios'
