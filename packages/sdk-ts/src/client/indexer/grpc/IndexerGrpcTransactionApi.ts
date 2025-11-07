@@ -19,7 +19,7 @@ import {
 import { IndexerModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
-import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
 interface PrepareTxArgs {
   address: AccountAddress

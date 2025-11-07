@@ -1,12 +1,17 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src",
     "outDir": "./dist/cjs",
     "module": "commonjs",
     "moduleResolution": "node",
     "tsBuildInfoFile": "../../../.build-cache/wallet-base.tsbuildinfo"
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["./src/**/*.spec.ts", "./src/**/*.test.ts"]
+  "include": [
+    "./src/**/*.ts",
+    "../../../protoV2/**/*.ts"
+  ],
+  "exclude": [
+    "./src/**/*.spec.ts",
+    "./src/**/*.test.ts"
+  ]
 }

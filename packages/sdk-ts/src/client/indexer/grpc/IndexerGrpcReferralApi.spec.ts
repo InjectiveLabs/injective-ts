@@ -1,5 +1,5 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcReferralApi } from './IndexerGrpcReferralApi.js'
 import type { IndexerGrpcReferralTransformer } from '../transformers/index.js'
 

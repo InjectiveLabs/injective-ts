@@ -1,8 +1,8 @@
 import {
   getEthereumAddress,
+  getChecksumAddress,
   getInjectiveAddress,
   getDefaultSubaccountId,
-  getChecksumAddress,
 } from '../../src/utils/index.js'
 
 describe('address helper functions', () => {

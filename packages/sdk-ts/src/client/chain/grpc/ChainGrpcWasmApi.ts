@@ -1,12 +1,8 @@
-import { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.mjs'
+import { QueryClient as CosmwasmWasmV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
 import { toBase64 } from '../../../utils/utf8.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 import { ChainGrpcWasmTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
@@ -14,17 +10,13 @@ import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcWasmApi extends BaseGrpcConsumer {
+export class ChainGrpcWasmApi extends BaseGrpcConsumerV2 {
   protected module: string = ChainModule.Wasm
-
-  protected client: CosmwasmWasmV1Query.QueryClientImpl
+  private client: CosmwasmWasmV1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new CosmwasmWasmV1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new CosmwasmWasmV1QueryClient(this.transport)
   }
 
   async fetchContractAccountsBalance({
@@ -34,41 +26,25 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     contractAddress: string
     pagination?: PaginationOption
   }) {
-    const request = CosmwasmWasmV1Query.QueryAllContractStateRequest.create()
+    const request = CosmwasmWasmV1QueryPb.QueryAllContractStateRequest.create()
 
     request.address = contractAddress
 
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<CosmwasmWasmV1Query.QueryAllContractStateResponse>(
-          () => this.client.AllContractState(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QueryAllContractStateRequest,
+      CosmwasmWasmV1QueryPb.QueryAllContractStateResponse
+    >(request, this.client.allContractState.bind(this.client))
 
-      return ChainGrpcWasmTransformer.allContractStateResponseToContractAccountsBalanceWithPagination(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AllContractState',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AllContractState',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcWasmTransformer.allContractStateResponseToContractAccountsBalanceWithPagination(
+      response,
+    )
   }
 
   async fetchContractState({
@@ -78,116 +54,69 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     contractAddress: string
     pagination?: PaginationOption
   }) {
-    const request = CosmwasmWasmV1Query.QueryAllContractStateRequest.create()
+    const request = CosmwasmWasmV1QueryPb.QueryAllContractStateRequest.create()
 
     request.address = contractAddress
 
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<CosmwasmWasmV1Query.QueryAllContractStateResponse>(
-          () => this.client.AllContractState(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QueryAllContractStateRequest,
+      CosmwasmWasmV1QueryPb.QueryAllContractStateResponse
+    >(request, this.client.allContractState.bind(this.client))
 
-      return ChainGrpcWasmTransformer.allContractStateResponseToContractState(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AllContractState',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AllContractState',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcWasmTransformer.allContractStateResponseToContractState(
+      response,
+    )
   }
 
   async fetchContractInfo(contractAddress: string) {
-    const request = CosmwasmWasmV1Query.QueryContractInfoRequest.create()
+    const request = CosmwasmWasmV1QueryPb.QueryContractInfoRequest.create()
 
     request.address = contractAddress
 
-    try {
-      const response =
-        await this.retry<CosmwasmWasmV1Query.QueryContractInfoResponse>(() =>
-          this.client.ContractInfo(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QueryContractInfoRequest,
+      CosmwasmWasmV1QueryPb.QueryContractInfoResponse
+    >(request, this.client.contractInfo.bind(this.client))
 
-      const contractInfo = response.contractInfo
+    const contractInfo = response.contractInfo
 
-      if (!contractInfo) {
-        return
-      }
-
-      return ChainGrpcWasmTransformer.contactInfoResponseToContractInfo(
-        contractInfo,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'ContractInfo',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'ContractInfo',
-        contextModule: this.module,
-      })
+    if (!contractInfo) {
+      return
     }
+
+    return ChainGrpcWasmTransformer.contactInfoResponseToContractInfo(
+      contractInfo,
+    )
   }
 
   async fetchContractHistory(contractAddress: string) {
-    const request = CosmwasmWasmV1Query.QueryContractHistoryRequest.create()
+    const request = CosmwasmWasmV1QueryPb.QueryContractHistoryRequest.create()
 
     request.address = contractAddress
 
-    try {
-      const response =
-        await this.retry<CosmwasmWasmV1Query.QueryContractHistoryResponse>(() =>
-          this.client.ContractHistory(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QueryContractHistoryRequest,
+      CosmwasmWasmV1QueryPb.QueryContractHistoryResponse
+    >(request, this.client.contractHistory.bind(this.client))
 
-      return ChainGrpcWasmTransformer.contactHistoryResponseToContractHistory(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'ContractHistory',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'ContractHistory',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcWasmTransformer.contactHistoryResponseToContractHistory(
+      response,
+    )
   }
 
   async fetchSmartContractState(
     contractAddress: string,
     query?: string | Record<string, any>,
   ) {
-    const request = CosmwasmWasmV1Query.QuerySmartContractStateRequest.create()
+    const request =
+      CosmwasmWasmV1QueryPb.QuerySmartContractStateRequest.create()
 
     request.address = contractAddress
 
@@ -198,32 +127,16 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
       )
     }
 
-    try {
-      const response =
-        await this.retry<CosmwasmWasmV1Query.QuerySmartContractStateResponse>(
-          () => this.client.SmartContractState(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QuerySmartContractStateRequest,
+      CosmwasmWasmV1QueryPb.QuerySmartContractStateResponse
+    >(request, this.client.smartContractState.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'SmartContractState',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'SmartContractState',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchRawContractState(contractAddress: string, query?: string) {
-    const request = CosmwasmWasmV1Query.QueryRawContractStateRequest.create()
+    const request = CosmwasmWasmV1QueryPb.QueryRawContractStateRequest.create()
 
     request.address = contractAddress
 
@@ -231,133 +144,69 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
       request.queryData = Buffer.from(query, 'base64')
     }
 
-    try {
-      const response =
-        await this.retry<CosmwasmWasmV1Query.QueryRawContractStateResponse>(
-          () => this.client.RawContractState(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QueryRawContractStateRequest,
+      CosmwasmWasmV1QueryPb.QueryRawContractStateResponse
+    >(request, this.client.rawContractState.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'RawContractState',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'RawContractState',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchContractCodes(pagination?: PaginationOption) {
-    const request = CosmwasmWasmV1Query.QueryCodesRequest.create()
+    const request = CosmwasmWasmV1QueryPb.QueryCodesRequest.create()
 
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response = await this.retry<CosmwasmWasmV1Query.QueryCodesResponse>(
-        () => this.client.Codes(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QueryCodesRequest,
+      CosmwasmWasmV1QueryPb.QueryCodesResponse
+    >(request, this.client.codes.bind(this.client))
 
-      return ChainGrpcWasmTransformer.contractCodesResponseToContractCodes(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Codes',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Codes',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcWasmTransformer.contractCodesResponseToContractCodes(
+      response,
+    )
   }
 
   async fetchContractCode(codeId: number) {
-    const request = CosmwasmWasmV1Query.QueryCodeRequest.create()
+    const request = CosmwasmWasmV1QueryPb.QueryCodeRequest.create()
 
-    request.codeId = codeId.toString()
+    request.codeId = BigInt(codeId)
 
-    try {
-      const response = await this.retry<CosmwasmWasmV1Query.QueryCodeResponse>(
-        () => this.client.Code(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QueryCodeRequest,
+      CosmwasmWasmV1QueryPb.QueryCodeResponse
+    >(request, this.client.code.bind(this.client))
 
-      return ChainGrpcWasmTransformer.contractCodeResponseToContractCode(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Code',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Code',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcWasmTransformer.contractCodeResponseToContractCode(response)
   }
 
   async fetchContractCodeContracts(
     codeId: number,
     pagination?: PaginationOption,
   ) {
-    const request = CosmwasmWasmV1Query.QueryContractsByCodeRequest.create()
+    const request = CosmwasmWasmV1QueryPb.QueryContractsByCodeRequest.create()
 
-    request.codeId = codeId.toString()
+    request.codeId = BigInt(codeId)
 
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<CosmwasmWasmV1Query.QueryContractsByCodeResponse>(() =>
-          this.client.ContractsByCode(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmwasmWasmV1QueryPb.QueryContractsByCodeRequest,
+      CosmwasmWasmV1QueryPb.QueryContractsByCodeResponse
+    >(request, this.client.contractsByCode.bind(this.client))
 
-      return ChainGrpcWasmTransformer.contractByCodeResponseToContractByCode(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmwasmWasmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'ContractsByCode',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'ContractsByCode',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcWasmTransformer.contractByCodeResponseToContractByCode(
+      response,
+    )
   }
 }

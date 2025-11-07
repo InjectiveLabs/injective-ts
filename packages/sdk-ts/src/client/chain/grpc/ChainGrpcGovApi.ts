@@ -1,137 +1,87 @@
-import { CosmosGovV1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as CosmosGovV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.mjs'
+import { QueryClient as CosmosGovV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
-import type { CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
+import type * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb.mjs'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcGovApi extends BaseGrpcConsumer {
+export class ChainGrpcGovApi extends BaseGrpcConsumerV2 {
   protected module: string = ChainModule.Gov
-
-  protected client: CosmosGovV1Query.QueryClientImpl
+  private client: CosmosGovV1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new CosmosGovV1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new CosmosGovV1QueryClient(this.transport)
   }
 
   async fetchModuleParams() {
     const paramTypes = ['voting', 'deposit', 'tallying']
     const requests = paramTypes.map((type) => {
-      const request = CosmosGovV1Query.QueryParamsRequest.create()
+      const request = CosmosGovV1QueryPb.QueryParamsRequest.create()
       request.paramsType = type
 
       return request
     })
 
-    try {
-      const responses = await Promise.all(
-        requests.map((request) => this.client.Params(request, this.metadata)),
-      )
-      const [votingParams, depositParams, tallyParams] = responses
+    const responses = await Promise.all(
+      requests.map((request) =>
+        this.executeGrpcCall<
+          CosmosGovV1QueryPb.QueryParamsRequest,
+          CosmosGovV1QueryPb.QueryParamsResponse
+        >(request, this.client.params.bind(this.client)),
+      ),
+    )
+    const [votingParams, depositParams, tallyParams] = responses
 
-      return ChainGrpcGovTransformer.moduleParamsResponseToModuleParamsByType({
-        votingParams: votingParams.params!,
-        tallyParams: tallyParams.params!,
-        depositParams: depositParams.params!,
-      })
-    } catch (e: any) {
-      if (e instanceof CosmosGovV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Params',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Params',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcGovTransformer.moduleParamsResponseToModuleParamsByType({
+      votingParams: votingParams.params!,
+      tallyParams: tallyParams.params!,
+      depositParams: depositParams.params!,
+    })
   }
 
   async fetchProposals({
     status,
     pagination,
   }: {
-    status: CosmosGovV1Gov.ProposalStatus
+    status: CosmosGovV1GovPb.ProposalStatus
     pagination?: PaginationOption
   }) {
-    const request = CosmosGovV1Query.QueryProposalsRequest.create()
+    const request = CosmosGovV1QueryPb.QueryProposalsRequest.create()
 
     request.proposalStatus = status
 
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<CosmosGovV1Query.QueryProposalsResponse>(() =>
-          this.client.Proposals(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosGovV1QueryPb.QueryProposalsRequest,
+      CosmosGovV1QueryPb.QueryProposalsResponse
+    >(request, this.client.proposals.bind(this.client))
 
-      return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
-    } catch (e: any) {
-      if (e instanceof CosmosGovV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Proposals',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Proposals',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
   }
 
   async fetchProposal(proposalId: number) {
-    const request = CosmosGovV1Query.QueryProposalRequest.create()
+    const request = CosmosGovV1QueryPb.QueryProposalRequest.create()
 
-    request.proposalId = proposalId.toString()
+    request.proposalId = BigInt(proposalId)
 
-    try {
-      const response = await this.retry<CosmosGovV1Query.QueryProposalResponse>(
-        () => this.client.Proposal(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      CosmosGovV1QueryPb.QueryProposalRequest,
+      CosmosGovV1QueryPb.QueryProposalResponse
+    >(request, this.client.proposal.bind(this.client))
 
-      return ChainGrpcGovTransformer.proposalResponseToProposal(response)
-    } catch (e: any) {
-      if (e instanceof CosmosGovV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Proposal',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Proposal',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcGovTransformer.proposalResponseToProposal(response)
   }
 
   async fetchProposalDeposits({
@@ -141,38 +91,23 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     proposalId: number
     pagination?: PaginationOption
   }) {
-    const request = CosmosGovV1Query.QueryDepositsRequest.create()
+    const request = CosmosGovV1QueryPb.QueryDepositsRequest.create()
 
-    request.proposalId = proposalId.toString()
+    request.proposalId = BigInt(proposalId)
 
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response = await this.retry<CosmosGovV1Query.QueryDepositsResponse>(
-        () => this.client.Deposits(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      CosmosGovV1QueryPb.QueryDepositsRequest,
+      CosmosGovV1QueryPb.QueryDepositsResponse
+    >(request, this.client.deposits.bind(this.client))
 
-      return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
-    } catch (e: any) {
-      if (e instanceof CosmosGovV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Deposits',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Deposits',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
   }
 
   async fetchProposalVotes({
@@ -182,64 +117,35 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     proposalId: number
     pagination?: PaginationOption
   }) {
-    const request = CosmosGovV1Query.QueryVotesRequest.create()
+    const request = CosmosGovV1QueryPb.QueryVotesRequest.create()
 
-    request.proposalId = proposalId.toString()
+    request.proposalId = BigInt(proposalId)
 
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
-    try {
-      const response = await this.retry<CosmosGovV1Query.QueryVotesResponse>(
-        () => this.client.Votes(request, this.metadata),
-      )
 
-      return ChainGrpcGovTransformer.votesResponseToVotes(response)
-    } catch (e: any) {
-      if (e instanceof CosmosGovV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Votes',
-          contextModule: this.module,
-        })
-      }
+    const response = await this.executeGrpcCall<
+      CosmosGovV1QueryPb.QueryVotesRequest,
+      CosmosGovV1QueryPb.QueryVotesResponse
+    >(request, this.client.votes.bind(this.client))
 
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Votes',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcGovTransformer.votesResponseToVotes(response)
   }
 
   async fetchProposalTally(proposalId: number) {
-    const request = CosmosGovV1Query.QueryTallyResultRequest.create()
+    const request = CosmosGovV1QueryPb.QueryTallyResultRequest.create()
 
-    request.proposalId = proposalId.toString()
-    try {
-      const response =
-        await this.retry<CosmosGovV1Query.QueryTallyResultResponse>(() =>
-          this.client.TallyResult(request, this.metadata),
-        )
+    request.proposalId = BigInt(proposalId)
 
-      return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
-    } catch (e: any) {
-      if (e instanceof CosmosGovV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TallyResult',
-          contextModule: this.module,
-        })
-      }
+    const response = await this.executeGrpcCall<
+      CosmosGovV1QueryPb.QueryTallyResultRequest,
+      CosmosGovV1QueryPb.QueryTallyResultResponse
+    >(request, this.client.tallyResult.bind(this.client))
 
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TallyResult',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
   }
 }

@@ -10,15 +10,15 @@ import {
 import { BaseAccount } from '../accounts/index.js'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client/index.js'
 import {
-  createAuthInfo,
-  createBody,
   createFee,
+  createBody,
+  SIGN_DIRECT,
   createSignDoc,
   createSigners,
-  SIGN_DIRECT,
+  createAuthInfo,
 } from './utils/index.js'
-import type { Msgs } from '../modules/msgs.js'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
+import type { Msgs } from '../modules/msgs.js'
 import type {
   CreateTransactionArgs,
   CreateTransactionResult,

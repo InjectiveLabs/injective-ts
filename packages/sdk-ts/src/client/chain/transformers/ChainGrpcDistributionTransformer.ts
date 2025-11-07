@@ -1,15 +1,18 @@
 import { toHumanReadable } from '@injectivelabs/utils'
 import type { Coin } from '@injectivelabs/ts-types'
-import type { ValidatorRewards } from '../types/distribution.js'
-import type { DistributionModuleParams } from '../types/distribution.js'
-import type { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type * as CosmosDistributionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/query_pb.mjs'
+import type {
+  GrpcDecCoin,
+  ValidatorRewards,
+  DistributionModuleParams,
+} from '../types/distribution.js'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcDistributionTransformer {
   static moduleParamsResponseToModuleParams(
-    response: CosmosDistributionV1Beta1Query.QueryParamsResponse,
+    response: CosmosDistributionV1Beta1QueryPb.QueryParamsResponse,
   ): DistributionModuleParams {
     const params = response.params!
 
@@ -22,7 +25,7 @@ export class ChainGrpcDistributionTransformer {
   }
 
   static delegationRewardResponseToReward(
-    response: CosmosDistributionV1Beta1Query.QueryDelegationRewardsResponse,
+    response: CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsResponse,
   ): Coin[] {
     const grpcRewards = response.rewards
 
@@ -35,12 +38,12 @@ export class ChainGrpcDistributionTransformer {
   }
 
   static totalDelegationRewardResponseToTotalReward(
-    response: CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsResponse,
+    response: CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsResponse,
   ): ValidatorRewards[] {
     const grpcRewards = response.rewards
 
     return grpcRewards.map((grpcReward) => {
-      const rewards = grpcReward.reward.map((reward) => ({
+      const rewards = grpcReward.reward.map((reward: GrpcDecCoin) => ({
         amount: toHumanReadable(reward.amount).toFixed(),
         denom: reward.denom,
       }))

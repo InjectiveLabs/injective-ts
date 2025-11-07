@@ -1,5 +1,5 @@
 import { Network } from '@injectivelabs/networks'
-import { toChainFormat, toBigNumber } from '@injectivelabs/utils'
+import { toBigNumber, toChainFormat } from '@injectivelabs/utils'
 import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
 import { OrderHashManager } from './OrderHashManager.js'
 import { Address } from '../../../../accounts/Address.js'

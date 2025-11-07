@@ -4,7 +4,7 @@ import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
 import { loadTrezorConnect } from '../lib.js'
 import { TrezorDerivationPathType } from '../../types.js'
 import type { AccountAddress } from '@injectivelabs/ts-types'
-import type { TrezorWalletInfo, HDNodeLike } from '../../types.js'
+import type { HDNodeLike, TrezorWalletInfo } from '../../types.js'
 
 const addressOfHDKey = (hdKey: HDNodeLike): string => {
   const shouldSanitizePublicKey = true

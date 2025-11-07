@@ -31,7 +31,7 @@
     "patch": "lerna version patch",
     "clean-up": "lerna run clean && shx rm -rf .build-cache *.log coverage junit.xml",
     "bootstrap": "pnpm clean-up && pnpm install",
-    "test": "jest",
+    "test": "NODE_OPTIONS='--max-old-space-size=8192' jest",
     "test:sdk-ts:core:stargate": "jest ./packages/sdk-ts/src/core/stargate",
     "test:sdk-ts:core:modules": "jest ./packages/sdk-ts/src/core/modules",
     "test:sdk-ts:core:account": "jest ./packages/sdk-ts/src/core/account",
@@ -43,7 +43,7 @@
     "coverage:unit": "pnpm test:unit --coverage",
     "coverage:integration": "pnpm test:integration --coverage",
     "coverage:show": "live-server coverage",
-    "lint": "eslint './packages/**/*.{ts,js}'",
+    "lint": "NODE_OPTIONS='--max-old-space-size=16384' eslint './packages/**/*.{ts,js}'",
     "lint:ci": "pnpm lint . --format junit",
     "lint:md": "markdownlint --ignore node_modules --ignore .git",
     "lint:type-imports": "node scripts/lint-type-imports.js",
@@ -121,5 +121,8 @@
       "@ethereumjs/common": "3.2.0",
       "@cosmjs/crypto>libsodium-wrappers-sumo": "npm:@bangjelkoski/noop"
     }
+  },
+  "dependencies": {
+    "@injectivelabs/core-proto-ts-v2": "link:protoV2/core/proto-ts"
   }
 }

@@ -1,5 +1,5 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcSpotApi } from './IndexerGrpcSpotApi.js'
 import { getDefaultSubaccountId } from '../../../utils/address.js'
 import type { SpotMarket } from '../types/index.js'

@@ -23,7 +23,6 @@ import {
 import { loadTrezorConnect } from './lib.js'
 import { transformTypedData } from '../utils.js'
 import { BaseTrezorTransport } from './hw/index.js'
-import type { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
 import type {
   AccountAddress,
   EvmChainId as EvmChainIdType,
@@ -41,6 +40,7 @@ import type {
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import type { TrezorWalletInfo, TrezorDerivationPathType } from '../types.js'
 
 type EthereumTransactionEIP1559 = {
   to: string

@@ -1,4 +1,4 @@
-import { CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
+import * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb.mjs'
 import type { Coin } from '@injectivelabs/ts-types'
 
 export interface GovModuleStateParams {
@@ -26,7 +26,7 @@ export interface Proposal {
   proposer: string
   content: any
   type: string
-  status: CosmosGovV1Gov.ProposalStatus
+  status: CosmosGovV1GovPb.ProposalStatus
   expedited: boolean
   failedReason: string
   submitTime: number
@@ -38,7 +38,7 @@ export interface Proposal {
 }
 
 export type WeightedVoteOption = {
-  option: CosmosGovV1Gov.VoteOption
+  option: CosmosGovV1GovPb.VoteOption
   weight: string
 }
 
@@ -61,17 +61,17 @@ export type ProposalDeposit = {
   amounts: Coin[]
 }
 
-export type GrpcProposal = CosmosGovV1Gov.Proposal
-export type GrpcProposalDeposit = CosmosGovV1Gov.Deposit
-export type GrpcGovernanceTallyParams = CosmosGovV1Gov.Params
-export type GrpcGovernanceVotingParams = CosmosGovV1Gov.Params
-export type GrpcGovernanceDepositParams = CosmosGovV1Gov.Params
-export type GrpcTallyResult = CosmosGovV1Gov.TallyResult
-export type GrpcVote = CosmosGovV1Gov.Vote
+export type GrpcProposal = CosmosGovV1GovPb.Proposal
+export type GrpcProposalDeposit = CosmosGovV1GovPb.Deposit
+export type GrpcGovernanceTallyParams = CosmosGovV1GovPb.Params
+export type GrpcGovernanceVotingParams = CosmosGovV1GovPb.Params
+export type GrpcGovernanceDepositParams = CosmosGovV1GovPb.Params
+export type GrpcTallyResult = CosmosGovV1GovPb.TallyResult
+export type GrpcVote = CosmosGovV1GovPb.Vote
 
-export type VoteOption = CosmosGovV1Gov.VoteOption
-export type ProposalStatus = CosmosGovV1Gov.ProposalStatus
-export const VoteOptionMap = CosmosGovV1Gov.VoteOption
-export const ProposalStatusMap = CosmosGovV1Gov.ProposalStatus
+export type VoteOption = CosmosGovV1GovPb.VoteOption
+export type ProposalStatus = CosmosGovV1GovPb.ProposalStatus
+export const VoteOptionMap = CosmosGovV1GovPb.VoteOption
+export const ProposalStatusMap = CosmosGovV1GovPb.ProposalStatus
 
 export type { ProposalStatus as GrpcProposalStatus }

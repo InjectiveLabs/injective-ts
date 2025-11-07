@@ -28,7 +28,7 @@ import {
   getOkxWalletProvider,
   getTrustWalletProvider,
 } from './utils/index.js'
-import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type { ErrorContext, ThrownException } from '@injectivelabs/exceptions'
 import type {
   TxRaw,

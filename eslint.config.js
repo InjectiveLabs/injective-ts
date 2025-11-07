@@ -11,6 +11,7 @@ export default [
   {
     ignores: [
       'proto/**',
+      'protoV2/**',
       '**/*.d.ts',
       '**/dist/**',
       'deprecated/**',
@@ -47,6 +48,7 @@ export default [
         'error',
         {
           prefer: 'type-imports',
+          fixStyle: 'separate-type-imports',
           disallowTypeAnnotations: false,
         },
       ],
@@ -57,23 +59,39 @@ export default [
           fixMixedExportsWithInlineTypeSpecifier: false,
         },
       ],
+      // Prevent type import side effects
+      '@typescript-eslint/no-import-type-side-effects': 'error',
       // Disable the base import/no-duplicates rule as it conflicts with type imports
       'import/no-duplicates': 'off',
-      // Sort imports by groups and line length within each group
+      // Enhanced import sorting with more granular groups
       'perfectionist/sort-imports': [
-        'warn',
+        'error',
         {
           type: 'line-length',
           order: 'asc',
-          newlinesBetween: 'never',
           groups: [
-            ['builtin', 'external'], // Group 1: Library imports
-            ['internal', 'parent', 'sibling', 'index'], // Group 2: Non-library imports
-            ['type'], // Group 3: Type imports
+            ['builtin', 'external'],
+            'internal',
+            ['parent', 'sibling', 'index'],
+            'object',
+            'unknown',
+            'type',
+            'internal-type',
+            ['parent-type', 'sibling-type', 'index-type'],
           ],
-          // Allow manual overrides with comments
-          partitionByComment: true,
+          newlinesBetween: 'ignore',
+          internalPattern: ['^@/', '^~/', '^#'],
         },
+      ],
+      // Sort named imports alphabetically by line length
+      'perfectionist/sort-named-imports': [
+        'error',
+        { type: 'line-length', order: 'asc' },
+      ],
+      // Sort exports alphabetically by line length
+      'perfectionist/sort-exports': [
+        'error',
+        { type: 'line-length', order: 'asc' },
       ],
       // Allow .js extensions in TypeScript files (for ESM compatibility)
       'import/extensions': [
@@ -91,6 +109,7 @@ export default [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
         },
       ],
       // Allow console in development
@@ -143,21 +162,33 @@ export default [
       prettier: prettier,
     },
     rules: {
-      // Sort imports by groups and line length within each group
+      // Enhanced import sorting
       'perfectionist/sort-imports': [
-        'warn',
+        'error',
         {
           type: 'line-length',
           order: 'asc',
-          newlinesBetween: 'never',
           groups: [
-            ['builtin', 'external'], // Group 1: Library imports
-            ['internal', 'parent', 'sibling', 'index'], // Group 2: Non-library imports
-            ['type'], // Group 3: Type imports
+            ['builtin', 'external'],
+            'internal',
+            ['parent', 'sibling', 'index'],
+            'object',
+            'unknown',
+            'type',
+            'internal-type',
+            ['parent-type', 'sibling-type', 'index-type'],
           ],
-          // Allow manual overrides with comments
-          partitionByComment: true,
+          newlinesBetween: 'ignore',
+          internalPattern: ['^@/', '^~/', '^#'],
         },
+      ],
+      'perfectionist/sort-named-imports': [
+        'error',
+        { type: 'line-length', order: 'asc' },
+      ],
+      'perfectionist/sort-exports': [
+        'error',
+        { type: 'line-length', order: 'asc' },
       ],
       // Allow console in development
       'no-console': 'warn',

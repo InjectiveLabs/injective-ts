@@ -1,6 +1,6 @@
 import {
-  CosmosAuthzV1Beta1Tx,
   GoogleProtobufAny,
+  CosmosAuthzV1Beta1Tx,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
 import type { Msgs } from '../../msgs.js'

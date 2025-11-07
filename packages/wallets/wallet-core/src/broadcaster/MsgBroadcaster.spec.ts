@@ -6,15 +6,15 @@ import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import {
   MsgSend,
   PrivateKey,
-  MsgBroadcasterWithPk,
   SIGN_DIRECT,
+  MsgBroadcasterWithPk,
 } from '@injectivelabs/sdk-ts'
 import { MsgBroadcaster } from './MsgBroadcaster.js'
-import type { MsgBroadcasterOptions } from './types.js'
 import type {
   WalletStrategyArguments,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import type { MsgBroadcasterOptions } from './types.js'
 
 const strategyArgs: WalletStrategyArguments = {} as any /** define the args */
 const strategyEthArgs: ConcreteEvmWalletStrategyArgs =

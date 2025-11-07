@@ -1,6 +1,6 @@
 import { StreamOperation } from '@injectivelabs/ts-types'
-import type { IndexerAuctionBid } from '../types/index.js'
 import type { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
+import type { IndexerAuctionBid } from '../types/index.js'
 
 /**
  * @category Indexer Stream Transformer

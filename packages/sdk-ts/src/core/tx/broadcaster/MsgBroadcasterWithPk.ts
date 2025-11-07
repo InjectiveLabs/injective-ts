@@ -24,12 +24,12 @@ import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
 } from '../../../client/chain/rest/index.js'
-import type { Msgs } from '../../modules/msgs.js'
-import type { AccountDetails } from '../../../types/auth.js'
-import type { CreateTransactionArgs } from '../types/index.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import type { Msgs } from '../../modules/msgs.js'
+import type { AccountDetails } from '../../../types/auth.js'
+import type { CreateTransactionArgs } from '../types/index.js'
 
 interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
@@ -186,7 +186,9 @@ export class MsgBroadcasterWithPk {
       ).fetchLatestBlock()
       const latestHeight = latestBlock!.header!.height
 
-      timeoutHeight = toBigNumber(latestHeight).plus(txTimeout).toNumber()
+      timeoutHeight = toBigNumber(latestHeight.toString())
+        .plus(txTimeout)
+        .toNumber()
     }
 
     const transactionApi = new IndexerGrpcWeb3GwApi(
@@ -436,7 +438,7 @@ export class MsgBroadcasterWithPk {
     ).fetchLatestBlock()
     const latestHeight = latestBlock!.header!.height
 
-    return toBigNumber(latestHeight).plus(txTimeout)
+    return toBigNumber(latestHeight.toString()).plus(txTimeout)
   }
 
   private async broadcastTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {

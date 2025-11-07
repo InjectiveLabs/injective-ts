@@ -1,8 +1,8 @@
 import * as viemChains from 'viem/chains'
 import {
+  http,
   extractChain,
   createWalletClient,
-  http,
   createPublicClient,
 } from 'viem'
 import type { LocalAccount } from 'viem'

@@ -1,258 +1,125 @@
-import { InjectiveEvmV1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveEvmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/query_pb.mjs'
+import { QueryClient as InjectiveEvmV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 import { ChainGrpcEvmTransformer } from '../transformers/index.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcEvmApi extends BaseGrpcConsumer {
+export class ChainGrpcEvmApi extends BaseGrpcConsumerV2 {
   protected module: string = ChainModule.Evm
 
-  protected client: InjectiveEvmV1Query.QueryClientImpl
+  private client: InjectiveEvmV1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new InjectiveEvmV1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveEvmV1QueryClient(this.transport)
   }
 
   async fetchAccount(ethAddress: string) {
-    const request = InjectiveEvmV1Query.QueryAccountRequest.create()
+    const request = InjectiveEvmV1QueryPb.QueryAccountRequest.create()
 
     request.address = ethAddress
 
-    try {
-      const response =
-        await this.retry<InjectiveEvmV1Query.QueryAccountResponse>(() =>
-          this.client.Account(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveEvmV1QueryPb.QueryAccountRequest,
+      InjectiveEvmV1QueryPb.QueryAccountResponse
+    >(request, this.client.account.bind(this.client))
 
-      return ChainGrpcEvmTransformer.accountResponseToAccount(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveEvmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'EvmAccount',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'EvmAccount',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcEvmTransformer.accountResponseToAccount(response)
   }
 
   async fetchCosmosAccount(ethAddress: string) {
-    const request = InjectiveEvmV1Query.QueryCosmosAccountRequest.create()
+    const request = InjectiveEvmV1QueryPb.QueryCosmosAccountRequest.create()
 
     request.address = ethAddress
 
-    try {
-      const response =
-        await this.retry<InjectiveEvmV1Query.QueryCosmosAccountResponse>(() =>
-          this.client.CosmosAccount(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveEvmV1QueryPb.QueryCosmosAccountRequest,
+      InjectiveEvmV1QueryPb.QueryCosmosAccountResponse
+    >(request, this.client.cosmosAccount.bind(this.client))
 
-      return ChainGrpcEvmTransformer.cosmosAccountResponseToCosmosAccount(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveEvmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'CosmosAccount',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'CosmosAccount',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcEvmTransformer.cosmosAccountResponseToCosmosAccount(
+      response,
+    )
   }
 
   async fetchValidatorAccount(consAddress: string) {
-    const request = InjectiveEvmV1Query.QueryValidatorAccountRequest.create()
+    const request = InjectiveEvmV1QueryPb.QueryValidatorAccountRequest.create()
 
     request.consAddress = consAddress
 
-    try {
-      const response =
-        await this.retry<InjectiveEvmV1Query.QueryValidatorAccountResponse>(
-          () => this.client.ValidatorAccount(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveEvmV1QueryPb.QueryValidatorAccountRequest,
+      InjectiveEvmV1QueryPb.QueryValidatorAccountResponse
+    >(request, this.client.validatorAccount.bind(this.client))
 
-      return ChainGrpcEvmTransformer.validatorAccountResponseToValidatorAccount(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveEvmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'EvmValidatorAccount',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'EvmValidatorAccount',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcEvmTransformer.validatorAccountResponseToValidatorAccount(
+      response,
+    )
   }
 
   async fetchBalance(ethAddress: string) {
-    const request = InjectiveEvmV1Query.QueryBalanceRequest.create()
+    const request = InjectiveEvmV1QueryPb.QueryBalanceRequest.create()
 
     request.address = ethAddress
 
-    try {
-      const response =
-        await this.retry<InjectiveEvmV1Query.QueryBalanceResponse>(() =>
-          this.client.Balance(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveEvmV1QueryPb.QueryBalanceRequest,
+      InjectiveEvmV1QueryPb.QueryBalanceResponse
+    >(request, this.client.balance.bind(this.client))
 
-      return response.balance
-    } catch (e: unknown) {
-      if (e instanceof InjectiveEvmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'EvmBalance',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'EvmBalance',
-        contextModule: this.module,
-      })
-    }
+    return response.balance
   }
 
   async fetchStorage(ethAddress: string, key: string) {
-    const request = InjectiveEvmV1Query.QueryStorageRequest.create()
+    const request = InjectiveEvmV1QueryPb.QueryStorageRequest.create()
 
     request.address = ethAddress
     request.key = key
 
-    try {
-      const response =
-        await this.retry<InjectiveEvmV1Query.QueryStorageResponse>(() =>
-          this.client.Storage(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveEvmV1QueryPb.QueryStorageRequest,
+      InjectiveEvmV1QueryPb.QueryStorageResponse
+    >(request, this.client.storage.bind(this.client))
 
-      return response.value
-    } catch (e: unknown) {
-      if (e instanceof InjectiveEvmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'EvmStorage',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'EvmStorage',
-        contextModule: this.module,
-      })
-    }
+    return response.value
   }
 
   async fetchCode(ethAddress: string) {
-    const request = InjectiveEvmV1Query.QueryCodeRequest.create()
+    const request = InjectiveEvmV1QueryPb.QueryCodeRequest.create()
 
     request.address = ethAddress
 
-    try {
-      const response = await this.retry<InjectiveEvmV1Query.QueryCodeResponse>(
-        () => this.client.Code(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveEvmV1QueryPb.QueryCodeRequest,
+      InjectiveEvmV1QueryPb.QueryCodeResponse
+    >(request, this.client.code.bind(this.client))
 
-      return response.code
-    } catch (e: unknown) {
-      if (e instanceof InjectiveEvmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'EvmCode',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'EvmCode',
-        contextModule: this.module,
-      })
-    }
+    return response.code
   }
 
   async fetchParams() {
-    const request = InjectiveEvmV1Query.QueryParamsRequest.create()
+    const request = InjectiveEvmV1QueryPb.QueryParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveEvmV1Query.QueryParamsResponse>(() =>
-          this.client.Params(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveEvmV1QueryPb.QueryParamsRequest,
+      InjectiveEvmV1QueryPb.QueryParamsResponse
+    >(request, this.client.params.bind(this.client))
 
-      return ChainGrpcEvmTransformer.paramsResponseToParams(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveEvmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'EvmParams',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'EvmParams',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcEvmTransformer.paramsResponseToParams(response)
   }
 
   async fetchBaseFee() {
-    const request = InjectiveEvmV1Query.QueryBaseFeeRequest.create()
+    const request = InjectiveEvmV1QueryPb.QueryBaseFeeRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveEvmV1Query.QueryBaseFeeResponse>(() =>
-          this.client.BaseFee(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveEvmV1QueryPb.QueryBaseFeeRequest,
+      InjectiveEvmV1QueryPb.QueryBaseFeeResponse
+    >(request, this.client.baseFee.bind(this.client))
 
-      return response.baseFee
-    } catch (e: unknown) {
-      if (e instanceof InjectiveEvmV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'EvmBaseFee',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'EvmBaseFee',
-        contextModule: this.module,
-      })
-    }
+    return response.baseFee
   }
 }

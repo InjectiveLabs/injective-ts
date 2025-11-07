@@ -67,7 +67,7 @@ BUILD_DIR="./proto/gen"
 
 # remote branches/tags
 injective_core_branch=release/v1.16.x
-cosmos_sdk_branch=v0.50.13-evm-comet1-inj.3
+cosmos_sdk_branch=v0.50.13-evm-comet1-inj.6
 wasmd_branch=v0.53.3-evm-comet1-inj
 ibc_go_branch=v8.7.0-evm-comet1-inj
 
@@ -81,13 +81,16 @@ if [ "$SKIP_CLONE" = false ]; then
   git clone https://github.com/InjectiveLabs/wasmd $BUILD_DIR/wasmd -b $wasmd_branch --depth 1 --single-branch > /dev/null
   git clone https://github.com/InjectiveLabs/ibc-go.git $BUILD_DIR/ibc-go -b $ibc_go_branch --depth 1 --single-branch > /dev/null
 
+  echo "Exporting proto files with buf..."
   buf export $BUILD_DIR/cosmos-sdk --output=$PROTO_DIR
   buf export $BUILD_DIR/wasmd --exclude-imports --output=$PROTO_DIR
   buf export $BUILD_DIR/ibc-go --exclude-imports --output=$PROTO_DIR
-  buf export https://github.com/cosmos/gogoproto.git --exclude-imports --output=$PROTO_DIR
-  buf export https://github.com/cometbft/cometbft.git --exclude-imports --output=$PROTO_DIR
-  buf export https://github.com/cosmos/ics23.git --exclude-imports --output=$PROTO_DIR
-  buf export https://github.com/cosmos/ibc-apps.git --exclude-imports --output=$PROTO_DIR --path=middleware/packet-forward-middleware/proto/packetforward/v1
+  
+  echo "Exporting external dependencies..."
+  buf export https://github.com/cosmos/gogoproto.git --exclude-imports --output=$PROTO_DIR || echo "⚠️  Warning: Failed to export gogoproto"
+  buf export https://github.com/cometbft/cometbft.git --exclude-imports --output=$PROTO_DIR || echo "⚠️  Warning: Failed to export cometbft"
+  buf export https://github.com/cosmos/ics23.git --exclude-imports --output=$PROTO_DIR || echo "⚠️  Warning: Failed to export ics23"
+  buf export https://github.com/cosmos/ibc-apps.git --exclude-imports --output=$PROTO_DIR --path=middleware/packet-forward-middleware/proto/packetforward/v1 || echo "⚠️  Warning: Failed to export ibc-apps"
 fi
 
   ## explicit copy of google/protobuf/struct.proto
@@ -127,68 +130,7 @@ fi
     cat ./src/index.template.ts > ./src/index.ts
 
     echo "Stub index file copied successfully!"
-
-    # Update tsup.config.ts with optimized entries for tree-shaking
-    echo "Updating optimized tsup.config.ts entries..."
-
-    # Create the updated tsup config
-    cat > ./tsup.config.ts << 'EOF'
-import { defineConfig } from 'tsup'
-
-export default defineConfig({
-  entry: {
-    // Main index file
-    'index': 'src/index.ts',
-    // Generated files based on index.template.ts exports
-EOF
-
-    # Extract file paths from index.template.ts and generate tsup entries
-    echo "    // Type files from template exports (excluding client files)"
-    grep -o '"./generated/[^"]*"' ./src/index.template.ts | \
-    grep -v '\.client"$' | \
-    sed 's/^"\.\/\(.*\)"$/\1/' | \
-    sed 's/\.ts$//' | \
-    sort -u | \
-    while read -r file_path; do
-        # Use the file path as-is for the entry key (without src/ prefix)
-        entry_key="$file_path"
-        
-        # Check if the actual file exists before adding it
-        if [ -f "./src/${file_path}.ts" ]; then
-            echo "    '${entry_key}': 'src/${file_path}.ts'," >> ./tsup.config.ts
-        fi
-    done
-
-    # Add client files that are referenced in the template
-    echo "    // Client files from template exports" >> ./tsup.config.ts
-    grep -o '"./generated/[^"]*\.client"' ./src/index.template.ts | \
-    sed 's/^"\.\/\(.*\)"$/\1/' | \
-    sort -u | \
-    while read -r file_path; do
-        # Use the file path as-is for the entry key (without src/ prefix)
-        entry_key="$file_path"
-        
-        # Check if the actual file exists before adding it
-        if [ -f "./src/${file_path}.ts" ]; then
-            echo "    '${entry_key}': 'src/${file_path}.ts'," >> ./tsup.config.ts
-        fi
-    done
-
-    # Add the closing part of the config with tree-shaking optimizations
-    cat >> ./tsup.config.ts << 'EOF'
-  },
-  format: ['esm'],
-  dts: true,
-  sourcemap: false,
-  clean: true,
-  splitting: false,  // Disable splitting to prevent name mangling
-  minify: false,     // Disable minification to preserve na
-  external: ['shared'],
-  bundle: false,     // Disable bundling to preserve original exports
-})
-EOF
-
-    echo "Optimized tsup.config.ts updated successfully!"
+    echo "Using static tsup.config.ts (not regenerating)"
 
 if [ "$SKIP_CLONE" = false ] && [ "$PERSIST" = false ]; then
   echo "Cleaning up temporary files..."

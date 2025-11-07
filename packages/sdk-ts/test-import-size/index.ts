@@ -7,10 +7,9 @@ import {
   // Client APIs
   ChainRestBankApi,
   ChainGrpcBankApi,
-  IndexerGrpcAccountApi,
-
   // Utils
   MsgBroadcasterWithPk,
+  IndexerGrpcAccountApi,
 } from '../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle

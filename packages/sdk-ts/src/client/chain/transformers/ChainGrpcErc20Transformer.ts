@@ -1,6 +1,6 @@
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type { GrpcTokenPair, TokenPair, Params } from '../types/erc20.js'
-import type { InjectiveErc20V1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type * as InjectiveErc20V1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb.mjs'
+import type { Params, TokenPair, GrpcTokenPair } from '../types/erc20.js'
 
 /**
  * @category Chain Grpc Transformer
@@ -14,7 +14,7 @@ export class ChainGrpcErc20Transformer {
   }
 
   static paramsResponseToParams(
-    response: InjectiveErc20V1Beta1Query.QueryParamsResponse,
+    response: InjectiveErc20V1Beta1QueryPb.QueryParamsResponse,
   ): Params {
     const params = response.params!
 
@@ -24,14 +24,14 @@ export class ChainGrpcErc20Transformer {
   }
 
   static tokenPairsResponseToTokenPairs(
-    response: InjectiveErc20V1Beta1Query.QueryAllTokenPairsResponse,
+    response: InjectiveErc20V1Beta1QueryPb.QueryAllTokenPairsResponse,
   ) {
     return {
       tokenPairs: response.tokenPairs.map((tokenPair) => ({
         bankDenom: tokenPair.bankDenom,
         erc20Address: tokenPair.erc20Address,
       })),
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination,
       ),
     }
