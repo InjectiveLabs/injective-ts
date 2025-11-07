@@ -2,5 +2,5 @@
 // export * from './ChainRestClient'
 export * from './grpc/index.js'
 export * from './rest/index.js'
-export * from './transformers/index.js'
 export * from './types/index.js'
+export * from './transformers/index.js'

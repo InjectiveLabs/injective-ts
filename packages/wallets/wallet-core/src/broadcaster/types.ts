@@ -1,8 +1,8 @@
 import type { EventEmitter } from 'eventemitter3'
 import type { Msgs } from '@injectivelabs/sdk-ts'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type { Network, NetworkEndpoints } from '@injectivelabs/networks'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string

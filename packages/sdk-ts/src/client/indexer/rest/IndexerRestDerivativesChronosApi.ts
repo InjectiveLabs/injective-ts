@@ -5,8 +5,8 @@ import {
 import { IndexerModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type {
-  ChronosDerivativeMarketSummaryResponse,
   AllDerivativeMarketSummaryResponse,
+  ChronosDerivativeMarketSummaryResponse,
 } from '../types/derivatives-rest.js'
 
 /**

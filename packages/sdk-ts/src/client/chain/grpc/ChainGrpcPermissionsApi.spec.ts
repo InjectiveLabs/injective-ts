@@ -1,6 +1,6 @@
 import { INJ_DENOM } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcPermissionsApi } from './ChainGrpcPermissionsApi.js'
 import type { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
 

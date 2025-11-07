@@ -5,8 +5,8 @@ import {
   getViemWalletClient,
 } from '@injectivelabs/wallet-base'
 import { loadLedgerServiceType } from '../lib.js'
-import type LedgerHW from './hw/index.js'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
+import type LedgerHW from './hw/index.js'
 
 export class LedgerEip1193Provider implements Eip1193Provider {
   private readonly ledger: LedgerHW

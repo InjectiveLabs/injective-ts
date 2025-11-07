@@ -91,10 +91,21 @@ export default {
   moduleDirectories: ['node_modules', '<rootDir>/src'],
 
   // An array of file extensions your modules use
-  moduleFileExtensions: ['ts', 'js'],
+  moduleFileExtensions: ['ts', 'js', 'mjs'],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
+    // Strip .mjs extensions from proto package imports for Jest
+    '^@injectivelabs/core-proto-ts-v2/generated/(.+)\\.mjs$':
+      '<rootDir>/protoV2/core/src/generated/$1.ts',
+    '^@injectivelabs/abacus-proto-ts-v2/generated/(.+)\\.mjs$':
+      '<rootDir>/protoV2/abacus/src/generated/$1.ts',
+    '^@injectivelabs/indexer-proto-ts-v2/generated/(.+)\\.mjs$':
+      '<rootDir>/protoV2/indexer/src/generated/$1.ts',
+    '^@injectivelabs/mito-proto-ts-v2/generated/(.+)\\.mjs$':
+      '<rootDir>/protoV2/mito/src/generated/$1.ts',
+    '^@injectivelabs/olp-proto-ts-v2/generated/(.+)\\.mjs$':
+      '<rootDir>/protoV2/olp/src/generated/$1.ts',
     ...pathsToModuleNameMapper(packagePaths, { prefix: '<rootDir>/' }),
     ...pathsToModuleNameMapper(directoryPaths),
     // '^crypto-es$': 'crypto-js'
@@ -184,11 +195,17 @@ export default {
       'ts-jest',
       {
         useESM: true,
+        isolatedModules: true,
         tsconfig: {
           module: 'ESNext',
           moduleResolution: 'Node',
           allowSyntheticDefaultImports: true,
           esModuleInterop: true,
+          noUnusedParameters: false,
+          noUnusedLocals: false,
+          skipLibCheck: true,
+          baseUrl: '.',
+          paths: compilerOptions.paths,
         },
       },
     ],
@@ -199,7 +216,13 @@ export default {
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
     '^.+\\.json$',
-    'node_modules/(?!' + ['@noble/secp256k1'].join('|') + ')',
+    'node_modules/(?!' +
+      [
+        '@noble/secp256k1',
+        '@injectivelabs/core-proto-ts-v2',
+        '@injectivelabs/abacus-proto-ts-v2',
+      ].join('|') +
+      ')',
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them

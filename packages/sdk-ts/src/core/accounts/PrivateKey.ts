@@ -1,18 +1,18 @@
 import secp256k1 from 'secp256k1'
 import { generateMnemonic } from 'bip39'
-import { keccak256, toBytes, hashTypedData } from 'viem'
+import { toBytes, keccak256, hashTypedData } from 'viem'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { InjectiveTypesV1Beta1TxExt } from '@injectivelabs/core-proto-ts'
-import { Wallet, HDNodeWallet, Signature, getBytes, concat } from 'ethers'
+import { Wallet, concat, getBytes, Signature, HDNodeWallet } from 'ethers'
 import { Address } from './Address.js'
 import { PublicKey } from './PublicKey.js'
 import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
-import { getEip712TypedData, MsgDecoder } from '../tx/eip712/index.js'
+import { MsgDecoder, getEip712TypedData } from '../tx/eip712/index.js'
 import {
   DEFAULT_DERIVATION_PATH,
-  recoverTypedSignaturePubKey,
   TypedDataUtilsSanitizeData,
+  recoverTypedSignaturePubKey,
 } from '../../utils/index.js'
 import type { TypedDataDefinition } from 'viem'
 import type { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'

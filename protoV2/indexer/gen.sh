@@ -3,9 +3,6 @@
 # Exit on error
 set -e
 
-# Source shared generation functions
-source ../_scripts/generate-exports.sh
-
 # Ensure we start with a clean slate
 rm -rf proto/gen
 rm -rf proto/proto
@@ -40,26 +37,17 @@ OUT_DIR="./src/generated"
 # Find all proto files
 PROTO_FILES=$(find ${PROTO_DIR} -name "*.proto" -type f)
 
-# Generate TypeScript code for each proto file
-for proto_file in ${PROTO_FILES}; do
-  echo "Generating TypeScript code for ${proto_file}"
-  
-  # Extract the filename without extension
-  filename=$(basename -- "$proto_file")
-  filename_no_ext="${filename%.*}"
-  
-  ./node_modules/.bin/protoc \
-    --proto_path=${PROTO_DIR} \
-    --ts_out=${OUT_DIR} \
-    --ts_opt=add_pb_suffix \
-    ${proto_file}
-    
-  echo "Generated files for ${filename_no_ext}"
-done
-echo "All gRPC-Web TypeScript client code generated successfully!" 
+# Generate TypeScript code with @protobuf-ts
+echo "Generating TypeScript code with @protobuf-ts..."
 
-# @protobuf-ts generates TypeScript files directly
-echo "TypeScript files generated successfully with @protobuf-ts"
+./node_modules/.bin/protoc \
+  --proto_path=${PROTO_DIR} \
+  --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
+  --ts_out=${OUT_DIR} \
+  --ts_opt=add_pb_suffix \
+  ${PROTO_FILES}
+  
+echo "TypeScript files generated successfully!"
 
 # Copy index template
 echo "Copying index.template.ts to index.ts..."

@@ -19,7 +19,7 @@ import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
 import type { AxiosError } from 'axios'
 import type { TxResponse } from '../types/tx.js'
-import type { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
+import type { TxConcreteApi, TxClientBroadcastOptions } from '../types/tx.js'
 import type {
   TxInfoResponse,
   TxResultResponse,

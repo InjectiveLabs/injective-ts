@@ -22,9 +22,9 @@ import {
   getEndpointsMainnetSentry,
 } from './endpoints.js'
 import type {
-  Network as NetworkType,
   ChainInfo,
   NetworkEndpoints,
+  Network as NetworkType,
 } from './types.js'
 
 export const getNetworkEndpoints = (network: Network): NetworkEndpoints => {

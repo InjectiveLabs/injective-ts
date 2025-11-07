@@ -1,0 +1,335 @@
+
+> @injectivelabs/sdk-ts@1.16.34 build /Users/leeruianthomas/Public/injective/injective-ts/packages/sdk-ts
+> pnpm type-check && tsdown
+
+
+> @injectivelabs/sdk-ts@1.16.34 type-check /Users/leeruianthomas/Public/injective/injective-ts/packages/sdk-ts
+> tsc --noEmit
+
+[34mℹ[39m tsdown [2mv0.16.7[22m powered by rolldown [2mv1.0.0-beta.51[22m
+[34mℹ[39m Using tsdown config: [4m/Users/leeruianthomas/Public/injective/injective-ts/packages/sdk-ts/tsdown.config.ts[24m
+[34mℹ[39m entry: [34msrc/index.ts, src/exports.ts, src/client/gql/index.ts, src/cosmjs.ts[39m
+[34mℹ[39m target: [34mes2018[39m
+[34mℹ[39m tsconfig: [34mtsconfig.json[39m
+[34mℹ[39m Build start
+[34mℹ[39m Cleaning 34 files
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[1mindex.cjs[22m                              [2m785.69 kB[22m [2m│ gzip:  96.37 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[1mclient/gql/index.cjs[22m                   [2m  2.41 kB[22m [2m│ gzip:   0.84 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[1mcosmjs.cjs[22m                             [2m  0.71 kB[22m [2m│ gzip:   0.24 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[1mexports.cjs[22m                            [2m  0.71 kB[22m [2m│ gzip:   0.24 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22mDirectEthSecp256k1Wallet-Dq2NxBpL.cjs  [2m811.06 kB[22m [2m│ gzip: 170.24 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22mPrivateKey-BRXNyz_x.cjs                [2m107.49 kB[22m [2m│ gzip:  17.91 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22mdefineProperty-AQaOOw2c.cjs            [2m  1.40 kB[22m [2m│ gzip:   0.56 kB[22m
+[34mℹ[39m [33m[CJS][39m 7 files, total: 1709.47 kB
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[1mindex.js[22m                              [2m 675.43 kB[22m [2m│ gzip: 90.10 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[1mclient/gql/index.js[22m                   [2m   2.14 kB[22m [2m│ gzip:  0.79 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[1mcosmjs.js[22m                             [2m   0.56 kB[22m [2m│ gzip:  0.24 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[1mexports.js[22m                            [2m   0.56 kB[22m [2m│ gzip:  0.24 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22mtx-Cl6AX9ss.js                        [2m 104.98 kB[22m [2m│ gzip: 20.91 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22mDirectEthSecp256k1Wallet-D9wZylPT.js  [2m  18.28 kB[22m [2m│ gzip:  4.36 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22mdefineProperty-CEU3rnyU.js            [2m   1.31 kB[22m [2m│ gzip:  0.53 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[32m[1mindex.d.ts[22m[39m                            [2m1321.85 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[32m[1mclient/gql/index.d.ts[22m[39m                 [2m   0.97 kB[22m [2m│ gzip:  0.41 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[32m[1mcosmjs.d.ts[22m[39m                           [2m   0.50 kB[22m [2m│ gzip:  0.23 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[32m[1mexports.d.ts[22m[39m                          [2m   0.50 kB[22m [2m│ gzip:  0.23 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[32mindex-w_rtXI_b.d.ts[39m                   [2m  85.47 kB[22m [2m│ gzip: 15.64 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[32mtx_pb-B8mWasoL.d.ts[39m                   [2m  25.75 kB[22m [2m│ gzip:  6.59 kB[22m
+[34mℹ[39m [34m[ESM][39m 13 files, total: 2238.30 kB
+[33m[UNRESOLVED_IMPORT] Warning:[0m Could not resolve '@cosmjs/math' in src/core/stargate/SigningStargateClient.ts
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/stargate/SigningStargateClient.ts:1:31 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m1 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0m[38;5;249mI[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249m5[0m[38;5;249m3[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mU[0m[38;5;249mi[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249m5[0m[38;5;249m3[0m[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m'@cosmjs/math'
+ [38;5;240m  │[0m                               ───────┬──────  
+ [38;5;240m  │[0m                                      ╰──────── Module not found, treating it as an external dependency
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: The "main" field here was ignored. Main fields must be configured explicitly when using the "neutral" platform.
+[38;5;246m───╯[0m
+
+[33m[UNRESOLVED_IMPORT] Warning:[0m Could not resolve '@cosmjs/utils' in src/core/stargate/SigningStargateClient.ts
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/stargate/SigningStargateClient.ts:4:39 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m4 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249mD[0m[38;5;249me[0m[38;5;249mf[0m[38;5;249mi[0m[38;5;249mn[0m[38;5;249me[0m[38;5;249md[0m[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m'@cosmjs/utils'
+ [38;5;240m  │[0m                                       ───────┬───────  
+ [38;5;240m  │[0m                                              ╰───────── Module not found, treating it as an external dependency
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: The "main" field here was ignored. Main fields must be configured explicitly when using the "neutral" platform.
+[38;5;246m───╯[0m
+
+[33m[UNRESOLVED_IMPORT] Warning:[0m Could not resolve '@cosmjs/tendermint-rpc' in src/core/stargate/SigningStargateClient.ts
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/stargate/SigningStargateClient.ts:6:36 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0m[38;5;249mT[0m[38;5;249me[0m[38;5;249mn[0m[38;5;249md[0m[38;5;249me[0m[38;5;249mr[0m[38;5;249mm[0m[38;5;249mi[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249m3[0m[38;5;249m7[0m[38;5;249mC[0m[38;5;249ml[0m[38;5;249mi[0m[38;5;249me[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m'@cosmjs/tendermint-rpc'
+ [38;5;240m  │[0m                                    ────────────┬───────────  
+ [38;5;240m  │[0m                                                ╰───────────── Module not found, treating it as an external dependency
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: The "main" field here was ignored. Main fields must be configured explicitly when using the "neutral" platform.
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitTextProposal.d.ts:5:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m5 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalSpotMarketLaunch.d.ts:5:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m5 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalPerpetualMarketLaunch.d.ts:6:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalSpotMarketParamUpdate.d.ts:6:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalPerpetualMarketLaunchV2.d.ts:6:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalExpiryFuturesMarketLaunch.d.ts:6:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/authz/msgs/MsgRevoke.d.ts:3:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/staking/msgs/MsgEditValidator.d.ts:4:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m4 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/wasm/msgs/MsgPrivilegedExecuteContract.d.ts:3:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/feegrant/msgs/MsgRevokeAllowance.d.ts:3:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/exchange/msgs/MsgBatchUpdateOrders.d.ts:4:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m4 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/MsgBase.d.ts:1:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m1 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "Jsonify" is not exported by "../../node_modules/.pnpm/type-fest@2.19.0/node_modules/type-fest/source/jsonify.d.ts".
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m ../../node_modules/.pnpm/type-fest@2.19.0/node_modules/type-fest/index.d.ts:41:10 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m41 │[0m [38;5;249me[0m[38;5;249mx[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mJsonify[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249m.[0m[38;5;249m/[0m[38;5;249ms[0m[38;5;249mo[0m[38;5;249mu[0m[38;5;249mr[0m[38;5;249mc[0m[38;5;249me[0m[38;5;249m/[0m[38;5;249mj[0m[38;5;249ms[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249mi[0m[38;5;249mf[0m[38;5;249my[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m   │[0m          ───┬───  
+ [38;5;240m   │[0m             ╰───── Missing export
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from './source/jsonify'`).
+[38;5;246m────╯[0m
+
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[32m[1mindex.d.cts[22m[39m             [2m1321.85 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[32m[1mclient/gql/index.d.cts[22m[39m  [2m   0.97 kB[22m [2m│ gzip:  0.41 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[32m[1mcosmjs.d.cts[22m[39m            [2m   0.50 kB[22m [2m│ gzip:  0.23 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[32m[1mexports.d.cts[22m[39m           [2m   0.50 kB[22m [2m│ gzip:  0.23 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[32mindex-DEldpIpV.d.cts[39m    [2m  85.47 kB[22m [2m│ gzip: 15.64 kB[22m
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[32mtx_pb-D3WSIQaz.d.cts[39m    [2m  25.75 kB[22m [2m│ gzip:  6.59 kB[22m
+[34mℹ[39m [33m[CJS][39m 6 files, total: 1435.05 kB
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitTextProposal.d.ts:5:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m5 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalSpotMarketLaunch.d.ts:5:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m5 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalPerpetualMarketLaunch.d.ts:6:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalSpotMarketParamUpdate.d.ts:6:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalPerpetualMarketLaunchV2.d.ts:6:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/gov/msgs/MsgSubmitProposalExpiryFuturesMarketLaunch.d.ts:6:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m6 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/feegrant/msgs/MsgRevokeAllowance.d.ts:3:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/authz/msgs/MsgRevoke.d.ts:3:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/staking/msgs/MsgEditValidator.d.ts:4:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m4 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/wasm/msgs/MsgPrivilegedExecuteContract.d.ts:3:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/exchange/msgs/MsgBatchUpdateOrders.d.ts:4:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m4 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "SnakeCaseKeys" is not exported by "../../node_modules/.pnpm/snakecase-keys@5.4.4/node_modules/snakecase-keys/index.d.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/core/modules/MsgBase.d.ts:1:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m1 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mSnakeCaseKeys[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249ms[0m[38;5;249mn[0m[38;5;249ma[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249ma[0m[38;5;249ms[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ──────┬──────  
+ [38;5;240m  │[0m                ╰──────── Missing export
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from 'snakecase-keys'`).
+[38;5;246m───╯[0m
+
+[33m[MISSING_EXPORT] Warning:[0m "Jsonify" is not exported by "../../node_modules/.pnpm/type-fest@2.19.0/node_modules/type-fest/source/jsonify.d.ts".
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m ../../node_modules/.pnpm/type-fest@2.19.0/node_modules/type-fest/index.d.ts:41:10 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m41 │[0m [38;5;249me[0m[38;5;249mx[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mJsonify[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m'[0m[38;5;249m.[0m[38;5;249m/[0m[38;5;249ms[0m[38;5;249mo[0m[38;5;249mu[0m[38;5;249mr[0m[38;5;249mc[0m[38;5;249me[0m[38;5;249m/[0m[38;5;249mj[0m[38;5;249ms[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249mi[0m[38;5;249mf[0m[38;5;249my[0m[38;5;249m'[0m[38;5;249m;[0m
+ [38;5;240m   │[0m          ───┬───  
+ [38;5;240m   │[0m             ╰───── Missing export
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mNote[0m: If you meant to import a type rather than a value, make sure to add the `type` modifier (e.g. `import { type Foo } from './source/jsonify'`).
+[38;5;246m────╯[0m
+
+[32m✔[39m Build complete in [32m6317ms[39m

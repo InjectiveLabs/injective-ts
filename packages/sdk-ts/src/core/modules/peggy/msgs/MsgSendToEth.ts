@@ -4,8 +4,8 @@ import {
   CosmosBaseV1Beta1Coin,
 } from '@injectivelabs/core-proto-ts'
 import {
-  DEFAULT_BRIDGE_FEE_AMOUNT,
   DEFAULT_BRIDGE_FEE_DENOM,
+  DEFAULT_BRIDGE_FEE_AMOUNT,
 } from '@injectivelabs/utils'
 import { MsgBase } from '../../MsgBase.js'
 

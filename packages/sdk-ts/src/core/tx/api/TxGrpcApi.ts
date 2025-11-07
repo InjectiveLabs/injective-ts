@@ -1,6 +1,6 @@
 import {
-  CosmosTxV1Beta1Service,
   CosmosTxV1Beta1Tx,
+  CosmosTxV1Beta1Service,
 } from '@injectivelabs/core-proto-ts'
 import {
   GeneralException,
@@ -10,8 +10,8 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   toBigNumber,
-  DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_BLOCK_TIME_IN_SECONDS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import { grpc } from '../../../utils/grpc.js'

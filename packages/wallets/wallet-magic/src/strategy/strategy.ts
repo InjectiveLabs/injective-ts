@@ -15,11 +15,11 @@ import {
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  DirectSignResponse,
   AminoSignResponse,
+  DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,

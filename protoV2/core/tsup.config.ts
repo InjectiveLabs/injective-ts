@@ -1,34 +1,65 @@
-import { globSync } from "glob";
-import { defineConfig } from "tsup";
-import path from "path";
+import path from 'path'
+import { defineConfig } from 'tsup'
+import { readdirSync, statSync } from 'fs'
 
-// Dynamically discover all TypeScript files in src/
-const sourceFiles = globSync("src/**/*.ts", {
-	ignore: ["**/*.d.ts"],
-});
+function findFiles(dir: string): string[] {
+  const result: string[] = []
 
-// Create entry points preserving directory structure
-const entries = sourceFiles.reduce((acc, file) => {
-	// Convert: src/generated/points_svc_pb.ts -> generated/points_svc_pb
-	const relativePath = path.relative("src", file).replace(/\.ts$/, "");
-	acc[relativePath] = file;
-	return acc;
-}, {} as Record<string, string>);
+  function traverse(currentDir: string) {
+    const files = readdirSync(currentDir)
 
-export default defineConfig({
-	entry: entries,
-	outDir: "proto-ts/esm",
-	format: ["esm"],
-	dts: true,
-	sourcemap: false,
-	clean: true,
-	splitting: false,
-	treeshake: true,
-	minify: false,
-	bundle: false,
-	external: [
-		"@protobuf-ts/runtime",
-		"@protobuf-ts/runtime-rpc",
-		"@protobuf-ts/grpcweb-transport",
-	],
-});
+    for (const file of files) {
+      const fullPath = path.join(currentDir, file)
+      const stat = statSync(fullPath)
+
+      if (stat.isDirectory()) {
+        traverse(fullPath)
+      } else if (
+        file.endsWith('.ts') &&
+        !file.endsWith('.d.ts') &&
+        !file.endsWith('.spec.ts')
+      ) {
+        result.push(fullPath)
+      }
+    }
+  }
+
+  traverse(dir)
+  return result
+}
+
+export default defineConfig(() => {
+  // Automatically find all generated files
+  const generatedFiles = findFiles('src/generated')
+
+  const entries: Record<string, string> = {
+    index: 'src/index.ts',
+  }
+
+  // Add all generated files as entry points
+  generatedFiles.forEach((file: string) => {
+    const key = path.relative('src', file).replace(/\.ts$/, '')
+    entries[key] = file
+  })
+
+  return [
+    {
+      entry: entries,
+      outDir: 'proto-ts/esm',
+      format: ['esm'],
+      dts: false, // Disable DTS generation in tsup (too slow/memory intensive)
+      sourcemap: false,
+      clean: true,
+      splitting: false,
+      treeshake: false,
+      minify: false,
+      bundle: false,
+      outExtension: () => ({ js: '.mjs' }),
+      external: [
+        '@protobuf-ts/runtime',
+        '@protobuf-ts/runtime-rpc',
+        '@protobuf-ts/grpcweb-transport',
+      ],
+    },
+  ]
+})

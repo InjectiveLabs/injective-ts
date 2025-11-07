@@ -4,12 +4,12 @@ import {
   CosmosWalletStrategy,
   CosmostationWalletStrategy,
 } from './strategies/index.js'
-import type { CosmosWalletStrategyArguments } from './types.js'
 import type {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
 } from '@injectivelabs/wallet-base'
+import type { CosmosWalletStrategyArguments } from './types.js'
 
 const createStrategy = ({
   args,

@@ -1,5 +1,4 @@
 import type { StdSignDoc } from '@keplr-wallet/types'
-import type { WalletDeviceType, Wallet } from './enums.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type {
   ChainId,
@@ -12,6 +11,7 @@ import type {
   AminoSignResponse,
   DirectSignResponse,
 } from '@injectivelabs/sdk-ts'
+import type { Wallet, WalletDeviceType } from './enums.js'
 
 export type onAccountChangeCallback = (account: string | string[]) => void
 export type onChainIdChangeCallback = () => void

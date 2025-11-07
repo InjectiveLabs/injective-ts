@@ -1,12 +1,11 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src",
     "outDir": "./dist/cjs",
     "module": "commonjs",
     "moduleResolution": "node",
     "tsBuildInfoFile": "../../../.build-cache/wallet-trezor.tsbuildinfo"
   },
-  "include": ["./src/**/*.ts"],
+  "include": ["./src/**/*.ts", "../../../protoV2/**/*.ts"],
   "exclude": ["./src/**/*.spec.ts", "./src/**/*.test.ts"]
 }

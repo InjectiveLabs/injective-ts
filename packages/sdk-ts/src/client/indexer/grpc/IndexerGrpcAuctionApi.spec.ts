@@ -1,4 +1,4 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcAuctionApi } from './IndexerGrpcAuctionApi.js'
 import type { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
 

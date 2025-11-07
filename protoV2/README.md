@@ -28,13 +28,13 @@ cd <package> && npm run generate:skip-clone
 
 ## Packages
 
-| Package | Description | Proto Source |
-|---------|-------------|--------------|
-| **core** | Injective, Cosmos, IBC, CometBFT protos | injective-core, cosmos-sdk, ibc-go |
-| **indexer** | Indexer gRPC API definitions | injective-indexer |
-| **abacus** | Abacus points service | injective-abacus |
-| **mito** | Mito finance API | mito-indexer |
-| **olp** | OLP/DMM API | injective-dmm-be |
+| Package     | Description                             | Proto Source                       |
+| ----------- | --------------------------------------- | ---------------------------------- |
+| **core**    | Injective, Cosmos, IBC, CometBFT protos | injective-core, cosmos-sdk, ibc-go |
+| **indexer** | Indexer gRPC API definitions            | injective-indexer                  |
+| **abacus**  | Abacus points service                   | injective-abacus                   |
+| **mito**    | Mito finance API                        | mito-indexer                       |
+| **olp**     | OLP/DMM API                             | injective-dmm-be                   |
 
 ## Key Features
 
@@ -101,7 +101,11 @@ protoV2/
 ├── mito/...
 ├── olp/...
 ├── MIGRATION_NOTES.md            # v1 vs v2 comparison
-├── SWITCHING_TO_TS_PROTO.md      # Guide for switching to ts-proto
+├── FIX_IMPORTS_RESOLUTION.md     # Import resolution fix
+├── BUILD_OPTIMIZATION.md         # Build optimization guide
+├── MEMORY_OPTIMIZATION.md        # Memory optimization guide
+├── TSUP_CONFIG_STANDARDIZATION.md # tsup config guide
+├── TESTING_GUIDE.md              # Testing guide
 └── README.md                     # This file
 ```
 
@@ -141,21 +145,22 @@ Core has a manually curated template (371 lines). To update:
 
 ## Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run generate` | Full generation (clone repos + generate) |
-| `npm run generate:skip-clone` | Quick regeneration (skip cloning) |
-| `npm run generate:persist` | Generate and keep temp directories |
-| `npm run build` | Build TypeScript to ESM |
-| `./run-all-gen.sh` | Generate all packages |
-| `./test-all-gen.sh` | Test all generations |
-| `./_scripts/update-index-template.sh` | Update index templates |
+| Script                                | Description                              |
+| ------------------------------------- | ---------------------------------------- |
+| `npm run generate`                    | Full generation (clone repos + generate) |
+| `npm run generate:skip-clone`         | Quick regeneration (skip cloning)        |
+| `npm run generate:persist`            | Generate and keep temp directories       |
+| `npm run build`                       | Build TypeScript to ESM                  |
+| `./run-all-gen.sh`                    | Generate all packages                    |
+| `./test-all-gen.sh`                   | Test all generations                     |
+| `./_scripts/update-index-template.sh` | Update index templates                   |
 
 ## Differences from v1 (proto)
 
 See `MIGRATION_NOTES.md` for detailed comparison.
 
 **Key differences:**
+
 - Uses `@protobuf-ts` instead of `ts-proto`
 - Generates TypeScript enums instead of const objects
 - Uses `tsup` instead of `tsc` for building
@@ -196,7 +201,11 @@ npm run build
 ## Documentation
 
 - `MIGRATION_NOTES.md` - v1 vs v2 comparison and enum differences
-- `SWITCHING_TO_TS_PROTO.md` - Guide for switching back to ts-proto
+- `FIX_IMPORTS_RESOLUTION.md` - Import resolution fix documentation
+- `BUILD_OPTIMIZATION.md` - Build optimization strategies
+- `MEMORY_OPTIMIZATION.md` - Memory optimization techniques
+- `TSUP_CONFIG_STANDARDIZATION.md` - tsup configuration guide
+- `TESTING_GUIDE.md` - Testing and validation guide
 - `_scripts/README.md` - Script documentation
 - Individual package `README.md` files (if present)
 
@@ -214,7 +223,7 @@ When adding new proto packages:
 ## Support
 
 For questions or issues:
+
 1. Check `MIGRATION_NOTES.md` for common questions
 2. Review `_scripts/README.md` for script usage
 3. Compare with working package (e.g., `indexer`)
-

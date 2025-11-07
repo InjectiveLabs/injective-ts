@@ -1,5 +1,5 @@
-import type { GrpcOracle, Oracle } from '../types/oracle.js'
 import type { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
+import type { Oracle, GrpcOracle } from '../types/oracle.js'
 
 export class IndexerGrpcOracleTransformer {
   static oraclesResponseToOracles(

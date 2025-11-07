@@ -1,5 +1,5 @@
 import { GrpcWebImpl } from './IndexerGrpcWebImpl.js'
-import { getGrpcTransport, grpc } from '../../utils/grpc.js'
+import { grpc, getGrpcTransport } from '../../utils/grpc.js'
 import type { grpcPkg } from '../../utils/grpc.js'
 
 export default class BaseIndexerGrpcConsumer extends GrpcWebImpl {

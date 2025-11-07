@@ -1,92 +1,52 @@
-import { IbcApplicationsTransferV1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as IbcApplicationsTransferV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/query_pb.mjs'
+import { QueryClient as IbcApplicationsTransferV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcIbcApi extends BaseGrpcConsumer {
+export class ChainGrpcIbcApi extends BaseGrpcConsumerV2 {
   protected module: string = ChainModule.Ibc
-
-  protected client: IbcApplicationsTransferV1Query.QueryClientImpl
+  private client: IbcApplicationsTransferV1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new IbcApplicationsTransferV1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new IbcApplicationsTransferV1QueryClient(this.transport)
   }
 
   async fetchDenomTrace(hash: string) {
     const request =
-      IbcApplicationsTransferV1Query.QueryDenomTraceRequest.create()
+      IbcApplicationsTransferV1QueryPb.QueryDenomTraceRequest.create()
 
     request.hash = hash
 
-    try {
-      const response =
-        await this.retry<IbcApplicationsTransferV1Query.QueryDenomTraceResponse>(
-          () => this.client.DenomTrace(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      IbcApplicationsTransferV1QueryPb.QueryDenomTraceRequest,
+      IbcApplicationsTransferV1QueryPb.QueryDenomTraceResponse
+    >(request, this.client.denomTrace.bind(this.client))
 
-      return response.denomTrace!
-    } catch (e: any) {
-      if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'DenomTrace',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'DenomTrace',
-        contextModule: this.module,
-      })
-    }
+    return response.denomTrace!
   }
 
   async fetchDenomsTrace(pagination?: PaginationOption) {
     const request =
-      IbcApplicationsTransferV1Query.QueryDenomTracesRequest.create()
+      IbcApplicationsTransferV1QueryPb.QueryDenomTracesRequest.create()
 
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<IbcApplicationsTransferV1Query.QueryDenomTracesResponse>(
-          () => this.client.DenomTraces(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      IbcApplicationsTransferV1QueryPb.QueryDenomTracesRequest,
+      IbcApplicationsTransferV1QueryPb.QueryDenomTracesResponse
+    >(request, this.client.denomTraces.bind(this.client))
 
-      return response.denomTraces
-    } catch (e: any) {
-      if (e instanceof IbcApplicationsTransferV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'DenomTraces',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'DenomTraces',
-        contextModule: this.module,
-      })
-    }
+    return response.denomTraces
   }
 }

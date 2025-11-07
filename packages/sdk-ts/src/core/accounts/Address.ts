@@ -3,8 +3,8 @@ import { bech32 } from '@scure/base'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
 import {
   BECH32_ADDR_ACC_PREFIX,
-  BECH32_ADDR_CONS_PREFIX,
   BECH32_ADDR_VAL_PREFIX,
+  BECH32_ADDR_CONS_PREFIX,
 } from '../../utils/constants.js'
 
 /**

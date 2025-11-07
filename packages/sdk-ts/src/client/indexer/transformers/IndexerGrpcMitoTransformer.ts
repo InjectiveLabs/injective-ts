@@ -15,13 +15,14 @@ import type {
   MitoStakingPool,
   MitoGaugeStatus,
   MitoLeaderboard,
-  MitoVestingConfig,
   MitoDenomBalance,
   MitoSubscription,
+  MitoVestingConfig,
   MitoIDOSubscriber,
   MitoPriceSnapshot,
   MitoClaimReference,
   MitoIDOSubscription,
+  MitoIDOClaimedCoins,
   MitoVestingConfigMap,
   MitoWhitelistAccount,
   MitoLeaderboardEpoch,
@@ -30,7 +31,6 @@ import type {
   MitoStakeToSubscription,
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
-  MitoIDOClaimedCoins,
 } from '../types/mito.js'
 
 /**

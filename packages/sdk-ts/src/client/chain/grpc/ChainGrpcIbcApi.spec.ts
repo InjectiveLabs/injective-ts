@@ -1,4 +1,4 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { sha256 } from '../../../utils/crypto.js'
 import { fromUtf8 } from '../../../utils/utf8.js'
 import { ChainGrpcIbcApi } from './ChainGrpcIbcApi.js'

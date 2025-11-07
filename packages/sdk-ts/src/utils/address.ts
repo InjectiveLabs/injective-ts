@@ -1,5 +1,5 @@
 import { bech32 } from '@scure/base'
-import { keccak256, toBytes } from 'viem'
+import { toBytes, keccak256 } from 'viem'
 
 /**
  * Get injective address from Ethereum hex address

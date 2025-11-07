@@ -1,4 +1,4 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcMintApi } from './ChainGrpcMintApi.js'
 import type { ChainGrpcMintTransformer } from '../transformers/index.js'
 

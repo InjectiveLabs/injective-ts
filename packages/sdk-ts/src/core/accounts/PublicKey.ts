@@ -8,8 +8,8 @@ import {
 } from '@injectivelabs/core-proto-ts'
 import { Address } from './Address.js'
 import {
-  BECH32_PUBKEY_ACC_PREFIX,
   decompressPubKey,
+  BECH32_PUBKEY_ACC_PREFIX,
 } from '../../utils/index.js'
 
 /**

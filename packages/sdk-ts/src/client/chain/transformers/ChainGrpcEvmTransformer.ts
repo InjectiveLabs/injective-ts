@@ -1,12 +1,12 @@
-import type { InjectiveEvmV1Query } from '@injectivelabs/core-proto-ts'
+import type * as InjectiveEvmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/query_pb.mjs'
 import type {
   EvmParams,
   EvmBlobConfig,
   EvmChainConfig,
-  EvmBlobScheduleConfig,
-  GrpcEvmChainConfig,
-  GrpcEvmBlobScheduleConfig,
   GrpcEvmBlobConfig,
+  GrpcEvmChainConfig,
+  EvmBlobScheduleConfig,
+  GrpcEvmBlobScheduleConfig,
 } from '../types/evm.js'
 
 /**
@@ -15,9 +15,9 @@ import type {
 export class ChainGrpcEvmTransformer {
   static grpcBlobConfigToBlobConfig(config: GrpcEvmBlobConfig): EvmBlobConfig {
     return {
-      max: config.max,
-      target: config.target,
-      baseFeeUpdateFraction: config.baseFeeUpdateFraction,
+      max: config.max.toString(),
+      target: config.target.toString(),
+      baseFeeUpdateFraction: config.baseFeeUpdateFraction.toString(),
     }
   }
 
@@ -78,37 +78,37 @@ export class ChainGrpcEvmTransformer {
    * */
 
   static accountResponseToAccount(
-    response: InjectiveEvmV1Query.QueryAccountResponse,
+    response: InjectiveEvmV1QueryPb.QueryAccountResponse,
   ) {
     return {
       balance: response.balance,
       codeHash: response.codeHash,
-      nonce: response.nonce,
+      nonce: response.nonce.toString(),
     }
   }
 
   static cosmosAccountResponseToCosmosAccount(
-    response: InjectiveEvmV1Query.QueryCosmosAccountResponse,
+    response: InjectiveEvmV1QueryPb.QueryCosmosAccountResponse,
   ) {
     return {
-      sequence: response.sequence,
+      sequence: response.sequence.toString(),
       cosmosAddress: response.cosmosAddress,
-      accountNumber: response.accountNumber,
+      accountNumber: response.accountNumber.toString(),
     }
   }
 
   static validatorAccountResponseToValidatorAccount(
-    response: InjectiveEvmV1Query.QueryValidatorAccountResponse,
+    response: InjectiveEvmV1QueryPb.QueryValidatorAccountResponse,
   ) {
     return {
-      sequence: response.sequence,
-      accountNumber: response.accountNumber,
+      sequence: response.sequence.toString(),
+      accountNumber: response.accountNumber.toString(),
       accountAddress: response.accountAddress,
     }
   }
 
   static paramsResponseToParams(
-    response: InjectiveEvmV1Query.QueryParamsResponse,
+    response: InjectiveEvmV1QueryPb.QueryParamsResponse,
   ): EvmParams | undefined {
     const { params } = response
 
@@ -120,7 +120,7 @@ export class ChainGrpcEvmTransformer {
       evmDenom: params.evmDenom,
       enableCreate: params.enableCreate,
       enableCall: params.enableCall,
-      extraEips: params.extraEips,
+      extraEips: params.extraEips.map((eip: bigint) => eip.toString()),
       chainConfig: params.chainConfig
         ? this.grpcChainConfigToChainConfig(params.chainConfig)
         : undefined,
