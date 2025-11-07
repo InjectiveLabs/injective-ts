@@ -1,8 +1,6 @@
-import type {
-  InjectiveEvmV1Log,
-  InjectiveEvmV1Params,
-  InjectiveEvmV1ChainConfig,
-} from '@injectivelabs/core-proto-ts'
+import type * as InjectiveEvmV1LogPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/log_pb.mjs'
+import type * as InjectiveEvmV1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/params_pb.mjs'
+import type * as InjectiveEvmV1ChainConfigPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/chain_config_pb.mjs'
 
 export interface EvmLog {
   address: string
@@ -65,10 +63,10 @@ export interface EvmParams {
   permissioned: boolean
 }
 
-export type GrpcEvmLog = InjectiveEvmV1Log.Log
-export type GrpcEvmParams = InjectiveEvmV1Params.Params
+export type GrpcEvmLog = InjectiveEvmV1LogPb.Log
+export type GrpcEvmParams = InjectiveEvmV1ParamsPb.Params
 
-export type GrpcEvmChainConfig = InjectiveEvmV1ChainConfig.ChainConfig
+export type GrpcEvmChainConfig = InjectiveEvmV1ChainConfigPb.ChainConfig
 export type GrpcEvmBlobScheduleConfig =
-  InjectiveEvmV1ChainConfig.BlobScheduleConfig
-export type GrpcEvmBlobConfig = InjectiveEvmV1ChainConfig.BlobConfig
+  InjectiveEvmV1ChainConfigPb.BlobScheduleConfig
+export type GrpcEvmBlobConfig = InjectiveEvmV1ChainConfigPb.BlobConfig

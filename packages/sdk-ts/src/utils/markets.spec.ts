@@ -1,8 +1,8 @@
 import {
-  getDerivativeMarketDecimals,
-  getDerivativeMarketTensMultiplier,
   getSpotMarketDecimals,
+  getDerivativeMarketDecimals,
   getSpotMarketTensMultiplier,
+  getDerivativeMarketTensMultiplier,
 } from './markets.js'
 
 describe('derivativeMarketTickSizes', () => {

@@ -1,6 +1,6 @@
 import type {
-  InjectiveTxFeesV1Beta1Txfees,
   InjectiveTxFeesV1Beta1Query,
+  InjectiveTxFeesV1Beta1Txfees,
 } from '@injectivelabs/core-proto-ts'
 
 export interface TxFeesModuleStateParams {

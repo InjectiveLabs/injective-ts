@@ -1,5 +1,5 @@
 import * as secp256k1 from 'secp256k1'
-import { recoverPublicKey, hashTypedData, type TypedDataDefinition } from 'viem'
+import { hashTypedData, recoverPublicKey, type TypedDataDefinition } from 'viem'
 
 export const recoverTypedSignaturePubKey = async (
   data: TypedDataDefinition,

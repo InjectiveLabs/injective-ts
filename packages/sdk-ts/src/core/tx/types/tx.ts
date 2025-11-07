@@ -1,11 +1,11 @@
 import type { StdFee } from '@cosmjs/amino'
-import type { Msgs } from '../../modules/msgs.js'
 import type {
   CosmosTxV1Beta1Tx,
+  GoogleProtobufAny,
   CosmosTxV1Beta1Service,
   CosmosTxSigningV1Beta1Signing,
-  GoogleProtobufAny,
 } from '@injectivelabs/core-proto-ts'
+import type { Msgs } from '../../modules/msgs.js'
 
 export interface TxClientBroadcastOptions {
   mode?: CosmosTxV1Beta1Service.BroadcastMode

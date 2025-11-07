@@ -1,146 +1,76 @@
-import { InjectiveAuctionV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveAuctionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/query_pb.mjs'
+import { QueryClient as InjectiveAuctionV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 import { ChainGrpcAuctionTransformer } from '../transformers/index.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
+export class ChainGrpcAuctionApi extends BaseGrpcConsumerV2 {
   protected module: string = ChainModule.Auction
 
-  protected client: InjectiveAuctionV1Beta1Query.QueryClientImpl
+  private client: InjectiveAuctionV1Beta1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new InjectiveAuctionV1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveAuctionV1Beta1QueryClient(this.transport)
   }
 
   async fetchModuleParams() {
     const request =
-      InjectiveAuctionV1Beta1Query.QueryAuctionParamsRequest.create()
+      InjectiveAuctionV1Beta1QueryPb.QueryAuctionParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionV1Beta1Query.QueryAuctionParamsResponse>(
-          () => this.client.AuctionParams(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionV1Beta1QueryPb.QueryAuctionParamsRequest,
+      InjectiveAuctionV1Beta1QueryPb.QueryAuctionParamsResponse
+    >(request, this.client.auctionParams.bind(this.client))
 
-      return ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AuctionParams',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AuctionParams',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuctionTransformer.moduleParamsResponseToModuleParams(
+      response,
+    )
   }
 
   async fetchCurrentBasket() {
     const request =
-      InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketRequest.create()
+      InjectiveAuctionV1Beta1QueryPb.QueryCurrentAuctionBasketRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketResponse>(
-          () => this.client.CurrentAuctionBasket(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionV1Beta1QueryPb.QueryCurrentAuctionBasketRequest,
+      InjectiveAuctionV1Beta1QueryPb.QueryCurrentAuctionBasketResponse
+    >(request, this.client.currentAuctionBasket.bind(this.client))
 
-      return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'CurrentAuctionBasket',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'CurrentAuctionBasket',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuctionTransformer.currentBasketResponseToCurrentBasket(
+      response,
+    )
   }
 
   async fetchModuleState() {
     const request =
-      InjectiveAuctionV1Beta1Query.QueryModuleStateRequest.create()
+      InjectiveAuctionV1Beta1QueryPb.QueryModuleStateRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionV1Beta1Query.QueryModuleStateResponse>(
-          () => this.client.AuctionModuleState(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionV1Beta1QueryPb.QueryModuleStateRequest,
+      InjectiveAuctionV1Beta1QueryPb.QueryModuleStateResponse
+    >(request, this.client.auctionModuleState.bind(this.client))
 
-      return ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AuctionModuleState',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AuctionModuleState',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuctionTransformer.auctionModuleStateResponseToAuctionModuleState(
+      response,
+    )
   }
 
   async fetchLastAuctionResult() {
     const request =
-      InjectiveAuctionV1Beta1Query.QueryLastAuctionResultRequest.create()
+      InjectiveAuctionV1Beta1QueryPb.QueryLastAuctionResultRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionV1Beta1Query.QueryLastAuctionResultResponse>(
-          () => this.client.LastAuctionResult(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionV1Beta1QueryPb.QueryLastAuctionResultRequest,
+      InjectiveAuctionV1Beta1QueryPb.QueryLastAuctionResultResponse
+    >(request, this.client.lastAuctionResult.bind(this.client))
 
-      return ChainGrpcAuctionTransformer.LastAuctionResultResponseToLastAuctionResult(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'CurrentAuctionBasket',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'LastAuctionResult',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuctionTransformer.lastAuctionResultResponseToLastAuctionResult(
+      response,
+    )
   }
 }

@@ -1,27 +1,21 @@
-import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+  InjectiveArchiverRpcPb,
+  InjectiveArchiverRPCClient,
+} from '@injectivelabs/indexer-proto-ts-v2'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcArchiverTransformer } from '../transformers/index.js'
+import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
+export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumerV2 {
   protected module: string = IndexerModule.Archiver
-
-  protected client: InjectiveArchiverRpc.InjectiveArchiverRPCClientImpl
+  private client: InjectiveArchiverRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectiveArchiverRpc.InjectiveArchiverRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveArchiverRPCClient(this.transport)
   }
 
   async fetchHistoricalBalance({
@@ -31,34 +25,19 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     account: string
     resolution: string
   }) {
-    const request = InjectiveArchiverRpc.BalanceRequest.create()
+    const request = InjectiveArchiverRpcPb.BalanceRequest.create()
 
     request.account = account
     request.resolution = resolution
 
-    try {
-      const response = await this.retry<InjectiveArchiverRpc.BalanceResponse>(
-        () => this.client.Balance(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.BalanceRequest,
+      InjectiveArchiverRpcPb.BalanceResponse
+    >(request, this.client.balance.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcHistoricalBalanceResponseToHistoricalBalances(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Historical Balance',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Historical Balance',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcHistoricalBalanceResponseToHistoricalBalances(
+      response,
+    )
   }
 
   async fetchHistoricalRpnl({
@@ -68,34 +47,19 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     account: string
     resolution: string
   }) {
-    const request = InjectiveArchiverRpc.RpnlRequest.create()
+    const request = InjectiveArchiverRpcPb.RpnlRequest.create()
 
     request.account = account
     request.resolution = resolution
 
-    try {
-      const response = await this.retry<InjectiveArchiverRpc.RpnlResponse>(() =>
-        this.client.Rpnl(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.RpnlRequest,
+      InjectiveArchiverRpcPb.RpnlResponse
+    >(request, this.client.rpnl.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcHistoricalRPNLResponseToHistoricalRPNL(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Historical Rpnl',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Historical Rpnl',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcHistoricalRPNLResponseToHistoricalRPNL(
+      response,
+    )
   }
 
   async fetchHistoricalVolumes({
@@ -105,34 +69,19 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     account: string
     resolution: string
   }) {
-    const request = InjectiveArchiverRpc.VolumesRequest.create()
+    const request = InjectiveArchiverRpcPb.VolumesRequest.create()
 
     request.account = account
     request.resolution = resolution
 
-    try {
-      const response = await this.retry<InjectiveArchiverRpc.VolumesResponse>(
-        () => this.client.Volumes(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.VolumesRequest,
+      InjectiveArchiverRpcPb.VolumesResponse
+    >(request, this.client.volumes.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcHistoricalVolumesResponseToHistoricalVolumes(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Historical Volumes',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Historical Volumes',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcHistoricalVolumesResponseToHistoricalVolumes(
+      response,
+    )
   }
 
   async fetchPnlLeaderboard({
@@ -146,10 +95,10 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     limit?: number
     account?: string
   }) {
-    const request = InjectiveArchiverRpc.PnlLeaderboardRequest.create()
+    const request = InjectiveArchiverRpcPb.PnlLeaderboardRequest.create()
 
-    request.startDate = startDate
-    request.endDate = endDate
+    request.startDate = BigInt(startDate)
+    request.endDate = BigInt(endDate)
 
     if (limit) {
       request.limit = limit
@@ -159,30 +108,14 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
       request.account = account
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveArchiverRpc.PnlLeaderboardResponse>(() =>
-          this.client.PnlLeaderboard(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.PnlLeaderboardRequest,
+      InjectiveArchiverRpcPb.PnlLeaderboardResponse
+    >(request, this.client.pnlLeaderboard.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardResponseToPnlLeaderboard(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Pnl Leaderboard',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Pnl Leaderboard',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardResponseToPnlLeaderboard(
+      response,
+    )
   }
 
   async fetchVolLeaderboard({
@@ -196,10 +129,10 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     limit?: number
     account?: string
   }) {
-    const request = InjectiveArchiverRpc.VolLeaderboardRequest.create()
+    const request = InjectiveArchiverRpcPb.VolLeaderboardRequest.create()
 
-    request.startDate = startDate
-    request.endDate = endDate
+    request.startDate = BigInt(startDate)
+    request.endDate = BigInt(endDate)
 
     if (limit) {
       request.limit = limit
@@ -209,30 +142,14 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
       request.account = account
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveArchiverRpc.VolLeaderboardResponse>(() =>
-          this.client.VolLeaderboard(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.VolLeaderboardRequest,
+      InjectiveArchiverRpcPb.VolLeaderboardResponse
+    >(request, this.client.volLeaderboard.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcVolLeaderboardResponseToVolLeaderboard(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Vol Leaderboard',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Vol Leaderboard',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcVolLeaderboardResponseToVolLeaderboard(
+      response,
+    )
   }
 
   async fetchPnlLeaderboardFixedResolution({
@@ -245,7 +162,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     account?: string
   }) {
     const request =
-      InjectiveArchiverRpc.PnlLeaderboardFixedResolutionRequest.create()
+      InjectiveArchiverRpcPb.PnlLeaderboardFixedResolutionRequest.create()
 
     request.resolution = resolution
 
@@ -257,31 +174,14 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
       request.account = account
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveArchiverRpc.PnlLeaderboardFixedResolutionResponse>(
-          () =>
-            this.client.PnlLeaderboardFixedResolution(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.PnlLeaderboardFixedResolutionRequest,
+      InjectiveArchiverRpcPb.PnlLeaderboardFixedResolutionResponse
+    >(request, this.client.pnlLeaderboardFixedResolution.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardFixedResolutionResponseToPnlLeaderboard(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Pnl Leaderboard Fixed Resolution',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Pnl Leaderboard Fixed Resolution',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardFixedResolutionResponseToPnlLeaderboard(
+      response,
+    )
   }
 
   async fetchVolLeaderboardFixedResolution({
@@ -294,7 +194,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     account?: string
   }) {
     const request =
-      InjectiveArchiverRpc.VolLeaderboardFixedResolutionRequest.create()
+      InjectiveArchiverRpcPb.VolLeaderboardFixedResolutionRequest.create()
 
     request.resolution = resolution
 
@@ -306,31 +206,14 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
       request.account = account
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveArchiverRpc.VolLeaderboardFixedResolutionResponse>(
-          () =>
-            this.client.VolLeaderboardFixedResolution(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.VolLeaderboardFixedResolutionRequest,
+      InjectiveArchiverRpcPb.VolLeaderboardFixedResolutionResponse
+    >(request, this.client.volLeaderboardFixedResolution.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcVolLeaderboardFixedResolutionResponseToVolLeaderboard(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Vol Leaderboard Fixed Resolution',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Vol Leaderboard Fixed Resolution',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcVolLeaderboardFixedResolutionResponseToVolLeaderboard(
+      response,
+    )
   }
 
   async fetchDenomHolders({
@@ -342,7 +225,7 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
     token?: string
     limit?: number
   }) {
-    const request = InjectiveArchiverRpc.DenomHoldersRequest.create()
+    const request = InjectiveArchiverRpcPb.DenomHoldersRequest.create()
 
     request.denom = denom
 
@@ -354,60 +237,28 @@ export class IndexerGrpcArchiverApi extends BaseGrpcConsumer {
       request.limit = limit
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveArchiverRpc.DenomHoldersResponse>(() =>
-          this.client.DenomHolders(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.DenomHoldersRequest,
+      InjectiveArchiverRpcPb.DenomHoldersResponse
+    >(request, this.client.denomHolders.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcDenomHoldersResponseToDenomHolders(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'DenomHolders',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'DenomHolders',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcDenomHoldersResponseToDenomHolders(
+      response,
+    )
   }
 
   async fetchAccountStats({ account }: { account: string }) {
-    const request = InjectiveArchiverRpc.AccountStatsRequest.create()
+    const request = InjectiveArchiverRpcPb.AccountStatsRequest.create()
 
     request.account = account
 
-    try {
-      const response =
-        await this.retry<InjectiveArchiverRpc.AccountStatsResponse>(() =>
-          this.client.AccountStats(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveArchiverRpcPb.AccountStatsRequest,
+      InjectiveArchiverRpcPb.AccountStatsResponse
+    >(request, this.client.accountStats.bind(this.client))
 
-      return IndexerGrpcArchiverTransformer.grpcAccountStatsResponseToAccountStats(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveArchiverRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'All Time Account Stats',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'All Time Account Stats',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcArchiverTransformer.grpcAccountStatsResponseToAccountStats(
+      response,
+    )
   }
 }

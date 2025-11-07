@@ -20,18 +20,18 @@ import {
   Registry,
   makeSignDoc,
   encodePubkey,
-  isOfflineDirectSigner,
   makeAuthInfoBytes,
+  isOfflineDirectSigner,
 } from '@cosmjs/proto-signing'
 import {
-  createAuthzAminoConverters,
-  createBankAminoConverters,
-  createDistributionAminoConverters,
-  createFeegrantAminoConverters,
   createGovAminoConverters,
   createIbcAminoConverters,
+  createBankAminoConverters,
+  createAuthzAminoConverters,
   createStakingAminoConverters,
   createVestingAminoConverters,
+  createFeegrantAminoConverters,
+  createDistributionAminoConverters,
 } from '@cosmjs/stargate'
 import { getPublicKey } from '../tx/index.js'
 import { StargateClient } from './StargateClient.js'
@@ -48,8 +48,8 @@ import type {
   TxBodyEncodeObject,
 } from '@cosmjs/proto-signing'
 import type {
-  MsgDelegateEncodeObject,
   MsgSendEncodeObject,
+  MsgDelegateEncodeObject,
   MsgTransferEncodeObject,
   MsgUndelegateEncodeObject,
   MsgWithdrawDelegatorRewardEncodeObject,

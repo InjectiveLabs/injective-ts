@@ -11,8 +11,8 @@ import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
 import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import type { PaginationOption } from '../../../types/pagination.js'
 import type {
-  TradeExecutionSide,
   TradeDirection,
+  TradeExecutionSide,
   TradeExecutionType,
 } from '../../../types/exchange.js'
 

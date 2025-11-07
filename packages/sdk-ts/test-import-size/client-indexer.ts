@@ -1,15 +1,15 @@
 // Test tree-shaking for client indexer module
 import {
+  IndexerGrpcMetaApi,
+  IndexerGrpcSpotApi,
+  IndexerGrpcOracleApi,
   IndexerGrpcAccountApi,
   IndexerGrpcAuctionApi,
-  IndexerGrpcDerivativesApi,
   IndexerGrpcExplorerApi,
-  IndexerGrpcInsuranceFundApi,
-  IndexerGrpcMetaApi,
-  IndexerGrpcOracleApi,
-  IndexerGrpcAccountPortfolioApi,
-  IndexerGrpcSpotApi,
+  IndexerGrpcDerivativesApi,
   IndexerGrpcTransactionApi,
+  IndexerGrpcInsuranceFundApi,
+  IndexerGrpcAccountPortfolioApi,
 } from '../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle

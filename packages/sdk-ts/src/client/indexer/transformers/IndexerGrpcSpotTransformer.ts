@@ -18,16 +18,16 @@ import type {
   OrderbookWithSequence,
 } from '../types/exchange.js'
 import type {
-  AtomicSwap,
   SpotTrade,
+  AtomicSwap,
   SpotMarket,
   GrpcSpotTrade,
   SpotLimitOrder,
+  GrpcAtomicSwap,
   SpotOrderHistory,
   GrpcSpotMarketInfo,
   GrpcSpotLimitOrder,
   GrpcSpotOrderHistory,
-  GrpcAtomicSwap,
 } from '../types/spot.js'
 
 const zeroPriceLevel = () => ({

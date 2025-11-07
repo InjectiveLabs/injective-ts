@@ -1,6 +1,6 @@
 import {
-  StargateClient as CosmjsStargateClient,
   accountFromAny,
+  StargateClient as CosmjsStargateClient,
 } from '@cosmjs/stargate'
 import { accountParser as injectiveAccountParser } from '../accounts/AccountParser.js'
 import type { Account } from '@cosmjs/stargate'

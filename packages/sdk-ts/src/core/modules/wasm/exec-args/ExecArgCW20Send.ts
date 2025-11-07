@@ -1,5 +1,5 @@
 import { fromUtf8 } from '../../../../utils/utf8.js'
-import { dataToExecData, ExecArgBase } from '../ExecArgBase.js'
+import { ExecArgBase, dataToExecData } from '../ExecArgBase.js'
 import type { ExecDataRepresentation } from '../ExecArgBase.js'
 
 /**

@@ -25,7 +25,6 @@ import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
 import { LedgerEip1193Provider } from './Eip1193Provider.js'
 import type { AccountAddress } from '@injectivelabs/ts-types'
-import type { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
 import type {
   TxRaw,
   TxResponse,
@@ -40,6 +39,7 @@ import type {
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import type { LedgerWalletInfo, LedgerDerivationPathType } from '../../types.js'
 
 export default class LedgerBase
   extends BaseConcreteStrategy

@@ -1,11 +1,7 @@
-import { CosmosAuthV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as CosmosAuthV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb.mjs'
+import { QueryClient as CosmosAuthV1BetaQueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
@@ -13,107 +9,53 @@ import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcAuthApi extends BaseGrpcConsumer {
+export class ChainGrpcAuthApi extends BaseGrpcConsumerV2 {
   protected module: string = ChainModule.Auth
-
-  protected client: CosmosAuthV1Beta1Query.QueryClientImpl
+  private client: CosmosAuthV1BetaQueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new CosmosAuthV1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new CosmosAuthV1BetaQueryClient(this.transport)
   }
 
   async fetchModuleParams() {
-    const request = CosmosAuthV1Beta1Query.QueryParamsRequest.create()
+    const request = CosmosAuthV1Beta1QueryPb.QueryParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<CosmosAuthV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosAuthV1Beta1QueryPb.QueryParamsRequest,
+      CosmosAuthV1Beta1QueryPb.QueryParamsResponse
+    >(request, this.client.params.bind(this.client))
 
-      return ChainGrpcAuthTransformer.moduleParamsResponseToModuleParams(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Params',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Params',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuthTransformer.moduleParamsResponseToModuleParams(response)
   }
 
   async fetchAccount(address: string) {
-    const request = CosmosAuthV1Beta1Query.QueryAccountRequest.create()
+    const request = CosmosAuthV1Beta1QueryPb.QueryAccountRequest.create()
 
     request.address = address
 
-    try {
-      const response =
-        await this.retry<CosmosAuthV1Beta1Query.QueryAccountResponse>(() =>
-          this.client.Account(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosAuthV1Beta1QueryPb.QueryAccountRequest,
+      CosmosAuthV1Beta1QueryPb.QueryAccountResponse
+    >(request, this.client.account.bind(this.client))
 
-      return ChainGrpcAuthTransformer.accountResponseToAccount(response)
-    } catch (e: unknown) {
-      if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Account',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Account',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuthTransformer.accountResponseToAccount(response)
   }
 
   async fetchAccounts(pagination?: PaginationOption) {
-    const request = CosmosAuthV1Beta1Query.QueryAccountsRequest.create()
+    const request = CosmosAuthV1Beta1QueryPb.QueryAccountsRequest.create()
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<CosmosAuthV1Beta1Query.QueryAccountsResponse>(() =>
-          this.client.Accounts(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosAuthV1Beta1QueryPb.QueryAccountsRequest,
+      CosmosAuthV1Beta1QueryPb.QueryAccountsResponse
+    >(request, this.client.accounts.bind(this.client))
 
-      return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
-    } catch (e: unknown) {
-      if (e instanceof CosmosAuthV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Accounts',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Accounts',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuthTransformer.accountsResponseToAccounts(response)
   }
 }

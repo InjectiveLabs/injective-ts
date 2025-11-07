@@ -1,3 +1,4 @@
 packages:
   - 'packages/*'
   - 'packages/wallets/*'
+  - 'protoV2/*/proto-ts'

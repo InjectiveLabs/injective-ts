@@ -9,8 +9,8 @@ import {
   DEFAULT_TURNKEY_REFRESH_SECONDS,
 } from '../consts.js'
 import type { HttpRestClient } from '@injectivelabs/utils'
-import type { TurnkeyOauthLoginResponse } from '../types.js'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
+import type { TurnkeyOauthLoginResponse } from '../types.js'
 
 export class TurnkeyOauthWallet {
   static async generateOAuthNonce(indexedDbClient: TurnkeyIndexedDbClient) {

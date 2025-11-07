@@ -2,8 +2,8 @@ import { TrezorException } from '@injectivelabs/exceptions'
 import {
   sanitizeTypedData,
   type TypedMessageV4,
-  TypedDataUtilsHashStruct,
   SignTypedDataVersionV4,
+  TypedDataUtilsHashStruct,
   TypedDataUtilsSanitizeData,
 } from '@injectivelabs/sdk-ts'
 

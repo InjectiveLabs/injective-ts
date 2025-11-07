@@ -1,8 +1,8 @@
 import { ErrorType, UnspecifiedErrorCode } from './types/index.js'
 import type {
   Exception,
-  ErrorContext,
   ErrorCode,
+  ErrorContext,
   ErrorContextCode,
 } from './types/index.js'
 

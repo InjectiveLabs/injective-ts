@@ -1,5 +1,5 @@
 // Test import for bundle analysis
-import { toChainFormat, sleep, awaitAll } from '../dist/esm/index.js'
+import { sleep, awaitAll, toChainFormat } from '../dist/esm/index.js'
 
 // Use the imports to ensure they're included in the bundle
 const formatted = toChainFormat(1)

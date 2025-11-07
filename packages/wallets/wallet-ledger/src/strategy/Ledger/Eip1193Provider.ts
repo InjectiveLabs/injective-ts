@@ -1,14 +1,14 @@
 import * as viemChains from 'viem/chains'
 import {
+  http,
+  extractChain,
   createPublicClient,
   createWalletClient,
-  extractChain,
-  http,
   serializeTransaction,
 } from 'viem'
 import { loadLedgerServiceType } from '../lib.js'
-import type LedgerHW from './hw/index.js'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
+import type LedgerHW from './hw/index.js'
 
 export class LedgerEip1193Provider implements Eip1193Provider {
   private readonly ledger: LedgerHW

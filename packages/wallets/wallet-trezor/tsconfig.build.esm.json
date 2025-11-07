@@ -3,7 +3,6 @@
   "compilerOptions": {
     "module": "NodeNext",
     "outDir": "./dist/esm",
-    "rootDir": "./src",
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",

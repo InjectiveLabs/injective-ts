@@ -1,7 +1,7 @@
 import snakecaseKeys from 'snakecase-keys'
 import {
-  InjectiveExchangeV1Beta1Exchange,
   InjectiveExchangeV1Beta1Tx,
+  InjectiveExchangeV1Beta1Exchange,
 } from '@injectivelabs/core-proto-ts'
 import { MsgBase } from '../../MsgBase.js'
 

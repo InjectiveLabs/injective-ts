@@ -4,9 +4,9 @@ import {
   hashToHex,
   decompressPubKey,
   privateKeyToPublicKey,
+  SignTypedDataVersionV4,
   TypedDataUtilsHashStruct,
   TypedDataUtilsSanitizeData,
-  SignTypedDataVersionV4,
 } from './crypto.js'
 
 describe('crypto helper functions', () => {

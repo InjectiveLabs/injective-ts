@@ -1,81 +1,42 @@
-import { CosmosBaseTendermintV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as CosmosBaseTendermintV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/tendermint/v1beta1/query_pb.mjs'
+import { ServiceClient as CosmosBaseTendermintV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/tendermint/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
+export class ChainGrpcTendermintApi extends BaseGrpcConsumerV2 {
   protected module: string = ChainModule.Tendermint
-
-  protected client: CosmosBaseTendermintV1Beta1Query.ServiceClientImpl
+  private client: CosmosBaseTendermintV1Beta1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new CosmosBaseTendermintV1Beta1Query.ServiceClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new CosmosBaseTendermintV1Beta1QueryClient(this.transport)
   }
 
   async fetchLatestBlock() {
     const request =
-      CosmosBaseTendermintV1Beta1Query.GetLatestBlockRequest.create()
+      CosmosBaseTendermintV1Beta1QueryPb.GetLatestBlockRequest.create()
 
-    try {
-      const response =
-        await this.retry<CosmosBaseTendermintV1Beta1Query.GetLatestBlockResponse>(
-          () => this.client.GetLatestBlock(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosBaseTendermintV1Beta1QueryPb.GetLatestBlockRequest,
+      CosmosBaseTendermintV1Beta1QueryPb.GetLatestBlockResponse
+    >(request, this.client.getLatestBlock.bind(this.client))
 
-      return response.sdkBlock || response.block
-    } catch (e: unknown) {
-      if (e instanceof CosmosBaseTendermintV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TendermintApi.fetchLatestBlock',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TendermintApi.fetchLatestBlock',
-        contextModule: this.module,
-      })
-    }
+    return response.sdkBlock || response.block
   }
 
   async fetchBlock(height: number | string) {
     const request =
-      CosmosBaseTendermintV1Beta1Query.GetBlockByHeightRequest.create()
+      CosmosBaseTendermintV1Beta1QueryPb.GetBlockByHeightRequest.create()
 
-    request.height = height.toString()
-    try {
-      const response =
-        await this.retry<CosmosBaseTendermintV1Beta1Query.GetBlockByHeightResponse>(
-          () => this.client.GetBlockByHeight(request, this.metadata),
-        )
+    request.height = BigInt(height.toString())
 
-      return response.sdkBlock || response.block
-    } catch (e: unknown) {
-      if (e instanceof CosmosBaseTendermintV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TendermintApi.fetchBlock',
-          contextModule: this.module,
-        })
-      }
+    const response = await this.executeGrpcCall<
+      CosmosBaseTendermintV1Beta1QueryPb.GetBlockByHeightRequest,
+      CosmosBaseTendermintV1Beta1QueryPb.GetBlockByHeightResponse
+    >(request, this.client.getBlockByHeight.bind(this.client))
 
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TendermintApi.fetchBlock',
-        contextModule: this.module,
-      })
-    }
+    return response.sdkBlock || response.block
   }
 }
