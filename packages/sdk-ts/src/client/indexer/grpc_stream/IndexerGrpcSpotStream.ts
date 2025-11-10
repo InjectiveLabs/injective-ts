@@ -1,7 +1,9 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import * as InjectiveSpotExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb'
+import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb.client'
+import { createStreamSubscription } from './streamHelpers.js'
+import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
 import { IndexerSpotStreamTransformer } from '../transformers/index.js'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import type { Subscription } from 'rxjs'
 import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import type { StreamStatusResponse } from '../types/index.js'
@@ -13,7 +15,7 @@ import type {
 } from '../../../types/index.js'
 
 export type MarketsStreamCallback = (
-  response: InjectiveSpotExchangeRpc.StreamMarketsResponse,
+  response: InjectiveSpotExchangeRpcPb.StreamMarketsResponse,
 ) => void
 
 export type SpotOrderbookV2StreamCallback = (
@@ -48,15 +50,15 @@ export type SpotTradesStreamCallback = (
 
 /**
  * @category Indexer Grpc Stream
+ * @description Provides streaming access to spot market data from Injective Indexer
  */
 export class IndexerGrpcSpotStream {
-  protected client: InjectiveSpotExchangeRpc.InjectiveSpotExchangeRPCClientImpl
+  private client: InjectiveSpotExchangeRPCClient
+  private transport: GrpcWebRpcTransport
 
-  constructor(endpoint: string) {
-    this.client =
-      new InjectiveSpotExchangeRpc.InjectiveSpotExchangeRPCClientImpl(
-        getGrpcIndexerWebImpl(endpoint),
-      )
+  constructor(endpoint: string, metadata?: Record<string, string>) {
+    this.transport = new GrpcWebRpcTransport(endpoint, metadata)
+    this.client = new InjectiveSpotExchangeRPCClient(this.transport)
   }
 
   /** @deprecated - use streamSpotOrderbookV2 */
@@ -71,6 +73,17 @@ export class IndexerGrpcSpotStream {
     )
   }
 
+  /**
+   * Stream spot orders
+   * @param params - Stream parameters
+   * @param params.marketId - Optional market ID to filter orders
+   * @param params.subaccountId - Optional subaccount ID to filter orders
+   * @param params.orderSide - Optional order side to filter
+   * @param params.callback - Called for each order update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamSpotOrders({
     marketId,
     subaccountId,
@@ -86,7 +99,12 @@ export class IndexerGrpcSpotStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveSpotExchangeRpc.StreamOrdersRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = InjectiveSpotExchangeRpcPb.StreamOrdersRequest.create()
 
     if (marketId) {
       request.marketId = marketId
@@ -100,25 +118,32 @@ export class IndexerGrpcSpotStream {
       request.orderSide = orderSide
     }
 
-    const subscription = this.client.StreamOrders(request).subscribe({
-      next(response: InjectiveSpotExchangeRpc.StreamOrdersResponse) {
+    const stream = this.client.streamOrders(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveSpotExchangeRpcPb.StreamOrdersResponse) => {
         callback(IndexerSpotStreamTransformer.ordersStreamCallback(response))
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
+  /**
+   * Stream spot order history
+   * @param params - Stream parameters
+   * @param params.marketId - Optional market ID to filter orders
+   * @param params.subaccountId - Optional subaccount ID to filter orders
+   * @param params.orderTypes - Optional array of order types to filter
+   * @param params.executionTypes - Optional array of execution types to filter
+   * @param params.direction - Optional trade direction to filter
+   * @param params.state - Optional order state to filter
+   * @param params.callback - Called for each order history update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamSpotOrderHistory({
     marketId,
     subaccountId,
@@ -140,7 +165,13 @@ export class IndexerGrpcSpotStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveSpotExchangeRpc.StreamOrdersHistoryRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request =
+      InjectiveSpotExchangeRpcPb.StreamOrdersHistoryRequest.create()
 
     if (subaccountId) {
       request.subaccountId = subaccountId
@@ -166,27 +197,35 @@ export class IndexerGrpcSpotStream {
       request.executionTypes = executionTypes
     }
 
-    const subscription = this.client.StreamOrdersHistory(request).subscribe({
-      next(response: InjectiveSpotExchangeRpc.StreamOrdersHistoryResponse) {
+    const stream = this.client.streamOrdersHistory(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveSpotExchangeRpcPb.StreamOrdersHistoryResponse) => {
         callback(
           IndexerSpotStreamTransformer.orderHistoryStreamCallback(response),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
+  /**
+   * Stream spot trades
+   * @param params - Stream parameters
+   * @param params.marketIds - Optional array of market IDs to filter trades
+   * @param params.marketId - Optional market ID to filter trades
+   * @param params.subaccountIds - Optional array of subaccount IDs to filter trades
+   * @param params.subaccountId - Optional subaccount ID to filter trades
+   * @param params.pagination - Optional pagination options
+   * @param params.direction - Optional trade direction to filter
+   * @param params.executionSide - Optional trade execution side to filter
+   * @param params.callback - Called for each trade update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamSpotTrades({
     marketIds,
     marketId,
@@ -210,7 +249,12 @@ export class IndexerGrpcSpotStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveSpotExchangeRpc.StreamTradesRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = InjectiveSpotExchangeRpcPb.StreamTradesRequest.create()
 
     if (marketIds) {
       request.marketIds = marketIds
@@ -238,7 +282,7 @@ export class IndexerGrpcSpotStream {
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.skip = pagination.skip.toString()
+        request.skip = BigInt(pagination.skip)
       }
 
       if (pagination.limit !== undefined) {
@@ -246,25 +290,27 @@ export class IndexerGrpcSpotStream {
       }
     }
 
-    const subscription = this.client.StreamTrades(request).subscribe({
-      next(response: InjectiveSpotExchangeRpc.StreamTradesResponse) {
+    const stream = this.client.streamTrades(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveSpotExchangeRpcPb.StreamTradesResponse) => {
         callback(IndexerSpotStreamTransformer.tradesStreamCallback(response))
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
+  /**
+   * Stream spot market data
+   * @param params - Stream parameters
+   * @param params.marketIds - Optional array of market IDs to filter
+   * @param params.callback - Called for each market update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamSpotMarket({
     marketIds,
     callback,
@@ -276,31 +322,38 @@ export class IndexerGrpcSpotStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveSpotExchangeRpc.StreamMarketsRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = InjectiveSpotExchangeRpcPb.StreamMarketsRequest.create()
 
     if (marketIds) {
       request.marketIds = marketIds
     }
 
-    const subscription = this.client.StreamMarkets(request).subscribe({
-      next(response: InjectiveSpotExchangeRpc.StreamMarketsResponse) {
+    const stream = this.client.streamMarkets(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveSpotExchangeRpcPb.StreamMarketsResponse) => {
         callback(response)
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
+  /**
+   * Stream spot orderbook V2
+   * @param params - Stream parameters
+   * @param params.marketIds - Array of market IDs to stream orderbook for
+   * @param params.callback - Called for each orderbook update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamSpotOrderbookV2({
     marketIds,
     callback,
@@ -312,31 +365,41 @@ export class IndexerGrpcSpotStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveSpotExchangeRpc.StreamOrderbookV2Request.create()
+    // Input validation
+    if (!marketIds || marketIds.length === 0) {
+      throw new Error('marketIds is required and cannot be empty')
+    }
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = InjectiveSpotExchangeRpcPb.StreamOrderbookV2Request.create()
 
     request.marketIds = marketIds
 
-    const subscription = this.client.StreamOrderbookV2(request).subscribe({
-      next(response: InjectiveSpotExchangeRpc.StreamOrderbookV2Response) {
+    const stream = this.client.streamOrderbookV2(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveSpotExchangeRpcPb.StreamOrderbookV2Response) => {
         callback(
           IndexerSpotStreamTransformer.orderbookV2StreamCallback(response),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
+  /**
+   * Stream spot orderbook updates
+   * @param params - Stream parameters
+   * @param params.marketIds - Array of market IDs to stream orderbook updates for
+   * @param params.callback - Called for each orderbook update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamSpotOrderbookUpdate({
     marketIds,
     callback,
@@ -348,29 +411,30 @@ export class IndexerGrpcSpotStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
+    // Input validation
+    if (!marketIds || marketIds.length === 0) {
+      throw new Error('marketIds is required and cannot be empty')
+    }
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
     const request =
-      InjectiveSpotExchangeRpc.StreamOrderbookUpdateRequest.create()
+      InjectiveSpotExchangeRpcPb.StreamOrderbookUpdateRequest.create()
 
     request.marketIds = marketIds
 
-    const subscription = this.client.StreamOrderbookUpdate(request).subscribe({
-      next(response: InjectiveSpotExchangeRpc.StreamOrderbookUpdateResponse) {
+    const stream = this.client.streamOrderbookUpdate(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveSpotExchangeRpcPb.StreamOrderbookUpdateResponse) => {
         callback(
           IndexerSpotStreamTransformer.orderbookUpdateStreamCallback(response),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 }

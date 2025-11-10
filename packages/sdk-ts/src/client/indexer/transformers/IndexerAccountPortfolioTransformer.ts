@@ -1,6 +1,6 @@
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
-import type { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectivePortfolioRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 import type {
   PositionsWithUPNL,
   AccountPortfolioV2,
@@ -14,7 +14,7 @@ import type {
 
 export class IndexerGrpcAccountPortfolioTransformer {
   static accountPortfolioResponseToAccountPortfolio(
-    response: InjectivePortfolioRpc.AccountPortfolioResponse,
+    response: InjectivePortfolioRpcPb.AccountPortfolioResponse,
     address: string,
   ): AccountPortfolioV2 {
     const portfolio = response.portfolio!
@@ -46,7 +46,7 @@ export class IndexerGrpcAccountPortfolioTransformer {
   }
 
   static accountPortfolioBalancesResponseToAccountPortfolioBalances(
-    response: InjectivePortfolioRpc.AccountPortfolioBalancesResponse,
+    response: InjectivePortfolioRpcPb.AccountPortfolioBalancesResponse,
     address: string,
   ): AccountPortfolioBalances {
     const portfolio = response.portfolio!

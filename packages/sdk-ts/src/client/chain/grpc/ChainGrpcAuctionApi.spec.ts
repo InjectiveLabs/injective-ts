@@ -71,7 +71,7 @@ describe('ChainGrpcAuctionApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcAuctionTransformer.LastAuctionResultResponseToLastAuctionResult
+            typeof ChainGrpcAuctionTransformer.lastAuctionResultResponseToLastAuctionResult
           >
         >(response),
       )

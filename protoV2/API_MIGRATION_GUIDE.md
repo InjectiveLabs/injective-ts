@@ -7,13 +7,14 @@ This guide provides step-by-step instructions for migrating API files from the o
 1. [Overview](#overview)
 2. [Migration Example: ChainGrpcAuctionApi](#migration-example-chaingrpcauctionapi)
 3. [Migration Example: IndexerGrpcAccountApi](#migration-example-indexergrpcaccountapi)
-4. [Prerequisites and Setup](#prerequisites-and-setup)
-5. [Step-by-Step Migration Process](#step-by-step-migration-process)
-6. [Tree-Shaking Optimization (Deep Imports)](#tree-shaking-optimization-deep-imports)
-7. [Reference Examples](#reference-examples)
-8. [Key Differences](#key-differences)
-9. [Common Patterns](#common-patterns)
-10. [Troubleshooting](#troubleshooting)
+4. [Migration Example: Streaming APIs](#migration-example-streaming-apis)
+5. [Prerequisites and Setup](#prerequisites-and-setup)
+6. [Step-by-Step Migration Process](#step-by-step-migration-process)
+7. [Tree-Shaking Optimization (Deep Imports)](#tree-shaking-optimization-deep-imports)
+8. [Reference Examples](#reference-examples)
+9. [Key Differences](#key-differences)
+10. [Common Patterns](#common-patterns)
+11. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -394,6 +395,544 @@ When migrating an Indexer API file:
 - [ ] **Update type file (if needed)**
   - [ ] Update proto imports to V2 package
   - [ ] Add `RpcPb` suffix to type aliases
+
+---
+
+## Migration Example: Streaming APIs
+
+Streaming APIs require special handling in V2 due to the different streaming interface provided by `@protobuf-ts`. This section covers migrating streaming endpoints like `IndexerGrpcSpotStream` and `IndexerGrpcDerivativesStream`.
+
+### Key Differences for Streaming
+
+**V1 Streaming:**
+
+- Used `grpc-web` streaming with direct subscription management
+- Had built-in `unsubscribe()` method on streams
+- Simple error handling with try-catch
+
+**V2 Streaming:**
+
+- Uses `@protobuf-ts` `ServerStreamingCall` with async iteration
+- Requires `AbortController` for proper stream cancellation
+- Need to manually create subscription wrapper to maintain API compatibility
+- Better error handling with abort signal checking
+
+### Critical Issue: Stream Cancellation
+
+⚠️ **IMPORTANT**: The V2 `ServerStreamingCall` does NOT have a direct `unsubscribe()` method. You MUST use `AbortController` to properly cancel streams. Without this, streams will continue running even after `unsubscribe()` is called, leading to memory leaks and unwanted callbacks.
+
+### Before (V1 - Broken in V2)
+
+```typescript
+streamOrders({
+  marketId,
+  subaccountId,
+  orderSide,
+  callback,
+  onEndCallback,
+  onStatusCallback,
+}: {
+  marketId?: string
+  subaccountId?: string
+  orderSide?: OrderSide
+  callback: (order: any) => void
+  onEndCallback?: () => void
+  onStatusCallback?: (status: StreamStatusResponse) => void
+}): Subscription {
+  const request = InjectiveSpotExchangeRpc.StreamOrdersRequest.create()
+
+  if (marketId) {
+    request.marketId = marketId
+  }
+
+  if (subaccountId) {
+    request.subaccountId = subaccountId
+  }
+
+  if (orderSide) {
+    request.orderSide = orderSide
+  }
+
+  const stream = this.client.StreamOrders(request)
+
+  // V1 streaming with grpc-web
+  stream.on('data', (response) => {
+    callback(IndexerSpotStreamTransformer.ordersStreamCallback(response))
+  })
+
+  stream.on('end', () => {
+    if (onEndCallback) {
+      onEndCallback()
+    }
+  })
+
+  stream.on('error', (error) => {
+    if (onStatusCallback) {
+      onStatusCallback(error)
+    }
+  })
+
+  return {
+    unsubscribe: () => {
+      stream.cancel()
+    },
+  } as Subscription
+}
+```
+
+### After (V2 - Correct Implementation)
+
+```typescript
+streamSpotOrders({
+  marketId,
+  subaccountId,
+  orderSide,
+  callback,
+  onEndCallback,
+  onStatusCallback,
+}: {
+  marketId?: string
+  subaccountId?: string
+  orderSide?: OrderSide
+  callback: SpotOrdersStreamCallback
+  onEndCallback?: (status?: StreamStatusResponse) => void
+  onStatusCallback?: (status: StreamStatusResponse) => void
+}): Subscription {
+  const request = InjectiveSpotExchangeRpcPb.StreamOrdersRequest.create()
+
+  if (marketId) {
+    request.marketId = marketId
+  }
+
+  if (subaccountId) {
+    request.subaccountId = subaccountId
+  }
+
+  if (orderSide) {
+    request.orderSide = orderSide
+  }
+
+  const stream = this.client.streamOrders(request)
+
+  // In V2, ServerStreamingCall has a different interface than V1
+  // We need to adapt streaming response to match expected callback pattern
+  const handleStreamResponse = (
+    response: InjectiveSpotExchangeRpcPb.StreamOrdersResponse,
+  ) => {
+    callback(IndexerSpotStreamTransformer.ordersStreamCallback(response))
+  }
+
+  // Use AbortController for proper stream cancellation
+  const abortController = new AbortController()
+
+  // Create a wrapper that mimics V1 streaming interface
+  const subscription = {
+    unsubscribe: () => {
+      abortController.abort()
+    },
+  }
+
+  // Handle stream using async iteration
+  ;(async () => {
+    try {
+      for await (const response of stream.responses) {
+        if (abortController.signal.aborted) {
+          break
+        }
+        handleStreamResponse(response)
+      }
+      if (onEndCallback && !abortController.signal.aborted) {
+        onEndCallback()
+      }
+    } catch (error) {
+      if (!abortController.signal.aborted && onStatusCallback) {
+        onStatusCallback(error as any)
+      }
+    }
+  })()
+
+  return subscription as Subscription
+}
+```
+
+### Key Changes Explained
+
+1. **Import Changes:**
+
+   ```typescript
+   // Old
+   import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+
+   // New
+   import {
+     InjectiveSpotExchangeRpcPb,
+     InjectiveSpotExchangeRPCClient,
+   } from '@injectivelabs/indexer-proto-ts-v2'
+   ```
+
+2. **Type Safety - Define Callback Types:**
+
+   ```typescript
+   export type SpotOrdersStreamCallback = (
+     response: ReturnType<
+       typeof IndexerSpotStreamTransformer.ordersStreamCallback
+     >,
+   ) => void
+
+   export type SpotOrderHistoryStreamCallback = (
+     response: ReturnType<
+       typeof IndexerSpotStreamTransformer.orderHistoryStreamCallback
+     >,
+   ) => void
+
+   export type SpotTradesStreamCallback = (
+     response: ReturnType<
+       typeof IndexerSpotStreamTransformer.tradesStreamCallback
+     >,
+   ) => void
+   ```
+
+3. **Callback Signature Consistency:**
+
+   ```typescript
+   // Make onEndCallback consistent across all methods
+   onEndCallback?: (status?: StreamStatusResponse) => void
+   ```
+
+4. **AbortController Pattern:**
+
+   ```typescript
+   const abortController = new AbortController()
+
+   const subscription = {
+     unsubscribe: () => {
+       abortController.abort()
+     },
+   }
+   ```
+
+5. **Async Iteration with Abort Checking:**
+   ```typescript
+   ;(async () => {
+     try {
+       for await (const response of stream.responses) {
+         // Check if stream was cancelled
+         if (abortController.signal.aborted) {
+           break
+         }
+         handleStreamResponse(response)
+       }
+       // Only call onEndCallback if not aborted
+       if (onEndCallback && !abortController.signal.aborted) {
+         onEndCallback()
+       }
+     } catch (error) {
+       // Only call error callback if not aborted
+       if (!abortController.signal.aborted && onStatusCallback) {
+         onStatusCallback(error as any)
+       }
+     }
+   })()
+   ```
+
+### Why AbortController is Critical
+
+**Without AbortController (Broken):**
+
+```typescript
+// ❌ BAD: Stream continues running after unsubscribe
+const subscription = {
+  unsubscribe: () => {
+    stream.headers.then(() => {
+      // Connection closed - but this doesn't actually stop the stream!
+    })
+  },
+}
+```
+
+**Problems:**
+
+- The async iteration continues running
+- Callbacks are still called after `unsubscribe()`
+- Memory leaks from unclosed streams
+- Unwanted side effects from callbacks
+
+**With AbortController (Correct):**
+
+```typescript
+// ✅ GOOD: Stream properly cancelled
+const abortController = new AbortController()
+
+const subscription = {
+  unsubscribe: () => {
+    abortController.abort()
+  },
+}
+
+;(async () => {
+  try {
+    for await (const response of stream.responses) {
+      if (abortController.signal.aborted) {
+        break // Exit the loop immediately
+      }
+      handleStreamResponse(response)
+    }
+  } catch (error) {
+    // Don't call error callback if intentionally aborted
+    if (!abortController.signal.aborted && onStatusCallback) {
+      onStatusCallback(error as any)
+    }
+  }
+})()
+```
+
+**Benefits:**
+
+- ✅ Stream stops immediately when `unsubscribe()` is called
+- ✅ No callbacks after cancellation
+- ✅ No memory leaks
+- ✅ Proper cleanup
+
+### Complete Example: IndexerGrpcSpotStream
+
+**File**: `packages/sdk-ts/src/client/indexer/grpc_stream/IndexerGrpcSpotStream.ts`
+
+```typescript
+import { GeneralException } from '@injectivelabs/exceptions'
+import {
+  InjectiveSpotExchangeRpcPb,
+  InjectiveSpotExchangeRPCClient,
+} from '@injectivelabs/indexer-proto-ts-v2'
+import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
+import { IndexerSpotStreamTransformer } from '../transformers/index.js'
+import type { Subscription } from 'rxjs'
+import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
+import type { StreamStatusResponse } from '../types/index.js'
+import type { PaginationOption } from '../../../types/pagination.js'
+import type {
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '../../../types/index.js'
+
+// Define typed callbacks for better type safety
+export type MarketsStreamCallback = (
+  response: InjectiveSpotExchangeRpcPb.StreamMarketsResponse,
+) => void
+
+export type SpotOrderbookV2StreamCallback = (
+  response: ReturnType<
+    typeof IndexerSpotStreamTransformer.orderbookV2StreamCallback
+  >,
+) => void
+
+export type SpotOrderbookUpdateStreamCallback = (
+  response: ReturnType<
+    typeof IndexerSpotStreamTransformer.orderbookUpdateStreamCallback
+  >,
+) => void
+
+export type SpotOrdersStreamCallback = (
+  response: ReturnType<
+    typeof IndexerSpotStreamTransformer.ordersStreamCallback
+  >,
+) => void
+
+export type SpotOrderHistoryStreamCallback = (
+  response: ReturnType<
+    typeof IndexerSpotStreamTransformer.orderHistoryStreamCallback
+  >,
+) => void
+
+export type SpotTradesStreamCallback = (
+  response: ReturnType<
+    typeof IndexerSpotStreamTransformer.tradesStreamCallback
+  >,
+) => void
+
+/**
+ * @category Indexer Grpc Stream
+ */
+export class IndexerGrpcSpotStream {
+  protected client: InjectiveSpotExchangeRPCClient
+  protected transport: GrpcWebRpcTransport
+
+  constructor(endpoint: string) {
+    this.transport = new GrpcWebRpcTransport(endpoint)
+    this.client = new InjectiveSpotExchangeRPCClient(this.transport)
+  }
+
+  streamSpotOrders({
+    marketId,
+    subaccountId,
+    orderSide,
+    callback,
+    onEndCallback,
+    onStatusCallback,
+  }: {
+    marketId?: string
+    subaccountId?: string
+    orderSide?: OrderSide
+    callback: SpotOrdersStreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }): Subscription {
+    const request = InjectiveSpotExchangeRpcPb.StreamOrdersRequest.create()
+
+    if (marketId) {
+      request.marketId = marketId
+    }
+
+    if (subaccountId) {
+      request.subaccountId = subaccountId
+    }
+
+    if (orderSide) {
+      request.orderSide = orderSide
+    }
+
+    const stream = this.client.streamOrders(request)
+
+    const handleStreamResponse = (
+      response: InjectiveSpotExchangeRpcPb.StreamOrdersResponse,
+    ) => {
+      callback(IndexerSpotStreamTransformer.ordersStreamCallback(response))
+    }
+
+    const abortController = new AbortController()
+
+    const subscription = {
+      unsubscribe: () => {
+        abortController.abort()
+      },
+    }
+
+    ;(async () => {
+      try {
+        for await (const response of stream.responses) {
+          if (abortController.signal.aborted) {
+            break
+          }
+          handleStreamResponse(response)
+        }
+        if (onEndCallback && !abortController.signal.aborted) {
+          onEndCallback()
+        }
+      } catch (error) {
+        if (!abortController.signal.aborted && onStatusCallback) {
+          onStatusCallback(error as any)
+        }
+      }
+    })()
+
+    return subscription as Subscription
+  }
+
+  // ... other streaming methods follow the same pattern
+}
+```
+
+### Streaming API Migration Checklist
+
+When migrating a streaming API file:
+
+- [ ] **Update imports**
+
+  - [ ] Change package from `@injectivelabs/indexer-proto-ts` to `@injectivelabs/indexer-proto-ts-v2`
+  - [ ] Import message namespace with `RpcPb` suffix
+  - [ ] Import client class (e.g., `InjectiveSpotExchangeRPCClient`)
+
+- [ ] **Define typed callbacks**
+
+  - [ ] Create callback type aliases using `ReturnType` of transformer methods
+  - [ ] Replace `any` callback types with proper typed callbacks
+
+- [ ] **Update constructor**
+
+  - [ ] Initialize `GrpcWebRpcTransport` with endpoint
+  - [ ] Pass `this.transport` to client constructor
+
+- [ ] **Update each streaming method**
+
+  - [ ] Change request creation to use `RpcPb` namespace
+  - [ ] Convert client method names to camelCase (e.g., `StreamOrders` → `streamOrders`)
+  - [ ] **Add `AbortController` for stream cancellation**
+  - [ ] Create subscription wrapper with `unsubscribe()` that calls `abort()`
+  - [ ] Use `for await...of stream.responses` for async iteration
+  - [ ] **Check `abortController.signal.aborted` in the loop**
+  - [ ] **Only call callbacks if not aborted**
+  - [ ] Update callback signatures to include optional `status` parameter in `onEndCallback`
+
+- [ ] **Test stream cancellation**
+  - [ ] Verify `unsubscribe()` stops the stream immediately
+  - [ ] Verify no callbacks are called after `unsubscribe()`
+  - [ ] Check for memory leaks with long-running streams
+
+### Common Streaming Patterns
+
+**Pattern 1: Basic Stream**
+
+```typescript
+const stream = this.client.streamOrders(request)
+const abortController = new AbortController()
+
+const subscription = {
+  unsubscribe: () => abortController.abort(),
+}
+
+;(async () => {
+  try {
+    for await (const response of stream.responses) {
+      if (abortController.signal.aborted) break
+      callback(transform(response))
+    }
+    if (onEndCallback && !abortController.signal.aborted) {
+      onEndCallback()
+    }
+  } catch (error) {
+    if (!abortController.signal.aborted && onStatusCallback) {
+      onStatusCallback(error as any)
+    }
+  }
+})()
+
+return subscription as Subscription
+```
+
+**Pattern 2: Stream with Pagination**
+
+```typescript
+const request = InjectiveSpotExchangeRpcPb.StreamTradesRequest.create()
+
+if (pagination) {
+  if (pagination.skip !== undefined) {
+    request.skip = BigInt(pagination.skip)
+  }
+  if (pagination.limit !== undefined) {
+    request.limit = pagination.limit
+  }
+}
+
+// ... rest follows Pattern 1
+```
+
+**Pattern 3: Stream with Multiple Optional Parameters**
+
+```typescript
+if (marketIds) {
+  request.marketIds = marketIds
+}
+
+if (subaccountIds) {
+  request.subaccountIds = subaccountIds
+}
+
+if (executionSide) {
+  request.executionSide = executionSide
+}
+
+// ... rest follows Pattern 1
+```
 
 ---
 

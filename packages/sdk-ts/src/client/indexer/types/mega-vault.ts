@@ -1,4 +1,4 @@
-import type { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveMegavaultRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 
 export interface OperationStatusLogEntry {
   status: string
@@ -179,23 +179,25 @@ export const MegaVaultSubscriptionStatus = {
   Executing: 'executing',
 } as const
 
-export type GrpcMegaVaultApr = InjectiveMegaVaultRpc.Apr
-export type GrpcMegaVaultPnl = InjectiveMegaVaultRpc.Pnl
-export type GrpcMegaVaultAprStats = InjectiveMegaVaultRpc.AprStats
-export type GrpcMegaVaultPnlStats = InjectiveMegaVaultRpc.PnlStats
-export type GrpcMegaVaultOperator = InjectiveMegaVaultRpc.Operator
-export type GrpcMegaVaultTargetApr = InjectiveMegaVaultRpc.TargetApr
-export type GrpcMegaVaultUserStats = InjectiveMegaVaultRpc.UserStats
-export type GrpcMegaVaultIncentives = InjectiveMegaVaultRpc.Incentives
-export type GrpcMegaVaultVaultStats = InjectiveMegaVaultRpc.VaultStats
-export type GrpcMegaVaultVolatility = InjectiveMegaVaultRpc.Volatility
-export type GrpcMegaVaultRedemption = InjectiveMegaVaultRpc.Redemption
-export type GrpcMegaVaultMaxDrawdown = InjectiveMegaVaultRpc.MaxDrawdown
-export type GrpcMegaVaultSubscription = InjectiveMegaVaultRpc.Subscription
-export type GrpcMegaVaultHistoricalPnL = InjectiveMegaVaultRpc.HistoricalPnL
-export type GrpcMegaVaultHistoricalTVL = InjectiveMegaVaultRpc.HistoricalTVL
-export type GrpcMegaVaultUnrealizedPnl = InjectiveMegaVaultRpc.UnrealizedPnl
-export type GrpcMegaVaultVolatilityStats = InjectiveMegaVaultRpc.VolatilityStats
+export type GrpcMegaVaultApr = InjectiveMegavaultRpcPb.Apr
+export type GrpcMegaVaultPnl = InjectiveMegavaultRpcPb.Pnl
+export type GrpcMegaVaultAprStats = InjectiveMegavaultRpcPb.AprStats
+export type GrpcMegaVaultPnlStats = InjectiveMegavaultRpcPb.PnlStats
+export type GrpcMegaVaultOperator = InjectiveMegavaultRpcPb.Operator
+export type GrpcMegaVaultTargetApr = InjectiveMegavaultRpcPb.TargetApr
+export type GrpcMegaVaultUserStats = InjectiveMegavaultRpcPb.UserStats
+export type GrpcMegaVaultIncentives = InjectiveMegavaultRpcPb.Incentives
+export type GrpcMegaVaultVaultStats = InjectiveMegavaultRpcPb.VaultStats
+export type GrpcMegaVaultVolatility = InjectiveMegavaultRpcPb.Volatility
+export type GrpcMegaVaultRedemption = InjectiveMegavaultRpcPb.Redemption
+export type GrpcMegaVaultMaxDrawdown = InjectiveMegavaultRpcPb.MaxDrawdown
+export type GrpcMegaVaultSubscription = InjectiveMegavaultRpcPb.Subscription
+export type GrpcMegaVaultHistoricalPnL = InjectiveMegavaultRpcPb.HistoricalPnL
+export type GrpcMegaVaultHistoricalTVL = InjectiveMegavaultRpcPb.HistoricalTVL
+export type GrpcMegaVaultUnrealizedPnl = InjectiveMegavaultRpcPb.UnrealizedPnl
+export type GrpcMegaVaultVolatilityStats =
+  InjectiveMegavaultRpcPb.VolatilityStats
+
 export type GrpcMegaVaultOperatorRedemptionBucket =
   InjectiveMegaVaultRpc.RedemptionBucket
 export type GrpcMegaVaultOperationStatusLogEntry =
