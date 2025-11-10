@@ -1,7 +1,10 @@
 import { ChainGrpcCommonTransformer } from '../client/chain/transformers/ChainGrpcCommonTransformer.js'
 import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import type { InjectiveAccountsRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 import type { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
+import type {
+  InjectiveAccountsRpcPb,
+  InjectiveExplorerRpcPb,
+} from '@injectivelabs/indexer-proto-ts-v2'
 import type * as CosmosBaseQueryV1Beta1PaginationPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/query/v1beta1/pagination_pb.mjs'
 import type {
   Pagination,
@@ -41,6 +44,9 @@ export const grpcPaginationToPagination = (
   return ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination)
 }
 
+/**
+ * @deprecated Use grpcPagingToPagingV2 instead (V1 proto package)
+ */
 export const grpcPagingToPaging = (
   pagination: InjectiveExplorerRpc.Paging | undefined,
 ): ExchangePagination => {
@@ -60,8 +66,16 @@ export const grpcPagingToPaging = (
   }
 }
 
+/**
+ * Converts gRPC Paging to ExchangePagination for V2 proto packages.
+ * Handles both InjectiveAccountsRpcPb.Paging and InjectiveExplorerRpcPb.Paging types.
+ * Supports bigint and string types for the total field.
+ */
 export const grpcPagingToPagingV2 = (
-  pagination: InjectiveAccountsRpcPb.Paging | undefined,
+  pagination:
+    | InjectiveAccountsRpcPb.Paging
+    | InjectiveExplorerRpcPb.Paging
+    | undefined,
 ): ExchangePagination => {
   if (!pagination) {
     return {
@@ -71,11 +85,19 @@ export const grpcPagingToPagingV2 = (
     }
   }
 
+  const total = pagination.total
+  const totalNumber =
+    typeof total === 'bigint'
+      ? Number(total)
+      : typeof total === 'string'
+      ? parseInt(total || '0', 10)
+      : parseInt(String(total) || '0', 10)
+
   return {
     ...pagination,
     to: parseInt(pagination.to.toString() || '0', 10),
     from: parseInt(pagination.from.toString() || '0', 10),
-    total: parseInt(pagination.total.toString() || '0', 10),
+    total: totalNumber,
   }
 }
 

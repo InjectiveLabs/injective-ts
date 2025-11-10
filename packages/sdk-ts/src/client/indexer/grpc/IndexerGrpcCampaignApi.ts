@@ -1,28 +1,21 @@
-import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveCampaignRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_campaign_rpc_pb'
+import { InjectiveCampaignRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_campaign_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerCampaignTransformer } from '../transformers/index.js'
+import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
+export class IndexerGrpcCampaignApi extends BaseIndexerGrpcConsumerV2 {
   protected module: string = IndexerModule.Campaign
 
-  protected client: InjectiveCampaignRpc.InjectiveCampaignRPCClientImpl
+  private client: InjectiveCampaignRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new InjectiveCampaignRpc.InjectiveCampaignRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveCampaignRPCClient(this.transport)
   }
 
   async fetchCampaign({
@@ -40,11 +33,11 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     accountAddress?: string
     contractAddress?: string
   }) {
-    const request = InjectiveCampaignRpc.RankingRequest.create()
+    const request = InjectiveCampaignRpcPb.RankingRequest.create()
 
     request.campaignId = campaignId
     if (skip) {
-      request.skip = skip
+      request.skip = BigInt(skip)
     }
 
     if (limit) {
@@ -63,27 +56,12 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       request.contractAddress = contractAddress
     }
 
-    try {
-      const response = await this.retry<InjectiveCampaignRpc.RankingResponse>(
-        () => this.client.Ranking(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveCampaignRpcPb.RankingRequest,
+      InjectiveCampaignRpcPb.RankingResponse
+    >(request, this.client.ranking.bind(this.client))
 
-      return IndexerCampaignTransformer.CampaignResponseToCampaign(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'FetchCampaign',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'FetchCampaign',
-        contextModule: this.module,
-      })
-    }
+    return IndexerCampaignTransformer.CampaignResponseToCampaign(response)
   }
 
   async fetchCampaigns({
@@ -99,7 +77,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     cursor?: string
     status?: string
   }) {
-    const request = InjectiveCampaignRpc.CampaignsV2Request.create()
+    const request = InjectiveCampaignRpcPb.CampaignsV2Request.create()
 
     if (type) {
       request.type = type
@@ -121,28 +99,12 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       request.status = status
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveCampaignRpc.CampaignsV2Response>(() =>
-          this.client.CampaignsV2(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveCampaignRpcPb.CampaignsV2Request,
+      InjectiveCampaignRpcPb.CampaignsV2Response
+    >(request, this.client.campaignsV2.bind(this.client))
 
-      return IndexerCampaignTransformer.CampaignsV2ResponseToCampaigns(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'FetchCampaigns',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'FetchCampaigns',
-        contextModule: this.module,
-      })
-    }
+    return IndexerCampaignTransformer.CampaignsV2ResponseToCampaigns(response)
   }
 
   async fetchRound({
@@ -156,10 +118,10 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     accountAddress?: string
     contractAddress?: string
   }) {
-    const request = InjectiveCampaignRpc.CampaignsRequest.create()
+    const request = InjectiveCampaignRpcPb.CampaignsRequest.create()
 
     if (roundId) {
-      request.roundId = roundId
+      request.roundId = BigInt(roundId)
     }
 
     if (accountAddress) {
@@ -174,27 +136,12 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       request.contractAddress = contractAddress
     }
 
-    try {
-      const response = await this.retry<InjectiveCampaignRpc.CampaignsResponse>(
-        () => this.client.Campaigns(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveCampaignRpcPb.CampaignsRequest,
+      InjectiveCampaignRpcPb.CampaignsResponse
+    >(request, this.client.campaigns.bind(this.client))
 
-      return IndexerCampaignTransformer.RoundsResponseToRounds(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveCampaignRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Campaigns',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Campaigns',
-        contextModule: this.module,
-      })
-    }
+    return IndexerCampaignTransformer.RoundsResponseToRounds(response)
   }
 
   async fetchGuilds({
@@ -208,7 +155,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     sortBy: string
     campaignContract: string
   }) {
-    const request = InjectiveCampaignRpc.ListGuildsRequest.create()
+    const request = InjectiveCampaignRpcPb.ListGuildsRequest.create()
 
     request.sortBy = sortBy
     request.campaignContract = campaignContract
@@ -221,28 +168,12 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       request.limit = limit
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveCampaignRpc.ListGuildsResponse>(() =>
-          this.client.ListGuilds(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveCampaignRpcPb.ListGuildsRequest,
+      InjectiveCampaignRpcPb.ListGuildsResponse
+    >(request, this.client.listGuilds.bind(this.client))
 
-      return IndexerCampaignTransformer.GuildsResponseToGuilds(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'FetchGuilds',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'FetchGuilds',
-        contextModule: this.module,
-      })
-    }
+    return IndexerCampaignTransformer.GuildsResponseToGuilds(response)
   }
 
   async fetchGuildMember({
@@ -252,35 +183,17 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     address: string
     campaignContract: string
   }) {
-    const request = InjectiveCampaignRpc.GetGuildMemberRequest.create()
+    const request = InjectiveCampaignRpcPb.GetGuildMemberRequest.create()
 
     request.address = address
     request.campaignContract = campaignContract
 
-    try {
-      const response =
-        await this.retry<InjectiveCampaignRpc.GetGuildMemberResponse>(() =>
-          this.client.GetGuildMember(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveCampaignRpcPb.GetGuildMemberRequest,
+      InjectiveCampaignRpcPb.GetGuildMemberResponse
+    >(request, this.client.getGuildMember.bind(this.client))
 
-      return IndexerCampaignTransformer.GuildMemberResponseToGuildMember(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'FetchGuildMember',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'FetchGuildMember',
-        contextModule: this.module,
-      })
-    }
+    return IndexerCampaignTransformer.GuildMemberResponseToGuildMember(response)
   }
 
   async fetchGuildMembers({
@@ -298,7 +211,7 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
     campaignContract: string
     includeGuildInfo: boolean
   }) {
-    const request = InjectiveCampaignRpc.ListGuildMembersRequest.create()
+    const request = InjectiveCampaignRpcPb.ListGuildMembersRequest.create()
 
     request.guildId = guildId
     request.campaignContract = campaignContract
@@ -316,29 +229,13 @@ export class IndexerGrpcCampaignApi extends BaseGrpcConsumer {
       request.limit = limit
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveCampaignRpc.ListGuildMembersResponse>(() =>
-          this.client.ListGuildMembers(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveCampaignRpcPb.ListGuildMembersRequest,
+      InjectiveCampaignRpcPb.ListGuildMembersResponse
+    >(request, this.client.listGuildMembers.bind(this.client))
 
-      return IndexerCampaignTransformer.GuildMembersResponseToGuildMembers(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'FetchGuildMembers',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'FetchGuildMembers',
-        contextModule: this.module,
-      })
-    }
+    return IndexerCampaignTransformer.GuildMembersResponseToGuildMembers(
+      response,
+    )
   }
 }

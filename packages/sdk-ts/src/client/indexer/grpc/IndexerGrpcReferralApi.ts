@@ -1,116 +1,64 @@
-import { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
 import {
-  UnspecifiedErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+  InjectiveReferralRpcPb,
+  InjectiveReferralRPCClient,
+} from '@injectivelabs/indexer-proto-ts-v2'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcReferralTransformer } from '../transformers/index.js'
+import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcReferralApi extends BaseGrpcConsumer {
+export class IndexerGrpcReferralApi extends BaseIndexerGrpcConsumerV2 {
   protected module: string = IndexerModule.Referral
-
-  protected client: InjectiveReferralRpc.InjectiveReferralRPCClientImpl
+  private client: InjectiveReferralRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new InjectiveReferralRpc.InjectiveReferralRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveReferralRPCClient(this.transport)
   }
 
   async fetchReferrerDetails(address: string) {
-    const request = InjectiveReferralRpc.GetReferrerDetailsRequest.create()
+    const request = InjectiveReferralRpcPb.GetReferrerDetailsRequest.create()
     request.referrerAddress = address
 
-    try {
-      const response =
-        await this.retry<InjectiveReferralRpc.GetReferrerDetailsResponse>(() =>
-          this.client.GetReferrerDetails(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveReferralRpcPb.GetReferrerDetailsRequest,
+      InjectiveReferralRpcPb.GetReferrerDetailsResponse
+    >(request, this.client.getReferrerDetails.bind(this.client))
 
-      return IndexerGrpcReferralTransformer.referrerDetailsResponseToReferrerDetails(
-        address,
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveReferralRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'Referral',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Referral',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcReferralTransformer.referrerDetailsResponseToReferrerDetails(
+      address,
+      response,
+    )
   }
 
   async fetchInviteeDetails(address: string) {
-    const request = InjectiveReferralRpc.GetInviteeDetailsRequest.create()
+    const request = InjectiveReferralRpcPb.GetInviteeDetailsRequest.create()
     request.inviteeAddress = address
 
-    try {
-      const response =
-        await this.retry<InjectiveReferralRpc.GetInviteeDetailsResponse>(() =>
-          this.client.GetInviteeDetails(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveReferralRpcPb.GetInviteeDetailsRequest,
+      InjectiveReferralRpcPb.GetInviteeDetailsResponse
+    >(request, this.client.getInviteeDetails.bind(this.client))
 
-      return IndexerGrpcReferralTransformer.inviteeDetailsResponseToInviteeDetails(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveReferralRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'Referral',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Referral',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcReferralTransformer.inviteeDetailsResponseToInviteeDetails(
+      response,
+    )
   }
 
   async fetchReferrerByCode(code: string) {
-    const request = InjectiveReferralRpc.GetReferrerByCodeRequest.create()
+    const request = InjectiveReferralRpcPb.GetReferrerByCodeRequest.create()
     request.referralCode = code
 
-    try {
-      const response =
-        await this.retry<InjectiveReferralRpc.GetReferrerByCodeResponse>(() =>
-          this.client.GetReferrerByCode(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveReferralRpcPb.GetReferrerByCodeRequest,
+      InjectiveReferralRpcPb.GetReferrerByCodeResponse
+    >(request, this.client.getReferrerByCode.bind(this.client))
 
-      return IndexerGrpcReferralTransformer.referrerByCodeResponseToReferrerByCode(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveReferralRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'Referral',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Referral',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcReferralTransformer.referrerByCodeResponseToReferrerByCode(
+      response,
+    )
   }
 }

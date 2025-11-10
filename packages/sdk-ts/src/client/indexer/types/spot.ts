@@ -1,5 +1,5 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveSpotExchangeRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 import type {
   OrderSide,
   OrderState,
@@ -106,8 +106,8 @@ export interface AtomicSwap {
   executedAt: number
 }
 
-export type GrpcSpotTrade = InjectiveSpotExchangeRpc.SpotTrade
-export type GrpcSpotMarketInfo = InjectiveSpotExchangeRpc.SpotMarketInfo
-export type GrpcSpotLimitOrder = InjectiveSpotExchangeRpc.SpotLimitOrder
-export type GrpcSpotOrderHistory = InjectiveSpotExchangeRpc.SpotOrderHistory
-export type GrpcAtomicSwap = InjectiveSpotExchangeRpc.AtomicSwap
+export type GrpcSpotTrade = InjectiveSpotExchangeRpcPb.SpotTrade
+export type GrpcSpotMarketInfo = InjectiveSpotExchangeRpcPb.SpotMarketInfo
+export type GrpcSpotLimitOrder = InjectiveSpotExchangeRpcPb.SpotLimitOrder
+export type GrpcSpotOrderHistory = InjectiveSpotExchangeRpcPb.SpotOrderHistory
+export type GrpcAtomicSwap = InjectiveSpotExchangeRpcPb.AtomicSwap
