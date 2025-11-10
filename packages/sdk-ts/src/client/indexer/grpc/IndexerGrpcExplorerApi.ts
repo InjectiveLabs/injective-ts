@@ -24,10 +24,12 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchTxByHash(hash: string) {
+  async fetchTxByHash(hash: string, isEvmHash: boolean = false) {
     const request = InjectiveExplorerRpc.GetTxByTxHashRequest.create()
 
     request.hash = hash
+
+    request.isEvmHash = isEvmHash
 
     try {
       const response = await this.client.GetTxByTxHash(request, this.metadata)
