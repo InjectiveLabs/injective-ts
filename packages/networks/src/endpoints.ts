@@ -14,15 +14,15 @@ export const getEndpointsMainnetSentry = (): NetworkEndpoints => ({
 })
 
 export const getEndpointsStaging = (): NetworkEndpoints => ({
-  indexer: 'https://staging.api.injective.network',
-  grpc: 'https://staging.grpc.injective.network',
-  rpc: 'https://staging.tm.injective.network',
-  rest: 'https://staging.lcd.injective.network',
-  chronos: 'https://staging.api.injective.network',
-  explorer: 'https://staging.api.injective.network',
-  cacheGrpc: 'https://staging.grpc.injective.network',
-  cacheRest: 'https://staging.gateway.grpc-web.injective.network',
-  web3gw: 'https://staging.api.injective.network',
+  indexer: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
+  grpc: 'https://k8s.global.mainnet.chain.grpc-web.injective.network',
+  rpc: 'https://k8s.global.mainnet.tm.injective.network',
+  rest: 'https://k8s.global.mainnet.lcd.injective.network',
+  chronos: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
+  explorer: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
+  cacheGrpc: 'https://k8s.global.mainnet.chain.grpc-web.injective.network',
+  cacheRest: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
+  web3gw: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
   chart: 'https://k8s.mainnet.staging.chart.grpc-web.injective.network',
 })
 
