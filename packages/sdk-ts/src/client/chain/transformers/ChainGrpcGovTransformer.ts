@@ -1,5 +1,6 @@
 import { toHumanReadable } from '@injectivelabs/utils'
 import { uint8ArrayToString } from '../../../utils/index.js'
+import { protobufTimestampToUnixSeconds } from '../../../utils/time.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type * as CosmosGovV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.mjs'
 import type { Pagination } from '../../../types/index.js'
@@ -195,39 +196,19 @@ export class ChainGrpcGovTransformer {
         value: message.value,
       },
       type: message.typeUrl,
-      submitTime: proposal.submitTime
-        ? Math.floor(
-            Number(proposal.submitTime.seconds) +
-              Number(proposal.submitTime.nanos) / 1_000_000_000,
-          )
-        : 0,
+      submitTime: protobufTimestampToUnixSeconds(proposal.submitTime),
       status: proposal.status,
       expedited: proposal.expedited,
       failedReason: proposal.failedReason,
       finalTallyResult:
         ChainGrpcGovTransformer.grpcTallyResultToTallyResult(finalTallyResult),
-      depositEndTime: proposal.depositEndTime
-        ? Math.floor(
-            Number(proposal.depositEndTime.seconds) +
-              Number(proposal.depositEndTime.nanos) / 1_000_000_000,
-          )
-        : 0,
+      depositEndTime: protobufTimestampToUnixSeconds(proposal.depositEndTime),
       totalDeposits: proposal.totalDeposit.map((coin) => ({
         denom: coin.denom,
         amount: toHumanReadable(coin.amount).toFixed(),
       })),
-      votingStartTime: proposal.votingStartTime
-        ? Math.floor(
-            Number(proposal.votingStartTime.seconds) +
-              Number(proposal.votingStartTime.nanos) / 1_000_000_000,
-          )
-        : 0,
-      votingEndTime: proposal.votingEndTime
-        ? Math.floor(
-            Number(proposal.votingEndTime.seconds) +
-              Number(proposal.votingEndTime.nanos) / 1_000_000_000,
-          )
-        : 0,
+      votingStartTime: protobufTimestampToUnixSeconds(proposal.votingStartTime),
+      votingEndTime: protobufTimestampToUnixSeconds(proposal.votingEndTime),
     }
   }
 }

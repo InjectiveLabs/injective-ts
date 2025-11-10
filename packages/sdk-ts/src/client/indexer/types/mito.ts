@@ -1,5 +1,5 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type { GoadesignGoagenMitoApiPb } from '@injectivelabs/mito-proto-ts-v2'
+import type * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb'
 
 export type MitoGaugeStatus = 'active' | 'live'
 

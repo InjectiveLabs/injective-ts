@@ -1,5 +1,5 @@
 import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
-import { InjectiveExchangeRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,

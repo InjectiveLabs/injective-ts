@@ -3,13 +3,13 @@ import * as CosmosMintV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/gener
 import { QueryClient as CosmosMintV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
 import { uint8ArrayToString } from '../../../utils/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcMintApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcMintApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Mint
   private client: CosmosMintV1Beta1QueryClient
 

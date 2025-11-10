@@ -1,11 +1,9 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  InjectiveSpotExchangeRpcPb,
-  InjectiveSpotExchangeRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveSpotExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb'
+import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import type { PaginationOption } from '../../../types/pagination.js'
 import type {
@@ -17,7 +15,7 @@ import type {
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Spot
 
   private client: InjectiveSpotExchangeRPCClient

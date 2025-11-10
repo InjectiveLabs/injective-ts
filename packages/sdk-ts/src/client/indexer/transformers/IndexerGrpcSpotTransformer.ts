@@ -1,7 +1,7 @@
 import { BigNumber } from '@injectivelabs/utils'
 import { TokenType } from '../../../types/token.js'
 import { grpcPagingToPagingV2 } from '../../../utils/pagination.js'
-import type { InjectiveExplorerRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
 import type * as InjectiveSpotExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb'
 import type {
   OrderSide,

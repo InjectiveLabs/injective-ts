@@ -1,83 +1,46 @@
-import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
-import {
-  IndexerErrorModule,
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import { IndexerErrorModule } from '@injectivelabs/exceptions'
+import * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/dmm_pb'
+import { InjectiveDmmV2RPCClient } from '@injectivelabs/olp-proto-ts-v2/generated/dmm_pb.client'
 import { DmmGrpcTransformer } from './transformers/index.js'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
-export class OLPGrpcApi extends BaseGrpcConsumer {
+export class OLPGrpcApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerErrorModule.OLP
 
-  protected client: InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl
+  private client: InjectiveDmmV2RPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new InjectiveDmmRpc.InjectiveDmmV2RPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveDmmV2RPCClient(this.transport)
   }
 
   async fetchEpochs(status?: string) {
-    const request = InjectiveDmmRpc.GetEpochsRequest.create()
+    const request = DmmPb.GetEpochsRequest.create()
 
     if (status) {
       request.status = status
     }
 
-    try {
-      const response = await this.retry<InjectiveDmmRpc.GetEpochsResponse>(() =>
-        this.client.GetEpochs(request),
-      )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetEpochsRequest,
+      DmmPb.GetEpochsResponse
+    >(request, this.client.getEpochs.bind(this.client))
 
-      return DmmGrpcTransformer.epochsResponseToEpochs(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetEpochs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetEpochs',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.epochsResponseToEpochs(response)
   }
 
   async fetchMarketRewards(epochId: string) {
-    const request = InjectiveDmmRpc.GetMarketRewardsRequest.create()
+    const request = DmmPb.GetMarketRewardsRequest.create()
 
     request.epochId = epochId.toString()
 
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetMarketRewardsResponse>(() =>
-          this.client.GetMarketRewards(request),
-        )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetMarketRewardsRequest,
+      DmmPb.GetMarketRewardsResponse
+    >(request, this.client.getMarketRewards.bind(this.client))
 
-      return DmmGrpcTransformer.marketRewardsResponseToMarketRewards(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetMarketRewards',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetMarketRewards',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.marketRewardsResponseToMarketRewards(response)
   }
 
   async fetchEligibleAddresses({
@@ -85,40 +48,23 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     page,
   }: {
     epochId: string
-    page?: InjectiveDmmRpc.Pagination
+    page?: DmmPb.Pagination
   }) {
-    const request = InjectiveDmmRpc.GetEligibleAddressesRequest.create()
-    InjectiveDmmRpc.GetRewardsDistributionRequest
+    const request = DmmPb.GetEligibleAddressesRequest.create()
     request.epochId = epochId
 
     if (page) {
       request.page = page
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetEligibleAddressesResponse>(() =>
-          this.client.GetEligibleAddresses(request),
-        )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetEligibleAddressesRequest,
+      DmmPb.GetEligibleAddressesResponse
+    >(request, this.client.getEligibleAddresses.bind(this.client))
 
-      return DmmGrpcTransformer.eligibleAddressesResponseToEligibleAddresses(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetEligibleAddresses',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetEligibleAddresses',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.eligibleAddressesResponseToEligibleAddresses(
+      response,
+    )
   }
 
   async fetchEpochScores({
@@ -126,9 +72,9 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     page,
   }: {
     epochId: string
-    page?: InjectiveDmmRpc.Pagination
+    page?: DmmPb.Pagination
   }) {
-    const request = InjectiveDmmRpc.GetEpochScoresRequest.create()
+    const request = DmmPb.GetEpochScoresRequest.create()
 
     request.epochId = epochId
 
@@ -136,27 +82,12 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
       request.page = page
     }
 
-    try {
-      const response = await this.retry<InjectiveDmmRpc.GetEpochScoresResponse>(
-        () => this.client.GetEpochScores(request),
-      )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetEpochScoresRequest,
+      DmmPb.GetEpochScoresResponse
+    >(request, this.client.getEpochScores.bind(this.client))
 
-      return DmmGrpcTransformer.epochScoresResponseToEpochScores(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetEpochScores',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetEpochScores',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.epochScoresResponseToEpochScores(response)
   }
 
   async fetchEpochScoresHistory({
@@ -166,9 +97,9 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
   }: {
     epochId: string
     accountAddress: string
-    page?: InjectiveDmmRpc.Pagination
+    page?: DmmPb.Pagination
   }) {
-    const request = InjectiveDmmRpc.GetEpochScoresHistoryRequest.create()
+    const request = DmmPb.GetEpochScoresHistoryRequest.create()
 
     request.epochId = epochId
     request.accountAddress = accountAddress
@@ -177,30 +108,14 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
       request.page = page
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetEpochScoresHistoryResponse>(() =>
-          this.client.GetEpochScoresHistory(request),
-        )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetEpochScoresHistoryRequest,
+      DmmPb.GetEpochScoresHistoryResponse
+    >(request, this.client.getEpochScoresHistory.bind(this.client))
 
-      return DmmGrpcTransformer.epochScoresHistoryResponseToEpochScoresHistory(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetEpochScoresHistory',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetEpochScoresHistory',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.epochScoresHistoryResponseToEpochScoresHistory(
+      response,
+    )
   }
 
   async fetchTotalScores({
@@ -210,9 +125,9 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
   }: {
     epochId: string
     marketId: string
-    page?: InjectiveDmmRpc.Pagination
+    page?: DmmPb.Pagination
   }) {
-    const request = InjectiveDmmRpc.GetTotalScoresRequest.create()
+    const request = DmmPb.GetTotalScoresRequest.create()
 
     request.epochId = epochId
     request.marketId = marketId
@@ -221,27 +136,12 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
       request.page = page
     }
 
-    try {
-      const response = await this.retry<InjectiveDmmRpc.GetTotalScoresResponse>(
-        () => this.client.GetTotalScores(request),
-      )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetTotalScoresRequest,
+      DmmPb.GetTotalScoresResponse
+    >(request, this.client.getTotalScores.bind(this.client))
 
-      return DmmGrpcTransformer.totalScoresResponseToTotalScores(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetTotalScores',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetTotalScores',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.totalScoresResponseToTotalScores(response)
   }
 
   async fetchTotalScoresHistory({
@@ -253,9 +153,9 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     epochId: string
     marketId: string
     accountAddress: string
-    page?: InjectiveDmmRpc.Pagination
+    page?: DmmPb.Pagination
   }) {
-    const request = InjectiveDmmRpc.GetTotalScoresHistoryRequest.create()
+    const request = DmmPb.GetTotalScoresHistoryRequest.create()
 
     request.epochId = epochId
     request.marketId = marketId
@@ -265,30 +165,14 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
       request.page = page
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetTotalScoresHistoryResponse>(() =>
-          this.client.GetTotalScoresHistory(request),
-        )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetTotalScoresHistoryRequest,
+      DmmPb.GetTotalScoresHistoryResponse
+    >(request, this.client.getTotalScoresHistory.bind(this.client))
 
-      return DmmGrpcTransformer.totalScoresHistoryResponseToTotalScoresHistory(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetTotalScoresHistory',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetTotalScoresHistory',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.totalScoresHistoryResponseToTotalScoresHistory(
+      response,
+    )
   }
 
   async fetchRewardsDistribution({
@@ -298,44 +182,28 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
   }: {
     epochId: string
     height?: string
-    page?: InjectiveDmmRpc.Pagination
+    page?: DmmPb.Pagination
   }) {
-    const request = InjectiveDmmRpc.GetRewardsDistributionRequest.create()
+    const request = DmmPb.GetRewardsDistributionRequest.create()
 
     request.epochId = epochId
 
     if (height) {
-      request.height = height
+      request.height = BigInt(height)
     }
 
     if (page) {
       request.page = page
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetRewardsDistributionResponse>(() =>
-          this.client.GetRewardsDistribution(request),
-        )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetRewardsDistributionRequest,
+      DmmPb.GetRewardsDistributionResponse
+    >(request, this.client.getRewardsDistribution.bind(this.client))
 
-      return DmmGrpcTransformer.rewardsDistributionResponseToRewardsDistribution(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetRewardsDistribution',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetRewardsDistribution',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.rewardsDistributionResponseToRewardsDistribution(
+      response,
+    )
   }
 
   async fetchAccountVolumes({
@@ -345,33 +213,17 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     epochId: string
     accountAddress: string
   }) {
-    const request = InjectiveDmmRpc.GetAccountVolumesRequest.create()
+    const request = DmmPb.GetAccountVolumesRequest.create()
 
     request.epochId = epochId
     request.accountAddress = accountAddress
 
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetAccountVolumesResponse>(() =>
-          this.client.GetAccountVolumes(request),
-        )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetAccountVolumesRequest,
+      DmmPb.GetAccountVolumesResponse
+    >(request, this.client.getAccountVolumes.bind(this.client))
 
-      return DmmGrpcTransformer.accountVolumesResponseToAccountVolumes(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetAccountVolumes',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetAccountVolumes',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.accountVolumesResponseToAccountVolumes(response)
   }
 
   async fetchRewardsEligibility({
@@ -381,7 +233,7 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     epochId?: string
     accountAddress?: string
   }) {
-    const request = InjectiveDmmRpc.GetRewardsEligibilityRequest.create()
+    const request = DmmPb.GetRewardsEligibilityRequest.create()
 
     if (epochId) {
       request.epochId = epochId
@@ -391,30 +243,14 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
       request.accountAddress = accountAddress
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetRewardsEligibilityResponse>(() =>
-          this.client.GetRewardsEligibility(request),
-        )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetRewardsEligibilityRequest,
+      DmmPb.GetRewardsEligibilityResponse
+    >(request, this.client.getRewardsEligibility.bind(this.client))
 
-      return DmmGrpcTransformer.rewardsEligibilityResponseToRewardsEligibility(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetRewardsEligibility',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetRewardsEligibility',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.rewardsEligibilityResponseToRewardsEligibility(
+      response,
+    )
   }
 
   async fetchMarketRewardsRange({
@@ -424,34 +260,18 @@ export class OLPGrpcApi extends BaseGrpcConsumer {
     epochId: string
     marketId?: string
   }) {
-    const request = InjectiveDmmRpc.GetMarketRewardsRangeRequest.create()
+    const request = DmmPb.GetMarketRewardsRangeRequest.create()
 
     request.epochId = epochId
     request.marketId = marketId
 
-    try {
-      const response =
-        await this.retry<InjectiveDmmRpc.GetMarketRewardsRangeResponse>(() =>
-          this.client.GetMarketRewardRanges(request),
-        )
+    const response = await this.executeGrpcCall<
+      DmmPb.GetMarketRewardsRangeRequest,
+      DmmPb.GetMarketRewardsRangeResponse
+    >(request, this.client.getMarketRewardRanges.bind(this.client))
 
-      return DmmGrpcTransformer.marketRewardsRangeResponseToMarketRewardsRange(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveDmmRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetMarketRewardRanges',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetMarketRewardRanges',
-        contextModule: this.module,
-      })
-    }
+    return DmmGrpcTransformer.marketRewardsRangeResponseToMarketRewardsRange(
+      response,
+    )
   }
 }

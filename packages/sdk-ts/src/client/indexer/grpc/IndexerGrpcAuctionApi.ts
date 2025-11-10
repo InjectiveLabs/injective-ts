@@ -2,12 +2,12 @@ import * as InjectiveAuctionRpcPb from '@injectivelabs/indexer-proto-ts-v2/gener
 import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Auction
 
   private client: InjectiveAuctionRPCClient

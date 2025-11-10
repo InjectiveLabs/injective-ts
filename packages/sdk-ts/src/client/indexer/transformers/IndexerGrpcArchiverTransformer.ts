@@ -1,4 +1,4 @@
-import type { InjectiveArchiverRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectiveArchiverRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_archiver_rpc_pb'
 import type {
   AccountStats,
   DenomHolders,
