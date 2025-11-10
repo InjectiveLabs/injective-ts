@@ -299,13 +299,16 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchTransaction(hash: string): Promise<ExplorerTransaction> {
+  async fetchTransaction(
+    hash: string,
+    isEvmTx = false,
+  ): Promise<ExplorerTransaction> {
     const endpoint = `txs/${hash}`
 
     try {
       const response = await this.retry<
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse>
-      >(() => this.get(endpoint))
+      >(() => this.get(endpoint, { is_evm_hash: isEvmTx }))
 
       return IndexerRestExplorerTransformer.transactionToTransaction(
         response.data.data,
