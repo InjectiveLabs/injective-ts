@@ -1,7 +1,8 @@
-import { GeneralException } from '@injectivelabs/exceptions'
-import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
+import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb.client'
+import { createStreamSubscription } from './streamHelpers.js'
+import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
 import { IndexerDerivativeStreamTransformer } from '../transformers/index.js'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import type { Subscription } from 'rxjs'
 import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import type { StreamStatusResponse } from '../types/index.js'
@@ -12,16 +13,8 @@ import type {
   TradeExecutionType,
 } from '../../../types/index.js'
 
-export type DerivativeOrderbookV2StreamCallback = (
-  response: ReturnType<
-    typeof IndexerDerivativeStreamTransformer.orderbookV2StreamCallback
-  >,
-) => void
-
-export type DerivativeOrderbookUpdateStreamCallback = (
-  response: ReturnType<
-    typeof IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback
-  >,
+export type DerivativeMarketStreamCallback = (
+  response: InjectiveDerivativeExchangeRpcPb.StreamMarketResponse,
 ) => void
 
 export type DerivativeOrdersStreamCallback = (
@@ -42,48 +35,55 @@ export type DerivativeTradesStreamCallback = (
   >,
 ) => void
 
-export type PositionsStreamCallback = (
+export type DerivativePositionsStreamCallback = (
   response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.positionStreamCallback
   >,
 ) => void
 
-export type PositionsV2StreamCallback = (
+export type DerivativePositionsV2StreamCallback = (
   response: ReturnType<
     typeof IndexerDerivativeStreamTransformer.positionV2StreamCallback
   >,
 ) => void
 
-export type MarketStreamCallback = (
-  response: InjectiveDerivativeExchangeRpc.StreamMarketResponse,
+export type DerivativeOrderbookV2StreamCallback = (
+  response: ReturnType<
+    typeof IndexerDerivativeStreamTransformer.orderbookV2StreamCallback
+  >,
+) => void
+
+export type DerivativeOrderbookUpdateStreamCallback = (
+  response: ReturnType<
+    typeof IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback
+  >,
 ) => void
 
 /**
  * @category Indexer Grpc Stream
+ * @description Provides streaming access to derivatives market data from Injective Indexer
  */
 export class IndexerGrpcDerivativesStream {
-  protected client: InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl
+  private client: InjectiveDerivativeExchangeRPCClient
+  private transport: GrpcWebRpcTransport
 
-  constructor(endpoint: string) {
-    this.client =
-      new InjectiveDerivativeExchangeRpc.InjectiveDerivativeExchangeRPCClientImpl(
-        getGrpcIndexerWebImpl(endpoint),
-      )
+  constructor(endpoint: string, metadata?: Record<string, string>) {
+    this.transport = new GrpcWebRpcTransport(endpoint, metadata)
+    this.client = new InjectiveDerivativeExchangeRPCClient(this.transport)
   }
 
-  /** @deprecated - use streamDerivativeOrderbookV2 */
-  streamDerivativeOrderbook(_args: {
-    marketIds: string[]
-    callback: any
-    onEndCallback?: (status?: StreamStatusResponse) => void
-    onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
-    throw new GeneralException(
-      new Error('deprecated - use streamDerivativeOrderbookV2'),
-    )
-  }
-
-  streamDerivativeOrders({
+  /**
+   * Stream derivative orders
+   * @param params - Stream parameters
+   * @param params.marketId - Optional market ID to filter orders
+   * @param params.subaccountId - Optional subaccount ID to filter orders
+   * @param params.orderSide - Optional order side to filter
+   * @param params.callback - Called for each order update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamOrders({
     marketId,
     subaccountId,
     orderSide,
@@ -98,7 +98,13 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveDerivativeExchangeRpc.StreamOrdersRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request =
+      InjectiveDerivativeExchangeRpcPb.StreamOrdersRequest.create()
 
     if (marketId) {
       request.marketId = marketId
@@ -112,50 +118,62 @@ export class IndexerGrpcDerivativesStream {
       request.orderSide = orderSide
     }
 
-    const subscription = this.client.StreamOrders(request).subscribe({
-      next(response: InjectiveDerivativeExchangeRpc.StreamOrdersResponse) {
+    const stream = this.client.streamOrders(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveDerivativeExchangeRpcPb.StreamOrdersResponse) => {
         callback(
           IndexerDerivativeStreamTransformer.ordersStreamCallback(response),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
-  streamDerivativeOrderHistory({
-    subaccountId,
+  /**
+   * Stream derivative order history
+   * @param params - Stream parameters
+   * @param params.marketId - Optional market ID to filter orders
+   * @param params.subaccountId - Optional subaccount ID to filter orders
+   * @param params.orderTypes - Optional array of order types to filter
+   * @param params.direction - Optional trade direction to filter
+   * @param params.state - Optional order state to filter
+   * @param params.executionTypes - Optional array of execution types to filter
+   * @param params.callback - Called for each order history update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamOrdersHistory({
     marketId,
+    subaccountId,
     orderTypes,
-    executionTypes,
     direction,
     state,
+    executionTypes,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
     marketId?: string
     subaccountId?: string
-    orderTypes?: OrderSide[]
-    executionTypes?: TradeExecutionType[]
+    orderTypes?: string[]
     direction?: TradeDirection
     state?: OrderState
+    executionTypes?: TradeExecutionType[]
     callback: DerivativeOrderHistoryStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
     const request =
-      InjectiveDerivativeExchangeRpc.StreamOrdersHistoryRequest.create()
+      InjectiveDerivativeExchangeRpcPb.StreamOrdersHistoryRequest.create()
 
     if (subaccountId) {
       request.subaccountId = subaccountId
@@ -181,40 +199,48 @@ export class IndexerGrpcDerivativesStream {
       request.executionTypes = executionTypes
     }
 
-    const subscription = this.client.StreamOrdersHistory(request).subscribe({
-      next(
-        response: InjectiveDerivativeExchangeRpc.StreamOrdersHistoryResponse,
-      ) {
+    const stream = this.client.streamOrdersHistory(request)
+
+    return createStreamSubscription(
+      stream,
+      (
+        response: InjectiveDerivativeExchangeRpcPb.StreamOrdersHistoryResponse,
+      ) => {
         callback(
           IndexerDerivativeStreamTransformer.orderHistoryStreamCallback(
             response,
           ),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
-  streamDerivativeTrades({
+  /**
+   * Stream derivative trades
+   * @param params - Stream parameters
+   * @param params.marketIds - Optional array of market IDs to filter trades
+   * @param params.marketId - Optional market ID to filter trades
+   * @param params.subaccountIds - Optional array of subaccount IDs to filter trades
+   * @param params.subaccountId - Optional subaccount ID to filter trades
+   * @param params.executionSide - Optional trade execution side to filter
+   * @param params.direction - Optional trade direction to filter
+   * @param params.pagination - Optional pagination options
+   * @param params.callback - Called for each trade update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamTrades({
     marketIds,
     marketId,
     subaccountIds,
     subaccountId,
-    callback,
-    pagination,
     executionSide,
     direction,
+    pagination,
+    callback,
     onEndCallback,
     onStatusCallback,
   }: {
@@ -222,14 +248,20 @@ export class IndexerGrpcDerivativesStream {
     marketId?: string
     subaccountIds?: string[]
     subaccountId?: string
-    pagination?: PaginationOption
     executionSide?: TradeExecutionSide
     direction?: TradeDirection
+    pagination?: PaginationOption
     callback: DerivativeTradesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveDerivativeExchangeRpc.StreamTradesRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request =
+      InjectiveDerivativeExchangeRpcPb.StreamTradesRequest.create()
 
     if (marketIds) {
       request.marketIds = marketIds
@@ -257,7 +289,7 @@ export class IndexerGrpcDerivativesStream {
 
     if (pagination) {
       if (pagination.skip !== undefined) {
-        request.skip = pagination.skip.toString()
+        request.skip = BigInt(pagination.skip)
       }
 
       if (pagination.limit !== undefined) {
@@ -265,44 +297,53 @@ export class IndexerGrpcDerivativesStream {
       }
     }
 
-    const subscription = this.client.StreamTrades(request).subscribe({
-      next(response: InjectiveDerivativeExchangeRpc.StreamTradesResponse) {
+    const stream = this.client.streamTrades(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveDerivativeExchangeRpcPb.StreamTradesResponse) => {
         callback(
           IndexerDerivativeStreamTransformer.tradesStreamCallback(response),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
-  streamDerivativePositions({
+  /**
+   * Stream derivative positions
+   * @param params - Stream parameters
+   * @param params.marketId - Optional market ID to filter positions
+   * @param params.address - Optional account address to filter positions
+   * @param params.subaccountId - Optional subaccount ID to filter positions
+   * @param params.callback - Called for each position update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamPositions({
     marketId,
+    address,
     subaccountId,
     callback,
-    address,
     onEndCallback,
     onStatusCallback,
   }: {
     marketId?: string
     address?: string
     subaccountId?: string
-    callback: PositionsStreamCallback
+    callback: DerivativePositionsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
     const request =
-      InjectiveDerivativeExchangeRpc.StreamPositionsRequest.create()
+      InjectiveDerivativeExchangeRpcPb.StreamPositionsRequest.create()
 
     if (marketId) {
       request.marketId = marketId
@@ -316,64 +357,74 @@ export class IndexerGrpcDerivativesStream {
       request.subaccountId = subaccountId
     }
 
-    const subscription = this.client.StreamPositions(request).subscribe({
-      next(response: InjectiveDerivativeExchangeRpc.StreamPositionsResponse) {
+    const stream = this.client.streamPositions(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveDerivativeExchangeRpcPb.StreamPositionsResponse) => {
         callback(
           IndexerDerivativeStreamTransformer.positionStreamCallback(response),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
-  streamDerivativeMarket({
+  /**
+   * Stream derivative markets
+   * @param params - Stream parameters
+   * @param params.marketIds - Optional array of market IDs to filter
+   * @param params.callback - Called for each market update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamMarkets({
     marketIds,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
     marketIds?: string[]
-    callback: MarketStreamCallback
+    callback: DerivativeMarketStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveDerivativeExchangeRpc.StreamMarketRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request =
+      InjectiveDerivativeExchangeRpcPb.StreamMarketRequest.create()
 
     if (marketIds && marketIds.length) {
       request.marketIds = marketIds
     }
 
-    const subscription = this.client.StreamMarket(request).subscribe({
-      next(response: InjectiveDerivativeExchangeRpc.StreamMarketResponse) {
+    const stream = this.client.streamMarket(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveDerivativeExchangeRpcPb.StreamMarketResponse) => {
         callback(response)
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
-  streamDerivativeOrderbookV2({
+  /**
+   * Stream derivative orderbooks V2
+   * @param params - Stream parameters
+   * @param params.marketIds - Array of market IDs to stream orderbook for
+   * @param params.callback - Called for each orderbook update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamOrderbooksV2({
     marketIds,
     callback,
     onEndCallback,
@@ -384,91 +435,120 @@ export class IndexerGrpcDerivativesStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
+    // Input validation
+    if (!marketIds || marketIds.length === 0) {
+      throw new Error('marketIds is required and cannot be empty')
+    }
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
     const request =
-      InjectiveDerivativeExchangeRpc.StreamOrderbookV2Request.create()
+      InjectiveDerivativeExchangeRpcPb.StreamOrderbookV2Request.create()
     request.marketIds = marketIds
 
-    const subscription = this.client.StreamOrderbookV2(request).subscribe({
-      next(response: InjectiveDerivativeExchangeRpc.StreamOrderbookV2Response) {
+    const stream = this.client.streamOrderbookV2(request)
+
+    return createStreamSubscription(
+      stream,
+      (
+        response: InjectiveDerivativeExchangeRpcPb.StreamOrderbookV2Response,
+      ) => {
         callback(
           IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(
             response,
           ),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
-  streamDerivativeOrderbookUpdate({
+  /**
+   * Stream derivative orderbook updates
+   * @param params - Stream parameters
+   * @param params.marketIds - Array of market IDs to stream orderbook updates for
+   * @param params.callback - Called for each orderbook update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamOrderbookUpdates({
     marketIds,
     callback,
     onEndCallback,
     onStatusCallback,
   }: {
     marketIds: string[]
-    callback: DerivativeOrderbookV2StreamCallback
+    callback: DerivativeOrderbookUpdateStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }) {
+  }): Subscription {
+    // Input validation
+    if (!marketIds || marketIds.length === 0) {
+      throw new Error('marketIds is required and cannot be empty')
+    }
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
     const request =
-      InjectiveDerivativeExchangeRpc.StreamOrderbookUpdateRequest.create()
+      InjectiveDerivativeExchangeRpcPb.StreamOrderbookUpdateRequest.create()
 
     request.marketIds = marketIds
 
-    const subscription = this.client.StreamOrderbookUpdate(request).subscribe({
-      next(
-        response: InjectiveDerivativeExchangeRpc.StreamOrderbookUpdateResponse,
-      ) {
+    const stream = this.client.streamOrderbookUpdate(request)
+
+    return createStreamSubscription(
+      stream,
+      (
+        response: InjectiveDerivativeExchangeRpcPb.StreamOrderbookUpdateResponse,
+      ) => {
         callback(
           IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
             response,
           ),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
-  streamDerivativePositionsV2({
+  /**
+   * Stream derivative positions V2
+   * @param params - Stream parameters
+   * @param params.marketId - Optional market ID to filter positions
+   * @param params.address - Optional account address to filter positions
+   * @param params.subaccountId - Optional subaccount ID to filter positions
+   * @param params.callback - Called for each position update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamPositionsV2({
     marketId,
+    address,
     subaccountId,
     callback,
-    address,
     onEndCallback,
     onStatusCallback,
   }: {
     marketId?: string
     address?: string
     subaccountId?: string
-    callback: PositionsV2StreamCallback
+    callback: DerivativePositionsV2StreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
     const request =
-      InjectiveDerivativeExchangeRpc.StreamPositionsV2Request.create()
+      InjectiveDerivativeExchangeRpcPb.StreamPositionsV2Request.create()
 
     if (marketId) {
       request.marketId = marketId
@@ -482,24 +562,19 @@ export class IndexerGrpcDerivativesStream {
       request.subaccountId = subaccountId
     }
 
-    const subscription = this.client.StreamPositionsV2(request).subscribe({
-      next(response: InjectiveDerivativeExchangeRpc.StreamPositionsV2Response) {
+    const stream = this.client.streamPositionsV2(request)
+
+    return createStreamSubscription(
+      stream,
+      (
+        response: InjectiveDerivativeExchangeRpcPb.StreamPositionsV2Response,
+      ) => {
         callback(
           IndexerDerivativeStreamTransformer.positionV2StreamCallback(response),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 }

@@ -1,105 +1,54 @@
-import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
 import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+  InjectiveMetaRpcPb,
+  InjectiveMetaRPCClient,
+} from '@injectivelabs/indexer-proto-ts-v2'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcMetaApi extends BaseGrpcConsumer {
+export class IndexerGrpcMetaApi extends BaseIndexerGrpcConsumerV2 {
   protected module: string = IndexerModule.Meta
-
-  protected client: InjectiveMetaRpc.InjectiveMetaRPCClientImpl
+  private client: InjectiveMetaRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectiveMetaRpc.InjectiveMetaRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveMetaRPCClient(this.transport)
   }
 
   async fetchPing() {
-    const request = InjectiveMetaRpc.PingRequest.create()
+    const request = InjectiveMetaRpcPb.PingRequest.create()
 
-    try {
-      const response = await this.retry<InjectiveMetaRpc.PingResponse>(() =>
-        this.client.Ping(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveMetaRpcPb.PingRequest,
+      InjectiveMetaRpcPb.PingResponse
+    >(request, this.client.ping.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Ping',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Ping',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchVersion() {
-    const request = InjectiveMetaRpc.VersionRequest.create()
+    const request = InjectiveMetaRpcPb.VersionRequest.create()
 
-    try {
-      const response = await this.retry<InjectiveMetaRpc.VersionResponse>(() =>
-        this.client.Version(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveMetaRpcPb.VersionRequest,
+      InjectiveMetaRpcPb.VersionResponse
+    >(request, this.client.version.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Version',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Version',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchInfo() {
-    const request = InjectiveMetaRpc.InfoRequest.create()
+    const request = InjectiveMetaRpcPb.InfoRequest.create()
 
-    request.timestamp = Date.now().toString()
+    request.timestamp = BigInt(Date.now())
 
-    try {
-      const response = await this.retry<InjectiveMetaRpc.InfoResponse>(() =>
-        this.client.Info(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveMetaRpcPb.InfoRequest,
+      InjectiveMetaRpcPb.InfoResponse
+    >(request, this.client.info.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Info',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Info',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 }

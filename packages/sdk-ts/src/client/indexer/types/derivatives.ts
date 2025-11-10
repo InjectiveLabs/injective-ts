@@ -1,4 +1,4 @@
-import type { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveDerivativeExchangeRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 import type {
   OrderSide,
   OrderState,
@@ -213,25 +213,26 @@ export interface FundingRate {
   timestamp: number
 }
 
-export type GrpcFundingRate = InjectiveDerivativeExchangeRpc.FundingRate
-export type GrpcPositionDelta = InjectiveDerivativeExchangeRpc.PositionDelta
-export type GrpcFundingPayment = InjectiveDerivativeExchangeRpc.FundingPayment
-export type GrpcDerivativeTrade = InjectiveDerivativeExchangeRpc.DerivativeTrade
+export type GrpcFundingRate = InjectiveDerivativeExchangeRpcPb.FundingRate
+export type GrpcPositionDelta = InjectiveDerivativeExchangeRpcPb.PositionDelta
+export type GrpcFundingPayment = InjectiveDerivativeExchangeRpcPb.FundingPayment
+export type GrpcDerivativeTrade =
+  InjectiveDerivativeExchangeRpcPb.DerivativeTrade
 export type GrpcDerivativePosition =
-  InjectiveDerivativeExchangeRpc.DerivativePosition
+  InjectiveDerivativeExchangeRpcPb.DerivativePosition
 export type GrpcDerivativePositionV2 =
-  InjectiveDerivativeExchangeRpc.DerivativePositionV2
+  InjectiveDerivativeExchangeRpcPb.DerivativePositionV2
 export type GrpcPerpetualMarketInfo =
-  InjectiveDerivativeExchangeRpc.PerpetualMarketInfo
+  InjectiveDerivativeExchangeRpcPb.PerpetualMarketInfo
 export type GrpcDerivativeMarketInfo =
-  InjectiveDerivativeExchangeRpc.DerivativeMarketInfo
+  InjectiveDerivativeExchangeRpcPb.DerivativeMarketInfo
 export type GrpcDerivativeLimitOrder =
-  InjectiveDerivativeExchangeRpc.DerivativeLimitOrder
+  InjectiveDerivativeExchangeRpcPb.DerivativeLimitOrder
 export type GrpcPerpetualMarketFunding =
-  InjectiveDerivativeExchangeRpc.PerpetualMarketFunding
+  InjectiveDerivativeExchangeRpcPb.PerpetualMarketFunding
 export type GrpcExpiryFuturesMarketInfo =
-  InjectiveDerivativeExchangeRpc.ExpiryFuturesMarketInfo
+  InjectiveDerivativeExchangeRpcPb.ExpiryFuturesMarketInfo
 export type GrpcBinaryOptionsMarketInfo =
-  InjectiveDerivativeExchangeRpc.BinaryOptionsMarketInfo
+  InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketInfo
 export type GrpcDerivativeOrderHistory =
-  InjectiveDerivativeExchangeRpc.DerivativeOrderHistory
+  InjectiveDerivativeExchangeRpcPb.DerivativeOrderHistory

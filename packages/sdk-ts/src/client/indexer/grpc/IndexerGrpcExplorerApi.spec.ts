@@ -87,7 +87,9 @@ describe('IndexerGrpcExplorerApi', () => {
         limit: 1,
       })
       const [block] = data
-      const response = await indexerGrpcExplorerApi.fetchBlock(block.height)
+      const response = await indexerGrpcExplorerApi.fetchBlock(
+        block.height.toString(),
+      )
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -242,7 +244,7 @@ describe('IndexerGrpcExplorerApi', () => {
     }
   })
 
-  test.only('fetchTxsV2', async () => {
+  test('fetchTxsV2', async () => {
     try {
       const response = await indexerGrpcExplorerApi.fetchTxsV2({
         perPage: 10,
@@ -275,7 +277,7 @@ describe('IndexerGrpcExplorerApi', () => {
     }
   })
 
-  test.only('fetchAccountTxsV2WithBlockDetails', async () => {
+  test('fetchAccountTxsV2WithBlockDetails', async () => {
     try {
       const response = await new IndexerGrpcExplorerApi(
         getNetworkEndpoints(Network.Testnet).indexer,

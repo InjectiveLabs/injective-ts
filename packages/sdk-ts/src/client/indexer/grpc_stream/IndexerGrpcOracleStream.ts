@@ -1,5 +1,7 @@
-import { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
+import * as InjectiveOracleRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_oracle_rpc_pb'
+import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_oracle_rpc_pb.client'
+import { createStreamSubscription } from './streamHelpers.js'
+import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
 import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer.js'
 import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../types/index.js'
@@ -18,16 +20,28 @@ export type OraclePricesByMarketsStreamCallback = (
 
 /**
  * @category Indexer Grpc Stream
+ * @description Provides streaming access to oracle price data from Injective Indexer
  */
 export class IndexerGrpcOracleStream {
-  protected client: InjectiveOracleRpc.InjectiveOracleRPCClientImpl
+  private client: InjectiveOracleRPCClient
+  private transport: GrpcWebRpcTransport
 
-  constructor(endpoint: string) {
-    this.client = new InjectiveOracleRpc.InjectiveOracleRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
-    )
+  constructor(endpoint: string, metadata?: Record<string, string>) {
+    this.transport = new GrpcWebRpcTransport(endpoint, metadata)
+    this.client = new InjectiveOracleRPCClient(this.transport)
   }
 
+  /**
+   * Stream oracle price updates
+   * @param params - Stream parameters
+   * @param params.oracleType - The oracle type to stream prices for
+   * @param params.baseSymbol - Optional base symbol filter
+   * @param params.quoteSymbol - Optional quote symbol filter
+   * @param params.callback - Called for each price update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamOraclePrices({
     oracleType,
     baseSymbol,
@@ -43,7 +57,15 @@ export class IndexerGrpcOracleStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveOracleRpc.StreamPricesRequest.create()
+    // Input validation
+    if (!oracleType) {
+      throw new Error('oracleType is required')
+    }
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = InjectiveOracleRpcPb.StreamPricesRequest.create()
 
     if (baseSymbol) {
       request.baseSymbol = baseSymbol
@@ -55,25 +77,27 @@ export class IndexerGrpcOracleStream {
 
     request.oracleType = oracleType
 
-    const subscription = this.client.StreamPrices(request).subscribe({
-      next(response: InjectiveOracleRpc.StreamPricesResponse) {
+    const stream = this.client.streamPrices(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveOracleRpcPb.StreamPricesResponse) => {
         callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 
+  /**
+   * Stream oracle prices by markets
+   * @param params - Stream parameters
+   * @param params.marketIds - Optional array of market IDs to filter
+   * @param params.callback - Called for each price update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamOraclePricesByMarkets({
     marketIds,
     callback,
@@ -85,30 +109,28 @@ export class IndexerGrpcOracleStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveOracleRpc.StreamPricesByMarketsRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = InjectiveOracleRpcPb.StreamPricesByMarketsRequest.create()
 
     if (marketIds) {
       request.marketIds = marketIds
     }
 
-    const subscription = this.client.StreamPricesByMarkets(request).subscribe({
-      next(response: InjectiveOracleRpc.StreamPricesByMarketsResponse) {
+    const stream = this.client.streamPricesByMarkets(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveOracleRpcPb.StreamPricesByMarketsResponse) => {
         callback(
           IndexerOracleStreamTransformer.pricesByMarketsCallback(response),
         )
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 }

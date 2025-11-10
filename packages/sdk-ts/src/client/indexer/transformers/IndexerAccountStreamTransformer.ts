@@ -1,13 +1,13 @@
 import { StreamOperation } from '../../../types/index.js'
 import { IndexerGrpcAccountTransformer } from './IndexerGrpcAccountTransformer.js'
-import type { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
+import type * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerAccountStreamTransformer {
   static balanceStreamCallback = (
-    response: InjectiveAccountRpc.StreamSubaccountBalanceResponse,
+    response: InjectiveAccountsRpcPb.StreamSubaccountBalanceResponse,
   ) => {
     const balance = response.balance
 

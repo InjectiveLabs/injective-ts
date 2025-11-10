@@ -1,20 +1,33 @@
-import { InjectiveTradingRpc } from '@injectivelabs/indexer-proto-ts'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
+import * as InjectiveTradingRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb'
+import { InjectiveTradingRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb.client'
+import { createStreamSubscription } from './streamHelpers.js'
+import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
 import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../types/index.js'
 
 /**
  * @category Indexer Grid Strategy Grpc Stream
+ * @description Provides streaming access to grid strategy data from Injective Indexer
  */
 export class IndexerGrpcTradingStream {
-  protected client: InjectiveTradingRpc.InjectiveTradingRPCClientImpl
+  private client: InjectiveTradingRPCClient
+  private transport: GrpcWebRpcTransport
 
   constructor(endpoint: string, metadata?: Record<string, string>) {
-    this.client = new InjectiveTradingRpc.InjectiveTradingRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint, metadata),
-    )
+    this.transport = new GrpcWebRpcTransport(endpoint, metadata)
+    this.client = new InjectiveTradingRPCClient(this.transport)
   }
 
+  /**
+   * Stream grid strategies
+   * @param params - Stream parameters
+   * @param params.marketId - Optional market ID to filter strategies
+   * @param params.accountAddresses - Optional array of account addresses to filter
+   * @param params.callback - Called for each strategy update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamGridStrategies({
     marketId,
     callback,
@@ -26,10 +39,11 @@ export class IndexerGrpcTradingStream {
     accountAddresses?: string[]
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-    callback: (response: InjectiveTradingRpc.StreamStrategyResponse) => void
+    callback: (response: InjectiveTradingRpcPb.StreamStrategyResponse) => void
   }): Subscription {
-    const request = InjectiveTradingRpc.StreamStrategyRequest.create()
+    const request = InjectiveTradingRpcPb.StreamStrategyRequest.create()
 
+    // Input validation (already exists in original)
     if ((!accountAddresses || accountAddresses.length === 0) && !marketId) {
       throw new Error('accountAddresses or marketId is required')
     }
@@ -46,22 +60,15 @@ export class IndexerGrpcTradingStream {
       request.marketId = marketId
     }
 
-    const subscription = this.client.StreamStrategy(request).subscribe({
-      next(response: InjectiveTradingRpc.StreamStrategyResponse) {
+    const stream = this.client.streamStrategy(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveTradingRpcPb.StreamStrategyResponse) => {
         callback(response)
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 }
