@@ -7,10 +7,8 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import {
-  InjectiveExchangeRpcPb,
-  InjectiveExchangeRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
+import { InjectiveExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb.client'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_EXCHANGE_LIMIT,
@@ -19,7 +17,7 @@ import {
 } from '@injectivelabs/utils'
 import { IndexerModule } from '../types/index.js'
 import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
 interface PrepareTxArgs {
@@ -38,7 +36,7 @@ interface PrepareTxArgs {
  * @category Indexer Grpc API
  * @deprecated use IndexerGrpcWeb3GwApi
  */
-export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Transaction
 
   private client: InjectiveExchangeRPCClient

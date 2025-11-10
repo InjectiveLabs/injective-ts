@@ -1,13 +1,13 @@
 import * as InjectivePermissionsV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/query_pb.mjs'
 import { QueryClient as InjectivePermissionsV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcPermissionsApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Permissions
   private client: InjectivePermissionsV1Beta1QueryClient
 

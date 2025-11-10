@@ -1,7 +1,7 @@
 import * as CosmosStakingV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/query_pb.mjs'
 import { QueryClient as CosmosStakingV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcStakingTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
@@ -9,7 +9,7 @@ import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcStakingApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcStakingApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Staking
   private client: CosmosStakingV1Beta1QueryClient
 

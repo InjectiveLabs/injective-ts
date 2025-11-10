@@ -1,13 +1,13 @@
 import * as InjectiveEvmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/query_pb.mjs'
 import { QueryClient as InjectiveEvmV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcEvmTransformer } from '../transformers/index.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcEvmApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcEvmApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Evm
 
   private client: InjectiveEvmV1QueryClient

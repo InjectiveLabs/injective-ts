@@ -1,4 +1,3 @@
-import type { InjectiveDerivativeExchangeRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 import type {
   OrderSide,
   OrderState,
@@ -6,6 +5,7 @@ import type {
   TradeExecutionType,
   TradeExecutionSide,
 } from '@injectivelabs/ts-types'
+import type * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
 import type { TokenMeta } from './../../../types/token.js'
 import type { GrpcOrderType } from '../../chain/types/exchange.js'
 

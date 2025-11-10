@@ -1,7 +1,7 @@
 import * as CosmosBankV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/query_pb.mjs'
 import { QueryClient as CosmosBankV1BetaQueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcBankTransformer } from '../transformers/index.js'
 import { fetchAllWithPagination } from '../../../utils/pagination.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
@@ -12,7 +12,7 @@ const MAX_LIMIT_FOR_SUPPLY = 10000
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcBankApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcBankApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Bank
   private client: CosmosBankV1BetaQueryClient
 

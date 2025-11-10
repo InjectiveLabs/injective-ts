@@ -1,12 +1,12 @@
 import * as InjectiveWasmxV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/query_pb.mjs'
 import { QueryClient as InjectiveWasmxV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcWasmXApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcWasmXApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.WasmX
   private client: InjectiveWasmxV1QueryClient
 

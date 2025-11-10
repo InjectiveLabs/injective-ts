@@ -3,7 +3,7 @@ import * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-
 import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcDerivativeTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import type { PaginationOption } from '../../../types/pagination.js'
 import type {
@@ -15,7 +15,7 @@ import type {
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Derivatives
 
   private client: InjectiveDerivativeExchangeRPCClient

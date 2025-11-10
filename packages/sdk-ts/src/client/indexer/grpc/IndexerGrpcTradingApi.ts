@@ -1,15 +1,13 @@
-import {
-  InjectiveTradingRpcPb,
-  InjectiveTradingRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveTradingRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb'
+import { InjectiveTradingRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { MarketType, GridStrategyType } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcTradingApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcTradingApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Trading
 
   private client: InjectiveTradingRPCClient

@@ -1,6 +1,10 @@
 import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import { BondStatus } from '../types/staking.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import {
+  protobufTimestampToDate,
+  protobufTimestampToUnixSeconds,
+} from '../../../utils/time.js'
 import type * as CosmosStakingV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/query_pb.mjs'
 import type { Pagination } from '../../../types/index.js'
 import type {
@@ -29,7 +33,7 @@ export class ChainGrpcStakingTransformer {
     const params = response.params
 
     return {
-      unbondingTime: Number(params!.unbondingTime!.seconds),
+      unbondingTime: protobufTimestampToUnixSeconds(params!.unbondingTime),
       minCommissionRate: params!.minCommissionRate,
       maxValidators: params!.maxValidators,
       maxEntries: params!.maxEntries,
@@ -138,10 +142,9 @@ export class ChainGrpcStakingTransformer {
               ? grpcUnBondingDelegation.validatorAddress
               : '',
             creationHeight: parseInt(entry.creationHeight.toString(), 10),
-            // Handle V2 timestamp conversion - completionTime is a Timestamp object with seconds property
-            completionTime: entry.completionTime
-              ? Number(entry.completionTime.seconds)
-              : 0,
+            completionTime: protobufTimestampToUnixSeconds(
+              entry.completionTime,
+            ),
             initialBalance: toBigNumber(entry.initialBalance).toFixed(),
             balance: toBigNumber(entry.balance).toFixed(),
           }),
@@ -179,10 +182,9 @@ export class ChainGrpcStakingTransformer {
               ...acc,
               {
                 delegation: {
-                  // Handle V2 timestamp conversion - completionTime is a Timestamp object with seconds property
-                  completionTime: entry.redelegationEntry?.completionTime
-                    ? Number(entry.redelegationEntry.completionTime.seconds)
-                    : 0,
+                  completionTime: protobufTimestampToUnixSeconds(
+                    entry.redelegationEntry?.completionTime,
+                  ),
                   delegatorAddress: grpcRedelegation.delegatorAddress || '',
                   sourceValidatorAddress:
                     grpcRedelegation.validatorSrcAddress || '',
@@ -279,11 +281,7 @@ export class ChainGrpcStakingTransformer {
           commissionRates ? commissionRates.maxChangeRate : '0',
         ).toFixed(),
       },
-      updateTime: commission
-        ? commission.updateTime
-          ? new Date(Number(commission.updateTime.seconds) * 1000)
-          : new Date()
-        : new Date(),
+      updateTime: protobufTimestampToDate(commission?.updateTime) ?? new Date(),
     }
   }
 

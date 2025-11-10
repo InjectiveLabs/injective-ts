@@ -1,5 +1,5 @@
 import type { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
-import type { InjectiveInsuranceRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectiveInsuranceRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb'
 import type {
   Redemption,
   RedemptionStatus,
