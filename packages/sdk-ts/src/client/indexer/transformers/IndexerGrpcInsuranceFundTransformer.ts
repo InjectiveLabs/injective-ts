@@ -1,5 +1,5 @@
-import type { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
 import type { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
+import type { InjectiveInsuranceRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 import type {
   Redemption,
   RedemptionStatus,
@@ -13,7 +13,7 @@ import type {
  */
 export class IndexerGrpcInsuranceFundTransformer {
   static insuranceFundsResponseToInsuranceFunds(
-    response: InjectiveInsuranceRpc.FundsResponse,
+    response: InjectiveInsuranceRpcPb.FundsResponse,
   ) {
     const insuranceFunds = response.funds
 
@@ -23,7 +23,7 @@ export class IndexerGrpcInsuranceFundTransformer {
   }
 
   static redemptionsResponseToRedemptions(
-    response: InjectiveInsuranceRpc.RedemptionsResponse,
+    response: InjectiveInsuranceRpcPb.RedemptionsResponse,
   ) {
     const redemptions = response.redemptionSchedules
 
@@ -43,9 +43,8 @@ export class IndexerGrpcInsuranceFundTransformer {
     return {
       depositDenom,
       insurancePoolTokenDenom: grpcInsuranceFund.poolTokenDenom,
-      redemptionNoticePeriodDuration: parseInt(
-        redemptionNoticePeriodDuration || '0',
-        10,
+      redemptionNoticePeriodDuration: Number(
+        redemptionNoticePeriodDuration || 0n,
       ),
       balance: grpcInsuranceFund.balance,
       totalShare: grpcInsuranceFund.totalShare,
@@ -54,10 +53,10 @@ export class IndexerGrpcInsuranceFundTransformer {
       marketTicker: grpcInsuranceFund.marketTicker,
       oracleBase: grpcInsuranceFund.oracleBase,
       oracleQuote: grpcInsuranceFund.oracleQuote,
-      oracleType: parseInt(
+      oracleType: Number(
         grpcInsuranceFund.oracleType,
       ) as InjectiveOracleV1Beta1Oracle.OracleType,
-      expiry: parseInt(grpcInsuranceFund.expiry, 10),
+      expiry: Number(grpcInsuranceFund.expiry),
     }
   }
 
@@ -73,16 +72,16 @@ export class IndexerGrpcInsuranceFundTransformer {
     redemption: GrpcIndexerRedemptionSchedule,
   ): Redemption {
     return {
-      redemptionId: parseInt(redemption.redemptionId, 10),
+      redemptionId: Number(redemption.redemptionId),
       status: redemption.status as RedemptionStatus,
       redeemer: redemption.redeemer,
-      claimableRedemptionTime: parseInt(redemption.claimableRedemptionTime, 10),
+      claimableRedemptionTime: Number(redemption.claimableRedemptionTime),
       redemptionAmount: redemption.redemptionAmount,
       redemptionDenom: redemption.redemptionDenom,
-      requestedAt: parseInt(redemption.requestedAt, 10),
+      requestedAt: Number(redemption.requestedAt),
       disbursedAmount: redemption.disbursedAmount,
       disbursedDenom: redemption.disbursedDenom,
-      disbursedAt: parseInt(redemption.disbursedAt, 10),
+      disbursedAt: Number(redemption.disbursedAt),
     }
   }
 

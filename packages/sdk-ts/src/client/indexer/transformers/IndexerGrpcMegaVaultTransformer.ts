@@ -1,4 +1,4 @@
-import type { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveMegavaultRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 import type {
   MegaVault,
   MegaVaultApr,
@@ -42,7 +42,7 @@ import type {
 
 export class IndexerGrpcMegaVaultTransformer {
   static vaultResponseToVault(
-    response: InjectiveMegaVaultRpc.GetVaultResponse,
+    response: InjectiveMegavaultRpcPb.GetVaultResponse,
   ): MegaVault | undefined {
     const vault = response.vault
 
@@ -53,12 +53,12 @@ export class IndexerGrpcMegaVaultTransformer {
     return {
       admin: vault.admin,
       lpDenom: vault.lpDenom,
-      createdAt: vault.createdAt,
-      updatedAt: vault.updatedAt,
+      createdAt: vault.createdAt.toString(),
+      updatedAt: vault.updatedAt.toString(),
       quoteDenom: vault.quoteDenom,
       contractName: vault.contractName,
-      createdHeight: vault.createdHeight,
-      updatedHeight: vault.updatedHeight,
+      createdHeight: vault.createdHeight.toString(),
+      updatedHeight: vault.updatedHeight.toString(),
       contractAddress: vault.contractAddress,
       contractVersion: vault.contractVersion,
       stats: vault.stats
@@ -84,7 +84,7 @@ export class IndexerGrpcMegaVaultTransformer {
   }
 
   static userResponseToUser(
-    response: InjectiveMegaVaultRpc.GetUserResponse,
+    response: InjectiveMegavaultRpcPb.GetUserResponse,
   ): MegaVaultUser | undefined {
     const user = response.user
     if (!user) {
@@ -93,8 +93,8 @@ export class IndexerGrpcMegaVaultTransformer {
 
     return {
       address: user.address,
-      updatedAt: user.updatedAt,
-      updatedHeight: user.updatedHeight,
+      updatedAt: user.updatedAt.toString(),
+      updatedHeight: user.updatedHeight.toString(),
       contractAddress: user.contractAddress,
       stats: user.stats
         ? IndexerGrpcMegaVaultTransformer.grpcUserStatsToUserStats(user.stats)
@@ -103,7 +103,7 @@ export class IndexerGrpcMegaVaultTransformer {
   }
 
   static subscriptionsResponseToSubscriptions(
-    response: InjectiveMegaVaultRpc.ListSubscriptionsResponse,
+    response: InjectiveMegavaultRpcPb.ListSubscriptionsResponse,
   ): MegaVaultSubscription[] {
     return response.subscriptions.map(
       IndexerGrpcMegaVaultTransformer.grpcSubscriptionToSubscription,
@@ -111,7 +111,7 @@ export class IndexerGrpcMegaVaultTransformer {
   }
 
   static redemptionsResponseToRedemptions(
-    response: InjectiveMegaVaultRpc.ListRedemptionsResponse,
+    response: InjectiveMegavaultRpcPb.ListRedemptionsResponse,
   ): MegaVaultRedemption[] {
     return response.redemptions.map(
       IndexerGrpcMegaVaultTransformer.grpcRedemptionToRedemption,
@@ -119,7 +119,7 @@ export class IndexerGrpcMegaVaultTransformer {
   }
 
   static operatorRedemptionBucketsResponseToOperatorRedemptionBuckets(
-    response: InjectiveMegaVaultRpc.GetOperatorRedemptionBucketsResponse,
+    response: InjectiveMegavaultRpcPb.GetOperatorRedemptionBucketsResponse,
   ): MegaVaultOperatorRedemptionBucket[] {
     return response.buckets.map(
       IndexerGrpcMegaVaultTransformer.grpcOperatorRedemptionBucketToOperatorRedemptionBucket,
@@ -127,7 +127,7 @@ export class IndexerGrpcMegaVaultTransformer {
   }
 
   static tvlHistoryResponseToTvlHistory(
-    response: InjectiveMegaVaultRpc.TvlHistoryResponse,
+    response: InjectiveMegavaultRpcPb.TvlHistoryResponse,
   ): MegaVaultHistoricalTVL[] {
     return response.history.map(
       IndexerGrpcMegaVaultTransformer.grpcHistoricalTVLToHistoricalTVL,
@@ -135,7 +135,7 @@ export class IndexerGrpcMegaVaultTransformer {
   }
 
   static pnlHistoryResponseToPnlHistory(
-    response: InjectiveMegaVaultRpc.PnlHistoryResponse,
+    response: InjectiveMegavaultRpcPb.PnlHistoryResponse,
   ): MegaVaultHistoricalPnL[] {
     return response.history.map(
       IndexerGrpcMegaVaultTransformer.grpcHistoricalPnLToHistoricalPnL,
@@ -147,11 +147,11 @@ export class IndexerGrpcMegaVaultTransformer {
   ): MegaVaultOperator {
     return {
       address: operator.address,
-      updatedAt: operator.updatedAt,
+      updatedAt: operator.updatedAt.toString(),
       percentage: operator.percentage,
       totalAmount: operator.totalAmount,
       subaccountId: operator.subaccountId,
-      updatedHeight: operator.updatedHeight,
+      updatedHeight: operator.updatedHeight.toString(),
       totalLiquidAmount: operator.totalLiquidAmount,
     }
   }
@@ -162,8 +162,8 @@ export class IndexerGrpcMegaVaultTransformer {
     return {
       address: incentive.address,
       amount: incentive.amount,
-      updatedAt: incentive.updatedAt,
-      updatedHeight: incentive.updatedHeight,
+      updatedAt: incentive.updatedAt.toString(),
+      updatedHeight: incentive.updatedHeight.toString(),
     }
   }
 
@@ -172,10 +172,10 @@ export class IndexerGrpcMegaVaultTransformer {
   ): MegaVaultTargetApr {
     return {
       apr: targetApr.apr,
-      updatedAt: targetApr.updatedAt,
+      updatedAt: targetApr.updatedAt.toString(),
       upperThreshold: targetApr.upperThreshold,
       lowerThreshold: targetApr.lowerThreshold,
-      updatedHeight: targetApr.updatedHeight,
+      updatedHeight: targetApr.updatedHeight.toString(),
     }
   }
 
@@ -310,14 +310,14 @@ export class IndexerGrpcMegaVaultTransformer {
   ): MegaVaultSubscription {
     return {
       user: subscription.user,
-      index: subscription.index,
+      index: subscription.index.toString(),
       amount: subscription.amount,
       status: subscription.status,
       lpAmount: subscription.lpAmount,
-      createdAt: subscription.createdAt,
-      executedAt: subscription.executedAt,
-      createdHeight: subscription.createdHeight,
-      executedHeight: subscription.executedHeight,
+      createdAt: subscription.createdAt.toString(),
+      executedAt: subscription.executedAt.toString(),
+      createdHeight: subscription.createdHeight.toString(),
+      executedHeight: subscription.executedHeight.toString(),
       contractAddress: subscription.contractAddress,
     }
   }
@@ -327,15 +327,15 @@ export class IndexerGrpcMegaVaultTransformer {
   ): MegaVaultRedemption {
     return {
       user: redemption.user,
-      dueAt: redemption.dueAt,
-      index: redemption.index,
+      dueAt: redemption.dueAt.toString(),
+      index: redemption.index.toString(),
       amount: redemption.amount,
       status: redemption.status,
       lpAmount: redemption.lpAmount,
-      createdAt: redemption.createdAt,
-      executedAt: redemption.executedAt,
-      createdHeight: redemption.createdHeight,
-      executedHeight: redemption.executedHeight,
+      createdAt: redemption.createdAt.toString(),
+      executedAt: redemption.executedAt.toString(),
+      createdHeight: redemption.createdHeight.toString(),
+      executedHeight: redemption.executedHeight.toString(),
       contractAddress: redemption.contractAddress,
     }
   }

@@ -1,5 +1,5 @@
-import type { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
 import type { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
+import type { InjectiveInsuranceRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 
 export interface IndexerInsuranceFund {
   depositDenom: string
@@ -45,6 +45,6 @@ export interface InsuranceFundCreateParams {
   expiry?: number
 }
 
-export type GrpcIndexerInsuranceFund = InjectiveInsuranceRpc.InsuranceFund
+export type GrpcIndexerInsuranceFund = InjectiveInsuranceRpcPb.InsuranceFund
 export type GrpcIndexerRedemptionSchedule =
-  InjectiveInsuranceRpc.RedemptionSchedule
+  InjectiveInsuranceRpcPb.RedemptionSchedule

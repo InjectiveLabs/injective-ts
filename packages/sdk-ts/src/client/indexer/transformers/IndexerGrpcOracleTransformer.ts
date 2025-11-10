@@ -1,9 +1,9 @@
-import type { InjectiveOracleRpc } from '@injectivelabs/indexer-proto-ts'
+import type { InjectiveOracleRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
 import type { Oracle, GrpcOracle } from '../types/oracle.js'
 
 export class IndexerGrpcOracleTransformer {
   static oraclesResponseToOracles(
-    response: InjectiveOracleRpc.OracleListResponse,
+    response: InjectiveOracleRpcPb.OracleListResponse,
   ): Oracle[] {
     const oracles = response.oracles
 

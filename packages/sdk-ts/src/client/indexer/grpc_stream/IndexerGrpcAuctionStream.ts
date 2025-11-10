@@ -1,6 +1,8 @@
-import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
+import * as InjectiveAuctionRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb'
+import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb.client'
+import { createStreamSubscription } from './streamHelpers.js'
+import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
 import { IndexerAuctionStreamTransformer } from '../transformers/index.js'
-import { getGrpcIndexerWebImpl } from '../../base/BaseIndexerGrpcWebConsumer.js'
 import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../types/index.js'
 
@@ -12,16 +14,25 @@ export type BidsStreamCallback = (
 
 /**
  * @category Indexer Grpc Stream
+ * @description Provides streaming access to auction data from Injective Indexer
  */
 export class IndexerGrpcAuctionStream {
-  protected client: InjectiveAuctionRpc.InjectiveAuctionRPCClientImpl
+  private client: InjectiveAuctionRPCClient
+  private transport: GrpcWebRpcTransport
 
-  constructor(endpoint: string) {
-    this.client = new InjectiveAuctionRpc.InjectiveAuctionRPCClientImpl(
-      getGrpcIndexerWebImpl(endpoint),
-    )
+  constructor(endpoint: string, metadata?: Record<string, string>) {
+    this.transport = new GrpcWebRpcTransport(endpoint, metadata)
+    this.client = new InjectiveAuctionRPCClient(this.transport)
   }
 
+  /**
+   * Stream auction bids
+   * @param params - Stream parameters
+   * @param params.callback - Called for each bid update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
   streamBids({
     callback,
     onEndCallback,
@@ -31,24 +42,22 @@ export class IndexerGrpcAuctionStream {
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    const request = InjectiveAuctionRpc.StreamBidsRequest.create()
+    // Input validation
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
 
-    const subscription = this.client.StreamBids(request).subscribe({
-      next(response: InjectiveAuctionRpc.StreamBidsResponse) {
+    const request = InjectiveAuctionRpcPb.StreamBidsRequest.create()
+
+    const stream = this.client.streamBids(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: InjectiveAuctionRpcPb.StreamBidsResponse) => {
         callback(IndexerAuctionStreamTransformer.bidsStreamCallback(response))
       },
-      error(err) {
-        if (onStatusCallback) {
-          onStatusCallback(err)
-        }
-      },
-      complete() {
-        if (onEndCallback) {
-          onEndCallback()
-        }
-      },
-    })
-
-    return subscription as unknown as Subscription
+      onEndCallback,
+      onStatusCallback,
+    )
   }
 }
