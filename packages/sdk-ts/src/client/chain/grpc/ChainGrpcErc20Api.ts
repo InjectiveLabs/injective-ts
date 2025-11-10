@@ -1,7 +1,7 @@
 import * as InjectiveErc20V1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb.mjs'
 import { QueryClient as InjectiveErc20V1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { fetchAllWithPagination } from '../../../utils/pagination.js'
 import {
   ChainGrpcErc20Transformer,
@@ -14,7 +14,7 @@ const MAX_LIMIT_FOR_SUPPLY = 10000
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcErc20Api extends BaseGrpcConsumerV2 {
+export class ChainGrpcErc20Api extends BaseGrpcConsumer {
   protected module: string = ChainModule.Erc20
 
   private client: InjectiveErc20V1Beta1QueryClient

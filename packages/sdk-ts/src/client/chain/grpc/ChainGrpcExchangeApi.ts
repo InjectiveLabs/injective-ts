@@ -1,7 +1,7 @@
 import * as InjectiveExchangeV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb.mjs'
 import { QueryClient as InjectiveExchangeV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcExchangeTransformer } from '../transformers/index.js'
 import type * as InjectiveExchangeV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/genesis_pb.mjs'
 import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb.mjs'
@@ -9,7 +9,7 @@ import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-pr
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcExchangeApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Exchange
   private client: InjectiveExchangeV1Beta1QueryClient
 

@@ -1,6 +1,6 @@
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
-import type { InjectivePortfolioRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectivePortfolioRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_portfolio_rpc_pb'
 import type {
   PositionsWithUPNL,
   AccountPortfolioV2,

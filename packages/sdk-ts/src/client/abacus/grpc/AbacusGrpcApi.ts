@@ -1,10 +1,10 @@
 import { IndexerErrorModule } from '@injectivelabs/exceptions'
 import * as PointsSvcPb from '@injectivelabs/abacus-proto-ts-v2/generated/points_svc_pb'
 import { PointsSvcClient } from '@injectivelabs/abacus-proto-ts-v2/generated/points_svc_pb.client'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { AbacusGrpcTransformer } from './transformers/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
 
-export class AbacusGrpcApi extends BaseGrpcConsumerV2 {
+export class AbacusGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.Abacus
   private client: PointsSvcClient
 

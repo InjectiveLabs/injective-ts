@@ -1,5 +1,5 @@
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
-import type { GoadesignGoagenMitoApiPb } from '@injectivelabs/mito-proto-ts-v2'
+import type * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb'
 import type {
   MitoIDO,
   MitoGauge,

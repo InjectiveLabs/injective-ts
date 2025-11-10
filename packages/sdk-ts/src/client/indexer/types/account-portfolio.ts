@@ -1,5 +1,5 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type { InjectivePortfolioRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectivePortfolioRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_portfolio_rpc_pb'
 import type { Position } from './derivatives.js'
 
 export interface SubaccountDepositV2 {

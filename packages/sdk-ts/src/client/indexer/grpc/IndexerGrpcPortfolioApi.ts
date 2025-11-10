@@ -1,15 +1,13 @@
-import {
-  InjectivePortfolioRpcPb,
-  InjectivePortfolioRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectivePortfolioRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_portfolio_rpc_pb'
+import { InjectivePortfolioRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_portfolio_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountPortfolioApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcAccountPortfolioApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Portfolio
   private client: InjectivePortfolioRPCClient
 

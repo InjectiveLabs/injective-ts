@@ -1,15 +1,13 @@
-import {
-  InjectiveInsuranceRpcPb,
-  InjectiveInsuranceRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveInsuranceRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb'
+import { InjectiveInsuranceRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.InsuranceFund
   private client: InjectiveInsuranceRPCClient
 

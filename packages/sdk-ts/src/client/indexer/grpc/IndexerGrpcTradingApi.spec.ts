@@ -1,7 +1,7 @@
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { MarketType, GridStrategyType } from '../types/index.js'
 import { IndexerGrpcTradingApi } from './IndexerGrpcTradingApi.js'
-import type { InjectiveTradingRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectiveTradingRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb'
 
 const endpoints = getNetworkEndpoints(Network.Mainnet)
 const indexerGrpcTradingApi = new IndexerGrpcTradingApi(endpoints.indexer)

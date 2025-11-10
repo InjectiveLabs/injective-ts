@@ -1,6 +1,6 @@
 import { grpcPagingToPagingV2 } from '../../..//utils/pagination.js'
 import type { Coin } from '@injectivelabs/ts-types'
-import type { InjectiveAccountsRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
 import type { GrpcCoin } from '../../../types/index.js'
 import type {
   TransferType,

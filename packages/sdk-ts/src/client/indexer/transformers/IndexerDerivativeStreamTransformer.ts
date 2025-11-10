@@ -1,5 +1,5 @@
 import { IndexerGrpcDerivativeTransformer } from './IndexerGrpcDerivativeTransformer.js'
-import type { InjectiveDerivativeExchangeRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
 import type { StreamOperation } from '../../../types/index.js'
 
 /**

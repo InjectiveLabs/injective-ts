@@ -1,14 +1,14 @@
 import * as IbcApplicationsTransferV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/query_pb.mjs'
 import { QueryClient as IbcApplicationsTransferV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcIbcApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcIbcApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Ibc
   private client: IbcApplicationsTransferV1QueryClient
 
