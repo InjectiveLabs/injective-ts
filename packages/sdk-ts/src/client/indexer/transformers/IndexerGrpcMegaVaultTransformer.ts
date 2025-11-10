@@ -1,4 +1,4 @@
-import type { InjectiveMegavaultRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectiveMegavaultRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_megavault_rpc_pb'
 import type {
   MegaVault,
   MegaVaultApr,

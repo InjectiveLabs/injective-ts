@@ -1,15 +1,13 @@
-import {
-  InjectiveReferralRpcPb,
-  InjectiveReferralRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveReferralRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_referral_rpc_pb'
+import { InjectiveReferralRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_referral_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcReferralTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcReferralApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcReferralApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Referral
   private client: InjectiveReferralRPCClient
 

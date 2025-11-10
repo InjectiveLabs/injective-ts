@@ -97,17 +97,27 @@ export default {
   moduleNameMapper: {
     // Strip .mjs extensions from proto package imports for Jest
     '^@injectivelabs/core-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/protoV2/core/src/generated/$1.ts',
+      '<rootDir>/../../protoV2/core/src/generated/$1.ts',
     '^@injectivelabs/abacus-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/protoV2/abacus/src/generated/$1.ts',
+      '<rootDir>/../../protoV2/abacus/src/generated/$1.ts',
     '^@injectivelabs/indexer-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/protoV2/indexer/src/generated/$1.ts',
+      '<rootDir>/../../protoV2/indexer/src/generated/$1.ts',
     '^@injectivelabs/mito-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/protoV2/mito/src/generated/$1.ts',
+      '<rootDir>/../../protoV2/mito/src/generated/$1.ts',
     '^@injectivelabs/olp-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/protoV2/olp/src/generated/$1.ts',
-    ...pathsToModuleNameMapper(packagePaths, { prefix: '<rootDir>/' }),
-    ...pathsToModuleNameMapper(directoryPaths),
+      '<rootDir>/../../protoV2/olp/src/generated/$1.ts',
+    // Handle client imports for V2 proto packages
+    '^@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb\\.client\\.mjs$':
+      '<rootDir>/../../protoV2/core/src/generated/cosmos/tx/v1beta1/service_pb.client.ts',
+    '^@injectivelabs/core-proto-ts-v2/generated/(.+)_pb\\.client\\.mjs$':
+      '<rootDir>/../../protoV2/core/src/generated/$1_pb.client.ts',
+    // Fix path for @injectivelabs packages
+    '^@injectivelabs/exceptions$': '<rootDir>/../../packages/exceptions/src/index.ts',
+    '^@injectivelabs/utils$': '<rootDir>/../../packages/utils/src/index.ts',
+    '^@injectivelabs/networks$': '<rootDir>/../../packages/networks/src/index.ts',
+    '^@injectivelabs/ts-types$': '<rootDir>/../../packages/ts-types/src/index.ts',
+    ...pathsToModuleNameMapper(packagePaths, { prefix: '<rootDir>/../../' }),
+    ...pathsToModuleNameMapper(directoryPaths, { prefix: '<rootDir>/../../' }),
     // '^crypto-es$': 'crypto-js'
   },
 

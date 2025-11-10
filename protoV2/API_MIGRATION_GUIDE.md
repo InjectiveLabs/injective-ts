@@ -2592,6 +2592,7 @@ Use this checklist when migrating an API file:
   - **Chain APIs**: `packages/sdk-ts/src/client/chain/grpc/ChainGrpcBankApi.ts`
   - **Indexer APIs**: (To be migrated - use this guide)
   - **Abacus APIs**: `packages/sdk-ts/src/client/abacus/grpc/AbacusGrpcApi.ts`
+  - **Tx API**: `packages/sdk-ts/src/core/tx/api/TxGrpcApi.ts`
 
 ---
 

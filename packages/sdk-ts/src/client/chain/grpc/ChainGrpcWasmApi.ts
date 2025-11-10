@@ -2,7 +2,7 @@ import * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generate
 import { QueryClient as CosmwasmWasmV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
 import { toBase64 } from '../../../utils/utf8.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcWasmTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
@@ -10,7 +10,7 @@ import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcWasmApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcWasmApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Wasm
   private client: CosmwasmWasmV1QueryClient
 

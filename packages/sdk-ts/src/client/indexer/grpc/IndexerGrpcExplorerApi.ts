@@ -1,15 +1,13 @@
-import {
-  InjectiveExplorerRpcPb,
-  InjectiveExplorerRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
+import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Explorer
   private client: InjectiveExplorerRPCClient
 

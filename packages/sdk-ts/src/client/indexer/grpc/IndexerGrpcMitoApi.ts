@@ -1,15 +1,13 @@
-import {
-  MitoAPIClient,
-  GoadesignGoagenMitoApiPb,
-} from '@injectivelabs/mito-proto-ts-v2'
+import { MitoAPIClient } from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb.client'
+import * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Mito
   private client: MitoAPIClient
 

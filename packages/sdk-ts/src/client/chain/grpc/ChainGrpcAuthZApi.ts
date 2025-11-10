@@ -1,7 +1,7 @@
 import * as CosmosAuthzV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb.mjs'
 import { QueryClient as CosmosAuthzV1BetaQueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcAuthZTransformer } from '../transformers/ChainGrpcAuthZTransformer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
@@ -9,7 +9,7 @@ import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcAuthZApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Authz
   private client: CosmosAuthzV1BetaQueryClient
 

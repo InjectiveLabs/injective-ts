@@ -1,7 +1,7 @@
 import * as CosmosDistributionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/query_pb.mjs'
 import { QueryClient as CosmosDistributionV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import BaseGrpcConsumerV2 from '../../base/BaseGrpcConsumerV2.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcDistributionTransformer } from '../transformers/index.js'
 import type { Coin } from '@injectivelabs/ts-types'
 import type { ValidatorRewards } from '../types/index.js'
@@ -9,7 +9,7 @@ import type { ValidatorRewards } from '../types/index.js'
 /**
  * @category Chain Grpc API
  */
-export class ChainGrpcDistributionApi extends BaseGrpcConsumerV2 {
+export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Distribution
   private client: CosmosDistributionV1Beta1QueryClient
 

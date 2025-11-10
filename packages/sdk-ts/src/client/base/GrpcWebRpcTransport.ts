@@ -1,4 +1,4 @@
-import { getGrpcWebTransport } from '../../utils/grpcV2.js'
+import { getGrpcWebTransport } from '../../utils/grpc.js'
 import type {
   UnaryCall,
   RpcOptions,

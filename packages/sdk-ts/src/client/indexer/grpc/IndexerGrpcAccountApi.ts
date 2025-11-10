@@ -1,17 +1,15 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  InjectiveAccountsRpcPb,
-  InjectiveAccountsRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
+import { InjectiveAccountsRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcAccountTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Account
   private client: InjectiveAccountsRPCClient
 

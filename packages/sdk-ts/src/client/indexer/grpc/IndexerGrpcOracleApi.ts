@@ -1,15 +1,13 @@
-import {
-  InjectiveOracleRpcPb,
-  InjectiveOracleRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveOracleRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_oracle_rpc_pb'
+import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_oracle_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcOracleApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcOracleApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Oracle
   private client: InjectiveOracleRPCClient
 

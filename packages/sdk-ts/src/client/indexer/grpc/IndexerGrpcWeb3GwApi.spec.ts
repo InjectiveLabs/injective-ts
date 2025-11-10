@@ -5,7 +5,7 @@ import {
 } from '@injectivelabs/utils'
 import { IndexerGrpcWeb3GwApi } from './IndexerGrpcWeb3GwApi.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
-import type { InjectiveExchangeRpcPb } from '@injectivelabs/indexer-proto-ts-v2'
+import type * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
 
 const endpoints = getNetworkEndpoints(Network.Mainnet)
 const indexerGrpcWeb3GwApi = new IndexerGrpcWeb3GwApi(endpoints.indexer)

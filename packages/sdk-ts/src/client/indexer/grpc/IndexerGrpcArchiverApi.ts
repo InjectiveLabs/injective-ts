@@ -1,15 +1,13 @@
-import {
-  InjectiveArchiverRpcPb,
-  InjectiveArchiverRPCClient,
-} from '@injectivelabs/indexer-proto-ts-v2'
+import * as InjectiveArchiverRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_archiver_rpc_pb'
+import { InjectiveArchiverRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_archiver_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcArchiverTransformer } from '../transformers/index.js'
-import BaseIndexerGrpcConsumerV2 from '../../base/BaseIndexerGrpcConsumerV2.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumerV2 {
+export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Archiver
   private client: InjectiveArchiverRPCClient
 
