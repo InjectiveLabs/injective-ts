@@ -1,9 +1,7 @@
 import { MsgTransfer as BaseMsgTransferCosmjs } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
-import {
-  CosmosBaseV1Beta1Coin,
-  IbcCoreClientV1Client,
-  IbcApplicationsTransferV1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import * as IbcCoreClientV1ClientPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/core/client/v1/client_pb.mjs'
+import * as IbcApplicationsTransferV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/tx_pb.mjs'
 
 export declare namespace MsgTransferCosmjs {
   export interface Params {
@@ -44,31 +42,44 @@ export default class MsgTransferCosmjs {
   public toProto() {
     const { params } = this
 
-    const token = CosmosBaseV1Beta1Coin.Coin.create()
-    token.denom = params.amount.denom
-    token.amount = params.amount.amount
+    const token = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    const message = IbcApplicationsTransferV1Tx.MsgTransfer.create()
-
-    message.sourcePort = params.port
-    message.sourceChannel = params.channelId
-    message.token = token
-    message.sender = params.sender
-    message.receiver = params.receiver
+    const message = IbcApplicationsTransferV1TxPb.MsgTransfer.create({
+      sourcePort: params.port,
+      sourceChannel: params.channelId,
+      token: token,
+      sender: params.sender,
+      receiver: params.receiver,
+    })
 
     if (params.height) {
-      const timeoutHeight = IbcCoreClientV1Client.Height.create()
-      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
-      timeoutHeight.revisionNumber = params.height.revisionNumber.toString()
+      const timeoutHeight = IbcCoreClientV1ClientPb.Height.create({
+        revisionHeight: BigInt(params.height.revisionHeight),
+        revisionNumber: BigInt(params.height.revisionNumber),
+      })
 
       message.timeoutHeight = timeoutHeight
     }
 
     if (params.timeout) {
-      message.timeoutTimestamp = params.timeout.toString()
+      message.timeoutTimestamp = BigInt(params.timeout)
     }
 
-    return BaseMsgTransferCosmjs.fromJSON(message)
+    return BaseMsgTransferCosmjs.fromPartial({
+      sourcePort: message.sourcePort,
+      sourceChannel: message.sourceChannel,
+      token: message.token,
+      sender: message.sender,
+      receiver: message.receiver,
+      timeoutHeight: message.timeoutHeight ? {
+        revisionHeight: message.timeoutHeight.revisionHeight,
+        revisionNumber: message.timeoutHeight.revisionNumber,
+      } : undefined,
+      timeoutTimestamp: message.timeoutTimestamp,
+    })
   }
 
   public toData() {
@@ -97,6 +108,11 @@ export default class MsgTransferCosmjs {
       type: '/ibc.applications.transfer.v1.MsgTransfer',
       value: {
         ...message,
+        timeoutHeight: message.timeoutHeight ? {
+          revisionHeight: message.timeoutHeight.revisionHeight.toString(),
+          revisionNumber: message.timeoutHeight.revisionNumber.toString(),
+        } : undefined,
+        timeoutTimestamp: message.timeoutTimestamp ? message.timeoutTimestamp.toString() : undefined,
       },
     }
   }

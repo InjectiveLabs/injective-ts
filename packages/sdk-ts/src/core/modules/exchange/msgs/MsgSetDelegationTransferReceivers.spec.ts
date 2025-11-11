@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgSetDelegationTransferReceivers from './MsgSetDelegationTransferReceivers.js'
@@ -19,7 +18,10 @@ const protoParams = {
   sender: params.sender,
   receivers: params.receivers,
 }
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  sender: params.sender,
+  receivers: params.receivers,
+}
 const message = MsgSetDelegationTransferReceivers.fromJSON(params)
 
 describe('MsgSetDelegationTransferReceivers', () => {
@@ -74,6 +76,7 @@ describe('MsgSetDelegationTransferReceivers', () => {
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
+    // will be resolved in chain v1.17.1
     it('EIP712 v2', async () => {
       const eip712TypedData = getEip712TypedDataV2(eip712Args)
 

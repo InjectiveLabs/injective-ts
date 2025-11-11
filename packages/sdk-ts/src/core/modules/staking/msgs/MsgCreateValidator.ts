@@ -1,10 +1,8 @@
 import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  CosmosBaseV1Beta1Coin,
-  CosmosStakingV1Beta1Tx,
-  CosmosStakingV1Beta1Staking,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/tx_pb.mjs'
+import * as CosmosStakingV1Beta1StakingPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/staking_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import { createAny } from '../../../tx/index.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
@@ -36,10 +34,10 @@ export declare namespace MsgCreateValidator {
     minSelfDelegation?: string
   }
 
-  export type Proto = CosmosStakingV1Beta1Tx.MsgCreateValidator
+  export type Proto = CosmosStakingV1Beta1TxPb.MsgCreateValidator
 
   export type Object = Omit<
-    CosmosStakingV1Beta1Tx.MsgCreateValidator,
+    CosmosStakingV1Beta1TxPb.MsgCreateValidator,
     'pubKey'
   > & {
     pubKey: any
@@ -61,71 +59,53 @@ export default class MsgCreateValidator extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = CosmosStakingV1Beta1Tx.MsgCreateValidator.create()
-
+    let description
     if (params.description) {
-      const description = CosmosStakingV1Beta1Staking.Description.create()
-
-      if (params.description.moniker) {
-        description.moniker = params.description.moniker
-      }
-
-      if (params.description.identity) {
-        description.identity = params.description.identity
-      }
-
-      if (params.description.website) {
-        description.website = params.description.website
-      }
-
-      if (params.description.securityContact) {
-        description.securityContact = params.description.securityContact
-      }
-
-      if (params.description.details) {
-        description.details = params.description.details
-      }
-
-      message.description = description
+      description = CosmosStakingV1Beta1StakingPb.Description.create({
+        moniker: params.description.moniker,
+        identity: params.description.identity,
+        website: params.description.website,
+        securityContact: params.description.securityContact,
+        details: params.description.details,
+      })
     }
 
+    let commission
     if (params.commission) {
-      const commissionRate =
-        CosmosStakingV1Beta1Staking.CommissionRates.create()
-
-      commissionRate.rate = params.commission.rate
-      commissionRate.maxRate = params.commission.maxRate
-      commissionRate.maxChangeRate = params.commission.maxChangeRate
-
-      message.commission = commissionRate
+      commission = CosmosStakingV1Beta1StakingPb.CommissionRates.create({
+        rate: params.commission.rate,
+        maxRate: params.commission.maxRate,
+        maxChangeRate: params.commission.maxChangeRate,
+      })
     }
 
-    if (params.minSelfDelegation) {
-      message.minSelfDelegation = params.minSelfDelegation
+    let value
+    if (params.value) {
+      value = CosmosBaseV1Beta1CoinPb.Coin.create({
+        denom: params.value.denom,
+        amount: params.value.amount,
+      })
     }
 
-    message.delegatorAddress = params.delegatorAddress
-    message.validatorAddress = params.validatorAddress
-
+    let pubkey
     if (params.pubKey) {
-      const pubKeyAny = createAny(
+      pubkey = createAny(
         Buffer.from(params.pubKey.value, 'base64'),
         params.pubKey.type,
       )
-
-      message.pubkey = pubKeyAny
     }
 
-    if (params.value) {
-      const coin = CosmosBaseV1Beta1Coin.Coin.create()
+    const message = CosmosStakingV1Beta1TxPb.MsgCreateValidator.create({
+      description: description,
+      commission: commission,
+      minSelfDelegation: params.minSelfDelegation,
+      delegatorAddress: params.delegatorAddress,
+      validatorAddress: params.validatorAddress,
+      pubkey: pubkey,
+      value: value,
+    })
 
-      coin.denom = params.value.denom
-      coin.amount = params.value.amount
-
-      message.value = coin
-    }
-
-    return CosmosStakingV1Beta1Tx.MsgCreateValidator.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -140,7 +120,23 @@ export default class MsgCreateValidator extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      description: {
+        moniker: proto.description?.moniker,
+        identity: proto.description?.identity,
+        website: proto.description?.website,
+        security_contact: proto.description?.securityContact,
+        details: proto.description?.details,
+      },
+      commission: {
+        rate: proto.commission?.rate,
+        max_rate: proto.commission?.maxRate,
+        max_change_rate: proto.commission?.maxChangeRate,
+      },
+      min_self_delegation: proto.minSelfDelegation,
+      delegator_address: proto.delegatorAddress,
+      validator_address: proto.validatorAddress,
+      pubkey: proto.pubkey,
+      value: proto.value,
     }
 
     return {
@@ -205,8 +201,8 @@ export default class MsgCreateValidator extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosStakingV1Beta1Tx.MsgCreateValidator.encode(
+    return CosmosStakingV1Beta1TxPb.MsgCreateValidator.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

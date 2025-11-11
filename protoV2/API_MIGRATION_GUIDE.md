@@ -2410,7 +2410,66 @@ NODE_OPTIONS="--max-old-space-size=8192" npx jest ChainGrpcAuctionApi
 bash RUN_JEST_WITH_MEMORY.sh
 ```
 
-### Issue 9: Implicit `any` type errors in transformers
+### Issue 9: Unused import - snakecaseKeys
+
+**Problem:**
+
+```typescript
+import snakecaseKeys from 'snakecase-keys' // Imported but never used
+```
+
+After migrating to V2, many message classes no longer use `snakecaseKeys` because they use explicit field ordering in `toAmino()` for EIP712 compatibility.
+
+**Solution:**
+
+Remove the unused import:
+
+```typescript
+// ❌ Before
+import snakecaseKeys from 'snakecase-keys'
+import * as CosmosBankV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/tx_pb.mjs'
+
+// ✅ After
+import * as CosmosBankV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/tx_pb.mjs'
+```
+
+**When to keep snakecaseKeys:**
+
+- Complex nested messages with many fields (5+)
+- Messages where manual field ordering would be error-prone
+- See MSG_MIGRATION_GUIDE.md for detailed guidance
+
+### Issue 10: Generic type parameters reversed in MsgBase
+
+**Problem:**
+
+```typescript
+// ❌ Wrong - params and proto are swapped
+export default class MsgMultiSend extends MsgBase<
+  MsgMultiSend.Proto,
+  MsgMultiSend.Params
+>
+```
+
+**Solution:**
+
+The correct order is `Params` first, then `Proto`:
+
+```typescript
+// ✅ Correct - params first, proto second
+export default class MsgMultiSend extends MsgBase<
+  MsgMultiSend.Params,
+  MsgMultiSend.Proto
+>
+```
+
+**Why this matters:**
+
+- `MsgBase` is defined as `MsgBase<TParams, TProto>`
+- Swapping them causes type errors in `toData()`, `toProto()`, and other methods
+- Always check the order: **Params, Proto**
+
+### Issue 11: Implicit `any` type errors in transformers and message classes
 
 **Problem:**
 
@@ -2418,6 +2477,7 @@ bash RUN_JEST_WITH_MEMORY.sh
 Parameter 'reward' implicitly has an 'any' type.
 Parameter 'entry' implicitly has an 'any' type.
 Parameter 'validator' implicitly has an 'any' type.
+Parameter 'c' implicitly has an 'any' type.
 ```
 
 These errors occur when TypeScript cannot infer the type of callback parameters in `.map()`, `.reduce()`, or `.filter()` operations on proto message fields.
@@ -2443,7 +2503,7 @@ import type * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/g
 export type GrpcDecCoin = CosmosBaseV1Beta1CoinPb.DecCoin
 ```
 
-**Step 3: Use the type in your transformer**
+**Step 3: Use the type in your transformer or message class**
 
 ```typescript
 // transformers/ChainGrpcDistributionTransformer.ts
@@ -2454,6 +2514,37 @@ const rewards = grpcReward.reward.map((reward: GrpcDecCoin) => ({
   amount: toHumanReadable(reward.amount).toFixed(),
   denom: reward.denom,
 }))
+```
+
+**For Message Classes:**
+
+```typescript
+// ❌ Before - implicit any error
+const inputs = params.inputs.map((i) => {
+  return CosmosBankV1Beta1BankPb.Input.create({
+    address: i.address,
+    coins: i.coins.map((c) => {
+      // Error: Parameter 'c' implicitly has an 'any' type
+      return CosmosBaseV1Beta1CoinPb.Coin.create({
+        denom: c.denom,
+        amount: c.amount,
+      })
+    }),
+  })
+})
+
+// ✅ After - explicit type annotation
+const inputs = params.inputs.map((i) => {
+  return CosmosBankV1Beta1BankPb.Input.create({
+    address: i.address,
+    coins: i.coins.map((c: CosmosBaseV1Beta1CoinPb.Coin) => {
+      return CosmosBaseV1Beta1CoinPb.Coin.create({
+        denom: c.denom,
+        amount: c.amount,
+      })
+    }),
+  })
+})
 ```
 
 **Common Proto Types:**
@@ -2533,7 +2624,31 @@ If you don't want to modify Jest config globally, you can also update the protoV
 
 ## Complete Migration Checklist
 
-Use this checklist when migrating an API file:
+Use this checklist when migrating an API file or message class:
+
+### Message Class Files (`MsgXxx.ts`)
+
+- [ ] Update imports to V2 deep imports with `.mjs` extension
+- [ ] **Remove ALL V1 imports** from `@injectivelabs/core-proto-ts`
+- [ ] Add `Pb` suffix to all proto namespace references
+- [ ] **Remove unused `snakecaseKeys` import** if using explicit field ordering
+- [ ] **Verify MsgBase generic parameters are in correct order**: `MsgBase<Params, Proto>`
+- [ ] Update `toProto()` method:
+  - [ ] Use `Message.create({ fields })` pattern
+  - [ ] Return message directly (no `.fromPartial()`)
+  - [ ] Use `BigInt()` for uint64/int64 fields
+  - [ ] **Add explicit type annotations for nested `.map()` callbacks**
+- [ ] Update `toData()` method:
+  - [ ] Spread proto object (`...proto`)
+  - [ ] Keep BigInt types (don't convert to string)
+- [ ] Update `toAmino()` method:
+  - [ ] Use explicit field ordering for simple messages (1-5 fields)
+  - [ ] Use `snakecaseKeys()` for complex nested messages (5+ fields)
+  - [ ] Convert BigInt to string
+- [ ] Update `toBinary()` method:
+  - [ ] Use `Message.toBinary(msg)` instead of `.encode().finish()`
+- [ ] Run linter to catch type errors
+- [ ] Run tests to verify migration
 
 ### API File (`ChainGrpcXxxApi.ts`)
 

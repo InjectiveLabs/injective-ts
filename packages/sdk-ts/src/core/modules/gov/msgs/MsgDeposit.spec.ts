@@ -20,7 +20,7 @@ const params: MsgDeposit['params'] = {
 const protoType = '/cosmos.gov.v1beta1.MsgDeposit'
 const protoTypeAmino = 'cosmos-sdk/MsgDeposit'
 const protoParams = {
-  proposalId: params.proposalId.toString(),
+  proposalId: BigInt(params.proposalId),
   depositor: params.depositor,
   amount: [params.amount],
 }

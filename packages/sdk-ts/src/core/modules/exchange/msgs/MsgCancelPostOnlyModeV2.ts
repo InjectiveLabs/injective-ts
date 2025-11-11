@@ -1,5 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
-import { InjectiveExchangeV2Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgCancelPostOnlyModeV2 {
@@ -7,15 +6,15 @@ export declare namespace MsgCancelPostOnlyModeV2 {
     sender: string
   }
 
-  export type Proto = InjectiveExchangeV2Tx.MsgCancelPostOnlyMode
+  export type Proto = InjectiveExchangeV2TxPb.MsgCancelPostOnlyMode
 }
 
 const createMessage = (params: MsgCancelPostOnlyModeV2.Params) => {
-  const message = InjectiveExchangeV2Tx.MsgCancelPostOnlyMode.create()
+  const message = InjectiveExchangeV2TxPb.MsgCancelPostOnlyMode.create({
+    sender: params.sender,
+  })
 
-  message.sender = params.sender
-
-  return InjectiveExchangeV2Tx.MsgCancelPostOnlyMode.fromPartial(message)
+  return message
 }
 
 /**
@@ -54,7 +53,7 @@ export default class MsgCancelPostOnlyModeV2 extends MsgBase<
     const { params } = this
     const msg = createMessage(params)
     const message = {
-      ...snakecaseKeys(msg),
+      sender: msg.sender,
     }
 
     return {
@@ -107,8 +106,8 @@ export default class MsgCancelPostOnlyModeV2 extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV2Tx.MsgCancelPostOnlyMode.encode(
+    return InjectiveExchangeV2TxPb.MsgCancelPostOnlyMode.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

@@ -1,8 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  InjectiveTokenFactoryV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import * as InjectiveTokenFactoryV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import type { TypedDataField } from '../../../tx/index.js'
 
@@ -16,7 +13,7 @@ export declare namespace MsgBurn {
     }
   }
 
-  export type Proto = InjectiveTokenFactoryV1Beta1Tx.MsgBurn
+  export type Proto = InjectiveTokenFactoryV1Beta1TxPb.MsgBurn
 }
 
 /**
@@ -30,21 +27,20 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
   public toProto() {
     const { params } = this
 
-    const coin = CosmosBaseV1Beta1Coin.Coin.create()
+    const coin = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    coin.denom = params.amount.denom
-    coin.amount = params.amount.amount
+    const message = InjectiveTokenFactoryV1Beta1TxPb.MsgBurn.create({
+      sender: params.sender,
+      amount: coin,
+      ...(params.burnFromAddress && {
+        burnFromAddress: params.burnFromAddress,
+      }),
+    })
 
-    const message = InjectiveTokenFactoryV1Beta1Tx.MsgBurn.create()
-
-    message.sender = params.sender
-    message.amount = coin
-
-    if (params.burnFromAddress) {
-      message.burnFromAddress = params.burnFromAddress
-    }
-
-    return InjectiveTokenFactoryV1Beta1Tx.MsgBurn.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -59,16 +55,14 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
-      burnFromAddress: proto.burnFromAddress,
+      sender: proto.sender,
+      amount: proto.amount,
+      ...(proto.burnFromAddress && { burnFromAddress: proto.burnFromAddress }),
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { burn_from_address, ...messageWithoutBurnFromAddress } = message
 
     return {
       type: 'injective/tokenfactory/burn',
-      value: messageWithoutBurnFromAddress,
+      value: message,
     }
   }
 
@@ -124,8 +118,6 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveTokenFactoryV1Beta1Tx.MsgBurn.encode(
-      this.toProto(),
-    ).finish()
+    return InjectiveTokenFactoryV1Beta1TxPb.MsgBurn.toBinary(this.toProto())
   }
 }

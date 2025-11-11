@@ -26,7 +26,11 @@ const protoParams = {
   receiver: params.receiver,
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  sender: params.sender,
+  amount: params.amount,
+  receiver: params.receiver,
+}
 const message = MsgMint.fromJSON(params)
 
 describe('MsgMint', () => {

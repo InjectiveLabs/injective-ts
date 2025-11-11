@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { InjectiveWasmxV1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveWasmxV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import type { ExecArgs } from '../exec-args.js'
 
@@ -52,10 +52,10 @@ export declare namespace MsgExecuteContractCompat {
     msg?: Record<string, any>
   }
 
-  export type Proto = InjectiveWasmxV1Tx.MsgExecuteContractCompat
+  export type Proto = InjectiveWasmxV1TxPb.MsgExecuteContractCompat
 
   export type Object = Omit<
-    InjectiveWasmxV1Tx.MsgExecuteContractCompat,
+    InjectiveWasmxV1TxPb.MsgExecuteContractCompat,
     'msg'
   > & {
     msg: string
@@ -78,29 +78,22 @@ export default class MsgExecuteContractCompat extends MsgBase<
 
   public toProto() {
     const { params } = this
-
-    const message = InjectiveWasmxV1Tx.MsgExecuteContractCompat.create()
     const msg = this.getMsgObject()
 
-    message.sender = params.sender
-    message.contract = params.contractAddress
-    message.msg = JSON.stringify(msg)
+    const funds = params.funds
+      ? (Array.isArray(params.funds) ? params.funds : [params.funds])
+          .map((coin) => `${coin.amount}${coin.denom}`)
+          .join(',')
+      : '0'
 
-    if (params.funds) {
-      const fundsToArray = Array.isArray(params.funds)
-        ? params.funds
-        : [params.funds]
+    const message = InjectiveWasmxV1TxPb.MsgExecuteContractCompat.create({
+      sender: params.sender,
+      contract: params.contractAddress,
+      msg: JSON.stringify(msg),
+      funds: funds,
+    })
 
-      const funds = fundsToArray.map((coin) => {
-        return `${coin.amount}${coin.denom}`
-      })
-
-      message.funds = funds.join(',')
-    } else {
-      message.funds = '0'
-    }
-
-    return InjectiveWasmxV1Tx.MsgExecuteContractCompat.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -148,9 +141,9 @@ export default class MsgExecuteContractCompat extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveWasmxV1Tx.MsgExecuteContractCompat.encode(
+    return InjectiveWasmxV1TxPb.MsgExecuteContractCompat.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 
   private getMsgObject() {
