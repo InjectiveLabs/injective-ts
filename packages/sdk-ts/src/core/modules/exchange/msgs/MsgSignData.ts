@@ -1,5 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import { toUtf8, getEthereumAddress } from '../../../../utils/index.js'
 
@@ -9,7 +8,7 @@ export declare namespace MsgSignData {
     data: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgSignData
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgSignData
 }
 
 /**
@@ -26,12 +25,12 @@ export default class MsgSignData extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveExchangeV1Beta1Tx.MsgSignData.create()
+    const message = InjectiveExchangeV1Beta1TxPb.MsgSignData.create({
+      signer: Buffer.from(getEthereumAddress(params.sender), 'hex'),
+      data: Buffer.from(toUtf8(params.data), 'utf-8'),
+    })
 
-    message.Signer = Buffer.from(getEthereumAddress(params.sender), 'hex')
-    message.Data = Buffer.from(toUtf8(params.data), 'utf-8')
-
-    return InjectiveExchangeV1Beta1Tx.MsgSignData.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -46,7 +45,8 @@ export default class MsgSignData extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      signer: Buffer.from(proto.signer).toString('hex'),
+      data: Buffer.from(proto.data).toString('utf-8'),
     }
 
     return {
@@ -75,8 +75,6 @@ export default class MsgSignData extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgSignData.encode(
-      this.toProto(),
-    ).finish()
+    return InjectiveExchangeV1Beta1TxPb.MsgSignData.toBinary(this.toProto())
   }
 }

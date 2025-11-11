@@ -51,6 +51,14 @@ export const getEip712TypedData = ({
   }
 }
 
+const jsonReplacer = (key: string, value: any) => {
+  if (typeof value === 'bigint') {
+    return value.toString()
+  }
+
+  return value
+}
+
 export const getEip712TypedDataV2 = ({
   msgs,
   tx,
@@ -71,8 +79,8 @@ export const getEip712TypedDataV2 = ({
     primaryType: 'Tx',
     ...getEip712DomainV2(evmChainId),
     message: {
-      context: JSON.stringify(getEipTxContext({ ...tx, fee })),
-      msgs: JSON.stringify(eip712Msgs),
+      context: JSON.stringify(getEipTxContext({ ...tx, fee }), jsonReplacer),
+      msgs: JSON.stringify(eip712Msgs, jsonReplacer),
     },
   }
 }

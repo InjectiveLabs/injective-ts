@@ -1,10 +1,7 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toPascalCase } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  CosmwasmWasmV1Tx,
-  CosmwasmWasmV1Types,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb.mjs'
+import * as CosmwasmWasmV1TypesPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/types_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import { fromUtf8 } from '../../../../utils/utf8.js'
 
@@ -13,12 +10,12 @@ export declare namespace MsgStoreCode {
     sender: string
     wasmBytes: Uint8Array | string
     instantiatePermission?: {
-      permission: CosmwasmWasmV1Types.AccessType
+      permission: CosmwasmWasmV1TypesPb.AccessType
       addresses: string[]
     }
   }
 
-  export type Proto = CosmwasmWasmV1Tx.MsgStoreCode
+  export type Proto = CosmwasmWasmV1TxPb.MsgStoreCode
 }
 
 /**
@@ -35,24 +32,23 @@ export default class MsgStoreCode extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = CosmwasmWasmV1Tx.MsgStoreCode.create()
+    const instantiatePermission = params.instantiatePermission
+      ? CosmwasmWasmV1TypesPb.AccessConfig.create({
+          permission: params.instantiatePermission.permission,
+          addresses: params.instantiatePermission.addresses,
+        })
+      : undefined
 
-    message.sender = params.sender
-    message.wasmByteCode =
-      typeof params.wasmBytes === 'string'
-        ? fromUtf8(params.wasmBytes)
-        : params.wasmBytes
+    const message = CosmwasmWasmV1TxPb.MsgStoreCode.create({
+      sender: params.sender,
+      wasmByteCode:
+        typeof params.wasmBytes === 'string'
+          ? fromUtf8(params.wasmBytes)
+          : params.wasmBytes,
+      instantiatePermission: instantiatePermission,
+    })
 
-    if (params.instantiatePermission) {
-      const accessConfig = CosmwasmWasmV1Types.AccessConfig.create()
-
-      accessConfig.permission = params.instantiatePermission.permission
-      accessConfig.addresses = params.instantiatePermission.addresses
-
-      message.instantiatePermission = accessConfig
-    }
-
-    return CosmwasmWasmV1Tx.MsgStoreCode.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -68,14 +64,14 @@ export default class MsgStoreCode extends MsgBase<
     const proto = this.toProto()
 
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
       wasm_byte_code: Buffer.from(proto.wasmByteCode).toString('base64'),
       instantiate_permission: proto.instantiatePermission
         ? {
             permission: toPascalCase(
-              CosmwasmWasmV1Types.accessTypeToJSON(
-                proto.instantiatePermission.permission,
-              ).replace('ACCESS_TYPE_', ''),
+              CosmwasmWasmV1TypesPb.AccessType[
+                proto.instantiatePermission.permission
+              ].replace('ACCESS_TYPE_', ''),
             ),
             addresses: proto.instantiatePermission.addresses || [],
           }
@@ -116,6 +112,6 @@ export default class MsgStoreCode extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmwasmWasmV1Tx.MsgStoreCode.encode(this.toProto()).finish()
+    return CosmwasmWasmV1TxPb.MsgStoreCode.toBinary(this.toProto())
   }
 }

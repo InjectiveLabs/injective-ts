@@ -1,8 +1,6 @@
-import {
-  GoogleProtobufAny,
-  CosmwasmWasmV1Authz,
-  InjectiveWasmxV1Authz,
-} from '@injectivelabs/core-proto-ts'
+import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as CosmwasmWasmV1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/authz_pb.mjs'
+import * as InjectiveWasmxV1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/authz_pb.mjs'
 import { BaseAuthorization } from './Base.js'
 import type { Coin } from '@injectivelabs/ts-types'
 
@@ -18,9 +16,10 @@ export declare namespace ContractExecutionCompatAuthorization {
     }
   }
 
-  export type Any = GoogleProtobufAny.Any
+  export type Any = GoogleProtobufAnyPb.Any
 
-  export type Proto = InjectiveWasmxV1Authz.ContractExecutionCompatAuthorization
+  export type Proto =
+    InjectiveWasmxV1AuthzPb.ContractExecutionCompatAuthorization
 
   export type Amino = Object
 }
@@ -39,87 +38,87 @@ export default class ContractExecutionCompatAuthorization extends BaseAuthorizat
     return new ContractExecutionCompatAuthorization(params)
   }
 
-  public toAny(): GoogleProtobufAny.Any {
+  public toAny(): GoogleProtobufAnyPb.Any {
     const { params } = this
 
-    const authorization =
-      InjectiveWasmxV1Authz.ContractExecutionCompatAuthorization.create()
-    const grant = CosmwasmWasmV1Authz.ContractGrant.create()
-
-    grant.contract = params.contract
+    let limit: GoogleProtobufAnyPb.Any | undefined
 
     if (params.limit) {
       if (params.limit.maxCalls && params.limit.amounts) {
-        const limit = CosmwasmWasmV1Authz.CombinedLimit.create()
+        const limitObj = CosmwasmWasmV1AuthzPb.CombinedLimit.create({
+          callsRemaining: BigInt(params.limit.maxCalls),
+          amounts: params.limit.amounts,
+        })
 
-        limit.callsRemaining = params.limit.maxCalls.toString()
-        limit.amounts = params.limit.amounts
-
-        const any = GoogleProtobufAny.Any.create()
-        any.typeUrl = '/cosmwasm.wasm.v1.CombinedLimit'
-        any.value = CosmwasmWasmV1Authz.CombinedLimit.encode(limit).finish()
-
-        grant.limit = any
+        limit = GoogleProtobufAnyPb.Any.create({
+          typeUrl: '/cosmwasm.wasm.v1.CombinedLimit',
+          value: CosmwasmWasmV1AuthzPb.CombinedLimit.toBinary(limitObj),
+        })
       } else if (params.limit.maxCalls) {
-        const limit = CosmwasmWasmV1Authz.MaxCallsLimit.create()
+        const limitObj = CosmwasmWasmV1AuthzPb.MaxCallsLimit.create({
+          remaining: BigInt(params.limit.maxCalls),
+        })
 
-        limit.remaining = params.limit.maxCalls.toString()
-
-        const any = GoogleProtobufAny.Any.create()
-        any.typeUrl = '/cosmwasm.wasm.v1.MaxCallsLimit'
-        any.value = CosmwasmWasmV1Authz.MaxCallsLimit.encode(limit).finish()
-
-        grant.limit = any
+        limit = GoogleProtobufAnyPb.Any.create({
+          typeUrl: '/cosmwasm.wasm.v1.MaxCallsLimit',
+          value: CosmwasmWasmV1AuthzPb.MaxCallsLimit.toBinary(limitObj),
+        })
       } else if (params.limit.amounts) {
-        const limit = CosmwasmWasmV1Authz.MaxFundsLimit.create()
+        const limitObj = CosmwasmWasmV1AuthzPb.MaxFundsLimit.create({
+          amounts: params.limit.amounts,
+        })
 
-        limit.amounts = params.limit.amounts
-
-        const any = GoogleProtobufAny.Any.create()
-        any.typeUrl = '/cosmwasm.wasm.v1.MaxFundsLimit'
-        any.value = CosmwasmWasmV1Authz.MaxFundsLimit.encode(limit).finish()
-
-        grant.limit = any
+        limit = GoogleProtobufAnyPb.Any.create({
+          typeUrl: '/cosmwasm.wasm.v1.MaxFundsLimit',
+          value: CosmwasmWasmV1AuthzPb.MaxFundsLimit.toBinary(limitObj),
+        })
       }
     }
 
+    let filter: GoogleProtobufAnyPb.Any
+
     if (params.filter) {
-      const filter = CosmwasmWasmV1Authz.AcceptedMessageKeysFilter.create()
+      const filterObj = CosmwasmWasmV1AuthzPb.AcceptedMessageKeysFilter.create({
+        keys: params.filter.acceptedMessagesKeys,
+      })
 
-      filter.keys = params.filter.acceptedMessagesKeys
-
-      const any = GoogleProtobufAny.Any.create()
-      any.typeUrl = '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter'
-      any.value =
-        CosmwasmWasmV1Authz.AcceptedMessageKeysFilter.encode(filter).finish()
-
-      grant.filter = any
+      filter = GoogleProtobufAnyPb.Any.create({
+        typeUrl: '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter',
+        value:
+          CosmwasmWasmV1AuthzPb.AcceptedMessageKeysFilter.toBinary(filterObj),
+      })
     } else {
-      const filter = CosmwasmWasmV1Authz.AllowAllMessagesFilter.create()
+      const filterObj = CosmwasmWasmV1AuthzPb.AllowAllMessagesFilter.create()
 
-      const any = GoogleProtobufAny.Any.create()
-      any.typeUrl = '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter'
-      any.value =
-        CosmwasmWasmV1Authz.AllowAllMessagesFilter.encode(filter).finish()
-
-      grant.filter = any
+      filter = GoogleProtobufAnyPb.Any.create({
+        typeUrl: '/cosmwasm.wasm.v1.AllowAllMessagesFilter',
+        value: CosmwasmWasmV1AuthzPb.AllowAllMessagesFilter.toBinary(filterObj),
+      })
     }
 
-    authorization.grants = [grant]
+    const grant = CosmwasmWasmV1AuthzPb.ContractGrant.create({
+      contract: params.contract,
+      limit: limit,
+      filter: filter,
+    })
 
-    const any = GoogleProtobufAny.Any.create()
-    any.typeUrl = '/injective.wasmx.v1.ContractExecutionCompatAuthorization'
-    any.value =
-      InjectiveWasmxV1Authz.ContractExecutionCompatAuthorization.encode(
-        authorization,
-      ).finish()
+    const authorization =
+      InjectiveWasmxV1AuthzPb.ContractExecutionCompatAuthorization.create({
+        grants: [grant],
+      })
 
-    return any
+    return GoogleProtobufAnyPb.Any.create({
+      typeUrl: '/injective.wasmx.v1.ContractExecutionCompatAuthorization',
+      value:
+        InjectiveWasmxV1AuthzPb.ContractExecutionCompatAuthorization.toBinary(
+          authorization,
+        ),
+    })
   }
 
   public toProto(): ContractExecutionCompatAuthorization.Proto {
     const authorization =
-      InjectiveWasmxV1Authz.ContractExecutionCompatAuthorization.decode(
+      InjectiveWasmxV1AuthzPb.ContractExecutionCompatAuthorization.fromBinary(
         this.toAny().value,
       )
 

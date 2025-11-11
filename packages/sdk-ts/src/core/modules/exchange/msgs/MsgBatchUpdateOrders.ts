@@ -1,14 +1,12 @@
 import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
-import {
-  InjectiveExchangeV1Beta1Tx,
-  InjectiveExchangeV1Beta1Exchange,
-} from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 
 interface SpotOrderToCreate {
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType
   triggerPrice?: string
   marketId: string
   feeRecipient: string
@@ -18,7 +16,7 @@ interface SpotOrderToCreate {
 }
 
 interface DerivativeOrderToCreate {
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType
   triggerPrice?: string
   feeRecipient: string
   marketId: string
@@ -29,7 +27,7 @@ interface DerivativeOrderToCreate {
 }
 
 interface BinaryOptionOrderToCreate {
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType
   triggerPrice?: string
   feeRecipient: string
   marketId: string
@@ -69,37 +67,26 @@ export declare namespace MsgBatchUpdateOrders {
     injectiveAddress: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgBatchUpdateOrders
 }
 
 const createSpotOrder = (
   args: SpotOrderToCreate & { subaccountId: string },
 ) => {
-  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
-  const paramsFromArgs = {
-    ...args,
+  const orderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo.create({
+    subaccountId: args.subaccountId,
+    feeRecipient: args.feeRecipient,
     price: args.price,
-    triggerPrice: args.triggerPrice || '0',
     quantity: args.quantity,
-  }
+    cid: args.cid,
+  })
 
-  orderInfo.subaccountId = args.subaccountId
-  orderInfo.feeRecipient = paramsFromArgs.feeRecipient
-  orderInfo.price = paramsFromArgs.price
-  orderInfo.quantity = paramsFromArgs.quantity
-
-  if (paramsFromArgs.cid) {
-    orderInfo.cid = paramsFromArgs.cid
-  }
-
-  const order = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
-  order.marketId = paramsFromArgs.marketId
-  order.orderType = paramsFromArgs.orderType
-  order.orderInfo = orderInfo
-
-  if (paramsFromArgs.triggerPrice) {
-    order.triggerPrice = paramsFromArgs.triggerPrice
-  }
+  const order = InjectiveExchangeV1Beta1ExchangePb.SpotOrder.create({
+    marketId: args.marketId,
+    orderType: args.orderType,
+    orderInfo: orderInfo,
+    triggerPrice: args.triggerPrice,
+  })
 
   return order
 }
@@ -107,32 +94,21 @@ const createSpotOrder = (
 const createDerivativeOrder = (
   args: DerivativeOrderToCreate & { subaccountId: string },
 ) => {
-  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
-  const paramsFromArgs = {
-    ...args,
+  const orderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo.create({
+    subaccountId: args.subaccountId,
+    feeRecipient: args.feeRecipient,
     price: args.price,
-    triggerPrice: args.triggerPrice || '0',
     quantity: args.quantity,
-  }
+    cid: args.cid,
+  })
 
-  orderInfo.subaccountId = args.subaccountId
-  orderInfo.feeRecipient = paramsFromArgs.feeRecipient
-  orderInfo.price = paramsFromArgs.price
-  orderInfo.quantity = paramsFromArgs.quantity
-
-  if (paramsFromArgs.cid) {
-    orderInfo.cid = paramsFromArgs.cid
-  }
-
-  const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
-  order.marketId = paramsFromArgs.marketId
-  order.orderType = paramsFromArgs.orderType
-  order.orderInfo = orderInfo
-  order.margin = paramsFromArgs.margin
-
-  if (paramsFromArgs.triggerPrice) {
-    order.triggerPrice = paramsFromArgs.triggerPrice
-  }
+  const order = InjectiveExchangeV1Beta1ExchangePb.DerivativeOrder.create({
+    marketId: args.marketId,
+    orderType: args.orderType,
+    orderInfo: orderInfo,
+    margin: args.margin,
+    triggerPrice: args.triggerPrice,
+  })
 
   return order
 }
@@ -140,136 +116,80 @@ const createDerivativeOrder = (
 const createBinaryOptionOrder = (
   args: BinaryOptionOrderToCreate & { subaccountId: string },
 ) => {
-  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
-  const paramsFromArgs = {
-    ...args,
+  const orderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo.create({
+    subaccountId: args.subaccountId,
+    feeRecipient: args.feeRecipient,
     price: args.price,
-    triggerPrice: args.triggerPrice || '0',
     quantity: args.quantity,
-  }
+    cid: args.cid,
+  })
 
-  orderInfo.subaccountId = args.subaccountId
-  orderInfo.feeRecipient = paramsFromArgs.feeRecipient
-  orderInfo.price = paramsFromArgs.price
-  orderInfo.quantity = paramsFromArgs.quantity
-
-  if (paramsFromArgs.cid) {
-    orderInfo.cid = paramsFromArgs.cid
-  }
-
-  const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
-  order.marketId = paramsFromArgs.marketId
-  order.orderType = paramsFromArgs.orderType
-  order.orderInfo = orderInfo
-  order.margin = paramsFromArgs.margin
-
-  if (paramsFromArgs.triggerPrice) {
-    order.triggerPrice = paramsFromArgs.triggerPrice
-  }
+  const order = InjectiveExchangeV1Beta1ExchangePb.DerivativeOrder.create({
+    marketId: args.marketId,
+    orderType: args.orderType,
+    orderInfo: orderInfo,
+    margin: args.margin,
+    triggerPrice: args.triggerPrice,
+  })
 
   return order
 }
 
 const createMsgAndCancelOrders = (params: MsgBatchUpdateOrders.Params) => {
-  const message = InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders.create()
-  message.sender = params.injectiveAddress
+  const message = InjectiveExchangeV1Beta1TxPb.MsgBatchUpdateOrders.create({
+    sender: params.injectiveAddress,
+    subaccountId: params.subaccountId,
+  })
 
-  if (
-    params.spotMarketIdsToCancelAll &&
-    params.spotMarketIdsToCancelAll.length > 0
-  ) {
+  if (params.spotMarketIdsToCancelAll) {
     message.spotMarketIdsToCancelAll = params.spotMarketIdsToCancelAll
-    message.subaccountId = params.subaccountId
   }
 
-  if (
-    params.derivativeMarketIdsToCancelAll &&
-    params.derivativeMarketIdsToCancelAll.length > 0
-  ) {
-    message.derivativeMarketIdsToCancelAll =
-      params.derivativeMarketIdsToCancelAll
-    message.subaccountId = params.subaccountId
+  if (params.derivativeMarketIdsToCancelAll) {
+    message.derivativeMarketIdsToCancelAll = params.derivativeMarketIdsToCancelAll
   }
 
-  if (
-    params.binaryOptionsMarketIdsToCancelAll &&
-    params.binaryOptionsMarketIdsToCancelAll.length > 0
-  ) {
-    message.binaryOptionsMarketIdsToCancelAll =
-      params.binaryOptionsMarketIdsToCancelAll
-    message.subaccountId = params.subaccountId
+  if (params.binaryOptionsMarketIdsToCancelAll) {
+    message.binaryOptionsMarketIdsToCancelAll = params.binaryOptionsMarketIdsToCancelAll
   }
 
-  if (params.spotOrdersToCancel && params.spotOrdersToCancel.length > 0) {
-    const orderData = params.spotOrdersToCancel.map(
+  if (params.spotOrdersToCancel) {
+    message.spotOrdersToCancel = params.spotOrdersToCancel.map(
       ({ marketId, subaccountId, orderHash, cid }) => {
-        const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
-        orderData.marketId = marketId
-        orderData.subaccountId = subaccountId
-
-        if (orderHash) {
-          orderData.orderHash = orderHash
-        }
-
-        if (cid) {
-          orderData.cid = cid
-        }
-
-        return orderData
+        return InjectiveExchangeV1Beta1TxPb.OrderData.create({
+          marketId,
+          subaccountId,
+          orderHash,
+          cid,
+        })
       },
     )
-
-    message.spotOrdersToCancel = orderData
   }
 
-  if (
-    params.derivativeOrdersToCancel &&
-    params.derivativeOrdersToCancel.length > 0
-  ) {
-    const orderData = params.derivativeOrdersToCancel.map(
+  if (params.derivativeOrdersToCancel) {
+    message.derivativeOrdersToCancel = params.derivativeOrdersToCancel.map(
       ({ marketId, subaccountId, orderHash, cid }) => {
-        const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
-        orderData.marketId = marketId
-        orderData.subaccountId = subaccountId
-
-        if (orderHash) {
-          orderData.orderHash = orderHash
-        }
-
-        if (cid) {
-          orderData.cid = cid
-        }
-
-        return orderData
+        return InjectiveExchangeV1Beta1TxPb.OrderData.create({
+          marketId,
+          subaccountId,
+          orderHash,
+          cid,
+        })
       },
     )
-
-    message.derivativeOrdersToCancel = orderData
   }
 
-  if (
-    params.binaryOptionsOrdersToCancel &&
-    params.binaryOptionsOrdersToCancel.length > 0
-  ) {
-    const orderData = params.binaryOptionsOrdersToCancel.map(
+  if (params.binaryOptionsOrdersToCancel) {
+    message.binaryOptionsOrdersToCancel = params.binaryOptionsOrdersToCancel.map(
       ({ marketId, subaccountId, orderHash, cid }) => {
-        const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
-        orderData.marketId = marketId
-        orderData.subaccountId = subaccountId
-
-        if (orderHash) {
-          orderData.orderHash = orderHash
-        }
-
-        if (cid) {
-          orderData.cid = cid
-        }
-
-        return orderData
+        return InjectiveExchangeV1Beta1TxPb.OrderData.create({
+          marketId,
+          subaccountId,
+          orderHash,
+          cid,
+        })
       },
     )
-
-    message.derivativeOrdersToCancel = orderData
   }
 
   return message
@@ -291,8 +211,8 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
     const message = createMsgAndCancelOrders(params)
 
-    if (params.spotOrdersToCreate && params.spotOrdersToCreate.length > 0) {
-      const orderData = params.spotOrdersToCreate.map((args) => {
+    if (params.spotOrdersToCreate) {
+      message.spotOrdersToCreate = params.spotOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
           price: toChainFormat(args.price).toFixed(),
@@ -306,15 +226,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           subaccountId: params.subaccountId,
         })
       })
-
-      message.spotOrdersToCreate = orderData
     }
 
-    if (
-      params.derivativeOrdersToCreate &&
-      params.derivativeOrdersToCreate.length > 0
-    ) {
-      const orderData = params.derivativeOrdersToCreate.map((args) => {
+    if (params.derivativeOrdersToCreate) {
+      message.derivativeOrdersToCreate = params.derivativeOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
           price: toChainFormat(args.price).toFixed(),
@@ -329,50 +244,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           subaccountId: params.subaccountId,
         })
       })
-
-      message.derivativeOrdersToCreate = orderData
     }
 
-    if (
-      params.binaryOptionsOrdersToCancel &&
-      params.binaryOptionsOrdersToCancel.length > 0
-    ) {
-      const orderData = params.binaryOptionsOrdersToCancel.map(
-        ({ marketId, subaccountId, orderHash, cid }) => {
-          const orderData = InjectiveExchangeV1Beta1Tx.OrderData.create()
-
-          orderData.marketId = marketId
-          orderData.subaccountId = subaccountId
-
-          if (orderHash) {
-            orderData.orderHash = orderHash
-          }
-
-          if (cid) {
-            orderData.cid = cid
-          }
-
-          return orderData
-        },
-      )
-
-      message.derivativeOrdersToCancel = orderData
-    }
-
-    if (
-      params.binaryOptionsMarketIdsToCancelAll &&
-      params.binaryOptionsMarketIdsToCancelAll.length > 0
-    ) {
-      message.subaccountId = params.subaccountId
-      message.binaryOptionsMarketIdsToCancelAll =
-        params.binaryOptionsMarketIdsToCancelAll
-    }
-
-    if (
-      params.binaryOptionsOrdersToCreate &&
-      params.binaryOptionsOrdersToCreate.length > 0
-    ) {
-      const orderData = params.binaryOptionsOrdersToCreate.map((args) => {
+    if (params.binaryOptionsOrdersToCreate) {
+      message.binaryOptionsOrdersToCreate = params.binaryOptionsOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
           price: toChainFormat(args.price).toFixed(),
@@ -387,11 +262,9 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           subaccountId: params.subaccountId,
         })
       })
-
-      message.derivativeOrdersToCreate = orderData
     }
 
-    return InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -408,8 +281,8 @@ export default class MsgBatchUpdateOrders extends MsgBase<
 
     const message = createMsgAndCancelOrders(params)
 
-    if (params.spotOrdersToCreate && params.spotOrdersToCreate.length > 0) {
-      const orderData = params.spotOrdersToCreate.map((args) => {
+    if (params.spotOrdersToCreate) {
+      message.spotOrdersToCreate = params.spotOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
           price: args.price,
@@ -423,15 +296,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           subaccountId: params.subaccountId,
         })
       })
-
-      message.spotOrdersToCreate = orderData
     }
 
-    if (
-      params.derivativeOrdersToCreate &&
-      params.derivativeOrdersToCreate.length > 0
-    ) {
-      const orderData = params.derivativeOrdersToCreate.map((args) => {
+    if (params.derivativeOrdersToCreate) {
+      message.derivativeOrdersToCreate = params.derivativeOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
           price: args.price,
@@ -446,14 +314,10 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           subaccountId: params.subaccountId,
         })
       })
-
-      message.derivativeOrdersToCreate = orderData
     }
-    if (
-      params.binaryOptionsOrdersToCreate &&
-      params.binaryOptionsOrdersToCreate.length > 0
-    ) {
-      const orderData = params.binaryOptionsOrdersToCreate.map((args) => {
+
+    if (params.binaryOptionsOrdersToCreate) {
+      message.binaryOptionsOrdersToCreate = params.binaryOptionsOrdersToCreate.map((args) => {
         const paramsFromArgs = {
           ...args,
           price: args.price,
@@ -468,20 +332,16 @@ export default class MsgBatchUpdateOrders extends MsgBase<
           subaccountId: params.subaccountId,
         })
       })
-
-      message.derivativeOrdersToCreate = orderData
     }
 
     const msg = {
-      ...snakecaseKeys(
-        InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders.fromPartial(message),
-      ),
+      ...snakecaseKeys(message),
     }
 
     return {
       type: 'exchange/MsgBatchUpdateOrders',
       value:
-        msg as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders>,
+        msg as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1TxPb.MsgBatchUpdateOrders>,
     }
   }
 
@@ -505,8 +365,8 @@ export default class MsgBatchUpdateOrders extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgBatchUpdateOrders.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgBatchUpdateOrders.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

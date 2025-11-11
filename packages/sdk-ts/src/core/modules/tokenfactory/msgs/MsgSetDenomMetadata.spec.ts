@@ -40,7 +40,23 @@ const protoParams = {
   },
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  sender: params.sender,
+  metadata: {
+    description: params.metadata.description,
+    denom_units: params.metadata.denomUnits,
+    base: params.metadata.base,
+    display: params.metadata.display,
+    name: params.metadata.name,
+    symbol: params.metadata.symbol,
+    uri: params.metadata.uri,
+    uri_hash: params.metadata.uriHash,
+    decimals: params.metadata.decimals,
+  },
+  admin_burn_disabled: {
+    should_disable: params.adminBurnDisabled,
+  },
+}
 const message = MsgSetDenomMetadata.fromJSON(params)
 
 describe('MsgSetDenomMetadata', () => {

@@ -1,8 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  CosmosStakingV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgBeginRedelegate {
@@ -16,7 +14,7 @@ export declare namespace MsgBeginRedelegate {
     injectiveAddress: string
   }
 
-  export type Proto = CosmosStakingV1Beta1Tx.MsgBeginRedelegate
+  export type Proto = CosmosStakingV1Beta1TxPb.MsgBeginRedelegate
 }
 
 /**
@@ -33,19 +31,19 @@ export default class MsgBeginRedelegate extends MsgBase<
   public toProto(): MsgBeginRedelegate.Proto {
     const { params } = this
 
-    const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    const coinAmount = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    coinAmount.denom = params.amount.denom
-    coinAmount.amount = params.amount.amount
+    const message = CosmosStakingV1Beta1TxPb.MsgBeginRedelegate.create({
+      delegatorAddress: params.injectiveAddress,
+      validatorSrcAddress: params.srcValidatorAddress,
+      validatorDstAddress: params.dstValidatorAddress,
+      amount: coinAmount,
+    })
 
-    const message = CosmosStakingV1Beta1Tx.MsgBeginRedelegate.create()
-
-    message.delegatorAddress = params.injectiveAddress
-    message.validatorSrcAddress = params.srcValidatorAddress
-    message.validatorDstAddress = params.dstValidatorAddress
-    message.amount = coinAmount
-
-    return CosmosStakingV1Beta1Tx.MsgBeginRedelegate.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -89,8 +87,8 @@ export default class MsgBeginRedelegate extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosStakingV1Beta1Tx.MsgBeginRedelegate.encode(
+    return CosmosStakingV1Beta1TxPb.MsgBeginRedelegate.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

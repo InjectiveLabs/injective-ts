@@ -1,5 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
-import { InjectiveExchangeV2Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgSetDelegationTransferReceivers {
@@ -8,7 +7,7 @@ export declare namespace MsgSetDelegationTransferReceivers {
     receivers: string[]
   }
 
-  export type Proto = InjectiveExchangeV2Tx.MsgSetDelegationTransferReceivers
+  export type Proto = InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers
 }
 
 /**
@@ -28,14 +27,12 @@ export default class MsgSetDelegationTransferReceivers extends MsgBase<
     const { params } = this
 
     const message =
-      InjectiveExchangeV2Tx.MsgSetDelegationTransferReceivers.create()
+      InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers.create({
+        sender: params.sender,
+        receivers: params.receivers,
+      })
 
-    message.sender = params.sender
-    message.receivers = params.receivers
-
-    return InjectiveExchangeV2Tx.MsgSetDelegationTransferReceivers.fromPartial(
-      message,
-    )
+    return message
   }
 
   public toData() {
@@ -50,7 +47,8 @@ export default class MsgSetDelegationTransferReceivers extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      receivers: proto.receivers,
     }
 
     return {
@@ -79,8 +77,8 @@ export default class MsgSetDelegationTransferReceivers extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV2Tx.MsgSetDelegationTransferReceivers.encode(
+    return InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

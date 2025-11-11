@@ -1,5 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
-import { InjectiveTokenFactoryV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveTokenFactoryV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgChangeAdmin {
@@ -9,7 +8,7 @@ export declare namespace MsgChangeAdmin {
     newAdmin: string
   }
 
-  export type Proto = InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin
+  export type Proto = InjectiveTokenFactoryV1Beta1TxPb.MsgChangeAdmin
 }
 
 /**
@@ -26,13 +25,13 @@ export default class MsgChangeAdmin extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.create()
+    const message = InjectiveTokenFactoryV1Beta1TxPb.MsgChangeAdmin.create({
+      sender: params.sender,
+      denom: params.denom,
+      newAdmin: params.newAdmin,
+    })
 
-    message.sender = params.sender
-    message.denom = params.denom
-    message.newAdmin = params.newAdmin
-
-    return InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -47,7 +46,9 @@ export default class MsgChangeAdmin extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      denom: proto.denom,
+      new_admin: proto.newAdmin,
     }
 
     return {
@@ -76,8 +77,8 @@ export default class MsgChangeAdmin extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveTokenFactoryV1Beta1Tx.MsgChangeAdmin.encode(
+    return InjectiveTokenFactoryV1Beta1TxPb.MsgChangeAdmin.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

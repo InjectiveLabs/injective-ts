@@ -1,7 +1,5 @@
-import {
-  GoogleProtobufAny,
-  CosmosAuthzV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as CosmosAuthzV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import type { Msgs } from '../../msgs.js'
 
@@ -11,9 +9,9 @@ export declare namespace MsgExec {
     msgs: Msgs | Msgs[]
   }
 
-  export type Proto = CosmosAuthzV1Beta1Tx.MsgExec
+  export type Proto = CosmosAuthzV1Beta1TxPb.MsgExec
 
-  export type Object = Omit<CosmosAuthzV1Beta1Tx.MsgExec, 'msgs'> & {
+  export type Object = Omit<CosmosAuthzV1Beta1TxPb.MsgExec, 'msgs'> & {
     msgs: any
   }
 }
@@ -33,26 +31,23 @@ export default class MsgExec extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = CosmosAuthzV1Beta1Tx.MsgExec.create()
-
-    if (params.grantee) {
-      message.grantee = params.grantee
-    }
-
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
 
     const actualMsgs = msgs.map((msg) => {
-      const msgValue = GoogleProtobufAny.Any.create()
-
-      msgValue.typeUrl = msg.toDirectSign().type
-      msgValue.value = msg.toBinary()
+      const msgValue = GoogleProtobufAnyPb.Any.create({
+        typeUrl: msg.toDirectSign().type,
+        value: msg.toBinary(),
+      })
 
       return msgValue
     })
 
-    message.msgs = actualMsgs
+    const message = CosmosAuthzV1Beta1TxPb.MsgExec.create({
+      grantee: params.grantee,
+      msgs: actualMsgs,
+    })
 
-    return CosmosAuthzV1Beta1Tx.MsgExec.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -111,6 +106,6 @@ export default class MsgExec extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosAuthzV1Beta1Tx.MsgExec.encode(this.toProto()).finish()
+    return CosmosAuthzV1Beta1TxPb.MsgExec.toBinary(this.toProto())
   }
 }
