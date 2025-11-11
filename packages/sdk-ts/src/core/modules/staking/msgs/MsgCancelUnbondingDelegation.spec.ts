@@ -25,9 +25,12 @@ const protoParams = {
   validatorAddress: params.validatorAddress,
   delegatorAddress: params.delegatorAddress,
   amount: params.amount,
-  creationHeight: params.creationHeight,
+  creationHeight: BigInt(params.creationHeight),
 }
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  ...snakecaseKeys(protoParams),
+  creation_height: params.creationHeight,
+}
 const message = MsgCancelUnbondingDelegation.fromJSON(params)
 
 describe('MsgCancelUnbondingDelegation', () => {

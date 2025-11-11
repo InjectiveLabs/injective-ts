@@ -32,19 +32,24 @@ describe('MsgWithdrawDelegatorReward', () => {
 
   it('generates proper data', () => {
     const data = message.toData()
+    const proto = message.toProto()
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...proto,
     })
   })
 
   it('generates proper amino', () => {
     const amino = message.toAmino()
+    const proto = message.toProto()
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      value: aminoParams,
+      value: {
+        delegator_address: proto.delegatorAddress,
+        validator_address: proto.validatorAddress,
+      },
     })
   })
 

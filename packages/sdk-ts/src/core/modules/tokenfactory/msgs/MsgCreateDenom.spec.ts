@@ -28,7 +28,14 @@ const protoParams = {
   allowAdminBurn: params.allowAdminBurn,
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  name: params.name,
+  sender: params.sender,
+  subdenom: params.subdenom,
+  symbol: params.symbol,
+  decimals: params.decimals,
+  allow_admin_burn: params.allowAdminBurn,
+}
 const message = MsgCreateDenom.fromJSON(params)
 
 describe('MsgCreateDenom', () => {

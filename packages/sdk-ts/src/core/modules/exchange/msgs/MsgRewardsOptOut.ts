@@ -1,5 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgRewardsOptOut {
@@ -7,7 +6,7 @@ export declare namespace MsgRewardsOptOut {
     sender: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgRewardsOptOut
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgRewardsOptOut
 }
 
 /**
@@ -24,11 +23,11 @@ export default class MsgRewardsOptOut extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveExchangeV1Beta1Tx.MsgRewardsOptOut.create()
+    const message = InjectiveExchangeV1Beta1TxPb.MsgRewardsOptOut.create({
+      sender: params.sender,
+    })
 
-    message.sender = params.sender
-
-    return InjectiveExchangeV1Beta1Tx.MsgRewardsOptOut.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -43,7 +42,7 @@ export default class MsgRewardsOptOut extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
     }
 
     return {
@@ -72,8 +71,8 @@ export default class MsgRewardsOptOut extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgRewardsOptOut.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgRewardsOptOut.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

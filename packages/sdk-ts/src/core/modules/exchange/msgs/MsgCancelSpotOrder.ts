@@ -1,5 +1,4 @@
-import snakecaseKeys from 'snakecase-keys'
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgCancelSpotOrder {
@@ -11,7 +10,7 @@ export declare namespace MsgCancelSpotOrder {
     cid?: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgCancelSpotOrder
 }
 
 /**
@@ -28,23 +27,17 @@ export default class MsgCancelSpotOrder extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder.create()
-
-    message.sender = params.injectiveAddress
-    message.marketId = params.marketId
-    message.subaccountId = params.subaccountId
-
-    if (params.orderHash) {
-      message.orderHash = params.orderHash
-    }
-
-    if (params.cid) {
-      message.cid = params.cid
-    }
+    const message = InjectiveExchangeV1Beta1TxPb.MsgCancelSpotOrder.create({
+      sender: params.injectiveAddress,
+      marketId: params.marketId,
+      subaccountId: params.subaccountId,
+      orderHash: params.orderHash || '',
+      cid: params.cid || '',
+    })
 
     // TODO: message.setOrderMask does not exist yet, enable this once it does.
 
-    return InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -59,7 +52,11 @@ export default class MsgCancelSpotOrder extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      market_id: proto.marketId,
+      subaccount_id: proto.subaccountId,
+      order_hash: proto.orderHash,
+      cid: proto.cid,
     }
 
     return {
@@ -88,8 +85,8 @@ export default class MsgCancelSpotOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgCancelSpotOrder.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgCancelSpotOrder.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

@@ -9,6 +9,14 @@ import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
+// Custom JSON replacer to handle BigInt serialization
+const jsonReplacer = (key: string, value: any) => {
+  if (typeof value === 'bigint') {
+    return value.toString()
+  }
+  return value
+}
+
 /**
  * @category Indexer Grpc API
  */
@@ -65,7 +73,7 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
+      Buffer.from(JSON.stringify(message, jsonReplacer), 'utf8'),
     )
 
     prepareTxRequest.msgs = messagesList
