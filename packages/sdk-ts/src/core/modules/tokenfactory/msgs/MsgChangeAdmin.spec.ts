@@ -22,7 +22,11 @@ const protoParams = {
   newAdmin: params.newAdmin,
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  sender: params.sender,
+  denom: params.denom,
+  new_admin: params.newAdmin,
+}
 const message = MsgChangeAdmin.fromJSON(params)
 
 describe('MsgChangeAdmin', () => {

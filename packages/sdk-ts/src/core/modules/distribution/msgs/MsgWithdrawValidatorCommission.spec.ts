@@ -30,19 +30,23 @@ describe('MsgWithdrawValidatorCommission', () => {
 
   it('generates proper data', () => {
     const data = message.toData()
+    const proto = message.toProto()
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...proto,
     })
   })
 
   it('generates proper amino', () => {
     const amino = message.toAmino()
+    const proto = message.toProto()
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      value: aminoParams,
+      value: {
+        validator_address: proto.validatorAddress,
+      },
     })
   })
 
@@ -56,10 +60,13 @@ describe('MsgWithdrawValidatorCommission', () => {
 
   it('generates proper Eip712 values', () => {
     const eip712 = message.toEip712()
+    const proto = message.toProto()
 
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
-      value: aminoParams,
+      value: {
+        validator_address: proto.validatorAddress,
+      },
     })
   })
 

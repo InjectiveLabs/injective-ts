@@ -1,6 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
+import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import { fromUtf8 } from '../../../../utils/utf8.js'
 
@@ -12,9 +11,9 @@ export declare namespace MsgMigrateContract {
     msg: object
   }
 
-  export type Proto = CosmwasmWasmV1Tx.MsgMigrateContract
+  export type Proto = CosmwasmWasmV1TxPb.MsgMigrateContract
 
-  export type Object = Omit<CosmwasmWasmV1Tx.MsgMigrateContract, 'msg'> & {
+  export type Object = Omit<CosmwasmWasmV1TxPb.MsgMigrateContract, 'msg'> & {
     msg: any
   }
 }
@@ -34,14 +33,14 @@ export default class MsgMigrateContract extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = CosmwasmWasmV1Tx.MsgMigrateContract.create()
+    const message = CosmwasmWasmV1TxPb.MsgMigrateContract.create({
+      sender: params.sender,
+      contract: params.contract,
+      codeId: BigInt(params.codeId),
+      msg: fromUtf8(JSON.stringify(params.msg)),
+    })
 
-    message.sender = params.sender
-    message.contract = params.contract
-    message.codeId = params.codeId.toString()
-    message.msg = fromUtf8(JSON.stringify(params.msg))
-
-    return CosmwasmWasmV1Tx.MsgMigrateContract.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -58,7 +57,9 @@ export default class MsgMigrateContract extends MsgBase<
     const proto = this.toProto()
 
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      contract: proto.contract,
+      code_id: proto.codeId.toString(),
       msg: params.msg,
     }
 
@@ -96,6 +97,6 @@ export default class MsgMigrateContract extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmwasmWasmV1Tx.MsgMigrateContract.encode(this.toProto()).finish()
+    return CosmwasmWasmV1TxPb.MsgMigrateContract.toBinary(this.toProto())
   }
 }

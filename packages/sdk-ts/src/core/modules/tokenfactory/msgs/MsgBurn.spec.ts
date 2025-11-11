@@ -25,7 +25,11 @@ const protoParams = {
   burnFromAddress: params.burnFromAddress,
 }
 
-const protoParamsAmino = params
+const protoParamsAmino = {
+  sender: params.sender,
+  amount: params.amount,
+  burnFromAddress: params.burnFromAddress,
+}
 const message = MsgBurn.fromJSON(params)
 
 describe('MsgBurn', () => {

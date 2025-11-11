@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
@@ -23,9 +22,8 @@ const protoTypeAmino = 'auction/MsgBid'
 const protoParams = {
   sender: params.injectiveAddress,
   bidAmount: params.amount,
-  round: params.round.toString(),
+  round: BigInt(params.round),
 }
-const aminoParams = snakecaseKeys(protoParams)
 
 const message = MsgBid.fromJSON(params)
 
@@ -50,7 +48,11 @@ describe('MsgBid', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      value: aminoParams,
+      value: {
+        sender: protoParams.sender,
+        bid_amount: protoParams.bidAmount,
+        round: protoParams.round.toString(),
+      },
     })
   })
 
@@ -59,7 +61,9 @@ describe('MsgBid', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...aminoParams,
+      sender: protoParams.sender,
+      bid_amount: protoParams.bidAmount,
+      round: protoParams.round.toString(),
     })
   })
 

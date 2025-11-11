@@ -97,27 +97,29 @@ export default {
   moduleNameMapper: {
     // Strip .mjs extensions from proto package imports for Jest
     '^@injectivelabs/core-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/../../protoV2/core/src/generated/$1.ts',
+      '<rootDir>/protoV2/core/src/generated/$1.ts',
     '^@injectivelabs/abacus-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/../../protoV2/abacus/src/generated/$1.ts',
+      '<rootDir>/protoV2/abacus/src/generated/$1.ts',
     '^@injectivelabs/indexer-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/../../protoV2/indexer/src/generated/$1.ts',
+      '<rootDir>/protoV2/indexer/src/generated/$1.ts',
     '^@injectivelabs/mito-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/../../protoV2/mito/src/generated/$1.ts',
+      '<rootDir>/protoV2/mito/src/generated/$1.ts',
     '^@injectivelabs/olp-proto-ts-v2/generated/(.+)\\.mjs$':
-      '<rootDir>/../../protoV2/olp/src/generated/$1.ts',
+      '<rootDir>/protoV2/olp/src/generated/$1.ts',
     // Handle client imports for V2 proto packages
     '^@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb\\.client\\.mjs$':
-      '<rootDir>/../../protoV2/core/src/generated/cosmos/tx/v1beta1/service_pb.client.ts',
+      '<rootDir>/protoV2/core/src/generated/cosmos/tx/v1beta1/service_pb.client.ts',
     '^@injectivelabs/core-proto-ts-v2/generated/(.+)_pb\\.client\\.mjs$':
-      '<rootDir>/../../protoV2/core/src/generated/$1_pb.client.ts',
-    // Fix path for @injectivelabs packages
-    '^@injectivelabs/exceptions$': '<rootDir>/../../packages/exceptions/src/index.ts',
-    '^@injectivelabs/utils$': '<rootDir>/../../packages/utils/src/index.ts',
-    '^@injectivelabs/networks$': '<rootDir>/../../packages/networks/src/index.ts',
-    '^@injectivelabs/ts-types$': '<rootDir>/../../packages/ts-types/src/index.ts',
-    ...pathsToModuleNameMapper(packagePaths, { prefix: '<rootDir>/../../' }),
-    ...pathsToModuleNameMapper(directoryPaths, { prefix: '<rootDir>/../../' }),
+      '<rootDir>/protoV2/core/src/generated/$1_pb.client.ts',
+    ...pathsToModuleNameMapper(packagePaths, { prefix: '<rootDir>/' }),
+    ...pathsToModuleNameMapper(directoryPaths, { prefix: '<rootDir>/' }),
+    // Override with explicit mappings (must come AFTER pathsToModuleNameMapper to override auto-generated mappings)
+    '^@injectivelabs/exceptions$': '<rootDir>/packages/exceptions/src/index.ts',
+    '^@injectivelabs/utils/test-utils$':
+      '<rootDir>/packages/utils/src/test-utils/index.ts',
+    '^@injectivelabs/utils$': '<rootDir>/packages/utils/src/index.ts',
+    '^@injectivelabs/networks$': '<rootDir>/packages/networks/src/index.ts',
+    '^@injectivelabs/ts-types$': '<rootDir>/packages/ts-types/src/index.ts',
     // '^crypto-es$': 'crypto-js'
   },
 
@@ -162,6 +164,9 @@ export default {
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
   setupFiles: ['dotenv/config'],
+
+  // Run tests in a single process to avoid BigInt serialization issues
+  maxWorkers: 1,
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],

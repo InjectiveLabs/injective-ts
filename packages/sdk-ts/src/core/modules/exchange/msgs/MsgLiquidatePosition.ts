@@ -1,9 +1,6 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
-import {
-  InjectiveExchangeV1Beta1Tx,
-  InjectiveExchangeV1Beta1Exchange,
-} from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
@@ -17,7 +14,7 @@ export declare namespace MsgLiquidatePosition {
     order?: {
       marketId: string
       subaccountId: string
-      orderType: InjectiveExchangeV1Beta1Exchange.OrderType
+      orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType
       triggerPrice?: string
       feeRecipient: string
       price: string
@@ -27,40 +24,37 @@ export declare namespace MsgLiquidatePosition {
     }
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgLiquidatePosition
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgLiquidatePosition
 }
 
 const createMessage = (params: MsgLiquidatePosition.Params) => {
-  const message = InjectiveExchangeV1Beta1Tx.MsgLiquidatePosition.create()
-
-  message.sender = params.injectiveAddress
-  message.subaccountId = params.subaccountId
-  message.marketId = params.marketId
+  const message = InjectiveExchangeV1Beta1TxPb.MsgLiquidatePosition.create({
+    sender: params.injectiveAddress,
+    subaccountId: params.subaccountId,
+    marketId: params.marketId,
+  })
 
   if (params.order) {
-    const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+    const orderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo.create({
+      subaccountId: params.order.subaccountId,
+      feeRecipient: params.order.feeRecipient,
+      price: params.order.price,
+      quantity: params.order.quantity,
+      cid: params.order.cid || '',
+    })
 
-    orderInfo.subaccountId = params.order.subaccountId
-    orderInfo.feeRecipient = params.order.feeRecipient
-    orderInfo.price = params.order.price
-    orderInfo.quantity = params.order.quantity
-
-    if (params.order.cid) {
-      orderInfo.cid = params.order.cid
-    }
-
-    const order = InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
-
-    order.marketId = params.order.marketId
-    order.margin = params.order.margin
-    order.orderInfo = orderInfo
-    order.orderType = params.order.orderType
-    order.triggerPrice = params.order.triggerPrice || '0'
+    const order = InjectiveExchangeV1Beta1ExchangePb.DerivativeOrder.create({
+      marketId: params.order.marketId,
+      margin: params.order.margin,
+      orderInfo: orderInfo,
+      orderType: params.order.orderType,
+      triggerPrice: params.order.triggerPrice || '0',
+    })
 
     message.order = order
   }
 
-  return InjectiveExchangeV1Beta1Tx.MsgLiquidatePosition.fromPartial(message)
+  return message
 }
 
 /**
@@ -105,10 +99,26 @@ export default class MsgLiquidatePosition extends MsgBase<
   }
 
   public toAmino() {
-    const { params } = this
-    const order = createMessage(params)
+    const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(order),
+      sender: proto.sender,
+      subaccount_id: proto.subaccountId,
+      market_id: proto.marketId,
+      order: proto.order
+        ? {
+            market_id: proto.order.marketId,
+            order_info: {
+              subaccount_id: proto.order.orderInfo.subaccountId,
+              fee_recipient: proto.order.orderInfo.feeRecipient,
+              price: proto.order.orderInfo.price,
+              quantity: proto.order.orderInfo.quantity,
+              cid: proto.order.orderInfo.cid,
+            },
+            order_type: proto.order.orderType,
+            margin: proto.order.margin,
+            trigger_price: proto.order.triggerPrice,
+          }
+        : undefined,
     }
 
     return {
@@ -145,9 +155,8 @@ export default class MsgLiquidatePosition extends MsgBase<
             trigger_price: numberToCosmosSdkDecString(
               order.trigger_price || '0',
             ),
-            order_type: InjectiveExchangeV1Beta1Exchange.orderTypeToJSON(
-              order.order_type,
-            ),
+            order_type:
+              InjectiveExchangeV1Beta1ExchangePb.OrderType[order.order_type],
           }
         : undefined,
     }
@@ -168,8 +177,8 @@ export default class MsgLiquidatePosition extends MsgBase<
             ...order,
             order_info: {
               ...order?.order_info,
-              price: toChainFormat(order.order_info.price).toFixed(),
-              quantity: toChainFormat(order.order_info.quantity).toFixed(),
+              price: toChainFormat(order?.order_info?.price || '0').toFixed(),
+              quantity: toChainFormat(order?.order_info?.quantity || '0').toFixed(),
             },
             margin: toChainFormat(order.margin).toFixed(),
             trigger_price: toChainFormat(order.trigger_price || '0').toFixed(),
@@ -193,8 +202,8 @@ export default class MsgLiquidatePosition extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgLiquidatePosition.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgLiquidatePosition.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

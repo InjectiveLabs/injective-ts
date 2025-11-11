@@ -1,10 +1,8 @@
 import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
-import {
-  CosmosAuthzV1Beta1Tx,
-  CosmosAuthzV1Beta1Authz,
-  GoogleProtobufTimestamp,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosAuthzV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/tx_pb.mjs'
+import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb.mjs'
+import * as GoogleProtobufTimestampPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/timestamp_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import type { BaseAuthorization } from './authorizations/Base.js'
 
@@ -18,9 +16,9 @@ export declare namespace MsgGrantWithAuthorization {
     expiryInSeconds?: number
   }
 
-  export type Proto = CosmosAuthzV1Beta1Tx.MsgGrant
+  export type Proto = CosmosAuthzV1Beta1TxPb.MsgGrant
 
-  export type Object = Omit<CosmosAuthzV1Beta1Tx.MsgGrant, 'msgs'> & {
+  export type Object = Omit<CosmosAuthzV1Beta1TxPb.MsgGrant, 'msgs'> & {
     msgs: any
   }
 }
@@ -42,18 +40,19 @@ export default class MsgGrantWithAuthorization extends MsgBase<
     const { params } = this
 
     const timestamp = this.getTimestamp()
-    const grant = CosmosAuthzV1Beta1Authz.Grant.create()
 
-    grant.authorization = params.authorization.toAny()
-    grant.expiration = new Date(Number(timestamp.seconds) * 1000)
+    const grant = CosmosAuthzV1Beta1AuthzPb.Grant.create({
+      authorization: params.authorization.toAny(),
+      expiration: timestamp,
+    })
 
-    const message = CosmosAuthzV1Beta1Tx.MsgGrant.create()
+    const message = CosmosAuthzV1Beta1TxPb.MsgGrant.create({
+      granter: params.granter,
+      grantee: params.grantee,
+      grant: grant,
+    })
 
-    message.granter = params.granter
-    message.grantee = params.grantee
-    message.grant = grant
-
-    return CosmosAuthzV1Beta1Tx.MsgGrant.fromJSON(message)
+    return message
   }
 
   public toData() {
@@ -132,9 +131,9 @@ export default class MsgGrantWithAuthorization extends MsgBase<
     const { params } = this
 
     if (params.expiration) {
-      const timestamp = GoogleProtobufTimestamp.Timestamp.create()
-
-      timestamp.seconds = params.expiration.toString()
+      const timestamp = GoogleProtobufTimestampPb.Timestamp.create({
+        seconds: BigInt(params.expiration),
+      })
 
       return timestamp
     }
@@ -147,19 +146,19 @@ export default class MsgGrantWithAuthorization extends MsgBase<
       dateNow.getDate(),
     )
 
-    const timestamp = GoogleProtobufTimestamp.Timestamp.create()
-
     const timestampInSeconds = (
       expiration.getTime() / 1000 +
       (params.expiryInSeconds || 0)
     ).toString()
 
-    timestamp.seconds = timestampInSeconds
+    const timestamp = GoogleProtobufTimestampPb.Timestamp.create({
+      seconds: BigInt(timestampInSeconds),
+    })
 
     return timestamp
   }
 
   public toBinary(): Uint8Array {
-    return CosmosAuthzV1Beta1Tx.MsgGrant.encode(this.toProto()).finish()
+    return CosmosAuthzV1Beta1TxPb.MsgGrant.toBinary(this.toProto())
   }
 }

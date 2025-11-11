@@ -1,5 +1,5 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgReclaimLockedFunds {
@@ -9,7 +9,7 @@ export declare namespace MsgReclaimLockedFunds {
     signature: Uint8Array
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgReclaimLockedFunds
 }
 
 /**
@@ -26,16 +26,16 @@ export default class MsgReclaimLockedFunds extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.create()
+    const message = InjectiveExchangeV1Beta1TxPb.MsgReclaimLockedFunds.create({
+      sender: params.sender,
+      lockedAccountPubKey: Buffer.from(
+        params.lockedAccountPubKey,
+        'base64',
+      ),
+      signature: params.signature,
+    })
 
-    message.sender = params.sender
-    message.lockedAccountPubKey = Buffer.from(
-      params.lockedAccountPubKey,
-      'base64',
-    )
-    message.signature = params.signature
-
-    return InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -90,8 +90,8 @@ export default class MsgReclaimLockedFunds extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgReclaimLockedFunds.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

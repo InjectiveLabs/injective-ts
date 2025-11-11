@@ -1,8 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  InjectiveExchangeV1Beta1Tx,
-  InjectiveExchangeV1Beta1Exchange,
-} from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgCancelBinaryOptionsOrder {
@@ -11,11 +8,11 @@ export declare namespace MsgCancelBinaryOptionsOrder {
     subaccountId: string
     injectiveAddress: string
     orderHash?: string
-    orderMask?: InjectiveExchangeV1Beta1Exchange.OrderMask
+    orderMask?: InjectiveExchangeV1Beta1ExchangePb.OrderMask
     cid?: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgCancelBinaryOptionsOrder
 }
 
 /**
@@ -35,22 +32,14 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
     const { params } = this
 
     const message =
-      InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder.create()
-
-    message.sender = params.injectiveAddress
-    message.marketId = params.marketId
-    message.subaccountId = params.subaccountId
-
-    if (params.orderHash) {
-      message.orderHash = params.orderHash
-    }
-
-    // TODO: Send order.orderMask instead when chain handles order mask properly.
-    message.orderMask = InjectiveExchangeV1Beta1Exchange.OrderMask.ANY
-
-    if (params.cid) {
-      message.cid = params.cid
-    }
+      InjectiveExchangeV1Beta1TxPb.MsgCancelBinaryOptionsOrder.create({
+        sender: params.injectiveAddress,
+        marketId: params.marketId,
+        subaccountId: params.subaccountId,
+        orderHash: params.orderHash || '',
+        orderMask: InjectiveExchangeV1Beta1ExchangePb.OrderMask.ANY,
+        cid: params.cid || '',
+      })
 
     return message
   }
@@ -67,7 +56,12 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      market_id: proto.marketId,
+      subaccount_id: proto.subaccountId,
+      order_hash: proto.orderHash,
+      order_mask: proto.orderMask,
+      cid: proto.cid,
     }
 
     return {
@@ -96,8 +90,8 @@ export default class MsgCancelBinaryOptionsOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgCancelBinaryOptionsOrder.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgCancelBinaryOptionsOrder.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }
