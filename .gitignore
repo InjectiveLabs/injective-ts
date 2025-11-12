@@ -4,6 +4,8 @@ dist
 .build-cache
 .nx/
 .DS_STORE
+.eslintcache
+.tsbuildinfo
 # Created by https://www.gitignore.io/api/node,intellij+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,intellij+all,visualstudiocode
 
