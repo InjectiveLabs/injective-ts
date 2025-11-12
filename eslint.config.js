@@ -12,6 +12,11 @@ export default [
     ignores: [
       'proto/**',
       'protoV2/**',
+      '**/proto-ts/**',
+      '**/src/generated/**',
+      '**/*_pb.ts',
+      '**/*_pb.js',
+      '**/*_pb.mjs',
       '**/*.d.ts',
       '**/dist/**',
       'deprecated/**',
@@ -28,7 +33,9 @@ export default [
       sourceType: 'module',
       parser: typescriptParser,
       parserOptions: {
-        project: './tsconfig.json',
+        // Enable type-aware linting with performance optimizations
+        project: true, // Auto-find nearest tsconfig
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
@@ -43,7 +50,7 @@ export default [
       },
     },
     rules: {
-      // Enforce type-only imports where appropriate
+      // Essential type-aware rules (performance optimized)
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {
@@ -52,14 +59,12 @@ export default [
           disallowTypeAnnotations: false,
         },
       ],
-      // Enforce type-only exports where appropriate
       '@typescript-eslint/consistent-type-exports': [
         'error',
         {
           fixMixedExportsWithInlineTypeSpecifier: false,
         },
       ],
-      // Prevent type import side effects
       '@typescript-eslint/no-import-type-side-effects': 'error',
       // Disable the base import/no-duplicates rule as it conflicts with type imports
       'import/no-duplicates': 'off',
