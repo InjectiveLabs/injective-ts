@@ -53,7 +53,8 @@
     "coverage": "vitest run --coverage",
     "coverage:show": "live-server coverage",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
     "@injectivelabs/ts-types": "workspace:*",
