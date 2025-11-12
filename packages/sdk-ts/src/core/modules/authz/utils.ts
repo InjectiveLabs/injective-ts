@@ -1,4 +1,4 @@
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb.mjs'
 import MsgExec from './msgs/MsgExec.js'
 import type { Msgs } from './../msgs.js'
@@ -23,12 +23,17 @@ export const getGenericAuthorizationFromMessageType = (
 
   const genericAuthorization =
     CosmosAuthzV1Beta1AuthzPb.GenericAuthorization.create({
-      msg: messageTypeUrl.startsWith('/') ? messageTypeUrl : `/${messageTypeUrl}`,
+      msg: messageTypeUrl.startsWith('/')
+        ? messageTypeUrl
+        : `/${messageTypeUrl}`,
     })
 
-  const authorization = GoogleProtobufAnyPb.Any.create({
+  const authorization = GoogleProtobufAnyPbPb.Any.create({
     typeUrl: genericAuthorizationType,
-    value: CosmosAuthzV1Beta1AuthzPb.GenericAuthorization.toBinary(genericAuthorization),
+    value:
+      CosmosAuthzV1Beta1AuthzPb.GenericAuthorization.toBinary(
+        genericAuthorization,
+      ),
   })
 
   return authorization

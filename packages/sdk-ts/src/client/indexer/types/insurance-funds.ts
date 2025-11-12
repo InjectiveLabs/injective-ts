@@ -1,5 +1,5 @@
-import type { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
 import type * as InjectiveInsuranceRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb'
+import type * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb.mjs'
 
 export interface IndexerInsuranceFund {
   depositDenom: string
@@ -12,7 +12,7 @@ export interface IndexerInsuranceFund {
   marketTicker: string
   oracleBase: string
   oracleQuote: string
-  oracleType: InjectiveOracleV1Beta1Oracle.OracleType
+  oracleType: InjectiveOracleV1Beta1OraclePb.OracleType
   expiry: number
 }
 
@@ -41,7 +41,7 @@ export interface InsuranceFundCreateParams {
   quoteDenom: string
   oracleBase: string
   oracleQuote: string
-  oracleType: InjectiveOracleV1Beta1Oracle.OracleType
+  oracleType: InjectiveOracleV1Beta1OraclePb.OracleType
   expiry?: number
 }
 

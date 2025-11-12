@@ -99,9 +99,6 @@ describe('MsgGrantWithAuthorization', () => {
       })
     })
 
-    // Skipping EIP712 tests for now due to BigInt serialization issues
-    // TODO: Fix EIP712 tests after BigInt serialization is resolved
-    /*
     describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
       const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
         messages: message,
@@ -126,7 +123,6 @@ describe('MsgGrantWithAuthorization', () => {
         expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
       })
     })
-    */
   })
 
   describe('ContractExecutionAuthorization', () => {
@@ -224,9 +220,6 @@ describe('MsgGrantWithAuthorization', () => {
       })
     })
 
-    // Skipping EIP712 tests for now due to BigInt serialization issues
-    // TODO: Fix EIP712 tests after BigInt serialization is resolved
-    /*
     describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
       const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
         messages: message,
@@ -251,7 +244,6 @@ describe('MsgGrantWithAuthorization', () => {
         expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
       })
     })
-    */
   })
 
   describe('ContractExecutionCompatAuthorization', () => {
@@ -349,9 +341,6 @@ describe('MsgGrantWithAuthorization', () => {
       })
     })
 
-    // Skipping EIP712 tests for now due to BigInt serialization issues
-    // TODO: Fix EIP712 tests after BigInt serialization is resolved
-    /*
     describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
       const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
         messages: message,
@@ -376,6 +365,5 @@ describe('MsgGrantWithAuthorization', () => {
         expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
       })
     })
-    */
   })
 })

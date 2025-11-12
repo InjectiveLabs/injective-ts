@@ -1,4 +1,3 @@
-import { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
 import * as CosmosBaseQueryV1Beta1PaginationPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/query/v1beta1/pagination_pb.mjs'
 import type { Coin } from '@injectivelabs/ts-types'
 import type { GrpcCoin } from '../../../types/index.js'
@@ -34,32 +33,22 @@ export class ChainGrpcCommonTransformer {
   }
 
   static pageRequestToGrpcPageRequest(pageRequest?: PaginationOption) {
-    const paginationForRequest =
-      CosmosBaseQueryV1Beta1Pagination.PageRequest.create()
-
     if (!pageRequest) {
       return
     }
 
-    if (pageRequest.key) {
-      paginationForRequest.key = Buffer.from(pageRequest.key, 'base64')
-    }
-
-    if (pageRequest.limit !== undefined) {
-      paginationForRequest.limit = pageRequest.limit.toString()
-    }
-
-    if (pageRequest.offset !== undefined) {
-      paginationForRequest.offset = pageRequest.offset.toString()
-    }
-
-    if (pageRequest.reverse !== undefined) {
-      paginationForRequest.reverse = pageRequest.reverse
-    }
-
-    if (pageRequest.countTotal !== undefined) {
-      paginationForRequest.countTotal = pageRequest.countTotal
-    }
+    const paginationForRequest =
+      CosmosBaseQueryV1Beta1PaginationPb.PageRequest.create({
+        key: pageRequest?.key
+          ? Buffer.from(pageRequest.key, 'base64')
+          : undefined,
+        limit: pageRequest?.limit ? BigInt(pageRequest.limit) : undefined,
+        offset: pageRequest?.offset ? BigInt(pageRequest.offset) : undefined,
+        reverse: pageRequest?.reverse ? pageRequest.reverse : undefined,
+        countTotal: pageRequest?.countTotal
+          ? pageRequest.countTotal
+          : undefined,
+      })
 
     return paginationForRequest
   }
@@ -79,13 +68,13 @@ export class ChainGrpcCommonTransformer {
   }
 
   static grpcPaginationToPagination(
-    pagination: CosmosBaseQueryV1Beta1Pagination.PageResponse | undefined,
+    pagination: CosmosBaseQueryV1Beta1PaginationPb.PageResponse | undefined,
   ): Pagination {
     return {
       total: pagination
         ? parseInt(
             ChainGrpcCommonTransformer.paginationUint8ArrayToString(
-              pagination.total,
+              pagination.total.toString(),
             ),
             10,
           )
@@ -102,7 +91,7 @@ export class ChainGrpcCommonTransformer {
     pagination: CosmosBaseQueryV1Beta1PaginationPb.PageResponse | undefined,
   ): Pagination {
     return {
-      total: pagination ? parseInt(pagination.total.toString(), 10) : 0,
+      total: pagination ? Number(pagination.total) : 0,
       next: pagination
         ? ChainGrpcCommonTransformer.paginationUint8ArrayToString(
             pagination.nextKey,

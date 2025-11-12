@@ -23,36 +23,6 @@
       "@injectivelabs/sdk-ts": [
         "packages/sdk-ts"
       ],
-      "@injectivelabs/core-proto-ts-v2": [
-        "protoV2/core/proto-ts/esm"
-      ],
-      "@injectivelabs/core-proto-ts-v2/generated/*": [
-        "protoV2/core/proto-ts/esm/generated/*"
-      ],
-      "@injectivelabs/abacus-proto-ts-v2": [
-        "protoV2/abacus/src"
-      ],
-      "@injectivelabs/abacus-proto-ts-v2/generated/*": [
-        "protoV2/abacus/src/generated/*"
-      ],
-      "@injectivelabs/indexer-proto-ts-v2": [
-        "protoV2/indexer/src"
-      ],
-      "@injectivelabs/indexer-proto-ts-v2/generated/*": [
-        "protoV2/indexer/src/generated/*"
-      ],
-      "@injectivelabs/mito-proto-ts-v2": [
-        "protoV2/mito/src"
-      ],
-      "@injectivelabs/mito-proto-ts-v2/generated/*": [
-        "protoV2/mito/src/generated/*"
-      ],
-      "@injectivelabs/olp-proto-ts-v2": [
-        "protoV2/olp/src"
-      ],
-      "@injectivelabs/olp-proto-ts-v2/generated/*": [
-        "protoV2/olp/src/generated/*"
-      ],
       "@injectivelabs/wallet-base": [
         "packages/wallets/wallet-base"
       ],

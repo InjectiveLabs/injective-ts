@@ -1,17 +1,15 @@
-import type {
-  CosmosTxV1Beta1Tx,
-  CometCryptoV1Keys,
-} from '@injectivelabs/core-proto-ts'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
+import type * as CometCryptoV1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/cometbft/crypto/v1/keys_pb.mjs'
 
 export interface RestSignerInfo {
-  public_key: CometCryptoV1Keys.PublicKey | null
-  mode_info: CosmosTxV1Beta1Tx.ModeInfo
+  public_key: CometCryptoV1KeysPb.PublicKey | null
+  mode_info: CosmosTxV1Beta1TxPb.ModeInfo
   sequence: string
 }
 
 export interface RestAuthInfo {
   signer_infos: RestSignerInfo[]
-  fee: CosmosTxV1Beta1Tx.Fee
+  fee: CosmosTxV1Beta1TxPb.Fee
 }
 
 export interface RestTxBody {

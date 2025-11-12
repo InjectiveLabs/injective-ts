@@ -2,7 +2,7 @@ import * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2
 import * as InjectiveCryptoV1Beta1Ethsecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/injective/crypto/v1beta1/ethsecp256k1/keys_pb.mjs'
 import { uint8ArrayToString } from '../../../utils/index.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import type * as CosmosAuthV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb.mjs'
 import type { Account, AuthModuleParams } from '../types/auth.js'
 
@@ -24,7 +24,7 @@ export class ChainGrpcAuthTransformer {
     }
   }
 
-  static grpcAccountToAccount(ethAccount: GoogleProtobufAnyPb.Any): Account {
+  static grpcAccountToAccount(ethAccount: GoogleProtobufAnyPbPb.Any): Account {
     const account = InjectiveTypesV1Beta1AccountPb.EthAccount.fromBinary(
       ethAccount.value,
     )

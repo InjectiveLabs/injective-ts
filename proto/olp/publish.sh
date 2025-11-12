@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# DEPRECATION WARNING
+echo "❌ ERROR: This script is deprecated, use protoV2/olp/publish.sh instead" >&2
+exit 1
+
 cd ./proto/olp
 cd ./proto-ts || exit
 

@@ -6,6 +6,6 @@
     "moduleResolution": "node",
     "tsBuildInfoFile": "../../../.build-cache/wallet-evm.tsbuildinfo"
   },
-  "include": ["./src/**/*.ts", "../../../protoV2/**/*.ts"],
+  "include": ["./src/**/*.ts"],
   "exclude": ["./src/**/*.spec.ts", "./src/**/*.test.ts"]
 }

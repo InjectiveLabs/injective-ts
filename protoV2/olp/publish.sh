@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-cd ./proto-ts || exit
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+cd "$SCRIPT_DIR/proto-ts" || exit
 
 v=$(npm view @injectivelabs/olp-proto-ts-v2 version)
 echo "current package version: $v"

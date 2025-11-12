@@ -1,4 +1,4 @@
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
 
 export * from './tx.js'
 export * from './api/index.js'
@@ -8,4 +8,4 @@ export * from './types/index.js'
 export * from './eip712/index.js'
 export * from './broadcaster/index.js'
 
-export { CosmosTxV1Beta1Tx }
+export { CosmosTxV1Beta1TxPb }

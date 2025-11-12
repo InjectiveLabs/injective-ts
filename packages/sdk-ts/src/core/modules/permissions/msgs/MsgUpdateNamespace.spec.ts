@@ -1,6 +1,6 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import { InjectivePermissionsV1Beta1Permissions } from '@injectivelabs/core-proto-ts'
+import * as InjectivePermissionsV1Beta1PermissionsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/permissions_pb.mjs'
 import MsgUpdateNamespace from './MsgUpdateNamespace.js'
 import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
@@ -18,7 +18,7 @@ const params: MsgUpdateNamespace['params'] = {
   ],
   policyStatuses: [
     {
-      action: InjectivePermissionsV1Beta1Permissions.Action.SEND,
+      action: InjectivePermissionsV1Beta1PermissionsPb.Action.SEND,
       isDisabled: false,
       isSealed: false,
     },
@@ -26,7 +26,7 @@ const params: MsgUpdateNamespace['params'] = {
   policyManagerCapabilities: [
     {
       manager: mockFactory.injectiveAddress2,
-      action: InjectivePermissionsV1Beta1Permissions.Action.SEND,
+      action: InjectivePermissionsV1Beta1PermissionsPb.Action.SEND,
       canDisable: false,
       canSeal: false,
     },

@@ -1,5 +1,5 @@
 import snakecaseKeys from 'snakecase-keys'
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb.mjs'
 import * as CosmosGovV1Beta1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/gov_pb.mjs'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
@@ -19,7 +19,10 @@ export declare namespace MsgSubmitTextProposal {
 
   export type Proto = CosmosGovV1Beta1TxPb.MsgSubmitProposal
 
-  export type Object = Omit<CosmosGovV1Beta1TxPb.MsgSubmitProposal, 'content'> & {
+  export type Object = Omit<
+    CosmosGovV1Beta1TxPb.MsgSubmitProposal,
+    'content'
+  > & {
     content: {
       type_url: string
       value: any
@@ -50,7 +53,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
 
-    const contentAny = GoogleProtobufAnyPb.Any.create({
+    const contentAny = GoogleProtobufAnyPbPb.Any.create({
       typeUrl: proposalType,
       value: CosmosGovV1Beta1GovPb.TextProposal.toBinary(content),
     })

@@ -78,15 +78,15 @@ export default class MsgSetDenomMetadata extends MsgBase<
     const message = {
       sender: proto.sender,
       metadata: {
-        description: proto.metadata.description,
-        denom_units: proto.metadata.denomUnits,
-        base: proto.metadata.base,
-        display: proto.metadata.display,
-        name: proto.metadata.name,
-        symbol: proto.metadata.symbol,
-        uri: proto.metadata.uri,
-        uri_hash: proto.metadata.uriHash,
-        decimals: proto.metadata.decimals,
+        description: proto.metadata?.description || '',
+        denom_units: proto.metadata?.denomUnits || [],
+        base: proto.metadata?.base || '',
+        display: proto.metadata?.display || '',
+        name: proto.metadata?.name || '',
+        symbol: proto.metadata?.symbol || '',
+        uri: proto.metadata?.uri || '',
+        uri_hash: proto.metadata?.uriHash || '',
+        decimals: proto.metadata?.decimals || '',
       },
       ...(proto.adminBurnDisabled && {
         admin_burn_disabled: {

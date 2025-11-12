@@ -39,3 +39,4 @@ export * as InjectivePortfolioRpcPb from "./generated/injective_portfolio_rpc_pb
 export * as InjectiveReferralRpcPb from "./generated/injective_referral_rpc_pb.js";
 export * as InjectiveSpotExchangeRpcPb from "./generated/injective_spot_exchange_rpc_pb.js";
 export * as InjectiveTradingRpcPb from "./generated/injective_trading_rpc_pb.js";
+
