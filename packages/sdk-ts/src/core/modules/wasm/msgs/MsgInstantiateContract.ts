@@ -107,8 +107,6 @@ export default class MsgInstantiateContract extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmwasmWasmV1TxPb.MsgInstantiateContract.toBinary(
-      this.toProto(),
-    )
+    return CosmwasmWasmV1TxPb.MsgInstantiateContract.toBinary(this.toProto())
   }
 }

@@ -78,24 +78,28 @@ export default class MsgCreateNamespace extends MsgBase<
     const policyManagerCapabilities =
       params.namespace.policyManagerCapabilities.map(
         (policyManagerCapability) => {
-          return InjectivePermissionsV1Beta1PermissionsPb.PolicyManagerCapability.create({
-            manager: policyManagerCapability.manager,
-            action: policyManagerCapability.action,
-            canDisable: policyManagerCapability.canDisable,
-            canSeal: policyManagerCapability.canSeal,
-          })
+          return InjectivePermissionsV1Beta1PermissionsPb.PolicyManagerCapability.create(
+            {
+              manager: policyManagerCapability.manager,
+              action: policyManagerCapability.action,
+              canDisable: policyManagerCapability.canDisable,
+              canSeal: policyManagerCapability.canSeal,
+            },
+          )
         },
       )
 
-    const namespace = InjectivePermissionsV1Beta1PermissionsPb.Namespace.create({
-      denom: params.namespace.denom,
-      contractHook: params.namespace.contractHook,
-      rolePermissions: rolePermissions,
-      actorRoles: actorRoles,
-      roleManagers: roleManagers,
-      policyStatuses: policyStatuses,
-      policyManagerCapabilities: policyManagerCapabilities,
-    })
+    const namespace = InjectivePermissionsV1Beta1PermissionsPb.Namespace.create(
+      {
+        denom: params.namespace.denom,
+        contractHook: params.namespace.contractHook,
+        rolePermissions: rolePermissions,
+        actorRoles: actorRoles,
+        roleManagers: roleManagers,
+        policyStatuses: policyStatuses,
+        policyManagerCapabilities: policyManagerCapabilities,
+      },
+    )
 
     const message = InjectivePermissionsV1Beta1TxPb.MsgCreateNamespace.create({
       sender: params.sender,
@@ -157,7 +161,8 @@ export default class MsgCreateNamespace extends MsgBase<
     const policyStatuses = (namespace?.policy_statuses || []).map(
       (policyStatus: any) => ({
         ...policyStatus,
-        action: InjectivePermissionsV1Beta1PermissionsPb.Action[policyStatus.action],
+        action:
+          InjectivePermissionsV1Beta1PermissionsPb.Action[policyStatus.action],
       }),
     )
 
@@ -165,7 +170,10 @@ export default class MsgCreateNamespace extends MsgBase<
       namespace?.policy_manager_capabilities || []
     ).map((policyManagerCapability: any) => ({
       ...policyManagerCapability,
-      action: InjectivePermissionsV1Beta1PermissionsPb.Action[policyManagerCapability.action],
+      action:
+        InjectivePermissionsV1Beta1PermissionsPb.Action[
+          policyManagerCapability.action
+        ],
     }))
 
     const messageAdjusted = {

@@ -68,8 +68,8 @@ import type {
 } from '@injectivelabs/ts-types'
 import type {
   TxResponse,
-  CosmosTxV1Beta1Tx,
   DirectSignResponse,
+  CosmosTxV1Beta1TxPb,
   CreateTransactionWithSignersArgs,
 } from '@injectivelabs/sdk-ts'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
@@ -1299,7 +1299,7 @@ export class MsgBroadcaster {
   /**
    * Create TxRaw and simulate it
    */
-  private async simulateTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
+  private async simulateTxRaw(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
     const { endpoints, httpHeaders } = this
 
     txRaw.signatures = [new Uint8Array(0)]

@@ -87,8 +87,6 @@ export default class MsgBeginRedelegate extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosStakingV1Beta1TxPb.MsgBeginRedelegate.toBinary(
-      this.toProto(),
-    )
+    return CosmosStakingV1Beta1TxPb.MsgBeginRedelegate.toBinary(this.toProto())
   }
 }

@@ -1,9 +1,7 @@
 import type { AminoSignResponse } from '@cosmjs/amino'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import type {
-  CosmosTxV1Beta1Tx,
-  CosmosBaseV1Beta1Coin,
-} from '@injectivelabs/core-proto-ts'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
+import type * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 
 export interface Coin {
   denom: string
@@ -21,8 +19,8 @@ export const StreamOperation = {
 export type StreamOperation =
   (typeof StreamOperation)[keyof typeof StreamOperation]
 
-export type GrpcCoin = CosmosBaseV1Beta1Coin.Coin
-export type TxRaw = CosmosTxV1Beta1Tx.TxRaw
-export type SignDoc = CosmosTxV1Beta1Tx.SignDoc
+export type GrpcCoin = CosmosBaseV1Beta1CoinPb.Coin
+export type TxRaw = CosmosTxV1Beta1TxPb.TxRaw
+export type SignDoc = CosmosTxV1Beta1TxPb.SignDoc
 
 export type { DirectSignResponse, AminoSignResponse }

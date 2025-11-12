@@ -1,9 +1,9 @@
-import type { InjectiveTradingRpc } from '@injectivelabs/indexer-proto-ts'
+import type * as InjectiveTradingRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb'
 
 export type ListTradingStrategiesResponse =
-  InjectiveTradingRpc.ListTradingStrategiesResponse
+  InjectiveTradingRpcPb.ListTradingStrategiesResponse
 
-export type TradingStrategy = InjectiveTradingRpc.TradingStrategy
+export type TradingStrategy = InjectiveTradingRpcPb.TradingStrategy
 
 export const MarketType = {
   Spot: 'spot',
@@ -23,4 +23,4 @@ export const GridStrategyType = {
 } as const
 
 export type GridStrategyStreamResponse =
-  InjectiveTradingRpc.StreamStrategyResponse
+  InjectiveTradingRpcPb.StreamStrategyResponse

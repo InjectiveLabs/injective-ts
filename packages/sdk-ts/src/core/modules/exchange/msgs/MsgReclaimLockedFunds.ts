@@ -28,10 +28,7 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
     const message = InjectiveExchangeV1Beta1TxPb.MsgReclaimLockedFunds.create({
       sender: params.sender,
-      lockedAccountPubKey: Buffer.from(
-        params.lockedAccountPubKey,
-        'base64',
-      ),
+      lockedAccountPubKey: Buffer.from(params.lockedAccountPubKey, 'base64'),
       signature: params.signature,
     })
 

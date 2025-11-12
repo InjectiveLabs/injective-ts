@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
 import * as CosmosGovV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/tx_pb.mjs'
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import type { Msgs } from '../../../../core/modules/msgs.js'
@@ -45,7 +45,7 @@ export default class MsgSubmitGenericProposal extends MsgBase<
 
     const message = CosmosGovV1TxPb.MsgSubmitProposal.create({
       messages: params.messages.map((msg) => {
-        const contentAny = GoogleProtobufAnyPb.Any.create({
+        const contentAny = GoogleProtobufAnyPbPb.Any.create({
           typeUrl: msg.toDirectSign().type,
           value: msg.toBinary(),
         })

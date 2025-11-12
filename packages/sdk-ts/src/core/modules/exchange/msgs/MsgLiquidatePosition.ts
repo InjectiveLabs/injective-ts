@@ -108,11 +108,11 @@ export default class MsgLiquidatePosition extends MsgBase<
         ? {
             market_id: proto.order.marketId,
             order_info: {
-              subaccount_id: proto.order.orderInfo.subaccountId,
-              fee_recipient: proto.order.orderInfo.feeRecipient,
-              price: proto.order.orderInfo.price,
-              quantity: proto.order.orderInfo.quantity,
-              cid: proto.order.orderInfo.cid,
+              subaccount_id: proto.order.orderInfo?.subaccountId,
+              fee_recipient: proto.order.orderInfo?.feeRecipient,
+              price: proto.order.orderInfo?.price,
+              quantity: proto.order.orderInfo?.quantity,
+              cid: proto.order.orderInfo?.cid,
             },
             order_type: proto.order.orderType,
             margin: proto.order.margin,
@@ -178,7 +178,9 @@ export default class MsgLiquidatePosition extends MsgBase<
             order_info: {
               ...order?.order_info,
               price: toChainFormat(order?.order_info?.price || '0').toFixed(),
-              quantity: toChainFormat(order?.order_info?.quantity || '0').toFixed(),
+              quantity: toChainFormat(
+                order?.order_info?.quantity || '0',
+              ).toFixed(),
             },
             margin: toChainFormat(order.margin).toFixed(),
             trigger_price: toChainFormat(order.trigger_price || '0').toFixed(),

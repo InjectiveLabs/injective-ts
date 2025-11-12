@@ -6,6 +6,11 @@
     "moduleResolution": "node",
     "tsBuildInfoFile": "../../../.build-cache/wallet-core.tsbuildinfo"
   },
-  "include": ["./src/**/*.ts", "../../../protoV2/**/*.ts"],
-  "exclude": ["./src/**/*.spec.ts", "./src/**/*.test.ts"]
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "./src/**/*.spec.ts",
+    "./src/**/*.test.ts"
+  ]
 }

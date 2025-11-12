@@ -1,3 +1,7 @@
+# DEPRECATION WARNING
+echo "❌ ERROR: This script is deprecated, use protoV2/mito/gen.sh instead" >&2
+exit 1
+
 ROOT_DIR=./proto/mito
 BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto

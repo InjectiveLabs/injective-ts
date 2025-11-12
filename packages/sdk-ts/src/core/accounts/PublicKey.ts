@@ -2,10 +2,8 @@ import { keccak256 } from 'viem'
 import secp256k1 from 'secp256k1'
 import { bech32 } from '@scure/base'
 import { toBytes as toBuffer } from 'viem'
-import {
-  GoogleProtobufAny,
-  InjectiveCryptoV1Beta1Ethsecp256k1Keys,
-} from '@injectivelabs/core-proto-ts'
+import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as InjectiveCryptoV1Beta1Ethsecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/injective/crypto/v1beta1/ethsecp256k1/keys_pb.mjs'
 import { Address } from './Address.js'
 import {
   decompressPubKey,
@@ -91,7 +89,7 @@ export class PublicKey {
   }
 
   public toProto() {
-    const proto = InjectiveCryptoV1Beta1Ethsecp256k1Keys.PubKey.create()
+    const proto = InjectiveCryptoV1Beta1Ethsecp256k1KeysPb.PubKey.create()
     proto.key = this.key
 
     return proto
@@ -100,10 +98,10 @@ export class PublicKey {
   public toAny() {
     const proto = this.toProto()
 
-    const message = GoogleProtobufAny.Any.create()
+    const message = GoogleProtobufAnyPb.Any.create()
     message.typeUrl = this.type
     message.value = Buffer.from(
-      InjectiveCryptoV1Beta1Ethsecp256k1Keys.PubKey.encode(proto).finish(),
+      InjectiveCryptoV1Beta1Ethsecp256k1KeysPb.PubKey.toBinary(proto),
     )
 
     return message

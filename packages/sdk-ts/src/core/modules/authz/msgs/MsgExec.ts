@@ -1,4 +1,4 @@
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosAuthzV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import type { Msgs } from '../../msgs.js'
@@ -34,7 +34,7 @@ export default class MsgExec extends MsgBase<
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
 
     const actualMsgs = msgs.map((msg) => {
-      const msgValue = GoogleProtobufAnyPb.Any.create({
+      const msgValue = GoogleProtobufAnyPbPb.Any.create({
         typeUrl: msg.toDirectSign().type,
         value: msg.toBinary(),
       })

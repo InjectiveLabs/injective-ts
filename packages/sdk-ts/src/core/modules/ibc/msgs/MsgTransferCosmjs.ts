@@ -74,10 +74,12 @@ export default class MsgTransferCosmjs {
       token: message.token,
       sender: message.sender,
       receiver: message.receiver,
-      timeoutHeight: message.timeoutHeight ? {
-        revisionHeight: message.timeoutHeight.revisionHeight,
-        revisionNumber: message.timeoutHeight.revisionNumber,
-      } : undefined,
+      timeoutHeight: message.timeoutHeight
+        ? {
+            revisionHeight: message.timeoutHeight.revisionHeight,
+            revisionNumber: message.timeoutHeight.revisionNumber,
+          }
+        : undefined,
       timeoutTimestamp: message.timeoutTimestamp,
     })
   }
@@ -108,11 +110,15 @@ export default class MsgTransferCosmjs {
       type: '/ibc.applications.transfer.v1.MsgTransfer',
       value: {
         ...message,
-        timeoutHeight: message.timeoutHeight ? {
-          revisionHeight: message.timeoutHeight.revisionHeight.toString(),
-          revisionNumber: message.timeoutHeight.revisionNumber.toString(),
-        } : undefined,
-        timeoutTimestamp: message.timeoutTimestamp ? message.timeoutTimestamp.toString() : undefined,
+        timeoutHeight: message.timeoutHeight
+          ? {
+              revisionHeight: message.timeoutHeight.revisionHeight.toString(),
+              revisionNumber: message.timeoutHeight.revisionNumber.toString(),
+            }
+          : undefined,
+        timeoutTimestamp: message.timeoutTimestamp
+          ? message.timeoutTimestamp.toString()
+          : undefined,
       },
     }
   }

@@ -1,6 +1,5 @@
 import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
-import * as CosmosFeegrantV1Beta1FeegrantPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/feegrant/v1beta1/feegrant_pb.mjs'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgGrantAllowance from './MsgGrantAllowance.js'
 import {

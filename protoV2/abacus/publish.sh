@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
-cd ./proto-ts || exit
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# v=$(npm view @injectivelabs/abacus-proto-ts-v2 version)
-# echo "current package version: $v"
+cd "$SCRIPT_DIR/proto-ts" || exit
 
-# v1="${v%.*}.$((${v##*.}+1))"
-# echo "new package version: $v1"
+v=$(npm view @injectivelabs/abacus-proto-ts-v2 version)
+echo "current package version: $v"
 
-npm version 1.17.0-alpha-4
-npm publish --tag alpha
+v1="${v%.*}.$((${v##*.}+1))"
+echo "new package version: $v1"
+
+npm version $v1
+npm publish

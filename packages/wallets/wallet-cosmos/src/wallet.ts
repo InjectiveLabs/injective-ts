@@ -1,6 +1,6 @@
 import { capitalize } from '@injectivelabs/utils'
 import { SigningStargateClient } from '@cosmjs/stargate'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
@@ -168,14 +168,14 @@ export class CosmosWallet {
    * @param txRaw - raw transaction to broadcast
    * @returns tx hash
    */
-  public async broadcastTx(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<string> {
+  public async broadcastTx(txRaw: CosmosTxV1Beta1TxPb.TxRaw): Promise<string> {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
     try {
       const result = await cosmosWallet.sendTx(
         chainId,
-        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
+        CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw),
         BroadcastMode.Sync as BroadcastModeType,
       )
 
@@ -207,7 +207,7 @@ export class CosmosWallet {
    * @returns tx hash
    */
   public async broadcastTxBlock(
-    txRaw: CosmosTxV1Beta1Tx.TxRaw,
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
   ): Promise<string> {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
@@ -215,7 +215,7 @@ export class CosmosWallet {
     try {
       const result = await cosmosWallet.sendTx(
         chainId,
-        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
+        CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw),
         BroadcastMode.Block as BroadcastModeType,
       )
 

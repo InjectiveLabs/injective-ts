@@ -79,9 +79,9 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
     // For EIP712 v2, we need full enum name
     // Check if optionName already has VOTE_OPTION_ prefix
     if (optionName && optionName.startsWith('VOTE_OPTION_')) {
-      web3Gw.option = optionName
+      web3Gw.option = optionName as any
     } else {
-      web3Gw.option = `VOTE_OPTION_${optionName}`
+      web3Gw.option = `VOTE_OPTION_${optionName}` as any
     }
 
     return web3Gw

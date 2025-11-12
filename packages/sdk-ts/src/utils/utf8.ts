@@ -11,7 +11,7 @@ export function toUtf8(data: Uint8Array | string): string {
     return data
   }
 
-  return new TextDecoder('utf-8', { fatal: true }).decode(data)
+  return new TextDecoder().decode(data)
 }
 
 export function binaryToBase64(data: string | Uint8Array): string {

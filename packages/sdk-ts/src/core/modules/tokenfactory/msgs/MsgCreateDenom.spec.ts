@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgCreateDenom from './MsgCreateDenom.js'
