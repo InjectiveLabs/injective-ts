@@ -3,6 +3,12 @@
 # Exit on error
 set -e
 
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Change to script directory to ensure relative paths work
+cd "$SCRIPT_DIR"
+
 # Parse command line arguments
 SKIP_CLONE=false
 PERSIST=false
@@ -65,11 +71,13 @@ ROOT_DIR="./proto"
 PROTO_DIR="./proto/proto"
 BUILD_DIR="./proto/gen"
 
+# https://github.com/InjectiveLabs/injective-core/blob/release/v1.16.x/go.mod
+
 # remote branches/tags
-injective_core_branch=release/v1.16.x
-cosmos_sdk_branch=v0.50.13-evm-comet1-inj.6
-wasmd_branch=v0.53.3-evm-comet1-inj
-ibc_go_branch=v8.7.0-evm-comet1-inj
+injective_core_branch=release/v1.17.x
+cosmos_sdk_branch=v0.50.14-inj
+wasmd_branch=v0.53.3-inj.2
+ibc_go_branch=v8.7.0-inj.3
 
 if [ "$SKIP_CLONE" = false ]; then
   ## Clone current proto definitions from core

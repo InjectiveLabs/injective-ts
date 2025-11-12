@@ -1,4 +1,4 @@
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmwasmWasmV1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/authz_pb.mjs'
 import { BaseAuthorization } from './Base.js'
 import type { Coin } from '@injectivelabs/ts-types'
@@ -15,7 +15,7 @@ export declare namespace ContractExecutionAuthorization {
     }
   }
 
-  export type Any = GoogleProtobufAnyPb.Any
+  export type Any = GoogleProtobufAnyPbPb.Any
 
   export type Proto = CosmwasmWasmV1AuthzPb.ContractExecutionAuthorization
 
@@ -36,10 +36,10 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
     return new ContractExecutionAuthorization(params)
   }
 
-  public toAny(): GoogleProtobufAnyPb.Any {
+  public toAny(): GoogleProtobufAnyPbPb.Any {
     const { params } = this
 
-    let limit: GoogleProtobufAnyPb.Any | undefined
+    let limit: GoogleProtobufAnyPbPb.Any | undefined
 
     if (params.limit) {
       if (params.limit.maxCalls && params.limit.amounts) {
@@ -48,7 +48,7 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
           amounts: params.limit.amounts,
         })
 
-        limit = GoogleProtobufAnyPb.Any.create({
+        limit = GoogleProtobufAnyPbPb.Any.create({
           typeUrl: '/cosmwasm.wasm.v1.CombinedLimit',
           value: CosmwasmWasmV1AuthzPb.CombinedLimit.toBinary(limitObj),
         })
@@ -57,7 +57,7 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
           remaining: BigInt(params.limit.maxCalls),
         })
 
-        limit = GoogleProtobufAnyPb.Any.create({
+        limit = GoogleProtobufAnyPbPb.Any.create({
           typeUrl: '/cosmwasm.wasm.v1.MaxCallsLimit',
           value: CosmwasmWasmV1AuthzPb.MaxCallsLimit.toBinary(limitObj),
         })
@@ -66,21 +66,21 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
           amounts: params.limit.amounts,
         })
 
-        limit = GoogleProtobufAnyPb.Any.create({
+        limit = GoogleProtobufAnyPbPb.Any.create({
           typeUrl: '/cosmwasm.wasm.v1.MaxFundsLimit',
           value: CosmwasmWasmV1AuthzPb.MaxFundsLimit.toBinary(limitObj),
         })
       }
     }
 
-    let filter: GoogleProtobufAnyPb.Any
+    let filter: GoogleProtobufAnyPbPb.Any
 
     if (params.filter) {
       const filterObj = CosmwasmWasmV1AuthzPb.AcceptedMessageKeysFilter.create({
         keys: params.filter.acceptedMessagesKeys,
       })
 
-      filter = GoogleProtobufAnyPb.Any.create({
+      filter = GoogleProtobufAnyPbPb.Any.create({
         typeUrl: '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter',
         value:
           CosmwasmWasmV1AuthzPb.AcceptedMessageKeysFilter.toBinary(filterObj),
@@ -88,7 +88,7 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
     } else {
       const filterObj = CosmwasmWasmV1AuthzPb.AllowAllMessagesFilter.create()
 
-      filter = GoogleProtobufAnyPb.Any.create({
+      filter = GoogleProtobufAnyPbPb.Any.create({
         typeUrl: '/cosmwasm.wasm.v1.AllowAllMessagesFilter',
         value: CosmwasmWasmV1AuthzPb.AllowAllMessagesFilter.toBinary(filterObj),
       })
@@ -105,7 +105,7 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
         grants: [grant],
       })
 
-    return GoogleProtobufAnyPb.Any.create({
+    return GoogleProtobufAnyPbPb.Any.create({
       typeUrl: '/cosmwasm.wasm.v1.ContractExecutionAuthorization',
       value:
         CosmwasmWasmV1AuthzPb.ContractExecutionAuthorization.toBinary(

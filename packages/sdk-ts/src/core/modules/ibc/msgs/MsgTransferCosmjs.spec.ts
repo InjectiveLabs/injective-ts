@@ -32,8 +32,12 @@ describe('MsgTransferCosmjs', () => {
     expect(proto.sender).toBe(params.sender)
     expect(proto.receiver).toBe(params.receiver)
     expect(proto.token).toEqual(params.amount)
-    expect(proto.timeoutHeight?.revisionHeight).toBe(BigInt(params.height!.revisionHeight))
-    expect(proto.timeoutHeight?.revisionNumber).toBe(BigInt(params.height!.revisionNumber))
+    expect(proto.timeoutHeight?.revisionHeight).toBe(
+      BigInt(params.height!.revisionHeight),
+    )
+    expect(proto.timeoutHeight?.revisionNumber).toBe(
+      BigInt(params.height!.revisionNumber),
+    )
     expect(proto.timeoutTimestamp).toBe(BigInt(params.timeout!))
   })
 
@@ -85,7 +89,6 @@ describe('MsgTransferCosmjs', () => {
       message: message.toProto(),
     })
   })
-
 
   it('throws error for toData', () => {
     expect(() => message.toData()).toThrow('Method not implemented.')

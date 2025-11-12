@@ -1,6 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb.mjs'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb.mjs'
@@ -37,7 +36,10 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
 
   export type Proto = CosmosGovV1Beta1TxPb.MsgSubmitProposal
 
-  export type Object = Omit<CosmosGovV1Beta1TxPb.MsgSubmitProposal, 'content'> & {
+  export type Object = Omit<
+    CosmosGovV1Beta1TxPb.MsgSubmitProposal,
+    'content'
+  > & {
     content: {
       type_url: string
       value: any
@@ -70,7 +72,9 @@ const createSpotMarketLaunchContent = (
     }
   }
 
-  return InjectiveExchangeV1Beta1ProposalPb.SpotMarketLaunchProposal.create(content)
+  return InjectiveExchangeV1Beta1ProposalPb.SpotMarketLaunchProposal.create(
+    content,
+  )
 }
 
 /**
@@ -115,11 +119,12 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
       amount: params.deposit.amount,
     })
 
-    const contentAny = GoogleProtobufAnyPb.Any.create({
+    const contentAny = GoogleProtobufAnyPbPb.Any.create({
       typeUrl: '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
-      value: InjectiveExchangeV1Beta1ProposalPb.SpotMarketLaunchProposal.toBinary(
-        createSpotMarketLaunchContent(params),
-      ),
+      value:
+        InjectiveExchangeV1Beta1ProposalPb.SpotMarketLaunchProposal.toBinary(
+          createSpotMarketLaunchContent(params),
+        ),
     })
 
     const message = CosmosGovV1Beta1TxPb.MsgSubmitProposal.create({

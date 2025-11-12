@@ -1,7 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb.mjs'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import type * as CosmosAuthzV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb.mjs'
 import type {
   GrantWithDecodedAuthorization,
@@ -76,7 +76,7 @@ export class ChainGrpcAuthZTransformer {
   }
 }
 
-const decodeAuthorization = (authorization: GoogleProtobufAnyPb.Any) => {
+const decodeAuthorization = (authorization: GoogleProtobufAnyPbPb.Any) => {
   switch (authorization.typeUrl) {
     case '/cosmos.authz.v1beta1.GenericAuthorization':
       return {
@@ -92,7 +92,7 @@ const decodeAuthorization = (authorization: GoogleProtobufAnyPb.Any) => {
 }
 
 const decodeAuthorizationNoThrow = (
-  authorization?: GoogleProtobufAnyPb.Any,
+  authorization?: GoogleProtobufAnyPbPb.Any,
 ) => {
   if (!authorization) {
     return undefined

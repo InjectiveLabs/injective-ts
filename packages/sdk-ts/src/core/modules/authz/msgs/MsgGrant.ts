@@ -1,12 +1,12 @@
 import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosAuthzV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/tx_pb.mjs'
-import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb.mjs'
 import * as GoogleProtobufTimestampPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/timestamp_pb.mjs'
+import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import { GrantAuthorizationType } from './../types.js'
 import { getGenericAuthorizationFromMessageType } from '../utils.js'
+import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 
 /**
  * @deprecated please use MsgGrantWithAuthorization
@@ -19,7 +19,7 @@ export declare namespace MsgGrant {
      * to get the authorization object from messageType
      */
     messageType?: string
-    authorization?: GoogleProtobufAnyPb.Any
+    authorization?: GoogleProtobufAnyPbPb.Any
     grantee: string
     granter: string
     expiration?: number

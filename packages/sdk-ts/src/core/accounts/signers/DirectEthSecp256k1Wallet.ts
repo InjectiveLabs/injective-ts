@@ -2,7 +2,7 @@ import { makeSignBytes } from '@cosmjs/proto-signing'
 import { PublicKey } from '../PublicKey.js'
 import { PrivateKey } from '../PrivateKey.js'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import type { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
 import type { AccountData, OfflineDirectSigner } from './types/proto-signer.js'
 
 export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {
@@ -51,7 +51,7 @@ export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {
 
   public async signDirect(
     address: string,
-    signDoc: Omit<CosmosTxV1Beta1Tx.SignDoc, 'accountNumber'> & {
+    signDoc: Omit<CosmosTxV1Beta1TxPb.SignDoc, 'accountNumber'> & {
       accountNumber: bigint
     },
   ): Promise<DirectSignResponse> {

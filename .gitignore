@@ -199,3 +199,4 @@ typings/
 .DS_Store
 packages/**/patches
 bundle-analysis/reports/
+proto/gen/

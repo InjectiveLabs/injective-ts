@@ -1,8 +1,8 @@
-import { InjectiveTypesV1Beta1Account } from '@injectivelabs/core-proto-ts'
+import * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb.mjs'
 import type { Account } from '@cosmjs/stargate'
 
 export const accountParser = (ethAccount: any): Account => {
-  const account = InjectiveTypesV1Beta1Account.EthAccount.decode(
+  const account = InjectiveTypesV1Beta1AccountPb.EthAccount.fromBinary(
     ethAccount.value as Uint8Array,
   )
   const baseAccount = account.baseAccount!
@@ -16,7 +16,7 @@ export const accountParser = (ethAccount: any): Account => {
           value: Buffer.from(pubKey.value).toString('base64'),
         }
       : null,
-    accountNumber: parseInt(baseAccount.accountNumber, 10),
-    sequence: parseInt(baseAccount.sequence, 10),
+    accountNumber: parseInt(baseAccount.accountNumber.toString(), 10),
+    sequence: parseInt(baseAccount.sequence.toString(), 10),
   }
 }

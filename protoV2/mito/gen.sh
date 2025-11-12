@@ -3,6 +3,12 @@
 # Exit on error
 set -e
 
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Change to script directory to ensure relative paths work
+cd "$SCRIPT_DIR"
+
 # Ensure we start with a clean slate
 rm -rf proto/gen
 rm -rf proto/proto

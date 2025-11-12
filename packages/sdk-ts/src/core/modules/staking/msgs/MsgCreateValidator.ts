@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/tx_pb.mjs'
@@ -201,8 +200,6 @@ export default class MsgCreateValidator extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosStakingV1Beta1TxPb.MsgCreateValidator.toBinary(
-      this.toProto(),
-    )
+    return CosmosStakingV1Beta1TxPb.MsgCreateValidator.toBinary(this.toProto())
   }
 }

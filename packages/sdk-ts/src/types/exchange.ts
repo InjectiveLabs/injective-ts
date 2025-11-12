@@ -1,4 +1,4 @@
-import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb.mjs'
 
 export const TradeExecutionType = {
   Market: 'market',
@@ -28,5 +28,5 @@ export const TradeDirection = {
 export type TradeDirection =
   (typeof TradeDirection)[keyof typeof TradeDirection]
 
-export type OrderMask = InjectiveExchangeV1Beta1Exchange.OrderMask
-export const OrderMaskMap = InjectiveExchangeV1Beta1Exchange.OrderMask
+export type OrderMask = InjectiveExchangeV1Beta1ExchangePb.OrderMask
+export const OrderMaskMap = InjectiveExchangeV1Beta1ExchangePb.OrderMask
