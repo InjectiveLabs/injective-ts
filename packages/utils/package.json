@@ -75,7 +75,8 @@
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js",
     "check:deps": "node circular-dependency-check.js",
-    "analyze:deps": "node dependency-analysis.js"
+    "analyze:deps": "node dependency-analysis.js",
+    "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
     "@bangjelkoski/store2": "^2.14.3",
