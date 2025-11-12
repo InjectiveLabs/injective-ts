@@ -1,13 +1,11 @@
 import {
-  CosmosTxV1Beta1Tx,
-  CosmosBaseV1Beta1Coin,
-} from '@injectivelabs/core-proto-ts'
-import {
   ErrorType,
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
 import * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 import { InjectiveExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb.client'
 import {
   DEFAULT_GAS_LIMIT,
@@ -58,7 +56,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
       feePrice = DEFAULT_BRIDGE_FEE_PRICE,
       timeoutHeight,
     } = args
-    const txFeeAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create()
     txFeeAmount.denom = feeDenom
     txFeeAmount.amount = feePrice
 
@@ -123,7 +121,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     feeDenom?: string
     feePrice?: string
   }) {
-    const txFeeAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create()
     txFeeAmount.denom = feeDenom
     txFeeAmount.amount = feePrice
 
@@ -245,7 +243,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
   }: {
     address: string
     signature: string // base64
-    txRaw: CosmosTxV1Beta1Tx.TxRaw
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw
     pubKey: {
       type: string
       value: string // base64
@@ -264,7 +262,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     broadcastTxRequest.senderAddress = address
     broadcastTxRequest.pubKey = cosmosPubKey
     broadcastTxRequest.signature = `0x${signatureInHex}`
-    broadcastTxRequest.tx = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
+    broadcastTxRequest.tx = CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw)
 
     const response = await this.executeGrpcCall<
       InjectiveExchangeRpcPb.BroadcastCosmosTxRequest,

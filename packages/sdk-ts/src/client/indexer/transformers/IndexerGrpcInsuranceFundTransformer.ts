@@ -1,5 +1,5 @@
-import type { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
 import type * as InjectiveInsuranceRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb'
+import type * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb.mjs'
 import type {
   Redemption,
   RedemptionStatus,
@@ -55,7 +55,7 @@ export class IndexerGrpcInsuranceFundTransformer {
       oracleQuote: grpcInsuranceFund.oracleQuote,
       oracleType: Number(
         grpcInsuranceFund.oracleType,
-      ) as InjectiveOracleV1Beta1Oracle.OracleType,
+      ) as InjectiveOracleV1Beta1OraclePb.OracleType,
       expiry: Number(grpcInsuranceFund.expiry),
     }
   }

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { StatusCodes } from 'http-status-codes'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
 import {
   HttpRequestMethod,
   HttpRequestException,
@@ -132,8 +132,8 @@ export class TxRestApi implements TxConcreteApi {
     )
   }
 
-  public async simulate(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
-    const txRawClone = CosmosTxV1Beta1Tx.TxRaw.fromPartial({ ...txRaw })
+  public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
+    const txRawClone = CosmosTxV1Beta1TxPb.TxRaw.create({ ...txRaw })
 
     if (txRawClone.signatures.length === 0) {
       txRawClone.signatures = [new Uint8Array(0)]
@@ -164,7 +164,7 @@ export class TxRestApi implements TxConcreteApi {
   }
 
   public async broadcast(
-    tx: CosmosTxV1Beta1Tx.TxRaw,
+    tx: CosmosTxV1Beta1TxPb.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
     const timeout =
@@ -213,7 +213,7 @@ export class TxRestApi implements TxConcreteApi {
    *
    * @deprecated - the BLOCk mode broadcasting is deprecated now, use either sync or async
    */
-  public async broadcastBlock(tx: CosmosTxV1Beta1Tx.TxRaw) {
+  public async broadcastBlock(tx: CosmosTxV1Beta1TxPb.TxRaw) {
     const response = await this.broadcastTx<{
       tx_response: TxInfoResponse
     }>(tx, BroadcastMode.Block)
@@ -251,7 +251,7 @@ export class TxRestApi implements TxConcreteApi {
   }
 
   private async broadcastTx<T>(
-    txRaw: CosmosTxV1Beta1Tx.TxRaw,
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     mode: BroadcastMode = BroadcastMode.Sync,
   ): Promise<T> {
     const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {

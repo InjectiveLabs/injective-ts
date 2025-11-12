@@ -1,6 +1,6 @@
 import { makeSignDoc } from '@cosmjs/proto-signing'
 import { CosmosChainId } from '@injectivelabs/ts-types'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import { InstallError } from '@cosmostation/extension-client'
 import { getOfflineSigner } from '@cosmostation/cosmos-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
@@ -132,7 +132,7 @@ export class Cosmostation
   }
 
   async sendTransaction(
-    transaction: DirectSignResponse | CosmosTxV1Beta1Tx.TxRaw,
+    transaction: DirectSignResponse | CosmosTxV1Beta1TxPb.TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
     const cosmostationWallet = await this.getCosmostationWallet()
@@ -141,7 +141,7 @@ export class Cosmostation
     try {
       const response = await cosmostationWallet.sendTransaction(
         this.chainName,
-        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
+        CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw),
         SEND_TRANSACTION_MODE.SYNC,
       )
 
@@ -182,7 +182,7 @@ export class Cosmostation
   }
 
   async signCosmosTransaction(transaction: {
-    txRaw: CosmosTxV1Beta1Tx.TxRaw
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw
     chainId: string
     address: string
     accountNumber: number

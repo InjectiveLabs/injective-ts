@@ -1,11 +1,11 @@
-import { GoogleProtobufAny } from '@injectivelabs/core-proto-ts'
+import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import {
   getEthereumAddress,
   getInjectiveAddress,
 } from '../../../utils/index.js'
 
 export const createAnyMessage = (msg: { type: string; value: Uint8Array }) => {
-  const message = GoogleProtobufAny.Any.create()
+  const message = GoogleProtobufAnyPb.Any.create()
   message.typeUrl = `${msg.type.startsWith('/') ? '' : '/'}${msg.type}`
   message.value = msg.value
 
@@ -13,7 +13,7 @@ export const createAnyMessage = (msg: { type: string; value: Uint8Array }) => {
 }
 
 export const createAny = (value: any, type: string) => {
-  const message = GoogleProtobufAny.Any.create()
+  const message = GoogleProtobufAnyPb.Any.create()
   message.typeUrl = type
   message.value = value
 

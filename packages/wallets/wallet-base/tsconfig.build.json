@@ -7,8 +7,7 @@
     "tsBuildInfoFile": "../../../.build-cache/wallet-base.tsbuildinfo"
   },
   "include": [
-    "./src/**/*.ts",
-    "../../../protoV2/**/*.ts"
+    "./src/**/*.ts"
   ],
   "exclude": [
     "./src/**/*.spec.ts",

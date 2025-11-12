@@ -1,5 +1,5 @@
 import { toChainFormat } from '@injectivelabs/utils'
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb.mjs'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb.mjs'
@@ -137,7 +137,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
       amount: params.deposit.amount,
     })
 
-    const contentAny = GoogleProtobufAnyPb.Any.create({
+    const contentAny = GoogleProtobufAnyPbPb.Any.create({
       typeUrl: '/injective.exchange.v2.PerpetualMarketLaunchProposal',
       value:
         InjectiveExchangeV2ProposalPb.PerpetualMarketLaunchProposal.toBinary(

@@ -26,7 +26,7 @@ import {
 } from '../../../client/chain/rest/index.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import type { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
 import type { Msgs } from '../../modules/msgs.js'
 import type { AccountDetails } from '../../../types/auth.js'
 import type { CreateTransactionArgs } from '../types/index.js'
@@ -441,7 +441,7 @@ export class MsgBroadcasterWithPk {
     return toBigNumber(latestHeight.toString()).plus(txTimeout)
   }
 
-  private async broadcastTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
+  private async broadcastTxRaw(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
     const { endpoints, txTimeout } = this
     const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw, {
       txTimeout,

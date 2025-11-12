@@ -5,7 +5,7 @@ import {
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
 import * as CosmosTxV1Beta1ServicePb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb.mjs'
-import { ServiceClient as CosmosTxV1Beta1ServiceClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb.client.mjs'
+import { ServiceClient as CosmosTxV1Beta1ServicePbClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb.client.mjs'
 import {
   toBigNumber,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
@@ -22,11 +22,11 @@ import type {
 
 export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
   protected module: string = 'TxGrpcApi'
-  private client: CosmosTxV1Beta1ServiceClient
+  private client: CosmosTxV1Beta1ServicePbClient
 
   constructor(endpoint: string) {
     super(endpoint)
-    this.client = new CosmosTxV1Beta1ServiceClient(this.transport)
+    this.client = new CosmosTxV1Beta1ServicePbClient(this.transport)
   }
 
   public async fetchTx(hash: string): Promise<TxResponse> {

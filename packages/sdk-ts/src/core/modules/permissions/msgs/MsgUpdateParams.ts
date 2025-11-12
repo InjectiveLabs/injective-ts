@@ -53,7 +53,8 @@ export default class MsgUpdateParams extends MsgBase<
     const message = {
       authority: proto.authority,
       params: {
-        wasm_hook_query_max_gas: proto.params.wasmHookQueryMaxGas.toString(),
+        wasm_hook_query_max_gas:
+          proto.params?.wasmHookQueryMaxGas.toString() || '0',
       },
     }
 

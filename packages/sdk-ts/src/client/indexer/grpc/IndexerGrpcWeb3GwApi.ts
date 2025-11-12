@@ -1,21 +1,13 @@
-import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
 import * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
-
-// Custom JSON replacer to handle BigInt serialization
-const jsonReplacer = (key: string, value: any) => {
-  if (typeof value === 'bigint') {
-    return value.toString()
-  }
-  return value
-}
 
 /**
  * @category Indexer Grpc API
@@ -54,9 +46,10 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     accountNumber?: number
     eip712Version?: string
   }) {
-    const txFeeAmount = CosmosBaseV1Beta1Coin.Coin.create()
-    txFeeAmount.denom = feeDenom
-    txFeeAmount.amount = feePrice
+    const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: feeDenom,
+      amount: feePrice,
+    })
 
     const cosmosTxFee = InjectiveExchangeRpcPb.CosmosTxFee.create()
     cosmosTxFee.price = [txFeeAmount]
@@ -73,7 +66,12 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message, jsonReplacer), 'utf8'),
+      Buffer.from(
+        JSON.stringify(message, (_, value) =>
+          typeof value === 'bigint' ? value.toString() : value,
+        ),
+        'utf8',
+      ),
     )
 
     prepareTxRequest.msgs = messagesList

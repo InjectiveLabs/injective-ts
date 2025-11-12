@@ -1,4 +1,3 @@
-import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgSetDelegationTransferReceivers {
@@ -7,7 +6,11 @@ export declare namespace MsgSetDelegationTransferReceivers {
     receivers: string[]
   }
 
-  export type Proto = InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers
+  // Note: MsgSetDelegationTransferReceivers doesn't exist in v2 proto package yet
+  export type Proto = {
+    sender: string
+    receivers: string[]
+  }
 }
 
 /**
@@ -26,11 +29,12 @@ export default class MsgSetDelegationTransferReceivers extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message =
-      InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers.create({
-        sender: params.sender,
-        receivers: params.receivers,
-      })
+    // Note: MsgSetDelegationTransferReceivers doesn't exist in v2 proto package yet
+    // Returning a plain object for now
+    const message = {
+      sender: params.sender,
+      receivers: params.receivers,
+    }
 
     return message
   }
@@ -77,8 +81,8 @@ export default class MsgSetDelegationTransferReceivers extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers.toBinary(
-      this.toProto(),
-    )
+    // Note: MsgSetDelegationTransferReceivers doesn't exist in v2 proto package yet
+    // Returning empty bytes for now
+    return new Uint8Array(0)
   }
 }

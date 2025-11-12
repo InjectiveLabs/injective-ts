@@ -3,8 +3,8 @@ import { generateMnemonic } from 'bip39'
 import { toBytes, keccak256, hashTypedData } from 'viem'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import { InjectiveTypesV1Beta1TxExt } from '@injectivelabs/core-proto-ts'
 import { Wallet, concat, getBytes, Signature, HDNodeWallet } from 'ethers'
+import * as InjectiveTypesV1Beta1TxExtPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/tx_ext_pb.mjs'
 import { Address } from './Address.js'
 import { PublicKey } from './PublicKey.js'
 import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
@@ -15,7 +15,7 @@ import {
   recoverTypedSignaturePubKey,
 } from '../../utils/index.js'
 import type { TypedDataDefinition } from 'viem'
-import type { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -327,14 +327,14 @@ export class PrivateKey {
    *
    * (params are passed as an object)
    *
-   * @param {CosmosTxV1Beta1Tx.TxRaw} txRaw: the signature to verify in hex
+   * @param {CosmosTxV1Beta1TxPb.TxRaw} txRaw: the signature to verify in hex
    * @param {object} signer: the public key and the account number to verify against
    **/
   public static async verifyCosmosSignature({
     txRaw,
     signer,
   }: {
-    txRaw: CosmosTxV1Beta1Tx.TxRaw
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw
     signer: {
       accountNumber: number | string
       publicKey: string /* in base64 */
@@ -374,7 +374,7 @@ export class PrivateKey {
       }
 
       const decodedExtension =
-        InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.decode(
+        InjectiveTypesV1Beta1TxExtPb.ExtensionOptionsWeb3Tx.fromBinary(
           extension.value,
         )
 

@@ -1,6 +1,6 @@
 import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb.mjs'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb.mjs'
@@ -42,7 +42,10 @@ export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
 
   export type Proto = CosmosGovV1Beta1TxPb.MsgSubmitProposal
 
-  export type Object = Omit<CosmosGovV1Beta1TxPb.MsgSubmitProposal, 'content'> & {
+  export type Object = Omit<
+    CosmosGovV1Beta1TxPb.MsgSubmitProposal,
+    'content'
+  > & {
     content: {
       type_url: string
       value: any
@@ -79,7 +82,9 @@ const createExpiryFuturesMarketLaunch = (
     }
   }
 
-  return InjectiveExchangeV1Beta1ProposalPb.ExpiryFuturesMarketLaunchProposal.create(content)
+  return InjectiveExchangeV1Beta1ProposalPb.ExpiryFuturesMarketLaunchProposal.create(
+    content,
+  )
 }
 
 /**
@@ -127,11 +132,12 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
       amount: params.deposit.amount,
     })
 
-    const contentAny = GoogleProtobufAnyPb.Any.create({
+    const contentAny = GoogleProtobufAnyPbPb.Any.create({
       typeUrl: '/injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal',
-      value: InjectiveExchangeV1Beta1ProposalPb.ExpiryFuturesMarketLaunchProposal.toBinary(
-        createExpiryFuturesMarketLaunch(params),
-      ),
+      value:
+        InjectiveExchangeV1Beta1ProposalPb.ExpiryFuturesMarketLaunchProposal.toBinary(
+          createExpiryFuturesMarketLaunch(params),
+        ),
     })
 
     const message = CosmosGovV1Beta1TxPb.MsgSubmitProposal.create({
@@ -244,7 +250,8 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
       ...web3gw,
       content: {
         ...content,
-        oracle_type: InjectiveOracleV1Beta1OraclePb.OracleType[content.oracle_type],
+        oracle_type:
+          InjectiveOracleV1Beta1OraclePb.OracleType[content.oracle_type],
         initial_margin_ratio: numberToCosmosSdkDecString(
           params.market.initialMarginRatio,
         ),

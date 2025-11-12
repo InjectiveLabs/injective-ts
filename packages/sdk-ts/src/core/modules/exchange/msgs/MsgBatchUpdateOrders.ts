@@ -146,11 +146,13 @@ const createMsgAndCancelOrders = (params: MsgBatchUpdateOrders.Params) => {
   }
 
   if (params.derivativeMarketIdsToCancelAll) {
-    message.derivativeMarketIdsToCancelAll = params.derivativeMarketIdsToCancelAll
+    message.derivativeMarketIdsToCancelAll =
+      params.derivativeMarketIdsToCancelAll
   }
 
   if (params.binaryOptionsMarketIdsToCancelAll) {
-    message.binaryOptionsMarketIdsToCancelAll = params.binaryOptionsMarketIdsToCancelAll
+    message.binaryOptionsMarketIdsToCancelAll =
+      params.binaryOptionsMarketIdsToCancelAll
   }
 
   if (params.spotOrdersToCancel) {
@@ -180,16 +182,17 @@ const createMsgAndCancelOrders = (params: MsgBatchUpdateOrders.Params) => {
   }
 
   if (params.binaryOptionsOrdersToCancel) {
-    message.binaryOptionsOrdersToCancel = params.binaryOptionsOrdersToCancel.map(
-      ({ marketId, subaccountId, orderHash, cid }) => {
-        return InjectiveExchangeV1Beta1TxPb.OrderData.create({
-          marketId,
-          subaccountId,
-          orderHash,
-          cid,
-        })
-      },
-    )
+    message.binaryOptionsOrdersToCancel =
+      params.binaryOptionsOrdersToCancel.map(
+        ({ marketId, subaccountId, orderHash, cid }) => {
+          return InjectiveExchangeV1Beta1TxPb.OrderData.create({
+            marketId,
+            subaccountId,
+            orderHash,
+            cid,
+          })
+        },
+      )
   }
 
   return message
@@ -229,39 +232,42 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     }
 
     if (params.derivativeOrdersToCreate) {
-      message.derivativeOrdersToCreate = params.derivativeOrdersToCreate.map((args) => {
-        const paramsFromArgs = {
-          ...args,
-          price: toChainFormat(args.price).toFixed(),
-          margin: toChainFormat(args.margin).toFixed(),
-          triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
-          quantity: toChainFormat(args.quantity).toFixed(),
-        }
+      message.derivativeOrdersToCreate = params.derivativeOrdersToCreate.map(
+        (args) => {
+          const paramsFromArgs = {
+            ...args,
+            price: toChainFormat(args.price).toFixed(),
+            margin: toChainFormat(args.margin).toFixed(),
+            triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
+            quantity: toChainFormat(args.quantity).toFixed(),
+          }
 
-        return createDerivativeOrder({
-          ...args,
-          ...paramsFromArgs,
-          subaccountId: params.subaccountId,
-        })
-      })
+          return createDerivativeOrder({
+            ...args,
+            ...paramsFromArgs,
+            subaccountId: params.subaccountId,
+          })
+        },
+      )
     }
 
     if (params.binaryOptionsOrdersToCreate) {
-      message.binaryOptionsOrdersToCreate = params.binaryOptionsOrdersToCreate.map((args) => {
-        const paramsFromArgs = {
-          ...args,
-          price: toChainFormat(args.price).toFixed(),
-          margin: toChainFormat(args.margin).toFixed(),
-          triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
-          quantity: toChainFormat(args.quantity).toFixed(),
-        }
+      message.binaryOptionsOrdersToCreate =
+        params.binaryOptionsOrdersToCreate.map((args) => {
+          const paramsFromArgs = {
+            ...args,
+            price: toChainFormat(args.price).toFixed(),
+            margin: toChainFormat(args.margin).toFixed(),
+            triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
+            quantity: toChainFormat(args.quantity).toFixed(),
+          }
 
-        return createBinaryOptionOrder({
-          ...args,
-          ...paramsFromArgs,
-          subaccountId: params.subaccountId,
+          return createBinaryOptionOrder({
+            ...args,
+            ...paramsFromArgs,
+            subaccountId: params.subaccountId,
+          })
         })
-      })
     }
 
     return message
@@ -299,39 +305,42 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     }
 
     if (params.derivativeOrdersToCreate) {
-      message.derivativeOrdersToCreate = params.derivativeOrdersToCreate.map((args) => {
-        const paramsFromArgs = {
-          ...args,
-          price: args.price,
-          margin: args.margin,
-          triggerPrice: args.triggerPrice || '0',
-          quantity: args.quantity,
-        }
+      message.derivativeOrdersToCreate = params.derivativeOrdersToCreate.map(
+        (args) => {
+          const paramsFromArgs = {
+            ...args,
+            price: args.price,
+            margin: args.margin,
+            triggerPrice: args.triggerPrice || '0',
+            quantity: args.quantity,
+          }
 
-        return createDerivativeOrder({
-          ...args,
-          ...paramsFromArgs,
-          subaccountId: params.subaccountId,
-        })
-      })
+          return createDerivativeOrder({
+            ...args,
+            ...paramsFromArgs,
+            subaccountId: params.subaccountId,
+          })
+        },
+      )
     }
 
     if (params.binaryOptionsOrdersToCreate) {
-      message.binaryOptionsOrdersToCreate = params.binaryOptionsOrdersToCreate.map((args) => {
-        const paramsFromArgs = {
-          ...args,
-          price: args.price,
-          margin: args.margin,
-          triggerPrice: args.triggerPrice || '0',
-          quantity: args.quantity,
-        }
+      message.binaryOptionsOrdersToCreate =
+        params.binaryOptionsOrdersToCreate.map((args) => {
+          const paramsFromArgs = {
+            ...args,
+            price: args.price,
+            margin: args.margin,
+            triggerPrice: args.triggerPrice || '0',
+            quantity: args.quantity,
+          }
 
-        return createBinaryOptionOrder({
-          ...args,
-          ...paramsFromArgs,
-          subaccountId: params.subaccountId,
+          return createBinaryOptionOrder({
+            ...args,
+            ...paramsFromArgs,
+            subaccountId: params.subaccountId,
+          })
         })
-      })
     }
 
     const msg = {

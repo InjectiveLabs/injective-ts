@@ -1,8 +1,8 @@
 import snakecaseKeys from 'snakecase-keys'
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
-import * as CosmosFeegrantV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/feegrant/v1beta1/tx_pb.mjs'
 import * as GoogleProtobufTimestampPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/timestamp_pb.mjs'
+import * as CosmosFeegrantV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/feegrant/v1beta1/tx_pb.mjs'
 import * as CosmosFeegrantV1Beta1FeegrantPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/feegrant/v1beta1/feegrant_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import type { Coin } from '@injectivelabs/ts-types'
@@ -43,21 +43,24 @@ export default class MsgGrantAllowance extends MsgBase<
     const { params } = this
 
     const timestamp = this.getTimestamp()
-    const basicAllowance = CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.create({
-      spendLimit: params.allowance.spendLimit.map(
-        ({ denom, amount }) => {
+    const basicAllowance =
+      CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.create({
+        spendLimit: params.allowance.spendLimit.map(({ denom, amount }) => {
           return CosmosBaseV1Beta1CoinPb.Coin.create({
             denom,
             amount,
           })
+        }),
+        expiration: {
+          seconds: timestamp.seconds,
+          nanos: timestamp.nanos,
         },
-      ),
-      expiration: new Date(Number(timestamp.seconds) * 1000),
-    })
+      })
 
-    const allowance = GoogleProtobufAnyPb.Any.create({
+    const allowance = GoogleProtobufAnyPbPb.Any.create({
       typeUrl: basicAllowanceType,
-      value: CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.toBinary(basicAllowance),
+      value:
+        CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.toBinary(basicAllowance),
     })
 
     const message = CosmosFeegrantV1Beta1TxPb.MsgGrantAllowance.create({
