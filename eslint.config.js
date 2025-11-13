@@ -23,6 +23,9 @@ export default [
       'node_modules/**',
       '.rollup.cache/**',
       'bundle-analysis/dist/**',
+      '**/tsdown.config.ts',
+      '**/test-import-size/**',
+      '**/test-import.ts',
     ],
   },
   // Base configuration for TypeScript files
@@ -220,9 +223,20 @@ export default [
   // Test files configuration
   {
     files: ['**/*.test.ts', '**/*.spec.ts', '**/*.test.js', '**/*.spec.js'],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        // Disable type-aware linting for test files since they're excluded from tsconfig
+        project: false,
+      },
+    },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       'no-console': 'off',
+      // Disable type-aware rules for test files
+      '@typescript-eslint/consistent-type-imports': 'off',
+      '@typescript-eslint/consistent-type-exports': 'off',
+      '@typescript-eslint/no-import-type-side-effects': 'off',
     },
   },
   // Prettier config to disable conflicting rules
