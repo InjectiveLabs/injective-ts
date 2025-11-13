@@ -1,8 +1,13 @@
 import { sleep } from '@injectivelabs/utils'
 import { toHex, serializeTransaction } from 'viem'
 import { EvmChainId } from '@injectivelabs/ts-types'
-import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import {
+  toUtf8,
+  TxGrpcApi,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   WalletException,
@@ -116,9 +121,11 @@ export default class TrezorBase
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 

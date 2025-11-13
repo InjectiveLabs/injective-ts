@@ -1,6 +1,9 @@
 import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import { isJsonString } from '../../../utils/helpers.js'
-import { grpcPagingToPagingV2 } from '../../../utils/index.js'
+import {
+  uint8ArrayToString,
+  grpcPagingToPagingV2,
+} from '../../../utils/index.js'
 import type { BigNumber } from '@injectivelabs/utils'
 import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
 import type {
@@ -36,9 +39,7 @@ const ZERO_IN_BASE = toBigNumber(0)
 const getContractTransactionV2Amount = (
   ApiTransaction: InjectiveExplorerRpcPb.TxDetailData,
 ): BigNumber => {
-  const messages = JSON.parse(
-    Buffer.from(ApiTransaction.messages).toString('utf8'),
-  )
+  const messages = JSON.parse(uint8ArrayToString(ApiTransaction.messages))
 
   const { type, value } = messages[0]
 
@@ -78,7 +79,7 @@ const parseStringToObjectLikeNoThrow = (
   }
 
   try {
-    return JSON.parse(Buffer.from(object).toString('utf8'))
+    return JSON.parse(uint8ArrayToString(object))
   } catch {
     return defaultValue
   }
@@ -251,8 +252,9 @@ export class IndexerGrpcExplorerTransformer {
     tx: InjectiveExplorerRpcPb.GetTxByTxHashResponse,
   ): BankMsgSendTransaction {
     const data = tx.data!
+
     const [message] = JSON.parse(
-      Buffer.from(data.messages).toString() as string,
+      uint8ArrayToString(data.messages) as string,
     ) as GrpcBankMsgSendMessage[]
 
     return {
@@ -309,7 +311,7 @@ export class IndexerGrpcExplorerTransformer {
         type: event.type,
         attributes: event.attributes,
       })),
-      messages: JSON.parse(Buffer.from(data.messages).toString() as string),
+      messages: JSON.parse(uint8ArrayToString(data.messages) as string),
     }
   }
 
@@ -324,7 +326,7 @@ export class IndexerGrpcExplorerTransformer {
   static grpcTransactionToTransactionFromDetail(
     tx: InjectiveExplorerRpcPb.TxDetailData,
   ): Transaction {
-    const messages = JSON.parse(Buffer.from(tx.messages).toString('utf8'))
+    const messages = JSON.parse(uint8ArrayToString(tx.messages))
 
     return {
       ...tx,
@@ -746,7 +748,7 @@ export class IndexerGrpcExplorerTransformer {
       })),
       messages: transactionV2MessagesToMessagesNoThrow(tx.messages),
       logs: parseStringToObjectLikeNoThrow(tx.logs),
-      data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
+      data: '/' + uint8ArrayToString(tx.data).split('/').pop(),
       claimIds: tx.claimIds.map((claimId) =>
         typeof claimId === 'bigint' ? Number(claimId) : parseInt(claimId, 10),
       ),
@@ -822,8 +824,8 @@ export class IndexerGrpcExplorerTransformer {
           ? Number(tx.blockUnixTimestamp)
           : parseInt(tx.blockUnixTimestamp, 10),
       amount: getContractTransactionV2Amount(tx),
-      logs: JSON.parse(Buffer.from(tx.logs).toString('utf8')),
-      data: '/' + Buffer.from(tx.data).toString('utf8').split('/').pop(),
+      logs: JSON.parse(uint8ArrayToString(tx.logs)),
+      data: '/' + uint8ArrayToString(tx.data).split('/').pop(),
       fee: toHumanReadable(tx.gasFee?.amount[0]?.amount || '0'),
       signatures: tx.signatures.map((signature) => ({
         address: signature.address,

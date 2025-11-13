@@ -5,11 +5,6 @@ import { InstallError } from '@cosmostation/extension-client'
 import { getOfflineSigner } from '@cosmostation/cosmos-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
 import {
-  toUtf8,
-  createTxRawFromSigResponse,
-  createSignDocFromTransaction,
-} from '@injectivelabs/sdk-ts'
-import {
   ErrorType,
   UnspecifiedErrorCode,
   TransactionException,
@@ -21,6 +16,14 @@ import {
   BaseConcreteStrategy,
   type ConcreteCosmosWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import {
+  toUtf8,
+  uint8ArrayToHex,
+  stringToUint8Array,
+  uint8ArrayToBase64,
+  createTxRawFromSigResponse,
+  createSignDocFromTransaction,
+} from '@injectivelabs/sdk-ts'
 import { CosmostationWallet } from './../wallet.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { Cosmos } from '@cosmostation/extension-client'
@@ -110,9 +113,11 @@ export class Cosmostation
 
   async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -229,7 +234,7 @@ export class Cosmostation
     try {
       const account = await cosmostationWallet.requestAccount(this.chainName)
 
-      return Buffer.from(account.publicKey).toString('base64')
+      return uint8ArrayToBase64(account.publicKey)
     } catch (e: unknown) {
       if ((e as any).code === 4001) {
         throw new CosmosWalletException(
