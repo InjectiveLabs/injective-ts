@@ -1,6 +1,11 @@
 import { TrezorException } from '@injectivelabs/exceptions'
-import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
+import {
+  addHexPrefix,
+  hexToUint8Array,
+  uint8ArrayToHex,
+  publicKeyToAddress,
+} from '@injectivelabs/sdk-ts'
 import { loadTrezorConnect } from '../lib.js'
 import { TrezorDerivationPathType } from '../../types.js'
 import type { AccountAddress } from '@injectivelabs/ts-types'
@@ -9,9 +14,11 @@ import type { HDNodeLike, TrezorWalletInfo } from '../../types.js'
 const addressOfHDKey = (hdKey: HDNodeLike): string => {
   const shouldSanitizePublicKey = true
   const derivedPublicKey = hdKey.publicKey
-  const ethereumAddressWithoutPrefix = Buffer.from(
-    publicKeyToAddress(derivedPublicKey, shouldSanitizePublicKey),
-  ).toString('hex')
+  const ethereumAddress = publicKeyToAddress(
+    derivedPublicKey,
+    shouldSanitizePublicKey,
+  )
+  const ethereumAddressWithoutPrefix = uint8ArrayToHex(ethereumAddress)
   const address = addHexPrefix(ethereumAddressWithoutPrefix)
 
   return address
@@ -109,8 +116,8 @@ export default class AccountManager {
 
     for (const item of result.payload) {
       const hdKey: HDNodeLike = {
-        publicKey: Buffer.from(item.publicKey, 'hex'),
-        chainCode: Buffer.from(item.chainCode, 'hex'),
+        publicKey: hexToUint8Array(item.publicKey),
+        chainCode: hexToUint8Array(item.chainCode),
       }
       const address = addressOfHDKey(hdKey)
 

@@ -1,4 +1,4 @@
-import { fromUtf8 } from '../../../utils/index.js'
+import { fromUtf8, uint8ArrayToString } from '../../../utils/index.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.mjs'
 import type {
@@ -25,13 +25,8 @@ export class ChainGrpcWasmTransformer {
     const contractAccountsBalance = response.models
       .map((model) => {
         return {
-          account: Buffer.from(model.key)
-            .toString('utf-8')
-            .split('balance')
-            .pop(),
-          balance: Buffer.from(model.value)
-            .toString('utf-8')
-            .replace(/['"]+/g, ''),
+          account: uint8ArrayToString(model.key).split('balance').pop(),
+          balance: uint8ArrayToString(model.value).replace(/['"]+/g, ''),
         }
       })
       .filter(({ account, balance }) => {
@@ -39,25 +34,25 @@ export class ChainGrpcWasmTransformer {
       }) as ContractAccountBalance[]
 
     const contractInfoModel = response.models.find((model) => {
-      return Buffer.from(model.key).toString('utf-8') === 'contract_info'
+      return uint8ArrayToString(model.key) === 'contract_info'
     })
-    const contractInfoValue = Buffer.from(
+    const contractInfoValue = uint8ArrayToString(
       contractInfoModel?.value || new Uint8Array(),
-    ).toString('utf-8')
+    )
 
     const tokenInfoModel = response.models.find((model) => {
-      return Buffer.from(model.key).toString('utf-8') === 'token_info'
+      return uint8ArrayToString(model.key) === 'token_info'
     })
-    const tokenInfoValue = Buffer.from(
+    const tokenInfoValue = uint8ArrayToString(
       tokenInfoModel?.value || new Uint8Array(),
-    ).toString('utf-8')
+    )
 
     const marketingInfoModel = response.models.find((model) => {
-      return Buffer.from(model.key).toString('utf-8') === 'marketing_info'
+      return uint8ArrayToString(model.key) === 'marketing_info'
     })
-    const marketingInfoValue = Buffer.from(
+    const marketingInfoValue = uint8ArrayToString(
       marketingInfoModel?.value || new Uint8Array(),
-    ).toString('utf-8')
+    )
 
     return {
       contractAccountsBalance,
@@ -76,13 +71,8 @@ export class ChainGrpcWasmTransformer {
     const contractAccountsBalance = response.models
       .map((model) => {
         return {
-          account: Buffer.from(model.key)
-            .toString('utf-8')
-            .split('balance')
-            .pop(),
-          balance: Buffer.from(model.value)
-            .toString('utf-8')
-            .replace(/['"]+/g, ''),
+          account: uint8ArrayToString(model.key).split('balance').pop(),
+          balance: uint8ArrayToString(model.value).replace(/['"]+/g, ''),
         }
       })
       .filter(({ account, balance }) => {
@@ -90,25 +80,25 @@ export class ChainGrpcWasmTransformer {
       }) as ContractAccountBalance[]
 
     const contractInfoModel = response.models.find((model) => {
-      return Buffer.from(model.key).toString('utf-8') === 'contract_info'
+      return uint8ArrayToString(model.key) === 'contract_info'
     })
-    const contractInfoValue = Buffer.from(
+    const contractInfoValue = uint8ArrayToString(
       contractInfoModel?.value || new Uint8Array(),
-    ).toString('utf-8')
+    )
 
     const tokenInfoModel = response.models.find((model) => {
-      return Buffer.from(model.key).toString('utf-8') === 'token_info'
+      return uint8ArrayToString(model.key) === 'token_info'
     })
-    const tokenInfoValue = Buffer.from(
+    const tokenInfoValue = uint8ArrayToString(
       tokenInfoModel?.value || new Uint8Array(),
-    ).toString('utf-8')
+    )
 
     const marketingInfoModel = response.models.find((model) => {
-      return Buffer.from(model.key).toString('utf-8') === 'marketing_info'
+      return uint8ArrayToString(model.key) === 'marketing_info'
     })
-    const marketingInfoValue = Buffer.from(
+    const marketingInfoValue = uint8ArrayToString(
       marketingInfoModel?.value || new Uint8Array(),
-    ).toString('utf-8')
+    )
 
     return {
       contractAccountsBalance,

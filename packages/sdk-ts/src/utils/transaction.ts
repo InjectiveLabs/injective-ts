@@ -1,5 +1,6 @@
-import * as secp256k1 from 'secp256k1'
+import { secp256k1 } from '@noble/curves/secp256k1'
 import { hashTypedData, recoverPublicKey, type TypedDataDefinition } from 'viem'
+import { uint8ArrayToHex } from './encoding.js'
 
 export const recoverTypedSignaturePubKey = async (
   data: TypedDataDefinition,
@@ -12,13 +13,11 @@ export const recoverTypedSignaturePubKey = async (
   })
 
   // viem's recoverPublicKey returns uncompressed public key (65 bytes with 0x04 prefix)
-  // Convert to Buffer for secp256k1.publicKeyConvert (expects Uint8Array)
-  const uncompressedKey = Buffer.from(publicKeyHex.slice(2), 'hex')
+  // Use @noble/curves to convert uncompressed to compressed format
+  // @noble/curves: ProjectivePoint handles conversion
+  // Uncompressed key (64 bytes without prefix) -> compressed (33 bytes)
+  const point = secp256k1.ProjectivePoint.fromHex(publicKeyHex.slice(2))
+  const compressedKey = point.toRawBytes(true) // true = compressed format
 
-  // Convert to compressed format (33 bytes)
-  const compressedKey = Buffer.from(
-    secp256k1.publicKeyConvert(uncompressedKey, true),
-  )
-
-  return `0x${compressedKey.toString('hex')}`
+  return `0x${uint8ArrayToHex(compressedKey)}`
 }

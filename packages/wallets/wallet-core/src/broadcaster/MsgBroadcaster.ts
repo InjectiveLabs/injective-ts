@@ -42,12 +42,15 @@ import {
   ofacWallets,
   SIGN_EIP712,
   SIGN_EIP712_V2,
+  hexToUint8Array,
   ChainGrpcAuthApi,
   createTxRawEIP712,
   createTransaction,
   ChainGrpcTxFeesApi,
   getAminoStdSignDoc,
   getEip712TypedData,
+  base64ToUint8Array,
+  uint8ArrayToBase64,
   createWeb3Extension,
   getEip712TypedDataV2,
   IndexerGrpcWeb3GwApi,
@@ -823,9 +826,7 @@ export class MsgBroadcaster {
         address: tx.injectiveAddress,
       })
 
-      txRaw.signatures = [
-        Buffer.from(signResponse.signature.signature, 'base64'),
-      ]
+      txRaw.signatures = [base64ToUint8Array(signResponse.signature.signature)]
 
       walletStrategy.emit(
         WalletStrategyEmitterEventType.TransactionBroadcastStart,
@@ -984,9 +985,8 @@ export class MsgBroadcaster {
     }
 
     /** Append Signatures */
-    const signatureBuff = Buffer.from(
+    const signatureBuff = base64ToUint8Array(
       aminoSignResponse.signature.signature,
-      'base64',
     )
     txRawEip712.signatures = [signatureBuff]
 
@@ -1204,7 +1204,7 @@ export class MsgBroadcaster {
       response.feePayerPubKey.key.startsWith('0x') ||
       response.feePayerPubKey.key.length === 66
     ) {
-      return Buffer.from(response.feePayerPubKey.key, 'hex').toString('base64')
+      return uint8ArrayToBase64(hexToUint8Array(response.feePayerPubKey.key))
     }
 
     return response.feePayerPubKey.key

@@ -4,6 +4,7 @@ import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/gener
 import * as CosmosStakingV1Beta1StakingPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/staking_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import { createAny } from '../../../tx/index.js'
+import { base64ToUint8Array } from '../../../../utils/encoding.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgCreateValidator {
@@ -89,7 +90,7 @@ export default class MsgCreateValidator extends MsgBase<
     let pubkey
     if (params.pubKey) {
       pubkey = createAny(
-        Buffer.from(params.pubKey.value, 'base64'),
+        base64ToUint8Array(params.pubKey.value),
         params.pubKey.type,
       )
     }

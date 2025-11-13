@@ -1,7 +1,11 @@
 import { Magic as MagicWallet } from 'magic-sdk'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
+import {
+  TxGrpcApi,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts'
 import {
   WalletAction,
   MagicProvider,
@@ -139,9 +143,11 @@ export class Magic
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 

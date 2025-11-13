@@ -3,7 +3,7 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb.mjs'
 import * as CosmwasmWasmV1TypesPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/types_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
-import { fromUtf8 } from '../../../../utils/utf8.js'
+import { fromUtf8, uint8ArrayToBase64 } from '../../../../utils/encoding.js'
 
 export declare namespace MsgStoreCode {
   export interface Params {
@@ -65,7 +65,7 @@ export default class MsgStoreCode extends MsgBase<
 
     const message = {
       sender: proto.sender,
-      wasm_byte_code: Buffer.from(proto.wasmByteCode).toString('base64'),
+      wasm_byte_code: uint8ArrayToBase64(proto.wasmByteCode),
       instantiate_permission: proto.instantiatePermission
         ? {
             permission: toPascalCase(

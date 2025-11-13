@@ -16,6 +16,11 @@ import {
 import { IndexerModule } from '../types/index.js'
 import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import {
+  uint8ArrayToHex,
+  stringToUint8Array,
+  base64ToUint8Array,
+} from '../../../utils/encoding.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
 interface PrepareTxArgs {
@@ -74,7 +79,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
+      stringToUint8Array(JSON.stringify(message)),
     )
 
     prepareTxRequest.msgs = messagesList
@@ -139,7 +144,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
+      stringToUint8Array(JSON.stringify(message)),
     )
 
     prepareTxRequest.msgs = messagesList
@@ -205,9 +210,8 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     broadcastTxRequest.chainId = BigInt(chainId)
     broadcastTxRequest.pubKey = cosmosPubKey
     broadcastTxRequest.signature = signature
-    broadcastTxRequest.tx = Buffer.from(
+    broadcastTxRequest.tx = stringToUint8Array(
       JSON.stringify(parsedTypedData.message),
-      'utf8',
     )
 
     broadcastTxRequest.feePayer = txResponse.feePayer
@@ -216,7 +220,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     const arrayOfMessages = Array.isArray(message) ? message : [message]
 
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
+      stringToUint8Array(JSON.stringify(message)),
     )
 
     broadcastTxRequest.msgs = messagesList
@@ -249,8 +253,8 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
       value: string // base64
     }
   }) {
-    const pubKeyInHex = Buffer.from(pubKey.value, 'base64').toString('hex')
-    const signatureInHex = Buffer.from(signature, 'base64').toString('hex')
+    const pubKeyInHex = uint8ArrayToHex(base64ToUint8Array(pubKey.value))
+    const signatureInHex = uint8ArrayToHex(base64ToUint8Array(signature))
     const cosmosPubKey = InjectiveExchangeRpcPb.CosmosPubKey.create()
     cosmosPubKey.type = pubKey.type
     cosmosPubKey.key = `0x${pubKeyInHex}`

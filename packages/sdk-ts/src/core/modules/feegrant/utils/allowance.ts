@@ -61,9 +61,7 @@ function encodeBasicAllowance(
 ): GoogleProtobufAnyPb.Any {
   return {
     typeUrl: '/cosmos.feegrant.v1beta1.BasicAllowance',
-    value: Buffer.from(
-      CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.toBinary(allowance),
-    ),
+    value: CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.toBinary(allowance),
   }
 }
 
@@ -72,9 +70,8 @@ function encodePeriodicAllowance(
 ): GoogleProtobufAnyPb.Any {
   return {
     typeUrl: '/cosmos.feegrant.v1beta1.PeriodicAllowance',
-    value: Buffer.from(
+    value:
       CosmosFeegrantV1Beta1FeegrantPb.PeriodicAllowance.toBinary(allowance),
-    ),
   }
 }
 
@@ -101,12 +98,10 @@ function encodeAllowedMsgAllowance(
 
   return {
     typeUrl: '/cosmos.feegrant.v1beta1.AllowedMsgAllowance',
-    value: Buffer.from(
-      CosmosFeegrantV1Beta1FeegrantPb.AllowedMsgAllowance.toBinary({
-        allowedMessages: allowance.allowedMessages,
-        allowance: internalAllowance,
-      }),
-    ),
+    value: CosmosFeegrantV1Beta1FeegrantPb.AllowedMsgAllowance.toBinary({
+      allowedMessages: allowance.allowedMessages,
+      allowance: internalAllowance,
+    }),
   }
 }
 

@@ -4,6 +4,7 @@ import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/genera
 import * as CosmosCryptoSecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/crypto/secp256k1/keys_pb.mjs'
 import * as InjectiveTypesV1Beta1TxExtPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/tx_ext_pb.mjs'
 import { createAny, createAnyMessage } from './helpers.js'
+import { base64ToUint8Array } from '../../../utils/encoding.js'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
 import type * as CosmosTxSigningV1Beta1SigningPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/signing/v1beta1/signing_pb.mjs'
@@ -38,7 +39,7 @@ export const getPublicKey = ({
     path = '/cosmos.crypto.secp256k1.PubKey'
   }
 
-  proto.key = Buffer.from(key, 'base64')
+  proto.key = base64ToUint8Array(key)
 
   return createAny(baseProto.toBinary(proto), path)
 }

@@ -1,5 +1,6 @@
 import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
 import { getInjectiveAddress } from '../../../utils/index.js'
+import { toUtf8, uint8ArrayToHex } from '../../../utils/encoding.js'
 import {
   MsgSignData,
   MsgIncreasePositionMargin,
@@ -33,8 +34,8 @@ export class MsgDecoder {
         )
 
         return MsgSignData.fromJSON({
-          data: Buffer.from(msg.data).toString('utf-8'),
-          sender: getInjectiveAddress(Buffer.from(msg.signer).toString('hex')),
+          data: toUtf8(msg.data),
+          sender: getInjectiveAddress(uint8ArrayToHex(msg.signer)),
         })
       }
 

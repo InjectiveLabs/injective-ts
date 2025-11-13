@@ -10,14 +10,13 @@
  * @example
  * ```typescript
  * import { defineConfig } from 'tsdown'
- * import { createSimpleOnSuccess } from '../../etc/tsdown-helpers.js'
+ * import { createSimpleOnSuccess } from '../../etc/tsdown-helpers'
  *
  * export default defineConfig({
  *   // ... other config
  *   onSuccess: createSimpleOnSuccess(),
  * })
  * ```
- * @returns {() => Promise<void>} An async function to reorganize build output
  */
 export function createSimpleOnSuccess() {
   return async () => {
@@ -61,7 +60,7 @@ export function createSimpleOnSuccess() {
  * @example
  * ```typescript
  * import { defineConfig } from 'tsdown'
- * import { createNestedOnSuccess } from '../../etc/tsdown-helpers.js'
+ * import { createNestedOnSuccess } from '../../etc/tsdown-helpers'
  *
  * export default defineConfig({
  *   entry: {
@@ -72,7 +71,6 @@ export function createSimpleOnSuccess() {
  *   onSuccess: createNestedOnSuccess(),
  * })
  * ```
- * @returns {() => Promise<void>} An async function to reorganize build output
  */
 export function createNestedOnSuccess() {
   return async () => {

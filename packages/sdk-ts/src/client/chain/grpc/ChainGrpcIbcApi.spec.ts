@@ -1,6 +1,6 @@
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { sha256 } from '../../../utils/crypto.js'
-import { fromUtf8 } from '../../../utils/utf8.js'
+import { fromUtf8 } from '../../../utils/encoding.js'
 import { ChainGrpcIbcApi } from './ChainGrpcIbcApi.js'
 import type * as IbcApplicationsTransferV1TransferPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/transfer_pb.mjs'
 

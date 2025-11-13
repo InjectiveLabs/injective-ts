@@ -1,7 +1,7 @@
 import { capitalize } from '@injectivelabs/utils'
 import { SigningStargateClient } from '@cosmjs/stargate'
-import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
+import { uint8ArrayToHex, CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   GeneralException,
@@ -186,7 +186,7 @@ export class CosmosWallet {
         )
       }
 
-      return Buffer.from(result).toString('hex')
+      return uint8ArrayToHex(result)
     } catch (e) {
       if (e instanceof TransactionException) {
         throw e
@@ -226,7 +226,7 @@ export class CosmosWallet {
         )
       }
 
-      return Buffer.from(result).toString('hex')
+      return uint8ArrayToHex(result)
     } catch (e) {
       if (e instanceof TransactionException) {
         throw e

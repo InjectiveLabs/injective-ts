@@ -6,6 +6,10 @@ import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-t
 import { Address } from '../../../../accounts/Address.js'
 import { domainHash, messageHash } from '../../../../../utils/crypto.js'
 import { numberToCosmosSdkDecString } from '../../../../../utils/numbers.js'
+import {
+  hexToUint8Array,
+  concatUint8Arrays,
+} from '../../../../../utils/encoding.js'
 import { ChainGrpcExchangeApi } from '../../../../../client/chain/grpc/ChainGrpcExchangeApi.js'
 import type { Network } from '@injectivelabs/networks'
 import type MsgCreateSpotLimitOrder from '../../msgs/MsgCreateSpotLimitOrder.js'
@@ -417,15 +421,15 @@ export class OrderHashManager {
   }
 
   private hashTypedData(eip712: any) {
-    const bytesToHash = Buffer.concat([
-      Buffer.from('19', 'hex'),
-      Buffer.from('01', 'hex'),
-      Buffer.from(domainHash(eip712)),
-      Buffer.from(messageHash(eip712)),
+    const bytesToHash = concatUint8Arrays([
+      hexToUint8Array('19'),
+      hexToUint8Array('01'),
+      hexToUint8Array(domainHash(eip712)),
+      hexToUint8Array(messageHash(eip712)),
     ])
 
     try {
-      return `0x${Buffer.from(keccak256(bytesToHash)).toString('hex')}`
+      return keccak256(bytesToHash)
     } catch {
       return ''
     }

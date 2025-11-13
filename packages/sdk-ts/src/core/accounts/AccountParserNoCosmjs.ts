@@ -1,4 +1,5 @@
 import * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb.mjs'
+import { uint8ArrayToBase64 } from '../../utils/encoding.js'
 
 export const accountEthParser = <T>(
   ethAccount: any,
@@ -15,7 +16,7 @@ export const accountEthParser = <T>(
     pubkey: pubKey
       ? {
           type: pubKeyTypeUrl,
-          value: Buffer.from(pubKey.value).toString('base64'),
+          value: uint8ArrayToBase64(pubKey.value),
         }
       : null,
     accountNumber: parseInt(baseAccount.accountNumber.toString(), 10),

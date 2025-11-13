@@ -1,5 +1,10 @@
-import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
+import {
+  addHexPrefix,
+  hexToUint8Array,
+  uint8ArrayToHex,
+  publicKeyToAddress,
+} from '@injectivelabs/sdk-ts'
 import { LedgerDerivationPathType } from '../../../types.js'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'
@@ -8,9 +13,11 @@ import type { HDNodeLike, LedgerWalletInfo } from '../../../types.js'
 const addressOfHDKey = (hdKey: HDNodeLike): string => {
   const shouldSanitizePublicKey = true
   const derivedPublicKey = hdKey.publicKey
-  const ethereumAddressWithoutPrefix = Buffer.from(
-    publicKeyToAddress(derivedPublicKey, shouldSanitizePublicKey),
-  ).toString('hex')
+  const ethereumAddress = publicKeyToAddress(
+    derivedPublicKey,
+    shouldSanitizePublicKey,
+  )
+  const ethereumAddressWithoutPrefix = uint8ArrayToHex(ethereumAddress)
   const address = addHexPrefix(ethereumAddressWithoutPrefix)
 
   return address
@@ -84,8 +91,8 @@ export default class AccountManager {
       const result = await this.ledger.getAddress(path)
 
       const hdKey: HDNodeLike = {
-        publicKey: Buffer.from(result.publicKey, 'hex'),
-        chainCode: Buffer.from(result.chainCode || '', 'hex'),
+        publicKey: hexToUint8Array(result.publicKey),
+        chainCode: hexToUint8Array(result.chainCode || ''),
       }
       const address = result.address || addressOfHDKey(hdKey)
 

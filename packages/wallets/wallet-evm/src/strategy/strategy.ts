@@ -1,5 +1,11 @@
 import { sleep, capitalize } from '@injectivelabs/utils'
-import { toUtf8, TxGrpcApi, isServerSide } from '@injectivelabs/sdk-ts'
+import {
+  toUtf8,
+  TxGrpcApi,
+  isServerSide,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts'
 import {
   Wallet,
   WalletAction,
@@ -191,9 +197,11 @@ export class EvmWallet
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
