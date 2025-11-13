@@ -40,12 +40,26 @@ export class ChainGrpcGovTransformer {
         ),
       },
       tallyParams: {
-        quorum: uint8ArrayToString(params?.quorum ?? '0'),
-        threshold: uint8ArrayToString(params?.threshold ?? '0'),
-        vetoThreshold: uint8ArrayToString(params?.vetoThreshold ?? '0'),
-        expeditedThreshold: uint8ArrayToString(
-          params?.expeditedThreshold ?? '0',
-        ),
+        quorum: !params?.quorum
+          ? '0'
+          : typeof params.quorum === 'string'
+          ? params.quorum
+          : uint8ArrayToString(params.quorum),
+        threshold: !params?.threshold
+          ? '0'
+          : typeof params.threshold === 'string'
+          ? params.threshold
+          : uint8ArrayToString(params.threshold),
+        vetoThreshold: !params?.vetoThreshold
+          ? '0'
+          : typeof params.vetoThreshold === 'string'
+          ? params.vetoThreshold
+          : uint8ArrayToString(params.vetoThreshold),
+        expeditedThreshold: !params?.expeditedThreshold
+          ? '0'
+          : typeof params.expeditedThreshold === 'string'
+          ? params.expeditedThreshold
+          : uint8ArrayToString(params.expeditedThreshold),
       },
     }
   }
@@ -74,10 +88,22 @@ export class ChainGrpcGovTransformer {
         ),
       },
       tallyParams: {
-        quorum: uint8ArrayToString(tallyParams.quorum),
-        threshold: uint8ArrayToString(tallyParams.threshold),
-        vetoThreshold: uint8ArrayToString(tallyParams.vetoThreshold),
-        expeditedThreshold: uint8ArrayToString(tallyParams.expeditedThreshold),
+        quorum:
+          typeof tallyParams.quorum === 'string'
+            ? tallyParams.quorum
+            : uint8ArrayToString(tallyParams.quorum),
+        threshold:
+          typeof tallyParams.threshold === 'string'
+            ? tallyParams.threshold
+            : uint8ArrayToString(tallyParams.threshold),
+        vetoThreshold:
+          typeof tallyParams.vetoThreshold === 'string'
+            ? tallyParams.vetoThreshold
+            : uint8ArrayToString(tallyParams.vetoThreshold),
+        expeditedThreshold:
+          typeof tallyParams.expeditedThreshold === 'string'
+            ? tallyParams.expeditedThreshold
+            : uint8ArrayToString(tallyParams.expeditedThreshold),
       },
     }
   }

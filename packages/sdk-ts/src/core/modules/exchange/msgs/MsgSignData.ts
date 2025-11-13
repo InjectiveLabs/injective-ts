@@ -1,6 +1,11 @@
 import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
 import { toUtf8, getEthereumAddress } from '../../../../utils/index.js'
+import {
+  hexToUint8Array,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '../../../../utils/encoding.js'
 
 export declare namespace MsgSignData {
   export interface Params {
@@ -26,8 +31,8 @@ export default class MsgSignData extends MsgBase<
     const { params } = this
 
     const message = InjectiveExchangeV1Beta1TxPb.MsgSignData.create({
-      signer: Buffer.from(getEthereumAddress(params.sender), 'hex'),
-      data: Buffer.from(toUtf8(params.data), 'utf-8'),
+      signer: hexToUint8Array(getEthereumAddress(params.sender)),
+      data: stringToUint8Array(toUtf8(params.data)),
     })
 
     return message
@@ -45,8 +50,8 @@ export default class MsgSignData extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      signer: Buffer.from(proto.signer).toString('hex'),
-      data: Buffer.from(proto.data).toString('utf-8'),
+      signer: uint8ArrayToHex(proto.signer),
+      data: toUtf8(proto.data),
     }
 
     return {

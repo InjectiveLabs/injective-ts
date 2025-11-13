@@ -1,10 +1,5 @@
 import { capitalize } from '@injectivelabs/utils'
 import {
-  waitTxBroadcasted,
-  createTxRawFromSigResponse,
-  createSignDocFromTransaction,
-} from '@injectivelabs/sdk-ts'
-import {
   ErrorType,
   UnspecifiedErrorCode,
   TransactionException,
@@ -18,6 +13,14 @@ import {
   BaseConcreteStrategy,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
+import {
+  uint8ArrayToHex,
+  waitTxBroadcasted,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+  createTxRawFromSigResponse,
+  createSignDocFromTransaction,
+} from '@injectivelabs/sdk-ts'
 import { CosmosWallet } from './../wallet.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
@@ -139,9 +142,11 @@ export class CosmosWalletStrategy
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -303,7 +308,7 @@ export class CosmosWalletStrategy
     const cosmosWallet = this.getCurrentCosmosWallet()
     const key = await cosmosWallet.getKey()
 
-    return Buffer.from(key.pubKey).toString('base64')
+    return uint8ArrayToBase64(key.pubKey)
   }
 
   async onAccountChange(

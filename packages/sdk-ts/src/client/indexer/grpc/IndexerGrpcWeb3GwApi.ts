@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/utils'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
 import { IndexerModule } from '../types/index.js'
+import { stringToUint8Array } from '../../../utils/encoding.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
@@ -66,11 +67,10 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(
+      stringToUint8Array(
         JSON.stringify(message, (_, value) =>
           typeof value === 'bigint' ? value.toString() : value,
         ),
-        'utf8',
       ),
     )
 

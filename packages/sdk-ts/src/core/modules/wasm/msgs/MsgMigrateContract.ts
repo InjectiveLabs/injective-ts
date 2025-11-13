@@ -1,7 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
-import { fromUtf8 } from '../../../../utils/utf8.js'
+import { fromUtf8 } from '../../../../utils/encoding.js'
 
 export declare namespace MsgMigrateContract {
   export interface Params {

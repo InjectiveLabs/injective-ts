@@ -8,6 +8,7 @@ import {
 } from '@injectivelabs/utils'
 import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
 import { BaseAccount } from '../accounts/index.js'
+import { base64ToUint8Array } from '../../utils/encoding.js'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client/index.js'
 import {
   createFee,
@@ -90,8 +91,8 @@ export const createTransactionWithSigners = ({
 
   const signDocBytes = CosmosTxV1Beta1TxPb.SignDoc.toBinary(signDoc)
 
-  const toSignBytes = Buffer.from(signDocBytes)
-  const toSignHash = keccak256(Buffer.from(signDocBytes), 'bytes')
+  const toSignBytes = signDocBytes
+  const toSignHash = keccak256(signDocBytes, 'bytes')
 
   const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create()
   txRaw.authInfoBytes = authInfoBytes
@@ -186,7 +187,7 @@ export const createTxRawFromSigResponse = (
   txRaw.authInfoBytes = directSignResponse.signed.authInfoBytes
   txRaw.bodyBytes = directSignResponse.signed.bodyBytes
   txRaw.signatures = [
-    Buffer.from(directSignResponse.signature.signature, 'base64'),
+    base64ToUint8Array(directSignResponse.signature.signature),
   ]
 
   return txRaw
@@ -239,8 +240,7 @@ export const createTransactionForAddressAndMsg = async (
 
   return createTransaction({
     ...params,
-    pubKey:
-      params.pubKey || Buffer.from(baseAccount.pubKey.key).toString('base64'),
+    pubKey: params.pubKey || baseAccount.pubKey.key,
     sequence: Number(baseAccount.sequence),
     accountNumber: Number(baseAccount.accountNumber),
     timeoutHeight: timeoutHeight.toNumber(),

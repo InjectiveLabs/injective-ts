@@ -35,6 +35,7 @@ import {
 } from '@cosmjs/stargate'
 import { getPublicKey } from '../tx/index.js'
 import { StargateClient } from './StargateClient.js'
+import { uint8ArrayToBase64, base64ToUint8Array } from '../../utils/encoding.js'
 import type { StdFee } from '@cosmjs/amino'
 import type { GasPrice } from '@cosmjs/stargate'
 import type { AminoConverters } from '@cosmjs/stargate'
@@ -366,7 +367,7 @@ export class SigningStargateClient extends StargateClient {
     const pubkey = chainId.startsWith('injective')
       ? getPublicKey({
           chainId,
-          key: Buffer.from(accountFromSigner.pubkey).toString('base64'),
+          key: uint8ArrayToBase64(accountFromSigner.pubkey),
         })
       : encodePubkey(encodeSecp256k1Pubkey(accountFromSigner.pubkey))
     const signMode = SignMode.SIGN_MODE_LEGACY_AMINO_JSON
@@ -405,7 +406,7 @@ export class SigningStargateClient extends StargateClient {
     return TxRaw.fromPartial({
       bodyBytes: signedTxBodyBytes,
       authInfoBytes: signedAuthInfoBytes,
-      signatures: [Buffer.from(signature.signature, 'base64')],
+      signatures: [base64ToUint8Array(signature.signature)],
     })
   }
 
@@ -429,7 +430,7 @@ export class SigningStargateClient extends StargateClient {
     const pubkey = chainId.startsWith('injective')
       ? getPublicKey({
           chainId,
-          key: Buffer.from(accountFromSigner.pubkey).toString('base64'),
+          key: uint8ArrayToBase64(accountFromSigner.pubkey),
         })
       : encodePubkey(encodeSecp256k1Pubkey(accountFromSigner.pubkey))
 
@@ -459,10 +460,11 @@ export class SigningStargateClient extends StargateClient {
       signerAddress,
       signDoc,
     )
+
     return TxRaw.fromPartial({
       bodyBytes: signed.bodyBytes,
       authInfoBytes: signed.authInfoBytes,
-      signatures: [Buffer.from(signature.signature, 'base64')],
+      signatures: [base64ToUint8Array(signature.signature)],
     })
   }
 }
