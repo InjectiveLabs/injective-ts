@@ -1,6 +1,5 @@
-import { loadTrezorConnect } from '../../lib.js'
 import AccountManager from '../AccountManager.js'
-import type { Manifest } from '@trezor/connect-web'
+import { loadTrezorConnect, type Manifest } from '../../lib.js'
 
 const TREZOR_CONNECT_MANIFEST = {
   email: 'contact@injectivelabs.org',
@@ -21,6 +20,8 @@ export default class BaseTrezorTransport {
         lazyLoad: true,
         manifest: TREZOR_CONNECT_MANIFEST,
         debug: true,
+        // 'auto', 'popup', 'iframe'
+        coreMode: 'auto',
       })
     }
 
