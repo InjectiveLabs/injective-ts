@@ -185,6 +185,7 @@ export default class TrezorBase
     address: AccountAddress,
   ): Promise<string> {
     const TrezorConnect = await loadTrezorConnect()
+    console.log('🪵Address:', address)
 
     const object = JSON.parse(eip712json)
     const compatibleObject = {
@@ -206,8 +207,14 @@ export default class TrezorBase
     } = dataWithHashes
 
     try {
+      console.log('🪵Signing EIP-712 typed data with Trezor...')
       await this.trezor.connect()
-      const { derivationPath } = await this.getWalletForAddress(address)
+      console.log('🪵Connected to Trezor...')
+      // const { derivationPath } = await this.getWalletForAddress(address)
+      // Hardcoded for testint purposes, otherwise use above
+      const derivationPath = "m/44'/60'/0'/0/0"
+      console.log('🪵Derivation path:', derivationPath)
+      console.log('Signing EIP-712 typed data with Trezor...')
       const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
         data: {
@@ -220,6 +227,8 @@ export default class TrezorBase
         domain_separator_hash,
         metamask_v4_compat: true,
       })
+
+      console.log('🪵response', response)
 
       if (!response.success) {
         // noinspection ExceptionCaughtLocallyJS
