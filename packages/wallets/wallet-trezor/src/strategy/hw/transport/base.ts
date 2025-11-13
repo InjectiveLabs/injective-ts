@@ -21,7 +21,7 @@ export default class BaseTrezorTransport {
         manifest: TREZOR_CONNECT_MANIFEST,
         debug: true,
         // 'auto', 'popup', 'iframe'
-        coreMode: 'auto',
+        coreMode: 'popup',
       })
     }
 
