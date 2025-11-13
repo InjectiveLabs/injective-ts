@@ -1,8 +1,9 @@
 import * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.mjs'
 import { QueryClient as CosmwasmWasmV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.client.mjs'
 import { ChainModule } from '../types/index.js'
-import { toBase64 } from '../../../utils/utf8.js'
+import { toBase64 } from '../../../utils/encoding.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import { base64ToUint8Array } from '../../../utils/encoding.js'
 import { ChainGrpcWasmTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
@@ -121,9 +122,8 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     request.address = contractAddress
 
     if (query) {
-      request.queryData = Buffer.from(
+      request.queryData = base64ToUint8Array(
         typeof query === 'string' ? query : toBase64(query),
-        'base64',
       )
     }
 
@@ -141,7 +141,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     request.address = contractAddress
 
     if (query) {
-      request.queryData = Buffer.from(query, 'base64')
+      request.queryData = base64ToUint8Array(query)
     }
 
     const response = await this.executeGrpcCall<

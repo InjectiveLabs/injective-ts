@@ -1,5 +1,5 @@
-import { fromUtf8 } from '../../../../utils/utf8.js'
 import { ExecArgBase, dataToExecData } from '../ExecArgBase.js'
+import { fromUtf8, uint8ArrayToBase64 } from '../../../../utils/encoding.js'
 import type { ExecDataRepresentation } from '../ExecArgBase.js'
 
 /**
@@ -50,9 +50,7 @@ export default class ExecArgCW20Send extends ExecArgBase<
     return {
       contract: params.contractAddress,
       amount: params.amount,
-      msg: Buffer.from(fromUtf8(JSON.stringify(params.msg || {}))).toString(
-        'base64',
-      ),
+      msg: uint8ArrayToBase64(fromUtf8(JSON.stringify(params.msg || {}))),
     }
   }
 

@@ -1,8 +1,13 @@
 import { serializeTransaction } from 'viem'
 import { sleep } from '@injectivelabs/utils'
 import { EvmChainId } from '@injectivelabs/ts-types'
-import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import {
+  toUtf8,
+  TxGrpcApi,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   LedgerException,
@@ -102,9 +107,11 @@ export default class LedgerBase
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -277,7 +284,7 @@ export default class LedgerBase
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signPersonalMessage(
         derivationPath,
-        Buffer.from(toUtf8(data), 'utf8').toString('hex'),
+        uint8ArrayToHex(stringToUint8Array(toUtf8(data))),
       )
 
       const combined = `${result.r}${result.s}${result.v.toString(16)}`

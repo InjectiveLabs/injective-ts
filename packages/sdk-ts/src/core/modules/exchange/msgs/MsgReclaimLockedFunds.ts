@@ -1,6 +1,10 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb.mjs'
 import { MsgBase } from '../../MsgBase.js'
+import {
+  base64ToUint8Array,
+  uint8ArrayToBase64,
+} from '../../../../utils/encoding.js'
 
 export declare namespace MsgReclaimLockedFunds {
   export interface Params {
@@ -28,7 +32,7 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
     const message = InjectiveExchangeV1Beta1TxPb.MsgReclaimLockedFunds.create({
       sender: params.sender,
-      lockedAccountPubKey: Buffer.from(params.lockedAccountPubKey, 'base64'),
+      lockedAccountPubKey: base64ToUint8Array(params.lockedAccountPubKey),
       signature: params.signature,
     })
 
@@ -49,8 +53,8 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
     const message = {
       sender: proto.sender,
-      lockedAccountPubKey: Buffer.from(proto.lockedAccountPubKey),
-      signature: Buffer.from(proto.signature),
+      lockedAccountPubKey: uint8ArrayToBase64(proto.lockedAccountPubKey),
+      signature: uint8ArrayToBase64(proto.signature),
     }
 
     return {

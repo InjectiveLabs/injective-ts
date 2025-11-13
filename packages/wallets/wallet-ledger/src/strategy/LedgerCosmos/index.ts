@@ -1,5 +1,4 @@
 import { CosmosWalletException } from '@injectivelabs/exceptions'
-import { toUtf8, TxGrpcApi, sortObjectByKeys } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   WalletException,
@@ -7,6 +6,15 @@ import {
   TransactionException,
   LedgerCosmosException,
 } from '@injectivelabs/exceptions'
+import {
+  toUtf8,
+  TxGrpcApi,
+  hexToUint8Array,
+  uint8ArrayToHex,
+  sortObjectByKeys,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts'
 import {
   WalletAction,
   WalletDeviceType,
@@ -80,9 +88,11 @@ export class LedgerCosmos
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -150,7 +160,7 @@ export class LedgerCosmos
       return {
         signed: undefined,
         signature: {
-          signature: Buffer.from(result.signature!).toString('base64'),
+          signature: uint8ArrayToBase64(result.signature!),
           pub_key: undefined,
         },
       } as unknown as AminoSignResponse
@@ -201,7 +211,7 @@ export class LedgerCosmos
       const ledger = await this.ledger.getInstance()
       const result = await ledger.sign(derivationPath, toUtf8(data))
 
-      return Buffer.from(result.signature!).toString('base64')
+      return uint8ArrayToBase64(result.signature!)
     } catch (e: unknown) {
       throw new LedgerCosmosException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -240,9 +250,7 @@ export class LedgerCosmos
 
     const ledgerWalletInfo = await this.getWalletForAddress(address)
 
-    return Buffer.from(ledgerWalletInfo.publicKey || '', 'hex').toString(
-      'base64',
-    )
+    return uint8ArrayToBase64(hexToUint8Array(ledgerWalletInfo.publicKey || ''))
   }
 
   private async getWalletForAddress(

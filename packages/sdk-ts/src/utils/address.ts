@@ -1,5 +1,6 @@
 import { bech32 } from '@scure/base'
 import { toBytes, keccak256 } from 'viem'
+import { uint8ArrayToHex } from './encoding.js'
 
 /**
  * Get injective address from Ethereum hex address
@@ -24,11 +25,10 @@ export const getEthereumAddress = (injectiveAddress: string): string => {
     return injectiveAddress
   }
 
-  return `0x${Buffer.from(
-    bech32.fromWords(
-      bech32.decode(injectiveAddress as `${string}1${string}`).words,
-    ),
-  ).toString('hex')}`
+  const bytes = bech32.fromWords(
+    bech32.decode(injectiveAddress as `${string}1${string}`).words,
+  )
+  return `0x${uint8ArrayToHex(bytes)}`
 }
 
 /**
@@ -52,11 +52,10 @@ export const getInjectiveAddressFromSubaccountId = (
  * @returns string
  */
 export const getDefaultSubaccountId = (injectiveAddress: string): string => {
-  return `0x${Buffer.from(
-    bech32.fromWords(
-      bech32.decode(injectiveAddress as `${string}1${string}`).words,
-    ),
-  ).toString('hex')}${'0'.repeat(24)}`
+  const bytes = bech32.fromWords(
+    bech32.decode(injectiveAddress as `${string}1${string}`).words,
+  )
+  return `0x${uint8ArrayToHex(bytes)}${'0'.repeat(24)}`
 }
 
 /**
@@ -69,11 +68,10 @@ export const getSubaccountId = (
   injectiveAddress: string,
   nonce = 0,
 ): string => {
-  return `0x${Buffer.from(
-    bech32.fromWords(
-      bech32.decode(injectiveAddress as `${string}1${string}`).words,
-    ),
-  ).toString('hex')}${'0'.repeat(23)}${nonce}`
+  const bytes = bech32.fromWords(
+    bech32.decode(injectiveAddress as `${string}1${string}`).words,
+  )
+  return `0x${uint8ArrayToHex(bytes)}${'0'.repeat(23)}${nonce}`
 }
 
 /** @deprecated - use getEthereumAddress */
@@ -82,36 +80,51 @@ export const getAddressFromInjectiveAddress = (address: string): string => {
     return address
   }
 
-  return `0x${Buffer.from(
-    bech32.fromWords(bech32.decode(address as `${string}1${string}`).words),
-  ).toString('hex')}`
+  const bytes = bech32.fromWords(
+    bech32.decode(address as `${string}1${string}`).words,
+  )
+  return `0x${uint8ArrayToHex(bytes)}`
 }
 
-export const getChecksumAddress = (ethAddress: string) => {
+/**
+ * Convert Ethereum address to checksummed format (EIP-55)
+ * @param ethAddress - Ethereum address (with or without 0x prefix)
+ * @returns Checksummed Ethereum address
+ */
+export const getChecksumAddress = (ethAddress: string): string => {
   const lowercasedAddress = ethAddress.toLowerCase().replace('0x', '')
   const addressHash = keccak256(lowercasedAddress as `0x${string}`).replace(
     '0x',
     '',
   )
 
-  let checksumAddress = '0x'
+  const checksumChars = lowercasedAddress.split('').map((char, i) => {
+    return parseInt(addressHash[i], 16) > 7 ? char.toUpperCase() : char
+  })
 
-  for (let i = 0; i < lowercasedAddress.length; i++) {
-    if (parseInt(addressHash[i], 16) > 7) {
-      checksumAddress += lowercasedAddress[i].toUpperCase()
-    } else {
-      checksumAddress += lowercasedAddress[i]
-    }
-  }
-
-  return checksumAddress
+  return '0x' + checksumChars.join('')
 }
 
-export const isCw20ContractAddress = (address: string) =>
+/**
+ * Check if address is a CW20 contract address
+ * @param address - Address to check
+ * @returns True if address is a CW20 contract address
+ */
+export const isCw20ContractAddress = (address: string): boolean =>
   address.length === 42 && address.startsWith('inj')
 
-export const addHexPrefix = (hex: string) =>
+/**
+ * Add 0x prefix to hex string if not present
+ * @param hex - Hex string
+ * @returns Hex string with 0x prefix
+ */
+export const addHexPrefix = (hex: string): string =>
   hex.startsWith('0x') ? hex : `0x${hex}`
 
-export const removeHexPrefix = (hex: string) =>
+/**
+ * Remove 0x prefix from hex string if present
+ * @param hex - Hex string
+ * @returns Hex string without 0x prefix
+ */
+export const removeHexPrefix = (hex: string): string =>
   hex.startsWith('0x') ? hex.slice(2) : hex

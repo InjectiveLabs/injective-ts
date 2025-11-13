@@ -1,4 +1,8 @@
 import * as CosmosBaseQueryV1Beta1PaginationPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/query/v1beta1/pagination_pb.mjs'
+import {
+  base64ToUint8Array,
+  uint8ArrayToBase64,
+} from '../../../utils/encoding.js'
 import type { Coin } from '@injectivelabs/ts-types'
 import type { GrpcCoin } from '../../../types/index.js'
 import type { Pagination, PaginationOption } from '../../../types/pagination.js'
@@ -18,9 +22,7 @@ export class ChainGrpcCommonTransformer {
 
     const paginationForRequest =
       CosmosBaseQueryV1Beta1PaginationPb.PageRequest.create({
-        key: pageRequest?.key
-          ? Buffer.from(pageRequest.key, 'base64')
-          : undefined,
+        key: pageRequest?.key ? base64ToUint8Array(pageRequest.key) : undefined,
         limit: pageRequest?.limit ? BigInt(pageRequest.limit) : undefined,
         offset: pageRequest?.offset ? BigInt(pageRequest.offset) : undefined,
         reverse: pageRequest?.reverse ? pageRequest.reverse : undefined,
@@ -39,9 +41,7 @@ export class ChainGrpcCommonTransformer {
 
     const paginationForRequest =
       CosmosBaseQueryV1Beta1PaginationPb.PageRequest.create({
-        key: pageRequest?.key
-          ? Buffer.from(pageRequest.key, 'base64')
-          : undefined,
+        key: pageRequest?.key ? base64ToUint8Array(pageRequest.key) : undefined,
         limit: pageRequest?.limit ? BigInt(pageRequest.limit) : undefined,
         offset: pageRequest?.offset ? BigInt(pageRequest.offset) : undefined,
         reverse: pageRequest?.reverse ? pageRequest.reverse : undefined,
@@ -64,7 +64,7 @@ export class ChainGrpcCommonTransformer {
       return key as string
     }
 
-    return Buffer.from(key).toString('base64')
+    return uint8ArrayToBase64(key)
   }
 
   static grpcPaginationToPagination(

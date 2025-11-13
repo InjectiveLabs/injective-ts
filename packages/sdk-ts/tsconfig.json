@@ -1,9 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "./src",
-    "noEmit": true,
-    "skipLibCheck": true,
     "isolatedModules": true,
     "paths": {
       "@injectivelabs/utils/test-utils": [

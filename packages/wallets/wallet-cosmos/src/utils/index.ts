@@ -1,7 +1,7 @@
-import { PublicKey } from '@injectivelabs/sdk-ts'
 import { capitalize } from '@injectivelabs/utils'
 import { Wallet } from '@injectivelabs/wallet-base'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
+import { PublicKey, uint8ArrayToBase64 } from '@injectivelabs/sdk-ts'
 import { CosmosWallet } from './../wallet.js'
 import { cosmosWallets } from './../data/index.js'
 import type { ChainId } from '@injectivelabs/ts-types'
@@ -46,9 +46,7 @@ export const confirmCosmosAddress = async ({
 
   const cosmosWallet = new CosmosWallet({ chainId, wallet })
   const key = await cosmosWallet.getKey()
-  const publicKey = PublicKey.fromBase64(
-    Buffer.from(key.pubKey).toString('base64'),
-  )
+  const publicKey = PublicKey.fromBase64(uint8ArrayToBase64(key.pubKey))
 
   const { address: derivedAddress } = publicKey.toAddress()
 

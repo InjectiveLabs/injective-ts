@@ -14,6 +14,7 @@ import { createTransaction } from '../tx.js'
 import { TxGrpcApi } from '../api/TxGrpcApi.js'
 import { ofacWallets } from '../../../json/index.js'
 import { PrivateKey } from '../../accounts/index.js'
+import { uint8ArrayToHex } from '../../../utils/encoding.js'
 import { IndexerGrpcWeb3GwApi } from '../../../client/index.js'
 import { getGasPriceBasedOnMessage } from '../../../utils/msgs.js'
 import {
@@ -212,7 +213,7 @@ export class MsgBroadcasterWithPk {
       txResponse,
       message: web3Msgs,
       chainId: evmChainId,
-      signature: `0x${Buffer.from(signature).toString('hex')}`,
+      signature: `0x${uint8ArrayToHex(signature)}`,
     })
 
     return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
@@ -359,7 +360,7 @@ export class MsgBroadcasterWithPk {
     })
 
     /** Sign transaction */
-    const signature = await privateKey.sign(Buffer.from(signBytes))
+    const signature = await privateKey.sign(signBytes)
 
     /** Append Signatures */
     txRaw.signatures = [signature]
