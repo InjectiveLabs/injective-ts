@@ -1,5 +1,17 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "noEmit": true, // Only for type checking
+    "skipLibCheck": true
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "./src/**/*.spec.ts",
+    "./src/**/*.test.ts"
+  ],
   "references": [
     //
   ]
