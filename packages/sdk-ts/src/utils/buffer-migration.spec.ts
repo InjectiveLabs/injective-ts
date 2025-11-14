@@ -5,6 +5,7 @@ import {
   hexToBuff,
   fromBase64,
   hexToBase64,
+  base64ToUtf8,
   binaryToBase64,
   hexToUint8Array,
   uint8ArrayToHex,
@@ -218,6 +219,30 @@ describe('Buffer Migration - Encoding Utilities', () => {
       const result = hexToBase64(hex)
 
       expect(result).toBe('SGVsbG8=')
+    })
+  })
+
+  describe('base64ToUtf8', () => {
+    it('should convert base64 string to UTF-8 string', () => {
+      const base64 = 'SGVsbG8gV29ybGQ=' // "Hello World" in base64
+      const result = base64ToUtf8(base64)
+
+      expect(result).toBe('Hello World')
+    })
+
+    it('should handle emoji and special characters', () => {
+      const base64 = '8J+YgCBIZWxsbyDwn5iB' // "😀 Hello 😁" in base64
+      const result = base64ToUtf8(base64)
+
+      expect(result).toBe('😀 Hello 😁')
+    })
+
+    it('should throw error for invalid base64', () => {
+      expect(() => base64ToUtf8('not-valid-base64!!!')).toThrow()
+    })
+
+    it('should throw error for empty string', () => {
+      expect(() => base64ToUtf8('')).toThrow()
     })
   })
 

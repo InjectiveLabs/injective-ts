@@ -1,5 +1,15 @@
 {
   "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@injectivelabs/utils": [
+        "../../utils/src/index.ts"
+      ],
+      "@injectivelabs/wallet-base": [
+        "../wallet-base/src/index.ts"
+      ]
+    }
+  },
   "include": [
     "./src/**/*.ts"
   ],
