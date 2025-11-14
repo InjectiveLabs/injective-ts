@@ -208,17 +208,6 @@ importers:
       '@injectivelabs/grpc-web-react-native-transport':
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
-<<<<<<< HEAD
-<<<<<<< HEAD
-      '@injectivelabs/indexer-proto-ts':
-        specifier: 1.13.27
-        version: 1.13.27
-      '@injectivelabs/mito-proto-ts':
-        specifier: 1.13.2
-        version: 1.13.2
-=======
-=======
->>>>>>> cfa65ce68 (chore: revert protobufs extension from .mjs to .js - canary)
       '@injectivelabs/indexer-proto-ts-v2':
         specifier: 1.17.1
         version: 1.17.1
@@ -739,6 +728,7 @@ importers:
         version: 2.40.3(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
       jest:
         specifier: ^29.0.0
 <<<<<<< HEAD
@@ -748,12 +738,15 @@ importers:
 =======
 >>>>>>> ad0f51529 (chore: optimise eslint speed)
 >>>>>>> 68997c21f (chore: optimise eslint speed)
+=======
+>>>>>>> 94370a7b1 (chore: release)
       live-server:
         specifier: ^1.2.1
         version: 1.2.2
       shx:
         specifier: ^0.3.4
         version: 0.3.4
+<<<<<<< HEAD
 <<<<<<< HEAD
       ts-jest:
         specifier: ^29.0.0
@@ -764,6 +757,8 @@ importers:
 =======
 >>>>>>> ad0f51529 (chore: optimise eslint speed)
 >>>>>>> 68997c21f (chore: optimise eslint speed)
+=======
+>>>>>>> 94370a7b1 (chore: release)
       ts-node:
         specifier: ^10.9.1
         version: 10.9.2(@types/node@22.17.0)(typescript@5.8.3)
@@ -1896,47 +1891,8 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@injectivelabs/indexer-proto-ts@1.13.27':
-=======
-=======
->>>>>>> f17199b38 (chore: migrate from jest to vitest)
-<<<<<<< HEAD
-  '@injectivelabs/indexer-proto-ts@1.13.24':
->>>>>>> 07b35764d (chore: migrate ChainGrpcApis to new protobuf)
-    resolution:
-      {
-        integrity: sha512-b4mLsbiM98eJ3ileMrWw3Bi7UjGHw/7VM/R6iaY8WST1YD3UElduByilFnvRURWuceHR09RCOj/8g0VvqUlYgA==,
-      }
-=======
-  '@injectivelabs/indexer-proto-ts@1.13.23':
-    resolution: {integrity: sha512-YjHlVMof3kMZ8GmM9YayDBz2mVE1V/gdyRnxhUF9VndXMSVGs8MTunVswJKuUVGO7i+6k+xPnyyqJJifpbZ5lA==}
->>>>>>> eecc8de64 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-  '@injectivelabs/indexer-proto-ts-v2@1.17.0':
-    resolution: {integrity: sha512-MRyuvVwyYch7YVC4ini4X3OqPu24H1HchMpI9ghSpALMm6G7sFR8jQPkXH4cEETooQQJhgAL2DU9ToWw005Gag==}
->>>>>>> 37a35a5fd (chore: migrate from jest to vitest)
-=======
-=======
->>>>>>> f507c174b (chore: update trezor version)
-  '@injectivelabs/indexer-proto-ts-v2@1.17.1':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-phDVFXsggOcOo2GgUlLUI2ibrk//70FDhnx8k4kXfmNIIYfwZG2Kc/LZY7GfyVM/WL4u4nR00ECrV+kLaV4qaw==}
->>>>>>> cfa65ce68 (chore: revert protobufs extension from .mjs to .js - canary)
-=======
-    resolution:
-      {
-        integrity: sha512-phDVFXsggOcOo2GgUlLUI2ibrk//70FDhnx8k4kXfmNIIYfwZG2Kc/LZY7GfyVM/WL4u4nR00ECrV+kLaV4qaw==,
-      }
->>>>>>> 8766fbe2b (chore: release)
-=======
   '@injectivelabs/indexer-proto-ts-v2@1.17.1':
     resolution: {integrity: sha512-phDVFXsggOcOo2GgUlLUI2ibrk//70FDhnx8k4kXfmNIIYfwZG2Kc/LZY7GfyVM/WL4u4nR00ECrV+kLaV4qaw==}
->>>>>>> a129349ec (chore: package bump)
 
   '@injectivelabs/mito-proto-ts-v2@1.17.1':
     resolution: {integrity: sha512-VpZcr8yqInYpkWN+qzcFGXNeMvkVjC8hMw9PIKaFWSlMWKb1NAMNWaP9wlDV/2pxn3D8B9SsT3loJeZSMYK48Q==}
@@ -13299,19 +13255,7 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.4
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@injectivelabs/indexer-proto-ts@1.13.27':
-=======
-<<<<<<< HEAD
-  '@injectivelabs/indexer-proto-ts@1.13.24':
-=======
-  '@injectivelabs/indexer-proto-ts-v2@1.17.0':
->>>>>>> 37a35a5fd (chore: migrate from jest to vitest)
->>>>>>> f17199b38 (chore: migrate from jest to vitest)
-=======
   '@injectivelabs/indexer-proto-ts-v2@1.17.1':
->>>>>>> cfa65ce68 (chore: revert protobufs extension from .mjs to .js - canary)
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1
@@ -13363,6 +13307,7 @@ snapshots:
       jest-util: 29.7.0
       slash: 3.0.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   '@jest/core@29.7.0(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.8.3))':
     dependencies:
@@ -13399,8 +13344,9 @@ snapshots:
       - supports-color
       - ts-node
 =======
+=======
+>>>>>>> 94370a7b1 (chore: release)
     optional: true
->>>>>>> ad0f51529 (chore: optimise eslint speed)
 
   '@jest/core@29.7.0(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.9.2))':
     dependencies:
@@ -17733,6 +17679,7 @@ snapshots:
       sha.js: 2.4.12
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   create-jest@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.8.3)):
 =======
 <<<<<<< HEAD
@@ -17754,6 +17701,8 @@ snapshots:
 
 =======
 >>>>>>> ad0f51529 (chore: optimise eslint speed)
+=======
+>>>>>>> 94370a7b1 (chore: release)
   create-jest@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.9.2)):
     dependencies:
       '@jest/types': 29.6.3
@@ -19947,6 +19896,7 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   jest-cli@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.8.3)):
     dependencies:
@@ -19967,8 +19917,9 @@ snapshots:
       - supports-color
       - ts-node
 =======
+=======
+>>>>>>> 94370a7b1 (chore: release)
     optional: true
->>>>>>> ad0f51529 (chore: optimise eslint speed)
 
   jest-cli@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.9.2)):
     dependencies:
@@ -19990,6 +19941,7 @@ snapshots:
       - ts-node
     optional: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   jest-config@29.7.0(@types/node@22.13.10)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.8.3)):
 =======
@@ -20094,6 +20046,8 @@ snapshots:
 =======
 >>>>>>> ad0f51529 (chore: optimise eslint speed)
 >>>>>>> 68997c21f (chore: optimise eslint speed)
+=======
+>>>>>>> 94370a7b1 (chore: release)
   jest-config@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.9.2)):
     dependencies:
       '@babel/core': 7.28.0
@@ -20366,6 +20320,7 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   jest@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.8.3)):
     dependencies:
@@ -20379,8 +20334,9 @@ snapshots:
       - supports-color
       - ts-node
 =======
+=======
+>>>>>>> 94370a7b1 (chore: release)
     optional: true
->>>>>>> ad0f51529 (chore: optimise eslint speed)
 
   jest@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.9.2)):
     dependencies:
@@ -23231,6 +23187,7 @@ snapshots:
       tslib: 2.8.1
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   ts-jest@29.3.4(@babel/core@7.28.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0))(jest@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.8.3)))(typescript@5.8.3):
 =======
 <<<<<<< HEAD
@@ -23257,6 +23214,8 @@ snapshots:
 
 =======
 >>>>>>> ad0f51529 (chore: optimise eslint speed)
+=======
+>>>>>>> 94370a7b1 (chore: release)
   ts-mixer@6.0.4: {}
 
   ts-node-dev@2.0.0(@types/node@22.17.0)(typescript@5.9.2):
