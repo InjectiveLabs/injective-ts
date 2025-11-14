@@ -1,5 +1,5 @@
-import type * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb.mjs'
-import type * as InjectiveExchangeV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/authz_pb.mjs'
+import type * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb'
+import type * as InjectiveExchangeV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/authz_pb'
 
 export type Grant = CosmosAuthzV1Beta1AuthzPb.Grant
 export type GrantAuthorization = CosmosAuthzV1Beta1AuthzPb.GrantAuthorization

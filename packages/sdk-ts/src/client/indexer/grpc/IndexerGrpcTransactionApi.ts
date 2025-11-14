@@ -3,9 +3,9 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
-import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { InjectiveExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb.client'
 import {
   DEFAULT_GAS_LIMIT,

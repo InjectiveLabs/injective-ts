@@ -1,6 +1,6 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type * as InjectiveErc20V1Beta1Erc20Pb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/erc20_pb.mjs'
-import type * as InjectiveErc20V1Beta1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/params_pb.mjs'
+import type * as InjectiveErc20V1Beta1Erc20Pb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/erc20_pb'
+import type * as InjectiveErc20V1Beta1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/params_pb'
 
 export interface TokenPair {
   /** bank denom */

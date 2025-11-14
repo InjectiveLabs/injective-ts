@@ -1,8 +1,8 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb.mjs'
+import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
-import type * as CosmosAuthzV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb.mjs'
+import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import type * as CosmosAuthzV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb'
 import type {
   GrantWithDecodedAuthorization,
   GrantAuthorizationWithDecodedAuthorization,

@@ -1,4 +1,4 @@
-import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
+import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 
 export abstract class BaseAuthorization<Params, Proto, DataRepresentation> {
   params: Params

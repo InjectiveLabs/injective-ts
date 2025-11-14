@@ -1,5 +1,5 @@
-import * as IbcApplicationsTransferV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/query_pb.mjs'
-import { QueryClient as IbcApplicationsTransferV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/query_pb.client.mjs'
+import * as IbcApplicationsTransferV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/query_pb'
+import { QueryClient as IbcApplicationsTransferV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'

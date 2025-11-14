@@ -1,8 +1,8 @@
 import { bech32 } from '@scure/base'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import { keccak256, toBytes as toBuffer } from 'viem'
-import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
-import * as InjectiveCryptoV1Beta1Ethsecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/injective/crypto/v1beta1/ethsecp256k1/keys_pb.mjs'
+import * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as InjectiveCryptoV1Beta1Ethsecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 import { Address } from './Address.js'
 import {
   decompressPubKey,

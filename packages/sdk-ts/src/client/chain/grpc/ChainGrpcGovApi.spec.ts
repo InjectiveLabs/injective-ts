@@ -1,5 +1,5 @@
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
-import * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb.mjs'
+import * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb'
 import { ChainGrpcGovApi } from './ChainGrpcGovApi.js'
 import type { ChainGrpcGovTransformer } from '../transformers/index.js'
 

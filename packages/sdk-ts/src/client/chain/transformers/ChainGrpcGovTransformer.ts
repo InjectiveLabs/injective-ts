@@ -2,7 +2,7 @@ import { toHumanReadable } from '@injectivelabs/utils'
 import { uint8ArrayToString } from '../../../utils/index.js'
 import { protobufTimestampToUnixSeconds } from '../../../utils/time.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as CosmosGovV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.mjs'
+import type * as CosmosGovV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb'
 import type { Pagination } from '../../../types/index.js'
 import type {
   Vote,

@@ -1,5 +1,5 @@
-import { OracleType } from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb.mjs'
-import type * as InjectiveInsuranceV1Beta1InsurancePb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/insurance_pb.mjs'
+import { OracleType } from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
+import type * as InjectiveInsuranceV1Beta1InsurancePb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/insurance_pb'
 
 export interface InsuranceModuleParams {
   defaultRedemptionNoticePeriodDuration: number

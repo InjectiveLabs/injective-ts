@@ -1,5 +1,5 @@
-import * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.mjs'
-import { QueryClient as CosmwasmWasmV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.client.mjs'
+import * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb'
+import { QueryClient as CosmwasmWasmV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import { toBase64 } from '../../../utils/encoding.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'

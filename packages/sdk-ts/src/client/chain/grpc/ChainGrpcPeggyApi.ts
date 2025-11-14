@@ -1,5 +1,5 @@
-import * as InjectivePeggyV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb.mjs'
-import { QueryClient as InjectivePeggyV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb.client.mjs'
+import * as InjectivePeggyV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb'
+import { QueryClient as InjectivePeggyV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcPeggyTransformer } from '../transformers/index.js'

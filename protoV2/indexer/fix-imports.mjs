@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-// Recursively find all .mjs files
-function findMjsFiles(dir) {
+// Recursively find all .js files
+function findJsFiles(dir) {
   const results = []
   const items = readdirSync(dir)
 
@@ -15,8 +15,8 @@ function findMjsFiles(dir) {
     const stat = statSync(fullPath)
 
     if (stat.isDirectory()) {
-      results.push(...findMjsFiles(fullPath))
-    } else if (item.endsWith('.mjs')) {
+      results.push(...findJsFiles(fullPath))
+    } else if (item.endsWith('.js')) {
       results.push(fullPath)
     }
   }
@@ -24,11 +24,11 @@ function findMjsFiles(dir) {
   return results
 }
 
-// Find all .mjs files in proto-ts/esm
+// Find all .js files in proto-ts/esm
 const esmDir = join(__dirname, 'proto-ts/esm')
-const files = findMjsFiles(esmDir)
+const files = findJsFiles(esmDir)
 
-console.log(`Found ${files.length} .mjs files to process`)
+console.log(`Found ${files.length} .js files to process`)
 
 let totalReplacements = 0
 
@@ -38,24 +38,23 @@ files.forEach((fullPath) => {
   // Count replacements for this file
   let fileReplacements = 0
 
-  // Replace relative imports without extensions or with .js extension
+  // Replace relative imports without extensions
   const newContent = content.replace(
     /(from\s+['"])(\.\/?[^'"]+?)(['"])/g,
     (match, prefix, path, suffix) => {
-      // Skip if already has .mjs
-      if (path.endsWith('.mjs')) {
+      // Skip if already has an extension
+      if (path.endsWith('.mjs') || path.endsWith('.js')) {
         return match
       }
 
-      // Skip if it's not a relative import (starts with http://, https://, etc)
+      // Skip if it's not a relative import (doesn't start with . or ..)
       if (!path.startsWith('.')) {
         return match
       }
 
-      // Remove .js if present, then add .mjs
-      const cleanPath = path.replace(/\.js$/, '')
+      // Add .js extension
       fileReplacements++
-      return `${prefix}${cleanPath}.mjs${suffix}`
+      return `${prefix}${path}.js${suffix}`
     },
   )
 

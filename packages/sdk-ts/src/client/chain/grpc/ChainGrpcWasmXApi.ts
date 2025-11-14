@@ -1,5 +1,5 @@
-import * as InjectiveWasmxV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/query_pb.mjs'
-import { QueryClient as InjectiveWasmxV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/query_pb.client.mjs'
+import * as InjectiveWasmxV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/query_pb'
+import { QueryClient as InjectiveWasmxV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 

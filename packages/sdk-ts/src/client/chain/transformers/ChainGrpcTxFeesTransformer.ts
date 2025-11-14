@@ -1,5 +1,5 @@
 import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
-import type * as InjectiveTxFeesV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/txfees/v1beta1/query_pb.mjs'
+import type * as InjectiveTxFeesV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/txfees/v1beta1/query_pb'
 import type {
   TxFeesEipBaseFee,
   TxFeesModuleStateParams,

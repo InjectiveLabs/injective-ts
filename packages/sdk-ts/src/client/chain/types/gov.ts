@@ -1,4 +1,4 @@
-import * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb.mjs'
+import * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb'
 import type { Coin } from '@injectivelabs/ts-types'
 
 export interface GovModuleStateParams {

@@ -1,7 +1,7 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcBankApi } from './ChainGrpcBankApi.js'
-import type * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import type * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import type { ChainGrpcBankTransformer } from '../transformers/index.js'
 import type { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 

@@ -1,6 +1,6 @@
 import { toHumanReadable } from '@injectivelabs/utils'
-import * as CosmosMintV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb.mjs'
-import { QueryClient as CosmosMintV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb.client.mjs'
+import * as CosmosMintV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb'
+import { QueryClient as CosmosMintV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import { uint8ArrayToString } from '../../../utils/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'

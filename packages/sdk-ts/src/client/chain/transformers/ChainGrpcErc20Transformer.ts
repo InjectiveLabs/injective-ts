@@ -1,5 +1,5 @@
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as InjectiveErc20V1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb.mjs'
+import type * as InjectiveErc20V1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb'
 import type { Params, TokenPair, GrpcTokenPair } from '../types/erc20.js'
 
 /**

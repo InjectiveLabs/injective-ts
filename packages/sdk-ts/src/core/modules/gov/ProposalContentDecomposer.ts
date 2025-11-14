@@ -1,10 +1,10 @@
-import * as CosmosGovV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/tx_pb.mjs'
-import * as CosmosGovV1Beta1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/gov_pb.mjs'
-import * as CosmosParamsV1Beta1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/params/v1beta1/params_pb.mjs'
-import * as CosmosUpgradeV1Beta1UpgradePb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/upgrade/v1beta1/upgrade_pb.mjs'
-import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb.mjs'
-import * as InjectiveOracleV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/proposal_pb.mjs'
-import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb.mjs'
+import * as CosmosGovV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/tx_pb'
+import * as CosmosGovV1Beta1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/gov_pb'
+import * as CosmosParamsV1Beta1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/params/v1beta1/params_pb'
+import * as CosmosUpgradeV1Beta1UpgradePb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/upgrade/v1beta1/upgrade_pb'
+import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
+import * as InjectiveOracleV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/proposal_pb'
+import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb'
 
 export class ProposalDecomposer {
   static getMsgExecLegacyContent(content: Uint8Array) {

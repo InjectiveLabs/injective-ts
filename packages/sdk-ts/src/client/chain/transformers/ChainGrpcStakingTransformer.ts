@@ -5,7 +5,7 @@ import {
   protobufTimestampToDate,
   protobufTimestampToUnixSeconds,
 } from '../../../utils/time.js'
-import type * as CosmosStakingV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/query_pb.mjs'
+import type * as CosmosStakingV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/query_pb'
 import type { Pagination } from '../../../types/index.js'
 import type {
   Pool,

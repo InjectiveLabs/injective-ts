@@ -1,5 +1,5 @@
-import * as InjectiveErc20V1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb.mjs'
-import { QueryClient as InjectiveErc20V1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb.client.mjs'
+import * as InjectiveErc20V1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb'
+import { QueryClient as InjectiveErc20V1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { fetchAllWithPagination } from '../../../utils/pagination.js'
