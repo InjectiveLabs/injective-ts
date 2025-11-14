@@ -55,6 +55,15 @@ if [ "$PERSIST" = true ]; then
   echo "💾 Will persist temporary directories after generation"
 fi
 
+# Check if node_modules exists, if not install dependencies
+if [ ! -d "node_modules" ] || [ ! -f "node_modules/.bin/protoc" ]; then
+  echo "📥 Installing dependencies..."
+  npm install || pnpm install || {
+    echo "❌ Failed to install dependencies"
+    exit 1
+  }
+fi
+
 if [ "$SKIP_CLONE" = false ]; then
   # Ensure we start with a clean slate
   rm -rf proto/gen
@@ -153,6 +162,10 @@ fi
 echo ""
 echo "Building TypeScript to ESM..."
 npm run build
+
+echo ""
+echo "Copying package.json template..."
+cp ./package.json.template ./proto-ts/package.json
 
 echo ""
 echo "✅ Generation complete!"

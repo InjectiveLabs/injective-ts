@@ -1,6 +1,6 @@
 import { Network } from '@injectivelabs/networks'
 import { toBigNumber, toChainFormat } from '@injectivelabs/utils'
-import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb.mjs'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { OrderHashManager } from './OrderHashManager.js'
 import { Address } from '../../../../accounts/Address.js'
 import MsgCreateSpotLimitOrder from '../../../exchange/msgs/MsgCreateSpotLimitOrder.js'

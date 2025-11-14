@@ -54,7 +54,7 @@ export default defineConfig(() => {
       treeshake: false,
       minify: false,
       bundle: false,
-      outExtension: () => ({ js: '.mjs' }),
+      outExtension: () => ({ js: '.js' }),
       external: [
         '@protobuf-ts/runtime',
         '@protobuf-ts/runtime-rpc',

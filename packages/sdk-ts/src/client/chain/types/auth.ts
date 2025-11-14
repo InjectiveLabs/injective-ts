@@ -1,4 +1,4 @@
-import type * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb.mjs'
+import type * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb'
 
 export interface AuthModuleParams {
   maxMemoCharacters: number

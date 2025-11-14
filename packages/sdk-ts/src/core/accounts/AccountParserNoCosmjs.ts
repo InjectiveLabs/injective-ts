@@ -1,4 +1,4 @@
-import * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb.mjs'
+import * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb'
 import { uint8ArrayToBase64 } from '../../utils/encoding.js'
 
 export const accountEthParser = <T>(

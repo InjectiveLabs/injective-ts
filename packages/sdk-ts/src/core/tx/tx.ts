@@ -6,7 +6,7 @@ import {
   getStdFeeFromString,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
-import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import { BaseAccount } from '../accounts/index.js'
 import { base64ToUint8Array } from '../../utils/encoding.js'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client/index.js'
