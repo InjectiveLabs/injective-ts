@@ -1,5 +1,5 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import type * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 
 export const isServerSide = () => typeof window === 'undefined'
 

@@ -1,10 +1,10 @@
-import * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb.mjs'
-import * as InjectiveCryptoV1Beta1Ethsecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/injective/crypto/v1beta1/ethsecp256k1/keys_pb.mjs'
+import * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb'
+import * as InjectiveCryptoV1Beta1Ethsecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 import { uint8ArrayToString } from '../../../utils/index.js'
 import { uint8ArrayToBase64 } from '../../../utils/encoding.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
-import type * as CosmosAuthV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb.mjs'
+import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import type * as CosmosAuthV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb'
 import type { Account, AuthModuleParams } from '../types/auth.js'
 
 /**

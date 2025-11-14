@@ -191,11 +191,11 @@ importers:
         specifier: ^0.33.0
         version: 0.33.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       '@injectivelabs/abacus-proto-ts-v2':
+        specifier: 1.17.2
+        version: 1.17.2
+      '@injectivelabs/core-proto-ts-v2':
         specifier: 1.17.1
         version: 1.17.1
-      '@injectivelabs/core-proto-ts-v2':
-        specifier: 1.17.0
-        version: 1.17.0
       '@injectivelabs/exceptions':
         specifier: workspace:*
         version: link:../exceptions
@@ -209,6 +209,7 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@injectivelabs/indexer-proto-ts':
         specifier: 1.13.27
         version: 1.13.27
@@ -216,19 +217,20 @@ importers:
         specifier: 1.13.2
         version: 1.13.2
 =======
+=======
+>>>>>>> cfa65ce68 (chore: revert protobufs extension from .mjs to .js - canary)
       '@injectivelabs/indexer-proto-ts-v2':
-        specifier: 1.17.0
-        version: 1.17.0
+        specifier: 1.17.1
+        version: 1.17.1
       '@injectivelabs/mito-proto-ts-v2':
-        specifier: 1.17.0
-        version: 1.17.0
->>>>>>> 37a35a5fd (chore: migrate from jest to vitest)
+        specifier: 1.17.1
+        version: 1.17.1
       '@injectivelabs/networks':
         specifier: workspace:*
         version: link:../networks
       '@injectivelabs/olp-proto-ts-v2':
-        specifier: 1.17.0
-        version: 1.17.0
+        specifier: 1.17.1
+        version: 1.17.1
       '@injectivelabs/ts-types':
         specifier: workspace:*
         version: link:../ts-types
@@ -280,6 +282,9 @@ importers:
       rxjs:
         specifier: 7.8.2
         version: 7.8.2
+      secp256k1:
+        specifier: ^4.0.3
+        version: 4.0.3
       shx:
         specifier: ^0.3.4
         version: 0.3.4
@@ -296,6 +301,9 @@ importers:
       '@types/lodash.toarray':
         specifier: ^4.4.7
         version: 4.4.7
+      '@types/secp256k1':
+        specifier: ^4.0.6
+        version: 4.0.7
 
   packages/ts-types:
     devDependencies:
@@ -1319,26 +1327,6 @@ packages:
     resolution: {integrity: sha512-a4qnWGzuM2IrlkDTFQmU7bDd+wNIzyvfcRIZ43i00ZHvTEtrCcWopT94rIv/Zy6fdgkhQ3HWrsGVlIPDT/ibRw==}
 
   '@cosmjs/crypto@0.28.13':
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-ynKfM0q/tMBQMHJby6ad8lR3gkgBKaelQhIsCZTjClsnuC7oYT9y3ThSZCUWr7Pa9h0J8ahU2YV2oFWFVWJQzQ==,
-      }
-    deprecated: This uses elliptic for cryptographic operations, which contains several security-relevant bugs. To what degree this affects your application is something you need to carefully investigate. See https://github.com/cosmos/cosmjs/issues/1708 for further pointers. Starting with version 0.34.0 the cryptographic library has been replaced. However, private keys might still be at risk.
-
-  '@cosmjs/crypto@0.32.3':
-    resolution:
-      {
-        integrity: sha512-niQOWJHUtlJm2GG4F00yGT7sGPKxfUwz+2qQ30uO/E3p58gOusTcH2qjiJNVxb8vScYJhFYFqpm/OA/mVqoUGQ==,
-      }
-    deprecated: This uses elliptic for cryptographic operations, which contains several security-relevant bugs. To what degree this affects your application is something you need to carefully investigate. See https://github.com/cosmos/cosmjs/issues/1708 for further pointers. Starting with version 0.34.0 the cryptographic library has been replaced. However, private keys might still be at risk.
-
-  '@cosmjs/crypto@0.33.0':
-    resolution:
-      {
-        integrity: sha512-kkt06t+cFW2XRGDGUZ0cVf5yoQ2OhZnubwbYbz3QXdyhf1qOXYVPRThfFPsko7dssr+e8Yy4OJKlh5SLA8DXTQ==,
-      }
-=======
     resolution: {integrity: sha512-ynKfM0q/tMBQMHJby6ad8lR3gkgBKaelQhIsCZTjClsnuC7oYT9y3ThSZCUWr7Pa9h0J8ahU2YV2oFWFVWJQzQ==}
     deprecated: This uses elliptic for cryptographic operations, which contains several security-relevant bugs. To what degree this affects your application is something you need to carefully investigate. See https://github.com/cosmos/cosmjs/issues/1708 for further pointers. Starting with version 0.34.0 the cryptographic library has been replaced. However, private keys might still be at risk.
 
@@ -1348,7 +1336,6 @@ packages:
 
   '@cosmjs/crypto@0.33.0':
     resolution: {integrity: sha512-kkt06t+cFW2XRGDGUZ0cVf5yoQ2OhZnubwbYbz3QXdyhf1qOXYVPRThfFPsko7dssr+e8Yy4OJKlh5SLA8DXTQ==}
->>>>>>> eecc8de64 (chore: migrate ChainGrpcApis to new protobuf)
     deprecated: This uses elliptic for cryptographic operations, which contains several security-relevant bugs. To what degree this affects your application is something you need to carefully investigate. See https://github.com/cosmos/cosmjs/issues/1708 for further pointers. Starting with version 0.34.0 the cryptographic library has been replaced. However, private keys might still be at risk.
 
   '@cosmjs/encoding@0.28.13':
@@ -1816,11 +1803,11 @@ packages:
     resolution: {integrity: sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==}
     engines: {node: '>=6.9.0'}
 
-  '@injectivelabs/abacus-proto-ts-v2@1.17.1':
-    resolution: {integrity: sha512-tyvOibJGGGsup3QlWsBIKtXoIygrSL9Rd/7zlBwrFI9Fea6Kh4VA8FeiUnsba3KTAuMbh678R/QmZb2jbDwdWw==}
+  '@injectivelabs/abacus-proto-ts-v2@1.17.2':
+    resolution: {integrity: sha512-B1HlmFjRNhohNdIkcgllJ4FK3ysJ79Ujo44lZZhoFWxK3owylT3kibXGH/D2Iqs49rttOnapnmlc37gKkZM+bA==}
 
-  '@injectivelabs/core-proto-ts-v2@1.17.0':
-    resolution: {integrity: sha512-pEbt5/8mMibhT1peLhNlF9Ue3lUmbmSunHII7LhyPHWNN8yITevdnlUCTfms5JKm7NCJuEeY4g9doUJIUVuB4A==}
+  '@injectivelabs/core-proto-ts-v2@1.17.1':
+    resolution: {integrity: sha512-ieq6kDHzXKhJM7bU61YU5oMydIN4XRRDOxcemn0fgsAIP72PLjC431Y/RvB+6KxSNyhcLirPaU4gq7LuXLgXaA==}
 
   '@injectivelabs/grpc-web-node-http-transport@0.0.2':
     resolution: {integrity: sha512-rpyhXLiGY/UMs6v6YmgWHJHiO9l0AgDyVNv+jcutNVt4tQrmNvnpvz2wCAGOFtq5LuX/E9ChtTVpk3gWGqXcGA==}
@@ -1837,6 +1824,7 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   '@injectivelabs/indexer-proto-ts@1.13.27':
@@ -1858,12 +1846,16 @@ packages:
   '@injectivelabs/indexer-proto-ts-v2@1.17.0':
     resolution: {integrity: sha512-MRyuvVwyYch7YVC4ini4X3OqPu24H1HchMpI9ghSpALMm6G7sFR8jQPkXH4cEETooQQJhgAL2DU9ToWw005Gag==}
 >>>>>>> 37a35a5fd (chore: migrate from jest to vitest)
+=======
+  '@injectivelabs/indexer-proto-ts-v2@1.17.1':
+    resolution: {integrity: sha512-phDVFXsggOcOo2GgUlLUI2ibrk//70FDhnx8k4kXfmNIIYfwZG2Kc/LZY7GfyVM/WL4u4nR00ECrV+kLaV4qaw==}
+>>>>>>> cfa65ce68 (chore: revert protobufs extension from .mjs to .js - canary)
 
-  '@injectivelabs/mito-proto-ts-v2@1.17.0':
-    resolution: {integrity: sha512-udHrvqiRB0rCXV6WZJZyaBBSk0mNfcA1+jlxyfSzgvXqWm5ohDJGHNBtnLvcOn3FWoyzRf/A7QbBJefqx7RYNw==}
+  '@injectivelabs/mito-proto-ts-v2@1.17.1':
+    resolution: {integrity: sha512-VpZcr8yqInYpkWN+qzcFGXNeMvkVjC8hMw9PIKaFWSlMWKb1NAMNWaP9wlDV/2pxn3D8B9SsT3loJeZSMYK48Q==}
 
-  '@injectivelabs/olp-proto-ts-v2@1.17.0':
-    resolution: {integrity: sha512-qMjpH85twNQOSRzsoL2JZ6/QTQmM7hpgpUsCqQ3hNLKd11GD1IAVEC7EpCdOnpJHBjVFudKl1dDO3L31Hot6fQ==}
+  '@injectivelabs/olp-proto-ts-v2@1.17.1':
+    resolution: {integrity: sha512-ZvlxBSCxy/yeBhuNx9dboRfA6ESiVHZEfhMa74zZYXMxe27r+jEOU5teJ5l7rapb7RhbIXgD9MaEomEj/1/sZQ==}
 
   '@ioredis/commands@1.2.0':
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
@@ -3749,6 +3741,9 @@ packages:
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
+
+  '@types/secp256k1@4.0.7':
+    resolution: {integrity: sha512-Rcvjl6vARGAKRO6jHeKMatGrvOMGrR/AR11N1x2LqintPCyDZ7NBhrh238Z2VZc7aM7KIwnFpFQ7fnfK4H/9Qw==}
 
   '@types/semver@7.7.0':
     resolution: {integrity: sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==}
@@ -11972,13 +11967,13 @@ snapshots:
 
   '@hutson/parse-repository-url@3.0.2': {}
 
-  '@injectivelabs/abacus-proto-ts-v2@1.17.1':
+  '@injectivelabs/abacus-proto-ts-v2@1.17.2':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1
       '@protobuf-ts/runtime-rpc': 2.11.1
 
-  '@injectivelabs/core-proto-ts-v2@1.17.0':
+  '@injectivelabs/core-proto-ts-v2@1.17.1':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1
@@ -11998,6 +11993,7 @@ snapshots:
       google-protobuf: 3.21.4
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   '@injectivelabs/indexer-proto-ts@1.13.27':
 =======
 <<<<<<< HEAD
@@ -12006,18 +12002,21 @@ snapshots:
   '@injectivelabs/indexer-proto-ts-v2@1.17.0':
 >>>>>>> 37a35a5fd (chore: migrate from jest to vitest)
 >>>>>>> f17199b38 (chore: migrate from jest to vitest)
+=======
+  '@injectivelabs/indexer-proto-ts-v2@1.17.1':
+>>>>>>> cfa65ce68 (chore: revert protobufs extension from .mjs to .js - canary)
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1
       '@protobuf-ts/runtime-rpc': 2.11.1
 
-  '@injectivelabs/mito-proto-ts-v2@1.17.0':
+  '@injectivelabs/mito-proto-ts-v2@1.17.1':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1
       '@protobuf-ts/runtime-rpc': 2.11.1
 
-  '@injectivelabs/olp-proto-ts-v2@1.17.0':
+  '@injectivelabs/olp-proto-ts-v2@1.17.1':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1
@@ -14241,6 +14240,10 @@ snapshots:
   '@types/parse-json@4.0.2': {}
 
   '@types/resolve@1.20.2': {}
+
+  '@types/secp256k1@4.0.7':
+    dependencies:
+      '@types/node': 22.17.0
 
   '@types/semver@7.7.0': {}
 

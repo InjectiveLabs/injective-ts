@@ -1,5 +1,5 @@
-import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
-import * as CosmwasmWasmV1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/authz_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmwasmWasmV1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/authz_pb'
 import { BaseAuthorization } from './Base.js'
 import type { Coin } from '@injectivelabs/ts-types'
 

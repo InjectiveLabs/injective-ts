@@ -1,6 +1,6 @@
-import type * as InjectiveEvmV1LogPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/log_pb.mjs'
-import type * as InjectiveEvmV1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/params_pb.mjs'
-import type * as InjectiveEvmV1ChainConfigPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/chain_config_pb.mjs'
+import type * as InjectiveEvmV1LogPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/log_pb'
+import type * as InjectiveEvmV1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/params_pb'
+import type * as InjectiveEvmV1ChainConfigPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/chain_config_pb'
 
 export interface EvmLog {
   address: string

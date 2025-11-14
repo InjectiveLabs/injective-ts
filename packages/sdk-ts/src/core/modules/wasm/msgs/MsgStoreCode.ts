@@ -1,7 +1,7 @@
 import { toPascalCase } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
-import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb.mjs'
-import * as CosmwasmWasmV1TypesPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/types_pb.mjs'
+import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb'
+import * as CosmwasmWasmV1TypesPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/types_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { fromUtf8, uint8ArrayToBase64 } from '../../../../utils/encoding.js'
 

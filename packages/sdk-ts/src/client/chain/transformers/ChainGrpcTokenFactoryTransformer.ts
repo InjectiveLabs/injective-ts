@@ -1,5 +1,5 @@
-import type { GenesisDenom } from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/genesis_pb.mjs'
-import type * as InjectiveTokenFactoryV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/query_pb.mjs'
+import type { GenesisDenom } from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/genesis_pb'
+import type * as InjectiveTokenFactoryV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/query_pb'
 import type {
   AuthorityMetadata,
   TokenFactoryModuleState,

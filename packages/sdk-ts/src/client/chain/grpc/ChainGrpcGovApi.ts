@@ -1,10 +1,10 @@
-import * as CosmosGovV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.mjs'
-import { QueryClient as CosmosGovV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.client.mjs'
+import * as CosmosGovV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb'
+import { QueryClient as CosmosGovV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
-import type * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb.mjs'
+import type * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**

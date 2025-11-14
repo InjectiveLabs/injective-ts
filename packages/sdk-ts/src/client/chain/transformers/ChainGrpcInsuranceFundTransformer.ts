@@ -1,4 +1,4 @@
-import type * as InjectiveInsuranceV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/query_pb.mjs'
+import type * as InjectiveInsuranceV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/query_pb'
 import type { GrpcInsuranceFund } from '../types/insurance.js'
 import type {
   InsuranceFund,

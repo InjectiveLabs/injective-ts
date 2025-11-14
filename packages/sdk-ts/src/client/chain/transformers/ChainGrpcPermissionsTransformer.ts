@@ -1,5 +1,5 @@
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as InjectivePermissionsV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/query_pb.mjs'
+import type * as InjectivePermissionsV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/query_pb'
 import type {
   PermissionRole,
   GrpcPermissionRole,

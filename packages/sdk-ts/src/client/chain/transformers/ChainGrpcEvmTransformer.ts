@@ -1,4 +1,4 @@
-import type * as InjectiveEvmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/query_pb.mjs'
+import type * as InjectiveEvmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/query_pb'
 import type {
   EvmParams,
   EvmBlobConfig,

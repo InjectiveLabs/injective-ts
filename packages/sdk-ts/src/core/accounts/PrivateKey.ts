@@ -4,7 +4,7 @@ import { toBytes, keccak256, hashTypedData } from 'viem'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { Wallet, concat, getBytes, Signature, HDNodeWallet } from 'ethers'
-import * as InjectiveTypesV1Beta1TxExtPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/tx_ext_pb.mjs'
+import * as InjectiveTypesV1Beta1TxExtPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/tx_ext_pb'
 import { Address } from './Address.js'
 import { PublicKey } from './PublicKey.js'
 import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
@@ -20,7 +20,7 @@ import {
   recoverTypedSignaturePubKey,
 } from '../../utils/index.js'
 import type { TypedDataDefinition } from 'viem'
-import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.

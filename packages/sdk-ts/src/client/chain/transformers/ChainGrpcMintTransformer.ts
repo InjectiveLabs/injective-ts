@@ -1,4 +1,4 @@
-import type * as CosmosMintV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb.mjs'
+import type * as CosmosMintV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb'
 import type { MinModuleParams } from '../types/mint.js'
 
 /**

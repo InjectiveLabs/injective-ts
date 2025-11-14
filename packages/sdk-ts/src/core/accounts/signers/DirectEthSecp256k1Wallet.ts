@@ -3,7 +3,7 @@ import { PublicKey } from '../PublicKey.js'
 import { PrivateKey } from '../PrivateKey.js'
 import { uint8ArrayToHex, uint8ArrayToBase64 } from '../../../utils/encoding.js'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
-import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import type { AccountData, OfflineDirectSigner } from './types/proto-signer.js'
 
 export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {

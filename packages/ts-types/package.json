@@ -5,8 +5,8 @@
   "sideEffects": false,
   "license": "Apache-2.0",
   "type": "module",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
+  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "author": {
     "name": "InjectiveLabs",
@@ -19,21 +19,21 @@
     ".": {
       "react-native": {
         "import": "./dist/esm/index.js",
-        "require": "./dist/cjs/index.js",
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "require": "./dist/cjs/index.cjs",
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "require": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "default": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       }
     }
   },
