@@ -292,6 +292,7 @@ export class IndexerGrpcMegaVaultTransformer {
   ): MegaVaultUserStats {
     return {
       currentAmount: stats.currentAmount,
+      depositedValue: stats.depositedValue,
       currentLpAmount: stats.currentLpAmount,
       pnl: stats.pnl
         ? IndexerGrpcMegaVaultTransformer.grpcPnlStatsToPnlStats(stats.pnl)

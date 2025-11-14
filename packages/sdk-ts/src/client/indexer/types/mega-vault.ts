@@ -104,6 +104,7 @@ export interface MegaVaultUser {
 
 export interface MegaVaultUserStats {
   currentAmount: string
+  depositedValue: string
   currentLpAmount: string
   pnl: MegaVaultPnlStats | undefined
 }
