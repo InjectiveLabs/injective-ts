@@ -1,13 +1,20 @@
 import type { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
 
+export interface OperationStatusLogEntry {
+  status: string
+  txHash: string
+  blockTime: string
+  blockHeight: string
+}
+
 export interface MegaVaultOperator {
   address: string
-  totalAmount: string
-  totalLiquidAmount: string
-  updatedHeight: string
   updatedAt: string
   percentage: string
+  totalAmount: string
   subaccountId: string
+  updatedHeight: string
+  totalLiquidAmount: string
 }
 
 export interface MegaVault {
@@ -112,6 +119,7 @@ export interface MegaVaultSubscription {
   createdHeight: string
   executedHeight: string
   contractAddress: string
+  log: OperationStatusLogEntry[]
 }
 
 export interface MegaVaultRedemption {
@@ -126,6 +134,7 @@ export interface MegaVaultRedemption {
   createdHeight: string
   executedHeight: string
   contractAddress: string
+  log: OperationStatusLogEntry[]
 }
 
 export interface MegaVaultOperatorRedemptionBucket {
@@ -155,17 +164,18 @@ export interface MegaVaultTargetApr {
 
 export type MegaVaultRedemptionStatus = 'pending' | 'executed' | 'executing'
 
-const MegaVaultRedemptionStatus = {
+export const MegaVaultRedemptionStatus = {
   Pending: 'pending',
   Executed: 'executed',
   Executing: 'executing',
 } as const
 
-export type MegaVaultSubscriptionStatus = 'pending' | 'executed'
+export type MegaVaultSubscriptionStatus = 'pending' | 'executed' | 'executing'
 
-const MegaVaultSubscriptionStatus = {
+export const MegaVaultSubscriptionStatus = {
   Pending: 'pending',
   Executed: 'executed',
+  Executing: 'executing',
 } as const
 
 export type GrpcMegaVaultApr = InjectiveMegaVaultRpc.Apr
@@ -187,3 +197,5 @@ export type GrpcMegaVaultUnrealizedPnl = InjectiveMegaVaultRpc.UnrealizedPnl
 export type GrpcMegaVaultVolatilityStats = InjectiveMegaVaultRpc.VolatilityStats
 export type GrpcMegaVaultOperatorRedemptionBucket =
   InjectiveMegaVaultRpc.RedemptionBucket
+export type GrpcMegaVaultOperationStatusLogEntry =
+  InjectiveMegaVaultRpc.OperationStatusLogEntry

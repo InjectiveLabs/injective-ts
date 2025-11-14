@@ -29,6 +29,7 @@ import type {
   GrpcMegaVaultRedemption,
   GrpcMegaVaultVaultStats,
   GrpcMegaVaultVolatility,
+  OperationStatusLogEntry,
   GrpcMegaVaultMaxDrawdown,
   MegaVaultVolatilityStats,
   GrpcMegaVaultSubscription,
@@ -37,6 +38,7 @@ import type {
   GrpcMegaVaultUnrealizedPnl,
   GrpcMegaVaultVolatilityStats,
   MegaVaultOperatorRedemptionBucket,
+  GrpcMegaVaultOperationStatusLogEntry,
   GrpcMegaVaultOperatorRedemptionBucket,
 } from '../types/mega-vault.js'
 
@@ -319,6 +321,9 @@ export class IndexerGrpcMegaVaultTransformer {
       createdHeight: subscription.createdHeight,
       executedHeight: subscription.executedHeight,
       contractAddress: subscription.contractAddress,
+      log: subscription.log.map(
+        IndexerGrpcMegaVaultTransformer.grpcOperationStatusLogEntryToOperationStatusLogEntry,
+      ),
     }
   }
 
@@ -337,6 +342,9 @@ export class IndexerGrpcMegaVaultTransformer {
       createdHeight: redemption.createdHeight,
       executedHeight: redemption.executedHeight,
       contractAddress: redemption.contractAddress,
+      log: redemption.log.map(
+        IndexerGrpcMegaVaultTransformer.grpcOperationStatusLogEntryToOperationStatusLogEntry,
+      ),
     }
   }
 
@@ -366,6 +374,17 @@ export class IndexerGrpcMegaVaultTransformer {
     return {
       t: history.t,
       v: history.v,
+    }
+  }
+
+  static grpcOperationStatusLogEntryToOperationStatusLogEntry(
+    log: GrpcMegaVaultOperationStatusLogEntry,
+  ): OperationStatusLogEntry {
+    return {
+      status: log.status,
+      txHash: log.txHash,
+      blockTime: log.blockTime,
+      blockHeight: log.blockHeight,
     }
   }
 }
