@@ -1,5 +1,24 @@
 {
   "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@injectivelabs/exceptions": [
+        "../../exceptions/src/index.ts"
+      ],
+      "@injectivelabs/utils": [
+        "../../utils/src/index.ts"
+      ],
+      "@injectivelabs/sdk-ts": [
+        "../../sdk-ts/src/index.ts"
+      ],
+      "@injectivelabs/ts-types": [
+        "../../ts-types/src/index.ts"
+      ],
+      "@injectivelabs/wallet-base": [
+        "../wallet-base/src/index.ts"
+      ]
+    }
+  },
   "include": [
     "./src/**/*.ts"
   ],

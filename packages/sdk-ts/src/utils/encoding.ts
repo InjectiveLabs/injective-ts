@@ -104,6 +104,16 @@ export function hexToBase64(hex: string): string {
 }
 
 /**
+ * Convert a base64 string to UTF-8 string
+ * @param base64String - Base64 encoded string
+ * @returns Decoded UTF-8 string
+ * @throws Error if base64 string is invalid
+ */
+export function base64ToUtf8(base64String: string): string {
+  return toUtf8(base64ToUint8Array(base64String))
+}
+
+/**
  * Convert a string or Uint8Array to Uint8Array using UTF-8 encoding
  * If input is already Uint8Array, returns it as-is
  * @param str - String or Uint8Array to encode

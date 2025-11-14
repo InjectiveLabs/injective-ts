@@ -1,5 +1,18 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@injectivelabs/exceptions": [
+        "../exceptions/src/index.ts"
+      ],
+      "@injectivelabs/networks": [
+        "../networks/src/index.ts"
+      ],
+      "@injectivelabs/ts-types": [
+        "../ts-types/src/index.ts"
+      ]
+    }
+  },
   "include": [
     "./src/**/*.ts"
   ],

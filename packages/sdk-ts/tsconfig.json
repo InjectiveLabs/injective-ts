@@ -5,6 +5,9 @@
     "paths": {
       "@injectivelabs/utils/test-utils": [
         "../utils/src/test-utils/index.ts"
+      ],
+      "@injectivelabs/exceptions": [
+        "../exceptions/src/index.ts"
       ]
     }
   },
