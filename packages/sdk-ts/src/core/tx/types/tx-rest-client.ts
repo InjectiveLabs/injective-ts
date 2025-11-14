@@ -1,5 +1,5 @@
-import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb.mjs'
-import type * as CometCryptoV1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/cometbft/crypto/v1/keys_pb.mjs'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
+import type * as CometCryptoV1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/cometbft/crypto/v1/keys_pb'
 
 export interface RestSignerInfo {
   public_key: CometCryptoV1KeysPb.PublicKey | null

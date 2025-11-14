@@ -1,7 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as InjectiveAuctionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/query_pb.mjs'
-import type * as InjectiveAuctionV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/genesis_pb.mjs'
+import type * as InjectiveAuctionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/query_pb'
+import type * as InjectiveAuctionV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/genesis_pb'
 import type {
   AuctionBid,
   GrpcAuctionBid,

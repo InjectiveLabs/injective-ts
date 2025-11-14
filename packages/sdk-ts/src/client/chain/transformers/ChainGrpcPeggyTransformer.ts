@@ -1,4 +1,4 @@
-import type * as InjectivePeggyV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb.mjs'
+import type * as InjectivePeggyV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb'
 import type { PeggyModuleParams } from '../types/peggy.js'
 
 /**

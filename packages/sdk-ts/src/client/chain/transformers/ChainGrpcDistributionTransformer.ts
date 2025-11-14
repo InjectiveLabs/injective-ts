@@ -1,6 +1,6 @@
 import { toHumanReadable } from '@injectivelabs/utils'
 import type { Coin } from '@injectivelabs/ts-types'
-import type * as CosmosDistributionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/query_pb.mjs'
+import type * as CosmosDistributionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/query_pb'
 import type {
   GrpcDecCoin,
   ValidatorRewards,

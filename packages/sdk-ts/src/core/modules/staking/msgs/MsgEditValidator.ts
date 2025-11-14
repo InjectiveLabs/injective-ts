@@ -1,6 +1,6 @@
 import { toChainFormat } from '@injectivelabs/utils'
-import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/tx_pb.mjs'
-import * as CosmosStakingV1Beta1StakingPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/staking_pb.mjs'
+import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/tx_pb'
+import * as CosmosStakingV1Beta1StakingPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/staking_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'

@@ -1,7 +1,7 @@
 import { toHumanReadable } from '@injectivelabs/utils'
 import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
-import type * as InjectiveExchangeV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb.mjs'
-import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb.mjs'
+import type * as InjectiveExchangeV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb'
+import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import type { SpotMarket } from '../../indexer/types/spot.js'
 import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
 import type {

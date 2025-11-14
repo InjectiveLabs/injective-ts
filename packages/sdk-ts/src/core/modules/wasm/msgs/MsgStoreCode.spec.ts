@@ -1,6 +1,6 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import * as CosmwasmWasmV1TypesPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/types_pb.mjs'
+import * as CosmwasmWasmV1TypesPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/types_pb'
 import MsgStoreCode from './MsgStoreCode.js'
 import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'

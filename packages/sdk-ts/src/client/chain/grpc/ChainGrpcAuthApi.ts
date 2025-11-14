@@ -1,5 +1,5 @@
-import * as CosmosAuthV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb.mjs'
-import { QueryClient as CosmosAuthV1BetaQueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb.client.mjs'
+import * as CosmosAuthV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb'
+import { QueryClient as CosmosAuthV1BetaQueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer.js'

@@ -1,6 +1,6 @@
 import { fromUtf8, uint8ArrayToString } from '../../../utils/index.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import type * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb.mjs'
+import type * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb'
 import type {
   TokenInfo,
   ContractInfo,

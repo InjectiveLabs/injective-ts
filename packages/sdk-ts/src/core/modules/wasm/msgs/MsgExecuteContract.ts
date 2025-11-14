@@ -1,6 +1,6 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb.mjs'
-import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { fromUtf8 } from '../../../../utils/encoding.js'
 import type { ExecArgs } from '../exec-args.js'

@@ -1,4 +1,4 @@
-import * as CosmosTxSigningV1Beta1SigningPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/signing/v1beta1/signing_pb.mjs'
+import * as CosmosTxSigningV1Beta1SigningPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/signing/v1beta1/signing_pb'
 
 export const SIGN_DIRECT = CosmosTxSigningV1Beta1SigningPb.SignMode.DIRECT
 export const SIGN_AMINO =

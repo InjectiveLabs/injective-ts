@@ -1,8 +1,8 @@
 import snakecaseKeys from 'snakecase-keys'
-import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb.mjs'
-import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb.mjs'
-import * as CosmosGovV1Beta1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/gov_pb.mjs'
-import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb.mjs'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb'
+import * as CosmosGovV1Beta1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/gov_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
 import type { SnakeCaseKeys } from 'snakecase-keys'
 

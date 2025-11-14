@@ -9,6 +9,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Change to script directory to ensure relative paths work
 cd "$SCRIPT_DIR"
 
+# Check if node_modules exists, if not install dependencies
+if [ ! -d "node_modules" ] || [ ! -f "node_modules/.bin/protoc" ]; then
+  echo "📥 Installing dependencies..."
+  npm install || pnpm install || {
+    echo "❌ Failed to install dependencies"
+    exit 1
+  }
+fi
+
 # Ensure we start with a clean slate
 rm -rf proto/gen
 rm -rf proto/proto
@@ -48,7 +57,7 @@ echo "Generating TypeScript code with @protobuf-ts..."
 
 ./node_modules/.bin/protoc \
   --proto_path=${PROTO_DIR} \
-  --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
+  --plugin=./node_modules/.bin/protoc-gen-ts \
   --ts_out=${OUT_DIR} \
   --ts_opt=add_pb_suffix \
   ${PROTO_FILES}
@@ -67,6 +76,10 @@ rm -rf proto/proto
 
 echo "Building TypeScript to ESM..."
 npm run build
+
+echo ""
+echo "Copying package.json template..."
+cp ./package.json.template ./proto-ts/package.json
 
 echo ""
 echo "✅ Generation complete!"
