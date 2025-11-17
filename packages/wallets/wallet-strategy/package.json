@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-strategy",
   "description": "Wallet strategy with instantiated wallets",
-  "version": "1.16.26",
+  "version": "1.16.27",
   "sideEffects": false,
   "type": "module",
   "author": {
