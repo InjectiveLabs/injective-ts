@@ -146,12 +146,12 @@ export interface MegaVaultOperatorRedemptionBucket {
 }
 
 export interface MegaVaultHistoricalTVL {
-  t: number
+  t: string
   v: string
 }
 
 export interface MegaVaultHistoricalPnL {
-  t: number
+  t: string
   v: string
 }
 
