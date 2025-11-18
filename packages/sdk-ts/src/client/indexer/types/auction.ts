@@ -31,6 +31,7 @@ export interface AuctionContract {
   startTimestamp: string
   endTimestamp: string
   maxRoundAllocation: string
+  isBidPlaced: boolean
 }
 
 export interface Auction {
