@@ -55,6 +55,7 @@ export type TrezorConnectWithWebSettings = {
   [key: string]: any
 }
 
+// todo: remove logs before merging to production
 export async function loadTrezorConnect() {
   console.log('🪵Loading TrezorConnect...')
 
@@ -62,7 +63,9 @@ export async function loadTrezorConnect() {
 
   console.log('🪵Module:', module)
 
-  return module.default
+  console.log({ aa: module.default, bb: (module.default as any)?.default })
+
+  return (module.default as any)?.default || module.default
 
   // return (
   //   (module as any).default.default ||
