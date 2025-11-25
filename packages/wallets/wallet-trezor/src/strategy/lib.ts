@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // We avoid importing types from @trezor/connect because it triggers a syntax error
 // in the underlying @trezor/connect type definitions (there's a typo: comma instead of space).
 // Instead, we define the minimal types we need inline.
@@ -61,12 +60,4 @@ export async function loadTrezorConnect(): Promise<TrezorConnectWithWebSettings>
     ((module as any)?.default
       ?.default as unknown as TrezorConnectWithWebSettings) || module.default
   )
-=======
-import type { TrezorConnect as TrezorConnectType } from '@trezor/connect-web'
-
-export async function loadTrezorConnect(): Promise<TrezorConnectType> {
-  const module = await import('@trezor/connect-web')
-
-  return (module as any).default.default as unknown as TrezorConnectType
->>>>>>> 1d5042ea2 (chore: update trezor version)
 }

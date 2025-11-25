@@ -364,8 +364,8 @@ export class IndexerGrpcMegaVaultTransformer {
     history: GrpcMegaVaultHistoricalTVL,
   ): MegaVaultHistoricalTVL {
     return {
-      t: history.t,
-      v: history.v,
+      t: history.t.toString(),
+      v: history.v.toString(),
     }
   }
 
@@ -373,8 +373,8 @@ export class IndexerGrpcMegaVaultTransformer {
     history: GrpcMegaVaultHistoricalPnL,
   ): MegaVaultHistoricalPnL {
     return {
-      t: history.t,
-      v: history.v,
+      t: history.t.toString(),
+      v: history.v.toString(),
     }
   }
 
@@ -384,8 +384,8 @@ export class IndexerGrpcMegaVaultTransformer {
     return {
       status: log.status,
       txHash: log.txHash,
-      blockTime: log.blockTime,
-      blockHeight: log.blockHeight,
+      blockTime: log.blockTime.toString(),
+      blockHeight: log.blockHeight.toString(),
     }
   }
 }
