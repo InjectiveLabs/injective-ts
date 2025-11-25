@@ -184,6 +184,8 @@ export class MsgBroadcaster {
     const devnetEvmIds = [
       EvmChainId.Sepolia,
       EvmChainId.DevnetEvm,
+      EvmChainId.MainnetEvm,
+      EvmChainId.TestnetEvm,
     ] as EvmChainId[]
 
     try {

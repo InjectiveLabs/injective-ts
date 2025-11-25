@@ -97,3 +97,68 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
     )
   }
 }
+
+export const addEvmNetworkToWallet = async ({
+  wallet,
+  chainId,
+  params,
+}: {
+  wallet: Wallet
+  chainId: EvmChainId
+  params: {
+    rpcUrls: string[]
+    chainName: string
+    blockExplorerUrls: string[]
+    chainId: string
+    nativeCurrency: {
+      name: string
+      symbol: string
+      decimals: number
+    }
+  }
+}) => {
+  if (!isEvmBrowserWallet(wallet)) {
+    throw new WalletException(
+      new Error(`Evm Wallet for ${capitalize(wallet)} is not supported.`),
+    )
+  }
+
+  const provider = (await getEvmProvider(wallet)) as BrowserEip1993Provider
+
+  if (!provider) {
+    throw new WalletException(
+      new Error(`Please install ${capitalize(wallet)} Extension`),
+    )
+  }
+
+  const chainIdToHex = chainId.toString(16)
+
+  try {
+    await Promise.race([
+      provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: `0x${chainIdToHex}` }],
+      }),
+      new Promise<void>((resolve) =>
+        provider.on('chainChanged', ({ chain }: any) => {
+          if (chain?.id === chainIdToHex) {
+            resolve()
+          }
+        }),
+      ),
+    ])
+  } catch (error) {
+    if ((error as any).code === 4902) {
+      await provider?.request({
+        method: 'wallet_addEthereumChain',
+        params: [params],
+      })
+    }
+
+    throw new WalletException(
+      new Error(
+        `Something went wrong while adding ${capitalize(wallet)} network`,
+      ),
+    )
+  }
+}
