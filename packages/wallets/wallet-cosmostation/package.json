@@ -1,7 +1,7 @@
 {
   "name": "@injectivelabs/wallet-cosmostation",
   "description": "Cosmostation strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.16.29",
+  "version": "1.16.30",
   "sideEffects": false,
   "type": "module",
   "author": {
