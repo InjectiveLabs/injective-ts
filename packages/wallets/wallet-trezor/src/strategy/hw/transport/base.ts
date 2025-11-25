@@ -1,9 +1,5 @@
 import AccountManager from '../AccountManager.js'
-<<<<<<< HEAD
-import { loadTrezorConnect, type Manifest } from '../../lib.js'
-=======
-import type { Manifest } from '@trezor/connect-web'
->>>>>>> 1d5042ea2 (chore: update trezor version)
+import { type Manifest, loadTrezorConnect } from '../../lib.js'
 
 const TREZOR_CONNECT_MANIFEST = {
   email: 'contact@injectivelabs.org',
@@ -19,18 +15,10 @@ export default class BaseTrezorTransport {
     const settings = await TrezorConnect.getSettings()
 
     if (!settings.success) {
-<<<<<<< HEAD
       await TrezorConnect.init({
         lazyLoad: true,
         manifest: TREZOR_CONNECT_MANIFEST,
         coreMode: 'popup',
-=======
-      console.log('🪵Initializing TrezorConnect...')
-      await TrezorConnect.init({
-        lazyLoad: true,
-        manifest: TREZOR_CONNECT_MANIFEST,
-        debug: true,
->>>>>>> 1d5042ea2 (chore: update trezor version)
       })
     }
 

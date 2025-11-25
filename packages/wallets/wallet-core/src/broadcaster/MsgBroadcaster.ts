@@ -371,7 +371,9 @@ export class MsgBroadcaster {
     /** Account Details * */
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+    const timeoutHeight = toBigNumber(latestHeight.toString()).plus(
+      txTimeoutInBlocks,
+    )
     const txTimeoutTimeInSeconds =
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
@@ -649,7 +651,7 @@ export class MsgBroadcaster {
         endpoints.grpc,
       ).fetchLatestBlock()
 
-      const latestHeight = latestBlock!.header!.height
+      const latestHeight = latestBlock!.header!.height.toString()
 
       timeoutHeight = toBigNumber(latestHeight)
         .plus(txTimeoutInBlocks)
@@ -1389,7 +1391,7 @@ export class MsgBroadcaster {
     const { baseAccount } = accountDetails
 
     const latestBlock = await tendermintClient.fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
+    const latestHeight = latestBlock!.header!.height.toString()
 
     return {
       baseAccount,
