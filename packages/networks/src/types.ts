@@ -40,5 +40,15 @@ export type ChainInfo = {
   feeDenom: string
   chainId: ChainId
   env: string
+  wInjAddress: string
   evmChainId?: EvmChainId
+  evmNetworkParams?: {
+    chainName: string
+    chainId: string
+    nativeCurrency: {
+      name: string
+      symbol: string
+      decimals: number
+    }
+  }
 }
