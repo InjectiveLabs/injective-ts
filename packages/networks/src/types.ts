@@ -40,9 +40,9 @@ export type ChainInfo = {
   feeDenom: string
   chainId: ChainId
   env: string
-  wInjAddress: string
   evmChainId?: EvmChainId
-  evmNetworkParams?: {
+  injectiveEvmNetworkParams?: {
+    wInjAddress: string
     chainName: string
     chainId: string
     nativeCurrency: {

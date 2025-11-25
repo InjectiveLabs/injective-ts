@@ -8,11 +8,11 @@ export const getMainnetChainInfo = (): ChainInfo => ({
   feeDenom: INJ_DENOM,
   chainId: ChainId.Mainnet,
   evmChainId: EvmChainId.Mainnet,
-  wInjAddress: WINJ_ADDRESS,
   env: 'mainnet',
-  evmNetworkParams: {
+  injectiveEvmNetworkParams: {
+    wInjAddress: WINJ_ADDRESS,
     chainName: 'Injective EVM',
-    chainId: `0x${EvmChainId.Mainnet.toString(16)}`,
+    chainId: `0x${EvmChainId.MainnetEvm.toString(16)}`,
     nativeCurrency: {
       name: 'Injective',
       symbol: 'INJ',
@@ -25,11 +25,11 @@ export const getTestnetChainInfo = (): ChainInfo => ({
   feeDenom: INJ_DENOM,
   chainId: ChainId.Testnet,
   evmChainId: EvmChainId.Sepolia,
-  wInjAddress: WINJ_ADDRESS,
   env: 'testnet',
-  evmNetworkParams: {
-    chainName: 'Sepolia',
-    chainId: `0x${EvmChainId.Sepolia.toString(16)}`,
+  injectiveEvmNetworkParams: {
+    wInjAddress: WINJ_ADDRESS,
+    chainName: 'Injective EVM Testnet',
+    chainId: `0x${EvmChainId.MainnetEvm.toString(16)}`,
     nativeCurrency: {
       name: 'Injective',
       symbol: 'INJ',
@@ -42,11 +42,11 @@ export const getDevnetChainInfo = (): ChainInfo => ({
   feeDenom: INJ_DENOM,
   chainId: ChainId.Devnet,
   evmChainId: EvmChainId.Sepolia,
-  wInjAddress: WINJ_ADDRESS,
   env: 'devnet',
-  evmNetworkParams: {
-    chainName: 'Sepolia',
-    chainId: `0x${EvmChainId.Sepolia.toString(16)}`,
+  injectiveEvmNetworkParams: {
+    wInjAddress: WINJ_ADDRESS,
+    chainName: 'Injective EVM Devnet',
+    chainId: `0x${EvmChainId.DevnetEvm.toString(16)}`,
     nativeCurrency: {
       name: 'Injective',
       symbol: 'INJ',
@@ -58,12 +58,12 @@ export const getDevnetChainInfo = (): ChainInfo => ({
 export const getLocalChainInfo = (): ChainInfo => ({
   feeDenom: INJ_DENOM,
   chainId: ChainId.Mainnet,
-  evmChainId: EvmChainId.Mainnet,
-  wInjAddress: WINJ_ADDRESS,
+  evmChainId: EvmChainId.Sepolia,
   env: 'local',
-  evmNetworkParams: {
+  injectiveEvmNetworkParams: {
+    wInjAddress: WINJ_ADDRESS,
     chainName: 'Localhost',
-    chainId: `0x${EvmChainId.Mainnet.toString(16)}`,
+    chainId: `0x${EvmChainId.MainnetEvm.toString(16)}`,
     nativeCurrency: {
       name: 'Injective',
       symbol: 'INJ',
