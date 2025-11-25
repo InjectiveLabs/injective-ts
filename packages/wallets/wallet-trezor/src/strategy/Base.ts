@@ -215,6 +215,7 @@ export default class TrezorBase
 
 =======
       console.log('🪵Connected to Trezor...')
+      // todo: Ivan review this
       // const { derivationPath } = await this.getWalletForAddress(address)
       // Hardcoded for testint purposes, otherwise use above
       const derivationPath = "m/44'/60'/0'/0/0"
@@ -236,8 +237,11 @@ export default class TrezorBase
 
       console.log('🪵response', response)
 
+      if (response.payload.code === 'Failure_ActionCancelled') {
+        throw new Error('Request rejected')
+      }
+
       if (!response.success) {
-        // noinspection ExceptionCaughtLocallyJS
         throw new Error(
           (response.payload && response.payload.error) || 'Unknown error',
         )
