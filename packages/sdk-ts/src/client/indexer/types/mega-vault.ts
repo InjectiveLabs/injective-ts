@@ -199,6 +199,6 @@ export type GrpcMegaVaultVolatilityStats =
   InjectiveMegavaultRpcPb.VolatilityStats
 
 export type GrpcMegaVaultOperatorRedemptionBucket =
-  InjectiveMegaVaultRpc.RedemptionBucket
+  InjectiveMegavaultRpcPb.RedemptionBucket
 export type GrpcMegaVaultOperationStatusLogEntry =
-  InjectiveMegaVaultRpc.OperationStatusLogEntry
+  InjectiveMegavaultRpcPb.OperationStatusLogEntry

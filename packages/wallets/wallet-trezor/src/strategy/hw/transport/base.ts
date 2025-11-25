@@ -1,5 +1,6 @@
+import { loadTrezorConnect } from '../../lib.js'
 import AccountManager from '../AccountManager.js'
-import { loadTrezorConnect, type Manifest } from '../../lib.js'
+import type { Manifest } from '../../lib.js'
 
 const TREZOR_CONNECT_MANIFEST = {
   email: 'contact@injectivelabs.org',

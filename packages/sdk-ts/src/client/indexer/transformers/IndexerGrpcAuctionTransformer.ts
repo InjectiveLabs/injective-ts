@@ -68,6 +68,7 @@ export class IndexerGrpcAuctionTransformer {
         ? {
             id: grpcAuction.contract.id.toString(),
             bidTarget: grpcAuction.contract.bidTarget,
+            isBidPlaced: grpcAuction.contract.isBidPlaced,
             currentSlots: grpcAuction.contract.currentSlots.toString(),
             totalSlots: grpcAuction.contract.totalSlots.toString(),
             maxUserAllocation: grpcAuction.contract.maxUserAllocation,

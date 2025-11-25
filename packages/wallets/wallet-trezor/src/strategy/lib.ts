@@ -2,6 +2,8 @@
 // in the underlying @trezor/connect type definitions (there's a typo: comma instead of space).
 // Instead, we define the minimal types we need inline.
 
+export type TrezorConnectType = typeof import('@trezor/connect-web').default
+
 type Manifest = {
   appName: string
   appIcon?: string
@@ -53,9 +55,17 @@ export type TrezorConnectWithWebSettings = {
   [key: string]: any
 }
 
-export async function loadTrezorConnect(): Promise<TrezorConnectWithWebSettings> {
+export async function loadTrezorConnect() {
+  console.log('🪵Loading TrezorConnect...')
+
   const module = await import('@trezor/connect-web')
 
-  return (module as any).default
-    .default as unknown as TrezorConnectWithWebSettings
+  console.log('🪵Module:', module)
+
+  return module.default
+
+  // return (
+  //   (module as any).default.default ||
+  //   ((module as any).default as unknown as TrezorConnectWithWebSettings)
+  // )
 }
