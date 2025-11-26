@@ -33,6 +33,7 @@ export interface Position {
 export interface PositionV2
   extends Omit<Position, 'aggregateReduceOnlyQuantity'> {
   denom: string
+  fundingSum: string
 }
 
 export interface PerpetualMarketInfo {
