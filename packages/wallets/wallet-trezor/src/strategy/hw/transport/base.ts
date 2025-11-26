@@ -15,7 +15,6 @@ export default class BaseTrezorTransport {
     const settings = await TrezorConnect.getSettings()
 
     if (!settings.success) {
-      console.log('🪵Initializing TrezorConnect...')
       await TrezorConnect.init({
         lazyLoad: true,
         manifest: TREZOR_CONNECT_MANIFEST,
