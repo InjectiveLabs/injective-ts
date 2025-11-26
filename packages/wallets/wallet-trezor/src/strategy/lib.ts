@@ -56,6 +56,8 @@ export type TrezorConnectWithWebSettings = {
 export async function loadTrezorConnect(): Promise<TrezorConnectWithWebSettings> {
   const module = await import('@trezor/connect-web')
 
-  return (module as any).default
-    .default as unknown as TrezorConnectWithWebSettings
+  return (
+    ((module as any)?.default
+      ?.default as unknown as TrezorConnectWithWebSettings) || module.default
+  )
 }
