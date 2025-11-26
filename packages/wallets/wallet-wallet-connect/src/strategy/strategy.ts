@@ -157,7 +157,18 @@ export class WalletConnect
   ): Promise<string> {
     const wc = await this.getConnectedWalletConnect()
 
-    console.log('signEip712TypedData', options?.txTimeout)
+    // Ensure it's a number, within range [300, 604800]
+    let txTimeout: number | undefined
+
+    if (options?.txTimeout !== undefined) {
+      const timeout = Number(options.txTimeout)
+
+      txTimeout =
+        isNaN(timeout) || timeout < 300 ? undefined : Math.min(timeout, 604800)
+    }
+
+    // todo: @thomas to improve this to emit an event instead of logging to the console
+    console.log('signEip712TypedData', txTimeout)
 
     try {
       return await wc.request(
@@ -165,7 +176,7 @@ export class WalletConnect
           method: 'eth_signTypedData_v4',
           params: [address, eip712json],
         },
-        options?.txTimeout || undefined,
+        txTimeout || undefined,
       )
     } catch (e: unknown) {
       throw new WalletConnectException(new Error((e as any).message), {

@@ -62,7 +62,7 @@
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*",
     "alchemy-sdk": "^3.4.7",
-    "viem": "^2.33.2"
+    "viem": "^2.40.3"
   },
   "devDependencies": {
     "shx": "^0.3.3"

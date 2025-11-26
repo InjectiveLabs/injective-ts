@@ -1,13 +1,7 @@
+import { getAddress } from 'viem'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { getEthereumAddress } from '@injectivelabs/sdk-ts'
 import { sleep, HttpRestClient } from '@injectivelabs/utils'
-import { http, getAddress, createPublicClient, createWalletClient } from 'viem'
-import {
-  WalletAction,
-  WalletDeviceType,
-  type WalletMetadata,
-  BaseConcreteStrategy,
-} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -15,14 +9,20 @@ import {
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
+import {
+  WalletAction,
+  WalletDeviceType,
+  getViemWalletClient,
+  getViemPublicClient,
+  type WalletMetadata,
+  BaseConcreteStrategy,
+} from '@injectivelabs/wallet-base'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
-import { DEFAULT_EVM_CHAIN_CONFIG } from './consts.js'
 import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
-import type { LocalAccount, PrepareTransactionRequestParameters } from 'viem'
 import type {
   TxRaw,
   AminoSignResponse,
@@ -172,18 +172,10 @@ export class TurnkeyWalletStrategy
         getAddress(args.address),
       )
 
-      const accountClient = createWalletClient({
-        account: account as LocalAccount,
-        chain: {
-          ...DEFAULT_EVM_CHAIN_CONFIG,
-          id: chainId,
-          rpcUrls: {
-            default: {
-              http: [url],
-            },
-          },
-        },
-        transport: http(url),
+      const accountClient = getViemWalletClient({
+        chainId,
+        account: account as any,
+        rpcUrl: url,
       })
 
       const parseHexValue = (value: string | number | bigint) => {
@@ -217,13 +209,13 @@ export class TurnkeyWalletStrategy
       }
 
       const preparedTransaction = await accountClient.prepareTransactionRequest(
-        processedTransaction as PrepareTransactionRequestParameters,
+        processedTransaction,
       )
 
-      delete preparedTransaction.account
+      delete (preparedTransaction as any).account
 
       const signedTransaction = await accountClient.signTransaction(
-        preparedTransaction,
+        preparedTransaction as any,
       )
 
       const tx = await accountClient.sendRawTransaction({
@@ -378,18 +370,7 @@ export class TurnkeyWalletStrategy
       )
     }
 
-    const publicClient = createPublicClient({
-      chain: {
-        ...DEFAULT_EVM_CHAIN_CONFIG,
-        id: chainId,
-        rpcUrls: {
-          default: {
-            http: [url],
-          },
-        },
-      },
-      transport: http(url),
-    })
+    const publicClient = getViemPublicClient(chainId, url)
 
     let attempts = 0
 

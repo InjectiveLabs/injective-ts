@@ -149,7 +149,7 @@
     "secp256k1": "^4.0.3",
     "shx": "^0.3.4",
     "snakecase-keys": "^5.4.1",
-    "viem": "^2.33.2"
+    "viem": "^2.40.3"
   },
   "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
   "typedoc": {

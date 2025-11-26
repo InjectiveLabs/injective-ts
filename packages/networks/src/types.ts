@@ -36,21 +36,9 @@ export type NetworkEndpoints = {
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */
 
-export type InjectiveEvmNetworkParams = {
-  wInjAddress: string
-  chainName: string
-  chainId: string
-  nativeCurrency: {
-    name: string
-    symbol: string
-    decimals: number
-  }
-}
-
 export type ChainInfo = {
   feeDenom: string
   chainId: ChainId
   env: string
   evmChainId?: EvmChainId
-  injectiveEvmNetworkParams: InjectiveEvmNetworkParams
 }
