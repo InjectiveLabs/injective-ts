@@ -1,10 +1,8 @@
-import * as viemChains from 'viem/chains'
 import {
-  extractChain,
-  createWalletClient,
-  http,
-  createPublicClient,
-} from 'viem'
+  getEvmChainConfig,
+  getViemPublicClient,
+  getViemWalletClient,
+} from '@injectivelabs/wallet-base'
 import type { LocalAccount } from 'viem'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 
@@ -53,19 +51,14 @@ class CustomEip1193Provider implements Eip1193Provider {
   }
 
   getClient() {
-    return createWalletClient({
-      chain: this.getChain(),
-      transport: http(),
+    return getViemWalletClient({
+      chainId: this.chainId,
+      account: this.account as any,
     })
   }
 
   getChain() {
-    const chain = extractChain({
-      id: this.chainId,
-      chains: Object.values(viemChains) as viemChains.Chain[],
-    })
-
-    return chain
+    return getEvmChainConfig(this.chainId)
   }
 
   on(_event: string, _listener: (...args: any[]) => void) {
@@ -118,10 +111,9 @@ class CustomEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      const accountClient = createWalletClient({
-        account: this.account as LocalAccount,
-        chain: this.getChain(),
-        transport: http(),
+      const accountClient = getViemWalletClient({
+        chainId: this.chainId,
+        account: this.account as any,
       })
 
       const client = this.getClient()
@@ -174,10 +166,7 @@ class CustomEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      const client = createPublicClient({
-        chain: this.getChain(),
-        transport: http(),
-      })
+      const client = getViemPublicClient(this.chainId)
 
       const count = await client.getTransactionCount({
         address: this.address as `0x${string}`,

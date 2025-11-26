@@ -1,11 +1,9 @@
-import * as viemChains from 'viem/chains'
+import { serializeTransaction } from 'viem'
 import {
-  createPublicClient,
-  createWalletClient,
-  extractChain,
-  http,
-  serializeTransaction,
-} from 'viem'
+  getEvmChainConfig,
+  getViemPublicClient,
+  getViemWalletClient,
+} from '@injectivelabs/wallet-base'
 import { loadLedgerServiceType } from '../lib.js'
 import type LedgerHW from './hw/index.js'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
@@ -28,14 +26,8 @@ export class LedgerEip1193Provider implements Eip1193Provider {
   }
 
   async getClient() {
-    const chain = extractChain({
-      id: this.chainId,
-      chains: Object.values(viemChains) as viemChains.Chain[],
-    })
-
-    return createWalletClient({
-      transport: http(),
-      chain,
+    return getViemWalletClient({
+      chainId: this.chainId,
       account: (await this.getAddress()) as `0x${string}`,
     })
   }
@@ -108,10 +100,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
   }
 
   getChain() {
-    return extractChain({
-      id: this.chainId,
-      chains: Object.values(viemChains) as viemChains.Chain[],
-    })
+    return getEvmChainConfig(this.chainId)
   }
 
   async request(args: { method: string; params: any[] }): Promise<any> {
@@ -147,10 +136,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
     }
 
     if (args.method === 'eth_estimateGas') {
-      const client = createPublicClient({
-        chain: this.getChain(),
-        transport: http(),
-      })
+      const client = getViemPublicClient(this.chainId)
 
       const data = {
         to: args.params[0].to,
@@ -169,10 +155,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      const client = createPublicClient({
-        chain: this.getChain(),
-        transport: http(),
-      })
+      const client = getViemPublicClient(this.chainId)
 
       const count = await client.getTransactionCount({
         address: (await this.getAddress()) as `0x${string}`,
@@ -185,9 +168,8 @@ export class LedgerEip1193Provider implements Eip1193Provider {
     if (args.method === 'eth_sendTransaction') {
       const address = await this.getAddress()
 
-      const walletClient = createWalletClient({
-        transport: http(),
-        chain: this.getChain(),
+      const walletClient = getViemWalletClient({
+        chainId: this.chainId,
         account: address as `0x${string}`,
       })
 

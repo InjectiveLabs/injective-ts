@@ -1,5 +1,4 @@
 import { Network } from './types.js'
-import { WINJ_ADDRESS } from './chainInfos.js'
 import { isTestnet, isDevnet } from './network.js'
 
 export const CW20_CODE_IDS_BY_NETWORK = (
@@ -115,5 +114,3 @@ export const getAssetPriceServiceForNetwork = (network: Network): string => {
   // mainnet
   return 'https://k8s.mainnet.asset.injective.network/asset-price/v1'
 }
-
-export { WINJ_ADDRESS }

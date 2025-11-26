@@ -1,6 +1,10 @@
 import { capitalize } from '@injectivelabs/utils'
 import { WalletException } from '@injectivelabs/exceptions'
-import { Wallet, isEvmBrowserWallet } from '@injectivelabs/wallet-base'
+import {
+  Wallet,
+  getEvmChainConfig,
+  isEvmBrowserWallet,
+} from '@injectivelabs/wallet-base'
 import { getRabbyProvider } from '../strategy/utils/rabby.js'
 import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
 import { getBitGetProvider } from '../strategy/utils/bitget.js'
@@ -101,21 +105,9 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
 export const addEvmNetworkToWallet = async ({
   wallet,
   chainId,
-  params,
 }: {
   wallet: Wallet
   chainId: EvmChainId
-  params: {
-    rpcUrls: string[]
-    chainName: string
-    blockExplorerUrls: string[]
-    chainId: string
-    nativeCurrency: {
-      name: string
-      symbol: string
-      decimals: number
-    }
-  }
 }) => {
   if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(
@@ -132,6 +124,17 @@ export const addEvmNetworkToWallet = async ({
   }
 
   const chainIdToHex = chainId.toString(16)
+  const chain = getEvmChainConfig(chainId)
+
+  const params = {
+    chainId: `0x${chain.id.toString(16)}`,
+    chainName: chain.name,
+    rpcUrls: [...(chain.rpcUrls?.default?.http || [])],
+    blockExplorerUrls: chain.blockExplorers?.default?.url
+      ? [chain.blockExplorers.default.url]
+      : [],
+    nativeCurrency: chain.nativeCurrency,
+  }
 
   try {
     await Promise.race([
@@ -153,6 +156,8 @@ export const addEvmNetworkToWallet = async ({
         method: 'wallet_addEthereumChain',
         params: [params],
       })
+
+      return
     }
 
     throw new WalletException(
