@@ -201,7 +201,7 @@ export default class TrezorBase
     try {
       await this.trezor.connect()
 
-      const derivationPath = "m/44'/60'/0'/0/0"
+      const { derivationPath } = await this.getWalletForAddress(address)
 
       const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
@@ -215,6 +215,8 @@ export default class TrezorBase
         domain_separator_hash,
         metamask_v4_compat: true,
       })
+
+      console.log('🪵response', response)
 
       if (!response.success) {
         // noinspection ExceptionCaughtLocallyJS
