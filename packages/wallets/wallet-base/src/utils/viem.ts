@@ -36,7 +36,6 @@ export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
     } as Chain
   }
 
-  // Use viem's extractChain for all other chainIds (includes mainnet, sepolia, injective, injectiveTestnet, etc.)
   try {
     return extractChain({
       id: chainId,

@@ -1,10 +1,6 @@
 import { capitalize } from '@injectivelabs/utils'
 import { WalletException } from '@injectivelabs/exceptions'
-import {
-  Wallet,
-  getEvmChainConfig,
-  isEvmBrowserWallet,
-} from '@injectivelabs/wallet-base'
+import { Wallet, isEvmBrowserWallet } from '@injectivelabs/wallet-base'
 import { getRabbyProvider } from '../strategy/utils/rabby.js'
 import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
 import { getBitGetProvider } from '../strategy/utils/bitget.js'
@@ -98,72 +94,6 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
   } catch {
     throw new WalletException(
       new Error(`Please update your ${capitalize(wallet)} network`),
-    )
-  }
-}
-
-export const addEvmNetworkToWallet = async ({
-  wallet,
-  chainId,
-}: {
-  wallet: Wallet
-  chainId: EvmChainId
-}) => {
-  if (!isEvmBrowserWallet(wallet)) {
-    throw new WalletException(
-      new Error(`Evm Wallet for ${capitalize(wallet)} is not supported.`),
-    )
-  }
-
-  const provider = (await getEvmProvider(wallet)) as BrowserEip1993Provider
-
-  if (!provider) {
-    throw new WalletException(
-      new Error(`Please install ${capitalize(wallet)} Extension`),
-    )
-  }
-
-  const chainIdToHex = chainId.toString(16)
-  const chain = getEvmChainConfig(chainId)
-
-  const params = {
-    chainId: `0x${chain.id.toString(16)}`,
-    chainName: chain.name,
-    rpcUrls: [...(chain.rpcUrls?.default?.http || [])],
-    blockExplorerUrls: chain.blockExplorers?.default?.url
-      ? [chain.blockExplorers.default.url]
-      : [],
-    nativeCurrency: chain.nativeCurrency,
-  }
-
-  try {
-    await Promise.race([
-      provider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: `0x${chainIdToHex}` }],
-      }),
-      new Promise<void>((resolve) =>
-        provider.on('chainChanged', ({ chain }: any) => {
-          if (chain?.id === chainIdToHex) {
-            resolve()
-          }
-        }),
-      ),
-    ])
-  } catch (error) {
-    if ((error as any).code === 4902) {
-      await provider?.request({
-        method: 'wallet_addEthereumChain',
-        params: [params],
-      })
-
-      return
-    }
-
-    throw new WalletException(
-      new Error(
-        `Something went wrong while adding ${capitalize(wallet)} network`,
-      ),
     )
   }
 }

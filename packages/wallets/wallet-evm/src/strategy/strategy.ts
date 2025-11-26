@@ -1,10 +1,11 @@
 import { sleep, capitalize } from '@injectivelabs/utils'
-import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
 import { toUtf8, TxGrpcApi, isServerSide } from '@injectivelabs/sdk-ts'
 import {
   Wallet,
   WalletAction,
   WalletDeviceType,
+  getEvmChainConfig,
+  isEvmBrowserWallet,
   WalletEventListener,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
@@ -405,6 +406,61 @@ export class EvmWallet
 
   async getEip1193Provider(): Promise<Eip1193Provider> {
     return this.getEthereum() as unknown as Eip1193Provider
+  }
+
+  async addEvmNetwork(chainId: EvmChainId): Promise<void> {
+    const ethereum = await this.getEthereum()
+
+    const chainIdToHex = chainId.toString(16)
+    const chain = getEvmChainConfig(chainId)
+
+    const params = {
+      chainId: `0x${chainIdToHex}`,
+      chainName: chain.name,
+      rpcUrls: [...(chain.rpcUrls?.default?.http || [])],
+      blockExplorerUrls: chain.blockExplorers?.default?.url
+        ? [chain.blockExplorers.default.url]
+        : [],
+      nativeCurrency: chain.nativeCurrency,
+    }
+
+    try {
+      await Promise.race([
+        ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: `0x${chainIdToHex}` }],
+        }),
+        new Promise<void>((resolve) =>
+          ethereum.on('chainChanged', ({ chain }: any) => {
+            if (chain?.id === chainIdToHex) {
+              resolve()
+            }
+          }),
+        ),
+      ])
+    } catch (error) {
+      if ((error as any).code === 4902) {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [params],
+        })
+
+        return
+      }
+
+      throw this.EvmWalletException(
+        new Error(
+          `Something went wrong while adding ${capitalize(
+            this.wallet || 'wallet',
+          )} network`,
+        ),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetChainId,
+        },
+      )
+    }
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {
