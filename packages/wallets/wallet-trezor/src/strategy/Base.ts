@@ -235,9 +235,12 @@ export default class TrezorBase
         metamask_v4_compat: true,
       })
 
-      console.log('🪵response', response)
+      console.log('🪵Trezor response:', response)
 
-      if (response.payload.code === 'Failure_ActionCancelled') {
+      if (
+        'code' in response.payload &&
+        response.payload.code === 'Failure_ActionCancelled'
+      ) {
         throw new Error('Request rejected')
       }
 
