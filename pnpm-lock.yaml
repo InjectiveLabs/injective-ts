@@ -137,6 +137,9 @@ importers:
       markdownlint-cli:
         specifier: ^0.28.1
         version: 0.28.1
+      nx:
+        specifier: ^22.1.2
+        version: 22.1.2
       patch-package:
         specifier: ^8.0.0
         version: 8.0.0
@@ -657,24 +660,10 @@ importers:
         version: link:../wallet-base
       '@trezor/connect':
         specifier: ^9.6.4
-<<<<<<< HEAD
-<<<<<<< HEAD
         version: 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
       '@trezor/connect-web':
         specifier: ^9.6.4
         version: 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-=======
-        version: 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-      '@trezor/connect-web':
-        specifier: ^9.6.4
-        version: 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-        version: 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-      '@trezor/connect-web':
-        specifier: ^9.6.4
-        version: 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       alchemy-sdk:
         specifier: 'catalog:'
         version: 3.4.7(bufferutil@4.0.7)(utf-8-validate@5.0.10)
@@ -772,154 +761,18 @@ packages:
     resolution: {integrity: sha512-UlLAnTPrFdNGoFtbSXwcGFQBtQZJCNjaN6hQNP3UPvuNXT1i82N26KL3dZeIpNalWywr9IuQuncaAfUaS1g6sQ==}
     engines: {node: '>=6.9.0'}
 
-<<<<<<< HEAD
-  '@babel/generator@7.28.0':
-    resolution: {integrity: sha512-lJjzvrbEeWrhB4P3QBsH7tey117PjLZnDbLiQEKjQ/fNJTjuq4HSqgFA+UNSwZT8D7dxxbnuSBMsa1lrWzKlQg==}
-    engines: {node: '>=6.9.0'}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@babel/generator@7.28.0':
-    resolution:
-      {
-        integrity: sha512-lJjzvrbEeWrhB4P3QBsH7tey117PjLZnDbLiQEKjQ/fNJTjuq4HSqgFA+UNSwZT8D7dxxbnuSBMsa1lrWzKlQg==,
-      }
-    engines: { node: '>=6.9.0' }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/generator@7.28.5':
     resolution: {integrity: sha512-3EwLFhZ38J4VyIP6WNtt2kUdW9dokXA9Cr4IVIFHuCpZ3H8/YFOl5JjZHisrn1fATPBmKKqXzDFvh9fUwHz6CQ==}
     engines: {node: '>=6.9.0'}
 
-<<<<<<< HEAD
-  '@babel/helper-compilation-targets@7.26.5':
-    resolution: {integrity: sha512-IXuyn5EkouFJscIDuFF5EsiSolseme1s0CZB+QxVugqJLYmKdxI1VfIBOst0SUu4rnk2Z7kqTwmoO1lp3HIfnA==}
-    engines: {node: '>=6.9.0'}
-
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-  '@babel/helper-annotate-as-pure@7.25.9':
-    resolution:
-      {
-        integrity: sha512-gv7320KBUFJz1RnylIg5WWYPRXKZ884AGkYpgpWW02TH66Dl+HaC1t1CKd0z3R4b6hdYEcmrNZHUmfCP+1u3/g==,
-      }
-    engines: { node: '>=6.9.0' }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-  '@babel/helper-compilation-targets@7.26.5':
-    resolution: {integrity: sha512-IXuyn5EkouFJscIDuFF5EsiSolseme1s0CZB+QxVugqJLYmKdxI1VfIBOst0SUu4rnk2Z7kqTwmoO1lp3HIfnA==}
-    engines: {node: '>=6.9.0'}
-
-=======
->>>>>>> f8ee83138 (chore: optimise eslint speed)
-  '@babel/helper-compilation-targets@7.27.2':
-    resolution:
-      {
-        integrity: sha512-2+1thGUUWWjLTYTHZWK1n8Yga0ijBz1XAhUXcKy81rd5g6yh7hGqMp45v7cadSbEHc9G3OTv45SyneRN3ps4DQ==,
-      }
-    engines: { node: '>=6.9.0' }
-
-<<<<<<< HEAD
-=======
-  '@babel/helper-create-class-features-plugin@7.25.9':
-    resolution:
-      {
-        integrity: sha512-UTZQMvt0d/rSz6KI+qdu7GQze5TIajwTS++GUozlw8VBJDEOAqSXwm1WvmYEZwqdqSGQshRocPDqrt4HBZB3fQ==,
-      }
-    engines: { node: '>=6.9.0' }
-    peerDependencies:
-      '@babel/core': ^7.0.0
-=======
-=======
-  '@babel/generator@7.26.9':
-    resolution: {integrity: sha512-kEWdzjOAUMW4hAyrzJ0ZaTOu9OmpyDIQicIh0zg0EEcEkYXZb2TjtBhnHi2ViX7PKwZqF4xwqfAm299/QMP3lg==}
-=======
-  '@babel/generator@7.28.5':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-3EwLFhZ38J4VyIP6WNtt2kUdW9dokXA9Cr4IVIFHuCpZ3H8/YFOl5JjZHisrn1fATPBmKKqXzDFvh9fUwHz6CQ==}
->>>>>>> bb71a84a5 (chore: package bump)
-    engines: {node: '>=6.9.0'}
-
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/helper-compilation-targets@7.27.2':
     resolution: {integrity: sha512-2+1thGUUWWjLTYTHZWK1n8Yga0ijBz1XAhUXcKy81rd5g6yh7hGqMp45v7cadSbEHc9G3OTv45SyneRN3ps4DQ==}
     engines: {node: '>=6.9.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-3EwLFhZ38J4VyIP6WNtt2kUdW9dokXA9Cr4IVIFHuCpZ3H8/YFOl5JjZHisrn1fATPBmKKqXzDFvh9fUwHz6CQ==,
-      }
-    engines: { node: '>=6.9.0' }
 
-  '@babel/helper-compilation-targets@7.27.2':
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-2+1thGUUWWjLTYTHZWK1n8Yga0ijBz1XAhUXcKy81rd5g6yh7hGqMp45v7cadSbEHc9G3OTv45SyneRN3ps4DQ==,
-      }
-    engines: { node: '>=6.9.0' }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-2+1thGUUWWjLTYTHZWK1n8Yga0ijBz1XAhUXcKy81rd5g6yh7hGqMp45v7cadSbEHc9G3OTv45SyneRN3ps4DQ==}
-    engines: {node: '>=6.9.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@babel/helper-globals@7.28.0':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-+W6cISkXFa1jXsDEdYA8HeevQT/FULhxzR99pxphltZcVaugps53THCeiWA8SguxxpSp3gKPiuYfSWopkLQ4hw==,
-      }
-    engines: { node: '>=6.9.0' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-+W6cISkXFa1jXsDEdYA8HeevQT/FULhxzR99pxphltZcVaugps53THCeiWA8SguxxpSp3gKPiuYfSWopkLQ4hw==}
     engines: {node: '>=6.9.0'}
 
-<<<<<<< HEAD
-  '@babel/helper-module-imports@7.25.9':
-    resolution: {integrity: sha512-tnUA4RsrmflIM6W6RFTLFSXITtl0wKjgpnLgXyowocVPrbYrLUXSBXDgTs8BlbmIzIdlBySRQjINYs2BAkiLtw==}
-    engines: {node: '>=6.9.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-
-<<<<<<< HEAD
-=======
-  '@babel/helper-member-expression-to-functions@7.25.9':
-    resolution:
-      {
-        integrity: sha512-wbfdZ9w5vk0C0oyHqAJbc62+vet5prjj01jjJ8sKn3j9h3MQQlflEdXYvuqRWjHnM12coDEqiC1IRCi0U/EKwQ==,
-      }
-    engines: { node: '>=6.9.0' }
-=======
-    resolution: {integrity: sha512-+W6cISkXFa1jXsDEdYA8HeevQT/FULhxzR99pxphltZcVaugps53THCeiWA8SguxxpSp3gKPiuYfSWopkLQ4hw==}
-    engines: {node: '>=6.9.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
-<<<<<<< HEAD
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-  '@babel/helper-module-imports@7.25.9':
-    resolution: {integrity: sha512-tnUA4RsrmflIM6W6RFTLFSXITtl0wKjgpnLgXyowocVPrbYrLUXSBXDgTs8BlbmIzIdlBySRQjINYs2BAkiLtw==}
-    engines: {node: '>=6.9.0'}
-
-=======
->>>>>>> bb71a84a5 (chore: package bump)
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/helper-module-imports@7.27.1':
     resolution: {integrity: sha512-0gSFWUPNXNopqtIPQvlD5WgXYI5GY2kP2cCvoT8kczjbfcfuIljTbcWrulD1CIPIX2gt1wghbDy08yE1p+/r3w==}
     engines: {node: '>=6.9.0'}
@@ -930,67 +783,10 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  '@babel/helper-optimise-call-expression@7.25.9':
-    resolution:
-      {
-        integrity: sha512-FIpuNaz5ow8VyrYcnXQTDRGvV6tTjkNtCK/RYNDXGSLlUD6cBuQTSw43CShGxjvfBTfcUA/r6UhUCbtYqkhcuQ==,
-      }
-    engines: { node: '>=6.9.0' }
-
-  '@babel/helper-plugin-utils@7.26.5':
-    resolution:
-      {
-        integrity: sha512-RS+jZcRdZdRFzMyr+wcsaqOmld1/EqTghfaBGQQd/WnRdzdlvSZ//kF7U8VQTxf1ynZ4cjUcYgjVGx13ewNPMg==,
-      }
-    engines: { node: '>=6.9.0' }
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
   '@babel/helper-plugin-utils@7.27.1':
     resolution: {integrity: sha512-1gn1Up5YXka3YYAHGKpbideQ5Yjf1tDa9qYcgysz+cNCXukyLl6DjPXhD3VRwSb8c0J9tA4b2+rHEZtc6R0tlw==}
     engines: {node: '>=6.9.0'}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  '@babel/helper-replace-supers@7.25.9':
-    resolution:
-      {
-        integrity: sha512-IiDqTOTBQy0sWyeXyGSC5TBJpGFXBkRynjBeXsvbhQFKj2viwJC76Epz35YLU1fpe/Am6Vppb7W7zM4fPQzLsQ==,
-      }
-    engines: { node: '>=6.9.0' }
-    peerDependencies:
-      '@babel/core': ^7.0.0
-
-  '@babel/helper-skip-transparent-expression-wrappers@7.25.9':
-    resolution:
-      {
-        integrity: sha512-K4Du3BFa3gvyhzgPcntrkDgZzQaq6uozzcpGbOO1OEJaI+EJdqWIMTLgFgQf6lrfiDFo5FU+BxKepI9RmZqahA==,
-      }
-    engines: { node: '>=6.9.0' }
-
-<<<<<<< HEAD
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-  '@babel/helper-string-parser@7.25.9':
-    resolution: {integrity: sha512-4A/SCr/2KLd5jrtOMFzaKjVtAei3+2r/NChoBNoZ3EyP/+GlhoaEGoWOZUmFmoITP7zOJyHIMm+DYRd8o3PvHA==}
-    engines: {node: '>=6.9.0'}
-
-=======
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-  '@babel/helper-string-parser@7.25.9':
-    resolution: {integrity: sha512-4A/SCr/2KLd5jrtOMFzaKjVtAei3+2r/NChoBNoZ3EyP/+GlhoaEGoWOZUmFmoITP7zOJyHIMm+DYRd8o3PvHA==}
-    engines: {node: '>=6.9.0'}
-
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   '@babel/helper-string-parser@7.27.1':
     resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
     engines: {node: '>=6.9.0'}
@@ -1049,36 +845,10 @@ packages:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-syntax-json-strings@7.8.3':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-lY6kdGpWHvjoe2vk4WrAapEuBR69EMxZl+RoGRhrFGNYVK8mOPAW8VfbT/ZgrFbXlDNiiaxQnAtgVCZ6jv30EA==,
-      }
-=======
     resolution: {integrity: sha512-lY6kdGpWHvjoe2vk4WrAapEuBR69EMxZl+RoGRhrFGNYVK8mOPAW8VfbT/ZgrFbXlDNiiaxQnAtgVCZ6jv30EA==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-<<<<<<< HEAD
-=======
-  '@babel/plugin-syntax-jsx@7.25.9':
-    resolution:
-      {
-        integrity: sha512-ld6oezHQMZsZfp6pWtbjaNDF2tiiCYYDqQszHt5VV437lewP9aSi2Of99CK0D0XB21k7FLgnLcmQKyKzynfeAA==,
-      }
-    engines: { node: '>=6.9.0' }
-=======
-    resolution: {integrity: sha512-lY6kdGpWHvjoe2vk4WrAapEuBR69EMxZl+RoGRhrFGNYVK8mOPAW8VfbT/ZgrFbXlDNiiaxQnAtgVCZ6jv30EA==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@babel/plugin-syntax-jsx@7.27.1':
     resolution: {integrity: sha512-y8YTNIeKoyhGd9O0Jiyzyyqk8gdjnumGTQPsz0xOZOQ2RmkVJeZ1vmmfIvFEKqucBG6axJGBZDE/7iI5suUI/w==}
     engines: {node: '>=6.9.0'}
@@ -1122,101 +892,17 @@ packages:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-syntax-top-level-await@7.14.5':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-hx++upLv5U1rgYfwe1xBQUhRmU41NEvpUvrp8jkrSCdvGSnM5/qdRMtylJ6PG5OFkBaHkbTAKTnd3/YyESRHFw==,
-      }
-    engines: { node: '>=6.9.0' }
-=======
     resolution: {integrity: sha512-hx++upLv5U1rgYfwe1xBQUhRmU41NEvpUvrp8jkrSCdvGSnM5/qdRMtylJ6PG5OFkBaHkbTAKTnd3/YyESRHFw==}
     engines: {node: '>=6.9.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-<<<<<<< HEAD
-=======
-  '@babel/plugin-syntax-typescript@7.25.9':
-    resolution:
-      {
-        integrity: sha512-hjMgRy5hb8uJJjUcdWunWVcoi9bGpJp8p5Ol1229PoN6aytsLwNMgmdftO23wnCLMfVmTwZDWMPNq/D1SY60JQ==,
-      }
-    engines: { node: '>=6.9.0' }
-=======
-    resolution: {integrity: sha512-hx++upLv5U1rgYfwe1xBQUhRmU41NEvpUvrp8jkrSCdvGSnM5/qdRMtylJ6PG5OFkBaHkbTAKTnd3/YyESRHFw==}
-    engines: {node: '>=6.9.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@babel/plugin-syntax-typescript@7.27.1':
     resolution: {integrity: sha512-xfYCBMxveHrRMnAWl1ZlPXOZjzkN82THFvLhQhFXFt81Z5HnN+EtUkZhv/zcKpmT3fzmWZB0ywiBrbC3vogbwQ==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  '@babel/plugin-transform-modules-commonjs@7.26.3':
-    resolution:
-      {
-        integrity: sha512-MgR55l4q9KddUDITEzEFYn5ZsGDXMSsU9E+kh7fjRXTIC3RHqfCo8RPRbyReYJh44HQ/yomFkqbOFohXvDCiIQ==,
-      }
-    engines: { node: '>=6.9.0' }
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
-  '@babel/plugin-transform-typescript@7.26.3':
-    resolution:
-      {
-        integrity: sha512-6+5hpdr6mETwSKjmJUdYw0EIkATiQhnELWlE3kJFBwSg/BGIVwVaVbX+gOXBCdc7Ln1RXZxyWGecIXhUfnl7oA==,
-      }
-    engines: { node: '>=6.9.0' }
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
-  '@babel/preset-typescript@7.26.0':
-    resolution:
-      {
-        integrity: sha512-NMk1IGZ5I/oHhoXEElcm+xUnL/szL6xflkFZmoEU9xj1qSJXpiS7rsspYo92B4DRCDvZn2erT5LdsCeXAKNCkg==,
-      }
-    engines: { node: '>=6.9.0' }
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
-  '@babel/runtime@7.26.0':
-    resolution:
-      {
-        integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==,
-      }
-    engines: { node: '>=6.9.0' }
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-  '@babel/template@7.26.9':
-    resolution: {integrity: sha512-qyRplbeIpNZhmzOysF/wFMuP9sctmh2cFzRAZOn1YapxBsE1i9bJIY586R/WBLfLcmcBlM8ROBiQURnnNy+zfA==}
-    engines: {node: '>=6.9.0'}
-
-<<<<<<< HEAD
-=======
->>>>>>> bb71a84a5 (chore: package bump)
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/template@7.27.2':
     resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
     engines: {node: '>=6.9.0'}
@@ -1248,33 +934,8 @@ packages:
     resolution: {integrity: sha512-lQgYJJbok2Unu2vKh0TAtWxXo16kLXNrjqmfo0hQTAuE/tVvz5zVqMgGsj+gMkkWfsInEbUndG0nlyCwaFv8hQ==}
 
   '@bangjelkoski/store2@2.14.3':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-ZG6ZDOHU5MZ4yxA3yY3gcZYnkcPtPaOwGOJrWD4Drar/u1TTBy1tWnP70atBa6LGm1+Ll1nb2GwS+HyWuFOWkw==,
-      }
-=======
     resolution: {integrity: sha512-ZG6ZDOHU5MZ4yxA3yY3gcZYnkcPtPaOwGOJrWD4Drar/u1TTBy1tWnP70atBa6LGm1+Ll1nb2GwS+HyWuFOWkw==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  '@bangjelkoski/trezor-connect-web@9.4.7-beta.1':
-    resolution:
-      {
-        integrity: sha512-p6DmkVhPpvwTJQNKdMGq2IBQ81Xz8x8NjheN5HICHuTsmty74ACQtyVjwDQ2LP+pctSluF2e7oLbj1uoBuUkUA==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-=======
-    resolution: {integrity: sha512-ZG6ZDOHU5MZ4yxA3yY3gcZYnkcPtPaOwGOJrWD4Drar/u1TTBy1tWnP70atBa6LGm1+Ll1nb2GwS+HyWuFOWkw==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@bangjelkoski/wallet-connect-ethereum-provider@2.17.2':
     resolution: {integrity: sha512-mot/LCgPMcWVeUH3pGCBMjubqSO9B3QEoo4RVP8Q5WLP7cspd+vK2lphpuytyV47Et3bCF15s9usZGM3l84ZnQ==}
 
@@ -1669,37 +1330,10 @@ packages:
     resolution: {integrity: sha512-pksvzI0VyLgmuEF2FA/JR/4/y6hcPq8OUail3/AvycBaW1d5VSauOZzqGvJ3RTmR4MU35lWE8KseKOsEhrFRBA==}
 
   '@ethereumjs/rlp@4.0.1':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-tqsQiBQDQdmPWE1xkkBq4rlSW5QZpLOUJ5RJh2/9fug+q9tnUhuZoVLk7s0scUIKTOzEtR72DFBXI4WiZcMpvw==,
-      }
-    engines: { node: '>=14' }
-=======
     resolution: {integrity: sha512-tqsQiBQDQdmPWE1xkkBq4rlSW5QZpLOUJ5RJh2/9fug+q9tnUhuZoVLk7s0scUIKTOzEtR72DFBXI4WiZcMpvw==}
     engines: {node: '>=14'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     hasBin: true
 
-<<<<<<< HEAD
-=======
-  '@ethereumjs/rlp@5.0.2':
-    resolution:
-      {
-        integrity: sha512-DziebCdg4JpGlEqEdGgXmjqcFoJi+JGulUXwEjsZGAscAQ7MyD/7LE/GVCP29vEQxKc7AAwjT3A2ywHp2xfoCA==,
-      }
-    engines: { node: '>=18' }
-=======
-    resolution: {integrity: sha512-tqsQiBQDQdmPWE1xkkBq4rlSW5QZpLOUJ5RJh2/9fug+q9tnUhuZoVLk7s0scUIKTOzEtR72DFBXI4WiZcMpvw==}
-    engines: {node: '>=14'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-    hasBin: true
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@ethereumjs/tx@4.2.0':
     resolution: {integrity: sha512-1nc6VO4jtFd172BbSnTnDQVr9IYBFl1y4xPzZdtkrkKIncBCkdbgfdRV+MiTkJYAtTxvV12GRZLqBFT1PNK6Yw==}
     engines: {node: '>=14'}
@@ -1775,31 +1409,8 @@ packages:
     resolution: {integrity: sha512-gKlH42riwb3KYp0reLsFTokByAKoJdgFCwI+CCiX/k+Jm2mbNs6oOaCjYQSlI1+XBVejwH2KrmCbMAT/GnRDQw==}
 
   '@ethersproject/signing-key@5.7.0':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-MZdy2nL3wO0u7gkB4nA/pEf8lu1TlFswPNmy8AiYkfKTdO6eXBJyUdmHO/ehm/htHw9K/qF8ujnTyUAD+Ry54Q==,
-      }
-=======
     resolution: {integrity: sha512-MZdy2nL3wO0u7gkB4nA/pEf8lu1TlFswPNmy8AiYkfKTdO6eXBJyUdmHO/ehm/htHw9K/qF8ujnTyUAD+Ry54Q==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  '@ethersproject/solidity@5.7.0':
-    resolution:
-      {
-        integrity: sha512-HmabMd2Dt/raavyaGukF4XxizWKhKQ24DoLtdNbBmNKUOPqwjsKQSdV9GQtj9CBEea9DlzETlVER1gYeXXBGaA==,
-      }
-=======
-    resolution: {integrity: sha512-MZdy2nL3wO0u7gkB4nA/pEf8lu1TlFswPNmy8AiYkfKTdO6eXBJyUdmHO/ehm/htHw9K/qF8ujnTyUAD+Ry54Q==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@ethersproject/strings@5.7.0':
     resolution: {integrity: sha512-/9nu+lj0YswRNSH0NXYqrh8775XNyEdUQAuf3f+SmOrnVewcJ5SBNAjF7lpgehKi4abvNNXyf+HX86czCdJ8Mg==}
 
@@ -1816,31 +1427,8 @@ packages:
     resolution: {integrity: sha512-Gueu8lSvyjBWL4cYsWsjh6MtMwM0+H4HvqFPZfB6dV8ctbP9zFAO73VG1cMWae0FLPCtz0peKPpZY8/ugJJX2w==}
 
   '@ethersproject/wordlists@5.7.0':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-S2TFNJNfHWVHNE6cNDjbVlZ6MgE17MIxMbMg2zv3wn+3XSJGosL1m9ZVv3GXCf/2ymSsQ+hRI5IzoMJTG6aoVA==,
-      }
-=======
     resolution: {integrity: sha512-S2TFNJNfHWVHNE6cNDjbVlZ6MgE17MIxMbMg2zv3wn+3XSJGosL1m9ZVv3GXCf/2ymSsQ+hRI5IzoMJTG6aoVA==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  '@everstake/wallet-sdk@1.0.13':
-    resolution:
-      {
-        integrity: sha512-ibzbHT86rXRWCmPtnJH5IcLAOtOZJOtwJqZDjpdYEkojhpreDrCTlTYh8j6B8oxZgjiHqBcXiQlo+QMCHthvIA==,
-      }
-=======
-    resolution: {integrity: sha512-S2TFNJNfHWVHNE6cNDjbVlZ6MgE17MIxMbMg2zv3wn+3XSJGosL1m9ZVv3GXCf/2ymSsQ+hRI5IzoMJTG6aoVA==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@fivebinaries/coin-selection@3.0.0':
     resolution: {integrity: sha512-h25Pn1ZA7oqQBQDodGAgIsQt66T2wDge9onBKNqE66WNWL0KJiKJbpij8YOLo5AAlEIg5IS7EB1QjBgDOIg6DQ==}
 
@@ -1950,6 +1538,10 @@ packages:
       node-notifier:
         optional: true
 
+  '@jest/diff-sequences@30.0.1':
+    resolution: {integrity: sha512-n5H8QLDJ47QqbCNn5SuFjCRDrOLEZ0h8vAHCK5RL9Ls7Xa8AQLa/YxAc9UjFqoEDM48muwtBGjtMY5cr0PLDCw==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
+
   '@jest/environment@29.7.0':
     resolution: {integrity: sha512-aQIfHDq33ExsN4jP1NWGXhxgQ/wixs60gDiKO+XVMd8Mn0NWPWgc34ZQDTb2jKaUWQ7MuwoitXAsN2XVXNMpAw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -1965,6 +1557,10 @@ packages:
   '@jest/fake-timers@29.7.0':
     resolution: {integrity: sha512-q4DH1Ha4TTFPdxLsqDXK1d3+ioSL7yL5oCMJZgDYm6i+6CygW5E5xVr/D1HdsGxjt1ZWSfUAs9OxSB/BNelWrQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/get-type@30.1.0':
+    resolution: {integrity: sha512-eMbZE2hUnx1WV0pmURZY9XoXPkUYjpc55mb0CrhtdWLtzMQPFvu/rZkTLZFTsdaVQa+Tr4eWAteqcUzoawq/uA==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/globals@29.7.0':
     resolution: {integrity: sha512-mpiz3dutLbkW2MNFubUGUEVLkTGiqW6yLVTA+JbP6fI6J5iL9Y0Nlg8k95pcF8ctKwCS7WVxteBs29hhfAotzQ==}
@@ -1982,6 +1578,10 @@ packages:
   '@jest/schemas@29.6.3':
     resolution: {integrity: sha512-mo5j5X+jIZmJQveBKeS/clAueipV7KgiX1vMgCxam1RNYiqE1w62n0/tJJnHtjW8ZHcQco5gY85jA3mi0L+nSA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/schemas@30.0.5':
+    resolution: {integrity: sha512-DmdYgtezMkh3cpU8/1uyXakv3tJRcmcXxBOcO0tbaozPwpmh4YMsnWrQm9ZmZMfa5ocbxzbFk6O4bDPEc/iAnA==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/source-map@29.6.3':
     resolution: {integrity: sha512-MHjT95QuipcPrpLM+8JMSzFx6eHp5Bm+4XeFDJlwsvVBjmKNiIAvasGK2fxz2WbGRlnvqehFbh07MMa7n3YJnw==}
@@ -2304,9 +1904,19 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@nx/nx-darwin-arm64@22.1.2':
+    resolution: {integrity: sha512-xT6U9oRjze9QTLp8ieoNOno6GHA5S2R36tzergMfTevCTnpJBE0GX8vtI6fmcK3NkVmbdPI9Vb/FmBPcvD9eEQ==}
+    cpu: [arm64]
+    os: [darwin]
+
   '@nx/nx-darwin-x64@20.8.2':
     resolution: {integrity: sha512-pt/wmDLM31Es8/EzazlyT5U+ou2l60rfMNFGCLqleHEQ0JUTc0KWnOciBLbHIQFiPsCQZJFEKyfV5V/ncePmmw==}
     engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@nx/nx-darwin-x64@22.1.2':
+    resolution: {integrity: sha512-20n1KPgPNV4gym3rzs/vgDJb0ybNIHuVYU+5m6/+ee5jZNApa5Ivi5Kqpm1RKLiKYgcm97ZbWbGi/K0CXqt1dw==}
     cpu: [x64]
     os: [darwin]
 
@@ -2316,9 +1926,19 @@ packages:
     cpu: [x64]
     os: [freebsd]
 
+  '@nx/nx-freebsd-x64@22.1.2':
+    resolution: {integrity: sha512-Z1AMFUuT1MAay09s0MWSRBdb9fY0DVwOm2TnvLRc1zJ2eMVnbK+Z2NMMOMM10udyogLbxGUHefbl+HtAAcJdxQ==}
+    cpu: [x64]
+    os: [freebsd]
+
   '@nx/nx-linux-arm-gnueabihf@20.8.2':
     resolution: {integrity: sha512-98O/qsxn4vIMPY/FyzvmVrl7C5yFhCUVk0/4PF+PA2SvtQ051L1eMRY6bq/lb69qfN6szJPZ41PG5mPx0NeLZw==}
     engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [linux]
+
+  '@nx/nx-linux-arm-gnueabihf@22.1.2':
+    resolution: {integrity: sha512-bR82Id9frpz4GbxXXMsiXAQZ6tI7d3Veifyqj6th/9A3/UyZR4YKYpGm2QEsm0hp4n3BO8K5JxCxhGDgp5YwVg==}
     cpu: [arm]
     os: [linux]
 
@@ -2328,9 +1948,19 @@ packages:
     cpu: [arm64]
     os: [linux]
 
+  '@nx/nx-linux-arm64-gnu@22.1.2':
+    resolution: {integrity: sha512-K6l/qa1rUM1saFlcT/KnJfhRtLyPkpYCxWGNYaMQ3gEFozPCHYdAJUQ+sKS8kVyWt2anAWx2XkmXUaz04OB8BQ==}
+    cpu: [arm64]
+    os: [linux]
+
   '@nx/nx-linux-arm64-musl@20.8.2':
     resolution: {integrity: sha512-4Ev+jM0VAxDHV/dFgMXjQTCXS4I8W4oMe7FSkXpG8RUn6JK659DC8ExIDPoGIh+Cyqq6r6mw1CSia+ciQWICWQ==}
     engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@nx/nx-linux-arm64-musl@22.1.2':
+    resolution: {integrity: sha512-vZUAUsaop5fdcyWpYzED+hWTKOuDtwG9DNNYUlII0dZhSA8kZwmXoYmrCGeMe5nQX9tF4pNzF+oddC/E169Z6g==}
     cpu: [arm64]
     os: [linux]
 
@@ -2340,9 +1970,19 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  '@nx/nx-linux-x64-gnu@22.1.2':
+    resolution: {integrity: sha512-+NiA5uNh1cdpk2k984NlfIxRXaO0Bu0S4qCvWWKmL/150f31qJ/eHN6rd78/Re2qKO1NDoyDZLW6jqRXIm/GgA==}
+    cpu: [x64]
+    os: [linux]
+
   '@nx/nx-linux-x64-musl@20.8.2':
     resolution: {integrity: sha512-ost41l5yc2aq2Gc9bMMpaPi/jkXqbXEMEPHrxWKuKmaek3K2zbVDQzvBBNcQKxf/mlCsrqN4QO0mKYSRRqag5A==}
     engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@nx/nx-linux-x64-musl@22.1.2':
+    resolution: {integrity: sha512-8O7dXems/Of/biCKeuGMh3nmbS2PNvaL8R4xQzaBl94XitzFMxVFjjoTST7y3Ksmsa5Wrbzwyh+kHOMoIMlVpA==}
     cpu: [x64]
     os: [linux]
 
@@ -2352,9 +1992,19 @@ packages:
     cpu: [arm64]
     os: [win32]
 
+  '@nx/nx-win32-arm64-msvc@22.1.2':
+    resolution: {integrity: sha512-/Wt3kdj5BksswSWL4N8tef6B+d5r0LbdEPqZimx3AqDMC9H1YkVuwwdBWFGOh+ldj/N8adRuZKjEMQfa/oqPGg==}
+    cpu: [arm64]
+    os: [win32]
+
   '@nx/nx-win32-x64-msvc@20.8.2':
     resolution: {integrity: sha512-iIsY+tVqes/NOqTbJmggL9Juie/iaDYlWgXA9IUv88FE9thqWKhVj4/tCcPjsOwzD+1SVna3YISEEFsx5UV4ew==}
     engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@nx/nx-win32-x64-msvc@22.1.2':
+    resolution: {integrity: sha512-vihs1hIVMyQYoKul5rfwvU+4WKhbajJ8lSUTVvxjV2j+8F0BYMvRQtB2jDZfBpjEpSBmgP4ApIsLkQzQQBzLug==}
     cpu: [x64]
     os: [win32]
 
@@ -2926,91 +2576,15 @@ packages:
   '@sinclair/typebox@0.33.22':
     resolution: {integrity: sha512-auUj4k+f4pyrIVf4GW5UKquSZFHJWri06QgARy9C0t9ZTjJLIuNIrr1yl9bWcJWJ1Gz1vOvYN1D+QPaIlNMVkQ==}
 
+  '@sinclair/typebox@0.34.41':
+    resolution: {integrity: sha512-6gS8pZzSXdyRHTIqoqSVknxolr1kzfy4/CeDnrzsVz8TTIWUbOBr6gnzOmTYJ3eXQNh4IYHIGi5aIL7sOZ2G/g==}
+
   '@sinonjs/commons@3.0.1':
     resolution: {integrity: sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==}
 
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@solana-program/compute-budget@0.8.0':
-    resolution:
-      {
-        integrity: sha512-qPKxdxaEsFxebZ4K5RPuy7VQIm/tfJLa1+Nlt3KNA8EYQkz9Xm8htdoEaXVrer9kpgzzp9R3I3Bh6omwCM06tQ==,
-      }
-=======
-  '@solana-program/compute-budget@0.6.1':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-PWcVmRx2gSQ8jd5va5HzSlKqQmR8Q1sYaPcqpCzhOHcApJ4YsVWY6QhaOD5Nx7z1UXkP12vNq3KDsSCZnT3Hkw==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-PWcVmRx2gSQ8jd5va5HzSlKqQmR8Q1sYaPcqpCzhOHcApJ4YsVWY6QhaOD5Nx7z1UXkP12vNq3KDsSCZnT3Hkw==,
-      }
->>>>>>> 8e756248f (chore: release)
-    peerDependencies:
-      '@solana/kit': ^2.1.0
-
-<<<<<<< HEAD
-  '@solana-program/stake@0.2.1':
-    resolution:
-      {
-        integrity: sha512-ssNPsJv9XHaA+L7ihzmWGYcm/+XYURQ8UA3wQMKf6ccEHyHOUgoglkkDU/BoA0+wul6HxZUN0tHFymC0qFw6sg==,
-      }
-=======
-  '@solana-program/system@0.6.2':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-q0ZnylK+LISjuP2jH5GWV9IJPtpzQctj5KQwij9XCDRSGkcFr2fpqptNnVupTLQiNL6Q4c1OZuG8WBmyFXVXZw==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-q0ZnylK+LISjuP2jH5GWV9IJPtpzQctj5KQwij9XCDRSGkcFr2fpqptNnVupTLQiNL6Q4c1OZuG8WBmyFXVXZw==,
-      }
->>>>>>> 8e756248f (chore: release)
-    peerDependencies:
-      '@solana/kit': ^2.1.0
-
-<<<<<<< HEAD
-  '@solana-program/system@0.7.0':
-    resolution:
-      {
-        integrity: sha512-FKTBsKHpvHHNc1ATRm7SlC5nF/VdJtOSjldhcyfMN9R7xo712Mo2jHIzvBgn8zQO5Kg0DcWuKB7268Kv1ocicw==,
-      }
-=======
-  '@solana-program/token-2022@0.3.4':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-URHA91F9sDibbL6RbuhnKHWGeAONCDcCmHq8tMtpVOhse9/WKp0JOvdLSiGuRkKZqLHo74xF8otmgPVchgVZXQ==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-URHA91F9sDibbL6RbuhnKHWGeAONCDcCmHq8tMtpVOhse9/WKp0JOvdLSiGuRkKZqLHo74xF8otmgPVchgVZXQ==,
-      }
->>>>>>> 8e756248f (chore: release)
-    peerDependencies:
-      '@solana/kit': ^2.1.0
-
-<<<<<<< HEAD
-  '@solana-program/token-2022@0.4.2':
-    resolution:
-      {
-        integrity: sha512-zIpR5t4s9qEU3hZKupzIBxJ6nUV5/UVyIT400tu9vT1HMs5JHxaTTsb5GUhYjiiTvNwU0MQavbwc4Dl29L0Xvw==,
-      }
-=======
-  '@solana-program/token@0.4.1':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-eSYmjsapzE9jXT2J9xydlMj/zsangMEIZAy9dy75VCXM6kgDCSnH5R7+HsIoKOTvb2VggU7GojC+YhMwWGCIBw==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-eSYmjsapzE9jXT2J9xydlMj/zsangMEIZAy9dy75VCXM6kgDCSnH5R7+HsIoKOTvb2VggU7GojC+YhMwWGCIBw==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
   '@solana-program/compute-budget@0.8.0':
     resolution: {integrity: sha512-qPKxdxaEsFxebZ4K5RPuy7VQIm/tfJLa1+Nlt3KNA8EYQkz9Xm8htdoEaXVrer9kpgzzp9R3I3Bh6omwCM06tQ==}
     peerDependencies:
@@ -3027,25 +2601,11 @@ packages:
       '@solana/kit': ^2.1.0
 
   '@solana-program/token-2022@0.4.2':
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-zIpR5t4s9qEU3hZKupzIBxJ6nUV5/UVyIT400tu9vT1HMs5JHxaTTsb5GUhYjiiTvNwU0MQavbwc4Dl29L0Xvw==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-zIpR5t4s9qEU3hZKupzIBxJ6nUV5/UVyIT400tu9vT1HMs5JHxaTTsb5GUhYjiiTvNwU0MQavbwc4Dl29L0Xvw==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-zIpR5t4s9qEU3hZKupzIBxJ6nUV5/UVyIT400tu9vT1HMs5JHxaTTsb5GUhYjiiTvNwU0MQavbwc4Dl29L0Xvw==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     peerDependencies:
       '@solana/kit': ^2.1.0
       '@solana/sysvars': ^2.1.0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@solana-program/token@0.5.1':
     resolution: {integrity: sha512-bJvynW5q9SFuVOZ5vqGVkmaPGA0MCC+m9jgJj1nk5m20I389/ms69ASnhWGoOPNcie7S9OwBX0gTj2fiyWpfag==}
     peerDependencies:
@@ -3269,360 +2829,6 @@ packages:
     engines: {node: '>=20.18.0'}
     peerDependencies:
       typescript: '>=5.3.3'
-=======
-  '@solana/buffer-layout@4.0.1':
-    resolution:
-      {
-        integrity: sha512-E1ImOIAD1tBZFRdjeM4/pzTiTApC0AOBGwyAMS4fwIodCWArzJ3DWdoh8cKxeFM2fElkxBh2Aqts1BPC373rHA==,
-      }
-    engines: { node: '>=5.10' }
-
-  '@solana/web3.js@1.98.0':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-nz3Q5OeyGFpFCR+erX2f6JPt3sKhzhYcSycBCSPkWjzSVDh/Rr1FqTVMRe58FKO16/ivTUcuJjeS5MyBvpkbzA==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-nz3Q5OeyGFpFCR+erX2f6JPt3sKhzhYcSycBCSPkWjzSVDh/Rr1FqTVMRe58FKO16/ivTUcuJjeS5MyBvpkbzA==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
-  '@solana-program/token@0.5.1':
-    resolution:
-      {
-        integrity: sha512-bJvynW5q9SFuVOZ5vqGVkmaPGA0MCC+m9jgJj1nk5m20I389/ms69ASnhWGoOPNcie7S9OwBX0gTj2fiyWpfag==,
-      }
-    peerDependencies:
-      '@solana/kit': ^2.1.0
-
-  '@solana/accounts@2.3.0':
-    resolution:
-      {
-        integrity: sha512-QgQTj404Z6PXNOyzaOpSzjgMOuGwG8vC66jSDB+3zHaRcEPRVRd2sVSrd1U6sHtnV3aiaS6YyDuPQMheg4K2jw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/addresses@2.3.0':
-    resolution:
-      {
-        integrity: sha512-ypTNkY2ZaRFpHLnHAgaW8a83N0/WoqdFvCqf4CQmnMdFsZSdC7qOwcbd7YzdaQn9dy+P2hybewzB+KP7LutxGA==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/assertions@2.3.0':
-    resolution:
-      {
-        integrity: sha512-Ekoet3khNg3XFLN7MIz8W31wPQISpKUGDGTylLptI+JjCDWx3PIa88xjEMqFo02WJ8sBj2NLV64Xg1sBcsHjZQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/codecs-core@2.3.0':
-    resolution:
-      {
-        integrity: sha512-oG+VZzN6YhBHIoSKgS5ESM9VIGzhWjEHEGNPSibiDTxFhsFWxNaz8LbMDPjBUE69r9wmdGLkrQ+wVPbnJcZPvw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/codecs-data-structures@2.3.0':
-    resolution:
-      {
-        integrity: sha512-qvU5LE5DqEdYMYgELRHv+HMOx73sSoV1ZZkwIrclwUmwTbTaH8QAJURBj0RhQ/zCne7VuLLOZFFGv6jGigWhSw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/codecs-numbers@2.3.0':
-    resolution:
-      {
-        integrity: sha512-jFvvwKJKffvG7Iz9dmN51OGB7JBcy2CJ6Xf3NqD/VP90xak66m/Lg48T01u5IQ/hc15mChVHiBm+HHuOFDUrQg==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/codecs-strings@2.3.0':
-    resolution:
-      {
-        integrity: sha512-y5pSBYwzVziXu521hh+VxqUtp0hYGTl1eWGoc1W+8mdvBdC1kTqm/X7aYQw33J42hw03JjryvYOvmGgk3Qz/Ug==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      fastestsmallesttextencoderdecoder: ^1.0.22
-      typescript: '>=5.3.3'
-
-  '@solana/codecs@2.3.0':
-    resolution:
-      {
-        integrity: sha512-JVqGPkzoeyU262hJGdH64kNLH0M+Oew2CIPOa/9tR3++q2pEd4jU2Rxdfye9sd0Ce3XJrR5AIa8ZfbyQXzjh+g==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/errors@2.3.0':
-    resolution:
-      {
-        integrity: sha512-66RI9MAbwYV0UtP7kGcTBVLxJgUxoZGm8Fbc0ah+lGiAw17Gugco6+9GrJCV83VyF2mDWyYnYM9qdI3yjgpnaQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    hasBin: true
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/fast-stable-stringify@2.3.0':
-    resolution:
-      {
-        integrity: sha512-KfJPrMEieUg6D3hfQACoPy0ukrAV8Kio883llt/8chPEG3FVTX9z/Zuf4O01a15xZmBbmQ7toil2Dp0sxMJSxw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/functional@2.3.0':
-    resolution:
-      {
-        integrity: sha512-AgsPh3W3tE+nK3eEw/W9qiSfTGwLYEvl0rWaxHht/lRcuDVwfKRzeSa5G79eioWFFqr+pTtoCr3D3OLkwKz02Q==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/instructions@2.3.0':
-    resolution:
-      {
-        integrity: sha512-PLMsmaIKu7hEAzyElrk2T7JJx4D+9eRwebhFZpy2PXziNSmFF929eRHKUsKqBFM3cYR1Yy3m6roBZfA+bGE/oQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/keys@2.3.0':
-    resolution:
-      {
-        integrity: sha512-ZVVdga79pNH+2pVcm6fr2sWz9HTwfopDVhYb0Lh3dh+WBmJjwkabXEIHey2rUES7NjFa/G7sV8lrUn/v8LDCCQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/kit@2.3.0':
-    resolution:
-      {
-        integrity: sha512-sb6PgwoW2LjE5oTFu4lhlS/cGt/NB3YrShEyx7JgWFWysfgLdJnhwWThgwy/4HjNsmtMrQGWVls0yVBHcMvlMQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/nominal-types@2.3.0':
-    resolution:
-      {
-        integrity: sha512-uKlMnlP4PWW5UTXlhKM8lcgIaNj8dvd8xO4Y9l+FVvh9RvW2TO0GwUO6JCo7JBzCB0PSqRJdWWaQ8pu1Ti/OkA==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/options@2.3.0':
-    resolution:
-      {
-        integrity: sha512-PPnnZBRCWWoZQ11exPxf//DRzN2C6AoFsDI/u2AsQfYih434/7Kp4XLpfOMT/XESi+gdBMFNNfbES5zg3wAIkw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/programs@2.3.0':
-    resolution:
-      {
-        integrity: sha512-UXKujV71VCI5uPs+cFdwxybtHZAIZyQkqDiDnmK+DawtOO9mBn4Nimdb/6RjR2CXT78mzO9ZCZ3qfyX+ydcB7w==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/promises@2.3.0':
-    resolution:
-      {
-        integrity: sha512-GjVgutZKXVuojd9rWy1PuLnfcRfqsaCm7InCiZc8bqmJpoghlyluweNc7ml9Y5yQn1P2IOyzh9+p/77vIyNybQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-api@2.3.0':
-    resolution:
-      {
-        integrity: sha512-UUdiRfWoyYhJL9PPvFeJr4aJ554ob2jXcpn4vKmRVn9ire0sCbpQKYx6K8eEKHZWXKrDW8IDspgTl0gT/aJWVg==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-parsed-types@2.3.0':
-    resolution:
-      {
-        integrity: sha512-B5pHzyEIbBJf9KHej+zdr5ZNAdSvu7WLU2lOUPh81KHdHQs6dEb310LGxcpCc7HVE8IEdO20AbckewDiAN6OCg==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-spec-types@2.3.0':
-    resolution:
-      {
-        integrity: sha512-xQsb65lahjr8Wc9dMtP7xa0ZmDS8dOE2ncYjlvfyw/h4mpdXTUdrSMi6RtFwX33/rGuztQ7Hwaid5xLNSLvsFQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-spec@2.3.0':
-    resolution:
-      {
-        integrity: sha512-fA2LMX4BMixCrNB2n6T83AvjZ3oUQTu7qyPLyt8gHQaoEAXs8k6GZmu6iYcr+FboQCjUmRPgMaABbcr9j2J9Sw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-subscriptions-api@2.3.0':
-    resolution:
-      {
-        integrity: sha512-9mCjVbum2Hg9KGX3LKsrI5Xs0KX390lS+Z8qB80bxhar6MJPugqIPH8uRgLhCW9GN3JprAfjRNl7our8CPvsPQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-subscriptions-channel-websocket@2.3.0':
-    resolution:
-      {
-        integrity: sha512-2oL6ceFwejIgeWzbNiUHI2tZZnaOxNTSerszcin7wYQwijxtpVgUHiuItM/Y70DQmH9sKhmikQp+dqeGalaJxw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-      ws: ^8.18.0
-
-  '@solana/rpc-subscriptions-spec@2.3.0':
-    resolution:
-      {
-        integrity: sha512-rdmVcl4PvNKQeA2l8DorIeALCgJEMSu7U8AXJS1PICeb2lQuMeaR+6cs/iowjvIB0lMVjYN2sFf6Q3dJPu6wWg==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-subscriptions@2.3.0':
-    resolution:
-      {
-        integrity: sha512-Uyr10nZKGVzvCOqwCZgwYrzuoDyUdwtgQRefh13pXIrdo4wYjVmoLykH49Omt6abwStB0a4UL5gX9V4mFdDJZg==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-transformers@2.3.0':
-    resolution:
-      {
-        integrity: sha512-UuHYK3XEpo9nMXdjyGKkPCOr7WsZsxs7zLYDO1A5ELH3P3JoehvrDegYRAGzBS2VKsfApZ86ZpJToP0K3PhmMA==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-transport-http@2.3.0':
-    resolution:
-      {
-        integrity: sha512-HFKydmxGw8nAF5N+S0NLnPBDCe5oMDtI2RAmW8DMqP4U3Zxt2XWhvV1SNkAldT5tF0U1vP+is6fHxyhk4xqEvg==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc-types@2.3.0':
-    resolution:
-      {
-        integrity: sha512-O09YX2hED2QUyGxrMOxQ9GzH1LlEwwZWu69QbL4oYmIf6P5dzEEHcqRY6L1LsDVqc/dzAdEs/E1FaPrcIaIIPw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/rpc@2.3.0':
-    resolution:
-      {
-        integrity: sha512-ZWN76iNQAOCpYC7yKfb3UNLIMZf603JckLKOOLTHuy9MZnTN8XV6uwvDFhf42XvhglgUjGCEnbUqWtxQ9pa/pQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/signers@2.3.0':
-    resolution:
-      {
-        integrity: sha512-OSv6fGr/MFRx6J+ZChQMRqKNPGGmdjkqarKkRzkwmv7v8quWsIRnJT5EV8tBy3LI4DLO/A8vKiNSPzvm1TdaiQ==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/subscribable@2.3.0':
-    resolution:
-      {
-        integrity: sha512-DkgohEDbMkdTWiKAoatY02Njr56WXx9e/dKKfmne8/Ad6/2llUIrax78nCdlvZW9quXMaXPTxZvdQqo9N669Og==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/sysvars@2.3.0':
-    resolution:
-      {
-        integrity: sha512-LvjADZrpZ+CnhlHqfI5cmsRzX9Rpyb1Ox2dMHnbsRNzeKAMhu9w4ZBIaeTdO322zsTr509G1B+k2ABD3whvUBA==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/transaction-confirmation@2.3.0':
-    resolution:
-      {
-        integrity: sha512-UiEuiHCfAAZEKdfne/XljFNJbsKAe701UQHKXEInYzIgBjRbvaeYZlBmkkqtxwcasgBTOmEaEKT44J14N9VZDw==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/transaction-messages@2.3.0':
-    resolution:
-      {
-        integrity: sha512-bgqvWuy3MqKS5JdNLH649q+ngiyOu5rGS3DizSnWwYUd76RxZl1kN6CoqHSrrMzFMvis6sck/yPGG3wqrMlAww==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
-
-  '@solana/transactions@2.3.0':
-    resolution:
-      {
-        integrity: sha512-LnTvdi8QnrQtuEZor5Msje61sDpPstTVwKg4y81tNxDhiyomjuvnSNLAq6QsB9gIxUqbNzPZgOG9IU4I4/Uaug==,
-      }
-    engines: { node: '>=20.18.0' }
-    peerDependencies:
-      typescript: '>=5.3.3'
->>>>>>> 1d5042ea2 (chore: update trezor version)
 
   '@stablelib/aead@1.0.1':
     resolution: {integrity: sha512-q39ik6sxGHewqtO0nP4BuSe3db5G1fEJE8ukvngS2gLkBXyy6E7pLubhbYgnkDFv6V8cWaxcE4Xn0t6LWcJkyg==}
@@ -3684,77 +2890,21 @@ packages:
   '@starknet-io/types-js@0.7.10':
     resolution: {integrity: sha512-1VtCqX4AHWJlRRSYGSn+4X1mqolI1Tdq62IwzoU2vUuEE72S1OlEeGhpvd6XsdqXcfHmVzYfj8k1XtKBQqwo9w==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@stellar/js-xdr@3.1.2':
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-VVolPL5goVEIsvuGqDc5uiKxV03lzfWdvYg1KikvwheDmTBO68CKDji3bAZ/kppZrx5iTA8z3Ld5yuytcvhvOQ==,
-      }
-=======
-  '@swc/helpers@0.5.15':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
     resolution: {integrity: sha512-VVolPL5goVEIsvuGqDc5uiKxV03lzfWdvYg1KikvwheDmTBO68CKDji3bAZ/kppZrx5iTA8z3Ld5yuytcvhvOQ==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   '@stellar/stellar-base@13.1.0':
     resolution: {integrity: sha512-90EArG+eCCEzDGj3OJNoCtwpWDwxjv+rs/RNPhvg4bulpjN/CSRj+Ys/SalRcfM4/WRC5/qAfjzmJBAuquWhkA==}
     engines: {node: '>=18.0.0'}
 
   '@stellar/stellar-sdk@13.3.0':
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-8+GHcZLp+mdin8gSjcgfb/Lb6sSMYRX6Nf/0LcSJxvjLQR0XHpjGzOiRbYb2jSXo51EnA6kAV5j+4Pzh5OUKUg==,
-      }
-    engines: { node: '>=18.0.0' }
-=======
-    resolution:
-      {
-        integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
-  '@stellar/js-xdr@3.1.2':
-    resolution:
-      {
-        integrity: sha512-VVolPL5goVEIsvuGqDc5uiKxV03lzfWdvYg1KikvwheDmTBO68CKDji3bAZ/kppZrx5iTA8z3Ld5yuytcvhvOQ==,
-      }
-
-  '@stellar/stellar-base@13.1.0':
-    resolution:
-      {
-        integrity: sha512-90EArG+eCCEzDGj3OJNoCtwpWDwxjv+rs/RNPhvg4bulpjN/CSRj+Ys/SalRcfM4/WRC5/qAfjzmJBAuquWhkA==,
-      }
-    engines: { node: '>=18.0.0' }
-
-  '@stellar/stellar-sdk@13.3.0':
-<<<<<<< HEAD
     resolution: {integrity: sha512-8+GHcZLp+mdin8gSjcgfb/Lb6sSMYRX6Nf/0LcSJxvjLQR0XHpjGzOiRbYb2jSXo51EnA6kAV5j+4Pzh5OUKUg==}
     engines: {node: '>=18.0.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-8+GHcZLp+mdin8gSjcgfb/Lb6sSMYRX6Nf/0LcSJxvjLQR0XHpjGzOiRbYb2jSXo51EnA6kAV5j+4Pzh5OUKUg==,
-      }
-    engines: { node: '>=18.0.0' }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-8+GHcZLp+mdin8gSjcgfb/Lb6sSMYRX6Nf/0LcSJxvjLQR0XHpjGzOiRbYb2jSXo51EnA6kAV5j+4Pzh5OUKUg==}
-    engines: {node: '>=18.0.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   '@topoconfig/extends@0.16.2':
     resolution: {integrity: sha512-sTF+qpWakr5jf1Hn/kkFSi833xPW15s/loMAiKSYSSVv4vDonxf6hwCGzMXjLq+7HZoaK6BgaV72wXr1eY7FcQ==}
     hasBin: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@trezor/analytics@1.4.3':
     resolution: {integrity: sha512-0o7gp7nfip8yjhAwP3R/Hcy5S8RfmZmYwpCcN0PbydWa5U5VMQ+T/iB/OpbpeV+8j13bf6i7++38nTCUNas0GA==}
     peerDependencies:
@@ -3804,126 +2954,7 @@ packages:
     resolution: {integrity: sha512-hFC0nVnWVFaWx0IfCsoHGvBrh5SKsnTHwrX5pvBotwOw51lzTDMd43CkA7nHRybkhcc2JgX1Qq2UbYdwgEWhPg==}
 
   '@trezor/env-utils@1.4.3':
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-sWC828NRNQi5vc9W4M9rHOJDeI9XlsgnzZaML/lHju7WhlZCmSq5BOntZQvD8d1W0fSwLMLdlcBKBr/gQkvFZQ==,
-      }
-=======
-  '@trezor/analytics@1.2.7-beta.1':
-    resolution:
-      {
-        integrity: sha512-U2QwCTlDaxyiYLH5tgLRBAPDfoZZqnlPGJLsNPwZHr9CPdxLmaEl7hqmfkpPgHodDrhZnXkN29qRA0WkQlpyaQ==,
-      }
-=======
-  '@trezor/analytics@1.4.3':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-0o7gp7nfip8yjhAwP3R/Hcy5S8RfmZmYwpCcN0PbydWa5U5VMQ+T/iB/OpbpeV+8j13bf6i7++38nTCUNas0GA==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-0o7gp7nfip8yjhAwP3R/Hcy5S8RfmZmYwpCcN0PbydWa5U5VMQ+T/iB/OpbpeV+8j13bf6i7++38nTCUNas0GA==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/blockchain-link-types@1.4.4':
-    resolution:
-      {
-        integrity: sha512-B38LH4aniZ7gKbpSdMRiA4YriauoYPHgjhKEd+ybR0ca+liNlPAvMwSHJyMhL1eDIYEs16oOjTgT53WjRRZbMg==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/blockchain-link-utils@1.4.4':
-    resolution:
-      {
-        integrity: sha512-8BZD6h5gs3ETPOG2Ri+GOyH44D38YQVeQj8n7oVOVQi21zx93JOpdL3fWS9RytkfmvB84WwVzYoHGlTs3T80Gw==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/blockchain-link@2.5.4':
-    resolution:
-      {
-        integrity: sha512-3Xki/2Vmr1/rKa5LF+Eb2/Qd5N9LqwyRL76+ycqe1KwqV7xK3XGMsqTH9FUUReRvGxrzAFonbOgADAJczhx81w==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/connect-analytics@1.3.6':
-    resolution:
-      {
-        integrity: sha512-Skya46inItcjaahaqpeSsQmB2Xle70f/l+6eTTJYxKQdpMtuW5LRsRRiyMAQTp5RBycL2ngnsVtY+/83Bt5lUw==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/connect-common@0.4.4':
-    resolution:
-      {
-        integrity: sha512-xG2CoPjgcldtO6HU0ZjNCvFdQ4hpl56qzU1VEF1/A1BL2zj2TwLGLmyr4E878go1mmfksNGY5a1tqnzAZ7pRLw==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/connect-web@9.6.4':
-    resolution:
-      {
-        integrity: sha512-Dip0+B2NKso8noux0mrsyy/Sz3Y0ZEn4Lq7CqM0hif4iu38FIPaUOWaR9BtDLj5TDYDi/sXHHkP+90gPobwigA==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/connect@9.6.4':
-    resolution:
-      {
-        integrity: sha512-/N3hhOFIIhufvihCx92wvxd15Wy9XAJOSbTiV8rYG2N9uBvzejctNO2+LpwCRl/cBKle9rsp4S7C/zz++iDuOg==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-<<<<<<< HEAD
-  '@trezor/env-utils@1.2.2-beta.1':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-Pb3LnuT6yTsZqYuuXixH3nUWhueY8Yylt23A/t8KkINJeofh0cxmvOuNffSTm/fZRPbV4R7rgfkIARF173/CIg==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-Pb3LnuT6yTsZqYuuXixH3nUWhueY8Yylt23A/t8KkINJeofh0cxmvOuNffSTm/fZRPbV4R7rgfkIARF173/CIg==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
-  '@trezor/crypto-utils@1.1.5':
-    resolution:
-      {
-        integrity: sha512-Bp3L9MvzYy1OhPcNJIPIPu7kAH1lQyI1ZMuGnIo53nLDcU+t7cWO8z8xpyGW1BAnQ9wn+xaqrycLRf76I0TBtA==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/device-utils@1.1.4':
-    resolution:
-      {
-        integrity: sha512-hFC0nVnWVFaWx0IfCsoHGvBrh5SKsnTHwrX5pvBotwOw51lzTDMd43CkA7nHRybkhcc2JgX1Qq2UbYdwgEWhPg==,
-      }
-
-  '@trezor/env-utils@1.4.3':
-<<<<<<< HEAD
     resolution: {integrity: sha512-sWC828NRNQi5vc9W4M9rHOJDeI9XlsgnzZaML/lHju7WhlZCmSq5BOntZQvD8d1W0fSwLMLdlcBKBr/gQkvFZQ==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-sWC828NRNQi5vc9W4M9rHOJDeI9XlsgnzZaML/lHju7WhlZCmSq5BOntZQvD8d1W0fSwLMLdlcBKBr/gQkvFZQ==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-sWC828NRNQi5vc9W4M9rHOJDeI9XlsgnzZaML/lHju7WhlZCmSq5BOntZQvD8d1W0fSwLMLdlcBKBr/gQkvFZQ==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     peerDependencies:
       expo-constants: '*'
       expo-localization: '*'
@@ -3937,8 +2968,6 @@ packages:
       react-native:
         optional: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@trezor/protobuf@1.4.4':
     resolution: {integrity: sha512-+DwcXkio4qlMkPu6KxnEfhXv5PHTkKh2n6Fo88i5zishUHpYD3NhCS0pouzti8PIPyJE73HQ9MoisG44KQjbtg==}
     peerDependencies:
@@ -3978,128 +3007,7 @@ packages:
       tslib: ^2.6.2
 
   '@trezor/websocket-client@1.2.4':
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-UgU31gFX8gY0abeI5DjRVnH4RfbXqHcOb019ogkR51KlfjkiWXTvUWKRLLqwslWiUIMEAI3ZFeXQds84b7Uw/Q==,
-      }
-=======
-  '@trezor/env-utils@1.3.0-beta.1':
-    resolution:
-      {
-        integrity: sha512-8oGjZ2hiaHeMa8ebk3Fm7PjbgfwAvVU/SDuT4P0p9MrBv1MS5MOH5h7bKiPyN0cnY6NjFKA2RYgKkaV0+y7X4g==,
-      }
-    peerDependencies:
-      expo-constants: '*'
-      expo-localization: '*'
-      react-native: '*'
-      tslib: ^2.6.2
-    peerDependenciesMeta:
-      expo-constants:
-        optional: true
-      expo-localization:
-        optional: true
-      react-native:
-        optional: true
-
-  '@trezor/protobuf@1.3.0-beta.1':
-    resolution:
-      {
-        integrity: sha512-lSzO272N0zoSaaHaSyD2vfBU1eRl86ct6sD2WVzmDqK7/HRAdytUnkXRZHNkIe+ZJjuB1D+BLQSCInDLyxuWWg==,
-      }
-=======
-  '@trezor/protobuf@1.4.4':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-+DwcXkio4qlMkPu6KxnEfhXv5PHTkKh2n6Fo88i5zishUHpYD3NhCS0pouzti8PIPyJE73HQ9MoisG44KQjbtg==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-+DwcXkio4qlMkPu6KxnEfhXv5PHTkKh2n6Fo88i5zishUHpYD3NhCS0pouzti8PIPyJE73HQ9MoisG44KQjbtg==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/protocol@1.2.10':
-    resolution:
-      {
-        integrity: sha512-Ek5bHu2s4OAWOaJU5ksd1kcpe/STyLWOtUVTq6Vn4oMT3++qtrjWRQx/aTN/UaTfNoZlKvFXCC/STGlgBv9CKQ==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/schema-utils@1.3.4':
-    resolution:
-      {
-        integrity: sha512-guP5TKjQEWe6c5HGx+7rhM0SAdEL5gylpkvk9XmJXjZDnl1Ew81nmLHUs2ghf8Od3pKBe4qjBIMBHUQNaOqWUg==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/transport@1.5.4':
-    resolution:
-      {
-        integrity: sha512-3vGn2IEofbzhKMyLjzmTCwVTE5Wj0gkncLCNc66DU95IEW5WlwNGt/nXSJCg9TMBHK6qtlbY1HOBFuUzEW2Q7w==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/type-utils@1.1.9':
-    resolution:
-      {
-        integrity: sha512-/Ug5pmVEpT5OVrf007kEvDj+zOdedHV0QcToUHG/WpVAKH9IsOssOAYIfRr8lDDgT+mDHuArZk/bYa1qvVz8Hw==,
-      }
-
-  '@trezor/utils@9.4.3':
-    resolution:
-      {
-        integrity: sha512-QkLHpGTF3W3wNGj6OCdcMog7MhAAdlUmpjjmMjMqE0JSoi1Yjr0m7k7xN0iIHSqcgrhYteZDeJZAGlAf/b7gqw==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/utils@9.4.4':
-    resolution:
-      {
-        integrity: sha512-08ciafbBqhApn58q3KkewdLQ3dCA71MsK/BOUfD43EB2GpB420zzky7REilXhOONc3giD0fBbTG3Zdt3HNL0/Q==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-  '@trezor/utxo-lib@2.4.4':
-    resolution:
-      {
-        integrity: sha512-rccdH3+iqvBL/Nkso/wGCdIXAQY+M/ubLIf/i/hBbcpRH6JoOg8oyaoaHzegsYNE6yHKnykTOZWz5Q4MTG02Bw==,
-      }
-    peerDependencies:
-      tslib: ^2.6.2
-
-<<<<<<< HEAD
-  '@trezor/websocket-client@1.1.0-beta.1':
-<<<<<<< HEAD
-    resolution: {integrity: sha512-ZOMNIM/SvOMO4PCpmXPtsaysyg2K+qdlnlet/UosvAg523I9YWFCOqQSJADQDFLE1Q1iI2wHyr1OgXDRMsyhXw==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-ZOMNIM/SvOMO4PCpmXPtsaysyg2K+qdlnlet/UosvAg523I9YWFCOqQSJADQDFLE1Q1iI2wHyr1OgXDRMsyhXw==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
-  '@trezor/websocket-client@1.2.4':
-<<<<<<< HEAD
     resolution: {integrity: sha512-UgU31gFX8gY0abeI5DjRVnH4RfbXqHcOb019ogkR51KlfjkiWXTvUWKRLLqwslWiUIMEAI3ZFeXQds84b7Uw/Q==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-UgU31gFX8gY0abeI5DjRVnH4RfbXqHcOb019ogkR51KlfjkiWXTvUWKRLLqwslWiUIMEAI3ZFeXQds84b7Uw/Q==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-UgU31gFX8gY0abeI5DjRVnH4RfbXqHcOb019ogkR51KlfjkiWXTvUWKRLLqwslWiUIMEAI3ZFeXQds84b7Uw/Q==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     peerDependencies:
       tslib: ^2.6.2
 
@@ -4213,38 +3121,9 @@ packages:
   '@types/babel__traverse@7.28.0':
     resolution: {integrity: sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
   '@types/chai@5.2.3':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==,
-      }
-=======
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
->>>>>>> 0ef34e79d (chore: migrate from jest to vitest)
-  '@types/connect@3.4.35':
-    resolution:
-      {
-        integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==,
-      }
-=======
-    resolution: {integrity: sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==}
->>>>>>> 70d3f3b0a (chore: update trezor version)
-=======
-    resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
->>>>>>> bb71a84a5 (chore: package bump)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@types/conventional-commits-parser@5.0.1':
     resolution: {integrity: sha512-7uz5EHdzz2TqoMfV7ee61Egf5y6NkcO4FB/1iCCQnbeiI1F3xzv3vK5dBCXUCLQgGYS+mUeigK1iKQzvED+QnQ==}
 
@@ -4300,31 +3179,8 @@ packages:
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
 
   '@types/minimist@1.2.5':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==,
-      }
-=======
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  '@types/node@12.20.55':
-    resolution:
-      {
-        integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==,
-      }
-=======
-    resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@types/node@22.13.10':
     resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
 
@@ -4362,72 +3218,14 @@ packages:
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
   '@types/unist@2.0.11':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==,
-      }
-=======
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  '@types/uuid@8.3.4':
-    resolution:
-      {
-        integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==,
-      }
-=======
-    resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@types/w3c-web-usb@1.0.10':
     resolution: {integrity: sha512-CHgUI5kTc/QLMP8hODUHhge0D4vx+9UiAwIGiT0sTy/B2XpdX1U5rJt6JSISgr6ikRT7vxV9EVAFeYZqUnl1gQ==}
 
   '@types/web@0.0.197':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-V4sOroWDADFx9dLodWpKm298NOJ1VJ6zoDVgaP+WBb/utWxqQ6gnMzd9lvVDAr/F3ibiKaxH9i45eS0gQPSTaQ==,
-      }
-=======
     resolution: {integrity: sha512-V4sOroWDADFx9dLodWpKm298NOJ1VJ6zoDVgaP+WBb/utWxqQ6gnMzd9lvVDAr/F3ibiKaxH9i45eS0gQPSTaQ==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  '@types/ws@7.4.7':
-    resolution:
-      {
-        integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==,
-      }
-
-  '@types/ws@8.5.13':
-    resolution:
-      {
-        integrity: sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==,
-      }
-
-  '@types/ws@8.5.3':
-    resolution:
-      {
-        integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==,
-      }
-=======
-    resolution: {integrity: sha512-V4sOroWDADFx9dLodWpKm298NOJ1VJ6zoDVgaP+WBb/utWxqQ6gnMzd9lvVDAr/F3ibiKaxH9i45eS0gQPSTaQ==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
 
@@ -4726,19 +3524,6 @@ packages:
   '@xrplf/secret-numbers@2.0.0':
     resolution: {integrity: sha512-z3AOibRTE9E8MbjgzxqMpG1RNaBhQ1jnfhNCa1cGf2reZUJzPMYs4TggQTc7j8+0WyV3cr7y/U8Oz99SXIkN5Q==}
 
-  '@xrplf/isomorphic@1.0.1':
-    resolution:
-      {
-        integrity: sha512-0bIpgx8PDjYdrLFeC3csF305QQ1L7sxaWnL5y71mCvhenZzJgku9QsA+9QCXBC1eNYtxWO/xR91zrXJy2T/ixg==,
-      }
-    engines: { node: '>=16.0.0' }
-
-  '@xrplf/secret-numbers@2.0.0':
-    resolution:
-      {
-        integrity: sha512-z3AOibRTE9E8MbjgzxqMpG1RNaBhQ1jnfhNCa1cGf2reZUJzPMYs4TggQTc7j8+0WyV3cr7y/U8Oz99SXIkN5Q==,
-      }
-
   '@yarnpkg/lockfile@1.1.0':
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
 
@@ -4765,28 +3550,6 @@ packages:
     resolution: {integrity: sha512-0aA81FScmJCPX+8UvkXLki3X1+yPQuWxEkqXBVKltgPAK79J+NB+Lp5DouMXa7L6f+zcRlIA/6XO7BN/q9fnvg==}
     hasBin: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  abitype@0.7.1:
-    resolution:
-      {
-        integrity: sha512-VBkRHTDZf9Myaek/dO3yMmOzB/y2s3Zo6nVU7yaw1G+TvCHAjwaJzNGN9yo4K5D8bU/VZXKP1EJpRhFr862PlQ==,
-      }
-    peerDependencies:
-      typescript: '>=4.9.4'
-      zod: ^3 >=3.19.1
-    peerDependenciesMeta:
-      zod:
-        optional: true
-
-<<<<<<< HEAD
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
   abitype@1.1.0:
     resolution: {integrity: sha512-6Vh4HcRxNMLA0puzPjM5GBgT4aAcFGKZzSgAXvuZ27shJP6NEpielTuqbBmZILR5/xd0PizkBGy5hReKz9jl5A==}
     peerDependencies:
@@ -4828,72 +3591,12 @@ packages:
     resolution: {integrity: sha512-H7wUZRn8WpTq9jocdxQ2c8x2sKo9ZVmzfRE13GiNJXfp7NcKYEdvl3vspKjXox6RIG2VtaRe4JFvxG4rqp2Zuw==}
 
   aes-js@4.0.0-beta.5:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-G965FqalsNyrPqgEGON7nIx1e/OVENSgiEIzyC63haUMuvNnwIgIjMs52hlTCKhkBny7A2ORNlfY9Zu+jmGk1Q==,
-      }
-=======
     resolution: {integrity: sha512-G965FqalsNyrPqgEGON7nIx1e/OVENSgiEIzyC63haUMuvNnwIgIjMs52hlTCKhkBny7A2ORNlfY9Zu+jmGk1Q==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  agent-base@6.0.2:
-    resolution:
-      {
-        integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==,
-      }
-    engines: { node: '>= 6.0.0' }
-
-  agent-base@7.1.1:
-    resolution:
-      {
-        integrity: sha512-H0TSyFNDMomMNJQBn8wFV5YC/2eJ+VXECwOadZJT554xP6cODZHPX3H9QMQECxvrgiSOP1pHjy1sMWQVYJOUOA==,
-      }
-    engines: { node: '>= 14' }
-=======
-    resolution: {integrity: sha512-G965FqalsNyrPqgEGON7nIx1e/OVENSgiEIzyC63haUMuvNnwIgIjMs52hlTCKhkBny7A2ORNlfY9Zu+jmGk1Q==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   agent-base@7.1.4:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==,
-      }
-    engines: { node: '>= 14' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
     engines: {node: '>= 14'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  agentkeepalive@4.5.0:
-    resolution:
-      {
-        integrity: sha512-5GG/5IbQQpC9FpkRGsSvZI5QYeSCzlJHdpBQntCsuTOxhKD8lqKhrleg2Yi7yvMIf82Ycmmqln9U8V9qwEiJew==,
-      }
-    engines: { node: '>= 8.0.0' }
-=======
-    resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
-    engines: {node: '>= 14'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   aggregate-error@3.1.0:
     resolution: {integrity: sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==}
     engines: {node: '>=8'}
@@ -5060,39 +3763,8 @@ packages:
     resolution: {integrity: sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==}
     engines: {node: '>=8'}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   asn1.js@4.10.1:
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-p32cOF5q0Zqs9uBiONKYLm6BClCoBCM5O9JfeUSlnQLBTxYdTK+pW+nXflm8UkKd2UYlEbYz5qEi0JuZR9ckSw==,
-      }
-=======
-  assert@2.0.0:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-se5Cd+js9dXJnu6Ag2JFc00t+HmHOen+8Q+L7O9zI0PqQXr20uk2J0XQqMxZEeo5U50o8Nvmmx7dZrl+Ufr35A==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-se5Cd+js9dXJnu6Ag2JFc00t+HmHOen+8Q+L7O9zI0PqQXr20uk2J0XQqMxZEeo5U50o8Nvmmx7dZrl+Ufr35A==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
-  asn1.js@4.10.1:
-<<<<<<< HEAD
     resolution: {integrity: sha512-p32cOF5q0Zqs9uBiONKYLm6BClCoBCM5O9JfeUSlnQLBTxYdTK+pW+nXflm8UkKd2UYlEbYz5qEi0JuZR9ckSw==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-p32cOF5q0Zqs9uBiONKYLm6BClCoBCM5O9JfeUSlnQLBTxYdTK+pW+nXflm8UkKd2UYlEbYz5qEi0JuZR9ckSw==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-p32cOF5q0Zqs9uBiONKYLm6BClCoBCM5O9JfeUSlnQLBTxYdTK+pW+nXflm8UkKd2UYlEbYz5qEi0JuZR9ckSw==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   assertion-error@2.0.1:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
@@ -5153,6 +3825,9 @@ packages:
   axios@1.11.0:
     resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
 
+  axios@1.13.2:
+    resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
+
   axios@1.7.7:
     resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
@@ -5207,34 +3882,6 @@ packages:
   bare-semver@1.0.2:
     resolution: {integrity: sha512-ESVaN2nzWhcI5tf3Zzcq9aqCZ676VWzqw07eEZ0qxAcEOAFYBa0pWq8sK34OQeHLY3JsfKXZS9mDyzyxGjeLzA==}
 
-  bare-addon-resolve@1.9.6:
-    resolution:
-      {
-        integrity: sha512-hvOQY1zDK6u0rSr27T6QlULoVLwi8J2k8HHHJlxSfT7XQdQ/7bsS+AnjYkHtu/TkL+gm3aMXAKucJkJAbrDG/g==,
-      }
-    peerDependencies:
-      bare-url: '*'
-    peerDependenciesMeta:
-      bare-url:
-        optional: true
-
-  bare-module-resolve@1.12.0:
-    resolution:
-      {
-        integrity: sha512-JrzrqlC3Tds0iKRwQs8xIIJ+FRieKA9ll0jaqpotDLZtjJPVevzRoeuUYZ5GIo1t1z7/pIRdk85Q3i/2xQLfEQ==,
-      }
-    peerDependencies:
-      bare-url: '*'
-    peerDependenciesMeta:
-      bare-url:
-        optional: true
-
-  bare-semver@1.0.2:
-    resolution:
-      {
-        integrity: sha512-ESVaN2nzWhcI5tf3Zzcq9aqCZ676VWzqw07eEZ0qxAcEOAFYBa0pWq8sK34OQeHLY3JsfKXZS9mDyzyxGjeLzA==,
-      }
-
   base-x@3.0.9:
     resolution: {integrity: sha512-H7JU6iBHTal1gp56aKoaa//YUxEaAOUiydvrV/pILqIHXTtqxSkATOnDA2u+jZ/61sD+L/412+7kzXRtWukhpQ==}
 
@@ -5248,13 +3895,6 @@ packages:
     resolution: {integrity: sha512-n3TkB02ixgBOhTvANakDb4xaMXnYUVkNoRFJjQflcqMQhyEKxEHdj3E6N8t8sUQ0mjH/3/JxzlXuz3ul/J90pQ==}
     engines: {node: '>=0.12.0'}
 
-  base32.js@0.1.0:
-    resolution:
-      {
-        integrity: sha512-n3TkB02ixgBOhTvANakDb4xaMXnYUVkNoRFJjQflcqMQhyEKxEHdj3E6N8t8sUQ0mjH/3/JxzlXuz3ul/J90pQ==,
-      }
-    engines: { node: '>=0.12.0' }
-
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
@@ -5267,32 +3907,8 @@ packages:
     engines: {node: '>= 0.8'}
 
   batch@0.6.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==,
-      }
-=======
     resolution: {integrity: sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  bchaddrjs@0.5.2:
-    resolution:
-      {
-        integrity: sha512-OO7gIn3m7ea4FVx4cT8gdlWQR2+++EquhdpWQJH9BQjK63tJJ6ngB3QMZDO6DiBoXiIGUsTPHjlrHVxPGcGxLQ==,
-      }
-    engines: { node: '>=8.0.0' }
-=======
-    resolution: {integrity: sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   bcryptjs@2.4.3:
     resolution: {integrity: sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==}
 
@@ -5306,56 +3922,14 @@ packages:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
 
   big-integer@1.6.36:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-t70bfa7HYEA1D9idDbmuv7YbsbVkQ+Hp+8KFSul4aE5e/i1bjCNIRYJZlA8Q8p0r9T8cF/RVvwUgRA//FydEyg==,
-      }
-    engines: { node: '>=0.6' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-t70bfa7HYEA1D9idDbmuv7YbsbVkQ+Hp+8KFSul4aE5e/i1bjCNIRYJZlA8Q8p0r9T8cF/RVvwUgRA//FydEyg==}
     engines: {node: '>=0.6'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  big-integer@1.6.51:
-    resolution:
-      {
-        integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==,
-      }
-    engines: { node: '>=0.6' }
-
-  bigint-buffer@1.1.5:
-    resolution:
-      {
-        integrity: sha512-trfYco6AoZ+rKhKnxA0hgX0HAbVP/s808/EuDSe2JDzUnCp/xAsli35Orvk67UrTEcwuxZqYZDmfA2RXJgxVvA==,
-      }
-    engines: { node: '>= 10.0.0' }
-=======
-    resolution: {integrity: sha512-t70bfa7HYEA1D9idDbmuv7YbsbVkQ+Hp+8KFSul4aE5e/i1bjCNIRYJZlA8Q8p0r9T8cF/RVvwUgRA//FydEyg==}
-    engines: {node: '>=0.6'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   bignumber.js@9.1.2:
     resolution: {integrity: sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==}
 
   bignumber.js@9.3.1:
     resolution: {integrity: sha512-Ko0uX15oIUS7wJ3Rb30Fs6SkVbLmPBAKdlm7q9+ak9bbIeFf0MwuBsQV6z7+X768/cHsfg+WlysDWJcmthjsjQ==}
-
-  bignumber.js@9.3.1:
-    resolution:
-      {
-        integrity: sha512-Ko0uX15oIUS7wJ3Rb30Fs6SkVbLmPBAKdlm7q9+ak9bbIeFf0MwuBsQV6z7+X768/cHsfg+WlysDWJcmthjsjQ==,
-      }
 
   bin-links@4.0.4:
     resolution: {integrity: sha512-cMtq4W5ZsEwcutJrVId+a/tjt8GSbS+h0oNkdl6+6rBuEv8Ot33Bevj5KPm40t309zuhVic8NjpuL42QCiJWWA==}
@@ -5406,39 +3980,8 @@ packages:
   bn.js@5.2.1:
     resolution: {integrity: sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   bn.js@5.2.2:
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-v2YAxEmKaBLahNwE1mjp4WON6huMNeuDvagFZW+ASCuA/ku0bXR9hSMw0XpiqMoA3+rmnyck/tPRSFQkoC9Cuw==,
-      }
-=======
-  borsh@0.7.0:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-CLCsZGIBCFnPtkNnieW/a8wmreDmfUtjU2m9yHrzPXIlNbqVs0AQrSatSG6vdNYUqdc83tkQi2eHfF98ubzQLA==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-CLCsZGIBCFnPtkNnieW/a8wmreDmfUtjU2m9yHrzPXIlNbqVs0AQrSatSG6vdNYUqdc83tkQi2eHfF98ubzQLA==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
-  bn.js@5.2.2:
-<<<<<<< HEAD
     resolution: {integrity: sha512-v2YAxEmKaBLahNwE1mjp4WON6huMNeuDvagFZW+ASCuA/ku0bXR9hSMw0XpiqMoA3+rmnyck/tPRSFQkoC9Cuw==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-v2YAxEmKaBLahNwE1mjp4WON6huMNeuDvagFZW+ASCuA/ku0bXR9hSMw0XpiqMoA3+rmnyck/tPRSFQkoC9Cuw==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-v2YAxEmKaBLahNwE1mjp4WON6huMNeuDvagFZW+ASCuA/ku0bXR9hSMw0XpiqMoA3+rmnyck/tPRSFQkoC9Cuw==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   boxen@1.3.0:
     resolution: {integrity: sha512-TNPjfTr432qx7yOjQyaXm3dSR0MH9vXp7eT1BFSl/C51g+EFnOR9hTg1IreahGBmDNCehscshe45f+C1TBZbLw==}
@@ -5464,8 +4007,6 @@ packages:
   browser-headers@0.4.1:
     resolution: {integrity: sha512-CA9hsySZVo9371qEHjHZtYxV2cFtVj5Wj/ZHi8ooEsrtm4vOnl9Y9HmyYWk9q+05d7K3rdoAE0j3MVEFVvtQtg==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   browserify-aes@1.2.0:
     resolution: {integrity: sha512-+7CHXqGuspUn/Sl5aO7Ea0xWGAtETPXNSAjHo48JfLdPWcMng33Xe4znFvQweqc/uzk5zSOI3H52CYnjCfb5hA==}
 
@@ -5483,72 +4024,6 @@ packages:
     resolution: {integrity: sha512-C2AUdAJg6rlM2W5QMp2Q4KGQMVBwR1lIimTsUnutJ8bMpW5B52pGpR2gEnNBNwijumDo5FojQ0L9JrXA8m4YEw==}
     engines: {node: '>= 0.10'}
 
-<<<<<<< HEAD
-  browserslist@4.24.4:
-    resolution: {integrity: sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==}
-    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
-    hasBin: true
-
-  browserslist@4.24.4:
-    resolution: {integrity: sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==}
-    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
-    hasBin: true
-
-=======
->>>>>>> f8ee83138 (chore: optimise eslint speed)
-  browserslist@4.25.1:
-    resolution:
-      {
-        integrity: sha512-KGj0KoOMXLpSNkkEI6Z6mShmQy0bc1I+T7K9N81k4WWMrfz+6fQ6es80B/YLAeRoKvjYE1YSHHOW1qe9xIVzHw==,
-      }
-    engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
-=======
-  browserify-aes@1.2.0:
-    resolution:
-      {
-        integrity: sha512-+7CHXqGuspUn/Sl5aO7Ea0xWGAtETPXNSAjHo48JfLdPWcMng33Xe4znFvQweqc/uzk5zSOI3H52CYnjCfb5hA==,
-      }
-
-  browserify-cipher@1.0.1:
-    resolution:
-      {
-        integrity: sha512-sPhkz0ARKbf4rRQt2hTpAHqn47X3llLkUGn+xEJzLjwY8LRs2p0v7ljvI5EyoRO/mexrNunNECisZs+gw2zz1w==,
-      }
-
-  browserify-des@1.0.2:
-    resolution:
-      {
-        integrity: sha512-BioO1xf3hFwz4kc6iBhI3ieDFompMhrMlnDFC4/0/vd5MokpuAc3R+LYbwTA9A5Yc9pq9UYPqffKpW2ObuwX5A==,
-      }
-
-  browserify-rsa@4.1.1:
-    resolution:
-      {
-        integrity: sha512-YBjSAiTqM04ZVei6sXighu679a3SqWORA3qZTEqZImnlkDIFtKc6pNutpjyZ8RJTjQtuYfeetkxM11GwoYXMIQ==,
-      }
-    engines: { node: '>= 0.10' }
-
-  browserify-sign@4.2.5:
-    resolution:
-      {
-        integrity: sha512-C2AUdAJg6rlM2W5QMp2Q4KGQMVBwR1lIimTsUnutJ8bMpW5B52pGpR2gEnNBNwijumDo5FojQ0L9JrXA8m4YEw==,
-      }
-    engines: { node: '>= 0.10' }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  browserslist@4.24.4:
-    resolution: {integrity: sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==}
-    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-    hasBin: true
-
->>>>>>> 70d3f3b0a (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   browserslist@4.25.1:
     resolution: {integrity: sha512-KGj0KoOMXLpSNkkEI6Z6mShmQy0bc1I+T7K9N81k4WWMrfz+6fQ6es80B/YLAeRoKvjYE1YSHHOW1qe9xIVzHw==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -5578,48 +4053,11 @@ packages:
   buffer-equal-constant-time@1.0.1:
     resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
 
-  buffer-equal-constant-time@1.0.1:
-    resolution:
-      {
-        integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==,
-      }
-
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   buffer-xor@1.0.3:
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ==,
-      }
-=======
-  buffer@5.6.0:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
-  buffer-xor@1.0.3:
-<<<<<<< HEAD
     resolution: {integrity: sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -5701,42 +4139,9 @@ packages:
     resolution: {integrity: sha512-vIwORDd/WyB8Nc23o2zNN5RrtFGlR6Fca61TtjkUXueI3Jf2DOZDl1zsshvBntZ3wZHBM9ztjnkXSmzQDaq3WA==}
     engines: {node: '>=20'}
 
-<<<<<<< HEAD
-  cbor@10.0.11:
-    resolution:
-      {
-        integrity: sha512-vIwORDd/WyB8Nc23o2zNN5RrtFGlR6Fca61TtjkUXueI3Jf2DOZDl1zsshvBntZ3wZHBM9ztjnkXSmzQDaq3WA==,
-      }
-    engines: { node: '>=20' }
-=======
   chai@6.2.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-p4Z49OGG5W/WBCPSS/dH3jQ73kD6tiMmUM+bckNK6Jr5JHMG3k9bg/BvKR8lKmtVBKmOiuVaV2ws8s9oSbwysg==}
     engines: {node: '>=18'}
->>>>>>> 0ef34e79d (chore: migrate from jest to vitest)
-=======
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-p4Z49OGG5W/WBCPSS/dH3jQ73kD6tiMmUM+bckNK6Jr5JHMG3k9bg/BvKR8lKmtVBKmOiuVaV2ws8s9oSbwysg==,
-      }
-    engines: { node: '>=18' }
-<<<<<<< HEAD
->>>>>>> 8e756248f (chore: release)
-=======
-    resolution: {integrity: sha512-p4Z49OGG5W/WBCPSS/dH3jQ73kD6tiMmUM+bckNK6Jr5JHMG3k9bg/BvKR8lKmtVBKmOiuVaV2ws8s9oSbwysg==}
-    engines: {node: '>=18'}
->>>>>>> bb71a84a5 (chore: package bump)
-=======
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-p4Z49OGG5W/WBCPSS/dH3jQ73kD6tiMmUM+bckNK6Jr5JHMG3k9bg/BvKR8lKmtVBKmOiuVaV2ws8s9oSbwysg==}
-    engines: {node: '>=18'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   chalk@2.4.1:
     resolution: {integrity: sha512-ObN6h1v2fTJSmUXoS3nMQ92LbDK9be4TV+6G+omQlGJFdcUX5heKi1LZ1YnRMIgwTLEj3E24bT6tYni50rlCfQ==}
@@ -5918,43 +4323,9 @@ packages:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   commander@14.0.2:
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==,
-      }
-    engines: { node: '>=20' }
-=======
-  commander@2.20.3:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
-  commander@14.0.2:
-<<<<<<< HEAD
     resolution: {integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==}
     engines: {node: '>=20'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==,
-      }
-    engines: { node: '>=20' }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==}
-    engines: {node: '>=20'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   commander@8.0.0:
     resolution: {integrity: sha512-Xvf85aAtu6v22+E5hfVoLHqyul/jyxh91zvqk/ioJTQuJR7Z78n7H558vMPKanPSRgIEeZemT92I2g9Y8LPbSQ==}
@@ -6115,24 +4486,7 @@ packages:
     hasBin: true
 
   create-ecdh@4.0.4:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-mf+TCx8wWc9VpuxfP2ht0iSISLZnt0JgWlrOKZiNqyUZWnjIaCIVNQArMHnCZKfEYRg6IM7A+NeJoN8gf/Ws0A==,
-      }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-mf+TCx8wWc9VpuxfP2ht0iSISLZnt0JgWlrOKZiNqyUZWnjIaCIVNQArMHnCZKfEYRg6IM7A+NeJoN8gf/Ws0A==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-mf+TCx8wWc9VpuxfP2ht0iSISLZnt0JgWlrOKZiNqyUZWnjIaCIVNQArMHnCZKfEYRg6IM7A+NeJoN8gf/Ws0A==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   create-hash@1.2.0:
     resolution: {integrity: sha512-z00bCGNHDG8mHAkP7CtT1qVu+bFQUPjYq/4Iv3C3kWjTFV10zIjfSoeqXo9Asws8gwSHDGj/hl2u4OGIjapeCg==}
@@ -6179,24 +4533,7 @@ packages:
         optional: true
 
   crypto-browserify@3.12.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-fz4spIh+znjO2VjL+IdhEpRJ3YN6sMzITSBijk6FK2UvTqruSQW+/cCZTSNsMiZNvUeq0CqurF+dAbyiGOY6Wg==,
-      }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-fz4spIh+znjO2VjL+IdhEpRJ3YN6sMzITSBijk6FK2UvTqruSQW+/cCZTSNsMiZNvUeq0CqurF+dAbyiGOY6Wg==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-fz4spIh+znjO2VjL+IdhEpRJ3YN6sMzITSBijk6FK2UvTqruSQW+/cCZTSNsMiZNvUeq0CqurF+dAbyiGOY6Wg==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   crypto-js@3.3.0:
     resolution: {integrity: sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==}
@@ -6268,37 +4605,9 @@ packages:
     engines: {node: '>=0.10.0'}
 
   decamelize@1.2.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==,
-      }
-    engines: { node: '>=0.10.0' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
     engines: {node: '>=0.10.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  decimal.js@10.4.3:
-    resolution:
-      {
-        integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==,
-      }
-=======
-    resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
-    engines: {node: '>=0.10.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   decode-uri-component@0.2.2:
     resolution: {integrity: sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==}
     engines: {node: '>=0.10'}
@@ -6361,32 +4670,8 @@ packages:
     engines: {node: '>=0.10.0'}
 
   defu@6.1.4:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==,
-      }
-=======
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  delay@5.0.0:
-    resolution:
-      {
-        integrity: sha512-ReEBKkIfe4ya47wlPYf/gu5ib6yUG0/Aez0JQZQz94kiWtRQvZIQbTiehsnwHvLSWJnQdhVeqYue7Id1dKr0qw==,
-      }
-    engines: { node: '>=10' }
-=======
-    resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
@@ -6412,12 +4697,6 @@ packages:
   des.js@1.1.0:
     resolution: {integrity: sha512-r17GxjhUCjSRy8aiJpr8/UadFIzMzJGexI3Nmz4ADi9LYSFx4gTBp80+NaX/YsXWWLhpZ7v/v/ubEc/bCNfKwg==}
 
-  des.js@1.1.0:
-    resolution:
-      {
-        integrity: sha512-r17GxjhUCjSRy8aiJpr8/UadFIzMzJGexI3Nmz4ADi9LYSFx4gTBp80+NaX/YsXWWLhpZ7v/v/ubEc/bCNfKwg==,
-      }
-
   destr@2.0.3:
     resolution: {integrity: sha512-2N3BOUU4gYMpTP24s5rF5iP7BDr7uNTCs4ozw3kf/eKfvWSIu93GEBi5m427YoyJoeOzQ5smuu4nNAPGb8idSQ==}
 
@@ -6429,12 +4708,6 @@ packages:
 
   detect-europe-js@0.1.2:
     resolution: {integrity: sha512-lgdERlL3u0aUdHocoouzT10d9I89VVhk0qNRmll7mXdGfJT1/wqZ2ZLA4oJAjeACPY5fT1wsbq2AT+GkuInsow==}
-
-  detect-europe-js@0.1.2:
-    resolution:
-      {
-        integrity: sha512-lgdERlL3u0aUdHocoouzT10d9I89VVhk0qNRmll7mXdGfJT1/wqZ2ZLA4oJAjeACPY5fT1wsbq2AT+GkuInsow==,
-      }
 
   detect-file@1.0.0:
     resolution: {integrity: sha512-DtCOLG98P007x7wiiOmfI0fi3eIKyWiLTGJ2MDnVi/E04lWGbf+JzrRHMm0rgIIZJGtHpKpbVgLWHrv8xXpc3Q==}
@@ -6472,29 +4745,6 @@ packages:
   diffie-hellman@5.0.3:
     resolution: {integrity: sha512-kqag/Nl+f3GwyK25fhUMYj81BUOrZ9IuJsjIcDE5icNM9FJHAVm3VcUDxdLPoQtTuUylWm6ZIknYJwwaPxsUzg==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  diffie-hellman@5.0.3:
-    resolution:
-      {
-        integrity: sha512-kqag/Nl+f3GwyK25fhUMYj81BUOrZ9IuJsjIcDE5icNM9FJHAVm3VcUDxdLPoQtTuUylWm6ZIknYJwwaPxsUzg==,
-      }
-=======
-  diff@8.0.2:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-sSuxWU5j5SR9QQji/o2qMvqRNYRDOcBTgsJ/DeCf4iSN4gW+gNMXM7wFIP+fdXZxoNiAnHUTGjCr+TSWXdRDKg==}
-    engines: {node: '>=0.3.1'}
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-    resolution:
-      {
-        integrity: sha512-sSuxWU5j5SR9QQji/o2qMvqRNYRDOcBTgsJ/DeCf4iSN4gW+gNMXM7wFIP+fdXZxoNiAnHUTGjCr+TSWXdRDKg==,
-      }
-    engines: { node: '>=0.3.1' }
->>>>>>> 8e756248f (chore: release)
-
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   dijkstrajs@1.0.2:
     resolution: {integrity: sha512-QV6PMaHTCNmKSeP6QoXhVTw9snc9VD8MulTT0Bd99Pacp4SS1cjcrYPgBPmibqKVtMJJfqC6XvOXgPMEEPH/fg==}
 
@@ -6552,12 +4802,6 @@ packages:
 
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
-
-  ecdsa-sig-formatter@1.0.11:
-    resolution:
-      {
-        integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==,
-      }
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -6686,43 +4930,8 @@ packages:
     engines: {node: '>=0.10'}
 
   es6-iterator@2.0.3:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-zw4SRzoUkd+cl+ZoE15A9o1oQd920Bb0iOJMQkQhl3jNc03YqVjAhG7scf9C5KWRU/R13Orf588uCC6525o02g==,
-      }
-=======
     resolution: {integrity: sha512-zw4SRzoUkd+cl+ZoE15A9o1oQd920Bb0iOJMQkQhl3jNc03YqVjAhG7scf9C5KWRU/R13Orf588uCC6525o02g==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  es6-object-assign@1.1.0:
-    resolution:
-      {
-        integrity: sha512-MEl9uirslVwqQU369iHNWZXsI8yaZYGg/D65aOgZkeyFJwHYSxilf7rQzXKI7DdDuBPrBXbfk3sl9hJhmd5AUw==,
-      }
-
-  es6-promise@4.2.8:
-    resolution:
-      {
-        integrity: sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==,
-      }
-
-  es6-promisify@5.0.0:
-    resolution:
-      {
-        integrity: sha512-C+d6UdsYDk0lMebHNR4S2NybQMMngAOnOwYBQjTOiv0MkoJMP0Myw2mgpDLBcpfCmRLxyFqYhS/CfOENq4SJhQ==,
-      }
-=======
-    resolution: {integrity: sha512-zw4SRzoUkd+cl+ZoE15A9o1oQd920Bb0iOJMQkQhl3jNc03YqVjAhG7scf9C5KWRU/R13Orf588uCC6525o02g==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   es6-symbol@3.1.3:
     resolution: {integrity: sha512-NJ6Yn3FuDinBaBRWl/q5X/s4koRHBrgKAu+yGI6JCBeiu3qrcbJhwT2GeR/EXVfylRk8dpQVJoLEFhK+Mu31NA==}
 
@@ -6939,37 +5148,8 @@ packages:
     engines: {node: '>= 0.6'}
 
   ethereum-cryptography@2.2.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-r/W8lkHSiTLxUxW8Rf3u4HGB0xQweG2RyETjywylKZSzLWoWAijRz8WCuOtJ6wah+avllXBqZuk29HCCvhEIRg==,
-      }
-=======
     resolution: {integrity: sha512-r/W8lkHSiTLxUxW8Rf3u4HGB0xQweG2RyETjywylKZSzLWoWAijRz8WCuOtJ6wah+avllXBqZuk29HCCvhEIRg==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  ethereum-multicall@2.26.0:
-    resolution:
-      {
-        integrity: sha512-7PslfFiHPUrA0zQpMgZdftUBNyVWuHVBwnRtDOr6Eam8O/OwucqP+OHZZDE7qdrWzi4Jrji8IMw2ZUFv/wbs8Q==,
-      }
-
-  ethers@5.7.2:
-    resolution:
-      {
-        integrity: sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==,
-      }
-=======
-    resolution: {integrity: sha512-r/W8lkHSiTLxUxW8Rf3u4HGB0xQweG2RyETjywylKZSzLWoWAijRz8WCuOtJ6wah+avllXBqZuk29HCCvhEIRg==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   ethers@6.13.5:
     resolution: {integrity: sha512-+knKNieu5EKRThQJWwqaJ10a6HE9sSehGeqWN65//wE7j47ZpFhKAnHB/JJFibwwg61I/koxaPsXbXpD/skNOQ==}
     engines: {node: '>=14.0.0'}
@@ -6996,19 +5176,6 @@ packages:
 
   evp_bytestokey@1.0.3:
     resolution: {integrity: sha512-/f2Go4TognH/KvCISP7OUsHn85hT9nUkxxA9BEWxFn+Oj9o8ZNLm/40hdlgSLyuOimsrTKLUMEorQexp/aPQeA==}
-
-  eventsource@2.0.2:
-    resolution:
-      {
-        integrity: sha512-IzUmBGPR3+oUG9dUeXynyNmf91/3zUSJg1lCktzKw47OXuhco54U3r9B7O4XX+Rb1Itm9OZ2b0RkTs10bICOxA==,
-      }
-    engines: { node: '>=12.0.0' }
-
-  evp_bytestokey@1.0.3:
-    resolution:
-      {
-        integrity: sha512-/f2Go4TognH/KvCISP7OUsHn85hT9nUkxxA9BEWxFn+Oj9o8ZNLm/40hdlgSLyuOimsrTKLUMEorQexp/aPQeA==,
-      }
 
   execa@0.7.0:
     resolution: {integrity: sha512-RztN09XglpYI7aBBrJCPW95jEH7YF1UEPOoX9yDhUTPdp7mK+CQvnLTuD10BNXZ3byLTu2uehZ8EcKT/4CGiFw==}
@@ -7069,38 +5236,9 @@ packages:
     engines: {node: '>=4'}
 
   extglob@2.0.4:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-Nmb6QXkELsuBr24CJSkilo6UHHgbekK5UiZgfE6UHD3Eb27YC6oD+bhcT+tJ6cl8dmsgdQxnWlcry8ksBIBLpw==,
-      }
-    engines: { node: '>=0.10.0' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-Nmb6QXkELsuBr24CJSkilo6UHHgbekK5UiZgfE6UHD3Eb27YC6oD+bhcT+tJ6cl8dmsgdQxnWlcry8ksBIBLpw==}
     engines: {node: '>=0.10.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  eyes@0.1.8:
-    resolution:
-      {
-        integrity: sha512-GipyPsXO1anza0AOZdy69Im7hGFCNB7Y/NGjDlZGJ3GJJLtwNSb2vrzYrTYJRrRloVx7pl+bhUaTB8yiccPvFQ==,
-      }
-    engines: { node: '> 0.1.90' }
-=======
-    resolution: {integrity: sha512-Nmb6QXkELsuBr24CJSkilo6UHHgbekK5UiZgfE6UHD3Eb27YC6oD+bhcT+tJ6cl8dmsgdQxnWlcry8ksBIBLpw==}
-    engines: {node: '>=0.10.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -7118,37 +5256,9 @@ packages:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
 
   fast-redact@3.1.2:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-+0em+Iya9fKGfEQGcd62Yv6onjBmmhV1uh86XVfOU8VwAe6kaFdQCWI9s0/Nnugx5Vd9tdbZ7e6gE2tR9dzXdw==,
-      }
-    engines: { node: '>=6' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-+0em+Iya9fKGfEQGcd62Yv6onjBmmhV1uh86XVfOU8VwAe6kaFdQCWI9s0/Nnugx5Vd9tdbZ7e6gE2tR9dzXdw==}
     engines: {node: '>=6'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  fast-stable-stringify@1.0.0:
-    resolution:
-      {
-        integrity: sha512-wpYMUmFu5f00Sm0cj2pfivpmawLZ0NKdviQ4w9zJeR8JVtOpOxHmLaJuj0vxvGqMJQWyP/COUkF75/57OKyRag==,
-      }
-=======
-    resolution: {integrity: sha512-+0em+Iya9fKGfEQGcd62Yv6onjBmmhV1uh86XVfOU8VwAe6kaFdQCWI9s0/Nnugx5Vd9tdbZ7e6gE2tR9dzXdw==}
-    engines: {node: '>=6'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   fast-uri@3.0.6:
     resolution: {integrity: sha512-Atfo14OibSv5wAp4VWNsFYE1AchQRTv9cBGWET4pZWHzYshFSS9NQI6I57rdKn9croWVMbYFbLhJ+yJvmZIIHw==}
 
@@ -7157,12 +5267,6 @@ packages:
 
   fastestsmallesttextencoderdecoder@1.0.22:
     resolution: {integrity: sha512-Pb8d48e+oIuY4MaM64Cd7OW1gt4nxCHs7/ddPPZ/Ic3sg8yVGM7O9wDvZ7us6ScaUupzM+pfBolwtYhN1IxBIw==}
-
-  fastestsmallesttextencoderdecoder@1.0.22:
-    resolution:
-      {
-        integrity: sha512-Pb8d48e+oIuY4MaM64Cd7OW1gt4nxCHs7/ddPPZ/Ic3sg8yVGM7O9wDvZ7us6ScaUupzM+pfBolwtYhN1IxBIw==,
-      }
 
   fastq@1.19.1:
     resolution: {integrity: sha512-GwLTyxkCXjXbxqIhTsMI2Nui8huMPtnxg7krajPJAjnEG/iiOS7i+zCtWGZR9G0NBKbXKh6X9m9UIsYX/N6vvQ==}
@@ -7182,19 +5286,6 @@ packages:
       picomatch:
         optional: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  feaxios@0.0.23:
-    resolution:
-      {
-        integrity: sha512-eghR0A21fvbkcQBgZuMfQhrXxJzC0GNUGC9fXhBge33D+mFDTwl0aJ35zoQQn575BhyjQitRc5N4f+L4cP708g==,
-      }
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
     engines: {node: '>=12.0.0'}
@@ -7203,31 +5294,9 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 0ef34e79d (chore: migrate from jest to vitest)
-=======
-=======
-  feaxios@0.0.23:
-    resolution: {integrity: sha512-eghR0A21fvbkcQBgZuMfQhrXxJzC0GNUGC9fXhBge33D+mFDTwl0aJ35zoQQn575BhyjQitRc5N4f+L4cP708g==}
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
 
   feaxios@0.0.23:
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-eghR0A21fvbkcQBgZuMfQhrXxJzC0GNUGC9fXhBge33D+mFDTwl0aJ35zoQQn575BhyjQitRc5N4f+L4cP708g==}
->>>>>>> bb71a84a5 (chore: package bump)
-=======
-    resolution:
-      {
-        integrity: sha512-eghR0A21fvbkcQBgZuMfQhrXxJzC0GNUGC9fXhBge33D+mFDTwl0aJ35zoQQn575BhyjQitRc5N4f+L4cP708g==,
-      }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-eghR0A21fvbkcQBgZuMfQhrXxJzC0GNUGC9fXhBge33D+mFDTwl0aJ35zoQQn575BhyjQitRc5N4f+L4cP708g==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   fetch-cookie@3.0.1:
     resolution: {integrity: sha512-ZGXe8Y5Z/1FWqQ9q/CrJhkUD73DyBU9VF0hBQmEO/wPHe4A9PKTjplFDLeFX8aOsYypZUcX5Ji/eByn3VCVO3Q==}
@@ -7310,30 +5379,6 @@ packages:
       debug:
         optional: true
 
-<<<<<<< HEAD
-  follow-redirects@1.15.6:
-    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  for-each@0.3.3:
-    resolution:
-      {
-        integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==,
-      }
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   for-each@0.3.5:
     resolution: {integrity: sha512-dKx12eRCVIzqCxFGplyFKJMPvLEWgmNtUrpTiJIR5u97zEhRG8ySrtboPHZXx7daLxQVrl643cTzbab2tkQjxg==}
     engines: {node: '>= 0.4'}
@@ -7661,13 +5706,6 @@ packages:
     resolution: {integrity: sha512-Bb33KbowVTIj5s7Ked1OsqHUeCpz//tPwR+E2zJgJKo9Z5XolZ9b6bdUgjmYlwnWhoOQKoTd1TYToZGn5mAYOg==}
     engines: {node: '>= 0.8'}
 
-  hash-base@3.1.2:
-    resolution:
-      {
-        integrity: sha512-Bb33KbowVTIj5s7Ked1OsqHUeCpz//tPwR+E2zJgJKo9Z5XolZ9b6bdUgjmYlwnWhoOQKoTd1TYToZGn5mAYOg==,
-      }
-    engines: { node: '>= 0.8' }
-
   hash.js@1.1.7:
     resolution: {integrity: sha512-taOaskGt4z4SOANNseOviYDvjEJinIkRgmp7LbKP2YTTmVxWBl87s/uzK9r+44BclBSp2X7K1hqeNfz9JbBeXA==}
 
@@ -7739,32 +5777,8 @@ packages:
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
 
   http-status-codes@2.3.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-RJ8XvFvpPM/Dmc5SV+dC4y5PCeOhT3x1Hq0NU3rjGeg5a/CqlhZ7uudknPwZFz4aeAXDcbAyaeP7GAo9lvngtA==,
-      }
-=======
     resolution: {integrity: sha512-RJ8XvFvpPM/Dmc5SV+dC4y5PCeOhT3x1Hq0NU3rjGeg5a/CqlhZ7uudknPwZFz4aeAXDcbAyaeP7GAo9lvngtA==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  https-proxy-agent@5.0.1:
-    resolution:
-      {
-        integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==,
-      }
-    engines: { node: '>= 6' }
-=======
-    resolution: {integrity: sha512-RJ8XvFvpPM/Dmc5SV+dC4y5PCeOhT3x1Hq0NU3rjGeg5a/CqlhZ7uudknPwZFz4aeAXDcbAyaeP7GAo9lvngtA==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   https-proxy-agent@7.0.6:
     resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
     engines: {node: '>= 14'}
@@ -7774,37 +5788,9 @@ packages:
     engines: {node: '>=10.17.0'}
 
   human-signals@5.0.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==,
-      }
-    engines: { node: '>=16.17.0' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  humanize-ms@1.2.1:
-    resolution:
-      {
-        integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==,
-      }
-=======
-    resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
-    engines: {node: '>=16.17.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   husky@7.0.4:
     resolution: {integrity: sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==}
     engines: {node: '>=12'}
@@ -7930,32 +5916,8 @@ packages:
     resolution: {integrity: sha512-DwzsA04LQ10FHTZuL0/grVDk4rFoVH1pjAToYwBrHSxcrBIGQuXrQMtD5U1b0U2XVgKZCTLLP8u2Qxqhy3l2Vg==}
 
   is-alphanumerical@1.0.4:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-UzoZUr+XfVz3t3v4KyGEniVL9BDRoQtY7tOyrRybkVNjDFWyo1yhXNGrrBTQxp3ib9BLAWs7k2YKBQsFRkZG9A==,
-      }
-=======
     resolution: {integrity: sha512-UzoZUr+XfVz3t3v4KyGEniVL9BDRoQtY7tOyrRybkVNjDFWyo1yhXNGrrBTQxp3ib9BLAWs7k2YKBQsFRkZG9A==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  is-arguments@1.1.1:
-    resolution:
-      {
-        integrity: sha512-8Q7EARjzEnKpt/PCD7e1cgUS0a6X8u5tdSiMqXhojOdoV9TsMsiO+9VLC5vAmO8N7/GmXn7yjR8qnA6bVAEzfA==,
-      }
-    engines: { node: '>= 0.4' }
-=======
-    resolution: {integrity: sha512-UzoZUr+XfVz3t3v4KyGEniVL9BDRoQtY7tOyrRybkVNjDFWyo1yhXNGrrBTQxp3ib9BLAWs7k2YKBQsFRkZG9A==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   is-array-buffer@3.0.5:
     resolution: {integrity: sha512-DDfANUiiG2wC1qawP66qlTugJeL5HyzMpfr8lLK+jMQirGzNod0B12cFB/9q838Ru27sBwfw78/rdoU7RERz6A==}
     engines: {node: '>= 0.4'}
@@ -8091,32 +6053,8 @@ packages:
     engines: {node: '>= 0.4'}
 
   is-module@1.0.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-51ypPSPCoTEIN9dy5Oy+h4pShgJmPCygKfyRCISBI+JoWT/2oJvK8QPxmwv7b/p239jXrm9M1mlQbyKJ5A152g==,
-      }
-=======
     resolution: {integrity: sha512-51ypPSPCoTEIN9dy5Oy+h4pShgJmPCygKfyRCISBI+JoWT/2oJvK8QPxmwv7b/p239jXrm9M1mlQbyKJ5A152g==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  is-nan@1.3.2:
-    resolution:
-      {
-        integrity: sha512-E+zBKpQ2t6MEo1VsonYmluk9NxGrbzpeeLC2xIViuO2EjU2xsXsBPwTr3Ykv9l08UYEVEdWeRZNouaZqF6RN0w==,
-      }
-    engines: { node: '>= 0.4' }
-=======
-    resolution: {integrity: sha512-51ypPSPCoTEIN9dy5Oy+h4pShgJmPCygKfyRCISBI+JoWT/2oJvK8QPxmwv7b/p239jXrm9M1mlQbyKJ5A152g==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   is-negative-zero@2.0.3:
     resolution: {integrity: sha512-5KoIu2Ngpyek75jXodFvnafB6DJgr3u8uuK0LEZJjrU19DrMD3EVERaR8sjz8CCGgpZvxPl9SuE1GMVPFHx1mw==}
     engines: {node: '>= 0.4'}
@@ -8164,13 +6102,6 @@ packages:
     resolution: {integrity: sha512-9xH0xvoggby+u0uGF7cZXdrutWiBiaFG8ZT4YFPXL8NzkyAwX3AKGLeFQLvzDpM430+nDFBZ1LHkie/8ocL06A==}
     engines: {node: '>=12'}
 
-  is-retry-allowed@3.0.0:
-    resolution:
-      {
-        integrity: sha512-9xH0xvoggby+u0uGF7cZXdrutWiBiaFG8ZT4YFPXL8NzkyAwX3AKGLeFQLvzDpM430+nDFBZ1LHkie/8ocL06A==,
-      }
-    engines: { node: '>=12' }
-
   is-set@2.0.3:
     resolution: {integrity: sha512-iPAjerrse27/ygGLxw+EBR9agv9Y6uLeYVJMu+QNCoouJ1/1ri0mGrcWpfCqFZuzzx3WjtwxG098X+n4OuRkPg==}
     engines: {node: '>= 0.4'}
@@ -8184,12 +6115,6 @@ packages:
 
   is-standalone-pwa@0.1.1:
     resolution: {integrity: sha512-9Cbovsa52vNQCjdXOzeQq5CnCbAcRk05aU62K20WO372NrTv0NxibLFCK6lQ4/iZEFdEA3p3t2VNOn8AJ53F5g==}
-
-  is-standalone-pwa@0.1.1:
-    resolution:
-      {
-        integrity: sha512-9Cbovsa52vNQCjdXOzeQq5CnCbAcRk05aU62K20WO372NrTv0NxibLFCK6lQ4/iZEFdEA3p3t2VNOn8AJ53F5g==,
-      }
 
   is-stream@1.1.0:
     resolution: {integrity: sha512-uQPm8kcs47jx38atAcWTVxyltQYoPT68y9aWYdV6yWXSyW8mzSat0TL6CiWdZeCdF3KrAvpVtnHbTv4RN+rqdQ==}
@@ -8290,35 +6215,10 @@ packages:
     resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
 
   isomorphic-ws@4.0.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==,
-      }
-=======
     resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     peerDependencies:
       ws: '*'
 
-<<<<<<< HEAD
-=======
-  isomorphic-ws@5.0.0:
-    resolution:
-      {
-        integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==,
-      }
-=======
-    resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-    peerDependencies:
-      ws: '*'
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   isows@1.0.7:
     resolution: {integrity: sha512-I1fSfDCZL5P0v33sVqeTDSpcstAg/N+wF5HS033mogOVIp4B+oHC7oOCsA3axAbBSGTJ8QubbNmnIRN/h8U7hg==}
     peerDependencies:
@@ -8356,37 +6256,10 @@ packages:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
   jake@10.9.4:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-wpHYzhxiVQL+IV05BLE2Xn34zW1S223hvjtqk0+gsPrwd/8JNLXJgZZM/iPFsYc1xyphF+6M6EvdE5E9MBGkDA==,
-      }
-    engines: { node: '>=10' }
-=======
     resolution: {integrity: sha512-wpHYzhxiVQL+IV05BLE2Xn34zW1S223hvjtqk0+gsPrwd/8JNLXJgZZM/iPFsYc1xyphF+6M6EvdE5E9MBGkDA==}
     engines: {node: '>=10'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     hasBin: true
 
-<<<<<<< HEAD
-=======
-  jayson@4.1.3:
-    resolution:
-      {
-        integrity: sha512-LtXh5aYZodBZ9Fc3j6f2w+MTNcnxteMOrb+QgIouguGOulWi0lieEkOUg+HkjjFs0DGoWDds6bi4E9hpNFLulQ==,
-      }
-    engines: { node: '>=8' }
-=======
-    resolution: {integrity: sha512-wpHYzhxiVQL+IV05BLE2Xn34zW1S223hvjtqk0+gsPrwd/8JNLXJgZZM/iPFsYc1xyphF+6M6EvdE5E9MBGkDA==}
-    engines: {node: '>=10'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-    hasBin: true
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   jest-changed-files@29.7.0:
     resolution: {integrity: sha512-fEArFiwf1BpQ+4bXSprcDc3/x4HSzL4al2tozwVpDFpsxALjLYdyiIK4e5Vz66GQJIbXJ82+35PtysofptNX2w==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -8420,6 +6293,10 @@ packages:
   jest-diff@29.7.0:
     resolution: {integrity: sha512-LMIgiIrhigmPrs03JHpxUh2yISK3vLFPkAodPeo0+BuF7wA2FoQbkEg1u8gBYBThncu7e1oEDUfIXVuTqLRUjw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-diff@30.2.0:
+    resolution: {integrity: sha512-dQHFo3Pt4/NLlG5z4PxZ/3yZTZ1C7s9hveiOj+GCN+uT109NC2QgsoVZsVOAvbJ3RgKkvyLGXZV9+piDpWbm6A==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-docblock@29.7.0:
     resolution: {integrity: sha512-q617Auw3A612guyaFgsbFeYpNP5t2aoUNLwBUbc/0kD1R4t9ixDbyFTHd1nok4epoVFpr7PmeWHrhvuV3XaJ4g==}
@@ -8610,37 +6487,9 @@ packages:
     resolution: {integrity: sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==}
 
   jsonparse@1.3.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==,
-      }
-    engines: { '0': node >= 0.2.0 }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==}
     engines: {'0': node >= 0.2.0}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  jsonschema@1.2.2:
-    resolution:
-      {
-        integrity: sha512-iX5OFQ6yx9NgbHCwse51ohhKgLuLL7Z5cNOeZOPIlDUtAMrxlruHLzVZxbltdHE5mEDXN+75oFOwq6Gn0MZwsA==,
-      }
-=======
-    resolution: {integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==}
-    engines: {'0': node >= 0.2.0}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
@@ -8656,18 +6505,6 @@ packages:
 
   jws@4.0.0:
     resolution: {integrity: sha512-KDncfTmOZoOMTFG4mBlG0qUIOlc03fmzH+ru6RgYVZhPkyiy/92Owlt/8UEN+a4TXR1FQetfIpJE8ApdvdVxTg==}
-
-  jwa@2.0.1:
-    resolution:
-      {
-        integrity: sha512-hRF04fqJIP8Abbkq5NKGN0Bbr3JxlQ+qhZufXVr0DvujKy93ZCbXZMHDL4EOtodSbCWxOqR8MS1tXA5hwqCXDg==,
-      }
-
-  jws@4.0.0:
-    resolution:
-      {
-        integrity: sha512-KDncfTmOZoOMTFG4mBlG0qUIOlc03fmzH+ru6RgYVZhPkyiy/92Owlt/8UEN+a4TXR1FQetfIpJE8ApdvdVxTg==,
-      }
 
   keccak@3.0.4:
     resolution: {integrity: sha512-3vKuW0jV8J3XNTzvfyicFR5qvxrSAGl7KIhvgOu5cmWwM7tZRj3fMbj/pfIf4be7aznbc+prBWGjywox/g2Y6Q==}
@@ -8854,12 +6691,6 @@ packages:
   long@5.2.5:
     resolution: {integrity: sha512-e0r9YBBgNCq1D1o5Dp8FMH0N5hsFtXDBiVa0qoJPHpakvZkmDKPRoGffZJII/XsHvj9An9blm+cRJ01yQqU+Dw==}
 
-  long@5.2.5:
-    resolution:
-      {
-        integrity: sha512-e0r9YBBgNCq1D1o5Dp8FMH0N5hsFtXDBiVa0qoJPHpakvZkmDKPRoGffZJII/XsHvj9An9blm+cRJ01yQqU+Dw==,
-      }
-
   longest@2.0.1:
     resolution: {integrity: sha512-Ajzxb8CM6WAnFjgiloPsI3bF+WCxcvhdIG3KNA2KN962+tdBsHcuQ4k4qX/EcS/2CRkcc0iAkR956Nib6aXU/Q==}
     engines: {node: '>=0.10.0'}
@@ -9003,13 +6834,6 @@ packages:
 
   miller-rabin@4.0.1:
     resolution: {integrity: sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA==}
-    hasBin: true
-
-  miller-rabin@4.0.1:
-    resolution:
-      {
-        integrity: sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA==,
-      }
     hasBin: true
 
   mime-db@1.33.0:
@@ -9189,37 +7013,9 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
   mylas@2.1.13:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-+MrqnJRtxdF+xngFfUUkIMQrUUL0KsxbADUkn23Z/4ibGg192Q+z+CQyiYwvWTsYjJygmMR8+w3ZDa98Zh6ESg==,
-      }
-    engines: { node: '>=12.0.0' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-+MrqnJRtxdF+xngFfUUkIMQrUUL0KsxbADUkn23Z/4ibGg192Q+z+CQyiYwvWTsYjJygmMR8+w3ZDa98Zh6ESg==}
     engines: {node: '>=12.0.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  nan@2.17.0:
-    resolution:
-      {
-        integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==,
-      }
-=======
-    resolution: {integrity: sha512-+MrqnJRtxdF+xngFfUUkIMQrUUL0KsxbADUkn23Z/4ibGg192Q+z+CQyiYwvWTsYjJygmMR8+w3ZDa98Zh6ESg==}
-    engines: {node: '>=12.0.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   nan@2.23.0:
     resolution: {integrity: sha512-1UxuyYGdoQHcGg87Lkqm3FzefucTa0NAiOcuRsDmysep3c1LVCRK2krrUDafMWtjSG04htvAmvg96+SDknOmgQ==}
 
@@ -9320,13 +7116,6 @@ packages:
     resolution: {integrity: sha512-l2NNj07e9afPnhAhvgVrCD/oy2Ai1yfLpuo3EpiO1jFTsB4sFz6oIfAfSZyQzVpkZQ9xS8ZS5g1jCBgq4Hwo0g==}
     engines: {node: '>=12.19'}
 
-  nofilter@3.1.0:
-    resolution:
-      {
-        integrity: sha512-l2NNj07e9afPnhAhvgVrCD/oy2Ai1yfLpuo3EpiO1jFTsB4sFz6oIfAfSZyQzVpkZQ9xS8ZS5g1jCBgq4Hwo0g==,
-      }
-    engines: { node: '>=12.19' }
-
   nopt@7.2.1:
     resolution: {integrity: sha512-taM24ViiimT/XntxbPyJQzCG+p4EKOpgD3mxFwW38mGjVUrfERQOeY4EDHjdnptttfHuHQXFx+lTP08Q+mLa/w==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -9407,6 +7196,18 @@ packages:
       '@swc/core':
         optional: true
 
+  nx@22.1.2:
+    resolution: {integrity: sha512-sD1CoYFPMsoiRG095qUhEhzL6ZbSY1a68dw9gJNRg60gM06O7l6X2Kyu+dEEwIZ5PutD82Pt4/S2nzK6mdhfew==}
+    hasBin: true
+    peerDependencies:
+      '@swc-node/register': ^1.8.0
+      '@swc/core': ^1.3.85
+    peerDependenciesMeta:
+      '@swc-node/register':
+        optional: true
+      '@swc/core':
+        optional: true
+
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
@@ -9416,38 +7217,9 @@ packages:
     engines: {node: '>=0.10.0'}
 
   object-inspect@1.13.4:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==,
-      }
-    engines: { node: '>= 0.4' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  object-is@1.1.5:
-    resolution:
-      {
-        integrity: sha512-3cyDsyHgtmi7I7DfSSI2LDp6SK2lwvtbg0p0R1e0RvTqF5ceGx+K2dfSjm1bKDMVCFEDAQvy+o8c6a7VujOddw==,
-      }
-    engines: { node: '>= 0.4' }
-=======
-    resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
-    engines: {node: '>= 0.4'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   object-keys@1.1.1:
     resolution: {integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==}
     engines: {node: '>= 0.4'}
@@ -9646,13 +7418,6 @@ packages:
     resolution: {integrity: sha512-fIYNuZ/HastSb80baGOuPRo1O9cf4baWw5WsAp7dBuUzeTD/BoaG8sVTdlPFksBE2lF21dN+A1AnrpIjSWqHHg==}
     engines: {node: '>= 0.10'}
 
-  parse-asn1@5.1.9:
-    resolution:
-      {
-        integrity: sha512-fIYNuZ/HastSb80baGOuPRo1O9cf4baWw5WsAp7dBuUzeTD/BoaG8sVTdlPFksBE2lF21dN+A1AnrpIjSWqHHg==,
-      }
-    engines: { node: '>= 0.10' }
-
   parse-conflict-json@3.0.1:
     resolution: {integrity: sha512-01TvEktc68vwbJOtWZluyWeVGWjP+bZwXtPDMQVbBKzbJ/vZBif0L69KH1+cHv1SZ6e0FKLvjyHe8mqsIqYOmw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -9752,13 +7517,6 @@ packages:
     resolution: {integrity: sha512-Q3CG/cYvCO1ye4QKkuH7EXxs3VC/rI1/trd+qX2+PolbaKG0H+bgcZzrTt96mMyRtejk+JMCiLUn3y29W8qmFQ==}
     engines: {node: '>= 0.10'}
 
-  pbkdf2@3.1.5:
-    resolution:
-      {
-        integrity: sha512-Q3CG/cYvCO1ye4QKkuH7EXxs3VC/rI1/trd+qX2+PolbaKG0H+bgcZzrTt96mMyRtejk+JMCiLUn3y29W8qmFQ==,
-      }
-    engines: { node: '>= 0.10' }
-
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -9855,6 +7613,10 @@ packages:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
+  pretty-format@30.2.0:
+    resolution: {integrity: sha512-9uBdv/B4EefsuAL+pWqueZyZS2Ba+LxfFeQ9DN14HU4bN8bhaxKdkpjpB6fs9+pSjIBu+FXQHImEg8j/Lw0+vA==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
+
   proc-log@4.2.0:
     resolution: {integrity: sha512-g8+OnU/L2v+wyiVK+D5fA34J7EH8jZ8DDlvwhRCMxmMj7UCBvxiO1mGeN+36JXIKF4zevU4kRBd8lVgG9vLelA==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -9927,12 +7689,6 @@ packages:
 
   public-encrypt@4.0.3:
     resolution: {integrity: sha512-zVpa8oKZSz5bTMTFClc1fQOnyyEzpl5ozpi1B5YcvBrdohMjH2rfsBtyXcuNuwjsDIXmBYlF2N5FlJYhR29t8Q==}
-
-  public-encrypt@4.0.3:
-    resolution:
-      {
-        integrity: sha512-zVpa8oKZSz5bTMTFClc1fQOnyyEzpl5ozpi1B5YcvBrdohMjH2rfsBtyXcuNuwjsDIXmBYlF2N5FlJYhR29t8Q==,
-      }
 
   pump@3.0.3:
     resolution: {integrity: sha512-todwxLMY7/heScKmntwQG8CXVkWUOdYxIvY2s0VWAAMh/nd8SoYiRaKjlr7+iCs984f2P8zvrfWcDDYVb73NfA==}
@@ -10007,18 +7763,6 @@ packages:
 
   randomfill@1.0.4:
     resolution: {integrity: sha512-87lcbR8+MhcWcUiQ+9e+Rwx8MyR2P7qnt15ynUlbm3TU/fjbgz4GsvfSUDTemtCCtVCqb4ZcEFlyPNTh9bBTLw==}
-
-  randombytes@2.1.0:
-    resolution:
-      {
-        integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==,
-      }
-
-  randomfill@1.0.4:
-    resolution:
-      {
-        integrity: sha512-87lcbR8+MhcWcUiQ+9e+Rwx8MyR2P7qnt15ynUlbm3TU/fjbgz4GsvfSUDTemtCCtVCqb4ZcEFlyPNTh9bBTLw==,
-      }
 
   range-parser@1.2.0:
     resolution: {integrity: sha512-kA5WQoNVo4t9lNx2kQNFCxKeBl5IbbSNBl1M/tLkw9WCn+hxNBAW5Qh8gdhs63CJnhjJ2zQWFoqPJP2sK1AV5A==}
@@ -10130,37 +7874,9 @@ packages:
     engines: {node: '>=4'}
 
   reflect.getprototypeof@1.0.10:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==,
-      }
-    engines: { node: '>= 0.4' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
     engines: {node: '>= 0.4'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  regenerator-runtime@0.14.1:
-    resolution:
-      {
-        integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==,
-      }
-=======
-    resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
-    engines: {node: '>= 0.4'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   regex-not@1.0.2:
     resolution: {integrity: sha512-J6SDjUgDxQj5NusnOtdFxDwN/+HWykR8GELwctJ7mdqhcyy1xEc4SRFHUXvxTp661YaVKAjfRLZ9cCqS6tn32A==}
     engines: {node: '>=0.10.0'}
@@ -10201,13 +7917,6 @@ packages:
   require-addon@1.2.0:
     resolution: {integrity: sha512-VNPDZlYgIYQwWp9jMTzljx+k0ZtatKlcvOhktZ/anNPI3dQ9NXk7cq2U4iJ1wd9IrytRnYhyEocFWbkdPb+MYA==}
     engines: {bare: '>=1.10.0'}
-
-  require-addon@1.2.0:
-    resolution:
-      {
-        integrity: sha512-VNPDZlYgIYQwWp9jMTzljx+k0ZtatKlcvOhktZ/anNPI3dQ9NXk7cq2U4iJ1wd9IrytRnYhyEocFWbkdPb+MYA==,
-      }
-    engines: { bare: '>=1.10.0' }
 
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
@@ -10295,8 +8004,6 @@ packages:
   ripemd160@2.0.2:
     resolution: {integrity: sha512-ii4iagi25WusVoiC4B4lq7pbXfAp3D9v5CwfkY33vffw2+pkDjY1D8GaN7spsxvCSx8dkPqOZCEZyfxcmJG2IA==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   ripemd160@2.0.3:
     resolution: {integrity: sha512-5Di9UC0+8h1L6ZD2d7awM7E/T4uA1fJRlx6zk/NvdCCVEoAnFqvHmCuNeIKoCeIixBX/q8uM+6ycDvF8woqosA==}
     engines: {node: '>= 0.8'}
@@ -10310,79 +8017,8 @@ packages:
     engines: {node: '>= 18'}
 
   ripple-keypairs@2.0.0:
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-b5rfL2EZiffmklqZk1W+dvSy97v3V/C7936WxCCgDynaGPp7GE6R2XO7EU9O2LlM/z95rj870IylYnOQs+1Rag==,
-      }
-    engines: { node: '>= 16' }
-=======
-  ripple-address-codec@4.2.4:
-    resolution:
-      {
-        integrity: sha512-roAOjKz94+FboTItey1XRh5qynwt4xvfBLvbbcx+FiR94Yw2x3LrKLF2GVCMCSAh5I6PkcpADg6AbYsUbGN3nA==,
-      }
-    engines: { node: '>= 10' }
-=======
-  ripemd160@2.0.3:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-5Di9UC0+8h1L6ZD2d7awM7E/T4uA1fJRlx6zk/NvdCCVEoAnFqvHmCuNeIKoCeIixBX/q8uM+6ycDvF8woqosA==}
-    engines: {node: '>= 0.8'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-5Di9UC0+8h1L6ZD2d7awM7E/T4uA1fJRlx6zk/NvdCCVEoAnFqvHmCuNeIKoCeIixBX/q8uM+6ycDvF8woqosA==,
-      }
-    engines: { node: '>= 0.8' }
->>>>>>> 5de8abb55 (chore: release)
-
-  ripple-address-codec@5.0.0:
-    resolution:
-      {
-        integrity: sha512-de7osLRH/pt5HX2xw2TRJtbdLLWHu0RXirpQaEeCnWKY5DYHykh3ETSkofvm0aX0LJiV7kwkegJxQkmbO94gWw==,
-      }
-    engines: { node: '>= 16' }
-
-  ripple-binary-codec@2.5.1:
-    resolution:
-      {
-        integrity: sha512-rzN4GTorLRH0bQD7Tccgn6Eq4aunMhZaUTXDEUJ+3xrjo0m1Av5AY1Doc/jsCIaxPIAnyoVg5rWlmI93U7pGdg==,
-      }
-    engines: { node: '>= 18' }
-
-<<<<<<< HEAD
-  ripple-lib-transactionparser@0.8.2:
-    resolution:
-      {
-        integrity: sha512-1teosQLjYHLyOQrKUQfYyMjDR3MAq/Ga+MJuLUfpBMypl4LZB4bEoMcmG99/+WVTEiZOezJmH9iCSvm/MyxD+g==,
-      }
-
-  ripple-lib@1.10.1:
-    resolution:
-      {
-        integrity: sha512-OQk+Syl2JfxKxV2KuF/kBMtnh012I5tNnziP3G4WDGCGSIAgeqkOgkR59IQ0YDNrs1YW8GbApxrdMSRi/QClcA==,
-      }
-    engines: { node: '>=10.13.0', yarn: ^1.15.2 }
-    deprecated: 'ripple-lib is deprecated. Please migrate to xrpl.js using this migration guide: https://xrpl.org/xrpljs2-migration-guide.html'
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-  ripple-keypairs@2.0.0:
-<<<<<<< HEAD
     resolution: {integrity: sha512-b5rfL2EZiffmklqZk1W+dvSy97v3V/C7936WxCCgDynaGPp7GE6R2XO7EU9O2LlM/z95rj870IylYnOQs+1Rag==}
     engines: {node: '>= 16'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-b5rfL2EZiffmklqZk1W+dvSy97v3V/C7936WxCCgDynaGPp7GE6R2XO7EU9O2LlM/z95rj870IylYnOQs+1Rag==,
-      }
-    engines: { node: '>= 16' }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-b5rfL2EZiffmklqZk1W+dvSy97v3V/C7936WxCCgDynaGPp7GE6R2XO7EU9O2LlM/z95rj870IylYnOQs+1Rag==}
-    engines: {node: '>= 16'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   rolldown-plugin-dts@0.18.1:
     resolution: {integrity: sha512-uIgNMix6OI+6bSkw0nw6O+G/ydPRCWKwvvcEyL6gWkVkSFVGWWO23DX4ZYVOqC7w5u2c8uPY9Q74U0QCKvegFA==}
@@ -10431,18 +8067,6 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  rpc-websockets@9.0.4:
-    resolution:
-      {
-        integrity: sha512-yWZWN0M+bivtoNLnaDbtny4XchdAIF5Q4g/ZsC5UC61Ckbp0QczwO8fg44rV3uYmY4WHd+EZQbn90W1d8ojzqQ==,
-      }
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
   run-async@2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
     engines: {node: '>=0.12.0'}
@@ -10561,37 +8185,9 @@ packages:
     engines: {node: '>= 0.4'}
 
   set-value@2.0.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-JxHc1weCN68wRY0fhCoXpyK55m/XPHafOmK4UWD7m2CI14GMcFypt4w/0+NV5f/ZMby2F6S2wwA7fgynh9gWSw==,
-      }
-    engines: { node: '>=0.10.0' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-JxHc1weCN68wRY0fhCoXpyK55m/XPHafOmK4UWD7m2CI14GMcFypt4w/0+NV5f/ZMby2F6S2wwA7fgynh9gWSw==}
     engines: {node: '>=0.10.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  setimmediate@1.0.5:
-    resolution:
-      {
-        integrity: sha512-MATJdZp8sLqDl/68LfQmbP8zKPLQNV6BIZoIgrscFDQ+RsvK/BxeDQOgyxKKoh0y/8h3BqVFnCqQ/gd+reiIXA==,
-      }
-=======
-    resolution: {integrity: sha512-JxHc1weCN68wRY0fhCoXpyK55m/XPHafOmK4UWD7m2CI14GMcFypt4w/0+NV5f/ZMby2F6S2wwA7fgynh9gWSw==}
-    engines: {node: '>=0.10.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   setprototypeof@1.1.0:
     resolution: {integrity: sha512-BvE/TwpZX4FXExxOxZyRGQQv651MSwmWKZGqvmPcRIjDqWub67kTKuIMx43cZZrS/cBBzwBcNDWoFxt2XEFIpQ==}
 
@@ -10605,14 +8201,6 @@ packages:
   sha.js@2.4.12:
     resolution: {integrity: sha512-8LzC5+bvI45BjpfXU8V5fdU2mfeKiQe1D1gIMn7XUlF3OTUrpdJpPPH4EMAnF0DsHHdSZqCdSss5qCmJKuiO3w==}
     engines: {node: '>= 0.10'}
-    hasBin: true
-
-  sha.js@2.4.12:
-    resolution:
-      {
-        integrity: sha512-8LzC5+bvI45BjpfXU8V5fdU2mfeKiQe1D1gIMn7XUlF3OTUrpdJpPPH4EMAnF0DsHHdSZqCdSss5qCmJKuiO3w==,
-      }
-    engines: { node: '>= 0.10' }
     hasBin: true
 
   sha256-uint8array@0.10.7:
@@ -10724,83 +8312,19 @@ packages:
     engines: {node: '>=0.10.0'}
 
   snapdragon@0.8.2:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-FtyOnWN/wCHTVXOMwvSv26d+ko5vWlIDD6zoUJ7LW8vh+ZBC8QdljveRP+crNrtBwioEUWy/4dMtbBjA4ioNlg==,
-      }
-    engines: { node: '>=0.10.0' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-FtyOnWN/wCHTVXOMwvSv26d+ko5vWlIDD6zoUJ7LW8vh+ZBC8QdljveRP+crNrtBwioEUWy/4dMtbBjA4ioNlg==}
     engines: {node: '>=0.10.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  socks-proxy-agent@8.0.4:
-    resolution:
-      {
-        integrity: sha512-GNAq/eg8Udq2x0eNiFkr9gRg5bA7PXEWagQdeRX4cPSG+X/8V38v637gim9bjFptMk1QWsCTr0ttrJEiXbNnRw==,
-      }
-    engines: { node: '>= 14' }
-=======
-    resolution: {integrity: sha512-FtyOnWN/wCHTVXOMwvSv26d+ko5vWlIDD6zoUJ7LW8vh+ZBC8QdljveRP+crNrtBwioEUWy/4dMtbBjA4ioNlg==}
-    engines: {node: '>=0.10.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   socks-proxy-agent@8.0.5:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==,
-      }
-    engines: { node: '>= 14' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==}
     engines: {node: '>= 14'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  socks@2.8.3:
-    resolution:
-      {
-        integrity: sha512-l5x7VUUWbjVFbafGLxPWkYsHIhEvmF85tbIeFZWc8ZPtoMyybuEhL7Jye/ooC4/d48FgOjSJXgsF/AJPYCW8Zw==,
-      }
-    engines: { node: '>= 10.0.0', npm: '>= 3.0.0' }
-=======
-    resolution: {integrity: sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==}
-    engines: {node: '>= 14'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   socks@2.8.6:
     resolution: {integrity: sha512-pe4Y2yzru68lXCb38aAqRf5gvN8YdjP1lok5o0J7BOHljkyCGKVz7H3vpVIXKD27rj2giOJ7DwVyk/GWrPHDWA==}
     engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
 
   sodium-native@4.3.3:
     resolution: {integrity: sha512-OnxSlN3uyY8D0EsLHpmm2HOFmKddQVvEMmsakCrXUzSd8kjjbzL413t4ZNF3n0UxSwNgwTyUvkmZHTfuCeiYSw==}
-
-  sodium-native@4.3.3:
-    resolution:
-      {
-        integrity: sha512-OnxSlN3uyY8D0EsLHpmm2HOFmKddQVvEMmsakCrXUzSd8kjjbzL413t4ZNF3n0UxSwNgwTyUvkmZHTfuCeiYSw==,
-      }
 
   sonic-boom@2.8.0:
     resolution: {integrity: sha512-kuonw1YOYYNOve5iHdSahXPOK49GqwA+LZhI6Wz/l0rP57iKyXXIHaRagOBHAPmGwJC6od2Z9zgvZ5loSgMlVg==}
@@ -11032,32 +8556,8 @@ packages:
     engines: {node: '>=8'}
 
   sturdy-websocket@0.2.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-NnzSOEKyv4I83qbuKw9ROtJrrT6Z/Xt7I0HiP/e6H6GnpeTDvzwGIGeJ8slai+VwODSHQDooW2CAilJwT9SpRg==,
-      }
-=======
     resolution: {integrity: sha512-NnzSOEKyv4I83qbuKw9ROtJrrT6Z/Xt7I0HiP/e6H6GnpeTDvzwGIGeJ8slai+VwODSHQDooW2CAilJwT9SpRg==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  superstruct@2.0.2:
-    resolution:
-      {
-        integrity: sha512-uV+TFRZdXsqXTL2pRvujROjdZQ4RAlBUS5BTh9IGm+jTqQntYThciG/qu57Gs69yjnVUSqdxF9YLmSnpupBW9A==,
-      }
-    engines: { node: '>=14.0.0' }
-=======
-    resolution: {integrity: sha512-NnzSOEKyv4I83qbuKw9ROtJrrT6Z/Xt7I0HiP/e6H6GnpeTDvzwGIGeJ8slai+VwODSHQDooW2CAilJwT9SpRg==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -11103,37 +8603,9 @@ packages:
     engines: {node: '>=4'}
 
   test-exclude@6.0.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==,
-      }
-    engines: { node: '>=8' }
-<<<<<<< HEAD
-=======
     resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
     engines: {node: '>=8'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  text-encoding-utf-8@1.0.2:
-    resolution:
-      {
-        integrity: sha512-8bw4MY9WjdsD2aMtO0OzOCY3pXGYNx2d2FfHRVUKkiCPDWjKuOlhLVASS+pD7VkLTVjW268LYJHwsnPFlBpbAg==,
-      }
-=======
-    resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
-    engines: {node: '>=8'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 5de8abb55 (chore: release)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   text-extensions@1.9.0:
     resolution: {integrity: sha512-wiBrwC1EhBelW12Zy26JeOUkQ5mRu+5o8rpsJk5+2t+Y5vE7e842qtZDQ2g1NpX/29HdyFeJ4nSIhI47ENSxlQ==}
     engines: {node: '>=0.10'}
@@ -11150,45 +8622,9 @@ packages:
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   tiny-secp256k1@1.1.7:
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-eb+F6NabSnjbLwNoC+2o5ItbmP1kg7HliWue71JgLegQt6A5mTN8YbvTLCazdlg6e5SV6A+r8OGvZYskdlmhqQ==,
-      }
-    engines: { node: '>=6.0.0' }
-=======
-  tiny-secp256k1@1.1.6:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-FmqJZGduTyvsr2cF3375fqGHUovSwDi/QytexX1Se4BPuPZpTE5Ftp5fg+EFSuEf3lhZqgCRjEG3ydUQ/aNiwA==}
-    engines: {node: '>=6.0.0'}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-FmqJZGduTyvsr2cF3375fqGHUovSwDi/QytexX1Se4BPuPZpTE5Ftp5fg+EFSuEf3lhZqgCRjEG3ydUQ/aNiwA==,
-      }
-    engines: { node: '>=6.0.0' }
->>>>>>> 8e756248f (chore: release)
-=======
-  tiny-secp256k1@1.1.7:
-<<<<<<< HEAD
     resolution: {integrity: sha512-eb+F6NabSnjbLwNoC+2o5ItbmP1kg7HliWue71JgLegQt6A5mTN8YbvTLCazdlg6e5SV6A+r8OGvZYskdlmhqQ==}
     engines: {node: '>=6.0.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-eb+F6NabSnjbLwNoC+2o5ItbmP1kg7HliWue71JgLegQt6A5mTN8YbvTLCazdlg6e5SV6A+r8OGvZYskdlmhqQ==,
-      }
-    engines: { node: '>=6.0.0' }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-eb+F6NabSnjbLwNoC+2o5ItbmP1kg7HliWue71JgLegQt6A5mTN8YbvTLCazdlg6e5SV6A+r8OGvZYskdlmhqQ==}
-    engines: {node: '>=6.0.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   tinybench@2.9.0:
     resolution: {integrity: sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==}
@@ -11227,13 +8663,6 @@ packages:
     resolution: {integrity: sha512-db0E3UJjcFhpDhAF4tLo03oli3pwl3dbnzXOUIlRKrp+ldk/VUxzpWYZENsw2SZiuBjHAk7DfB0VU7NKdpb6sw==}
     engines: {node: '>= 0.4'}
 
-  to-buffer@1.2.2:
-    resolution:
-      {
-        integrity: sha512-db0E3UJjcFhpDhAF4tLo03oli3pwl3dbnzXOUIlRKrp+ldk/VUxzpWYZENsw2SZiuBjHAk7DfB0VU7NKdpb6sw==,
-      }
-    engines: { node: '>= 0.4' }
-
   to-object-path@0.3.0:
     resolution: {integrity: sha512-9mWHdnGRuh3onocaHzukyvCZhzvr6tiflAy/JRFXcJX0TjgfWA9pk9t8CMbzmBE4Jfw58pXbkngtBtqYxzNEyg==}
     engines: {node: '>=0.10.0'}
@@ -11257,41 +8686,9 @@ packages:
   toml@3.0.0:
     resolution: {integrity: sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==}
 
-<<<<<<< HEAD
-  toml@3.0.0:
-    resolution:
-      {
-        integrity: sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==,
-      }
-=======
   totalist@3.0.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
     engines: {node: '>=6'}
->>>>>>> 0ef34e79d (chore: migrate from jest to vitest)
-=======
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==,
-      }
-    engines: { node: '>=6' }
-<<<<<<< HEAD
->>>>>>> 8e756248f (chore: release)
-=======
-    resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
-    engines: {node: '>=6'}
->>>>>>> bb71a84a5 (chore: package bump)
-=======
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
-    engines: {node: '>=6'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   tough-cookie@4.1.4:
     resolution: {integrity: sha512-Loo5UUvLD9ScZ6jh8beX1T6sO1w2/MpCRpEP7V280GKMVUQ0Jzar2U3UJPsrdbziLEMMhu3Ujnq//rhiFuIeag==}
@@ -11424,12 +8821,6 @@ packages:
   tweetnacl@1.0.3:
     resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
 
-  tweetnacl@1.0.3:
-    resolution:
-      {
-        integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==,
-      }
-
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -11518,39 +8909,12 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  ua-is-frozen@0.1.2:
-    resolution:
-      {
-        integrity: sha512-RwKDW2p3iyWn4UbaxpP2+VxwqXh0jpvdxsYpZ5j/MLLiQOfbsV5shpgQiw93+KMYQPcteeMQ289MaAFzs3G9pw==,
-      }
-=======
-  ua-parser-js@1.0.37:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-
-  ua-parser-js@2.0.6:
-    resolution:
-      {
-        integrity: sha512-EmaxXfltJaDW75SokrY4/lXMrVyXomE/0FpIIqP2Ctic93gK7rlme55Cwkz8l3YZ6gqf94fCU7AnIkidd/KXPg==,
-      }
-    hasBin: true
-=======
-    resolution:
-      {
-        integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==,
-      }
->>>>>>> 8e756248f (chore: release)
-=======
   ua-is-frozen@0.1.2:
     resolution: {integrity: sha512-RwKDW2p3iyWn4UbaxpP2+VxwqXh0jpvdxsYpZ5j/MLLiQOfbsV5shpgQiw93+KMYQPcteeMQ289MaAFzs3G9pw==}
 
   ua-parser-js@2.0.6:
     resolution: {integrity: sha512-EmaxXfltJaDW75SokrY4/lXMrVyXomE/0FpIIqP2Ctic93gK7rlme55Cwkz8l3YZ6gqf94fCU7AnIkidd/KXPg==}
     hasBin: true
->>>>>>> 1d5042ea2 (chore: update trezor version)
 
   uc.micro@1.0.6:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
@@ -11594,12 +8958,6 @@ packages:
 
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
-
-  undici-types@7.16.0:
-    resolution:
-      {
-        integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==,
-      }
 
   unenv@1.9.0:
     resolution: {integrity: sha512-QKnFNznRxmbOF1hDgzpqrlIf6NC5sbZ2OJ+5Wl3OX8uM+LUJXbj4TXvLJCtwbPTmbMHCLIz6JLKNinNsMShK9g==}
@@ -11722,12 +9080,6 @@ packages:
   urijs@1.19.11:
     resolution: {integrity: sha512-HXgFDgDommxn5/bIv0cnQZsPhHDA90NPHD6+c/v21U5+Sx5hoP8+dP9IZXBU1gIfvdRfhG8cel9QNPeionfcCQ==}
 
-  urijs@1.19.11:
-    resolution:
-      {
-        integrity: sha512-HXgFDgDommxn5/bIv0cnQZsPhHDA90NPHD6+c/v21U5+Sx5hoP8+dP9IZXBU1gIfvdRfhG8cel9QNPeionfcCQ==,
-      }
-
   urix@0.1.0:
     resolution: {integrity: sha512-Am1ousAhSLBeB9cG/7k7r2R0zj50uDRlZHPGbazid5s9rlF1F/QKYObEKSIunSjIOkJZqwRRLpvewjEkM7pSqg==}
     deprecated: Please see https://github.com/lydell/urix#deprecated
@@ -11735,45 +9087,9 @@ packages:
   url-parse@1.5.10:
     resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   usb@2.16.0:
-<<<<<<< HEAD
-    resolution:
-      {
-        integrity: sha512-jD88fvzDViMDH5KmmNJgzMBDj/95bDTt6+kBNaNxP4G98xUTnDMiLUY2CYmToba6JAFhM9VkcaQuxCNRLGR7zg==,
-      }
-    engines: { node: '>=12.22.0 <13.0 || >=14.17.0' }
-=======
-  usb@2.14.0:
-<<<<<<< HEAD
-    resolution: {integrity: sha512-I3lzVOH21BsO6qPYvx1C7Ji08lbuM0qmsEtNGAphqlhNME5cz/vExY+jIXZl+HQIRybI/sTxdyLab5tALsL69w==}
-    engines: {node: '>=12.22.0 <13.0 || >=14.17.0'}
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
-=======
-    resolution:
-      {
-        integrity: sha512-I3lzVOH21BsO6qPYvx1C7Ji08lbuM0qmsEtNGAphqlhNME5cz/vExY+jIXZl+HQIRybI/sTxdyLab5tALsL69w==,
-      }
-    engines: { node: '>=12.22.0 <13.0 || >=14.17.0' }
->>>>>>> 8e756248f (chore: release)
-=======
-  usb@2.16.0:
-<<<<<<< HEAD
     resolution: {integrity: sha512-jD88fvzDViMDH5KmmNJgzMBDj/95bDTt6+kBNaNxP4G98xUTnDMiLUY2CYmToba6JAFhM9VkcaQuxCNRLGR7zg==}
     engines: {node: '>=12.22.0 <13.0 || >=14.17.0'}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-    resolution:
-      {
-        integrity: sha512-jD88fvzDViMDH5KmmNJgzMBDj/95bDTt6+kBNaNxP4G98xUTnDMiLUY2CYmToba6JAFhM9VkcaQuxCNRLGR7zg==,
-      }
-    engines: { node: '>=12.22.0 <13.0 || >=14.17.0' }
->>>>>>> 5de8abb55 (chore: release)
-=======
-    resolution: {integrity: sha512-jD88fvzDViMDH5KmmNJgzMBDj/95bDTt6+kBNaNxP4G98xUTnDMiLUY2CYmToba6JAFhM9VkcaQuxCNRLGR7zg==}
-    engines: {node: '>=12.22.0 <13.0 || >=14.17.0'}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   use-sync-external-store@1.2.0:
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
@@ -11789,31 +9105,8 @@ packages:
     engines: {node: '>=6.14.2'}
 
   util-deprecate@1.0.2:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==,
-      }
-=======
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  util@0.12.5:
-    resolution:
-      {
-        integrity: sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==,
-      }
-=======
-    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   utility-types@3.10.0:
     resolution: {integrity: sha512-O11mqxmi7wMKCo6HKFt5AhO4BwY3VV68YU07tgxfz8zJTIxr4BpsezN49Ffwy9j3ZpwwJp4fkRwjRzq3uWE6Rg==}
     engines: {node: '>= 4'}
@@ -11963,158 +9256,8 @@ packages:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
 
   wcwidth@1.0.1:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==,
-      }
-=======
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  web3-core@4.7.1:
-    resolution:
-      {
-        integrity: sha512-9KSeASCb/y6BG7rwhgtYC4CvYY66JfkmGNEYb7q1xgjt9BWfkf09MJPaRyoyT5trdOxYDHkT9tDlypvQWaU8UQ==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-errors@1.3.1:
-    resolution:
-      {
-        integrity: sha512-w3NMJujH+ZSW4ltIZZKtdbkbyQEvBzyp3JRn59Ckli0Nz4VMsVq8aF1bLWM7A2kuQ+yVEm3ySeNU+7mSRwx7RQ==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-eth-abi@4.4.1:
-    resolution:
-      {
-        integrity: sha512-60ecEkF6kQ9zAfbTY04Nc9q4eEYM0++BySpGi8wZ2PD1tw/c0SDvsKhV6IKURxLJhsDlb08dATc3iD6IbtWJmg==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-eth-accounts@4.3.1:
-    resolution:
-      {
-        integrity: sha512-rTXf+H9OKze6lxi7WMMOF1/2cZvJb2AOnbNQxPhBDssKOllAMzLhg1FbZ4Mf3lWecWfN6luWgRhaeSqO1l+IBQ==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-eth-contract@4.7.2:
-    resolution:
-      {
-        integrity: sha512-3ETqs2pMNPEAc7BVY/C3voOhTUeJdkf2aM3X1v+edbngJLHAxbvxKpOqrcO0cjXzC4uc2Q8Zpf8n8zT5r0eLnA==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-eth-ens@4.4.0:
-    resolution:
-      {
-        integrity: sha512-DeyVIS060hNV9g8dnTx92syqvgbvPricE3MerCxe/DquNZT3tD8aVgFfq65GATtpCgDDJffO2bVeHp3XBemnSQ==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-eth-iban@4.0.7:
-    resolution:
-      {
-        integrity: sha512-8weKLa9KuKRzibC87vNLdkinpUE30gn0IGY027F8doeJdcPUfsa4IlBgNC4k4HLBembBB2CTU0Kr/HAOqMeYVQ==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-eth-personal@4.1.0:
-    resolution:
-      {
-        integrity: sha512-RFN83uMuvA5cu1zIwwJh9A/bAj0OBxmGN3tgx19OD/9ygeUZbifOL06jgFzN0t+1ekHqm3DXYQM8UfHpXi7yDQ==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-eth@4.11.1:
-    resolution:
-      {
-        integrity: sha512-q9zOkzHnbLv44mwgLjLXuyqszHuUgZWsQayD2i/rus2uk0G7hMn11bE2Q3hOVnJS4ws4VCtUznlMxwKQ+38V2w==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-net@4.1.0:
-    resolution:
-      {
-        integrity: sha512-WWmfvHVIXWEoBDWdgKNYKN8rAy6SgluZ0abyRyXOL3ESr7ym7pKWbfP4fjApIHlYTh8tNqkrdPfM4Dyi6CA0SA==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-providers-http@4.2.0:
-    resolution:
-      {
-        integrity: sha512-IPMnDtHB7dVwaB7/mMxAZzyq7d5ezfO1+Vw0bNfAeIi7gaDlJiggp85SdyAfOgov8AMUA/dyiY72kQ0KmjXKvQ==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-providers-ipc@4.0.7:
-    resolution:
-      {
-        integrity: sha512-YbNqY4zUvIaK2MHr1lQFE53/8t/ejHtJchrWn9zVbFMGXlTsOAbNoIoZWROrg1v+hCBvT2c9z8xt7e/+uz5p1g==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-providers-ws@4.0.8:
-    resolution:
-      {
-        integrity: sha512-goJdgata7v4pyzHRsg9fSegUG4gVnHZSHODhNnn6J93ykHkBI1nz4fjlGpcQLUMi4jAMz6SHl9Ibzs2jj9xqPw==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-rpc-methods@1.3.0:
-    resolution:
-      {
-        integrity: sha512-/CHmzGN+IYgdBOme7PdqzF+FNeMleefzqs0LVOduncSaqsppeOEoskLXb2anSpzmQAP3xZJPaTrkQPWSJMORig==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-rpc-providers@1.0.0-rc.4:
-    resolution:
-      {
-        integrity: sha512-PXosCqHW0EADrYzgmueNHP3Y5jcSmSwH+Dkqvn7EYD0T2jcsdDAIHqk6szBiwIdhumM7gv9Raprsu/s/f7h1fw==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-types@1.10.0:
-    resolution:
-      {
-        integrity: sha512-0IXoaAFtFc8Yin7cCdQfB9ZmjafrbP6BO0f0KT/khMhXKUpoJ6yShrVhiNpyRBo8QQjuOagsWzwSK2H49I7sbw==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-utils@4.3.3:
-    resolution:
-      {
-        integrity: sha512-kZUeCwaQm+RNc2Bf1V3BYbF29lQQKz28L0y+FA4G0lS8IxtJVGi5SeDTUkpwqqkdHHC7JcapPDnyyzJ1lfWlOw==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3-validator@2.0.6:
-    resolution:
-      {
-        integrity: sha512-qn9id0/l1bWmvH4XfnG/JtGKKwut2Vokl6YXP5Kfg424npysmtRLe9DgiNBM9Op7QL/aSiaA0TVXibuIuWcizg==,
-      }
-    engines: { node: '>=14', npm: '>=6.12.0' }
-
-  web3@4.16.0:
-    resolution:
-      {
-        integrity: sha512-SgoMSBo6EsJ5GFCGar2E/pR2lcR/xmUSuQ61iK6yDqzxmm42aPPxSqZfJz2z/UCR6pk03u77pU8TGV6lgMDdIQ==,
-      }
-    engines: { node: '>=14.0.0', npm: '>=6.12.0' }
-=======
-    resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
@@ -12149,32 +9292,8 @@ packages:
     engines: {node: '>= 0.4'}
 
   which-module@2.0.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5de8abb55 (chore: release)
-    resolution:
-      {
-        integrity: sha512-B+enWhmw6cjfVC7kS8Pj9pCrKSc5txArRyaYGe088shv/FGWH+0Rjx/xPgtsWfsUtS27FkP697E4DDhgrgoc0Q==,
-      }
-=======
     resolution: {integrity: sha512-B+enWhmw6cjfVC7kS8Pj9pCrKSc5txArRyaYGe088shv/FGWH+0Rjx/xPgtsWfsUtS27FkP697E4DDhgrgoc0Q==}
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
-<<<<<<< HEAD
-=======
-  which-typed-array@1.1.18:
-    resolution:
-      {
-        integrity: sha512-qEcY+KJYlWyLH9vNbsr6/5j59AXk5ni5aakf8ldzBvGde6Iz4sxZGkJyWSAueTG7QhOvNRYb1lDdFmL5Td0QKA==,
-      }
-    engines: { node: '>= 0.4' }
-=======
-    resolution: {integrity: sha512-B+enWhmw6cjfVC7kS8Pj9pCrKSc5txArRyaYGe088shv/FGWH+0Rjx/xPgtsWfsUtS27FkP697E4DDhgrgoc0Q==}
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
->>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
   which-typed-array@1.1.19:
     resolution: {integrity: sha512-rEvr90Bck4WZt9HHFC4DJMsjvu7x+r6bImz0/BrbWb7A2djJ8hnZMrWnHo9F8ssv0OMErasDhftrfROTyqSDrw==}
     engines: {node: '>= 0.4'}
@@ -12315,13 +9434,6 @@ packages:
   xrpl@4.4.3:
     resolution: {integrity: sha512-vi2OjuNkiaP8nv1j+nqHp8GZwwEjO6Y8+j/OuVMg6M4LwXEwyHdIj33dlg7cyY1Lw5+jb9HqFOQvABhaywVbTQ==}
     engines: {node: '>=18.0.0'}
-
-  xrpl@4.4.3:
-    resolution:
-      {
-        integrity: sha512-vi2OjuNkiaP8nv1j+nqHp8GZwwEjO6Y8+j/OuVMg6M4LwXEwyHdIj33dlg7cyY1Lw5+jb9HqFOQvABhaywVbTQ==,
-      }
-    engines: { node: '>=18.0.0' }
 
   xstream@11.14.0:
     resolution: {integrity: sha512-1bLb+kKKtKPbgTK6i/BaoAn03g47PpFstlbe1BA+y3pNS/LfvcaghS5BFf9+EE1J+KwSQsEpfJvFN5GqFtiNmw==}
@@ -12465,46 +9577,6 @@ snapshots:
       - supports-color
     optional: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-  '@babel/generator@7.28.0':
-    dependencies:
-      '@babel/parser': 7.28.0
-      '@babel/types': 7.28.2
-      '@jridgewell/gen-mapping': 0.3.12
-      '@jridgewell/trace-mapping': 0.3.29
-      jsesc: 3.1.0
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@babel/helper-compilation-targets@7.26.5':
-    dependencies:
-      '@babel/compat-data': 7.26.8
-      '@babel/helper-validator-option': 7.25.9
-      browserslist: 4.24.4
-      lru-cache: 5.1.1
-      semver: 6.3.1
-=======
-  '@babel/helper-annotate-as-pure@7.25.9':
-    dependencies:
-      '@babel/types': 7.26.9
->>>>>>> f8ee83138 (chore: optimise eslint speed)
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
-=======
-    optional: true
-
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/generator@7.28.5':
     dependencies:
       '@babel/parser': 7.28.5
@@ -12513,37 +9585,6 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.29
       jsesc: 3.1.0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@babel/helper-annotate-as-pure@7.25.9':
-    dependencies:
-      '@babel/types': 7.28.2
-<<<<<<< HEAD
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-=======
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-  '@babel/helper-compilation-targets@7.26.5':
-    dependencies:
-      '@babel/compat-data': 7.26.8
-      '@babel/helper-validator-option': 7.25.9
-      browserslist: 4.24.4
-      lru-cache: 5.1.1
-      semver: 6.3.1
-<<<<<<< HEAD
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
-=======
->>>>>>> bb71a84a5 (chore: package bump)
-=======
-    optional: true
-
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/helper-compilation-targets@7.27.2':
     dependencies:
       '@babel/compat-data': 7.28.0
@@ -12553,37 +9594,8 @@ snapshots:
       semver: 6.3.1
     optional: true
 
-<<<<<<< HEAD
-  '@babel/helper-globals@7.28.0': {}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  '@babel/helper-member-expression-to-functions@7.25.9':
-    dependencies:
-      '@babel/traverse': 7.26.9
-      '@babel/types': 7.28.2
-    transitivePeerDependencies:
-      - supports-color
-
-<<<<<<< HEAD
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-=======
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  '@babel/helper-module-imports@7.25.9':
-    dependencies:
-      '@babel/traverse': 7.26.9
-      '@babel/types': 7.28.2
-    transitivePeerDependencies:
-      - supports-color
-=======
   '@babel/helper-globals@7.28.0':
     optional: true
->>>>>>> bb71a84a5 (chore: package bump)
 
   '@babel/helper-module-imports@7.27.1':
     dependencies:
@@ -12593,29 +9605,6 @@ snapshots:
       - supports-color
     optional: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@babel/helper-module-transforms@7.26.0(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  '@babel/helper-module-transforms@7.26.0(@babel/core@7.28.0)':
-    dependencies:
-      '@babel/core': 7.28.0
->>>>>>> f8ee83138 (chore: optimise eslint speed)
-      '@babel/helper-module-imports': 7.25.9
-      '@babel/helper-validator-identifier': 7.27.1
-      '@babel/traverse': 7.26.9
-    transitivePeerDependencies:
-      - supports-color
-
-=======
->>>>>>> 70d3f3b0a (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   '@babel/helper-module-transforms@7.27.3(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
@@ -12624,57 +9613,11 @@ snapshots:
       '@babel/traverse': 7.28.0
     transitivePeerDependencies:
       - supports-color
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@babel/helper-plugin-utils@7.27.1': {}
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  '@babel/helper-optimise-call-expression@7.25.9':
-    dependencies:
-      '@babel/types': 7.28.2
-
-  '@babel/helper-plugin-utils@7.26.5': {}
-=======
     optional: true
->>>>>>> bb71a84a5 (chore: package bump)
 
   '@babel/helper-plugin-utils@7.27.1':
     optional: true
-<<<<<<< HEAD
->>>>>>> f8ee83138 (chore: optimise eslint speed)
-=======
 
-<<<<<<< HEAD
-  '@babel/helper-replace-supers@7.25.9(@babel/core@7.28.0)':
-    dependencies:
-      '@babel/core': 7.28.0
-      '@babel/helper-member-expression-to-functions': 7.25.9
-      '@babel/helper-optimise-call-expression': 7.25.9
-      '@babel/traverse': 7.26.9
-    transitivePeerDependencies:
-      - supports-color
-
-  '@babel/helper-skip-transparent-expression-wrappers@7.25.9':
-    dependencies:
-      '@babel/traverse': 7.26.9
-      '@babel/types': 7.28.2
-    transitivePeerDependencies:
-      - supports-color
-<<<<<<< HEAD
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-=======
-  '@babel/helper-plugin-utils@7.27.1': {}
-
-  '@babel/helper-string-parser@7.25.9': {}
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   '@babel/helper-string-parser@7.27.1': {}
 
   '@babel/helper-validator-identifier@7.27.1': {}
@@ -13826,6 +10769,8 @@ snapshots:
       - ts-node
     optional: true
 
+  '@jest/diff-sequences@30.0.1': {}
+
   '@jest/environment@29.7.0':
     dependencies:
       '@jest/fake-timers': 29.7.0
@@ -13856,6 +10801,8 @@ snapshots:
       jest-mock: 29.7.0
       jest-util: 29.7.0
     optional: true
+
+  '@jest/get-type@30.1.0': {}
 
   '@jest/globals@29.7.0':
     dependencies:
@@ -13900,6 +10847,10 @@ snapshots:
   '@jest/schemas@29.6.3':
     dependencies:
       '@sinclair/typebox': 0.27.8
+
+  '@jest/schemas@30.0.5':
+    dependencies:
+      '@sinclair/typebox': 0.34.41
 
   '@jest/source-map@29.6.3':
     dependencies:
@@ -14470,31 +11421,61 @@ snapshots:
   '@nx/nx-darwin-arm64@20.8.2':
     optional: true
 
+  '@nx/nx-darwin-arm64@22.1.2':
+    optional: true
+
   '@nx/nx-darwin-x64@20.8.2':
+    optional: true
+
+  '@nx/nx-darwin-x64@22.1.2':
     optional: true
 
   '@nx/nx-freebsd-x64@20.8.2':
     optional: true
 
+  '@nx/nx-freebsd-x64@22.1.2':
+    optional: true
+
   '@nx/nx-linux-arm-gnueabihf@20.8.2':
+    optional: true
+
+  '@nx/nx-linux-arm-gnueabihf@22.1.2':
     optional: true
 
   '@nx/nx-linux-arm64-gnu@20.8.2':
     optional: true
 
+  '@nx/nx-linux-arm64-gnu@22.1.2':
+    optional: true
+
   '@nx/nx-linux-arm64-musl@20.8.2':
+    optional: true
+
+  '@nx/nx-linux-arm64-musl@22.1.2':
     optional: true
 
   '@nx/nx-linux-x64-gnu@20.8.2':
     optional: true
 
+  '@nx/nx-linux-x64-gnu@22.1.2':
+    optional: true
+
   '@nx/nx-linux-x64-musl@20.8.2':
+    optional: true
+
+  '@nx/nx-linux-x64-musl@22.1.2':
     optional: true
 
   '@nx/nx-win32-arm64-msvc@20.8.2':
     optional: true
 
+  '@nx/nx-win32-arm64-msvc@22.1.2':
+    optional: true
+
   '@nx/nx-win32-x64-msvc@20.8.2':
+    optional: true
+
+  '@nx/nx-win32-x64-msvc@22.1.2':
     optional: true
 
   '@octokit/auth-token@4.0.0': {}
@@ -14936,6 +11917,8 @@ snapshots:
 
   '@sinclair/typebox@0.33.22': {}
 
+  '@sinclair/typebox@0.34.41': {}
+
   '@sinonjs/commons@3.0.1':
     dependencies:
       type-detect: 4.0.8
@@ -14946,8 +11929,6 @@ snapshots:
       '@sinonjs/commons': 3.0.1
     optional: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@solana-program/compute-budget@0.8.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))':
     dependencies:
       '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
@@ -14968,35 +11949,6 @@ snapshots:
   '@solana-program/token@0.5.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))':
     dependencies:
       '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-=======
-  '@solana-program/compute-budget@0.8.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))':
-=======
-  '@solana-program/compute-budget@0.8.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))':
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-    dependencies:
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-
-  '@solana-program/stake@0.2.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))':
-    dependencies:
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-
-  '@solana-program/system@0.7.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))':
-    dependencies:
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-
-  '@solana-program/token-2022@0.4.2(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))':
-    dependencies:
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-      '@solana/sysvars': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-
-  '@solana-program/token@0.5.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))':
-    dependencies:
-<<<<<<< HEAD
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   '@solana/accounts@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)':
     dependencies:
@@ -15094,15 +12046,7 @@ snapshots:
     transitivePeerDependencies:
       - fastestsmallesttextencoderdecoder
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-=======
-  '@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-  '@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     dependencies:
       '@solana/accounts': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/addresses': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
@@ -15115,27 +12059,11 @@ snapshots:
       '@solana/rpc': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/rpc-parsed-types': 2.3.0(typescript@5.9.2)
       '@solana/rpc-spec-types': 2.3.0(typescript@5.9.2)
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@solana/rpc-subscriptions': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
       '@solana/rpc-types': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/signers': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/sysvars': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/transaction-confirmation': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-=======
-      '@solana/rpc-subscriptions': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-      '@solana/rpc-types': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-      '@solana/signers': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-      '@solana/sysvars': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-      '@solana/transaction-confirmation': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-      '@solana/rpc-subscriptions': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-      '@solana/rpc-types': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-      '@solana/signers': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-      '@solana/sysvars': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-      '@solana/transaction-confirmation': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       '@solana/transaction-messages': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/transactions': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       typescript: 5.9.2
@@ -15214,30 +12142,14 @@ snapshots:
     transitivePeerDependencies:
       - fastestsmallesttextencoderdecoder
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@solana/rpc-subscriptions-channel-websocket@2.3.0(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-=======
-  '@solana/rpc-subscriptions-channel-websocket@2.3.0(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-  '@solana/rpc-subscriptions-channel-websocket@2.3.0(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     dependencies:
       '@solana/errors': 2.3.0(typescript@5.9.2)
       '@solana/functional': 2.3.0(typescript@5.9.2)
       '@solana/rpc-subscriptions-spec': 2.3.0(typescript@5.9.2)
       '@solana/subscribable': 2.3.0(typescript@5.9.2)
       typescript: 5.9.2
-<<<<<<< HEAD
-<<<<<<< HEAD
       ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-=======
-      ws: 8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-      ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
->>>>>>> 2f6132c7a (chore: minor trezor beta)
 
   '@solana/rpc-subscriptions-spec@2.3.0(typescript@5.9.2)':
     dependencies:
@@ -15247,15 +12159,7 @@ snapshots:
       '@solana/subscribable': 2.3.0(typescript@5.9.2)
       typescript: 5.9.2
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@solana/rpc-subscriptions@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-=======
-  '@solana/rpc-subscriptions@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-  '@solana/rpc-subscriptions@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     dependencies:
       '@solana/errors': 2.3.0(typescript@5.9.2)
       '@solana/fast-stable-stringify': 2.3.0(typescript@5.9.2)
@@ -15263,15 +12167,7 @@ snapshots:
       '@solana/promises': 2.3.0(typescript@5.9.2)
       '@solana/rpc-spec-types': 2.3.0(typescript@5.9.2)
       '@solana/rpc-subscriptions-api': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@solana/rpc-subscriptions-channel-websocket': 2.3.0(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-=======
-      '@solana/rpc-subscriptions-channel-websocket': 2.3.0(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-      '@solana/rpc-subscriptions-channel-websocket': 2.3.0(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       '@solana/rpc-subscriptions-spec': 2.3.0(typescript@5.9.2)
       '@solana/rpc-transformers': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/rpc-types': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
@@ -15356,15 +12252,7 @@ snapshots:
     transitivePeerDependencies:
       - fastestsmallesttextencoderdecoder
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@solana/transaction-confirmation@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-=======
-  '@solana/transaction-confirmation@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-  '@solana/transaction-confirmation@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     dependencies:
       '@solana/addresses': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/codecs-strings': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
@@ -15372,15 +12260,7 @@ snapshots:
       '@solana/keys': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/promises': 2.3.0(typescript@5.9.2)
       '@solana/rpc': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@solana/rpc-subscriptions': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-=======
-      '@solana/rpc-subscriptions': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-      '@solana/rpc-subscriptions': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       '@solana/rpc-types': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/transaction-messages': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@solana/transactions': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
@@ -15571,8 +12451,6 @@ snapshots:
       - react-native
       - utf-8-validate
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@trezor/blockchain-link@2.5.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
     dependencies:
       '@solana-program/compute-budget': 0.8.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
@@ -15580,24 +12458,6 @@ snapshots:
       '@solana-program/token': 0.5.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
       '@solana-program/token-2022': 0.4.2(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))
       '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-=======
-  '@trezor/blockchain-link@2.5.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@solana-program/compute-budget': 0.8.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/stake': 0.2.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/token': 0.5.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/token-2022': 0.4.2(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-  '@trezor/blockchain-link@2.5.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@solana-program/compute-budget': 0.8.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/stake': 0.2.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/token': 0.5.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/token-2022': 0.4.2(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       '@solana/rpc-types': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)
       '@stellar/stellar-sdk': 13.3.0
       '@trezor/blockchain-link-types': 1.4.4(tslib@2.8.1)
@@ -15646,21 +12506,9 @@ snapshots:
       - expo-localization
       - react-native
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@trezor/connect-web@9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
     dependencies:
       '@trezor/connect': 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-=======
-  '@trezor/connect-web@9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@trezor/connect': 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-  '@trezor/connect-web@9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@trezor/connect': 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       '@trezor/connect-common': 0.4.4(tslib@2.8.1)
       '@trezor/utils': 9.4.4(tslib@2.8.1)
       '@trezor/websocket-client': 1.2.4(bufferutil@4.0.7)(tslib@2.8.1)(utf-8-validate@5.0.10)
@@ -15680,15 +12528,7 @@ snapshots:
       - utf-8-validate
       - ws
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   '@trezor/connect@9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
-=======
-  '@trezor/connect@9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-  '@trezor/connect@9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))':
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     dependencies:
       '@ethereumjs/common': 3.2.0
       '@ethereumjs/tx': 4.2.0
@@ -15696,27 +12536,12 @@ snapshots:
       '@mobily/ts-belt': 3.13.1
       '@noble/hashes': 1.8.0
       '@scure/bip39': 1.6.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       '@solana-program/compute-budget': 0.8.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
       '@solana-program/system': 0.7.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
       '@solana-program/token': 0.5.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
       '@solana-program/token-2022': 0.4.2(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))
       '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
       '@trezor/blockchain-link': 2.5.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-<<<<<<< HEAD
-=======
-      '@solana-program/compute-budget': 0.8.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/system': 0.7.0(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/token': 0.5.1(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))
-      '@solana-program/token-2022': 0.4.2(@solana/kit@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))
-      '@solana/kit': 2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-      '@trezor/blockchain-link': 2.5.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10))
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       '@trezor/blockchain-link-types': 1.4.4(tslib@2.8.1)
       '@trezor/blockchain-link-utils': 1.4.4(bufferutil@4.0.7)(tslib@2.8.1)(utf-8-validate@5.0.10)
       '@trezor/connect-analytics': 1.3.6(tslib@2.8.1)
@@ -16048,21 +12873,11 @@ snapshots:
       '@babel/types': 7.28.5
     optional: true
 
-<<<<<<< HEAD
-=======
   '@types/chai@5.2.3':
     dependencies:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
 
-<<<<<<< HEAD
-  '@types/connect@3.4.35':
-    dependencies:
-      '@types/node': 22.17.0
-
->>>>>>> 0ef34e79d (chore: migrate from jest to vitest)
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
       '@types/node': 22.17.0
@@ -16164,38 +12979,8 @@ snapshots:
 
   '@types/web@0.0.197': {}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  '@types/yargs-parser@21.0.3': {}
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  '@types/ws@7.4.7':
-    dependencies:
-      '@types/node': 22.17.0
-
-  '@types/ws@8.5.13':
-    dependencies:
-      '@types/node': 22.17.0
-
-  '@types/ws@8.5.3':
-    dependencies:
-      '@types/node': 22.17.0
-
   '@types/yargs-parser@21.0.3':
     optional: true
-<<<<<<< HEAD
->>>>>>> f8ee83138 (chore: optimise eslint speed)
-=======
-=======
-  '@types/yargs-parser@21.0.3': {}
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-  '@types/yargs-parser@21.0.3':
-    optional: true
->>>>>>> bb71a84a5 (chore: package bump)
 
   '@types/yargs@17.0.33':
     dependencies:
@@ -16996,15 +13781,7 @@ snapshots:
     dependencies:
       '@noble/hashes': 1.8.0
       eventemitter3: 5.0.1
-<<<<<<< HEAD
-<<<<<<< HEAD
       ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-=======
-      ws: 8.18.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
-      ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
->>>>>>> 2f6132c7a (chore: minor trezor beta)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -17044,27 +13821,6 @@ snapshots:
       fs-extra: 10.1.0
       yargs: 17.7.2
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  abitype@0.7.1(typescript@5.9.2)(zod@3.24.2):
-    dependencies:
-      typescript: 5.9.2
-    optionalDependencies:
-      zod: 3.24.2
-
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-  abitype@1.1.0(typescript@5.8.3)(zod@3.24.2):
-    optionalDependencies:
-      typescript: 5.8.3
-      zod: 3.24.2
-
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   abitype@1.1.0(typescript@5.9.2)(zod@3.24.2):
     optionalDependencies:
       typescript: 5.9.2
@@ -17091,32 +13847,6 @@ snapshots:
 
   aes-js@4.0.0-beta.5: {}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  agent-base@6.0.2:
-    dependencies:
-      debug: 4.4.3
-    transitivePeerDependencies:
-      - supports-color
-
-  agent-base@7.1.1:
-    dependencies:
-      debug: 4.4.3
-    transitivePeerDependencies:
-      - supports-color
-
-<<<<<<< HEAD
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-=======
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   agent-base@7.1.4: {}
 
   aggregate-error@3.1.0:
@@ -17367,6 +14097,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@1.13.2:
+    dependencies:
+      follow-redirects: 1.15.11
+      form-data: 4.0.4
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axios@1.7.7:
     dependencies:
       follow-redirects: 1.15.11
@@ -17586,14 +14324,6 @@ snapshots:
 
   browser-headers@0.4.1: {}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   browserify-aes@1.2.0:
     dependencies:
       buffer-xor: 1.0.3
@@ -17634,33 +14364,6 @@ snapshots:
       readable-stream: 2.3.8
       safe-buffer: 5.2.1
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-  browserslist@4.24.4:
-    dependencies:
-      caniuse-lite: 1.0.30001702
-      electron-to-chromium: 1.5.112
-      node-releases: 2.0.19
-      update-browserslist-db: 1.1.1(browserslist@4.24.4)
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-=======
->>>>>>> f8ee83138 (chore: optimise eslint speed)
-=======
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
-=======
-    optional: true
-
->>>>>>> 2f6132c7a (chore: minor trezor beta)
-=======
->>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   browserslist@4.25.1:
     dependencies:
       caniuse-lite: 1.0.30001733
@@ -17801,30 +14504,11 @@ snapshots:
     dependencies:
       big-integer: 1.6.36
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  cbor@10.0.11:
-    dependencies:
-      nofilter: 3.1.0
-=======
-  chai@6.2.1: {}
->>>>>>> 0ef34e79d (chore: migrate from jest to vitest)
-=======
-  chai@6.2.1: {}
-=======
-  cbor@10.0.11:
-    dependencies:
-      nofilter: 3.1.0
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
   cbor@10.0.11:
     dependencies:
       nofilter: 3.1.0
 
   chai@6.2.1: {}
->>>>>>> bb71a84a5 (chore: package bump)
 
   chalk@2.4.1:
     dependencies:
@@ -18474,20 +15158,6 @@ snapshots:
 
   diff@4.0.2: {}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  diffie-hellman@5.0.3:
-    dependencies:
-      bn.js: 4.12.0
-      miller-rabin: 4.0.1
-      randombytes: 2.1.0
-=======
-  diff@8.0.2: {}
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   diff@8.0.2: {}
 
   diffie-hellman@5.0.3:
@@ -18495,11 +15165,6 @@ snapshots:
       bn.js: 4.12.0
       miller-rabin: 4.0.1
       randombytes: 2.1.0
-<<<<<<< HEAD
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
 
   dijkstrajs@1.0.2: {}
 
@@ -19285,20 +15950,6 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.2
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  feaxios@0.0.23:
-    dependencies:
-      is-retry-allowed: 3.0.0
-=======
-  fdir@6.5.0(picomatch@4.0.3):
-    optionalDependencies:
-      picomatch: 4.0.3
->>>>>>> 0ef34e79d (chore: migrate from jest to vitest)
-=======
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   fdir@6.5.0(picomatch@4.0.3):
     optionalDependencies:
       picomatch: 4.0.3
@@ -19306,11 +15957,6 @@ snapshots:
   feaxios@0.0.23:
     dependencies:
       is-retry-allowed: 3.0.0
-<<<<<<< HEAD
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
 
   fetch-cookie@3.0.1:
     dependencies:
@@ -19868,27 +16514,6 @@ snapshots:
 
   http-status-codes@2.3.0: {}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  https-proxy-agent@5.0.1:
-    dependencies:
-      agent-base: 6.0.2
-      debug: 4.4.3
-    transitivePeerDependencies:
-      - supports-color
-
-<<<<<<< HEAD
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-=======
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   https-proxy-agent@7.0.6:
     dependencies:
       agent-base: 7.1.4
@@ -20311,17 +16936,6 @@ snapshots:
     dependencies:
       ws: 7.5.10(bufferutil@4.0.7)(utf-8-validate@5.0.10)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  isomorphic-ws@5.0.0(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)):
-    dependencies:
-      ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
   isows@1.0.7(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)):
     dependencies:
       ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
@@ -20486,6 +17100,13 @@ snapshots:
       diff-sequences: 29.6.3
       jest-get-type: 29.6.3
       pretty-format: 29.7.0
+
+  jest-diff@30.2.0:
+    dependencies:
+      '@jest/diff-sequences': 30.0.1
+      '@jest/get-type': 30.1.0
+      chalk: 4.1.2
+      pretty-format: 30.2.0
 
   jest-docblock@29.7.0:
     dependencies:
@@ -21766,6 +18387,57 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  nx@22.1.2:
+    dependencies:
+      '@napi-rs/wasm-runtime': 0.2.4
+      '@yarnpkg/lockfile': 1.1.0
+      '@yarnpkg/parsers': 3.0.2
+      '@zkochan/js-yaml': 0.0.7
+      axios: 1.13.2
+      chalk: 4.1.2
+      cli-cursor: 3.1.0
+      cli-spinners: 2.6.1
+      cliui: 8.0.1
+      dotenv: 16.4.7
+      dotenv-expand: 11.0.7
+      enquirer: 2.3.6
+      figures: 3.2.0
+      flat: 5.0.2
+      front-matter: 4.0.2
+      ignore: 7.0.5
+      jest-diff: 30.2.0
+      jsonc-parser: 3.2.0
+      lines-and-columns: 2.0.3
+      minimatch: 9.0.3
+      node-machine-id: 1.1.12
+      npm-run-path: 4.0.1
+      open: 8.4.2
+      ora: 5.3.0
+      resolve.exports: 2.0.3
+      semver: 7.7.3
+      string-width: 4.2.3
+      tar-stream: 2.2.0
+      tmp: 0.2.4
+      tree-kill: 1.2.2
+      tsconfig-paths: 4.2.0
+      tslib: 2.8.1
+      yaml: 2.8.1
+      yargs: 17.7.2
+      yargs-parser: 21.1.1
+    optionalDependencies:
+      '@nx/nx-darwin-arm64': 22.1.2
+      '@nx/nx-darwin-x64': 22.1.2
+      '@nx/nx-freebsd-x64': 22.1.2
+      '@nx/nx-linux-arm-gnueabihf': 22.1.2
+      '@nx/nx-linux-arm64-gnu': 22.1.2
+      '@nx/nx-linux-arm64-musl': 22.1.2
+      '@nx/nx-linux-x64-gnu': 22.1.2
+      '@nx/nx-linux-x64-musl': 22.1.2
+      '@nx/nx-win32-arm64-msvc': 22.1.2
+      '@nx/nx-win32-x64-msvc': 22.1.2
+    transitivePeerDependencies:
+      - debug
+
   object-assign@4.1.1: {}
 
   object-copy@0.1.0:
@@ -22220,6 +18892,12 @@ snapshots:
   pretty-format@29.7.0:
     dependencies:
       '@jest/schemas': 29.6.3
+      ansi-styles: 5.2.0
+      react-is: 18.3.1
+
+  pretty-format@30.2.0:
+    dependencies:
+      '@jest/schemas': 30.0.5
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
@@ -22754,28 +19432,6 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.46.2
       fsevents: 2.3.2
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  rpc-websockets@9.0.4:
-    dependencies:
-      '@swc/helpers': 0.5.15
-      '@types/uuid': 8.3.4
-      '@types/ws': 8.5.13
-      buffer: 6.0.3
-      eventemitter3: 5.0.1
-      uuid: 8.3.2
-      ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-    optionalDependencies:
-      bufferutil: 4.0.7
-      utf-8-validate: 5.0.10
-
-=======
->>>>>>> a466f1b7f (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
   run-async@2.4.1: {}
 
   run-con@1.2.12:
@@ -23100,28 +19756,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1d5042ea2 (chore: update trezor version)
-  socks-proxy-agent@8.0.4:
-    dependencies:
-      agent-base: 7.1.1
-      debug: 4.4.3
-      socks: 2.8.3
-    transitivePeerDependencies:
-      - supports-color
-
-<<<<<<< HEAD
->>>>>>> da0572b2e (chore: migrate from tsc to tsdown)
-=======
-=======
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> bb71a84a5 (chore: package bump)
   socks-proxy-agent@8.0.5:
     dependencies:
       agent-base: 7.1.4
@@ -23530,24 +20164,9 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  toml@3.0.0: {}
-=======
-  totalist@3.0.1: {}
->>>>>>> 0ef34e79d (chore: migrate from jest to vitest)
-=======
-  totalist@3.0.1: {}
-=======
-  toml@3.0.0: {}
->>>>>>> 70d3f3b0a (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
   toml@3.0.0: {}
 
   totalist@3.0.1: {}
->>>>>>> bb71a84a5 (chore: package bump)
 
   tough-cookie@4.1.4:
     dependencies:
@@ -24079,240 +20698,6 @@ snapshots:
     dependencies:
       defaults: 1.0.4
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  web3-core@4.7.1(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10):
-    dependencies:
-      web3-errors: 1.3.1
-      web3-eth-accounts: 4.3.1
-      web3-eth-iban: 4.0.7
-      web3-providers-http: 4.2.0(encoding@0.1.13)
-      web3-providers-ws: 4.0.8(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-    optionalDependencies:
-      web3-providers-ipc: 4.0.7
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-
-  web3-errors@1.3.1:
-    dependencies:
-      web3-types: 1.10.0
-
-  web3-eth-abi@4.4.1(typescript@5.9.2)(zod@3.24.2):
-    dependencies:
-      abitype: 0.7.1(typescript@5.9.2)(zod@3.24.2)
-      web3-errors: 1.3.1
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-    transitivePeerDependencies:
-      - typescript
-      - zod
-
-  web3-eth-accounts@4.3.1:
-    dependencies:
-      '@ethereumjs/rlp': 4.0.1
-      crc-32: 1.2.2
-      ethereum-cryptography: 2.2.1
-      web3-errors: 1.3.1
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-
-  web3-eth-contract@4.7.2(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2):
-    dependencies:
-      '@ethereumjs/rlp': 5.0.2
-      web3-core: 4.7.1(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-errors: 1.3.1
-      web3-eth: 4.11.1(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      web3-eth-abi: 4.4.1(typescript@5.9.2)(zod@3.24.2)
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - typescript
-      - utf-8-validate
-      - zod
-
-  web3-eth-ens@4.4.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2):
-    dependencies:
-      '@adraffy/ens-normalize': 1.11.0
-      web3-core: 4.7.1(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-errors: 1.3.1
-      web3-eth: 4.11.1(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      web3-eth-contract: 4.7.2(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      web3-net: 4.1.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - typescript
-      - utf-8-validate
-      - zod
-
-  web3-eth-iban@4.0.7:
-    dependencies:
-      web3-errors: 1.3.1
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-
-  web3-eth-personal@4.1.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2):
-    dependencies:
-      web3-core: 4.7.1(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-eth: 4.11.1(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      web3-rpc-methods: 1.3.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - typescript
-      - utf-8-validate
-      - zod
-
-  web3-eth@4.11.1(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2):
-    dependencies:
-      setimmediate: 1.0.5
-      web3-core: 4.7.1(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-errors: 1.3.1
-      web3-eth-abi: 4.4.1(typescript@5.9.2)(zod@3.24.2)
-      web3-eth-accounts: 4.3.1
-      web3-net: 4.1.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-providers-ws: 4.0.8(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      web3-rpc-methods: 1.3.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - typescript
-      - utf-8-validate
-      - zod
-
-  web3-net@4.1.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10):
-    dependencies:
-      web3-core: 4.7.1(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-rpc-methods: 1.3.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-
-  web3-providers-http@4.2.0(encoding@0.1.13):
-    dependencies:
-      cross-fetch: 4.0.0(encoding@0.1.13)
-      web3-errors: 1.3.1
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-    transitivePeerDependencies:
-      - encoding
-
-  web3-providers-ipc@4.0.7:
-    dependencies:
-      web3-errors: 1.3.1
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-    optional: true
-
-  web3-providers-ws@4.0.8(bufferutil@4.0.7)(utf-8-validate@5.0.10):
-    dependencies:
-      '@types/ws': 8.5.3
-      isomorphic-ws: 5.0.0(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-      web3-errors: 1.3.1
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  web3-rpc-methods@1.3.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10):
-    dependencies:
-      web3-core: 4.7.1(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-types: 1.10.0
-      web3-validator: 2.0.6
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-
-  web3-rpc-providers@1.0.0-rc.4(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10):
-    dependencies:
-      web3-errors: 1.3.1
-      web3-providers-http: 4.2.0(encoding@0.1.13)
-      web3-providers-ws: 4.0.8(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-
-  web3-types@1.10.0: {}
-
-  web3-utils@4.3.3:
-    dependencies:
-      ethereum-cryptography: 2.2.1
-      eventemitter3: 5.0.1
-      web3-errors: 1.3.1
-      web3-types: 1.10.0
-      web3-validator: 2.0.6
-
-  web3-validator@2.0.6:
-    dependencies:
-      ethereum-cryptography: 2.2.1
-      util: 0.12.5
-      web3-errors: 1.3.1
-      web3-types: 1.10.0
-      zod: 3.24.2
-
-  web3@4.16.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2):
-    dependencies:
-      web3-core: 4.7.1(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-errors: 1.3.1
-      web3-eth: 4.11.1(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      web3-eth-abi: 4.4.1(typescript@5.9.2)(zod@3.24.2)
-      web3-eth-accounts: 4.3.1
-      web3-eth-contract: 4.7.2(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      web3-eth-ens: 4.4.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      web3-eth-iban: 4.0.7
-      web3-eth-personal: 4.1.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-      web3-net: 4.1.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-providers-http: 4.2.0(encoding@0.1.13)
-      web3-providers-ws: 4.0.8(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      web3-rpc-methods: 1.3.0(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-rpc-providers: 1.0.0-rc.4(bufferutil@4.0.7)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      web3-types: 1.10.0
-      web3-utils: 4.3.3
-      web3-validator: 2.0.6
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - typescript
-      - utf-8-validate
-      - zod
-
-=======
->>>>>>> a466f1b7f (chore: update trezor version)
->>>>>>> 1d5042ea2 (chore: update trezor version)
-=======
->>>>>>> 2f6132c7a (chore: minor trezor beta)
   webidl-conversions@3.0.1: {}
 
   websocket-driver@0.7.4:
