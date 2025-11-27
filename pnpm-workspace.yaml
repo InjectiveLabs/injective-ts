@@ -17,5 +17,4 @@ catalog:
 
   # Utilities
   http-status-codes: ^2.3.0
-  alchemy-sdk: ^3.4.7
   eip1193-provider: ^1.0.1

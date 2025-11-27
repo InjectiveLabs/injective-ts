@@ -23,7 +23,6 @@ export default defineConfig({
     '@bangjelkoski/ledgerhq-hw-transport-webhid',
     '@bangjelkoski/ledgerhq-hw-transport-webusb',
     // External dependencies
-    'alchemy-sdk',
     'viem',
   ],
   onSuccess: createSimpleOnSuccess(),

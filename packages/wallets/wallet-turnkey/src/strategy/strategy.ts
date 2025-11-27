@@ -1,7 +1,7 @@
 import { getAddress } from 'viem'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts'
+import { HttpRestClient } from '@injectivelabs/utils'
 import { getEthereumAddress } from '@injectivelabs/sdk-ts'
-import { sleep, HttpRestClient } from '@injectivelabs/utils'
 import {
   ErrorType,
   WalletException,
@@ -356,8 +356,6 @@ export class TurnkeyWalletStrategy
   ): Promise<Record<string, any>> {
     const options = this.evmOptions
 
-    const maxAttempts = 10
-    const interval = 3000
     const chainId = evmChainId || options.evmChainId
     const url = options.rpcUrl || options.rpcUrls?.[chainId]
 
@@ -373,26 +371,19 @@ export class TurnkeyWalletStrategy
 
     const publicClient = getViemPublicClient(chainId, url)
 
-    let attempts = 0
+    try {
+      const receipt = await publicClient.waitForTransactionReceipt({
+        hash: txHash as `0x${string}`,
+        timeout: 30_000,
+        pollingInterval: 3_000,
+      })
 
-    while (attempts < maxAttempts) {
-      attempts++
-      await sleep(interval)
-
-      try {
-        const receipt = await publicClient.getTransactionReceipt({
-          hash: txHash as `0x${string}`,
-        })
-
-        if (receipt) {
-          return receipt
-        }
-      } catch {}
+      return receipt
+    } catch {
+      throw new Error(
+        `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+      )
     }
-
-    throw new Error(
-      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
-    )
   }
 
   async getPubKey(): Promise<string> {

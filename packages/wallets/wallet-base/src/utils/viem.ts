@@ -3,6 +3,7 @@ import * as viemChains from 'viem/chains'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import {
   http,
+  custom,
   extractChain,
   createPublicClient,
   createWalletClient,
@@ -14,6 +15,7 @@ import type {
   PublicClient,
   WalletClient,
 } from 'viem'
+import type { BrowserEip1993Provider } from './../types/provider'
 
 export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
   if (chainId === EvmChainId.DevnetEvm) {
@@ -101,5 +103,17 @@ export const getViemWalletClient = ({
     chain: chainConfig,
     transport: rpcUrl ? http(rpcUrl) : http(),
     account: typeof account === 'string' ? (account as `0x${string}`) : account,
+  })
+}
+
+export const getViemPublicClientFromEip1193Provider = (
+  chainId: EvmChainId | number,
+  provider: BrowserEip1993Provider,
+): PublicClient => {
+  const chain = getEvmChainConfig(chainId)
+
+  return createPublicClient({
+    chain,
+    transport: custom(provider),
   })
 }

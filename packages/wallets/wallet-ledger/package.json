@@ -59,7 +59,6 @@
     "@bangjelkoski/ledgerhq-hw-transport-webhid": "6.30.0-beta.0",
     "@bangjelkoski/ledgerhq-hw-transport-webusb": "6.29.4-beta.0",
     "viem": "catalog:",
-    "alchemy-sdk": "catalog:",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/exceptions": "workspace:*",
