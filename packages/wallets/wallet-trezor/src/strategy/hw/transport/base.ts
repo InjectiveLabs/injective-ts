@@ -18,13 +18,7 @@ export default class BaseTrezorTransport {
       await TrezorConnect.init({
         lazyLoad: true,
         manifest: TREZOR_CONNECT_MANIFEST,
-<<<<<<< HEAD
         coreMode: 'popup',
-=======
-        debug: true,
-        // 'auto', 'popup', 'iframe'
-        coreMode: 'auto',
->>>>>>> 2f6132c7a (chore: minor trezor beta)
       })
     }
 

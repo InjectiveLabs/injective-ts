@@ -1,23 +1,14 @@
 {
   "name": "@injectivelabs/wallet-strategy",
-  "description": "Wallet strategy with instantiated wallets",
   "version": "1.16.37",
-  "sideEffects": false,
-  "type": "module",
+  "description": "Wallet strategy with instantiated wallets",
+  "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
-  "license": "Apache-2.0",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
-  "_moduleAliases": {
-    "~wallet-strategy": "dist"
-  },
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
@@ -40,6 +31,12 @@
       }
     }
   },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm type-check && tsdown",
     "build:fast": "tsdown",
@@ -56,31 +53,35 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/networks": "workspace:*",
-    "@injectivelabs/sdk-ts": "workspace:*",
-    "@injectivelabs/ts-types": "workspace:*",
+    "hdkey": "^2.1.0",
+    "viem": "catalog:",
+    "ethers": "catalog:",
+    "alchemy-sdk": "catalog:",
+    "eip1193-provider": "catalog:",
     "@injectivelabs/utils": "workspace:*",
+    "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/networks": "workspace:*",
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/wallet-evm": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*",
     "@injectivelabs/wallet-core": "workspace:*",
-    "@injectivelabs/wallet-cosmos": "workspace:*",
-    "@injectivelabs/wallet-cosmostation": "workspace:*",
-    "@injectivelabs/wallet-evm": "workspace:*",
-    "@injectivelabs/wallet-ledger": "workspace:*",
     "@injectivelabs/wallet-magic": "workspace:*",
-    "@injectivelabs/wallet-private-key": "workspace:*",
+    "@injectivelabs/wallet-cosmos": "workspace:*",
+    "@injectivelabs/wallet-ledger": "workspace:*",
     "@injectivelabs/wallet-trezor": "workspace:*",
     "@injectivelabs/wallet-turnkey": "workspace:*",
-    "@injectivelabs/wallet-wallet-connect": "workspace:*",
-    "alchemy-sdk": "^3.4.7",
-    "eip1193-provider": "^1.0.1",
-    "ethers": "^6.5.1",
-    "hdkey": "^2.1.0",
-    "viem": "^2.40.3"
+    "@injectivelabs/wallet-private-key": "workspace:*",
+    "@injectivelabs/wallet-cosmostation": "workspace:*",
+    "@injectivelabs/wallet-wallet-connect": "workspace:*"
   },
   "devDependencies": {
-    "@types/hdkey": "^2.0.1",
-    "shx": "^0.3.3"
+    "@types/hdkey": "^2.0.1"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
+  "publishConfig": {
+    "access": "public"
+  },
+  "_moduleAliases": {
+    "~wallet-strategy": "dist"
+  }
 }

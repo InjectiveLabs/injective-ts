@@ -1,23 +1,14 @@
 {
   "name": "@injectivelabs/wallet-cosmostation",
-  "description": "Cosmostation strategy for use with @injectivelabs/wallet-core.",
   "version": "1.16.37",
-  "sideEffects": false,
-  "type": "module",
+  "description": "Cosmostation strategy for use with @injectivelabs/wallet-core.",
+  "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
-  "license": "Apache-2.0",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
-  "_moduleAliases": {
-    "~wallet-cosmostation": "dist"
-  },
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
@@ -40,6 +31,12 @@
       }
     }
   },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm type-check && tsdown",
     "build:fast": "tsdown",
@@ -56,23 +53,20 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@cosmjs/proto-signing": "^0.32.3",
     "@cosmostation/cosmos-client": "^0.0.5",
     "@cosmostation/extension-client": "^0.1.15",
-    "@injectivelabs/exceptions": "workspace:*",
+    "@walletconnect/ethereum-provider": "2.18.1",
+    "@cosmjs/proto-signing": "catalog:",
+    "@injectivelabs/utils": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/utils": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*",
-    "@walletconnect/ethereum-provider": "2.18.1"
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*"
   },
-  "devDependencies": {
-    "shx": "^0.3.4"
+  "publishConfig": {
+    "access": "public"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "wallet-cosmostation API Documentation"
+  "_moduleAliases": {
+    "~wallet-cosmostation": "dist"
   }
 }

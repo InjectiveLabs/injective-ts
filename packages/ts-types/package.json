@@ -1,20 +1,14 @@
 {
   "name": "@injectivelabs/ts-types",
-  "description": "List of types that can be reused throughout Injective.",
   "version": "1.16.37",
-  "sideEffects": false,
+  "description": "List of types that can be reused throughout Injective.",
   "license": "Apache-2.0",
-  "type": "module",
-  "types": "dist/esm/index.d.ts",
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/esm/index.js",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
-  "files": [
-    "dist"
-  ],
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
@@ -37,9 +31,12 @@
       }
     }
   },
-  "_moduleAliases": {
-    "~ts-types": "dist"
-  },
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.cts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm type-check && tsdown",
     "build:fast": "tsdown",
@@ -55,8 +52,10 @@
     "start": "node dist/index.js",
     "lint": "eslint . --ext .ts,.js"
   },
-  "devDependencies": {
-    "shx": "^0.3.4"
+  "publishConfig": {
+    "access": "public"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
+  "_moduleAliases": {
+    "~ts-types": "dist"
+  }
 }

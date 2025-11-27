@@ -1,23 +1,14 @@
 {
   "name": "@injectivelabs/wallet-base",
-  "description": "Base wallet strategy for use with @injectivelabs/wallet-core.",
   "version": "1.16.37",
-  "sideEffects": false,
-  "type": "module",
+  "description": "Base wallet strategy for use with @injectivelabs/wallet-core.",
+  "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
-  "license": "Apache-2.0",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
-  "_moduleAliases": {
-    "~wallet-base": "dist"
-  },
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
@@ -40,6 +31,12 @@
       }
     }
   },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm type-check && tsdown",
     "build:fast": "tsdown",
@@ -56,15 +53,17 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/networks": "workspace:*",
+    "viem": "catalog:",
+    "eip1193-provider": "catalog:",
     "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "eip1193-provider": "^1.0.1",
-    "viem": "^2.40.3"
+    "@injectivelabs/exceptions": "workspace:*"
   },
-  "devDependencies": {
-    "shx": "^0.3.3"
+  "publishConfig": {
+    "access": "public"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
+  "_moduleAliases": {
+    "~wallet-base": "dist"
+  }
 }

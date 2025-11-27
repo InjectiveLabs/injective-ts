@@ -1,26 +1,14 @@
 {
   "name": "@injectivelabs/wallet-turnkey",
-  "description": "Turnkey wallet strategy for use with @injectivelabs/wallet-core.",
   "version": "1.16.37",
-  "sideEffects": false,
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
+  "description": "Turnkey wallet strategy for use with @injectivelabs/wallet-core.",
+  "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
-  "license": "Apache-2.0",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
-  "_moduleAliases": {
-    "~wallet-turnkey": "dist"
-  },
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
@@ -43,6 +31,12 @@
       }
     }
   },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm type-check && tsdown",
     "build:fast": "tsdown",
@@ -59,21 +53,19 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "workspace:*",
+    "@turnkey/viem": "^0.9.10",
+    "@turnkey/sdk-browser": "5.2.3",
+    "viem": "catalog:",
+    "@injectivelabs/utils": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/utils": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*",
-    "@turnkey/sdk-browser": "5.2.3",
-    "@turnkey/viem": "^0.9.10",
-    "viem": "^2.40.3"
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*"
   },
-  "devDependencies": {
-    "live-server": "^1.2.1",
-    "shx": "^0.3.4",
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.0.0"
+  "publishConfig": {
+    "access": "public"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
+  "_moduleAliases": {
+    "~wallet-turnkey": "dist"
+  }
 }
