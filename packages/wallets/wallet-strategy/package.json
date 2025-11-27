@@ -56,7 +56,6 @@
     "hdkey": "^2.1.0",
     "viem": "catalog:",
     "ethers": "catalog:",
-    "alchemy-sdk": "catalog:",
     "eip1193-provider": "catalog:",
     "@injectivelabs/utils": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",

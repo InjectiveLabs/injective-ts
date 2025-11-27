@@ -1,4 +1,4 @@
-import { sleep, capitalize } from '@injectivelabs/utils'
+import { capitalize } from '@injectivelabs/utils'
 import {
   toUtf8,
   TxGrpcApi,
@@ -14,6 +14,7 @@ import {
   isEvmBrowserWallet,
   WalletEventListener,
   BaseConcreteStrategy,
+  getViemPublicClientFromEip1193Provider,
 } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
@@ -358,30 +359,29 @@ export class EvmWallet
 
   async getEvmTransactionReceipt(txHash: string): Promise<string> {
     const ethereum = await this.getEthereum()
+    const chainIdHex = (await ethereum.request({
+      method: 'eth_chainId',
+    })) as string
+    const chainId = parseInt(chainIdHex, 16)
 
-    const interval = 3000
-    const maxAttempts = 10
-    let attempts = 0
-
-    while (attempts < maxAttempts) {
-      attempts++
-      await sleep(interval)
-
-      try {
-        const receipt = await ethereum.request({
-          method: 'eth_getTransactionReceipt',
-          params: [txHash],
-        })
-
-        if (receipt) {
-          return txHash
-        }
-      } catch {}
-    }
-
-    throw new Error(
-      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+    const publicClient = getViemPublicClientFromEip1193Provider(
+      chainId,
+      ethereum,
     )
+
+    try {
+      await publicClient.waitForTransactionReceipt({
+        hash: txHash as `0x${string}`,
+        timeout: 30_000,
+        pollingInterval: 3_000,
+      })
+
+      return txHash
+    } catch {
+      throw new Error(
+        `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+      )
+    }
   }
 
   async getPubKey(): Promise<string> {
