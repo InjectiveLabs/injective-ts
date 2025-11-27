@@ -14,7 +14,6 @@ import {
   WalletDeviceType,
   getViemWalletClient,
   getViemPublicClient,
-  type WalletMetadata,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
 import { TurnkeyErrorCodes } from './types.js'
@@ -22,6 +21,7 @@ import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { WalletMetadata } from '@injectivelabs/wallet-base'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 import type {
   TxRaw,
@@ -174,7 +174,7 @@ export class TurnkeyWalletStrategy
 
       const accountClient = getViemWalletClient({
         chainId,
-        account: account as any,
+        account,
         rpcUrl: url,
       })
 
@@ -212,10 +212,11 @@ export class TurnkeyWalletStrategy
         processedTransaction,
       )
 
-      delete (preparedTransaction as any).account
+      // Remove account property as it's not needed for signing
+      const { account: _, ...transactionToSign } = preparedTransaction
 
       const signedTransaction = await accountClient.signTransaction(
-        preparedTransaction as any,
+        transactionToSign as any,
       )
 
       const tx = await accountClient.sendRawTransaction({

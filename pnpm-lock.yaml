@@ -4,6 +4,39 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@cosmjs/amino':
+      specifier: ^0.33.0
+      version: 0.33.0
+    '@cosmjs/proto-signing':
+      specifier: ^0.33.0
+      version: 0.33.0
+    '@cosmjs/stargate':
+      specifier: ^0.33.0
+      version: 0.33.0
+    '@keplr-wallet/types':
+      specifier: ^0.12.159
+      version: 0.12.159
+    alchemy-sdk:
+      specifier: ^3.4.7
+      version: 3.4.7
+    axios:
+      specifier: ^1.8.1
+      version: 1.11.0
+    eip1193-provider:
+      specifier: ^1.0.1
+      version: 1.0.1
+    ethers:
+      specifier: ^6.13.5
+      version: 6.13.5
+    http-status-codes:
+      specifier: ^2.3.0
+      version: 2.3.0
+    viem:
+      specifier: ^2.40.3
+      version: 2.40.3
+
 overrides:
   rxjs: 7.8.2
   rpc-websockets: 9.0.4
@@ -159,22 +192,14 @@ importers:
   packages/exceptions:
     dependencies:
       http-status-codes:
-        specifier: ^2.3.0
+        specifier: 'catalog:'
         version: 2.3.0
-    devDependencies:
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
 
   packages/networks:
     dependencies:
       '@injectivelabs/ts-types':
         specifier: workspace:*
         version: link:../ts-types
-    devDependencies:
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
 
   packages/sdk-ts:
     dependencies:
@@ -182,13 +207,13 @@ importers:
         specifier: 3.13.9
         version: 3.13.9(graphql@16.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@cosmjs/amino':
-        specifier: ^0.33.0
+        specifier: 'catalog:'
         version: 0.33.0
       '@cosmjs/proto-signing':
-        specifier: ^0.33.0
+        specifier: 'catalog:'
         version: 0.33.0
       '@cosmjs/stargate':
-        specifier: ^0.33.0
+        specifier: 'catalog:'
         version: 0.33.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       '@injectivelabs/abacus-proto-ts-v2':
         specifier: 1.17.2
@@ -245,8 +270,8 @@ importers:
         specifier: ^1.2.6
         version: 1.2.6
       axios:
-        specifier: ^1.8.1
-        version: 1.8.1
+        specifier: 'catalog:'
+        version: 1.11.0
       bip39:
         specifier: ^3.1.0
         version: 3.1.0
@@ -257,7 +282,7 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       ethers:
-        specifier: ^6.13.5
+        specifier: 'catalog:'
         version: 6.13.5(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       google-protobuf:
         specifier: ^3.21.4
@@ -266,7 +291,7 @@ importers:
         specifier: ^16.10.0
         version: 16.10.0
       http-status-codes:
-        specifier: ^2.2.0
+        specifier: 'catalog:'
         version: 2.3.0
       rxjs:
         specifier: 7.8.2
@@ -274,14 +299,11 @@ importers:
       secp256k1:
         specifier: ^4.0.3
         version: 4.0.3
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
       snakecase-keys:
         specifier: ^5.4.1
         version: 5.4.4
       viem:
-        specifier: ^2.40.3
+        specifier: 'catalog:'
         version: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
       '@types/crypto-js':
@@ -293,12 +315,11 @@ importers:
       '@types/secp256k1':
         specifier: ^4.0.6
         version: 4.0.6
-
-  packages/ts-types:
-    devDependencies:
       shx:
         specifier: ^0.3.4
         version: 0.3.4
+
+  packages/ts-types: {}
 
   packages/utils:
     dependencies:
@@ -315,18 +336,14 @@ importers:
         specifier: workspace:*
         version: link:../ts-types
       axios:
-        specifier: ^1.8.1
-        version: 1.8.1
+        specifier: 'catalog:'
+        version: 1.11.0
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2
       http-status-codes:
-        specifier: ^2.3.0
+        specifier: 'catalog:'
         version: 2.3.0
-    devDependencies:
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
 
   packages/wallets/wallet-base:
     dependencies:
@@ -343,15 +360,11 @@ importers:
         specifier: workspace:*
         version: link:../../ts-types
       eip1193-provider:
-        specifier: ^1.0.1
+        specifier: 'catalog:'
         version: 1.0.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       viem:
-        specifier: ^2.40.3
+        specifier: 'catalog:'
         version: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-    devDependencies:
-      shx:
-        specifier: ^0.3.3
-        version: 0.3.4
 
   packages/wallets/wallet-core:
     dependencies:
@@ -374,23 +387,19 @@ importers:
         specifier: workspace:*
         version: link:../wallet-base
       '@keplr-wallet/types':
-        specifier: ^0.12.159
+        specifier: 'catalog:'
         version: 0.12.159(starknet@6.24.1(encoding@0.1.13))
       eventemitter3:
         specifier: ^5.0.1
         version: 5.0.1
-    devDependencies:
-      shx:
-        specifier: ^0.3.3
-        version: 0.3.4
 
   packages/wallets/wallet-cosmos:
     dependencies:
       '@cosmjs/proto-signing':
-        specifier: ^0.33.0
+        specifier: 'catalog:'
         version: 0.33.0
       '@cosmjs/stargate':
-        specifier: ^0.33.0
+        specifier: 'catalog:'
         version: 0.33.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       '@injectivelabs/exceptions':
         specifier: workspace:*
@@ -408,12 +417,8 @@ importers:
         specifier: workspace:*
         version: link:../wallet-base
       '@keplr-wallet/types':
-        specifier: ^0.12.71
+        specifier: 'catalog:'
         version: 0.12.159(starknet@6.24.1(encoding@0.1.13))
-    devDependencies:
-      shx:
-        specifier: ^0.3.3
-        version: 0.3.4
 
   packages/wallets/wallet-cosmos-strategy:
     dependencies:
@@ -432,16 +437,12 @@ importers:
       '@injectivelabs/wallet-cosmostation':
         specifier: workspace:*
         version: link:../wallet-cosmostation
-    devDependencies:
-      shx:
-        specifier: ^0.3.3
-        version: 0.3.4
 
   packages/wallets/wallet-cosmostation:
     dependencies:
       '@cosmjs/proto-signing':
-        specifier: ^0.32.3
-        version: 0.32.3
+        specifier: 'catalog:'
+        version: 0.33.0
       '@cosmostation/cosmos-client':
         specifier: ^0.0.5
         version: 0.0.5(bufferutil@4.0.7)(utf-8-validate@5.0.10)
@@ -466,10 +467,6 @@ importers:
       '@walletconnect/ethereum-provider':
         specifier: 2.18.1
         version: 2.18.1(bufferutil@4.0.7)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10)
-    devDependencies:
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
 
   packages/wallets/wallet-evm:
     dependencies:
@@ -491,10 +488,6 @@ importers:
       '@injectivelabs/wallet-base':
         specifier: workspace:*
         version: link:../wallet-base
-    devDependencies:
-      shx:
-        specifier: ^0.3.3
-        version: 0.3.4
 
   packages/wallets/wallet-ledger:
     dependencies:
@@ -526,18 +519,15 @@ importers:
         specifier: workspace:*
         version: link:../wallet-base
       alchemy-sdk:
-        specifier: ^3.4.7
+        specifier: 'catalog:'
         version: 3.4.7(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       viem:
-        specifier: ^2.40.3
+        specifier: 'catalog:'
         version: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
       '@types/ledgerhq__hw-transport-webusb':
         specifier: ^4.70.1
         version: 4.70.1
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
 
   packages/wallets/wallet-magic:
     dependencies:
@@ -565,10 +555,6 @@ importers:
       magic-sdk:
         specifier: 29.1.0
         version: 29.1.0
-    devDependencies:
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
 
   packages/wallets/wallet-private-key:
     dependencies:
@@ -584,10 +570,6 @@ importers:
       '@injectivelabs/wallet-base':
         specifier: workspace:*
         version: link:../wallet-base
-    devDependencies:
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
 
   packages/wallets/wallet-strategy:
     dependencies:
@@ -640,27 +622,24 @@ importers:
         specifier: workspace:*
         version: link:../wallet-wallet-connect
       alchemy-sdk:
-        specifier: ^3.4.7
+        specifier: 'catalog:'
         version: 3.4.7(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       eip1193-provider:
-        specifier: ^1.0.1
+        specifier: 'catalog:'
         version: 1.0.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       ethers:
-        specifier: ^6.5.1
+        specifier: 'catalog:'
         version: 6.13.5(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       hdkey:
         specifier: ^2.1.0
         version: 2.1.0
       viem:
-        specifier: ^2.40.3
+        specifier: 'catalog:'
         version: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
       '@types/hdkey':
         specifier: ^2.0.1
         version: 2.0.1
-      shx:
-        specifier: ^0.3.3
-        version: 0.3.4
 
   packages/wallets/wallet-trezor:
     dependencies:
@@ -697,15 +676,11 @@ importers:
         version: 9.6.4(@solana/sysvars@2.3.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.2))(bufferutil@4.0.7)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(tslib@2.8.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
 >>>>>>> 2f6132c7a (chore: minor trezor beta)
       alchemy-sdk:
-        specifier: ^3.4.7
+        specifier: 'catalog:'
         version: 3.4.7(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       viem:
-        specifier: ^2.40.3
+        specifier: 'catalog:'
         version: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
-    devDependencies:
-      shx:
-        specifier: ^0.3.3
-        version: 0.3.4
 
   packages/wallets/wallet-turnkey:
     dependencies:
@@ -726,29 +701,13 @@ importers:
         version: link:../wallet-base
       '@turnkey/sdk-browser':
         specifier: 5.2.3
-        version: 5.2.3(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+        version: 5.2.3(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@turnkey/viem':
         specifier: ^0.9.10
-        version: 0.9.10(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.40.3(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)
+        version: 0.9.10(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)
       viem:
-        specifier: ^2.40.3
-        version: 2.40.3(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
-    devDependencies:
-      live-server:
-        specifier: ^1.2.1
-        version: 1.2.2
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.2(@types/node@22.17.0)(typescript@5.8.3)
-      tsconfig-paths:
-        specifier: ^4.2.0
-        version: 4.2.0
-      typescript:
-        specifier: ^5.0.0
-        version: 5.8.3
+        specifier: 'catalog:'
+        version: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
 
   packages/wallets/wallet-wallet-connect:
     dependencies:
@@ -770,10 +729,6 @@ importers:
       '@injectivelabs/wallet-base':
         specifier: workspace:*
         version: link:../wallet-base
-    devDependencies:
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
 
 packages:
 
@@ -805,30 +760,19 @@ packages:
       subscriptions-transport-ws:
         optional: true
 
-  '@babel/code-frame@7.26.2':
-    resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/compat-data@7.26.8':
-    resolution: {integrity: sha512-oH5UPLMWR3L2wEFLnFJ1TZXqHufiTKAiLfqw5zkhS4dKXLJ10yVztfil/twG8EDTA4F/tvVNw9nOl4ZMslB8rQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/compat-data@7.28.0':
     resolution: {integrity: sha512-60X7qkglvrap8mn1lh2ebxXdZYtUcpd7gsmy9kLaBJ4i/WdY8PqTSdxyA8qraikqKQK5C1KRBKXqznrVapyNaw==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/core@7.26.0':
-    resolution: {integrity: sha512-i1SLeK+DzNnQ3LL/CswPCa/E5u4lh1k6IAEphON8F+cXt0t9euTshDru0q7/IqMa1PMPz5RnHuHscF8/ZJsStg==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/core@7.28.0':
     resolution: {integrity: sha512-UlLAnTPrFdNGoFtbSXwcGFQBtQZJCNjaN6hQNP3UPvuNXT1i82N26KL3dZeIpNalWywr9IuQuncaAfUaS1g6sQ==}
     engines: {node: '>=6.9.0'}
 
+<<<<<<< HEAD
   '@babel/generator@7.28.0':
     resolution: {integrity: sha512-lJjzvrbEeWrhB4P3QBsH7tey117PjLZnDbLiQEKjQ/fNJTjuq4HSqgFA+UNSwZT8D7dxxbnuSBMsa1lrWzKlQg==}
     engines: {node: '>=6.9.0'}
@@ -846,10 +790,13 @@ packages:
 <<<<<<< HEAD
 =======
 =======
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/generator@7.28.5':
     resolution: {integrity: sha512-3EwLFhZ38J4VyIP6WNtt2kUdW9dokXA9Cr4IVIFHuCpZ3H8/YFOl5JjZHisrn1fATPBmKKqXzDFvh9fUwHz6CQ==}
     engines: {node: '>=6.9.0'}
 
+<<<<<<< HEAD
   '@babel/helper-compilation-targets@7.26.5':
     resolution: {integrity: sha512-IXuyn5EkouFJscIDuFF5EsiSolseme1s0CZB+QxVugqJLYmKdxI1VfIBOst0SUu4rnk2Z7kqTwmoO1lp3HIfnA==}
     engines: {node: '>=6.9.0'}
@@ -899,6 +846,8 @@ packages:
 >>>>>>> bb71a84a5 (chore: package bump)
     engines: {node: '>=6.9.0'}
 
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/helper-compilation-targets@7.27.2':
     resolution: {integrity: sha512-2+1thGUUWWjLTYTHZWK1n8Yga0ijBz1XAhUXcKy81rd5g6yh7hGqMp45v7cadSbEHc9G3OTv45SyneRN3ps4DQ==}
     engines: {node: '>=6.9.0'}
@@ -940,6 +889,7 @@ packages:
     resolution: {integrity: sha512-+W6cISkXFa1jXsDEdYA8HeevQT/FULhxzR99pxphltZcVaugps53THCeiWA8SguxxpSp3gKPiuYfSWopkLQ4hw==}
     engines: {node: '>=6.9.0'}
 
+<<<<<<< HEAD
   '@babel/helper-module-imports@7.25.9':
     resolution: {integrity: sha512-tnUA4RsrmflIM6W6RFTLFSXITtl0wKjgpnLgXyowocVPrbYrLUXSBXDgTs8BlbmIzIdlBySRQjINYs2BAkiLtw==}
     engines: {node: '>=6.9.0'}
@@ -968,15 +918,11 @@ packages:
 
 =======
 >>>>>>> bb71a84a5 (chore: package bump)
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/helper-module-imports@7.27.1':
     resolution: {integrity: sha512-0gSFWUPNXNopqtIPQvlD5WgXYI5GY2kP2cCvoT8kczjbfcfuIljTbcWrulD1CIPIX2gt1wghbDy08yE1p+/r3w==}
     engines: {node: '>=6.9.0'}
-
-  '@babel/helper-module-transforms@7.26.0':
-    resolution: {integrity: sha512-xO+xu6B5K2czEnQye6BHA7DolFFmS3LB7stHZFaOLb1pAwO1HWLS8fXA+eh0A2yIvltPVmx3eNNDBJA2SLHXFw==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
 
   '@babel/helper-module-transforms@7.27.3':
     resolution: {integrity: sha512-dSOvYwvyLsWBeIRyOeHXp5vPj5l1I011r52FM1+r1jCERv+aFXYk4whgQccYEGYxK2H3ZAIA8nuPkQ0HaUo3qg==}
@@ -1057,26 +1003,13 @@ packages:
     resolution: {integrity: sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-validator-option@7.25.9':
-    resolution: {integrity: sha512-e/zv1co8pp55dNdEcCynfj9X7nyUKUXoUEwfXqaZt0omVOmDe9oOTdKStH4GmAw6zxMFs50ZayuMfHDKlO7Tfw==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-validator-option@7.27.1':
     resolution: {integrity: sha512-YvjJow9FxbhFFKDSuFnVCe2WxXk1zWc22fFePVNEaWJEu8IrZVlda6N0uHwzZrUM1il7NC9Mlp4MaJYbYd9JSg==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helpers@7.26.0':
-    resolution: {integrity: sha512-tbhNuIxNcVb21pInl3ZSjksLCvgdZy9KwJ8brv993QtIVKJBBkYXz4q4ZbAv31GdnC+R90np23L5FbEBlthAEw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helpers@7.28.2':
     resolution: {integrity: sha512-/V9771t+EgXz62aCcyofnQhGM8DQACbRhvzKFsXKC9QM+5MadF8ZmIm0crDMaz3+o0h0zXfJnd4EhbYbxsrcFw==}
     engines: {node: '>=6.9.0'}
-
-  '@babel/parser@7.28.0':
-    resolution: {integrity: sha512-jVZGvOxOuNSsuQuLRTh13nU0AogFlw32w/MT+LV6D3sP5WdbW61E77RnkbaO2dUvmPAYrBDJXGn5gGS6tH4j8g==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
 
   '@babel/parser@7.28.5':
     resolution: {integrity: sha512-KKBU1VGYR7ORr3At5HAtUQ+TV3SzRCXmA/8OdDZiLDBIZxVyzXuztPjfLd3BV1PRAQGCMWWSHYhL0F8d5uHBDQ==}
@@ -1232,6 +1165,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '@babel/plugin-transform-modules-commonjs@7.26.3':
     resolution:
@@ -1281,20 +1215,14 @@ packages:
 >>>>>>> bb71a84a5 (chore: package bump)
 =======
 >>>>>>> 2f6132c7a (chore: minor trezor beta)
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/template@7.27.2':
     resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/traverse@7.26.9':
-    resolution: {integrity: sha512-ZYW7L+pL8ahU5fXmNbPF+iZFHCv5scFak7MZ9bwaRPLUhHh7QQEMjZUg0HevihoqCM5iSYHN61EyCoZvqC+bxg==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/traverse@7.28.0':
     resolution: {integrity: sha512-mGe7UK5wWyh0bKRfupsUchrQGqvDbZDbKJw+kcRGSmdHVYrv+ltd0pnpDTVpiTqnaBru9iEvA8pz8W46v0Amwg==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/types@7.28.2':
-    resolution: {integrity: sha512-ruv7Ae4J5dUYULmeXw1gmb7rYRz57OWCPM57pHojnLq/3Z1CK2lNSLTCVjxVk1F/TZHwOZZrOWi0ur95BbLxNQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.28.5':
@@ -1444,18 +1372,11 @@ packages:
   '@cosmjs/amino@0.28.13':
     resolution: {integrity: sha512-IHnH2zGwaY69qT4mVAavr/pfzx6YE+ud1NHJbvVePlbGiz68CXTi5LHR+K0lrKB5mQ7E+ZErWz2mw5U/x+V1wQ==}
 
-  '@cosmjs/amino@0.32.3':
-    resolution: {integrity: sha512-G4zXl+dJbqrz1sSJ56H/25l5NJEk/pAPIr8piAHgbXYw88OdAOlpA26PQvk2IbSN/rRgVbvlLTNgX2tzz1dyUA==}
-
   '@cosmjs/amino@0.33.0':
     resolution: {integrity: sha512-a4qnWGzuM2IrlkDTFQmU7bDd+wNIzyvfcRIZ43i00ZHvTEtrCcWopT94rIv/Zy6fdgkhQ3HWrsGVlIPDT/ibRw==}
 
   '@cosmjs/crypto@0.28.13':
     resolution: {integrity: sha512-ynKfM0q/tMBQMHJby6ad8lR3gkgBKaelQhIsCZTjClsnuC7oYT9y3ThSZCUWr7Pa9h0J8ahU2YV2oFWFVWJQzQ==}
-    deprecated: This uses elliptic for cryptographic operations, which contains several security-relevant bugs. To what degree this affects your application is something you need to carefully investigate. See https://github.com/cosmos/cosmjs/issues/1708 for further pointers. Starting with version 0.34.0 the cryptographic library has been replaced. However, private keys might still be at risk.
-
-  '@cosmjs/crypto@0.32.3':
-    resolution: {integrity: sha512-niQOWJHUtlJm2GG4F00yGT7sGPKxfUwz+2qQ30uO/E3p58gOusTcH2qjiJNVxb8vScYJhFYFqpm/OA/mVqoUGQ==}
     deprecated: This uses elliptic for cryptographic operations, which contains several security-relevant bugs. To what degree this affects your application is something you need to carefully investigate. See https://github.com/cosmos/cosmjs/issues/1708 for further pointers. Starting with version 0.34.0 the cryptographic library has been replaced. However, private keys might still be at risk.
 
   '@cosmjs/crypto@0.33.0':
@@ -1464,9 +1385,6 @@ packages:
 
   '@cosmjs/encoding@0.28.13':
     resolution: {integrity: sha512-jtXbAYtV77rLHxoIrjGFsvgGjeTKttuHRv6cvuy3toCZzY7JzTclKH5O2g36IIE4lXwD9xwuhGJ2aa6A3dhNkA==}
-
-  '@cosmjs/encoding@0.32.3':
-    resolution: {integrity: sha512-p4KF7hhv8jBQX3MkB3Defuhz/W0l3PwWVYU2vkVuBJ13bJcXyhU9nJjiMkaIv+XP+W2QgRceqNNgFUC5chNR7w==}
 
   '@cosmjs/encoding@0.33.0':
     resolution: {integrity: sha512-9z0g9mM7w5BISVVs8BK1Yp7KSQgNLGz2SBoWYOm4wODB/YcoitODgyRqECcuMZBXtd2sCyy2M1VLs9Z69BPZRQ==}
@@ -1477,17 +1395,11 @@ packages:
   '@cosmjs/math@0.28.13':
     resolution: {integrity: sha512-PDpL8W/kbyeWi0mQ2OruyqE8ZUAdxPs1xCbDX3WXJwy2oU+X2UTbkuweJHVpS9CIqmZulBoWQAmlf6t6zr1N/g==}
 
-  '@cosmjs/math@0.32.3':
-    resolution: {integrity: sha512-amumUtZs8hCCnV+lSBaJIiZkGabQm22QGg/IotYrhcmoOEOjt82n7hMNlNXRs7V6WLMidGrGYcswB5zcmp0Meg==}
-
   '@cosmjs/math@0.33.0':
     resolution: {integrity: sha512-B2uOgM12iuIhJWzGuAxGwO6zO+cI8Q4z7mVu7HgFrGJJTM1HtPTYgb55oMOuUN0OZ352MEEm5uAt8sA9jZQqbA==}
 
   '@cosmjs/proto-signing@0.28.13':
     resolution: {integrity: sha512-nSl/2ZLsUJYz3Ad0RY3ihZUgRHIow2OnYqKsESMu+3RA/jTi9bDYhiBu8mNMHI0xrEJry918B2CyI56pOUHdPQ==}
-
-  '@cosmjs/proto-signing@0.32.3':
-    resolution: {integrity: sha512-kSZ0ZUY0DwcRT0NcIn2HkadH4NKlwjfZgbLj1ABwh/4l0RgeT84QCscZCu63tJYq3K6auwqTiZSZERwlO4/nbg==}
 
   '@cosmjs/proto-signing@0.33.0':
     resolution: {integrity: sha512-UHA92d/Siy3wnce/xhU4iagKrs6r8Ruacc0qeHj3mNrtuUH8f70cD7lzzClzI7wvRLcPprOY0YTeEzqGbPeBFw==}
@@ -1506,9 +1418,6 @@ packages:
 
   '@cosmjs/utils@0.28.13':
     resolution: {integrity: sha512-dVeMBiyg+46x7XBZEfJK8yTihphbCFpjVYmLJVqmTsHfJwymQ65cpyW/C+V/LgWARGK8hWQ/aX9HM5Ao8QmMSg==}
-
-  '@cosmjs/utils@0.32.3':
-    resolution: {integrity: sha512-WCZK4yksj2hBDz4w7xFZQTRZQ/RJhBX26uFHmmQFIcNUUVAihrLO+RerqJgk0dZqC42wstM9pEUQGtPmLcIYvg==}
 
   '@cosmjs/utils@0.33.0':
     resolution: {integrity: sha512-Y6glwHNlNjcOgwPg8YmNr1PSrNm307EhJVytFt8HmA/G7MRcIA+jIzCL0VlOrWGU4TrAOXvshM+oJZbTIldFRA==}
@@ -5247,9 +5156,6 @@ packages:
   axios@1.7.7:
     resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
-  axios@1.8.1:
-    resolution: {integrity: sha512-NN+fvwH/kV01dYUQ3PTOZns4LWtWhOFCAhQ/pHb88WQ1hNe5V/dvFwc4VJcDL11LT9xSX0QtsR8sWUuyOuOq7g==}
-
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
@@ -5548,10 +5454,6 @@ packages:
     resolution: {integrity: sha512-aNdbnj9P8PjdXU4ybaWLK2IF3jc/EoDYbC7AazW6to3TRsfXxscC9UXOB5iDiEQrkyIbWp2SLQda4+QAa7nc3w==}
     engines: {node: '>=0.10.0'}
 
-  braces@3.0.2:
-    resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
-    engines: {node: '>=8'}
-
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
@@ -5581,6 +5483,7 @@ packages:
     resolution: {integrity: sha512-C2AUdAJg6rlM2W5QMp2Q4KGQMVBwR1lIimTsUnutJ8bMpW5B52pGpR2gEnNBNwijumDo5FojQ0L9JrXA8m4YEw==}
     engines: {node: '>= 0.10'}
 
+<<<<<<< HEAD
   browserslist@4.24.4:
     resolution: {integrity: sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -5644,6 +5547,8 @@ packages:
 >>>>>>> 70d3f3b0a (chore: update trezor version)
 =======
 >>>>>>> bb71a84a5 (chore: package bump)
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   browserslist@4.25.1:
     resolution: {integrity: sha512-KGj0KoOMXLpSNkkEI6Z6mShmQy0bc1I+T7K9N81k4WWMrfz+6fQ6es80B/YLAeRoKvjYE1YSHHOW1qe9xIVzHw==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -5781,9 +5686,6 @@ packages:
   camelcase@6.3.0:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
-
-  caniuse-lite@1.0.30001702:
-    resolution: {integrity: sha512-LoPe/D7zioC0REI5W73PeR1e1MLCipRGq/VkovJnd6Df+QVqT+vT33OXCp8QUd7kA7RZrHWxb1B36OQKI/0gOA==}
 
   caniuse-lite@1.0.30001733:
     resolution: {integrity: sha512-e4QKw/O2Kavj2VQTKZWrwzkt3IxOmIlU6ajRb6LP64LHpBo1J67k2Hi4Vu/TgJWsNtynurfS0uK3MaUTCPfu5Q==}
@@ -6672,9 +6574,6 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  electron-to-chromium@1.5.112:
-    resolution: {integrity: sha512-oen93kVyqSb3l+ziUgzIOlWt/oOuy4zRmpwestMn4rhFWAoFJeFuCVte9F2fASjeZZo7l/Cif9TiyrdW4CwEMA==}
-
   electron-to-chromium@1.5.199:
     resolution: {integrity: sha512-3gl0S7zQd88kCAZRO/DnxtBKuhMO4h0EaQIN3YgZfV6+pW+5+bf2AdQeHNESCoaQqo/gjGVYEf2YM4O5HJQqpQ==}
 
@@ -7354,10 +7253,6 @@ packages:
     resolution: {integrity: sha512-VcpLTWqWDiTerugjj8e3+esbg+skS3M9e54UuR3iCeIDMXCLTsAH8hTSzDQU/X6/6t3eYkOKoZSef2PlU6U1XQ==}
     engines: {node: '>=0.10.0'}
 
-  fill-range@7.0.1:
-    resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
-    engines: {node: '>=8'}
-
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
@@ -7415,6 +7310,7 @@ packages:
       debug:
         optional: true
 
+<<<<<<< HEAD
   follow-redirects@1.15.6:
     resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
     engines: {node: '>=4.0'}
@@ -7436,6 +7332,8 @@ packages:
 >>>>>>> 46d128104 (chore: migrate ChainGrpcApis to new protobuf)
 =======
 >>>>>>> 1d5042ea2 (chore: update trezor version)
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   for-each@0.3.5:
     resolution: {integrity: sha512-dKx12eRCVIzqCxFGplyFKJMPvLEWgmNtUrpTiJIR5u97zEhRG8ySrtboPHZXx7daLxQVrl643cTzbab2tkQjxg==}
     engines: {node: '>= 0.4'}
@@ -7447,10 +7345,6 @@ packages:
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
-
-  form-data@4.0.0:
-    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
-    engines: {node: '>= 6'}
 
   form-data@4.0.4:
     resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
@@ -7665,10 +7559,6 @@ packages:
   global-prefix@1.0.2:
     resolution: {integrity: sha512-5lsx1NUDHtSjfg0eHlmYvZKv8/nVqX4ckFbM+FrGcQ+04KWcWFo9P5MxPZYSzUvyzmdTbI7Eix8Q4IbELDqzKg==}
     engines: {node: '>=0.10.0'}
-
-  globals@11.12.0:
-    resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
-    engines: {node: '>=4'}
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
@@ -9106,10 +8996,6 @@ packages:
   micromatch@3.1.10:
     resolution: {integrity: sha512-MWikgl9n9M3w+bpsY3He8L+w9eF9338xRl8IAO5viDizwSzziFEyUzo2xrrloB64ADbTf8uA8vRqqttDTOmccg==}
     engines: {node: '>=0.10.0'}
-
-  micromatch@4.0.5:
-    resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
-    engines: {node: '>=8.6'}
 
   micromatch@4.0.8:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
@@ -11627,11 +11513,6 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  typescript@5.8.3:
-    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-
   typescript@5.9.2:
     resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
     engines: {node: '>=14.17'}
@@ -11822,12 +11703,6 @@ packages:
   upath@2.0.1:
     resolution: {integrity: sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==}
     engines: {node: '>=4'}
-
-  update-browserslist-db@1.1.1:
-    resolution: {integrity: sha512-R8UzCaa9Az+38REPiJ1tXlImTJXlVfgHZsglwBD/k6nj76ctsH1E3q4doGrukiLQd3sGQYu56r5+lo5r94l29A==}
-    hasBin: true
-    peerDependencies:
-      browserslist: '>= 4.21.0'
 
   update-browserslist-db@1.1.3:
     resolution: {integrity: sha512-UxhIZQ+QInVdunkDAaiazvvT/+fXL5Osr0JZlJulepYu6Jd7qJtDZjlur0emRlT71EN3ScPoE7gvsuIKKNavKw==}
@@ -12560,58 +12435,27 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@babel/code-frame@7.26.2':
-    dependencies:
-      '@babel/helper-validator-identifier': 7.27.1
-      js-tokens: 4.0.0
-      picocolors: 1.1.1
-    optional: true
-
   '@babel/code-frame@7.27.1':
     dependencies:
       '@babel/helper-validator-identifier': 7.27.1
       js-tokens: 4.0.0
       picocolors: 1.1.1
 
-  '@babel/compat-data@7.26.8':
-    optional: true
-
   '@babel/compat-data@7.28.0':
-    optional: true
-
-  '@babel/core@7.26.0':
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@babel/code-frame': 7.26.2
-      '@babel/generator': 7.28.0
-      '@babel/helper-compilation-targets': 7.26.5
-      '@babel/helper-module-transforms': 7.26.0(@babel/core@7.26.0)
-      '@babel/helpers': 7.26.0
-      '@babel/parser': 7.28.0
-      '@babel/template': 7.26.9
-      '@babel/traverse': 7.26.9
-      '@babel/types': 7.28.2
-      convert-source-map: 2.0.0
-      debug: 4.4.1(supports-color@8.1.1)
-      gensync: 1.0.0-beta.2
-      json5: 2.2.3
-      semver: 6.3.1
-    transitivePeerDependencies:
-      - supports-color
     optional: true
 
   '@babel/core@7.28.0':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@babel/code-frame': 7.27.1
-      '@babel/generator': 7.28.0
+      '@babel/generator': 7.28.5
       '@babel/helper-compilation-targets': 7.27.2
       '@babel/helper-module-transforms': 7.27.3(@babel/core@7.28.0)
       '@babel/helpers': 7.28.2
-      '@babel/parser': 7.28.0
+      '@babel/parser': 7.28.5
       '@babel/template': 7.27.2
       '@babel/traverse': 7.28.0
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.5
       convert-source-map: 2.0.0
       debug: 4.4.1(supports-color@8.1.1)
       gensync: 1.0.0-beta.2
@@ -12621,6 +12465,7 @@ snapshots:
       - supports-color
     optional: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -12658,6 +12503,8 @@ snapshots:
     optional: true
 
 >>>>>>> 2f6132c7a (chore: minor trezor beta)
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/generator@7.28.5':
     dependencies:
       '@babel/parser': 7.28.5
@@ -12666,6 +12513,7 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.29
       jsesc: 3.1.0
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   '@babel/helper-annotate-as-pure@7.25.9':
@@ -12694,6 +12542,8 @@ snapshots:
     optional: true
 
 >>>>>>> 2f6132c7a (chore: minor trezor beta)
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   '@babel/helper-compilation-targets@7.27.2':
     dependencies:
       '@babel/compat-data': 7.28.0
@@ -12735,28 +12585,10 @@ snapshots:
     optional: true
 >>>>>>> bb71a84a5 (chore: package bump)
 
-  '@babel/helper-module-imports@7.25.9':
-    dependencies:
-      '@babel/traverse': 7.26.9
-      '@babel/types': 7.28.2
-    transitivePeerDependencies:
-      - supports-color
-    optional: true
-
   '@babel/helper-module-imports@7.27.1':
     dependencies:
       '@babel/traverse': 7.28.0
-      '@babel/types': 7.28.2
-    transitivePeerDependencies:
-      - supports-color
-    optional: true
-
-  '@babel/helper-module-transforms@7.26.0(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-module-imports': 7.25.9
-      '@babel/helper-validator-identifier': 7.27.1
-      '@babel/traverse': 7.26.9
+      '@babel/types': 7.28.5
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -12788,7 +12620,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-module-imports': 7.27.1
-      '@babel/helper-validator-identifier': 7.27.1
+      '@babel/helper-validator-identifier': 7.28.5
       '@babel/traverse': 7.28.0
     transitivePeerDependencies:
       - supports-color
@@ -12849,48 +12681,22 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.28.5': {}
 
-  '@babel/helper-validator-option@7.25.9':
-    optional: true
-
   '@babel/helper-validator-option@7.27.1':
-    optional: true
-
-  '@babel/helpers@7.26.0':
-    dependencies:
-      '@babel/template': 7.26.9
-      '@babel/types': 7.28.2
     optional: true
 
   '@babel/helpers@7.28.2':
     dependencies:
       '@babel/template': 7.27.2
-      '@babel/types': 7.28.2
-    optional: true
-
-  '@babel/parser@7.28.0':
-    dependencies:
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.5
     optional: true
 
   '@babel/parser@7.28.5':
     dependencies:
       '@babel/types': 7.28.5
 
-  '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
-  '@babel/plugin-syntax-bigint@7.8.3(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
@@ -12900,21 +12706,9 @@ snapshots:
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
-  '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
-  '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
@@ -12924,33 +12718,15 @@ snapshots:
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
-  '@babel/plugin-syntax-import-attributes@7.27.1(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-import-attributes@7.27.1(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
-  '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
-  '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
@@ -12966,21 +12742,9 @@ snapshots:
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
-  '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
-  '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
@@ -12990,21 +12754,9 @@ snapshots:
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
-  '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
-  '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
@@ -13014,21 +12766,9 @@ snapshots:
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
-  '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
-  '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
@@ -13038,21 +12778,9 @@ snapshots:
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
-  '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
-  '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.26.0)':
-    dependencies:
-      '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
@@ -13068,50 +12796,24 @@ snapshots:
       '@babel/helper-plugin-utils': 7.27.1
     optional: true
 
-  '@babel/template@7.26.9':
-    dependencies:
-      '@babel/code-frame': 7.26.2
-      '@babel/parser': 7.28.0
-      '@babel/types': 7.28.2
-    optional: true
-
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/parser': 7.28.0
-      '@babel/types': 7.28.2
-    optional: true
-
-  '@babel/traverse@7.26.9':
-    dependencies:
-      '@babel/code-frame': 7.26.2
-      '@babel/generator': 7.28.0
-      '@babel/parser': 7.28.0
-      '@babel/template': 7.26.9
-      '@babel/types': 7.28.2
-      debug: 4.4.1(supports-color@8.1.1)
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
+      '@babel/parser': 7.28.5
+      '@babel/types': 7.28.5
     optional: true
 
   '@babel/traverse@7.28.0':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/generator': 7.28.0
+      '@babel/generator': 7.28.5
       '@babel/helper-globals': 7.28.0
-      '@babel/parser': 7.28.0
+      '@babel/parser': 7.28.5
       '@babel/template': 7.27.2
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.5
       debug: 4.4.1(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
-    optional: true
-
-  '@babel/types@7.28.2':
-    dependencies:
-      '@babel/helper-string-parser': 7.27.1
-      '@babel/helper-validator-identifier': 7.27.1
     optional: true
 
   '@babel/types@7.28.5':
@@ -13381,13 +13083,6 @@ snapshots:
       '@cosmjs/math': 0.28.13
       '@cosmjs/utils': 0.28.13
 
-  '@cosmjs/amino@0.32.3':
-    dependencies:
-      '@cosmjs/crypto': 0.32.3
-      '@cosmjs/encoding': 0.32.3
-      '@cosmjs/math': 0.32.3
-      '@cosmjs/utils': 0.32.3
-
   '@cosmjs/amino@0.33.0':
     dependencies:
       '@cosmjs/crypto': 0.33.0
@@ -13405,33 +13100,17 @@ snapshots:
       elliptic: 6.6.1
       libsodium-wrappers: 0.7.15
 
-  '@cosmjs/crypto@0.32.3':
-    dependencies:
-      '@cosmjs/encoding': 0.32.3
-      '@cosmjs/math': 0.32.3
-      '@cosmjs/utils': 0.32.3
-      '@noble/hashes': 1.8.0
-      bn.js: 5.2.1
-      elliptic: 6.6.1
-      libsodium-wrappers-sumo: '@bangjelkoski/noop@0.0.1'
-
   '@cosmjs/crypto@0.33.0':
     dependencies:
       '@cosmjs/encoding': 0.33.0
       '@cosmjs/math': 0.33.0
       '@cosmjs/utils': 0.33.0
       '@noble/hashes': 1.8.0
-      bn.js: 5.2.1
+      bn.js: 5.2.2
       elliptic: 6.6.1
       libsodium-wrappers-sumo: '@bangjelkoski/noop@0.0.1'
 
   '@cosmjs/encoding@0.28.13':
-    dependencies:
-      base64-js: 1.5.1
-      bech32: 1.1.4
-      readonly-date: 1.0.0
-
-  '@cosmjs/encoding@0.32.3':
     dependencies:
       base64-js: 1.5.1
       bech32: 1.1.4
@@ -13452,13 +13131,9 @@ snapshots:
     dependencies:
       bn.js: 5.2.1
 
-  '@cosmjs/math@0.32.3':
-    dependencies:
-      bn.js: 5.2.1
-
   '@cosmjs/math@0.33.0':
     dependencies:
-      bn.js: 5.2.1
+      bn.js: 5.2.2
 
   '@cosmjs/proto-signing@0.28.13':
     dependencies:
@@ -13469,15 +13144,6 @@ snapshots:
       '@cosmjs/utils': 0.28.13
       cosmjs-types: 0.4.1
       long: 4.0.0
-
-  '@cosmjs/proto-signing@0.32.3':
-    dependencies:
-      '@cosmjs/amino': 0.32.3
-      '@cosmjs/crypto': 0.32.3
-      '@cosmjs/encoding': 0.32.3
-      '@cosmjs/math': 0.32.3
-      '@cosmjs/utils': 0.32.3
-      cosmjs-types: 0.9.0
 
   '@cosmjs/proto-signing@0.33.0':
     dependencies:
@@ -13535,8 +13201,6 @@ snapshots:
       - utf-8-validate
 
   '@cosmjs/utils@0.28.13': {}
-
-  '@cosmjs/utils@0.32.3': {}
 
   '@cosmjs/utils@0.33.0': {}
 
@@ -13941,7 +13605,7 @@ snapshots:
       '@ethersproject/bytes': 5.7.0
       '@ethersproject/logger': 5.7.0
       '@ethersproject/properties': 5.7.0
-      bn.js: 5.2.1
+      bn.js: 5.2.2
       elliptic: 6.5.4
       hash.js: 1.1.7
 
@@ -14152,7 +13816,7 @@ snapshots:
       jest-util: 29.7.0
       jest-validate: 29.7.0
       jest-watcher: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.8
       pretty-format: 29.7.0
       slash: 3.0.0
       strip-ansi: 6.0.1
@@ -16246,7 +15910,7 @@ snapshots:
       '@turnkey/api-key-stamper': 0.4.7
       '@turnkey/encoding': 0.5.0
 
-  '@turnkey/sdk-browser@5.2.3(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
+  '@turnkey/sdk-browser@5.2.3(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@turnkey/api-key-stamper': 0.4.6
       '@turnkey/crypto': 2.4.0
@@ -16255,7 +15919,7 @@ snapshots:
       '@turnkey/iframe-stamper': 2.5.0
       '@turnkey/indexed-db-stamper': 1.1.0
       '@turnkey/sdk-types': 0.2.1
-      '@turnkey/wallet-stamper': 1.0.4(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      '@turnkey/wallet-stamper': 1.0.4(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@turnkey/webauthn-stamper': 0.5.1
       bs58check: 3.0.1
       buffer: 6.0.3
@@ -16268,7 +15932,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@turnkey/sdk-browser@5.3.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
+  '@turnkey/sdk-browser@5.3.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@turnkey/api-key-stamper': 0.4.7
       '@turnkey/crypto': 2.4.1
@@ -16277,7 +15941,7 @@ snapshots:
       '@turnkey/iframe-stamper': 2.5.0
       '@turnkey/indexed-db-stamper': 1.1.1
       '@turnkey/sdk-types': 0.2.1
-      '@turnkey/wallet-stamper': 1.0.5(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      '@turnkey/wallet-stamper': 1.0.5(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@turnkey/webauthn-stamper': 0.5.1
       bs58check: 3.0.1
       buffer: 6.0.3
@@ -16290,11 +15954,11 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@turnkey/sdk-server@4.2.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
+  '@turnkey/sdk-server@4.2.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@turnkey/api-key-stamper': 0.4.7
       '@turnkey/http': 3.5.0(encoding@0.1.13)
-      '@turnkey/wallet-stamper': 1.0.5(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      '@turnkey/wallet-stamper': 1.0.5(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
       buffer: 6.0.3
       cross-fetch: 3.2.0(encoding@0.1.13)
     transitivePeerDependencies:
@@ -16306,15 +15970,15 @@ snapshots:
 
   '@turnkey/sdk-types@0.2.1': {}
 
-  '@turnkey/viem@0.9.10(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.40.3(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)':
+  '@turnkey/viem@0.9.10(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)':
     dependencies:
       '@noble/curves': 1.8.0
       '@turnkey/api-key-stamper': 0.4.7
       '@turnkey/http': 3.5.0(encoding@0.1.13)
-      '@turnkey/sdk-browser': 5.3.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
-      '@turnkey/sdk-server': 4.2.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      '@turnkey/sdk-browser': 5.3.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
+      '@turnkey/sdk-server': 4.2.0(bufferutil@4.0.7)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
       cross-fetch: 4.0.0(encoding@0.1.13)
-      viem: 2.40.3(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -16322,24 +15986,24 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@turnkey/wallet-stamper@1.0.4(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
+  '@turnkey/wallet-stamper@1.0.4(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@turnkey/crypto': 2.4.0
       '@turnkey/encoding': 0.5.0
     optionalDependencies:
-      viem: 2.40.3(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - bufferutil
       - typescript
       - utf-8-validate
       - zod
 
-  '@turnkey/wallet-stamper@1.0.5(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
+  '@turnkey/wallet-stamper@1.0.5(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@turnkey/crypto': 2.4.1
       '@turnkey/encoding': 0.5.0
     optionalDependencies:
-      viem: 2.40.3(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -16361,8 +16025,8 @@ snapshots:
 
   '@types/babel__core@7.20.5':
     dependencies:
-      '@babel/parser': 7.28.0
-      '@babel/types': 7.28.2
+      '@babel/parser': 7.28.5
+      '@babel/types': 7.28.5
       '@types/babel__generator': 7.27.0
       '@types/babel__template': 7.4.4
       '@types/babel__traverse': 7.28.0
@@ -16370,18 +16034,18 @@ snapshots:
 
   '@types/babel__generator@7.27.0':
     dependencies:
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.5
     optional: true
 
   '@types/babel__template@7.4.4':
     dependencies:
-      '@babel/parser': 7.28.0
-      '@babel/types': 7.28.2
+      '@babel/parser': 7.28.5
+      '@babel/types': 7.28.5
     optional: true
 
   '@types/babel__traverse@7.28.0':
     dependencies:
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.5
     optional: true
 
 <<<<<<< HEAD
@@ -17382,6 +17046,7 @@ snapshots:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
   abitype@0.7.1(typescript@5.9.2)(zod@3.24.2):
@@ -17398,6 +17063,8 @@ snapshots:
       typescript: 5.8.3
       zod: 3.24.2
 
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   abitype@1.1.0(typescript@5.9.2)(zod@3.24.2):
     optionalDependencies:
       typescript: 5.9.2
@@ -17485,7 +17152,7 @@ snapshots:
       '@ethersproject/units': 5.7.0
       '@ethersproject/wallet': 5.7.0
       '@ethersproject/web': 5.7.1
-      axios: 1.8.1
+      axios: 1.11.0
       sturdy-websocket: 0.2.1
       websocket: 1.0.35
     transitivePeerDependencies:
@@ -17688,7 +17355,7 @@ snapshots:
 
   axios@0.21.4:
     dependencies:
-      follow-redirects: 1.15.6
+      follow-redirects: 1.15.11
     transitivePeerDependencies:
       - debug
 
@@ -17702,29 +17369,21 @@ snapshots:
 
   axios@1.7.7:
     dependencies:
-      follow-redirects: 1.15.6
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
-  axios@1.8.1:
-    dependencies:
-      follow-redirects: 1.15.6
-      form-data: 4.0.0
+      follow-redirects: 1.15.11
+      form-data: 4.0.4
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
 
   axobject-query@4.1.0: {}
 
-  babel-jest@29.7.0(@babel/core@7.26.0):
+  babel-jest@29.7.0(@babel/core@7.28.0):
     dependencies:
-      '@babel/core': 7.26.0
+      '@babel/core': 7.28.0
       '@jest/transform': 29.7.0
       '@types/babel__core': 7.20.5
       babel-plugin-istanbul: 6.1.1
-      babel-preset-jest: 29.6.3(@babel/core@7.26.0)
+      babel-preset-jest: 29.6.3(@babel/core@7.28.0)
       chalk: 4.1.2
       graceful-fs: 4.2.11
       slash: 3.0.0
@@ -17746,29 +17405,9 @@ snapshots:
   babel-plugin-jest-hoist@29.6.3:
     dependencies:
       '@babel/template': 7.27.2
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.5
       '@types/babel__core': 7.20.5
       '@types/babel__traverse': 7.28.0
-    optional: true
-
-  babel-preset-current-node-syntax@1.2.0(@babel/core@7.26.0):
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.26.0)
-      '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.26.0)
-      '@babel/plugin-syntax-class-properties': 7.12.13(@babel/core@7.26.0)
-      '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.26.0)
-      '@babel/plugin-syntax-import-attributes': 7.27.1(@babel/core@7.26.0)
-      '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.26.0)
-      '@babel/plugin-syntax-json-strings': 7.8.3(@babel/core@7.26.0)
-      '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.26.0)
-      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.26.0)
-      '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.26.0)
-      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.26.0)
-      '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.26.0)
-      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.26.0)
-      '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.26.0)
-      '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.26.0)
     optional: true
 
   babel-preset-current-node-syntax@1.2.0(@babel/core@7.28.0):
@@ -17791,11 +17430,11 @@ snapshots:
       '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.28.0)
     optional: true
 
-  babel-preset-jest@29.6.3(@babel/core@7.26.0):
+  babel-preset-jest@29.6.3(@babel/core@7.28.0):
     dependencies:
-      '@babel/core': 7.26.0
+      '@babel/core': 7.28.0
       babel-plugin-jest-hoist: 29.6.3
-      babel-preset-current-node-syntax: 1.2.0(@babel/core@7.26.0)
+      babel-preset-current-node-syntax: 1.2.0(@babel/core@7.28.0)
     optional: true
 
   balanced-match@1.0.2: {}
@@ -17939,11 +17578,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  braces@3.0.2:
-    dependencies:
-      fill-range: 7.0.1
-    optional: true
-
   braces@3.0.3:
     dependencies:
       fill-range: 7.1.1
@@ -18002,6 +17636,7 @@ snapshots:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 2f6132c7a (chore: minor trezor beta)
   browserslist@4.24.4:
@@ -18024,6 +17659,8 @@ snapshots:
     optional: true
 
 >>>>>>> 2f6132c7a (chore: minor trezor beta)
+=======
+>>>>>>> 972835dde (refactor: clean up pacakge.json and implemented pnpm catalog)
   browserslist@4.25.1:
     dependencies:
       caniuse-lite: 1.0.30001733
@@ -18150,9 +17787,6 @@ snapshots:
   camelcase@5.3.1: {}
 
   camelcase@6.3.0:
-    optional: true
-
-  caniuse-lite@1.0.30001702:
     optional: true
 
   caniuse-lite@1.0.30001733:
@@ -18939,9 +18573,6 @@ snapshots:
     dependencies:
       jake: 10.9.4
 
-  electron-to-chromium@1.5.112:
-    optional: true
-
   electron-to-chromium@1.5.199:
     optional: true
 
@@ -19709,11 +19340,6 @@ snapshots:
       repeat-string: 1.6.1
       to-regex-range: 2.1.1
 
-  fill-range@7.0.1:
-    dependencies:
-      to-regex-range: 5.0.1
-    optional: true
-
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -19775,8 +19401,6 @@ snapshots:
 
   follow-redirects@1.15.11: {}
 
-  follow-redirects@1.15.6: {}
-
   for-each@0.3.5:
     dependencies:
       is-callable: 1.2.7
@@ -19787,12 +19411,6 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
-
-  form-data@4.0.0:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
 
   form-data@4.0.4:
     dependencies:
@@ -20045,9 +19663,6 @@ snapshots:
       ini: 1.3.8
       is-windows: 1.0.2
       which: 1.3.1
-
-  globals@11.12.0:
-    optional: true
 
   globals@14.0.0: {}
 
@@ -20717,7 +20332,7 @@ snapshots:
   istanbul-lib-instrument@5.2.1:
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/parser': 7.28.0
+      '@babel/parser': 7.28.5
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
       semver: 6.3.1
@@ -20728,10 +20343,10 @@ snapshots:
   istanbul-lib-instrument@6.0.3:
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/parser': 7.28.0
+      '@babel/parser': 7.28.5
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
-      semver: 7.7.2
+      semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -20835,10 +20450,10 @@ snapshots:
 
   jest-config@29.7.0(@types/node@22.17.0)(ts-node@10.9.2(@types/node@22.17.0)(typescript@5.9.2)):
     dependencies:
-      '@babel/core': 7.26.0
+      '@babel/core': 7.28.0
       '@jest/test-sequencer': 29.7.0
       '@jest/types': 29.6.3
-      babel-jest: 29.7.0(@babel/core@7.26.0)
+      babel-jest: 29.7.0(@babel/core@7.28.0)
       chalk: 4.1.2
       ci-info: 3.9.0
       deepmerge: 4.2.2
@@ -20852,7 +20467,7 @@ snapshots:
       jest-runner: 29.7.0
       jest-util: 29.7.0
       jest-validate: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.8
       parse-json: 5.2.0
       pretty-format: 29.7.0
       slash: 3.0.0
@@ -21043,10 +20658,10 @@ snapshots:
   jest-snapshot@29.7.0:
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/generator': 7.28.0
+      '@babel/generator': 7.28.5
       '@babel/plugin-syntax-jsx': 7.27.1(@babel/core@7.28.0)
       '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.28.0)
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.5
       '@jest/expect-utils': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
@@ -21061,7 +20676,7 @@ snapshots:
       jest-util: 29.7.0
       natural-compare: 1.4.0
       pretty-format: 29.7.0
-      semver: 7.7.2
+      semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -21741,12 +21356,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  micromatch@4.0.5:
-    dependencies:
-      braces: 3.0.2
-      picomatch: 2.3.1
-    optional: true
-
   micromatch@4.0.8:
     dependencies:
       braces: 3.0.3
@@ -22310,21 +21919,6 @@ snapshots:
       get-intrinsic: 1.3.0
       object-keys: 1.1.1
       safe-push-apply: 1.0.0
-
-  ox@0.9.6(typescript@5.8.3)(zod@3.24.2):
-    dependencies:
-      '@adraffy/ens-normalize': 1.11.0
-      '@noble/ciphers': 1.3.0
-      '@noble/curves': 1.9.1
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.1.0(typescript@5.8.3)(zod@3.24.2)
-      eventemitter3: 5.0.1
-    optionalDependencies:
-      typescript: 5.8.3
-    transitivePeerDependencies:
-      - zod
 
   ox@0.9.6(typescript@5.9.2)(zod@3.24.2):
     dependencies:
@@ -23998,24 +23592,6 @@ snapshots:
       - '@swc/wasm'
       - '@types/node'
 
-  ts-node@10.9.2(@types/node@22.17.0)(typescript@5.8.3):
-    dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      '@tsconfig/node10': 1.0.9
-      '@tsconfig/node12': 1.0.11
-      '@tsconfig/node14': 1.0.3
-      '@tsconfig/node16': 1.0.3
-      '@types/node': 22.17.0
-      acorn: 8.11.3
-      acorn-walk: 8.2.0
-      arg: 4.1.3
-      create-require: 1.1.1
-      diff: 4.0.2
-      make-error: 1.3.6
-      typescript: 5.8.3
-      v8-compile-cache-lib: 3.0.1
-      yn: 3.1.1
-
   ts-node@10.9.2(@types/node@22.17.0)(typescript@5.9.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
@@ -24210,8 +23786,6 @@ snapshots:
 
   typescript@4.9.5: {}
 
-  typescript@5.8.3: {}
-
   typescript@5.9.2: {}
 
   ua-is-frozen@0.1.2: {}
@@ -24337,13 +23911,6 @@ snapshots:
 
   upath@2.0.1: {}
 
-  update-browserslist-db@1.1.1(browserslist@4.24.4):
-    dependencies:
-      browserslist: 4.24.4
-      escalade: 3.2.0
-      picocolors: 1.1.1
-    optional: true
-
   update-browserslist-db@1.1.3(browserslist@4.25.1):
     dependencies:
       browserslist: 4.25.1
@@ -24427,23 +23994,6 @@ snapshots:
       uint8array-tools: 0.0.8
 
   vary@1.1.2: {}
-
-  viem@2.40.3(bufferutil@4.0.7)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2):
-    dependencies:
-      '@noble/curves': 1.9.1
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.1.0(typescript@5.8.3)(zod@3.24.2)
-      isows: 1.0.7(ws@8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
-      ox: 0.9.6(typescript@5.8.3)(zod@3.24.2)
-      ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-    optionalDependencies:
-      typescript: 5.8.3
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
 
   viem@2.40.3(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2):
     dependencies:

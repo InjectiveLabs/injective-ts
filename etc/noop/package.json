@@ -2,7 +2,7 @@
   "name": "noop",
   "version": "0.0.1",
   "main": "index.cjs",
-  "private": true,
   "scripts": {},
-  "dependencies": {}
+  "dependencies": {},
+  "private": true
 }

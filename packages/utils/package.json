@@ -1,20 +1,14 @@
 {
   "name": "@injectivelabs/utils",
-  "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
   "version": "1.16.38",
-  "sideEffects": false,
-  "type": "module",
+  "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
+  "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
-  "license": "Apache-2.0",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
@@ -57,9 +51,12 @@
       }
     }
   },
-  "_moduleAliases": {
-    "~utils": "dist"
-  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm type-check && tsdown",
     "build:fast": "tsdown",
@@ -78,16 +75,18 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
+    "bignumber.js": "^9.1.2",
     "@bangjelkoski/store2": "^2.14.3",
-    "@injectivelabs/exceptions": "workspace:*",
+    "axios": "catalog:",
+    "http-status-codes": "catalog:",
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "axios": "^1.8.1",
-    "bignumber.js": "^9.1.2",
-    "http-status-codes": "^2.3.0"
+    "@injectivelabs/exceptions": "workspace:*"
   },
-  "devDependencies": {
-    "shx": "^0.3.4"
+  "publishConfig": {
+    "access": "public"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
+  "_moduleAliases": {
+    "~utils": "dist"
+  }
 }

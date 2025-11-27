@@ -209,19 +209,9 @@ export default class TrezorBase
     try {
       console.log('🪵Signing EIP-712 typed data with Trezor...')
       await this.trezor.connect()
-<<<<<<< HEAD
 
       const { derivationPath } = await this.getWalletForAddress(address)
 
-=======
-      console.log('🪵Connected to Trezor...')
-      // todo: Ivan review this
-      // const { derivationPath } = await this.getWalletForAddress(address)
-      // Hardcoded for testint purposes, otherwise use above
-      const derivationPath = "m/44'/60'/0'/0/0"
-      console.log('🪵Derivation path:', derivationPath)
-      console.log('Signing EIP-712 typed data with Trezor...')
->>>>>>> 1d5042ea2 (chore: update trezor version)
       const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
         data: {

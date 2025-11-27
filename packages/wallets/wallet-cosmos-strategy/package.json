@@ -1,23 +1,14 @@
 {
   "name": "@injectivelabs/wallet-cosmos-strategy",
-  "description": "Wallet Cosmos Strategy with instantiated wallets",
   "version": "1.16.38",
-  "sideEffects": false,
-  "type": "module",
+  "description": "Wallet Cosmos Strategy with instantiated wallets",
+  "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
-  "license": "Apache-2.0",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
-  "_moduleAliases": {
-    "~wallet-cosmos-strategy": "dist"
-  },
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
@@ -40,6 +31,12 @@
       }
     }
   },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm type-check && tsdown",
     "build:fast": "tsdown",
@@ -62,8 +59,10 @@
     "@injectivelabs/wallet-cosmos": "workspace:*",
     "@injectivelabs/wallet-cosmostation": "workspace:*"
   },
-  "devDependencies": {
-    "shx": "^0.3.3"
+  "publishConfig": {
+    "access": "public"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445"
+  "_moduleAliases": {
+    "~wallet-cosmos-strategy": "dist"
+  }
 }
