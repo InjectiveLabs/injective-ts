@@ -2,6 +2,7 @@
   "npmClient": "pnpm",
   "name": "injective-ts",
   "version": "independent",
+  "useNx": true,
   "command": {
     "version": {
       "message": "chore: release"

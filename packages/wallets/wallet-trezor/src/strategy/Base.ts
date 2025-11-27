@@ -185,7 +185,6 @@ export default class TrezorBase
     address: AccountAddress,
   ): Promise<string> {
     const TrezorConnect = await loadTrezorConnect()
-    console.log('🪵Address:', address)
 
     const object = JSON.parse(eip712json)
     const compatibleObject = {
@@ -207,7 +206,6 @@ export default class TrezorBase
     } = dataWithHashes
 
     try {
-      console.log('🪵Signing EIP-712 typed data with Trezor...')
       await this.trezor.connect()
 
       const { derivationPath } = await this.getWalletForAddress(address)
@@ -224,8 +222,6 @@ export default class TrezorBase
         domain_separator_hash,
         metamask_v4_compat: true,
       })
-
-      console.log('🪵Trezor response:', response)
 
       if (
         'code' in response.payload &&
