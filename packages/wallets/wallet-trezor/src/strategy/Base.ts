@@ -216,8 +216,6 @@ export default class TrezorBase
         metamask_v4_compat: true,
       })
 
-      console.log('🪵response', response)
-
       if (!response.success) {
         // noinspection ExceptionCaughtLocallyJS
         throw new Error(
