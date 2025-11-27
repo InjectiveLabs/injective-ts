@@ -200,7 +200,9 @@ export default class TrezorBase
 
     try {
       await this.trezor.connect()
+
       const { derivationPath } = await this.getWalletForAddress(address)
+
       const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
         data: {
