@@ -5,7 +5,6 @@ export default defineConfig({
   entry: {
     index: './src/index.ts',
     exports: './src/exports.ts',
-    'client/gql/index': './src/client/gql/index.ts',
     cosmjs: './src/cosmjs.ts',
   },
   format: ['cjs', 'esm'],
@@ -30,13 +29,11 @@ export default defineConfig({
     '@injectivelabs/abacus-proto-ts-v2',
     '@injectivelabs/indexer-proto-ts-v2',
     // Other heavy external dependencies
-    '@apollo/client',
     '@cosmjs/amino',
     '@cosmjs/proto-signing',
     '@cosmjs/stargate',
     'axios',
     'ethers',
-    'graphql',
     'rxjs',
   ],
   onSuccess: createNestedOnSuccess(),
