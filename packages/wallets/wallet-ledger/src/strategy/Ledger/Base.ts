@@ -15,6 +15,7 @@ import {
   WalletAction,
   getKeyFromRpcUrl,
   WalletDeviceType,
+  getViemPublicClient,
   BaseConcreteStrategy,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
@@ -114,7 +115,31 @@ export default class LedgerBase
       evmChainId: EvmChainId
     },
   ): Promise<string> {
+    const evmChainId = args.evmChainId
+    const injectiveEvmChainIds = [
+      EvmChainId.MainnetEvm,
+      EvmChainId.TestnetEvm,
+      EvmChainId.DevnetEvm,
+    ] as EvmChainId[]
+
     const signedTransaction = await this.signEvmTransaction(txData, args)
+
+    if (injectiveEvmChainIds.includes(evmChainId)) {
+      try {
+        const publicClient = getViemPublicClient(evmChainId)
+        const txHash = await publicClient.sendRawTransaction({
+          serializedTransaction: signedTransaction as `0x${string}`,
+        })
+
+        return txHash
+      } catch (e: unknown) {
+        throw new LedgerException(new Error((e as any).message), {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.SendEvmTransaction,
+        })
+      }
+    }
 
     try {
       const alchemy = await this.getAlchemy(args.evmChainId)
@@ -278,12 +303,42 @@ export default class LedgerBase
     txHash: string,
     evmChainId?: EvmChainId,
   ): Promise<string> {
-    const alchemy = await this.getAlchemy(evmChainId)
-    const provider = await alchemy.config.getProvider()
+    const chainId = evmChainId || this.evmOptions.evmChainId
+    const injectiveEvmChainIds = [
+      EvmChainId.MainnetEvm,
+      EvmChainId.TestnetEvm,
+      EvmChainId.DevnetEvm,
+    ] as EvmChainId[]
 
     const interval = 3000
     const maxAttempts = 10
     let attempts = 0
+
+    if (injectiveEvmChainIds.includes(chainId)) {
+      const publicClient = getViemPublicClient(chainId)
+
+      while (attempts < maxAttempts) {
+        attempts++
+        await sleep(interval)
+
+        try {
+          const receipt = await publicClient.getTransactionReceipt({
+            hash: txHash as `0x${string}`,
+          })
+
+          if (receipt) {
+            return txHash
+          }
+        } catch {}
+      }
+
+      throw new Error(
+        `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+      )
+    }
+
+    const alchemy = await this.getAlchemy(evmChainId)
+    const provider = await alchemy.config.getProvider()
 
     while (attempts < maxAttempts) {
       attempts++
@@ -317,9 +372,24 @@ export default class LedgerBase
   ): Promise<string> {
     const ledgerService = await loadLedgerServiceType()
 
-    const alchemy = await this.getAlchemy(args.evmChainId)
     const chainId = parseInt(args.evmChainId.toString(), 10) as EvmChainId
-    const nonce = await alchemy.core.getTransactionCount(args.address)
+    const injectiveEvmChainIds = [
+      EvmChainId.MainnetEvm,
+      EvmChainId.TestnetEvm,
+      EvmChainId.DevnetEvm,
+    ] as EvmChainId[]
+
+    let nonce: number
+
+    if (injectiveEvmChainIds.includes(args.evmChainId)) {
+      const publicClient = getViemPublicClient(args.evmChainId)
+      nonce = await publicClient.getTransactionCount({
+        address: args.address as `0x${string}`,
+      })
+    } else {
+      const alchemy = await this.getAlchemy(args.evmChainId)
+      nonce = await alchemy.core.getTransactionCount(args.address)
+    }
 
     const parseHexValue = (value: string | number | bigint) => {
       if (typeof value === 'string') {
