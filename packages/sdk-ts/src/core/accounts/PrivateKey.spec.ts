@@ -1,6 +1,12 @@
+import { getDefaultStdFee } from '@injectivelabs/utils'
 import { Wallet, hashMessage, verifyMessage } from 'ethers'
 import { PrivateKey } from './PrivateKey.js'
-import { generateArbitrarySignDoc } from '../tx/index.js'
+import { MsgSend } from '../modules/index.js'
+import {
+  TxClient,
+  createTransaction,
+  generateArbitrarySignDoc,
+} from '../tx/index.js'
 
 const pk = process.env.TEST_PRIVATE_KEY as string
 const seedPhrase = process.env.TEST_SEED_PHRASE as string
@@ -160,5 +166,335 @@ describe('PrivateKey', () => {
         publicKey: privateKey.toPublicKey().toHex(),
       }),
     ).toBe(true)
+  })
+})
+
+/**
+ * Tests that validate the documentation at:
+ * .gitbook/developers-native/transactions/private-key.mdx
+ *
+ * These tests ensure that the code examples in the documentation work correctly
+ * and will catch any breaking changes in the SDK that affect the docs.
+ */
+describe('Documentation Validation: private-key.mdx', () => {
+  describe('Preparing a transaction', () => {
+    it('should create a MsgSend message correctly', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+
+      const amount = {
+        denom: 'inj',
+        amount: '10000000000000000', // 0.01 INJ in wei
+      }
+
+      const msg = MsgSend.fromJSON({
+        amount,
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      expect(msg).toBeDefined()
+      expect(msg.toProto()).toBeDefined()
+      expect(msg.toDirectSign()).toBeDefined()
+
+      const directSign = msg.toDirectSign()
+      expect(directSign.type).toBe('/cosmos.bank.v1beta1.MsgSend')
+      expect(directSign.message).toBeDefined()
+    })
+
+    it('should create a transaction with createTransaction', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+      const pubKey = privateKey.toPublicKey().toBase64()
+
+      const amount = {
+        denom: 'inj',
+        amount: '10000000000000000',
+      }
+
+      const msg = MsgSend.fromJSON({
+        amount,
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      // This matches the documentation example
+      const { txRaw, signBytes } = createTransaction({
+        pubKey,
+        chainId: 'injective-1',
+        message: msg,
+        fee: getDefaultStdFee(),
+        sequence: 0, // Mock sequence
+        timeoutHeight: 12345678,
+        accountNumber: 12345, // Mock account number
+      })
+
+      expect(txRaw).toBeDefined()
+      expect(signBytes).toBeDefined()
+      expect(signBytes.length).toBeGreaterThan(0)
+      expect(txRaw.bodyBytes).toBeDefined()
+      expect(txRaw.authInfoBytes).toBeDefined()
+    })
+
+    it('should return txRaw with empty signatures array initially', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+      const pubKey = privateKey.toPublicKey().toBase64()
+
+      const msg = MsgSend.fromJSON({
+        amount: { denom: 'inj', amount: '10000000000000000' },
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      const { txRaw } = createTransaction({
+        pubKey,
+        chainId: 'injective-1',
+        message: msg,
+        fee: getDefaultStdFee(),
+        sequence: 0,
+        timeoutHeight: 12345678,
+        accountNumber: 12345,
+      })
+
+      // txRaw.signatures should be empty or undefined before signing
+      expect(txRaw.signatures.length).toBe(0)
+    })
+  })
+
+  describe('Signing a transaction', () => {
+    it('should sign transaction bytes with privateKey.sign', async () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+      const pubKey = privateKey.toPublicKey().toBase64()
+
+      const msg = MsgSend.fromJSON({
+        amount: { denom: 'inj', amount: '10000000000000000' },
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      const { signBytes } = createTransaction({
+        pubKey,
+        chainId: 'injective-1',
+        message: msg,
+        fee: getDefaultStdFee(),
+        sequence: 0,
+        timeoutHeight: 12345678,
+        accountNumber: 12345,
+      })
+
+      // This matches the documentation example:
+      // const signature = await privateKey.sign(Buffer.from(signBytes));
+      const signature = privateKey.sign(signBytes)
+
+      expect(signature).toBeDefined()
+      expect(signature).toBeInstanceOf(Uint8Array)
+      expect(signature.length).toBe(64) // secp256k1 signature is 64 bytes (r + s)
+    })
+
+    it('should produce consistent signatures for the same input', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+      const pubKey = privateKey.toPublicKey().toBase64()
+
+      const msg = MsgSend.fromJSON({
+        amount: { denom: 'inj', amount: '10000000000000000' },
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      const { signBytes } = createTransaction({
+        pubKey,
+        chainId: 'injective-1',
+        message: msg,
+        fee: getDefaultStdFee(),
+        sequence: 0,
+        timeoutHeight: 12345678,
+        accountNumber: 12345,
+      })
+
+      const signature1 = privateKey.sign(signBytes)
+      const signature2 = privateKey.sign(signBytes)
+
+      // Signatures should be identical for the same input
+      expect(Buffer.from(signature1).toString('hex')).toBe(
+        Buffer.from(signature2).toString('hex'),
+      )
+    })
+  })
+
+  describe('Full transaction flow (Prepare + Sign)', () => {
+    it('should complete the full prepare and sign flow', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+      const publicKey = privateKey.toPublicKey().toBase64()
+
+      // Step 1: Prepare Message
+      const amount = {
+        denom: 'inj',
+        amount: '10000000000000000',
+      }
+
+      const msg = MsgSend.fromJSON({
+        amount,
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      // Step 2: Prepare the Transaction
+      const { signBytes, txRaw } = createTransaction({
+        message: msg,
+        memo: '',
+        pubKey: publicKey,
+        fee: getDefaultStdFee(),
+        sequence: 0,
+        accountNumber: 12345,
+        chainId: 'injective-1',
+      })
+
+      // Step 3: Sign transaction
+      const signature = privateKey.sign(signBytes)
+
+      // Step 4: Append Signatures
+      txRaw.signatures = [signature]
+
+      expect(txRaw.signatures.length).toBe(1)
+      expect(txRaw.signatures[0]).toBe(signature)
+    })
+
+    it('should calculate transaction hash with TxClient.hash', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+      const publicKey = privateKey.toPublicKey().toBase64()
+
+      const msg = MsgSend.fromJSON({
+        amount: { denom: 'inj', amount: '10000000000000000' },
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      const { signBytes, txRaw } = createTransaction({
+        message: msg,
+        memo: '',
+        pubKey: publicKey,
+        fee: getDefaultStdFee(),
+        sequence: 0,
+        accountNumber: 12345,
+        chainId: 'injective-1',
+      })
+
+      const signature = privateKey.sign(signBytes)
+      txRaw.signatures = [signature]
+
+      // This matches the documentation example:
+      // console.log(`Transaction Hash: ${TxClient.hash(txRaw)}`);
+      const txHash = TxClient.hash(txRaw)
+
+      expect(txHash).toBeDefined()
+      expect(typeof txHash).toBe('string')
+      expect(txHash.length).toBe(64) // SHA256 hash is 64 hex characters
+      // Hash should be consistent
+      expect(TxClient.hash(txRaw)).toBe(txHash)
+    })
+
+    it('should encode and decode transaction with TxClient', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+      const publicKey = privateKey.toPublicKey().toBase64()
+
+      const msg = MsgSend.fromJSON({
+        amount: { denom: 'inj', amount: '10000000000000000' },
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      const { signBytes, txRaw } = createTransaction({
+        message: msg,
+        memo: '',
+        pubKey: publicKey,
+        fee: getDefaultStdFee(),
+        sequence: 0,
+        accountNumber: 12345,
+        chainId: 'injective-1',
+      })
+
+      const signature = privateKey.sign(signBytes)
+      txRaw.signatures = [signature]
+
+      // Test encode/decode roundtrip
+      const encoded = TxClient.encode(txRaw)
+      expect(typeof encoded).toBe('string')
+      expect(encoded.length).toBeGreaterThan(0)
+
+      const decoded = TxClient.decode(encoded)
+      expect(decoded).toBeDefined()
+      expect(decoded.bodyBytes).toEqual(txRaw.bodyBytes)
+      expect(decoded.authInfoBytes).toEqual(txRaw.authInfoBytes)
+    })
+  })
+
+  describe('PrivateKey utility methods', () => {
+    it('should derive correct address from private key', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+
+      // Methods used in documentation
+      const injectiveAddress = privateKey.toBech32()
+      const address = privateKey.toAddress()
+      const pubKey = privateKey.toPublicKey().toBase64()
+
+      expect(injectiveAddress).toMatch(/^inj1[a-z0-9]{38}$/)
+      expect(address).toBeDefined()
+      expect(address.toBech32()).toBe(injectiveAddress)
+      expect(pubKey).toBeDefined()
+      expect(typeof pubKey).toBe('string')
+    })
+
+    it('should handle private key with 0x prefix', () => {
+      const privateKeyWithPrefix = PrivateKey.fromHex('0x' + pk)
+      const privateKeyWithoutPrefix = PrivateKey.fromHex(pk)
+
+      expect(privateKeyWithPrefix.toBech32()).toBe(
+        privateKeyWithoutPrefix.toBech32(),
+      )
+      expect(privateKeyWithPrefix.toPublicKey().toBase64()).toBe(
+        privateKeyWithoutPrefix.toPublicKey().toBase64(),
+      )
+    })
+  })
+
+  describe('MsgSend validation', () => {
+    it('should handle single amount object', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+
+      const msg = MsgSend.fromJSON({
+        amount: { denom: 'inj', amount: '10000000000000000' },
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      const proto = msg.toProto()
+      expect(proto.amount.length).toBe(1)
+      expect(proto.amount[0].denom).toBe('inj')
+      expect(proto.amount[0].amount).toBe('10000000000000000')
+    })
+
+    it('should handle array of amounts', () => {
+      const privateKey = PrivateKey.fromHex(pk)
+      const injectiveAddress = privateKey.toBech32()
+
+      const msg = MsgSend.fromJSON({
+        amount: [
+          { denom: 'inj', amount: '10000000000000000' },
+          { denom: 'peggy0x...', amount: '1000000' },
+        ],
+        srcInjectiveAddress: injectiveAddress,
+        dstInjectiveAddress: injectiveAddress,
+      })
+
+      const proto = msg.toProto()
+      expect(proto.amount.length).toBe(2)
+    })
   })
 })

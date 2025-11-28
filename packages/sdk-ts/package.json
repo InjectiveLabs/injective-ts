@@ -50,26 +50,6 @@
         "default": "./dist/cjs/exports.js"
       }
     },
-    "./graphql": {
-      "react-native": {
-        "import": "./dist/esm/client/gql/index.js",
-        "require": "./dist/cjs/client/gql/index.js",
-        "types": "./dist/cjs/client/gql/index.d.ts",
-        "default": "./dist/cjs/client/gql/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/client/gql/index.d.ts",
-        "default": "./dist/cjs/client/gql/index.js"
-      },
-      "import": {
-        "types": "./dist/esm/client/gql/index.d.ts",
-        "default": "./dist/esm/client/gql/index.js"
-      },
-      "default": {
-        "types": "./dist/cjs/client/gql/index.d.ts",
-        "default": "./dist/cjs/client/gql/index.js"
-      }
-    },
     "./cosmjs": {
       "react-native": {
         "import": "./dist/esm/cosmjs.js",
@@ -118,13 +98,11 @@
     "rxjs": "7.8.2",
     "bip39": "^3.1.0",
     "crypto-js": "^4.2.0",
-    "graphql": "^16.10.0",
     "secp256k1": "^4.0.3",
     "@scure/base": "^1.2.6",
     "cosmjs-types": "^0.9.0",
     "@noble/curves": "^1.8.1",
     "@noble/hashes": "^1.7.1",
-    "@apollo/client": "3.13.9",
     "snakecase-keys": "^5.4.1",
     "google-protobuf": "^3.21.4",
     "@protobuf-ts/runtime": "^2.11.1",
