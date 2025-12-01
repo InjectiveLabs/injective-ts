@@ -10,6 +10,7 @@
 
 import { base64 } from '@scure/base'
 import { hexToBytes, bytesToHex } from 'viem'
+import type { Hash } from 'viem'
 
 /**
  * Convert a hex string to Uint8Array
@@ -27,7 +28,7 @@ export function hexToUint8Array(hex: string): Uint8Array {
   // Ensure hex has 0x prefix for viem
   const prefixedHex = hex.startsWith('0x') ? hex : `0x${hex}`
   try {
-    return hexToBytes(prefixedHex as `0x${string}`)
+    return hexToBytes(prefixedHex as Hash)
   } catch {
     throw new Error(`Invalid hex string: ${hex}`)
   }

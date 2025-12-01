@@ -1,6 +1,7 @@
 import { secp256k1 } from '@noble/curves/secp256k1'
-import { hashTypedData, recoverPublicKey, type TypedDataDefinition } from 'viem'
+import { hashTypedData, recoverPublicKey } from 'viem'
 import { uint8ArrayToHex } from './encoding.js'
+import type { Hash, TypedDataDefinition } from 'viem'
 
 export const recoverTypedSignaturePubKey = async (
   data: TypedDataDefinition,
@@ -9,7 +10,7 @@ export const recoverTypedSignaturePubKey = async (
   const messageHash = hashTypedData(data)
   const publicKeyHex = await recoverPublicKey({
     hash: messageHash,
-    signature: signature as `0x${string}`,
+    signature: signature as Hash,
   })
 
   // viem's recoverPublicKey returns uncompressed public key (65 bytes with 0x04 prefix)

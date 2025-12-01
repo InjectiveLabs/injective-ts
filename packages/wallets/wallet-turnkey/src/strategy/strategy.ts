@@ -19,6 +19,7 @@ import {
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
+import type { Hash } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { WalletMetadata } from '@injectivelabs/wallet-base'
@@ -220,7 +221,7 @@ export class TurnkeyWalletStrategy
       )
 
       const tx = await accountClient.sendRawTransaction({
-        serializedTransaction: signedTransaction as `0x${string}`,
+        serializedTransaction: signedTransaction as Hash,
       })
 
       return tx
@@ -373,7 +374,7 @@ export class TurnkeyWalletStrategy
 
     try {
       const receipt = await publicClient.waitForTransactionReceipt({
-        hash: txHash as `0x${string}`,
+        hash: txHash as Hash,
         timeout: 30_000,
         pollingInterval: 3_000,
       })

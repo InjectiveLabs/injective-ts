@@ -3,7 +3,7 @@ import {
   getViemPublicClient,
   getViemWalletClient,
 } from '@injectivelabs/wallet-base'
-import type { LocalAccount } from 'viem'
+import type { Hash, LocalAccount } from 'viem'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 
 export const getEip1193ProviderForTurnkey = async (
@@ -169,7 +169,7 @@ class CustomEip1193Provider implements Eip1193Provider {
       const client = getViemPublicClient(this.chainId)
 
       const count = await client.getTransactionCount({
-        address: this.address as `0x${string}`,
+        address: this.address as Hash,
         blockTag: 'pending',
       })
 

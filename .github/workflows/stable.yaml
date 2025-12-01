@@ -1,20 +1,22 @@
 name: Publish stable
 
+# Stable releases are now done via CLI: pnpm release:minor (or :patch, :major)
+# This workflow is kept for reference but disabled
+
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   publish:
-    if: false # temporary disabled
+    if: false # Use CLI instead: pnpm release:minor
     runs-on: ubuntu-latest
-
     permissions: write-all
 
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Using Node from .nvmrc
         uses: useblacksmith/setup-node@v5
@@ -33,7 +35,6 @@ jobs:
 
       - name: Build dependencies
         run: |
-          lerna clean --yes
           node etc/bootstrapEnv
           pnpm install
           pnpm build
@@ -41,31 +42,13 @@ jobs:
       - name: Setup npm
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-          # Tell Git to ignore this temporary change
           git update-index --assume-unchanged .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Version and publish
         run: |
-          lerna version patch --conventional-commits --conventional-graduate --force-git-tag --yes
-          lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
+          pnpm exec lerna version minor --conventional-commits --force-git-tag --yes
+          pnpm exec lerna publish from-git --dist-tag latest --yes --no-private
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: 'Broadcast published versions on Slack'
-        run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
-        env:
-          GIT_ACTOR: ${{ github.actor }}
-          SLACK_API: ${{ secrets.SLACK_API }}
-          GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-
-      - name: Merge master -> dev
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: master
-          target_branch: dev
-          github_token: ${{ secrets.GH_TOKEN }}

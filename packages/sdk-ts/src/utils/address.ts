@@ -1,6 +1,7 @@
 import { bech32 } from '@scure/base'
 import { toBytes, keccak256 } from 'viem'
 import { uint8ArrayToHex } from './encoding.js'
+import type { Hash } from 'viem'
 
 /**
  * Get injective address from Ethereum hex address
@@ -93,10 +94,7 @@ export const getAddressFromInjectiveAddress = (address: string): string => {
  */
 export const getChecksumAddress = (ethAddress: string): string => {
   const lowercasedAddress = ethAddress.toLowerCase().replace('0x', '')
-  const addressHash = keccak256(lowercasedAddress as `0x${string}`).replace(
-    '0x',
-    '',
-  )
+  const addressHash = keccak256(lowercasedAddress as Hash).replace('0x', '')
 
   const checksumChars = lowercasedAddress.split('').map((char, i) => {
     return parseInt(addressHash[i], 16) > 7 ? char.toUpperCase() : char
