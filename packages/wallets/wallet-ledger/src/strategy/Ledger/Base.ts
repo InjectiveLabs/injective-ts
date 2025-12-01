@@ -23,7 +23,6 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
-import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
 import { LedgerEip1193Provider } from './Eip1193Provider.js'
 import type { Hash } from 'viem'
@@ -178,7 +177,8 @@ export default class LedgerBase
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signEIP712Message(derivationPath, object)
 
-      const combined = `${result.r}${result.s}${result.v.toString(16)}`
+      const v = result.v.toString(16).padStart(2, '0')
+      const combined = `${result.r}${result.s}${v}`
 
       return combined.startsWith('0x') ? combined : `0x${combined}`
     } catch (e: unknown) {
@@ -205,7 +205,8 @@ export default class LedgerBase
           messageHash(object),
         )
 
-        const combined = `${result.r}${result.s}${result.v.toString(16)}`
+        const v = result.v.toString(16).padStart(2, '0')
+        const combined = `${result.r}${result.s}${v}`
 
         return combined.startsWith('0x') ? combined : `0x${combined}`
       } catch (e) {
@@ -261,7 +262,8 @@ export default class LedgerBase
         uint8ArrayToHex(stringToUint8Array(toUtf8(data))),
       )
 
-      const combined = `${result.r}${result.s}${result.v.toString(16)}`
+      const v = result.v.toString(16).padStart(2, '0')
+      const combined = `${result.r}${result.s}${v}`
 
       return combined.startsWith('0x') ? combined : `0x${combined}`
     } catch (e: unknown) {
@@ -311,8 +313,6 @@ export default class LedgerBase
     txData: any,
     args: { address: string; evmChainId: EvmChainId },
   ): Promise<string> {
-    const ledgerService = await loadLedgerServiceType()
-
     const publicClient = await this.getPublicClient(args.evmChainId)
     const chainId = parseInt(args.evmChainId.toString(), 10) as EvmChainId
     const address = args.address.startsWith('0x')
@@ -352,18 +352,15 @@ export default class LedgerBase
       const ledger = await this.ledger.getInstance()
       const { derivationPath } = await this.getWalletForAddress(args.address)
 
-      // Resolve transaction for Ledger display
-      const resolution = await ledgerService.resolveTransaction(
-        serializedTxHex,
-        {},
-        {},
-      )
-
-      // Sign the transaction with Ledger
-      const txSig = await ledger.signTransaction(
+      // Sign the transaction with clear signing enabled
+      const txSig = await ledger.clearSignTransaction(
         derivationPath,
         serializedTxHex,
-        resolution,
+        {
+          erc20: true,
+          externalPlugins: true,
+          nft: true,
+        },
       )
 
       const signedTxData = {

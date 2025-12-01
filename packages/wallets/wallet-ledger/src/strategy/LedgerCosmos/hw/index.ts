@@ -5,8 +5,10 @@ import {
   loadTransportWebUSB,
   loadTransportWebHIDType,
 } from './../../lib.js'
-import type { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
-import type { Cosmos as CosmosApp } from '@bangjelkoski/ledgerhq-hw-app-cosmos'
+import type Cosmos from '@ledgerhq/hw-app-cosmos'
+import type Transport from '@ledgerhq/hw-transport'
+
+type CosmosApp = Cosmos
 
 export default class LedgerTransport {
   private ledger: CosmosApp | null = null

@@ -4,7 +4,6 @@ import {
   getViemPublicClient,
   getViemWalletClient,
 } from '@injectivelabs/wallet-base'
-import { loadLedgerServiceType } from '../lib.js'
 import type { Hash } from 'viem'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 import type LedgerHW from './hw/index.js'
@@ -55,7 +54,8 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       JSON.parse(data),
     )
 
-    const combined = `${result.r}${result.s}${result.v.toString(16)}`
+    const v = result.v.toString(16).padStart(2, '0')
+    const combined = `${result.r}${result.s}${v}`
 
     return combined.startsWith('0x') ? combined : `0x${combined}`
   }
@@ -65,18 +65,15 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
     const serializedTransaction = serializeTransaction(txData)
 
-    const ledgerService = await loadLedgerServiceType()
-
-    const resolution = await ledgerService.resolveTransaction(
-      serializedTransaction.substring(2),
-      {},
-      {},
-    )
-
-    const signature = await ledgerInstance.signTransaction(
+    // Sign the transaction with clear signing enabled
+    const signature = await ledgerInstance.clearSignTransaction(
       this.derivationPath,
       serializedTransaction.substring(2),
-      resolution,
+      {
+        erc20: true,
+        externalPlugins: true,
+        nft: true,
+      },
     )
 
     const signedTransaction = serializeTransaction(txData, {
@@ -95,7 +92,8 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       messageHex,
     )
 
-    const combined = `${result.r}${result.s}${result.v.toString(16)}`
+    const v = result.v.toString(16).padStart(2, '0')
+    const combined = `${result.r}${result.s}${v}`
 
     return combined.startsWith('0x') ? combined : `0x${combined}`
   }

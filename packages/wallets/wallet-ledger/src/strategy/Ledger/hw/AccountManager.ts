@@ -6,9 +6,11 @@ import {
   publicKeyToAddress,
 } from '@injectivelabs/sdk-ts/utils'
 import { LedgerDerivationPathType } from '../../../types.js'
+import type Eth from '@ledgerhq/hw-app-eth'
 import type { AccountAddress } from '@injectivelabs/ts-types'
-import type { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'
 import type { HDNodeLike, LedgerWalletInfo } from '../../../types.js'
+
+type EthereumApp = Eth
 
 const addressOfHDKey = (hdKey: HDNodeLike): string => {
   const shouldSanitizePublicKey = true

@@ -5,8 +5,10 @@ import {
   loadTransportWebUSB,
   loadTransportWebHIDType,
 } from '../../lib.js'
-import type { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
-import type { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'
+import type Eth from '@ledgerhq/hw-app-eth'
+import type Transport from '@ledgerhq/hw-transport'
+
+type EthereumApp = Eth
 
 export default class LedgerTransport {
   private ledger: EthereumApp | null = null
