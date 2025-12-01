@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-evm",
-  "version": "1.16.38",
+  "version": "1.16.38-alpha.0",
   "description": "EVM wallet strategies for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
@@ -53,11 +53,11 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@injectivelabs/utils": "workspace:*",
-    "@injectivelabs/sdk-ts": "workspace:*",
-    "@injectivelabs/networks": "workspace:*",
-    "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/networks": "workspace:*",
+    "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/utils": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*"
   },
   "publishConfig": {

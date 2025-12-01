@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-cosmos",
-  "version": "1.16.38",
+  "version": "1.16.38-alpha.0",
   "description": "Cosmos wallet strategies for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
@@ -53,14 +53,14 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@cosmjs/stargate": "catalog:",
-    "@keplr-wallet/types": "catalog:",
     "@cosmjs/proto-signing": "catalog:",
-    "@injectivelabs/utils": "workspace:*",
+    "@cosmjs/stargate": "catalog:",
+    "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*"
+    "@injectivelabs/utils": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*",
+    "@keplr-wallet/types": "catalog:"
   },
   "publishConfig": {
     "access": "public"
