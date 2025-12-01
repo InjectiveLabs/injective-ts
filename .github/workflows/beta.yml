@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Using Node from .nvmrc
         uses: useblacksmith/setup-node@v5
@@ -32,7 +34,6 @@ jobs:
 
       - name: Build dependencies
         run: |
-          lerna clean --yes
           node etc/bootstrapEnv
           pnpm install
           pnpm build
@@ -49,8 +50,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          lerna version prerelease --preid beta --force-git-tag --no-changelog --yes
-          lerna publish from-git --force-git-tag --dist-tag beta --yes --summary-file
+          pnpm exec lerna version prerelease --preid beta --force-git-tag --no-changelog --yes
+          pnpm exec lerna publish from-git --dist-tag beta --yes --no-private --summary-file
 
       - name: 'Broadcast published versions on Slack'
         run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE

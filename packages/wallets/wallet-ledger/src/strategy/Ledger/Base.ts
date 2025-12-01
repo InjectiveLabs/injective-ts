@@ -1,5 +1,4 @@
 import { serializeTransaction } from 'viem'
-import { getViemPublicClient } from '@injectivelabs/wallet-base'
 import {
   toUtf8,
   TxGrpcApi,
@@ -27,6 +26,7 @@ import LedgerHW from './hw/index.js'
 import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
 import { LedgerEip1193Provider } from './Eip1193Provider.js'
+import type { Hash } from 'viem'
 import type { PublicClient } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
@@ -121,36 +121,12 @@ export default class LedgerBase
       evmChainId: EvmChainId
     },
   ): Promise<string> {
-    const evmChainId = args.evmChainId
-    const injectiveEvmChainIds = [
-      EvmChainId.MainnetEvm,
-      EvmChainId.TestnetEvm,
-      EvmChainId.DevnetEvm,
-    ] as EvmChainId[]
-
     const signedTransaction = await this.signEvmTransaction(txData, args)
-
-    if (injectiveEvmChainIds.includes(evmChainId)) {
-      try {
-        const publicClient = getViemPublicClient(evmChainId)
-        const txHash = await publicClient.sendRawTransaction({
-          serializedTransaction: signedTransaction as `0x${string}`,
-        })
-
-        return txHash
-      } catch (e: unknown) {
-        throw new LedgerException(new Error((e as any).message), {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: WalletAction.SendEvmTransaction,
-        })
-      }
-    }
 
     try {
       const publicClient = await this.getPublicClient(args.evmChainId)
       const txHash = await publicClient.sendRawTransaction({
-        serializedTransaction: signedTransaction as `0x${string}`,
+        serializedTransaction: signedTransaction as Hash,
       })
 
       return txHash
@@ -312,7 +288,7 @@ export default class LedgerBase
 
     try {
       await publicClient.waitForTransactionReceipt({
-        hash: txHash as `0x${string}`,
+        hash: txHash as Hash,
         timeout: 30_000,
         pollingInterval: 3_000,
       })
@@ -340,8 +316,8 @@ export default class LedgerBase
     const publicClient = await this.getPublicClient(args.evmChainId)
     const chainId = parseInt(args.evmChainId.toString(), 10) as EvmChainId
     const address = args.address.startsWith('0x')
-      ? (args.address as `0x${string}`)
-      : (`0x${args.address}` as `0x${string}`)
+      ? (args.address as Hash)
+      : (`0x${args.address}` as Hash)
     const nonce = await publicClient.getTransactionCount({
       address,
     })
@@ -360,9 +336,9 @@ export default class LedgerBase
       type: 'eip1559' as const,
       chainId,
       nonce,
-      to: txData.to as `0x${string}`,
+      to: txData.to as Hash,
       value: parseHexValue(txData.value || '0x0'),
-      data: txData.data as `0x${string}`,
+      data: txData.data as Hash,
       gas: parseHexValue(txData.gas),
       maxFeePerGas: parseHexValue(txData.maxFeePerGas),
       maxPriorityFeePerGas: parseHexValue(txData.maxPriorityFeePerGas),
@@ -393,8 +369,8 @@ export default class LedgerBase
       const signedTxData = {
         ...eip1559TxData,
         v: BigInt(`0x${txSig.v}`),
-        r: `0x${txSig.r}` as `0x${string}`,
-        s: `0x${txSig.s}` as `0x${string}`,
+        r: `0x${txSig.r}` as Hash,
+        s: `0x${txSig.s}` as Hash,
       }
 
       return serializeTransaction(signedTxData)

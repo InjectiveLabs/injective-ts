@@ -19,7 +19,7 @@ import {
   TypedDataUtilsSanitizeData,
   recoverTypedSignaturePubKey,
 } from '../../utils/index.js'
-import type { TypedDataDefinition } from 'viem'
+import type { Hash, TypedDataDefinition } from 'viem'
 import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 
 /**
@@ -449,9 +449,9 @@ export class PrivateKey {
     const pubHex = publicKey.startsWith('0x') ? publicKey : `0x${publicKey}`
     // @noble/curves: verify(signature, msgHash, publicKey) returns boolean
     return secp256k1.verify(
-      toBytes(sigHex as `0x${string}`),
+      toBytes(sigHex as Hash),
       toBytes(keccak256(signDoc)),
-      toBytes(pubHex as `0x${string}`),
+      toBytes(pubHex as Hash),
     )
   }
 }

@@ -5,6 +5,7 @@ import {
   getViemWalletClient,
 } from '@injectivelabs/wallet-base'
 import { loadLedgerServiceType } from '../lib.js'
+import type { Hash } from 'viem'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 import type LedgerHW from './hw/index.js'
 
@@ -28,7 +29,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
   async getClient() {
     return getViemWalletClient({
       chainId: this.chainId,
-      account: (await this.getAddress()) as `0x${string}`,
+      account: (await this.getAddress()) as Hash,
     })
   }
 
@@ -79,8 +80,8 @@ export class LedgerEip1193Provider implements Eip1193Provider {
     )
 
     const signedTransaction = serializeTransaction(txData, {
-      r: signature.r as `0x${string}`,
-      s: signature.s as `0x${string}`,
+      r: signature.r as Hash,
+      s: signature.s as Hash,
       v: BigInt(signature.v),
     })
 
@@ -142,7 +143,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
         to: args.params[0].to,
         value: args.params[0].value,
         data: args.params[0].data,
-        account: (await this.getAddress()) as `0x${string}`,
+        account: (await this.getAddress()) as Hash,
       }
 
       const estimate = await client.estimateGas(data)
@@ -158,7 +159,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       const client = getViemPublicClient(this.chainId)
 
       const count = await client.getTransactionCount({
-        address: (await this.getAddress()) as `0x${string}`,
+        address: (await this.getAddress()) as Hash,
         blockTag: 'pending',
       })
 
@@ -170,7 +171,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
       const walletClient = getViemWalletClient({
         chainId: this.chainId,
-        account: address as `0x${string}`,
+        account: address as Hash,
       })
 
       const preparedTransaction = await walletClient.prepareTransactionRequest({
@@ -180,7 +181,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       const signedTransaction = await this.signTransaction(preparedTransaction)
 
       const tx = await walletClient.sendRawTransaction({
-        serializedTransaction: signedTransaction as `0x${string}`,
+        serializedTransaction: signedTransaction as Hash,
       })
 
       return tx

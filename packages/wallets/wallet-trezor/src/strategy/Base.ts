@@ -25,7 +25,7 @@ import {
 import { loadTrezorConnect } from './lib.js'
 import { transformTypedData } from '../utils.js'
 import { BaseTrezorTransport } from './hw/index.js'
-import type { PublicClient } from 'viem'
+import type { Hash, PublicClient } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type {
   AccountAddress,
@@ -137,7 +137,7 @@ export default class TrezorBase
     try {
       const publicClient = await this.getPublicClient(args.evmChainId)
       const txHash = await publicClient.sendRawTransaction({
-        serializedTransaction: signedTransaction as `0x${string}`,
+        serializedTransaction: signedTransaction as Hash,
       })
 
       return txHash
@@ -320,7 +320,7 @@ export default class TrezorBase
 
     try {
       await publicClient.waitForTransactionReceipt({
-        hash: txHash as `0x${string}`,
+        hash: txHash as Hash,
         timeout: 30_000,
         pollingInterval: 3_000,
       })
@@ -348,8 +348,8 @@ export default class TrezorBase
     const chainId = parseInt(args.evmChainId.toString(), 10)
     const publicClient = await this.getPublicClient(args.evmChainId)
     const address = args.address.startsWith('0x')
-      ? (args.address as `0x${string}`)
-      : (`0x${args.address}` as `0x${string}`)
+      ? (args.address as Hash)
+      : (`0x${args.address}` as Hash)
     const nonce = await publicClient.getTransactionCount({
       address,
     })
@@ -412,15 +412,15 @@ export default class TrezorBase
         type: 'eip1559' as const,
         chainId,
         nonce,
-        to: txData.to as `0x${string}`,
+        to: txData.to as Hash,
         value: valueBigInt,
-        data: (txData.data || '0x') as `0x${string}`,
+        data: (txData.data || '0x') as Hash,
         gas: gasBigInt,
         maxFeePerGas: maxFeePerGasBigInt,
         maxPriorityFeePerGas: maxPriorityFeePerGasBigInt,
         v: BigInt(response.payload.v),
-        r: response.payload.r as `0x${string}`,
-        s: response.payload.s as `0x${string}`,
+        r: response.payload.r as Hash,
+        s: response.payload.s as Hash,
       }
 
       return serializeTransaction(viemTxData)
