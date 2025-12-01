@@ -23,7 +23,7 @@ export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
       nativeCurrency: injective.nativeCurrency,
       rpcUrls: {
         default: {
-          http: [],
+          http: ['https://devnet.json-rpc.injective.dev'],
         },
       },
       blockExplorers: {
