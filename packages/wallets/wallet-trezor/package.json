@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-trezor",
-  "version": "1.16.37",
+  "version": "1.16.38-alpha.0",
   "description": "Trezor wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
@@ -53,13 +53,13 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@trezor/connect": "^9.6.4",
-    "@trezor/connect-web": "^9.6.4",
-    "viem": "catalog:",
+    "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*"
+    "@injectivelabs/wallet-base": "workspace:*",
+    "@trezor/connect": "^9.6.4",
+    "@trezor/connect-web": "^9.6.4",
+    "viem": "catalog:"
   },
   "publishConfig": {
     "access": "public"

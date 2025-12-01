@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-cosmostation",
-  "version": "1.16.37",
+  "version": "1.16.38-alpha.0",
   "description": "Cosmostation strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
@@ -53,15 +53,15 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
+    "@cosmjs/proto-signing": "catalog:",
     "@cosmostation/cosmos-client": "^0.0.5",
     "@cosmostation/extension-client": "^0.1.15",
-    "@walletconnect/ethereum-provider": "2.18.1",
-    "@cosmjs/proto-signing": "catalog:",
-    "@injectivelabs/utils": "workspace:*",
+    "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*"
+    "@injectivelabs/utils": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*",
+    "@walletconnect/ethereum-provider": "2.18.1"
   },
   "publishConfig": {
     "access": "public"
