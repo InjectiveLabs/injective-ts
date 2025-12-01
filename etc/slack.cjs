@@ -34,13 +34,13 @@ function getSlackAPI() {
   return apiValue.split('=').pop()
 }
 
-function formatPublishedItem({ packageName, version }) {
+function formatPublishedItem({ packageName, name, version }) {
   return {
     type: 'rich_text_section',
     elements: [
       {
         type: 'text',
-        text: `${packageName}: ${version}`,
+        text: `${packageName || name}: ${version}`,
       },
     ],
   }
@@ -107,19 +107,28 @@ const main = async () => {
   }
 
   try {
-    // Check if the summary file exists first
-    if (!fs.existsSync('./lerna-publish-summary.json')) {
+    // Check for pnpm summary file first, then fall back to lerna
+    const pnpmSummaryPath = './pnpm-publish-summary.json'
+    const lernaSummaryPath = './lerna-publish-summary.json'
+
+    let content
+    if (fs.existsSync(pnpmSummaryPath)) {
+      const rawContent = JSON.parse(
+        fs.readFileSync(pnpmSummaryPath, { encoding: 'utf8' }),
+      )
+      // pnpm format: { publishedPackages: [{ name, version }] }
+      content = rawContent.publishedPackages || []
+    } else if (fs.existsSync(lernaSummaryPath)) {
+      // lerna format: [{ packageName, version }]
+      content = JSON.parse(
+        fs.readFileSync(lernaSummaryPath, { encoding: 'utf8' }),
+      )
+    } else {
       console.log(
-        'No lerna-publish-summary.json found. This typically means no packages were published (they may have already been published).',
+        'No publish summary file found. This typically means no packages were published (they may have already been published).',
       )
       return
     }
-
-    const content = JSON.parse(
-      fs.readFileSync('./lerna-publish-summary.json', {
-        encoding: 'utf8',
-      }),
-    )
 
     publishedItems = content.map(formatPublishedItem)
 

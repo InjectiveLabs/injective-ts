@@ -50,8 +50,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          pnpm exec lerna version prerelease --preid alpha --force-git-tag --no-changelog --yes
-          pnpm exec lerna publish from-git --dist-tag alpha --yes --no-private --summary-file
+          pnpm exec lerna version prerelease --preid alpha --force-git-tag --no-changelog --yes --force-publish
+          pnpm publish -r --access public --tag alpha --no-git-checks --report-summary
 
       - name: 'Broadcast published versions on Slack'
         run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
