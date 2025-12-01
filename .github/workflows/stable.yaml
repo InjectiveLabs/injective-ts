@@ -49,6 +49,6 @@ jobs:
       - name: Version and publish
         run: |
           pnpm exec lerna version minor --conventional-commits --force-git-tag --yes
-          pnpm exec lerna publish from-git --dist-tag latest --yes --no-private
+          pnpm publish -r --access public --tag latest --no-git-checks
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
