@@ -88,7 +88,7 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     return this.wallet
   }
 
-  public setWallet(wallet: Wallet) {
+  public async setWallet(wallet: Wallet): Promise<void> {
     this.wallet = wallet
 
     this.getStrategy()

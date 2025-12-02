@@ -281,7 +281,7 @@ export interface WalletStrategy {
 
   getWallet(): Wallet
   getWalletClient?<T>(): Promise<T>
-  setWallet(wallet: Wallet): void
+  setWallet(wallet: Wallet): Promise<void>
   setMetadata(metadata?: WalletMetadata): void
   getStrategy(): ConcreteWalletStrategy
   getAddresses(args?: unknown): Promise<AccountAddress[]>
