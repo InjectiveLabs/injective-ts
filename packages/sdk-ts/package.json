@@ -13,68 +13,288 @@
     ".": {
       "react-native": {
         "import": "./dist/esm/index.js",
-        "require": "./dist/cjs/index.js",
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "require": "./dist/cjs/index.cjs",
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "require": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "default": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       }
     },
     "./exports": {
       "react-native": {
         "import": "./dist/esm/exports.js",
-        "require": "./dist/cjs/exports.js",
-        "types": "./dist/cjs/exports.d.ts",
-        "default": "./dist/cjs/exports.js"
+        "require": "./dist/cjs/exports.cjs",
+        "types": "./dist/cjs/exports.d.cts",
+        "default": "./dist/cjs/exports.cjs"
       },
       "require": {
-        "types": "./dist/cjs/exports.d.ts",
-        "default": "./dist/cjs/exports.js"
+        "types": "./dist/cjs/exports.d.cts",
+        "default": "./dist/cjs/exports.cjs"
       },
       "import": {
         "types": "./dist/esm/exports.d.ts",
         "default": "./dist/esm/exports.js"
       },
       "default": {
-        "types": "./dist/cjs/exports.d.ts",
-        "default": "./dist/cjs/exports.js"
+        "types": "./dist/cjs/exports.d.cts",
+        "default": "./dist/cjs/exports.cjs"
       }
     },
     "./cosmjs": {
       "react-native": {
         "import": "./dist/esm/cosmjs.js",
-        "require": "./dist/cjs/cosmjs.js",
-        "types": "./dist/cjs/cosmjs.d.ts",
-        "default": "./dist/cjs/cosmjs.js"
+        "require": "./dist/cjs/cosmjs.cjs",
+        "types": "./dist/cjs/cosmjs.d.cts",
+        "default": "./dist/cjs/cosmjs.cjs"
       },
       "require": {
-        "types": "./dist/cjs/cosmjs.d.ts",
-        "default": "./dist/cjs/cosmjs.js"
+        "types": "./dist/cjs/cosmjs.d.cts",
+        "default": "./dist/cjs/cosmjs.cjs"
       },
       "import": {
         "types": "./dist/esm/cosmjs.d.ts",
         "default": "./dist/esm/cosmjs.js"
       },
       "default": {
-        "types": "./dist/cjs/cosmjs.d.ts",
-        "default": "./dist/cjs/cosmjs.js"
+        "types": "./dist/cjs/cosmjs.d.cts",
+        "default": "./dist/cjs/cosmjs.cjs"
+      }
+    },
+    "./client/indexer": {
+      "react-native": {
+        "import": "./dist/esm/client/indexer.js",
+        "require": "./dist/cjs/client/indexer.cjs",
+        "types": "./dist/cjs/client/indexer.d.cts",
+        "default": "./dist/cjs/client/indexer.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/indexer.d.cts",
+        "default": "./dist/cjs/client/indexer.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/indexer.d.ts",
+        "default": "./dist/esm/client/indexer.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/indexer.d.cts",
+        "default": "./dist/cjs/client/indexer.cjs"
+      }
+    },
+    "./client/chain": {
+      "react-native": {
+        "import": "./dist/esm/client/chain.js",
+        "require": "./dist/cjs/client/chain.cjs",
+        "types": "./dist/cjs/client/chain.d.cts",
+        "default": "./dist/cjs/client/chain.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/chain.d.cts",
+        "default": "./dist/cjs/client/chain.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/chain.d.ts",
+        "default": "./dist/esm/client/chain.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/chain.d.cts",
+        "default": "./dist/cjs/client/chain.cjs"
+      }
+    },
+    "./client/wasm": {
+      "react-native": {
+        "import": "./dist/esm/client/wasm.js",
+        "require": "./dist/cjs/client/wasm.cjs",
+        "types": "./dist/cjs/client/wasm.d.cts",
+        "default": "./dist/cjs/client/wasm.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/wasm.d.cts",
+        "default": "./dist/cjs/client/wasm.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/wasm.d.ts",
+        "default": "./dist/esm/client/wasm.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/wasm.d.cts",
+        "default": "./dist/cjs/client/wasm.cjs"
+      }
+    },
+    "./client/abacus": {
+      "react-native": {
+        "import": "./dist/esm/client/abacus.js",
+        "require": "./dist/cjs/client/abacus.cjs",
+        "types": "./dist/cjs/client/abacus.d.cts",
+        "default": "./dist/cjs/client/abacus.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/abacus.d.cts",
+        "default": "./dist/cjs/client/abacus.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/abacus.d.ts",
+        "default": "./dist/esm/client/abacus.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/abacus.d.cts",
+        "default": "./dist/cjs/client/abacus.cjs"
+      }
+    },
+    "./client/olp": {
+      "react-native": {
+        "import": "./dist/esm/client/olp.js",
+        "require": "./dist/cjs/client/olp.cjs",
+        "types": "./dist/cjs/client/olp.d.cts",
+        "default": "./dist/cjs/client/olp.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/olp.d.cts",
+        "default": "./dist/cjs/client/olp.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/olp.d.ts",
+        "default": "./dist/esm/client/olp.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/olp.d.cts",
+        "default": "./dist/cjs/client/olp.cjs"
+      }
+    },
+    "./core/modules": {
+      "react-native": {
+        "import": "./dist/esm/core/modules.js",
+        "require": "./dist/cjs/core/modules.cjs",
+        "types": "./dist/cjs/core/modules.d.cts",
+        "default": "./dist/cjs/core/modules.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/core/modules.d.cts",
+        "default": "./dist/cjs/core/modules.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/core/modules.d.ts",
+        "default": "./dist/esm/core/modules.js"
+      },
+      "default": {
+        "types": "./dist/cjs/core/modules.d.cts",
+        "default": "./dist/cjs/core/modules.cjs"
+      }
+    },
+    "./core/accounts": {
+      "react-native": {
+        "import": "./dist/esm/core/accounts.js",
+        "require": "./dist/cjs/core/accounts.cjs",
+        "types": "./dist/cjs/core/accounts.d.cts",
+        "default": "./dist/cjs/core/accounts.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/core/accounts.d.cts",
+        "default": "./dist/cjs/core/accounts.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/core/accounts.d.ts",
+        "default": "./dist/esm/core/accounts.js"
+      },
+      "default": {
+        "types": "./dist/cjs/core/accounts.d.cts",
+        "default": "./dist/cjs/core/accounts.cjs"
+      }
+    },
+    "./core/tx": {
+      "react-native": {
+        "import": "./dist/esm/core/tx.js",
+        "require": "./dist/cjs/core/tx.cjs",
+        "types": "./dist/cjs/core/tx.d.cts",
+        "default": "./dist/cjs/core/tx.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/core/tx.d.cts",
+        "default": "./dist/cjs/core/tx.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/core/tx.d.ts",
+        "default": "./dist/esm/core/tx.js"
+      },
+      "default": {
+        "types": "./dist/cjs/core/tx.d.cts",
+        "default": "./dist/cjs/core/tx.cjs"
+      }
+    },
+    "./types": {
+      "react-native": {
+        "import": "./dist/esm/types.js",
+        "require": "./dist/cjs/types.cjs",
+        "types": "./dist/cjs/types.d.cts",
+        "default": "./dist/cjs/types.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/types.d.cts",
+        "default": "./dist/cjs/types.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/types.d.ts",
+        "default": "./dist/esm/types.js"
+      },
+      "default": {
+        "types": "./dist/cjs/types.d.cts",
+        "default": "./dist/cjs/types.cjs"
+      }
+    },
+    "./utils": {
+      "react-native": {
+        "import": "./dist/esm/utils.js",
+        "require": "./dist/cjs/utils.cjs",
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/utils.d.ts",
+        "default": "./dist/esm/utils.js"
+      },
+      "default": {
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      }
+    },
+    "./service": {
+      "react-native": {
+        "import": "./dist/esm/service.js",
+        "require": "./dist/cjs/service.cjs",
+        "types": "./dist/cjs/service.d.cts",
+        "default": "./dist/cjs/service.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/service.d.cts",
+        "default": "./dist/cjs/service.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/service.d.ts",
+        "default": "./dist/esm/service.js"
+      },
+      "default": {
+        "types": "./dist/cjs/service.d.cts",
+        "default": "./dist/cjs/service.cjs"
       }
     },
     "./src/*": "./src/*"
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
-  "types": "dist/cjs/index.d.ts",
+  "types": "dist/cjs/index.d.cts",
   "files": [
     "dist"
   ],

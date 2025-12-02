@@ -1,14 +1,14 @@
 import { Network } from '@injectivelabs/networks'
 import { Wallet } from '@injectivelabs/wallet-base'
 import { EvmChainId } from '@injectivelabs/ts-types'
+import { MsgSend } from '@injectivelabs/sdk-ts/core/modules'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import {
-  MsgSend,
-  PrivateKey,
   SIGN_DIRECT,
   MsgBroadcasterWithPk,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/core/tx'
 import { MsgBroadcaster } from './MsgBroadcaster.js'
 import type {
   WalletStrategyArguments,

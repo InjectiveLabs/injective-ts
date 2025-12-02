@@ -5,6 +5,16 @@ import { InstallError } from '@cosmostation/extension-client'
 import { getOfflineSigner } from '@cosmostation/cosmos-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
 import {
+  createTxRawFromSigResponse,
+  createSignDocFromTransaction,
+} from '@injectivelabs/sdk-ts/core/tx'
+import {
+  toUtf8,
+  uint8ArrayToHex,
+  stringToUint8Array,
+  uint8ArrayToBase64,
+} from '@injectivelabs/sdk-ts/utils'
+import {
   ErrorType,
   UnspecifiedErrorCode,
   TransactionException,
@@ -16,17 +26,10 @@ import {
   BaseConcreteStrategy,
   type ConcreteCosmosWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import {
-  toUtf8,
-  uint8ArrayToHex,
-  stringToUint8Array,
-  uint8ArrayToBase64,
-  createTxRawFromSigResponse,
-  createSignDocFromTransaction,
-} from '@injectivelabs/sdk-ts'
 import { CosmostationWallet } from './../wallet.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { Cosmos } from '@cosmostation/extension-client'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   ChainId,
   EvmChainId,
@@ -37,10 +40,9 @@ import type {
   ConcreteWalletStrategy,
 } from '@injectivelabs/wallet-base'
 import type {
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 
 const getChainNameFromChainId = (chainId: CosmosChainId | ChainId) => {
   const [chainName] = chainId.split('-')

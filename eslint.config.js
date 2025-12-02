@@ -5,6 +5,7 @@ import perfectionist from 'eslint-plugin-perfectionist'
 import prettier from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
 import noEnumRule from './scripts/eslint-rules/no-enum.js'
+import noSdkTsBarrelRule from './scripts/eslint-rules/no-sdk-ts-barrel.js'
 
 export default [
   // Ignore patterns
@@ -49,6 +50,7 @@ export default [
       custom: {
         rules: {
           'no-enum': noEnumRule,
+          'no-sdk-ts-barrel': noSdkTsBarrelRule,
         },
       },
     },
@@ -135,6 +137,8 @@ export default [
       '@typescript-eslint/no-use-before-define': 'off',
       // Custom rule to discourage enums in favor of type + const pattern
       'custom/no-enum': 'error',
+      // Custom rule to enforce subpath imports from @injectivelabs/sdk-ts
+      'custom/no-sdk-ts-barrel': 'error',
       // Enforce spacing inside object/type brackets
       'object-curly-spacing': ['error', 'always'],
       // Prettier integration

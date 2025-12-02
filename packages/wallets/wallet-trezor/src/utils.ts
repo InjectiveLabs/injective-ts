@@ -5,7 +5,7 @@ import {
   SignTypedDataVersionV4,
   TypedDataUtilsHashStruct,
   TypedDataUtilsSanitizeData,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/utils'
 
 /**
  * Calculates the domain_separator_hash and message_hash from an EIP-712 Typed Data object.

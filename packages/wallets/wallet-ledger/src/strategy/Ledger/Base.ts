@@ -1,10 +1,10 @@
 import { serializeTransaction } from 'viem'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
   toUtf8,
-  TxGrpcApi,
   uint8ArrayToHex,
   stringToUint8Array,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   LedgerException,
@@ -30,12 +30,12 @@ import type { Hash } from 'viem'
 import type { PublicClient } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   Eip1193Provider,

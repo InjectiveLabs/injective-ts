@@ -1,10 +1,20 @@
 import { capitalize } from '@injectivelabs/utils'
 import {
+  uint8ArrayToHex,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
+import {
   ErrorType,
   UnspecifiedErrorCode,
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
+import {
+  waitTxBroadcasted,
+  createTxRawFromSigResponse,
+  createSignDocFromTransaction,
+} from '@injectivelabs/sdk-ts/core/tx'
 import {
   Wallet,
   WalletAction,
@@ -13,29 +23,21 @@ import {
   BaseConcreteStrategy,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
-import {
-  uint8ArrayToHex,
-  waitTxBroadcasted,
-  uint8ArrayToBase64,
-  stringToUint8Array,
-  createTxRawFromSigResponse,
-  createSignDocFromTransaction,
-} from '@injectivelabs/sdk-ts'
 import { CosmosWallet } from './../wallet.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
 import type {
   ChainId,
   EvmChainId,
   CosmosChainId,
   AccountAddress,
 } from '@injectivelabs/ts-types'
-import type {
-  TxRaw,
-  TxResponse,
-  AminoSignResponse,
-  DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,

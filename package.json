@@ -42,7 +42,7 @@
     "coverage:integration": "pnpm test:integration --coverage",
     "coverage:show": "live-server coverage",
     "lint": "cross-env NODE_OPTIONS='--max-old-space-size=4096' lerna run lint",
-    "format": "pnpm lint --fix",
+    "lint:fix": "cross-env NODE_OPTIONS='--max-old-space-size=4096' lerna run lint -- --fix",
     "format:md": "pnpm lint:md --fix",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
     "link:local": "node etc/link-local.cjs",

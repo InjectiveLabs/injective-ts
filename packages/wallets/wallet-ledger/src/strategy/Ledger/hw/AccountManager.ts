@@ -4,7 +4,7 @@ import {
   hexToUint8Array,
   uint8ArrayToHex,
   publicKeyToAddress,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/utils'
 import { LedgerDerivationPathType } from '../../../types.js'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'

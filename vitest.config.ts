@@ -44,6 +44,54 @@ export default defineConfig({
         __dirname,
         'packages/ts-types/src/index.ts',
       ),
+      '@injectivelabs/sdk-ts/client/indexer': join(
+        __dirname,
+        'packages/sdk-ts/src/client/indexer/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/client/chain': join(
+        __dirname,
+        'packages/sdk-ts/src/client/chain/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/client/wasm': join(
+        __dirname,
+        'packages/sdk-ts/src/client/wasm/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/client/abacus': join(
+        __dirname,
+        'packages/sdk-ts/src/client/abacus/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/client/olp': join(
+        __dirname,
+        'packages/sdk-ts/src/client/olp/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/core/modules': join(
+        __dirname,
+        'packages/sdk-ts/src/core/modules/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/core/accounts': join(
+        __dirname,
+        'packages/sdk-ts/src/core/accounts/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/core/tx': join(
+        __dirname,
+        'packages/sdk-ts/src/core/tx/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/types': join(
+        __dirname,
+        'packages/sdk-ts/src/types/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/utils': join(
+        __dirname,
+        'packages/sdk-ts/src/utils/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/service': join(
+        __dirname,
+        'packages/sdk-ts/src/service/index.ts',
+      ),
+      '@injectivelabs/sdk-ts/cosmjs': join(
+        __dirname,
+        'packages/sdk-ts/src/cosmjs.ts',
+      ),
       '@injectivelabs/sdk-ts': join(__dirname, 'packages/sdk-ts/src/index.ts'),
       '@injectivelabs/wallet-base': join(
         __dirname,

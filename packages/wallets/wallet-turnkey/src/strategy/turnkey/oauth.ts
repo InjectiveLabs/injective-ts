@@ -1,4 +1,4 @@
-import { sha256 } from '@injectivelabs/sdk-ts'
+import { sha256 } from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
