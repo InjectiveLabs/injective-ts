@@ -1,6 +1,5 @@
-import { EvmChainId } from '@injectivelabs/ts-types'
 import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
-import { EthereumProvider } from '@bangjelkoski/wc-ethereum-provider'
+import { EthereumProvider } from '@walletconnect/ethereum-provider'
 import {
   WalletAction,
   WalletDeviceType,
@@ -14,11 +13,8 @@ import {
   TransactionException,
   WalletConnectException,
 } from '@injectivelabs/exceptions'
+import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
-import type {
-  Provider,
-  EthereumProviderOptions,
-} from '@bangjelkoski/wc-ethereum-provider'
 import type {
   TxRaw,
   TxResponse,
@@ -41,7 +37,7 @@ export class WalletConnect
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  public provider: Provider | undefined
+  public provider: InstanceType<typeof EthereumProvider> | undefined
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
@@ -176,7 +172,7 @@ export class WalletConnect
           method: 'eth_signTypedData_v4',
           params: [address, eip712json],
         },
-        txTimeout || undefined,
+        txTimeout,
       )
     } catch (e: unknown) {
       throw new WalletConnectException(new Error((e as any).message), {
@@ -289,7 +285,7 @@ export class WalletConnect
       [WalletEventListener.AccountChange]: callback,
     }
 
-    wc.on('accountsChanged', (accounts) => callback(accounts[0]))
+    wc.on('accountsChanged', (accounts: string[]) => callback(accounts[0]))
   }
 
   private async getWalletConnect() {
@@ -324,33 +320,50 @@ export class WalletConnect
     try {
       this.provider = await EthereumProvider.init({
         projectId: this.metadata.walletConnect.projectId as string,
-        metadata: this
-          .metadata as unknown as EthereumProviderOptions['metadata'],
+        optionalChains: [
+          ...new Set([this.evmChainId, 1, 11155111].filter(Boolean)),
+        ] as [number, ...number[]],
+        optionalMethods: [
+          'eth_sendTransaction',
+          'personal_sign',
+          'eth_signTypedData_v4',
+          'wallet_switchEthereumChain',
+        ],
+        optionalEvents: [
+          'chainChanged',
+          'accountsChanged',
+          'connect',
+          'disconnect',
+        ],
+        metadata: {
+          name: 'Injective',
+          description: 'Injective Protocol',
+          url: 'https://injective.com',
+          icons: [],
+        },
         showQrModal: true,
-        optionalChains: this.evmChainId
-          ? [this.evmChainId]
-          : [EvmChainId.Mainnet, EvmChainId.Sepolia],
         qrModalOptions: {
           explorerRecommendedWalletIds: [WalletConnectIds.FireBlocks],
           explorerExcludedWalletIds: 'ALL',
-          mobileWallets: [],
-          walletImages: {
-            [WalletConnectIds.FireBlocks]: '/wallet-connect/fireblocks.webp',
-          },
           desktopWallets: [
             {
               id: WalletConnectIds.FireBlocks,
               name: 'Fireblocks',
               links: {
-                native: 'fireblocks-wc://',
-                universal: 'https://console.fireblocks.io/v2/',
+                native: '',
+                universal: 'https://console.fireblocks.io/v2/walletconnect',
               },
             },
           ],
         },
       })
 
-      return this.provider as Provider
+      // Handle remote session deletion
+      this.provider.on('session_delete', () => {
+        this.provider = undefined
+      })
+
+      return this.provider
     } catch {
       throw new WalletException(
         new Error('WalletConnect not supported for this wallet'),
@@ -369,7 +382,9 @@ export class WalletConnect
     return provider as unknown as Eip1193Provider
   }
 
-  private async getConnectedWalletConnect(): Promise<Provider> {
+  private async getConnectedWalletConnect(): Promise<
+    InstanceType<typeof EthereumProvider>
+  > {
     if (!this.provider) {
       await this.getWalletConnect()
     }
@@ -378,7 +393,18 @@ export class WalletConnect
       await this.enable()
     }
 
-    return this.provider as Provider
+    if (!this.provider) {
+      throw new WalletException(
+        new Error('Failed to initialize WalletConnect provider'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetAccounts,
+        },
+      )
+    }
+
+    return this.provider
   }
 
   private async connectWalletConnect(topic?: string) {

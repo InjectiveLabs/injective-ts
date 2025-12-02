@@ -14,7 +14,8 @@ This document outlines the migration plan from the forked WalletConnect packages
 6. [Phase Details](#phase-details)
 7. [Code Patterns](#code-patterns)
 8. [Testing Checklist](#testing-checklist)
-9. [Rollback Plan](#rollback-plan)
+9. [V2 Compatibility Analysis](#v2-compatibility-analysis)
+10. [References](#references)
 
 ---
 
@@ -49,35 +50,39 @@ This document outlines the migration plan from the forked WalletConnect packages
 }
 ```
 
-### New Implementation
+### Updated Implementation
 
-- **New File:** `src/strategy/strategy-v2.ts`
-- **New Class:** `WalletConnectV2` extends `BaseConcreteStrategy`
-- **Coexistence:** Both v1 and v2 strategies exported until v2 is validated
+- **File:** `src/strategy/strategy.ts` (in-place update)
+- **Class:** `WalletConnect` extends `BaseConcreteStrategy` (unchanged class name)
+- **Approach:** Update existing strategy directly, no separate v2 file
 
 ---
 
 ## Key Decisions
 
-| Topic           | Decision                                                                        |
-| --------------- | ------------------------------------------------------------------------------- |
-| QR Modal        | Fireblocks-only configuration, exclude all other wallets                        |
-| RPC URLs        | Use WalletConnect default proxy (no custom config needed)                       |
-| Types           | Create new `WalletConnectMetadataV2` type in `wallet-base`                      |
-| Strategy Export | Export both `WalletConnectStrategy` (v1) and `WalletConnectV2Strategy` (v2)     |
-| Wallet Enum     | No changes to `Wallet` const/enums - both strategies use `Wallet.WalletConnect` |
-| Timeline        | No deadline - validate thoroughly before switching                              |
+| Topic           | Decision                                                     |
+| --------------- | ------------------------------------------------------------ |
+| QR Modal        | Fireblocks-only configuration, exclude all other wallets     |
+| RPC URLs        | Use WalletConnect default proxy (no custom config needed)    |
+| Types           | Update existing types in-place                               |
+| Strategy Export | Single `WalletConnectStrategy` export (no v1/v2 coexistence) |
+| Wallet Enum     | No changes to `Wallet` const/enums                           |
+| Timeline        | No deadline - validate thoroughly before releasing           |
 
 ---
 
 ## Breaking Changes
 
-### API Changes in WalletConnect v2
+### Consumer API Changes
+
+**None** - The public API remains identical. Consumers will not need to change their code.
+
+### Internal API Changes in WalletConnect v2
 
 #### 1. Initialization
 
 ```typescript
-// OLD (v1 fork)
+// OLD (forked package)
 this.provider = await EthereumProvider.init({
   projectId: projectId,
   metadata: metadata,
@@ -85,20 +90,43 @@ this.provider = await EthereumProvider.init({
   optionalChains: [this.evmChainId]
 })
 
-// NEW (v2)
+// NEW (official v2)
 this.provider = await EthereumProvider.init({
   projectId: projectId,
-  chains: [this.evmChainId],  // Required chains (not optional)
-  optionalChains: [...],
-  methods: ['eth_sendTransaction', 'personal_sign'],  // Explicit methods
-  optionalMethods: ['eth_signTypedData_v4', ...],
-  events: ['chainChanged', 'accountsChanged'],  // Explicit events
+  optionalChains: [this.evmChainId, 1, 11155111],  // Use optionalChains only (recommended)
+  optionalMethods: ['eth_sendTransaction', 'personal_sign', 'eth_signTypedData_v4', ...],
+  optionalEvents: ['chainChanged', 'accountsChanged', 'connect', 'disconnect'],
   metadata: { name, description, url, icons },
   showQrModal: true,
 })
 ```
 
-#### 2. Required vs Optional Methods
+#### 2. optionalChains vs chains (Important)
+
+**Use `optionalChains` only** - Do not use `chains` (required namespaces).
+
+Per [WalletConnect docs](https://docs.reown.com/advanced/providers/ethereum):
+
+> "We recommend using optionalChains (optional namespaces) over chains (required namespaces). Required namespaces will block wallets from connecting to your application if any of the chains are not supported by the wallet. Smart Contract Wallets can only support one chain, the one that they had been deployed to."
+
+```typescript
+// RECOMMENDED - use optionalChains only
+this.provider = await EthereumProvider.init({
+  projectId,
+  optionalChains: [this.evmChainId, 1, 11155111], // All chains as optional
+  optionalMethods: [...],
+  optionalEvents: [...],
+})
+
+// NOT RECOMMENDED - chains creates required namespaces
+this.provider = await EthereumProvider.init({
+  projectId,
+  chains: [this.evmChainId], // Will block Smart Contract Wallets!
+  optionalChains: [...],
+})
+```
+
+#### 3. Required vs Optional Methods
 
 ```typescript
 // REQUIRED (must be supported or connection fails)
@@ -145,31 +173,57 @@ const WalletConnectV2ErrorCodes = {
 ### Overview
 
 ```
-Phase 1: Build Verification     (1 day)   - Verify official package builds
-Phase 2: Type Definitions       (1 day)   - Create WalletConnectMetadataV2
-Phase 3: Core Implementation    (3 days)  - Build WalletConnectV2Strategy
-Phase 4: Error Handling         (1 day)   - Update WalletConnectException
-Phase 5: Build Config           (0.5 day) - Update tsdown.config.ts
-Phase 6: Testing                (2 days)  - Manual testing with Fireblocks
-Phase 7: Cleanup (later)        (1 day)   - Remove v1 after validation
+Phase 1: Update Dependencies        (0.5 day)  - Replace forked packages with official ones
+Phase 2: Build Verification         (0.5 day)  - Verify official package builds correctly
+Phase 3: Update Strategy            (1-2 days) - Modify strategy.ts for v2 API changes
+Phase 4: Update Build Config        (0.5 day)  - Update tsdown.config.ts externals
+Phase 5: Testing                    (2 days)   - Manual testing with Fireblocks
+Phase 6: Release                    (0.5 day)  - Version bump and publish
 ```
 
-**Total: ~10 days (2 weeks)**
+**Total: ~5-6 days (1 week)**
 
 ---
 
 ## Phase Details
 
-### Phase 1: Build Verification
+### Phase 1: Update Dependencies
+
+**Goal:** Replace forked packages with official WalletConnect packages.
+
+**Steps:**
+
+1. Update `package.json`:
+
+```bash
+# Remove forked dependencies
+pnpm remove @bangjelkoski/wc-ethereum-provider @bangjelkoski/wallet-connect-ethereum-provider --filter @injectivelabs/wallet-wallet-connect
+
+# Add official dependencies
+pnpm add @walletconnect/ethereum-provider@^2.23.0 @walletconnect/types@^2.23.0 --filter @injectivelabs/wallet-wallet-connect
+```
+
+2. Update import statements in `src/strategy/strategy.ts`:
+
+```typescript
+// OLD
+import EthereumProvider from '@bangjelkoski/wc-ethereum-provider'
+
+// NEW
+import { EthereumProvider } from '@walletconnect/ethereum-provider'
+```
+
+---
+
+### Phase 2: Build Verification
 
 **Goal:** Verify the official `@walletconnect/ethereum-provider` package builds correctly with our tsdown configuration.
 
 **Steps:**
 
-1. Add `@walletconnect/ethereum-provider@2.23.0` to `package.json`
-2. Run `pnpm build` in the package
-3. Check for ESM/CJS resolution errors
-4. Test the output works in both module formats
+1. Run `pnpm build` in the package
+2. Check for ESM/CJS resolution errors
+3. Test the output works in both module formats
 
 **If build fails:**
 
@@ -179,87 +233,21 @@ Phase 7: Cleanup (later)        (1 day)   - Remove v1 after validation
 
 ---
 
-### Phase 2: Type Definitions
+### Phase 3: Update Strategy
 
-**Goal:** Create new types without breaking existing implementations.
+**Goal:** Update `src/strategy/strategy.ts` for v2 API compatibility.
 
-**File:** `packages/wallets/wallet-base/src/types/strategy.ts`
+**File:** `src/strategy/strategy.ts`
 
-```typescript
-// Keep existing type unchanged
-export type WalletConnectMetadata = {
-  projectId?: string
-}
+#### Key Changes:
 
-// Add new v2 type
-export type WalletConnectMetadataV2 = {
-  projectId: string // Required in v2
-  name?: string
-  description?: string
-  url?: string
-  icons?: string[]
-}
-```
+1. **Update `getWalletConnect()`** - Add explicit methods/events to provider init
+2. **Add `session_delete` handler** - Handle remote disconnection
+3. **Update import** - Change from default to named export
 
-**File:** `packages/wallets/wallet-wallet-connect/src/types/v2-types.ts`
+Note: The timeout parameter for `signEip712TypedData()` works the same way - the official v2 package supports the `expiry` parameter.
 
-```typescript
-import type { SessionTypes, SignClientTypes } from '@walletconnect/types'
-
-export interface WalletConnectV2Options {
-  projectId: string
-  chains?: number[]
-  optionalChains?: number[]
-  methods?: string[]
-  optionalMethods?: string[]
-  events?: string[]
-  optionalEvents?: string[]
-  metadata?: WalletConnectV2Metadata
-  showQrModal?: boolean
-}
-
-export interface WalletConnectV2Metadata {
-  name: string
-  description: string
-  url: string
-  icons: string[]
-}
-
-export interface WalletConnectV2Events {
-  connect: { chainId: string }
-  disconnect: { code: number; message: string }
-  chainChanged: string
-  accountsChanged: string[]
-  session_delete: { topic: string }
-  display_uri: string
-}
-
-export type WalletConnectSession = SessionTypes.Struct | undefined
-```
-
----
-
-### Phase 3: Core Implementation
-
-**Goal:** Create `WalletConnectV2Strategy` class alongside existing implementation.
-
-**New File:** `src/strategy/strategy-v2.ts`
-
-#### Key Methods to Implement:
-
-1. **`getWalletConnect()`** - Provider initialization
-2. **`connectWalletConnect()`** - Connection flow
-3. **`getConnectedWalletConnect()`** - Get active provider
-4. **`enable()`** - Wallet enablement
-5. **`disconnect()`** - Cleanup and disconnection
-6. **`getAddresses()`** - Get connected addresses
-7. **`signEip712TypedData()`** - EIP-712 signing (critical for Injective)
-8. **`sendEvmTransaction()`** - Transaction sending
-9. **`onAccountChange()`** - Account change listener
-10. **`onChainIdChange()`** - Chain change listener
-11. **`getSessionOrConfirm()`** - Session management
-
-#### Fireblocks-Specific Configuration:
+#### Fireblocks-Specific Configuration (unchanged):
 
 ```typescript
 const FIREBLOCKS_WALLET_ID = 'ecc4036f86e27eb4cfde344e696a5982e524c10b7cf04044e3de08508aa911cf'
@@ -292,23 +280,7 @@ const qrModalOptions = {
 
 ---
 
-### Phase 4: Error Handling
-
-**Goal:** Update `WalletConnectException` to handle v2 error patterns.
-
-**File:** `packages/exceptions/src/exceptions/exceptions/WalletConnectException.ts`
-
-Add handling for:
-
-- `4001` - User rejected
-- `4100` - Unauthorized
-- `4200` - Unsupported method
-- `4900` - Disconnected
-- `4901` - Chain disconnected
-
----
-
-### Phase 5: Build Configuration
+### Phase 4: Build Configuration
 
 **Update:** `tsdown.config.ts`
 
@@ -323,7 +295,7 @@ export default defineConfig({
     '@injectivelabs/utils',
     '@injectivelabs/wallet-base',
     '@injectivelabs/wallet-core',
-    // Updated for v2
+    // Updated for v2 (remove old forked packages)
     '@walletconnect/ethereum-provider',
     '@walletconnect/types',
     '@walletconnect/utils',
@@ -331,20 +303,9 @@ export default defineConfig({
 })
 ```
 
-**Update:** `src/index.ts`
-
-```typescript
-// Export both strategies
-export { WalletConnect as WalletConnectStrategy } from './strategy/strategy.js'
-export { WalletConnectV2 as WalletConnectV2Strategy } from './strategy/strategy-v2.js'
-
-// Re-export types
-export * from './types/v2-types.js'
-```
-
 ---
 
-### Phase 6: Testing
+### Phase 5: Testing
 
 #### Manual Testing Checklist
 
@@ -375,22 +336,32 @@ pnpm --filter @injectivelabs/wallet-wallet-connect test
 
 ---
 
-### Phase 7: Cleanup (After Validation)
+### Phase 6: Release
 
-Once v2 is confirmed working:
+**Goal:** Version bump and publish the updated package.
 
-1. Remove v1 strategy file (`strategy.ts`)
-2. Remove forked dependencies from `package.json`
-3. Rename `WalletConnectV2Strategy` to `WalletConnectStrategy`
-4. Update exports in `index.ts`
-5. Remove `WalletConnectMetadataV2` (merge into `WalletConnectMetadata`)
-6. Update CHANGELOG.md
+**Steps:**
+
+1. Update CHANGELOG.md with migration notes
+2. Version bump (minor version recommended since public API is unchanged)
+3. Run full test suite across dependent packages
+4. Publish to npm
 
 ---
 
 ## Code Patterns
 
-### Initialization Pattern (v2)
+### Updated Import Statement
+
+```typescript
+// OLD (forked package)
+import EthereumProvider from '@bangjelkoski/wc-ethereum-provider'
+
+// NEW (official v2)
+import { EthereumProvider } from '@walletconnect/ethereum-provider'
+```
+
+### Initialization Pattern (Updated for v2)
 
 ```typescript
 private async getWalletConnect(): Promise<EthereumProvider> {
@@ -398,7 +369,7 @@ private async getWalletConnect(): Promise<EthereumProvider> {
     return this.provider
   }
 
-  const projectId = this.metadata?.walletConnectV2?.projectId
+  const projectId = this.metadata?.walletConnect?.projectId
   if (!projectId) {
     throw new WalletConnectException(
       new Error('WalletConnect projectId is required'),
@@ -407,20 +378,23 @@ private async getWalletConnect(): Promise<EthereumProvider> {
 
   this.provider = await EthereumProvider.init({
     projectId,
-    chains: this.evmChainId ? [this.evmChainId] : undefined,
-    optionalChains: [1, 11155111], // Mainnet, Sepolia
-    methods: ['eth_sendTransaction', 'personal_sign'],
+    optionalChains: [
+      ...(this.evmChainId ? [this.evmChainId] : []),
+      1,        // Mainnet
+      11155111, // Sepolia
+    ],
     optionalMethods: [
+      'eth_sendTransaction',
+      'personal_sign',
       'eth_signTypedData_v4',
       'wallet_switchEthereumChain',
     ],
-    events: ['chainChanged', 'accountsChanged'],
-    optionalEvents: ['connect', 'disconnect'],
+    optionalEvents: ['chainChanged', 'accountsChanged', 'connect', 'disconnect'],
     metadata: {
-      name: this.metadata?.walletConnectV2?.name || 'Injective',
-      description: this.metadata?.walletConnectV2?.description || 'Injective Protocol',
-      url: this.metadata?.walletConnectV2?.url || 'https://injective.com',
-      icons: this.metadata?.walletConnectV2?.icons || [],
+      name: this.metadata?.walletConnect?.name || 'Injective',
+      description: this.metadata?.walletConnect?.description || 'Injective Protocol',
+      url: this.metadata?.walletConnect?.url || 'https://injective.com',
+      icons: this.metadata?.walletConnect?.icons || [],
     },
     showQrModal: true,
     qrModalOptions: {
@@ -430,11 +404,33 @@ private async getWalletConnect(): Promise<EthereumProvider> {
     },
   })
 
+  // NEW: Handle remote session deletion
+  this.provider.on('session_delete', () => {
+    this.provider = undefined
+  })
+
   return this.provider
 }
 ```
 
-### Event Handling Pattern (v2)
+### Timeout Parameter (expiry)
+
+The official v2 package **does support** a timeout parameter called `expiry` (second parameter to `request()`). This is the same functionality as the forked package - no workaround needed!
+
+```typescript
+// Official v2 API signature:
+public async request<T = unknown>(args: RequestArguments, expiry?: number): Promise<T>
+
+// Usage - works the same as the forked package:
+return await wc.request<string>(
+  { method: 'eth_signTypedData_v4', params: [address, eip712json] },
+  txTimeout || undefined, // expiry parameter - same API as before
+)
+```
+
+**No code changes required** for the timeout functionality.
+
+### Event Handling Pattern (unchanged)
 
 ```typescript
 async onAccountChange(callback: (account: string | string[]) => void): Promise<void> {
@@ -447,17 +443,9 @@ async onAccountChange(callback: (account: string | string[]) => void): Promise<v
   this.listeners[WalletEventListener.AccountChange] = handler
   wc.on('accountsChanged', handler)
 }
-
-async onSessionDelete(callback: () => void): Promise<void> {
-  const wc = await this.getConnectedWalletConnect()
-  wc.on('session_delete', () => {
-    this.provider = undefined
-    callback()
-  })
-}
 ```
 
-### Disconnect Pattern (v2)
+### Disconnect Pattern (unchanged)
 
 ```typescript
 public async disconnect(): Promise<void> {
@@ -502,13 +490,14 @@ public async disconnect(): Promise<void> {
 - [ ] QR modal shows Fireblocks only
 - [ ] Can connect to Fireblocks wallet
 - [ ] `getAddresses()` returns correct address
-- [ ] `signEip712TypedData()` works
+- [ ] `signEip712TypedData()` works (with timeout/expiry)
 - [ ] `sendEvmTransaction()` works
 - [ ] Account change events fire
 - [ ] Chain change events fire
 - [ ] `disconnect()` cleans up properly
 - [ ] Can reconnect after disconnect
 - [ ] Session restoration works on page refresh
+- [ ] `session_delete` event handled (remote disconnect)
 
 ### Error Handling
 
@@ -519,112 +508,52 @@ public async disconnect(): Promise<void> {
 
 ---
 
-## Rollback Plan
-
-If v2 implementation fails or causes issues:
-
-1. **Immediate:** Switch imports back to v1 strategy
-
-   ```typescript
-   // In consumer code
-   import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
-   // Instead of WalletConnectV2Strategy
-   ```
-
-2. **Package level:** v1 strategy remains unchanged and functional
-
-3. **Dependencies:** Forked packages remain in package.json until v2 is validated
-
----
-
-## References
-
-- [WalletConnect v2 Docs](https://docs.walletconnect.com/)
-- [Ethereum Provider API](https://github.com/WalletConnect/walletconnect-monorepo/tree/v2.0/providers/ethereum-provider)
-- [Reown AppKit Docs](https://docs.reown.com/appkit/react/core/installation)
-- [WalletConnect v2 Types](https://github.com/WalletConnect/walletconnect-monorepo/blob/v2.0/providers/ethereum-provider/src/types.ts)
-
----
-
 ## V2 Compatibility Analysis
 
 ### Method Compatibility Matrix
 
-| Method                         | V1 Implementation                           | V2 Compatibility        | Notes                         |
-| ------------------------------ | ------------------------------------------- | ----------------------- | ----------------------------- |
-| `getWalletDeviceType()`        | Returns `WalletDeviceType.Browser`          | ✅ No change            | Static method                 |
-| `enable(topic?)`               | Calls `connectWalletConnect(topic)`         | ✅ Compatible           | `pairingTopic` works the same |
-| `disconnect()`                 | Removes listeners + `provider.disconnect()` | ✅ Compatible           | Same API                      |
-| `getAddresses()`               | `eth_requestAccounts`                       | ✅ Compatible           | Standard EIP-1193             |
-| `getSessionOrConfirm()`        | `wc.session?.topic`                         | ✅ Compatible           | `session.topic` exists in v2  |
-| `sendEvmTransaction()`         | `eth_sendTransaction`                       | ✅ Compatible           | Standard EIP-1193             |
-| `sendTransaction()`            | Uses `TxGrpcApi.broadcast()`                | ✅ No change            | Doesn't touch WC              |
-| `signEip712TypedData()`        | `eth_signTypedData_v4` + timeout            | ⚠️ **Needs workaround** | See timeout section below     |
-| `signAminoCosmosTransaction()` | Throws "not supported"                      | ✅ No change            | Keep throwing                 |
-| `signCosmosTransaction()`      | Throws "not supported"                      | ✅ No change            | Keep throwing                 |
-| `signArbitrary()`              | `personal_sign`                             | ✅ Compatible           | Standard EIP-1193             |
-| `getEthereumChainId()`         | `eth_chainId`                               | ✅ Compatible           | Standard EIP-1193             |
-| `getEvmTransactionReceipt()`   | Throws "not supported"                      | ✅ No change            | Keep throwing                 |
-| `getPubKey()`                  | Throws "not supported"                      | ✅ No change            | Keep throwing                 |
-| `onChainIdChanged()`           | `wc.on('chainChanged')`                     | ✅ Compatible           | Same event name               |
-| `onAccountChange()`            | `wc.on('accountsChanged')`                  | ✅ Compatible           | Same event name               |
-| `getEip1193Provider()`         | Returns provider                            | ✅ Compatible           | Standard EIP-1193             |
+| Method                         | Current Implementation                      | V2 Compatibility | Notes                         |
+| ------------------------------ | ------------------------------------------- | ---------------- | ----------------------------- |
+| `getWalletDeviceType()`        | Returns `WalletDeviceType.Browser`          | ✅ No change     | Static method                 |
+| `enable(topic?)`               | Calls `connectWalletConnect(topic)`         | ✅ Compatible    | `pairingTopic` works the same |
+| `disconnect()`                 | Removes listeners + `provider.disconnect()` | ✅ Compatible    | Same API                      |
+| `getAddresses()`               | `eth_requestAccounts`                       | ✅ Compatible    | Standard EIP-1193             |
+| `getSessionOrConfirm()`        | `wc.session?.topic`                         | ✅ Compatible    | `session.topic` exists in v2  |
+| `sendEvmTransaction()`         | `eth_sendTransaction`                       | ✅ Compatible    | Standard EIP-1193             |
+| `sendTransaction()`            | Uses `TxGrpcApi.broadcast()`                | ✅ No change     | Doesn't touch WC              |
+| `signEip712TypedData()`        | `eth_signTypedData_v4` + timeout            | ✅ Compatible    | `expiry` param supported      |
+| `signAminoCosmosTransaction()` | Throws "not supported"                      | ✅ No change     | Keep throwing                 |
+| `signCosmosTransaction()`      | Throws "not supported"                      | ✅ No change     | Keep throwing                 |
+| `signArbitrary()`              | `personal_sign`                             | ✅ Compatible    | Standard EIP-1193             |
+| `getEthereumChainId()`         | `eth_chainId`                               | ✅ Compatible    | Standard EIP-1193             |
+| `getEvmTransactionReceipt()`   | Throws "not supported"                      | ✅ No change     | Keep throwing                 |
+| `getPubKey()`                  | Throws "not supported"                      | ✅ No change     | Keep throwing                 |
+| `onChainIdChanged()`           | `wc.on('chainChanged')`                     | ✅ Compatible    | Same event name               |
+| `onAccountChange()`            | `wc.on('accountsChanged')`                  | ✅ Compatible    | Same event name               |
+| `getEip1193Provider()`         | Returns provider                            | ✅ Compatible    | Standard EIP-1193             |
 
-**Summary:** 90% of the implementation maps directly to v2 with no changes.
+**Summary:** All methods map directly to v2 with no code changes required (except import statement).
 
 ---
 
 ### Critical Items
 
-#### 1. Request Timeout Parameter
+#### 1. Request Timeout Parameter (`expiry`)
 
-The v1 forked package supports a timeout parameter in `request()`:
+The official v2 package **does support** a timeout parameter called `expiry`:
 
 ```typescript
-// Current v1 implementation
+// Official v2 API signature:
+public async request<T = unknown>(args: RequestArguments, expiry?: number): Promise<T>
+
+// Current implementation works as-is:
 return await wc.request(
   { method: 'eth_signTypedData_v4', params: [address, eip712json] },
-  txTimeout || undefined, // <-- Second parameter (forked feature)
+  txTimeout || undefined, // expiry parameter - same API
 )
 ```
 
-The official v2 `@walletconnect/ethereum-provider` may not support this second parameter.
-
-**Workaround for v2:**
-
-```typescript
-async signEip712TypedData(
-  eip712json: string,
-  address: AccountAddress,
-  options: { txTimeout?: number } = {},
-): Promise<string> {
-  const wc = await this.getConnectedWalletConnect()
-
-  let txTimeout: number | undefined
-  if (options?.txTimeout !== undefined) {
-    const timeout = Number(options.txTimeout)
-    txTimeout = isNaN(timeout) || timeout < 300 ? undefined : Math.min(timeout, 604800)
-  }
-
-  const requestPromise = wc.request<string>({
-    method: 'eth_signTypedData_v4',
-    params: [address, eip712json],
-  })
-
-  // Implement timeout via Promise.race if needed
-  if (txTimeout) {
-    const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(
-        () => reject(new WalletConnectException(new Error('Request timed out'))),
-        txTimeout * 1000
-      )
-    )
-    return Promise.race([requestPromise, timeoutPromise])
-  }
-
-  return requestPromise
-}
-```
+**No changes required** - the timeout functionality works identically to the forked package.
 
 #### 2. QR Modal Deprecation Notice
 
@@ -642,10 +571,9 @@ The WalletConnect docs note that `showQrModal` is deprecated (rebranded as Reown
 
 v2 has a `session_delete` event that fires when the wallet disconnects the session remotely.
 
-**Add this handler in v2 strategy:**
+**Add this handler in `getWalletConnect()` after provider init:**
 
 ```typescript
-// In getWalletConnect() after provider.init()
 this.provider.on('session_delete', () => {
   this.provider = undefined
   // Optionally: emit event for UI to handle disconnection
@@ -666,21 +594,21 @@ this.provider.on('session_delete', () => {
 
 ---
 
-### Updated Implementation Checklist
+### Implementation Checklist
 
-Based on the compatibility analysis, update Phase 3 checklist:
+Code changes required based on the compatibility analysis:
 
-- [ ] Implement `Promise.race` timeout workaround for `signEip712TypedData()`
+- [ ] Update import from `@bangjelkoski/wc-ethereum-provider` to `@walletconnect/ethereum-provider`
+- [ ] Use `optionalChains` only (do not use `chains`)
+- [ ] Add explicit `optionalMethods`, `optionalEvents` to provider init
 - [ ] Add `session_delete` event handler
-- [ ] Use `optionalChains` instead of `chains` (per WC docs recommendation)
-- [ ] Verify `showQrModal: true` still works in v2
-- [ ] Test all 17 methods listed in compatibility matrix
+- [ ] Update `tsdown.config.ts` externals
 
 ---
 
-## Changelog
+## References
 
-| Date       | Change                                     |
-| ---------- | ------------------------------------------ |
-| 2025-11-28 | Initial migration plan created             |
-| 2025-11-28 | Added v2 compatibility analysis and matrix |
+- [WalletConnect v2 Docs](https://docs.walletconnect.com/)
+- [Ethereum Provider API](https://github.com/WalletConnect/walletconnect-monorepo/tree/v2.0/providers/ethereum-provider)
+- [Reown AppKit Docs](https://docs.reown.com/appkit/react/core/installation)
+- [WalletConnect v2 Types](https://github.com/WalletConnect/walletconnect-monorepo/blob/v2.0/providers/ethereum-provider/src/types.ts)
