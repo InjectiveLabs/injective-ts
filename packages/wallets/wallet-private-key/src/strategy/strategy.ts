@@ -1,10 +1,20 @@
-import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { PrivateKey as PrivateKeySigner } from '@injectivelabs/sdk-ts/core/accounts'
+import {
+  TxGrpcApi,
+  getInjectiveSignerAddress,
+} from '@injectivelabs/sdk-ts/core/tx'
 import {
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
+import {
+  toUtf8,
+  uint8ArrayToHex,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
@@ -12,20 +22,13 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import {
-  uint8ArrayToHex,
-  uint8ArrayToBase64,
-  stringToUint8Array,
-  getInjectiveSignerAddress,
-  PrivateKey as PrivateKeySigner,
-} from '@injectivelabs/sdk-ts'
 import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,

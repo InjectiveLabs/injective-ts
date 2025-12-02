@@ -1,11 +1,11 @@
 import { Magic as MagicWallet } from 'magic-sdk'
 import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
-  TxGrpcApi,
   uint8ArrayToHex,
   stringToUint8Array,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/utils'
 import {
   WalletAction,
   MagicProvider,
@@ -24,7 +24,7 @@ import type {
   TxRaw,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   BrowserEip1993Provider,

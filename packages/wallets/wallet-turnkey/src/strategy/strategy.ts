@@ -1,7 +1,7 @@
 import { getAddress } from 'viem'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { HttpRestClient } from '@injectivelabs/utils'
-import { getEthereumAddress } from '@injectivelabs/sdk-ts'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
+import { getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
@@ -28,7 +28,7 @@ import type {
   TxRaw,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   Eip1193Provider,

@@ -1,11 +1,11 @@
 import { capitalize } from '@injectivelabs/utils'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
   toUtf8,
-  TxGrpcApi,
   isServerSide,
   uint8ArrayToHex,
   stringToUint8Array,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/utils'
 import {
   Wallet,
   WalletAction,
@@ -39,14 +39,14 @@ import {
   getTrustWalletProvider,
 } from './utils/index.js'
 import type { Hash } from 'viem'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type { ErrorContext, ThrownException } from '@injectivelabs/exceptions'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   Eip1193Provider,

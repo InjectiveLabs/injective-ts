@@ -1,5 +1,5 @@
 import type { EventEmitter } from 'eventemitter3'
-import type { Msgs } from '@injectivelabs/sdk-ts'
+import type { Msgs } from '@injectivelabs/sdk-ts/core/modules'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type { Network, NetworkEndpoints } from '@injectivelabs/networks'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'

@@ -1,11 +1,11 @@
 import { toHex, serializeTransaction } from 'viem'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { getViemPublicClient } from '@injectivelabs/wallet-base'
 import {
   toUtf8,
-  TxGrpcApi,
   uint8ArrayToHex,
   stringToUint8Array,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
@@ -27,16 +27,16 @@ import { transformTypedData } from '../utils.js'
 import { BaseTrezorTransport } from './hw/index.js'
 import type { Hash, PublicClient } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   AccountAddress,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   SendTransactionOptions,

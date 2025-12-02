@@ -1,4 +1,4 @@
-import { isServerSide } from '@injectivelabs/sdk-ts'
+import { isServerSide } from '@injectivelabs/sdk-ts/utils'
 import type {
   BrowserEip1993Provider,
   WindowWithEip1193Provider,

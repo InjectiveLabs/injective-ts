@@ -10,13 +10,13 @@ import { WalletStrategyEmitterEventType } from '../broadcaster/types.js'
 import type { StdSignDoc } from '@keplr-wallet/types'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   Eip1193Provider,
   WalletDeviceType,

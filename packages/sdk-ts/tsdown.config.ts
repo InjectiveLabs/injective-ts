@@ -3,9 +3,23 @@ import { createNestedOnSuccess } from '../../etc/tsdown-helpers.js'
 
 export default defineConfig({
   entry: {
+    // Existing entry points (keep for backward compatibility)
     index: './src/index.ts',
     exports: './src/exports.ts',
     cosmjs: './src/cosmjs.ts',
+
+    // New subpath entry points
+    'client/indexer': './src/client/indexer/index.ts',
+    'client/chain': './src/client/chain/index.ts',
+    'client/wasm': './src/client/wasm/index.ts',
+    'client/abacus': './src/client/abacus/index.ts',
+    'client/olp': './src/client/olp/index.ts',
+    'core/modules': './src/core/modules/index.ts',
+    'core/accounts': './src/core/accounts/index.ts',
+    'core/tx': './src/core/tx/index.ts',
+    types: './src/types/index.ts',
+    utils: './src/utils/index.ts',
+    service: './src/service/index.ts',
   },
   format: ['cjs', 'esm'],
   dts: {

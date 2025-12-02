@@ -1,10 +1,18 @@
+import { ofacWallets } from '@injectivelabs/sdk-ts'
 import { EvmChainId } from '@injectivelabs/ts-types'
+import { PublicKey } from '@injectivelabs/sdk-ts/core/accounts'
+import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
 import {
   isTestnet,
   isMainnet,
   getNetworkInfo,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
+import {
+  ChainGrpcAuthApi,
+  ChainGrpcTxFeesApi,
+  ChainGrpcTendermintApi,
+} from '@injectivelabs/sdk-ts/client/chain'
 import {
   sleep,
   getStdFee,
@@ -13,6 +21,15 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
+import {
+  hexToBuff,
+  hexToBase64,
+  hexToUint8Array,
+  base64ToUint8Array,
+  uint8ArrayToBase64,
+  getGasPriceBasedOnMessage,
+  recoverTypedSignaturePubKey,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   WalletException,
   GeneralException,
@@ -35,46 +52,33 @@ import {
 } from '@injectivelabs/wallet-base'
 import {
   TxGrpcApi,
-  hexToBuff,
-  PublicKey,
   SIGN_DIRECT,
-  hexToBase64,
-  ofacWallets,
   SIGN_EIP712,
   SIGN_EIP712_V2,
-  hexToUint8Array,
-  ChainGrpcAuthApi,
   createTxRawEIP712,
   createTransaction,
-  ChainGrpcTxFeesApi,
   getAminoStdSignDoc,
   getEip712TypedData,
-  base64ToUint8Array,
-  uint8ArrayToBase64,
   createWeb3Extension,
   getEip712TypedDataV2,
-  IndexerGrpcWeb3GwApi,
-  ChainGrpcTendermintApi,
-  getGasPriceBasedOnMessage,
   createTxRawFromSigResponse,
-  recoverTypedSignaturePubKey,
   createTransactionWithSigners,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/core/tx'
 import { checkIfTxRunOutOfGas } from '../utils/index.js'
 import { WalletStrategyEmitterEventType } from './types.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ThrownException } from '@injectivelabs/exceptions'
+import type { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
+import type { DirectSignResponse } from '@injectivelabs/sdk-ts/types'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  TxResponse,
+  CreateTransactionWithSignersArgs,
+} from '@injectivelabs/sdk-ts/core/tx'
 import type {
   ChainId as ChainIdType,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
-import type {
-  TxResponse,
-  DirectSignResponse,
-  CosmosTxV1Beta1TxPb,
-  CreateTransactionWithSignersArgs,
-} from '@injectivelabs/sdk-ts'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type {
   MsgBroadcasterOptions,

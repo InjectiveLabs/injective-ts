@@ -1,4 +1,5 @@
-import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
+import { toUtf8 } from '@injectivelabs/sdk-ts/utils'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { EthereumProvider } from '@walletconnect/ethereum-provider'
 import {
   WalletAction,
@@ -15,12 +16,12 @@ import {
 } from '@injectivelabs/exceptions'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   Eip1193Provider,

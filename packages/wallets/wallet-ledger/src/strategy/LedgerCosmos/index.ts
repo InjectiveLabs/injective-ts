@@ -1,3 +1,4 @@
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
 import {
   ErrorType,
@@ -8,13 +9,12 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   toUtf8,
-  TxGrpcApi,
   hexToUint8Array,
   uint8ArrayToHex,
   sortObjectByKeys,
   uint8ArrayToBase64,
   stringToUint8Array,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/utils'
 import {
   WalletAction,
   WalletDeviceType,
@@ -24,6 +24,7 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   ChainId,
   EvmChainId,
@@ -31,10 +32,9 @@ import type {
 } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,

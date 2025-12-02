@@ -1,7 +1,8 @@
 import { capitalize } from '@injectivelabs/utils'
 import { SigningStargateClient } from '@cosmjs/stargate'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
+import { uint8ArrayToHex } from '@injectivelabs/sdk-ts/utils'
 import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
-import { uint8ArrayToHex, CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   GeneralException,
