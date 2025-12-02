@@ -61,7 +61,7 @@ export class BaseCosmosWalletStrategy extends BaseWalletStrategy {
     } as unknown as WalletStrategyArguments)
   }
 
-  public setWallet(wallet: Wallet) {
+  public async setWallet(wallet: Wallet): Promise<void> {
     this.wallet = isCosmosWallet(wallet) ? wallet : Wallet.Keplr
   }
 }
