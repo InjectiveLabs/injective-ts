@@ -5,6 +5,7 @@ import type {
   BitGetException,
   LedgerException,
   GeneralException,
+  KeplrEvmException,
   MetamaskException,
   OkxWalletException,
   HttpRequestException,
@@ -22,6 +23,7 @@ export type ThrownException =
   | WalletException
   | BitGetException
   | GeneralException
+  | KeplrEvmException
   | MetamaskException
   | OkxWalletException
   | HttpRequestException

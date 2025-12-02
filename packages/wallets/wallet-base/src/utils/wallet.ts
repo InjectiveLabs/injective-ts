@@ -12,6 +12,7 @@ export const isEvmWallet = (wallet: Wallet): boolean =>
       Wallet.Rainbow,
       Wallet.Turnkey,
       Wallet.Metamask,
+      Wallet.KeplrEvm,
       Wallet.OkxWallet,
       Wallet.PrivateKey,
       Wallet.TrezorBip32,
@@ -33,6 +34,7 @@ export const isEvmBrowserWallet = (wallet: Wallet) =>
       Wallet.Phantom,
       Wallet.Rainbow,
       Wallet.Metamask,
+      Wallet.KeplrEvm,
       Wallet.OkxWallet,
       Wallet.TrustWallet,
     ] as WalletType[]

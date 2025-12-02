@@ -20,6 +20,7 @@ import {
   ErrorType,
   WalletException,
   BitGetException,
+  KeplrEvmException,
   MetamaskException,
   OkxWalletException,
   UnspecifiedErrorCode,
@@ -33,6 +34,7 @@ import {
   getPhantomProvider,
   getRainbowProvider,
   getMetamaskProvider,
+  getKeplrEvmProvider,
   getOkxWalletProvider,
   getTrustWalletProvider,
 } from './utils/index.js'
@@ -84,6 +86,11 @@ export class EvmWallet
         (announcement: any) => {
           const event = announcement as unknown as EIP6963AnnounceProviderEvent
           const walletName = event.detail.info.name.toLowerCase()
+
+          // Keplr announces as "Keplr" via EIP6963, not "keplr-evm"
+          if (walletName === 'keplr') {
+            this.evmProviders[Wallet.KeplrEvm] = event.detail.provider
+          }
 
           if (walletName === Wallet.Metamask.toLowerCase()) {
             this.evmProviders[Wallet.Metamask] = event.detail.provider
@@ -146,6 +153,10 @@ export class EvmWallet
 
     if (this.wallet === Wallet.Rainbow) {
       return new RainbowWalletException(error, context)
+    }
+
+    if (this.wallet === Wallet.KeplrEvm) {
+      return new KeplrEvmException(error, context)
     }
 
     return new WalletException(error, context)
@@ -519,6 +530,8 @@ export class EvmWallet
         ? await getTrustWalletProvider()
         : this.wallet === Wallet.Rainbow
         ? await getRainbowProvider()
+        : this.wallet === Wallet.KeplrEvm
+        ? await getKeplrEvmProvider()
         : undefined
 
     if (!backUpProvider) {
