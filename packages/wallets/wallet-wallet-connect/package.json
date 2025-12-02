@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-wallet-connect",
-  "version": "1.16.38-alpha.2",
+  "version": "1.16.38-alpha.3",
   "description": "Wallet connect strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
@@ -53,12 +53,12 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@walletconnect/types": "^2.23.0",
-    "@walletconnect/ethereum-provider": "^2.23.0",
+    "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*"
+    "@injectivelabs/wallet-base": "workspace:*",
+    "@walletconnect/ethereum-provider": "^2.23.0",
+    "@walletconnect/types": "^2.23.0"
   },
   "publishConfig": {
     "access": "public"
