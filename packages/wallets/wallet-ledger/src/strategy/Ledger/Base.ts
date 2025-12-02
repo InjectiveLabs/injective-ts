@@ -103,6 +103,30 @@ export default class LedgerBase
     }
   }
 
+  public async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string }[]
+  > {
+    const { baseDerivationPath, derivationPathType } = this
+
+    try {
+      const accountManager = await this.ledger.getAccountManager()
+      const wallets = await accountManager.getWallets(
+        baseDerivationPath,
+        derivationPathType,
+      )
+      return wallets.map((k) => ({
+        address: k.address,
+        derivationPath: k.derivationPath,
+      }))
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
+  }
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${uint8ArrayToHex(
@@ -383,6 +407,17 @@ export default class LedgerBase
   private async getWalletForAddress(
     address: string,
   ): Promise<LedgerWalletInfo> {
+    // Check metadata first for derivation path
+    if (this.metadata?.derivationPath) {
+      return {
+        address,
+        baseDerivationPath:
+          this.metadata.baseDerivationPath || this.baseDerivationPath,
+        derivationPath: this.metadata.derivationPath,
+      }
+    }
+
+    // Fall back to AccountManager lookup
     try {
       const { baseDerivationPath, derivationPathType } = this
       const accountManager = await this.ledger.getAccountManager()

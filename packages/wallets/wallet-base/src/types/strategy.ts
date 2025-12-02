@@ -97,6 +97,8 @@ export interface WalletMetadata {
   turnkey?: Partial<TurnkeyMetadata>
   walletConnect?: WalletConnectMetadata
   privateKey?: PrivateKeyMetadata
+  derivationPath?: string
+  baseDerivationPath?: string
 }
 
 export interface ConcreteWalletStrategyArgs {
