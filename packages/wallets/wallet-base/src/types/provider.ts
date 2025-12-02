@@ -3,6 +3,7 @@ import type { EIP1193Provider } from 'eip1193-provider'
 export interface BrowserEip1993Provider extends EIP1193Provider {
   removeAllListeners(): void
   isTrust: boolean
+  isKeplr: boolean
   isRabby: boolean
   isRainbow: boolean
   isPhantom: boolean

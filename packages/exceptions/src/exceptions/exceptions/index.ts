@@ -5,6 +5,7 @@ import { TrezorException } from './TrezorException.js'
 import { WalletException } from './WalletException.js'
 import { GeneralException } from './GeneralException.js'
 import { MetamaskException } from './MetamaskException.js'
+import { KeplrEvmException } from './KeplrEvmException.js'
 import { OkxWalletException } from './OkxWalletException.js'
 import { HttpRequestException } from './HttpRequestException.js'
 import { TransactionException } from './TransactionException.js'
@@ -23,6 +24,7 @@ export {
   WalletException,
   BitGetException,
   GeneralException,
+  KeplrEvmException,
   MetamaskException,
   OkxWalletException,
   TransactionException,

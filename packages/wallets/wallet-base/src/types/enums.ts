@@ -21,6 +21,7 @@ export const Wallet = {
   Rainbow: 'rainbow',
   Turnkey: 'turnkey',
   Metamask: 'metamask',
+  KeplrEvm: 'keplr-evm',
   OkxWallet: 'okx-wallet',
   PrivateKey: 'private-key',
   TrustWallet: 'trust-wallet',
