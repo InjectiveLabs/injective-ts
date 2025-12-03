@@ -25,6 +25,7 @@ import {
 import { loadTrezorConnect } from './lib.js'
 import { transformTypedData } from '../utils.js'
 import { BaseTrezorTransport } from './hw/index.js'
+import { TrezorEip1193Provider } from './Eip1193Provider.js'
 import type { Hash, PublicClient } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
@@ -39,6 +40,7 @@ import type {
 } from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
+  Eip1193Provider,
   SendTransactionOptions,
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
@@ -109,6 +111,32 @@ export default class TrezorBase
       )
 
       return wallets.map((k) => k.address)
+    } catch (e: unknown) {
+      throw new TrezorException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
+  }
+
+  public async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    const { baseDerivationPath, derivationPathType } = this
+
+    try {
+      await this.trezor.connect()
+      const accountManager = await this.trezor.getAccountManager()
+      const wallets = await accountManager.getWallets(
+        baseDerivationPath,
+        derivationPathType,
+      )
+      return wallets.map((k) => ({
+        address: k.address,
+        derivationPath: k.derivationPath,
+        baseDerivationPath: derivationPathType,
+      }))
     } catch (e: unknown) {
       throw new TrezorException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -462,6 +490,13 @@ export default class TrezorBase
     return (await accountManager.getWalletForAddress(
       address,
     )) as TrezorWalletInfo
+  }
+
+  public async getEip1193Provider(): Promise<Eip1193Provider> {
+    return new TrezorEip1193Provider(this.trezor, {
+      chainId: this.evmOptions.evmChainId.toString(),
+      derivationPath: this.metadata?.derivationPath,
+    })
   }
 
   private async getPublicClient(evmChainId?: EvmChainIdType) {

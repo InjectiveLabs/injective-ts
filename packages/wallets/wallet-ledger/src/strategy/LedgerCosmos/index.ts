@@ -86,6 +86,19 @@ export class LedgerCosmos
     }
   }
 
+  public async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new LedgerCosmosException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${uint8ArrayToHex(
@@ -223,7 +236,7 @@ export class LedgerCosmos
 
   async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEthereumChainId is not supported on Keplr'),
+      new Error('getEthereumChainId is not supported on LedgerCosmos'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetChainId,
@@ -233,7 +246,7 @@ export class LedgerCosmos
 
   async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEvmTransactionReceipt is not supported on Keplr'),
+      new Error('getEvmTransactionReceipt is not supported on LedgerCosmos'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetEvmTransactionReceipt,

@@ -97,6 +97,8 @@ export interface WalletMetadata {
   turnkey?: Partial<TurnkeyMetadata>
   walletConnect?: WalletConnectMetadata
   privateKey?: PrivateKeyMetadata
+  derivationPath?: string
+  baseDerivationPath?: string
 }
 
 export interface ConcreteWalletStrategyArgs {
@@ -120,6 +122,15 @@ export interface ConcreteCosmosWalletStrategy {
    * The accounts from the wallet (addresses)
    */
   getAddresses(args?: unknown): Promise<string[]>
+
+  /**
+   * The accounts from the wallet with derivation path info (for hardware wallets)
+   */
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
 
   /**
    * Return the WalletDeviceType connected on the
@@ -179,6 +190,15 @@ export interface ConcreteWalletStrategy extends Omit<
   ConcreteCosmosWalletStrategy,
   'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
 > {
+  /**
+   * The accounts from the wallet with derivation path info (for hardware wallets)
+   */
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
+
   /**
    * Sends Cosmos transaction. Returns a transaction hash
    * @param transaction should implement TransactionConfig
@@ -282,6 +302,11 @@ export interface WalletStrategy {
   setMetadata(metadata?: WalletMetadata): void
   getStrategy(): ConcreteWalletStrategy
   getAddresses(args?: unknown): Promise<AccountAddress[]>
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
   getWalletDeviceType(): Promise<WalletDeviceType>
   getPubKey(address?: string): Promise<string>
   enable(args?: unknown): Promise<boolean>

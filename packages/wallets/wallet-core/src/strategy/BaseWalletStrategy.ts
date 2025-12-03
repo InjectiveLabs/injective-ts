@@ -114,6 +114,15 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     return this.getStrategy().getAddresses(args)
   }
 
+  public getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    const strategy = this.getStrategy()
+    return strategy.getAddressesInfo(args)
+  }
+
   public getWalletDeviceType(): Promise<WalletDeviceType> {
     return this.getStrategy().getWalletDeviceType()
   }

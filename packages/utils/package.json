@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/utils",
-  "version": "1.16.38-alpha.2",
+  "version": "1.16.38-alpha.4",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
   "license": "Apache-2.0",
   "author": {
@@ -13,47 +13,47 @@
     ".": {
       "react-native": {
         "import": "./dist/esm/index.js",
-        "require": "./dist/cjs/index.js",
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "require": "./dist/cjs/index.cjs",
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "require": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "default": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       }
     },
     "./test-utils": {
       "react-native": {
         "import": "./dist/esm/test-utils/index.js",
-        "require": "./dist/cjs/test-utils/index.js",
-        "types": "./dist/cjs/test-utils/index.d.ts",
-        "default": "./dist/cjs/test-utils/index.js"
+        "require": "./dist/cjs/test-utils/index.cjs",
+        "types": "./dist/cjs/test-utils/index.d.cts",
+        "default": "./dist/cjs/test-utils/index.cjs"
       },
       "require": {
-        "types": "./dist/cjs/test-utils/index.d.ts",
-        "default": "./dist/cjs/test-utils/index.js"
+        "types": "./dist/cjs/test-utils/index.d.cts",
+        "default": "./dist/cjs/test-utils/index.cjs"
       },
       "import": {
         "types": "./dist/esm/test-utils/index.d.ts",
         "default": "./dist/esm/test-utils/index.js"
       },
       "default": {
-        "types": "./dist/cjs/test-utils/index.d.ts",
-        "default": "./dist/cjs/test-utils/index.js"
+        "types": "./dist/cjs/test-utils/index.d.cts",
+        "default": "./dist/cjs/test-utils/index.cjs"
       }
     }
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
-  "types": "dist/cjs/index.d.ts",
+  "types": "dist/cjs/index.d.cts",
   "files": [
     "dist"
   ],
@@ -75,13 +75,13 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "bignumber.js": "^9.3.1",
     "@bangjelkoski/store2": "^2.14.3",
-    "axios": "catalog:",
-    "http-status-codes": "catalog:",
+    "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/exceptions": "workspace:*"
+    "axios": "catalog:",
+    "bignumber.js": "^9.3.1",
+    "http-status-codes": "catalog:"
   },
   "publishConfig": {
     "access": "public"
