@@ -106,13 +106,11 @@ export interface ConcreteWalletStrategyArgs {
   metadata?: WalletMetadata
 }
 
-export interface ConcreteEvmWalletStrategyArgs
-  extends ConcreteWalletStrategyArgs {
+export interface ConcreteEvmWalletStrategyArgs extends ConcreteWalletStrategyArgs {
   evmOptions: WalletStrategyEvmOptions
 }
 
-export interface ConcreteCosmosWalletStrategyArgs
-  extends ConcreteWalletStrategyArgs {
+export interface ConcreteCosmosWalletStrategyArgs extends ConcreteWalletStrategyArgs {
   wallet?: Wallet
 }
 
@@ -188,11 +186,10 @@ export interface WalletStrategyArguments {
   strategies: ConcreteStrategiesArg
 }
 
-export interface ConcreteWalletStrategy
-  extends Omit<
-    ConcreteCosmosWalletStrategy,
-    'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
-  > {
+export interface ConcreteWalletStrategy extends Omit<
+  ConcreteCosmosWalletStrategy,
+  'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
+> {
   /**
    * The accounts from the wallet with derivation path info (for hardware wallets)
    */
