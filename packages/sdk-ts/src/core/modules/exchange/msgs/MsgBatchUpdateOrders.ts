@@ -344,7 +344,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
     }
 
     const msg = {
-      ...snakecaseKeys(message),
+      ...snakecaseKeys(message as unknown as Record<string, unknown>),
     }
 
     return {

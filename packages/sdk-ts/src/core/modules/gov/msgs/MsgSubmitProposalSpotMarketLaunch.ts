@@ -82,8 +82,7 @@ const createSpotMarketLaunchContent = (
  */
 export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   MsgSubmitProposalSpotMarketLaunch.Params,
-  MsgSubmitProposalSpotMarketLaunch.Proto,
-  MsgSubmitProposalSpotMarketLaunch.Object
+  MsgSubmitProposalSpotMarketLaunch.Proto
 > {
   static fromJSON(
     params: MsgSubmitProposalSpotMarketLaunch.Params,

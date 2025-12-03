@@ -35,8 +35,7 @@ export declare namespace MsgSubmitTextProposal {
  */
 export default class MsgSubmitTextProposal extends MsgBase<
   MsgSubmitTextProposal.Params,
-  MsgSubmitTextProposal.Proto,
-  MsgSubmitTextProposal.Object
+  MsgSubmitTextProposal.Proto
 > {
   static fromJSON(params: MsgSubmitTextProposal.Params): MsgSubmitTextProposal {
     return new MsgSubmitTextProposal(params)

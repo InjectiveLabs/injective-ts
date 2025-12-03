@@ -13,9 +13,8 @@ const indexerGrpcPortfolioApi = new IndexerGrpcAccountPortfolioApi(
 describe('IndexerGrpcAccountPortfolioApi', () => {
   test('fetchAccountPortfolio', async () => {
     try {
-      const response = await indexerGrpcPortfolioApi.fetchAccountPortfolio(
-        injectiveAddress,
-      )
+      const response =
+        await indexerGrpcPortfolioApi.fetchAccountPortfolio(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(

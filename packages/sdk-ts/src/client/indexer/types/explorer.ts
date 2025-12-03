@@ -309,8 +309,10 @@ export interface Contract {
   }
 }
 
-export interface ContractTransactionWithMessages
-  extends Omit<ContractTransaction, 'messages'> {
+export interface ContractTransactionWithMessages extends Omit<
+  ContractTransaction,
+  'messages'
+> {
   messages: Array<{
     type: string
     value: {
@@ -372,8 +374,10 @@ export interface ExplorerBlockWithTxs extends Omit<BlockWithTxs, 'txs'> {
   txs: ExplorerTransaction[]
 }
 
-export interface ExplorerValidatorUptime
-  extends Omit<ValidatorUptime, 'status'> {
+export interface ExplorerValidatorUptime extends Omit<
+  ValidatorUptime,
+  'status'
+> {
   status: ValidatorUptimeStatus
 }
 

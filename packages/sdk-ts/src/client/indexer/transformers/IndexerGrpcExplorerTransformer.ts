@@ -94,7 +94,7 @@ const transactionV2MessagesToMessagesNoThrow = (messages: any): Message[] => {
       ({
         type: msg.type,
         message: msg.value,
-      } as Message),
+      }) as Message,
   )
 }
 

@@ -126,9 +126,8 @@ describe.skip('OrderHashManager', () => {
   it('generates proper hash from msg', async () => {
     orderHashManager.setNonce(78)
 
-    const spotOrderHashes = await orderHashManager.getSpotOrderHashFromMsg(
-      spotMsg,
-    )
+    const spotOrderHashes =
+      await orderHashManager.getSpotOrderHashFromMsg(spotMsg)
     const derivativeOrderHashes =
       await orderHashManager.getDerivativeOrderHashFromMsg(derivativeMsg)
 

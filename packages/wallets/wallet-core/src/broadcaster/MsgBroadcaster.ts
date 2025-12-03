@@ -253,8 +253,8 @@ export class MsgBroadcaster {
       return isCosmosWallet(walletStrategy.wallet)
         ? await this.broadcastDirectSign(txWithAddresses)
         : isEip712V2OnlyWallet(walletStrategy.wallet)
-        ? await this.broadcastEip712V2(txWithAddresses)
-        : await this.broadcastEip712(txWithAddresses)
+          ? await this.broadcastEip712V2(txWithAddresses)
+          : await this.broadcastEip712(txWithAddresses)
     } catch (e) {
       const error = e as any
 

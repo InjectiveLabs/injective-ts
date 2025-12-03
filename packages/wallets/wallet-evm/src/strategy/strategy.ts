@@ -519,20 +519,20 @@ export class EvmWallet
       this.wallet === Wallet.Metamask
         ? await getMetamaskProvider()
         : this.wallet === Wallet.Rabby
-        ? await getRabbyProvider()
-        : this.wallet === Wallet.Phantom
-        ? await getPhantomProvider()
-        : this.wallet === Wallet.BitGet
-        ? await getBitGetProvider()
-        : this.wallet === Wallet.OkxWallet
-        ? await getOkxWalletProvider()
-        : this.wallet === Wallet.TrustWallet
-        ? await getTrustWalletProvider()
-        : this.wallet === Wallet.Rainbow
-        ? await getRainbowProvider()
-        : this.wallet === Wallet.KeplrEvm
-        ? await getKeplrEvmProvider()
-        : undefined
+          ? await getRabbyProvider()
+          : this.wallet === Wallet.Phantom
+            ? await getPhantomProvider()
+            : this.wallet === Wallet.BitGet
+              ? await getBitGetProvider()
+              : this.wallet === Wallet.OkxWallet
+                ? await getOkxWalletProvider()
+                : this.wallet === Wallet.TrustWallet
+                  ? await getTrustWalletProvider()
+                  : this.wallet === Wallet.Rainbow
+                    ? await getRainbowProvider()
+                    : this.wallet === Wallet.KeplrEvm
+                      ? await getKeplrEvmProvider()
+                      : undefined
 
     if (!backUpProvider) {
       throw this.EvmWalletException(

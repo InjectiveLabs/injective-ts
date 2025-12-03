@@ -75,13 +75,13 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
+    "bignumber.js": "^9.3.1",
     "@bangjelkoski/store2": "^2.14.3",
-    "@injectivelabs/exceptions": "workspace:*",
+    "axios": "catalog:",
+    "http-status-codes": "catalog:",
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "axios": "catalog:",
-    "bignumber.js": "^9.1.2",
-    "http-status-codes": "catalog:"
+    "@injectivelabs/exceptions": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

@@ -1,4 +1,4 @@
-import { MsgTransfer as BaseMsgTransferCosmjs } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
+import { MsgTransfer as BaseMsgTransferCosmjs } from 'cosmjs-types/ibc/applications/transfer/v1/tx'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import * as IbcCoreClientV1ClientPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/core/client/v1/client_pb'
 import * as IbcApplicationsTransferV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/tx_pb'

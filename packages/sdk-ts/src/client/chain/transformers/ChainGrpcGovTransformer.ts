@@ -43,23 +43,23 @@ export class ChainGrpcGovTransformer {
         quorum: !params?.quorum
           ? '0'
           : typeof params.quorum === 'string'
-          ? params.quorum
-          : uint8ArrayToString(params.quorum),
+            ? params.quorum
+            : uint8ArrayToString(params.quorum),
         threshold: !params?.threshold
           ? '0'
           : typeof params.threshold === 'string'
-          ? params.threshold
-          : uint8ArrayToString(params.threshold),
+            ? params.threshold
+            : uint8ArrayToString(params.threshold),
         vetoThreshold: !params?.vetoThreshold
           ? '0'
           : typeof params.vetoThreshold === 'string'
-          ? params.vetoThreshold
-          : uint8ArrayToString(params.vetoThreshold),
+            ? params.vetoThreshold
+            : uint8ArrayToString(params.vetoThreshold),
         expeditedThreshold: !params?.expeditedThreshold
           ? '0'
           : typeof params.expeditedThreshold === 'string'
-          ? params.expeditedThreshold
-          : uint8ArrayToString(params.expeditedThreshold),
+            ? params.expeditedThreshold
+            : uint8ArrayToString(params.expeditedThreshold),
       },
     }
   }

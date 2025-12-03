@@ -148,9 +148,8 @@ class CustomEip1193Provider implements Eip1193Provider {
         }
       }
 
-      const preparedTransaction = await accountClient.prepareTransactionRequest(
-        processedTransaction,
-      )
+      const preparedTransaction =
+        await accountClient.prepareTransactionRequest(processedTransaction)
 
       const signedTransaction = await this.signTransaction(preparedTransaction)
 

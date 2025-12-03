@@ -3,7 +3,6 @@ import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/gener
 import * as CosmosStakingV1Beta1StakingPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/staking_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgEditValidator {
   export interface Params {
@@ -83,8 +82,7 @@ export default class MsgEditValidator extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgEditValidator',
-      value:
-        message as unknown as SnakeCaseKeys<CosmosStakingV1Beta1TxPb.MsgEditValidator>,
+      value: message,
     }
   }
 
@@ -103,7 +101,7 @@ export default class MsgEditValidator extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      commission_rate: toChainFormat(value.commission_rate).toFixed(),
+      commission_rate: toChainFormat(value.commission_rate || '0').toFixed(),
     }
 
     return {
@@ -117,7 +115,9 @@ export default class MsgEditValidator extends MsgBase<
 
     const messageAdjusted = {
       ...web3gw,
-      commission_rate: numberToCosmosSdkDecString(web3gw.commission_rate),
+      commission_rate: numberToCosmosSdkDecString(
+        web3gw.commission_rate || '0',
+      ),
     }
 
     return messageAdjusted

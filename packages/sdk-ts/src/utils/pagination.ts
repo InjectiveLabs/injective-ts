@@ -86,8 +86,8 @@ export const grpcPagingToPagingV2 = (
     typeof total === 'bigint'
       ? Number(total)
       : typeof total === 'string'
-      ? parseInt(total || '0', 10)
-      : parseInt(String(total) || '0', 10)
+        ? parseInt(total || '0', 10)
+        : parseInt(String(total) || '0', 10)
 
   return {
     ...pagination,

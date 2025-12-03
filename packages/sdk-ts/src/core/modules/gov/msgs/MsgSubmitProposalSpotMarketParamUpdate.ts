@@ -85,8 +85,7 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
  */
 export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   MsgSubmitProposalSpotMarketParamUpdate.Params,
-  MsgSubmitProposalSpotMarketParamUpdate.Proto,
-  MsgSubmitProposalSpotMarketParamUpdate.Object
+  MsgSubmitProposalSpotMarketParamUpdate.Proto
 > {
   static fromJSON(
     params: MsgSubmitProposalSpotMarketParamUpdate.Params,

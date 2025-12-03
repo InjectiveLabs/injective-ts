@@ -30,8 +30,10 @@ export interface Position {
   updatedAt: number
 }
 
-export interface PositionV2
-  extends Omit<Position, 'aggregateReduceOnlyQuantity'> {
+export interface PositionV2 extends Omit<
+  Position,
+  'aggregateReduceOnlyQuantity'
+> {
   denom: string
 }
 
@@ -91,11 +93,10 @@ export interface ExpiryFuturesMarket extends BaseDerivativeMarket {
   expiryFuturesMarketInfo?: ExpiryFuturesMarketInfo
 }
 
-export interface BinaryOptionsMarket
-  extends Omit<
-    BaseDerivativeMarket,
-    'minPriceTickSize' | 'minQuantityTickSize'
-  > {
+export interface BinaryOptionsMarket extends Omit<
+  BaseDerivativeMarket,
+  'minPriceTickSize' | 'minQuantityTickSize'
+> {
   oracleSymbol: string
   oracleProvider: string
   oracleScaleFactor: number

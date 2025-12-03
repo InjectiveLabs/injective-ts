@@ -53,9 +53,8 @@ describe('ChainGrpcWasmApi', () => {
 
   test('fetchContractInfo', async () => {
     try {
-      const response = await chainGrpcWasmApi.fetchContractInfo(
-        injectiveAddress,
-      )
+      const response =
+        await chainGrpcWasmApi.fetchContractInfo(injectiveAddress)
 
       expect(response).toBeDefined()
       if (response) {
@@ -76,9 +75,8 @@ describe('ChainGrpcWasmApi', () => {
 
   test('fetchContractHistory', async () => {
     try {
-      const response = await chainGrpcWasmApi.fetchContractHistory(
-        injectiveAddress,
-      )
+      const response =
+        await chainGrpcWasmApi.fetchContractHistory(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(

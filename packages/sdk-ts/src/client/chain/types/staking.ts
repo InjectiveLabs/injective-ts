@@ -1,7 +1,9 @@
 import type * as CosmosStakingV1Beta1StakingPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/staking_pb'
 
-export interface StakingModuleParams
-  extends Omit<GrpcStakingParams, 'unbondingTime'> {
+export interface StakingModuleParams extends Omit<
+  GrpcStakingParams,
+  'unbondingTime'
+> {
   unbondingTime: number
 }
 

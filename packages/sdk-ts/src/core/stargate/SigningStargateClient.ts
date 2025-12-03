@@ -3,19 +3,19 @@ import { AminoTypes } from '@cosmjs/stargate'
 import { calculateFee } from '@cosmjs/stargate'
 import { assert, assertDefined } from '@cosmjs/utils'
 import { defaultRegistryTypes } from '@cosmjs/stargate'
+import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { Tendermint37Client } from '@cosmjs/tendermint-rpc'
-import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx.js'
-import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing.js'
-import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
+import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing'
+import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx'
+import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
+import {
+  MsgDelegate,
+  MsgUndelegate,
+} from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import {
   encodeSecp256k1Pubkey,
   makeSignDoc as makeSignDocAmino,
 } from '@cosmjs/amino'
-import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx.js'
-import {
-  MsgDelegate,
-  MsgUndelegate,
-} from 'cosmjs-types/cosmos/staking/v1beta1/tx.js'
 import {
   Registry,
   makeSignDoc,
@@ -39,8 +39,8 @@ import { uint8ArrayToBase64, base64ToUint8Array } from '../../utils/encoding.js'
 import type { StdFee } from '@cosmjs/amino'
 import type { GasPrice } from '@cosmjs/stargate'
 import type { AminoConverters } from '@cosmjs/stargate'
-import type { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin.js'
-import type { Height } from 'cosmjs-types/ibc/core/client/v1/client.js'
+import type { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'
+import type { Height } from 'cosmjs-types/ibc/core/client/v1/client'
 import type { CometClient, HttpEndpoint } from '@cosmjs/tendermint-rpc'
 import type { DeliverTxResponse, StargateClientOptions } from '@cosmjs/stargate'
 import type {

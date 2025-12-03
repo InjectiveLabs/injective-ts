@@ -39,9 +39,8 @@ describe('IndexerGrpcAccountApi', () => {
 
   test('fetchSubaccountsList', async () => {
     try {
-      const response = await indexerGrpcAccountApi.fetchSubaccountsList(
-        injectiveAddress,
-      )
+      const response =
+        await indexerGrpcAccountApi.fetchSubaccountsList(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(expect.objectContaining<string[]>(response))
@@ -80,9 +79,8 @@ describe('IndexerGrpcAccountApi', () => {
 
   test('fetchSubaccountBalancesList', async () => {
     try {
-      const response = await indexerGrpcAccountApi.fetchSubaccountBalancesList(
-        subaccountId,
-      )
+      const response =
+        await indexerGrpcAccountApi.fetchSubaccountBalancesList(subaccountId)
 
       expect(response).toBeDefined()
       expect(response).toEqual(

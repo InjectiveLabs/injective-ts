@@ -53,14 +53,13 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@injectivelabs/exceptions": "workspace:*",
+    "magic-sdk": "^31.2.0",
+    "@magic-ext/cosmos": "^26.2.0",
+    "@magic-ext/oauth2": "^13.2.0",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/utils": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*",
-    "@magic-ext/cosmos": "23.9.1",
-    "@magic-ext/oauth2": "9.9.0",
-    "magic-sdk": "29.1.0"
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
