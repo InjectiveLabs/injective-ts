@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-strategy",
-  "version": "1.16.38-alpha.3",
+  "version": "1.16.38-alpha.4",
   "description": "Wallet strategy with instantiated wallets",
   "license": "Apache-2.0",
   "author": {
@@ -56,14 +56,14 @@
     "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*",
     "@injectivelabs/wallet-core": "workspace:*",
-    "@injectivelabs/wallet-evm": "workspace:*",
     "@injectivelabs/wallet-cosmos": "workspace:*",
+    "@injectivelabs/wallet-cosmostation": "workspace:*",
+    "@injectivelabs/wallet-evm": "workspace:*",
     "@injectivelabs/wallet-ledger": "workspace:*",
     "@injectivelabs/wallet-magic": "workspace:*",
+    "@injectivelabs/wallet-private-key": "workspace:*",
     "@injectivelabs/wallet-trezor": "workspace:*",
     "@injectivelabs/wallet-turnkey": "workspace:*",
-    "@injectivelabs/wallet-private-key": "workspace:*",
-    "@injectivelabs/wallet-cosmostation": "workspace:*",
     "@injectivelabs/wallet-wallet-connect": "workspace:*"
   },
   "publishConfig": {
