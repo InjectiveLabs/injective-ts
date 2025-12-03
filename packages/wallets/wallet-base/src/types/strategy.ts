@@ -124,6 +124,15 @@ export interface ConcreteCosmosWalletStrategy {
   getAddresses(args?: unknown): Promise<string[]>
 
   /**
+   * The accounts from the wallet with derivation path info (for hardware wallets)
+   */
+  getAddressesInfo?(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
+
+  /**
    * Return the WalletDeviceType connected on the
    * wallet provider (extension, mobile, hardware wallet)
    */

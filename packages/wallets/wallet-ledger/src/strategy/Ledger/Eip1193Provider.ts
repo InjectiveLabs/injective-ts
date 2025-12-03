@@ -20,7 +20,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
     params: { derivationPath?: string; chainId?: string },
   ) {
     this.ledger = ledger
-    this.derivationPath = "m/44'/60'/0'/0/0"
+    this.derivationPath = params.derivationPath || "m/44'/60'/0'/0/0"
 
     this.chainId = parseInt(params.chainId || '1')
   }

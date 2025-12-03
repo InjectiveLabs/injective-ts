@@ -104,7 +104,7 @@ export default class LedgerBase
   }
 
   public async getAddressesInfo(): Promise<
-    { address: string; derivationPath: string }[]
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
   > {
     const { baseDerivationPath, derivationPathType } = this
 
@@ -117,6 +117,7 @@ export default class LedgerBase
       return wallets.map((k) => ({
         address: k.address,
         derivationPath: k.derivationPath,
+        baseDerivationPath: k.baseDerivationPath,
       }))
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
@@ -456,7 +457,7 @@ export default class LedgerBase
   public async getEip1193Provider(): Promise<Eip1193Provider> {
     return new LedgerEip1193Provider(this.ledger, {
       chainId: this.evmOptions.evmChainId.toString(),
-      derivationPath: this.baseDerivationPath,
+      derivationPath: this.metadata?.derivationPath,
     })
   }
 

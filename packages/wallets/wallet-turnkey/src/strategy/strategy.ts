@@ -138,6 +138,19 @@ export class TurnkeyWalletStrategy
     }
   }
 
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(_address?: string): Promise<string> {
     const turnkeyWallet = await this.getTurnkeyWallet()
 

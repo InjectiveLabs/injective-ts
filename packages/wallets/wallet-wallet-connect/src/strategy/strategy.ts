@@ -93,6 +93,19 @@ export class WalletConnect
     }
   }
 
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(_address: AccountAddress): Promise<string> {
     const wc = await this.getConnectedWalletConnect()
 

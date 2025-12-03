@@ -113,6 +113,18 @@ export class Cosmostation
     }
   }
 
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new CosmosWalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${uint8ArrayToHex(
