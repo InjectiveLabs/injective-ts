@@ -12,7 +12,7 @@ import {
 } from '@injectivelabs/utils'
 import { createTransaction } from '../tx.js'
 import { TxGrpcApi } from '../api/TxGrpcApi.js'
-import { ofacWallets } from '../../../json/index.js'
+import { ofacList } from '../../../utils/ofac.js'
 import { PrivateKey } from '../../accounts/index.js'
 import { uint8ArrayToHex } from '../../../utils/encoding.js'
 import { IndexerGrpcWeb3GwApi } from '../../../client/index.js'
@@ -125,7 +125,7 @@ export class MsgBroadcasterWithPk {
   ) {
     const { privateKey } = this
 
-    if (ofacWallets.includes(privateKey.toHex())) {
+    if (ofacList.includes(privateKey.toHex())) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -157,7 +157,7 @@ export class MsgBroadcasterWithPk {
 
     const ethereumWallet = this.privateKey.toHex()
 
-    if (ofacWallets.includes(ethereumWallet)) {
+    if (ofacList.includes(ethereumWallet)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -233,7 +233,7 @@ export class MsgBroadcasterWithPk {
 
     const ethereumWallet = this.privateKey.toHex()
 
-    if (ofacWallets.includes(ethereumWallet)) {
+    if (ofacList.includes(ethereumWallet)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )

@@ -1,5 +1,5 @@
-import { ofacWallets } from '@injectivelabs/sdk-ts'
 import { EvmChainId } from '@injectivelabs/ts-types'
+import { ofacList } from '@injectivelabs/sdk-ts/utils'
 import { PublicKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
 import {
@@ -243,7 +243,7 @@ export class MsgBroadcaster {
       injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacList.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -285,7 +285,7 @@ export class MsgBroadcaster {
       injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacList.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -325,7 +325,7 @@ export class MsgBroadcaster {
       injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacList.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )

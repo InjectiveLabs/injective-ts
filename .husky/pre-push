@@ -1,0 +1,4 @@
+set -e
+
+pnpm lint
+pnpm build
