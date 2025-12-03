@@ -106,11 +106,13 @@ export interface ConcreteWalletStrategyArgs {
   metadata?: WalletMetadata
 }
 
-export interface ConcreteEvmWalletStrategyArgs extends ConcreteWalletStrategyArgs {
+export interface ConcreteEvmWalletStrategyArgs
+  extends ConcreteWalletStrategyArgs {
   evmOptions: WalletStrategyEvmOptions
 }
 
-export interface ConcreteCosmosWalletStrategyArgs extends ConcreteWalletStrategyArgs {
+export interface ConcreteCosmosWalletStrategyArgs
+  extends ConcreteWalletStrategyArgs {
   wallet?: Wallet
 }
 
@@ -126,7 +128,7 @@ export interface ConcreteCosmosWalletStrategy {
   /**
    * The accounts from the wallet with derivation path info (for hardware wallets)
    */
-  getAddressesInfo?(
+  getAddressesInfo(
     args?: unknown,
   ): Promise<
     { address: string; derivationPath: string; baseDerivationPath: string }[]
@@ -186,10 +188,20 @@ export interface WalletStrategyArguments {
   strategies: ConcreteStrategiesArg
 }
 
-export interface ConcreteWalletStrategy extends Omit<
-  ConcreteCosmosWalletStrategy,
-  'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
-> {
+export interface ConcreteWalletStrategy
+  extends Omit<
+    ConcreteCosmosWalletStrategy,
+    'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
+  > {
+  /**
+   * The accounts from the wallet with derivation path info (for hardware wallets)
+   */
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
+
   /**
    * Sends Cosmos transaction. Returns a transaction hash
    * @param transaction should implement TransactionConfig
@@ -293,6 +305,11 @@ export interface WalletStrategy {
   setMetadata(metadata?: WalletMetadata): void
   getStrategy(): ConcreteWalletStrategy
   getAddresses(args?: unknown): Promise<AccountAddress[]>
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
   getWalletDeviceType(): Promise<WalletDeviceType>
   getPubKey(address?: string): Promise<string>
   enable(args?: unknown): Promise<boolean>
