@@ -47,11 +47,12 @@
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
     "link:local": "node etc/link-local.cjs",
     "commit": "git cz",
-    "test-import-size": "node bundle-size/index.js"
+    "test-import-size": "node bundle-size/index.js",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@commitlint/cli": "^13.1.0",
-    "@commitlint/config-conventional": "^13.1.0",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
@@ -73,7 +74,7 @@
     "eslint-plugin-markdown": "^2.2.1",
     "eslint-plugin-perfectionist": "^4.15.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^7.0.2",
+    "husky": "^9.1.7",
     "jest-junit": "^15.0.0",
     "lerna": "8.2.3",
     "lint-staged": "^11.1.2",

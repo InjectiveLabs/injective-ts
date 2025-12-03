@@ -22,12 +22,17 @@ const storeJsonFile = (path, data) => {
 
 const fetchOfac = async () => {
   const response = await fetch(
-    'https://raw.githubusercontent.com/InjectiveLabs/injective-lists/master/wallets/ofacAndRestricted.json',
+    'https://raw.githubusercontent.com/InjectiveLabs/injective-lists/master/json/wallets/ofacAndRestricted.json',
   )
-  const wallets = await response.text()
+  const wallets = await response.json()
 
   try {
-    storeJsonFile(`src/json/ofac.ts`, `export const ofacWallets = ${wallets}`)
+    const tsContent = `export const ofacList: string[] = ${JSON.stringify(
+      wallets,
+      null,
+      2,
+    )}\n`
+    storeJsonFile(`src/utils/ofac.ts`, tsContent)
 
     console.log(`✅✅✅ OFAC list fetched`)
   } catch (e) {

@@ -27,6 +27,7 @@ export default [
       '**/tsdown.config.ts',
       '**/test-import-size/**',
       '**/test-import.ts',
+      '**/src/utils/ofac.ts',
     ],
   },
   // Base configuration for TypeScript files
