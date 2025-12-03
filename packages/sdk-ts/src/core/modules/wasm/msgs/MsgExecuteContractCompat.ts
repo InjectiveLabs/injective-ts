@@ -67,8 +67,7 @@ export declare namespace MsgExecuteContractCompat {
  */
 export default class MsgExecuteContractCompat extends MsgBase<
   MsgExecuteContractCompat.Params,
-  MsgExecuteContractCompat.Proto,
-  MsgExecuteContractCompat.Object
+  MsgExecuteContractCompat.Proto
 > {
   static fromJSON(
     params: MsgExecuteContractCompat.Params,
@@ -108,7 +107,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(proto as unknown as Record<string, unknown>),
       msg: JSON.stringify(this.getMsgObject()),
     }
 

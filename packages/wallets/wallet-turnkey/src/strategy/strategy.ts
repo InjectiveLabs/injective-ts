@@ -209,9 +209,8 @@ export class TurnkeyWalletStrategy
         }
       }
 
-      const preparedTransaction = await accountClient.prepareTransactionRequest(
-        processedTransaction,
-      )
+      const preparedTransaction =
+        await accountClient.prepareTransactionRequest(processedTransaction)
 
       // Remove account property as it's not needed for signing
       const { account: _, ...transactionToSign } = preparedTransaction
@@ -270,9 +269,8 @@ export class TurnkeyWalletStrategy
     //? Turnkey expects the case sensitive address and the current impl of getChecksumAddress from sdk-ts doesn't play nice with browser envs
     const checksumAddress = getAddress(address)
 
-    const account = await turnkeyWallet.getOrCreateAndGetAccount(
-      checksumAddress,
-    )
+    const account =
+      await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
 
     if (!account) {
       throw new WalletException(new Error('Turnkey account not found'))
@@ -433,9 +431,8 @@ export class TurnkeyWalletStrategy
     //? Turnkey expects the case sensitive address and the current impl of getChecksumAddress from sdk-ts doesn't play nice with browser envs
     const checksumAddress = getAddress(getEthereumAddress(addresses[0]))
 
-    const account = await turnkeyWallet.getOrCreateAndGetAccount(
-      checksumAddress,
-    )
+    const account =
+      await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
 
     const eip1193Provider = await getEip1193ProviderForTurnkey(
       account,

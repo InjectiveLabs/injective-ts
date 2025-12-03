@@ -72,9 +72,8 @@ describe('IndexerGrpcTransactionApi', () => {
         memo: 12345,
       }
 
-      const response = await indexerGrpcTransactionApi.prepareExchangeTxRequest(
-        args,
-      )
+      const response =
+        await indexerGrpcTransactionApi.prepareExchangeTxRequest(args)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -102,9 +101,8 @@ describe('IndexerGrpcTransactionApi', () => {
         memo: 'cosmos memo',
       }
 
-      const response = await indexerGrpcTransactionApi.prepareCosmosTxRequest(
-        args,
-      )
+      const response =
+        await indexerGrpcTransactionApi.prepareCosmosTxRequest(args)
 
       expect(response).toBeDefined()
       expect(response).toEqual(

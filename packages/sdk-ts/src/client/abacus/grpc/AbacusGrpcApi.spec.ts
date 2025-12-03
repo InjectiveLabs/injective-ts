@@ -10,9 +10,8 @@ const abacusGrpcApi = new AbacusGrpcApi(
 describe('AbacusGrpcApi', () => {
   test('fetchAccountLatestPoints', async () => {
     try {
-      const response = await abacusGrpcApi.fetchAccountLatestPoints(
-        injectiveAddress,
-      )
+      const response =
+        await abacusGrpcApi.fetchAccountLatestPoints(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -59,9 +58,8 @@ describe('AbacusGrpcApi', () => {
 
   test('fetchAccountDailyPoints without limit', async () => {
     try {
-      const response = await abacusGrpcApi.fetchAccountDailyPoints(
-        injectiveAddress,
-      )
+      const response =
+        await abacusGrpcApi.fetchAccountDailyPoints(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(Array.isArray(response)).toBe(true)
@@ -114,9 +112,8 @@ describe('AbacusGrpcApi', () => {
 
   test('fetchAccountWeeklyPoints without limit', async () => {
     try {
-      const response = await abacusGrpcApi.fetchAccountWeeklyPoints(
-        injectiveAddress,
-      )
+      const response =
+        await abacusGrpcApi.fetchAccountWeeklyPoints(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(Array.isArray(response)).toBe(true)

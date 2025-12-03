@@ -75,7 +75,7 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
         ? params.trailingArithmetic.lpMode
           ? { trailing_arithmetic_l_p: trailingBounds }
           : { trailing_arithmetic: trailingBounds }
-        : params.strategyType ?? StrategyType.Arithmetic
+        : (params.strategyType ?? StrategyType.Arithmetic)
 
     return {
       subaccount_id: params.subaccountId,

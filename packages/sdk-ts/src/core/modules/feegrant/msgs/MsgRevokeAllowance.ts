@@ -46,7 +46,7 @@ export default class MsgRevokeAllowance extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(proto as unknown as Record<string, unknown>),
     }
 
     return {

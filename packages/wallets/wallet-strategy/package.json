@@ -54,28 +54,17 @@
   },
   "dependencies": {
     "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/networks": "workspace:*",
-    "@injectivelabs/sdk-ts": "workspace:*",
-    "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/utils": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*",
     "@injectivelabs/wallet-core": "workspace:*",
-    "@injectivelabs/wallet-cosmos": "workspace:*",
-    "@injectivelabs/wallet-cosmostation": "workspace:*",
     "@injectivelabs/wallet-evm": "workspace:*",
+    "@injectivelabs/wallet-cosmos": "workspace:*",
     "@injectivelabs/wallet-ledger": "workspace:*",
     "@injectivelabs/wallet-magic": "workspace:*",
-    "@injectivelabs/wallet-private-key": "workspace:*",
     "@injectivelabs/wallet-trezor": "workspace:*",
     "@injectivelabs/wallet-turnkey": "workspace:*",
-    "@injectivelabs/wallet-wallet-connect": "workspace:*",
-    "eip1193-provider": "catalog:",
-    "ethers": "catalog:",
-    "hdkey": "^2.1.0",
-    "viem": "catalog:"
-  },
-  "devDependencies": {
-    "@types/hdkey": "^2.0.1"
+    "@injectivelabs/wallet-private-key": "workspace:*",
+    "@injectivelabs/wallet-cosmostation": "workspace:*",
+    "@injectivelabs/wallet-wallet-connect": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

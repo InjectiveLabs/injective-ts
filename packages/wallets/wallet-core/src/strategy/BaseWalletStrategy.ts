@@ -220,9 +220,8 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
 
     this.emit(WalletStrategyEmitterEventType.TransactionSignStart)
 
-    const response = await this.getStrategy().signAminoCosmosTransaction(
-      transaction,
-    )
+    const response =
+      await this.getStrategy().signAminoCosmosTransaction(transaction)
 
     this.emit(WalletStrategyEmitterEventType.TransactionSigned)
 

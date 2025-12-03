@@ -441,27 +441,27 @@ export class ChainGrpcExchangeTransformer {
       perpetualMarketInfo: {
         hourlyFundingRateCap: denomAmountFromGrpcChainDenomAmount(
           market.info?.oneofKind === 'perpetualInfo'
-            ? market.info.perpetualInfo.marketInfo?.hourlyFundingRateCap?.toString() ??
-                '0'
+            ? (market.info.perpetualInfo.marketInfo?.hourlyFundingRateCap?.toString() ??
+                '0')
             : '0',
         ).toFixed(),
         hourlyInterestRate: denomAmountFromGrpcChainDenomAmount(
           market.info?.oneofKind === 'perpetualInfo'
-            ? market.info.perpetualInfo.marketInfo?.hourlyInterestRate?.toString() ??
-                '0'
+            ? (market.info.perpetualInfo.marketInfo?.hourlyInterestRate?.toString() ??
+                '0')
             : '0',
         ).toFixed(),
         nextFundingTimestamp: parseInt(
           market.info?.oneofKind === 'perpetualInfo'
-            ? market.info.perpetualInfo.marketInfo?.nextFundingTimestamp?.toString() ??
-                ''
+            ? (market.info.perpetualInfo.marketInfo?.nextFundingTimestamp?.toString() ??
+                '')
             : '',
           10,
         ),
         fundingInterval: parseInt(
           market.info?.oneofKind === 'perpetualInfo'
-            ? market.info.perpetualInfo.marketInfo?.fundingInterval?.toString() ??
-                ''
+            ? (market.info.perpetualInfo.marketInfo?.fundingInterval?.toString() ??
+                '')
             : '',
           10,
         ),

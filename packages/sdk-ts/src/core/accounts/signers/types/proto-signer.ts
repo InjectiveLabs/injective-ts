@@ -10,7 +10,9 @@ export interface AccountData extends Omit<CosmjsAccountData, 'algo'> {
   algo: Algo
 }
 
-export interface OfflineDirectSigner
-  extends Omit<CosmjsOfflineDirectSigner, 'getAccounts'> {
+export interface OfflineDirectSigner extends Omit<
+  CosmjsOfflineDirectSigner,
+  'getAccounts'
+> {
   readonly getAccounts: () => Promise<readonly AccountData[]>
 }

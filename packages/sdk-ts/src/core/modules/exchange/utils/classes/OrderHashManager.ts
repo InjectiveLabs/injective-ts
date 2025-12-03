@@ -413,9 +413,8 @@ export class OrderHashManager {
     const subaccountId =
       Address.fromBech32(address).getSubaccountId(subaccountIndex)
 
-    const { nonce } = await chainGrpcExchangeApi.fetchSubaccountTradeNonce(
-      subaccountId,
-    )
+    const { nonce } =
+      await chainGrpcExchangeApi.fetchSubaccountTradeNonce(subaccountId)
 
     this.nonce = nonce + 1
   }

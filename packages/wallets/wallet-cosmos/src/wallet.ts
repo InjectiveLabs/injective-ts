@@ -77,8 +77,8 @@ export class CosmosWallet {
       wallet === Wallet.Keplr
         ? 'https://chains.keplr.app/'
         : wallet === Wallet.OWallet
-        ? 'https://owallet.io/'
-        : undefined
+          ? 'https://owallet.io/'
+          : undefined
 
     throw new CosmosWalletException(
       new Error(

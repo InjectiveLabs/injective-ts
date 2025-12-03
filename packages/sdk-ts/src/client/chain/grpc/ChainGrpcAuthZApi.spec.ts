@@ -28,9 +28,8 @@ describe('ChainGrpcAuthZApi', () => {
 
   test('fetchGranterGrants', async () => {
     try {
-      const response = await chainGrpcAuthZApi.fetchGranterGrants(
-        injectiveAddress,
-      )
+      const response =
+        await chainGrpcAuthZApi.fetchGranterGrants(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -49,9 +48,8 @@ describe('ChainGrpcAuthZApi', () => {
 
   test('fetchGranteeGrants', async () => {
     try {
-      const response = await chainGrpcAuthZApi.fetchGranteeGrants(
-        injectiveAddress,
-      )
+      const response =
+        await chainGrpcAuthZApi.fetchGranteeGrants(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(

@@ -91,8 +91,7 @@ const createPerpetualMarketLaunch = (
  */
 export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
   MsgSubmitProposalPerpetualMarketLaunchV2.Params,
-  MsgSubmitProposalPerpetualMarketLaunchV2.Proto,
-  MsgSubmitProposalPerpetualMarketLaunchV2.Object
+  MsgSubmitProposalPerpetualMarketLaunchV2.Proto
 > {
   static fromJSON(
     params: MsgSubmitProposalPerpetualMarketLaunchV2.Params,

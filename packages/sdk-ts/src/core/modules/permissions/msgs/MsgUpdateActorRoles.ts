@@ -68,7 +68,7 @@ export default class MsgUpdateActorRoles extends MsgBase<
     const proto = this.toProto()
 
     const message = {
-      ...snakecaseKeys(proto),
+      ...snakecaseKeys(proto as unknown as Record<string, unknown>),
     }
 
     return {

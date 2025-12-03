@@ -17,8 +17,7 @@ export interface MsgBroadcasterTxOptions {
   }
 }
 
-export interface MsgBroadcasterTxOptionsWithAddresses
-  extends MsgBroadcasterTxOptions {
+export interface MsgBroadcasterTxOptionsWithAddresses extends MsgBroadcasterTxOptions {
   ethereumAddress: string
   injectiveAddress: string
 }

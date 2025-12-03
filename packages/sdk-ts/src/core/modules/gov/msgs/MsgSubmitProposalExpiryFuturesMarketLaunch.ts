@@ -92,8 +92,7 @@ const createExpiryFuturesMarketLaunch = (
  */
 export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
   MsgSubmitProposalExpiryFuturesMarketLaunch.Params,
-  MsgSubmitProposalExpiryFuturesMarketLaunch.Proto,
-  MsgSubmitProposalExpiryFuturesMarketLaunch.Object
+  MsgSubmitProposalExpiryFuturesMarketLaunch.Proto
 > {
   static fromJSON(
     params: MsgSubmitProposalExpiryFuturesMarketLaunch.Params,

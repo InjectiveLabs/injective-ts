@@ -28,16 +28,20 @@ export type CancelDerivativeOrderAuthz =
 export type BatchCancelDerivativeOrdersAuthz =
   InjectiveExchangeV1Beta1AuthzPb.BatchCancelDerivativeOrdersAuthz
 
-export interface GrantWithDecodedAuthorization
-  extends Omit<Grant, 'authorization'> {
+export interface GrantWithDecodedAuthorization extends Omit<
+  Grant,
+  'authorization'
+> {
   authorization:
     | GenericAuthorization
     | undefined /** Todo: add more authorizations */
   authorizationType: string
 }
 
-export interface GrantAuthorizationWithDecodedAuthorization
-  extends Omit<GrantAuthorization, 'authorization'> {
+export interface GrantAuthorizationWithDecodedAuthorization extends Omit<
+  GrantAuthorization,
+  'authorization'
+> {
   authorization:
     | GenericAuthorization
     | undefined /** Todo: add more authorizations */

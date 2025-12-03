@@ -69,9 +69,8 @@ describe('ChainGrpcExchangeApi', () => {
 
   test('fetchFeeDiscountAccountInfo', async () => {
     try {
-      const response = await chainGrpcExchangeApi.fetchFeeDiscountAccountInfo(
-        injectiveAddress,
-      )
+      const response =
+        await chainGrpcExchangeApi.fetchFeeDiscountAccountInfo(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -173,9 +172,8 @@ describe('ChainGrpcExchangeApi', () => {
 
   test('fetchSubaccountTradeNonce', async () => {
     try {
-      const response = await chainGrpcExchangeApi.fetchSubaccountTradeNonce(
-        subaccountId,
-      )
+      const response =
+        await chainGrpcExchangeApi.fetchSubaccountTradeNonce(subaccountId)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -193,9 +191,8 @@ describe('ChainGrpcExchangeApi', () => {
 
   test('fetchIsOptedOutOfRewards', async () => {
     try {
-      const response = await chainGrpcExchangeApi.fetchIsOptedOutOfRewards(
-        injectiveAddress,
-      )
+      const response =
+        await chainGrpcExchangeApi.fetchIsOptedOutOfRewards(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
