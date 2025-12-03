@@ -120,6 +120,32 @@ export default class TrezorBase
     }
   }
 
+  public async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    const { baseDerivationPath, derivationPathType } = this
+
+    try {
+      await this.trezor.connect()
+      const accountManager = await this.trezor.getAccountManager()
+      const wallets = await accountManager.getWallets(
+        baseDerivationPath,
+        derivationPathType,
+      )
+      return wallets.map((k) => ({
+        address: k.address,
+        derivationPath: k.derivationPath,
+        baseDerivationPath: derivationPathType,
+      }))
+    } catch (e: unknown) {
+      throw new TrezorException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
+  }
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
       `0x${uint8ArrayToHex(
@@ -469,7 +495,7 @@ export default class TrezorBase
   public async getEip1193Provider(): Promise<Eip1193Provider> {
     return new TrezorEip1193Provider(this.trezor, {
       chainId: this.evmOptions.evmChainId.toString(),
-      derivationPath: this.baseDerivationPath,
+      derivationPath: this.metadata?.derivationPath,
     })
   }
 
