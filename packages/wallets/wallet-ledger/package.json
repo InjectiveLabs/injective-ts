@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-ledger",
-  "version": "1.16.38-alpha.3",
+  "version": "1.16.38-alpha.4",
   "description": "Ledger wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
@@ -53,15 +53,15 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*",
     "@ledgerhq/hw-app-cosmos": "^6.32.9",
     "@ledgerhq/hw-app-eth": "^6.47.1",
     "@ledgerhq/hw-transport": "^6.31.13",
     "@ledgerhq/hw-transport-webhid": "^6.30.9",
     "@ledgerhq/hw-transport-webusb": "^6.29.13",
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/sdk-ts": "workspace:*",
-    "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*",
     "viem": "catalog:"
   },
   "publishConfig": {

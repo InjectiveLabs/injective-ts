@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-magic",
-  "version": "1.16.38-alpha.3",
+  "version": "1.16.38-alpha.4",
   "description": "Magic wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
@@ -53,13 +53,13 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "magic-sdk": "^31.2.0",
-    "@magic-ext/cosmos": "^26.2.0",
-    "@magic-ext/oauth2": "^13.2.0",
+    "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/wallet-base": "workspace:*"
+    "@injectivelabs/wallet-base": "workspace:*",
+    "@magic-ext/cosmos": "^26.2.0",
+    "@magic-ext/oauth2": "^13.2.0",
+    "magic-sdk": "^31.2.0"
   },
   "publishConfig": {
     "access": "public"
