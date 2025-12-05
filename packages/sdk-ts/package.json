@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/sdk-ts",
-  "version": "1.16.38",
+  "version": "1.16.39-alpha.0",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
   "license": "Apache-2.0",
   "author": {
@@ -336,8 +336,8 @@
     "@protobuf-ts/runtime": "^2.11.1",
     "@protobuf-ts/runtime-rpc": "^2.11.1",
     "@scure/base": "^1.2.6",
-    "bip39": "^3.1.0",
     "axios": "catalog:",
+    "bip39": "^3.1.0",
     "cosmjs-types": "0.9.0",
     "crypto-js": "^4.2.0",
     "ethers": "catalog:",
