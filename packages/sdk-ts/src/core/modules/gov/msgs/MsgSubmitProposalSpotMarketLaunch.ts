@@ -5,7 +5,10 @@ import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/genera
 import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
+import type snakecaseKeys from 'snakecase-keys'
+
+type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
+  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgSubmitProposalSpotMarketLaunch {
   export interface Params {

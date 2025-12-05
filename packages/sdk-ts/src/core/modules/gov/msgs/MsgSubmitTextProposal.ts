@@ -4,7 +4,9 @@ import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated
 import * as CosmosGovV1Beta1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/gov_pb'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
+
+type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
+  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgSubmitTextProposal {
   export interface Params {

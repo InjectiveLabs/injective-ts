@@ -49,7 +49,7 @@ jobs:
 
       - name: Version and publish
         run: |
-          pnpm exec lerna version patch --force-git-tag --no-changelog --yes
+          pnpm exec lerna version patch --force-publish --force-git-tag --no-changelog --yes
           pnpm publish -r --access public --tag latest --no-git-checks --report-summary
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}

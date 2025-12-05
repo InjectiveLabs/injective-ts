@@ -42,13 +42,18 @@ export default defineConfig({
     '@injectivelabs/core-proto-ts-v2',
     '@injectivelabs/abacus-proto-ts-v2',
     '@injectivelabs/indexer-proto-ts-v2',
-    // Other heavy external dependencies
+    // CosmJS dependencies
     '@cosmjs/amino',
+    '@cosmjs/math',
     '@cosmjs/proto-signing',
     '@cosmjs/stargate',
+    '@cosmjs/tendermint-rpc',
+    '@cosmjs/utils',
+    // Other heavy external dependencies
     'axios',
     'ethers',
     'rxjs',
+    'type-fest',
   ],
   onSuccess: createNestedOnSuccess(),
 })

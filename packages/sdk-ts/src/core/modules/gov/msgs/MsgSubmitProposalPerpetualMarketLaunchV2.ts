@@ -6,7 +6,10 @@ import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
+import type snakecaseKeys from 'snakecase-keys'
+
+type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
+  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
   export interface Params {

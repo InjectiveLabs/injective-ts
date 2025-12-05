@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/utils",
-  "version": "1.16.38-alpha.5",
+  "version": "1.16.38",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
   "license": "Apache-2.0",
   "author": {
@@ -75,13 +75,13 @@
     "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@bangjelkoski/store2": "^2.14.3",
     "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
     "axios": "catalog:",
     "bignumber.js": "^9.3.1",
-    "http-status-codes": "catalog:"
+    "http-status-codes": "catalog:",
+    "store2": "^2.14.4"
   },
   "publishConfig": {
     "access": "public"

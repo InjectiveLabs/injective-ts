@@ -1,7 +1,10 @@
 import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
+import type snakecaseKeys from 'snakecase-keys'
 import type { ExecPrivilegedArgs } from '../exec-args.js'
+
+type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
+  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgPrivilegedExecuteContract {
   export interface Params {

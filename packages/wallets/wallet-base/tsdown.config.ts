@@ -16,6 +16,23 @@ export default defineConfig({
     '@injectivelabs/networks',
     '@injectivelabs/sdk-ts',
     '@injectivelabs/ts-types',
+    '@injectivelabs/utils',
+    // External dependencies
+    'axios',
+    'store2',
+    'http-status-codes',
+    'form-data',
+    // Node.js built-ins
+    'crypto',
+    'http',
+    'https',
+    'http2',
+    'util',
+    'zlib',
+    'stream',
+    'events',
+    'url',
+    'assert',
   ],
   onSuccess: createSimpleOnSuccess(),
 })
