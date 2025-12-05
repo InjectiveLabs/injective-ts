@@ -245,10 +245,20 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     )
   }
 
-  async fetchAccountStats({ account }: { account: string }) {
+  async fetchAccountStats({
+    account,
+    period,
+  }: {
+    account: string
+    period?: string
+  }) {
     const request = InjectiveArchiverRpcPb.AccountStatsRequest.create()
 
     request.account = account
+
+    if (period) {
+      request.period = period
+    }
 
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.AccountStatsRequest,

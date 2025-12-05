@@ -175,6 +175,7 @@ export class IndexerGrpcArchiverTransformer {
   ): AccountStats {
     return {
       pnl: response.pnl,
+      stake: response.stake,
       volume: response.volume,
     }
   }
