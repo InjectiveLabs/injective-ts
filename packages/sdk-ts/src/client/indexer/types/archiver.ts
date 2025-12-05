@@ -49,6 +49,7 @@ export interface DenomHolders {
 
 export interface AccountStats {
   pnl: number
+  stake: string
   volume: number
 }
 
