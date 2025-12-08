@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmosAuthzV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/tx_pb'
 import * as GoogleProtobufTimestampPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/timestamp_pb'
@@ -112,8 +111,9 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
         authorization.value,
       )
 
-    const messageWithAuthorizationType = snakecaseKeys({
-      ...message,
+    const messageWithAuthorizationType = {
+      granter: message.granter,
+      grantee: message.grantee,
       grant: {
         authorization: {
           type: 'cosmos-sdk/GenericAuthorization',
@@ -123,7 +123,7 @@ export default class MsgGrant extends MsgBase<MsgGrant.Params, MsgGrant.Proto> {
           .toISOString()
           .replace('.000Z', 'Z'),
       },
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgGrant',

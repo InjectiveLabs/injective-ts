@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
@@ -70,7 +69,12 @@ export default class MsgInstantiateContract extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto as unknown as Record<string, unknown>),
+      sender: proto.sender,
+      admin: proto.admin,
+      code_id: proto.codeId.toString(),
+      label: proto.label,
+      msg: proto.msg,
+      funds: proto.funds,
     }
 
     return {

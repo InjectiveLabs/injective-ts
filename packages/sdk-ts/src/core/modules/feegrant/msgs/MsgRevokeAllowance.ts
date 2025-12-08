@@ -1,9 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
 import * as CosmosFeegrantV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/feegrant/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-
-type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
-  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgRevokeAllowance {
   export interface Params {
@@ -48,12 +44,13 @@ export default class MsgRevokeAllowance extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto as unknown as Record<string, unknown>),
+      granter: proto.granter,
+      grantee: proto.grantee,
     }
 
     return {
       type: 'cosmos-sdk/MsgRevokeAllowance',
-      value: message as unknown as SnakeCaseKeys<MsgRevokeAllowance>,
+      value: message,
     }
   }
 

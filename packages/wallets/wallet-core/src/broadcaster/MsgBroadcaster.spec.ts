@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { Network } from '@injectivelabs/networks'
 import { Wallet } from '@injectivelabs/wallet-base'
 import { EvmChainId } from '@injectivelabs/ts-types'
@@ -169,9 +170,10 @@ describe('MsgBroadcaster', () => {
         amount: [{ denom: 'inj', amount: '64000000000000' }],
         gas: '400000',
       }
-      jest
-        .spyOn(mockBroadcaster as any, 'getStdFeeWithDynamicBaseFee')
-        .mockResolvedValue(mockStdFee)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'getStdFeeWithDynamicBaseFee',
+      ).mockResolvedValue(mockStdFee)
 
       // Call the private method using type assertion
       const result = await (mockBroadcaster as any).getTxWithSignersAndStdFee(
@@ -201,18 +203,20 @@ describe('MsgBroadcaster', () => {
       }
 
       // Mock simulateTxWithSigners method
-      jest
-        .spyOn(mockBroadcaster as any, 'simulateTxWithSigners')
-        .mockResolvedValue(mockSimulationResult)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'simulateTxWithSigners',
+      ).mockResolvedValue(mockSimulationResult)
 
       // Mock the getStdFeeWithDynamicBaseFee method
       const mockStdFee = {
         amount: [{ denom: 'inj', amount: '72000000000000' }], // Updated amount based on simulated gas
         gas: '360000', // 300000 * 1.2 = 360000
       }
-      jest
-        .spyOn(mockBroadcaster as any, 'getStdFeeWithDynamicBaseFee')
-        .mockResolvedValue(mockStdFee)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'getStdFeeWithDynamicBaseFee',
+      ).mockResolvedValue(mockStdFee)
 
       // Call the private method
       const result = await (mockBroadcaster as any).getTxWithSignersAndStdFee(
@@ -246,18 +250,20 @@ describe('MsgBroadcaster', () => {
       }
 
       // Mock simulateTxWithSigners method
-      jest
-        .spyOn(mockBroadcaster as any, 'simulateTxWithSigners')
-        .mockResolvedValue(mockSimulationResult)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'simulateTxWithSigners',
+      ).mockResolvedValue(mockSimulationResult)
 
       // Mock the getStdFeeWithDynamicBaseFee method
       const mockStdFee = {
         amount: [{ denom: 'inj', amount: '64000000000000' }],
         gas: '400000',
       }
-      jest
-        .spyOn(mockBroadcaster as any, 'getStdFeeWithDynamicBaseFee')
-        .mockResolvedValue(mockStdFee)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'getStdFeeWithDynamicBaseFee',
+      ).mockResolvedValue(mockStdFee)
 
       // Call the private method
       const result = await (mockBroadcaster as any).getTxWithSignersAndStdFee(
@@ -292,21 +298,23 @@ describe('MsgBroadcaster', () => {
         },
       }
 
-      jest
-        .spyOn(mockBroadcaster as any, 'simulateTxWithSigners')
-        .mockResolvedValue(mockSimulationResult)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'simulateTxWithSigners',
+      ).mockResolvedValue(mockSimulationResult)
 
       // Mock getStdFeeWithDynamicBaseFee to capture the gas calculation
       let capturedGasArg: any
-      jest
-        .spyOn(mockBroadcaster as any, 'getStdFeeWithDynamicBaseFee')
-        .mockImplementation((args: any) => {
-          capturedGasArg = args
-          return Promise.resolve({
-            amount: [{ denom: 'inj', amount: '60000000000000' }],
-            gas: args.gas,
-          })
+      vi.spyOn(
+        mockBroadcaster as any,
+        'getStdFeeWithDynamicBaseFee',
+      ).mockImplementation((args: any) => {
+        capturedGasArg = args
+        return Promise.resolve({
+          amount: [{ denom: 'inj', amount: '60000000000000' }],
+          gas: args.gas,
         })
+      })
 
       // Call the private method
       await (mockBroadcaster as any).getTxWithSignersAndStdFee(mockArgs)
@@ -339,9 +347,10 @@ describe('MsgBroadcaster', () => {
         amount: [{ denom: 'inj', amount: '64000000000000' }],
         gas: '400000',
       }
-      jest
-        .spyOn(mockBroadcaster as any, 'getStdFeeWithDynamicBaseFee')
-        .mockResolvedValue(mockStdFee)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'getStdFeeWithDynamicBaseFee',
+      ).mockResolvedValue(mockStdFee)
 
       const result = await (mockBroadcaster as any).getTxWithSignersAndStdFee(
         multiSignerArgs,
@@ -366,9 +375,10 @@ describe('MsgBroadcaster', () => {
         amount: [{ denom: 'inj', amount: '64000000000000' }],
         gas: '400000',
       }
-      jest
-        .spyOn(mockBroadcaster as any, 'getStdFeeWithDynamicBaseFee')
-        .mockResolvedValue(mockStdFee)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'getStdFeeWithDynamicBaseFee',
+      ).mockResolvedValue(mockStdFee)
 
       const result = await (mockBroadcaster as any).getTxWithSignersAndStdFee(
         stringFeeArgs,
@@ -395,17 +405,19 @@ describe('MsgBroadcaster', () => {
         },
       }
 
-      jest
-        .spyOn(mockBroadcaster as any, 'simulateTxWithSigners')
-        .mockResolvedValue(mockSimulationResult)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'simulateTxWithSigners',
+      ).mockResolvedValue(mockSimulationResult)
 
       const mockStdFee = {
         amount: [{ denom: 'inj', amount: '64000000000000' }],
         gas: '400000',
       }
-      jest
-        .spyOn(mockBroadcaster as any, 'getStdFeeWithDynamicBaseFee')
-        .mockResolvedValue(mockStdFee)
+      vi.spyOn(
+        mockBroadcaster as any,
+        'getStdFeeWithDynamicBaseFee',
+      ).mockResolvedValue(mockStdFee)
 
       const result = await (mockBroadcaster as any).getTxWithSignersAndStdFee(
         mockArgs,

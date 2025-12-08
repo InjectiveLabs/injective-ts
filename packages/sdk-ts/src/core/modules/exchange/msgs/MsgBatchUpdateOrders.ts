@@ -1,11 +1,9 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
 
-type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
-  snakecaseKeys.SnakeCaseKeys<T>
+type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> = T
 
 interface SpotOrderToCreate {
   orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType
@@ -345,8 +343,58 @@ export default class MsgBatchUpdateOrders extends MsgBase<
         })
     }
 
+    const orderInfoToSnakeCase = (orderInfo: any) => ({
+      subaccount_id: orderInfo.subaccountId,
+      fee_recipient: orderInfo.feeRecipient,
+      price: orderInfo.price,
+      quantity: orderInfo.quantity,
+      cid: orderInfo.cid,
+    })
+
+    const spotOrderToSnakeCase = (order: any) => ({
+      market_id: order.marketId,
+      order_type: order.orderType,
+      order_info: orderInfoToSnakeCase(order.orderInfo),
+      trigger_price: order.triggerPrice,
+    })
+
+    const derivativeOrderToSnakeCase = (order: any) => ({
+      market_id: order.marketId,
+      order_type: order.orderType,
+      order_info: orderInfoToSnakeCase(order.orderInfo),
+      margin: order.margin,
+      trigger_price: order.triggerPrice,
+    })
+
+    const orderDataToSnakeCase = (orderData: any) => ({
+      market_id: orderData.marketId,
+      subaccount_id: orderData.subaccountId,
+      order_hash: orderData.orderHash,
+      cid: orderData.cid,
+    })
+
     const msg = {
-      ...snakecaseKeys(message as unknown as Record<string, unknown>),
+      sender: message.sender,
+      subaccount_id: message.subaccountId,
+      spot_market_ids_to_cancel_all: message.spotMarketIdsToCancelAll,
+      derivative_market_ids_to_cancel_all:
+        message.derivativeMarketIdsToCancelAll,
+      binary_options_market_ids_to_cancel_all:
+        message.binaryOptionsMarketIdsToCancelAll,
+      spot_orders_to_cancel:
+        message.spotOrdersToCancel.map(orderDataToSnakeCase),
+      derivative_orders_to_cancel:
+        message.derivativeOrdersToCancel.map(orderDataToSnakeCase),
+      binary_options_orders_to_cancel:
+        message.binaryOptionsOrdersToCancel.map(orderDataToSnakeCase),
+      spot_orders_to_create:
+        message.spotOrdersToCreate.map(spotOrderToSnakeCase),
+      derivative_orders_to_create: message.derivativeOrdersToCreate.map(
+        derivativeOrderToSnakeCase,
+      ),
+      binary_options_orders_to_create: message.binaryOptionsOrdersToCreate.map(
+        derivativeOrderToSnakeCase,
+      ),
     }
 
     return {

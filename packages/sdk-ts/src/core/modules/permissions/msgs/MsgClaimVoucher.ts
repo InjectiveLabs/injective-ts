@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import * as InjectivePermissionsV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 
@@ -45,7 +44,8 @@ export default class MsgClaimVoucher extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto as unknown as Record<string, unknown>),
+      sender: proto.sender,
+      denom: proto.denom,
     }
 
     return {

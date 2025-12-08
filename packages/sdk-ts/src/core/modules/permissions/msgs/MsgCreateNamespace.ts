@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectivePermissionsV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/tx_pb'
 import * as InjectivePermissionsV1Beta1PermissionsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/permissions_pb'
@@ -120,15 +119,41 @@ export default class MsgCreateNamespace extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
-    const message = snakecaseKeys({
-      ...proto,
+    const ns = proto.namespace
+
+    const message = {
+      sender: proto.sender,
       namespace: {
-        ...proto.namespace,
-        policyStatuses: proto.namespace?.policyStatuses || [],
-        policyManagerCapabilities:
-          proto.namespace?.policyManagerCapabilities || [],
+        denom: ns?.denom,
+        contract_hook: ns?.contractHook,
+        role_permissions: (ns?.rolePermissions || []).map((role) => ({
+          name: role.name,
+          role_id: role.roleId,
+          permissions: role.permissions,
+        })),
+        actor_roles: (ns?.actorRoles || []).map((ar) => ({
+          actor: ar.actor,
+          roles: ar.roles,
+        })),
+        role_managers: (ns?.roleManagers || []).map((rm) => ({
+          manager: rm.manager,
+          roles: rm.roles,
+        })),
+        policy_statuses: (ns?.policyStatuses || []).map((ps) => ({
+          action: ps.action,
+          is_disabled: ps.isDisabled,
+          is_sealed: ps.isSealed,
+        })),
+        policy_manager_capabilities: (ns?.policyManagerCapabilities || []).map(
+          (pmc) => ({
+            manager: pmc.manager,
+            action: pmc.action,
+            can_disable: pmc.canDisable,
+            can_seal: pmc.canSeal,
+          }),
+        ),
       },
-    })
+    }
 
     return {
       type: 'permissions/MsgCreateNamespace',

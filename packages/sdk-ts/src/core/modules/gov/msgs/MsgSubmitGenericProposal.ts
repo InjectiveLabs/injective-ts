@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import * as CosmosGovV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/tx_pb'
 import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
@@ -76,10 +75,15 @@ export default class MsgSubmitGenericProposal extends MsgBase<
     const { params } = this
     const proto = this.toProto()
 
-    const messageWithProposalType: any = snakecaseKeys({
-      ...proto,
+    const messageWithProposalType: any = {
       messages: params.messages.map((msg) => msg.toAmino()),
-    })
+      initial_deposit: proto.initialDeposit,
+      proposer: proto.proposer,
+      metadata: proto.metadata,
+      title: proto.title,
+      summary: proto.summary,
+      expedited: proto.expedited,
+    }
 
     return {
       type: 'cosmos-sdk/v1/MsgSubmitProposal',

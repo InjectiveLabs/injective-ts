@@ -46,11 +46,9 @@ describe('MsgSubmitProposalPerpetualMarketLaunchV2', () => {
       messages: message,
     })
 
+    // EIP712 v1 is not supported for this message type - the chain returns:
+    // "field uncapped within a oneof must have the amino.oneof_type_name option set"
     it.skip('EIP712 v1', async () => {
-      // SKIPPED: EIP712 v1 is not supported for this message type due to chain-side proto definition issue.
-      // The PerpetualMarketLaunchProposal v2 proto has an 'open_notional_cap' oneof field that lacks
-      // the required amino.oneof_type_name annotation, causing amino serialization to fail on the chain.
-      // This is a known limitation - use EIP712 v2 instead for this message type.
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(

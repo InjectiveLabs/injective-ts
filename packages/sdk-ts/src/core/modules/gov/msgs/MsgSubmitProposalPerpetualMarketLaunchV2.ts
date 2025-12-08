@@ -6,10 +6,6 @@ import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-import type snakecaseKeys from 'snakecase-keys'
-
-type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
-  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
   export interface Params {
@@ -191,7 +187,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           min_notional: content.minNotional,
           admin_info: content.adminInfo || null,
           reduce_margin_ratio: content.reduceMarginRatio,
-          // open_notional_cap field removed due to oneof serialization issues with amino
+          open_notional_cap: { uncapped: {} },
         },
       },
       initial_deposit: [
@@ -205,8 +201,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunchV2.Object>,
+      value: messageWithProposalType,
     }
   }
 
@@ -219,13 +214,12 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
       content: {
         '@type': '/injective.exchange.v2.PerpetualMarketLaunchProposal',
         ...value.content.value,
-        // open_notional_cap field omitted - will be handled by chain defaults
       },
     }
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunchV2.Object>),
+      ...messageWithProposalType,
     }
   }
 
@@ -258,15 +252,14 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           reduce_margin_ratio: toChainFormat(
             params.market.reduceMarginRatio,
           ).toFixed(),
-          // open_notional_cap field removed for EIP712 v1 due to oneof serialization issues
+          open_notional_cap: { uncapped: {} },
         },
       },
     }
 
     return {
       type,
-      value:
-        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunchV2.Object>,
+      value: messageAdjusted,
     }
   }
 
@@ -308,7 +301,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
         reduce_margin_ratio: numberToCosmosSdkDecString(
           params.market.reduceMarginRatio,
         ),
-        open_notional_cap: {},
+        open_notional_cap: { uncapped: {} },
       },
     }
 

@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
@@ -56,7 +55,9 @@ export default class MsgDelegate extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto as unknown as Record<string, unknown>),
+      delegator_address: proto.delegatorAddress,
+      validator_address: proto.validatorAddress,
+      amount: proto.amount,
     }
 
     return {

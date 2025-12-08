@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
 import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb'
@@ -7,9 +6,6 @@ import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2
 import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-
-type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
-  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgSubmitProposalExpiryFuturesMarketLaunch {
   export interface Params {
@@ -164,10 +160,33 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
 
     const content = createExpiryFuturesMarketLaunch(params)
 
-    const messageWithProposalType = snakecaseKeys({
+    const messageWithProposalType = {
       content: {
         type: 'exchange/ExpiryFuturesMarketLaunchProposal',
-        value: content,
+        value: {
+          title: content.title,
+          description: content.description,
+          ticker: content.ticker,
+          quote_denom: content.quoteDenom,
+          oracle_base: content.oracleBase,
+          oracle_quote: content.oracleQuote,
+          oracle_scale_factor: content.oracleScaleFactor,
+          oracle_type: content.oracleType,
+          expiry: content.expiry,
+          initial_margin_ratio: content.initialMarginRatio,
+          maintenance_margin_ratio: content.maintenanceMarginRatio,
+          maker_fee_rate: content.makerFeeRate,
+          taker_fee_rate: content.takerFeeRate,
+          min_price_tick_size: content.minPriceTickSize,
+          min_quantity_tick_size: content.minQuantityTickSize,
+          min_notional: content.minNotional,
+          admin_info: content.adminInfo
+            ? {
+                admin: content.adminInfo.admin,
+                admin_permissions: content.adminInfo.adminPermissions,
+              }
+            : null,
+        },
       },
       initial_deposit: [
         {
@@ -176,12 +195,11 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
         },
       ],
       proposer: params.proposer,
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>,
+      value: messageWithProposalType,
     }
   }
 
@@ -200,7 +218,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>),
+      ...messageWithProposalType,
     }
   }
 
@@ -237,8 +255,7 @@ export default class MsgSubmitProposalExpiryFuturesMarketLaunch extends MsgBase<
 
     return {
       type,
-      value:
-        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalExpiryFuturesMarketLaunch.Object>,
+      value: messageAdjusted,
     }
   }
 

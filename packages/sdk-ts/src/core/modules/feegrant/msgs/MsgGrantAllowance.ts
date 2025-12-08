@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import * as GoogleProtobufTimestampPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/timestamp_pb'
@@ -88,12 +87,13 @@ export default class MsgGrantAllowance extends MsgBase<
     const timestamp = this.getTimestamp()
     const message = proto
 
-    const messageWithAllowance = snakecaseKeys({
-      ...message,
+    const messageWithAllowance = {
+      granter: message.granter,
+      grantee: message.grantee,
       allowance: {
         type: 'cosmos-sdk/BasicAllowance',
         value: {
-          spendLimit: params.allowance.spendLimit.map(({ denom, amount }) => ({
+          spend_limit: params.allowance.spendLimit.map(({ denom, amount }) => ({
             denom,
             amount,
           })),
@@ -102,7 +102,7 @@ export default class MsgGrantAllowance extends MsgBase<
             .replace('.000Z', 'Z'),
         },
       },
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgGrantAllowance',

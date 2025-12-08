@@ -1,12 +1,8 @@
-import snakecaseKeys from 'snakecase-keys'
 import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb'
 import * as CosmosGovV1Beta1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/gov_pb'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
-
-type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
-  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgSubmitTextProposal {
   export interface Params {
@@ -79,11 +75,15 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
   public toAmino() {
     const { params } = this
+    const content = this.getContent()
 
-    const messageWithProposalType = snakecaseKeys({
+    const messageWithProposalType = {
       content: {
         type: 'cosmos-sdk/TextProposal',
-        value: this.getContent(),
+        value: {
+          title: content.title,
+          description: content.description,
+        },
       },
       initial_deposit: [
         {
@@ -92,12 +92,11 @@ export default class MsgSubmitTextProposal extends MsgBase<
         },
       ],
       proposer: params.proposer,
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitTextProposal.Object>,
+      value: messageWithProposalType,
     }
   }
 
@@ -120,7 +119,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitTextProposal.Object>),
+      ...messageWithProposalType,
     }
   }
 

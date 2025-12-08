@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveWasmxV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
@@ -107,12 +106,11 @@ export default class MsgExecuteContractCompat extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto as unknown as Record<string, unknown>),
+      sender: proto.sender,
+      contract: proto.contract,
       msg: JSON.stringify(this.getMsgObject()),
+      funds: proto.funds,
     }
-
-    // @ts-ignore
-    delete message.funds_list
 
     return {
       type: 'wasmx/MsgExecuteContractCompat',

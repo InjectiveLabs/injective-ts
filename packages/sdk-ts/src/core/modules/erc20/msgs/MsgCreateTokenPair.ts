@@ -54,7 +54,10 @@ export default class MsgCreateTokenPair extends MsgBase<
     const proto = this.toProto()
     const message = {
       sender: proto.sender,
-      token_pair: proto.tokenPair,
+      token_pair: {
+        bank_denom: proto.tokenPair?.bankDenom,
+        erc20_address: proto.tokenPair?.erc20Address,
+      },
     }
 
     return {

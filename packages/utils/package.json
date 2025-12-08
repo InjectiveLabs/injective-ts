@@ -79,7 +79,7 @@
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
     "axios": "catalog:",
-    "bignumber.js": "^9.3.1",
+    "bignumber.js": "catalog:",
     "http-status-codes": "catalog:",
     "store2": "^2.14.4"
   },

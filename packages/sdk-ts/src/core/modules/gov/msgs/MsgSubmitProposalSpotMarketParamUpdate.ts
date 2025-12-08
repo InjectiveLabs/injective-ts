@@ -6,10 +6,6 @@ import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-t
 import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-import type snakecaseKeys from 'snakecase-keys'
-
-type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
-  snakecaseKeys.SnakeCaseKeys<T>
 
 const createSpotMarketParamUpdate = (
   params: MsgSubmitProposalSpotMarketParamUpdate.Params,
@@ -188,8 +184,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>,
+      value: messageWithProposalType,
     }
   }
 
@@ -207,7 +202,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>),
+      ...messageWithProposalType,
     }
   }
 
@@ -249,8 +244,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     return {
       type,
-      value:
-        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>,
+      value: messageAdjusted,
     }
   }
 
