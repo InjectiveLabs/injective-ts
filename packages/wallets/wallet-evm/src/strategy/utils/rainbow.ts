@@ -1,12 +1,12 @@
-import { isServerSide } from '@injectivelabs/sdk-ts/utils'
 import type {
   BrowserEip1993Provider,
   WindowWithEip1193Provider,
 } from '@injectivelabs/wallet-base'
 
-const $window = (isServerSide()
-  ? {}
-  : window) as unknown as WindowWithEip1193Provider
+const getWindow = () =>
+  (typeof window === 'undefined'
+    ? {}
+    : window) as unknown as WindowWithEip1193Provider
 
 export async function getRainbowProvider({ timeout } = { timeout: 3000 }) {
   const provider = getRainbowWalletFromWindow()
@@ -28,6 +28,8 @@ async function listenForRainbowWalletInitialized(
       resolve(getRainbowWalletFromWindow())
     }
 
+    const $window = getWindow()
+
     $window.addEventListener('rainbow#initialized', handleInitialization, {
       once: true,
     })
@@ -40,6 +42,7 @@ async function listenForRainbowWalletInitialized(
 }
 
 function getRainbowWalletFromWindow() {
+  const $window = getWindow()
   const injectedProviderExist =
     typeof window !== 'undefined' &&
     (typeof $window.ethereum !== 'undefined' ||

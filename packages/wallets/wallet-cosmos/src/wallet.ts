@@ -28,12 +28,13 @@ import type {
   BroadcastMode as BroadcastModeType,
 } from '@keplr-wallet/types'
 
-const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
-  keplr?: Keplr
-  ninji?: Keplr
-  leap?: Keplr
-  owallet?: Keplr
-}
+const getWindow = () =>
+  (typeof window !== 'undefined' ? window : {}) as Window & {
+    keplr?: Keplr
+    ninji?: Keplr
+    leap?: Keplr
+    owallet?: Keplr
+  }
 
 export class CosmosWallet {
   public wallet: Wallet
@@ -352,6 +353,7 @@ export class CosmosWallet {
 
   private getCosmos() {
     const { wallet } = this
+    const $window = getWindow()
 
     if (!$window) {
       throw new CosmosWalletException(

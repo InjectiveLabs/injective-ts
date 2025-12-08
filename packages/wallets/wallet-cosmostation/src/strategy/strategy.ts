@@ -1,8 +1,7 @@
 import { makeSignDoc } from '@cosmjs/proto-signing'
 import { CosmosChainId } from '@injectivelabs/ts-types'
 import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
-import { InstallError } from '@cosmostation/extension-client'
-import { getOfflineSigner } from '@cosmostation/cosmos-client'
+import { cosmos, InstallError } from '@cosmostation/extension-client'
 import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
 import {
   createTxRawFromSigResponse,
@@ -43,6 +42,64 @@ import type {
   AminoSignResponse,
   DirectSignResponse,
 } from '@injectivelabs/sdk-ts/types'
+
+/**
+ * Get an offline signer from the Cosmostation extension.
+ * This replaces @cosmostation/cosmos-client's getOfflineSigner to avoid
+ * WalletConnect v1 dependencies that cause ESM bundling issues.
+ */
+async function getExtensionOfflineSigner(chainId: string): Promise<{
+  getAccounts: () => Promise<
+    { address: string; pubkey: Uint8Array; algo: string }[]
+  >
+  signAmino: (
+    signerAddress: string,
+    signDoc: any,
+  ) => Promise<{ signed: any; signature: { pub_key: any; signature: string } }>
+  signDirect: (
+    signerAddress: string,
+    signDoc: any,
+  ) => Promise<{ signed: any; signature: { pub_key: any; signature: string } }>
+}> {
+  const provider = await cosmos()
+
+  return {
+    getAccounts: async () => {
+      const response = await provider.getAccount(chainId)
+      return [
+        {
+          address: response.address,
+          pubkey: response.publicKey,
+          algo: 'secp256k1',
+        },
+      ]
+    },
+    signAmino: async (_signerAddress: string, signDoc: any) => {
+      const response = await provider.signAmino(chainId, signDoc)
+      return {
+        signed: response.signed_doc,
+        signature: { pub_key: response.pub_key, signature: response.signature },
+      }
+    },
+    signDirect: async (_signerAddress: string, signDoc: any) => {
+      const response = await provider.signDirect(chainId, {
+        account_number: String(signDoc.accountNumber),
+        auth_info_bytes: signDoc.authInfoBytes,
+        body_bytes: signDoc.bodyBytes,
+        chain_id: signDoc.chainId,
+      })
+      return {
+        signed: {
+          accountNumber: response.signed_doc.account_number,
+          chainId: response.signed_doc.chain_id,
+          authInfoBytes: response.signed_doc.auth_info_bytes,
+          bodyBytes: response.signed_doc.body_bytes,
+        },
+        signature: { pub_key: response.pub_key, signature: response.signature },
+      }
+    },
+  }
+}
 
 const getChainNameFromChainId = (chainId: CosmosChainId | ChainId) => {
   const [chainName] = chainId.split('-')
@@ -324,7 +381,9 @@ export class Cosmostation
   }
 
   public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
-    return (await getOfflineSigner(chainId)) as unknown as OfflineSigner
+    return (await getExtensionOfflineSigner(
+      chainId,
+    )) as unknown as OfflineSigner
   }
 
   private async getCosmostationWallet(): Promise<Cosmos> {
