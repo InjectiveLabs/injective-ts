@@ -50,7 +50,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          pnpm exec lerna version prerelease --preid alpha --force-git-tag --no-changelog --yes
+          pnpm exec lerna version prerelease --preid alpha --force-publish --force-git-tag --no-changelog --yes
           pnpm publish -r --access public --tag alpha --no-git-checks --report-summary
 
       - name: 'Broadcast published versions on Slack'

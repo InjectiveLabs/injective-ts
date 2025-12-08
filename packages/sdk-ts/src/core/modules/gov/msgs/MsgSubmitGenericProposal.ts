@@ -43,7 +43,7 @@ export default class MsgSubmitGenericProposal extends MsgBase<
     })
 
     const message = CosmosGovV1TxPb.MsgSubmitProposal.create({
-      messages: params.messages.map((msg) => {
+      messages: params.messages.map((msg): GoogleProtobufAnyPbPb.Any => {
         const contentAny = GoogleProtobufAnyPbPb.Any.create({
           typeUrl: msg.toDirectSign().type,
           value: msg.toBinary(),
@@ -125,7 +125,7 @@ export default class MsgSubmitGenericProposal extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: '/cosmos.gov.v1.MsgSubmitProposal',
+      type: '/cosmos.gov.v1.MsgSubmitProposal' as const,
       message: proto,
     }
   }

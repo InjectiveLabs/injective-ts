@@ -12,7 +12,8 @@ export interface BrowserEip1993Provider extends EIP1193Provider {
   isTrustWallet: boolean
 }
 
-export interface WindowWithEip1193Provider extends Window {
+// Use Omit to avoid conflict with viem's stricter Window.ethereum type
+export interface WindowWithEip1193Provider extends Omit<Window, 'ethereum'> {
   rainbow: BrowserEip1993Provider
   rabby: BrowserEip1993Provider
   ethereum: BrowserEip1993Provider

@@ -33,14 +33,16 @@ export default class MsgExec extends MsgBase<
 
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
 
-    const actualMsgs = msgs.map((msg) => {
-      const msgValue = GoogleProtobufAnyPbPb.Any.create({
-        typeUrl: msg.toDirectSign().type,
-        value: msg.toBinary(),
-      })
+    const actualMsgs: GoogleProtobufAnyPbPb.Any[] = msgs.map(
+      (msg): GoogleProtobufAnyPbPb.Any => {
+        const msgValue = GoogleProtobufAnyPbPb.Any.create({
+          typeUrl: msg.toDirectSign().type,
+          value: msg.toBinary(),
+        })
 
-      return msgValue
-    })
+        return msgValue
+      },
+    )
 
     const message = CosmosAuthzV1Beta1TxPb.MsgExec.create({
       grantee: params.grantee,
@@ -100,7 +102,7 @@ export default class MsgExec extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: '/cosmos.authz.v1beta1.MsgExec',
+      type: '/cosmos.authz.v1beta1.MsgExec' as const,
       message: proto,
     }
   }

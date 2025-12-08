@@ -26,6 +26,7 @@
       "@injectivelabs/networks": ["./packages/networks"],
       "@injectivelabs/utils": ["./packages/utils"],
       "@injectivelabs/sdk-ts": ["./packages/sdk-ts"],
+      "@injectivelabs/sdk-ts/*": ["./packages/sdk-ts/src/*"],
       "@injectivelabs/wallet-base": ["./packages/wallets/wallet-base"],
       "@injectivelabs/wallet-core": ["./packages/wallets/wallet-core"],
       "@injectivelabs/wallet-evm": ["./packages/wallets/wallet-evm"],

@@ -63,6 +63,7 @@ echo "Generating TypeScript code with @protobuf-ts..."
   --plugin=./node_modules/.bin/protoc-gen-ts \
   --ts_out=${OUT_DIR} \
   --ts_opt=add_pb_suffix \
+  --ts_opt=force_optimize_code_size \
   ${PROTO_FILES}
   
 echo "TypeScript files generated successfully!"
