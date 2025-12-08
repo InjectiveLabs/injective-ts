@@ -40,6 +40,7 @@ import type {
 } from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
+  WalletMetadata,
   Eip1193Provider,
   SendTransactionOptions,
   ConcreteWalletStrategy,
@@ -87,6 +88,10 @@ export default class TrezorBase
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
   }
 
+  setMetadata(metadata: WalletMetadata): void {
+    this.metadata = metadata
+  }
+
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Hardware)
   }
@@ -97,6 +102,12 @@ export default class TrezorBase
 
   public async disconnect() {
     return Promise.resolve()
+  }
+
+  protected async getDerivationPath(address: string): Promise<string> {
+    return this.metadata?.derivationPath
+      ? this.metadata.derivationPath
+      : (await this.getWalletForAddress(address)).derivationPath
   }
 
   public async getAddresses(): Promise<string[]> {
@@ -233,8 +244,7 @@ export default class TrezorBase
 
     try {
       await this.trezor.connect()
-
-      const { derivationPath } = await this.getWalletForAddress(address)
+      const derivationPath = await this.getDerivationPath(address)
 
       const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
@@ -310,7 +320,7 @@ export default class TrezorBase
 
     try {
       await this.trezor.connect()
-      const { derivationPath } = await this.getWalletForAddress(signer)
+      const derivationPath = await this.getDerivationPath(signer)
 
       const response = await TrezorConnect.ethereumSignMessage({
         path: derivationPath,
@@ -415,7 +425,8 @@ export default class TrezorBase
 
     try {
       await this.trezor.connect()
-      const { derivationPath } = await this.getWalletForAddress(args.address)
+      const derivationPath = await this.getDerivationPath(args.address)
+
       const response = await TrezorConnect.ethereumSignTransaction({
         path: derivationPath,
         transaction: trezorTxData,

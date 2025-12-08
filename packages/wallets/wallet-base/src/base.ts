@@ -33,4 +33,8 @@ export default abstract class BaseConcreteStrategy {
     this.chainId = args.chainId
     this.metadata = args.metadata
   }
+
+  public setMetadata(metadata?: WalletMetadata) {
+    this.metadata = metadata
+  }
 }

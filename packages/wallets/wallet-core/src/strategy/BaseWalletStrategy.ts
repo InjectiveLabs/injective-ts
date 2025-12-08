@@ -95,8 +95,8 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
   }
 
   public setMetadata(metadata?: WalletMetadata) {
-    console.log('Setting metadata', metadata)
     this.metadata = metadata
+
     this.getStrategy().setMetadata?.(metadata)
   }
 

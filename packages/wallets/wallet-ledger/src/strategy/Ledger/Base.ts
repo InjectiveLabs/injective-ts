@@ -37,6 +37,7 @@ import type {
 } from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
+  WalletMetadata,
   Eip1193Provider,
   SendTransactionOptions,
   ConcreteWalletStrategy,
@@ -72,6 +73,10 @@ export default class LedgerBase
     this.evmOptions = args.evmOptions
   }
 
+  setMetadata(metadata: WalletMetadata): void {
+    this.metadata = metadata
+  }
+
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Hardware)
   }
@@ -82,6 +87,12 @@ export default class LedgerBase
 
   public async disconnect() {
     this.ledger = await this.ledger.refresh()
+  }
+
+  protected async getDerivationPath(address: string): Promise<string> {
+    return this.metadata?.derivationPath
+      ? this.metadata.derivationPath
+      : (await this.getWalletForAddress(address)).derivationPath
   }
 
   public async getAddresses(): Promise<string[]> {
@@ -195,7 +206,7 @@ export default class LedgerBase
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const { derivationPath } = await this.getWalletForAddress(address)
+    const derivationPath = await this.getDerivationPath(address)
     const object = JSON.parse(eip712json)
 
     try {
@@ -279,8 +290,7 @@ export default class LedgerBase
     data: string | Uint8Array,
   ): Promise<string> {
     try {
-      const { derivationPath } = await this.getWalletForAddress(signer)
-
+      const derivationPath = await this.getDerivationPath(signer)
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signPersonalMessage(
         derivationPath,
@@ -375,7 +385,7 @@ export default class LedgerBase
 
     try {
       const ledger = await this.ledger.getInstance()
-      const { derivationPath } = await this.getWalletForAddress(args.address)
+      const derivationPath = await this.getDerivationPath(args.address)
 
       // Sign the transaction with clear signing enabled
       const txSig = await ledger.clearSignTransaction(

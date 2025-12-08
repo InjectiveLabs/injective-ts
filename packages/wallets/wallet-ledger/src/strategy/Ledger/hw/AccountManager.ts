@@ -94,7 +94,9 @@ export default class AccountManager {
 
       const hdKey: HDNodeLike = {
         publicKey: hexToUint8Array(result.publicKey),
-        chainCode: hexToUint8Array(result.chainCode || ''),
+        chainCode: result.chainCode
+          ? hexToUint8Array(result.chainCode)
+          : new Uint8Array(32),
       }
       const address = result.address || addressOfHDKey(hdKey)
 
