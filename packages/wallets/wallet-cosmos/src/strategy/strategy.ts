@@ -122,6 +122,13 @@ export class CosmosWalletStrategy
           this.listeners[WalletEventListener.AccountChange],
         )
       }
+
+      if (wallet === Wallet.Cosmostation) {
+        window.removeEventListener(
+          'cosmostation_keystorechange',
+          this.listeners[WalletEventListener.AccountChange],
+        )
+      }
     }
 
     this.listeners = {}
@@ -350,6 +357,10 @@ export class CosmosWalletStrategy
 
     if (wallet === Wallet.Leap) {
       window.addEventListener('leap_keystorechange', listener)
+    }
+
+    if (wallet === Wallet.Cosmostation) {
+      window.addEventListener('cosmostation_keystorechange', listener)
     }
   }
 

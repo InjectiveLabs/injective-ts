@@ -2,6 +2,7 @@
   "name": "@injectivelabs/wallet-cosmostation",
   "version": "1.17.2-alpha.1",
   "description": "Cosmostation strategy for use with @injectivelabs/wallet-core.",
+  "deprecated": "Use @injectivelabs/wallet-cosmos with Wallet.Cosmostation instead",
   "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
@@ -54,7 +55,6 @@
   },
   "dependencies": {
     "@cosmjs/proto-signing": "catalog:",
-    "@cosmostation/extension-client": "^0.1.15",
     "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",

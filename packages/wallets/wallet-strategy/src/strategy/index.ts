@@ -20,11 +20,6 @@ const loadEvmStrategy = () =>
 const loadCosmosStrategy = () =>
   import('@injectivelabs/wallet-cosmos').then((m) => m.CosmosWalletStrategy)
 
-const loadCosmostationStrategy = () =>
-  import('@injectivelabs/wallet-cosmostation').then(
-    (m) => m.CosmostationWalletStrategy,
-  )
-
 const loadLedgerStrategies = () =>
   import('@injectivelabs/wallet-ledger').then((m) => ({
     LedgerLiveStrategy: m.LedgerLiveStrategy,
@@ -112,14 +107,10 @@ const createStrategy = async ({
     case Wallet.Keplr:
     case Wallet.Leap:
     case Wallet.Ninji:
-    case Wallet.OWallet: {
+    case Wallet.OWallet:
+    case Wallet.Cosmostation: {
       const CosmosWalletStrategy = await loadCosmosStrategy()
       return new CosmosWalletStrategy({ ...args, wallet })
-    }
-
-    case Wallet.Cosmostation: {
-      const CosmostationWalletStrategy = await loadCosmostationStrategy()
-      return new CosmostationWalletStrategy({ ...args })
     }
 
     case Wallet.Ledger: {

@@ -1,9 +1,6 @@
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import { Wallet, isCosmosWallet } from '@injectivelabs/wallet-base'
-import {
-  CosmosWalletStrategy,
-  CosmostationWalletStrategy,
-} from './strategies/index.js'
+import { CosmosWalletStrategy } from './strategies/index.js'
 import type {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
@@ -22,10 +19,7 @@ const createStrategy = ({
     case Wallet.Keplr:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Keplr })
     case Wallet.Cosmostation:
-      return new CosmostationWalletStrategy({
-        ...args,
-        wallet: Wallet.Cosmostation,
-      })
+      return new CosmosWalletStrategy({ ...args, wallet: Wallet.Cosmostation })
     case Wallet.Leap:
       return new CosmosWalletStrategy({ ...args, wallet: Wallet.Leap })
     case Wallet.Ninji:

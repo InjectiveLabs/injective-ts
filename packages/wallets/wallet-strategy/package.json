@@ -57,7 +57,6 @@
     "@injectivelabs/wallet-base": "workspace:*",
     "@injectivelabs/wallet-core": "workspace:*",
     "@injectivelabs/wallet-cosmos": "workspace:*",
-    "@injectivelabs/wallet-cosmostation": "workspace:*",
     "@injectivelabs/wallet-evm": "workspace:*",
     "@injectivelabs/wallet-ledger": "workspace:*",
     "@injectivelabs/wallet-magic": "workspace:*",

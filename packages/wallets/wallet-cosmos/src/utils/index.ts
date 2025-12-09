@@ -14,6 +14,7 @@ export const isCosmosWalletInstalled = (wallet: Wallet) => {
     keplr?: CosmosBrowserWallet
     ninji?: CosmosBrowserWallet
     oWallet?: CosmosBrowserWallet
+    cosmostation?: { providers?: { keplr?: CosmosBrowserWallet } }
   }
 
   switch (wallet) {
@@ -25,6 +26,8 @@ export const isCosmosWalletInstalled = (wallet: Wallet) => {
       return $window.leap !== undefined
     case Wallet.OWallet:
       return $window.oWallet !== undefined
+    case Wallet.Cosmostation:
+      return $window.cosmostation?.providers?.keplr !== undefined
     default:
       return false
   }

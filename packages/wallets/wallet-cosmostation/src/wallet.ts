@@ -1,4 +1,3 @@
-import { cosmos, InstallError } from '@cosmostation/extension-client'
 import {
   ErrorType,
   UnspecifiedErrorCode,
@@ -9,6 +8,68 @@ import type {
   CosmosChainId,
   TestnetCosmosChainId,
 } from '@injectivelabs/ts-types'
+import type {
+  CosmostationCosmos,
+  CosmostationAccount,
+  CosmostationSupportedChainIdsResponse,
+} from './types.js'
+
+/**
+ * Get the Cosmostation cosmos provider from window.
+ * Throws if the extension is not installed.
+ */
+export function getCosmostationProvider(): CosmostationCosmos {
+  if (typeof window === 'undefined' || !window.cosmostation?.cosmos) {
+    throw new CosmosWalletException(
+      new Error('Please install the Cosmostation extension'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletNotInstalledError,
+      },
+    )
+  }
+
+  return window.cosmostation.cosmos
+}
+
+/**
+ * Request an account from the Cosmostation extension.
+ */
+export async function requestAccount(
+  chainName: string,
+): Promise<CosmostationAccount> {
+  const provider = getCosmostationProvider()
+
+  return provider.request<CosmostationAccount>({
+    method: 'cos_requestAccount',
+    params: { chainName },
+  })
+}
+
+/**
+ * Get account info without prompting the user (if already connected).
+ */
+export async function getAccount(
+  chainName: string,
+): Promise<CosmostationAccount> {
+  const provider = getCosmostationProvider()
+
+  return provider.request<CosmostationAccount>({
+    method: 'cos_account',
+    params: { chainName },
+  })
+}
+
+/**
+ * Get supported chain IDs from the extension.
+ */
+export async function getSupportedChainIds(): Promise<CosmostationSupportedChainIdsResponse> {
+  const provider = getCosmostationProvider()
+
+  return provider.request<CosmostationSupportedChainIdsResponse>({
+    method: 'cos_supportedChainIds',
+  })
+}
 
 export class CosmostationWallet {
   private chainId: CosmosChainId | TestnetCosmosChainId | ChainId
@@ -23,11 +84,13 @@ export class CosmostationWallet {
 
   public async checkChainIdSupport() {
     const { chainId: actualChainId } = this
-    const provider = await this.getCosmostationWallet()
     const chainName = actualChainId.split('-')
 
+    // Ensure extension is installed
+    getCosmostationProvider()
+
     try {
-      const supportedChainIds = await provider.getSupportedChainIds()
+      const supportedChainIds = await getSupportedChainIds()
 
       return !!supportedChainIds.official.find(
         (chainId) => chainId === actualChainId,
@@ -43,25 +106,7 @@ export class CosmostationWallet {
     }
   }
 
-  async getCosmostationWallet() {
-    try {
-      const provider = await cosmos()
-
-      return provider
-    } catch (e) {
-      if (e instanceof InstallError) {
-        throw new CosmosWalletException(
-          new Error('Please install the Cosmostation extension'),
-          {
-            code: UnspecifiedErrorCode,
-            type: ErrorType.WalletNotInstalledError,
-          },
-        )
-      }
-
-      throw new CosmosWalletException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-      })
-    }
+  async getCosmostationProvider(): Promise<CosmostationCosmos> {
+    return getCosmostationProvider()
   }
 }

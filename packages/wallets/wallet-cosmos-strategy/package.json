@@ -56,8 +56,7 @@
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*",
     "@injectivelabs/wallet-core": "workspace:*",
-    "@injectivelabs/wallet-cosmos": "workspace:*",
-    "@injectivelabs/wallet-cosmostation": "workspace:*"
+    "@injectivelabs/wallet-cosmos": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

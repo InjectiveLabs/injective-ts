@@ -34,6 +34,12 @@ const getWindow = () =>
     ninji?: Keplr
     leap?: Keplr
     owallet?: Keplr
+    cosmostation?: {
+      cosmos: {
+        request<T>(message: { method: string; params?: unknown }): Promise<T>
+      }
+      providers: { keplr?: Keplr }
+    }
   }
 
 export class CosmosWallet {
@@ -289,7 +295,9 @@ export class CosmosWallet {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (wallet !== Wallet.Keplr) {
+    if (
+      !([Wallet.Keplr, Wallet.Cosmostation] as WalletType[]).includes(wallet)
+    ) {
       throw new CosmosWalletException(
         new Error(`signArbitrary is not supported on ${capitalize(wallet)}`),
       )
@@ -335,8 +343,14 @@ export class CosmosWallet {
 
   public async checkChainIdSupport() {
     const { chainId, wallet } = this
-    const cosmos = this.getCosmos()
     const chainName = chainId.split('-')
+
+    // Cosmostation has a dedicated API for checking chain support
+    if (wallet === Wallet.Cosmostation) {
+      return this.checkCosmostationChainSupport()
+    }
+
+    const cosmos = this.getCosmos()
 
     try {
       return !!(await cosmos.getKey(chainId))
@@ -348,6 +362,47 @@ export class CosmosWallet {
           } network. Please use another Cosmos wallet`,
         ),
       )
+    }
+  }
+
+  private async checkCosmostationChainSupport(): Promise<boolean> {
+    const { chainId } = this
+    const $window = getWindow()
+    const chainName = chainId.split('-')
+
+    if (!$window.cosmostation?.cosmos) {
+      throw new CosmosWalletException(
+        new Error('Please install the Cosmostation extension'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletNotInstalledError,
+          contextModule: Wallet.Cosmostation,
+        },
+      )
+    }
+
+    try {
+      const supportedChainIds = await $window.cosmostation.cosmos.request<{
+        official: string[]
+        unofficial: string[]
+      }>({ method: 'cos_supportedChainIds' })
+
+      const isSupported = supportedChainIds.official.includes(chainId)
+
+      if (!isSupported) {
+        throw new CosmosWalletException(
+          new Error(
+            `Cosmostation doesn't support ${
+              chainName[0] || chainId
+            } network. Please use another Cosmos wallet`,
+          ),
+        )
+      }
+
+      return true
+    } catch (e) {
+      if (e instanceof CosmosWalletException) throw e
+      throw new CosmosWalletException(new Error((e as any).message))
     }
   }
 
@@ -382,6 +437,10 @@ export class CosmosWallet {
 
     if (wallet === Wallet.Leap) {
       cosmos = $window.leap
+    }
+
+    if (wallet === Wallet.Cosmostation) {
+      cosmos = $window.cosmostation?.providers?.keplr
     }
 
     if (!cosmos) {

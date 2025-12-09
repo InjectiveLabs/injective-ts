@@ -6,4 +6,5 @@ export const cosmosWallets = [
   Wallet.Ninji,
   Wallet.Keplr,
   Wallet.OWallet,
+  Wallet.Cosmostation,
 ] as WalletType[]
