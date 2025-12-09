@@ -62,7 +62,15 @@
     "@ledgerhq/hw-transport": "^6.31.13",
     "@ledgerhq/hw-transport-webhid": "^6.30.9",
     "@ledgerhq/hw-transport-webusb": "^6.29.13",
+    "buffer": "^6.0.3",
     "viem": "catalog:"
+  },
+  "peerDependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/rlp": "^5.7.0",
+    "@ethersproject/transactions": "^5.7.0",
+    "axios": "^1.0.0",
+    "bignumber.js": "^9.0.0"
   },
   "publishConfig": {
     "access": "public"

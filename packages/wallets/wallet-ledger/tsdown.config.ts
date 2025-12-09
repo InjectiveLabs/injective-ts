@@ -6,24 +6,38 @@ export default defineConfig({
   format: ['cjs', 'esm'],
   dts: true,
   clean: true,
-  treeshake: true, // Enable tree-shaking
+  treeshake: true,
   platform: 'neutral',
   target: 'es2018',
   outDir: 'dist',
   external: [
-    // External workspace dependencies
+    // Workspace dependencies
     '@injectivelabs/exceptions',
     '@injectivelabs/sdk-ts',
     '@injectivelabs/ts-types',
     '@injectivelabs/wallet-base',
-    // External ledger dependencies
-    '@bangjelkoski/ledgerhq-hw-app-cosmos',
-    '@bangjelkoski/ledgerhq-hw-app-eth',
-    '@bangjelkoski/ledgerhq-hw-transport',
-    '@bangjelkoski/ledgerhq-hw-transport-webhid',
-    '@bangjelkoski/ledgerhq-hw-transport-webusb',
-    // External dependencies
+    // Transitive dependencies from @ledgerhq/* (declared as peerDependencies)
+    'axios',
+    'bignumber.js',
+    '@ethersproject/abi',
+    '@ethersproject/rlp',
+    '@ethersproject/transactions',
+    // Direct external dependencies
     'viem',
   ],
+  // Force bundling of @ledgerhq/* packages (even though they use dynamic imports)
+  // This is needed so Buffer injection can process their code
+  noExternal: [/@ledgerhq\/.*/],
+  inputOptions: {
+    resolve: {
+      // Required for platform: 'neutral' to resolve @ledgerhq packages correctly
+      mainFields: ['module', 'main'],
+    },
+    transform: {
+      inject: {
+        Buffer: ['buffer', 'Buffer'],
+      },
+    },
+  },
   onSuccess: createSimpleOnSuccess(),
 })

@@ -417,6 +417,15 @@ importers:
 
   packages/wallets/wallet-ledger:
     dependencies:
+      '@ethersproject/abi':
+        specifier: ^5.7.0
+        version: 5.7.0
+      '@ethersproject/rlp':
+        specifier: ^5.7.0
+        version: 5.7.0
+      '@ethersproject/transactions':
+        specifier: ^5.7.0
+        version: 5.7.0
       '@injectivelabs/exceptions':
         specifier: workspace:*
         version: link:../../exceptions
@@ -444,6 +453,15 @@ importers:
       '@ledgerhq/hw-transport-webusb':
         specifier: ^6.29.13
         version: 6.29.13
+      axios:
+        specifier: ^1.0.0
+        version: 1.13.2
+      bignumber.js:
+        specifier: ^9.0.0
+        version: 9.3.1
+      buffer:
+        specifier: ^6.0.3
+        version: 6.0.3
       viem:
         specifier: 'catalog:'
         version: 2.41.2(bufferutil@4.0.7)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.24.2)
