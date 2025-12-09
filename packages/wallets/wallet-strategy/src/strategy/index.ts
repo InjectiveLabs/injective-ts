@@ -5,6 +5,16 @@ import {
   isEvmWallet,
   type WalletMetadata,
 } from '@injectivelabs/wallet-base'
+import {
+  loadEvmStrategy,
+  loadMagicStrategy,
+  loadCosmosStrategy,
+  loadTurnkeyStrategy,
+  loadLedgerStrategies,
+  loadTrezorStrategies,
+  loadPrivateKeyStrategy,
+  loadWalletConnectStrategy,
+} from './loaders.js'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
 import type {
   ConcreteStrategiesArg,
@@ -13,40 +23,6 @@ import type {
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-
-const loadEvmStrategy = () =>
-  import('@injectivelabs/wallet-evm').then((m) => m.EvmWalletStrategy)
-
-const loadCosmosStrategy = () =>
-  import('@injectivelabs/wallet-cosmos').then((m) => m.CosmosWalletStrategy)
-
-const loadLedgerStrategies = () =>
-  import('@injectivelabs/wallet-ledger').then((m) => ({
-    LedgerLiveStrategy: m.LedgerLiveStrategy,
-    LedgerLegacyStrategy: m.LedgerLegacyStrategy,
-  }))
-
-const loadTrezorStrategies = () =>
-  import('@injectivelabs/wallet-trezor').then((m) => ({
-    TrezorBip32Strategy: m.TrezorBip32Strategy,
-    TrezorBip44Strategy: m.TrezorBip44Strategy,
-  }))
-
-const loadPrivateKeyStrategy = () =>
-  import('@injectivelabs/wallet-private-key').then(
-    (m) => m.PrivateKeyWalletStrategy,
-  )
-
-const loadTurnkeyStrategy = () =>
-  import('@injectivelabs/wallet-turnkey').then((m) => m.TurnkeyWalletStrategy)
-
-const loadMagicStrategy = () =>
-  import('@injectivelabs/wallet-magic').then((m) => m.MagicStrategy)
-
-const loadWalletConnectStrategy = () =>
-  import('@injectivelabs/wallet-wallet-connect').then(
-    (m) => m.WalletConnectStrategy,
-  )
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { evmOptions } = args
@@ -98,6 +74,7 @@ const createStrategy = async ({
     case Wallet.Rainbow:
     case Wallet.Rabby: {
       const EvmWalletStrategy = await loadEvmStrategy()
+
       return new EvmWalletStrategy({
         ...ethWalletArgs,
         wallet,
@@ -110,31 +87,37 @@ const createStrategy = async ({
     case Wallet.OWallet:
     case Wallet.Cosmostation: {
       const CosmosWalletStrategy = await loadCosmosStrategy()
+
       return new CosmosWalletStrategy({ ...args, wallet })
     }
 
     case Wallet.Ledger: {
       const { LedgerLiveStrategy } = await loadLedgerStrategies()
+
       return new LedgerLiveStrategy(ethWalletArgs)
     }
 
     case Wallet.LedgerLegacy: {
       const { LedgerLegacyStrategy } = await loadLedgerStrategies()
+
       return new LedgerLegacyStrategy(ethWalletArgs)
     }
 
     case Wallet.TrezorBip32: {
       const { TrezorBip32Strategy } = await loadTrezorStrategies()
+
       return new TrezorBip32Strategy(ethWalletArgs)
     }
 
     case Wallet.TrezorBip44: {
       const { TrezorBip44Strategy } = await loadTrezorStrategies()
+
       return new TrezorBip44Strategy(ethWalletArgs)
     }
 
     case Wallet.PrivateKey: {
       const PrivateKeyWalletStrategy = await loadPrivateKeyStrategy()
+
       return new PrivateKeyWalletStrategy(ethWalletArgs)
     }
 
@@ -143,6 +126,7 @@ const createStrategy = async ({
         return undefined
       }
       const TurnkeyWalletStrategy = await loadTurnkeyStrategy()
+
       return new TurnkeyWalletStrategy(ethWalletArgs)
     }
 
@@ -151,6 +135,7 @@ const createStrategy = async ({
         return undefined
       }
       const MagicStrategy = await loadMagicStrategy()
+
       return new MagicStrategy(args)
     }
 
@@ -159,6 +144,7 @@ const createStrategy = async ({
         return undefined
       }
       const WalletConnectStrategy = await loadWalletConnectStrategy()
+
       return new WalletConnectStrategy(ethWalletArgs)
     }
 

@@ -213,23 +213,31 @@ export class TrezorEip1193Provider implements Eip1193Provider {
   async request(args: { method: string; params: any[] }): Promise<any> {
     if (args.method === 'eth_requestAccounts') {
       const address = await this.getAddress()
+
       return [address]
     }
 
     if (args.method === 'eth_sign') {
-      if (!args.params[0]) throw new Error('Missing parameter for eth_sign')
+      if (!args.params[0]) {
+        throw new Error('Missing parameter for eth_sign')
+      }
+
       return this.signMessage(args.params[0])
     }
 
     if (args.method === 'eth_signTransaction') {
-      if (!args.params[0])
+      if (!args.params[0]) {
         throw new Error('Missing parameter for eth_signTransaction')
+      }
+
       return this.signTransaction(args.params[0])
     }
 
     if (args.method === 'eth_signTypedData') {
-      if (!args.params[0])
+      if (!args.params[0]) {
         throw new Error('Missing parameter for eth_signTypedData')
+      }
+
       return this.signTypedData(args.params[0])
     }
 
@@ -252,6 +260,7 @@ export class TrezorEip1193Provider implements Eip1193Provider {
       }
 
       const estimate = await client.estimateGas(data)
+
       return `0x${estimate.toString(16)}`
     }
 

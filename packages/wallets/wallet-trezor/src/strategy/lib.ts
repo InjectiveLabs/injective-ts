@@ -24,7 +24,7 @@ type ConnectSettingsPublic = {
   pendingTransportEvent?: boolean
   lazyLoad?: boolean
   interactionTimeout?: number
-  trustedHost: boolean
+  trustedHost?: boolean
   binFilesBaseUrl?: string
   enableFirmwareHashCheck?: boolean
   firmwareHashCheckTimeouts?: Record<string, number>
@@ -33,7 +33,7 @@ type ConnectSettingsPublic = {
     appName?: string
     staticKey?: string
     knownCredentials?: unknown[]
-    pairingMethods: unknown[]
+    pairingMethods?: unknown[]
   }
 }
 
@@ -45,19 +45,27 @@ type InitSettingsWithWeb = {
 // Export Manifest type so it can be used in other files
 export type { Manifest }
 
-// Define the return type without referencing TrezorConnectType to avoid triggering
-// TypeScript to parse the broken type definition in @trezor/connect
 export type TrezorConnectWithWebSettings = {
   init: (settings: InitSettingsWithWeb) => Promise<void>
+  dispose?: () => void | Promise<void>
+  getSettings: () => Promise<{ success: boolean; payload?: unknown }>
   // Add other methods as needed, or use a more permissive type
   [key: string]: any
 }
 
-export async function loadTrezorConnect(): Promise<TrezorConnectWithWebSettings> {
-  const module = await import('@trezor/connect-web')
+type TrezorConnect = TrezorConnectWithWebSettings
 
-  return (
-    ((module as any)?.default
-      ?.default as unknown as TrezorConnectWithWebSettings) || module.default
-  )
+let cachedTrezorConnect: TrezorConnect | null = null
+
+export async function loadTrezorConnect(): Promise<TrezorConnect> {
+  if (!cachedTrezorConnect) {
+    const module = await import('@trezor/connect-web')
+    // Handle different module export formats
+    // Some bundlers may wrap the default export differently
+    cachedTrezorConnect =
+      ((module as any)?.default
+        ?.default as unknown as TrezorConnectWithWebSettings) ||
+      (module.default as unknown as TrezorConnectWithWebSettings)
+  }
+  return cachedTrezorConnect
 }

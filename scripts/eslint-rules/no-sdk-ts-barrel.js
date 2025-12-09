@@ -154,9 +154,11 @@ function isException(importName) {
     if (typeof exception === 'string') {
       return importName === exception
     }
+
     if (exception instanceof RegExp) {
       return exception.test(importName)
     }
+
     return false
   })
 }

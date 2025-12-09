@@ -123,7 +123,17 @@ export default class TrezorBase
 
       return wallets.map((k) => k.address)
     } catch (e: unknown) {
-      throw new TrezorException(new Error((e as any).message), {
+      const errorMessage = (e as any).message || 'Unknown error'
+      const isInitError =
+        errorMessage.includes('Initialize') ||
+        errorMessage.includes('Handshake') ||
+        errorMessage.includes('Init_')
+
+      const message = isInitError
+        ? `Trezor connection failed: ${errorMessage}. Please ensure your Trezor device is connected, unlocked, and that pop-ups are allowed for this site.`
+        : errorMessage
+
+      throw new TrezorException(new Error(message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
@@ -143,13 +153,24 @@ export default class TrezorBase
         baseDerivationPath,
         derivationPathType,
       )
+
       return wallets.map((k) => ({
         address: k.address,
         derivationPath: k.derivationPath,
         baseDerivationPath: derivationPathType,
       }))
     } catch (e: unknown) {
-      throw new TrezorException(new Error((e as any).message), {
+      const errorMessage = (e as any).message || 'Unknown error'
+      const isInitError =
+        errorMessage.includes('Initialize') ||
+        errorMessage.includes('Handshake') ||
+        errorMessage.includes('Init_')
+
+      const message = isInitError
+        ? `Trezor connection failed: ${errorMessage}. Please ensure your Trezor device is connected, unlocked, and that pop-ups are allowed for this site.`
+        : errorMessage
+
+      throw new TrezorException(new Error(message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,

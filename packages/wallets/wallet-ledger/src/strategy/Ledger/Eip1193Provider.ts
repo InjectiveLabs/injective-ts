@@ -111,18 +111,23 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
     if (args.method === 'eth_sign') {
       if (!args.params[0]) throw new Error('Missing parameter for eth_sign')
+
       return this.signMessage(args.params[0])
     }
 
     if (args.method === 'eth_signTransaction') {
-      if (!args.params[0])
+      if (!args.params[0]) {
         throw new Error('Missing parameter for eth_signTransaction')
+      }
+
       return this.signTransaction(args.params[0])
     }
 
     if (args.method === 'eth_signTypedData') {
-      if (!args.params[0])
+      if (!args.params[0]) {
         throw new Error('Missing parameter for eth_signTypedData')
+      }
+
       return this.signTypedData(args.params[0])
     }
 

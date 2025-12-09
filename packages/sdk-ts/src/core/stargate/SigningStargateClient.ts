@@ -197,6 +197,7 @@ export class SigningStargateClient extends StargateClient {
         amount: [...amount],
       },
     }
+
     return this.signAndBroadcast(senderAddress, [sendMsg], fee, memo)
   }
 
@@ -215,6 +216,7 @@ export class SigningStargateClient extends StargateClient {
         amount: amount,
       }),
     }
+
     return this.signAndBroadcast(delegatorAddress, [delegateMsg], fee, memo)
   }
 
@@ -233,6 +235,7 @@ export class SigningStargateClient extends StargateClient {
         amount: amount,
       }),
     }
+
     return this.signAndBroadcast(delegatorAddress, [undelegateMsg], fee, memo)
   }
 
@@ -249,6 +252,7 @@ export class SigningStargateClient extends StargateClient {
         validatorAddress: validatorAddress,
       }),
     }
+
     return this.signAndBroadcast(delegatorAddress, [withdrawMsg], fee, memo)
   }
 
@@ -279,6 +283,7 @@ export class SigningStargateClient extends StargateClient {
         timeoutTimestamp: timeoutTimestampNanoseconds,
       }),
     }
+
     return this.signAndBroadcast(senderAddress, [transferMsg], fee, memo)
   }
 

@@ -97,6 +97,7 @@ export const domainHash = (message: TypedDataDefinition) => {
     primaryType: 'EIP712Domain',
     message: {},
   }
+
   return hashTypedData(domainTypedData)
 }
 
@@ -112,6 +113,7 @@ export const messageHash = (message: TypedDataDefinition) => {
     primaryType: message.primaryType,
     message: message.message,
   }
+
   return hashTypedData(messageTypedData)
 }
 
@@ -186,6 +188,7 @@ export const sanitizeTypedData = <
         k,
         sanitizeTypedData((data as any)[k]),
       ])
+
       return Object.fromEntries(entries) as T
     }
 

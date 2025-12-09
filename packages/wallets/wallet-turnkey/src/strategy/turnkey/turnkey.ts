@@ -284,6 +284,7 @@ export class TurnkeyWallet {
         new Error('googleClientId and googleRedirectUri are required'),
       )
     }
+
     return generateGoogleUrl({
       nonce,
       clientId: this.metadata.googleClientId,

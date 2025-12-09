@@ -1,5 +1,4 @@
 import { capitalize } from '@injectivelabs/utils'
-import { SigningStargateClient } from '@cosmjs/stargate'
 import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import { uint8ArrayToHex } from '@injectivelabs/sdk-ts/utils'
 import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
@@ -11,6 +10,7 @@ import {
   CosmosWalletException,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
+import { loadSigningStargateClient } from './lib.js'
 import type { StdFee } from '@cosmjs/stargate'
 import type { EncodeObject } from '@cosmjs/proto-signing'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
@@ -268,6 +268,8 @@ export class CosmosWallet {
     if (!endpoints.rpc) {
       throw new GeneralException(new Error(`Please provide rpc endpoint`))
     }
+
+    const SigningStargateClient = await loadSigningStargateClient()
 
     const offlineSigner = cosmosWallet.getOfflineSignerOnlyAmino(chainId)
     const [account] = await offlineSigner.getAccounts()

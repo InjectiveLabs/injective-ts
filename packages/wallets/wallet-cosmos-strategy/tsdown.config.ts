@@ -18,6 +18,8 @@ export default defineConfig({
     '@injectivelabs/utils',
     '@injectivelabs/wallet-base',
     '@injectivelabs/wallet-core',
+    // Keep cosmos external for dynamic imports
+    '@injectivelabs/wallet-cosmos',
   ],
   onSuccess: createSimpleOnSuccess(),
 })

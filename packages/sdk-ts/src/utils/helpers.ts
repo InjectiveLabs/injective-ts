@@ -84,6 +84,7 @@ export const sortObjectByKeysWithReduce = <T>(obj: T): T => {
     .reduce((sorted, k) => {
       const key = k as keyof typeof obj
       sorted[key] = sortObjectByKeysWithReduce(obj[key])
+
       return sorted
     }, {} as T)
 }

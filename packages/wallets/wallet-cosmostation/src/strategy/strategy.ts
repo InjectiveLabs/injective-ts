@@ -1,4 +1,3 @@
-import { makeSignDoc } from '@cosmjs/proto-signing'
 import { CosmosChainId } from '@injectivelabs/ts-types'
 import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import {
@@ -23,6 +22,7 @@ import {
   type onAccountChangeCallback,
   type ConcreteCosmosWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import { loadMakeSignDoc } from './lib.js'
 import { requestAccount, getCosmostationProvider } from './../wallet.js'
 import {
   SEND_TRANSACTION_MODE,
@@ -75,6 +75,7 @@ async function getExtensionOfflineSigner(chainId: string): Promise<{
         method: 'cos_account',
         params: { chainName: chainId },
       })
+
       return [
         {
           address: response.address,
@@ -93,6 +94,7 @@ async function getExtensionOfflineSigner(chainId: string): Promise<{
           isEditMemo: true,
         },
       })
+
       return {
         signed: response.signed_doc,
         signature: { pub_key: response.pub_key, signature: response.signature },
@@ -114,6 +116,7 @@ async function getExtensionOfflineSigner(chainId: string): Promise<{
           isEditMemo: true,
         },
       })
+
       return {
         signed: {
           accountNumber: response.signed_doc.account_number,
@@ -320,6 +323,9 @@ export class Cosmostation
             isEditMemo: true,
           },
         })
+
+      // Lazy load makeSignDoc to avoid bundling @cosmjs in the initial bundle
+      const makeSignDoc = await loadMakeSignDoc()
 
       return {
         signed: makeSignDoc(

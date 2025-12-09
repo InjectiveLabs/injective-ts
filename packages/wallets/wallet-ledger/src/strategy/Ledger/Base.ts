@@ -104,6 +104,7 @@ export default class LedgerBase
         baseDerivationPath,
         derivationPathType,
       )
+
       return wallets.map((k) => k.address)
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
@@ -125,6 +126,7 @@ export default class LedgerBase
         baseDerivationPath,
         derivationPathType,
       )
+
       return wallets.map((k) => ({
         address: k.address,
         derivationPath: k.derivationPath,

@@ -127,6 +127,7 @@ const main = async () => {
       console.log(
         'No publish summary file found. This typically means no packages were published (they may have already been published).',
       )
+
       return
     }
 
@@ -134,6 +135,7 @@ const main = async () => {
 
     if (!publishedItems || publishedItems.length === 0) {
       console.log('No packages were published according to the summary file.')
+
       return
     }
   } catch (e) {

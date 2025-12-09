@@ -18,6 +18,8 @@ export default defineConfig({
     '@injectivelabs/exceptions',
     '@injectivelabs/wallet-base',
     '@injectivelabs/wallet-core',
+    // Keep cosmjs external for dynamic imports
+    '@cosmjs/proto-signing',
   ],
   onSuccess: createSimpleOnSuccess(),
 })
