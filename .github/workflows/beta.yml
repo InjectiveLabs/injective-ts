@@ -46,12 +46,19 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Version and publish
+      - name: Version packages
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          pnpm exec lerna version prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes
+          pnpm exec lerna version prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes --no-push
+
+      - name: Publish to npm
+        run: |
           pnpm publish -r --access public --tag beta --no-git-checks --report-summary
+
+      - name: Push tags to git
+        run: |
+          git push --follow-tags
 
       - name: 'Broadcast published versions on Slack'
         run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE

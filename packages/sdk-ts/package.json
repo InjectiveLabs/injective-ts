@@ -339,7 +339,6 @@
     "axios": "catalog:",
     "bip39": "^3.1.0",
     "cosmjs-types": "0.9.0",
-    "crypto-js": "^4.2.0",
     "ethers": "catalog:",
     "http-status-codes": "catalog:",
     "rxjs": "catalog:",
@@ -347,7 +346,6 @@
     "viem": "catalog:"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.2.2",
     "shx": "^0.3.4"
   },
   "publishConfig": {

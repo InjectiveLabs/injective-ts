@@ -1,9 +1,14 @@
-// import CryptoEs from 'crypto-es'
-import CryptoEs from 'crypto-js'
 import { keccak256 } from 'viem'
 import { hashTypedData } from 'viem'
 import { secp256k1 } from '@noble/curves/secp256k1'
-import { hexToUint8Array, uint8ArrayToBase64 } from './encoding.js'
+import { sha256 as nobleSha256 } from '@noble/hashes/sha2'
+import { ripemd160 as nobleRipemd160 } from '@noble/hashes/legacy'
+import {
+  hexToUint8Array,
+  uint8ArrayToHex,
+  uint8ArrayToBase64,
+  base64ToUint8Array,
+} from './encoding.js'
 import type { TypedDataDefinition } from 'viem'
 
 /**
@@ -12,9 +17,8 @@ import type { TypedDataDefinition } from 'viem'
  * @returns Uppercase hex string
  */
 export const hashToHex = (data: string): string => {
-  return CryptoEs.SHA256(CryptoEs.enc.Base64.parse(data))
-    .toString()
-    .toUpperCase()
+  const bytes = base64ToUint8Array(data)
+  return uint8ArrayToHex(nobleSha256(bytes)).toUpperCase()
 }
 
 /**
@@ -23,10 +27,7 @@ export const hashToHex = (data: string): string => {
  * @returns SHA256 hash as Uint8Array
  */
 export const sha256 = (data: Uint8Array): Uint8Array => {
-  const wordArray = CryptoEs.lib.WordArray.create(data)
-  const hash = CryptoEs.SHA256(wordArray)
-
-  return hexToUint8Array(hash.toString())
+  return nobleSha256(data)
 }
 
 /**
@@ -35,10 +36,7 @@ export const sha256 = (data: Uint8Array): Uint8Array => {
  * @returns RIPEMD160 hash as Uint8Array
  */
 export const ripemd160 = (data: Uint8Array): Uint8Array => {
-  const wordArray = CryptoEs.lib.WordArray.create(data)
-  const hash = CryptoEs.RIPEMD160(wordArray)
-
-  return hexToUint8Array(hash.toString())
+  return nobleRipemd160(data)
 }
 
 /**
@@ -249,6 +247,7 @@ function hashStruct(
       if (encoding === 'hex') {
         return hash.slice(2) // Remove 0x prefix for hex string
       }
+
       return hash
     },
   }

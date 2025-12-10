@@ -46,9 +46,13 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Version and publish
-        run: |
-          pnpm exec lerna version minor --conventional-commits --force-git-tag --yes
-          pnpm publish -r --access public --tag latest --no-git-checks
+      - name: Version packages
+        run: pnpm exec lerna version minor --conventional-commits --force-git-tag --yes --no-push
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Publish to npm
+        run: pnpm publish -r --access public --tag latest --no-git-checks
+
+      - name: Push tags to git
+        run: git push --follow-tags
