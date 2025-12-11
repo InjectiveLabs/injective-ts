@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-magic",
-  "version": "1.17.2-alpha.5",
+  "version": "1.17.2-alpha.6",
   "description": "Magic wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
