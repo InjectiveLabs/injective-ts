@@ -53,7 +53,7 @@ jobs:
           fetch-depth: 0
 
       - name: Using Node from .nvmrc
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
@@ -62,6 +62,10 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: latest
+
+      # OIDC trusted publishing requires npm 11.5.1+
+      - name: Update npm for OIDC trusted publishing
+        run: npm install -g npm@latest
 
       - name: Set up Git user
         run: |
@@ -123,15 +127,14 @@ jobs:
         run: |
           pnpm exec lerna version ${{ steps.determine-publish-type.outputs.version_args }}
 
-      # We use pnpm to pack (resolves catalog: protocol) then npm to publish (OIDC works).
-      # lerna publish doesn't resolve pnpm's catalog: protocol, and pnpm publish doesn't
-      # properly handle npm's OIDC token exchange.
+      # pnpm pack resolves catalog: protocol, npm publish handles OIDC authentication
       - name: Publish to npm (OIDC)
         run: |
           DIST_TAG="${{ steps.determine-publish-type.outputs.dist_tag }}"
           PUBLISHED_PACKAGES="[]"
+          ROOT_DIR="$(pwd)"
+          PUBLISH_COUNT=0
 
-          # Find all packages, pack with pnpm (resolves catalog:), publish with npm (OIDC)
           for pkg_json in packages/*/package.json packages/wallets/*/package.json; do
             pkg_dir=$(dirname "$pkg_json")
             pkg_name=$(node -p "require('./$pkg_json').name")
@@ -140,29 +143,29 @@ jobs:
             echo "📦 Publishing $pkg_name@$pkg_version"
             
             # Pack with pnpm to resolve catalog: dependencies
-            cd "$pkg_dir"
-            pnpm pack
+            pnpm --dir "$pkg_dir" pack --pack-destination "$ROOT_DIR"
             
-            # Find the tarball
-            tarball=$(ls *.tgz 2>/dev/null | head -1)
+            tarball_name=$(echo "$pkg_name" | sed 's/@//;s/\//-/')-$pkg_version.tgz
             
-            if [ -n "$tarball" ]; then
-              # Publish with npm for OIDC support
-              if npm publish "$tarball" --access public --tag "$DIST_TAG" --provenance; then
+            if [ -f "$tarball_name" ]; then
+              if npm publish "$tarball_name" --access public --tag "$DIST_TAG" --provenance; then
                 PUBLISHED_PACKAGES=$(echo "$PUBLISHED_PACKAGES" | node -p "JSON.stringify([...JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')), {name:'$pkg_name',version:'$pkg_version'}])")
+                PUBLISH_COUNT=$((PUBLISH_COUNT + 1))
               fi
-              rm -f "$tarball"
+              rm -f "$tarball_name"
             else
               echo "⚠️ No tarball found for $pkg_name"
             fi
-            
-            cd - > /dev/null
           done
 
-          # Generate publish summary for Slack notification
           echo "{\"publishedPackages\":$PUBLISHED_PACKAGES}" > pnpm-publish-summary.json
-          echo "📋 Published packages summary:"
-          cat pnpm-publish-summary.json
+
+          if [ "$PUBLISH_COUNT" -eq 0 ]; then
+            echo "::error::No packages were published. Check npm OIDC trusted publisher configuration."
+            exit 1
+          fi
+
+          echo "✅ Successfully published $PUBLISH_COUNT packages"
 
       - name: Push tags to git
         run: |
