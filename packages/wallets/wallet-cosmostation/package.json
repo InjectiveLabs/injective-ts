@@ -8,6 +8,10 @@
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InjectiveLabs/injective-ts"
+  },
   "type": "module",
   "sideEffects": false,
   "exports": {

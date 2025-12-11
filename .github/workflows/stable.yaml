@@ -1,14 +1,26 @@
-name: Publish stable
+# ============================================
+# DEPRECATED WORKFLOW
+# ============================================
+# This workflow is permanently disabled.
+# All publishing (latest, canary, beta) is now handled by dev.yaml
+# which uses OIDC trusted publishing.
+#
+# For local/CLI releases, use:
+#   pnpm release:patch
+#   pnpm release:minor
+#
+# These require npm CLI authentication (npm login).
+# ============================================
 
-# Stable releases are now done via CLI: pnpm release:minor (or :patch, :major)
-# This workflow is kept for reference but disabled
+name: Publish stable (DEPRECATED)
 
 on:
   workflow_dispatch:
 
 jobs:
   publish:
-    if: false # Use CLI instead: pnpm release:minor
+    # Permanently disabled - use dev.yaml or CLI instead
+    if: false
     runs-on: ubuntu-latest
     permissions: write-all
 

@@ -1,16 +1,50 @@
-name: Publish dev
+name: Publish
+
+# Unified publish workflow for all release types:
+# - latest: Triggered on push to dev branch (npm tag: latest)
+# - canary: Triggered on feature branches with "canary" in commit message (npm tag: alpha)
+# - beta: Triggered on feature branches with "beta" in commit message (npm tag: beta)
+#
+# Uses OIDC trusted publishing - no NPM_TOKEN required.
+# Configured as trusted publisher on npm: https://docs.npmjs.com/trusted-publishers
 
 on:
   push:
-    branches:
-      - dev
+    branches-ignore:
+      - master
   workflow_dispatch:
 
+# OIDC requires id-token: write permission
+# contents: write is needed for git push --follow-tags
+permissions:
+  contents: write
+  id-token: write
+
 jobs:
+  # ============================================
+  # Publish Job - Handles latest, canary, and beta
+  # ============================================
   publish:
-    if: ${{ !contains(github.event.head_commit.message, 'GITBOOK') && !contains(github.event.head_commit.message, 'skip-deploy') && !contains(github.event.head_commit.message, 'skip deploy') && github.event_name != 'workflow_dispatch' }}
+    name: 'Publish'
     runs-on: ubuntu-latest
-    permissions: write-all
+    # Skip if:
+    # - Contains skip keywords (for dev branch)
+    # - Is workflow_dispatch on dev branch
+    # - Is a feature branch without canary/beta keyword
+    if: |
+      !contains(github.event.head_commit.message, 'GITBOOK') &&
+      !contains(github.event.head_commit.message, 'skip-deploy') &&
+      !contains(github.event.head_commit.message, 'skip deploy') &&
+      (
+        github.ref == 'refs/heads/dev' ||
+        contains(github.event.head_commit.message, 'canary') ||
+        contains(github.event.head_commit.message, 'beta')
+      ) &&
+      !(github.ref == 'refs/heads/dev' && github.event_name == 'workflow_dispatch')
+    outputs:
+      publish_type: ${{ steps.determine-publish-type.outputs.type }}
+      dist_tag: ${{ steps.determine-publish-type.outputs.dist_tag }}
+      version_args: ${{ steps.determine-publish-type.outputs.version_args }}
 
     steps:
       - name: Checkout
@@ -33,29 +67,64 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
 
+      - name: Determine publish type
+        id: determine-publish-type
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          BRANCH: ${{ github.ref }}
+        run: |
+          # Check for conflicting keywords
+          HAS_CANARY=false
+          HAS_BETA=false
+
+          if echo "$COMMIT_MSG" | grep -qi "canary"; then
+            HAS_CANARY=true
+          fi
+
+          if echo "$COMMIT_MSG" | grep -qi "beta"; then
+            HAS_BETA=true
+          fi
+
+          # Determine publish type based on branch and commit message
+          if [[ "$BRANCH" == "refs/heads/dev" ]]; then
+            TYPE="latest"
+            DIST_TAG="latest"
+            VERSION_ARGS="patch --force-publish --force-git-tag --no-changelog --yes --no-push"
+          elif [[ "$HAS_CANARY" == "true" && "$HAS_BETA" == "true" ]]; then
+            echo "::error::Commit message contains both 'canary' and 'beta'. Please use only one."
+            exit 1
+          elif [[ "$HAS_CANARY" == "true" ]]; then
+            TYPE="canary"
+            DIST_TAG="alpha"
+            VERSION_ARGS="prerelease --preid alpha --force-publish --force-git-tag --no-changelog --yes --no-push"
+          elif [[ "$HAS_BETA" == "true" ]]; then
+            TYPE="beta"
+            DIST_TAG="beta"
+            VERSION_ARGS="prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes --no-push"
+          else
+            echo "::error::No valid publish type determined. This should not happen."
+            exit 1
+          fi
+
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+          echo "dist_tag=$DIST_TAG" >> $GITHUB_OUTPUT
+          echo "version_args=$VERSION_ARGS" >> $GITHUB_OUTPUT
+
       - name: Build dependencies
         run: |
           node etc/bootstrapEnv
           pnpm install
           pnpm build
 
-      - name: 'Setup npm'
-        run: |
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-          # Tell Git to ignore this temporary change
-          git update-index --assume-unchanged .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Version packages
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          pnpm exec lerna version patch --force-publish --force-git-tag --no-changelog --yes --no-push
+          pnpm exec lerna version ${{ steps.determine-publish-type.outputs.version_args }}
 
-      - name: Publish to npm
+      - name: Publish to npm (OIDC)
         run: |
-          pnpm publish -r --access public --tag latest --no-git-checks --report-summary
+          pnpm exec lerna publish from-git --yes --dist-tag "${{ steps.determine-publish-type.outputs.dist_tag }}"
 
       - name: Push tags to git
         run: |
@@ -68,11 +137,17 @@ jobs:
           SLACK_API: ${{ secrets.SLACK_API }}
           GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
 
+  # ============================================
+  # Package Bump Jobs (only after latest publish on dev branch)
+  # ============================================
   package-bump-layer:
     name: 'Package bump layer'
     runs-on: ubuntu-latest
     needs: publish
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump layer
@@ -85,8 +160,11 @@ jobs:
   package-bump-hub:
     name: 'Package bump hub'
     runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    needs: [publish, package-bump-layer]
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump Hub
@@ -99,8 +177,11 @@ jobs:
   package-bump-helix:
     name: 'Package bump Helix'
     runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    needs: [publish, package-bump-layer]
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump Helix
@@ -110,25 +191,14 @@ jobs:
           repository_url: injectiveLabs/injective-helix
           repository_branch: dev
 
-  # package-bump-bridge:
-  #   name: 'Package bump Bridge'
-  #   runs-on: ubuntu-latest
-  #   needs: package-bump-layer
-  #   if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
-
-  #   steps:
-  #     - name: Package bump Bridge
-  #       uses: InjectiveLabs/github-fe/actions/package-bump@master
-  #       with:
-  #         gh_token: ${{ secrets.GH_TOKEN }}
-  #         repository_url: injectiveLabs/injective-bridge
-  #         repository_branch: dev
-
   package-bump-explorer:
     name: 'Package bump Explorer'
     runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    needs: [publish, package-bump-layer]
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump Explorer
@@ -141,8 +211,11 @@ jobs:
   package-bump-trading-ui:
     name: 'Package bump Trading UI'
     runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    needs: [publish, package-bump-layer]
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump Trading UI
@@ -155,8 +228,11 @@ jobs:
   package-bump-mito:
     name: 'Package bump Mito'
     runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    needs: [publish, package-bump-layer]
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump Mito
@@ -169,8 +245,11 @@ jobs:
   package-bump-ui-api:
     name: 'Package bump UI API'
     runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    needs: [publish, package-bump-layer]
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump UI API
@@ -183,8 +262,11 @@ jobs:
   package-bump-admin-ui:
     name: 'Package bump Admin UI'
     runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    needs: [publish, package-bump-layer]
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump Admin UI
@@ -197,8 +279,11 @@ jobs:
   package-bump-do-ui:
     name: 'Package bump DO UI'
     runs-on: ubuntu-latest
-    needs: package-bump-layer
-    if: ${{ always() && (needs.publish.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    needs: [publish, package-bump-layer]
+    if: |
+      always() &&
+      (needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Package bump DO UI
