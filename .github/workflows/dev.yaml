@@ -56,6 +56,7 @@ jobs:
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -122,9 +123,46 @@ jobs:
         run: |
           pnpm exec lerna version ${{ steps.determine-publish-type.outputs.version_args }}
 
+      # We use pnpm to pack (resolves catalog: protocol) then npm to publish (OIDC works).
+      # lerna publish doesn't resolve pnpm's catalog: protocol, and pnpm publish doesn't
+      # properly handle npm's OIDC token exchange.
       - name: Publish to npm (OIDC)
         run: |
-          pnpm exec lerna publish from-git --yes --dist-tag "${{ steps.determine-publish-type.outputs.dist_tag }}"
+          DIST_TAG="${{ steps.determine-publish-type.outputs.dist_tag }}"
+          PUBLISHED_PACKAGES="[]"
+
+          # Find all packages, pack with pnpm (resolves catalog:), publish with npm (OIDC)
+          for pkg_json in packages/*/package.json packages/wallets/*/package.json; do
+            pkg_dir=$(dirname "$pkg_json")
+            pkg_name=$(node -p "require('./$pkg_json').name")
+            pkg_version=$(node -p "require('./$pkg_json').version")
+            
+            echo "📦 Publishing $pkg_name@$pkg_version"
+            
+            # Pack with pnpm to resolve catalog: dependencies
+            cd "$pkg_dir"
+            pnpm pack
+            
+            # Find the tarball
+            tarball=$(ls *.tgz 2>/dev/null | head -1)
+            
+            if [ -n "$tarball" ]; then
+              # Publish with npm for OIDC support
+              if npm publish "$tarball" --access public --tag "$DIST_TAG" --provenance; then
+                PUBLISHED_PACKAGES=$(echo "$PUBLISHED_PACKAGES" | node -p "JSON.stringify([...JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')), {name:'$pkg_name',version:'$pkg_version'}])")
+              fi
+              rm -f "$tarball"
+            else
+              echo "⚠️ No tarball found for $pkg_name"
+            fi
+            
+            cd - > /dev/null
+          done
+
+          # Generate publish summary for Slack notification
+          echo "{\"publishedPackages\":$PUBLISHED_PACKAGES}" > pnpm-publish-summary.json
+          echo "📋 Published packages summary:"
+          cat pnpm-publish-summary.json
 
       - name: Push tags to git
         run: |
