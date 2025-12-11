@@ -57,8 +57,8 @@
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*",
-    "@walletconnect/ethereum-provider": "^2.23.0",
-    "@walletconnect/types": "^2.23.0"
+    "@reown/appkit": "1.8.15",
+    "@reown/appkit-adapter-ethers": "1.8.15"
   },
   "publishConfig": {
     "access": "public"

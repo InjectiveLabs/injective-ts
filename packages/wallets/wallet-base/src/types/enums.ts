@@ -1,5 +1,7 @@
 import { WalletErrorActionModule } from '@injectivelabs/exceptions'
 
+export * from './events.js'
+
 export const BroadcastMode = {
   Block: 'block',
   Sync: 'sync',

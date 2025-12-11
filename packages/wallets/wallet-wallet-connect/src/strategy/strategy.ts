@@ -1,12 +1,9 @@
+import { createAppKit } from '@reown/appkit'
+import { sleep } from '@injectivelabs/utils'
 import { toUtf8 } from '@injectivelabs/sdk-ts/utils'
+import { EvmChainId } from '@injectivelabs/ts-types'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
-import { EthereumProvider } from '@walletconnect/ethereum-provider'
-import {
-  WalletAction,
-  WalletDeviceType,
-  WalletEventListener,
-  BaseConcreteStrategy,
-} from '@injectivelabs/wallet-base'
+import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import {
   ErrorType,
   WalletException,
@@ -14,7 +11,14 @@ import {
   TransactionException,
   WalletConnectException,
 } from '@injectivelabs/exceptions'
-import type { EvmChainId } from '@injectivelabs/ts-types'
+import {
+  WalletAction,
+  WalletDeviceType,
+  WalletEventListener,
+  BaseConcreteStrategy,
+  WalletConnectStrategyEventType,
+} from '@injectivelabs/wallet-base'
+import type { AppKit } from '@reown/appkit'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
@@ -29,105 +33,343 @@ import type {
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
 
-const WalletConnectIds = {
-  FireBlocks:
-    '5864e2ced7c293ed18ac35e0db085c09ed567d67346ccb6f58a0327a75137489',
-}
+const FIREBLOCKS_WALLET_ID =
+  '5864e2ced7c293ed18ac35e0db085c09ed567d67346ccb6f58a0327a75137489'
+
+const SESSION_RESTORE_TIMEOUT_MS = 3000
+
+type Provider = Awaited<ReturnType<AppKit['getUniversalProvider']>>
 
 export class WalletConnect
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  public provider: InstanceType<typeof EthereumProvider> | undefined
+  private static appKit: AppKit | undefined
+  private static sessionRestorePromise: Promise<void> | undefined
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  async enable(args?: { topic: string }): Promise<boolean> {
-    await this.connectWalletConnect(args?.topic)
+  private createAppKit(): AppKit {
+    const projectId = this.metadata?.walletConnect?.projectId as string
 
-    return Promise.resolve(true)
-  }
-
-  public async disconnect() {
-    if (this.listeners[WalletEventListener.AccountChange]) {
-      const wc = await this.getConnectedWalletConnect()
-
-      wc.removeListener(
-        'accountsChanged',
-        this.listeners[WalletEventListener.AccountChange],
+    if (!projectId) {
+      throw new WalletException(
+        new Error('Please provide projectId in metadata for WalletConnect'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetAccounts,
+        },
       )
     }
 
-    if (this.listeners[WalletEventListener.ChainIdChange]) {
-      const wc = await this.getConnectedWalletConnect()
+    if (WalletConnect.appKit) {
+      return WalletConnect.appKit
+    }
 
-      wc.removeListener(
-        'chainChanged',
-        this.listeners[WalletEventListener.ChainIdChange],
+    const chainId = this.evmChainId || EvmChainId.Mainnet
+
+    WalletConnect.appKit = createAppKit({
+      projectId,
+      allWallets: 'HIDE',
+      enableEIP6963: false,
+      enableInjected: false,
+      enableCoinbase: false,
+      enableReconnect: true,
+      adapters: [new EthersAdapter()],
+      networks: [
+        {
+          id: chainId,
+          name: 'Injective',
+          chainNamespace: 'eip155',
+          caipNetworkId: `eip155:${chainId}`,
+          nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+          rpcUrls: {
+            default: {
+              http: [],
+            },
+          },
+        },
+      ],
+      metadata: {
+        name: 'Injective',
+        description: 'Injective Protocol',
+        url: 'https://injective.com',
+        icons: [],
+      },
+      includeWalletIds: [FIREBLOCKS_WALLET_ID],
+      featuredWalletIds: [FIREBLOCKS_WALLET_ID],
+      features: {
+        email: false,
+        socials: false,
+        allWallets: false,
+        connectMethodsOrder: ['wallet'],
+      },
+    })
+
+    WalletConnect.sessionRestorePromise = this.waitForSessionRestore(
+      WalletConnect.appKit,
+    )
+
+    return WalletConnect.appKit
+  }
+
+  /**
+   * Waits for AppKit to restore session from localStorage on page refresh.
+   * Resolves immediately if already connected, otherwise waits for provider
+   * subscription or times out.
+   */
+  private waitForSessionRestore(modal: AppKit): Promise<void> {
+    if (modal.getIsConnectedState()) {
+      return Promise.resolve()
+    }
+
+    return new Promise((resolve) => {
+      let resolved = false
+
+      const done = () => {
+        if (!resolved) {
+          resolved = true
+          clearTimeout(timeout)
+          unsubscribe()
+          resolve()
+        }
+      }
+
+      const timeout = setTimeout(done, SESSION_RESTORE_TIMEOUT_MS)
+
+      const unsubscribe = modal.subscribeProviders((state) => {
+        if (state?.eip155 && modal.getIsConnectedState()) {
+          done()
+        }
+      })
+    })
+  }
+
+  async initStrategy(): Promise<void> {
+    this.createAppKit()
+
+    if (WalletConnect.sessionRestorePromise) {
+      await WalletConnect.sessionRestorePromise
+    }
+  }
+
+  private async getProvider(): Promise<Provider> {
+    return this.createAppKit().getUniversalProvider()
+  }
+
+  private async getWalletProvider(
+    contextModule: string,
+  ): Promise<Eip1193Provider> {
+    const modal = await this.getAppKit()
+    const provider = modal.getWalletProvider()
+
+    if (!provider) {
+      throw new WalletConnectException(new Error('No provider available'), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule,
+      })
+    }
+
+    return provider as Eip1193Provider
+  }
+
+  private async getAppKit(): Promise<AppKit> {
+    await this.initStrategy()
+    const modal = this.createAppKit()
+
+    if (!modal.getIsConnectedState()) {
+      throw new WalletException(
+        new Error('Wallet not connected. Please call enable() first.'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetAccounts,
+        },
       )
+    }
+
+    return modal
+  }
+
+  async enable(): Promise<boolean> {
+    await this.initStrategy()
+    const modal = this.createAppKit()
+
+    if (modal.getIsConnectedState()) {
+      return true
+    }
+
+    await this.connect()
+
+    return true
+  }
+
+  private async connect(): Promise<void> {
+    const modal = this.createAppKit()
+
+    if (modal.getIsConnectedState()) {
+      return
+    }
+
+    // Clear stale pairings for fresh QR
+    try {
+      const provider = await modal.getUniversalProvider()
+      const pairing = provider?.client?.core?.pairing
+
+      if (pairing) {
+        const pairings = pairing.getPairings() || []
+
+        await Promise.all(
+          pairings.map((p) =>
+            pairing.disconnect({ topic: p.topic }).catch(() => {}),
+          ),
+        )
+      }
+    } catch {
+      // Silently fail
+    }
+
+    await modal.open({ view: 'Connect' })
+    await sleep(100)
+
+    modal.redirect('ConnectingWalletConnectBasic')
+
+    // Wait for connection or cancellation
+    await new Promise<void>((resolve, reject) => {
+      const unsubscribe = modal.subscribeState((state: { open: boolean }) => {
+        if (modal.getIsConnectedState()) {
+          unsubscribe()
+          modal.close()
+          resolve()
+        } else if (!state.open) {
+          unsubscribe()
+          reject(new Error('Connection cancelled'))
+        }
+      })
+    })
+  }
+
+  async disconnect(): Promise<void> {
+    try {
+      const modal = this.createAppKit()
+      const provider = modal.getWalletProvider() as
+        | (Eip1193Provider & {
+            removeListener?: (e: string, h: unknown) => void
+          })
+        | undefined
+
+      if (provider?.removeListener) {
+        if (this.listeners[WalletEventListener.AccountChange]) {
+          provider.removeListener(
+            'accountsChanged',
+            this.listeners[WalletEventListener.AccountChange],
+          )
+        }
+        if (this.listeners[WalletEventListener.ChainIdChange]) {
+          provider.removeListener(
+            'chainChanged',
+            this.listeners[WalletEventListener.ChainIdChange],
+          )
+        }
+      }
+
+      await modal.disconnect()
+    } catch {
+      // Silently fail
     }
 
     this.listeners = {}
+  }
 
-    if (this.provider) {
-      await this.provider.disconnect()
-      this.provider = undefined
+  async onDisconnect(callback: () => void): Promise<void> {
+    try {
+      const provider = await this.getProvider()
+
+      provider?.on('session_delete', callback)
+    } catch {
+      // Silently fail
     }
   }
 
   async getAddresses(): Promise<string[]> {
-    const wc = await this.getConnectedWalletConnect()
+    const modal = await this.getAppKit()
 
-    try {
-      return await wc.request({
-        method: 'eth_requestAccounts',
-      })
-    } catch (e: unknown) {
-      throw new WalletConnectException(new Error((e as any).message), {
+    const address = modal.getAddress()
+
+    if (!address) {
+      throw new WalletConnectException(new Error('No address available'), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
       })
     }
+
+    return [address]
   }
 
-  async getAddressesInfo(): Promise<
-    { address: string; derivationPath: string; baseDerivationPath: string }[]
-  > {
-    throw new WalletException(
-      new Error('getAddressesInfo is not implemented'),
-      {
+  async getSessionOrConfirm(): Promise<string> {
+    try {
+      const provider = await this.getProvider()
+
+      return provider?.session?.topic || ''
+    } catch {
+      return ''
+    }
+  }
+
+  async signEip712TypedData(
+    eip712json: string,
+    address: AccountAddress,
+    options: { txTimeout?: number } = {},
+  ): Promise<string> {
+    await this.getAppKit()
+
+    const provider = await this.getProvider()
+    if (!provider) {
+      throw new WalletConnectException(new Error('No provider available'), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.GetAccounts,
+        contextModule: WalletAction.SignTransaction,
+      })
+    }
+
+    // Validate and clamp txTimeout (required for Fireblocks)
+    let txTimeout: number | undefined
+
+    if (options.txTimeout !== undefined) {
+      const timeout = Number(options.txTimeout)
+
+      txTimeout =
+        isNaN(timeout) || timeout < 300 ? undefined : Math.min(timeout, 604800)
+    }
+
+    const caipChain = `eip155:${this.evmChainId || 1}`
+
+    this.emit(
+      WalletConnectStrategyEventType.WalletConnectSigningWithTxTimeout,
+      {
+        timeout: txTimeout,
       },
     )
-  }
-
-  async getSessionOrConfirm(_address: AccountAddress): Promise<string> {
-    const wc = await this.getConnectedWalletConnect()
-
-    return wc.session?.topic || ''
-  }
-
-  async sendEvmTransaction(
-    transaction: unknown,
-    _options: { address: AccountAddress; evmChainId: EvmChainId },
-  ): Promise<string> {
-    const wc = await this.getConnectedWalletConnect()
 
     try {
-      return await wc.request({
-        method: 'eth_sendTransaction',
-        params: [transaction],
-      })
-    } catch (e: unknown) {
-      throw new WalletConnectException(new Error((e as any).message), {
+      // Use 3-arg request to pass txTimeout to WalletConnect
+      const signature = await provider.request(
+        { method: 'eth_signTypedData_v4', params: [address, eip712json] },
+        caipChain,
+        txTimeout,
+      )
+
+      return signature as string
+    } catch (e) {
+      throw new WalletConnectException(new Error((e as Error).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SendEvmTransaction,
+        contextModule: WalletAction.SignTransaction,
       })
     }
   }
@@ -140,9 +382,7 @@ export class WalletConnect
 
     if (!endpoints) {
       throw new WalletException(
-        new Error(
-          'You have to pass endpoints within the options for using Ethereum native wallets',
-        ),
+        new Error('You have to pass endpoints within the options'),
       )
     }
 
@@ -160,41 +400,138 @@ export class WalletConnect
     return response
   }
 
-  async signEip712TypedData(
-    eip712json: string,
-    address: AccountAddress,
-    options: { txTimeout?: number } = {},
+  async sendEvmTransaction(
+    transaction: unknown,
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
-    const wc = await this.getConnectedWalletConnect()
+    const modal = await this.getAppKit()
+    const provider = modal.getWalletProvider() as Eip1193Provider
 
-    // Ensure it's a number, within range [300, 604800]
-    let txTimeout: number | undefined
-
-    if (options?.txTimeout !== undefined) {
-      const timeout = Number(options.txTimeout)
-
-      txTimeout =
-        isNaN(timeout) || timeout < 300 ? undefined : Math.min(timeout, 604800)
-    }
-
-    // todo: @thomas to improve this to emit an event instead of logging to the console
-    console.log('signEip712TypedData', txTimeout)
-
-    try {
-      return await wc.request(
-        {
-          method: 'eth_signTypedData_v4',
-          params: [address, eip712json],
-        },
-        txTimeout,
-      )
-    } catch (e: unknown) {
-      throw new WalletConnectException(new Error((e as any).message), {
+    if (!provider) {
+      throw new WalletConnectException(new Error('No provider available'), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SignTransaction,
+        contextModule: WalletAction.SendEvmTransaction,
       })
     }
+
+    try {
+      return await provider.request({
+        method: 'eth_sendTransaction',
+        params: [transaction],
+      })
+    } catch (e) {
+      throw new WalletConnectException(new Error((e as Error).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendEvmTransaction,
+      })
+    }
+  }
+
+  async signArbitrary(
+    signer: AccountAddress,
+    data: string | Uint8Array,
+  ): Promise<string> {
+    const modal = await this.getAppKit()
+    const provider = modal.getWalletProvider() as Eip1193Provider
+
+    if (!provider) {
+      throw new WalletConnectException(new Error('No provider available'), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignArbitrary,
+      })
+    }
+
+    try {
+      return (await provider.request({
+        method: 'personal_sign',
+        params: [toUtf8(data), signer],
+      })) as string
+    } catch (e) {
+      throw new WalletConnectException(new Error((e as Error).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignArbitrary,
+      })
+    }
+  }
+
+  async getEthereumChainId(): Promise<string> {
+    const modal = await this.getAppKit()
+    const provider = modal.getWalletProvider() as Eip1193Provider
+
+    if (!provider) {
+      throw new WalletConnectException(new Error('No provider available'), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetChainId,
+      })
+    }
+
+    try {
+      return await provider.request({ method: 'eth_chainId', params: [] })
+    } catch (e) {
+      throw new WalletConnectException(new Error((e as Error).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetChainId,
+      })
+    }
+  }
+
+  async getEip1193Provider(): Promise<Eip1193Provider> {
+    const modal = await this.getAppKit()
+    const provider = modal.getWalletProvider()
+
+    if (!provider) {
+      throw new WalletException(new Error('No wallet provider available'), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
+
+    return provider as unknown as Eip1193Provider
+  }
+
+  async onChainIdChanged(callback: (chain: string) => void): Promise<void> {
+    const modal = await this.getAppKit()
+    const provider = modal.getWalletProvider() as Eip1193Provider & {
+      on: (event: string, handler: (v: string) => void) => void
+    }
+
+    this.listeners[WalletEventListener.ChainIdChange] = callback
+    provider?.on('chainChanged', callback)
+  }
+
+  async onAccountChange(
+    callback: (account: AccountAddress | string[]) => void,
+  ): Promise<void> {
+    const modal = await this.getAppKit()
+    const provider = modal.getWalletProvider() as Eip1193Provider & {
+      on: (event: string, handler: (v: string[]) => void) => void
+    }
+
+    this.listeners[WalletEventListener.AccountChange] = callback
+    provider?.on('accountsChanged', (accounts: string[]) =>
+      callback(accounts[0]),
+    )
+  }
+
+  // Unsupported methods
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not supported by WalletConnect'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
   }
 
   async signAminoCosmosTransaction(_transaction: {
@@ -202,7 +539,7 @@ export class WalletConnect
     signDoc: StdSignDoc
   }): Promise<AminoSignResponse> {
     throw new WalletException(
-      new Error('This wallet does not support signing Cosmos transactions'),
+      new Error('Cosmos transactions are not supported by WalletConnect'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
@@ -218,7 +555,7 @@ export class WalletConnect
     address: string
   }): Promise<DirectSignResponse> {
     throw new WalletException(
-      new Error('This wallet does not support signing Cosmos transactions'),
+      new Error('Cosmos transactions are not supported by WalletConnect'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
@@ -227,45 +564,9 @@ export class WalletConnect
     )
   }
 
-  async signArbitrary(
-    signer: AccountAddress,
-    data: string | Uint8Array,
-  ): Promise<string> {
-    const wc = await this.getConnectedWalletConnect()
-
-    try {
-      const signature = await wc.request<string>({
-        method: 'personal_sign',
-        params: [toUtf8(data), signer],
-      })
-
-      return signature
-    } catch (e: unknown) {
-      throw new WalletConnectException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.SignArbitrary,
-      })
-    }
-  }
-
-  async getEthereumChainId(): Promise<string> {
-    const wc = await this.getConnectedWalletConnect()
-
-    try {
-      return wc.request({ method: 'eth_chainId' })
-    } catch (e: unknown) {
-      throw new WalletConnectException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetChainId,
-      })
-    }
-  }
-
   async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new WalletException(
-      new Error('This wallet does not support awaiting Evm transactions'),
+      new Error('getEvmTransactionReceipt is not supported by WalletConnect'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
@@ -276,160 +577,7 @@ export class WalletConnect
 
   async getPubKey(): Promise<string> {
     throw new WalletException(
-      new Error('You can only fetch PubKey from Cosmos native wallets'),
+      new Error('getPubKey is not supported by WalletConnect'),
     )
-  }
-
-  async onChainIdChanged(callback: (chain: string) => void): Promise<void> {
-    const wc = await this.getConnectedWalletConnect()
-
-    this.listeners = {
-      [WalletEventListener.ChainIdChange]: callback,
-    }
-
-    wc.on('chainChanged', callback)
-  }
-
-  async onAccountChange(
-    callback: (account: AccountAddress | string[]) => void,
-  ): Promise<void> {
-    const wc = await this.getConnectedWalletConnect()
-
-    this.listeners = {
-      [WalletEventListener.AccountChange]: callback,
-    }
-
-    wc.on('accountsChanged', (accounts: string[]) => callback(accounts[0]))
-  }
-
-  private async getWalletConnect() {
-    if (this.provider) {
-      return this.provider
-    }
-
-    if (!this.metadata?.walletConnect) {
-      throw new WalletException(
-        new Error('Please provide metadata for WalletConnect'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: WalletAction.GetAccounts,
-        },
-      )
-    }
-
-    if (!this.metadata.walletConnect.projectId) {
-      throw new WalletException(
-        new Error(
-          'Please provide projectId alongside the metadata for WalletConnect',
-        ),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: WalletAction.GetAccounts,
-        },
-      )
-    }
-
-    try {
-      this.provider = await EthereumProvider.init({
-        projectId: this.metadata.walletConnect.projectId as string,
-        optionalChains: [
-          ...new Set([this.evmChainId, 1, 11155111].filter(Boolean)),
-        ] as [number, ...number[]],
-        optionalMethods: [
-          'eth_sendTransaction',
-          'personal_sign',
-          'eth_signTypedData_v4',
-          'wallet_switchEthereumChain',
-        ],
-        optionalEvents: [
-          'chainChanged',
-          'accountsChanged',
-          'connect',
-          'disconnect',
-        ],
-        metadata: {
-          name: 'Injective',
-          description: 'Injective Protocol',
-          url: 'https://injective.com',
-          icons: [],
-        },
-        showQrModal: true,
-        qrModalOptions: {
-          explorerRecommendedWalletIds: [WalletConnectIds.FireBlocks],
-          explorerExcludedWalletIds: 'ALL',
-          desktopWallets: [
-            {
-              id: WalletConnectIds.FireBlocks,
-              name: 'Fireblocks',
-              links: {
-                native: '',
-                universal: 'https://console.fireblocks.io/v2/walletconnect',
-              },
-            },
-          ],
-        },
-      })
-
-      // Handle remote session deletion
-      this.provider.on('session_delete', () => {
-        this.provider = undefined
-      })
-
-      return this.provider
-    } catch {
-      throw new WalletException(
-        new Error('WalletConnect not supported for this wallet'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: WalletAction.GetAccounts,
-        },
-      )
-    }
-  }
-
-  async getEip1193Provider(): Promise<Eip1193Provider> {
-    const provider = await this.getWalletConnect()
-
-    return provider as unknown as Eip1193Provider
-  }
-
-  private async getConnectedWalletConnect(): Promise<
-    InstanceType<typeof EthereumProvider>
-  > {
-    if (!this.provider) {
-      await this.getWalletConnect()
-    }
-
-    if (!this.provider?.connected) {
-      await this.enable()
-    }
-
-    if (!this.provider) {
-      throw new WalletException(
-        new Error('Failed to initialize WalletConnect provider'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: WalletAction.GetAccounts,
-        },
-      )
-    }
-
-    return this.provider
-  }
-
-  private async connectWalletConnect(topic?: string) {
-    if (this.provider && this.provider.connected) {
-      return
-    }
-
-    const wc = await this.getWalletConnect()
-
-    await wc.connect({
-      ...(topic && { pairingTopic: topic }),
-    })
   }
 }

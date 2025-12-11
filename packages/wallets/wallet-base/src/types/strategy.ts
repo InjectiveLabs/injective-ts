@@ -13,6 +13,10 @@ import type {
 } from '@injectivelabs/sdk-ts/types'
 import type { Wallet, WalletDeviceType } from './enums.js'
 
+export interface StrategyEmitter {
+  emit(event: string, data?: Record<string, any>): boolean
+}
+
 export type onAccountChangeCallback = (account: string | string[]) => void
 export type onChainIdChangeCallback = () => void
 
@@ -104,6 +108,7 @@ export interface WalletMetadata {
 export interface ConcreteWalletStrategyArgs {
   chainId: ChainId
   metadata?: WalletMetadata
+  emitter?: StrategyEmitter
 }
 
 export interface ConcreteEvmWalletStrategyArgs extends ConcreteWalletStrategyArgs {
@@ -278,6 +283,8 @@ export interface ConcreteWalletStrategy extends Omit<
   onAccountChange?(callback: onAccountChangeCallback): Promise<void> | void
 
   onChainIdChange?(callback: onChainIdChangeCallback): Promise<void> | void
+
+  initStrategy?(): Promise<void> | void
 
   disconnect?(): Promise<void> | void
 

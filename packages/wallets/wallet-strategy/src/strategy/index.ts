@@ -1,10 +1,6 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import {
-  Wallet,
-  isEvmWallet,
-  type WalletMetadata,
-} from '@injectivelabs/wallet-base'
+import { Wallet, isEvmWallet } from '@injectivelabs/wallet-base'
 import {
   loadEvmStrategy,
   loadMagicStrategy,
@@ -16,6 +12,10 @@ import {
   loadWalletConnectStrategy,
 } from './loaders.js'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  WalletMetadata,
+  StrategyEmitter,
+} from '@injectivelabs/wallet-base'
 import type {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
@@ -43,9 +43,11 @@ const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
 const createStrategy = async ({
   args,
   wallet,
+  emitter,
 }: {
   wallet: Wallet
   args: WalletStrategyArguments
+  emitter?: StrategyEmitter
 }): Promise<ConcreteWalletStrategy | undefined> => {
   /**
    * If we only want to use Cosmos Native Wallets
@@ -63,7 +65,13 @@ const createStrategy = async ({
     ...args,
     chainId: args.chainId,
     evmOptions: args.evmOptions as WalletStrategyEvmOptions,
+    emitter,
   } as ConcreteEvmWalletStrategyArgs
+
+  const cosmosWalletArgs = {
+    ...args,
+    emitter,
+  }
 
   switch (wallet) {
     case Wallet.Metamask:
@@ -88,7 +96,7 @@ const createStrategy = async ({
     case Wallet.Cosmostation: {
       const CosmosWalletStrategy = await loadCosmosStrategy()
 
-      return new CosmosWalletStrategy({ ...args, wallet })
+      return new CosmosWalletStrategy({ ...cosmosWalletArgs, wallet })
     }
 
     case Wallet.Ledger: {
@@ -136,7 +144,7 @@ const createStrategy = async ({
       }
       const MagicStrategy = await loadMagicStrategy()
 
-      return new MagicStrategy(args)
+      return new MagicStrategy(cosmosWalletArgs)
     }
 
     case Wallet.WalletConnect: {
@@ -179,7 +187,8 @@ export class WalletStrategy extends BaseWalletStrategy {
     this.wallet = wallet
 
     // Preload the strategy for the new wallet
-    await this.loadStrategy(wallet)
+    const strategy = await this.loadStrategy(wallet)
+    await strategy?.initStrategy?.()
   }
 
   /**
@@ -221,6 +230,7 @@ export class WalletStrategy extends BaseWalletStrategy {
             metadata: { ...this.args.metadata, ...metadata },
           },
           wallet: walletEnum,
+          emitter: this.getEmitter(),
         })
 
         continue
@@ -240,7 +250,9 @@ export class WalletStrategy extends BaseWalletStrategy {
    */
   public getStrategy(): ConcreteWalletStrategy {
     if (this.strategies[this.wallet]) {
-      return this.strategies[this.wallet] as ConcreteWalletStrategy
+      const strategy = this.strategies[this.wallet] as ConcreteWalletStrategy
+
+      return strategy
     }
 
     throw new GeneralException(
@@ -275,6 +287,7 @@ export class WalletStrategy extends BaseWalletStrategy {
     const loadPromise = createStrategy({
       args: this.args,
       wallet,
+      emitter: this.getEmitter(),
     })
 
     this.loadingStrategies.set(wallet, loadPromise)

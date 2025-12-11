@@ -49,6 +49,7 @@ import {
   isCosmosAminoOnlyWallet,
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
+  WalletStrategyEmitterEventType,
 } from '@injectivelabs/wallet-base'
 import {
   TxGrpcApi,
@@ -65,7 +66,6 @@ import {
   createTransactionWithSigners,
 } from '@injectivelabs/sdk-ts/core/tx'
 import { checkIfTxRunOutOfGas } from '../utils/index.js'
-import { WalletStrategyEmitterEventType } from './types.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ThrownException } from '@injectivelabs/exceptions'
 import type { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'

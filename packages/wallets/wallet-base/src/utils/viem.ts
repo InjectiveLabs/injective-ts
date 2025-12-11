@@ -59,7 +59,7 @@ export const getViemPublicClient = (
     [EvmChainId.Mainnet, EvmChainId.Sepolia] as EvmChainId[]
   ).includes(chainId as EvmChainId)
 
-  if (isEthereumNetwork && rpcUrl && !rpcUrl.includes('alchemyapi')) {
+  if (isEthereumNetwork && rpcUrl && !rpcUrl.includes('alchemy')) {
     throw new Error(
       `An Alchemy RPC URL must be provided for EvmChainId ${chainId}`,
     )

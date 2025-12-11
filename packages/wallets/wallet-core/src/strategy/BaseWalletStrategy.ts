@@ -4,9 +4,8 @@ import {
   Wallet,
   isEvmWallet,
   isCosmosWallet,
-  type WalletMetadata,
+  WalletStrategyEmitterEventType,
 } from '@injectivelabs/wallet-base'
-import { WalletStrategyEmitterEventType } from '../broadcaster/types.js'
 import type { StdSignDoc } from '@keplr-wallet/types'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { AccountAddress } from '@injectivelabs/ts-types'
@@ -17,6 +16,11 @@ import type {
   AminoSignResponse,
   DirectSignResponse,
 } from '@injectivelabs/sdk-ts/types'
+import type {
+  WalletMetadata,
+  WalletStrategyEmitter,
+  WalletStrategyEmitterEvents,
+} from '@injectivelabs/wallet-base'
 import type {
   Eip1193Provider,
   WalletDeviceType,
@@ -29,10 +33,6 @@ import type {
   CosmosWalletAbstraction,
   WalletStrategy as WalletStrategyInterface,
 } from '@injectivelabs/wallet-base'
-import type {
-  WalletStrategyEmitter,
-  WalletStrategyEmitterEvents,
-} from '../broadcaster/types.js'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -84,6 +84,14 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     this.emit = this.emitter.emit.bind(this.emitter)
   }
 
+  /**
+   * Get the emitter instance.
+   * Used to pass to strategies so they can emit events directly.
+   */
+  public getEmitter(): WalletStrategyEmitter {
+    return this.emitter
+  }
+
   public getWallet(): Wallet {
     return this.wallet
   }
@@ -91,7 +99,8 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
   public async setWallet(wallet: Wallet): Promise<void> {
     this.wallet = wallet
 
-    this.getStrategy()
+    const strategy = this.getStrategy()
+    await strategy?.initStrategy?.()
   }
 
   public setMetadata(metadata?: WalletMetadata) {

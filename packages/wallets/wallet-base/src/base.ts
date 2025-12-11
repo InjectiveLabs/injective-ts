@@ -5,9 +5,11 @@ import type {
 } from '@injectivelabs/ts-types'
 import type {
   WalletMetadata,
+  StrategyEmitter,
   WalletEventListener,
   ConcreteWalletStrategyArgs,
   ConcreteEvmWalletStrategyArgs,
+  WalletStrategyEmitterEventType,
   ConcreteCosmosWalletStrategyArgs,
 } from './types/index.js'
 
@@ -19,6 +21,12 @@ export default abstract class BaseConcreteStrategy {
   protected listeners: Partial<Record<WalletEventListener, any>> = {}
 
   public metadata?: WalletMetadata
+
+  /**
+   * Optional emitter passed from parent WalletStrategy.
+   * When provided, strategies emit events directly on the parent's emitter.
+   */
+  protected emitter?: StrategyEmitter
 
   public constructor(
     args:
@@ -32,9 +40,21 @@ export default abstract class BaseConcreteStrategy {
         : undefined
     this.chainId = args.chainId
     this.metadata = args.metadata
+    this.emitter = args.emitter
   }
 
   public setMetadata(metadata?: WalletMetadata) {
     this.metadata = metadata
+  }
+
+  /**
+   * Emit an event from this strategy.
+   * If emitter was provided from parent, events go directly to parent.
+   */
+  protected emit(
+    event: WalletStrategyEmitterEventType,
+    data?: Record<string, any>,
+  ) {
+    this.emitter?.emit(event, data)
   }
 }
