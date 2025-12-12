@@ -76,13 +76,13 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       # OIDC trusted publishing requires npm 11.5.1+
-      - name: Update npm and set up Git user
+      - name: Update npm for OIDC trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Set up Git user
         run: |
-          npm install -g npm@latest &
-          NPM_PID=$!
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          wait $NPM_PID || { echo "::error::Failed to update npm"; exit 1; }
 
       - name: Determine publish type
         id: determine-publish-type
@@ -143,75 +143,34 @@ jobs:
       - name: Publish to npm (OIDC)
         run: |
           DIST_TAG="${{ steps.determine-publish-type.outputs.dist_tag }}"
+          PUBLISHED_PACKAGES="[]"
           ROOT_DIR="$(pwd)"
+          PUBLISH_COUNT=0
 
-          # Create a temporary directory for publish scripts
-          mkdir -p "$ROOT_DIR/.publish-tmp"
-
-          # Generate publish commands for all packages (use null delimiter for safety)
           for pkg_json in packages/*/package.json packages/wallets/*/package.json; do
             pkg_dir=$(dirname "$pkg_json")
             pkg_name=$(node -p "require('./$pkg_json').name")
             pkg_version=$(node -p "require('./$pkg_json').version")
-            tarball_name=$(echo "$pkg_name" | sed 's/@//;s/\//-/')-$pkg_version.tgz
+            
+            echo "📦 Publishing $pkg_name@$pkg_version"
             
             # Pack with pnpm to resolve catalog: dependencies
-            pnpm --dir "$pkg_dir" pack --pack-destination "$ROOT_DIR/.publish-tmp"
+            pnpm --dir "$pkg_dir" pack --pack-destination "$ROOT_DIR"
             
-            if [ -f "$ROOT_DIR/.publish-tmp/$tarball_name" ]; then
-              # Use null delimiter to safely handle any package names
-              printf '%s\t%s\t%s\0' "$ROOT_DIR/.publish-tmp/$tarball_name" "$pkg_name" "$pkg_version" >> "$ROOT_DIR/.publish-tmp/packages.txt"
+            tarball_name=$(echo "$pkg_name" | sed 's/@//;s/\//-/')-$pkg_version.tgz
+            
+            if [ -f "$tarball_name" ]; then
+              if npm publish "$tarball_name" --access public --tag "$DIST_TAG" --provenance; then
+                PUBLISHED_PACKAGES=$(echo "$PUBLISHED_PACKAGES" | node -p "JSON.stringify([...JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')), {name:'$pkg_name',version:'$pkg_version'}])")
+                PUBLISH_COUNT=$((PUBLISH_COUNT + 1))
+              fi
+              rm -f "$tarball_name"
             else
               echo "⚠️ No tarball found for $pkg_name"
             fi
           done
 
-          # Publish packages in parallel (4 concurrent jobs)
-          RESULTS_FILE="$ROOT_DIR/.publish-tmp/results.txt"
-          FAILED_FILE="$ROOT_DIR/.publish-tmp/failed.txt"
-          touch "$RESULTS_FILE" "$FAILED_FILE"
-
-          publish_package() {
-            IFS=$'\t' read -r tarball pkg_name pkg_version <<< "$1"
-            echo "📦 Publishing $pkg_name@$pkg_version"
-            if npm publish "$tarball" --access public --tag "$DIST_TAG" --provenance 2>&1; then
-              echo "$pkg_name:$pkg_version" >> "$RESULTS_FILE"
-            else
-              echo "$pkg_name:$pkg_version" >> "$FAILED_FILE"
-              echo "::warning::Failed to publish $pkg_name@$pkg_version"
-            fi
-          }
-          export -f publish_package
-          export DIST_TAG RESULTS_FILE FAILED_FILE
-
-          # Run publishes in parallel using null delimiter for safety
-          if [ -f "$ROOT_DIR/.publish-tmp/packages.txt" ]; then
-            xargs -0 -P 4 -I {} bash -c 'publish_package "$@"' _ {} < "$ROOT_DIR/.publish-tmp/packages.txt"
-          fi
-
-          # Build results from file
-          PUBLISH_COUNT=$(wc -l < "$RESULTS_FILE" | tr -d ' ')
-          FAILED_COUNT=$(wc -l < "$FAILED_FILE" | tr -d ' ')
-
-          # Build JSON array efficiently
-          PUBLISHED_PACKAGES=$(node -e "
-            const fs = require('fs');
-            const lines = fs.readFileSync('$RESULTS_FILE', 'utf8').trim().split('\n').filter(Boolean);
-            const packages = lines.map(line => {
-              const [name, version] = line.split(':');
-              return { name, version };
-            });
-            console.log(JSON.stringify(packages));
-          ")
-
-          # Cleanup
-          rm -rf "$ROOT_DIR/.publish-tmp"
-
           echo "{\"publishedPackages\":$PUBLISHED_PACKAGES}" > pnpm-publish-summary.json
-
-          if [ "$FAILED_COUNT" -gt 0 ]; then
-            echo "::warning::$FAILED_COUNT package(s) failed to publish"
-          fi
 
           if [ "$PUBLISH_COUNT" -eq 0 ]; then
             echo "::error::No packages were published. Check npm OIDC trusted publisher configuration."
