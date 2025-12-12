@@ -1,6 +1,7 @@
-import { generateMnemonic } from 'bip39'
+import { generateMnemonic } from '@scure/bip39'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import { toBytes, keccak256, hashTypedData } from 'viem'
+import { wordlist } from '@scure/bip39/wordlists/english'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import { Wallet, concat, getBytes, Signature, HDNodeWallet } from 'ethers'
@@ -39,7 +40,7 @@ export class PrivateKey {
    * @returns { privateKey: PrivateKey, mnemonic: string }
    */
   static generate(): { privateKey: PrivateKey; mnemonic: string } {
-    const mnemonic = generateMnemonic()
+    const mnemonic = generateMnemonic(wordlist)
     const privateKey = PrivateKey.fromMnemonic(mnemonic)
 
     return {
