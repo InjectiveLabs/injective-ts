@@ -14,6 +14,7 @@ import {
   sortObjectByKeys,
   uint8ArrayToBase64,
   stringToUint8Array,
+  safeBigIntStringify,
 } from '@injectivelabs/sdk-ts/utils'
 import {
   WalletAction,
@@ -167,7 +168,7 @@ export class LedgerCosmos
 
       const result = await ledger.sign(
         derivationPath,
-        JSON.stringify(sortObjectByKeys(transaction.signDoc)),
+        safeBigIntStringify(sortObjectByKeys(transaction.signDoc)),
       )
 
       return {

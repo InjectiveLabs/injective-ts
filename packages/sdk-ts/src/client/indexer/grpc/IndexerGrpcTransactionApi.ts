@@ -14,6 +14,7 @@ import {
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
 import { IndexerModule } from '../types/index.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import {
@@ -79,7 +80,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      stringToUint8Array(JSON.stringify(message)),
+      stringToUint8Array(safeBigIntStringify(message)),
     )
 
     prepareTxRequest.msgs = messagesList
@@ -144,7 +145,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      stringToUint8Array(JSON.stringify(message)),
+      stringToUint8Array(safeBigIntStringify(message)),
     )
 
     prepareTxRequest.msgs = messagesList
@@ -211,7 +212,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     broadcastTxRequest.pubKey = cosmosPubKey
     broadcastTxRequest.signature = signature
     broadcastTxRequest.tx = stringToUint8Array(
-      JSON.stringify(parsedTypedData.message),
+      safeBigIntStringify(parsedTypedData.message),
     )
 
     broadcastTxRequest.feePayer = txResponse.feePayer
@@ -220,7 +221,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     const arrayOfMessages = Array.isArray(message) ? message : [message]
 
     const messagesList = arrayOfMessages.map((message) =>
-      stringToUint8Array(JSON.stringify(message)),
+      stringToUint8Array(safeBigIntStringify(message)),
     )
 
     broadcastTxRequest.msgs = messagesList

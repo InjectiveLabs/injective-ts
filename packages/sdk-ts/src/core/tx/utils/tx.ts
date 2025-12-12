@@ -5,6 +5,7 @@ import * as CosmosCryptoSecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/ge
 import * as InjectiveTypesV1Beta1TxExtPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/tx_ext_pb'
 import { createAny, createAnyMessage } from './helpers.js'
 import { base64ToUint8Array } from '../../../utils/encoding.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import type * as CosmosTxSigningV1Beta1SigningPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/signing/v1beta1/signing_pb'
@@ -251,7 +252,7 @@ export const createWeb3Extension = ({
 export const createNonCriticalExtensionFromObject = (
   object: Record<string, unknown>,
 ) => {
-  const jsonBytes = new TextEncoder().encode(JSON.stringify(object))
+  const jsonBytes = new TextEncoder().encode(safeBigIntStringify(object))
 
   return createAny(jsonBytes, '/google.protobuf.Struct')
 }

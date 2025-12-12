@@ -39,29 +39,35 @@ export const objectToJson = (
   object: Record<string, any>,
   params?:
     | {
-        replacer?: any
+        replacer?: (key: string, value: unknown) => unknown
         indentation?: number
       }
     | undefined,
 ): string => {
-  const { replacer, indentation } = params || { replacer: null, indentation: 2 }
+  const { replacer, indentation } = params || {
+    replacer: undefined,
+    indentation: 2,
+  }
 
-  return JSON.stringify(object, replacer, indentation)
+  return safeBigIntStringify(object, replacer, indentation)
 }
 
 export const protoObjectToJson = (
   object: any,
   params?:
     | {
-        replacer?: any
+        replacer?: (key: string, value: unknown) => unknown
         indentation?: number
       }
     | undefined,
 ): string => {
-  const { replacer, indentation } = params || { replacer: null, indentation: 2 }
+  const { replacer, indentation } = params || {
+    replacer: undefined,
+    indentation: 2,
+  }
 
   if (object.toObject !== undefined) {
-    return JSON.stringify(object.toObject(), replacer, indentation)
+    return safeBigIntStringify(object.toObject(), replacer, indentation)
   }
 
   return objectToJson(object, { replacer, indentation })
@@ -150,4 +156,34 @@ export function isJsonString<T>(str: T): boolean {
   }
 
   return true
+}
+
+/**
+ * BigInt-safe JSON replacer function.
+ * Converts BigInt values to strings during JSON serialization.
+ */
+export const bigIntReplacer = (_key: string, value: unknown): unknown =>
+  typeof value === 'bigint' ? value.toString() : value
+
+/**
+ * Stringify an object to JSON with BigInt support.
+ * Converts BigInt values to strings during serialization to prevent
+ * "Do not know how to serialize a BigInt" errors.
+ *
+ * @param value - The value to serialize
+ * @param replacer - Optional custom replacer function (BigInt handling is applied first)
+ * @param space - Optional indentation for pretty printing
+ * @returns JSON string
+ */
+export const safeBigIntStringify = (
+  value: unknown,
+  replacer?: ((key: string, value: unknown) => unknown) | null,
+  space?: string | number,
+): string => {
+  const combinedReplacer = (key: string, val: unknown): unknown => {
+    const bigIntHandled = bigIntReplacer(key, val)
+    return replacer ? replacer(key, bigIntHandled) : bigIntHandled
+  }
+
+  return JSON.stringify(value, combinedReplacer, space)
 }

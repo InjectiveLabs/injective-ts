@@ -104,6 +104,16 @@ describe('MsgGrant', () => {
     })
   })
 
+  it('generates JSON without BigInt serialization error', () => {
+    expect(() => message.toJSON()).not.toThrow()
+
+    const json = message.toJSON()
+    const parsed = JSON.parse(json)
+
+    expect(typeof parsed.grant.expiration.seconds).toBe('string')
+    expect(parsed.grant.expiration.seconds).toBe(params.expiration!.toString())
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

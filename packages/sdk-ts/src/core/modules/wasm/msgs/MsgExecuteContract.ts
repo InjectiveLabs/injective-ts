@@ -3,6 +3,7 @@ import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/c
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { fromUtf8 } from '../../../../utils/encoding.js'
+import { safeBigIntStringify } from '../../../../utils/helpers.js'
 import type { ExecArgs } from '../exec-args.js'
 
 export declare namespace MsgExecuteContract {
@@ -70,7 +71,7 @@ export default class MsgExecuteContract extends MsgBase<
     const message = CosmwasmWasmV1TxPb.MsgExecuteContract.create({
       sender: params.sender,
       contract: params.contractAddress,
-      msg: fromUtf8(JSON.stringify(msg)),
+      msg: fromUtf8(safeBigIntStringify(msg)),
       funds: funds,
     })
 

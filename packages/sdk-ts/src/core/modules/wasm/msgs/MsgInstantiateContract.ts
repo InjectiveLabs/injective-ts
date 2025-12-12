@@ -3,6 +3,7 @@ import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/c
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { fromUtf8 } from '../../../../utils/encoding.js'
+import { safeBigIntStringify } from '../../../../utils/helpers.js'
 
 export declare namespace MsgInstantiateContract {
   export interface Params {
@@ -50,7 +51,7 @@ export default class MsgInstantiateContract extends MsgBase<
       admin: params.admin,
       codeId: BigInt(params.codeId),
       label: params.label,
-      msg: fromUtf8(JSON.stringify(params.msg)),
+      msg: fromUtf8(safeBigIntStringify(params.msg)),
       funds: funds,
     })
 

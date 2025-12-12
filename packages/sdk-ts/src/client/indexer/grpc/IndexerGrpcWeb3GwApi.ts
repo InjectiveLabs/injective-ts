@@ -7,6 +7,7 @@ import {
 } from '@injectivelabs/utils'
 import { IndexerModule } from '../types/index.js'
 import { stringToUint8Array } from '../../../utils/encoding.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
@@ -67,11 +68,7 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      stringToUint8Array(
-        JSON.stringify(message, (_, value) =>
-          typeof value === 'bigint' ? value.toString() : value,
-        ),
-      ),
+      stringToUint8Array(safeBigIntStringify(message)),
     )
 
     prepareTxRequest.msgs = messagesList

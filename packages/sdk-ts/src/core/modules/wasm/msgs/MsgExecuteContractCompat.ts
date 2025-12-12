@@ -1,6 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveWasmxV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { safeBigIntStringify } from '../../../../utils/helpers.js'
 import type { ExecArgs } from '../exec-args.js'
 
 export declare namespace MsgExecuteContractCompat {
@@ -87,7 +88,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     const message = InjectiveWasmxV1TxPb.MsgExecuteContractCompat.create({
       sender: params.sender,
       contract: params.contractAddress,
-      msg: JSON.stringify(msg),
+      msg: safeBigIntStringify(msg),
       funds: funds,
     })
 
@@ -108,7 +109,7 @@ export default class MsgExecuteContractCompat extends MsgBase<
     const message = {
       sender: proto.sender,
       contract: proto.contract,
-      msg: JSON.stringify(this.getMsgObject()),
+      msg: safeBigIntStringify(this.getMsgObject()),
       funds: proto.funds,
     }
 

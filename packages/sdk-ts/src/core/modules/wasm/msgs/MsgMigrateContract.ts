@@ -2,6 +2,7 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { fromUtf8 } from '../../../../utils/encoding.js'
+import { safeBigIntStringify } from '../../../../utils/helpers.js'
 
 export declare namespace MsgMigrateContract {
   export interface Params {
@@ -37,7 +38,7 @@ export default class MsgMigrateContract extends MsgBase<
       sender: params.sender,
       contract: params.contract,
       codeId: BigInt(params.codeId),
-      msg: fromUtf8(JSON.stringify(params.msg)),
+      msg: fromUtf8(safeBigIntStringify(params.msg)),
     })
 
     return message

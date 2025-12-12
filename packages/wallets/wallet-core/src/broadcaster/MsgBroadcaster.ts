@@ -1,6 +1,6 @@
 import { EvmChainId } from '@injectivelabs/ts-types'
-import { ofacList } from '@injectivelabs/sdk-ts/utils'
 import { PublicKey } from '@injectivelabs/sdk-ts/core/accounts'
+import { ofacList, safeBigIntStringify } from '@injectivelabs/sdk-ts/utils'
 import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
 import {
   isTestnet,
@@ -426,7 +426,7 @@ export class MsgBroadcaster {
 
     /** Signing on Ethereum */
     const signature = await walletStrategy.signEip712TypedData(
-      JSON.stringify(eip712TypedData),
+      safeBigIntStringify(eip712TypedData),
       tx.ethereumAddress,
       { txTimeout: txTimeoutTimeInSeconds },
     )
@@ -559,7 +559,7 @@ export class MsgBroadcaster {
 
     /** Signing on Ethereum */
     const signature = await walletStrategy.signEip712TypedData(
-      JSON.stringify(eip712TypedData),
+      safeBigIntStringify(eip712TypedData),
       tx.ethereumAddress,
       { txTimeout: txTimeoutTimeInSeconds },
     )

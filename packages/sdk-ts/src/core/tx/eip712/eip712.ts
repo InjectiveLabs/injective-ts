@@ -1,4 +1,5 @@
 import { getEipTxContext } from './utils.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import {
   getEip712Fee,
   getEipTxDetails,
@@ -71,13 +72,9 @@ export const getEip712TypedDataV2 = ({
     primaryType: 'Tx',
     ...getEip712DomainV2(evmChainId),
     message: {
-      context: JSON.stringify(getEipTxContext({ ...tx, fee }), (_, value) =>
-        typeof value === 'bigint' ? value.toString() : value,
-      ),
+      context: safeBigIntStringify(getEipTxContext({ ...tx, fee })),
 
-      msgs: JSON.stringify(eip712Msgs, (_, value) =>
-        typeof value === 'bigint' ? value.toString() : value,
-      ),
+      msgs: safeBigIntStringify(eip712Msgs),
     },
   }
 }

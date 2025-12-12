@@ -1,4 +1,5 @@
 import { ExecArgBase, dataToExecData } from '../ExecArgBase.js'
+import { safeBigIntStringify } from '../../../../utils/helpers.js'
 import { fromUtf8, uint8ArrayToBase64 } from '../../../../utils/encoding.js'
 import type { ExecDataRepresentation } from '../ExecArgBase.js'
 
@@ -50,7 +51,7 @@ export default class ExecArgCW20Send extends ExecArgBase<
     return {
       contract: params.contractAddress,
       amount: params.amount,
-      msg: uint8ArrayToBase64(fromUtf8(JSON.stringify(params.msg || {}))),
+      msg: uint8ArrayToBase64(fromUtf8(safeBigIntStringify(params.msg || {}))),
     }
   }
 

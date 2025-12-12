@@ -10,6 +10,7 @@
 
 import { base64 } from '@scure/base'
 import { hexToBytes, bytesToHex } from 'viem'
+import { safeBigIntStringify } from './helpers.js'
 import type { Hash } from 'viem'
 
 /**
@@ -178,7 +179,7 @@ export function binaryToBase64(data: string | Uint8Array): string {
  * @returns Base64 encoded string
  */
 export function toBase64(data: Record<string, any>): string {
-  return uint8ArrayToBase64(stringToUint8Array(JSON.stringify(data)))
+  return uint8ArrayToBase64(stringToUint8Array(safeBigIntStringify(data)))
 }
 
 /**
