@@ -1,10 +1,5 @@
-import { defineConfig } from 'vitest/config'
-import { readFileSync } from 'fs'
 import { join } from 'path'
-
-const tsconfig = JSON.parse(
-  readFileSync(join(__dirname, 'tsconfig.json'), 'utf8'),
-)
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
@@ -12,16 +7,41 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['dotenv/config'],
     testTimeout: 30000,
-    maxWorkers: 1, // Keep single worker for BigInt serialization
+    maxWorkers: 'max',
+    pool: 'threads',
     include: [
       'packages/**/__tests__/**/*.[jt]s?(x)',
       'packages/**/?(*.)+(spec|test).[tj]s?(x)',
     ],
-    exclude: ['**/node_modules/**', '/deprecated/'],
+    exclude: [
+      '**/node_modules/**',
+      '/deprecated/',
+      // Exclude blockchain broadcasting tests - run separately with npm run test:broadcast
+      '**/MsgBroadcaster.spec.ts',
+      '**/wallet-private-key/src/strategy/strategy.spec.ts',
+      '**/SigninStargateClient.spec.ts',
+    ],
+    fileParallelism: true,
+    hookTimeout: 10000,
+    clearMocks: true,
+    mockReset: true,
+    restoreMocks: true,
+    unstubGlobals: true,
+    dangerouslyIgnoreUnhandledErrors: false,
+    slowTestThreshold: 5000,
     coverage: {
       provider: 'v8',
-      reporter: ['json', 'html'],
-      exclude: ['**/node_modules/**'],
+      reporter: ['json', 'html', 'text', 'lcov'],
+      exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/*.spec.ts',
+        '**/*.test.ts',
+        '**/proto/**',
+        '**/protoV2/**',
+        '**/__tests__/**',
+        '**/coverage/**',
+      ],
     },
   },
   resolve: {

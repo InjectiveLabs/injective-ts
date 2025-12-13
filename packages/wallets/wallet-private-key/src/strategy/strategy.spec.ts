@@ -35,7 +35,7 @@ const broadcasterArgs: MsgBroadcasterOptions = {
 }
 const msgBroadcaster = new MsgBroadcaster(broadcasterArgs)
 
-describe('MsgBroadcaster', () => {
+describe.sequential('MsgBroadcaster', () => {
   test('prepares, simulates, signs and broadcasts a transaction', async () => {
     const pk = PrivateKey.fromHex(process.env.TEST_PRIVATE_KEY as string)
     const injectiveAddress = pk.toBech32()

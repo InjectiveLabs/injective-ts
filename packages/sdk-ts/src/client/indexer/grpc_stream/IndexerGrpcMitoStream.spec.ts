@@ -1,7 +1,10 @@
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcMitoStream } from './IndexerGrpcMitoStream.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
+const injectiveAddress = mockFactory.injectiveAddress
+const stakingContractAddress = 'inj1pxzykc8qry3ytxwxr3ua72tn6e4wvusj40yy2w'
 
 describe('IndexerGrpcMitoStream', () => {
   let mitoStream: IndexerGrpcMitoStream
@@ -62,6 +65,7 @@ describe('IndexerGrpcMitoStream', () => {
   describe('streamVaultHolderSubscriptions', () => {
     it('should create subscription with unsubscribe method', () => {
       const subscription = mitoStream.streamVaultHolderSubscriptions({
+        holderAddress: injectiveAddress,
         callback: () => {},
       })
 
@@ -75,6 +79,8 @@ describe('IndexerGrpcMitoStream', () => {
   describe('streamStakingRewardsByAccount', () => {
     it('should create subscription with unsubscribe method', () => {
       const subscription = mitoStream.streamStakingRewardsByAccount({
+        staker: injectiveAddress,
+        stakingContractAddress: stakingContractAddress,
         callback: () => {},
       })
 
@@ -88,6 +94,8 @@ describe('IndexerGrpcMitoStream', () => {
   describe('streamHistoricalStaking', () => {
     it('should create subscription with unsubscribe method', () => {
       const subscription = mitoStream.streamHistoricalStaking({
+        staker: injectiveAddress,
+        stakingContractAddress: stakingContractAddress,
         callback: () => {},
       })
 

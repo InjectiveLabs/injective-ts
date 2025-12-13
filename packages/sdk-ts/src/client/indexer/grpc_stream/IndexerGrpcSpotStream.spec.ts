@@ -27,9 +27,9 @@ describe('IndexerGrpcSpotStream', () => {
     })
   })
 
-  describe('streamSpotMarket', () => {
+  describe('streamMarkets', () => {
     it('should create subscription with unsubscribe method', () => {
-      const subscription = spotStream.streamSpotMarket({
+      const subscription = spotStream.streamMarkets({
         callback: () => {},
       })
 
@@ -41,7 +41,7 @@ describe('IndexerGrpcSpotStream', () => {
 
     it('should throw error if callback is not a function', () => {
       expect(() => {
-        spotStream.streamSpotMarket({
+        spotStream.streamMarkets({
           callback: null as any,
         })
       }).toThrow('callback must be a function')
@@ -50,7 +50,7 @@ describe('IndexerGrpcSpotStream', () => {
     it('should stop receiving callbacks after unsubscribe', async () => {
       let callbackCount = 0
 
-      const subscription = spotStream.streamSpotMarket({
+      const subscription = spotStream.streamMarkets({
         callback: () => {
           callbackCount++
         },
@@ -66,9 +66,9 @@ describe('IndexerGrpcSpotStream', () => {
     })
   })
 
-  describe('streamSpotOrderbookV2', () => {
+  describe('streamOrderbooksV2', () => {
     it('should create subscription with unsubscribe method', () => {
-      const subscription = spotStream.streamSpotOrderbookV2({
+      const subscription = spotStream.streamOrderbooksV2({
         marketIds: [mockMarketId],
         callback: () => {},
       })
@@ -81,7 +81,7 @@ describe('IndexerGrpcSpotStream', () => {
 
     it('should throw error if callback is not a function', () => {
       expect(() => {
-        spotStream.streamSpotOrderbookV2({
+        spotStream.streamOrderbooksV2({
           marketIds: [mockMarketId],
           callback: null as any,
         })
@@ -91,7 +91,7 @@ describe('IndexerGrpcSpotStream', () => {
     it('should handle orderbook stream cancellation', async () => {
       let callbackCount = 0
 
-      const subscription = spotStream.streamSpotOrderbookV2({
+      const subscription = spotStream.streamOrderbooksV2({
         marketIds: [mockMarketId],
         callback: () => {
           callbackCount++
@@ -108,9 +108,9 @@ describe('IndexerGrpcSpotStream', () => {
     })
   })
 
-  describe('streamSpotOrderbookUpdate', () => {
+  describe('streamOrderbookUpdates', () => {
     it('should create subscription with unsubscribe method', () => {
-      const subscription = spotStream.streamSpotOrderbookUpdate({
+      const subscription = spotStream.streamOrderbookUpdates({
         marketIds: [mockMarketId],
         callback: () => {},
       })
@@ -122,9 +122,9 @@ describe('IndexerGrpcSpotStream', () => {
     })
   })
 
-  describe('streamSpotOrders', () => {
+  describe('streamOrders', () => {
     it('should create subscription with unsubscribe method', () => {
-      const subscription = spotStream.streamSpotOrders({
+      const subscription = spotStream.streamOrders({
         marketId: mockMarketId,
         callback: () => {},
       })
@@ -136,9 +136,9 @@ describe('IndexerGrpcSpotStream', () => {
     })
   })
 
-  describe('streamSpotTrades', () => {
+  describe('streamTrades', () => {
     it('should create subscription with unsubscribe method', () => {
-      const subscription = spotStream.streamSpotTrades({
+      const subscription = spotStream.streamTrades({
         marketId: mockMarketId,
         callback: () => {},
       })

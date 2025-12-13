@@ -35,7 +35,7 @@ const broadcasterArgs: MsgBroadcasterOptions = {
 }
 export const msgBroadcaster = new MsgBroadcaster(broadcasterArgs)
 
-describe('MsgBroadcaster', () => {
+describe.sequential('MsgBroadcaster', () => {
   test('prepares, simulates, signs and broadcasts a transaction', async () => {
     const privateKey = PrivateKey.fromHex(
       process.env.TEST_PRIVATE_KEY as string,

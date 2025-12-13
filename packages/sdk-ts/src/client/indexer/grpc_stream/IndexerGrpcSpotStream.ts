@@ -61,16 +61,14 @@ export class IndexerGrpcSpotStream {
     this.client = new InjectiveSpotExchangeRPCClient(this.transport)
   }
 
-  /** @deprecated - use streamSpotOrderbookV2 */
-  streamSpotOrderbook(_args: {
+  /** @deprecated - use streamOrderbookV2 */
+  streamOrderbook(_args: {
     marketIds: string[]
     callback: any
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
   }): Subscription {
-    throw new GeneralException(
-      new Error('deprecated - use streamDerivativeOrderbookV2'),
-    )
+    throw new GeneralException(new Error('deprecated - use streamOrderbookV2'))
   }
 
   /**
@@ -84,7 +82,7 @@ export class IndexerGrpcSpotStream {
    * @param params.onStatusCallback - Called on stream errors
    * @returns Subscription object with unsubscribe method
    */
-  streamSpotOrders({
+  streamOrders({
     marketId,
     subaccountId,
     orderSide,
@@ -144,7 +142,7 @@ export class IndexerGrpcSpotStream {
    * @param params.onStatusCallback - Called on stream errors
    * @returns Subscription object with unsubscribe method
    */
-  streamSpotOrderHistory({
+  streamOrderHistory({
     marketId,
     subaccountId,
     orderTypes,
@@ -226,7 +224,7 @@ export class IndexerGrpcSpotStream {
    * @param params.onStatusCallback - Called on stream errors
    * @returns Subscription object with unsubscribe method
    */
-  streamSpotTrades({
+  streamTrades({
     marketIds,
     marketId,
     subaccountIds,
@@ -311,7 +309,7 @@ export class IndexerGrpcSpotStream {
    * @param params.onStatusCallback - Called on stream errors
    * @returns Subscription object with unsubscribe method
    */
-  streamSpotMarket({
+  streamMarkets({
     marketIds,
     callback,
     onEndCallback,
@@ -354,7 +352,7 @@ export class IndexerGrpcSpotStream {
    * @param params.onStatusCallback - Called on stream errors
    * @returns Subscription object with unsubscribe method
    */
-  streamSpotOrderbookV2({
+  streamOrderbooksV2({
     marketIds,
     callback,
     onEndCallback,
@@ -400,7 +398,7 @@ export class IndexerGrpcSpotStream {
    * @param params.onStatusCallback - Called on stream errors
    * @returns Subscription object with unsubscribe method
    */
-  streamSpotOrderbookUpdate({
+  streamOrderbookUpdates({
     marketIds,
     callback,
     onEndCallback,

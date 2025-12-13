@@ -322,16 +322,16 @@
     "@cosmjs/amino": "catalog:",
     "@cosmjs/proto-signing": "catalog:",
     "@cosmjs/stargate": "catalog:",
-    "@injectivelabs/abacus-proto-ts-v2": "1.17.3",
-    "@injectivelabs/core-proto-ts-v2": "1.17.2",
-    "@injectivelabs/exceptions": "workspace:*",
-    "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
-    "@injectivelabs/indexer-proto-ts-v2": "1.17.4",
-    "@injectivelabs/mito-proto-ts-v2": "1.17.2",
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/grpc-web": "^0.0.1",
+    "@injectivelabs/olp-proto-ts-v2": "1.17.3",
+    "@injectivelabs/core-proto-ts-v2": "1.17.3",
+    "@injectivelabs/mito-proto-ts-v2": "1.17.3",
+    "@injectivelabs/abacus-proto-ts-v2": "1.17.4",
+    "@injectivelabs/indexer-proto-ts-v2": "1.17.5",
     "@injectivelabs/networks": "workspace:*",
-    "@injectivelabs/olp-proto-ts-v2": "1.17.2",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/utils": "workspace:*",
     "@noble/curves": "catalog:",
@@ -348,9 +348,6 @@
     "rxjs": "catalog:",
     "snakecase-keys": "^5.4.1",
     "viem": "catalog:"
-  },
-  "devDependencies": {
-    "shx": "^0.3.4"
   },
   "publishConfig": {
     "access": "public"

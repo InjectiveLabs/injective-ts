@@ -100,9 +100,9 @@ describe('IndexerGrpcDerivativesStream', () => {
     })
   })
 
-  describe('streamDerivativeOrderbookV2', () => {
+  describe('streamOrderbooksV2', () => {
     it('should create subscription with unsubscribe method', () => {
-      const subscription = derivativesStream.streamDerivativeOrderbookV2({
+      const subscription = derivativesStream.streamOrderbooksV2({
         marketIds: [mockMarketId],
         callback: () => {},
       })
@@ -114,9 +114,9 @@ describe('IndexerGrpcDerivativesStream', () => {
     })
   })
 
-  describe('streamDerivativeOrders', () => {
+  describe('streamOrders', () => {
     it('should create subscription with unsubscribe method', () => {
-      const subscription = derivativesStream.streamDerivativeOrders({
+      const subscription = derivativesStream.streamOrders({
         marketId: mockMarketId,
         callback: () => {},
       })
@@ -128,9 +128,9 @@ describe('IndexerGrpcDerivativesStream', () => {
     })
   })
 
-  describe('streamDerivativeTrades', () => {
+  describe('streamTrades', () => {
     it('should create subscription with unsubscribe method', () => {
-      const subscription = derivativesStream.streamDerivativeTrades({
+      const subscription = derivativesStream.streamTrades({
         marketId: mockMarketId,
         callback: () => {},
       })

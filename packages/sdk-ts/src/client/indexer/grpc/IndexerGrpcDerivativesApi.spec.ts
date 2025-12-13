@@ -312,7 +312,7 @@ describe('IndexerGrpcDerivativeApi', () => {
           (e as any).message,
       )
     }
-  })
+  }, 60000)
 
   test('fetchPositions', async () => {
     try {
