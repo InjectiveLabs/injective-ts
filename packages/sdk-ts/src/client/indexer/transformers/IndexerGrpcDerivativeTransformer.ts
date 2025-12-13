@@ -1,11 +1,12 @@
 import { BigNumber } from '@injectivelabs/utils'
-import { OrderState, TradeDirection } from '@injectivelabs/ts-types'
-import { TokenType } from '../../../types/token.js'
-import type {
-  OrderSide,
-  TradeExecutionSide,
-  TradeExecutionType,
-} from '@injectivelabs/ts-types'
+import {
+  TokenType,
+  OrderState,
+  TradeDirection,
+  type OrderSide,
+  type TradeExecutionSide,
+  type TradeExecutionType,
+} from '../../../types/index.js'
 import type * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
 import type {
   Orderbook,

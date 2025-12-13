@@ -1,6 +1,5 @@
-export * from './trade.js'
 export * from './types.js'
 export * from './cosmos.js'
-export * from './common.js'
+export type * from './common.js'
 export type * from './aliases.js'
 export type * from './transactions.js'

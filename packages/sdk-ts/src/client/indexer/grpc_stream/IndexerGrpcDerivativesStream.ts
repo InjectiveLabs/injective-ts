@@ -4,11 +4,12 @@ import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
 import { IndexerDerivativeStreamTransformer } from '../transformers/index.js'
 import type { Subscription } from 'rxjs'
-import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
 import type { StreamStatusResponse } from '../types/index.js'
-import type { PaginationOption } from '../../../types/pagination.js'
 import type {
+  OrderSide,
+  OrderState,
   TradeDirection,
+  PaginationOption,
   TradeExecutionSide,
   TradeExecutionType,
 } from '../../../types/index.js'

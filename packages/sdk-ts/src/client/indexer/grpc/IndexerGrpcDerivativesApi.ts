@@ -4,13 +4,14 @@ import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/indexer-pro
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcDerivativeTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { OrderSide, OrderState } from '@injectivelabs/ts-types'
-import type { PaginationOption } from '../../../types/pagination.js'
 import type {
+  OrderSide,
+  OrderState,
   TradeDirection,
+  PaginationOption,
   TradeExecutionSide,
   TradeExecutionType,
-} from '../../../types/exchange.js'
+} from '../../../types/index.js'
 
 /**
  * @category Indexer Grpc API

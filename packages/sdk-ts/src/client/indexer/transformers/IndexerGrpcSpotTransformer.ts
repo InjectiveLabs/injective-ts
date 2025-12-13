@@ -1,5 +1,5 @@
 import { BigNumber } from '@injectivelabs/utils'
-import { TokenType } from '../../../types/token.js'
+import { TokenType } from '../../../types/index.js'
 import { grpcPagingToPagingV2 } from '../../../utils/pagination.js'
 import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
 import type * as InjectiveSpotExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb'
@@ -9,7 +9,7 @@ import type {
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
-} from '@injectivelabs/ts-types'
+} from '../../../types/index.js'
 import type {
   Orderbook,
   PriceLevel,

@@ -1,20 +1,3 @@
-export interface StreamStatusResponse {
-  details: string
-  code: number
-  metadata: any
-}
-
-export const StreamOperation = {
-  Insert: 'insert',
-  Delete: 'delete',
-  Replace: 'replace',
-  Update: 'update',
-  Invalidate: 'invalidate',
-} as const
-
-export type StreamOperation =
-  (typeof StreamOperation)[keyof typeof StreamOperation]
-
 export interface PaginationOption {
   key: string
   offset?: number

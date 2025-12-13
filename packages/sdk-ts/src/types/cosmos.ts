@@ -8,19 +8,8 @@ export interface Coin {
   amount: string
 }
 
-export const StreamOperation = {
-  Insert: 'insert',
-  Delete: 'delete',
-  Replace: 'replace',
-  Update: 'update',
-  Invalidate: 'invalidate',
-} as const
-
-export type StreamOperation =
-  (typeof StreamOperation)[keyof typeof StreamOperation]
-
-export type GrpcCoin = CosmosBaseV1Beta1CoinPb.Coin
 export type TxRaw = CosmosTxV1Beta1TxPb.TxRaw
 export type SignDoc = CosmosTxV1Beta1TxPb.SignDoc
+export type GrpcCoin = CosmosBaseV1Beta1CoinPb.Coin
 
 export type { DirectSignResponse, AminoSignResponse }
