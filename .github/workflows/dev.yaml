@@ -181,7 +181,7 @@ jobs:
 
       - name: Push tags to git
         run: |
-          git push --follow-tags
+          git push origin HEAD --follow-tags
 
       - name: Broadcast published versions on Slack
         run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE

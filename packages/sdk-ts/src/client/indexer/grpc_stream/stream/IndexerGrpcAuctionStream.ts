@@ -1,10 +1,10 @@
 import * as InjectiveAuctionRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb'
 import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb.client'
 import { createStreamSubscription } from './streamHelpers.js'
-import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
-import { IndexerAuctionStreamTransformer } from '../transformers/index.js'
+import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
+import { IndexerAuctionStreamTransformer } from '../../transformers/index.js'
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
+import type { StreamStatusResponse } from '../../types/index.js'
 
 export type BidsStreamCallback = (
   response: ReturnType<

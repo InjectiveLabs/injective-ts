@@ -1,10 +1,10 @@
 import * as InjectiveArchiverRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_archiver_rpc_pb'
 import { InjectiveArchiverRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_archiver_rpc_pb.client'
 import { createStreamSubscription } from './streamHelpers.js'
-import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
-import { IndexerArchiverStreamTransformer } from '../transformers/index.js'
+import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
+import { IndexerArchiverStreamTransformer } from '../../transformers/index.js'
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
+import type { StreamStatusResponse } from '../../types/index.js'
 
 export type SpotAverageEntriesStreamCallback = (
   response: ReturnType<

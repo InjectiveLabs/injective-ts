@@ -1,10 +1,10 @@
 import * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
 import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb.client'
 import { createStreamSubscription } from './streamHelpers.js'
-import { ExplorerStreamTransformer } from '../transformers/index.js'
-import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
+import { ExplorerStreamTransformer } from '../../transformers/index.js'
+import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
+import type { StreamStatusResponse } from '../../types/index.js'
 
 export type BlocksStreamCallback = (
   response: ReturnType<typeof ExplorerStreamTransformer.blocksStreamCallback>,

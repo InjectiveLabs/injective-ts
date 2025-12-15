@@ -1,5 +1,5 @@
 import { createStreamSubscription } from './streamHelpers.js'
-import type { StreamStatusResponse } from '../types/index.js'
+import type { StreamStatusResponse } from '../../types/index.js'
 
 describe('streamHelpers', () => {
   describe('createStreamSubscription', () => {

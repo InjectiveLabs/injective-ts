@@ -1,5 +1,5 @@
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
+import type { StreamStatusResponse } from '../../types/index.js'
 
 /**
  * Creates a subscription wrapper for V2 streaming with proper cancellation support.

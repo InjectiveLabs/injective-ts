@@ -1,3 +1,9 @@
+/**
+ * StreamManager - Simple registry for managing multiple V1 stream subscriptions by key
+ *
+ * This is a lightweight utility for storing and canceling multiple V1 RxJS-based streams.
+ * For V2 streams with advanced lifecycle management and retry logic, use StreamManagerV2.
+ */
 export default class StreamManager<T> {
   private streams: Map<T, any> = new Map()
 

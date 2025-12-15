@@ -1,9 +1,9 @@
 import * as InjectiveTradingRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb'
 import { InjectiveTradingRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb.client'
 import { createStreamSubscription } from './streamHelpers.js'
-import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
+import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
+import type { StreamStatusResponse } from '../../types/index.js'
 
 /**
  * @category Indexer Grid Strategy Grpc Stream

@@ -42,6 +42,9 @@ catalogs:
     ethers:
       specifier: ^6.16.0
       version: 6.16.0
+    eventemitter3:
+      specifier: ^5.0.1
+      version: 5.0.1
     http-status-codes:
       specifier: ^2.3.0
       version: 2.3.0
@@ -246,6 +249,9 @@ importers:
       ethers:
         specifier: 'catalog:'
         version: 6.16.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      eventemitter3:
+        specifier: 'catalog:'
+        version: 5.0.1
       http-status-codes:
         specifier: 'catalog:'
         version: 2.3.0
@@ -327,7 +333,7 @@ importers:
         specifier: 'catalog:'
         version: 0.12.297(starknet@6.24.1(encoding@0.1.13))
       eventemitter3:
-        specifier: ^5.0.1
+        specifier: 'catalog:'
         version: 5.0.1
 
   packages/wallets/wallet-cosmos:

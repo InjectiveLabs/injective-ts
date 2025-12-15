@@ -6,20 +6,20 @@ packages:
 catalog:
   # Core libraries
   viem: ^2.41.2
-  ethers: ^6.16.0
   axios: ^1.13.2
+  ethers: ^6.16.0
 
   # Cosmos ecosystem
   '@cosmjs/amino': 0.33.0
-  '@cosmjs/proto-signing': 0.33.0
   '@cosmjs/stargate': 0.33.0
+  '@cosmjs/proto-signing': 0.33.0
   '@keplr-wallet/types': ^0.12.296
 
   # Utilities
-  http-status-codes: ^2.3.0
-  eip1193-provider: ^1.0.1
   bignumber.js: ^9.3.1
-  rxjs: 7.8.2
+  eventemitter3: ^5.0.1
+  eip1193-provider: ^1.0.1
+  http-status-codes: ^2.3.0
 
   # Cryptography
   '@noble/curves': ^1.9.0

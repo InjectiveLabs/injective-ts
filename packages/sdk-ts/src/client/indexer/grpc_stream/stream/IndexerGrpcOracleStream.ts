@@ -1,10 +1,10 @@
 import * as InjectiveOracleRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_oracle_rpc_pb'
 import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_oracle_rpc_pb.client'
 import { createStreamSubscription } from './streamHelpers.js'
-import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
-import { IndexerOracleStreamTransformer } from '../transformers/IndexerOracleStreamTransformer.js'
+import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
+import { IndexerOracleStreamTransformer } from '../../transformers/IndexerOracleStreamTransformer.js'
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
+import type { StreamStatusResponse } from '../../types/index.js'
 
 export type OraclePriceStreamCallback = (
   response: ReturnType<

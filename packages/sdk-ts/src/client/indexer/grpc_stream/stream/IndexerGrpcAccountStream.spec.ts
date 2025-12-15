@@ -1,6 +1,6 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
-import { getDefaultSubaccountId } from '../../../utils/address.js'
+import { getDefaultSubaccountId } from '../../../../utils/address.js'
 import { IndexerGrpcAccountStream } from './IndexerGrpcAccountStream.js'
 
 const injectiveAddress = mockFactory.injectiveAddress

@@ -2,10 +2,10 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveSpotExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb'
 import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb.client'
 import { createStreamSubscription } from './streamHelpers.js'
-import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
-import { IndexerSpotStreamTransformer } from '../transformers/index.js'
+import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
+import { IndexerSpotStreamTransformer } from '../../transformers/index.js'
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
+import type { StreamStatusResponse } from '../../types/index.js'
 import type {
   OrderSide,
   OrderState,
@@ -13,7 +13,7 @@ import type {
   PaginationOption,
   TradeExecutionSide,
   TradeExecutionType,
-} from '../../../types/index.js'
+} from '../../../../types/index.js'
 
 export type MarketsStreamCallback = (
   response: InjectiveSpotExchangeRpcPb.StreamMarketsResponse,

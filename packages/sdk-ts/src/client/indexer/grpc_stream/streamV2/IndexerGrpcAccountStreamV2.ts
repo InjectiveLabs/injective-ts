@@ -1,22 +1,17 @@
 import * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
 import { InjectiveAccountsRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb.client'
-import { createStreamSubscription } from './streamHelpers.js'
-import { GrpcWebRpcTransport } from '../../base/GrpcWebRpcTransport.js'
-import { IndexerAccountStreamTransformer } from '../transformers/index.js'
-import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../types/index.js'
+import { createStreamSubscriptionV2 } from './streamHelpersV2.js'
+import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
+import { IndexerAccountStreamTransformer } from '../../transformers/index.js'
+import type { StreamSubscription } from '../../../../types/index.js'
 
-export type BalanceStreamCallback = (
+export type BalanceStreamCallbackV2 = (
   response: ReturnType<
     typeof IndexerAccountStreamTransformer.balanceStreamCallback
   >,
 ) => void
 
-/**
- * @category Indexer Grpc Stream
- * @description Provides streaming access to account data from the Injective Indexer
- */
-export class IndexerGrpcAccountStream {
+export class IndexerGrpcAccountStreamV2 {
   private client: InjectiveAccountsRPCClient
   private transport: GrpcWebRpcTransport
 
@@ -27,25 +22,17 @@ export class IndexerGrpcAccountStream {
 
   /**
    * Stream subaccount balance updates
-   * @param params - Stream parameters
    * @param params.subaccountId - The subaccount ID to stream balance for
    * @param params.callback - Called for each balance update
-   * @param params.onEndCallback - Called when stream ends normally
-   * @param params.onStatusCallback - Called on stream errors
-   * @returns Subscription object with unsubscribe method
+   * @returns StreamSubscription
    */
   streamSubaccountBalance({
     subaccountId,
     callback,
-    onEndCallback,
-    onStatusCallback,
   }: {
     subaccountId: string
-    callback: BalanceStreamCallback
-    onEndCallback?: (status?: StreamStatusResponse) => void
-    onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
-    // Input validation
+    callback: BalanceStreamCallbackV2
+  }): StreamSubscription {
     if (!subaccountId) {
       throw new Error('subaccountId is required')
     }
@@ -59,15 +46,10 @@ export class IndexerGrpcAccountStream {
 
     const stream = this.client.streamSubaccountBalance(request)
 
-    return createStreamSubscription(
-      stream,
-      (response: InjectiveAccountsRpcPb.StreamSubaccountBalanceResponse) => {
-        callback(
-          IndexerAccountStreamTransformer.balanceStreamCallback(response),
-        )
-      },
-      onEndCallback,
-      onStatusCallback,
-    )
+    return createStreamSubscriptionV2(stream, (response) => {
+      const transformed =
+        IndexerAccountStreamTransformer.balanceStreamCallback(response)
+      callback(transformed)
+    })
   }
 }
