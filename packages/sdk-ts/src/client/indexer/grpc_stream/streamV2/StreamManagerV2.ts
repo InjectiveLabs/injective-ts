@@ -5,7 +5,6 @@ import {
   StreamDisconnectReason,
 } from '../../../../types/index.js'
 import type {
-  StreamStats,
   StreamError,
   StreamSubscription,
   StreamManagerConfig,
@@ -44,7 +43,6 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   private state: StreamState = StreamState.Idle
   private subscription: StreamSubscription | null = null
   private retryTimeoutId: NodeJS.Timeout | null = null
-  private stats: StreamStats
   private retryAttempt: number = 0
 
   constructor(config: StreamManagerConfig<TResponse>) {
@@ -55,20 +53,6 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       streamFactory: config.streamFactory,
       onData: config.onData,
       retryConfig: { ...DEFAULT_RETRY_CONFIG, ...config.retryConfig },
-    }
-
-    // Initialize stream statistics
-    this.stats = {
-      state: StreamState.Idle,
-      connectCount: 0,
-      disconnectCount: 0,
-      retryCount: 0,
-      dataReceivedCount: 0,
-      errorCount: 0,
-      lastDataAt: null,
-      createdAt: Date.now(),
-      connectedAt: null,
-      disconnectedAt: null,
     }
 
     // Override emit to intercept 'data' events for stats tracking and user callback
@@ -104,14 +88,6 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     return this.config.id
   }
 
-  public getState(): StreamState {
-    return this.state
-  }
-
-  public getStats(): StreamStats {
-    return { ...this.stats, state: this.state }
-  }
-
   /**
    * Destroy the stream manager and clean up all resources
    * Call this when the stream manager is no longer needed
@@ -121,11 +97,14 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     this.removeAllListeners()
   }
 
+  public getState(): StreamState {
+    return this.state
+  }
+
   private updateState(newState: StreamState): void {
     const oldState = this.state
 
     this.state = newState
-    this.stats.state = newState
 
     this.emit(StreamEvent.StateChange, { from: oldState, to: newState })
   }
@@ -180,7 +159,6 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
 
     this.retryTimeoutId = setTimeout(() => {
       this.retryAttempt++
-      this.stats.retryCount++
 
       this.emit(StreamEvent.Retry, {
         attempt: this.retryAttempt,
@@ -202,7 +180,6 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   private handleError(error: Error | StreamError | any): void {
     const errorInfo = this.extractErrorInfo(error)
 
-    this.stats.errorCount++
     this.emit(StreamEvent.Error, errorInfo)
 
     // Map gRPC error code to appropriate disconnect reason
@@ -229,13 +206,10 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   /**
-   * Handles incoming data - tracks stats and calls user callback
+   * Handles incoming data - calls user callback
    * Called automatically when user emits 'data' event from streamFactory callback
    */
   private handleData(response: TResponse): void {
-    this.stats.dataReceivedCount++
-    this.stats.lastDataAt = Date.now()
-
     try {
       this.config.onData(response)
     } catch (error) {
@@ -246,21 +220,16 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   private handleConnected(isReconnect: boolean): void {
     this.updateState(StreamState.Connected)
     this.retryAttempt = 0
-    this.stats.connectCount++
-    this.stats.connectedAt = Date.now()
 
     this.emit(StreamEvent.Connect, {
       isReconnect,
-      attempt: this.stats.connectCount,
+      attempt: 0,
     })
   }
 
   private handleDisconnect(reason: StreamDisconnectReason): void {
     this.clearSubscription()
     this.clearRetryTimeout()
-
-    this.stats.disconnectCount++
-    this.stats.disconnectedAt = Date.now()
 
     // Determine if retry should be attempted based on disconnect reason
     const willRetry =

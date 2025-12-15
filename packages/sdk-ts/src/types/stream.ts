@@ -187,19 +187,3 @@ export interface StreamManagerEvents<TResponse> {
     message: string
   }
 }
-
-/**
- * Stream statistics
- */
-export interface StreamStats {
-  state: StreamState
-  connectCount: number
-  disconnectCount: number
-  retryCount: number
-  dataReceivedCount: number
-  errorCount: number
-  lastDataAt: number | null
-  createdAt: number
-  connectedAt: number | null
-  disconnectedAt: number | null
-}

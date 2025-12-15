@@ -27,5 +27,5 @@ export * from './streamV2/IndexerGrpcExplorerStreamV2.js'
 export * from './streamV2/IndexerGrpcDerivativesStreamV2.js'
 export * from './streamV2/IndexerGrpcAccountPortfolioStreamV2.js'
 
-export * from './streamV2/StreamManager.js'
+export * from './streamV2/StreamManagerV2.js'
 export * from './streamV2/streamHelpersV2.js'

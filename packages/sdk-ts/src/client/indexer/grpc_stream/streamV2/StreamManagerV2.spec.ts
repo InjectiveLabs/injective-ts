@@ -1,6 +1,6 @@
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { it, vi, expect, describe, afterEach, beforeEach } from 'vitest'
-import { StreamManagerV2 } from './StreamManager.js'
+import { StreamManagerV2 } from './StreamManagerV2.js'
 import { StreamState, StreamDisconnectReason } from '../../../../types/index.js'
 import { IndexerGrpcDerivativesStreamV2 } from './IndexerGrpcDerivativesStreamV2.js'
 import type { Mock } from 'vitest'
@@ -52,14 +52,6 @@ describe('StreamManagerV2', () => {
 
       expect(manager.getId()).toBe('test-stream')
       expect(manager.getState()).toBe(StreamState.Idle)
-
-      const stats = manager.getStats()
-      expect(stats.state).toBe(StreamState.Idle)
-      expect(stats.connectCount).toBe(0)
-      expect(stats.disconnectCount).toBe(0)
-      expect(stats.retryCount).toBe(0)
-      expect(stats.dataReceivedCount).toBe(0)
-      expect(stats.errorCount).toBe(0)
     })
   })
 
@@ -294,7 +286,7 @@ describe('StreamManagerV2', () => {
       expect(connectEvents).toHaveLength(1)
       expect(connectEvents[0]).toEqual({
         isReconnect: false,
-        attempt: 1,
+        attempt: 0,
       })
     })
 
@@ -526,73 +518,6 @@ describe('StreamManagerV2', () => {
     })
   })
 
-  describe('statistics', () => {
-    it('should track connection statistics', () => {
-      const manager = new StreamManagerV2({
-        id: 'test-stream',
-        streamFactory,
-        onData: onDataCallback,
-      })
-
-      manager.start()
-      manager.stop()
-
-      const stats = manager.getStats()
-      expect(stats.connectCount).toBe(1)
-      expect(stats.disconnectCount).toBe(1)
-      expect(stats.connectedAt).toBeTruthy()
-      expect(stats.disconnectedAt).toBeTruthy()
-    })
-
-    it('should track data statistics', () => {
-      const manager = new StreamManagerV2({
-        id: 'test-stream',
-        streamFactory,
-        onData: onDataCallback,
-      })
-
-      manager.start()
-
-      // Simulate multiple data events using proper emit pattern
-      manager.emit('data', 'data1')
-      manager.emit('data', 'data2')
-      manager.emit('data', 'data3')
-
-      const stats = manager.getStats()
-      expect(stats.dataReceivedCount).toBe(3)
-      expect(stats.lastDataAt).toBeTruthy()
-      expect(onDataCallback).toHaveBeenCalledTimes(3)
-    })
-
-    it('should track retry statistics', () => {
-      const manager = new StreamManagerV2({
-        id: 'test-stream',
-        streamFactory,
-        onData: onDataCallback,
-        retryConfig: {
-          enabled: true,
-          maxAttempts: 2,
-          initialDelayMs: 100,
-          maxDelayMs: 1000,
-          backoffMultiplier: 2,
-          persistent: false,
-        },
-      })
-
-      // Fail first attempt
-      vi.mocked(streamFactory).mockImplementationOnce(() => {
-        throw new Error('First failure')
-      })
-
-      manager.start()
-      vi.advanceTimersByTime(100) // Trigger retry
-
-      const stats = manager.getStats()
-      expect(stats.retryCount).toBe(1)
-      expect(stats.errorCount).toBe(1)
-    })
-  })
-
   describe('edge cases', () => {
     it('should handle multiple start calls gracefully', () => {
       const manager = new StreamManagerV2({
@@ -721,15 +646,9 @@ describe('StreamManagerV2', () => {
       expect(manager.getState()).toBe(StreamState.Connected)
       expect(connectEvents).toHaveLength(1)
 
-      const stats = manager.getStats()
-      expect(stats.connectCount).toBe(1)
-      expect(stats.connectedAt).toBeTruthy()
-
       // Data may or may not be received depending on market activity
       if (result === 'data') {
         expect(dataReceived.length).toBeGreaterThan(0)
-        expect(stats.dataReceivedCount).toBeGreaterThan(0)
-        expect(stats.lastDataAt).toBeTruthy()
       }
 
       manager.stop()
@@ -793,63 +712,6 @@ describe('StreamManagerV2', () => {
       )
       expect(disconnectEvents[0].willRetry).toBe(false)
     }, 10000)
-
-    it('should track statistics correctly with real stream', async () => {
-      const endpoints = getNetworkEndpoints(Network.MainnetSentry)
-      const derivativesStream = new IndexerGrpcDerivativesStreamV2(
-        endpoints.indexer,
-      )
-
-      let dataCount = 0
-
-      const manager = new StreamManagerV2({
-        id: 'stats-test-stream',
-        streamFactory: () =>
-          derivativesStream.streamMarkets({
-            callback: (response) => {
-              manager.emit('data', response)
-            },
-          }),
-        onData: () => {
-          dataCount++
-        },
-        retryConfig: {
-          enabled: false,
-        },
-      })
-
-      manager.start()
-
-      // Wait for connection
-      await new Promise((resolve) => {
-        const timeout = setTimeout(resolve, 3000)
-        manager.on('connect', () => {
-          clearTimeout(timeout)
-          resolve('connected')
-        })
-      })
-
-      const stats = manager.getStats()
-
-      // Connection stats should always be present
-      expect(stats.connectCount).toBe(1)
-      expect(stats.disconnectCount).toBe(0)
-      expect(stats.errorCount).toBe(0)
-      expect(stats.retryCount).toBe(0)
-      expect(stats.connectedAt).toBeTruthy()
-
-      // Data stats depend on whether market is active
-      if (stats.dataReceivedCount > 0) {
-        expect(dataCount).toBe(stats.dataReceivedCount)
-        expect(stats.lastDataAt).toBeTruthy()
-      }
-
-      manager.stop()
-
-      const finalStats = manager.getStats()
-      expect(finalStats.disconnectCount).toBe(1)
-      expect(finalStats.disconnectedAt).toBeTruthy()
-    }, 8000)
 
     it('should handle destroy() cleanup properly', async () => {
       const endpoints = getNetworkEndpoints(Network.MainnetSentry)
