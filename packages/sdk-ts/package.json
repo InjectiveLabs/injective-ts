@@ -346,7 +346,7 @@
     "ethers": "catalog:",
     "eventemitter3": "catalog:",
     "http-status-codes": "catalog:",
-    "rxjs": "7.8.2:",
+    "rxjs": "7.8.2",
     "snakecase-keys": "^5.4.1",
     "viem": "catalog:"
   },
