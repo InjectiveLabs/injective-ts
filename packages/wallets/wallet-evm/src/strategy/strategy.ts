@@ -1,17 +1,26 @@
-import { sleep, capitalize } from '@injectivelabs/utils'
-import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
-import { toUtf8, TxGrpcApi, isServerSide } from '@injectivelabs/sdk-ts'
+import { capitalize } from '@injectivelabs/utils'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
+import {
+  toUtf8,
+  isServerSide,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   Wallet,
   WalletAction,
   WalletDeviceType,
+  getEvmChainConfig,
+  isEvmBrowserWallet,
   WalletEventListener,
   BaseConcreteStrategy,
+  getViemPublicClientFromEip1193Provider,
 } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
   BitGetException,
+  KeplrEvmException,
   MetamaskException,
   OkxWalletException,
   UnspecifiedErrorCode,
@@ -25,17 +34,19 @@ import {
   getPhantomProvider,
   getRainbowProvider,
   getMetamaskProvider,
+  getKeplrEvmProvider,
   getOkxWalletProvider,
   getTrustWalletProvider,
 } from './utils/index.js'
-import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type { Hash } from 'viem'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type { ErrorContext, ThrownException } from '@injectivelabs/exceptions'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   Eip1193Provider,
@@ -75,6 +86,11 @@ export class EvmWallet
         (announcement: any) => {
           const event = announcement as unknown as EIP6963AnnounceProviderEvent
           const walletName = event.detail.info.name.toLowerCase()
+
+          // Keplr announces as "Keplr" via EIP6963, not "keplr-evm"
+          if (walletName === 'keplr') {
+            this.evmProviders[Wallet.KeplrEvm] = event.detail.provider
+          }
 
           if (walletName === Wallet.Metamask.toLowerCase()) {
             this.evmProviders[Wallet.Metamask] = event.detail.provider
@@ -139,6 +155,10 @@ export class EvmWallet
       return new RainbowWalletException(error, context)
     }
 
+    if (this.wallet === Wallet.KeplrEvm) {
+      return new KeplrEvmException(error, context)
+    }
+
     return new WalletException(error, context)
   }
 
@@ -188,11 +208,26 @@ export class EvmWallet
     }
   }
 
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -349,30 +384,29 @@ export class EvmWallet
 
   async getEvmTransactionReceipt(txHash: string): Promise<string> {
     const ethereum = await this.getEthereum()
+    const chainIdHex = (await ethereum.request({
+      method: 'eth_chainId',
+    })) as string
+    const chainId = parseInt(chainIdHex, 16)
 
-    const interval = 3000
-    const maxAttempts = 10
-    let attempts = 0
-
-    while (attempts < maxAttempts) {
-      attempts++
-      await sleep(interval)
-
-      try {
-        const receipt = await ethereum.request({
-          method: 'eth_getTransactionReceipt',
-          params: [txHash],
-        })
-
-        if (receipt) {
-          return txHash
-        }
-      } catch {}
-    }
-
-    throw new Error(
-      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+    const publicClient = getViemPublicClientFromEip1193Provider(
+      chainId,
+      ethereum,
     )
+
+    try {
+      await publicClient.waitForTransactionReceipt({
+        hash: txHash as Hash,
+        timeout: 30_000,
+        pollingInterval: 3_000,
+      })
+
+      return txHash
+    } catch {
+      throw new Error(
+        `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+      )
+    }
   }
 
   async getPubKey(): Promise<string> {
@@ -407,6 +441,86 @@ export class EvmWallet
     return this.getEthereum() as unknown as Eip1193Provider
   }
 
+  async addEvmNetwork(chainId: EvmChainId): Promise<void> {
+    const ethereum = await this.getEthereum()
+    const chainIdHex = `0x${chainId.toString(16)}`
+    const chain = getEvmChainConfig(chainId)
+
+    const params = {
+      chainId: chainIdHex,
+      chainName: chain.name,
+      rpcUrls: [...(chain.rpcUrls?.default?.http || [])],
+      blockExplorerUrls: chain.blockExplorers?.default?.url
+        ? [chain.blockExplorers.default.url]
+        : [],
+      nativeCurrency: chain.nativeCurrency,
+    }
+
+    const TIMEOUT_MS = 30_000
+
+    try {
+      await Promise.race([
+        ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: chainIdHex }],
+        }),
+        new Promise<void>((resolve, reject) => {
+          const handleChainChanged = (newChainId: string) => {
+            if (newChainId.toLowerCase() === chainIdHex.toLowerCase()) {
+              cleanup()
+              resolve()
+            }
+          }
+
+          const timeoutId = setTimeout(() => {
+            cleanup()
+            reject(new Error('Chain switch timed out'))
+          }, TIMEOUT_MS)
+
+          const cleanup = () => {
+            ethereum.removeListener('chainChanged', handleChainChanged)
+            clearTimeout(timeoutId)
+          }
+
+          ethereum.on('chainChanged', handleChainChanged)
+        }),
+      ])
+    } catch (error) {
+      const errorCode =
+        (error as any).code ?? (error as any)?.data?.originalError?.code
+
+      if (errorCode === 4902) {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [params],
+        })
+
+        return
+      }
+
+      if ((error as Error).message === 'Chain switch timed out') {
+        throw this.EvmWalletException(new Error('Chain switch timed out'), {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetChainId,
+        })
+      }
+
+      throw this.EvmWalletException(
+        new Error(
+          `Something went wrong while adding ${capitalize(
+            this.wallet || 'wallet',
+          )} network`,
+        ),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetChainId,
+        },
+      )
+    }
+  }
+
   private async getEthereum(): Promise<BrowserEip1993Provider> {
     const evmProvider = this.evmProviders[this.wallet as Wallet]
 
@@ -418,18 +532,20 @@ export class EvmWallet
       this.wallet === Wallet.Metamask
         ? await getMetamaskProvider()
         : this.wallet === Wallet.Rabby
-        ? await getRabbyProvider()
-        : this.wallet === Wallet.Phantom
-        ? await getPhantomProvider()
-        : this.wallet === Wallet.BitGet
-        ? await getBitGetProvider()
-        : this.wallet === Wallet.OkxWallet
-        ? await getOkxWalletProvider()
-        : this.wallet === Wallet.TrustWallet
-        ? await getTrustWalletProvider()
-        : this.wallet === Wallet.Rainbow
-        ? await getRainbowProvider()
-        : undefined
+          ? await getRabbyProvider()
+          : this.wallet === Wallet.Phantom
+            ? await getPhantomProvider()
+            : this.wallet === Wallet.BitGet
+              ? await getBitGetProvider()
+              : this.wallet === Wallet.OkxWallet
+                ? await getOkxWalletProvider()
+                : this.wallet === Wallet.TrustWallet
+                  ? await getTrustWalletProvider()
+                  : this.wallet === Wallet.Rainbow
+                    ? await getRainbowProvider()
+                    : this.wallet === Wallet.KeplrEvm
+                      ? await getKeplrEvmProvider()
+                      : undefined
 
     if (!backUpProvider) {
       throw this.EvmWalletException(

@@ -1,26 +1,19 @@
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
-import { InjectiveMetaRpc } from '@injectivelabs/indexer-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import { MitoAPIClient } from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb.client'
+import * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
+export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Mito
-
-  protected client: MitoApi.MitoAPIClientImpl
+  private client: MitoAPIClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new MitoApi.MitoAPIClientImpl(this.getGrpcWebImpl(endpoint))
+    this.client = new MitoAPIClient(this.transport)
   }
 
   async fetchVault({
@@ -30,7 +23,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     contractAddress?: string
     slug?: string
   }) {
-    const request = MitoApi.GetVaultRequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetVaultRequest.create()
 
     if (slug) {
       request.slug = slug
@@ -40,27 +33,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.contractAddress = contractAddress
     }
 
-    try {
-      const response = await this.retry<MitoApi.GetVaultResponse>(() =>
-        this.client.GetVault(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetVaultRequest,
+      GoadesignGoagenMitoApiPb.GetVaultResponse
+    >(request, this.client.getVault.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.vaultResponseToVault(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetVault',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetVault',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.vaultResponseToVault(response)
   }
 
   async fetchVaults({
@@ -72,10 +50,10 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     codeId?: string
     pageIndex?: number
   }) {
-    const request = MitoApi.GetVaultsRequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetVaultsRequest.create()
 
     if (codeId) {
-      request.codeId = codeId
+      request.codeId = BigInt(codeId)
     }
 
     if (limit) {
@@ -86,27 +64,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.pageIndex = pageIndex
     }
 
-    try {
-      const response = await this.retry<MitoApi.GetVaultsResponse>(() =>
-        this.client.GetVaults(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetVaultsRequest,
+      GoadesignGoagenMitoApiPb.GetVaultsResponse
+    >(request, this.client.getVaults.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.vaultsResponseToVaults(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetVaults',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetVaults',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.vaultsResponseToVaults(response)
   }
 
   async fetchLpTokenPriceChart({
@@ -118,41 +81,26 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     from?: string
     vaultAddress: string
   }) {
-    const request = MitoApi.LPTokenPriceChartRequest.create()
+    const request = GoadesignGoagenMitoApiPb.LPTokenPriceChartRequest.create()
 
     request.vaultAddress = vaultAddress
 
     if (from) {
-      request.fromTime = from
+      request.fromTime = BigInt(from)
     }
 
     if (to) {
-      request.toTime = to
+      request.toTime = BigInt(to)
     }
 
-    try {
-      const response = await this.retry<MitoApi.LPTokenPriceChartResponse>(() =>
-        this.client.LPTokenPriceChart(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.LPTokenPriceChartRequest,
+      GoadesignGoagenMitoApiPb.LPTokenPriceChartResponse
+    >(request, this.client.lPTokenPriceChart.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'LPTokenPriceChart',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'LPTokenPriceChart',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
+      response,
+    )
   }
 
   async fetchTVLChartRequest({
@@ -164,41 +112,26 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     from?: string
     vaultAddress: string
   }) {
-    const request = MitoApi.TVLChartRequest.create()
+    const request = GoadesignGoagenMitoApiPb.TVLChartRequest.create()
 
     request.vaultAddress = vaultAddress
 
     if (to) {
-      request.toTime = to
+      request.toTime = BigInt(to)
     }
 
     if (from) {
-      request.fromTime = from
+      request.fromTime = BigInt(from)
     }
 
-    try {
-      const response = await this.retry<MitoApi.TVLChartResponse>(() =>
-        this.client.TVLChart(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.TVLChartRequest,
+      GoadesignGoagenMitoApiPb.TVLChartResponse
+    >(request, this.client.tVLChart.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TVLChart',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TVLChart',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
+      response,
+    )
   }
 
   async fetchVaultsByHolderAddress({
@@ -212,7 +145,8 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     holderAddress: string
     vaultAddress?: string
   }) {
-    const request = MitoApi.VaultsByHolderAddressRequest.create()
+    const request =
+      GoadesignGoagenMitoApiPb.VaultsByHolderAddressRequest.create()
 
     request.holderAddress = holderAddress
 
@@ -228,29 +162,14 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.limit = limit
     }
 
-    try {
-      const response = await this.retry<MitoApi.VaultsByHolderAddressResponse>(
-        () => this.client.VaultsByHolderAddress(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.VaultsByHolderAddressRequest,
+      GoadesignGoagenMitoApiPb.VaultsByHolderAddressResponse
+    >(request, this.client.vaultsByHolderAddress.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.vaultsByHolderAddressResponseToVaultsByHolderAddress(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'VaultsByHolderAddress',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'VaultsByHolderAddress',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.vaultsByHolderAddressResponseToVaultsByHolderAddress(
+      response,
+    )
   }
 
   async fetchLPHolders({
@@ -264,7 +183,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     vaultAddress: string
     stakingContractAddress: string
   }) {
-    const request = MitoApi.LPHoldersRequest.create()
+    const request = GoadesignGoagenMitoApiPb.LPHoldersRequest.create()
 
     request.vaultAddress = vaultAddress
     request.stakingContractAddress = stakingContractAddress
@@ -277,27 +196,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.limit = limit
     }
 
-    try {
-      const response = await this.retry<MitoApi.LPHoldersResponse>(() =>
-        this.client.LPHolders(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.LPHoldersRequest,
+      GoadesignGoagenMitoApiPb.LPHoldersResponse
+    >(request, this.client.lPHolders.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.lpHoldersResponseToLPHolders(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'LPHolders',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'LPHolders',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.lpHoldersResponseToLPHolders(response)
   }
 
   async fetchHolderPortfolio({
@@ -307,64 +211,32 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     holderAddress: string
     stakingContractAddress: string
   }) {
-    const request = MitoApi.PortfolioRequest.create()
+    const request = GoadesignGoagenMitoApiPb.PortfolioRequest.create()
 
     request.holderAddress = holderAddress
     request.stakingContractAddress = stakingContractAddress
 
-    try {
-      const response = await this.retry<MitoApi.PortfolioResponse>(() =>
-        this.client.Portfolio(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.PortfolioRequest,
+      GoadesignGoagenMitoApiPb.PortfolioResponse
+    >(request, this.client.portfolio.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.portfolioResponseToPortfolio(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Portfolio',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Portfolio',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.portfolioResponseToPortfolio(response)
   }
 
   async fetchLeaderboard(epochId?: number) {
-    const request = MitoApi.LeaderboardRequest.create()
+    const request = GoadesignGoagenMitoApiPb.LeaderboardRequest.create()
 
     if (epochId) {
       request.epochId = epochId
     }
 
-    try {
-      const response = await this.retry<MitoApi.LeaderboardResponse>(() =>
-        this.client.Leaderboard(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.LeaderboardRequest,
+      GoadesignGoagenMitoApiPb.LeaderboardResponse
+    >(request, this.client.leaderboard.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.leaderboardResponseToLeaderboard(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Leaderboard',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Leaderboard',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.leaderboardResponseToLeaderboard(response)
   }
 
   async fetchTransferHistory({
@@ -380,7 +252,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     toNumber?: number
     fromNumber?: number
   }) {
-    const request = MitoApi.TransfersHistoryRequest.create()
+    const request = GoadesignGoagenMitoApiPb.TransfersHistoryRequest.create()
 
     if (vault) {
       request.vault = vault
@@ -402,29 +274,14 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.fromNumber = fromNumber
     }
 
-    try {
-      const response = await this.retry<MitoApi.TransfersHistoryResponse>(() =>
-        this.client.TransfersHistory(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.TransfersHistoryRequest,
+      GoadesignGoagenMitoApiPb.TransfersHistoryResponse
+    >(request, this.client.transfersHistory.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.transferHistoryResponseToTransfer(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TransfersHistory',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TransfersHistory',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.transferHistoryResponseToTransfer(
+      response,
+    )
   }
 
   async fetchLeaderboardEpochs({
@@ -436,7 +293,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     toEpochId?: number
     fromEpochId?: number
   }) {
-    const request = MitoApi.LeaderboardEpochsRequest.create()
+    const request = GoadesignGoagenMitoApiPb.LeaderboardEpochsRequest.create()
 
     if (limit) {
       request.limit = limit
@@ -450,29 +307,14 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.fromEpochId = fromEpochId
     }
 
-    try {
-      const response = await this.retry<MitoApi.LeaderboardEpochsResponse>(() =>
-        this.client.LeaderboardEpochs(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.LeaderboardEpochsRequest,
+      GoadesignGoagenMitoApiPb.LeaderboardEpochsResponse
+    >(request, this.client.leaderboardEpochs.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.leaderboardEpochsResponseToLeaderboardEpochs(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'LeaderboardEpochs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'LeaderboardEpochs',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.leaderboardEpochsResponseToLeaderboardEpochs(
+      response,
+    )
   }
 
   async fetchStakingPools({
@@ -482,7 +324,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     staker?: string
     stakingContractAddress: string
   }) {
-    const request = MitoApi.GetStakingPoolsRequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetStakingPoolsRequest.create()
 
     request.stakingContractAddress = stakingContractAddress
 
@@ -490,29 +332,14 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.staker = staker
     }
 
-    try {
-      const response = await this.retry<MitoApi.GetStakingPoolsResponse>(() =>
-        this.client.GetStakingPools(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetStakingPoolsRequest,
+      GoadesignGoagenMitoApiPb.GetStakingPoolsResponse
+    >(request, this.client.getStakingPools.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.stakingPoolsResponseToStakingPools(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetStakingPools',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetStakingPools',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.stakingPoolsResponseToStakingPools(
+      response,
+    )
   }
 
   async fetchStakingHistory({
@@ -526,7 +353,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     toNumber?: number
     fromNumber?: number
   } = {}) {
-    const request = MitoApi.StakingHistoryRequest.create()
+    const request = GoadesignGoagenMitoApiPb.StakingHistoryRequest.create()
 
     if (limit) {
       request.limit = limit
@@ -544,29 +371,14 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.fromNumber = fromNumber
     }
 
-    try {
-      const response = await this.retry<MitoApi.StakingHistoryResponse>(() =>
-        this.client.StakingHistory(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.StakingHistoryRequest,
+      GoadesignGoagenMitoApiPb.StakingHistoryResponse
+    >(request, this.client.stakingHistory.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoStakingHistoryResponseTpStakingHistory(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'StakingHistory',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'StakingHistory',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoStakingHistoryResponseTpStakingHistory(
+      response,
+    )
   }
 
   async fetchStakingRewardsByAccount({
@@ -576,94 +388,50 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     staker: string
     stakingContractAddress: string
   }) {
-    const request = MitoApi.StakingRewardByAccountRequest.create()
+    const request =
+      GoadesignGoagenMitoApiPb.StakingRewardByAccountRequest.create()
 
     request.staker = staker
     request.stakingContractAddress = stakingContractAddress
 
-    try {
-      const response = await this.retry<MitoApi.StakingRewardByAccountResponse>(
-        () => this.client.StakingRewardByAccount(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.StakingRewardByAccountRequest,
+      GoadesignGoagenMitoApiPb.StakingRewardByAccountResponse
+    >(request, this.client.stakingRewardByAccount.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.stakingRewardByAccountResponseToStakingRewardByAccount(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'StakingReward',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'StakingReward',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.stakingRewardByAccountResponseToStakingRewardByAccount(
+      response,
+    )
   }
 
   async fetchMissions({ accountAddress }: { accountAddress: string }) {
-    const request = MitoApi.MissionsRequest.create()
+    const request = GoadesignGoagenMitoApiPb.MissionsRequest.create()
 
     request.accountAddress = accountAddress
 
-    try {
-      const response = await this.retry<MitoApi.MissionsResponse>(() =>
-        this.client.Missions(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.MissionsRequest,
+      GoadesignGoagenMitoApiPb.MissionsResponse
+    >(request, this.client.missions.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoMissionsResponseMissions(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Missions',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Missions',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoMissionsResponseMissions(response)
   }
 
   async fetchMissionLeaderboard(userAddress?: string) {
-    const request = MitoApi.MissionLeaderboardRequest.create()
+    const request = GoadesignGoagenMitoApiPb.MissionLeaderboardRequest.create()
 
     if (userAddress) {
       request.userAddress = userAddress
     }
 
-    try {
-      const response = await this.retry<MitoApi.MissionLeaderboardResponse>(
-        () => this.client.MissionLeaderboard(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.MissionLeaderboardRequest,
+      GoadesignGoagenMitoApiPb.MissionLeaderboardResponse
+    >(request, this.client.missionLeaderboard.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoMissionLeaderboardResponseToMissionLeaderboard(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'MissionLeaderboard',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'MissionLeaderboard',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoMissionLeaderboardResponseToMissionLeaderboard(
+      response,
+    )
   }
 
   async fetchIDO({
@@ -673,7 +441,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     contractAddress: string
     accountAddress?: string
   }) {
-    const request = MitoApi.GetIDORequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetIDORequest.create()
 
     request.contractAddress = contractAddress
 
@@ -681,27 +449,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.accountAddress = accountAddress
     }
 
-    try {
-      const response = await this.retry<MitoApi.GetIDOResponse>(() =>
-        this.client.GetIDO(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetIDORequest,
+      GoadesignGoagenMitoApiPb.GetIDOResponse
+    >(request, this.client.getIDO.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoIDOResponseToIDO(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetIDO',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetIdo',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoIDOResponseToIDO(response)
   }
 
   async fetchIDOs({
@@ -717,7 +470,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     accountAddress?: string
     ownerAddress?: string
   } = {}) {
-    const request = MitoApi.ListIDOsRequest.create()
+    const request = GoadesignGoagenMitoApiPb.ListIDOsRequest.create()
 
     if (status) {
       request.status = status
@@ -739,27 +492,12 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.ownerAddress = ownerAddress
     }
 
-    try {
-      const response = await this.retry<MitoApi.ListIDOsResponse>(() =>
-        this.client.ListIDOs(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.ListIDOsRequest,
+      GoadesignGoagenMitoApiPb.ListIDOsResponse
+    >(request, this.client.listIDOs.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoListIDOsResponseToIDOs(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'ListIDOs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'ListIDOs',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoListIDOsResponseToIDOs(response)
   }
 
   async fetchIDOSubscribers({
@@ -773,7 +511,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     sortBy?: string
     contractAddress: string
   }) {
-    const request = MitoApi.GetIDOSubscribersRequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetIDOSubscribersRequest.create()
 
     request.contractAddress = contractAddress
 
@@ -789,29 +527,14 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.sortBy = sortBy
     }
 
-    try {
-      const response = await this.retry<MitoApi.GetIDOSubscribersResponse>(() =>
-        this.client.GetIDOSubscribers(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetIDOSubscribersRequest,
+      GoadesignGoagenMitoApiPb.GetIDOSubscribersResponse
+    >(request, this.client.getIDOSubscribers.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoIDOSubscribersResponseToIDOSubscribers(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetIDOSubscribers',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetIDOSubscribers',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoIDOSubscribersResponseToIDOSubscribers(
+      response,
+    )
   }
 
   async fetchIDOSubscription({
@@ -821,34 +544,19 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     contractAddress: string
     accountAddress: string
   }) {
-    const request = MitoApi.GetIDOSubscriptionRequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetIDOSubscriptionRequest.create()
 
     request.accountAddress = accountAddress
     request.contractAddress = contractAddress
 
-    try {
-      const response = await this.retry<MitoApi.GetIDOSubscriptionResponse>(
-        () => this.client.GetIDOSubscription(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetIDOSubscriptionRequest,
+      GoadesignGoagenMitoApiPb.GetIDOSubscriptionResponse
+    >(request, this.client.getIDOSubscription.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoIDOSubscriptionResponseToIDOSubscription(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetIDOSubscription',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetIDOSubscription',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoIDOSubscriptionResponseToIDOSubscription(
+      response,
+    )
   }
 
   async fetchIDOActivities({
@@ -862,7 +570,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     limit?: number
     toNumber?: string
   } = {}) {
-    const request = MitoApi.GetIDOActivitiesRequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetIDOActivitiesRequest.create()
 
     if (contractAddress) {
       request.contractAddress = contractAddress
@@ -880,29 +588,14 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.toNumber = toNumber
     }
 
-    try {
-      const response = await this.retry<MitoApi.GetIDOActivitiesResponse>(() =>
-        this.client.GetIDOActivities(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetIDOActivitiesRequest,
+      GoadesignGoagenMitoApiPb.GetIDOActivitiesResponse
+    >(request, this.client.getIDOActivities.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoIDOActivitiesResponseToIDOActivities(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetIDOActivities',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetIDOActivities',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoIDOActivitiesResponseToIDOActivities(
+      response,
+    )
   }
 
   async fetchIDOWhitelist({
@@ -914,7 +607,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     limit?: number
     idoAddress: string
   }) {
-    const request = MitoApi.GetWhitelistRequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetWhitelistRequest.create()
 
     request.idoAddress = idoAddress
 
@@ -926,29 +619,14 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.limit = limit
     }
 
-    try {
-      const response = await this.retry<MitoApi.GetWhitelistResponse>(() =>
-        this.client.GetWhitelist(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetWhitelistRequest,
+      GoadesignGoagenMitoApiPb.GetWhitelistResponse
+    >(request, this.client.getWhitelist.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.mitoWhitelistAccountResponseToWhitelistAccount(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetWhitelist',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetWhitelist',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.mitoWhitelistAccountResponseToWhitelistAccount(
+      response,
+    )
   }
 
   async fetchClaimReferences({
@@ -962,7 +640,7 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
     idoAddress: string
     accountAddress: string
   }) {
-    const request = MitoApi.GetClaimReferencesRequest.create()
+    const request = GoadesignGoagenMitoApiPb.GetClaimReferencesRequest.create()
 
     request.idoAddress = idoAddress
     request.accountAddress = accountAddress
@@ -975,28 +653,13 @@ export class IndexerGrpcMitoApi extends BaseGrpcConsumer {
       request.limit = limit
     }
 
-    try {
-      const response = await this.retry<MitoApi.GetClaimReferencesResponse>(
-        () => this.client.GetClaimReferences(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      GoadesignGoagenMitoApiPb.GetClaimReferencesRequest,
+      GoadesignGoagenMitoApiPb.GetClaimReferencesResponse
+    >(request, this.client.getClaimReferences.bind(this.client))
 
-      return IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMetaRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetClaimReferences',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetClaimReferences',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences(
+      response,
+    )
   }
 }

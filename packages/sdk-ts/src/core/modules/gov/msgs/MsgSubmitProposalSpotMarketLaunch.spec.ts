@@ -36,6 +36,7 @@ describe('MsgSubmitProposalSpotMarketLaunch', () => {
     })
 
     it.skip('EIP712 v1', async () => {
+      // SKIPPED: EIP712 v1 is not supported for this message type
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(

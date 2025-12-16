@@ -1,6 +1,6 @@
 import type { StdSignDoc } from '@keplr-wallet/types'
-import type { WalletDeviceType, Wallet } from './enums.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   ChainId,
   EvmChainId,
@@ -8,10 +8,14 @@ import type {
 } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
+import type { Wallet, WalletDeviceType } from './enums.js'
+
+export interface StrategyEmitter {
+  emit(event: string, data?: Record<string, any>): boolean
+}
 
 export type onAccountChangeCallback = (account: string | string[]) => void
 export type onChainIdChangeCallback = () => void
@@ -97,20 +101,21 @@ export interface WalletMetadata {
   turnkey?: Partial<TurnkeyMetadata>
   walletConnect?: WalletConnectMetadata
   privateKey?: PrivateKeyMetadata
+  derivationPath?: string
+  baseDerivationPath?: string
 }
 
 export interface ConcreteWalletStrategyArgs {
   chainId: ChainId
   metadata?: WalletMetadata
+  emitter?: StrategyEmitter
 }
 
-export interface ConcreteEvmWalletStrategyArgs
-  extends ConcreteWalletStrategyArgs {
+export interface ConcreteEvmWalletStrategyArgs extends ConcreteWalletStrategyArgs {
   evmOptions: WalletStrategyEvmOptions
 }
 
-export interface ConcreteCosmosWalletStrategyArgs
-  extends ConcreteWalletStrategyArgs {
+export interface ConcreteCosmosWalletStrategyArgs extends ConcreteWalletStrategyArgs {
   wallet?: Wallet
 }
 
@@ -122,6 +127,15 @@ export interface ConcreteCosmosWalletStrategy {
    * The accounts from the wallet (addresses)
    */
   getAddresses(args?: unknown): Promise<string[]>
+
+  /**
+   * The accounts from the wallet with derivation path info (for hardware wallets)
+   */
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
 
   /**
    * Return the WalletDeviceType connected on the
@@ -177,11 +191,19 @@ export interface WalletStrategyArguments {
   strategies: ConcreteStrategiesArg
 }
 
-export interface ConcreteWalletStrategy
-  extends Omit<
-    ConcreteCosmosWalletStrategy,
-    'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
-  > {
+export interface ConcreteWalletStrategy extends Omit<
+  ConcreteCosmosWalletStrategy,
+  'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
+> {
+  /**
+   * The accounts from the wallet with derivation path info (for hardware wallets)
+   */
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
+
   /**
    * Sends Cosmos transaction. Returns a transaction hash
    * @param transaction should implement TransactionConfig
@@ -262,6 +284,8 @@ export interface ConcreteWalletStrategy
 
   onChainIdChange?(callback: onChainIdChangeCallback): Promise<void> | void
 
+  initStrategy?(): Promise<void> | void
+
   disconnect?(): Promise<void> | void
 
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
@@ -281,10 +305,15 @@ export interface WalletStrategy {
 
   getWallet(): Wallet
   getWalletClient?<T>(): Promise<T>
-  setWallet(wallet: Wallet): void
+  setWallet(wallet: Wallet): Promise<void>
   setMetadata(metadata?: WalletMetadata): void
   getStrategy(): ConcreteWalletStrategy
   getAddresses(args?: unknown): Promise<AccountAddress[]>
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
   getWalletDeviceType(): Promise<WalletDeviceType>
   getPubKey(address?: string): Promise<string>
   enable(args?: unknown): Promise<boolean>

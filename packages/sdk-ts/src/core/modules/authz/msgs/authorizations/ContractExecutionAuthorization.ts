@@ -1,7 +1,5 @@
-import {
-  GoogleProtobufAny,
-  CosmwasmWasmV1Authz,
-} from '@injectivelabs/core-proto-ts'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmwasmWasmV1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/authz_pb'
 import { BaseAuthorization } from './Base.js'
 import type { Coin } from '@injectivelabs/ts-types'
 
@@ -17,9 +15,9 @@ export declare namespace ContractExecutionAuthorization {
     }
   }
 
-  export type Any = GoogleProtobufAny.Any
+  export type Any = GoogleProtobufAnyPbPb.Any
 
-  export type Proto = CosmwasmWasmV1Authz.ContractExecutionAuthorization
+  export type Proto = CosmwasmWasmV1AuthzPb.ContractExecutionAuthorization
 
   export type Amino = Object
 }
@@ -38,87 +36,87 @@ export default class ContractExecutionAuthorization extends BaseAuthorization<
     return new ContractExecutionAuthorization(params)
   }
 
-  public toAny(): GoogleProtobufAny.Any {
+  public toAny(): GoogleProtobufAnyPbPb.Any {
     const { params } = this
 
-    const authorization =
-      CosmwasmWasmV1Authz.ContractExecutionAuthorization.create()
-    const grant = CosmwasmWasmV1Authz.ContractGrant.create()
-
-    grant.contract = params.contract
+    let limit: GoogleProtobufAnyPbPb.Any | undefined
 
     if (params.limit) {
       if (params.limit.maxCalls && params.limit.amounts) {
-        const limit = CosmwasmWasmV1Authz.CombinedLimit.create()
+        const limitObj = CosmwasmWasmV1AuthzPb.CombinedLimit.create({
+          callsRemaining: BigInt(params.limit.maxCalls),
+          amounts: params.limit.amounts,
+        })
 
-        limit.callsRemaining = params.limit.maxCalls.toString()
-        limit.amounts = params.limit.amounts
-
-        const any = GoogleProtobufAny.Any.create()
-        any.typeUrl = '/cosmwasm.wasm.v1.CombinedLimit'
-        any.value = CosmwasmWasmV1Authz.CombinedLimit.encode(limit).finish()
-
-        grant.limit = any
+        limit = GoogleProtobufAnyPbPb.Any.create({
+          typeUrl: '/cosmwasm.wasm.v1.CombinedLimit',
+          value: CosmwasmWasmV1AuthzPb.CombinedLimit.toBinary(limitObj),
+        })
       } else if (params.limit.maxCalls) {
-        const limit = CosmwasmWasmV1Authz.MaxCallsLimit.create()
+        const limitObj = CosmwasmWasmV1AuthzPb.MaxCallsLimit.create({
+          remaining: BigInt(params.limit.maxCalls),
+        })
 
-        limit.remaining = params.limit.maxCalls.toString()
-
-        const any = GoogleProtobufAny.Any.create()
-        any.typeUrl = '/cosmwasm.wasm.v1.MaxCallsLimit'
-        any.value = CosmwasmWasmV1Authz.MaxCallsLimit.encode(limit).finish()
-
-        grant.limit = any
+        limit = GoogleProtobufAnyPbPb.Any.create({
+          typeUrl: '/cosmwasm.wasm.v1.MaxCallsLimit',
+          value: CosmwasmWasmV1AuthzPb.MaxCallsLimit.toBinary(limitObj),
+        })
       } else if (params.limit.amounts) {
-        const limit = CosmwasmWasmV1Authz.MaxFundsLimit.create()
+        const limitObj = CosmwasmWasmV1AuthzPb.MaxFundsLimit.create({
+          amounts: params.limit.amounts,
+        })
 
-        limit.amounts = params.limit.amounts
-
-        const any = GoogleProtobufAny.Any.create()
-        any.typeUrl = '/cosmwasm.wasm.v1.MaxFundsLimit'
-        any.value = CosmwasmWasmV1Authz.MaxFundsLimit.encode(limit).finish()
-
-        grant.limit = any
+        limit = GoogleProtobufAnyPbPb.Any.create({
+          typeUrl: '/cosmwasm.wasm.v1.MaxFundsLimit',
+          value: CosmwasmWasmV1AuthzPb.MaxFundsLimit.toBinary(limitObj),
+        })
       }
     }
 
+    let filter: GoogleProtobufAnyPbPb.Any
+
     if (params.filter) {
-      const filter = CosmwasmWasmV1Authz.AcceptedMessageKeysFilter.create()
+      const filterObj = CosmwasmWasmV1AuthzPb.AcceptedMessageKeysFilter.create({
+        keys: params.filter.acceptedMessagesKeys,
+      })
 
-      filter.keys = params.filter.acceptedMessagesKeys
-
-      const any = GoogleProtobufAny.Any.create()
-      any.typeUrl = '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter'
-      any.value =
-        CosmwasmWasmV1Authz.AcceptedMessageKeysFilter.encode(filter).finish()
-
-      grant.filter = any
+      filter = GoogleProtobufAnyPbPb.Any.create({
+        typeUrl: '/cosmwasm.wasm.v1.AcceptedMessageKeysFilter',
+        value:
+          CosmwasmWasmV1AuthzPb.AcceptedMessageKeysFilter.toBinary(filterObj),
+      })
     } else {
-      const filter = CosmwasmWasmV1Authz.AllowAllMessagesFilter.create()
+      const filterObj = CosmwasmWasmV1AuthzPb.AllowAllMessagesFilter.create()
 
-      const any = GoogleProtobufAny.Any.create()
-      any.typeUrl = '/cosmwasm.wasm.v1.AllowAllMessagesFilter'
-      any.value =
-        CosmwasmWasmV1Authz.AllowAllMessagesFilter.encode(filter).finish()
-
-      grant.filter = any
+      filter = GoogleProtobufAnyPbPb.Any.create({
+        typeUrl: '/cosmwasm.wasm.v1.AllowAllMessagesFilter',
+        value: CosmwasmWasmV1AuthzPb.AllowAllMessagesFilter.toBinary(filterObj),
+      })
     }
 
-    authorization.grants = [grant]
+    const grant = CosmwasmWasmV1AuthzPb.ContractGrant.create({
+      contract: params.contract,
+      limit: limit,
+      filter: filter,
+    })
 
-    const any = GoogleProtobufAny.Any.create()
-    any.typeUrl = '/cosmwasm.wasm.v1.ContractExecutionAuthorization'
-    any.value =
-      CosmwasmWasmV1Authz.ContractExecutionAuthorization.encode(
-        authorization,
-      ).finish()
+    const authorization =
+      CosmwasmWasmV1AuthzPb.ContractExecutionAuthorization.create({
+        grants: [grant],
+      })
 
-    return any
+    return GoogleProtobufAnyPbPb.Any.create({
+      typeUrl: '/cosmwasm.wasm.v1.ContractExecutionAuthorization',
+      value:
+        CosmwasmWasmV1AuthzPb.ContractExecutionAuthorization.toBinary(
+          authorization,
+        ),
+    })
   }
 
   public toProto(): ContractExecutionAuthorization.Proto {
     const authorization =
-      CosmwasmWasmV1Authz.ContractExecutionAuthorization.decode(
+      CosmwasmWasmV1AuthzPb.ContractExecutionAuthorization.fromBinary(
         this.toAny().value,
       )
 

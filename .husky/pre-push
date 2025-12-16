@@ -1,0 +1,4 @@
+set -e
+
+pnpm lint || exit 1
+pnpm build || exit 1

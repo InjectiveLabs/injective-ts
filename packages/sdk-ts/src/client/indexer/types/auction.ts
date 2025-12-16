@@ -1,4 +1,4 @@
-import type { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
+import type * as InjectiveAuctionRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb'
 
 export interface IndexerAuctionBid {
   bidder: string
@@ -68,11 +68,11 @@ export interface AuctionsStats {
   totalBurntInUsd: string
 }
 
-export type GrpcAuction = InjectiveAuctionRpc.Auction
-export type GrpcAuctionCoin = InjectiveAuctionRpc.Coin
-export type GrpcIndexerAuctionBid = InjectiveAuctionRpc.Bid
-export type GrpcAuctionV2 = InjectiveAuctionRpc.AuctionV2Result
-export type GrpcAuctionCoinPrices = InjectiveAuctionRpc.CoinPrices
-export type GrpcAccountAuctionV2 = InjectiveAuctionRpc.AccountAuctionV2
-export type GrpcAuctionContract = InjectiveAuctionRpc.AuctionContract
-export type StreamBidsResponse = InjectiveAuctionRpc.StreamBidsResponse
+export type GrpcAuction = InjectiveAuctionRpcPb.Auction
+export type GrpcAuctionCoin = InjectiveAuctionRpcPb.Coin
+export type GrpcIndexerAuctionBid = InjectiveAuctionRpcPb.Bid
+export type GrpcAuctionV2 = InjectiveAuctionRpcPb.AuctionV2Result
+export type GrpcAuctionCoinPrices = InjectiveAuctionRpcPb.CoinPrices
+export type GrpcAccountAuctionV2 = InjectiveAuctionRpcPb.AccountAuctionV2
+export type GrpcAuctionContract = InjectiveAuctionRpcPb.AuctionContract
+export type StreamBidsResponse = InjectiveAuctionRpcPb.StreamBidsResponse

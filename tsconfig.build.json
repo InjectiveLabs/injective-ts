@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "rootDir": ".",
-    "lib": [
-      "DOM",
-      "es2018",
-      "es2019",
-      "es2021"
-    ],
+    "lib": ["DOM", "es2018", "es2019", "es2021"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -24,53 +19,25 @@
     "incremental": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": [
-      "node",
-      "jest"
-    ],
+    "types": ["node"],
     "paths": {
-      "@injectivelabs/ts-types": [
-        "./packages/ts-types"
-      ],
-      "@injectivelabs/exceptions": [
-        "./packages/exceptions"
-      ],
-      "@injectivelabs/networks": [
-        "./packages/networks"
-      ],
-      "@injectivelabs/utils": [
-        "./packages/utils"
-      ],
-      "@injectivelabs/sdk-ts": [
-        "./packages/sdk-ts"
-      ],
-      "@injectivelabs/wallet-base": [
-        "./packages/wallets/wallet-base"
-      ],
-      "@injectivelabs/wallet-core": [
-        "./packages/wallets/wallet-core"
-      ],
-      "@injectivelabs/wallet-evm": [
-        "./packages/wallets/wallet-evm"
-      ],
-      "@injectivelabs/wallet-ledger": [
-        "./packages/wallets/wallet-ledger"
-      ],
-      "@injectivelabs/wallet-keplr": [
-        "./packages/wallets/wallet-keplr"
-      ],
-      "@injectivelabs/wallet-trezor": [
-        "./packages/wallets/wallet-trezor"
-      ],
-      "@injectivelabs/wallet-magic": [
-        "./packages/wallets/wallet-magic"
-      ],
+      "@injectivelabs/ts-types": ["./packages/ts-types"],
+      "@injectivelabs/exceptions": ["./packages/exceptions"],
+      "@injectivelabs/networks": ["./packages/networks"],
+      "@injectivelabs/utils": ["./packages/utils"],
+      "@injectivelabs/sdk-ts": ["./packages/sdk-ts"],
+      "@injectivelabs/sdk-ts/*": ["./packages/sdk-ts/src/*"],
+      "@injectivelabs/wallet-base": ["./packages/wallets/wallet-base"],
+      "@injectivelabs/wallet-core": ["./packages/wallets/wallet-core"],
+      "@injectivelabs/wallet-evm": ["./packages/wallets/wallet-evm"],
+      "@injectivelabs/wallet-ledger": ["./packages/wallets/wallet-ledger"],
+      "@injectivelabs/wallet-keplr": ["./packages/wallets/wallet-keplr"],
+      "@injectivelabs/wallet-trezor": ["./packages/wallets/wallet-trezor"],
+      "@injectivelabs/wallet-magic": ["./packages/wallets/wallet-magic"],
       "@injectivelabs/wallet-wallet-connect": [
         "./packages/wallets/wallet-wallet-connect"
       ],
-      "@injectivelabs/wallet-strategy": [
-        "./packages/wallets/wallet-strategy"
-      ]
+      "@injectivelabs/wallet-strategy": ["./packages/wallets/wallet-strategy"]
     }
   },
   "exclude": [
@@ -79,6 +46,7 @@
     "docs",
     "./deprecated",
     "**/*.test.ts",
+    "**/*.spec.ts",
     "**/*.specs.ts"
   ]
 }

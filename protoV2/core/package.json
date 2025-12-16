@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "generate": "sh ./gen.sh",
+    "generate:skip-clone": "sh ./gen.sh --skip-clone",
+    "generate:persist": "sh ./gen.sh --persist",
+    "build": "NODE_OPTIONS='--max-old-space-size=8192' tsup && node generate-dts.mjs && node fix-imports.mjs",
+    "build:esm": "NODE_OPTIONS='--max-old-space-size=8192' tsup --format esm && node generate-dts.mjs && node fix-imports.mjs",
+    "build:cjs": "NODE_OPTIONS='--max-old-space-size=8192' tsup --format cjs"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "glob": "^11.0.3",
+    "protoc": "^32.0.0",
+    "typescript": "^5.0.0",
+    "@protobuf-ts/plugin": "^2.11.1",
+    "@protobuf-ts/runtime": "^2.11.1",
+    "@protobuf-ts/runtime-rpc": "^2.11.1"
+  }
+}

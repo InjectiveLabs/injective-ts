@@ -1,8 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  InjectiveAuctionV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as InjectiveAuctionV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgBid {
@@ -15,7 +12,7 @@ export declare namespace MsgBid {
     }
   }
 
-  export type Proto = InjectiveAuctionV1Beta1Tx.MsgBid
+  export type Proto = InjectiveAuctionV1Beta1TxPb.MsgBid
 }
 
 /**
@@ -29,18 +26,18 @@ export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
   public toProto() {
     const { params } = this
 
-    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
+    const amountCoin = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    amountCoin.denom = params.amount.denom
-    amountCoin.amount = params.amount.amount
+    const message = InjectiveAuctionV1Beta1TxPb.MsgBid.create({
+      sender: params.injectiveAddress,
+      bidAmount: amountCoin,
+      round: BigInt(params.round),
+    })
 
-    const message = InjectiveAuctionV1Beta1Tx.MsgBid.create()
-
-    message.sender = params.injectiveAddress
-    message.bidAmount = amountCoin
-    message.round = params.round.toString()
-
-    return InjectiveAuctionV1Beta1Tx.MsgBid.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -55,7 +52,9 @@ export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      bid_amount: proto.bidAmount,
+      round: proto.round.toString(),
     }
 
     return {
@@ -84,6 +83,6 @@ export default class MsgBid extends MsgBase<MsgBid.Params, MsgBid.Proto> {
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveAuctionV1Beta1Tx.MsgBid.encode(this.toProto()).finish()
+    return InjectiveAuctionV1Beta1TxPb.MsgBid.toBinary(this.toProto())
   }
 }

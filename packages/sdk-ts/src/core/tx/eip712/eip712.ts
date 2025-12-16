@@ -1,4 +1,5 @@
 import { getEipTxContext } from './utils.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import {
   getEip712Fee,
   getEipTxDetails,
@@ -8,9 +9,9 @@ import {
   getDefaultEip712TypesV2,
   getTypesIncludingFeePayer,
 } from './utils.js'
-import type { Msgs } from '../../modules/msgs.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
-import type { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
+import type { Msgs } from '../../modules/msgs.js'
+import type { Eip712ConvertTxArgs, Eip712ConvertFeeArgs } from './types.js'
 
 export const getEip712TypedData = ({
   msgs,
@@ -71,8 +72,9 @@ export const getEip712TypedDataV2 = ({
     primaryType: 'Tx',
     ...getEip712DomainV2(evmChainId),
     message: {
-      context: JSON.stringify(getEipTxContext({ ...tx, fee })),
-      msgs: JSON.stringify(eip712Msgs),
+      context: safeBigIntStringify(getEipTxContext({ ...tx, fee })),
+
+      msgs: safeBigIntStringify(eip712Msgs),
     },
   }
 }

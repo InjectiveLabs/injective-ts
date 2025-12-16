@@ -1,16 +1,16 @@
-import snakecaseKeys from 'snakecase-keys'
-import { CosmosGovV1Tx, CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
+import * as CosmosGovV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/tx_pb'
+import * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgVote {
   export interface Params {
     proposalId: number
     metadata?: string
-    vote: CosmosGovV1Gov.VoteOption
+    vote: CosmosGovV1GovPb.VoteOption
     voter: string
   }
 
-  export type Proto = CosmosGovV1Tx.MsgVote
+  export type Proto = CosmosGovV1TxPb.MsgVote
 }
 
 /**
@@ -24,12 +24,12 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
   public toProto() {
     const { params } = this
 
-    const message = CosmosGovV1Tx.MsgVote.create()
-
-    message.proposalId = params.proposalId.toString()
-    message.voter = params.voter
-    message.option = params.vote
-    message.metadata = params.metadata || ''
+    const message = CosmosGovV1TxPb.MsgVote.create({
+      proposalId: BigInt(params.proposalId),
+      voter: params.voter,
+      option: params.vote,
+      metadata: params.metadata || '',
+    })
 
     return message
   }
@@ -46,8 +46,10 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      proposal_id: proto.proposalId.toString(),
+      voter: proto.voter,
       option: proto.option,
+      metadata: proto.metadata,
     }
 
     return {
@@ -69,9 +71,18 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
   public toEip712V2() {
     const web3Gw = this.toWeb3Gw()
 
-    web3Gw.option = CosmosGovV1Gov.voteOptionToJSON(
-      web3Gw.option,
-    ) as unknown as CosmosGovV1Gov.VoteOption
+    // Convert enum number to string name
+    const optionValue = web3Gw.option as number
+    const optionName =
+      CosmosGovV1GovPb.VoteOption[optionValue] || 'VOTE_OPTION_NO'
+
+    // For EIP712 v2, we need full enum name
+    // Check if optionName already has VOTE_OPTION_ prefix
+    if (optionName && optionName.startsWith('VOTE_OPTION_')) {
+      web3Gw.option = optionName as any
+    } else {
+      web3Gw.option = `VOTE_OPTION_${optionName}` as any
+    }
 
     return web3Gw
   }
@@ -86,6 +97,6 @@ export default class MsgVote extends MsgBase<MsgVote.Params, MsgVote.Proto> {
   }
 
   public toBinary(): Uint8Array {
-    return CosmosGovV1Tx.MsgVote.encode(this.toProto()).finish()
+    return CosmosGovV1TxPb.MsgVote.toBinary(this.toProto())
   }
 }

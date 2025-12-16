@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgChangeAdmin from './MsgChangeAdmin.js'
@@ -22,7 +21,11 @@ const protoParams = {
   newAdmin: params.newAdmin,
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  sender: params.sender,
+  denom: params.denom,
+  new_admin: params.newAdmin,
+}
 const message = MsgChangeAdmin.fromJSON(params)
 
 describe('MsgChangeAdmin', () => {

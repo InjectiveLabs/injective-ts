@@ -1,5 +1,5 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcAuthApi } from './ChainGrpcAuthApi.js'
 import type { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer.js'
 

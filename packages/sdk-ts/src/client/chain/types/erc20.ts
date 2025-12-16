@@ -1,8 +1,6 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type {
-  InjectiveErc20V1Beta1Erc20,
-  InjectiveErc20V1Beta1Params,
-} from '@injectivelabs/core-proto-ts'
+import type * as InjectiveErc20V1Beta1Erc20Pb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/erc20_pb'
+import type * as InjectiveErc20V1Beta1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/params_pb'
 
 export interface TokenPair {
   /** bank denom */
@@ -15,5 +13,5 @@ export interface Params {
   denomCreationFee?: Coin
 }
 
-export type GrpcParams = InjectiveErc20V1Beta1Params.Params
-export type GrpcTokenPair = InjectiveErc20V1Beta1Erc20.TokenPair
+export type GrpcParams = InjectiveErc20V1Beta1ParamsPb.Params
+export type GrpcTokenPair = InjectiveErc20V1Beta1Erc20Pb.TokenPair

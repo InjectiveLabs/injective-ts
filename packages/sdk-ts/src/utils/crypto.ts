@@ -1,34 +1,58 @@
-// import CryptoEs from 'crypto-es'
-import CryptoEs from 'crypto-js'
 import { keccak256 } from 'viem'
 import { hashTypedData } from 'viem'
 import { secp256k1 } from '@noble/curves/secp256k1'
+import { sha256 as nobleSha256 } from '@noble/hashes/sha2'
+import { ripemd160 as nobleRipemd160 } from '@noble/hashes/legacy'
+import {
+  hexToUint8Array,
+  uint8ArrayToHex,
+  uint8ArrayToBase64,
+  base64ToUint8Array,
+} from './encoding.js'
 import type { TypedDataDefinition } from 'viem'
 
+/**
+ * Hash data to hex string using SHA256
+ * @param data - Base64 encoded string to hash
+ * @returns Uppercase hex string
+ */
 export const hashToHex = (data: string): string => {
-  return CryptoEs.SHA256(CryptoEs.enc.Base64.parse(data))
-    .toString()
-    .toUpperCase()
+  const bytes = base64ToUint8Array(data)
+  return uint8ArrayToHex(nobleSha256(bytes)).toUpperCase()
 }
 
+/**
+ * Compute SHA256 hash of Uint8Array data
+ * @param data - Data to hash
+ * @returns SHA256 hash as Uint8Array
+ */
 export const sha256 = (data: Uint8Array): Uint8Array => {
-  const wordArray = CryptoEs.lib.WordArray.create(data)
-  const hash = CryptoEs.SHA256(wordArray)
-
-  return Uint8Array.from(Buffer.from(hash.toString(), 'hex'))
+  return nobleSha256(data)
 }
 
+/**
+ * Compute RIPEMD160 hash of Uint8Array data
+ * @param data - Data to hash
+ * @returns RIPEMD160 hash as Uint8Array
+ */
 export const ripemd160 = (data: Uint8Array): Uint8Array => {
-  const wordArray = CryptoEs.lib.WordArray.create(data)
-  const hash = CryptoEs.RIPEMD160(wordArray)
-
-  return Uint8Array.from(Buffer.from(hash.toString(), 'hex'))
+  return nobleRipemd160(data)
 }
 
+/**
+ * Derive public key from private key
+ * @param privateKey - Private key as Uint8Array
+ * @returns Compressed public key (33 bytes)
+ */
 export const privateKeyToPublicKey = (privateKey: Uint8Array): Uint8Array => {
   return secp256k1.getPublicKey(privateKey, true)
 }
 
+/**
+ * Derive public key from private key hash (hex string)
+ * @param privateKeyHash - Private key as hex string (with or without 0x prefix)
+ * @returns Compressed public key (33 bytes)
+ */
 export const privateKeyHashToPublicKey = (
   privateKeyHash: string,
 ): Uint8Array => {
@@ -36,22 +60,34 @@ export const privateKeyHashToPublicKey = (
     ? privateKeyHash.slice(2)
     : privateKeyHash
 
-  return secp256k1.getPublicKey(Buffer.from(privateKey, 'hex'), true)
+  return secp256k1.getPublicKey(hexToUint8Array(privateKey), true)
 }
 
+/**
+ * Derive public key from private key and encode as base64
+ * @param privateKey - Private key as Uint8Array
+ * @returns Base64 encoded compressed public key
+ */
 export const privateKeyToPublicKeyBase64 = (privateKey: Uint8Array): string => {
-  return Buffer.from(privateKeyToPublicKey(privateKey)).toString('base64')
+  return uint8ArrayToBase64(privateKeyToPublicKey(privateKey))
 }
 
+/**
+ * Derive public key from private key hash and encode as base64
+ * @param privateKeyHash - Private key as hex string (with or without 0x prefix)
+ * @returns Base64 encoded compressed public key
+ */
 export const privateKeyHashToPublicKeyBase64 = (
   privateKeyHash: string,
 ): string => {
-  return Buffer.from(privateKeyHashToPublicKey(privateKeyHash)).toString(
-    'base64',
-  )
+  return uint8ArrayToBase64(privateKeyHashToPublicKey(privateKeyHash))
 }
 
-// Hash only the domain portion
+/**
+ * Hash only the domain portion of EIP-712 typed data
+ * @param message - EIP-712 typed data definition
+ * @returns Hash of the domain
+ */
 export const domainHash = (message: TypedDataDefinition) => {
   const domainTypedData: TypedDataDefinition = {
     domain: message.domain,
@@ -59,10 +95,15 @@ export const domainHash = (message: TypedDataDefinition) => {
     primaryType: 'EIP712Domain',
     message: {},
   }
+
   return hashTypedData(domainTypedData)
 }
 
-// Hash only the message portion
+/**
+ * Hash only the message portion of EIP-712 typed data
+ * @param message - EIP-712 typed data definition
+ * @returns Hash of the message
+ */
 export const messageHash = (message: TypedDataDefinition) => {
   const messageTypedData: TypedDataDefinition = {
     domain: {},
@@ -70,25 +111,24 @@ export const messageHash = (message: TypedDataDefinition) => {
     primaryType: message.primaryType,
     message: message.message,
   }
+
   return hashTypedData(messageTypedData)
 }
 
-export function uint8ArrayToHex(arr: Uint8Array) {
-  return Buffer.from(arr).toString('hex')
-}
+/**
+ * Decompress a compressed public key (starts with 02 or 03)
+ * If the key is already 64 bytes, prepends '04' to make it uncompressed
+ * @param startsWith02Or03 - Compressed public key hex string
+ * @returns Decompressed public key hex string (without 04 prefix)
+ */
+export function decompressPubKey(startsWith02Or03: string): string {
+  const testBuffer = hexToUint8Array(startsWith02Or03)
 
-export function hexToUnit8Array(str: string) {
-  return new Uint8Array(Buffer.from(str, 'hex'))
-}
+  if (testBuffer.length === 64) {
+    startsWith02Or03 = '04' + startsWith02Or03
+  }
 
-export function decompressPubKey(startsWith02Or03: string) {
-  const testBuffer = Buffer.from(startsWith02Or03, 'hex')
-
-  if (testBuffer.length === 64) startsWith02Or03 = '04' + startsWith02Or03
-
-  const point = secp256k1.ProjectivePoint.fromHex(
-    Buffer.from(testBuffer).toString('hex'),
-  )
+  const point = secp256k1.ProjectivePoint.fromHex(startsWith02Or03)
 
   const decompressed = point.toHex(false)
 
@@ -97,6 +137,13 @@ export function decompressPubKey(startsWith02Or03: string) {
   return decompressed.slice(2)
 }
 
+/**
+ * Convert public key to Ethereum address using Keccak256
+ * @param pubKey - Public key as Uint8Array (64 bytes uncompressed or 33 bytes compressed)
+ * @param sanitize - If true, will decompress compressed keys before hashing
+ * @returns Ethereum address (20 bytes)
+ * @throws Error if pubKey length is not 64 after sanitization
+ */
 export const publicKeyToAddress = function (
   pubKey: Uint8Array,
   sanitize: boolean = false,
@@ -111,9 +158,15 @@ export const publicKeyToAddress = function (
     throw new Error('Expected pubKey to be of length 64')
   }
 
-  return keccak256(Buffer.from(pubKey), 'bytes').subarray(-20)
+  return keccak256(pubKey, 'bytes').subarray(-20)
 }
 
+/**
+ * Sanitize typed data by converting BigInt values to strings
+ * Recursively processes objects and arrays
+ * @param data - Data to sanitize (can be object, array, or primitive)
+ * @returns Sanitized data with BigInt values converted to strings
+ */
 export const sanitizeTypedData = <
   T extends
     | object
@@ -133,6 +186,7 @@ export const sanitizeTypedData = <
         k,
         sanitizeTypedData((data as any)[k]),
       ])
+
       return Object.fromEntries(entries) as T
     }
 
@@ -193,6 +247,7 @@ function hashStruct(
       if (encoding === 'hex') {
         return hash.slice(2) // Remove 0x prefix for hex string
       }
+
       return hash
     },
   }

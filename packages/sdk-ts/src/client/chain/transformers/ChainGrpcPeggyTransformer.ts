@@ -1,12 +1,12 @@
+import type * as InjectivePeggyV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb'
 import type { PeggyModuleParams } from '../types/peggy.js'
-import type { InjectivePeggyV1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcPeggyTransformer {
   static moduleParamsResponseToModuleParams(
-    response: InjectivePeggyV1Query.QueryParamsResponse,
+    response: InjectivePeggyV1QueryPb.QueryParamsResponse,
   ): PeggyModuleParams {
     const params = response.params!
     const valsetReward = params.valsetReward
@@ -15,23 +15,24 @@ export class ChainGrpcPeggyTransformer {
       peggyId: params.peggyId,
       contractSourceHash: params.contractSourceHash,
       bridgeEthereumAddress: params.bridgeEthereumAddress,
-      bridgeChainId: params.bridgeChainId,
-      signedValsetsWindow: params.signedValsetsWindow,
-      signedBatchesWindow: params.signedBatchesWindow,
-      signedClaimsWindow: params.signedClaimsWindow,
-      targetBatchTimeout: params.targetBatchTimeout,
-      averageBlockTime: params.averageBlockTime,
-      averageEthereumBlockTime: params.averageEthereumBlockTime,
+      bridgeChainId: params.bridgeChainId.toString(),
+      signedValsetsWindow: params.signedValsetsWindow.toString(),
+      signedBatchesWindow: params.signedBatchesWindow.toString(),
+      signedClaimsWindow: params.signedClaimsWindow.toString(),
+      targetBatchTimeout: params.targetBatchTimeout.toString(),
+      averageBlockTime: params.averageBlockTime.toString(),
+      averageEthereumBlockTime: params.averageEthereumBlockTime.toString(),
       slashFractionValset: params.slashFractionValset,
       slashFractionBatch: params.slashFractionBatch,
       slashFractionClaim: params.slashFractionClaim,
       slashFractionConflictingClaim: params.slashFractionConflictingClaim,
-      unbondSlashingValsetsWindow: params.unbondSlashingValsetsWindow,
+      unbondSlashingValsetsWindow:
+        params.unbondSlashingValsetsWindow.toString(),
       slashFractionBadEthSignature: params.slashFractionBadEthSignature,
       cosmosCoinDenom: params.cosmosCoinDenom,
       cosmosCoinErc20Contract: params.cosmosCoinErc20Contract,
       claimSlashingEnabled: params.claimSlashingEnabled,
-      bridgeContractStartHeight: params.bridgeContractStartHeight,
+      bridgeContractStartHeight: params.bridgeContractStartHeight.toString(),
       valsetReward: {
         denom: valsetReward!.denom,
         amount: valsetReward!.amount,

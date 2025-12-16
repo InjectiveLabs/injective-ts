@@ -1,6 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
-import { InjectiveExchangeV2Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
@@ -17,23 +16,23 @@ export declare namespace MsgUpdateDerivativeMarketV2 {
     newReduceMarginRatio?: string
   }
 
-  export type Proto = InjectiveExchangeV2Tx.MsgUpdateDerivativeMarket
+  export type Proto = InjectiveExchangeV2TxPb.MsgUpdateDerivativeMarket
 }
 
 const createMessage = (params: MsgUpdateDerivativeMarketV2.Params) => {
-  const message = InjectiveExchangeV2Tx.MsgUpdateDerivativeMarket.create()
+  const message = InjectiveExchangeV2TxPb.MsgUpdateDerivativeMarket.create({
+    admin: params.admin,
+    marketId: params.marketId,
+    newTicker: params.newTicker || '',
+    newMinNotional: params.newMinNotional || '0',
+    newMinPriceTickSize: params.newMinPriceTickSize || '0',
+    newMinQuantityTickSize: params.newMinQuantityTickSize || '0',
+    newInitialMarginRatio: params.newInitialMarginRatio || '0',
+    newMaintenanceMarginRatio: params.newMaintenanceMarginRatio || '0',
+    newReduceMarginRatio: params.newReduceMarginRatio || '0',
+  })
 
-  message.admin = params.admin
-  message.marketId = params.marketId
-  message.newTicker = params.newTicker || ''
-  message.newMinNotional = params.newMinNotional || '0'
-  message.newMinPriceTickSize = params.newMinPriceTickSize || '0'
-  message.newMinQuantityTickSize = params.newMinQuantityTickSize || '0'
-  message.newInitialMarginRatio = params.newInitialMarginRatio || '0'
-  message.newMaintenanceMarginRatio = params.newMaintenanceMarginRatio || '0'
-  message.newReduceMarginRatio = params.newReduceMarginRatio || '0'
-
-  return InjectiveExchangeV2Tx.MsgUpdateDerivativeMarket.fromPartial(message)
+  return message
 }
 
 /**
@@ -88,9 +87,16 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const msg = createMessage(params)
     const message = {
-      ...snakecaseKeys(msg),
+      admin: params.admin,
+      market_id: params.marketId,
+      new_ticker: params.newTicker || '',
+      new_min_notional: params.newMinNotional,
+      new_min_price_tick_size: params.newMinPriceTickSize,
+      new_min_quantity_tick_size: params.newMinQuantityTickSize,
+      new_initial_margin_ratio: params.newInitialMarginRatio,
+      new_maintenance_margin_ratio: params.newMaintenanceMarginRatio,
+      new_reduce_margin_ratio: params.newReduceMarginRatio,
     }
 
     return {
@@ -125,10 +131,12 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
 
   public toEip712V2() {
     const { params } = this
-    const web3gw = this.toWeb3Gw()
 
     const messageAdjusted = {
-      ...web3gw,
+      '@type': '/injective.exchange.v2.MsgUpdateDerivativeMarket',
+      admin: params.admin,
+      market_id: params.marketId,
+      new_ticker: params.newTicker || '',
       new_min_price_tick_size: numberToCosmosSdkDecString(
         params.newMinPriceTickSize || '0',
       ),
@@ -147,6 +155,7 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
       new_reduce_margin_ratio: numberToCosmosSdkDecString(
         params.newReduceMarginRatio || '0',
       ),
+      new_open_notional_cap: {},
     }
 
     return messageAdjusted
@@ -162,8 +171,8 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV2Tx.MsgUpdateDerivativeMarket.encode(
+    return InjectiveExchangeV2TxPb.MsgUpdateDerivativeMarket.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

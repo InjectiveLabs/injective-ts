@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
@@ -26,7 +25,11 @@ const protoParams = {
   receiver: params.receiver,
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  sender: params.sender,
+  amount: params.amount,
+  receiver: params.receiver,
+}
 const message = MsgMint.fromJSON(params)
 
 describe('MsgMint', () => {

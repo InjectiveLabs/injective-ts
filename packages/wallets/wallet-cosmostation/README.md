@@ -1,5 +1,17 @@
 # 🌟 Injective Protocol - Wallet Cosmostation
 
+> **DEPRECATED**: This package is deprecated. Please use `@injectivelabs/wallet-cosmos` with `Wallet.Cosmostation` instead.
+>
+> ```typescript
+> import { Wallet } from '@injectivelabs/wallet-base'
+> import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
+>
+> const strategy = new CosmosWalletStrategy({
+>   chainId: ChainId.Mainnet,
+>   wallet: Wallet.Cosmostation,
+> })
+> ```
+
 <!-- TODO -->
 
 [![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-cosmostation.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-cosmostation)

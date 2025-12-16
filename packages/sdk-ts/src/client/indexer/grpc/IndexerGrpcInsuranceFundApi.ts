@@ -1,27 +1,19 @@
-import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveInsuranceRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb'
+import { InjectiveInsuranceRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcInsuranceFundApi extends BaseGrpcConsumer {
+export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.InsuranceFund
-
-  protected client: InjectiveInsuranceRpc.InjectiveInsuranceRPCClientImpl
+  private client: InjectiveInsuranceRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectiveInsuranceRpc.InjectiveInsuranceRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveInsuranceRPCClient(this.transport)
   }
 
   async fetchRedemptions({
@@ -33,7 +25,7 @@ export class IndexerGrpcInsuranceFundApi extends BaseGrpcConsumer {
     denom?: string
     status?: string
   }) {
-    const request = InjectiveInsuranceRpc.RedemptionsRequest.create()
+    const request = InjectiveInsuranceRpcPb.RedemptionsRequest.create()
 
     request.redeemer = address
 
@@ -45,57 +37,26 @@ export class IndexerGrpcInsuranceFundApi extends BaseGrpcConsumer {
       request.status = status
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveInsuranceRpc.RedemptionsResponse>(() =>
-          this.client.Redemptions(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveInsuranceRpcPb.RedemptionsRequest,
+      InjectiveInsuranceRpcPb.RedemptionsResponse
+    >(request, this.client.redemptions.bind(this.client))
 
-      return IndexerGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Redemptions',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Redemptions',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
+      response,
+    )
   }
 
   async fetchInsuranceFunds() {
-    const request = InjectiveInsuranceRpc.FundsRequest.create()
+    const request = InjectiveInsuranceRpcPb.FundsRequest.create()
 
-    try {
-      const response = await this.retry<InjectiveInsuranceRpc.FundsResponse>(
-        () => this.client.Funds(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveInsuranceRpcPb.FundsRequest,
+      InjectiveInsuranceRpcPb.FundsResponse
+    >(request, this.client.funds.bind(this.client))
 
-      return IndexerGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveInsuranceRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Funds',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Funds',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
+      response,
+    )
   }
 }

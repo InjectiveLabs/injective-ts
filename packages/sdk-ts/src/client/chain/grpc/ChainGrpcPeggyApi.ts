@@ -1,9 +1,5 @@
-import { InjectivePeggyV1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectivePeggyV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb'
+import { QueryClient as InjectivePeggyV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcPeggyTransformer } from '../transformers/index.js'
@@ -13,43 +9,23 @@ import { ChainGrpcPeggyTransformer } from '../transformers/index.js'
  */
 export class ChainGrpcPeggyApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Peggy
-
-  protected client: InjectivePeggyV1Query.QueryClientImpl
+  private client: InjectivePeggyV1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectivePeggyV1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectivePeggyV1QueryClient(this.transport)
   }
 
   async fetchModuleParams() {
-    const request = InjectivePeggyV1Query.QueryParamsRequest.create()
+    const request = InjectivePeggyV1QueryPb.QueryParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectivePeggyV1Query.QueryParamsResponse>(() =>
-          this.client.Params(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectivePeggyV1QueryPb.QueryParamsRequest,
+      InjectivePeggyV1QueryPb.QueryParamsResponse
+    >(request, this.client.params.bind(this.client))
 
-      return ChainGrpcPeggyTransformer.moduleParamsResponseToModuleParams(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectivePeggyV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Params',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Params',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcPeggyTransformer.moduleParamsResponseToModuleParams(
+      response,
+    )
   }
 }

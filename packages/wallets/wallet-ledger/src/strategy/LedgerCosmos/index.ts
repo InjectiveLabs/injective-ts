@@ -1,5 +1,5 @@
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { CosmosWalletException } from '@injectivelabs/exceptions'
-import { toUtf8, TxGrpcApi, sortObjectByKeys } from '@injectivelabs/sdk-ts'
 import {
   ErrorType,
   WalletException,
@@ -7,6 +7,15 @@ import {
   TransactionException,
   LedgerCosmosException,
 } from '@injectivelabs/exceptions'
+import {
+  toUtf8,
+  hexToUint8Array,
+  uint8ArrayToHex,
+  sortObjectByKeys,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+  safeBigIntStringify,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   WalletAction,
   WalletDeviceType,
@@ -16,7 +25,7 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
-import type { LedgerWalletInfo } from '../../types.js'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   ChainId,
   EvmChainId,
@@ -24,15 +33,15 @@ import type {
 } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
+import type { LedgerWalletInfo } from '../../types.js'
 
 export class LedgerCosmos
   extends BaseConcreteStrategy
@@ -78,11 +87,26 @@ export class LedgerCosmos
     }
   }
 
+  public async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new LedgerCosmosException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -144,13 +168,13 @@ export class LedgerCosmos
 
       const result = await ledger.sign(
         derivationPath,
-        JSON.stringify(sortObjectByKeys(transaction.signDoc)),
+        safeBigIntStringify(sortObjectByKeys(transaction.signDoc)),
       )
 
       return {
         signed: undefined,
         signature: {
-          signature: Buffer.from(result.signature!).toString('base64'),
+          signature: uint8ArrayToBase64(result.signature!),
           pub_key: undefined,
         },
       } as unknown as AminoSignResponse
@@ -201,7 +225,7 @@ export class LedgerCosmos
       const ledger = await this.ledger.getInstance()
       const result = await ledger.sign(derivationPath, toUtf8(data))
 
-      return Buffer.from(result.signature!).toString('base64')
+      return uint8ArrayToBase64(result.signature!)
     } catch (e: unknown) {
       throw new LedgerCosmosException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -213,7 +237,7 @@ export class LedgerCosmos
 
   async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEthereumChainId is not supported on Keplr'),
+      new Error('getEthereumChainId is not supported on LedgerCosmos'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetChainId,
@@ -223,7 +247,7 @@ export class LedgerCosmos
 
   async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEvmTransactionReceipt is not supported on Keplr'),
+      new Error('getEvmTransactionReceipt is not supported on LedgerCosmos'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetEvmTransactionReceipt,
@@ -240,9 +264,7 @@ export class LedgerCosmos
 
     const ledgerWalletInfo = await this.getWalletForAddress(address)
 
-    return Buffer.from(ledgerWalletInfo.publicKey || '', 'hex').toString(
-      'base64',
-    )
+    return uint8ArrayToBase64(hexToUint8Array(ledgerWalletInfo.publicKey || ''))
   }
 
   private async getWalletForAddress(

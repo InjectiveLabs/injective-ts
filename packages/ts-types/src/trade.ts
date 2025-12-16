@@ -1,3 +1,6 @@
+/**
+ * @deprecated Use TradeExecutionType from @injectivelabs/sdk-ts/types instead
+ */
 export const TradeExecutionType = {
   Market: 'market',
   LimitFill: 'limitFill',
@@ -5,17 +8,29 @@ export const TradeExecutionType = {
   LimitMatchNewOrder: 'limitMatchNewOrder',
 } as const
 
+/**
+ * @deprecated Use TradeExecutionType from @injectivelabs/sdk-ts/types instead
+ */
 export type TradeExecutionType =
   (typeof TradeExecutionType)[keyof typeof TradeExecutionType]
 
+/**
+ * @deprecated Use TradeExecutionSide from @injectivelabs/sdk-ts/types instead
+ */
 export const TradeExecutionSide = {
   Maker: 'maker',
   Taker: 'taker',
 } as const
 
+/**
+ * @deprecated Use TradeExecutionSide from @injectivelabs/sdk-ts/types instead
+ */
 export type TradeExecutionSide =
   (typeof TradeExecutionSide)[keyof typeof TradeExecutionSide]
 
+/**
+ * @deprecated Use TradeDirection from @injectivelabs/sdk-ts/types instead
+ */
 export const TradeDirection = {
   Buy: 'buy',
   Sell: 'sell',
@@ -23,9 +38,15 @@ export const TradeDirection = {
   Short: 'short',
 } as const
 
+/**
+ * @deprecated Use TradeDirection from @injectivelabs/sdk-ts instead
+ */
 export type TradeDirection =
   (typeof TradeDirection)[keyof typeof TradeDirection]
 
+/**
+ * @deprecated Use OrderState from @injectivelabs/sdk-ts/types instead
+ */
 export const OrderState = {
   Unfilled: 'unfilled',
   Booked: 'booked',
@@ -36,8 +57,14 @@ export const OrderState = {
   Triggered: 'triggered',
 } as const
 
+/**
+ * @deprecated Use OrderState from @injectivelabs/sdk-ts/types instead
+ */
 export type OrderState = (typeof OrderState)[keyof typeof OrderState]
 
+/**
+ * @deprecated Use OrderSide from @injectivelabs/sdk-ts/types instead
+ */
 export const OrderSide = {
   Unspecified: 'unspecified',
   Buy: 'buy',
@@ -53,4 +80,7 @@ export const OrderSide = {
   Unrecognized: 'unrecognized',
 } as const
 
+/**
+ * @deprecated Use OrderSide from @injectivelabs/sdk-ts/types instead
+ */
 export type OrderSide = (typeof OrderSide)[keyof typeof OrderSide]

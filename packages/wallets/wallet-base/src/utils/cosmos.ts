@@ -1,12 +1,12 @@
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 
 export const createCosmosSignDocFromSignDoc = (
-  signDoc: CosmosTxV1Beta1Tx.SignDoc,
+  signDoc: CosmosTxV1Beta1TxPb.SignDoc,
 ): any => {
-  return CosmosTxV1Beta1Tx.SignDoc.fromPartial({
+  return CosmosTxV1Beta1TxPb.SignDoc.create({
     bodyBytes: signDoc.bodyBytes,
     authInfoBytes: signDoc.authInfoBytes,
-    accountNumber: BigInt(signDoc.accountNumber).toString(),
+    accountNumber: BigInt(signDoc.accountNumber),
     chainId: signDoc.chainId,
   })
 }

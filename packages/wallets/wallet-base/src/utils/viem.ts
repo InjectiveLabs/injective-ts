@@ -3,17 +3,20 @@ import * as viemChains from 'viem/chains'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import {
   http,
+  custom,
   extractChain,
   createPublicClient,
   createWalletClient,
 } from 'viem'
 import type {
+  Hash,
   Chain,
   Account,
   LocalAccount,
   PublicClient,
   WalletClient,
 } from 'viem'
+import type { BrowserEip1993Provider } from './../types/provider'
 
 export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
   if (chainId === EvmChainId.DevnetEvm) {
@@ -23,7 +26,7 @@ export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
       nativeCurrency: injective.nativeCurrency,
       rpcUrls: {
         default: {
-          http: [],
+          http: ['https://devnet.json-rpc.injective.dev'],
         },
       },
       blockExplorers: {
@@ -36,7 +39,6 @@ export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
     } as Chain
   }
 
-  // Use viem's extractChain for all other chainIds (includes mainnet, sepolia, injective, injectiveTestnet, etc.)
   try {
     return extractChain({
       id: chainId,
@@ -52,6 +54,16 @@ export const getViemPublicClient = (
   rpcUrl?: string,
 ): PublicClient => {
   const chain = getEvmChainConfig(chainId)
+
+  const isEthereumNetwork = (
+    [EvmChainId.Mainnet, EvmChainId.Sepolia] as EvmChainId[]
+  ).includes(chainId as EvmChainId)
+
+  if (isEthereumNetwork && rpcUrl && !rpcUrl.includes('alchemy')) {
+    throw new Error(
+      `An Alchemy RPC URL must be provided for EvmChainId ${chainId}`,
+    )
+  }
 
   const chainConfig: Chain = rpcUrl
     ? {
@@ -101,6 +113,18 @@ export const getViemWalletClient = ({
   return createWalletClient({
     chain: chainConfig,
     transport: rpcUrl ? http(rpcUrl) : http(),
-    account: typeof account === 'string' ? (account as `0x${string}`) : account,
+    account: typeof account === 'string' ? (account as Hash) : account,
+  })
+}
+
+export const getViemPublicClientFromEip1193Provider = (
+  chainId: EvmChainId | number,
+  provider: BrowserEip1993Provider,
+): PublicClient => {
+  const chain = getEvmChainConfig(chainId)
+
+  return createPublicClient({
+    chain,
+    transport: custom(provider),
   })
 }

@@ -1,4 +1,4 @@
-import { toBase64 } from '../../../../utils/utf8.js'
+import { toBase64 } from '../../../../utils/encoding.js'
 import { ExecArgBase, dataToExecData } from '../ExecArgBase.js'
 import type { ExecDataRepresentation } from '../ExecArgBase.js'
 

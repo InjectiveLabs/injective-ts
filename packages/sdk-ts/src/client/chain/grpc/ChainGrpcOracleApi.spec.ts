@@ -1,4 +1,4 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcOracleApi } from './ChainGrpcOracleApi.js'
 import type { OracleModuleParams } from '../types/index.js'
 

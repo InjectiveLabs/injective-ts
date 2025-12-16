@@ -1,18 +1,21 @@
-import { StreamOperation } from '@injectivelabs/ts-types'
+import { StreamOperation } from '../../../types/index.js'
+import type * as InjectiveAuctionRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb'
 import type { IndexerAuctionBid } from '../types/index.js'
-import type { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerAuctionStreamTransformer {
   static bidsStreamCallback = (
-    response: InjectiveAuctionRpc.StreamBidsResponse,
+    response: InjectiveAuctionRpcPb.StreamBidsResponse,
   ) => ({
     bid: {
       bidder: response.bidder,
       bidAmount: response.bidAmount,
-      bidTimestamp: parseInt(response.timestamp, 10),
+      bidTimestamp:
+        typeof response.timestamp === 'bigint'
+          ? Number(response.timestamp)
+          : parseInt(response.timestamp, 10),
     } as IndexerAuctionBid,
     operation: StreamOperation.Insert,
   })

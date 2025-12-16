@@ -1,6 +1,6 @@
 import { Network } from '@injectivelabs/networks'
-import { toChainFormat, toBigNumber } from '@injectivelabs/utils'
-import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
+import { toBigNumber, toChainFormat } from '@injectivelabs/utils'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { OrderHashManager } from './OrderHashManager.js'
 import { Address } from '../../../../accounts/Address.js'
 import MsgCreateSpotLimitOrder from '../../../exchange/msgs/MsgCreateSpotLimitOrder.js'
@@ -46,7 +46,7 @@ const spotOrder = {
     feeRecipient: address.bech32Address,
   },
   marketId: marketId,
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY,
 }
 
 const spotMsg = MsgCreateSpotLimitOrder.fromJSON({
@@ -62,7 +62,7 @@ const spotMsg = MsgCreateSpotLimitOrder.fromJSON({
     spotInfo.quantity,
     toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
   ).toFixed(),
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY,
 })
 
 const derivativeOrder = {
@@ -82,13 +82,13 @@ const derivativeOrder = {
     derivativeInfo.quoteDecimals,
   ).toFixed(),
   marketId: marketId,
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY,
 }
 
 const derivativeMsg = MsgCreateDerivativeLimitOrder.fromJSON({
   subaccountId: subaccountId,
   injectiveAddress: address.bech32Address,
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY,
   price: toChainFormat(
     derivativeInfo.price,
     derivativeInfo.quoteDecimals,
@@ -126,9 +126,8 @@ describe.skip('OrderHashManager', () => {
   it('generates proper hash from msg', async () => {
     orderHashManager.setNonce(78)
 
-    const spotOrderHashes = await orderHashManager.getSpotOrderHashFromMsg(
-      spotMsg,
-    )
+    const spotOrderHashes =
+      await orderHashManager.getSpotOrderHashFromMsg(spotMsg)
     const derivativeOrderHashes =
       await orderHashManager.getDerivativeOrderHashFromMsg(derivativeMsg)
 

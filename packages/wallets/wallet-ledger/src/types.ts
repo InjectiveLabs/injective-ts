@@ -1,7 +1,7 @@
 // Browser-compatible HDNode-like interface (replaces hdkey dependency)
 export interface HDNodeLike {
-  publicKey: Buffer
-  chainCode: Buffer
+  publicKey: Uint8Array
+  chainCode: Uint8Array
 }
 
 export const LedgerDerivationPathType = {

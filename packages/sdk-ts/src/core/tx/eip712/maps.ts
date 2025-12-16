@@ -237,8 +237,6 @@ export const numberTypeToReflectionNumberType = (
       return 'uint32'
     case 'round':
       return 'uint64'
-    case 'oracle_scale_factor':
-      return 'uint64'
     case 'expiry':
       return 'int64'
     case 'creation_height':

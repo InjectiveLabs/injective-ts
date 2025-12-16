@@ -2,10 +2,14 @@ import { keccak256 } from 'viem'
 import { BigNumber } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { getNetworkEndpoints } from '@injectivelabs/networks'
-import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { Address } from '../../../../accounts/Address.js'
 import { domainHash, messageHash } from '../../../../../utils/crypto.js'
 import { numberToCosmosSdkDecString } from '../../../../../utils/numbers.js'
+import {
+  hexToUint8Array,
+  concatUint8Arrays,
+} from '../../../../../utils/encoding.js'
 import { ChainGrpcExchangeApi } from '../../../../../client/chain/grpc/ChainGrpcExchangeApi.js'
 import type { Network } from '@injectivelabs/networks'
 import type MsgCreateSpotLimitOrder from '../../msgs/MsgCreateSpotLimitOrder.js'
@@ -136,25 +140,25 @@ const EIP712Types = {
 
 const orderTypeToChainOrderType = (orderType: number) => {
   switch (orderType) {
-    case InjectiveExchangeV1Beta1Exchange.OrderType.BUY:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY:
       return '\u0001'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.SELL:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.SELL:
       return '\u0002'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.STOP_BUY:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.STOP_BUY:
       return '\u0003'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.STOP_SELL:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.STOP_SELL:
       return '\u0004'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.TAKE_BUY:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.TAKE_BUY:
       return '\u0005'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.TAKE_SELL:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.TAKE_SELL:
       return '\u0006'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.BUY_PO:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY_PO:
       return '\u0007'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.SELL_PO:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.SELL_PO:
       return '\u0008'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.BUY_ATOMIC:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY_ATOMIC:
       return '\u0009'
-    case InjectiveExchangeV1Beta1Exchange.OrderType.SELL_ATOMIC:
+    case InjectiveExchangeV1Beta1ExchangePb.OrderType.SELL_ATOMIC:
       return '\u000A'
     default:
       return '\u0001'
@@ -409,23 +413,22 @@ export class OrderHashManager {
     const subaccountId =
       Address.fromBech32(address).getSubaccountId(subaccountIndex)
 
-    const { nonce } = await chainGrpcExchangeApi.fetchSubaccountTradeNonce(
-      subaccountId,
-    )
+    const { nonce } =
+      await chainGrpcExchangeApi.fetchSubaccountTradeNonce(subaccountId)
 
     this.nonce = nonce + 1
   }
 
   private hashTypedData(eip712: any) {
-    const bytesToHash = Buffer.concat([
-      Buffer.from('19', 'hex'),
-      Buffer.from('01', 'hex'),
-      Buffer.from(domainHash(eip712)),
-      Buffer.from(messageHash(eip712)),
+    const bytesToHash = concatUint8Arrays([
+      hexToUint8Array('19'),
+      hexToUint8Array('01'),
+      hexToUint8Array(domainHash(eip712)),
+      hexToUint8Array(messageHash(eip712)),
     ])
 
     try {
-      return `0x${Buffer.from(keccak256(bytesToHash)).toString('hex')}`
+      return keccak256(bytesToHash)
     } catch {
       return ''
     }

@@ -4,9 +4,9 @@ import {
   getViemPublicClient,
   getViemWalletClient,
 } from '@injectivelabs/wallet-base'
-import { loadLedgerServiceType } from '../lib.js'
-import type LedgerHW from './hw/index.js'
+import type { Hash } from 'viem'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
+import type LedgerHW from './hw/index.js'
 
 export class LedgerEip1193Provider implements Eip1193Provider {
   private readonly ledger: LedgerHW
@@ -20,7 +20,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
     params: { derivationPath?: string; chainId?: string },
   ) {
     this.ledger = ledger
-    this.derivationPath = "m/44'/60'/0'/0/0"
+    this.derivationPath = params.derivationPath || "m/44'/60'/0'/0/0"
 
     this.chainId = parseInt(params.chainId || '1')
   }
@@ -28,7 +28,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
   async getClient() {
     return getViemWalletClient({
       chainId: this.chainId,
-      account: (await this.getAddress()) as `0x${string}`,
+      account: (await this.getAddress()) as Hash,
     })
   }
 
@@ -54,7 +54,8 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       JSON.parse(data),
     )
 
-    const combined = `${result.r}${result.s}${result.v.toString(16)}`
+    const v = result.v.toString(16).padStart(2, '0')
+    const combined = `${result.r}${result.s}${v}`
 
     return combined.startsWith('0x') ? combined : `0x${combined}`
   }
@@ -64,23 +65,20 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
     const serializedTransaction = serializeTransaction(txData)
 
-    const ledgerService = await loadLedgerServiceType()
-
-    const resolution = await ledgerService.resolveTransaction(
-      serializedTransaction.substring(2),
-      {},
-      {},
-    )
-
-    const signature = await ledgerInstance.signTransaction(
+    // Sign the transaction with clear signing enabled
+    const signature = await ledgerInstance.clearSignTransaction(
       this.derivationPath,
       serializedTransaction.substring(2),
-      resolution,
+      {
+        erc20: true,
+        externalPlugins: true,
+        nft: true,
+      },
     )
 
     const signedTransaction = serializeTransaction(txData, {
-      r: signature.r as `0x${string}`,
-      s: signature.s as `0x${string}`,
+      r: signature.r as Hash,
+      s: signature.s as Hash,
       v: BigInt(signature.v),
     })
 
@@ -94,7 +92,8 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       messageHex,
     )
 
-    const combined = `${result.r}${result.s}${result.v.toString(16)}`
+    const v = result.v.toString(16).padStart(2, '0')
+    const combined = `${result.r}${result.s}${v}`
 
     return combined.startsWith('0x') ? combined : `0x${combined}`
   }
@@ -112,18 +111,23 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
     if (args.method === 'eth_sign') {
       if (!args.params[0]) throw new Error('Missing parameter for eth_sign')
+
       return this.signMessage(args.params[0])
     }
 
     if (args.method === 'eth_signTransaction') {
-      if (!args.params[0])
+      if (!args.params[0]) {
         throw new Error('Missing parameter for eth_signTransaction')
+      }
+
       return this.signTransaction(args.params[0])
     }
 
     if (args.method === 'eth_signTypedData') {
-      if (!args.params[0])
+      if (!args.params[0]) {
         throw new Error('Missing parameter for eth_signTypedData')
+      }
+
       return this.signTypedData(args.params[0])
     }
 
@@ -142,7 +146,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
         to: args.params[0].to,
         value: args.params[0].value,
         data: args.params[0].data,
-        account: (await this.getAddress()) as `0x${string}`,
+        account: (await this.getAddress()) as Hash,
       }
 
       const estimate = await client.estimateGas(data)
@@ -158,7 +162,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       const client = getViemPublicClient(this.chainId)
 
       const count = await client.getTransactionCount({
-        address: (await this.getAddress()) as `0x${string}`,
+        address: (await this.getAddress()) as Hash,
         blockTag: 'pending',
       })
 
@@ -170,7 +174,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
       const walletClient = getViemWalletClient({
         chainId: this.chainId,
-        account: address as `0x${string}`,
+        account: address as Hash,
       })
 
       const preparedTransaction = await walletClient.prepareTransactionRequest({
@@ -180,7 +184,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       const signedTransaction = await this.signTransaction(preparedTransaction)
 
       const tx = await walletClient.sendRawTransaction({
-        serializedTransaction: signedTransaction as `0x${string}`,
+        serializedTransaction: signedTransaction as Hash,
       })
 
       return tx

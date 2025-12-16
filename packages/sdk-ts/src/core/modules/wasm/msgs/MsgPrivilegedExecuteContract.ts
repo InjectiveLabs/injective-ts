@@ -1,8 +1,10 @@
-import snakecaseKeys from 'snakecase-keys'
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
+import type snakecaseKeys from 'snakecase-keys'
 import type { ExecPrivilegedArgs } from '../exec-args.js'
+
+type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> =
+  snakecaseKeys.SnakeCaseKeys<T>
 
 export declare namespace MsgPrivilegedExecuteContract {
   export interface Params {
@@ -12,7 +14,7 @@ export declare namespace MsgPrivilegedExecuteContract {
     data: ExecPrivilegedArgs
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgPrivilegedExecuteContract
 }
 
 /**
@@ -32,16 +34,14 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
     const { params } = this
 
     const message =
-      InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract.create()
+      InjectiveExchangeV1Beta1TxPb.MsgPrivilegedExecuteContract.create({
+        sender: params.sender,
+        funds: params.funds,
+        contractAddress: params.contractAddress,
+        data: params.data.toExecJSON(),
+      })
 
-    message.sender = params.sender
-    message.funds = params.funds
-    message.contractAddress = params.contractAddress
-    message.data = params.data.toExecJSON()
-
-    return InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract.fromPartial(
-      message,
-    )
+    return message
   }
 
   public toData() {
@@ -56,13 +56,16 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      funds: proto.funds,
+      contract_address: proto.contractAddress,
+      data: proto.data,
     }
 
     return {
       type: 'exchange/MsgPrivilegedExecuteContract',
       value:
-        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract>,
+        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1TxPb.MsgPrivilegedExecuteContract>,
     }
   }
 
@@ -86,8 +89,8 @@ export default class MsgPrivilegedExecuteContract extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgPrivilegedExecuteContract.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgPrivilegedExecuteContract.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

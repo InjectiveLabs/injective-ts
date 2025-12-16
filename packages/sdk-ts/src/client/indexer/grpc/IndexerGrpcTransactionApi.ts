@@ -1,25 +1,28 @@
-import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import {
-  CosmosTxV1Beta1Tx,
-  CosmosBaseV1Beta1Coin,
-} from '@injectivelabs/core-proto-ts'
+  ErrorType,
+  UnspecifiedErrorCode,
+  TransactionException,
+} from '@injectivelabs/exceptions'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
+import * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import { InjectiveExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb.client'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
-import {
-  ErrorType,
-  UnspecifiedErrorCode,
-  TransactionException,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import { recoverTypedSignaturePubKey } from '../../../utils/transaction.js'
-import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import {
+  uint8ArrayToHex,
+  stringToUint8Array,
+  base64ToUint8Array,
+} from '../../../utils/encoding.js'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
 interface PrepareTxArgs {
   address: AccountAddress
@@ -37,17 +40,14 @@ interface PrepareTxArgs {
  * @category Indexer Grpc API
  * @deprecated use IndexerGrpcWeb3GwApi
  */
-export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
+export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Transaction
 
-  protected client: InjectiveExchangeRpc.InjectiveExchangeRPCClientImpl
+  private client: InjectiveExchangeRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectiveExchangeRpc.InjectiveExchangeRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveExchangeRPCClient(this.transport)
   }
 
   async prepareTxRequest(args: PrepareTxArgs) {
@@ -62,60 +62,43 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
       feePrice = DEFAULT_BRIDGE_FEE_PRICE,
       timeoutHeight,
     } = args
-    const txFeeAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create()
     txFeeAmount.denom = feeDenom
     txFeeAmount.amount = feePrice
 
-    const cosmosTxFee = InjectiveExchangeRpc.CosmosTxFee.create()
+    const cosmosTxFee = InjectiveExchangeRpcPb.CosmosTxFee.create()
     cosmosTxFee.price = [txFeeAmount]
 
     if (!estimateGas) {
-      cosmosTxFee.gas = gasLimit.toString()
+      cosmosTxFee.gas = BigInt(gasLimit)
     }
 
-    const prepareTxRequest = InjectiveExchangeRpc.PrepareTxRequest.create()
-    prepareTxRequest.chainId = chainId.toString()
+    const prepareTxRequest = InjectiveExchangeRpcPb.PrepareTxRequest.create()
+    prepareTxRequest.chainId = BigInt(chainId)
     prepareTxRequest.signerAddress = address
     prepareTxRequest.fee = cosmosTxFee
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
+      stringToUint8Array(safeBigIntStringify(message)),
     )
 
     prepareTxRequest.msgs = messagesList
 
     if (timeoutHeight !== undefined) {
-      prepareTxRequest.timeoutHeight = timeoutHeight.toString()
+      prepareTxRequest.timeoutHeight = BigInt(timeoutHeight)
     }
 
     if (memo) {
       prepareTxRequest.memo = typeof memo === 'number' ? memo.toString() : memo
     }
 
-    try {
-      const response = await this.client.PrepareTx(
-        prepareTxRequest,
-        this.metadata,
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExchangeRpcPb.PrepareTxRequest,
+      InjectiveExchangeRpcPb.PrepareTxResponse
+    >(prepareTxRequest, this.client.prepareTx.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
-        throw new TransactionException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PrepareTx',
-          contextModule: 'Web3Gateway',
-          type: e.type,
-        })
-      }
-
-      throw new TransactionException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Web3Gateway.PrepareTx',
-        type: ErrorType.Web3Gateway,
-      })
-    }
+    return response
   }
 
   async prepareExchangeTxRequest(args: PrepareTxArgs) {
@@ -144,60 +127,43 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
     feeDenom?: string
     feePrice?: string
   }) {
-    const txFeeAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create()
     txFeeAmount.denom = feeDenom
     txFeeAmount.amount = feePrice
 
-    const cosmosTxFee = InjectiveExchangeRpc.CosmosTxFee.create()
+    const cosmosTxFee = InjectiveExchangeRpcPb.CosmosTxFee.create()
     cosmosTxFee.price = [txFeeAmount]
 
     if (!estimateGas) {
-      cosmosTxFee.gas = gasLimit.toString()
+      cosmosTxFee.gas = BigInt(gasLimit)
     }
 
     const prepareTxRequest =
-      InjectiveExchangeRpc.PrepareCosmosTxRequest.create()
+      InjectiveExchangeRpcPb.PrepareCosmosTxRequest.create()
     prepareTxRequest.fee = cosmosTxFee
     prepareTxRequest.senderAddress = address
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
+      stringToUint8Array(safeBigIntStringify(message)),
     )
 
     prepareTxRequest.msgs = messagesList
 
     if (timeoutHeight !== undefined) {
-      prepareTxRequest.timeoutHeight = timeoutHeight.toString()
+      prepareTxRequest.timeoutHeight = BigInt(timeoutHeight)
     }
 
     if (memo) {
       prepareTxRequest.memo = typeof memo === 'number' ? memo.toString() : memo
     }
 
-    try {
-      const response = await this.client.PrepareCosmosTx(
-        prepareTxRequest,
-        this.metadata,
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExchangeRpcPb.PrepareCosmosTxRequest,
+      InjectiveExchangeRpcPb.PrepareCosmosTxResponse
+    >(prepareTxRequest, this.client.prepareCosmosTx.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
-        throw new TransactionException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          type: e.type,
-          contextCode: e.code,
-          context: 'Web3Gateway.CosmosPrepareTx',
-        })
-      }
-
-      throw new TransactionException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Web3Gateway.CosmosPrepareTx',
-        type: ErrorType.Web3Gateway,
-      })
-    }
+    return response
   }
 
   /**
@@ -215,7 +181,7 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
     signature: string
     chainId: EvmChainId
     useCorrectEIP712Hash?: boolean
-    txResponse: InjectiveExchangeRpc.PrepareTxResponse
+    txResponse: InjectiveExchangeRpcPb.PrepareTxResponse
     message: Record<string, any>
   }) {
     const parsedTypedData = JSON.parse(txResponse.data)
@@ -233,20 +199,20 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
       })
     }
 
-    const cosmosPubKey = InjectiveExchangeRpc.CosmosPubKey.create()
+    const cosmosPubKey = InjectiveExchangeRpcPb.CosmosPubKey.create()
     cosmosPubKey.type = txResponse.pubKeyType
     cosmosPubKey.key = publicKeyHex
 
     parsedTypedData.message.msgs = null
 
-    const broadcastTxRequest = InjectiveExchangeRpc.BroadcastTxRequest.create()
+    const broadcastTxRequest =
+      InjectiveExchangeRpcPb.BroadcastTxRequest.create()
     broadcastTxRequest.mode = 'sync'
-    broadcastTxRequest.chainId = chainId.toString()
+    broadcastTxRequest.chainId = BigInt(chainId)
     broadcastTxRequest.pubKey = cosmosPubKey
     broadcastTxRequest.signature = signature
-    broadcastTxRequest.tx = Buffer.from(
-      JSON.stringify(parsedTypedData.message),
-      'utf8',
+    broadcastTxRequest.tx = stringToUint8Array(
+      safeBigIntStringify(parsedTypedData.message),
     )
 
     broadcastTxRequest.feePayer = txResponse.feePayer
@@ -255,34 +221,17 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
     const arrayOfMessages = Array.isArray(message) ? message : [message]
 
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
+      stringToUint8Array(safeBigIntStringify(message)),
     )
 
     broadcastTxRequest.msgs = messagesList
 
-    try {
-      const response = await this.client.BroadcastTx(
-        broadcastTxRequest,
-        this.metadata,
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExchangeRpcPb.BroadcastTxRequest,
+      InjectiveExchangeRpcPb.BroadcastTxResponse
+    >(broadcastTxRequest, this.client.broadcastTx.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
-        throw new TransactionException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          type: e.type,
-          contextCode: e.code,
-          context: 'Web3Gateway.BroadcastTx',
-        })
-      }
-
-      throw new TransactionException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Web3Gateway.BroadcastTx',
-        type: ErrorType.Web3Gateway,
-      })
-    }
+    return response
   }
 
   /**
@@ -299,73 +248,43 @@ export class IndexerGrpcTransactionApi extends BaseGrpcConsumer {
   }: {
     address: string
     signature: string // base64
-    txRaw: CosmosTxV1Beta1Tx.TxRaw
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw
     pubKey: {
       type: string
       value: string // base64
     }
   }) {
-    const pubKeyInHex = Buffer.from(pubKey.value, 'base64').toString('hex')
-    const signatureInHex = Buffer.from(signature, 'base64').toString('hex')
-    const cosmosPubKey = InjectiveExchangeRpc.CosmosPubKey.create()
+    const pubKeyInHex = uint8ArrayToHex(base64ToUint8Array(pubKey.value))
+    const signatureInHex = uint8ArrayToHex(base64ToUint8Array(signature))
+    const cosmosPubKey = InjectiveExchangeRpcPb.CosmosPubKey.create()
     cosmosPubKey.type = pubKey.type
     cosmosPubKey.key = `0x${pubKeyInHex}`
 
     txRaw.signatures = []
 
     const broadcastTxRequest =
-      InjectiveExchangeRpc.BroadcastCosmosTxRequest.create()
+      InjectiveExchangeRpcPb.BroadcastCosmosTxRequest.create()
     broadcastTxRequest.senderAddress = address
     broadcastTxRequest.pubKey = cosmosPubKey
     broadcastTxRequest.signature = `0x${signatureInHex}`
-    broadcastTxRequest.tx = CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish()
+    broadcastTxRequest.tx = CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw)
 
-    try {
-      const response = await this.client.BroadcastCosmosTx(
-        broadcastTxRequest,
-        this.metadata,
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExchangeRpcPb.BroadcastCosmosTxRequest,
+      InjectiveExchangeRpcPb.BroadcastCosmosTxResponse
+    >(broadcastTxRequest, this.client.broadcastCosmosTx.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof GrpcUnaryRequestException) {
-        throw new TransactionException(e.toOriginalError(), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          type: e.type,
-          contextCode: e.code,
-          context: 'Web3Gateway.BroadcastCosmosTx',
-        })
-      }
-
-      throw new TransactionException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Web3Gateway.BroadcastCosmosTx',
-        type: ErrorType.Web3Gateway,
-      })
-    }
+    return response
   }
 
   async fetchFeePayer() {
-    const request = InjectiveExchangeRpc.GetFeePayerRequest.create()
+    const request = InjectiveExchangeRpcPb.GetFeePayerRequest.create()
 
-    try {
-      const response = await this.client.GetFeePayer(request, this.metadata)
+    const response = await this.executeGrpcCall<
+      InjectiveExchangeRpcPb.GetFeePayerRequest,
+      InjectiveExchangeRpcPb.GetFeePayerResponse
+    >(request, this.client.getFeePayer.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
-        throw new TransactionException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          type: e.type,
-          context: 'Web3Gateway.FeePayer',
-        })
-      }
-
-      throw new TransactionException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Web3Gateway.FeePayer',
-        type: ErrorType.Web3Gateway,
-      })
-    }
+    return response
   }
 }

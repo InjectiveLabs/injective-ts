@@ -1,7 +1,8 @@
 import { serializeSignDoc } from '@cosmjs/amino'
 import { PublicKey } from '../PublicKey.js'
 import { PrivateKey } from '../PrivateKey.js'
-import type { AminoSignResponse, StdSignDoc } from '@cosmjs/amino'
+import { uint8ArrayToHex, uint8ArrayToBase64 } from '../../../utils/encoding.js'
+import type { StdSignDoc, AminoSignResponse } from '@cosmjs/amino'
 import type { AccountData, OfflineAminoSigner } from './types/amino-signer.js'
 
 export class EthSecp256k1Wallet implements OfflineAminoSigner {
@@ -15,7 +16,7 @@ export class EthSecp256k1Wallet implements OfflineAminoSigner {
     privKey: Uint8Array,
     prefix = 'inj',
   ): Promise<EthSecp256k1Wallet> {
-    const publicKey = PrivateKey.fromHex(Buffer.from(privKey).toString('hex'))
+    const publicKey = PrivateKey.fromHex(uint8ArrayToHex(privKey))
       .toPublicKey()
       .toPubKeyBytes()
 
@@ -29,7 +30,7 @@ export class EthSecp256k1Wallet implements OfflineAminoSigner {
   private readonly prefix: string
 
   private constructor(privKey: Uint8Array, pubKey: Uint8Array, prefix: string) {
-    this.privateKey = PrivateKey.fromHex(Buffer.from(privKey).toString('hex'))
+    this.privateKey = PrivateKey.fromHex(uint8ArrayToHex(privKey))
     this.publicKey = PublicKey.fromBytes(pubKey)
     this.prefix = prefix
   }
@@ -57,7 +58,7 @@ export class EthSecp256k1Wallet implements OfflineAminoSigner {
     }
 
     const messageBytes = serializeSignDoc(signDoc)
-    const signature = await this.privateKey.sign(Buffer.from(messageBytes))
+    const signature = await this.privateKey.sign(messageBytes)
 
     return {
       signed: signDoc,
@@ -66,7 +67,7 @@ export class EthSecp256k1Wallet implements OfflineAminoSigner {
           type: 'tendermint/PubKeyEthSecp256k1',
           value: this.publicKey.toBase64(),
         },
-        signature: Buffer.from(signature).toString('base64'),
+        signature: uint8ArrayToBase64(signature),
       },
     }
   }

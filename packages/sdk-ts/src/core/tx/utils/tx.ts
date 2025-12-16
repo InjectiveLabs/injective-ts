@@ -1,25 +1,22 @@
 import { getStdFee } from '@injectivelabs/utils'
-import {
-  CosmosTxV1Beta1Tx,
-  GoogleProtobufStruct,
-  CosmosBaseV1Beta1Coin,
-  InjectiveTypesV1Beta1TxExt,
-  CosmosCryptoSecp256k1Keys,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as CosmosCryptoSecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/crypto/secp256k1/keys_pb'
+import * as InjectiveTypesV1Beta1TxExtPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/tx_ext_pb'
 import { createAny, createAnyMessage } from './helpers.js'
-import type { Msgs } from '../../modules/msgs.js'
+import { base64ToUint8Array } from '../../../utils/encoding.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import type {
-  GoogleProtobufAny,
-  CosmosTxSigningV1Beta1Signing,
-} from '@injectivelabs/core-proto-ts'
+import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import type * as CosmosTxSigningV1Beta1SigningPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/signing/v1beta1/signing_pb'
+import type { Msgs } from '../../modules/msgs.js'
 
 export const getPublicKey = ({
   chainId,
   key,
 }: {
   chainId: string
-  key: string | GoogleProtobufAny.Any
+  key: string | GoogleProtobufAnyPb.Any
 }) => {
   if (typeof key !== 'string') {
     return key
@@ -30,22 +27,22 @@ export const getPublicKey = ({
   let baseProto
 
   if (chainId.startsWith('injective')) {
-    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
-    baseProto = CosmosCryptoSecp256k1Keys.PubKey
+    proto = CosmosCryptoSecp256k1KeysPb.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1KeysPb.PubKey
     path = '/injective.crypto.v1beta1.ethsecp256k1.PubKey'
   } else if (chainId.startsWith('evmos')) {
-    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
-    baseProto = CosmosCryptoSecp256k1Keys.PubKey
+    proto = CosmosCryptoSecp256k1KeysPb.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1KeysPb.PubKey
     path = '/ethermint.crypto.v1.ethsecp256k1.PubKey'
   } else {
-    proto = CosmosCryptoSecp256k1Keys.PubKey.create()
-    baseProto = CosmosCryptoSecp256k1Keys.PubKey
+    proto = CosmosCryptoSecp256k1KeysPb.PubKey.create()
+    baseProto = CosmosCryptoSecp256k1KeysPb.PubKey
     path = '/cosmos.crypto.secp256k1.PubKey'
   }
 
-  proto.key = Buffer.from(key, 'base64')
+  proto.key = base64ToUint8Array(key)
 
-  return createAny(baseProto.encode(proto).finish(), path)
+  return createAny(baseProto.toBinary(proto), path)
 }
 
 export const createBody = ({
@@ -59,7 +56,7 @@ export const createBody = ({
 }) => {
   const messages = Array.isArray(message) ? message : [message]
 
-  const txBody = CosmosTxV1Beta1Tx.TxBody.create()
+  const txBody = CosmosTxV1Beta1TxPb.TxBody.create()
 
   txBody.messages = messages.map((message) =>
     createAnyMessage({
@@ -71,7 +68,7 @@ export const createBody = ({
   txBody.memo = memo
 
   if (timeoutHeight) {
-    txBody.timeoutHeight = timeoutHeight.toString()
+    txBody.timeoutHeight = BigInt(timeoutHeight)
   }
 
   return txBody
@@ -88,12 +85,12 @@ export const createFee = ({
   granter?: string
   gasLimit: number
 }) => {
-  const feeAmount = CosmosBaseV1Beta1Coin.Coin.create()
+  const feeAmount = CosmosBaseV1Beta1CoinPb.Coin.create()
   feeAmount.amount = fee.amount
   feeAmount.denom = fee.denom
 
-  const feeProto = CosmosTxV1Beta1Tx.Fee.create()
-  feeProto.gasLimit = gasLimit.toString()
+  const feeProto = CosmosTxV1Beta1TxPb.Fee.create()
+  feeProto.gasLimit = BigInt(gasLimit)
   feeProto.amount = [feeAmount]
 
   if (payer) {
@@ -113,8 +110,8 @@ export const createSigners = ({
   signers,
 }: {
   chainId: string
-  signers: { pubKey: string | GoogleProtobufAny.Any; sequence: number }[]
-  mode: CosmosTxSigningV1Beta1Signing.SignMode
+  signers: { pubKey: string | GoogleProtobufAnyPb.Any; sequence: number }[]
+  mode: CosmosTxSigningV1Beta1SigningPb.SignMode
 }) => {
   return signers.map((s) =>
     createSignerInfo({
@@ -133,21 +130,24 @@ export const createSignerInfo = ({
   mode,
 }: {
   chainId: string
-  publicKey: string | GoogleProtobufAny.Any
+  publicKey: string | GoogleProtobufAnyPb.Any
   sequence: number
-  mode: CosmosTxSigningV1Beta1Signing.SignMode
+  mode: CosmosTxSigningV1Beta1SigningPb.SignMode
 }) => {
   const pubKey = getPublicKey({ chainId, key: publicKey })
 
-  const single = CosmosTxV1Beta1Tx.ModeInfo_Single.create()
+  const single = CosmosTxV1Beta1TxPb.ModeInfo_Single.create()
   single.mode = mode
 
-  const modeInfo = CosmosTxV1Beta1Tx.ModeInfo.create()
-  modeInfo.single = single
+  const modeInfo = CosmosTxV1Beta1TxPb.ModeInfo.create()
+  modeInfo.sum = {
+    oneofKind: 'single',
+    single: single,
+  }
 
-  const signerInfo = CosmosTxV1Beta1Tx.SignerInfo.create()
+  const signerInfo = CosmosTxV1Beta1TxPb.SignerInfo.create()
   signerInfo.publicKey = pubKey
-  signerInfo.sequence = sequence.toString()
+  signerInfo.sequence = BigInt(sequence)
   signerInfo.modeInfo = modeInfo
 
   return signerInfo
@@ -157,10 +157,10 @@ export const createAuthInfo = ({
   signerInfo,
   fee,
 }: {
-  signerInfo: CosmosTxV1Beta1Tx.SignerInfo[]
-  fee: CosmosTxV1Beta1Tx.Fee
+  signerInfo: CosmosTxV1Beta1TxPb.SignerInfo[]
+  fee: CosmosTxV1Beta1TxPb.Fee
 }) => {
-  const authInfo = CosmosTxV1Beta1Tx.AuthInfo.create()
+  const authInfo = CosmosTxV1Beta1TxPb.AuthInfo.create()
   authInfo.signerInfos = signerInfo
   authInfo.fee = fee
 
@@ -178,9 +178,9 @@ export const createSignDoc = ({
   chainId: string
   accountNumber: number
 }) => {
-  const signDoc = CosmosTxV1Beta1Tx.SignDoc.create()
+  const signDoc = CosmosTxV1Beta1TxPb.SignDoc.create()
 
-  signDoc.accountNumber = accountNumber.toString()
+  signDoc.accountNumber = BigInt(accountNumber)
   signDoc.chainId = chainId
   signDoc.bodyBytes = bodyBytes
   signDoc.authInfoBytes = authInfoBytes
@@ -189,28 +189,26 @@ export const createSignDoc = ({
 }
 
 export const createSignDocFromTransaction = (args: {
-  txRaw: CosmosTxV1Beta1Tx.TxRaw
+  txRaw: CosmosTxV1Beta1TxPb.TxRaw
   chainId: string
   accountNumber: number
 }) => {
-  return CosmosTxV1Beta1Tx.SignDoc.fromPartial({
+  return CosmosTxV1Beta1TxPb.SignDoc.create({
     bodyBytes: args.txRaw.bodyBytes,
     authInfoBytes: args.txRaw.authInfoBytes,
-    accountNumber: args.accountNumber.toString(),
+    accountNumber: BigInt(args.accountNumber),
     chainId: args.chainId,
   })
 }
 
 export const createTxRawEIP712 = (
-  txRaw: CosmosTxV1Beta1Tx.TxRaw,
-  extension: InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx,
-  nonCriticalExtension?: GoogleProtobufAny.Any | GoogleProtobufAny.Any[],
+  txRaw: CosmosTxV1Beta1TxPb.TxRaw,
+  extension: InjectiveTypesV1Beta1TxExtPb.ExtensionOptionsWeb3Tx,
+  nonCriticalExtension?: GoogleProtobufAnyPb.Any | GoogleProtobufAnyPb.Any[],
 ) => {
-  const body = CosmosTxV1Beta1Tx.TxBody.decode(txRaw.bodyBytes)
+  const body = CosmosTxV1Beta1TxPb.TxBody.fromBinary(txRaw.bodyBytes)
   const extensionAny = createAny(
-    InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.encode(
-      extension,
-    ).finish(),
+    InjectiveTypesV1Beta1TxExtPb.ExtensionOptionsWeb3Tx.toBinary(extension),
     '/injective.types.v1beta1.ExtensionOptionsWeb3Tx',
   )
 
@@ -222,7 +220,7 @@ export const createTxRawEIP712 = (
       : [nonCriticalExtension]
   }
 
-  txRaw.bodyBytes = CosmosTxV1Beta1Tx.TxBody.encode(body).finish()
+  txRaw.bodyBytes = CosmosTxV1Beta1TxPb.TxBody.toBinary(body)
 
   return txRaw
 }
@@ -237,8 +235,8 @@ export const createWeb3Extension = ({
   feePayerSig?: Uint8Array
 }) => {
   const web3Extension =
-    InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.create()
-  web3Extension.typedDataChainID = evmChainId.toString()
+    InjectiveTypesV1Beta1TxExtPb.ExtensionOptionsWeb3Tx.create()
+  web3Extension.typedDataChainID = BigInt(evmChainId)
 
   if (feePayer) {
     web3Extension.feePayer = feePayer
@@ -254,25 +252,20 @@ export const createWeb3Extension = ({
 export const createNonCriticalExtensionFromObject = (
   object: Record<string, unknown>,
 ) => {
-  const nonCriticalExtension = GoogleProtobufStruct.Struct.create()
+  const jsonBytes = new TextEncoder().encode(safeBigIntStringify(object))
 
-  nonCriticalExtension.fields = object
-
-  return createAny(
-    GoogleProtobufStruct.Struct.encode(nonCriticalExtension).finish(),
-    '/google.protobuf.Struct',
-  )
+  return createAny(jsonBytes, '/google.protobuf.Struct')
 }
 
 export const getTransactionPartsFromTxRaw = (
-  txRaw: CosmosTxV1Beta1Tx.TxRaw,
+  txRaw: CosmosTxV1Beta1TxPb.TxRaw,
 ): {
-  authInfo: CosmosTxV1Beta1Tx.AuthInfo
-  body: CosmosTxV1Beta1Tx.TxBody
+  authInfo: CosmosTxV1Beta1TxPb.AuthInfo
+  body: CosmosTxV1Beta1TxPb.TxBody
   signatures: Uint8Array[]
 } => {
-  const authInfo = CosmosTxV1Beta1Tx.AuthInfo.decode(txRaw.authInfoBytes)
-  const body = CosmosTxV1Beta1Tx.TxBody.decode(txRaw.bodyBytes)
+  const authInfo = CosmosTxV1Beta1TxPb.AuthInfo.fromBinary(txRaw.authInfoBytes)
+  const body = CosmosTxV1Beta1TxPb.TxBody.fromBinary(txRaw.bodyBytes)
 
   return {
     body,

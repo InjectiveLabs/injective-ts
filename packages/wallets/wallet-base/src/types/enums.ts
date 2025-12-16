@@ -1,5 +1,7 @@
 import { WalletErrorActionModule } from '@injectivelabs/exceptions'
 
+export * from './events.js'
+
 export const BroadcastMode = {
   Block: 'block',
   Sync: 'sync',
@@ -21,6 +23,7 @@ export const Wallet = {
   Rainbow: 'rainbow',
   Turnkey: 'turnkey',
   Metamask: 'metamask',
+  KeplrEvm: 'keplr-evm',
   OkxWallet: 'okx-wallet',
   PrivateKey: 'private-key',
   TrustWallet: 'trust-wallet',

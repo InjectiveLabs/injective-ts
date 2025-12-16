@@ -1,8 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  InjectivePermissionsV1Beta1Tx,
-  InjectivePermissionsV1Beta1Permissions,
-} from '@injectivelabs/core-proto-ts'
+import * as InjectivePermissionsV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/tx_pb'
+import * as InjectivePermissionsV1Beta1PermissionsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/permissions_pb'
 import { MsgBase } from '../../MsgBase.js'
 import type { PermissionRoleActors } from './../../../../client/chain/types/permissions.js'
 
@@ -14,7 +11,7 @@ export declare namespace MsgUpdateActorRoles {
     roleActorsToRevoke: PermissionRoleActors[]
   }
 
-  export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateActorRoles
+  export type Proto = InjectivePermissionsV1Beta1TxPb.MsgUpdateActorRoles
 }
 
 /**
@@ -31,37 +28,30 @@ export default class MsgUpdateActorRoles extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectivePermissionsV1Beta1Tx.MsgUpdateActorRoles.create()
-    message.sender = params.sender
-    message.denom = params.denom
-
     const roleActorsToAdd =
       params.roleActorsToAdd.map((roleActors) => {
-        const actor = InjectivePermissionsV1Beta1Permissions.RoleActors.create()
-
-        actor.role = roleActors.role
-        actor.actors = roleActors.actors
-
-        return actor
+        return InjectivePermissionsV1Beta1PermissionsPb.RoleActors.create({
+          role: roleActors.role,
+          actors: roleActors.actors,
+        })
       }) || []
-
-    message.roleActorsToAdd = roleActorsToAdd
 
     const roleActorsToRevoke =
       params.roleActorsToRevoke.map((roleActors) => {
-        const actor = InjectivePermissionsV1Beta1Permissions.RoleActors.create()
-
-        actor.role = roleActors.role
-        actor.actors = roleActors.actors
-
-        return actor
+        return InjectivePermissionsV1Beta1PermissionsPb.RoleActors.create({
+          role: roleActors.role,
+          actors: roleActors.actors,
+        })
       }) || []
 
-    message.roleActorsToRevoke = roleActorsToRevoke
+    const message = InjectivePermissionsV1Beta1TxPb.MsgUpdateActorRoles.create({
+      sender: params.sender,
+      denom: params.denom,
+      roleActorsToAdd: roleActorsToAdd,
+      roleActorsToRevoke: roleActorsToRevoke,
+    })
 
-    return InjectivePermissionsV1Beta1Tx.MsgUpdateActorRoles.fromPartial(
-      message,
-    )
+    return message
   }
 
   public toData() {
@@ -77,7 +67,16 @@ export default class MsgUpdateActorRoles extends MsgBase<
     const proto = this.toProto()
 
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      denom: proto.denom,
+      role_actors_to_add: proto.roleActorsToAdd.map((roleActor) => ({
+        role: roleActor.role,
+        actors: roleActor.actors,
+      })),
+      role_actors_to_revoke: proto.roleActorsToRevoke.map((roleActor) => ({
+        role: roleActor.role,
+        actors: roleActor.actors,
+      })),
     }
 
     return {
@@ -106,8 +105,8 @@ export default class MsgUpdateActorRoles extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectivePermissionsV1Beta1Tx.MsgUpdateActorRoles.encode(
+    return InjectivePermissionsV1Beta1TxPb.MsgUpdateActorRoles.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

@@ -5,7 +5,7 @@ import {
 import { IndexerModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import { IndexerRestExplorerTransformer } from '../transformers/index.js'
-import type { MsgStatus, MsgType } from '@injectivelabs/ts-types'
+import type { MsgType, MsgStatus } from '@injectivelabs/ts-types'
 import type { Block, ExplorerValidator } from '../types/explorer.js'
 import type {
   Paging,

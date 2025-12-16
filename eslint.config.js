@@ -5,18 +5,25 @@ import perfectionist from 'eslint-plugin-perfectionist'
 import prettier from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
 import noEnumRule from './scripts/eslint-rules/no-enum.js'
+import noSdkTsBarrelRule from './scripts/eslint-rules/no-sdk-ts-barrel.js'
 
 export default [
   // Ignore patterns
   {
     ignores: [
       'proto/**',
+      'protoV2/**',
+      '**/proto-ts/**',
+      '**/src/generated/**',
+      '**/*_pb.ts',
+      '**/*_pb.js',
+      '**/*_pb.mjs',
       '**/*.d.ts',
       '**/dist/**',
       'deprecated/**',
       'node_modules/**',
-      '.rollup.cache/**',
-      'bundle-analysis/dist/**',
+      '**/tsdown.config.ts',
+      '**/src/utils/ofac.ts',
     ],
   },
   // Base configuration for TypeScript files
@@ -27,7 +34,9 @@ export default [
       sourceType: 'module',
       parser: typescriptParser,
       parserOptions: {
-        project: './tsconfig.json',
+        // Enable type-aware linting with performance optimizations
+        project: true, // Auto-find nearest tsconfig
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
@@ -38,42 +47,58 @@ export default [
       custom: {
         rules: {
           'no-enum': noEnumRule,
+          'no-sdk-ts-barrel': noSdkTsBarrelRule,
         },
       },
     },
     rules: {
-      // Enforce type-only imports where appropriate
+      // Essential type-aware rules (performance optimized)
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {
           prefer: 'type-imports',
+          fixStyle: 'separate-type-imports',
           disallowTypeAnnotations: false,
         },
       ],
-      // Enforce type-only exports where appropriate
       '@typescript-eslint/consistent-type-exports': [
         'error',
         {
           fixMixedExportsWithInlineTypeSpecifier: false,
         },
       ],
+      '@typescript-eslint/no-import-type-side-effects': 'error',
       // Disable the base import/no-duplicates rule as it conflicts with type imports
       'import/no-duplicates': 'off',
-      // Sort imports by groups and line length within each group
+      // Enhanced import sorting with more granular groups
       'perfectionist/sort-imports': [
-        'warn',
+        'error',
         {
           type: 'line-length',
           order: 'asc',
-          newlinesBetween: 'never',
           groups: [
-            ['builtin', 'external'], // Group 1: Library imports
-            ['internal', 'parent', 'sibling', 'index'], // Group 2: Non-library imports
-            ['type'], // Group 3: Type imports
+            ['builtin', 'external'],
+            'internal',
+            ['parent', 'sibling', 'index'],
+            'object',
+            'unknown',
+            'type',
+            'internal-type',
+            ['parent-type', 'sibling-type', 'index-type'],
           ],
-          // Allow manual overrides with comments
-          partitionByComment: true,
+          newlinesBetween: 'ignore',
+          internalPattern: ['^@/', '^~/', '^#'],
         },
+      ],
+      // Sort named imports alphabetically by line length
+      'perfectionist/sort-named-imports': [
+        'error',
+        { type: 'line-length', order: 'asc' },
+      ],
+      // Sort exports alphabetically by line length
+      'perfectionist/sort-exports': [
+        'error',
+        { type: 'line-length', order: 'asc' },
       ],
       // Allow .js extensions in TypeScript files (for ESM compatibility)
       'import/extensions': [
@@ -91,6 +116,7 @@ export default [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
         },
       ],
       // Allow console in development
@@ -108,6 +134,8 @@ export default [
       '@typescript-eslint/no-use-before-define': 'off',
       // Custom rule to discourage enums in favor of type + const pattern
       'custom/no-enum': 'error',
+      // Custom rule to enforce subpath imports from @injectivelabs/sdk-ts
+      'custom/no-sdk-ts-barrel': 'error',
       // Enforce spacing inside object/type brackets
       'object-curly-spacing': ['error', 'always'],
       // Prettier integration
@@ -143,21 +171,33 @@ export default [
       prettier: prettier,
     },
     rules: {
-      // Sort imports by groups and line length within each group
+      // Enhanced import sorting
       'perfectionist/sort-imports': [
-        'warn',
+        'error',
         {
           type: 'line-length',
           order: 'asc',
-          newlinesBetween: 'never',
           groups: [
-            ['builtin', 'external'], // Group 1: Library imports
-            ['internal', 'parent', 'sibling', 'index'], // Group 2: Non-library imports
-            ['type'], // Group 3: Type imports
+            ['builtin', 'external'],
+            'internal',
+            ['parent', 'sibling', 'index'],
+            'object',
+            'unknown',
+            'type',
+            'internal-type',
+            ['parent-type', 'sibling-type', 'index-type'],
           ],
-          // Allow manual overrides with comments
-          partitionByComment: true,
+          newlinesBetween: 'ignore',
+          internalPattern: ['^@/', '^~/', '^#'],
         },
+      ],
+      'perfectionist/sort-named-imports': [
+        'error',
+        { type: 'line-length', order: 'asc' },
+      ],
+      'perfectionist/sort-exports': [
+        'error',
+        { type: 'line-length', order: 'asc' },
       ],
       // Allow console in development
       'no-console': 'warn',
@@ -184,9 +224,20 @@ export default [
   // Test files configuration
   {
     files: ['**/*.test.ts', '**/*.spec.ts', '**/*.test.js', '**/*.spec.js'],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        // Disable type-aware linting for test files since they're excluded from tsconfig
+        project: false,
+      },
+    },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       'no-console': 'off',
+      // Disable type-aware rules for test files
+      '@typescript-eslint/consistent-type-imports': 'off',
+      '@typescript-eslint/consistent-type-exports': 'off',
+      '@typescript-eslint/no-import-type-side-effects': 'off',
     },
   },
   // Prettier config to disable conflicting rules

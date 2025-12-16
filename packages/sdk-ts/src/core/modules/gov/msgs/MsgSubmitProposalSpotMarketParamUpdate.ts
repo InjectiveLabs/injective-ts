@@ -1,45 +1,39 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
-import {
-  GoogleProtobufAny,
-  CosmosGovV1Beta1Tx,
-  CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Proposal,
-  InjectiveExchangeV1Beta1Exchange,
-} from '@injectivelabs/core-proto-ts'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
 
 const createSpotMarketParamUpdate = (
   params: MsgSubmitProposalSpotMarketParamUpdate.Params,
 ) => {
-  const content =
-    InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.create()
-
-  content.title = params.market.title
-  content.description = params.market.description
-  content.marketId = params.market.marketId
-  content.makerFeeRate = params.market.makerFeeRate
-  content.takerFeeRate = params.market.takerFeeRate
-  content.relayerFeeShareRate = params.market.relayerFeeShareRate
-  content.minPriceTickSize = params.market.minPriceTickSize
-  content.minQuantityTickSize = params.market.minQuantityTickSize
-  content.status = params.market.status
-  content.ticker = params.market.ticker
-  content.baseDecimals = params.market.baseDecimals
-  content.quoteDecimals = params.market.quoteDecimals
-  content.minNotional = params.market.minNotional
-
-  if (params.market.adminInfo) {
-    const adminInfo = InjectiveExchangeV1Beta1Proposal.AdminInfo.create()
-    adminInfo.admin = params.market.adminInfo.admin
-    adminInfo.adminPermissions = params.market.adminInfo.adminPermissions
-
-    content.adminInfo = adminInfo
+  const content: any = {
+    title: params.market.title,
+    description: params.market.description,
+    marketId: params.market.marketId,
+    makerFeeRate: params.market.makerFeeRate,
+    takerFeeRate: params.market.takerFeeRate,
+    relayerFeeShareRate: params.market.relayerFeeShareRate,
+    minPriceTickSize: params.market.minPriceTickSize,
+    minQuantityTickSize: params.market.minQuantityTickSize,
+    status: params.market.status,
+    ticker: params.market.ticker,
+    baseDecimals: params.market.baseDecimals,
+    quoteDecimals: params.market.quoteDecimals,
+    minNotional: params.market.minNotional,
   }
 
-  return InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.fromPartial(
+  if (params.market.adminInfo) {
+    content.adminInfo = {
+      admin: params.market.adminInfo.admin,
+      adminPermissions: params.market.adminInfo.adminPermissions,
+    }
+  }
+
+  return InjectiveExchangeV1Beta1ProposalPb.SpotMarketParamUpdateProposal.create(
     content,
   )
 }
@@ -63,7 +57,7 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
         admin: string
         adminPermissions: number
       }
-      status: InjectiveExchangeV1Beta1Exchange.MarketStatus
+      status: InjectiveExchangeV1Beta1ExchangePb.MarketStatus
     }
     proposer: string
     deposit: {
@@ -72,9 +66,12 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
     }
   }
 
-  export type Proto = CosmosGovV1Beta1Tx.MsgSubmitProposal
+  export type Proto = CosmosGovV1Beta1TxPb.MsgSubmitProposal
 
-  export type Object = Omit<CosmosGovV1Beta1Tx.MsgSubmitProposal, 'content'> & {
+  export type Object = Omit<
+    CosmosGovV1Beta1TxPb.MsgSubmitProposal,
+    'content'
+  > & {
     content: {
       type_url: string
       value: any
@@ -87,8 +84,7 @@ export declare namespace MsgSubmitProposalSpotMarketParamUpdate {
  */
 export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   MsgSubmitProposalSpotMarketParamUpdate.Params,
-  MsgSubmitProposalSpotMarketParamUpdate.Proto,
-  MsgSubmitProposalSpotMarketParamUpdate.Object
+  MsgSubmitProposalSpotMarketParamUpdate.Proto
 > {
   static fromJSON(
     params: MsgSubmitProposalSpotMarketParamUpdate.Params,
@@ -122,26 +118,26 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
       },
     }
 
-    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+    const depositParams = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.deposit.denom,
+      amount: params.deposit.amount,
+    })
 
-    depositParams.denom = params.deposit.denom
-    depositParams.amount = params.deposit.amount
+    const contentAny = GoogleProtobufAnyPbPb.Any.create({
+      typeUrl: '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
+      value:
+        InjectiveExchangeV1Beta1ProposalPb.SpotMarketParamUpdateProposal.toBinary(
+          createSpotMarketParamUpdate(params),
+        ),
+    })
 
-    const contentAny = GoogleProtobufAny.Any.create()
-    contentAny.typeUrl =
-      '/injective.exchange.v1beta1.SpotMarketParamUpdateProposal'
-    contentAny.value =
-      InjectiveExchangeV1Beta1Proposal.SpotMarketParamUpdateProposal.encode(
-        createSpotMarketParamUpdate(params),
-      ).finish()
+    const message = CosmosGovV1Beta1TxPb.MsgSubmitProposal.create({
+      content: contentAny,
+      initialDeposit: [depositParams],
+      proposer: params.proposer,
+    })
 
-    const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
-
-    message.content = contentAny
-    message.initialDeposit = [depositParams]
-    message.proposer = params.proposer
-
-    return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -157,10 +153,25 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const { params } = this
 
     const content = createSpotMarketParamUpdate(params)
-    const messageWithProposalType = snakecaseKeys({
+    const messageWithProposalType = {
       content: {
         type: 'exchange/SpotMarketParamUpdateProposal',
-        value: content,
+        value: {
+          title: content.title,
+          description: content.description,
+          market_id: content.marketId,
+          maker_fee_rate: content.makerFeeRate,
+          taker_fee_rate: content.takerFeeRate,
+          relayer_fee_share_rate: content.relayerFeeShareRate,
+          min_price_tick_size: content.minPriceTickSize,
+          min_quantity_tick_size: content.minQuantityTickSize,
+          status: content.status,
+          ticker: content.ticker,
+          min_notional: content.minNotional,
+          admin_info: content.adminInfo || null,
+          base_decimals: content.baseDecimals,
+          quote_decimals: content.quoteDecimals,
+        },
       },
       initial_deposit: [
         {
@@ -169,12 +180,11 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
         },
       ],
       proposer: params.proposer,
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>,
+      value: messageWithProposalType,
     }
   }
 
@@ -192,7 +202,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>),
+      ...messageWithProposalType,
     }
   }
 
@@ -201,12 +211,21 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const amino = this.toAmino()
     const { value, type } = amino
 
+    // Convert admin_info to use snake_case for adminPermissions
+    const adminInfo = value.content.value.admin_info
+      ? {
+          admin: value.content.value.admin_info.admin,
+          admin_permissions: value.content.value.admin_info.adminPermissions,
+        }
+      : null
+
     const messageAdjusted = {
       ...value,
       content: {
         type: 'exchange/SpotMarketParamUpdateProposal',
         value: {
           ...value.content.value,
+          admin_info: adminInfo,
           relayer_fee_share_rate: toChainFormat(
             params.market.relayerFeeShareRate,
           ).toFixed(),
@@ -225,8 +244,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
 
     return {
       type,
-      value:
-        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketParamUpdate.Object>,
+      value: messageAdjusted,
     }
   }
 
@@ -235,13 +253,19 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
     const web3gw = this.toWeb3Gw()
     const content = web3gw.content as unknown as any
 
+    // Convert admin_info to use snake_case for adminPermissions
+    const adminInfo = content.admin_info
+      ? {
+          admin: content.admin_info.admin,
+          admin_permissions: content.admin_info.adminPermissions,
+        }
+      : null
+
     const messageAdjusted = {
       ...web3gw,
       content: {
         ...content,
-        status: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
-          content.status,
-        ),
+        status: InjectiveExchangeV1Beta1ExchangePb.MarketStatus[content.status],
         relayer_fee_share_rate: numberToCosmosSdkDecString(
           params.market.relayerFeeShareRate,
         ),
@@ -254,6 +278,7 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
         min_quantity_tick_size: numberToCosmosSdkDecString(
           params.market.minQuantityTickSize,
         ),
+        admin_info: adminInfo,
       },
     }
 
@@ -270,6 +295,6 @@ export default class MsgSubmitProposalSpotMarketParamUpdate extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1TxPb.MsgSubmitProposal.toBinary(this.toProto())
   }
 }

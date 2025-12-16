@@ -1,8 +1,10 @@
 import { serializeTransaction } from 'viem'
-import { sleep } from '@injectivelabs/utils'
-import { EvmChainId } from '@injectivelabs/ts-types'
-import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
-import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
+import {
+  toUtf8,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   LedgerException,
@@ -13,33 +15,36 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   WalletAction,
-  getKeyFromRpcUrl,
   WalletDeviceType,
+  getViemPublicClient,
   BaseConcreteStrategy,
   DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
-import { loadLedgerServiceType } from './../lib.js'
 import { domainHash, messageHash } from './utils.js'
 import { LedgerEip1193Provider } from './Eip1193Provider.js'
+import type { Hash } from 'viem'
+import type { PublicClient } from 'viem'
+import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
-import type { LedgerDerivationPathType, LedgerWalletInfo } from '../../types.js'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
+  WalletMetadata,
   Eip1193Provider,
   SendTransactionOptions,
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import type { LedgerWalletInfo, LedgerDerivationPathType } from '../../types.js'
 
 export default class LedgerBase
   extends BaseConcreteStrategy
@@ -53,7 +58,7 @@ export default class LedgerBase
 
   private evmOptions: WalletStrategyEvmOptions
 
-  private alchemy: Alchemy | undefined
+  private publicClient: PublicClient | undefined
 
   constructor(
     args: ConcreteEvmWalletStrategyArgs & {
@@ -68,6 +73,10 @@ export default class LedgerBase
     this.evmOptions = args.evmOptions
   }
 
+  setMetadata(metadata: WalletMetadata): void {
+    this.metadata = metadata
+  }
+
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Hardware)
   }
@@ -80,6 +89,12 @@ export default class LedgerBase
     this.ledger = await this.ledger.refresh()
   }
 
+  protected async getDerivationPath(address: string): Promise<string> {
+    return this.metadata?.derivationPath
+      ? this.metadata.derivationPath
+      : (await this.getWalletForAddress(address)).derivationPath
+  }
+
   public async getAddresses(): Promise<string[]> {
     const { baseDerivationPath, derivationPathType } = this
 
@@ -89,7 +104,34 @@ export default class LedgerBase
         baseDerivationPath,
         derivationPathType,
       )
+
       return wallets.map((k) => k.address)
+    } catch (e: unknown) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
+  }
+
+  public async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    const { baseDerivationPath, derivationPathType } = this
+
+    try {
+      const accountManager = await this.ledger.getAccountManager()
+      const wallets = await accountManager.getWallets(
+        baseDerivationPath,
+        derivationPathType,
+      )
+
+      return wallets.map((k) => ({
+        address: k.address,
+        derivationPath: k.derivationPath,
+        baseDerivationPath: k.baseDerivationPath,
+      }))
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -101,9 +143,11 @@ export default class LedgerBase
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -117,11 +161,10 @@ export default class LedgerBase
     const signedTransaction = await this.signEvmTransaction(txData, args)
 
     try {
-      const alchemy = await this.getAlchemy(args.evmChainId)
-      const provider = await alchemy.config.getProvider()
-      const txHash = await provider.send('eth_sendRawTransaction', [
-        signedTransaction,
-      ])
+      const publicClient = await this.getPublicClient(args.evmChainId)
+      const txHash = await publicClient.sendRawTransaction({
+        serializedTransaction: signedTransaction as Hash,
+      })
 
       return txHash
     } catch (e: unknown) {
@@ -165,14 +208,15 @@ export default class LedgerBase
     eip712json: string,
     address: AccountAddress,
   ): Promise<string> {
-    const { derivationPath } = await this.getWalletForAddress(address)
+    const derivationPath = await this.getDerivationPath(address)
     const object = JSON.parse(eip712json)
 
     try {
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signEIP712Message(derivationPath, object)
 
-      const combined = `${result.r}${result.s}${result.v.toString(16)}`
+      const v = result.v.toString(16).padStart(2, '0')
+      const combined = `${result.r}${result.s}${v}`
 
       return combined.startsWith('0x') ? combined : `0x${combined}`
     } catch (e: unknown) {
@@ -199,7 +243,8 @@ export default class LedgerBase
           messageHash(object),
         )
 
-        const combined = `${result.r}${result.s}${result.v.toString(16)}`
+        const v = result.v.toString(16).padStart(2, '0')
+        const combined = `${result.r}${result.s}${v}`
 
         return combined.startsWith('0x') ? combined : `0x${combined}`
       } catch (e) {
@@ -247,15 +292,15 @@ export default class LedgerBase
     data: string | Uint8Array,
   ): Promise<string> {
     try {
-      const { derivationPath } = await this.getWalletForAddress(signer)
-
+      const derivationPath = await this.getDerivationPath(signer)
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signPersonalMessage(
         derivationPath,
-        Buffer.from(toUtf8(data), 'utf8').toString('hex'),
+        uint8ArrayToHex(stringToUint8Array(toUtf8(data))),
       )
 
-      const combined = `${result.r}${result.s}${result.v.toString(16)}`
+      const v = result.v.toString(16).padStart(2, '0')
+      const combined = `${result.r}${result.s}${v}`
 
       return combined.startsWith('0x') ? combined : `0x${combined}`
     } catch (e: unknown) {
@@ -268,41 +313,31 @@ export default class LedgerBase
   }
 
   async getEthereumChainId(): Promise<string> {
-    const alchemy = await this.getAlchemy()
-    const alchemyProvider = await alchemy.config.getProvider()
+    const publicClient = await this.getPublicClient()
+    const chainId = await publicClient.getChainId()
 
-    return alchemyProvider.network.chainId.toString()
+    return chainId.toString()
   }
 
   async getEvmTransactionReceipt(
     txHash: string,
     evmChainId?: EvmChainId,
   ): Promise<string> {
-    const alchemy = await this.getAlchemy(evmChainId)
-    const provider = await alchemy.config.getProvider()
+    const publicClient = await this.getPublicClient(evmChainId)
 
-    const interval = 3000
-    const maxAttempts = 10
-    let attempts = 0
+    try {
+      await publicClient.waitForTransactionReceipt({
+        hash: txHash as Hash,
+        timeout: 30_000,
+        pollingInterval: 3_000,
+      })
 
-    while (attempts < maxAttempts) {
-      attempts++
-      await sleep(interval)
-
-      try {
-        const receipt = await provider.send('eth_getTransactionReceipt', [
-          txHash,
-        ])
-
-        if (receipt) {
-          return txHash
-        }
-      } catch {}
+      return txHash
+    } catch {
+      throw new Error(
+        `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+      )
     }
-
-    throw new Error(
-      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
-    )
   }
 
   async getPubKey(): Promise<string> {
@@ -315,11 +350,14 @@ export default class LedgerBase
     txData: any,
     args: { address: string; evmChainId: EvmChainId },
   ): Promise<string> {
-    const ledgerService = await loadLedgerServiceType()
-
-    const alchemy = await this.getAlchemy(args.evmChainId)
+    const publicClient = await this.getPublicClient(args.evmChainId)
     const chainId = parseInt(args.evmChainId.toString(), 10) as EvmChainId
-    const nonce = await alchemy.core.getTransactionCount(args.address)
+    const address = args.address.startsWith('0x')
+      ? (args.address as Hash)
+      : (`0x${args.address}` as Hash)
+    const nonce = await publicClient.getTransactionCount({
+      address,
+    })
 
     const parseHexValue = (value: string | number | bigint) => {
       if (typeof value === 'string') {
@@ -335,9 +373,9 @@ export default class LedgerBase
       type: 'eip1559' as const,
       chainId,
       nonce,
-      to: txData.to as `0x${string}`,
+      to: txData.to as Hash,
       value: parseHexValue(txData.value || '0x0'),
-      data: txData.data as `0x${string}`,
+      data: txData.data as Hash,
       gas: parseHexValue(txData.gas),
       maxFeePerGas: parseHexValue(txData.maxFeePerGas),
       maxPriorityFeePerGas: parseHexValue(txData.maxPriorityFeePerGas),
@@ -349,27 +387,24 @@ export default class LedgerBase
 
     try {
       const ledger = await this.ledger.getInstance()
-      const { derivationPath } = await this.getWalletForAddress(args.address)
+      const derivationPath = await this.getDerivationPath(args.address)
 
-      // Resolve transaction for Ledger display
-      const resolution = await ledgerService.resolveTransaction(
-        serializedTxHex,
-        {},
-        {},
-      )
-
-      // Sign the transaction with Ledger
-      const txSig = await ledger.signTransaction(
+      // Sign the transaction with clear signing enabled
+      const txSig = await ledger.clearSignTransaction(
         derivationPath,
         serializedTxHex,
-        resolution,
+        {
+          erc20: true,
+          externalPlugins: true,
+          nft: true,
+        },
       )
 
       const signedTxData = {
         ...eip1559TxData,
         v: BigInt(`0x${txSig.v}`),
-        r: `0x${txSig.r}` as `0x${string}`,
-        s: `0x${txSig.s}` as `0x${string}`,
+        r: `0x${txSig.r}` as Hash,
+        s: `0x${txSig.s}` as Hash,
       }
 
       return serializeTransaction(signedTxData)
@@ -385,6 +420,17 @@ export default class LedgerBase
   private async getWalletForAddress(
     address: string,
   ): Promise<LedgerWalletInfo> {
+    // Check metadata first for derivation path
+    if (this.metadata?.derivationPath) {
+      return {
+        address,
+        baseDerivationPath:
+          this.metadata.baseDerivationPath || this.baseDerivationPath,
+        derivationPath: this.metadata.derivationPath,
+      }
+    }
+
+    // Fall back to AccountManager lookup
     try {
       const { baseDerivationPath, derivationPathType } = this
       const accountManager = await this.ledger.getAccountManager()
@@ -423,13 +469,13 @@ export default class LedgerBase
   public async getEip1193Provider(): Promise<Eip1193Provider> {
     return new LedgerEip1193Provider(this.ledger, {
       chainId: this.evmOptions.evmChainId.toString(),
-      derivationPath: this.baseDerivationPath,
+      derivationPath: this.metadata?.derivationPath,
     })
   }
 
-  private async getAlchemy(evmChainId?: EvmChainId) {
-    if (this.alchemy) {
-      return this.alchemy
+  private async getPublicClient(evmChainId?: EvmChainId) {
+    if (this.publicClient) {
+      return this.publicClient
     }
 
     const options = this.evmOptions
@@ -443,14 +489,8 @@ export default class LedgerBase
       )
     }
 
-    this.alchemy = new Alchemy({
-      apiKey: getKeyFromRpcUrl(url),
-      network:
-        chainId === EvmChainId.Mainnet
-          ? AlchemyNetwork.ETH_MAINNET
-          : AlchemyNetwork.ETH_SEPOLIA,
-    })
+    this.publicClient = getViemPublicClient(chainId, url)
 
-    return this.alchemy
+    return this.publicClient
   }
 }

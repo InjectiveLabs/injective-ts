@@ -58,6 +58,7 @@ export interface TokenStatic {
   path?: string
   channelId?: string
   baseDenom?: string
+  description?: string
   externalLogo?: string
   overrideSymbol?: string
 }

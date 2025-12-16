@@ -1,165 +1,359 @@
 {
   "name": "@injectivelabs/sdk-ts",
+  "version": "1.17.2-alpha.12",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
-  "version": "1.16.33",
-  "sideEffects": false,
   "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InjectiveLabs/injective-ts"
+  },
   "type": "module",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
         "import": "./dist/esm/index.js",
-        "require": "./dist/cjs/index.js",
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "require": "./dist/cjs/index.cjs",
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "require": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "default": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       }
     },
     "./exports": {
       "react-native": {
         "import": "./dist/esm/exports.js",
-        "require": "./dist/cjs/exports.js",
-        "types": "./dist/cjs/exports.d.ts",
-        "default": "./dist/cjs/exports.js"
+        "require": "./dist/cjs/exports.cjs",
+        "types": "./dist/cjs/exports.d.cts",
+        "default": "./dist/cjs/exports.cjs"
       },
       "require": {
-        "types": "./dist/cjs/exports.d.ts",
-        "default": "./dist/cjs/exports.js"
+        "types": "./dist/cjs/exports.d.cts",
+        "default": "./dist/cjs/exports.cjs"
       },
       "import": {
         "types": "./dist/esm/exports.d.ts",
         "default": "./dist/esm/exports.js"
       },
       "default": {
-        "types": "./dist/cjs/exports.d.ts",
-        "default": "./dist/cjs/exports.js"
-      }
-    },
-    "./graphql": {
-      "react-native": {
-        "import": "./dist/esm/client/gql/index.js",
-        "require": "./dist/cjs/client/gql/index.js",
-        "types": "./dist/cjs/client/gql/index.d.ts",
-        "default": "./dist/cjs/client/gql/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/client/gql/index.d.ts",
-        "default": "./dist/cjs/client/gql/index.js"
-      },
-      "import": {
-        "types": "./dist/esm/client/gql/index.d.ts",
-        "default": "./dist/esm/client/gql/index.js"
-      },
-      "default": {
-        "types": "./dist/cjs/client/gql/index.d.ts",
-        "default": "./dist/cjs/client/gql/index.js"
+        "types": "./dist/cjs/exports.d.cts",
+        "default": "./dist/cjs/exports.cjs"
       }
     },
     "./cosmjs": {
       "react-native": {
         "import": "./dist/esm/cosmjs.js",
-        "require": "./dist/cjs/cosmjs.js",
-        "types": "./dist/cjs/cosmjs.d.ts",
-        "default": "./dist/cjs/cosmjs.js"
+        "require": "./dist/cjs/cosmjs.cjs",
+        "types": "./dist/cjs/cosmjs.d.cts",
+        "default": "./dist/cjs/cosmjs.cjs"
       },
       "require": {
-        "types": "./dist/cjs/cosmjs.d.ts",
-        "default": "./dist/cjs/cosmjs.js"
+        "types": "./dist/cjs/cosmjs.d.cts",
+        "default": "./dist/cjs/cosmjs.cjs"
       },
       "import": {
         "types": "./dist/esm/cosmjs.d.ts",
         "default": "./dist/esm/cosmjs.js"
       },
       "default": {
-        "types": "./dist/cjs/cosmjs.d.ts",
-        "default": "./dist/cjs/cosmjs.js"
+        "types": "./dist/cjs/cosmjs.d.cts",
+        "default": "./dist/cjs/cosmjs.cjs"
+      }
+    },
+    "./client/indexer": {
+      "react-native": {
+        "import": "./dist/esm/client/indexer.js",
+        "require": "./dist/cjs/client/indexer.cjs",
+        "types": "./dist/cjs/client/indexer.d.cts",
+        "default": "./dist/cjs/client/indexer.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/indexer.d.cts",
+        "default": "./dist/cjs/client/indexer.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/indexer.d.ts",
+        "default": "./dist/esm/client/indexer.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/indexer.d.cts",
+        "default": "./dist/cjs/client/indexer.cjs"
+      }
+    },
+    "./client/chain": {
+      "react-native": {
+        "import": "./dist/esm/client/chain.js",
+        "require": "./dist/cjs/client/chain.cjs",
+        "types": "./dist/cjs/client/chain.d.cts",
+        "default": "./dist/cjs/client/chain.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/chain.d.cts",
+        "default": "./dist/cjs/client/chain.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/chain.d.ts",
+        "default": "./dist/esm/client/chain.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/chain.d.cts",
+        "default": "./dist/cjs/client/chain.cjs"
+      }
+    },
+    "./client/wasm": {
+      "react-native": {
+        "import": "./dist/esm/client/wasm.js",
+        "require": "./dist/cjs/client/wasm.cjs",
+        "types": "./dist/cjs/client/wasm.d.cts",
+        "default": "./dist/cjs/client/wasm.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/wasm.d.cts",
+        "default": "./dist/cjs/client/wasm.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/wasm.d.ts",
+        "default": "./dist/esm/client/wasm.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/wasm.d.cts",
+        "default": "./dist/cjs/client/wasm.cjs"
+      }
+    },
+    "./client/abacus": {
+      "react-native": {
+        "import": "./dist/esm/client/abacus.js",
+        "require": "./dist/cjs/client/abacus.cjs",
+        "types": "./dist/cjs/client/abacus.d.cts",
+        "default": "./dist/cjs/client/abacus.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/abacus.d.cts",
+        "default": "./dist/cjs/client/abacus.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/abacus.d.ts",
+        "default": "./dist/esm/client/abacus.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/abacus.d.cts",
+        "default": "./dist/cjs/client/abacus.cjs"
+      }
+    },
+    "./client/olp": {
+      "react-native": {
+        "import": "./dist/esm/client/olp.js",
+        "require": "./dist/cjs/client/olp.cjs",
+        "types": "./dist/cjs/client/olp.d.cts",
+        "default": "./dist/cjs/client/olp.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/olp.d.cts",
+        "default": "./dist/cjs/client/olp.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/olp.d.ts",
+        "default": "./dist/esm/client/olp.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/olp.d.cts",
+        "default": "./dist/cjs/client/olp.cjs"
+      }
+    },
+    "./core/modules": {
+      "react-native": {
+        "import": "./dist/esm/core/modules.js",
+        "require": "./dist/cjs/core/modules.cjs",
+        "types": "./dist/cjs/core/modules.d.cts",
+        "default": "./dist/cjs/core/modules.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/core/modules.d.cts",
+        "default": "./dist/cjs/core/modules.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/core/modules.d.ts",
+        "default": "./dist/esm/core/modules.js"
+      },
+      "default": {
+        "types": "./dist/cjs/core/modules.d.cts",
+        "default": "./dist/cjs/core/modules.cjs"
+      }
+    },
+    "./core/accounts": {
+      "react-native": {
+        "import": "./dist/esm/core/accounts.js",
+        "require": "./dist/cjs/core/accounts.cjs",
+        "types": "./dist/cjs/core/accounts.d.cts",
+        "default": "./dist/cjs/core/accounts.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/core/accounts.d.cts",
+        "default": "./dist/cjs/core/accounts.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/core/accounts.d.ts",
+        "default": "./dist/esm/core/accounts.js"
+      },
+      "default": {
+        "types": "./dist/cjs/core/accounts.d.cts",
+        "default": "./dist/cjs/core/accounts.cjs"
+      }
+    },
+    "./core/tx": {
+      "react-native": {
+        "import": "./dist/esm/core/tx.js",
+        "require": "./dist/cjs/core/tx.cjs",
+        "types": "./dist/cjs/core/tx.d.cts",
+        "default": "./dist/cjs/core/tx.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/core/tx.d.cts",
+        "default": "./dist/cjs/core/tx.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/core/tx.d.ts",
+        "default": "./dist/esm/core/tx.js"
+      },
+      "default": {
+        "types": "./dist/cjs/core/tx.d.cts",
+        "default": "./dist/cjs/core/tx.cjs"
+      }
+    },
+    "./types": {
+      "react-native": {
+        "import": "./dist/esm/types.js",
+        "require": "./dist/cjs/types.cjs",
+        "types": "./dist/cjs/types.d.cts",
+        "default": "./dist/cjs/types.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/types.d.cts",
+        "default": "./dist/cjs/types.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/types.d.ts",
+        "default": "./dist/esm/types.js"
+      },
+      "default": {
+        "types": "./dist/cjs/types.d.cts",
+        "default": "./dist/cjs/types.cjs"
+      }
+    },
+    "./utils": {
+      "react-native": {
+        "import": "./dist/esm/utils.js",
+        "require": "./dist/cjs/utils.cjs",
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/utils.d.ts",
+        "default": "./dist/esm/utils.js"
+      },
+      "default": {
+        "types": "./dist/cjs/utils.d.cts",
+        "default": "./dist/cjs/utils.cjs"
+      }
+    },
+    "./service": {
+      "react-native": {
+        "import": "./dist/esm/service.js",
+        "require": "./dist/cjs/service.cjs",
+        "types": "./dist/cjs/service.d.cts",
+        "default": "./dist/cjs/service.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/service.d.cts",
+        "default": "./dist/cjs/service.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/service.d.ts",
+        "default": "./dist/esm/service.js"
+      },
+      "default": {
+        "types": "./dist/cjs/service.d.cts",
+        "default": "./dist/cjs/service.cjs"
       }
     },
     "./src/*": "./src/*"
   },
-  "_moduleAliases": {
-    "~sdk-ts": "dist"
-  },
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.cts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "fetch:ofac": "node --experimental-fetch ./../../etc/ofac.cjs",
-    "build": "pnpm build:cjs && pnpm build:esm && pnpm build:post",
-    "build:cjs": "tsc --build --force tsconfig.build.json",
-    "build:esm": "tsc --build --force tsconfig.build.esm.json",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && pnpm build:post",
-    "build:post": "shx cp ../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../etc/stub/package.esm.json.stub dist/esm/package.json",
-    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
-    "coverage": "jest --coverage",
+    "build": "pnpm type-check && tsdown",
+    "build:fast": "tsdown",
+    "build:watch": "tsdown --watch",
+    "clean": "shx rm -rf coverage *.log junit.xml .build-cache dist && shx mkdir -p dist",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ci": "vitest run --coverage --reporter=verbose",
+    "coverage": "vitest run --coverage",
     "coverage:show": "live-server coverage",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@apollo/client": "3.13.9",
-    "@cosmjs/amino": "^0.33.0",
-    "@cosmjs/proto-signing": "^0.33.0",
-    "@cosmjs/stargate": "^0.33.0",
-    "@injectivelabs/abacus-proto-ts": "1.14.1",
-    "@injectivelabs/core-proto-ts": "1.16.6",
+    "@cosmjs/amino": "catalog:",
+    "@cosmjs/proto-signing": "catalog:",
+    "@cosmjs/stargate": "catalog:",
+    "@injectivelabs/abacus-proto-ts-v2": "1.17.4",
+    "@injectivelabs/core-proto-ts-v2": "1.17.3",
     "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
-    "@injectivelabs/indexer-proto-ts": "1.13.27",
-    "@injectivelabs/mito-proto-ts": "1.13.2",
+    "@injectivelabs/indexer-proto-ts-v2": "1.17.5",
+    "@injectivelabs/mito-proto-ts-v2": "1.17.3",
     "@injectivelabs/networks": "workspace:*",
-    "@injectivelabs/olp-proto-ts": "1.13.4",
+    "@injectivelabs/olp-proto-ts-v2": "1.17.3",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/utils": "workspace:*",
-    "@noble/curves": "^1.8.1",
-    "@noble/hashes": "^1.7.1",
-    "@scure/base": "^1.2.6",
-    "axios": "^1.8.1",
-    "bip39": "^3.1.0",
-    "cosmjs-types": "^0.9.0",
-    "crypto-js": "^4.2.0",
-    "ethers": "^6.13.5",
-    "google-protobuf": "^3.21.4",
-    "graphql": "^16.10.0",
-    "http-status-codes": "^2.2.0",
+    "@noble/curves": "catalog:",
+    "@noble/hashes": "catalog:",
+    "@protobuf-ts/grpcweb-transport": "^2.11.1",
+    "@protobuf-ts/runtime": "^2.11.1",
+    "@protobuf-ts/runtime-rpc": "^2.11.1",
+    "@scure/base": "catalog:",
+    "@scure/bip39": "catalog:",
+    "axios": "catalog:",
+    "cosmjs-types": "0.9.0",
+    "ethers": "catalog:",
+    "eventemitter3": "catalog:",
+    "http-status-codes": "catalog:",
     "rxjs": "7.8.2",
-    "secp256k1": "^4.0.3",
-    "shx": "^0.3.4",
     "snakecase-keys": "^5.4.1",
-    "viem": "^2.40.3"
+    "viem": "catalog:"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "sdk-ts API documentation"
+  "publishConfig": {
+    "access": "public"
   },
-  "devDependencies": {
-    "@types/crypto-js": "^4.2.2",
-    "@types/lodash.toarray": "^4.4.7",
-    "@types/secp256k1": "^4.0.6"
+  "_moduleAliases": {
+    "~sdk-ts": "dist"
   }
 }

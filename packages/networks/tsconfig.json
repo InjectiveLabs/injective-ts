@@ -1,3 +1,17 @@
 {
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@injectivelabs/ts-types": [
+        "../ts-types/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "./src/**/*.spec.ts",
+    "./src/**/*.test.ts"
+  ]
 }

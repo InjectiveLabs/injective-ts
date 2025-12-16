@@ -1,8 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgDeposit {
@@ -15,7 +12,7 @@ export declare namespace MsgDeposit {
     }
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgDeposit
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgDeposit
 }
 
 /**
@@ -32,18 +29,18 @@ export default class MsgDeposit extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
+    const amountCoin = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    amountCoin.denom = params.amount.denom
-    amountCoin.amount = params.amount.amount
+    const message = InjectiveExchangeV1Beta1TxPb.MsgDeposit.create({
+      sender: params.injectiveAddress,
+      subaccountId: params.subaccountId,
+      amount: amountCoin,
+    })
 
-    const message = InjectiveExchangeV1Beta1Tx.MsgDeposit.create()
-
-    message.sender = params.injectiveAddress
-    message.subaccountId = params.subaccountId
-    message.amount = amountCoin
-
-    return InjectiveExchangeV1Beta1Tx.MsgDeposit.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -58,7 +55,9 @@ export default class MsgDeposit extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      subaccount_id: proto.subaccountId,
+      amount: proto.amount,
     }
 
     return {
@@ -87,6 +86,6 @@ export default class MsgDeposit extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgDeposit.encode(this.toProto()).finish()
+    return InjectiveExchangeV1Beta1TxPb.MsgDeposit.toBinary(this.toProto())
   }
 }

@@ -1,124 +1,60 @@
-import { InjectiveAbacusRpc } from '@injectivelabs/abacus-proto-ts'
-import {
-  IndexerErrorModule,
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import { IndexerErrorModule } from '@injectivelabs/exceptions'
+import * as PointsSvcPb from '@injectivelabs/abacus-proto-ts-v2/generated/points_svc_pb'
+import { PointsSvcClient } from '@injectivelabs/abacus-proto-ts-v2/generated/points_svc_pb.client'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { AbacusGrpcTransformer } from './transformers/index.js'
 
 export class AbacusGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.Abacus
-
-  protected client: InjectiveAbacusRpc.PointsSvcClientImpl
+  private client: PointsSvcClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectiveAbacusRpc.PointsSvcClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new PointsSvcClient(this.transport)
   }
 
   async fetchAccountLatestPoints(address: string) {
-    const request = InjectiveAbacusRpc.PointsLatestForAccountRequest.create()
+    const request = PointsSvcPb.PointsLatestForAccountRequest.create({
+      accountAddress: address,
+    })
 
-    request.accountAddress = address
+    const response = await this.executeGrpcCall<
+      PointsSvcPb.PointsLatestForAccountRequest,
+      PointsSvcPb.PointsLatestForAccountResponse
+    >(request, this.client.pointsLatestForAccount.bind(this.client))
 
-    try {
-      const response =
-        await this.retry<InjectiveAbacusRpc.PointsLatestForAccountResponse>(
-          () => this.client.PointsLatestForAccount(request),
-        )
-
-      return AbacusGrpcTransformer.grpcPointsLatestToPointsLatest(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAbacusRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PointsStatsLatestForAccount',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'PointsStatsLatestForAccount',
-        contextModule: this.module,
-      })
-    }
+    return AbacusGrpcTransformer.grpcPointsLatestToPointsLatest(response)
   }
 
   async fetchAccountDailyPoints(address: string, daysLimit?: number) {
-    const request =
-      InjectiveAbacusRpc.PointsStatsDailyForAccountRequest.create()
+    const request = PointsSvcPb.PointsStatsDailyForAccountRequest.create({
+      accountAddress: address,
+      daysLimit: daysLimit ? BigInt(daysLimit) : undefined,
+    })
 
-    request.accountAddress = address
+    const response = await this.executeGrpcCall<
+      PointsSvcPb.PointsStatsDailyForAccountRequest,
+      PointsSvcPb.HistoricalPointsStatsRowCollection
+    >(request, this.client.pointsStatsDailyForAccount.bind(this.client))
 
-    if (daysLimit) {
-      request.daysLimit = daysLimit.toString()
-    }
-
-    try {
-      const response =
-        await this.retry<InjectiveAbacusRpc.HistoricalPointsStatsRowCollection>(
-          () => this.client.PointsStatsDailyForAccount(request),
-        )
-
-      return AbacusGrpcTransformer.grpcPointsStatsDailyToPointsStatsDaily(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAbacusRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PointsStatsDailyForAccount',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'PointsStatsDailyForAccount',
-        contextModule: this.module,
-      })
-    }
+    return AbacusGrpcTransformer.grpcPointsStatsDailyToPointsStatsDaily(
+      response,
+    )
   }
 
   async fetchAccountWeeklyPoints(address: string, weeksLimit?: number) {
-    const request =
-      InjectiveAbacusRpc.PointsStatsWeeklyForAccountRequest.create()
+    const request = PointsSvcPb.PointsStatsWeeklyForAccountRequest.create({
+      accountAddress: address,
+      weeksLimit: weeksLimit ? BigInt(weeksLimit) : undefined,
+    })
 
-    request.accountAddress = address
+    const response = await this.executeGrpcCall<
+      PointsSvcPb.PointsStatsWeeklyForAccountRequest,
+      PointsSvcPb.HistoricalPointsStatsRowCollection
+    >(request, this.client.pointsStatsWeeklyForAccount.bind(this.client))
 
-    if (weeksLimit) {
-      request.weeksLimit = weeksLimit.toString()
-    }
-
-    try {
-      const response =
-        await this.retry<InjectiveAbacusRpc.HistoricalPointsStatsRowCollection>(
-          () => this.client.PointsStatsWeeklyForAccount(request),
-        )
-
-      return AbacusGrpcTransformer.grpcPointsStatsWeeklyToPointsStatsWeekly(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAbacusRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PointsStatsWeeklyForAccount',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'PointsStatsWeeklyForAccount',
-        contextModule: this.module,
-      })
-    }
+    return AbacusGrpcTransformer.grpcPointsStatsWeeklyToPointsStatsWeekly(
+      response,
+    )
   }
 }

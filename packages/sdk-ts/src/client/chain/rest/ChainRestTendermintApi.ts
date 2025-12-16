@@ -6,8 +6,8 @@ import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type { RestApiResponse } from '../types/index.js'
 import type {
-  BlockLatestRestResponse,
   NodeInfoRestResponse,
+  BlockLatestRestResponse,
 } from './../types/tendermint-rest.js'
 
 /**

@@ -1,6 +1,6 @@
 import {
-  StargateClient as CosmjsStargateClient,
   accountFromAny,
+  StargateClient as CosmjsStargateClient,
 } from '@cosmjs/stargate'
 import { accountParser as injectiveAccountParser } from '../accounts/AccountParser.js'
 import type { Account } from '@cosmjs/stargate'
@@ -10,9 +10,8 @@ export class StargateClient extends CosmjsStargateClient {
     try {
       const chainId = await this.getChainId()
       const isInjective = chainId.startsWith('injective')
-      const account = await this.forceGetQueryClient().auth.account(
-        searchAddress,
-      )
+      const account =
+        await this.forceGetQueryClient().auth.account(searchAddress)
 
       if (!account) {
         return null

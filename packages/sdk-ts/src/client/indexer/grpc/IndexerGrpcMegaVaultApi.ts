@@ -1,54 +1,32 @@
-import { InjectiveMegaVaultRpc } from '@injectivelabs/indexer-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveMegavaultRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_megavault_rpc_pb'
+import { InjectiveMegavaultRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_megavault_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
+export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.MegaVault
-
-  protected client: InjectiveMegaVaultRpc.InjectiveMegavaultRPCClientImpl
+  private client: InjectiveMegavaultRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectiveMegaVaultRpc.InjectiveMegavaultRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveMegavaultRPCClient(this.transport)
   }
 
   async fetchVault({ vaultAddress }: { vaultAddress: string }) {
-    const request = InjectiveMegaVaultRpc.GetVaultRequest.create()
+    const request = InjectiveMegavaultRpcPb.GetVaultRequest.create()
 
     request.vaultAddress = vaultAddress
 
-    try {
-      const response = await this.retry<InjectiveMegaVaultRpc.GetVaultResponse>(
-        () => this.client.GetVault(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveMegavaultRpcPb.GetVaultRequest,
+      InjectiveMegavaultRpcPb.GetVaultResponse
+    >(request, this.client.getVault.bind(this.client))
 
-      return IndexerGrpcMegaVaultTransformer.vaultResponseToVault(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'fetchVault',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'fetchVault',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMegaVaultTransformer.vaultResponseToVault(response)
   }
 
   async fetchVaultUser({
@@ -58,32 +36,17 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
     userAddress: string
     vaultAddress: string
   }) {
-    const request = InjectiveMegaVaultRpc.GetUserRequest.create()
+    const request = InjectiveMegavaultRpcPb.GetUserRequest.create()
 
     request.vaultAddress = vaultAddress
     request.userAddress = userAddress
 
-    try {
-      const response = await this.retry<InjectiveMegaVaultRpc.GetUserResponse>(
-        () => this.client.GetUser(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveMegavaultRpcPb.GetUserRequest,
+      InjectiveMegavaultRpcPb.GetUserResponse
+    >(request, this.client.getUser.bind(this.client))
 
-      return IndexerGrpcMegaVaultTransformer.userResponseToUser(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'fetchVaultUser',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'fetchVaultUser',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMegaVaultTransformer.userResponseToUser(response)
   }
 
   async fetchVaultSubscriptions({
@@ -99,7 +62,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
     userAddress: string
     vaultAddress: string
   }) {
-    const request = InjectiveMegaVaultRpc.ListSubscriptionsRequest.create()
+    const request = InjectiveMegavaultRpcPb.ListSubscriptionsRequest.create()
 
     request.vaultAddress = vaultAddress
     request.userAddress = userAddress
@@ -116,30 +79,14 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       request.token = token
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveMegaVaultRpc.ListSubscriptionsResponse>(() =>
-          this.client.ListSubscriptions(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveMegavaultRpcPb.ListSubscriptionsRequest,
+      InjectiveMegavaultRpcPb.ListSubscriptionsResponse
+    >(request, this.client.listSubscriptions.bind(this.client))
 
-      return IndexerGrpcMegaVaultTransformer.subscriptionsResponseToSubscriptions(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'fetchVaultSubscriptions',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'fetchVaultSubscriptions',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMegaVaultTransformer.subscriptionsResponseToSubscriptions(
+      response,
+    )
   }
 
   async fetchVaultRedemptions({
@@ -155,7 +102,7 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
     vaultAddress: string
     userAddress: string
   }) {
-    const request = InjectiveMegaVaultRpc.ListRedemptionsRequest.create()
+    const request = InjectiveMegavaultRpcPb.ListRedemptionsRequest.create()
 
     request.vaultAddress = vaultAddress
     request.userAddress = userAddress
@@ -172,30 +119,14 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
       request.token = token
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveMegaVaultRpc.ListRedemptionsResponse>(() =>
-          this.client.ListRedemptions(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveMegavaultRpcPb.ListRedemptionsRequest,
+      InjectiveMegavaultRpcPb.ListRedemptionsResponse
+    >(request, this.client.listRedemptions.bind(this.client))
 
-      return IndexerGrpcMegaVaultTransformer.redemptionsResponseToRedemptions(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'fetchVaultRedemptions',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'fetchVaultRedemptions',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMegaVaultTransformer.redemptionsResponseToRedemptions(
+      response,
+    )
   }
 
   async fetchOperatorRedemptionBuckets({
@@ -206,36 +137,19 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
     operatorAddress: string
   }) {
     const request =
-      InjectiveMegaVaultRpc.GetOperatorRedemptionBucketsRequest.create()
+      InjectiveMegavaultRpcPb.GetOperatorRedemptionBucketsRequest.create()
 
     request.vaultAddress = vaultAddress
     request.operatorAddress = operatorAddress
 
-    try {
-      const response =
-        await this.retry<InjectiveMegaVaultRpc.GetOperatorRedemptionBucketsResponse>(
-          () =>
-            this.client.GetOperatorRedemptionBuckets(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveMegavaultRpcPb.GetOperatorRedemptionBucketsRequest,
+      InjectiveMegavaultRpcPb.GetOperatorRedemptionBucketsResponse
+    >(request, this.client.getOperatorRedemptionBuckets.bind(this.client))
 
-      return IndexerGrpcMegaVaultTransformer.operatorRedemptionBucketsResponseToOperatorRedemptionBuckets(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'fetchOperatorRedemptionBuckets',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'fetchOperatorRedemptionBuckets',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMegaVaultTransformer.operatorRedemptionBucketsResponseToOperatorRedemptionBuckets(
+      response,
+    )
   }
 
   async fetchVaultTvlHistory({
@@ -247,39 +161,23 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
     vaultAddress: string
     maxDataPoints?: number
   }) {
-    const request = InjectiveMegaVaultRpc.TvlHistoryRequest.create()
+    const request = InjectiveMegavaultRpcPb.TvlHistoryRequest.create()
 
     request.vaultAddress = vaultAddress
-    request.since = since.toString()
+    request.since = BigInt(since)
 
     if (maxDataPoints) {
       request.maxDataPoints = maxDataPoints
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveMegaVaultRpc.TvlHistoryResponse>(() =>
-          this.client.TvlHistory(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveMegavaultRpcPb.TvlHistoryRequest,
+      InjectiveMegavaultRpcPb.TvlHistoryResponse
+    >(request, this.client.tvlHistory.bind(this.client))
 
-      return IndexerGrpcMegaVaultTransformer.tvlHistoryResponseToTvlHistory(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'fetchVaultTvlHistory',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'fetchVaultTvlHistory',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMegaVaultTransformer.tvlHistoryResponseToTvlHistory(
+      response,
+    )
   }
 
   async fetchVaultPnlHistory({
@@ -291,38 +189,22 @@ export class IndexerGrpcMegaVaultApi extends BaseGrpcConsumer {
     vaultAddress: string
     maxDataPoints?: number
   }) {
-    const request = InjectiveMegaVaultRpc.PnlHistoryRequest.create()
+    const request = InjectiveMegavaultRpcPb.PnlHistoryRequest.create()
 
     request.vaultAddress = vaultAddress
-    request.since = since.toString()
+    request.since = BigInt(since)
 
     if (maxDataPoints) {
       request.maxDataPoints = maxDataPoints
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveMegaVaultRpc.PnlHistoryResponse>(() =>
-          this.client.PnlHistory(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveMegavaultRpcPb.PnlHistoryRequest,
+      InjectiveMegavaultRpcPb.PnlHistoryResponse
+    >(request, this.client.pnlHistory.bind(this.client))
 
-      return IndexerGrpcMegaVaultTransformer.pnlHistoryResponseToPnlHistory(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveMegaVaultRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: e.code,
-          context: 'fetchVaultPnlHistory',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'fetchVaultPnlHistory',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcMegaVaultTransformer.pnlHistoryResponseToPnlHistory(
+      response,
+    )
   }
 }

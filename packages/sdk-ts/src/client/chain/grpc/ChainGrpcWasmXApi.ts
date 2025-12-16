@@ -1,9 +1,5 @@
-import { InjectiveWasmxV1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveWasmxV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/query_pb'
+import { QueryClient as InjectiveWasmxV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 
@@ -12,68 +8,32 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
  */
 export class ChainGrpcWasmXApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.WasmX
-
-  protected client: InjectiveWasmxV1Query.QueryClientImpl
+  private client: InjectiveWasmxV1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectiveWasmxV1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveWasmxV1QueryClient(this.transport)
   }
 
   async fetchModuleParams() {
-    const request = InjectiveWasmxV1Query.QueryWasmxParamsRequest.create()
+    const request = InjectiveWasmxV1QueryPb.QueryWasmxParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveWasmxV1Query.QueryWasmxParamsResponse>(() =>
-          this.client.WasmxParams(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveWasmxV1QueryPb.QueryWasmxParamsRequest,
+      InjectiveWasmxV1QueryPb.QueryWasmxParamsResponse
+    >(request, this.client.wasmxParams.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveWasmxV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'WasmxParams',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'WasmxParams',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchModuleState() {
-    const request = InjectiveWasmxV1Query.QueryModuleStateRequest.create()
+    const request = InjectiveWasmxV1QueryPb.QueryModuleStateRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveWasmxV1Query.QueryModuleStateResponse>(() =>
-          this.client.WasmxModuleState(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveWasmxV1QueryPb.QueryModuleStateRequest,
+      InjectiveWasmxV1QueryPb.QueryModuleStateResponse
+    >(request, this.client.wasmxModuleState.bind(this.client))
 
-      return response.state /* TODO */
-    } catch (e: unknown) {
-      if (e instanceof InjectiveWasmxV1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'WasmxModuleState',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'WasmxModuleState',
-        contextModule: this.module,
-      })
-    }
+    return response.state /* TODO */
   }
 }

@@ -1,10 +1,18 @@
 import { EvmChainId } from '@injectivelabs/ts-types'
+import { PublicKey } from '@injectivelabs/sdk-ts/core/accounts'
+import { ofacList, safeBigIntStringify } from '@injectivelabs/sdk-ts/utils'
+import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
 import {
   isTestnet,
   isMainnet,
   getNetworkInfo,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
+import {
+  ChainGrpcAuthApi,
+  ChainGrpcTxFeesApi,
+  ChainGrpcTendermintApi,
+} from '@injectivelabs/sdk-ts/client/chain'
 import {
   sleep,
   getStdFee,
@@ -13,6 +21,15 @@ import {
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
+import {
+  hexToBuff,
+  hexToBase64,
+  hexToUint8Array,
+  base64ToUint8Array,
+  uint8ArrayToBase64,
+  getGasPriceBasedOnMessage,
+  recoverTypedSignaturePubKey,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   WalletException,
   GeneralException,
@@ -32,52 +49,42 @@ import {
   isCosmosAminoOnlyWallet,
   getEthereumSignerAddress,
   getInjectiveSignerAddress,
+  WalletStrategyEmitterEventType,
 } from '@injectivelabs/wallet-base'
 import {
   TxGrpcApi,
-  hexToBuff,
-  PublicKey,
   SIGN_DIRECT,
-  hexToBase64,
-  ofacWallets,
   SIGN_EIP712,
   SIGN_EIP712_V2,
-  ChainGrpcAuthApi,
   createTxRawEIP712,
   createTransaction,
-  ChainGrpcTxFeesApi,
   getAminoStdSignDoc,
   getEip712TypedData,
   createWeb3Extension,
   getEip712TypedDataV2,
-  IndexerGrpcWeb3GwApi,
-  ChainGrpcTendermintApi,
-  getGasPriceBasedOnMessage,
   createTxRawFromSigResponse,
-  recoverTypedSignaturePubKey,
   createTransactionWithSigners,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/core/tx'
 import { checkIfTxRunOutOfGas } from '../utils/index.js'
-import { WalletStrategyEmitterEventType } from './types.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ThrownException } from '@injectivelabs/exceptions'
+import type { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
+import type { DirectSignResponse } from '@injectivelabs/sdk-ts/types'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
-import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type {
+  TxResponse,
+  CreateTransactionWithSignersArgs,
+} from '@injectivelabs/sdk-ts/core/tx'
 import type {
   ChainId as ChainIdType,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type {
   MsgBroadcasterOptions,
   MsgBroadcasterTxOptions,
   MsgBroadcasterTxOptionsWithAddresses,
 } from './types.js'
-import type {
-  TxResponse,
-  CosmosTxV1Beta1Tx,
-  DirectSignResponse,
-  CreateTransactionWithSignersArgs,
-} from '@injectivelabs/sdk-ts'
 
 const getEthereumWalletPubKey = async <T>({
   pubKey,
@@ -236,7 +243,7 @@ export class MsgBroadcaster {
       injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacList.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -246,8 +253,8 @@ export class MsgBroadcaster {
       return isCosmosWallet(walletStrategy.wallet)
         ? await this.broadcastDirectSign(txWithAddresses)
         : isEip712V2OnlyWallet(walletStrategy.wallet)
-        ? await this.broadcastEip712V2(txWithAddresses)
-        : await this.broadcastEip712(txWithAddresses)
+          ? await this.broadcastEip712V2(txWithAddresses)
+          : await this.broadcastEip712(txWithAddresses)
     } catch (e) {
       const error = e as any
 
@@ -278,7 +285,7 @@ export class MsgBroadcaster {
       injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacList.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -318,7 +325,7 @@ export class MsgBroadcaster {
       injectiveAddress: getInjectiveSignerAddress(tx.injectiveAddress),
     } as MsgBroadcasterTxOptionsWithAddresses
 
-    if (ofacWallets.includes(txWithAddresses.ethereumAddress)) {
+    if (ofacList.includes(txWithAddresses.ethereumAddress)) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
@@ -368,7 +375,9 @@ export class MsgBroadcaster {
     /** Account Details * */
     const { baseAccount, latestHeight } =
       await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
-    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+    const timeoutHeight = toBigNumber(latestHeight.toString()).plus(
+      txTimeoutInBlocks,
+    )
     const txTimeoutTimeInSeconds =
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
@@ -417,7 +426,7 @@ export class MsgBroadcaster {
 
     /** Signing on Ethereum */
     const signature = await walletStrategy.signEip712TypedData(
-      JSON.stringify(eip712TypedData),
+      safeBigIntStringify(eip712TypedData),
       tx.ethereumAddress,
       { txTimeout: txTimeoutTimeInSeconds },
     )
@@ -550,7 +559,7 @@ export class MsgBroadcaster {
 
     /** Signing on Ethereum */
     const signature = await walletStrategy.signEip712TypedData(
-      JSON.stringify(eip712TypedData),
+      safeBigIntStringify(eip712TypedData),
       tx.ethereumAddress,
       { txTimeout: txTimeoutTimeInSeconds },
     )
@@ -646,7 +655,7 @@ export class MsgBroadcaster {
         endpoints.grpc,
       ).fetchLatestBlock()
 
-      const latestHeight = latestBlock!.header!.height
+      const latestHeight = latestBlock!.header!.height.toString()
 
       timeoutHeight = toBigNumber(latestHeight)
         .plus(txTimeoutInBlocks)
@@ -823,9 +832,7 @@ export class MsgBroadcaster {
         address: tx.injectiveAddress,
       })
 
-      txRaw.signatures = [
-        Buffer.from(signResponse.signature.signature, 'base64'),
-      ]
+      txRaw.signatures = [base64ToUint8Array(signResponse.signature.signature)]
 
       walletStrategy.emit(
         WalletStrategyEmitterEventType.TransactionBroadcastStart,
@@ -984,9 +991,8 @@ export class MsgBroadcaster {
     }
 
     /** Append Signatures */
-    const signatureBuff = Buffer.from(
+    const signatureBuff = base64ToUint8Array(
       aminoSignResponse.signature.signature,
-      'base64',
     )
     txRawEip712.signatures = [signatureBuff]
 
@@ -1204,7 +1210,7 @@ export class MsgBroadcaster {
       response.feePayerPubKey.key.startsWith('0x') ||
       response.feePayerPubKey.key.length === 66
     ) {
-      return Buffer.from(response.feePayerPubKey.key, 'hex').toString('base64')
+      return uint8ArrayToBase64(hexToUint8Array(response.feePayerPubKey.key))
     }
 
     return response.feePayerPubKey.key
@@ -1299,7 +1305,7 @@ export class MsgBroadcaster {
   /**
    * Create TxRaw and simulate it
    */
-  private async simulateTxRaw(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
+  private async simulateTxRaw(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
     const { endpoints, httpHeaders } = this
 
     txRaw.signatures = [new Uint8Array(0)]
@@ -1389,7 +1395,7 @@ export class MsgBroadcaster {
     const { baseAccount } = accountDetails
 
     const latestBlock = await tendermintClient.fetchLatestBlock()
-    const latestHeight = latestBlock!.header!.height
+    const latestHeight = latestBlock!.header!.height.toString()
 
     return {
       baseAccount,

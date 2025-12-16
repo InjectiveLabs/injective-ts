@@ -1,8 +1,9 @@
-import type { InjectiveTokenFactoryV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type { GenesisDenom } from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/genesis_pb'
+import type * as InjectiveTokenFactoryV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/query_pb'
 import type {
   AuthorityMetadata,
-  TokenFactoryModuleParams,
   TokenFactoryModuleState,
+  TokenFactoryModuleParams,
 } from '../types/tokenfactory.js'
 
 /**
@@ -10,7 +11,7 @@ import type {
  */
 export class ChainGrpcTokenFactoryTransformer {
   static moduleParamsResponseToModuleParams(
-    response: InjectiveTokenFactoryV1Beta1Query.QueryParamsResponse,
+    response: InjectiveTokenFactoryV1Beta1QueryPb.QueryParamsResponse,
   ): TokenFactoryModuleParams {
     const params = response.params!
 
@@ -20,13 +21,13 @@ export class ChainGrpcTokenFactoryTransformer {
   }
 
   static moduleStateResponseToModuleState(
-    response: InjectiveTokenFactoryV1Beta1Query.QueryModuleStateResponse,
+    response: InjectiveTokenFactoryV1Beta1QueryPb.QueryModuleStateResponse,
   ): TokenFactoryModuleState {
     const state = response.state!
 
     return {
       denomCreationFee: state.params!.denomCreationFee,
-      factoryDenoms: state.factoryDenoms.map((item) => ({
+      factoryDenoms: state.factoryDenoms.map((item: GenesisDenom) => ({
         denom: item.denom,
         authorityMetadata: item.authorityMetadata!,
       })),
@@ -34,13 +35,13 @@ export class ChainGrpcTokenFactoryTransformer {
   }
 
   static denomsCreatorResponseToDenomsString(
-    response: InjectiveTokenFactoryV1Beta1Query.QueryDenomsFromCreatorResponse,
+    response: InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomsFromCreatorResponse,
   ): string[] {
     return response.denoms
   }
 
   static authorityMetadataResponseToAuthorityMetadata(
-    response: InjectiveTokenFactoryV1Beta1Query.QueryDenomAuthorityMetadataResponse,
+    response: InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomAuthorityMetadataResponse,
   ): AuthorityMetadata {
     return response.authorityMetadata!
   }

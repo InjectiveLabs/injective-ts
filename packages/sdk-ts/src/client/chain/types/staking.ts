@@ -1,7 +1,9 @@
-import type { CosmosStakingV1Beta1Staking } from '@injectivelabs/core-proto-ts'
+import type * as CosmosStakingV1Beta1StakingPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/staking_pb'
 
-export interface StakingModuleParams
-  extends Omit<GrpcStakingParams, 'unbondingTime'> {
+export interface StakingModuleParams extends Omit<
+  GrpcStakingParams,
+  'unbondingTime'
+> {
   unbondingTime: number
 }
 
@@ -80,18 +82,22 @@ export interface Validator {
   minSelfDelegation: string
 }
 
-export type GrpcValidator = CosmosStakingV1Beta1Staking.Validator
-export type GrpcDelegation = CosmosStakingV1Beta1Staking.Delegation
-export type GrpcValidatorDescription = CosmosStakingV1Beta1Staking.Description
-export type GrpcValidatorCommission = CosmosStakingV1Beta1Staking.Commission
+export type GrpcValidator = CosmosStakingV1Beta1StakingPb.Validator
+export type GrpcDelegation = CosmosStakingV1Beta1StakingPb.Delegation
+export type GrpcValidatorDescription = CosmosStakingV1Beta1StakingPb.Description
+export type GrpcValidatorCommission = CosmosStakingV1Beta1StakingPb.Commission
 export type GrpcValidatorCommissionRates =
-  CosmosStakingV1Beta1Staking.CommissionRates
+  CosmosStakingV1Beta1StakingPb.CommissionRates
 export type GrpcUnbondingDelegation =
-  CosmosStakingV1Beta1Staking.UnbondingDelegation
-export type GrpcReDelegation = CosmosStakingV1Beta1Staking.Redelegation
+  CosmosStakingV1Beta1StakingPb.UnbondingDelegation
+export type GrpcUnbondingDelegationEntry =
+  CosmosStakingV1Beta1StakingPb.UnbondingDelegationEntry
+export type GrpcReDelegation = CosmosStakingV1Beta1StakingPb.Redelegation
 export type GrpcDelegationResponse =
-  CosmosStakingV1Beta1Staking.DelegationResponse
+  CosmosStakingV1Beta1StakingPb.DelegationResponse
 export type GrpcReDelegationResponse =
-  CosmosStakingV1Beta1Staking.RedelegationResponse
-export type GrpcStakingParams = CosmosStakingV1Beta1Staking.Params
-export type GrpcPool = CosmosStakingV1Beta1Staking.Pool
+  CosmosStakingV1Beta1StakingPb.RedelegationResponse
+export type GrpcReDelegationEntryResponse =
+  CosmosStakingV1Beta1StakingPb.RedelegationEntryResponse
+export type GrpcStakingParams = CosmosStakingV1Beta1StakingPb.Params
+export type GrpcPool = CosmosStakingV1Beta1StakingPb.Pool

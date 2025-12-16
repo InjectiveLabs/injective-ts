@@ -1,9 +1,6 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosGovV1Tx,
-  GoogleProtobufAny,
-  CosmosBaseV1Beta1Coin,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosGovV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/tx_pb'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
 import type { Msgs } from '../../../../core/modules/msgs.js'
 
@@ -21,7 +18,7 @@ export declare namespace MsgSubmitGenericProposal {
     }
   }
 
-  export type Proto = CosmosGovV1Tx.MsgSubmitProposal
+  export type Proto = CosmosGovV1TxPb.MsgSubmitProposal
 }
 
 /**
@@ -40,29 +37,29 @@ export default class MsgSubmitGenericProposal extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
-
-    depositParams.denom = params.deposit.denom
-    depositParams.amount = params.deposit.amount
-
-    const message = CosmosGovV1Tx.MsgSubmitProposal.create()
-
-    message.messages = params.messages.map((msg) => {
-      const contentAny = GoogleProtobufAny.Any.create()
-
-      contentAny.typeUrl = msg.toDirectSign().type
-      contentAny.value = msg.toBinary()
-
-      return contentAny
+    const depositParams = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.deposit.denom,
+      amount: params.deposit.amount,
     })
-    message.initialDeposit = [depositParams]
-    message.proposer = params.proposer
-    message.metadata = params.metadata || ''
-    message.title = params.title
-    message.summary = params.summary
-    message.expedited = params.expedited || false
 
-    return CosmosGovV1Tx.MsgSubmitProposal.fromPartial(message)
+    const message = CosmosGovV1TxPb.MsgSubmitProposal.create({
+      messages: params.messages.map((msg): GoogleProtobufAnyPbPb.Any => {
+        const contentAny = GoogleProtobufAnyPbPb.Any.create({
+          typeUrl: msg.toDirectSign().type,
+          value: msg.toBinary(),
+        })
+
+        return contentAny
+      }),
+      initialDeposit: [depositParams],
+      proposer: params.proposer,
+      metadata: params.metadata || '',
+      title: params.title,
+      summary: params.summary,
+      expedited: params.expedited || false,
+    })
+
+    return message
   }
 
   public toData() {
@@ -78,10 +75,15 @@ export default class MsgSubmitGenericProposal extends MsgBase<
     const { params } = this
     const proto = this.toProto()
 
-    const messageWithProposalType: any = snakecaseKeys({
-      ...proto,
+    const messageWithProposalType: any = {
       messages: params.messages.map((msg) => msg.toAmino()),
-    })
+      initial_deposit: proto.initialDeposit,
+      proposer: proto.proposer,
+      metadata: proto.metadata,
+      title: proto.title,
+      summary: proto.summary,
+      expedited: proto.expedited,
+    }
 
     return {
       type: 'cosmos-sdk/v1/MsgSubmitProposal',
@@ -123,12 +125,12 @@ export default class MsgSubmitGenericProposal extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: '/cosmos.gov.v1.MsgSubmitProposal',
+      type: '/cosmos.gov.v1.MsgSubmitProposal' as const,
       message: proto,
     }
   }
 
   public toBinary(): Uint8Array {
-    return CosmosGovV1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
+    return CosmosGovV1TxPb.MsgSubmitProposal.toBinary(this.toProto())
   }
 }

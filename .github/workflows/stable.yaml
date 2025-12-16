@@ -1,20 +1,34 @@
-name: Publish stable
+# ============================================
+# DEPRECATED WORKFLOW
+# ============================================
+# This workflow is permanently disabled.
+# All publishing (latest, canary, beta) is now handled by dev.yaml
+# which uses OIDC trusted publishing.
+#
+# For local/CLI releases, use:
+#   pnpm release:patch
+#   pnpm release:minor
+#
+# These require npm CLI authentication (npm login).
+# ============================================
+
+name: Publish stable (DEPRECATED)
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   publish:
-    if: false # temporary disabled
+    # Permanently disabled - use dev.yaml or CLI instead
+    if: false
     runs-on: ubuntu-latest
-
     permissions: write-all
 
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Using Node from .nvmrc
         uses: useblacksmith/setup-node@v5
@@ -33,7 +47,6 @@ jobs:
 
       - name: Build dependencies
         run: |
-          lerna clean --yes
           node etc/bootstrapEnv
           pnpm install
           pnpm build
@@ -41,31 +54,17 @@ jobs:
       - name: Setup npm
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-          # Tell Git to ignore this temporary change
           git update-index --assume-unchanged .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Version and publish
-        run: |
-          lerna version patch --conventional-commits --conventional-graduate --force-git-tag --yes
-          lerna publish from-git --force-git-tag --dist-tag latest --yes --summary-file
+      - name: Version packages
+        run: pnpm exec lerna version minor --conventional-commits --force-git-tag --yes --no-push
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: 'Broadcast published versions on Slack'
-        run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
-        env:
-          GIT_ACTOR: ${{ github.actor }}
-          SLACK_API: ${{ secrets.SLACK_API }}
-          GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+      - name: Publish to npm
+        run: pnpm publish -r --access public --tag latest --no-git-checks
 
-      - name: Merge master -> dev
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: master
-          target_branch: dev
-          github_token: ${{ secrets.GH_TOKEN }}
+      - name: Push tags to git
+        run: git push --follow-tags

@@ -1,6 +1,7 @@
 import { ChainGrpcCommonTransformer } from '../client/chain/transformers/ChainGrpcCommonTransformer.js'
-import type { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import type { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
+import type * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
+import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
+import type * as CosmosBaseQueryV1Beta1PaginationPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/query/v1beta1/pagination_pb'
 import type {
   Pagination,
   PaginationOption,
@@ -10,10 +11,17 @@ import type {
 /**
  * @deprecated Use ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest instead
  */
+
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
-): CosmosBaseQueryV1Beta1Pagination.PageRequest | undefined => {
+): CosmosBaseQueryV1Beta1PaginationPb.PageRequest | undefined => {
   return ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+}
+
+export const pageRequestToGrpcPageRequestV2 = (
+  pagination?: PaginationOption,
+): CosmosBaseQueryV1Beta1PaginationPb.PageRequest | undefined => {
+  return ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 }
 
 /**
@@ -27,13 +35,16 @@ export const paginationUint8ArrayToString = (key: any) => {
  * @deprecated Use ChainGrpcCommonTransformer.grpcPaginationToPagination instead
  */
 export const grpcPaginationToPagination = (
-  pagination: CosmosBaseQueryV1Beta1Pagination.PageResponse | undefined,
+  pagination: CosmosBaseQueryV1Beta1PaginationPb.PageResponse | undefined,
 ): Pagination => {
   return ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination)
 }
 
+/**
+ * @deprecated Use grpcPagingToPagingV2 instead (V1 proto package)
+ */
 export const grpcPagingToPaging = (
-  pagination: InjectiveExplorerRpc.Paging | undefined,
+  pagination: InjectiveExplorerRpcPb.Paging | undefined,
 ): ExchangePagination => {
   if (!pagination) {
     return {
@@ -47,7 +58,42 @@ export const grpcPagingToPaging = (
     ...pagination,
     to: parseInt(pagination.to.toString() || '0', 10),
     from: parseInt(pagination.from.toString() || '0', 10),
-    total: parseInt(pagination.total || '0', 10),
+    total: parseInt((pagination.total || 0n).toString(), 10),
+  }
+}
+
+/**
+ * Converts gRPC Paging to ExchangePagination for V2 proto packages.
+ * Handles both InjectiveAccountsRpcPb.Paging and InjectiveExplorerRpcPb.Paging types.
+ * Supports bigint and string types for the total field.
+ */
+export const grpcPagingToPagingV2 = (
+  pagination:
+    | InjectiveAccountsRpcPb.Paging
+    | InjectiveExplorerRpcPb.Paging
+    | undefined,
+): ExchangePagination => {
+  if (!pagination) {
+    return {
+      to: 0,
+      from: 0,
+      total: 0,
+    }
+  }
+
+  const total = pagination.total
+  const totalNumber =
+    typeof total === 'bigint'
+      ? Number(total)
+      : typeof total === 'string'
+        ? parseInt(total || '0', 10)
+        : parseInt(String(total) || '0', 10)
+
+  return {
+    ...pagination,
+    to: parseInt(pagination.to.toString() || '0', 10),
+    from: parseInt(pagination.from.toString() || '0', 10),
+    total: totalNumber,
   }
 }
 

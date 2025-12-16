@@ -1,0 +1,35 @@
+{
+  "name": "@injectivelabs/mito-proto-ts-v2",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./esm/index.d.ts",
+      "import": "./esm/index.js",
+      "default": "./esm/index.js"
+    },
+    "./generated/*": {
+      "types": "./esm/generated/*.d.ts",
+      "import": "./esm/generated/*.js",
+      "default": "./esm/generated/*.js"
+    },
+    "./generated/*.js": "./esm/generated/*.js"
+  },
+  "files": [
+    "esm"
+  ],
+  "sideEffects": false,
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InjectiveLabs/injective-ts"
+  },
+  "dependencies": {
+    "@protobuf-ts/runtime": "^2.11.1",
+    "@protobuf-ts/runtime-rpc": "^2.11.1",
+    "@protobuf-ts/grpcweb-transport": "^2.11.1"
+  }
+}
+

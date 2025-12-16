@@ -1,12 +1,12 @@
 import { coins } from '@cosmjs/amino'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { PrivateKey } from '../accounts/index.js'
 import { SigningStargateClient } from './SigningStargateClient.js'
 import { InjectiveDirectEthSecp256k1Wallet } from '../accounts/signers/index.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { InjectiveOfflineSigner } from '../accounts/signers/types/index.js'
 
-describe('SigningStargateClient', () => {
+describe.sequential('SigningStargateClient', () => {
   it('can sign and broadcast a transaction', async () => {
     const privateKey = PrivateKey.fromHex(
       process.env.TEST_PRIVATE_KEY as string,

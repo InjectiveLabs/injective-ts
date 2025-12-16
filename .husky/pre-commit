@@ -1,4 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+echo "Fetching OFAC list..."
 
-pnpm lint-staged
+cd packages/sdk-ts && pnpm fetch:ofac && git add src/utils/ofac.ts
