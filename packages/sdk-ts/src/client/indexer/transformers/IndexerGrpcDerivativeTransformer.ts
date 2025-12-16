@@ -628,6 +628,7 @@ export class IndexerGrpcDerivativeTransformer {
       liquidationPrice: position.liquidationPrice,
       markPrice: position.markPrice,
       ticker: position.ticker,
+      fundingSum: position.fundingSum,
       updatedAt: Number(position.updatedAt),
     }
   }
