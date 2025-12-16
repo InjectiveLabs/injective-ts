@@ -1,13 +1,11 @@
 import { BigNumber } from '@injectivelabs/utils'
-import {
-  TokenType,
-  OrderState,
-  TradeDirection,
-  type OrderSide,
-  type TradeExecutionSide,
-  type TradeExecutionType,
-} from '../../../types/index.js'
+import { TokenType, OrderState, TradeDirection } from '../../../types/index.js'
 import type * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
+import type {
+  OrderSide,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '../../../types/index.js'
 import type {
   Orderbook,
   PriceLevel,
@@ -628,8 +626,11 @@ export class IndexerGrpcDerivativeTransformer {
       liquidationPrice: position.liquidationPrice,
       markPrice: position.markPrice,
       ticker: position.ticker,
-      fundingSum: position.fundingSum,
       updatedAt: Number(position.updatedAt),
+      fundingSum: position.fundingSum,
+      fundingLast: position.fundingLast,
+      cumulativeFundingEntry: position.cumulativeFundingEntry,
+      effectiveCumulativeFundingEntry: position.effectiveCumulativeFundingEntry,
     }
   }
 

@@ -36,6 +36,9 @@ export interface PositionV2 extends Omit<
 > {
   denom: string
   fundingSum: string
+  fundingLast: string
+  cumulativeFundingEntry: string
+  effectiveCumulativeFundingEntry: string
 }
 
 export interface PerpetualMarketInfo {
