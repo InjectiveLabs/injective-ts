@@ -1,6 +1,7 @@
 import { RpcError } from '@protobuf-ts/runtime-rpc'
 import {
   UnspecifiedErrorCode,
+  TransactionException,
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
@@ -81,19 +82,81 @@ export default class BaseGrpcConsumer {
   }
 
   /**
-   * Centralized error handler for gRPC calls
-   * Converts RpcError to GrpcUnaryRequestException with proper error codes
+   * Extracts the ABCI error code from a gRPC error message.
+   * Chain errors contain patterns like: {key:"ABCICode" value:"100"}
+   */
+  private getABCICodeFromMessage(message: string): number | undefined {
+    const ABCICodePattern = /{key:"ABCICode"[ \t]+value:"(.*?)"}/g
+    const ABCICode = ABCICodePattern.exec(message)
+
+    if (!ABCICode || ABCICode.length < 2) {
+      return undefined
+    }
+
+    return Number(ABCICode[1])
+  }
+
+  /**
+   * Extracts the codespace/module from a gRPC error message.
+   * Chain errors contain patterns like: {key:"Codespace" value:"exchange"}
+   */
+  private getCodespaceFromMessage(message: string): string | undefined {
+    const codespacePattern = /{key:"Codespace"[ \t]+value:"(.*?)"}/g
+    const codespace = codespacePattern.exec(message)
+
+    if (!codespace || codespace.length < 2) {
+      return undefined
+    }
+
+    return codespace[1]
+  }
+
+  /**
+   * Centralized error handler for gRPC calls.
+   * When the error contains chain error details (ABCI code and codespace),
+   * throws a TransactionException which will map the error to a user-friendly message.
+   * Otherwise throws a GrpcUnaryRequestException for generic gRPC errors.
    */
   protected handleGrpcError(e: unknown, context: string): never {
     if (e instanceof RpcError) {
-      throw new GrpcUnaryRequestException(new Error(e.message), {
+      const message = e.message
+      const abciCode = this.getABCICodeFromMessage(message)
+      const codespace = this.getCodespaceFromMessage(message)
+
+      // If we have chain error details, throw TransactionException
+      // which will map the error to a user-friendly message
+      if (abciCode && codespace) {
+        throw new TransactionException(new Error(message), {
+          code: grpcErrorCodeToErrorCode(Number(e.code)),
+          context,
+          contextModule: codespace,
+          contextCode: abciCode,
+        })
+      }
+
+      throw new GrpcUnaryRequestException(new Error(message), {
         code: grpcErrorCodeToErrorCode(Number(e.code)),
         context,
         contextModule: this.module,
       })
     }
 
-    throw new GrpcUnaryRequestException(e as Error, {
+    const error = e as Error
+    const message = error?.message || ''
+    const abciCode = this.getABCICodeFromMessage(message)
+    const codespace = this.getCodespaceFromMessage(message)
+
+    // If we have chain error details, throw TransactionException
+    if (abciCode && codespace) {
+      throw new TransactionException(error, {
+        code: UnspecifiedErrorCode,
+        context,
+        contextModule: codespace,
+        contextCode: abciCode,
+      })
+    }
+
+    throw new GrpcUnaryRequestException(error, {
       code: UnspecifiedErrorCode,
       context,
       contextModule: this.module,

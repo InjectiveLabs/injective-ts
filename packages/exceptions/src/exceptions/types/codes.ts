@@ -332,6 +332,10 @@ export const ChainExchangeModuleErrorCode = {
   ErrClientOrderIdAlreadyExists: 97,
   // client order id is invalid. Max length is 36 chars
   ErrInvalidCid: 98,
+  // invalid closing direction
+  ErrInvalidClosingDirection: 99,
+  // invalid notional
+  ErrInvalidNotional: 100,
 } as const
 
 export type ChainExchangeModuleErrorCode =

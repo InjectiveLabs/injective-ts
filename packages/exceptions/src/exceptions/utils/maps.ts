@@ -130,7 +130,8 @@ export const mapFailedTransactionMessage = (
     return reason
   }
 
-  const ABCICode = context && context.code ? context.code : getABCICode(message)
+  const ABCICode =
+    context && context.contextCode ? context.contextCode : getABCICode(message)
   const contextModule = context?.contextModule || getContextModule(message)
   const reason = getReason(message)
 
