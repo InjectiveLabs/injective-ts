@@ -249,7 +249,6 @@ describe('IndexerGrpcSpotApi', () => {
   //         toNumber: 11,
   //       },
   //     })
-  //     console.log({ response })
   //     if (response.swapHistory.length === 0) {
   //       console.warn('fetchAtomicSwapHistory.swapHistoryIsEmptyArray')
   //     }
