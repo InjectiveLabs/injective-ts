@@ -288,6 +288,8 @@ const exchangeErrorMap = {
     'Client order id already exists',
   [ChainExchangeModuleErrorCode.ErrInvalidCid]:
     'Client order id is invalid. Max length is 36 chars',
+  [ChainExchangeModuleErrorCode.ErrInvalidClosingDirection]:
+    'Invalid closing direction',
 }
 
 const insuranceErrorMap = {

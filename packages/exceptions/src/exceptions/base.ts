@@ -102,17 +102,20 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public parseContext(errorContext?: ErrorContext) {
-    const { contextModule, type, code, context } = errorContext || {
-      contextModule: 'Unknown',
-      context: 'Unknown',
-      code: UnspecifiedErrorCode,
-      type: ErrorType.Unspecified,
-    }
+    const { contextModule, type, code, context, contextCode } =
+      errorContext || {
+        contextModule: 'Unknown',
+        context: 'Unknown',
+        code: UnspecifiedErrorCode,
+        type: ErrorType.Unspecified,
+        contextCode: undefined,
+      }
 
     this.context = context
     this.contextModule = contextModule
     this.type = type || ErrorType.Unspecified
     this.code = code || UnspecifiedErrorCode
+    this.contextCode = contextCode
   }
 
   public setType(type: ErrorType) {
