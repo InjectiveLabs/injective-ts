@@ -290,7 +290,6 @@ const exchangeErrorMap = {
     'Client order id is invalid. Max length is 36 chars',
   [ChainExchangeModuleErrorCode.ErrInvalidClosingDirection]:
     'Invalid closing direction',
-  [ChainExchangeModuleErrorCode.ErrInvalidNotional]: 'Invalid notional',
 }
 
 const insuranceErrorMap = {
@@ -1445,12 +1444,6 @@ export const chainErrorMessagesMap: Record<
   'Invalid argument': {
     message: 'The argument is not valid',
     code: ChainExchangeModuleErrorCode.ErrInvalidArgument,
-    module: TransactionChainErrorModule.Exchange,
-  },
-
-  'invalid notional': {
-    message: 'Invalid notional',
-    code: ChainExchangeModuleErrorCode.ErrInvalidNotional,
     module: TransactionChainErrorModule.Exchange,
   },
 

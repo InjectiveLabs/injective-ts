@@ -149,14 +149,15 @@ export const mapFailedTransactionMessage = (
 
   if (!codespaceErrorMessages) {
     return {
-      message: reason || message,
+      message: reason || parseErrorMessage(message),
       code: ABCICode,
       contextModule,
     }
   }
 
   return {
-    message: codespaceErrorMessages[ABCICode] || reason || message,
+    message:
+      codespaceErrorMessages[ABCICode] || reason || parseErrorMessage(message),
     code: ABCICode,
     contextModule,
   }
