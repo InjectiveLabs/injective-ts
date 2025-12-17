@@ -136,21 +136,38 @@ const createBinaryOptionOrder = (
 }
 
 const createMsgAndCancelOrders = (params: MsgBatchUpdateOrders.Params) => {
+  const hasCancelAll =
+    (params.spotMarketIdsToCancelAll &&
+      params.spotMarketIdsToCancelAll.length > 0) ||
+    (params.derivativeMarketIdsToCancelAll &&
+      params.derivativeMarketIdsToCancelAll.length > 0) ||
+    (params.binaryOptionsMarketIdsToCancelAll &&
+      params.binaryOptionsMarketIdsToCancelAll.length > 0)
+
   const message = InjectiveExchangeV1Beta1TxPb.MsgBatchUpdateOrders.create({
     sender: params.injectiveAddress,
-    subaccountId: params.subaccountId,
+    ...(hasCancelAll && { subaccountId: params.subaccountId }),
   })
 
-  if (params.spotMarketIdsToCancelAll) {
+  if (
+    params.spotMarketIdsToCancelAll &&
+    params.spotMarketIdsToCancelAll.length > 0
+  ) {
     message.spotMarketIdsToCancelAll = params.spotMarketIdsToCancelAll
   }
 
-  if (params.derivativeMarketIdsToCancelAll) {
+  if (
+    params.derivativeMarketIdsToCancelAll &&
+    params.derivativeMarketIdsToCancelAll.length > 0
+  ) {
     message.derivativeMarketIdsToCancelAll =
       params.derivativeMarketIdsToCancelAll
   }
 
-  if (params.binaryOptionsMarketIdsToCancelAll) {
+  if (
+    params.binaryOptionsMarketIdsToCancelAll &&
+    params.binaryOptionsMarketIdsToCancelAll.length > 0
+  ) {
     message.binaryOptionsMarketIdsToCancelAll =
       params.binaryOptionsMarketIdsToCancelAll
   }
