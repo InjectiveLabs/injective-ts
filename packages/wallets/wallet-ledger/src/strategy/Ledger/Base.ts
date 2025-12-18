@@ -23,8 +23,13 @@ import {
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
 } from '@injectivelabs/wallet-base'
 import LedgerHW from './hw/index.js'
-import { domainHash, messageHash } from './utils.js'
 import { LedgerEip1193Provider } from './Eip1193Provider.js'
+import {
+  domainHash,
+  messageHash,
+  type EIP712Message,
+  isEIP712PayloadTooBig,
+} from './utils.js'
 import type { Hash } from 'viem'
 import type { PublicClient } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
@@ -211,15 +216,19 @@ export default class LedgerBase
     const derivationPath = await this.getDerivationPath(address)
     const object = JSON.parse(eip712json)
 
+    if (isEIP712PayloadTooBig(object)) {
+      console.log('Payload is too big, signing with hashed message')
+      return this.signEIP712HashedMessage(derivationPath, object)
+    }
+
     try {
+      console.log('Payload is not too big, signing with message')
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signEIP712Message(derivationPath, object)
 
-      const v = result.v.toString(16).padStart(2, '0')
-      const combined = `${result.r}${result.s}${v}`
-
-      return combined.startsWith('0x') ? combined : `0x${combined}`
+      return this.formatSignatureResult(result)
     } catch (e: unknown) {
+      console.log('Error signing EIP712 message:', e)
       const errorMessage = (e as any).message
       const isKnownNanoSError =
         errorMessage.includes('instruction not supported') ||
@@ -235,26 +244,41 @@ export default class LedgerBase
         })
       }
 
-      try {
-        const ledger = await this.ledger.getInstance()
-        const result = await ledger.signEIP712HashedMessage(
-          derivationPath,
-          domainHash(object),
-          messageHash(object),
-        )
-
-        const v = result.v.toString(16).padStart(2, '0')
-        const combined = `${result.r}${result.s}${v}`
-
-        return combined.startsWith('0x') ? combined : `0x${combined}`
-      } catch (e) {
-        throw new LedgerException(new Error((e as any).message), {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: WalletAction.SignTransaction,
-        })
-      }
+      return this.signEIP712HashedMessage(derivationPath, object)
     }
+  }
+
+  private async signEIP712HashedMessage(
+    derivationPath: string,
+    object: EIP712Message,
+  ): Promise<string> {
+    try {
+      const ledger = await this.ledger.getInstance()
+      const result = await ledger.signEIP712HashedMessage(
+        derivationPath,
+        domainHash(object),
+        messageHash(object),
+      )
+
+      return this.formatSignatureResult(result)
+    } catch (e) {
+      throw new LedgerException(new Error((e as any).message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SignTransaction,
+      })
+    }
+  }
+
+  private formatSignatureResult(result: {
+    v: number
+    r: string
+    s: string
+  }): string {
+    const v = result.v.toString(16).padStart(2, '0')
+    const combined = `${result.r}${result.s}${v}`
+
+    return combined.startsWith('0x') ? combined : `0x${combined}`
   }
 
   async signAminoCosmosTransaction(_transaction: {
@@ -299,10 +323,7 @@ export default class LedgerBase
         uint8ArrayToHex(stringToUint8Array(toUtf8(data))),
       )
 
-      const v = result.v.toString(16).padStart(2, '0')
-      const combined = `${result.r}${result.s}${v}`
-
-      return combined.startsWith('0x') ? combined : `0x${combined}`
+      return this.formatSignatureResult(result)
     } catch (e: unknown) {
       throw new LedgerException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
