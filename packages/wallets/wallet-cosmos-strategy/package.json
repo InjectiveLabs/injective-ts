@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-cosmos-strategy",
-  "version": "1.17.2-alpha.14",
+  "version": "1.17.2-alpha.15",
   "description": "Wallet Cosmos Strategy with instantiated wallets",
   "license": "Apache-2.0",
   "author": {
