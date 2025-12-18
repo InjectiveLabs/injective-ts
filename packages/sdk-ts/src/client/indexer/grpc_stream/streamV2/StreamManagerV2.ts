@@ -2,6 +2,7 @@ import { EventEmitter } from 'eventemitter3'
 import {
   StreamState,
   StreamEvent,
+  GrpcStatusCode,
   StreamDisconnectReason,
 } from '../../../../types/index.js'
 import type {
@@ -26,14 +27,84 @@ const DEFAULT_RETRY_CONFIG: StreamManagerRetryConfig = {
 }
 
 /**
+ * Maps gRPC status code to disconnect reason
+ */
+function mapGrpcCodeToReason(code: number): StreamDisconnectReason {
+  switch (code) {
+    // User-initiated cancellation
+    case GrpcStatusCode.CANCELLED:
+      return StreamDisconnectReason.UserStopped
+
+    // Network/connectivity issues - retryable
+    case GrpcStatusCode.UNAVAILABLE:
+      return StreamDisconnectReason.NetworkError
+
+    // Timeout - retryable
+    case GrpcStatusCode.DEADLINE_EXCEEDED:
+      return StreamDisconnectReason.Timeout
+
+    // Authentication/authorization - non-retryable (user needs to re-auth)
+    case GrpcStatusCode.UNAUTHENTICATED:
+    case GrpcStatusCode.PERMISSION_DENIED:
+      return StreamDisconnectReason.AuthenticationError
+
+    // Rate limiting - retryable with longer backoff
+    case GrpcStatusCode.RESOURCE_EXHAUSTED:
+      return StreamDisconnectReason.RateLimited
+
+    // Invalid request - non-retryable (request is malformed or resource doesn't exist)
+    case GrpcStatusCode.INVALID_ARGUMENT:
+    case GrpcStatusCode.NOT_FOUND:
+    case GrpcStatusCode.ALREADY_EXISTS:
+    case GrpcStatusCode.OUT_OF_RANGE:
+    case GrpcStatusCode.UNIMPLEMENTED:
+    case GrpcStatusCode.FAILED_PRECONDITION:
+      return StreamDisconnectReason.InvalidRequest
+
+    // Server-side errors - retryable
+    case GrpcStatusCode.UNKNOWN:
+    case GrpcStatusCode.INTERNAL:
+    case GrpcStatusCode.DATA_LOSS:
+    case GrpcStatusCode.ABORTED:
+    default:
+      return StreamDisconnectReason.StreamError
+  }
+}
+
+/**
+ * Determines if a disconnect reason should trigger a retry
+ */
+function isRetryableReason(reason: StreamDisconnectReason): boolean {
+  switch (reason) {
+    // Retryable errors
+    case StreamDisconnectReason.NetworkError:
+    case StreamDisconnectReason.Timeout:
+    case StreamDisconnectReason.RateLimited:
+    case StreamDisconnectReason.StreamError:
+    case StreamDisconnectReason.StreamEnded:
+      return true
+
+    // Non-retryable errors
+    case StreamDisconnectReason.UserStopped:
+    case StreamDisconnectReason.MaxRetries:
+    case StreamDisconnectReason.AuthenticationError:
+    case StreamDisconnectReason.InvalidRequest:
+      return false
+
+    default:
+      return false
+  }
+}
+
+/**
  * StreamManagerV2 - Manages gRPC stream connections with automatic retry
  *
  * V2 Features:
  * - Event-based lifecycle (on/off methods)
  * - Automatic retry with exponential backoff
  * - Persistent retry mode
- * - Comprehensive statistics tracking
- * - gRPC error code mapping
+ * - Comprehensive gRPC error code mapping
+ * - Distinguishes retryable vs non-retryable errors
  *
  */
 export class StreamManagerV2<TResponse> extends EventEmitter<
@@ -127,7 +198,13 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     this.retryTimeoutId = null
   }
 
-  private calculateNextBackoff(): number | null {
+  private calculateNextBackoff(reason?: StreamDisconnectReason): number | null {
+    // Rate limiting should use a longer initial backoff
+    const baseDelay =
+      reason === StreamDisconnectReason.RateLimited
+        ? Math.max(this.config.retryConfig.initialDelayMs, 5000) // At least 5s for rate limiting
+        : this.config.retryConfig.initialDelayMs
+
     if (
       this.config.retryConfig.maxAttempts > 0 &&
       this.retryAttempt >= this.config.retryConfig.maxAttempts
@@ -138,18 +215,18 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     }
 
     const nextBackoffDelay =
-      this.config.retryConfig.initialDelayMs *
+      baseDelay *
       Math.pow(this.config.retryConfig.backoffMultiplier, this.retryAttempt)
 
     return Math.min(nextBackoffDelay, this.config.retryConfig.maxDelayMs)
   }
 
-  private scheduleRetry(): void {
+  private scheduleRetry(reason?: StreamDisconnectReason): void {
     if (!this.config.retryConfig.enabled) {
       return
     }
 
-    const nextBackoff = this.calculateNextBackoff()
+    const nextBackoff = this.calculateNextBackoff(reason)
 
     if (nextBackoff === null) {
       this.handleMaxRetriesReached()
@@ -163,7 +240,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       this.emit(StreamEvent.Retry, {
         attempt: this.retryAttempt,
         delayMs: nextBackoff,
-        nextBackoff: this.calculateNextBackoff(),
+        nextBackoff: this.calculateNextBackoff(reason),
       })
 
       this.connect()
@@ -183,24 +260,12 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     this.emit(StreamEvent.Error, errorInfo)
 
     // Map gRPC error code to appropriate disconnect reason
-    let reason: StreamDisconnectReason = StreamDisconnectReason.StreamError
+    const grpcCode =
+      error && typeof error === 'object' && 'code' in error
+        ? error.code
+        : GrpcStatusCode.UNKNOWN
 
-    if (error && typeof error === 'object' && 'code' in error) {
-      switch (error.code) {
-        case 14: // UNAVAILABLE
-          reason = StreamDisconnectReason.NetworkError
-          break
-        case 4: // DEADLINE_EXCEEDED
-          reason = StreamDisconnectReason.Timeout
-          break
-        case 16: // UNAUTHENTICATED
-          reason = StreamDisconnectReason.AuthenticationError
-          break
-        case 1: // CANCELLED
-          reason = StreamDisconnectReason.UserStopped
-          break
-      }
-    }
+    const reason = mapGrpcCodeToReason(grpcCode)
 
     this.handleDisconnect(reason)
   }
@@ -233,9 +298,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
 
     // Determine if retry should be attempted based on disconnect reason
     const willRetry =
-      reason !== StreamDisconnectReason.UserStopped &&
-      reason !== StreamDisconnectReason.MaxRetries &&
-      this.config.retryConfig.enabled
+      isRetryableReason(reason) && this.config.retryConfig.enabled
 
     this.emit(StreamEvent.Disconnect, {
       reason,
@@ -245,7 +308,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
 
     if (willRetry) {
       this.updateState(StreamState.Reconnecting)
-      this.scheduleRetry()
+      this.scheduleRetry(reason)
     } else {
       this.updateState(StreamState.Stopped)
     }
@@ -279,23 +342,31 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   /**
-   * Extracts error message and details from an error object
+   * Extracts error message, code, and details from an error object
    */
   private extractErrorInfo(error: Error | StreamError | any): {
     message: string
+    code?: number
     details?: any
   } {
     // Handle StreamError with gRPC details field
     if (error && typeof error === 'object' && 'details' in error) {
       return {
         message: error.details,
+        code: error.code,
         details: error,
       }
     }
 
     // Handle standard Error
+    const code =
+      error && typeof error === 'object' && 'code' in error
+        ? error.code
+        : undefined
+
     return {
       message: error instanceof Error ? error.message : 'Unknown error',
+      code,
       details: error instanceof Error ? error.stack : error,
     }
   }

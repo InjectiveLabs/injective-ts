@@ -3,6 +3,33 @@
  */
 
 /**
+ * gRPC Status Codes
+ * @see https://grpc.io/docs/guides/status-codes/
+ */
+export const GrpcStatusCode = {
+  OK: 0,
+  CANCELLED: 1,
+  UNKNOWN: 2,
+  INVALID_ARGUMENT: 3,
+  DEADLINE_EXCEEDED: 4,
+  NOT_FOUND: 5,
+  ALREADY_EXISTS: 6,
+  PERMISSION_DENIED: 7,
+  RESOURCE_EXHAUSTED: 8,
+  FAILED_PRECONDITION: 9,
+  ABORTED: 10,
+  OUT_OF_RANGE: 11,
+  UNIMPLEMENTED: 12,
+  INTERNAL: 13,
+  UNAVAILABLE: 14,
+  DATA_LOSS: 15,
+  UNAUTHENTICATED: 16,
+} as const
+
+export type GrpcStatusCode =
+  (typeof GrpcStatusCode)[keyof typeof GrpcStatusCode]
+
+/**
  * Enhanced disconnect reasons with gRPC error code mapping
  */
 export const StreamDisconnectReason = {
@@ -14,8 +41,12 @@ export const StreamDisconnectReason = {
   NetworkError: 'network-error',
   /** Request timeout (gRPC code 4) */
   Timeout: 'timeout',
-  /** Authentication failed (gRPC code 16) */
+  /** Authentication/authorization failed (gRPC code 7 or 16) */
   AuthenticationError: 'authentication-error',
+  /** Invalid request - non-retryable (gRPC code 3, 5, 6, 11, 12) */
+  InvalidRequest: 'invalid-request',
+  /** Rate limited (gRPC code 8) */
+  RateLimited: 'rate-limited',
   /** Max retry attempts reached */
   MaxRetries: 'max-retries',
   /** Stream ended normally */
@@ -60,6 +91,8 @@ export interface StreamSubscription {
  * - 3: INVALID_ARGUMENT
  * - 4: DEADLINE_EXCEEDED
  * - 5: NOT_FOUND
+ * - 7: PERMISSION_DENIED
+ * - 8: RESOURCE_EXHAUSTED
  * - 13: INTERNAL
  * - 14: UNAVAILABLE
  * - 16: UNAUTHENTICATED
@@ -179,6 +212,7 @@ export interface StreamManagerEvents<TResponse> {
   // Error occurred
   error: {
     message: string
+    code?: number
     details?: any
   }
 

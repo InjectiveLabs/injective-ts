@@ -1,8 +1,12 @@
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { it, vi, expect, describe, afterEach, beforeEach } from 'vitest'
 import { StreamManagerV2 } from './StreamManagerV2.js'
-import { StreamState, StreamDisconnectReason } from '../../../../types/index.js'
 import { IndexerGrpcDerivativesStreamV2 } from './IndexerGrpcDerivativesStreamV2.js'
+import {
+  StreamState,
+  GrpcStatusCode,
+  StreamDisconnectReason,
+} from '../../../../types/index.js'
 import type { Mock } from 'vitest'
 import type {
   StreamError,
@@ -94,7 +98,7 @@ describe('StreamManagerV2', () => {
 
       // Simulate error from subscription
       const streamError: StreamError = {
-        code: 14,
+        code: GrpcStatusCode.UNAVAILABLE,
         details: 'Connection lost',
       }
       mockSubscription._errorHandler?.(streamError)
@@ -268,6 +272,40 @@ describe('StreamManagerV2', () => {
       expect(streamFactory).toHaveBeenCalledTimes(2)
       expect(manager.getState()).toBe(StreamState.Connected)
     })
+
+    it('should use longer backoff for rate limiting errors', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 3,
+          initialDelayMs: 1000,
+          maxDelayMs: 30000,
+          backoffMultiplier: 2,
+          persistent: false,
+        },
+      })
+
+      const retryEvents: any[] = []
+      manager.on('retry', (payload) => retryEvents.push(payload))
+
+      manager.start()
+
+      // Simulate rate limiting error
+      const streamError: StreamError = {
+        code: GrpcStatusCode.RESOURCE_EXHAUSTED,
+        details: 'Rate limit exceeded',
+      }
+      mockSubscription._errorHandler?.(streamError)
+
+      // Fast forward - rate limiting should use at least 5s backoff
+      vi.advanceTimersByTime(5000)
+
+      expect(retryEvents).toHaveLength(1)
+      expect(retryEvents[0].delayMs).toBeGreaterThanOrEqual(5000)
+    })
   })
 
   describe('event emission', () => {
@@ -333,7 +371,7 @@ describe('StreamManagerV2', () => {
       expect(onDataCallback).toHaveBeenCalledWith(testData)
     })
 
-    it('should emit error event on stream error', () => {
+    it('should emit error event on stream error with code', () => {
       const manager = new StreamManagerV2({
         id: 'test-stream',
         streamFactory,
@@ -343,16 +381,18 @@ describe('StreamManagerV2', () => {
       const errorEvents: any[] = []
       manager.on('error', (payload) => errorEvents.push(payload))
 
-      const error = new Error('Stream error')
-      vi.mocked(streamFactory).mockImplementationOnce(() => {
-        throw error
-      })
-
       manager.start()
 
+      // Simulate error from subscription with code
+      const streamError: StreamError = {
+        code: GrpcStatusCode.INTERNAL,
+        details: 'Internal server error',
+      }
+      mockSubscription._errorHandler?.(streamError)
+
       expect(errorEvents).toHaveLength(1)
-      expect(errorEvents[0].message).toBe('Stream error')
-      expect(errorEvents[0].details).toBe(error.stack)
+      expect(errorEvents[0].message).toBe('Internal server error')
+      expect(errorEvents[0].code).toBe(GrpcStatusCode.INTERNAL)
     })
 
     it('should handle subscription error events', () => {
@@ -371,7 +411,7 @@ describe('StreamManagerV2', () => {
 
       // Simulate error from subscription
       const streamError: StreamError = {
-        code: 14,
+        code: GrpcStatusCode.UNAVAILABLE,
         details: 'UNAVAILABLE',
       }
       mockSubscription._errorHandler?.(streamError)
@@ -408,16 +448,94 @@ describe('StreamManagerV2', () => {
   })
 
   describe('gRPC error code mapping', () => {
-    it('should map gRPC error codes to disconnect reasons', () => {
+    it('should map all gRPC error codes to correct disconnect reasons', () => {
       const testCases = [
-        { code: 14, expected: StreamDisconnectReason.NetworkError },
-        { code: 4, expected: StreamDisconnectReason.Timeout },
-        { code: 16, expected: StreamDisconnectReason.AuthenticationError },
-        { code: 1, expected: StreamDisconnectReason.UserStopped },
-        { code: 99, expected: StreamDisconnectReason.StreamError },
+        // Retryable errors
+        {
+          code: GrpcStatusCode.UNAVAILABLE,
+          expected: StreamDisconnectReason.NetworkError,
+          shouldRetry: true,
+        },
+        {
+          code: GrpcStatusCode.DEADLINE_EXCEEDED,
+          expected: StreamDisconnectReason.Timeout,
+          shouldRetry: true,
+        },
+        {
+          code: GrpcStatusCode.INTERNAL,
+          expected: StreamDisconnectReason.StreamError,
+          shouldRetry: true,
+        },
+        {
+          code: GrpcStatusCode.UNKNOWN,
+          expected: StreamDisconnectReason.StreamError,
+          shouldRetry: true,
+        },
+        {
+          code: GrpcStatusCode.DATA_LOSS,
+          expected: StreamDisconnectReason.StreamError,
+          shouldRetry: true,
+        },
+        {
+          code: GrpcStatusCode.ABORTED,
+          expected: StreamDisconnectReason.StreamError,
+          shouldRetry: true,
+        },
+        {
+          code: GrpcStatusCode.RESOURCE_EXHAUSTED,
+          expected: StreamDisconnectReason.RateLimited,
+          shouldRetry: true,
+        },
+
+        // Non-retryable errors
+        {
+          code: GrpcStatusCode.CANCELLED,
+          expected: StreamDisconnectReason.UserStopped,
+          shouldRetry: false,
+        },
+        {
+          code: GrpcStatusCode.UNAUTHENTICATED,
+          expected: StreamDisconnectReason.AuthenticationError,
+          shouldRetry: false,
+        },
+        {
+          code: GrpcStatusCode.PERMISSION_DENIED,
+          expected: StreamDisconnectReason.AuthenticationError,
+          shouldRetry: false,
+        },
+        {
+          code: GrpcStatusCode.INVALID_ARGUMENT,
+          expected: StreamDisconnectReason.InvalidRequest,
+          shouldRetry: false,
+        },
+        {
+          code: GrpcStatusCode.NOT_FOUND,
+          expected: StreamDisconnectReason.InvalidRequest,
+          shouldRetry: false,
+        },
+        {
+          code: GrpcStatusCode.ALREADY_EXISTS,
+          expected: StreamDisconnectReason.InvalidRequest,
+          shouldRetry: false,
+        },
+        {
+          code: GrpcStatusCode.OUT_OF_RANGE,
+          expected: StreamDisconnectReason.InvalidRequest,
+          shouldRetry: false,
+        },
+        {
+          code: GrpcStatusCode.UNIMPLEMENTED,
+          expected: StreamDisconnectReason.InvalidRequest,
+          shouldRetry: false,
+        },
+        {
+          code: GrpcStatusCode.FAILED_PRECONDITION,
+          expected: StreamDisconnectReason.InvalidRequest,
+          shouldRetry: false,
+        },
       ]
 
-      testCases.forEach(({ code, expected }) => {
+      testCases.forEach(({ code, expected, shouldRetry }) => {
         const manager = new StreamManagerV2({
           id: 'test-stream',
           streamFactory,
@@ -437,6 +555,8 @@ describe('StreamManagerV2', () => {
         mockSubscription._errorHandler?.(streamError)
 
         expect(disconnectEvents[0].reason).toBe(expected)
+        expect(disconnectEvents[0].willRetry).toBe(shouldRetry)
+
         manager.stop()
       })
     })
@@ -451,7 +571,7 @@ describe('StreamManagerV2', () => {
       manager.start()
 
       const streamError: StreamError = {
-        code: 14,
+        code: GrpcStatusCode.UNAVAILABLE,
         details: 'Network unavailable',
       }
       mockSubscription._errorHandler?.(streamError)
@@ -469,7 +589,7 @@ describe('StreamManagerV2', () => {
       manager.start()
 
       const streamError: StreamError = {
-        code: 4,
+        code: GrpcStatusCode.DEADLINE_EXCEEDED,
         details: 'Deadline exceeded',
       }
       mockSubscription._errorHandler?.(streamError)
@@ -477,22 +597,129 @@ describe('StreamManagerV2', () => {
       expect(manager.getState()).toBe(StreamState.Reconnecting)
     })
 
-    it('should map authentication errors (code 16) and trigger retry', () => {
+    it('should NOT retry on authentication errors (code 16)', () => {
       const manager = new StreamManagerV2({
         id: 'test-stream',
         streamFactory,
         onData: onDataCallback,
       })
 
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
       manager.start()
 
       const streamError: StreamError = {
-        code: 16,
+        code: GrpcStatusCode.UNAUTHENTICATED,
         details: 'Unauthenticated',
       }
       mockSubscription._errorHandler?.(streamError)
 
+      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(disconnectEvents[0].willRetry).toBe(false)
+      expect(disconnectEvents[0].reason).toBe(
+        StreamDisconnectReason.AuthenticationError,
+      )
+    })
+
+    it('should NOT retry on permission denied errors (code 7)', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+
+      const streamError: StreamError = {
+        code: GrpcStatusCode.PERMISSION_DENIED,
+        details: 'Permission denied',
+      }
+      mockSubscription._errorHandler?.(streamError)
+
+      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(disconnectEvents[0].willRetry).toBe(false)
+      expect(disconnectEvents[0].reason).toBe(
+        StreamDisconnectReason.AuthenticationError,
+      )
+    })
+
+    it('should NOT retry on invalid argument errors (code 3)', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+
+      const streamError: StreamError = {
+        code: GrpcStatusCode.INVALID_ARGUMENT,
+        details: 'Invalid argument',
+      }
+      mockSubscription._errorHandler?.(streamError)
+
+      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(disconnectEvents[0].willRetry).toBe(false)
+      expect(disconnectEvents[0].reason).toBe(
+        StreamDisconnectReason.InvalidRequest,
+      )
+    })
+
+    it('should NOT retry on not found errors (code 5)', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+
+      const streamError: StreamError = {
+        code: GrpcStatusCode.NOT_FOUND,
+        details: 'Resource not found',
+      }
+      mockSubscription._errorHandler?.(streamError)
+
+      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(disconnectEvents[0].willRetry).toBe(false)
+      expect(disconnectEvents[0].reason).toBe(
+        StreamDisconnectReason.InvalidRequest,
+      )
+    })
+
+    it('should retry on rate limiting errors (code 8) with longer backoff', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+
+      const streamError: StreamError = {
+        code: GrpcStatusCode.RESOURCE_EXHAUSTED,
+        details: 'Rate limit exceeded',
+      }
+      mockSubscription._errorHandler?.(streamError)
+
       expect(manager.getState()).toBe(StreamState.Reconnecting)
+      expect(disconnectEvents[0].willRetry).toBe(true)
+      expect(disconnectEvents[0].reason).toBe(
+        StreamDisconnectReason.RateLimited,
+      )
     })
 
     it('should not retry on user cancelled (code 1)', () => {
@@ -508,7 +735,7 @@ describe('StreamManagerV2', () => {
       manager.start()
 
       const streamError: StreamError = {
-        code: 1,
+        code: GrpcStatusCode.CANCELLED,
         details: 'Cancelled',
       }
       mockSubscription._errorHandler?.(streamError)
@@ -588,6 +815,60 @@ describe('StreamManagerV2', () => {
       manager.stop()
 
       expect(manager.getState()).toBe(StreamState.Stopped)
+    })
+
+    it('should handle unknown error codes gracefully', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+
+      // Simulate error with unknown code
+      const streamError: StreamError = {
+        code: 999, // Unknown code
+        details: 'Unknown error',
+      }
+      mockSubscription._errorHandler?.(streamError)
+
+      // Should default to StreamError and retry
+      expect(disconnectEvents[0].reason).toBe(
+        StreamDisconnectReason.StreamError,
+      )
+      expect(disconnectEvents[0].willRetry).toBe(true)
+    })
+
+    it('should handle errors without code property', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const errorEvents: any[] = []
+      const disconnectEvents: any[] = []
+      manager.on('error', (payload) => errorEvents.push(payload))
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      // Factory throws plain Error without code
+      const plainError = new Error('Plain error without code')
+      vi.mocked(streamFactory).mockImplementationOnce(() => {
+        throw plainError
+      })
+
+      manager.start()
+
+      expect(errorEvents).toHaveLength(1)
+      expect(errorEvents[0].message).toBe('Plain error without code')
+      // Should default to UNKNOWN and retry
+      expect(disconnectEvents[0].reason).toBe(
+        StreamDisconnectReason.StreamError,
+      )
     })
   })
 
