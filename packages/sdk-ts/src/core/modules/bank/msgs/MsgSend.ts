@@ -1,17 +1,20 @@
 import * as CosmosBankV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/tx_pb'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
+import type { Coin } from '@injectivelabs/ts-types'
 
 export declare namespace MsgSend {
   export interface Params {
-    amount:
-      | {
-          denom: string
-          amount: string
-        }
-      | {
-          denom: string
-          amount: string
+    amount: Coin | Coin[]
+    srcInjectiveAddress: string
+    dstInjectiveAddress: string
+  }
+
+  export type Proto = CosmosBankV1Beta1TxPb.MsgSend
+}
+
+/**
+ * @category Messages
         }[]
     srcInjectiveAddress: string
     dstInjectiveAddress: string

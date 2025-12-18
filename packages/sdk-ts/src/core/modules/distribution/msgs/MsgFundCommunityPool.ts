@@ -6,7 +6,7 @@ import type { TypedDataField } from '../../../tx/eip712/types.js'
 
 export declare namespace MsgFundCommunityPool {
   export interface Params {
-    amount: Coin[]
+    amount: Coin | Coin[]
     depositor: string
   }
 
@@ -27,7 +27,11 @@ export default class MsgFundCommunityPool extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const coins = params.amount.map((amount) => {
+    const amounts = Array.isArray(params.amount)
+      ? params.amount
+      : [params.amount]
+
+    const coins = amounts.map((amount) => {
       return CosmosBaseV1Beta1CoinPb.Coin.create({
         denom: amount.denom,
         amount: amount.amount,

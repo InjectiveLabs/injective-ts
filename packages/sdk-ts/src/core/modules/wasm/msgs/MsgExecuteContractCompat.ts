@@ -2,20 +2,13 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveWasmxV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/wasmx/v1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { safeBigIntStringify } from '../../../../utils/helpers.js'
+import type { Coin } from '@injectivelabs/ts-types'
 import type { ExecArgs } from '../exec-args.js'
 
 export declare namespace MsgExecuteContractCompat {
   export interface Params {
     /* Keep in mind that funds have to be lexicographically sorted by denom */
-    funds?:
-      | {
-          denom: string
-          amount: string
-        }
-      | {
-          denom: string
-          amount: string
-        }[]
+    funds?: Coin | Coin[]
     sender: string
     contractAddress: string
 
