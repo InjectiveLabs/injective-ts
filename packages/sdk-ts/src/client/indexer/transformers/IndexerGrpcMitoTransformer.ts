@@ -1,4 +1,5 @@
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
+import { bigIntToNumber, bigIntToString } from '../../../utils/helpers.js'
 import type * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb'
 import type {
   MitoIDO,
@@ -152,10 +153,7 @@ export class IndexerGrpcMitoTransformer {
   ): MitoPortfolio {
     return {
       pnl: portfolio.pnl,
-      totalValue:
-        typeof portfolio.totalValue === 'bigint'
-          ? Number(portfolio.totalValue)
-          : portfolio.totalValue,
+      totalValue: bigIntToNumber(portfolio.totalValue),
       updatedAt: Number(portfolio.pnlUpdatedAt),
       totalValueChartList: portfolio.totalValueChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
@@ -171,10 +169,7 @@ export class IndexerGrpcMitoTransformer {
   ): MitoLeaderboard {
     return {
       epochId: leaderboard.epochId,
-      snapshotBlock:
-        typeof leaderboard.snapshotBlock === 'bigint'
-          ? leaderboard.snapshotBlock.toString()
-          : leaderboard.snapshotBlock,
+      snapshotBlock: bigIntToString(leaderboard.snapshotBlock),
       updatedAt: Number(leaderboard.updatedAt),
       entriesList: leaderboard.entries.map(
         (entry: GoadesignGoagenMitoApiPb.LeaderboardEntry) => ({
@@ -307,10 +302,7 @@ export class IndexerGrpcMitoTransformer {
       stakedAmount: holder.stakedAmount,
       holderAddress: holder.holderAddress,
       lpAmountPercentage: holder.lpAmountPercentage,
-      redemptionLockTime:
-        typeof holder.redemptionLockTime === 'bigint'
-          ? holder.redemptionLockTime.toString()
-          : holder.redemptionLockTime,
+      redemptionLockTime: bigIntToString(holder.redemptionLockTime),
       updatedAt: Number(holder.updatedAt),
     }
   }
@@ -320,17 +312,11 @@ export class IndexerGrpcMitoTransformer {
   ): MitoMission {
     return {
       id: mission.id,
-      points:
-        typeof mission.points === 'bigint'
-          ? mission.points.toString()
-          : mission.points,
+      points: bigIntToString(mission.points),
       progress: mission.progress,
       expected: mission.expected,
       completed: mission.completed,
-      accruedPoints:
-        typeof mission.accruedPoints === 'bigint'
-          ? mission.accruedPoints.toString()
-          : mission.accruedPoints,
+      accruedPoints: bigIntToString(mission.accruedPoints),
       updatedAt: Number(mission.updatedAt),
     }
   }
@@ -340,10 +326,7 @@ export class IndexerGrpcMitoTransformer {
   ): MitoMissionLeaderboardEntry {
     return {
       address: entry.address,
-      accruedPoints:
-        typeof entry.accruedPoints === 'bigint'
-          ? entry.accruedPoints.toString()
-          : entry.accruedPoints,
+      accruedPoints: bigIntToString(entry.accruedPoints),
     }
   }
 

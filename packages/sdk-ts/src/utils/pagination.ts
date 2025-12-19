@@ -1,3 +1,4 @@
+import { bigIntToNumber } from './helpers.js'
 import { ChainGrpcCommonTransformer } from '../client/chain/transformers/ChainGrpcCommonTransformer.js'
 import type * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
 import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
@@ -56,16 +57,17 @@ export const grpcPagingToPaging = (
 
   return {
     ...pagination,
+    total: bigIntToNumber(pagination.total),
     to: parseInt(pagination.to.toString() || '0', 10),
     from: parseInt(pagination.from.toString() || '0', 10),
-    total: parseInt((pagination.total || 0n).toString(), 10),
+    countBySubaccount: bigIntToNumber(pagination.countBySubaccount),
   }
 }
 
 /**
  * Converts gRPC Paging to ExchangePagination for V2 proto packages.
  * Handles both InjectiveAccountsRpcPb.Paging and InjectiveExplorerRpcPb.Paging types.
- * Supports bigint and string types for the total field.
+ * Supports bigint and string types for the total and countBySubaccount fields.
  */
 export const grpcPagingToPagingV2 = (
   pagination:
@@ -81,19 +83,12 @@ export const grpcPagingToPagingV2 = (
     }
   }
 
-  const total = pagination.total
-  const totalNumber =
-    typeof total === 'bigint'
-      ? Number(total)
-      : typeof total === 'string'
-        ? parseInt(total || '0', 10)
-        : parseInt(String(total) || '0', 10)
-
   return {
     ...pagination,
+    total: bigIntToNumber(pagination.total),
     to: parseInt(pagination.to.toString() || '0', 10),
     from: parseInt(pagination.from.toString() || '0', 10),
-    total: totalNumber,
+    countBySubaccount: bigIntToNumber(pagination.countBySubaccount),
   }
 }
 

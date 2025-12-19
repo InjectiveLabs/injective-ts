@@ -163,7 +163,57 @@ export function isJsonString<T>(str: T): boolean {
  * Converts BigInt values to strings during JSON serialization.
  */
 export const bigIntReplacer = (_key: string, value: unknown): unknown =>
-  typeof value === 'bigint' ? value.toString() : value
+  typeof value === 'bigint' ? bigIntToString(value) : value
+
+/**
+ * Converts a potentially bigint value to a number.
+ * Handles bigint, string, and other number-like types.
+ * Returns 0 for null/undefined values.
+ */
+export const bigIntToNumber = (value: unknown): number => {
+  if (value === null || value === undefined) {
+    return 0
+  }
+
+  if (typeof value === 'bigint') {
+    return Number(value)
+  }
+
+  if (typeof value === 'string') {
+    return parseInt(value || '0', 10)
+  }
+
+  if (typeof value === 'number') {
+    return value
+  }
+
+  return parseInt(String(value || '0'), 10)
+}
+
+/**
+ * Converts a potentially bigint value to a string.
+ * Handles bigint, string, and other types that can be converted to string.
+ * Returns empty string for null/undefined values.
+ */
+export const bigIntToString = (value: unknown): string => {
+  if (value === null || value === undefined) {
+    return ''
+  }
+
+  if (typeof value === 'bigint') {
+    return value.toString()
+  }
+
+  if (typeof value === 'string') {
+    return value
+  }
+
+  if (typeof value === 'number') {
+    return value.toString()
+  }
+
+  return String(value || '')
+}
 
 /**
  * Stringify an object to JSON with BigInt support.

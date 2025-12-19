@@ -303,6 +303,14 @@ export class TurnkeyWalletStrategy
       )
     }
 
+    // Convert chainId from hex string to number for Turnkey EIP-712 compatibility
+    if (
+      parsedData.domain?.chainId &&
+      typeof parsedData.domain.chainId === 'string'
+    ) {
+      parsedData.domain.chainId = Number(parsedData.domain.chainId)
+    }
+
     const signature = await account.signTypedData(parsedData)
 
     return signature

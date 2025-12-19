@@ -1,3 +1,4 @@
+import { bigIntToString } from '../../../utils/helpers.js'
 import type * as InjectiveEvmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/evm/v1/query_pb'
 import type {
   EvmParams,
@@ -120,7 +121,7 @@ export class ChainGrpcEvmTransformer {
       evmDenom: params.evmDenom,
       enableCreate: params.enableCreate,
       enableCall: params.enableCall,
-      extraEips: params.extraEips.map((eip: bigint) => eip.toString()),
+      extraEips: params.extraEips.map((eip: bigint) => bigIntToString(eip)),
       chainConfig: params.chainConfig
         ? this.grpcChainConfigToChainConfig(params.chainConfig)
         : undefined,

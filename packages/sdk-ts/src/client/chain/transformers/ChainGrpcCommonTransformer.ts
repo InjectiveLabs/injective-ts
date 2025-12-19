@@ -1,4 +1,5 @@
 import * as CosmosBaseQueryV1Beta1PaginationPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/query/v1beta1/pagination_pb'
+import { bigIntToNumber } from '../../../utils/helpers.js'
 import {
   base64ToUint8Array,
   uint8ArrayToBase64,
@@ -91,7 +92,7 @@ export class ChainGrpcCommonTransformer {
     pagination: CosmosBaseQueryV1Beta1PaginationPb.PageResponse | undefined,
   ): Pagination {
     return {
-      total: pagination ? Number(pagination.total) : 0,
+      total: pagination ? bigIntToNumber(pagination.total) : 0,
       next: pagination
         ? ChainGrpcCommonTransformer.paginationUint8ArrayToString(
             pagination.nextKey,

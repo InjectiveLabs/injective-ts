@@ -1,4 +1,5 @@
 import { BigNumber } from '@injectivelabs/utils'
+import { grpcPagingToPagingV2 } from '../../../utils/pagination.js'
 import { TokenType, OrderState, TradeDirection } from '../../../types/index.js'
 import type * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
 import type {
@@ -139,15 +140,7 @@ export class IndexerGrpcDerivativeTransformer {
 
     return {
       orders: IndexerGrpcDerivativeTransformer.grpcOrdersToOrders(orders),
-      pagination: pagination
-        ? {
-            to: pagination.to,
-            from: pagination.from,
-            total: Number(pagination.total),
-            countBySubaccount: pagination.countBySubaccount,
-            next: pagination.next,
-          }
-        : undefined,
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
@@ -164,15 +157,7 @@ export class IndexerGrpcDerivativeTransformer {
           orderHistory,
           isConditional,
         ),
-      pagination: pagination
-        ? {
-            to: pagination.to,
-            from: pagination.from,
-            total: Number(pagination.total),
-            countBySubaccount: pagination.countBySubaccount,
-            next: pagination.next,
-          }
-        : undefined,
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
@@ -185,15 +170,7 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       positions:
         IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions),
-      pagination: pagination
-        ? {
-            to: pagination.to,
-            from: pagination.from,
-            total: Number(pagination.total),
-            countBySubaccount: pagination.countBySubaccount,
-            next: pagination.next,
-          }
-        : undefined,
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
@@ -208,15 +185,7 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcPositionsV2ToPositionsV2(
           positions,
         ),
-      pagination: pagination
-        ? {
-            to: pagination.to,
-            from: pagination.from,
-            total: Number(pagination.total),
-            countBySubaccount: pagination.countBySubaccount,
-            next: pagination.next,
-          }
-        : undefined,
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
@@ -228,15 +197,7 @@ export class IndexerGrpcDerivativeTransformer {
 
     return {
       trades: IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades),
-      pagination: pagination
-        ? {
-            to: pagination.to,
-            from: pagination.from,
-            total: Number(pagination.total),
-            countBySubaccount: pagination.countBySubaccount,
-            next: pagination.next,
-          }
-        : undefined,
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
@@ -259,15 +220,7 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
           fundingPayments,
         ),
-      pagination: pagination
-        ? {
-            to: pagination.to,
-            from: pagination.from,
-            total: Number(pagination.total),
-            countBySubaccount: pagination.countBySubaccount,
-            next: pagination.next,
-          }
-        : undefined,
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
@@ -282,15 +235,7 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcFundingRatesToFundingRates(
           fundingRates,
         ),
-      pagination: pagination
-        ? {
-            to: pagination.to,
-            from: pagination.from,
-            total: Number(pagination.total),
-            countBySubaccount: pagination.countBySubaccount,
-            next: pagination.next,
-          }
-        : undefined,
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
@@ -347,13 +292,7 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcBinaryOptionsMarketsToBinaryOptionsMarkets(
           markets,
         ),
-      pagination: {
-        to: pagination?.to || 0,
-        from: pagination?.from || 0,
-        total: Number(pagination?.total || 0),
-        countBySubaccount: Number(pagination?.countBySubaccount || 0),
-        next: pagination?.next || [],
-      },
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 

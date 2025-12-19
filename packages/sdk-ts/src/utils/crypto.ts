@@ -3,6 +3,7 @@ import { hashTypedData } from 'viem'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import { sha256 as nobleSha256 } from '@noble/hashes/sha2'
 import { ripemd160 as nobleRipemd160 } from '@noble/hashes/legacy'
+import { bigIntToString } from './helpers.js'
 import {
   hexToUint8Array,
   uint8ArrayToHex,
@@ -194,7 +195,7 @@ export const sanitizeTypedData = <
       return (data as any[]).map((v) => sanitizeTypedData(v)) as T
 
     case '[object BigInt]':
-      return (data as bigint).toString() as unknown as T
+      return bigIntToString(data) as unknown as T
 
     default:
       return data

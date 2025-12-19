@@ -1,4 +1,5 @@
 import { StreamOperation } from '../../../types/index.js'
+import { bigIntToNumber } from '../../../utils/helpers.js'
 import type * as InjectiveOracleRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_oracle_rpc_pb'
 
 /**
@@ -9,11 +10,8 @@ export class IndexerOracleStreamTransformer {
     response: InjectiveOracleRpcPb.StreamPricesResponse,
   ) => ({
     price: response.price,
+    timestamp: bigIntToNumber(response.timestamp),
     operation: StreamOperation.Update as StreamOperation,
-    timestamp:
-      typeof response.timestamp === 'bigint'
-        ? Number(response.timestamp)
-        : parseInt(response.timestamp, 10),
   })
 
   static pricesByMarketsCallback = (

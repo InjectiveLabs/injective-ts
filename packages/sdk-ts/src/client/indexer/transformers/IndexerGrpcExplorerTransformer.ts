@@ -1,9 +1,13 @@
 import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
-import { isJsonString } from '../../../utils/helpers.js'
 import {
   uint8ArrayToString,
   grpcPagingToPagingV2,
 } from '../../../utils/index.js'
+import {
+  isJsonString,
+  bigIntToNumber,
+  bigIntToString,
+} from '../../../utils/helpers.js'
 import type { BigNumber } from '@injectivelabs/utils'
 import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
 import type {
@@ -176,27 +180,15 @@ export class IndexerGrpcExplorerTransformer {
         IndexerGrpcExplorerTransformer.grpcValidatorDescriptionToValidatorDescription(
           data.description!,
         ),
-      unbondingHeight:
-        typeof data.unbondingHeight === 'bigint'
-          ? Number(data.unbondingHeight)
-          : parseInt(data.unbondingHeight, 10),
+      unbondingHeight: bigIntToNumber(data.unbondingHeight),
       unbondingTime: data.unbondingTime,
       commissionRate: data.commissionRate,
       commissionMaxRate: data.commissionMaxRate,
       commissionMaxChangeRate: data.commissionMaxChangeRate,
       commissionUpdateTime: data.commissionUpdateTime,
-      proposed:
-        typeof data.proposed === 'bigint'
-          ? Number(data.proposed)
-          : parseInt(data.proposed, 10),
-      signed:
-        typeof data.signed === 'bigint'
-          ? Number(data.signed)
-          : parseInt(data.signed, 10),
-      missed:
-        typeof data.missed === 'bigint'
-          ? Number(data.missed)
-          : parseInt(data.missed, 10),
+      signed: bigIntToNumber(data.signed),
+      missed: bigIntToNumber(data.missed),
+      proposed: bigIntToNumber(data.proposed),
       uptimePercentage: data.uptimePercentage,
       imageUrl: data.imageUrl,
       timestamp: data.timestamp,
@@ -214,20 +206,14 @@ export class IndexerGrpcExplorerTransformer {
   ): IndexerStreamTransaction {
     return {
       id: response.id,
-      blockNumber:
-        typeof response.blockNumber === 'bigint'
-          ? Number(response.blockNumber)
-          : parseInt(response.blockNumber, 10),
-      blockTimestamp: response.blockTimestamp,
       hash: response.hash,
-      codespace: response.codespace,
-      messages: response.messages,
-      txNumber:
-        typeof response.txNumber === 'bigint'
-          ? Number(response.txNumber)
-          : parseInt(response.txNumber, 10),
-      errorLog: response.errorLog,
       code: response.code,
+      messages: response.messages,
+      errorLog: response.errorLog,
+      codespace: response.codespace,
+      blockTimestamp: response.blockTimestamp,
+      txNumber: bigIntToNumber(response.txNumber),
+      blockNumber: bigIntToNumber(response.blockNumber),
     }
   }
 
@@ -239,12 +225,9 @@ export class IndexerGrpcExplorerTransformer {
 
     return {
       amounts,
-      gasLimit:
-        typeof gasFee.gasLimit === 'bigint'
-          ? Number(gasFee.gasLimit)
-          : parseInt(gasFee.gasLimit, 10),
       payer: gasFee.payer,
       granter: gasFee.granter,
+      gasLimit: bigIntToNumber(gasFee.gasLimit),
     }
   }
 
@@ -258,16 +241,13 @@ export class IndexerGrpcExplorerTransformer {
     ) as GrpcBankMsgSendMessage[]
 
     return {
-      blockNumber:
-        typeof data.blockNumber === 'bigint'
-          ? Number(data.blockNumber)
-          : parseInt(data.blockNumber, 10),
-      blockTimestamp: data.blockTimestamp,
       hash: data.hash,
-      amount: message.value.amount[0].amount,
-      denom: message.value.amount[0].denom,
       sender: message.value.from_address,
       receiver: message.value.to_address,
+      blockTimestamp: data.blockTimestamp,
+      denom: message.value.amount[0].denom,
+      amount: message.value.amount[0].amount,
+      blockNumber: bigIntToNumber(data.blockNumber),
     }
   }
 
@@ -278,33 +258,21 @@ export class IndexerGrpcExplorerTransformer {
 
     return {
       id: data.id,
-      blockNumber:
-        typeof data.blockNumber === 'bigint'
-          ? Number(data.blockNumber)
-          : parseInt(data.blockNumber, 10),
-      blockTimestamp: data.blockTimestamp,
       hash: data.hash,
       code: data.code,
       info: data.info,
-      gasWanted:
-        typeof data.gasWanted === 'bigint'
-          ? Number(data.gasWanted)
-          : parseInt(data.gasWanted, 10),
-      gasUsed:
-        typeof data.gasUsed === 'bigint'
-          ? Number(data.gasUsed)
-          : parseInt(data.gasUsed, 10),
-      codespace: data.codespace,
       data: data.data,
-      gasFee: IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(data.gasFee!),
       txType: data.txType,
+      codespace: data.codespace,
+      blockTimestamp: data.blockTimestamp,
+      gasUsed: bigIntToNumber(data.gasUsed),
+      gasWanted: bigIntToNumber(data.gasWanted),
+      blockNumber: bigIntToNumber(data.blockNumber),
+      gasFee: IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(data.gasFee!),
       signatures: data.signatures.map((signature) => ({
         pubkey: signature.pubkey,
         address: signature.address,
-        sequence:
-          typeof signature.sequence === 'bigint'
-            ? Number(signature.sequence)
-            : parseInt(signature.sequence, 10),
+        sequence: bigIntToNumber(signature.sequence),
         signature: signature.signature,
       })),
       events: data.events.map((event) => ({
@@ -330,26 +298,14 @@ export class IndexerGrpcExplorerTransformer {
 
     return {
       ...tx,
-      gasWanted:
-        typeof tx.gasWanted === 'bigint'
-          ? Number(tx.gasWanted)
-          : parseInt(tx.gasWanted, 10),
-      gasUsed:
-        typeof tx.gasUsed === 'bigint'
-          ? Number(tx.gasUsed)
-          : parseInt(tx.gasUsed, 10),
-      blockNumber:
-        typeof tx.blockNumber === 'bigint'
-          ? Number(tx.blockNumber)
-          : parseInt(tx.blockNumber, 10),
+      gasUsed: bigIntToNumber(tx.gasUsed),
+      gasWanted: bigIntToNumber(tx.gasWanted),
+      blockNumber: bigIntToNumber(tx.blockNumber),
       signatures: tx.signatures.map((signature) => ({
         pubkey: signature.pubkey,
         address: signature.address,
-        sequence:
-          typeof signature.sequence === 'bigint'
-            ? Number(signature.sequence)
-            : parseInt(signature.sequence, 10),
         signature: signature.signature,
+        sequence: bigIntToNumber(signature.sequence),
       })),
       gasFee: tx.gasFee
         ? IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(tx.gasFee!)
@@ -377,23 +333,14 @@ export class IndexerGrpcExplorerTransformer {
 
   static grpcBlockToBlock(block: InjectiveExplorerRpcPb.BlockInfo): Block {
     return {
-      height:
-        typeof block.height === 'bigint'
-          ? Number(block.height)
-          : parseInt(block.height, 10),
-      proposer: block.proposer,
       moniker: block.moniker,
+      proposer: block.proposer,
       blockHash: block.blockHash,
-      parentHash: block.parentHash,
-      numPreCommits:
-        typeof block.numPreCommits === 'bigint'
-          ? Number(block.numPreCommits)
-          : parseInt(block.numPreCommits, 10),
-      numTxs:
-        typeof block.numTxs === 'bigint'
-          ? Number(block.numTxs)
-          : parseInt(block.numTxs, 10),
       timestamp: block.timestamp,
+      parentHash: block.parentHash,
+      height: bigIntToNumber(block.height),
+      numTxs: bigIntToNumber(block.numTxs),
+      numPreCommits: bigIntToNumber(block.numPreCommits),
     }
   }
 
@@ -401,23 +348,14 @@ export class IndexerGrpcExplorerTransformer {
     block: InjectiveExplorerRpcPb.BlockInfo,
   ): BlockWithTxs {
     return {
-      height:
-        typeof block.height === 'bigint'
-          ? Number(block.height)
-          : parseInt(block.height, 10),
-      proposer: block.proposer,
       moniker: block.moniker,
+      proposer: block.proposer,
       blockHash: block.blockHash,
-      parentHash: block.parentHash,
-      numPreCommits:
-        typeof block.numPreCommits === 'bigint'
-          ? Number(block.numPreCommits)
-          : parseInt(block.numPreCommits, 10),
-      numTxs:
-        typeof block.numTxs === 'bigint'
-          ? Number(block.numTxs)
-          : parseInt(block.numTxs, 10),
       timestamp: block.timestamp,
+      parentHash: block.parentHash,
+      height: bigIntToNumber(block.height),
+      numTxs: bigIntToNumber(block.numTxs),
+      numPreCommits: bigIntToNumber(block.numPreCommits),
     }
   }
 
@@ -453,11 +391,8 @@ export class IndexerGrpcExplorerTransformer {
     validatorUptime: GrpcValidatorUptime,
   ): ValidatorUptime {
     return {
-      blockNumber:
-        typeof validatorUptime.blockNumber === 'bigint'
-          ? Number(validatorUptime.blockNumber)
-          : parseInt(validatorUptime.blockNumber, 10),
       status: validatorUptime.status,
+      blockNumber: bigIntToNumber(validatorUptime.blockNumber),
     }
   }
 
@@ -465,22 +400,13 @@ export class IndexerGrpcExplorerTransformer {
     validatorUptime: GrpcValidatorSlashingEvent,
   ): ValidatorSlashingEvent {
     return {
-      blockNumber:
-        typeof validatorUptime.blockNumber === 'bigint'
-          ? Number(validatorUptime.blockNumber)
-          : parseInt(validatorUptime.blockNumber, 10),
-      blockTimestamp: validatorUptime.blockTimestamp,
-      address: validatorUptime.address,
-      power:
-        typeof validatorUptime.power === 'bigint'
-          ? Number(validatorUptime.power)
-          : parseInt(validatorUptime.power, 10),
       reason: validatorUptime.reason,
       jailed: validatorUptime.jailed,
-      missedBlocks:
-        typeof validatorUptime.missedBlocks === 'bigint'
-          ? Number(validatorUptime.missedBlocks)
-          : parseInt(validatorUptime.missedBlocks, 10),
+      address: validatorUptime.address,
+      power: bigIntToNumber(validatorUptime.power),
+      blockTimestamp: validatorUptime.blockTimestamp,
+      blockNumber: bigIntToNumber(validatorUptime.blockNumber),
+      missedBlocks: bigIntToNumber(validatorUptime.missedBlocks),
     }
   }
 
@@ -488,28 +414,22 @@ export class IndexerGrpcExplorerTransformer {
     grpcIBCTransferTx: GrpcIBCTransferTx,
   ): IBCTransferTx {
     return {
-      sender: grpcIBCTransferTx.sender,
-      receiver: grpcIBCTransferTx.receiver,
-      sourcePort: grpcIBCTransferTx.sourcePort,
-      sourceChannel: grpcIBCTransferTx.sourceChannel,
-      destinationPort: grpcIBCTransferTx.destinationPort,
-      destinationChannel: grpcIBCTransferTx.destinationChannel,
-      amount: grpcIBCTransferTx.amount,
       denom: grpcIBCTransferTx.denom,
-      timeoutHeight: grpcIBCTransferTx.timeoutHeight,
-      timeoutTimestamp:
-        typeof grpcIBCTransferTx.timeoutTimestamp === 'bigint'
-          ? Number(grpcIBCTransferTx.timeoutTimestamp)
-          : parseInt(grpcIBCTransferTx.timeoutTimestamp, 10),
-      packetSequence:
-        typeof grpcIBCTransferTx.packetSequence === 'bigint'
-          ? Number(grpcIBCTransferTx.packetSequence)
-          : parseInt(grpcIBCTransferTx.packetSequence, 10),
-      dataHex: grpcIBCTransferTx.dataHex,
       state: grpcIBCTransferTx.state,
-      txHashesList: grpcIBCTransferTx.txHashes,
+      sender: grpcIBCTransferTx.sender,
+      amount: grpcIBCTransferTx.amount,
+      dataHex: grpcIBCTransferTx.dataHex,
+      receiver: grpcIBCTransferTx.receiver,
       createdAt: grpcIBCTransferTx.createdAt,
       updatedAt: grpcIBCTransferTx.updatedAt,
+      sourcePort: grpcIBCTransferTx.sourcePort,
+      txHashesList: grpcIBCTransferTx.txHashes,
+      sourceChannel: grpcIBCTransferTx.sourceChannel,
+      timeoutHeight: grpcIBCTransferTx.timeoutHeight,
+      destinationPort: grpcIBCTransferTx.destinationPort,
+      destinationChannel: grpcIBCTransferTx.destinationChannel,
+      packetSequence: bigIntToNumber(grpcIBCTransferTx.packetSequence),
+      timeoutTimestamp: bigIntToNumber(grpcIBCTransferTx.timeoutTimestamp),
     }
   }
 
@@ -517,24 +437,18 @@ export class IndexerGrpcExplorerTransformer {
     grpcPeggyDepositTx: GrpcPeggyDepositTx,
   ): PeggyDepositTx {
     return {
-      sender: grpcPeggyDepositTx.sender,
-      receiver: grpcPeggyDepositTx.receiver,
-      eventNonce:
-        typeof grpcPeggyDepositTx.eventNonce === 'bigint'
-          ? Number(grpcPeggyDepositTx.eventNonce)
-          : parseInt(grpcPeggyDepositTx.eventNonce, 10),
-      eventHeight:
-        typeof grpcPeggyDepositTx.eventHeight === 'bigint'
-          ? Number(grpcPeggyDepositTx.eventHeight)
-          : parseInt(grpcPeggyDepositTx.eventHeight, 10),
-      amount: grpcPeggyDepositTx.amount,
       denom: grpcPeggyDepositTx.denom,
-      orchestratorAddress: grpcPeggyDepositTx.orchestratorAddress,
       state: grpcPeggyDepositTx.state,
+      sender: grpcPeggyDepositTx.sender,
+      amount: grpcPeggyDepositTx.amount,
+      receiver: grpcPeggyDepositTx.receiver,
       claimType: grpcPeggyDepositTx.claimType,
-      txHashesList: grpcPeggyDepositTx.txHashes,
       createdAt: grpcPeggyDepositTx.createdAt,
       updatedAt: grpcPeggyDepositTx.updatedAt,
+      txHashesList: grpcPeggyDepositTx.txHashes,
+      eventNonce: bigIntToNumber(grpcPeggyDepositTx.eventNonce),
+      eventHeight: bigIntToNumber(grpcPeggyDepositTx.eventHeight),
+      orchestratorAddress: grpcPeggyDepositTx.orchestratorAddress,
     }
   }
 
@@ -542,37 +456,22 @@ export class IndexerGrpcExplorerTransformer {
     grpcPeggyWithdrawalTx: GrpcPeggyWithdrawalTx,
   ): PeggyWithdrawalTx {
     return {
-      sender: grpcPeggyWithdrawalTx.sender,
-      receiver: grpcPeggyWithdrawalTx.receiver,
-      amount: grpcPeggyWithdrawalTx.amount,
       denom: grpcPeggyWithdrawalTx.denom,
-      bridgeFee: grpcPeggyWithdrawalTx.bridgeFee,
-      outgoingTxId:
-        typeof grpcPeggyWithdrawalTx.outgoingTxId === 'bigint'
-          ? Number(grpcPeggyWithdrawalTx.outgoingTxId)
-          : parseInt(grpcPeggyWithdrawalTx.outgoingTxId, 10),
-      batchTimeout:
-        typeof grpcPeggyWithdrawalTx.batchTimeout === 'bigint'
-          ? Number(grpcPeggyWithdrawalTx.batchTimeout)
-          : parseInt(grpcPeggyWithdrawalTx.batchTimeout, 10),
-      batchNonce:
-        typeof grpcPeggyWithdrawalTx.batchNonce === 'bigint'
-          ? Number(grpcPeggyWithdrawalTx.batchNonce)
-          : parseInt(grpcPeggyWithdrawalTx.batchNonce, 10),
-      eventNonce:
-        typeof grpcPeggyWithdrawalTx.eventNonce === 'bigint'
-          ? Number(grpcPeggyWithdrawalTx.eventNonce)
-          : parseInt(grpcPeggyWithdrawalTx.eventNonce, 10),
-      eventHeight:
-        typeof grpcPeggyWithdrawalTx.eventHeight === 'bigint'
-          ? Number(grpcPeggyWithdrawalTx.eventHeight)
-          : parseInt(grpcPeggyWithdrawalTx.eventHeight, 10),
-      orchestratorAddress: grpcPeggyWithdrawalTx.orchestratorAddress,
       state: grpcPeggyWithdrawalTx.state,
+      sender: grpcPeggyWithdrawalTx.sender,
+      amount: grpcPeggyWithdrawalTx.amount,
+      receiver: grpcPeggyWithdrawalTx.receiver,
+      bridgeFee: grpcPeggyWithdrawalTx.bridgeFee,
       claimType: grpcPeggyWithdrawalTx.claimType,
-      txHashesList: grpcPeggyWithdrawalTx.txHashes,
       createdAt: grpcPeggyWithdrawalTx.createdAt,
       updatedAt: grpcPeggyWithdrawalTx.updatedAt,
+      txHashesList: grpcPeggyWithdrawalTx.txHashes,
+      batchNonce: bigIntToNumber(grpcPeggyWithdrawalTx.batchNonce),
+      eventNonce: bigIntToNumber(grpcPeggyWithdrawalTx.eventNonce),
+      eventHeight: bigIntToNumber(grpcPeggyWithdrawalTx.eventHeight),
+      orchestratorAddress: grpcPeggyWithdrawalTx.orchestratorAddress,
+      outgoingTxId: bigIntToNumber(grpcPeggyWithdrawalTx.outgoingTxId),
+      batchTimeout: bigIntToNumber(grpcPeggyWithdrawalTx.batchTimeout),
     }
   }
 
@@ -580,42 +479,15 @@ export class IndexerGrpcExplorerTransformer {
     response: InjectiveExplorerRpcPb.GetStatsResponse,
   ): ExplorerStats {
     return {
-      assets:
-        typeof response.assets === 'bigint'
-          ? response.assets.toString()
-          : response.assets,
-      txsTotal:
-        typeof response.txsTotal === 'bigint'
-          ? response.txsTotal.toString()
-          : response.txsTotal,
-      addresses:
-        typeof response.addresses === 'bigint'
-          ? response.addresses.toString()
-          : response.addresses,
-      injSupply:
-        typeof response.injSupply === 'bigint'
-          ? response.injSupply.toString()
-          : response.injSupply,
-      txsInPast24Hours:
-        typeof response.txs24H === 'bigint'
-          ? response.txs24H.toString()
-          : response.txs24H,
-      txsInPast30Days:
-        typeof response.txs30D === 'bigint'
-          ? response.txs30D.toString()
-          : response.txs30D,
-      blockCountInPast24Hours:
-        typeof response.blockCount24H === 'bigint'
-          ? response.blockCount24H.toString()
-          : response.blockCount24H,
-      txsPerSecondInPast24Hours:
-        typeof response.txsPs24H === 'bigint'
-          ? response.txsPs24H.toString()
-          : response.txsPs24H,
-      txsPerSecondInPast100Blocks:
-        typeof response.txsPs100B === 'bigint'
-          ? response.txsPs100B.toString()
-          : response.txsPs100B,
+      assets: bigIntToString(response.assets),
+      txsTotal: bigIntToString(response.txsTotal),
+      addresses: bigIntToString(response.addresses),
+      injSupply: bigIntToString(response.injSupply),
+      txsInPast30Days: bigIntToString(response.txs30D),
+      txsInPast24Hours: bigIntToString(response.txs24H),
+      txsPerSecondInPast24Hours: bigIntToString(response.txsPs24H),
+      blockCountInPast24Hours: bigIntToString(response.blockCount24H),
+      txsPerSecondInPast100Blocks: bigIntToString(response.txsPs100B),
     }
   }
 
@@ -643,9 +515,7 @@ export class IndexerGrpcExplorerTransformer {
       signature: signature.signature,
       sequence: (() => {
         try {
-          return typeof signature.sequence === 'bigint'
-            ? Number(signature.sequence)
-            : parseInt(signature.sequence, 10)
+          return bigIntToNumber(signature.sequence)
         } catch {
           return 0
         }
@@ -654,18 +524,13 @@ export class IndexerGrpcExplorerTransformer {
 
     const claimIds = tx.claimIds.map((claimId) => {
       try {
-        return typeof claimId === 'bigint'
-          ? Number(claimId)
-          : parseInt(claimId, 10)
+        return bigIntToNumber(claimId)
       } catch {
         return 0
       }
     })
 
-    const blockNumber =
-      typeof tx.blockNumber === 'bigint'
-        ? Number(tx.blockNumber)
-        : parseInt(tx.blockNumber)
+    const blockNumber = bigIntToNumber(tx.blockNumber)
 
     return {
       logs,
@@ -714,44 +579,28 @@ export class IndexerGrpcExplorerTransformer {
           amount: amount.amount,
           denom: amount.denom,
         })),
-        gasLimit:
-          typeof tx.gasFee?.gasLimit === 'bigint'
-            ? Number(tx.gasFee?.gasLimit)
-            : parseInt(tx.gasFee?.gasLimit ?? '0', 10),
+        gasLimit: bigIntToNumber(tx.gasFee?.gasLimit),
         granter: tx.gasFee?.granter ?? '',
         payer: tx.gasFee?.payer ?? '',
       },
       events: tx.events,
       errorLog: tx.errorLog,
       codespace: tx.codespace,
-      gasUsed:
-        typeof tx.gasUsed === 'bigint'
-          ? Number(tx.gasUsed)
-          : parseInt(tx.gasUsed, 10),
+      gasUsed: bigIntToNumber(tx.gasUsed),
+
       blockTimestamp: tx.blockTimestamp,
-      gasWanted:
-        typeof tx.gasWanted === 'bigint'
-          ? Number(tx.gasWanted)
-          : parseInt(tx.gasWanted, 10),
-      blockNumber:
-        typeof tx.blockNumber === 'bigint'
-          ? Number(tx.blockNumber)
-          : parseInt(tx.blockNumber, 10),
+      gasWanted: bigIntToNumber(tx.gasWanted),
+      blockNumber: bigIntToNumber(tx.blockNumber),
       signatures: tx.signatures.map((signature) => ({
         address: signature.address,
         pubkey: signature.pubkey,
         signature: signature.signature,
-        sequence:
-          typeof signature.sequence === 'bigint'
-            ? Number(signature.sequence)
-            : parseInt(signature.sequence, 10),
+        sequence: bigIntToNumber(signature.sequence),
       })),
       messages: transactionV2MessagesToMessagesNoThrow(tx.messages),
       logs: parseStringToObjectLikeNoThrow(tx.logs),
       data: '/' + uint8ArrayToString(tx.data).split('/').pop(),
-      claimIds: tx.claimIds.map((claimId) =>
-        typeof claimId === 'bigint' ? Number(claimId) : parseInt(claimId, 10),
-      ),
+      claimIds: tx.claimIds.map((claimId) => bigIntToNumber(claimId)),
     }
   }
 
@@ -773,18 +622,9 @@ export class IndexerGrpcExplorerTransformer {
       blockHash: block.blockHash,
       timestamp: block.timestamp,
       parentHash: block.parentHash,
-      height:
-        typeof block.height === 'bigint'
-          ? Number(block.height)
-          : parseInt(block.height, 10),
-      numTxs:
-        typeof block.numTxs === 'bigint'
-          ? Number(block.numTxs)
-          : parseInt(block.numTxs, 10),
-      numPreCommits:
-        typeof block.numPreCommits === 'bigint'
-          ? Number(block.numPreCommits)
-          : parseInt(block.numPreCommits, 10),
+      height: bigIntToNumber(block.height),
+      numTxs: bigIntToNumber(block.numTxs),
+      numPreCommits: bigIntToNumber(block.numPreCommits),
     }
   }
 
@@ -811,18 +651,9 @@ export class IndexerGrpcExplorerTransformer {
       type: tx.txType,
       txHash: tx.hash,
       error_log: tx.errorLog,
-      height:
-        typeof tx.blockNumber === 'bigint'
-          ? Number(tx.blockNumber)
-          : parseInt(tx.blockNumber, 10),
-      tx_number:
-        typeof tx.txNumber === 'bigint'
-          ? Number(tx.txNumber)
-          : parseInt(tx.txNumber, 10),
-      time:
-        typeof tx.blockUnixTimestamp === 'bigint'
-          ? Number(tx.blockUnixTimestamp)
-          : parseInt(tx.blockUnixTimestamp, 10),
+      height: bigIntToNumber(tx.blockNumber),
+      tx_number: bigIntToNumber(tx.txNumber),
+      time: bigIntToNumber(tx.blockUnixTimestamp),
       amount: getContractTransactionV2Amount(tx),
       logs: JSON.parse(uint8ArrayToString(tx.logs)),
       data: '/' + uint8ArrayToString(tx.data).split('/').pop(),
@@ -831,10 +662,7 @@ export class IndexerGrpcExplorerTransformer {
         address: signature.address,
         pubkey: signature.pubkey,
         signature: signature.signature,
-        sequence:
-          typeof signature.sequence === 'bigint'
-            ? Number(signature.sequence)
-            : parseInt(signature.sequence, 10),
+        sequence: bigIntToNumber(signature.sequence),
       })),
     }
   }

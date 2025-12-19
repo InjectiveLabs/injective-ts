@@ -1,4 +1,5 @@
 import { StreamOperation } from '../../../types/index.js'
+import { bigIntToNumber } from '../../../utils/helpers.js'
 import type * as InjectiveAuctionRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb'
 import type { IndexerAuctionBid } from '../types/index.js'
 
@@ -12,10 +13,7 @@ export class IndexerAuctionStreamTransformer {
     bid: {
       bidder: response.bidder,
       bidAmount: response.bidAmount,
-      bidTimestamp:
-        typeof response.timestamp === 'bigint'
-          ? Number(response.timestamp)
-          : parseInt(response.timestamp, 10),
+      bidTimestamp: bigIntToNumber(response.timestamp),
     } as IndexerAuctionBid,
     operation: StreamOperation.Insert,
   })
