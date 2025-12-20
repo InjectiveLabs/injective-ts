@@ -6,6 +6,8 @@ import type { Window as KeplrWindow } from '@keplr-wallet/types'
  */
 export interface CosmostationCosmos {
   request<T>(message: { method: string; params?: unknown }): Promise<T>
+  on(eventName: string, handler: () => void): void
+  off(eventName: string, handler: () => void): void
 }
 
 /**
@@ -14,7 +16,7 @@ export interface CosmostationCosmos {
  */
 export interface CosmostationProvider {
   cosmos: CosmostationCosmos
-  providers: {
+  providers?: {
     keplr?: KeplrWindow['keplr']
   }
 }

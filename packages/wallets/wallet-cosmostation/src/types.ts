@@ -153,13 +153,3 @@ export const SEND_TRANSACTION_MODE = {
 
 export type SendTransactionMode =
   (typeof SEND_TRANSACTION_MODE)[keyof typeof SEND_TRANSACTION_MODE]
-
-// ============================================================================
-// Global Window Type Extension
-// ============================================================================
-
-declare global {
-  interface Window {
-    cosmostation?: CosmostationProvider
-  }
-}

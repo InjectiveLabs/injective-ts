@@ -30,7 +30,7 @@ export const generateArbitrarySignDoc = (message: string, signer: string) => {
 
   return {
     signDoc,
-    signDocBuff: stringified,
+    signDocBuff: stringToUint8Array(stringified),
     stringifiedSignDoc: stringified,
   }
 }

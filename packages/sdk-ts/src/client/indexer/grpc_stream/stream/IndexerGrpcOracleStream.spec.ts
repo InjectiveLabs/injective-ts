@@ -1,5 +1,8 @@
+import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcOracleStream } from './IndexerGrpcOracleStream.js'
+
+const marketId = mockFactory.derivativeMarketId
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 
@@ -87,9 +90,7 @@ describe('IndexerGrpcOracleStream', () => {
   describe('streamOraclePricesByMarkets', () => {
     it('should create subscription with unsubscribe method', () => {
       const subscription = oracleStream.streamOraclePricesByMarkets({
-        oracleType: 'band',
-        baseSymbol: 'INJ',
-        quoteSymbol: 'USDT',
+        marketIds: [marketId],
         callback: () => {},
       })
 
@@ -102,9 +103,7 @@ describe('IndexerGrpcOracleStream', () => {
     it('should throw error if callback is not a function', () => {
       expect(() => {
         oracleStream.streamOraclePricesByMarkets({
-          oracleType: 'band',
-          baseSymbol: 'INJ',
-          quoteSymbol: 'USDT',
+          marketIds: [marketId],
           callback: null as any,
         })
       }).toThrow('callback must be a function')

@@ -25,8 +25,9 @@ const params: MsgFundCommunityPool['params'] = {
 
 const protoType = '/cosmos.distribution.v1beta1.MsgFundCommunityPool'
 const protoTypeShort = 'cosmos-sdk/MsgFundCommunityPool'
+
 const protoParams = {
-  amount: [params.amount[0], params.amount[1]],
+  amount: params.amount,
   depositor: params.depositor,
 }
 const aminoParams = snakecaseKeys(protoParams)

@@ -23,6 +23,7 @@ export const StreamOperation = {
  */
 export type StreamOperation =
   (typeof StreamOperation)[keyof typeof StreamOperation]
+
 export interface PaginationOption {
   key: string
   offset?: number

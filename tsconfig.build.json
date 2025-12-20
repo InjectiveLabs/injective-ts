@@ -19,7 +19,7 @@
     "incremental": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": ["node", "vitest/globals"],
     "paths": {
       "@injectivelabs/ts-types": ["./packages/ts-types"],
       "@injectivelabs/exceptions": ["./packages/exceptions"],
