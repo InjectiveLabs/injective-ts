@@ -1,5 +1,5 @@
+import type * as InjectiveInsuranceV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/query_pb'
 import type { GrpcInsuranceFund } from '../types/insurance.js'
-import type { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
 import type {
   InsuranceFund,
   InsuranceModuleParams,
@@ -10,14 +10,13 @@ import type {
  */
 export class ChainGrpcInsuranceFundTransformer {
   static moduleParamsResponseToModuleParams(
-    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsResponse,
+    response: InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceParamsResponse,
   ): InsuranceModuleParams {
     const params = response.params!
 
     return {
-      defaultRedemptionNoticePeriodDuration: parseInt(
-        params.defaultRedemptionNoticePeriodDuration?.seconds || '0',
-        10,
+      defaultRedemptionNoticePeriodDuration: Number(
+        params.defaultRedemptionNoticePeriodDuration || 0n,
       ),
     }
   }
@@ -28,9 +27,8 @@ export class ChainGrpcInsuranceFundTransformer {
     return {
       depositDenom: grpcFund.depositDenom,
       insurancePoolTokenDenom: grpcFund.insurancePoolTokenDenom,
-      redemptionNoticePeriodDuration: parseInt(
-        grpcFund.redemptionNoticePeriodDuration?.seconds || '0',
-        10,
+      redemptionNoticePeriodDuration: Number(
+        grpcFund.redemptionNoticePeriodDuration || 0n,
       ),
       balance: grpcFund.balance,
       totalShare: grpcFund.totalShare,
@@ -39,12 +37,12 @@ export class ChainGrpcInsuranceFundTransformer {
       oracleBase: grpcFund.oracleBase,
       oracleQuote: grpcFund.oracleQuote,
       oracleType: grpcFund.oracleType,
-      expiry: parseInt(grpcFund.expiry, 10),
+      expiry: Number(grpcFund.expiry),
     }
   }
 
   static insuranceFundResponseToInsuranceFund(
-    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceFundResponse,
+    response: InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundResponse,
   ) {
     return ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(
       response.fund!,
@@ -52,7 +50,7 @@ export class ChainGrpcInsuranceFundTransformer {
   }
 
   static insuranceFundsResponseToInsuranceFunds(
-    response: InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsResponse,
+    response: InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundsResponse,
   ) {
     return response.funds.map((fund) =>
       ChainGrpcInsuranceFundTransformer.grpcInsuranceFundToInsuranceFund(fund),
@@ -60,7 +58,7 @@ export class ChainGrpcInsuranceFundTransformer {
   }
 
   static redemptionsResponseToRedemptions(
-    response: InjectiveInsuranceV1Beta1Query.QueryEstimatedRedemptionsResponse,
+    response: InjectiveInsuranceV1Beta1QueryPb.QueryEstimatedRedemptionsResponse,
   ) {
     return response.amount.map((amount) => {
       return {
@@ -71,7 +69,7 @@ export class ChainGrpcInsuranceFundTransformer {
   }
 
   static estimatedRedemptionsResponseToEstimatedRedemptions(
-    response: InjectiveInsuranceV1Beta1Query.QueryPendingRedemptionsResponse,
+    response: InjectiveInsuranceV1Beta1QueryPb.QueryPendingRedemptionsResponse,
   ) {
     return response.amount.map((amount) => {
       return {

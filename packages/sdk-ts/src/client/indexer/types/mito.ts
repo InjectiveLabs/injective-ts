@@ -1,5 +1,5 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type { MitoApi } from '@injectivelabs/mito-proto-ts'
+import type * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb'
 
 export type MitoGaugeStatus = 'active' | 'live'
 
@@ -303,28 +303,38 @@ export interface MitoClaimReference {
   vestingDurationSeconds: number
 }
 
-export type GrpcMitoIDO = MitoApi.IDO
-export type GrpcMitoVault = MitoApi.Vault
-export type GrpcMitoMission = MitoApi.Mission
-export type GrpcMitoChanges = MitoApi.Changes
-export type GrpcMitoHolders = MitoApi.Holders
-export type GrpcMitoStakingGauge = MitoApi.Gauge
-export type GrpcMitoTokenInfo = MitoApi.TokenInfo
-export type GrpcMitoPagination = MitoApi.Pagination
-export type GrpcMitoIDOProgress = MitoApi.IDOProgress
-export type GrpcMitoStakingPool = MitoApi.StakingPool
-export type GrpcMitoDenomBalance = MitoApi.DenomBalance
-export type GrpcMitoSubscription = MitoApi.Subscription
-export type GrpcMitoPriceSnapshot = MitoApi.PriceSnapshot
-export type GrpcMitoIDOSubscriber = MitoApi.IDOSubscriber
-export type GrpcMitoClaimReference = MitoApi.ClaimReference
-export type GrpcMitoIDOClaimedCoins = MitoApi.IDOClaimedCoins
-export type GrpcMitoIDOSubscription = MitoApi.IDOSubscription
-export type GrpcMitoLeaderboardEntry = MitoApi.LeaderboardEntry
-export type GrpcMitoLeaderboardEpoch = MitoApi.LeaderboardEpoch
-export type GrpcMitoStakingStakingReward = MitoApi.StakingReward
-export type GrpcMitoSubaccountBalance = MitoApi.SubaccountBalance
-export type GrpcMitoWhitelistAccount = MitoApi.WhitelistAccount
-export type GrpcMitoStakingStakingActivity = MitoApi.StakingActivity
-export type GrpcMitoMissionLeaderboardEntry = MitoApi.MissionLeaderboardEntry
-export type GrpcMitoIDOSubscriptionActivity = MitoApi.IDOSubscriptionActivity
+export type GrpcMitoIDO = GoadesignGoagenMitoApiPb.IDO
+export type GrpcMitoVault = GoadesignGoagenMitoApiPb.Vault
+export type GrpcMitoMission = GoadesignGoagenMitoApiPb.Mission
+export type GrpcMitoChanges = GoadesignGoagenMitoApiPb.Changes
+export type GrpcMitoHolders = GoadesignGoagenMitoApiPb.Holders
+export type GrpcMitoStakingGauge = GoadesignGoagenMitoApiPb.Gauge
+export type GrpcMitoTokenInfo = GoadesignGoagenMitoApiPb.TokenInfo
+export type GrpcMitoPagination = GoadesignGoagenMitoApiPb.Pagination
+export type GrpcMitoIDOProgress = GoadesignGoagenMitoApiPb.IDOProgress
+export type GrpcMitoStakingPool = GoadesignGoagenMitoApiPb.StakingPool
+export type GrpcMitoDenomBalance = GoadesignGoagenMitoApiPb.DenomBalance
+export type GrpcMitoSubscription = GoadesignGoagenMitoApiPb.Subscription
+export type GrpcMitoPriceSnapshot = GoadesignGoagenMitoApiPb.PriceSnapshot
+export type GrpcMitoIDOSubscriber = GoadesignGoagenMitoApiPb.IDOSubscriber
+export type GrpcMitoClaimReference = GoadesignGoagenMitoApiPb.ClaimReference
+export type GrpcMitoIDOClaimedCoins = GoadesignGoagenMitoApiPb.IDOClaimedCoins
+export type GrpcMitoIDOSubscription = GoadesignGoagenMitoApiPb.IDOSubscription
+export type GrpcMitoLeaderboardEntry = GoadesignGoagenMitoApiPb.LeaderboardEntry
+export type GrpcMitoLeaderboardEpoch = GoadesignGoagenMitoApiPb.LeaderboardEpoch
+export type GrpcMitoStakingStakingReward =
+  GoadesignGoagenMitoApiPb.StakingReward
+
+export type GrpcMitoSubaccountBalance =
+  GoadesignGoagenMitoApiPb.SubaccountBalance
+
+export type GrpcMitoWhitelistAccount = GoadesignGoagenMitoApiPb.WhitelistAccount
+
+export type GrpcMitoStakingStakingActivity =
+  GoadesignGoagenMitoApiPb.StakingActivity
+
+export type GrpcMitoMissionLeaderboardEntry =
+  GoadesignGoagenMitoApiPb.MissionLeaderboardEntry
+
+export type GrpcMitoIDOSubscriptionActivity =
+  GoadesignGoagenMitoApiPb.IDOSubscriptionActivity

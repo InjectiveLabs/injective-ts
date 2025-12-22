@@ -1,11 +1,11 @@
 import { toBigNumber } from '@injectivelabs/utils'
+import type * as InjectiveReferralRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_referral_rpc_pb'
 import type { ReferralDetails } from '../types/index.js'
-import type { InjectiveReferralRpc } from '@injectivelabs/indexer-proto-ts'
 
 export class IndexerGrpcReferralTransformer {
   static referrerDetailsResponseToReferrerDetails(
     address: string,
-    response: InjectiveReferralRpc.GetReferrerDetailsResponse,
+    response: InjectiveReferralRpcPb.GetReferrerDetailsResponse,
   ): ReferralDetails {
     return {
       referrerAddress: address,
@@ -17,13 +17,13 @@ export class IndexerGrpcReferralTransformer {
   }
 
   static inviteeDetailsResponseToInviteeDetails(
-    response: InjectiveReferralRpc.GetInviteeDetailsResponse,
-  ): InjectiveReferralRpc.GetInviteeDetailsResponse {
+    response: InjectiveReferralRpcPb.GetInviteeDetailsResponse,
+  ): InjectiveReferralRpcPb.GetInviteeDetailsResponse {
     return response
   }
 
   static referrerByCodeResponseToReferrerByCode(
-    response: InjectiveReferralRpc.GetReferrerByCodeResponse,
+    response: InjectiveReferralRpcPb.GetReferrerByCodeResponse,
   ): string {
     return response?.referrerAddress || ''
   }

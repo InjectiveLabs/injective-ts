@@ -1,8 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  InjectiveInsuranceV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgRequestRedemption {
@@ -15,7 +12,7 @@ export declare namespace MsgRequestRedemption {
     injectiveAddress: string
   }
 
-  export type Proto = InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption
+  export type Proto = InjectiveInsuranceV1Beta1TxPb.MsgRequestRedemption
 }
 
 /**
@@ -32,18 +29,18 @@ export default class MsgRequestRedemption extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
+    const amountCoin = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    amountCoin.denom = params.amount.denom
-    amountCoin.amount = params.amount.amount
+    const message = InjectiveInsuranceV1Beta1TxPb.MsgRequestRedemption.create({
+      sender: params.injectiveAddress,
+      marketId: params.marketId,
+      amount: amountCoin,
+    })
 
-    const message = InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.create()
-
-    message.sender = params.injectiveAddress
-    message.marketId = params.marketId
-    message.amount = amountCoin
-
-    return InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.fromJSON(message)
+    return message
   }
 
   public toData() {
@@ -58,7 +55,9 @@ export default class MsgRequestRedemption extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      market_id: proto.marketId,
+      amount: proto.amount,
     }
 
     return {
@@ -87,8 +86,8 @@ export default class MsgRequestRedemption extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveInsuranceV1Beta1Tx.MsgRequestRedemption.encode(
+    return InjectiveInsuranceV1Beta1TxPb.MsgRequestRedemption.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

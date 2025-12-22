@@ -1,54 +1,31 @@
-import { InjectiveTradingRpc } from '@injectivelabs/indexer-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveTradingRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb'
+import { InjectiveTradingRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { MarketType, GridStrategyType } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
+export class IndexerGrpcTradingApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Trading
 
-  protected client: InjectiveTradingRpc.InjectiveTradingRPCClientImpl
+  private client: InjectiveTradingRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
-
-    this.client = new InjectiveTradingRpc.InjectiveTradingRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveTradingRPCClient(this.transport)
   }
 
   async fetchTradingStats() {
-    const request = InjectiveTradingRpc.GetTradingStatsRequest.create()
+    const request = InjectiveTradingRpcPb.GetTradingStatsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveTradingRpc.GetTradingStatsResponse>(() =>
-          this.client.GetTradingStats(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveTradingRpcPb.GetTradingStatsRequest,
+      InjectiveTradingRpcPb.GetTradingStatsResponse
+    >(request, this.client.getTradingStats.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveTradingRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TradingStats',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TradingStats',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchGridStrategies({
@@ -84,7 +61,7 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     lastExecutedTime?: number
     isTrailingStrategy?: boolean
   }) {
-    const request = InjectiveTradingRpc.ListTradingStrategiesRequest.create()
+    const request = InjectiveTradingRpcPb.ListTradingStrategiesRequest.create()
 
     if (accountAddress) {
       request.accountAddress = accountAddress
@@ -111,7 +88,7 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     }
 
     if (skip) {
-      request.skip = skip.toString()
+      request.skip = BigInt(skip)
     }
 
     if (marketId) {
@@ -131,11 +108,11 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     }
 
     if (startTime) {
-      request.startTime = startTime.toString()
+      request.startTime = BigInt(startTime)
     }
 
     if (endTime) {
-      request.endTime = endTime.toString()
+      request.endTime = BigInt(endTime)
     }
 
     if (pendingExecution) {
@@ -143,30 +120,14 @@ export class IndexerGrpcTradingApi extends BaseGrpcConsumer {
     }
 
     if (lastExecutedTime) {
-      request.lastExecutedTime = lastExecutedTime.toString()
+      request.lastExecutedTime = BigInt(lastExecutedTime)
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveTradingRpc.ListTradingStrategiesResponse>(
-          () => this.client.ListTradingStrategies(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveTradingRpcPb.ListTradingStrategiesRequest,
+      InjectiveTradingRpcPb.ListTradingStrategiesResponse
+    >(request, this.client.listTradingStrategies.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveTradingRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GridStrategies',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GridStrategies',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 }

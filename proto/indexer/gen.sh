@@ -1,3 +1,7 @@
+# DEPRECATION WARNING
+echo "❌ ERROR: This script is deprecated, use protoV2/indexer/gen.sh instead" >&2
+exit 1
+
 ROOT_DIR=./proto/indexer
 BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto

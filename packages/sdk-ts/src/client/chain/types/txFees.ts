@@ -1,7 +1,5 @@
-import type {
-  InjectiveTxFeesV1Beta1Txfees,
-  InjectiveTxFeesV1Beta1Query,
-} from '@injectivelabs/core-proto-ts'
+import type * as InjectiveTxFeesV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/txfees/v1beta1/query_pb'
+import type * as InjectiveTxFeesV1Beta1TxfeesPb from '@injectivelabs/core-proto-ts-v2/generated/injective/txfees/v1beta1/txfees_pb'
 
 export interface TxFeesModuleStateParams {
   maxGasWantedPerTx: string
@@ -23,5 +21,5 @@ export interface TxFeesEipBaseFee {
   baseFee?: string
 }
 
-export type GrpcTxFeesParams = InjectiveTxFeesV1Beta1Txfees.Params
-export type GrpcTxFeesEipBaseFee = InjectiveTxFeesV1Beta1Query.EipBaseFee
+export type GrpcTxFeesParams = InjectiveTxFeesV1Beta1TxfeesPb.Params
+export type GrpcTxFeesEipBaseFee = InjectiveTxFeesV1Beta1QueryPb.EipBaseFee

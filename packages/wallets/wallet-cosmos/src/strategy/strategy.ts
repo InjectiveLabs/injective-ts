@@ -1,15 +1,20 @@
 import { capitalize } from '@injectivelabs/utils'
 import {
-  waitTxBroadcasted,
-  createTxRawFromSigResponse,
-  createSignDocFromTransaction,
-} from '@injectivelabs/sdk-ts'
+  uint8ArrayToHex,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   UnspecifiedErrorCode,
-  CosmosWalletException,
   TransactionException,
+  CosmosWalletException,
 } from '@injectivelabs/exceptions'
+import {
+  waitTxBroadcasted,
+  createTxRawFromSigResponse,
+  createSignDocFromTransaction,
+} from '@injectivelabs/sdk-ts/core/tx'
 import {
   Wallet,
   WalletAction,
@@ -20,19 +25,19 @@ import {
 } from '@injectivelabs/wallet-base'
 import { CosmosWallet } from './../wallet.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
 import type {
   ChainId,
   EvmChainId,
   CosmosChainId,
   AccountAddress,
 } from '@injectivelabs/ts-types'
-import type {
-  TxRaw,
-  TxResponse,
-  AminoSignResponse,
-  DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,
@@ -117,6 +122,13 @@ export class CosmosWalletStrategy
           this.listeners[WalletEventListener.AccountChange],
         )
       }
+
+      if (wallet === Wallet.Cosmostation) {
+        window.removeEventListener(
+          'cosmostation_keystorechange',
+          this.listeners[WalletEventListener.AccountChange],
+        )
+      }
     }
 
     this.listeners = {}
@@ -137,11 +149,25 @@ export class CosmosWalletStrategy
     }
   }
 
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new CosmosWalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -303,7 +329,7 @@ export class CosmosWalletStrategy
     const cosmosWallet = this.getCurrentCosmosWallet()
     const key = await cosmosWallet.getKey()
 
-    return Buffer.from(key.pubKey).toString('base64')
+    return uint8ArrayToBase64(key.pubKey)
   }
 
   async onAccountChange(
@@ -331,6 +357,10 @@ export class CosmosWalletStrategy
 
     if (wallet === Wallet.Leap) {
       window.addEventListener('leap_keystorechange', listener)
+    }
+
+    if (wallet === Wallet.Cosmostation) {
+      window.addEventListener('cosmostation_keystorechange', listener)
     }
   }
 

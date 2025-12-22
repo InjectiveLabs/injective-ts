@@ -1,14 +1,20 @@
-import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { PrivateKey as PrivateKeySigner } from '@injectivelabs/sdk-ts/core/accounts'
 import {
+  TxGrpcApi,
   getInjectiveSignerAddress,
-  PrivateKey as PrivateKeySigner,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/core/tx'
 import {
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
+import {
+  toUtf8,
+  uint8ArrayToHex,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
@@ -17,12 +23,12 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   ConcreteWalletStrategy,
@@ -61,11 +67,26 @@ export class PrivateKeyWallet
     }
   }
 
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -131,7 +152,7 @@ export class PrivateKeyWallet
     try {
       const signature = await pk.signTypedData(JSON.parse(eip712json))
 
-      return `0x${Buffer.from(signature).toString('hex')}`
+      return `0x${uint8ArrayToHex(signature)}`
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -189,9 +210,9 @@ export class PrivateKeyWallet
     }
 
     try {
-      const signature = await pk.signHashed(Buffer.from(toUtf8(data), 'utf-8'))
+      const signature = await pk.signHashed(stringToUint8Array(toUtf8(data)))
 
-      return `0x${Buffer.from(signature).toString('base64')}`
+      return `0x${uint8ArrayToBase64(signature)}`
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,

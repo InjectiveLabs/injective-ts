@@ -5,8 +5,8 @@ import {
 import { IndexerModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type {
-  ChronosSpotMarketSummaryResponse,
   AllSpotMarketSummaryResponse,
+  ChronosSpotMarketSummaryResponse,
 } from '../types/spot-rest.js'
 
 /**

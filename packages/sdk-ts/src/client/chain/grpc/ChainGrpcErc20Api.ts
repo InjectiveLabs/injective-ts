@@ -1,9 +1,5 @@
-import { InjectiveErc20V1Beta1Query } from '@injectivelabs/core-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveErc20V1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb'
+import { QueryClient as InjectiveErc20V1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/erc20/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { fetchAllWithPagination } from '../../../utils/pagination.js'
@@ -21,75 +17,41 @@ const MAX_LIMIT_FOR_SUPPLY = 10000
 export class ChainGrpcErc20Api extends BaseGrpcConsumer {
   protected module: string = ChainModule.Erc20
 
-  protected client: InjectiveErc20V1Beta1Query.QueryClientImpl
+  private client: InjectiveErc20V1Beta1QueryClient
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new InjectiveErc20V1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveErc20V1Beta1QueryClient(this.transport)
   }
 
   async fetchModuleParams() {
-    const request = InjectiveErc20V1Beta1Query.QueryParamsRequest.create()
+    const request = InjectiveErc20V1Beta1QueryPb.QueryParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveErc20V1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveErc20V1Beta1QueryPb.QueryParamsRequest,
+      InjectiveErc20V1Beta1QueryPb.QueryParamsResponse
+    >(request, this.client.params.bind(this.client))
 
-      return ChainGrpcErc20Transformer.paramsResponseToParams(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveErc20V1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Erc20Params',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Erc20Params',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcErc20Transformer.paramsResponseToParams(response)
   }
 
   async fetchTokenPairs(pagination?: PaginationOption) {
     const request =
-      InjectiveErc20V1Beta1Query.QueryAllTokenPairsRequest.create()
+      InjectiveErc20V1Beta1QueryPb.QueryAllTokenPairsRequest.create()
     const paginationForRequest =
-      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveErc20V1Beta1Query.QueryAllTokenPairsResponse>(
-          () => this.client.AllTokenPairs(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveErc20V1Beta1QueryPb.QueryAllTokenPairsRequest,
+      InjectiveErc20V1Beta1QueryPb.QueryAllTokenPairsResponse
+    >(request, this.client.allTokenPairs.bind(this.client))
 
-      return ChainGrpcErc20Transformer.tokenPairsResponseToTokenPairs(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveErc20V1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Erc20TokenPairs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Erc20TokenPairs',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcErc20Transformer.tokenPairsResponseToTokenPairs(response)
   }
 
   async fetchAllTokenPairsWithPagination(
@@ -100,71 +62,39 @@ export class ChainGrpcErc20Api extends BaseGrpcConsumer {
 
   async fetchTokenPairByDenom(denom: string) {
     const request =
-      InjectiveErc20V1Beta1Query.QueryTokenPairByDenomRequest.create()
+      InjectiveErc20V1Beta1QueryPb.QueryTokenPairByDenomRequest.create()
     request.bankDenom = denom
 
-    try {
-      const response =
-        await this.retry<InjectiveErc20V1Beta1Query.QueryTokenPairByDenomResponse>(
-          () => this.client.TokenPairByDenom(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveErc20V1Beta1QueryPb.QueryTokenPairByDenomRequest,
+      InjectiveErc20V1Beta1QueryPb.QueryTokenPairByDenomResponse
+    >(request, this.client.tokenPairByDenom.bind(this.client))
 
-      if (!response.tokenPair) {
-        return undefined
-      }
-
-      return ChainGrpcErc20Transformer.grpcTokenPairToTokenPair(
-        response.tokenPair,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveErc20V1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Erc20TokenPairByDenom',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Erc20TokenPairByDenom',
-        contextModule: this.module,
-      })
+    if (!response.tokenPair) {
+      return undefined
     }
+
+    return ChainGrpcErc20Transformer.grpcTokenPairToTokenPair(
+      response.tokenPair,
+    )
   }
 
   async fetchTokenPairByErc20Address(erc20Address: string) {
     const request =
-      InjectiveErc20V1Beta1Query.QueryTokenPairByERC20AddressRequest.create()
+      InjectiveErc20V1Beta1QueryPb.QueryTokenPairByERC20AddressRequest.create()
     request.erc20Address = erc20Address
 
-    try {
-      const response =
-        await this.retry<InjectiveErc20V1Beta1Query.QueryTokenPairByERC20AddressResponse>(
-          () => this.client.TokenPairByERC20Address(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveErc20V1Beta1QueryPb.QueryTokenPairByERC20AddressRequest,
+      InjectiveErc20V1Beta1QueryPb.QueryTokenPairByERC20AddressResponse
+    >(request, this.client.tokenPairByERC20Address.bind(this.client))
 
-      if (!response.tokenPair) {
-        return undefined
-      }
-
-      return ChainGrpcErc20Transformer.grpcTokenPairToTokenPair(
-        response.tokenPair,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveErc20V1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Erc20TokenPairByErc20Address',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Erc20TokenPairByErc20Address',
-        contextModule: this.module,
-      })
+    if (!response.tokenPair) {
+      return undefined
     }
+
+    return ChainGrpcErc20Transformer.grpcTokenPairToTokenPair(
+      response.tokenPair,
+    )
   }
 }

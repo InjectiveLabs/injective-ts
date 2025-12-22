@@ -1,18 +1,16 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  CosmosDistributionV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as CosmosDistributionV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 import type { Coin } from '@injectivelabs/ts-types'
+import type { TypedDataField } from '../../../tx/eip712/types.js'
 
 export declare namespace MsgFundCommunityPool {
   export interface Params {
-    amount: Coin[]
+    amount: Coin | Coin[]
     depositor: string
   }
 
-  export type Proto = CosmosDistributionV1Beta1Tx.MsgFundCommunityPool
+  export type Proto = CosmosDistributionV1Beta1TxPb.MsgFundCommunityPool
 }
 
 /**
@@ -29,21 +27,23 @@ export default class MsgFundCommunityPool extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = CosmosDistributionV1Beta1Tx.MsgFundCommunityPool.create()
+    const amounts = Array.isArray(params.amount)
+      ? params.amount
+      : [params.amount]
 
-    message.depositor = params.depositor
-
-    const coins = params.amount.map((amount) => {
-      const coin = CosmosBaseV1Beta1Coin.Coin.create()
-      coin.denom = amount.denom
-      coin.amount = amount.amount
-
-      return coin
+    const coins = amounts.map((amount) => {
+      return CosmosBaseV1Beta1CoinPb.Coin.create({
+        denom: amount.denom,
+        amount: amount.amount,
+      })
     })
 
-    message.amount = coins
+    const message = CosmosDistributionV1Beta1TxPb.MsgFundCommunityPool.create({
+      depositor: params.depositor,
+      amount: coins,
+    })
 
-    return CosmosDistributionV1Beta1Tx.MsgFundCommunityPool.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -58,7 +58,8 @@ export default class MsgFundCommunityPool extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      depositor: proto.depositor,
+      amount: proto.amount,
     }
 
     return {
@@ -87,8 +88,36 @@ export default class MsgFundCommunityPool extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosDistributionV1Beta1Tx.MsgFundCommunityPool.encode(
+    return CosmosDistributionV1Beta1TxPb.MsgFundCommunityPool.toBinary(
       this.toProto(),
-    ).finish()
+    )
+  }
+
+  public toEip712Types(): Map<string, TypedDataField[]> {
+    const map = new Map<string, TypedDataField[]>()
+
+    map.set('TypeAmount', [
+      { name: 'denom', type: 'string' },
+      { name: 'amount', type: 'string' },
+    ])
+
+    map.set('MsgValue', [
+      { name: 'amount', type: 'TypeAmount[]' },
+      { name: 'depositor', type: 'string' },
+    ])
+
+    return map
+  }
+
+  public toEip712V2() {
+    const proto = this.toProto()
+
+    // Create object with explicit field order to ensure JSON serialization preserves order
+    const result: any = {}
+    result['@type'] = '/cosmos.distribution.v1beta1.MsgFundCommunityPool'
+    result.amount = proto.amount
+    result.depositor = proto.depositor
+
+    return result
   }
 }

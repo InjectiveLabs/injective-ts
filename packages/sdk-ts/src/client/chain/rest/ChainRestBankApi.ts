@@ -9,8 +9,8 @@ import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type { RestApiResponse } from '../types/index.js'
 import type {
-  BalancesResponse,
   DenomBalance,
+  BalancesResponse,
   DenomOwnersResponse,
 } from './../types/bank-rest.js'
 

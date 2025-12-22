@@ -1,15 +1,15 @@
-import type { PriceLevel } from './exchange.js'
 import type { Coin } from '@injectivelabs/ts-types'
-import type { TokenMeta } from './../../../types/token.js'
+import type * as InjectiveSpotExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb'
+import type { PriceLevel } from './exchange.js'
 import type { GrpcOrderType } from '../../chain/types/exchange.js'
-import type { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
 import type {
   OrderSide,
+  TokenMeta,
   OrderState,
   TradeDirection,
   TradeExecutionType,
   TradeExecutionSide,
-} from '@injectivelabs/ts-types'
+} from '../../../types/index.js'
 
 export interface SpotMarket {
   marketId: string
@@ -106,8 +106,8 @@ export interface AtomicSwap {
   executedAt: number
 }
 
-export type GrpcSpotTrade = InjectiveSpotExchangeRpc.SpotTrade
-export type GrpcSpotMarketInfo = InjectiveSpotExchangeRpc.SpotMarketInfo
-export type GrpcSpotLimitOrder = InjectiveSpotExchangeRpc.SpotLimitOrder
-export type GrpcSpotOrderHistory = InjectiveSpotExchangeRpc.SpotOrderHistory
-export type GrpcAtomicSwap = InjectiveSpotExchangeRpc.AtomicSwap
+export type GrpcSpotTrade = InjectiveSpotExchangeRpcPb.SpotTrade
+export type GrpcSpotMarketInfo = InjectiveSpotExchangeRpcPb.SpotMarketInfo
+export type GrpcSpotLimitOrder = InjectiveSpotExchangeRpcPb.SpotLimitOrder
+export type GrpcSpotOrderHistory = InjectiveSpotExchangeRpcPb.SpotOrderHistory
+export type GrpcAtomicSwap = InjectiveSpotExchangeRpcPb.AtomicSwap

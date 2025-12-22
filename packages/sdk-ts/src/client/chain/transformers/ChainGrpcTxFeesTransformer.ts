@@ -1,5 +1,5 @@
 import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
-import type { InjectiveTxFeesV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type * as InjectiveTxFeesV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/txfees/v1beta1/query_pb'
 import type {
   TxFeesEipBaseFee,
   TxFeesModuleStateParams,
@@ -10,13 +10,13 @@ import type {
  */
 export class ChainGrpcTxFeesTransformer {
   static moduleParamsResponseToModuleParams(
-    response: InjectiveTxFeesV1Beta1Query.QueryParamsResponse,
+    response: InjectiveTxFeesV1Beta1QueryPb.QueryParamsResponse,
   ): TxFeesModuleStateParams {
     const params = response.params!
 
     return {
-      maxGasWantedPerTx: params.maxGasWantedPerTx,
-      highGasTxThreshold: params.highGasTxThreshold,
+      maxGasWantedPerTx: params.maxGasWantedPerTx.toString(),
+      highGasTxThreshold: params.highGasTxThreshold.toString(),
       minGasPriceForHighGasTx: params.minGasPriceForHighGasTx,
       mempool1559Enabled: params.mempool1559Enabled,
       minGasPrice: denomAmountFromGrpcChainDenomAmount(
@@ -28,7 +28,7 @@ export class ChainGrpcTxFeesTransformer {
       maxBaseFeeMultiplier: denomAmountFromGrpcChainDenomAmount(
         params.maxBaseFeeMultiplier,
       ).toFixed(),
-      resetInterval: params.resetInterval,
+      resetInterval: params.resetInterval.toString(),
       maxBlockChangeRate: denomAmountFromGrpcChainDenomAmount(
         params.maxBlockChangeRate,
       ).toFixed(),
@@ -48,7 +48,7 @@ export class ChainGrpcTxFeesTransformer {
   }
 
   static eipBaseFeeResponseToEipBaseFee(
-    response: InjectiveTxFeesV1Beta1Query.QueryEipBaseFeeResponse,
+    response: InjectiveTxFeesV1Beta1QueryPb.QueryEipBaseFeeResponse,
   ): TxFeesEipBaseFee {
     return {
       baseFee: response.baseFee

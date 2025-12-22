@@ -25,8 +25,9 @@ const params: MsgFundCommunityPool['params'] = {
 
 const protoType = '/cosmos.distribution.v1beta1.MsgFundCommunityPool'
 const protoTypeShort = 'cosmos-sdk/MsgFundCommunityPool'
+
 const protoParams = {
-  amount: [params.amount[0], params.amount[1]],
+  amount: params.amount,
   depositor: params.depositor,
 }
 const aminoParams = snakecaseKeys(protoParams)
@@ -42,19 +43,24 @@ describe('MsgFundCommunityPool', () => {
 
   it('generates proper data', () => {
     const data = message.toData()
+    const proto = message.toProto()
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...proto,
     })
   })
 
   it('generates proper amino', () => {
     const amino = message.toAmino()
+    const proto = message.toProto()
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      value: aminoParams,
+      value: {
+        depositor: proto.depositor,
+        amount: proto.amount,
+      },
     })
   })
 

@@ -1,6 +1,12 @@
-import { verifyMessage, Wallet, hashMessage } from 'ethers'
+import { getDefaultStdFee } from '@injectivelabs/utils'
+import { Wallet, hashMessage, verifyMessage } from 'ethers'
 import { PrivateKey } from './PrivateKey.js'
-import { generateArbitrarySignDoc } from '../tx/index.js'
+import { MsgSend } from '../modules/index.js'
+import {
+  TxClient,
+  createTransaction,
+  generateArbitrarySignDoc,
+} from '../tx/index.js'
 
 const pk = process.env.TEST_PRIVATE_KEY as string
 const seedPhrase = process.env.TEST_SEED_PHRASE as string
@@ -160,5 +166,154 @@ describe('PrivateKey', () => {
         publicKey: privateKey.toPublicKey().toHex(),
       }),
     ).toBe(true)
+  })
+})
+
+describe('Transaction signing flow', () => {
+  const createTestMsg = (injectiveAddress: string) =>
+    MsgSend.fromJSON({
+      amount: { denom: 'inj', amount: '10000000000000000' },
+      srcInjectiveAddress: injectiveAddress,
+      dstInjectiveAddress: injectiveAddress,
+    })
+
+  const createTestTransaction = (privateKey: PrivateKey) => {
+    const injectiveAddress = privateKey.toBech32()
+    const pubKey = privateKey.toPublicKey().toBase64()
+    const msg = createTestMsg(injectiveAddress)
+
+    return createTransaction({
+      pubKey,
+      message: msg,
+      chainId: 'injective-1',
+      fee: getDefaultStdFee(),
+      sequence: 0,
+      timeoutHeight: 12345678,
+      accountNumber: 12345,
+    })
+  }
+
+  it('creates a valid MsgSend with correct type URL', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const msg = createTestMsg(privateKey.toBech32())
+
+    expect(msg.toProto()).toBeDefined()
+    expect(msg.toDirectSign().type).toBe('/cosmos.bank.v1beta1.MsgSend')
+  })
+
+  it('creates a transaction with txRaw and signBytes', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const { txRaw, signBytes } = createTestTransaction(privateKey)
+
+    expect(txRaw.bodyBytes).toBeDefined()
+    expect(txRaw.authInfoBytes).toBeDefined()
+    expect(signBytes.length).toBeGreaterThan(0)
+    expect(txRaw.signatures.length).toBe(0)
+  })
+
+  it('signs transaction bytes and produces a 64-byte secp256k1 signature', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const { signBytes } = createTestTransaction(privateKey)
+
+    const signature = privateKey.sign(signBytes)
+
+    expect(signature).toBeInstanceOf(Uint8Array)
+    expect(signature.length).toBe(64)
+  })
+
+  it('produces deterministic signatures for the same input', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const { signBytes } = createTestTransaction(privateKey)
+
+    const signature1 = privateKey.sign(signBytes)
+    const signature2 = privateKey.sign(signBytes)
+
+    expect(Buffer.from(signature1).toString('hex')).toBe(
+      Buffer.from(signature2).toString('hex'),
+    )
+  })
+
+  it('completes full transaction prepare and sign flow', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const { signBytes, txRaw } = createTestTransaction(privateKey)
+
+    const signature = privateKey.sign(signBytes)
+    txRaw.signatures = [signature]
+
+    expect(txRaw.signatures.length).toBe(1)
+    expect(txRaw.signatures[0]).toBe(signature)
+  })
+
+  it('calculates consistent transaction hash', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const { signBytes, txRaw } = createTestTransaction(privateKey)
+
+    txRaw.signatures = [privateKey.sign(signBytes)]
+    const txHash = TxClient.hash(txRaw)
+
+    expect(typeof txHash).toBe('string')
+    expect(txHash.length).toBe(64)
+    expect(TxClient.hash(txRaw)).toBe(txHash)
+  })
+
+  it('encodes and decodes transaction correctly', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const { signBytes, txRaw } = createTestTransaction(privateKey)
+
+    txRaw.signatures = [privateKey.sign(signBytes)]
+
+    const encoded = TxClient.encode(txRaw)
+    const decoded = TxClient.decode(encoded)
+
+    expect(typeof encoded).toBe('string')
+    expect(decoded.bodyBytes).toEqual(txRaw.bodyBytes)
+    expect(decoded.authInfoBytes).toEqual(txRaw.authInfoBytes)
+  })
+})
+
+describe('PrivateKey address derivation', () => {
+  it('derives valid bech32 address and consistent Address object', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+
+    const injectiveAddress = privateKey.toBech32()
+    const address = privateKey.toAddress()
+
+    expect(injectiveAddress).toMatch(/^inj1[a-z0-9]{38}$/)
+    expect(address.toBech32()).toBe(injectiveAddress)
+  })
+})
+
+describe('MsgSend', () => {
+  it('handles single amount object', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const injectiveAddress = privateKey.toBech32()
+
+    const msg = MsgSend.fromJSON({
+      amount: { denom: 'inj', amount: '10000000000000000' },
+      srcInjectiveAddress: injectiveAddress,
+      dstInjectiveAddress: injectiveAddress,
+    })
+
+    const proto = msg.toProto()
+    expect(proto.amount.length).toBe(1)
+    expect(proto.amount[0].denom).toBe('inj')
+    expect(proto.amount[0].amount).toBe('10000000000000000')
+  })
+
+  it('handles array of amounts', () => {
+    const privateKey = PrivateKey.fromHex(pk)
+    const injectiveAddress = privateKey.toBech32()
+
+    const msg = MsgSend.fromJSON({
+      amount: [
+        { denom: 'inj', amount: '10000000000000000' },
+        { denom: 'peggy0x...', amount: '1000000' },
+      ],
+      srcInjectiveAddress: injectiveAddress,
+      dstInjectiveAddress: injectiveAddress,
+    })
+
+    const proto = msg.toProto()
+    expect(proto.amount.length).toBe(2)
   })
 })

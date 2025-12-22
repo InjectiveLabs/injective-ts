@@ -1,4 +1,4 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcAuctionApi } from './ChainGrpcAuctionApi.js'
 import type { ChainGrpcAuctionTransformer } from '../transformers/index.js'
 
@@ -71,7 +71,7 @@ describe('ChainGrpcAuctionApi', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcAuctionTransformer.LastAuctionResultResponseToLastAuctionResult
+            typeof ChainGrpcAuctionTransformer.lastAuctionResultResponseToLastAuctionResult
           >
         >(response),
       )

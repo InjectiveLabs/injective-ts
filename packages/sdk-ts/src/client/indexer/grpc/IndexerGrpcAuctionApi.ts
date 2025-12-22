@@ -1,115 +1,62 @@
-import { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
+import * as InjectiveAuctionRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb'
+import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
-  protected module: string = IndexerModule.Account
+export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
+  protected module: string = IndexerModule.Auction
 
-  protected client: InjectiveAuctionRpc.InjectiveAuctionRPCClientImpl
+  private client: InjectiveAuctionRPCClient
 
   constructor(endpoint: string) {
     super(endpoint)
 
-    this.client = new InjectiveAuctionRpc.InjectiveAuctionRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+    this.client = new InjectiveAuctionRPCClient(this.transport)
   }
 
   async fetchAuction(round?: number) {
-    const request = InjectiveAuctionRpc.AuctionEndpointRequest.create()
+    const request = InjectiveAuctionRpcPb.AuctionEndpointRequest.create()
 
     /**
      * If round is provided, set it on the request,
      * otherwise fetch latest round
      **/
     if (round) {
-      request.round = round.toString()
+      request.round = BigInt(round)
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionRpc.AuctionEndpointResponse>(() =>
-          this.client.AuctionEndpoint(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionRpcPb.AuctionEndpointRequest,
+      InjectiveAuctionRpcPb.AuctionEndpointResponse
+    >(request, this.client.auctionEndpoint.bind(this.client))
 
-      return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AuctionEndpoint',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AuctionEndpoint',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
   }
 
   async fetchAuctions() {
-    const request = InjectiveAuctionRpc.AuctionsRequest.create()
+    const request = InjectiveAuctionRpcPb.AuctionsRequest.create()
 
-    try {
-      const response = await this.retry<InjectiveAuctionRpc.AuctionsResponse>(
-        () => this.client.Auctions(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionRpcPb.AuctionsRequest,
+      InjectiveAuctionRpcPb.AuctionsResponse
+    >(request, this.client.auctions.bind(this.client))
 
-      return IndexerGrpcAuctionTransformer.auctionsResponseToAuctions(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Auctions',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Auctions',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcAuctionTransformer.auctionsResponseToAuctions(response)
   }
 
   async fetchInjBurnt() {
-    const request: InjectiveAuctionRpc.InjBurntEndpointRequest = {}
+    const request = InjectiveAuctionRpcPb.InjBurntEndpointRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionRpc.InjBurntEndpointResponse>(() =>
-          this.client.InjBurntEndpoint(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionRpcPb.InjBurntEndpointRequest,
+      InjectiveAuctionRpcPb.InjBurntEndpointResponse
+    >(request, this.client.injBurntEndpoint.bind(this.client))
 
-      return Number(response.totalInjBurnt)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'InjBurntEndpoint',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'InjBurntEndpoint',
-        contextModule: this.module,
-      })
-    }
+    return Number(response.totalInjBurnt)
   }
 
   async fetchAuctionsHistoryV2({
@@ -121,72 +68,41 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     endTime?: string
     perPage?: number
   }) {
-    const request = InjectiveAuctionRpc.AuctionsHistoryV2Request.create()
+    const request = InjectiveAuctionRpcPb.AuctionsHistoryV2Request.create()
 
     request.perPage = perPage
 
     if (endTime) {
-      request.endTime = endTime
+      request.endTime = BigInt(endTime)
     }
 
     if (token) {
       request.token = token
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionRpc.AuctionsHistoryV2Response>(() =>
-          this.client.AuctionsHistoryV2(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionRpcPb.AuctionsHistoryV2Request,
+      InjectiveAuctionRpcPb.AuctionsHistoryV2Response
+    >(request, this.client.auctionsHistoryV2.bind(this.client))
 
-      return IndexerGrpcAuctionTransformer.auctionsHistoryV2ResponseToAuctionHistory(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AuctionsV2',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AuctionsV2',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcAuctionTransformer.auctionsHistoryV2ResponseToAuctionHistory(
+      response,
+    )
   }
 
   async fetchAuctionV2(round: number | string = -1) {
-    const request = InjectiveAuctionRpc.AuctionV2Request.create()
+    const request = InjectiveAuctionRpcPb.AuctionV2Request.create()
 
     if (round) {
-      request.round = round.toString()
+      request.round = BigInt(round)
     }
 
-    try {
-      const response = await this.retry<InjectiveAuctionRpc.AuctionV2Response>(
-        () => this.client.AuctionV2(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionRpcPb.AuctionV2Request,
+      InjectiveAuctionRpcPb.AuctionV2Response
+    >(request, this.client.auctionV2.bind(this.client))
 
-      return IndexerGrpcAuctionTransformer.grpcAuctionV2ToAuctionV2(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AuctionV2',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AuctionV2',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcAuctionTransformer.grpcAuctionV2ToAuctionV2(response)
   }
 
   async fetchAccountAuctionsV2({
@@ -198,7 +114,7 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
     address: string
     perPage?: number
   }) {
-    const request = InjectiveAuctionRpc.AccountAuctionsV2Request.create()
+    const request = InjectiveAuctionRpcPb.AccountAuctionsV2Request.create()
 
     request.address = address
     request.perPage = perPage
@@ -207,58 +123,26 @@ export class IndexerGrpcAuctionApi extends BaseGrpcConsumer {
       request.token = token.toString()
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionRpc.AccountAuctionsV2Response>(() =>
-          this.client.AccountAuctionsV2(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionRpcPb.AccountAuctionsV2Request,
+      InjectiveAuctionRpcPb.AccountAuctionsV2Response
+    >(request, this.client.accountAuctionsV2.bind(this.client))
 
-      return IndexerGrpcAuctionTransformer.accountAuctionsV2ResponseToAccountAuctionsV2(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AccountAuctionsV2',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AccountAuctionsV2',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcAuctionTransformer.accountAuctionsV2ResponseToAccountAuctionsV2(
+      response,
+    )
   }
 
   async fetchAuctionStats() {
-    const request: InjectiveAuctionRpc.AuctionsStatsRequest = {}
+    const request = InjectiveAuctionRpcPb.AuctionsStatsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveAuctionRpc.AuctionsStatsResponse>(() =>
-          this.client.AuctionsStats(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionRpcPb.AuctionsStatsRequest,
+      InjectiveAuctionRpcPb.AuctionsStatsResponse
+    >(request, this.client.auctionsStats.bind(this.client))
 
-      return IndexerGrpcAuctionTransformer.auctionStatsResponseToAuctionStats(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveAuctionRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AuctionStats',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AuctionStats',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcAuctionTransformer.auctionStatsResponseToAuctionStats(
+      response,
+    )
   }
 }

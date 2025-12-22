@@ -1,11 +1,7 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  IbcCoreClientV1Client,
-  IbcApplicationsTransferV1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as IbcCoreClientV1ClientPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/core/client/v1/client_pb'
+import * as IbcApplicationsTransferV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/ibc/applications/transfer/v1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgTransfer {
   export interface Params {
@@ -25,7 +21,7 @@ export declare namespace MsgTransfer {
     }
   }
 
-  export type Proto = IbcApplicationsTransferV1Tx.MsgTransfer
+  export type Proto = IbcApplicationsTransferV1TxPb.MsgTransfer
 }
 
 /**
@@ -42,34 +38,34 @@ export default class MsgTransfer extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const token = CosmosBaseV1Beta1Coin.Coin.create()
-    token.denom = params.amount.denom
-    token.amount = params.amount.amount
+    const token = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    const message = IbcApplicationsTransferV1Tx.MsgTransfer.create()
-
-    message.sourcePort = params.port
-    message.sourceChannel = params.channelId
-    message.token = token
-    message.sender = params.sender
-    message.receiver = params.receiver
+    const message = IbcApplicationsTransferV1TxPb.MsgTransfer.create({
+      sourcePort: params.port,
+      sourceChannel: params.channelId,
+      token: token,
+      sender: params.sender,
+      receiver: params.receiver,
+      memo: params.memo || '',
+    })
 
     if (params.height) {
-      const timeoutHeight = IbcCoreClientV1Client.Height.create()
-
-      timeoutHeight.revisionNumber = params.height.revisionNumber.toString()
-      timeoutHeight.revisionHeight = params.height.revisionHeight.toString()
+      const timeoutHeight = IbcCoreClientV1ClientPb.Height.create({
+        revisionNumber: BigInt(params.height.revisionNumber),
+        revisionHeight: BigInt(params.height.revisionHeight),
+      })
 
       message.timeoutHeight = timeoutHeight
     }
 
     if (params.timeout) {
-      message.timeoutTimestamp = params.timeout.toString()
+      message.timeoutTimestamp = BigInt(params.timeout)
     }
 
-    message.memo = params.memo || ''
-
-    return IbcApplicationsTransferV1Tx.MsgTransfer.fromJSON(message)
+    return message
   }
 
   public toData() {
@@ -84,15 +80,26 @@ export default class MsgTransfer extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      source_port: proto.sourcePort,
+      source_channel: proto.sourceChannel,
+      token: proto.token,
+      sender: proto.sender,
+      receiver: proto.receiver,
+      timeout_height: proto.timeoutHeight
+        ? {
+            revision_number: proto.timeoutHeight.revisionNumber.toString(),
+            revision_height: proto.timeoutHeight.revisionHeight.toString(),
+          }
+        : undefined,
+      timeout_timestamp: proto.timeoutTimestamp
+        ? proto.timeoutTimestamp.toString()
+        : undefined,
+      memo: proto.memo || '',
     }
 
     return {
       type: 'cosmos-sdk/MsgTransfer',
-      value: {
-        ...message,
-        memo: message.memo || '',
-      } as unknown as SnakeCaseKeys<IbcApplicationsTransferV1Tx.MsgTransfer>,
+      value: message,
     }
   }
 
@@ -116,8 +123,6 @@ export default class MsgTransfer extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return IbcApplicationsTransferV1Tx.MsgTransfer.encode(
-      this.toProto(),
-    ).finish()
+    return IbcApplicationsTransferV1TxPb.MsgTransfer.toBinary(this.toProto())
   }
 }

@@ -1,0 +1,12 @@
+# Generated source files
+*/src/generated/
+
+# Temporary proto files
+*/proto/
+*/gen/
+
+# Published package output
+*/proto-ts/
+
+# Old dist folder (if any)
+*/dist/

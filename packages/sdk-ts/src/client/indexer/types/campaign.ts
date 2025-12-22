@@ -1,5 +1,5 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
+import type * as InjectiveCampaignRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_campaign_rpc_pb'
 
 export interface Campaign {
   campaignId: string
@@ -78,10 +78,10 @@ export interface CampaignV2 {
   campaignId: string
   marketId: string
   totalScore: string
-  createdAt: string
-  updatedAt: string
-  startDate: string
-  endDate: string
+  createdAt: number
+  updatedAt: number
+  startDate: number
+  endDate: number
   isClaimable: boolean
   roundId: number
   managerContract: string
@@ -94,8 +94,8 @@ export interface CampaignV2 {
   description: string
 }
 
-export type GrpcGuild = InjectiveCampaignRpc.Guild
-export type GrpcCampaign = InjectiveCampaignRpc.Campaign
-export type GrpcGuildMember = InjectiveCampaignRpc.GuildMember
-export type GrpcCampaignUser = InjectiveCampaignRpc.CampaignUser
-export type GrpcCampaignV2 = InjectiveCampaignRpc.CampaignV2
+export type GrpcGuild = InjectiveCampaignRpcPb.Guild
+export type GrpcCampaign = InjectiveCampaignRpcPb.Campaign
+export type GrpcGuildMember = InjectiveCampaignRpcPb.GuildMember
+export type GrpcCampaignUser = InjectiveCampaignRpcPb.CampaignUser
+export type GrpcCampaignV2 = InjectiveCampaignRpcPb.CampaignV2

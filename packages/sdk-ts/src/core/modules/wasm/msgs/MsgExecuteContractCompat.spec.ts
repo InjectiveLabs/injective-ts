@@ -56,4 +56,30 @@ describe('MsgExecuteContractCompat', () => {
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
   })
+
+  describe('handles BigInt values in message', () => {
+    it('should serialize BigInt values without throwing', () => {
+      const paramsWithBigInt: MsgExecuteContractCompat['params'] = {
+        sender: mockFactory.injectiveAddress,
+        contractAddress: mockFactory.injectiveAddress,
+        msg: {
+          amount: BigInt('1000000000000000000'),
+          nested: {
+            value: BigInt(12345),
+          },
+        },
+      }
+
+      const messageWithBigInt =
+        MsgExecuteContractCompat.fromJSON(paramsWithBigInt)
+
+      // Should not throw "Do not know how to serialize a BigInt"
+      expect(() => messageWithBigInt.toProto()).not.toThrow()
+      expect(() => messageWithBigInt.toAmino()).not.toThrow()
+
+      const proto = messageWithBigInt.toProto()
+      expect(proto.msg).toContain('1000000000000000000')
+      expect(proto.msg).toContain('12345')
+    })
+  })
 })

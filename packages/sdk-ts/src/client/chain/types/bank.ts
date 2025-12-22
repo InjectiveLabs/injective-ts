@@ -1,5 +1,5 @@
 import type { Coin } from '@injectivelabs/ts-types'
-import type { CosmosBankV1Beta1Bank } from '@injectivelabs/core-proto-ts'
+import type * as CosmosBankV1Beta1BankPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/bank_pb'
 
 export interface BankModuleParams {
   sendEnabledList: Array<SendEnabled>
@@ -10,7 +10,7 @@ export interface TotalSupply extends Array<Coin> {
   //
 }
 
-export type GrpcSupply = CosmosBankV1Beta1Bank.Supply
-export type GrpcBankParams = CosmosBankV1Beta1Bank.Params
-export type SendEnabled = CosmosBankV1Beta1Bank.SendEnabled
-export type Metadata = CosmosBankV1Beta1Bank.Metadata
+export type GrpcSupply = CosmosBankV1Beta1BankPb.Supply
+export type GrpcBankParams = CosmosBankV1Beta1BankPb.Params
+export type SendEnabled = CosmosBankV1Beta1BankPb.SendEnabled
+export type Metadata = CosmosBankV1Beta1BankPb.Metadata

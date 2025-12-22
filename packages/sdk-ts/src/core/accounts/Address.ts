@@ -1,10 +1,11 @@
 import { toBytes } from 'viem'
 import { bech32 } from '@scure/base'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
+import { uint8ArrayToHex } from '../../utils/encoding.js'
 import {
   BECH32_ADDR_ACC_PREFIX,
-  BECH32_ADDR_CONS_PREFIX,
   BECH32_ADDR_VAL_PREFIX,
+  BECH32_ADDR_CONS_PREFIX,
 } from '../../utils/constants.js'
 
 /**
@@ -37,9 +38,10 @@ export class Address {
     prefix: string = BECH32_ADDR_ACC_PREFIX,
   ): Address {
     try {
-      const address = Buffer.from(
-        bech32.fromWords(bech32.decode(bech as `${string}1${string}`).words),
-      ).toString('hex')
+      const bytes = bech32.fromWords(
+        bech32.decode(bech as `${string}1${string}`).words,
+      )
+      const address = uint8ArrayToHex(bytes)
       const addressInHex = address.startsWith('0x') ? address : `0x${address}`
       const addressBuffer = toBytes(addressInHex.toString())
       const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
@@ -117,11 +119,10 @@ export class Address {
    * */
   toHex(): string {
     const { bech32Address } = this
-    const address = Buffer.from(
-      bech32.fromWords(
-        bech32.decode(bech32Address as `${string}1${string}`).words,
-      ),
-    ).toString('hex')
+    const bytes = bech32.fromWords(
+      bech32.decode(bech32Address as `${string}1${string}`).words,
+    )
+    const address = uint8ArrayToHex(bytes)
 
     return address.startsWith('0x') ? address : `0x${address}`
   }

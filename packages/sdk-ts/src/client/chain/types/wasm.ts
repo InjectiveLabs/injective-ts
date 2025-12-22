@@ -1,6 +1,6 @@
-import { CosmwasmWasmV1Types } from '@injectivelabs/core-proto-ts'
+import * as CosmwasmWasmV1TypesPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/types_pb'
+import type * as CosmwasmWasmV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/query_pb'
 import type { Pagination } from './../../../types/pagination.js'
-import type { CosmwasmWasmV1Query } from '@injectivelabs/core-proto-ts'
 
 export interface AbsoluteTxPosition {
   blockHeight: number
@@ -64,7 +64,7 @@ export interface AbsoluteTxPosition {
 }
 
 export interface ContractCodeHistoryEntry {
-  operation: CosmwasmWasmV1Types.ContractCodeHistoryOperationType
+  operation: CosmwasmWasmV1TypesPb.ContractCodeHistoryOperationType
   codeId: number
   updated?: AbsoluteTxPosition
   msg: Uint8Array | string
@@ -76,14 +76,14 @@ export interface CodeInfoResponse {
   dataHash: Uint8Array | string
 }
 
-export type GrpcCodeInfoResponse = CosmwasmWasmV1Query.CodeInfoResponse
-export type grpcContractInfo = CosmwasmWasmV1Types.ContractInfo
-export type GrpcContractInfo = CosmwasmWasmV1Types.ContractInfo
+export type GrpcCodeInfoResponse = CosmwasmWasmV1QueryPb.CodeInfoResponse
+export type grpcContractInfo = CosmwasmWasmV1TypesPb.ContractInfo
+export type GrpcContractInfo = CosmwasmWasmV1TypesPb.ContractInfo
 export type GrpcContractCodeHistoryEntry =
-  CosmwasmWasmV1Types.ContractCodeHistoryEntry
-export type GrpcAbsoluteTxPosition = CosmwasmWasmV1Types.AbsoluteTxPosition
+  CosmwasmWasmV1TypesPb.ContractCodeHistoryEntry
+export type GrpcAbsoluteTxPosition = CosmwasmWasmV1TypesPb.AbsoluteTxPosition
 
 export type ContractCodeHistoryOperationType =
-  CosmwasmWasmV1Types.ContractCodeHistoryOperationType
+  CosmwasmWasmV1TypesPb.ContractCodeHistoryOperationType
 export const ContractCodeHistoryOperationTypeMap =
-  CosmwasmWasmV1Types.ContractCodeHistoryOperationType
+  CosmwasmWasmV1TypesPb.ContractCodeHistoryOperationType

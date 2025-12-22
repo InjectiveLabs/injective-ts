@@ -2,23 +2,24 @@ import { keccak256 } from 'viem'
 import { toBigNumber } from '@injectivelabs/utils'
 import { getDefaultStdFee } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 import {
   getStdFeeFromString,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
 } from '@injectivelabs/utils'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import { BaseAccount } from '../accounts/index.js'
+import { base64ToUint8Array } from '../../utils/encoding.js'
 import { ChainRestAuthApi, ChainRestTendermintApi } from '../../client/index.js'
 import {
-  createAuthInfo,
-  createBody,
   createFee,
+  createBody,
+  SIGN_DIRECT,
   createSignDoc,
   createSigners,
-  SIGN_DIRECT,
+  createAuthInfo,
 } from './utils/index.js'
-import type { Msgs } from '../modules/msgs.js'
 import type { DirectSignResponse } from '@cosmjs/proto-signing'
+import type { Msgs } from '../modules/msgs.js'
 import type {
   CreateTransactionArgs,
   CreateTransactionResult,
@@ -78,8 +79,8 @@ export const createTransactionWithSigners = ({
     fee: feeMessage,
   })
 
-  const bodyBytes = CosmosTxV1Beta1Tx.TxBody.encode(body).finish()
-  const authInfoBytes = CosmosTxV1Beta1Tx.AuthInfo.encode(authInfo).finish()
+  const bodyBytes = CosmosTxV1Beta1TxPb.TxBody.toBinary(body)
+  const authInfoBytes = CosmosTxV1Beta1TxPb.AuthInfo.toBinary(authInfo)
 
   const signDoc = createSignDoc({
     chainId,
@@ -88,12 +89,12 @@ export const createTransactionWithSigners = ({
     accountNumber: signer.accountNumber,
   })
 
-  const signDocBytes = CosmosTxV1Beta1Tx.SignDoc.encode(signDoc).finish()
+  const signDocBytes = CosmosTxV1Beta1TxPb.SignDoc.toBinary(signDoc)
 
-  const toSignBytes = Buffer.from(signDocBytes)
-  const toSignHash = keccak256(Buffer.from(signDocBytes), 'bytes')
+  const toSignBytes = signDocBytes
+  const toSignHash = keccak256(signDocBytes, 'bytes')
 
-  const txRaw = CosmosTxV1Beta1Tx.TxRaw.create()
+  const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create()
   txRaw.authInfoBytes = authInfoBytes
   txRaw.bodyBytes = bodyBytes
 
@@ -174,19 +175,19 @@ export const createTransactionFromMsg = (
  * @returns TxRaw
  */
 export const createTxRawFromSigResponse = (
-  response: CosmosTxV1Beta1Tx.TxRaw | DirectSignResponse,
+  response: CosmosTxV1Beta1TxPb.TxRaw | DirectSignResponse,
 ) => {
   if ((response as DirectSignResponse).signed === undefined) {
-    return response as CosmosTxV1Beta1Tx.TxRaw
+    return response as CosmosTxV1Beta1TxPb.TxRaw
   }
 
   const directSignResponse = response as DirectSignResponse
 
-  const txRaw = CosmosTxV1Beta1Tx.TxRaw.create()
+  const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create()
   txRaw.authInfoBytes = directSignResponse.signed.authInfoBytes
   txRaw.bodyBytes = directSignResponse.signed.bodyBytes
   txRaw.signatures = [
-    Buffer.from(directSignResponse.signature.signature, 'base64'),
+    base64ToUint8Array(directSignResponse.signature.signature),
   ]
 
   return txRaw
@@ -239,8 +240,7 @@ export const createTransactionForAddressAndMsg = async (
 
   return createTransaction({
     ...params,
-    pubKey:
-      params.pubKey || Buffer.from(baseAccount.pubKey.key).toString('base64'),
+    pubKey: params.pubKey || baseAccount.pubKey.key,
     sequence: Number(baseAccount.sequence),
     accountNumber: Number(baseAccount.accountNumber),
     timeoutHeight: timeoutHeight.toNumber(),
@@ -258,10 +258,10 @@ export const createTransactionAndCosmosSignDoc = (
 
   return {
     ...result,
-    cosmosSignDoc: CosmosTxV1Beta1Tx.SignDoc.fromPartial({
+    cosmosSignDoc: CosmosTxV1Beta1TxPb.SignDoc.create({
       bodyBytes: result.bodyBytes,
       authInfoBytes: result.authInfoBytes,
-      accountNumber: signer.accountNumber.toString(),
+      accountNumber: BigInt(signer.accountNumber),
       chainId: args.chainId,
     }),
   }
@@ -285,20 +285,20 @@ export const createTransactionAndCosmosSignDocForAddressAndMsg = async (
 
   return {
     ...result,
-    cosmosSignDoc: CosmosTxV1Beta1Tx.SignDoc.fromPartial({
+    cosmosSignDoc: CosmosTxV1Beta1TxPb.SignDoc.create({
       bodyBytes: result.bodyBytes,
       authInfoBytes: result.authInfoBytes,
-      accountNumber: signer.accountNumber.toString(),
+      accountNumber: BigInt(signer.accountNumber),
       chainId: params.chainId,
     }),
   }
 }
 
 export const getTxRawFromTxRawOrDirectSignResponse = (
-  txRawOrDirectSignResponse: CosmosTxV1Beta1Tx.TxRaw | DirectSignResponse,
-): CosmosTxV1Beta1Tx.TxRaw => {
+  txRawOrDirectSignResponse: CosmosTxV1Beta1TxPb.TxRaw | DirectSignResponse,
+): CosmosTxV1Beta1TxPb.TxRaw => {
   return (txRawOrDirectSignResponse as DirectSignResponse).signed === undefined
-    ? (txRawOrDirectSignResponse as CosmosTxV1Beta1Tx.TxRaw)
+    ? (txRawOrDirectSignResponse as CosmosTxV1Beta1TxPb.TxRaw)
     : createTxRawFromSigResponse(
         txRawOrDirectSignResponse as DirectSignResponse,
       )

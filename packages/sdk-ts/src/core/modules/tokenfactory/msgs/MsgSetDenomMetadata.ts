@@ -1,18 +1,15 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBankV1Beta1Bank,
-  InjectiveTokenFactoryV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBankV1Beta1BankPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/bank_pb'
+import * as InjectiveTokenFactoryV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgSetDenomMetadata {
   export interface Params {
     sender: string
-    metadata: CosmosBankV1Beta1Bank.Metadata
+    metadata: CosmosBankV1Beta1BankPb.Metadata
     adminBurnDisabled?: boolean
   }
 
-  export type Proto = InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata
+  export type Proto = InjectiveTokenFactoryV1Beta1TxPb.MsgSetDenomMetadata
 }
 
 /**
@@ -29,42 +26,42 @@ export default class MsgSetDenomMetadata extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const metadata = CosmosBankV1Beta1Bank.Metadata.create()
+    const metadata = CosmosBankV1Beta1BankPb.Metadata.create({
+      description: params.metadata.description,
+      denomUnits: params.metadata.denomUnits.map((value) => {
+        const denomUnit = CosmosBankV1Beta1BankPb.DenomUnit.create({
+          denom: value.denom,
+          exponent: value.exponent,
+          aliases: value.aliases,
+        })
 
-    metadata.description = params.metadata.description
-    metadata.denomUnits = params.metadata.denomUnits.map((value) => {
-      const denomUnit = CosmosBankV1Beta1Bank.DenomUnit.create()
-
-      denomUnit.denom = value.denom
-      denomUnit.exponent = value.exponent
-      denomUnit.aliases = value.aliases
-
-      return denomUnit
+        return denomUnit
+      }),
+      base: params.metadata.base,
+      display: params.metadata.display,
+      name: params.metadata.name,
+      symbol: params.metadata.symbol,
+      uri: params.metadata.uri,
+      uriHash: params.metadata.uriHash,
+      decimals: params.metadata.decimals,
     })
-    metadata.base = params.metadata.base
-    metadata.display = params.metadata.display
-    metadata.name = params.metadata.name
-    metadata.symbol = params.metadata.symbol
-    metadata.uri = params.metadata.uri
-    metadata.uriHash = params.metadata.uriHash
-    metadata.decimals = params.metadata.decimals
 
-    const message = InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.create()
-
-    if (params.adminBurnDisabled !== undefined) {
-      const adminBurnDisabled =
-        InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata_AdminBurnDisabled.create()
-
-      adminBurnDisabled.shouldDisable = params.adminBurnDisabled
-      message.adminBurnDisabled = adminBurnDisabled
-    }
-
-    message.sender = params.sender
-    message.metadata = metadata
-
-    return InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.fromPartial(
-      message,
+    const message = InjectiveTokenFactoryV1Beta1TxPb.MsgSetDenomMetadata.create(
+      {
+        sender: params.sender,
+        metadata: metadata,
+        ...(params.adminBurnDisabled !== undefined && {
+          adminBurnDisabled:
+            InjectiveTokenFactoryV1Beta1TxPb.MsgSetDenomMetadata_AdminBurnDisabled.create(
+              {
+                shouldDisable: params.adminBurnDisabled,
+              },
+            ),
+        }),
+      },
     )
+
+    return message
   }
 
   public toData() {
@@ -79,7 +76,23 @@ export default class MsgSetDenomMetadata extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      metadata: {
+        description: proto.metadata?.description || '',
+        denom_units: proto.metadata?.denomUnits || [],
+        base: proto.metadata?.base || '',
+        display: proto.metadata?.display || '',
+        name: proto.metadata?.name || '',
+        symbol: proto.metadata?.symbol || '',
+        uri: proto.metadata?.uri || '',
+        uri_hash: proto.metadata?.uriHash || '',
+        decimals: proto.metadata?.decimals || '',
+      },
+      ...(proto.adminBurnDisabled && {
+        admin_burn_disabled: {
+          should_disable: proto.adminBurnDisabled.shouldDisable,
+        },
+      }),
     }
 
     return {
@@ -108,8 +121,8 @@ export default class MsgSetDenomMetadata extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveTokenFactoryV1Beta1Tx.MsgSetDenomMetadata.encode(
+    return InjectiveTokenFactoryV1Beta1TxPb.MsgSetDenomMetadata.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

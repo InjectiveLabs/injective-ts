@@ -1,8 +1,7 @@
-import type { EventEmitter } from 'eventemitter3'
-import type { Msgs } from '@injectivelabs/sdk-ts'
+import type { Msgs } from '@injectivelabs/sdk-ts/core/modules'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
-import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type { Network, NetworkEndpoints } from '@injectivelabs/networks'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
@@ -17,8 +16,7 @@ export interface MsgBroadcasterTxOptions {
   }
 }
 
-export interface MsgBroadcasterTxOptionsWithAddresses
-  extends MsgBroadcasterTxOptions {
+export interface MsgBroadcasterTxOptionsWithAddresses extends MsgBroadcasterTxOptions {
   ethereumAddress: string
   injectiveAddress: string
 }
@@ -36,39 +34,3 @@ export interface MsgBroadcasterOptions {
   gasBufferCoefficient?: number
   httpHeaders?: Record<string, string>
 }
-
-export const WalletStrategyEmitterEventType = {
-  TransactionFail: 'transaction-fail',
-  TransactionSigned: 'transaction-signed',
-  TransactionSignStart: 'transaction-sign-start',
-  TransactionBroadcastEnd: 'transaction-broadcast-end',
-  WalletStrategyDisconnect: 'wallet-strategy-disconnect',
-  TransactionBroadcastStart: 'transaction-broadcast-start',
-  TransactionPreparationEnd: 'transaction-preparation-end',
-  TransactionPreparationStart: 'transaction-preparation-start',
-} as const
-
-export type WalletStrategyEmitterEventType =
-  (typeof WalletStrategyEmitterEventType)[keyof typeof WalletStrategyEmitterEventType]
-
-export type WalletStrategyEmitterEvents = {
-  [WalletStrategyEmitterEventType.TransactionFail]: Record<string, any>
-  [WalletStrategyEmitterEventType.TransactionSigned]: Record<string, any>
-  [WalletStrategyEmitterEventType.TransactionSignStart]: Record<string, any>
-  [WalletStrategyEmitterEventType.TransactionBroadcastEnd]: Record<string, any>
-  [WalletStrategyEmitterEventType.WalletStrategyDisconnect]: Record<string, any>
-  [WalletStrategyEmitterEventType.TransactionBroadcastStart]: Record<
-    string,
-    any
-  >
-  [WalletStrategyEmitterEventType.TransactionPreparationEnd]: Record<
-    string,
-    any
-  >
-  [WalletStrategyEmitterEventType.TransactionPreparationStart]: Record<
-    string,
-    any
-  >
-}
-
-export type WalletStrategyEmitter = EventEmitter<WalletStrategyEmitterEvents>

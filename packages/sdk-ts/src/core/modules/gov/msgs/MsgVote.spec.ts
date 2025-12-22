@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgVote from './MsgVote.js'
@@ -18,15 +17,17 @@ const params: MsgVote['params'] = {
 const protoType = '/cosmos.gov.v1.MsgVote'
 const protoTypeAmino = 'cosmos-sdk/v1/MsgVote'
 const protoParams = {
-  proposalId: params.proposalId.toString(),
+  proposalId: BigInt(params.proposalId),
   voter: params.voter,
   metadata: params.metadata,
   option: params.vote,
 }
-const protoParamsAmino = snakecaseKeys({
-  ...protoParams,
+const protoParamsAmino = {
+  proposal_id: params.proposalId.toString(),
+  voter: params.voter,
+  metadata: params.metadata,
   option: 3,
-})
+}
 const message = MsgVote.fromJSON(params)
 
 describe('MsgVote', () => {

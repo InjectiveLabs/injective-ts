@@ -1,24 +1,42 @@
-import * as grpcPkg from '@injectivelabs/grpc-web'
-import { NodeHttpTransport } from '@injectivelabs/grpc-web-node-http-transport'
-import { ReactNativeTransport } from '@injectivelabs/grpc-web-react-native-transport'
-import { isNode, isReactNative } from './helpers.js'
+import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport'
+import type { RpcTransport } from '@protobuf-ts/runtime-rpc'
 
-const grpc: typeof grpcPkg.grpc =
-  grpcPkg.grpc ??
-  (grpcPkg as unknown as { default: { grpc: typeof grpcPkg.grpc } }).default
-    .grpc ??
-  grpcPkg
-
-export const getGrpcTransport = () => {
-  if (isReactNative()) {
-    return ReactNativeTransport({ withCredentials: true })
-  }
-
-  if (isNode()) {
-    return NodeHttpTransport()
-  }
-
-  return grpc.CrossBrowserHttpTransport({ withCredentials: false })
+/**
+ * Creates a gRPC-Web transport using @protobuf-ts/grpcweb-transport.
+ * This transport works in browser, Node.js, and React Native environments.
+ *
+ * @param baseUrl - The base URL of the gRPC-Web endpoint
+ * @param options - Optional configuration for the transport
+ * @returns A configured RpcTransport instance
+ */
+export const getGrpcWebTransport = (
+  baseUrl: string,
+  options?: {
+    /**
+     * Custom fetch implementation (useful for Node.js or React Native)
+     */
+    fetch?: typeof fetch
+    /**
+     * Additional headers to include with every request
+     */
+    headers?: Record<string, string>
+    /**
+     * Timeout in milliseconds
+     */
+    timeout?: number
+    /**
+     * Whether to include credentials (cookies) with requests
+     */
+    credentials?: RequestCredentials
+  },
+): RpcTransport => {
+  return new GrpcWebFetchTransport({
+    baseUrl,
+    ...options,
+  })
 }
 
-export { grpc, grpcPkg }
+/**
+ * Re-export GrpcWebFetchTransport for direct use
+ */
+export { GrpcWebFetchTransport }

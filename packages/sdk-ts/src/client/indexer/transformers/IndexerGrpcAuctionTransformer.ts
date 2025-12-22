@@ -1,4 +1,4 @@
-import type { InjectiveAuctionRpc } from '@injectivelabs/indexer-proto-ts'
+import type * as InjectiveAuctionRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_auction_rpc_pb'
 import type {
   Auction,
   AuctionV2,
@@ -41,7 +41,7 @@ export class IndexerGrpcAuctionTransformer {
     return {
       bidder: grpcBid.bidder,
       bidAmount: grpcBid.amount,
-      bidTimestamp: parseInt(grpcBid.timestamp, 10),
+      bidTimestamp: Number(grpcBid.timestamp),
     }
   }
 
@@ -52,9 +52,9 @@ export class IndexerGrpcAuctionTransformer {
         IndexerGrpcAuctionTransformer.grpcAuctionCoinToAuctionCoin,
       ),
       winningBidAmount: grpcAuction.winningBidAmount,
-      round: parseInt(grpcAuction.round, 10),
-      endTimestamp: parseInt(grpcAuction.endTimestamp, 10),
-      updatedAt: parseInt(grpcAuction.updatedAt, 10),
+      round: Number(grpcAuction.round),
+      endTimestamp: Number(grpcAuction.endTimestamp),
+      updatedAt: Number(grpcAuction.updatedAt),
     }
   }
 
@@ -64,12 +64,26 @@ export class IndexerGrpcAuctionTransformer {
       basket: grpcAuction.basket.map(
         IndexerGrpcAuctionTransformer.grpcAuctionCoinPricesToAuctionCoinPrices,
       ),
-      contract: grpcAuction.contract,
+      contract: grpcAuction.contract
+        ? {
+            id: grpcAuction.contract.id.toString(),
+            bidTarget: grpcAuction.contract.bidTarget,
+            isBidPlaced: grpcAuction.contract.isBidPlaced,
+            currentSlots: grpcAuction.contract.currentSlots.toString(),
+            totalSlots: grpcAuction.contract.totalSlots.toString(),
+            maxUserAllocation: grpcAuction.contract.maxUserAllocation,
+            totalCommitted: grpcAuction.contract.totalCommitted,
+            whitelistAddresses: grpcAuction.contract.whitelistAddresses,
+            startTimestamp: grpcAuction.contract.startTimestamp.toString(),
+            endTimestamp: grpcAuction.contract.endTimestamp.toString(),
+            maxRoundAllocation: grpcAuction.contract.maxRoundAllocation,
+          }
+        : undefined,
       winningBidAmount: grpcAuction.winningBidAmount,
       winningBidAmountUsd: grpcAuction.winningBidAmountUsd,
-      round: parseInt(grpcAuction.round, 10),
-      endTimestamp: parseInt(grpcAuction.endTimestamp, 10),
-      updatedAt: parseInt(grpcAuction.updatedAt, 10),
+      round: Number(grpcAuction.round),
+      endTimestamp: Number(grpcAuction.endTimestamp),
+      updatedAt: Number(grpcAuction.updatedAt),
     }
   }
 
@@ -77,8 +91,8 @@ export class IndexerGrpcAuctionTransformer {
     grpcAccountAuction: GrpcAccountAuctionV2,
   ): AccountAuctionV2 {
     return {
-      id: grpcAccountAuction.id,
-      round: parseInt(grpcAccountAuction.round, 10),
+      id: grpcAccountAuction.id.toString(),
+      round: Number(grpcAccountAuction.round),
       amountDeposited: grpcAccountAuction.amountDeposited,
       isClaimable: grpcAccountAuction.isClaimable,
       claimedAssets: grpcAccountAuction.claimedAssets.map(
@@ -88,7 +102,7 @@ export class IndexerGrpcAuctionTransformer {
   }
 
   static auctionsResponseToAuctions(
-    response: InjectiveAuctionRpc.AuctionsResponse,
+    response: InjectiveAuctionRpcPb.AuctionsResponse,
   ): Auction[] {
     return response.auctions.map((a) =>
       IndexerGrpcAuctionTransformer.grpcAuctionToAuction(a),
@@ -96,7 +110,7 @@ export class IndexerGrpcAuctionTransformer {
   }
 
   static auctionsHistoryV2ResponseToAuctionHistory(
-    response: InjectiveAuctionRpc.AuctionsHistoryV2Response,
+    response: InjectiveAuctionRpcPb.AuctionsHistoryV2Response,
   ) {
     return {
       auctions: response.auctions.map(
@@ -107,7 +121,7 @@ export class IndexerGrpcAuctionTransformer {
   }
 
   static accountAuctionsV2ResponseToAccountAuctionsV2(
-    response: InjectiveAuctionRpc.AccountAuctionsV2Response,
+    response: InjectiveAuctionRpcPb.AccountAuctionsV2Response,
   ) {
     return {
       auctions: response.auctions.map(
@@ -119,7 +133,7 @@ export class IndexerGrpcAuctionTransformer {
   }
 
   static auctionResponseToAuction(
-    response: InjectiveAuctionRpc.AuctionEndpointResponse,
+    response: InjectiveAuctionRpcPb.AuctionEndpointResponse,
   ): {
     auction: Auction
     bids: IndexerAuctionBid[]
@@ -133,7 +147,7 @@ export class IndexerGrpcAuctionTransformer {
   }
 
   static auctionStatsResponseToAuctionStats(
-    response: InjectiveAuctionRpc.AuctionsStatsResponse,
+    response: InjectiveAuctionRpcPb.AuctionsStatsResponse,
   ): AuctionsStats {
     return {
       totalBurnt: response.totalBurnt,

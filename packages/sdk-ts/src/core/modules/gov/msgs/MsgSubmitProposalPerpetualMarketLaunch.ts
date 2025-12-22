@@ -1,15 +1,11 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
-import {
-  GoogleProtobufAny,
-  CosmosGovV1Beta1Tx,
-  CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Proposal,
-  InjectiveOracleV1Beta1Oracle,
-} from '@injectivelabs/core-proto-ts'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
+import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-import type { SnakeCaseKeys } from 'snakecase-keys'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
   export interface Params {
@@ -21,7 +17,7 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
       oracleBase: string
       oracleQuote: string
       oracleScaleFactor: number
-      oracleType: InjectiveOracleV1Beta1Oracle.OracleType
+      oracleType: InjectiveOracleV1Beta1OraclePb.OracleType
       initialMarginRatio: string
       maintenanceMarginRatio: string
       makerFeeRate: string
@@ -41,9 +37,12 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
     }
   }
 
-  export type Proto = CosmosGovV1Beta1Tx.MsgSubmitProposal
+  export type Proto = CosmosGovV1Beta1TxPb.MsgSubmitProposal
 
-  export type Object = Omit<CosmosGovV1Beta1Tx.MsgSubmitProposal, 'content'> & {
+  export type Object = Omit<
+    CosmosGovV1Beta1TxPb.MsgSubmitProposal,
+    'content'
+  > & {
     content: {
       type_url: string
       value: any
@@ -54,34 +53,32 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
 const createPerpetualMarketLaunch = (
   params: MsgSubmitProposalPerpetualMarketLaunch.Params,
 ) => {
-  const content =
-    InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.create()
-
-  content.title = params.market.title
-  content.description = params.market.description
-  content.ticker = params.market.ticker
-  content.quoteDenom = params.market.quoteDenom
-  content.oracleBase = params.market.oracleBase
-  content.oracleQuote = params.market.oracleQuote
-  content.oracleScaleFactor = params.market.oracleScaleFactor
-  content.oracleType = params.market.oracleType
-  content.initialMarginRatio = params.market.initialMarginRatio
-  content.maintenanceMarginRatio = params.market.maintenanceMarginRatio
-  content.makerFeeRate = params.market.makerFeeRate
-  content.takerFeeRate = params.market.takerFeeRate
-  content.minPriceTickSize = params.market.minPriceTickSize
-  content.minQuantityTickSize = params.market.minQuantityTickSize
-  content.minNotional = params.market.minNotional
-
-  if (params.market.adminInfo) {
-    const adminInfo = InjectiveExchangeV1Beta1Proposal.AdminInfo.create()
-
-    adminInfo.admin = params.market.adminInfo.admin
-    adminInfo.adminPermissions = params.market.adminInfo.adminPermissions
-    content.adminInfo = adminInfo
+  const content: any = {
+    title: params.market.title,
+    description: params.market.description,
+    ticker: params.market.ticker,
+    quoteDenom: params.market.quoteDenom,
+    oracleBase: params.market.oracleBase,
+    oracleQuote: params.market.oracleQuote,
+    oracleScaleFactor: params.market.oracleScaleFactor,
+    oracleType: params.market.oracleType,
+    initialMarginRatio: params.market.initialMarginRatio,
+    maintenanceMarginRatio: params.market.maintenanceMarginRatio,
+    makerFeeRate: params.market.makerFeeRate,
+    takerFeeRate: params.market.takerFeeRate,
+    minPriceTickSize: params.market.minPriceTickSize,
+    minQuantityTickSize: params.market.minQuantityTickSize,
+    minNotional: params.market.minNotional,
   }
 
-  return InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.fromPartial(
+  if (params.market.adminInfo) {
+    content.adminInfo = {
+      admin: params.market.adminInfo.admin,
+      adminPermissions: params.market.adminInfo.adminPermissions,
+    }
+  }
+
+  return InjectiveExchangeV1Beta1ProposalPb.PerpetualMarketLaunchProposal.create(
     content,
   )
 }
@@ -91,8 +88,7 @@ const createPerpetualMarketLaunch = (
  */
 export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
   MsgSubmitProposalPerpetualMarketLaunch.Params,
-  MsgSubmitProposalPerpetualMarketLaunch.Proto,
-  MsgSubmitProposalPerpetualMarketLaunch.Object
+  MsgSubmitProposalPerpetualMarketLaunch.Proto
 > {
   static fromJSON(
     params: MsgSubmitProposalPerpetualMarketLaunch.Params,
@@ -126,26 +122,26 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
       },
     }
 
-    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+    const depositParams = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.deposit.denom,
+      amount: params.deposit.amount,
+    })
 
-    depositParams.denom = params.deposit.denom
-    depositParams.amount = params.deposit.amount
+    const contentAny = GoogleProtobufAnyPbPb.Any.create({
+      typeUrl: '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
+      value:
+        InjectiveExchangeV1Beta1ProposalPb.PerpetualMarketLaunchProposal.toBinary(
+          createPerpetualMarketLaunch(params),
+        ),
+    })
 
-    const contentAny = GoogleProtobufAny.Any.create()
-    contentAny.typeUrl =
-      '/injective.exchange.v1beta1.PerpetualMarketLaunchProposal'
-    contentAny.value =
-      InjectiveExchangeV1Beta1Proposal.PerpetualMarketLaunchProposal.encode(
-        createPerpetualMarketLaunch(params),
-      ).finish()
+    const message = CosmosGovV1Beta1TxPb.MsgSubmitProposal.create({
+      content: contentAny,
+      initialDeposit: [depositParams],
+      proposer: params.proposer,
+    })
 
-    const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
-
-    message.content = contentAny
-    message.initialDeposit = [depositParams]
-    message.proposer = params.proposer
-
-    return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -162,10 +158,32 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
     const content = createPerpetualMarketLaunch(params)
 
-    const messageWithProposalType = snakecaseKeys({
+    const messageWithProposalType = {
       content: {
         type: 'exchange/PerpetualMarketLaunchProposal',
-        value: content,
+        value: {
+          title: content.title,
+          description: content.description,
+          ticker: content.ticker,
+          quote_denom: content.quoteDenom,
+          oracle_base: content.oracleBase,
+          oracle_quote: content.oracleQuote,
+          oracle_scale_factor: content.oracleScaleFactor,
+          oracle_type: content.oracleType,
+          initial_margin_ratio: content.initialMarginRatio,
+          maintenance_margin_ratio: content.maintenanceMarginRatio,
+          maker_fee_rate: content.makerFeeRate,
+          taker_fee_rate: content.takerFeeRate,
+          min_price_tick_size: content.minPriceTickSize,
+          min_quantity_tick_size: content.minQuantityTickSize,
+          min_notional: content.minNotional,
+          admin_info: content.adminInfo
+            ? {
+                admin: content.adminInfo.admin,
+                admin_permissions: content.adminInfo.adminPermissions,
+              }
+            : null,
+        },
       },
       initial_deposit: [
         {
@@ -174,12 +192,11 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
         },
       ],
       proposer: params.proposer,
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>,
+      value: messageWithProposalType,
     }
   }
 
@@ -197,7 +214,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>),
+      ...messageWithProposalType,
     }
   }
 
@@ -233,8 +250,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
 
     return {
       type,
-      value:
-        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalPerpetualMarketLaunch.Object>,
+      value: messageAdjusted,
     }
   }
 
@@ -247,9 +263,8 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
       ...web3gw,
       content: {
         ...content,
-        oracle_type: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-          content.oracle_type,
-        ),
+        oracle_type:
+          InjectiveOracleV1Beta1OraclePb.OracleType[content.oracle_type],
         initial_margin_ratio: numberToCosmosSdkDecString(
           params.market.initialMarginRatio,
         ),
@@ -282,6 +297,6 @@ export default class MsgSubmitProposalPerpetualMarketLaunch extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1TxPb.MsgSubmitProposal.toBinary(this.toProto())
   }
 }

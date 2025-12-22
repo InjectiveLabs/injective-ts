@@ -3,43 +3,44 @@ import { AminoTypes } from '@cosmjs/stargate'
 import { calculateFee } from '@cosmjs/stargate'
 import { assert, assertDefined } from '@cosmjs/utils'
 import { defaultRegistryTypes } from '@cosmjs/stargate'
+import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { Tendermint37Client } from '@cosmjs/tendermint-rpc'
-import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx.js'
-import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing.js'
-import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx.js'
+import { SignMode } from 'cosmjs-types/cosmos/tx/signing/v1beta1/signing'
+import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx'
+import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
+import {
+  MsgDelegate,
+  MsgUndelegate,
+} from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import {
   encodeSecp256k1Pubkey,
   makeSignDoc as makeSignDocAmino,
 } from '@cosmjs/amino'
-import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx.js'
-import {
-  MsgDelegate,
-  MsgUndelegate,
-} from 'cosmjs-types/cosmos/staking/v1beta1/tx.js'
 import {
   Registry,
   makeSignDoc,
   encodePubkey,
-  isOfflineDirectSigner,
   makeAuthInfoBytes,
+  isOfflineDirectSigner,
 } from '@cosmjs/proto-signing'
 import {
-  createAuthzAminoConverters,
-  createBankAminoConverters,
-  createDistributionAminoConverters,
-  createFeegrantAminoConverters,
   createGovAminoConverters,
   createIbcAminoConverters,
+  createBankAminoConverters,
+  createAuthzAminoConverters,
   createStakingAminoConverters,
   createVestingAminoConverters,
+  createFeegrantAminoConverters,
+  createDistributionAminoConverters,
 } from '@cosmjs/stargate'
 import { getPublicKey } from '../tx/index.js'
 import { StargateClient } from './StargateClient.js'
+import { uint8ArrayToBase64, base64ToUint8Array } from '../../utils/encoding.js'
 import type { StdFee } from '@cosmjs/amino'
 import type { GasPrice } from '@cosmjs/stargate'
 import type { AminoConverters } from '@cosmjs/stargate'
-import type { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin.js'
-import type { Height } from 'cosmjs-types/ibc/core/client/v1/client.js'
+import type { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin'
+import type { Height } from 'cosmjs-types/ibc/core/client/v1/client'
 import type { CometClient, HttpEndpoint } from '@cosmjs/tendermint-rpc'
 import type { DeliverTxResponse, StargateClientOptions } from '@cosmjs/stargate'
 import type {
@@ -48,8 +49,8 @@ import type {
   TxBodyEncodeObject,
 } from '@cosmjs/proto-signing'
 import type {
-  MsgDelegateEncodeObject,
   MsgSendEncodeObject,
+  MsgDelegateEncodeObject,
   MsgTransferEncodeObject,
   MsgUndelegateEncodeObject,
   MsgWithdrawDelegatorRewardEncodeObject,
@@ -196,6 +197,7 @@ export class SigningStargateClient extends StargateClient {
         amount: [...amount],
       },
     }
+
     return this.signAndBroadcast(senderAddress, [sendMsg], fee, memo)
   }
 
@@ -214,6 +216,7 @@ export class SigningStargateClient extends StargateClient {
         amount: amount,
       }),
     }
+
     return this.signAndBroadcast(delegatorAddress, [delegateMsg], fee, memo)
   }
 
@@ -232,6 +235,7 @@ export class SigningStargateClient extends StargateClient {
         amount: amount,
       }),
     }
+
     return this.signAndBroadcast(delegatorAddress, [undelegateMsg], fee, memo)
   }
 
@@ -248,6 +252,7 @@ export class SigningStargateClient extends StargateClient {
         validatorAddress: validatorAddress,
       }),
     }
+
     return this.signAndBroadcast(delegatorAddress, [withdrawMsg], fee, memo)
   }
 
@@ -278,6 +283,7 @@ export class SigningStargateClient extends StargateClient {
         timeoutTimestamp: timeoutTimestampNanoseconds,
       }),
     }
+
     return this.signAndBroadcast(senderAddress, [transferMsg], fee, memo)
   }
 
@@ -366,7 +372,7 @@ export class SigningStargateClient extends StargateClient {
     const pubkey = chainId.startsWith('injective')
       ? getPublicKey({
           chainId,
-          key: Buffer.from(accountFromSigner.pubkey).toString('base64'),
+          key: uint8ArrayToBase64(accountFromSigner.pubkey),
         })
       : encodePubkey(encodeSecp256k1Pubkey(accountFromSigner.pubkey))
     const signMode = SignMode.SIGN_MODE_LEGACY_AMINO_JSON
@@ -405,7 +411,7 @@ export class SigningStargateClient extends StargateClient {
     return TxRaw.fromPartial({
       bodyBytes: signedTxBodyBytes,
       authInfoBytes: signedAuthInfoBytes,
-      signatures: [Buffer.from(signature.signature, 'base64')],
+      signatures: [base64ToUint8Array(signature.signature)],
     })
   }
 
@@ -429,7 +435,7 @@ export class SigningStargateClient extends StargateClient {
     const pubkey = chainId.startsWith('injective')
       ? getPublicKey({
           chainId,
-          key: Buffer.from(accountFromSigner.pubkey).toString('base64'),
+          key: uint8ArrayToBase64(accountFromSigner.pubkey),
         })
       : encodePubkey(encodeSecp256k1Pubkey(accountFromSigner.pubkey))
 
@@ -459,10 +465,11 @@ export class SigningStargateClient extends StargateClient {
       signerAddress,
       signDoc,
     )
+
     return TxRaw.fromPartial({
       bodyBytes: signed.bodyBytes,
       authInfoBytes: signed.authInfoBytes,
-      signatures: [Buffer.from(signature.signature, 'base64')],
+      signatures: [base64ToUint8Array(signature.signature)],
     })
   }
 }

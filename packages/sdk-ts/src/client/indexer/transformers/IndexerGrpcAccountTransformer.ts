@@ -1,7 +1,7 @@
-import { grpcPagingToPaging } from '../../..//utils/pagination.js'
+import { grpcPagingToPagingV2 } from '../../..//utils/pagination.js'
 import type { Coin } from '@injectivelabs/ts-types'
+import type * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
 import type { GrpcCoin } from '../../../types/index.js'
-import type { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
 import type {
   TransferType,
   TradingReward,
@@ -28,7 +28,7 @@ export class IndexerGrpcAccountTransformer {
    * @deprecated - use IndexerGrpcAccountPortfolioApi.accountPortfolioResponseToAccountPortfolio
    */
   static accountPortfolioResponseToAccountPortfolio(
-    response: InjectiveAccountRpc.PortfolioResponse,
+    response: InjectiveAccountsRpcPb.PortfolioResponse,
   ): AccountPortfolio {
     const portfolio = response.portfolio!
     const subaccounts = portfolio.subaccounts || []
@@ -86,7 +86,7 @@ export class IndexerGrpcAccountTransformer {
   }
 
   static balancesResponseToBalances(
-    response: InjectiveAccountRpc.SubaccountBalancesListResponse,
+    response: InjectiveAccountsRpcPb.SubaccountBalancesListResponse,
   ): SubaccountBalance[] {
     return response.balances.map((b) =>
       IndexerGrpcAccountTransformer.grpcBalanceToBalance(b),
@@ -94,7 +94,7 @@ export class IndexerGrpcAccountTransformer {
   }
 
   static balanceResponseToBalance(
-    response: InjectiveAccountRpc.SubaccountBalanceEndpointResponse,
+    response: InjectiveAccountsRpcPb.SubaccountBalanceEndpointResponse,
   ): SubaccountBalance {
     return IndexerGrpcAccountTransformer.grpcBalanceToBalance(response.balance!)
   }
@@ -133,7 +133,7 @@ export class IndexerGrpcAccountTransformer {
       srcSubaccountAddress: transfer.srcAccountAddress,
       dstSubaccountId: transfer.dstSubaccountId,
       dstSubaccountAddress: transfer.dstAccountAddress,
-      executedAt: parseInt(transfer.executedAt, 10),
+      executedAt: Number(transfer.executedAt),
       amount: amount
         ? IndexerGrpcAccountTransformer.grpcAmountToAmount(amount)
         : undefined,
@@ -141,7 +141,7 @@ export class IndexerGrpcAccountTransformer {
   }
 
   static tradingRewardsResponseToTradingRewards(
-    response: InjectiveAccountRpc.RewardsResponse,
+    response: InjectiveAccountsRpcPb.RewardsResponse,
   ): TradingReward[] {
     const rewards = response.rewards
 
@@ -167,12 +167,12 @@ export class IndexerGrpcAccountTransformer {
         amount: r.amount,
         denom: r.denom,
       })),
-      distributedAt: parseInt(reward.distributedAt, 10),
+      distributedAt: Number(reward.distributedAt),
     }
   }
 
   static transferHistoryResponseToTransferHistory(
-    response: InjectiveAccountRpc.SubaccountHistoryResponse,
+    response: InjectiveAccountsRpcPb.SubaccountHistoryResponse,
   ) {
     const transfers = response.transfers
     const pagination = response.paging
@@ -183,7 +183,7 @@ export class IndexerGrpcAccountTransformer {
           transfer,
         ),
       ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 

@@ -1,9 +1,6 @@
-import { InjectivePermissionsV1Beta1Permissions as PermissionProto } from '@injectivelabs/core-proto-ts'
+import * as InjectivePermissionsV1Beta1PermissionsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/permissions_pb'
 import type { Coin } from '@injectivelabs/ts-types'
-import type {
-  InjectivePermissionsV1Beta1Params,
-  InjectivePermissionsV1Beta1Permissions,
-} from '@injectivelabs/core-proto-ts'
+import type * as InjectivePermissionsV1Beta1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/params_pb'
 
 export interface PermissionParams {
   wasmHookQueryMaxGas: string
@@ -26,14 +23,14 @@ export interface PermissionRoleManager {
 }
 
 export interface PermissionPolicyStatus {
-  action: PermissionProto.Action
+  action: InjectivePermissionsV1Beta1PermissionsPb.Action
   isDisabled: boolean
   isSealed: boolean
 }
 
 export interface PermissionPolicyManagerCapability {
   manager: string
-  action: PermissionProto.Action
+  action: InjectivePermissionsV1Beta1PermissionsPb.Action
   canDisable: boolean
   canSeal: boolean
 }
@@ -91,24 +88,25 @@ export interface PermissionGenesisState {
 }
 
 export type GrpcPermissionNamespace =
-  InjectivePermissionsV1Beta1Permissions.Namespace
+  InjectivePermissionsV1Beta1PermissionsPb.Namespace
 export type GrpcPermissionRoleIDs =
-  InjectivePermissionsV1Beta1Permissions.RoleIDs
+  InjectivePermissionsV1Beta1PermissionsPb.RoleIDs
 export type GrpcPermissionsNamespace =
-  InjectivePermissionsV1Beta1Permissions.Namespace
+  InjectivePermissionsV1Beta1PermissionsPb.Namespace
 export type GrpcPermissionRoleActors =
-  InjectivePermissionsV1Beta1Permissions.RoleActors
+  InjectivePermissionsV1Beta1PermissionsPb.RoleActors
 export type GrpcPermissionActorRoles =
-  InjectivePermissionsV1Beta1Permissions.ActorRoles
+  InjectivePermissionsV1Beta1PermissionsPb.ActorRoles
 export type GrpcPermissionRoleManager =
-  InjectivePermissionsV1Beta1Permissions.RoleManager
+  InjectivePermissionsV1Beta1PermissionsPb.RoleManager
 export type GrpcPermissionPolicyStatus =
-  InjectivePermissionsV1Beta1Permissions.PolicyStatus
+  InjectivePermissionsV1Beta1PermissionsPb.PolicyStatus
 export type GrpcPermissionAddressVoucher =
-  InjectivePermissionsV1Beta1Permissions.AddressVoucher
+  InjectivePermissionsV1Beta1PermissionsPb.AddressVoucher
 export type GrpcPermissionPolicyStatusManagerCapability =
-  InjectivePermissionsV1Beta1Permissions.PolicyManagerCapability
-export type GrpcPermissionsParams = InjectivePermissionsV1Beta1Params.Params
-export type GrpcPermissionRole = InjectivePermissionsV1Beta1Permissions.Role
+  InjectivePermissionsV1Beta1PermissionsPb.PolicyManagerCapability
+export type GrpcPermissionsParams = InjectivePermissionsV1Beta1ParamsPb.Params
+export type GrpcPermissionRole = InjectivePermissionsV1Beta1PermissionsPb.Role
 
-export const PermissionActionMap = PermissionProto.Action
+export const PermissionActionMap =
+  InjectivePermissionsV1Beta1PermissionsPb.Action

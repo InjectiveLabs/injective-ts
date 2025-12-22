@@ -1,5 +1,9 @@
-import { toUtf8 } from '../../utils/utf8.js'
 import { sortObjectByKeys } from '../../utils/helpers.js'
+import {
+  toUtf8,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+} from '../../utils/encoding.js'
 
 export const generateArbitrarySignDoc = (message: string, signer: string) => {
   const signDoc = {
@@ -14,7 +18,7 @@ export const generateArbitrarySignDoc = (message: string, signer: string) => {
       {
         type: 'sign/MsgSignData',
         value: {
-          data: Buffer.from(toUtf8(message)).toString('base64'),
+          data: uint8ArrayToBase64(stringToUint8Array(toUtf8(message))),
           signer: signer,
         },
       },
@@ -26,7 +30,7 @@ export const generateArbitrarySignDoc = (message: string, signer: string) => {
 
   return {
     signDoc,
-    signDocBuff: Buffer.from(stringified),
+    signDocBuff: stringToUint8Array(stringified),
     stringifiedSignDoc: stringified,
   }
 }

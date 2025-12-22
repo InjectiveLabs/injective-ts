@@ -1,6 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
 import { toChainFormat } from '@injectivelabs/utils'
-import { InjectiveExchangeV2Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
@@ -14,20 +13,20 @@ export declare namespace MsgUpdateSpotMarketV2 {
     newMinQuantityTickSize?: string
   }
 
-  export type Proto = InjectiveExchangeV2Tx.MsgUpdateSpotMarket
+  export type Proto = InjectiveExchangeV2TxPb.MsgUpdateSpotMarket
 }
 
 const createMessage = (params: MsgUpdateSpotMarketV2.Params) => {
-  const message = InjectiveExchangeV2Tx.MsgUpdateSpotMarket.create()
+  const message = InjectiveExchangeV2TxPb.MsgUpdateSpotMarket.create({
+    admin: params.admin,
+    marketId: params.marketId,
+    newTicker: params.newTicker || '',
+    newMinNotional: params.newMinNotional || '0',
+    newMinPriceTickSize: params.newMinPriceTickSize || '0',
+    newMinQuantityTickSize: params.newMinQuantityTickSize || '0',
+  })
 
-  message.admin = params.admin
-  message.marketId = params.marketId
-  message.newTicker = params.newTicker || ''
-  message.newMinNotional = params.newMinNotional || '0'
-  message.newMinPriceTickSize = params.newMinPriceTickSize || '0'
-  message.newMinQuantityTickSize = params.newMinQuantityTickSize || '0'
-
-  return InjectiveExchangeV2Tx.MsgUpdateSpotMarket.fromPartial(message)
+  return message
 }
 
 /**
@@ -71,9 +70,13 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const msg = createMessage(params)
     const message = {
-      ...snakecaseKeys(msg),
+      admin: params.admin,
+      market_id: params.marketId,
+      new_ticker: params.newTicker || '',
+      new_min_notional: params.newMinNotional,
+      new_min_price_tick_size: params.newMinPriceTickSize,
+      new_min_quantity_tick_size: params.newMinQuantityTickSize,
     }
 
     return {
@@ -108,10 +111,12 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
 
   public toEip712V2() {
     const { params } = this
-    const web3gw = this.toWeb3Gw()
 
     const messageAdjusted = {
-      ...web3gw,
+      '@type': '/injective.exchange.v2.MsgUpdateSpotMarket',
+      admin: params.admin,
+      market_id: params.marketId,
+      new_ticker: params.newTicker || '',
       new_min_price_tick_size: numberToCosmosSdkDecString(
         params.newMinPriceTickSize || '0',
       ),
@@ -136,8 +141,6 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV2Tx.MsgUpdateSpotMarket.encode(
-      this.toProto(),
-    ).finish()
+    return InjectiveExchangeV2TxPb.MsgUpdateSpotMarket.toBinary(this.toProto())
   }
 }

@@ -1,8 +1,5 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  CosmosStakingV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgTransferDelegation {
@@ -16,7 +13,7 @@ export declare namespace MsgTransferDelegation {
     receiverAddress: string
   }
 
-  export type Proto = CosmosStakingV1Beta1Tx.MsgTransferDelegation
+  export type Proto = CosmosStakingV1Beta1TxPb.MsgTransferDelegation
 }
 
 /**
@@ -33,19 +30,19 @@ export default class MsgTransferDelegation extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    const coinAmount = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    coinAmount.denom = params.amount.denom
-    coinAmount.amount = params.amount.amount
+    const message = CosmosStakingV1Beta1TxPb.MsgTransferDelegation.create({
+      delegatorAddress: params.injectiveAddress,
+      validatorAddress: params.validatorAddress,
+      receiverAddress: params.receiverAddress,
+      amount: coinAmount,
+    })
 
-    const message = CosmosStakingV1Beta1Tx.MsgTransferDelegation.create()
-
-    message.delegatorAddress = params.injectiveAddress
-    message.validatorAddress = params.validatorAddress
-    message.receiverAddress = params.receiverAddress
-    message.amount = coinAmount
-
-    return CosmosStakingV1Beta1Tx.MsgTransferDelegation.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -60,7 +57,10 @@ export default class MsgTransferDelegation extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      delegator_address: proto.delegatorAddress,
+      validator_address: proto.validatorAddress,
+      receiver_address: proto.receiverAddress,
+      amount: proto.amount,
     }
 
     return {
@@ -89,8 +89,8 @@ export default class MsgTransferDelegation extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosStakingV1Beta1Tx.MsgTransferDelegation.encode(
+    return CosmosStakingV1Beta1TxPb.MsgTransferDelegation.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

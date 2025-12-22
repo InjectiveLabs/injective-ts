@@ -1,7 +1,7 @@
 import { getAddress } from 'viem'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts'
-import { getEthereumAddress } from '@injectivelabs/sdk-ts'
-import { sleep, HttpRestClient } from '@injectivelabs/utils'
+import { HttpRestClient } from '@injectivelabs/utils'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
+import { getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
@@ -14,20 +14,21 @@ import {
   WalletDeviceType,
   getViemWalletClient,
   getViemPublicClient,
-  type WalletMetadata,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
+import type { Hash } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { WalletMetadata } from '@injectivelabs/wallet-base'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 import type {
   TxRaw,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   Eip1193Provider,
@@ -137,6 +138,19 @@ export class TurnkeyWalletStrategy
     }
   }
 
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(_address?: string): Promise<string> {
     const turnkeyWallet = await this.getTurnkeyWallet()
 
@@ -174,7 +188,7 @@ export class TurnkeyWalletStrategy
 
       const accountClient = getViemWalletClient({
         chainId,
-        account: account as any,
+        account,
         rpcUrl: url,
       })
 
@@ -208,18 +222,18 @@ export class TurnkeyWalletStrategy
         }
       }
 
-      const preparedTransaction = await accountClient.prepareTransactionRequest(
-        processedTransaction,
-      )
+      const preparedTransaction =
+        await accountClient.prepareTransactionRequest(processedTransaction)
 
-      delete (preparedTransaction as any).account
+      // Remove account property as it's not needed for signing
+      const { account: _, ...transactionToSign } = preparedTransaction
 
       const signedTransaction = await accountClient.signTransaction(
-        preparedTransaction as any,
+        transactionToSign as any,
       )
 
       const tx = await accountClient.sendRawTransaction({
-        serializedTransaction: signedTransaction as `0x${string}`,
+        serializedTransaction: signedTransaction as Hash,
       })
 
       return tx
@@ -268,9 +282,8 @@ export class TurnkeyWalletStrategy
     //? Turnkey expects the case sensitive address and the current impl of getChecksumAddress from sdk-ts doesn't play nice with browser envs
     const checksumAddress = getAddress(address)
 
-    const account = await turnkeyWallet.getOrCreateAndGetAccount(
-      checksumAddress,
-    )
+    const account =
+      await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
 
     if (!account) {
       throw new WalletException(new Error('Turnkey account not found'))
@@ -288,6 +301,14 @@ export class TurnkeyWalletStrategy
           contextModule: WalletAction.SignTransaction,
         },
       )
+    }
+
+    // Convert chainId from hex string to number for Turnkey EIP-712 compatibility
+    if (
+      parsedData.domain?.chainId &&
+      typeof parsedData.domain.chainId === 'string'
+    ) {
+      parsedData.domain.chainId = Number(parsedData.domain.chainId)
     }
 
     const signature = await account.signTypedData(parsedData)
@@ -355,8 +376,6 @@ export class TurnkeyWalletStrategy
   ): Promise<Record<string, any>> {
     const options = this.evmOptions
 
-    const maxAttempts = 10
-    const interval = 3000
     const chainId = evmChainId || options.evmChainId
     const url = options.rpcUrl || options.rpcUrls?.[chainId]
 
@@ -372,26 +391,19 @@ export class TurnkeyWalletStrategy
 
     const publicClient = getViemPublicClient(chainId, url)
 
-    let attempts = 0
+    try {
+      const receipt = await publicClient.waitForTransactionReceipt({
+        hash: txHash as Hash,
+        timeout: 30_000,
+        pollingInterval: 3_000,
+      })
 
-    while (attempts < maxAttempts) {
-      attempts++
-      await sleep(interval)
-
-      try {
-        const receipt = await publicClient.getTransactionReceipt({
-          hash: txHash as `0x${string}`,
-        })
-
-        if (receipt) {
-          return receipt
-        }
-      } catch {}
+      return receipt
+    } catch {
+      throw new Error(
+        `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+      )
     }
-
-    throw new Error(
-      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
-    )
   }
 
   async getPubKey(): Promise<string> {
@@ -440,9 +452,8 @@ export class TurnkeyWalletStrategy
     //? Turnkey expects the case sensitive address and the current impl of getChecksumAddress from sdk-ts doesn't play nice with browser envs
     const checksumAddress = getAddress(getEthereumAddress(addresses[0]))
 
-    const account = await turnkeyWallet.getOrCreateAndGetAccount(
-      checksumAddress,
-    )
+    const account =
+      await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
 
     const eip1193Provider = await getEip1193ProviderForTurnkey(
       account,

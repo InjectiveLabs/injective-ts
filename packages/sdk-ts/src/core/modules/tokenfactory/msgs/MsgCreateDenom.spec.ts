@@ -1,4 +1,3 @@
-import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgCreateDenom from './MsgCreateDenom.js'
@@ -28,7 +27,14 @@ const protoParams = {
   allowAdminBurn: params.allowAdminBurn,
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  name: params.name,
+  sender: params.sender,
+  subdenom: params.subdenom,
+  symbol: params.symbol,
+  decimals: params.decimals,
+  allow_admin_burn: params.allowAdminBurn,
+}
 const message = MsgCreateDenom.fromJSON(params)
 
 describe('MsgCreateDenom', () => {

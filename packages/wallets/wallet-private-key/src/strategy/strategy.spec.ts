@@ -1,7 +1,8 @@
 import { Network } from '@injectivelabs/networks'
 import { Wallet } from '@injectivelabs/wallet-base'
-import { MsgSend, PrivateKey } from '@injectivelabs/sdk-ts'
+import { MsgSend } from '@injectivelabs/sdk-ts/core/modules'
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 import { MsgBroadcaster, BaseWalletStrategy } from '@injectivelabs/wallet-core'
 import type { MsgBroadcasterOptions } from '@injectivelabs/wallet-core'
@@ -34,7 +35,7 @@ const broadcasterArgs: MsgBroadcasterOptions = {
 }
 const msgBroadcaster = new MsgBroadcaster(broadcasterArgs)
 
-describe('MsgBroadcaster', () => {
+describe.sequential('MsgBroadcaster', () => {
   test('prepares, simulates, signs and broadcasts a transaction', async () => {
     const pk = PrivateKey.fromHex(process.env.TEST_PRIVATE_KEY as string)
     const injectiveAddress = pk.toBech32()

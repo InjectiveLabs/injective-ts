@@ -1,12 +1,12 @@
-import { isServerSide } from '@injectivelabs/sdk-ts'
 import type {
   BrowserEip1993Provider,
   WindowWithEip1193Provider,
 } from '@injectivelabs/wallet-base'
 
-const $window = (isServerSide()
-  ? {}
-  : window) as unknown as WindowWithEip1193Provider
+const getWindow = () =>
+  (typeof window === 'undefined'
+    ? {}
+    : window) as unknown as WindowWithEip1193Provider
 
 export async function getBitGetProvider({ timeout } = { timeout: 3000 }) {
   const provider = getBitGetFromWindow()
@@ -26,6 +26,8 @@ async function listenForBitGetInitialized({ timeout } = { timeout: 3000 }) {
       resolve(getBitGetFromWindow())
     }
 
+    const $window = getWindow()
+
     $window.addEventListener('bitkeep#initialized', handleInitialization, {
       once: true,
     })
@@ -38,6 +40,7 @@ async function listenForBitGetInitialized({ timeout } = { timeout: 3000 }) {
 }
 
 function getBitGetFromWindow() {
+  const $window = getWindow()
   const injectedProviderExist =
     typeof window !== 'undefined' &&
     (typeof $window.ethereum !== 'undefined' ||

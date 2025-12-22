@@ -1,5 +1,5 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { getDefaultSubaccountId } from '../../../utils/address.js'
 import { IndexerGrpcDerivativesApi } from './IndexerGrpcDerivativesApi.js'
 import type { DerivativeMarket } from '../types/index.js'
@@ -312,7 +312,7 @@ describe('IndexerGrpcDerivativeApi', () => {
           (e as any).message,
       )
     }
-  })
+  }, 60000)
 
   test('fetchPositions', async () => {
     try {

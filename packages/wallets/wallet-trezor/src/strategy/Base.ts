@@ -1,8 +1,11 @@
-import { sleep } from '@injectivelabs/utils'
 import { toHex, serializeTransaction } from 'viem'
-import { EvmChainId } from '@injectivelabs/ts-types'
-import { toUtf8, TxGrpcApi } from '@injectivelabs/sdk-ts'
-import { Alchemy, Network as AlchemyNetwork } from 'alchemy-sdk'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
+import { getViemPublicClient } from '@injectivelabs/wallet-base'
+import {
+  toUtf8,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
@@ -13,7 +16,6 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   WalletAction,
-  getKeyFromRpcUrl,
   WalletDeviceType,
   BaseConcreteStrategy,
   DEFAULT_BASE_DERIVATION_PATH,
@@ -23,24 +25,29 @@ import {
 import { loadTrezorConnect } from './lib.js'
 import { transformTypedData } from '../utils.js'
 import { BaseTrezorTransport } from './hw/index.js'
-import type { TrezorDerivationPathType, TrezorWalletInfo } from '../types.js'
+import { TrezorEip1193Provider } from './Eip1193Provider.js'
+import type { Hash, PublicClient } from 'viem'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   AccountAddress,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
+  WalletMetadata,
+  Eip1193Provider,
   SendTransactionOptions,
   ConcreteWalletStrategy,
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+import type { TrezorWalletInfo, TrezorDerivationPathType } from '../types.js'
 
 type EthereumTransactionEIP1559 = {
   to: string
@@ -64,7 +71,7 @@ export default class TrezorBase
 
   private evmOptions: WalletStrategyEvmOptions
 
-  private alchemy: Alchemy | undefined
+  private publicClient: PublicClient | undefined
 
   private derivationPathType: TrezorDerivationPathType
 
@@ -81,6 +88,10 @@ export default class TrezorBase
     this.baseDerivationPath = DEFAULT_BASE_DERIVATION_PATH
   }
 
+  setMetadata(metadata: WalletMetadata): void {
+    this.metadata = metadata
+  }
+
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Hardware)
   }
@@ -91,6 +102,12 @@ export default class TrezorBase
 
   public async disconnect() {
     return Promise.resolve()
+  }
+
+  protected async getDerivationPath(address: string): Promise<string> {
+    return this.metadata?.derivationPath
+      ? this.metadata.derivationPath
+      : (await this.getWalletForAddress(address)).derivationPath
   }
 
   public async getAddresses(): Promise<string[]> {
@@ -106,7 +123,54 @@ export default class TrezorBase
 
       return wallets.map((k) => k.address)
     } catch (e: unknown) {
-      throw new TrezorException(new Error((e as any).message), {
+      const errorMessage = (e as any).message || 'Unknown error'
+      const isInitError =
+        errorMessage.includes('Initialize') ||
+        errorMessage.includes('Handshake') ||
+        errorMessage.includes('Init_')
+
+      const message = isInitError
+        ? `Trezor connection failed: ${errorMessage}. Please ensure your Trezor device is connected, unlocked, and that pop-ups are allowed for this site.`
+        : errorMessage
+
+      throw new TrezorException(new Error(message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      })
+    }
+  }
+
+  public async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    const { baseDerivationPath, derivationPathType } = this
+
+    try {
+      await this.trezor.connect()
+      const accountManager = await this.trezor.getAccountManager()
+      const wallets = await accountManager.getWallets(
+        baseDerivationPath,
+        derivationPathType,
+      )
+
+      return wallets.map((k) => ({
+        address: k.address,
+        derivationPath: k.derivationPath,
+        baseDerivationPath: derivationPathType,
+      }))
+    } catch (e: unknown) {
+      const errorMessage = (e as any).message || 'Unknown error'
+      const isInitError =
+        errorMessage.includes('Initialize') ||
+        errorMessage.includes('Handshake') ||
+        errorMessage.includes('Init_')
+
+      const message = isInitError
+        ? `Trezor connection failed: ${errorMessage}. Please ensure your Trezor device is connected, unlocked, and that pop-ups are allowed for this site.`
+        : errorMessage
+
+      throw new TrezorException(new Error(message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.GetAccounts,
@@ -116,9 +180,11 @@ export default class TrezorBase
 
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 
@@ -129,11 +195,10 @@ export default class TrezorBase
     const signedTransaction = await this.signEvmTransaction(txData, args)
 
     try {
-      const alchemy = await this.getAlchemy(args.evmChainId)
-      const provider = await alchemy.config.getProvider()
-      const txHash = await provider.send('eth_sendRawTransaction', [
-        signedTransaction,
-      ])
+      const publicClient = await this.getPublicClient(args.evmChainId)
+      const txHash = await publicClient.sendRawTransaction({
+        serializedTransaction: signedTransaction as Hash,
+      })
 
       return txHash
     } catch (e: unknown) {
@@ -200,8 +265,7 @@ export default class TrezorBase
 
     try {
       await this.trezor.connect()
-
-      const { derivationPath } = await this.getWalletForAddress(address)
+      const derivationPath = await this.getDerivationPath(address)
 
       const response = await TrezorConnect.ethereumSignTypedData({
         path: derivationPath,
@@ -216,8 +280,14 @@ export default class TrezorBase
         metamask_v4_compat: true,
       })
 
+      if (
+        'code' in response.payload &&
+        response.payload.code === 'Failure_ActionCancelled'
+      ) {
+        throw new Error('Request rejected')
+      }
+
       if (!response.success) {
-        // noinspection ExceptionCaughtLocallyJS
         throw new Error(
           (response.payload && response.payload.error) || 'Unknown error',
         )
@@ -271,7 +341,7 @@ export default class TrezorBase
 
     try {
       await this.trezor.connect()
-      const { derivationPath } = await this.getWalletForAddress(signer)
+      const derivationPath = await this.getDerivationPath(signer)
 
       const response = await TrezorConnect.ethereumSignMessage({
         path: derivationPath,
@@ -295,41 +365,31 @@ export default class TrezorBase
   }
 
   async getEthereumChainId(): Promise<string> {
-    const alchemy = await this.getAlchemy()
-    const alchemyProvider = await alchemy.config.getProvider()
+    const publicClient = await this.getPublicClient()
+    const chainId = await publicClient.getChainId()
 
-    return alchemyProvider.network.chainId.toString()
+    return chainId.toString()
   }
 
   async getEvmTransactionReceipt(
     txHash: string,
     evmChainId?: EvmChainId,
   ): Promise<string> {
-    const alchemy = await this.getAlchemy(evmChainId)
-    const provider = await alchemy.config.getProvider()
+    const publicClient = await this.getPublicClient(evmChainId)
 
-    const interval = 3000
-    const maxAttempts = 10
-    let attempts = 0
+    try {
+      await publicClient.waitForTransactionReceipt({
+        hash: txHash as Hash,
+        timeout: 30_000,
+        pollingInterval: 3_000,
+      })
 
-    while (attempts < maxAttempts) {
-      attempts++
-      await sleep(interval)
-
-      try {
-        const receipt = await provider.send('eth_getTransactionReceipt', [
-          txHash,
-        ])
-
-        if (receipt) {
-          return txHash
-        }
-      } catch {}
+      return txHash
+    } catch {
+      throw new Error(
+        `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+      )
     }
-
-    throw new Error(
-      `Failed to retrieve transaction receipt for txHash: ${txHash}`,
-    )
   }
 
   async getPubKey(): Promise<string> {
@@ -345,8 +405,13 @@ export default class TrezorBase
     const TrezorConnect = await loadTrezorConnect()
 
     const chainId = parseInt(args.evmChainId.toString(), 10)
-    const alchemy = await this.getAlchemy(args.evmChainId)
-    const nonce = await alchemy.core.getTransactionCount(args.address)
+    const publicClient = await this.getPublicClient(args.evmChainId)
+    const address = args.address.startsWith('0x')
+      ? (args.address as Hash)
+      : (`0x${args.address}` as Hash)
+    const nonce = await publicClient.getTransactionCount({
+      address,
+    })
 
     // Handle hex string values properly (with or without 0x prefix)
     const parseHexValue = (value: string | number | bigint) => {
@@ -381,7 +446,8 @@ export default class TrezorBase
 
     try {
       await this.trezor.connect()
-      const { derivationPath } = await this.getWalletForAddress(args.address)
+      const derivationPath = await this.getDerivationPath(args.address)
+
       const response = await TrezorConnect.ethereumSignTransaction({
         path: derivationPath,
         transaction: trezorTxData,
@@ -406,15 +472,15 @@ export default class TrezorBase
         type: 'eip1559' as const,
         chainId,
         nonce,
-        to: txData.to as `0x${string}`,
+        to: txData.to as Hash,
         value: valueBigInt,
-        data: (txData.data || '0x') as `0x${string}`,
+        data: (txData.data || '0x') as Hash,
         gas: gasBigInt,
         maxFeePerGas: maxFeePerGasBigInt,
         maxPriorityFeePerGas: maxPriorityFeePerGasBigInt,
         v: BigInt(response.payload.v),
-        r: response.payload.r as `0x${string}`,
-        s: response.payload.s as `0x${string}`,
+        r: response.payload.r as Hash,
+        s: response.payload.s as Hash,
       }
 
       return serializeTransaction(viemTxData)
@@ -458,9 +524,16 @@ export default class TrezorBase
     )) as TrezorWalletInfo
   }
 
-  private async getAlchemy(evmChainId?: EvmChainIdType) {
-    if (this.alchemy) {
-      return this.alchemy
+  public async getEip1193Provider(): Promise<Eip1193Provider> {
+    return new TrezorEip1193Provider(this.trezor, {
+      chainId: this.evmOptions.evmChainId.toString(),
+      derivationPath: this.metadata?.derivationPath,
+    })
+  }
+
+  private async getPublicClient(evmChainId?: EvmChainIdType) {
+    if (this.publicClient) {
+      return this.publicClient
     }
 
     const options = this.evmOptions
@@ -474,14 +547,8 @@ export default class TrezorBase
       )
     }
 
-    this.alchemy = new Alchemy({
-      apiKey: getKeyFromRpcUrl(url),
-      network:
-        chainId === EvmChainId.Mainnet
-          ? AlchemyNetwork.ETH_MAINNET
-          : AlchemyNetwork.ETH_SEPOLIA,
-    })
+    this.publicClient = getViemPublicClient(chainId, url)
 
-    return this.alchemy
+    return this.publicClient
   }
 }

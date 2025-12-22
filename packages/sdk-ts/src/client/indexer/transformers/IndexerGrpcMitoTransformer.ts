@@ -1,5 +1,6 @@
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
-import type { MitoApi } from '@injectivelabs/mito-proto-ts'
+import { bigIntToNumber, bigIntToString } from '../../../utils/helpers.js'
+import type * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb'
 import type {
   MitoIDO,
   MitoGauge,
@@ -15,13 +16,14 @@ import type {
   MitoStakingPool,
   MitoGaugeStatus,
   MitoLeaderboard,
-  MitoVestingConfig,
   MitoDenomBalance,
   MitoSubscription,
+  MitoVestingConfig,
   MitoIDOSubscriber,
   MitoPriceSnapshot,
   MitoClaimReference,
   MitoIDOSubscription,
+  MitoIDOClaimedCoins,
   MitoVestingConfigMap,
   MitoWhitelistAccount,
   MitoLeaderboardEpoch,
@@ -30,14 +32,15 @@ import type {
   MitoStakeToSubscription,
   MitoIDOSubscriptionActivity,
   MitoMissionLeaderboardEntry,
-  MitoIDOClaimedCoins,
 } from '../types/mito.js'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcMitoTransformer {
-  static grpcTokenInfoToTokenInfo(tokenInfo: MitoApi.TokenInfo): MitoTokenInfo {
+  static grpcTokenInfoToTokenInfo(
+    tokenInfo: GoadesignGoagenMitoApiPb.TokenInfo,
+  ): MitoTokenInfo {
     return {
       denom: tokenInfo.denom,
       supply: tokenInfo.supply,
@@ -48,7 +51,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoPaginationToPagination(
-    pagination?: MitoApi.Pagination,
+    pagination?: GoadesignGoagenMitoApiPb.Pagination,
   ): MitoPagination | undefined {
     if (!pagination) {
       return undefined
@@ -60,7 +63,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoDenomBalanceToDenomBalance(
-    denomBalance: MitoApi.DenomBalance,
+    denomBalance: GoadesignGoagenMitoApiPb.DenomBalance,
   ): MitoDenomBalance {
     return {
       denom: denomBalance.denom,
@@ -69,7 +72,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static changesResponseToChanges(
-    changes?: MitoApi.Changes,
+    changes?: GoadesignGoagenMitoApiPb.Changes,
   ): MitoChanges | undefined {
     if (!changes) {
       return undefined
@@ -88,7 +91,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoSubaccountInfoToSubaccountInfo(
-    mitoSubaccountInfo?: MitoApi.SubaccountBalance,
+    mitoSubaccountInfo?: GoadesignGoagenMitoApiPb.SubaccountBalance,
   ): MitoSubaccountBalance | undefined {
     if (!mitoSubaccountInfo) {
       return
@@ -102,10 +105,10 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoVaultToVault(vault: MitoApi.Vault): MitoVault {
+  static mitoVaultToVault(vault: GoadesignGoagenMitoApiPb.Vault): MitoVault {
     return {
       slug: vault.slug,
-      codeId: vault.codeId,
+      codeId: vault.codeId.toString(),
       marketId: vault.marketId,
       vaultName: vault.vaultName,
       vaultType: vault.vaultType,
@@ -115,8 +118,8 @@ export class IndexerGrpcMitoTransformer {
       contractAddress: vault.contractAddress,
       notionalValueCap: vault.notionalValueCap,
       masterContractAddress: vault.masterContractAddress,
-      updatedAt: parseInt(vault.updatedAt, 10),
-      createdAt: parseInt(vault.createdAt, 10),
+      updatedAt: Number(vault.updatedAt),
+      createdAt: Number(vault.createdAt),
       apy: vault.apy,
       apyue: vault.apyue,
       apy7D: vault.apy7D,
@@ -137,21 +140,21 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoPriceSnapshotToPriceSnapshot(
-    snapshot: MitoApi.PriceSnapshot,
+    snapshot: GoadesignGoagenMitoApiPb.PriceSnapshot,
   ): MitoPriceSnapshot {
     return {
       price: snapshot.price,
-      updatedAt: parseInt(snapshot.updatedAt, 10),
+      updatedAt: Number(snapshot.updatedAt),
     }
   }
 
   static portfolioResponseToPortfolio(
-    portfolio: MitoApi.PortfolioResponse,
+    portfolio: GoadesignGoagenMitoApiPb.PortfolioResponse,
   ): MitoPortfolio {
     return {
       pnl: portfolio.pnl,
-      totalValue: portfolio.totalValue,
-      updatedAt: parseInt(portfolio.pnlUpdatedAt, 10),
+      totalValue: bigIntToNumber(portfolio.totalValue),
+      updatedAt: Number(portfolio.pnlUpdatedAt),
       totalValueChartList: portfolio.totalValueChart.map(
         IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
       ),
@@ -162,21 +165,23 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static leaderboardResponseToLeaderboard(
-    leaderboard: MitoApi.LeaderboardResponse,
+    leaderboard: GoadesignGoagenMitoApiPb.LeaderboardResponse,
   ): MitoLeaderboard {
     return {
       epochId: leaderboard.epochId,
-      snapshotBlock: leaderboard.snapshotBlock,
-      updatedAt: parseInt(leaderboard.updatedAt, 10),
-      entriesList: leaderboard.entries.map((entry) => ({
-        address: entry.address,
-        pnl: entry.pnl,
-      })),
+      snapshotBlock: bigIntToString(leaderboard.snapshotBlock),
+      updatedAt: Number(leaderboard.updatedAt),
+      entriesList: leaderboard.entries.map(
+        (entry: GoadesignGoagenMitoApiPb.LeaderboardEntry) => ({
+          address: entry.address,
+          pnl: entry.pnl,
+        }),
+      ),
     }
   }
 
   static mitoTransferHistoryToTransferHistory(
-    transfer: MitoApi.Transfer,
+    transfer: GoadesignGoagenMitoApiPb.Transfer,
   ): MitoTransfer {
     return {
       vault: transfer.vault,
@@ -187,30 +192,30 @@ export class IndexerGrpcMitoTransformer {
       isDeposit: transfer.isDeposit,
       tidByVault: transfer.tidByVault,
       tidByAccount: transfer.tidByAccount,
-      executedAt: parseInt(transfer.executedAt, 10),
+      executedAt: Number(transfer.executedAt),
       coins: transfer.coins.map(IndexerCommonTransformer.grpcCoinToCoin),
     }
   }
 
   static mitoLeaderboardEpochToLeaderboardEpoch(
-    leaderboardEpoch: MitoApi.LeaderboardEpoch,
+    leaderboardEpoch: GoadesignGoagenMitoApiPb.LeaderboardEpoch,
   ): MitoLeaderboardEpoch {
     return {
       isLive: leaderboardEpoch.isLive,
       epochId: leaderboardEpoch.epochId,
-      startAt: parseInt(leaderboardEpoch.startAt, 10),
-      endAt: parseInt(leaderboardEpoch.endAt, 10),
+      startAt: Number(leaderboardEpoch.startAt),
+      endAt: Number(leaderboardEpoch.endAt),
     }
   }
 
   static mitoStakingRewardToStakingReward(
-    stakingReward: MitoApi.StakingReward,
+    stakingReward: GoadesignGoagenMitoApiPb.StakingReward,
   ) {
     return {
       apr: stakingReward.apr,
       vaultName: stakingReward.vaultName,
       vaultAddress: stakingReward.vaultAddress,
-      lockTimestamp: parseInt(stakingReward.lockTimestamp, 10),
+      lockTimestamp: Number(stakingReward.lockTimestamp),
       claimableRewards: stakingReward.claimableRewards.map(
         IndexerCommonTransformer.grpcCoinToCoin,
       ),
@@ -223,14 +228,14 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoGaugeToGauge(gauge: MitoApi.Gauge): MitoGauge {
+  static mitoGaugeToGauge(gauge: GoadesignGoagenMitoApiPb.Gauge): MitoGauge {
     return {
       id: gauge.id,
       owner: gauge.owner,
       status: gauge.status as MitoGaugeStatus,
       lastDistribution: gauge.lastDistribution,
-      endTimestamp: parseInt(gauge.endTimestamp, 10),
-      startTimestamp: parseInt(gauge.startTimestamp, 10),
+      endTimestamp: Number(gauge.endTimestamp),
+      startTimestamp: Number(gauge.startTimestamp),
       rewardTokens: gauge.rewardTokens.map(
         IndexerCommonTransformer.grpcCoinToCoin,
       ),
@@ -238,7 +243,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoStakingPoolToStakingPool(
-    stakingPool: MitoApi.StakingPool,
+    stakingPool: GoadesignGoagenMitoApiPb.StakingPool,
   ): MitoStakingPool {
     return {
       apr: stakingPool.apr,
@@ -255,7 +260,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoStakingActivityToStakingActivity(
-    stakingActivity: MitoApi.StakingActivity,
+    stakingActivity: GoadesignGoagenMitoApiPb.StakingActivity,
   ) {
     return {
       action: stakingActivity.action,
@@ -263,7 +268,7 @@ export class IndexerGrpcMitoTransformer {
       staker: stakingActivity.staker,
       vaultAddress: stakingActivity.vaultAddress,
       numberByAccount: stakingActivity.numberByAccount,
-      timestamp: parseInt(stakingActivity.timestamp, 10),
+      timestamp: Number(stakingActivity.timestamp),
       rewardedTokens: stakingActivity.rewardedTokens.map(
         IndexerCommonTransformer.grpcCoinToCoin,
       ),
@@ -274,7 +279,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoSubscriptionToSubscription(
-    subscription: MitoApi.Subscription,
+    subscription: GoadesignGoagenMitoApiPb.Subscription,
   ): MitoSubscription {
     const vaultInfo = subscription.vaultInfo
       ? IndexerGrpcMitoTransformer.mitoVaultToVault(subscription.vaultInfo)
@@ -288,50 +293,54 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoLpHolderToLPHolder(holder: MitoApi.Holders): MitoHolders {
+  static mitoLpHolderToLPHolder(
+    holder: GoadesignGoagenMitoApiPb.Holders,
+  ): MitoHolders {
     return {
       amount: holder.amount,
       vaultAddress: holder.vaultAddress,
       stakedAmount: holder.stakedAmount,
       holderAddress: holder.holderAddress,
       lpAmountPercentage: holder.lpAmountPercentage,
-      redemptionLockTime: holder.redemptionLockTime,
-      updatedAt: parseInt(holder.updatedAt, 10),
+      redemptionLockTime: bigIntToString(holder.redemptionLockTime),
+      updatedAt: Number(holder.updatedAt),
     }
   }
 
-  static mitoMissionToMission(mission: MitoApi.Mission): MitoMission {
+  static mitoMissionToMission(
+    mission: GoadesignGoagenMitoApiPb.Mission,
+  ): MitoMission {
     return {
       id: mission.id,
-      points: mission.points,
+      points: bigIntToString(mission.points),
       progress: mission.progress,
       expected: mission.expected,
       completed: mission.completed,
-      accruedPoints: mission.accruedPoints,
-      updatedAt: parseInt(mission.updatedAt, 10),
+      accruedPoints: bigIntToString(mission.accruedPoints),
+      updatedAt: Number(mission.updatedAt),
     }
   }
 
   static mitoMissionLeaderboardEntryToMissionLeaderboardEntry(
-    entry: MitoApi.MissionLeaderboardEntry,
+    entry: GoadesignGoagenMitoApiPb.MissionLeaderboardEntry,
   ): MitoMissionLeaderboardEntry {
     return {
       address: entry.address,
-      accruedPoints: entry.accruedPoints,
+      accruedPoints: bigIntToString(entry.accruedPoints),
     }
   }
 
   static mitoIDOProgressToIDOProgress(
-    progress: MitoApi.IDOProgress,
+    progress: GoadesignGoagenMitoApiPb.IDOProgress,
   ): MitoIDOProgress {
     return {
       status: progress.status,
-      timestamp: parseInt(progress.timestamp, 10),
+      timestamp: Number(progress.timestamp),
     }
   }
 
   static mitoStakedToSubscriptionToStakedToSubscription(
-    data: MitoApi.ArrayOfString,
+    data: GoadesignGoagenMitoApiPb.ArrayOfString,
   ): MitoStakeToSubscription {
     return {
       stakedAmount: data.field[0],
@@ -339,7 +348,7 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoIDOToIDO(IDO: MitoApi.IDO): MitoIDO {
+  static mitoIDOToIDO(IDO: GoadesignGoagenMitoApiPb.IDO): MitoIDO {
     return {
       name: IDO.name,
       owner: IDO.owner,
@@ -360,11 +369,10 @@ export class IndexerGrpcMitoTransformer {
       isAccountWhiteListed: IDO.isAccountWhiteListed,
       isVestingScheduleEnabled: IDO.isVestingScheduleEnabled,
       targetAmountInQuoteDenom: IDO.targetAmountInQuoteDenom,
-      endTime: parseInt(IDO.endTime, 10),
-      startTime: parseInt(IDO.startTime, 10),
-      secondBeforeStartToSetQuotePrice: parseInt(
+      endTime: Number(IDO.endTime),
+      startTime: Number(IDO.startTime),
+      secondBeforeStartToSetQuotePrice: Number(
         IDO.secondBeforeStartToSetQuotePrice,
-        10,
       ),
       progress: IDO.progress.map(
         IndexerGrpcMitoTransformer.mitoIDOProgressToIDOProgress,
@@ -383,11 +391,11 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoIDOSubscriberToIDOSubscriber(
-    IDOSubscriber: MitoApi.IDOSubscriber,
+    IDOSubscriber: GoadesignGoagenMitoApiPb.IDOSubscriber,
   ): MitoIDOSubscriber {
     return {
       address: IDOSubscriber.address,
-      lastSubscribeTime: parseInt(IDOSubscriber.lastSubscribeTime, 10),
+      lastSubscribeTime: Number(IDOSubscriber.lastSubscribeTime),
       subscribedCoin: IDOSubscriber.subscribedCoin
         ? IndexerCommonTransformer.grpcCoinToCoin(IDOSubscriber.subscribedCoin)
         : undefined,
@@ -406,23 +414,23 @@ export class IndexerGrpcMitoTransformer {
             IDOSubscriber.estimateTokenReceived,
           )
         : undefined,
-      createdAt: parseInt(IDOSubscriber.createdAt, 10),
+      createdAt: Number(IDOSubscriber.createdAt),
     }
   }
 
   static mitoIDOClaimedCoinsToIDOClaimedCoins(
-    claimedCoins: MitoApi.IDOClaimedCoins,
+    claimedCoins: GoadesignGoagenMitoApiPb.IDOClaimedCoins,
   ): MitoIDOClaimedCoins {
     return {
       claimedCoins: claimedCoins.claimedCoins.map(
         IndexerCommonTransformer.grpcCoinToCoin,
       ),
-      updatedAt: parseInt(claimedCoins.updatedAt, 10),
+      updatedAt: Number(claimedCoins.updatedAt),
     }
   }
 
   static mitoIDOSubscriptionToIDOSubscription(
-    subscription: MitoApi.IDOSubscription,
+    subscription: GoadesignGoagenMitoApiPb.IDOSubscription,
   ): MitoIDOSubscription {
     return {
       price: subscription.price,
@@ -431,7 +439,7 @@ export class IndexerGrpcMitoTransformer {
       stakedAmount: subscription.stakedAmount,
       rewardClaimed: subscription.rewardClaimed,
       committedAmount: subscription.committedAmount,
-      updatedAt: parseInt(subscription.updatedAt, 10),
+      updatedAt: Number(subscription.updatedAt),
       claimableCoins: subscription.claimableCoins.map(
         IndexerCommonTransformer.grpcCoinToCoin,
       ),
@@ -458,13 +466,13 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoIDOSubscriptionActivityToIDOSubscriptionActivity(
-    IDOSubscriptionActivity: MitoApi.IDOSubscriptionActivity,
+    IDOSubscriptionActivity: GoadesignGoagenMitoApiPb.IDOSubscriptionActivity,
   ): MitoIDOSubscriptionActivity {
     return {
       txHash: IDOSubscriptionActivity.txHash,
       address: IDOSubscriptionActivity.address,
       usdValue: IDOSubscriptionActivity.usdValue,
-      timestamp: parseInt(IDOSubscriptionActivity.timestamp, 10),
+      timestamp: Number(IDOSubscriptionActivity.timestamp),
       subscribedCoin: IDOSubscriptionActivity.subscribedCoin
         ? IndexerCommonTransformer.grpcCoinToCoin(
             IDOSubscriptionActivity.subscribedCoin,
@@ -474,17 +482,17 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoWhitelistAccountToWhitelistAccount(
-    account: MitoApi.WhitelistAccount,
+    account: GoadesignGoagenMitoApiPb.WhitelistAccount,
   ): MitoWhitelistAccount {
     return {
       weight: account.weight,
       accountAddress: account.accountAddress,
-      updatedAt: parseInt(account.updatedAt, 10),
+      updatedAt: Number(account.updatedAt),
     }
   }
 
   static mitoClaimReferenceToClaimReference(
-    claimReference: MitoApi.ClaimReference,
+    claimReference: GoadesignGoagenMitoApiPb.ClaimReference,
   ): MitoClaimReference {
     return {
       denom: claimReference.denom,
@@ -493,33 +501,24 @@ export class IndexerGrpcMitoTransformer {
       claimableAmount: claimReference.claimableAmount,
       cwContractAddress: claimReference.cwContractAddress,
       idoContractAddress: claimReference.idoContractAddress,
-      vestingDurationSeconds: parseInt(
-        claimReference.vestingDurationSeconds,
-        10,
-      ),
-      updatedAt: parseInt(claimReference.updatedAt, 10),
-      startVestingTime: parseInt(claimReference.startVestingTime, 10),
+      vestingDurationSeconds: Number(claimReference.vestingDurationSeconds),
+      updatedAt: Number(claimReference.updatedAt),
+      startVestingTime: Number(claimReference.startVestingTime),
     }
   }
 
   static mitoVestingCOonfigToVestingConfig(
-    config?: MitoApi.VestingConfig,
+    config?: GoadesignGoagenMitoApiPb.VestingConfig,
   ): MitoVestingConfig {
     return {
       schedule: config?.schedule || '',
-      vestingDurationSeconds: parseInt(
-        config?.vestingDurationSeconds || '0',
-        10,
-      ),
-      vestingStartDelaySeconds: parseInt(
-        config?.vestingDurationSeconds || '0',
-        10,
-      ),
+      vestingDurationSeconds: Number(config?.vestingDurationSeconds || 0n),
+      vestingStartDelaySeconds: Number(config?.vestingStartDelaySeconds || 0n),
     }
   }
 
   static mitoIDOInitParamsToIDOVestingConfig(
-    initParams?: MitoApi.InitParams,
+    initParams?: GoadesignGoagenMitoApiPb.InitParams,
   ): MitoVestingConfigMap | undefined {
     if (!initParams || !initParams.vestingConfig) {
       return
@@ -537,13 +536,17 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static vaultResponseToVault(response: MitoApi.GetVaultResponse): MitoVault {
+  static vaultResponseToVault(
+    response: GoadesignGoagenMitoApiPb.GetVaultResponse,
+  ): MitoVault {
     const [vault] = response.vault
 
     return IndexerGrpcMitoTransformer.mitoVaultToVault(vault)
   }
 
-  static vaultsResponseToVaults(response: MitoApi.GetVaultsResponse): {
+  static vaultsResponseToVaults(
+    response: GoadesignGoagenMitoApiPb.GetVaultsResponse,
+  ): {
     vaults: MitoVault[]
     pagination?: MitoPagination
   } {
@@ -556,7 +559,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static lpTokenPriceChartResponseToLPTokenPriceChart(
-    response: MitoApi.LPTokenPriceChartResponse,
+    response: GoadesignGoagenMitoApiPb.LPTokenPriceChartResponse,
   ): MitoPriceSnapshot[] {
     return response.prices.map(
       IndexerGrpcMitoTransformer.mitoPriceSnapshotToPriceSnapshot,
@@ -564,7 +567,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static vaultsByHolderAddressResponseToVaultsByHolderAddress(
-    response: MitoApi.VaultsByHolderAddressResponse,
+    response: GoadesignGoagenMitoApiPb.VaultsByHolderAddressResponse,
   ) {
     return {
       subscriptions: response.subscriptions.map(
@@ -576,7 +579,9 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static lpHoldersResponseToLPHolders(response: MitoApi.LPHoldersResponse) {
+  static lpHoldersResponseToLPHolders(
+    response: GoadesignGoagenMitoApiPb.LPHoldersResponse,
+  ) {
     return {
       holders: response.holders.map(
         IndexerGrpcMitoTransformer.mitoLpHolderToLPHolder,
@@ -588,7 +593,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static transferHistoryResponseToTransfer(
-    response: MitoApi.TransfersHistoryResponse,
+    response: GoadesignGoagenMitoApiPb.TransfersHistoryResponse,
   ) {
     return {
       transfers: response.transfers.map(
@@ -601,7 +606,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static leaderboardEpochsResponseToLeaderboardEpochs(
-    response: MitoApi.LeaderboardEpochsResponse,
+    response: GoadesignGoagenMitoApiPb.LeaderboardEpochsResponse,
   ) {
     return {
       epochs: response.epochs.map(
@@ -614,7 +619,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static stakingPoolsResponseToStakingPools(
-    response: MitoApi.GetStakingPoolsResponse,
+    response: GoadesignGoagenMitoApiPb.GetStakingPoolsResponse,
   ) {
     return {
       pools: response.pools.map(
@@ -627,7 +632,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static stakingRewardByAccountResponseToStakingRewardByAccount(
-    response: MitoApi.StakingRewardByAccountResponse,
+    response: GoadesignGoagenMitoApiPb.StakingRewardByAccountResponse,
   ) {
     return {
       rewards: response.rewards.map(
@@ -640,7 +645,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoStakingHistoryResponseTpStakingHistory(
-    response: MitoApi.StakingHistoryResponse,
+    response: GoadesignGoagenMitoApiPb.StakingHistoryResponse,
   ) {
     return {
       activities: response.activities.map(
@@ -652,23 +657,27 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoMissionsResponseMissions(response: MitoApi.MissionsResponse) {
+  static mitoMissionsResponseMissions(
+    response: GoadesignGoagenMitoApiPb.MissionsResponse,
+  ) {
     return response.data.map(IndexerGrpcMitoTransformer.mitoMissionToMission)
   }
 
   static mitoMissionLeaderboardResponseToMissionLeaderboard(
-    response: MitoApi.MissionLeaderboardResponse,
+    response: GoadesignGoagenMitoApiPb.MissionLeaderboardResponse,
   ): MitoMissionLeaderboard {
     return {
       entries: response.data.map(
         IndexerGrpcMitoTransformer.mitoMissionLeaderboardEntryToMissionLeaderboardEntry,
       ),
-      updatedAt: parseInt(response.updatedAt, 10),
-      rank: response.userRank,
+      updatedAt: Number(response.updatedAt),
+      rank: response.userRank?.toString(),
     }
   }
 
-  static mitoListIDOsResponseToIDOs(response: MitoApi.ListIDOsResponse) {
+  static mitoListIDOsResponseToIDOs(
+    response: GoadesignGoagenMitoApiPb.ListIDOsResponse,
+  ) {
     return {
       idos: response.idos.map(IndexerGrpcMitoTransformer.mitoIDOToIDO),
       pagination: IndexerGrpcMitoTransformer.mitoPaginationToPagination(
@@ -677,7 +686,9 @@ export class IndexerGrpcMitoTransformer {
     }
   }
 
-  static mitoIDOResponseToIDO(response: MitoApi.GetIDOResponse) {
+  static mitoIDOResponseToIDO(
+    response: GoadesignGoagenMitoApiPb.GetIDOResponse,
+  ) {
     return {
       ido: response.ido
         ? IndexerGrpcMitoTransformer.mitoIDOToIDO(response.ido)
@@ -686,7 +697,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoIDOSubscribersResponseToIDOSubscribers(
-    response: MitoApi.GetIDOSubscribersResponse,
+    response: GoadesignGoagenMitoApiPb.GetIDOSubscribersResponse,
   ) {
     return {
       marketId: response.marketId,
@@ -706,7 +717,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoIDOSubscriptionResponseToIDOSubscription(
-    response: MitoApi.GetIDOSubscriptionResponse,
+    response: GoadesignGoagenMitoApiPb.GetIDOSubscriptionResponse,
   ) {
     return {
       subscription: response.subscription
@@ -718,7 +729,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoIDOActivitiesResponseToIDOActivities(
-    response: MitoApi.GetIDOActivitiesResponse,
+    response: GoadesignGoagenMitoApiPb.GetIDOActivitiesResponse,
   ) {
     return {
       activities: response.activities.map(
@@ -731,7 +742,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static mitoWhitelistAccountResponseToWhitelistAccount(
-    response: MitoApi.GetWhitelistResponse,
+    response: GoadesignGoagenMitoApiPb.GetWhitelistResponse,
   ) {
     return {
       idoAddress: response.idoAddress,
@@ -745,7 +756,7 @@ export class IndexerGrpcMitoTransformer {
   }
 
   static claimReferencesResponseToClaimReferences(
-    response: MitoApi.GetClaimReferencesResponse,
+    response: GoadesignGoagenMitoApiPb.GetClaimReferencesResponse,
   ): {
     claimReferences: MitoClaimReference[]
     pagination?: MitoPagination

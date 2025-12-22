@@ -1,7 +1,11 @@
 import { Magic as MagicWallet } from 'magic-sdk'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts'
 import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
+import {
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   WalletAction,
   MagicProvider,
@@ -15,12 +19,12 @@ import {
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  DirectSignResponse,
   AminoSignResponse,
-} from '@injectivelabs/sdk-ts'
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
   BrowserEip1993Provider,
@@ -137,11 +141,26 @@ export class Magic
     }
   }
 
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
   async getSessionOrConfirm(address: AccountAddress): Promise<string> {
     return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
     )
   }
 

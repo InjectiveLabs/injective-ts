@@ -1,19 +1,15 @@
-import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
-import { InjectiveExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
-import {
-  ErrorType,
-  TransactionException,
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-} from '@injectivelabs/exceptions'
 import { IndexerModule } from '../types/index.js'
+import { stringToUint8Array } from '../../../utils/encoding.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
-import type { AccountAddress, EvmChainId } from '@injectivelabs/ts-types'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 
 /**
  * @category Indexer Grpc API
@@ -52,31 +48,33 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     accountNumber?: number
     eip712Version?: string
   }) {
-    const txFeeAmount = CosmosBaseV1Beta1Coin.Coin.create()
-    txFeeAmount.denom = feeDenom
-    txFeeAmount.amount = feePrice
+    const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: feeDenom,
+      amount: feePrice,
+    })
 
-    const cosmosTxFee = InjectiveExchangeRpc.CosmosTxFee.create()
+    const cosmosTxFee = InjectiveExchangeRpcPb.CosmosTxFee.create()
     cosmosTxFee.price = [txFeeAmount]
 
     if (!estimateGas) {
-      cosmosTxFee.gas = gasLimit.toString()
+      cosmosTxFee.gas = BigInt(gasLimit)
     }
 
-    const prepareTxRequest = InjectiveExchangeRpc.PrepareEip712Request.create()
-    prepareTxRequest.chainId = chainId.toString()
+    const prepareTxRequest =
+      InjectiveExchangeRpcPb.PrepareEip712Request.create()
+    prepareTxRequest.chainId = BigInt(chainId)
     prepareTxRequest.signerAddress = address
     prepareTxRequest.fee = cosmosTxFee
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
     const messagesList = arrayOfMessages.map((message) =>
-      Buffer.from(JSON.stringify(message), 'utf8'),
+      stringToUint8Array(safeBigIntStringify(message)),
     )
 
     prepareTxRequest.msgs = messagesList
 
     if (timeoutHeight !== undefined) {
-      prepareTxRequest.timeoutHeight = timeoutHeight.toString()
+      prepareTxRequest.timeoutHeight = BigInt(timeoutHeight)
     }
 
     if (memo) {
@@ -88,35 +86,21 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     }
 
     if (accountNumber) {
-      prepareTxRequest.accountNumber = accountNumber.toString()
+      prepareTxRequest.accountNumber = BigInt(accountNumber)
     }
 
     if (sequence) {
-      prepareTxRequest.sequence = sequence.toString()
+      prepareTxRequest.sequence = BigInt(sequence)
     }
 
-    try {
-      const response = await this.client.PrepareEip712(
-        prepareTxRequest,
-        this.metadata,
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExchangeRpcPb.PrepareEip712Request,
+      InjectiveExchangeRpcPb.PrepareEip712Response
+    >(
+      prepareTxRequest,
+      (this as any).client.prepareEip712.bind((this as any).client),
+    )
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExchangeRpc.GrpcWebError) {
-        throw new TransactionException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PrepareEip712',
-          contextModule: 'Web3Gateway',
-          type: e.type,
-        })
-      }
-
-      throw new TransactionException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Web3Gateway.PrepareEip712',
-        type: ErrorType.Web3Gateway,
-      })
-    }
+    return response
   }
 }

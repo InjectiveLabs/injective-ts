@@ -1,7 +1,7 @@
 import { createAccount } from '@turnkey/viem'
 import { HttpRestClient } from '@injectivelabs/utils'
-import { getInjectiveAddress } from '@injectivelabs/sdk-ts'
 import { Turnkey, SessionType } from '@turnkey/sdk-browser'
+import { getInjectiveAddress } from '@injectivelabs/sdk-ts/utils'
 import { WalletAction, TurnkeyProvider } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
@@ -284,6 +284,7 @@ export class TurnkeyWallet {
         new Error('googleClientId and googleRedirectUri are required'),
       )
     }
+
     return generateGoogleUrl({
       nonce,
       clientId: this.metadata.googleClientId,

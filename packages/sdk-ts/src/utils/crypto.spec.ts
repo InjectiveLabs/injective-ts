@@ -4,16 +4,18 @@ import {
   hashToHex,
   decompressPubKey,
   privateKeyToPublicKey,
+  SignTypedDataVersionV4,
   TypedDataUtilsHashStruct,
   TypedDataUtilsSanitizeData,
-  SignTypedDataVersionV4,
 } from './crypto.js'
 
 describe('crypto helper functions', () => {
   it('hashToHex returns correct value', () => {
-    const message = 'hello world'
+    // Use valid base64 input (base64 encoding of 'hello world')
+    const message = 'aGVsbG8gd29ybGQ='
+    // SHA256 of 'hello world' bytes
     const expected =
-      '8D93BD1A4B536FE30D0AA7D4FD0B43F4964A91059A1FB0014D8F3F4E575B38AB'
+      'B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9'
     const actual = hashToHex(message)
 
     expect(actual).toEqual(expected)

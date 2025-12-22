@@ -1,6 +1,10 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import {
+  base64ToUint8Array,
+  uint8ArrayToBase64,
+} from '../../../../utils/encoding.js'
 
 export declare namespace MsgReclaimLockedFunds {
   export interface Params {
@@ -9,7 +13,7 @@ export declare namespace MsgReclaimLockedFunds {
     signature: Uint8Array
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgReclaimLockedFunds
 }
 
 /**
@@ -26,16 +30,13 @@ export default class MsgReclaimLockedFunds extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.create()
+    const message = InjectiveExchangeV1Beta1TxPb.MsgReclaimLockedFunds.create({
+      sender: params.sender,
+      lockedAccountPubKey: base64ToUint8Array(params.lockedAccountPubKey),
+      signature: params.signature,
+    })
 
-    message.sender = params.sender
-    message.lockedAccountPubKey = Buffer.from(
-      params.lockedAccountPubKey,
-      'base64',
-    )
-    message.signature = params.signature
-
-    return InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -52,8 +53,8 @@ export default class MsgReclaimLockedFunds extends MsgBase<
 
     const message = {
       sender: proto.sender,
-      lockedAccountPubKey: Buffer.from(proto.lockedAccountPubKey),
-      signature: Buffer.from(proto.signature),
+      lockedAccountPubKey: uint8ArrayToBase64(proto.lockedAccountPubKey),
+      signature: uint8ArrayToBase64(proto.signature),
     }
 
     return {
@@ -90,8 +91,8 @@ export default class MsgReclaimLockedFunds extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgReclaimLockedFunds.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgReclaimLockedFunds.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

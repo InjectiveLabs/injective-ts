@@ -1,13 +1,11 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import { CosmosAuthzV1Beta1Authz } from '@injectivelabs/core-proto-ts'
+import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import type * as CosmosAuthzV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb'
 import type {
-  GoogleProtobufAny,
-  CosmosAuthzV1Beta1Query,
-} from '@injectivelabs/core-proto-ts'
-import type {
-  GrantAuthorizationWithDecodedAuthorization,
   GrantWithDecodedAuthorization,
+  GrantAuthorizationWithDecodedAuthorization,
 } from '../types/index.js'
 
 /**
@@ -15,7 +13,7 @@ import type {
  */
 export class ChainGrpcAuthZTransformer {
   static grpcGrantToGrant(
-    grant: CosmosAuthzV1Beta1Authz.Grant,
+    grant: CosmosAuthzV1Beta1AuthzPb.Grant,
   ): GrantWithDecodedAuthorization {
     const authorization = decodeAuthorizationNoThrow(grant.authorization)
 
@@ -27,7 +25,7 @@ export class ChainGrpcAuthZTransformer {
   }
 
   static grpcGrantAuthorizationToGrantAuthorization(
-    grant: CosmosAuthzV1Beta1Authz.GrantAuthorization,
+    grant: CosmosAuthzV1Beta1AuthzPb.GrantAuthorization,
   ): GrantAuthorizationWithDecodedAuthorization {
     const authorization = decodeAuthorizationNoThrow(grant.authorization)
 
@@ -41,10 +39,10 @@ export class ChainGrpcAuthZTransformer {
   }
 
   static grpcGrantsToGrants(
-    response: CosmosAuthzV1Beta1Query.QueryGrantsResponse,
+    response: CosmosAuthzV1Beta1QueryPb.QueryGrantsResponse,
   ) {
     return {
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination!,
       ),
       grants: response.grants.map(ChainGrpcAuthZTransformer.grpcGrantToGrant),
@@ -52,10 +50,10 @@ export class ChainGrpcAuthZTransformer {
   }
 
   static grpcGranteeGrantsToGranteeGrants(
-    response: CosmosAuthzV1Beta1Query.QueryGranteeGrantsResponse,
+    response: CosmosAuthzV1Beta1QueryPb.QueryGranteeGrantsResponse,
   ) {
     return {
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination!,
       ),
       grants: response.grants.map(
@@ -65,10 +63,10 @@ export class ChainGrpcAuthZTransformer {
   }
 
   static grpcGranterGrantsToGranterGrants(
-    response: CosmosAuthzV1Beta1Query.QueryGranterGrantsResponse,
+    response: CosmosAuthzV1Beta1QueryPb.QueryGranterGrantsResponse,
   ) {
     return {
-      pagination: ChainGrpcCommonTransformer.grpcPaginationToPagination(
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
         response.pagination!,
       ),
       grants: response.grants.map(
@@ -78,13 +76,14 @@ export class ChainGrpcAuthZTransformer {
   }
 }
 
-const decodeAuthorization = (authorization: GoogleProtobufAny.Any) => {
+const decodeAuthorization = (authorization: GoogleProtobufAnyPbPb.Any) => {
   switch (authorization.typeUrl) {
     case '/cosmos.authz.v1beta1.GenericAuthorization':
       return {
-        authorization: CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(
-          authorization.value,
-        ),
+        authorization:
+          CosmosAuthzV1Beta1AuthzPb.GenericAuthorization.fromBinary(
+            authorization.value,
+          ),
         authorizationType: '/cosmos.authz.v1beta1.GenericAuthorization',
       }
     default:
@@ -92,7 +91,9 @@ const decodeAuthorization = (authorization: GoogleProtobufAny.Any) => {
   }
 }
 
-const decodeAuthorizationNoThrow = (authorization?: GoogleProtobufAny.Any) => {
+const decodeAuthorizationNoThrow = (
+  authorization?: GoogleProtobufAnyPbPb.Any,
+) => {
   if (!authorization) {
     return undefined
   }

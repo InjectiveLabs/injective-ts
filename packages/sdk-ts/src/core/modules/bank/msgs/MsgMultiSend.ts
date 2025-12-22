@@ -1,32 +1,29 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBankV1Beta1Tx,
-  CosmosBankV1Beta1Bank,
-  CosmosBaseV1Beta1Coin,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmosBankV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/tx_pb'
+import * as CosmosBankV1Beta1BankPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/bank_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgMultiSend {
   export interface Params {
     inputs: {
       address: string
-      coins: CosmosBaseV1Beta1Coin.Coin[]
+      coins: CosmosBaseV1Beta1CoinPb.Coin[]
     }[]
     outputs: {
       address: string
-      coins: CosmosBaseV1Beta1Coin.Coin[]
+      coins: CosmosBaseV1Beta1CoinPb.Coin[]
     }[]
   }
 
-  export type Proto = CosmosBankV1Beta1Tx.MsgMultiSend
+  export type Proto = CosmosBankV1Beta1TxPb.MsgMultiSend
 }
 
 /**
  * @category Messages
  */
 export default class MsgMultiSend extends MsgBase<
-  MsgMultiSend.Proto,
-  MsgMultiSend.Params
+  MsgMultiSend.Params,
+  MsgMultiSend.Proto
 > {
   static fromJSON(params: MsgMultiSend.Params): MsgMultiSend {
     return new MsgMultiSend(params)
@@ -36,41 +33,33 @@ export default class MsgMultiSend extends MsgBase<
     const { params } = this
 
     const inputs = params.inputs.map((i) => {
-      const input = CosmosBankV1Beta1Bank.Input.create()
-
-      input.address = i.address
-      input.coins = i.coins.map((c) => {
-        const coin = CosmosBaseV1Beta1Coin.Coin.create()
-
-        coin.denom = c.denom
-        coin.amount = c.amount
-
-        return coin
+      return CosmosBankV1Beta1BankPb.Input.create({
+        address: i.address,
+        coins: i.coins.map((c: CosmosBaseV1Beta1CoinPb.Coin) => {
+          return CosmosBaseV1Beta1CoinPb.Coin.create({
+            denom: c.denom,
+            amount: c.amount,
+          })
+        }),
       })
-
-      return input
     })
 
     const outputs = params.outputs.map((o) => {
-      const output = CosmosBankV1Beta1Bank.Output.create()
-
-      output.address = o.address
-      output.coins = o.coins.map((c) => {
-        const coin = CosmosBaseV1Beta1Coin.Coin.create()
-
-        coin.denom = c.denom
-        coin.amount = c.amount
-
-        return coin
+      return CosmosBankV1Beta1BankPb.Output.create({
+        address: o.address,
+        coins: o.coins.map((c: CosmosBaseV1Beta1CoinPb.Coin) => {
+          return CosmosBaseV1Beta1CoinPb.Coin.create({
+            denom: c.denom,
+            amount: c.amount,
+          })
+        }),
       })
-
-      return output
     })
 
-    const message = CosmosBankV1Beta1Tx.MsgMultiSend.create()
-
-    message.inputs = inputs
-    message.outputs = outputs
+    const message = CosmosBankV1Beta1TxPb.MsgMultiSend.create({
+      inputs: inputs,
+      outputs: outputs,
+    })
 
     return message
   }
@@ -87,7 +76,8 @@ export default class MsgMultiSend extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      inputs: proto.inputs,
+      outputs: proto.outputs,
     }
 
     return {
@@ -116,6 +106,6 @@ export default class MsgMultiSend extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosBankV1Beta1Tx.MsgMultiSend.encode(this.toProto()).finish()
+    return CosmosBankV1Beta1TxPb.MsgMultiSend.toBinary(this.toProto())
   }
 }

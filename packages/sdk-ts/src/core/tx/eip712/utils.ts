@@ -4,7 +4,7 @@ import {
   DEFAULT_GAS_LIMIT,
 } from '@injectivelabs/utils'
 import type { EvmChainId } from '@injectivelabs/ts-types'
-import type { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
+import type { Eip712ConvertTxArgs, Eip712ConvertFeeArgs } from './types.js'
 
 export const getEip712Domain = (evmChainId: EvmChainId) => {
   return {

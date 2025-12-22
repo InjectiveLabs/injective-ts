@@ -1,9 +1,13 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "isolatedModules": true,
+    "types": ["node", "vitest/globals"],
     "paths": {
-      "@injectivelabs/utils/test-utils": ["../utils/src/test-utils/index.ts"]
+      "@injectivelabs/utils/test-utils": ["../utils/src/test-utils/index.ts"],
+      "@injectivelabs/exceptions": ["../exceptions/src/index.ts"]
     }
-  }
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
