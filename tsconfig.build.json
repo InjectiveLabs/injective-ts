@@ -45,6 +45,8 @@
     "dist",
     "docs",
     "./deprecated",
+    "protoV2",
+    "proto",
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.specs.ts"
