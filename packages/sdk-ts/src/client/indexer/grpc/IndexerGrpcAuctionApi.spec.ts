@@ -138,4 +138,26 @@ describe('IndexerGrpcAuctionApi', () => {
       )
     }
   })
+
+  test('fetchAccountAuctionStatus', async () => {
+    try {
+      const response = await indexerGrpcAuctionApi.fetchAccountAuctionStatus({
+        address: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcAuctionTransformer.auctionAccountStatusResponseToAuctionAccountStatus
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcAuctionApi.fetchAccountAuctionStatus => ' +
+          (e as any).message,
+      )
+    }
+  })
 })
