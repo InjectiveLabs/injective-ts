@@ -8,23 +8,54 @@ This guide helps you upgrade from any version **before v1.17.2** to **v1.17.x** 
 
 ## Table of Contents
 
-- [Breaking Changes](#breaking-changes)
-  - [1. setMetadata() is Now Async](#1-setmetadata-is-now-async)
-  - [2. Wallet Strategies Require Explicit Loading](#2-wallet-strategies-require-explicit-loading)
-  - [3. Buffer Dependency Removed](#3-buffer-dependency-removed)
-  - [4. Apollo GraphQL Client Removed](#4-apollo-graphql-client-removed)
-- [Deprecations](#deprecations)
-  - [Type Imports from @injectivelabs/ts-types](#type-imports-from-injectivelabtsts-types)
-- [Recommended Updates](#recommended-updates)
-  - [Use Subpath Imports for Better Tree-Shaking](#use-subpath-imports-for-better-tree-shaking)
-- [New Features](#new-features)
-  - [Lazy Loading Methods](#lazy-loading-methods)
-  - [Encoding Utilities](#encoding-utilities)
-- [Migration Checklist](#migration-checklist)
-- [Troubleshooting](#troubleshooting)
-- [Complete Code Examples](#complete-code-examples)
-- [Benefits](#benefits)
-- [Resources](#resources)
+- [Migration Guide: Upgrading to v1.17.x](#migration-guide-upgrading-to-v117x)
+  - [Table of Contents](#table-of-contents)
+  - [Breaking Changes](#breaking-changes)
+    - [1. setMetadata() is Now Async](#1-setmetadata-is-now-async)
+      - [❌ Before](#-before)
+      - [✅ After](#-after)
+    - [2. Wallet Strategies Require Explicit Loading](#2-wallet-strategies-require-explicit-loading)
+      - [❌ Before](#-before-1)
+      - [✅ After](#-after-1)
+    - [3. Buffer Dependency Removed](#3-buffer-dependency-removed)
+      - [Migration Table](#migration-table)
+      - [❌ Before](#-before-2)
+      - [✅ After](#-after-2)
+    - [4. Apollo GraphQL Client Removed](#4-apollo-graphql-client-removed)
+      - [❌ Before](#-before-3)
+      - [✅ After](#-after-3)
+  - [Deprecations](#deprecations)
+    - [Type Imports from @injectivelabs/ts-types](#type-imports-from-injectivelabsts-types)
+      - [⚠️ Deprecated Types](#️-deprecated-types)
+      - [❌ Before](#-before-4)
+      - [✅ After](#-after-4)
+  - [Recommended Updates](#recommended-updates)
+    - [Use Subpath Imports for Better Tree-Shaking](#use-subpath-imports-for-better-tree-shaking)
+      - [💡 Before (Still Works)](#-before-still-works)
+      - [💡 After (Recommended)](#-after-recommended)
+      - [Available Subpath Imports](#available-subpath-imports)
+  - [New Features](#new-features)
+    - [Lazy Loading Methods](#lazy-loading-methods)
+    - [Encoding Utilities](#encoding-utilities)
+  - [Troubleshooting](#troubleshooting)
+    - [Error: "Wallet X strategy not loaded. Call setWallet() or loadStrategy() first."](#error-wallet-x-strategy-not-loaded-call-setwallet-or-loadstrategy-first)
+    - [Error: "setMetadata is not a function" or unexpected behavior](#error-setmetadata-is-not-a-function-or-unexpected-behavior)
+    - [Error: "Buffer is not defined"](#error-buffer-is-not-defined)
+    - [TypeScript errors: Cannot find module '@injectivelabs/sdk-ts/client/indexer'](#typescript-errors-cannot-find-module-injectivelabssdk-tsclientindexer)
+    - [Module not found errors after upgrading](#module-not-found-errors-after-upgrading)
+  - [Complete Code Examples](#complete-code-examples)
+    - [Full Wallet Strategy Migration](#full-wallet-strategy-migration)
+      - [❌ Before v1.17.x](#-before-v117x)
+      - [✅ After v1.17.x](#-after-v117x)
+    - [Full Trading Application Migration](#full-trading-application-migration)
+      - [❌ Before v1.17.x](#-before-v117x-1)
+      - [✅ After v1.17.x (with subpath imports)](#-after-v117x-with-subpath-imports)
+  - [Benefits](#benefits)
+    - [Performance Improvements](#performance-improvements)
+    - [Developer Experience](#developer-experience)
+    - [Code Quality](#code-quality)
+    - [Maintenance](#maintenance)
+  - [Resources](#resources)
 
 ---
 
@@ -201,33 +232,44 @@ const gqlClient = new GqlClient(endpoint)
 
 #### ✅ After
 
-If you were using the GraphQL client, you have two options:
+If you were using the GraphQL client, use `HttpClient` for GraphQL queries:
 
-1. **Use the REST/gRPC clients instead** (recommended):
+```typescript
+import { HttpClient } from '@injectivelabs/utils'
 
-   ```typescript
-   import { IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts/client/indexer'
+const client = new HttpClient('YOUR_GRAPHQL_ENDPOINT')
 
-   const indexerApi = new IndexerGrpcAccountApi(endpoint)
-   ```
+// Optional: Set auth headers if required
+client.setConfig({
+  headers: {
+    authorization: 'Bearer YOUR_API_KEY',
+  },
+})
 
-2. **Implement your own GraphQL client**:
+// Make a query
+const query = JSON.stringify({
+  query: `
+    query GetData($id: ID!) {
+      entity(id: $id) {
+        id
+        name
+        value
+      }
+    }
+  `,
+  variables: { id: '123' },
+})
 
-   See the official documentation for GraphQL endpoint usage: [Querying GraphQL Endpoints](https://docs.injective.network/developers-native/query-ethereum#querying-graphql-endpoints)
+const response = await client.post<string, { data: { data: YourResponseType } }>('', query)
+console.log(response.data.data)
+```
 
-   ```typescript
-   import { ApolloClient, InMemoryCache } from '@apollo/client'
-
-   const client = new ApolloClient({
-     uri: endpoint,
-     cache: new InMemoryCache(),
-   })
-   ```
+**Full documentation**: [Querying GraphQL Endpoints](https://docs.injective.network/developers-native/query-ethereum#querying-graphql-endpoints)
 
 **Action Required**:
 
-- If using GraphQL client, migrate to gRPC/REST APIs or implement your own Apollo client
-- See [GraphQL documentation](https://docs.injective.network/developers-native/query-ethereum#querying-graphql-endpoints) for implementation guidance
+- If using GraphQL client, use `HttpClient` from `@injectivelabs/utils`
+- See [GraphQL documentation](https://docs.injective.network/developers-native/query-ethereum#querying-graphql-endpoints) for complete implementation examples
 - Remove any imports from `@injectivelabs/sdk-ts/client/gql`
 
 ---
@@ -364,46 +406,6 @@ const hex = uint8ArrayToHex(bytes)
 ```
 
 **Source**: [`packages/sdk-ts/src/utils/encoding.ts`](../packages/sdk-ts/src/utils/encoding.ts)
-
----
-
-## Migration Checklist
-
-Use this checklist to ensure a complete migration:
-
-### Critical (Must Fix)
-
-- [ ] **Search for `setMetadata(`** in your codebase
-  - [ ] Add `await` before each call
-  - [ ] Ensure containing functions are `async`
-
-- [ ] **Update wallet initialization**
-  - [ ] Remove `wallet` option from `WalletStrategy` constructor
-  - [ ] Add `await walletStrategy.setWallet(Wallet.YourWallet)` after construction
-  - [ ] Move wallet method calls after `setWallet()`
-
-- [ ] **Replace Buffer usage**
-  - [ ] Search for `Buffer.from(`
-  - [ ] Search for `.toString('hex')`, `.toString('base64')`, etc.
-  - [ ] Replace with encoding utilities from migration table
-  - [ ] Add imports: `import { ... } from '@injectivelabs/sdk-ts/utils'`
-
-- [ ] **Remove GraphQL client usage** (if applicable)
-  - [ ] Replace with gRPC/REST clients or implement own Apollo client
-  - [ ] Remove imports from `@injectivelabs/sdk-ts/client/gql`
-
-### Recommended (Avoid Future Deprecation)
-
-- [ ] **Update deprecated type imports**
-  - [ ] Search for `from '@injectivelabs/ts-types'`
-  - [ ] Replace with `from '@injectivelabs/sdk-ts/types'`
-
-### Optional (Performance Benefits)
-
-- [ ] **Migrate to subpath imports**
-  - [ ] Update imports to use subpath patterns
-  - [ ] Measure bundle size improvements
-  - [ ] Configure IDE to prefer subpath imports
 
 ---
 
@@ -672,7 +674,7 @@ Upgrading to v1.17.x provides several benefits:
   - [`packages/ts-types/src/trade.ts`](../packages/ts-types/src/trade.ts)
   - [`packages/ts-types/src/common.ts`](../packages/ts-types/src/common.ts)
 - **Wallet Strategy Source**: [`packages/wallets/wallet-strategy/src/strategy/index.ts`](../packages/wallets/wallet-strategy/src/strategy/index.ts)
-- **Documentation PR**: [injective-docs #18](https://github.com/InjectiveLabs/injective-docs/pull/18) - Real-world migration examples
+- **Documentation**: [injective-docs](https://docs.injective.network/)
 
 ---
 
