@@ -206,7 +206,7 @@ jobs:
       - name: Package bump layer
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.LAYER_GH_TOKEN }}
           repository_url: injectiveLabs/injective-ui
           repository_branch: master
 
@@ -223,7 +223,7 @@ jobs:
       - name: Package bump Hub
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.HUB_GH_TOKEN }}
           repository_url: injectiveLabs/injective-hub
           repository_branch: dev
 
@@ -240,7 +240,7 @@ jobs:
       - name: Package bump Helix
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.HELIX_GH_TOKEN }}
           repository_url: injectiveLabs/injective-helix
           repository_branch: dev
 
@@ -257,7 +257,7 @@ jobs:
       - name: Package bump Explorer
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.EXPLORER_GH_TOKEN }}
           repository_url: injectiveLabs/injective-explorer
           repository_branch: dev
 
@@ -274,7 +274,7 @@ jobs:
       - name: Package bump Trading UI
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.TRADING_UI_GH_TOKEN }}
           repository_url: injectiveLabs/injective-trading-ui
           repository_branch: dev
 
@@ -291,7 +291,7 @@ jobs:
       - name: Package bump Mito
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.MITO_GH_TOKEN }}
           repository_url: mitoFinance/mito-ui
           repository_branch: dev
 
@@ -308,7 +308,7 @@ jobs:
       - name: Package bump UI API
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.UI_API_GH_TOKEN }}
           repository_url: injectiveLabs/injective-ui-api
           repository_branch: staging
 
@@ -325,7 +325,7 @@ jobs:
       - name: Package bump Admin UI
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.ADMIN_UI_GH_TOKEN }}
           repository_url: InjectiveLabs/injective-admin-ui
           repository_branch: dev
 
@@ -342,6 +342,6 @@ jobs:
       - name: Package bump DO UI
         uses: InjectiveLabs/github-fe/actions/package-bump@master
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.DO_UI_GH_TOKEN }}
           repository_url: injectiveLabs/injective-do-ui
           repository_branch: master
