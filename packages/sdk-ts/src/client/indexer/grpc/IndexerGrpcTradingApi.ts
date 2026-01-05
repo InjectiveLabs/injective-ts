@@ -3,6 +3,7 @@ import { InjectiveTradingRPCClient } from '@injectivelabs/indexer-proto-ts-v2/ge
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { MarketType, GridStrategyType } from '../types/index.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Indexer Grpc API
@@ -12,8 +13,8 @@ export class IndexerGrpcTradingApi extends BaseIndexerGrpcConsumer {
 
   private client: InjectiveTradingRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new InjectiveTradingRPCClient(this.transport)
   }
 

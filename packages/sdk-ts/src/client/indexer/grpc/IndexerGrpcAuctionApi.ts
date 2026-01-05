@@ -3,6 +3,7 @@ import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-proto-ts-v2/ge
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Indexer Grpc API
@@ -12,8 +13,8 @@ export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
 
   private client: InjectiveAuctionRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
 
     this.client = new InjectiveAuctionRPCClient(this.transport)
   }

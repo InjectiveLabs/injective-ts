@@ -5,6 +5,7 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcStakingTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Chain Grpc API
@@ -13,8 +14,8 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Staking
   private client: CosmosStakingV1Beta1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new CosmosStakingV1Beta1QueryClient(this.transport)
   }
 

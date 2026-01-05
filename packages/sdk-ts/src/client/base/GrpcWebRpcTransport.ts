@@ -1,4 +1,7 @@
-import { getGrpcWebTransport } from '../../utils/grpc.js'
+import {
+  getGrpcWebTransport,
+  type GrpcWebTransportAdditionalOptions,
+} from '../../utils/grpc.js'
 import type {
   UnaryCall,
   RpcOptions,
@@ -18,15 +21,7 @@ import type {
 export class GrpcWebRpcTransport implements RpcTransport {
   private transport: RpcTransport
 
-  constructor(
-    baseUrl: string,
-    options?: {
-      fetch?: typeof fetch
-      headers?: Record<string, string>
-      timeout?: number
-      credentials?: RequestCredentials
-    },
-  ) {
+  constructor(baseUrl: string, options?: GrpcWebTransportAdditionalOptions) {
     this.transport = getGrpcWebTransport(baseUrl, options)
   }
 

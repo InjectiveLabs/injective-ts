@@ -3,6 +3,7 @@ import { QueryClient as InjectivePeggyV1QueryClient } from '@injectivelabs/core-
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcPeggyTransformer } from '../transformers/index.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Chain Grpc API
@@ -11,8 +12,8 @@ export class ChainGrpcPeggyApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Peggy
   private client: InjectivePeggyV1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new InjectivePeggyV1QueryClient(this.transport)
   }
 

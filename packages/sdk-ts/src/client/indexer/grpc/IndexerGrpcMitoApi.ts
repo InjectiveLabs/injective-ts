@@ -3,6 +3,7 @@ import * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/gener
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Indexer Grpc API
@@ -11,8 +12,8 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Mito
   private client: MitoAPIClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new MitoAPIClient(this.transport)
   }
 

@@ -3,6 +3,7 @@ import { InjectiveReferralRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcReferralTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Indexer Grpc API
@@ -11,8 +12,8 @@ export class IndexerGrpcReferralApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Referral
   private client: InjectiveReferralRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
 
     this.client = new InjectiveReferralRPCClient(this.transport)
   }

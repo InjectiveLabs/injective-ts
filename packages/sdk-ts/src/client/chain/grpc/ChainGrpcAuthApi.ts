@@ -5,6 +5,7 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcAuthTransformer } from '../transformers/ChainGrpcAuthTransformer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Chain Grpc API
@@ -13,8 +14,8 @@ export class ChainGrpcAuthApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Auth
   private client: CosmosAuthV1BetaQueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new CosmosAuthV1BetaQueryClient(this.transport)
   }
 

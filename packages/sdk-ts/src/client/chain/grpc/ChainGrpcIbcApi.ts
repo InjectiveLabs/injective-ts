@@ -4,6 +4,7 @@ import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Chain Grpc API
@@ -12,8 +13,8 @@ export class ChainGrpcIbcApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Ibc
   private client: IbcApplicationsTransferV1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new IbcApplicationsTransferV1QueryClient(this.transport)
   }
 

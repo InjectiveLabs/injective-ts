@@ -6,6 +6,7 @@ import { ChainGrpcBankTransformer } from '../transformers/index.js'
 import { fetchAllWithPagination } from '../../../utils/pagination.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 const MAX_LIMIT_FOR_SUPPLY = 10000
 
@@ -16,8 +17,8 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Bank
   private client: CosmosBankV1BetaQueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new CosmosBankV1BetaQueryClient(this.transport)
   }
 

@@ -5,6 +5,7 @@ import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcAccountTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Indexer Grpc API
@@ -13,8 +14,8 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Account
   private client: InjectiveAccountsRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new InjectiveAccountsRPCClient(this.transport)
   }
 

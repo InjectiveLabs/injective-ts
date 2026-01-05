@@ -3,6 +3,7 @@ import { QueryClient as InjectiveTokenFactoryV1Beta1QueryClient } from '@injecti
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcTokenFactoryTransformer } from '../index.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category TokenFactory Grpc API
@@ -11,8 +12,8 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.WasmX
   private client: InjectiveTokenFactoryV1Beta1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new InjectiveTokenFactoryV1Beta1QueryClient(this.transport)
   }
 

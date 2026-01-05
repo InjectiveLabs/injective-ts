@@ -4,6 +4,7 @@ import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcSpotTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 import type {
   OrderSide,
   OrderState,
@@ -21,8 +22,8 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
 
   private client: InjectiveSpotExchangeRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new InjectiveSpotExchangeRPCClient(this.transport)
   }
 

@@ -3,6 +3,7 @@ import { InjectivePortfolioRPCClient } from '@injectivelabs/indexer-proto-ts-v2/
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Indexer Grpc API
@@ -11,8 +12,8 @@ export class IndexerGrpcAccountPortfolioApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Portfolio
   private client: InjectivePortfolioRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new InjectivePortfolioRPCClient(this.transport)
   }
 

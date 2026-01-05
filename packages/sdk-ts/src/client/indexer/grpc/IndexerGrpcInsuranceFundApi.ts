@@ -3,6 +3,7 @@ import { InjectiveInsuranceRPCClient } from '@injectivelabs/indexer-proto-ts-v2/
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Indexer Grpc API
@@ -11,8 +12,8 @@ export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.InsuranceFund
   private client: InjectiveInsuranceRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new InjectiveInsuranceRPCClient(this.transport)
   }
 

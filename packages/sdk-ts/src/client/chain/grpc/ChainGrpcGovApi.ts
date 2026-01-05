@@ -6,6 +6,7 @@ import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb'
 import type { PaginationOption } from '../../../types/pagination.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Chain Grpc API
@@ -14,8 +15,8 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Gov
   private client: CosmosGovV1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new CosmosGovV1QueryClient(this.transport)
   }
 

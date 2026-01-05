@@ -2,6 +2,8 @@ import * as CosmosBaseTendermintV1Beta1QueryPb from '@injectivelabs/core-proto-t
 import { ServiceClient as CosmosBaseTendermintV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/tendermint/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+
 /**
  * @category Chain Grpc API
  */
@@ -9,8 +11,8 @@ export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Tendermint
   private client: CosmosBaseTendermintV1Beta1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new CosmosBaseTendermintV1Beta1QueryClient(this.transport)
   }
 

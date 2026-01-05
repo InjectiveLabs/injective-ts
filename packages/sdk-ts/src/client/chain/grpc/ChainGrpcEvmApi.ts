@@ -3,6 +3,7 @@ import { QueryClient as InjectiveEvmV1QueryClient } from '@injectivelabs/core-pr
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcEvmTransformer } from '../transformers/index.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Chain Grpc API
@@ -12,8 +13,8 @@ export class ChainGrpcEvmApi extends BaseGrpcConsumer {
 
   private client: InjectiveEvmV1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
 
     this.client = new InjectiveEvmV1QueryClient(this.transport)
   }

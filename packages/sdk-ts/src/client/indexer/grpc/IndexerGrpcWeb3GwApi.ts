@@ -10,6 +10,7 @@ import { stringToUint8Array } from '../../../utils/encoding.js'
 import { safeBigIntStringify } from '../../../utils/helpers.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Indexer Grpc API
@@ -17,8 +18,8 @@ import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
   protected module: string = IndexerModule.Web3Gw
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
   }
 
   async prepareEip712Request({

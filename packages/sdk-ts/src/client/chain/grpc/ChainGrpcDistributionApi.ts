@@ -5,6 +5,7 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcDistributionTransformer } from '../transformers/index.js'
 import type { Coin } from '@injectivelabs/ts-types'
 import type { ValidatorRewards } from '../types/index.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
 
 /**
  * @category Chain Grpc API
@@ -13,8 +14,8 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Distribution
   private client: CosmosDistributionV1Beta1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    super(endpoint, options)
     this.client = new CosmosDistributionV1Beta1QueryClient(this.transport)
   }
 

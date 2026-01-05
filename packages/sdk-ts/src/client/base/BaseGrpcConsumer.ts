@@ -7,6 +7,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { GrpcWebRpcTransport } from './GrpcWebRpcTransport.js'
 import type { UnaryCall, RpcOptions } from '@protobuf-ts/runtime-rpc'
+import type { GrpcWebTransportAdditionalOptions } from '../../utils/grpc.js'
 
 /**
  * BaseGrpcConsumer provides base functionality for all gRPC consumers.
@@ -17,19 +18,20 @@ export default class BaseGrpcConsumer {
   protected module: string = ''
   protected metadata?: Record<string, string>
   protected endpoint: string
+  protected options?: GrpcWebTransportAdditionalOptions
 
-  constructor(endpoint: string) {
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
     this.endpoint = endpoint
-    this.transport = new GrpcWebRpcTransport(endpoint, {
-      headers: {},
-    })
+    this.options = options
+    this.transport = new GrpcWebRpcTransport(endpoint, options)
   }
 
   public setMetadata(map: Record<string, string>) {
     this.metadata = map
-    // Recreate transport with new metadata
+    // Recreate transport with new metadata, preserving existing options
     this.transport = new GrpcWebRpcTransport(this.endpoint, {
-      headers: this.metadata,
+      ...this.options,
+      meta: this.metadata,
     })
     return this
   }
