@@ -7,7 +7,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { GrpcWebRpcTransport } from './GrpcWebRpcTransport.js'
 import type { UnaryCall, RpcOptions } from '@protobuf-ts/runtime-rpc'
-import type { GrpcWebTransportAdditionalOptions } from '../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../types'
 
 /**
  * BaseGrpcConsumer provides base functionality for all gRPC consumers.

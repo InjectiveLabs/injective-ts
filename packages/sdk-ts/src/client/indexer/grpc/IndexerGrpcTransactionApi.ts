@@ -23,7 +23,7 @@ import {
   base64ToUint8Array,
 } from '../../../utils/encoding.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 interface PrepareTxArgs {
   address: AccountAddress

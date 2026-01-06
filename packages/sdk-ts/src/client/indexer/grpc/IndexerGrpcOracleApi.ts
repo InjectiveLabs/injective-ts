@@ -3,7 +3,7 @@ import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-proto-ts-v2/gen
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 /**
  * @category Indexer Grpc API

@@ -7,7 +7,7 @@ import { base64ToUint8Array } from '../../../utils/encoding.js'
 import { ChainGrpcWasmTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 /**
  * @category Chain Grpc API

@@ -3,7 +3,7 @@ import * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/gener
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 /**
  * @category Indexer Grpc API

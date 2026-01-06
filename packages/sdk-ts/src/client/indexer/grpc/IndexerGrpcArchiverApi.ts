@@ -3,7 +3,7 @@ import { InjectiveArchiverRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcArchiverTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 /**
  * @category Indexer Grpc API

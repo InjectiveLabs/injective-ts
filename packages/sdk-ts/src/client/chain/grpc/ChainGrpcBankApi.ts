@@ -6,7 +6,7 @@ import { ChainGrpcBankTransformer } from '../transformers/index.js'
 import { fetchAllWithPagination } from '../../../utils/pagination.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 const MAX_LIMIT_FOR_SUPPLY = 10000
 

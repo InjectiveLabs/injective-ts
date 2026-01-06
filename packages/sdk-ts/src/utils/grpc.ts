@@ -1,10 +1,6 @@
-import {
-  type GrpcWebOptions,
-  GrpcWebFetchTransport,
-} from '@protobuf-ts/grpcweb-transport'
+import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport'
 import type { RpcTransport } from '@protobuf-ts/runtime-rpc'
-
-type GrpcWebTransportAdditionalOptions = Omit<GrpcWebOptions, 'baseUrl'>
+import type { GrpcWebTransportAdditionalOptions } from '../types/index.js'
 
 /**
  * Creates a gRPC-Web transport using @protobuf-ts/grpcweb-transport.
@@ -27,4 +23,4 @@ export const getGrpcWebTransport = (
 /**
  * Re-export GrpcWebFetchTransport for direct use
  */
-export { GrpcWebFetchTransport, type GrpcWebTransportAdditionalOptions }
+export { GrpcWebFetchTransport }

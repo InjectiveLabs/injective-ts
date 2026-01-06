@@ -3,7 +3,7 @@ import { QueryClient as InjectivePeggyV1QueryClient } from '@injectivelabs/core-
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcPeggyTransformer } from '../transformers/index.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 /**
  * @category Chain Grpc API

@@ -5,7 +5,7 @@ import { ChainModule } from '../types/index.js'
 import { uint8ArrayToString } from '../../../utils/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 /**
  * @category Chain Grpc API

@@ -3,7 +3,7 @@ import { QueryClient as InjectivePermissionsV1Beta1QueryClient } from '@injectiv
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 /**
  * @category Chain Grpc API

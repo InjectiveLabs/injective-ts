@@ -15,7 +15,7 @@ import MsgExecuteContractCompat from '../../../core/modules/wasm/msgs/MsgExecute
 import ExecArgNeptuneWithdraw from '../../../core/modules/wasm/exec-args/ExecArgNeptuneWithdraw.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { AssetInfo, AssetInfoWithPrice } from './types.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 const NEPTUNE_USDT_MARKET_CONTRACT =
   'inj1nc7gjkf2mhp34a6gquhurg8qahnw5kxs5u3s4u'

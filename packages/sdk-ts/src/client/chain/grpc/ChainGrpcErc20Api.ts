@@ -8,7 +8,7 @@ import {
   ChainGrpcCommonTransformer,
 } from '../transformers/index.js'
 import type { PaginationOption } from '../../../types/pagination.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 const MAX_LIMIT_FOR_SUPPLY = 10000
 

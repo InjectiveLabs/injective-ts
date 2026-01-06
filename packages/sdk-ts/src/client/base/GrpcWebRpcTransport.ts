@@ -1,7 +1,4 @@
-import {
-  getGrpcWebTransport,
-  type GrpcWebTransportAdditionalOptions,
-} from '../../utils/grpc.js'
+import { getGrpcWebTransport } from '../../utils/grpc.js'
 import type {
   UnaryCall,
   RpcOptions,
@@ -11,6 +8,7 @@ import type {
   ClientStreamingCall,
   DuplexStreamingCall,
 } from '@protobuf-ts/runtime-rpc'
+import type { GrpcWebTransportAdditionalOptions } from '../../types'
 
 /**
  * GrpcWebRpcTransport provides a simple wrapper around GrpcWebFetchTransport

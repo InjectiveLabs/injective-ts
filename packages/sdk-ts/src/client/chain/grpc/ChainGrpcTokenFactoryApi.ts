@@ -3,7 +3,7 @@ import { QueryClient as InjectiveTokenFactoryV1Beta1QueryClient } from '@injecti
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcTokenFactoryTransformer } from '../index.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 /**
  * @category TokenFactory Grpc API

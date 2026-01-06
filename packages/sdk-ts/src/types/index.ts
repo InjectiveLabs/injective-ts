@@ -1,6 +1,7 @@
 export * from './token.js'
 export * from './stream.js'
 export * from './exchange.js'
+export type * from './grpc.js'
 export type * from './cosmos.js'
 export * from './stream-legacy.js'
 export type * from './pagination.js'

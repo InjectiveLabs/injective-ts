@@ -4,7 +4,7 @@ import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/indexer-pro
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcDerivativeTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../utils/grpc.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 import type {
   OrderSide,
   OrderState,
