@@ -3,15 +3,12 @@ import * as PointsSvcPb from '@injectivelabs/abacus-proto-ts-v2/generated/points
 import { PointsSvcClient } from '@injectivelabs/abacus-proto-ts-v2/generated/points_svc_pb.client'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { AbacusGrpcTransformer } from './transformers/index.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 export class AbacusGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.Abacus
-  private client: PointsSvcClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new PointsSvcClient(this.transport)
+  private get client() {
+    return this.initClient(PointsSvcClient)
   }
 
   async fetchAccountLatestPoints(address: string) {

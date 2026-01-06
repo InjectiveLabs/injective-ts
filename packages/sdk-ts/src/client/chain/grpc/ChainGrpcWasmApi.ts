@@ -7,18 +7,14 @@ import { base64ToUint8Array } from '../../../utils/encoding.js'
 import { ChainGrpcWasmTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcWasmApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Wasm
-  private client: CosmwasmWasmV1QueryClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new CosmwasmWasmV1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(CosmwasmWasmV1QueryClient)
   }
 
   async fetchContractAccountsBalance({

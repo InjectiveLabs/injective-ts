@@ -3,20 +3,14 @@ import { QueryClient as InjectiveAuctionV1Beta1QueryClient } from '@injectivelab
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcAuctionTransformer } from '../transformers/index.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcAuctionApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Auction
 
-  private client: InjectiveAuctionV1Beta1QueryClient
-
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-
-    this.client = new InjectiveAuctionV1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveAuctionV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {

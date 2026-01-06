@@ -13,7 +13,6 @@ import {
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
-import type { GrpcWebTransportAdditionalOptions } from 'packages/sdk-ts/src/index.js'
 import type { TxResponse } from '../types/tx.js'
 import type {
   TxConcreteApi,
@@ -23,11 +22,9 @@ import type {
 
 export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
   protected module: string = 'TxGrpcApi'
-  private client: CosmosTxV1Beta1ServicePbClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new CosmosTxV1Beta1ServicePbClient(this.transport)
+  private get client() {
+    return this.initClient(CosmosTxV1Beta1ServicePbClient)
   }
 
   public async fetchTx(hash: string): Promise<TxResponse> {

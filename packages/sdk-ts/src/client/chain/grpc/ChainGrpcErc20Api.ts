@@ -8,8 +8,6 @@ import {
   ChainGrpcCommonTransformer,
 } from '../transformers/index.js'
 import type { PaginationOption } from '../../../types/pagination.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 const MAX_LIMIT_FOR_SUPPLY = 10000
 
 /**
@@ -18,12 +16,8 @@ const MAX_LIMIT_FOR_SUPPLY = 10000
 export class ChainGrpcErc20Api extends BaseGrpcConsumer {
   protected module: string = ChainModule.Erc20
 
-  private client: InjectiveErc20V1Beta1QueryClient
-
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-
-    this.client = new InjectiveErc20V1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveErc20V1Beta1QueryClient)
   }
 
   async fetchModuleParams() {

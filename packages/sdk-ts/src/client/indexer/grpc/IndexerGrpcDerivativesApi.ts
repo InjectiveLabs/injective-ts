@@ -4,7 +4,6 @@ import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/indexer-pro
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcDerivativeTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 import type {
   OrderSide,
   OrderState,
@@ -20,12 +19,8 @@ import type {
 export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Derivatives
 
-  private client: InjectiveDerivativeExchangeRPCClient
-
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-
-    this.client = new InjectiveDerivativeExchangeRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveDerivativeExchangeRPCClient)
   }
 
   async fetchMarkets(params?: {

@@ -19,6 +19,7 @@ export default class BaseGrpcConsumer {
   protected metadata?: Record<string, string>
   protected endpoint: string
   protected options?: GrpcWebTransportAdditionalOptions
+  private _client: unknown
 
   constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
     this.endpoint = endpoint
@@ -42,6 +43,24 @@ export default class BaseGrpcConsumer {
 
   public getTransport(): GrpcWebRpcTransport {
     return this.transport
+  }
+
+  /**
+   * Lazily initializes and returns the gRPC client.
+   * Call this from a getter in subclasses to avoid constructor boilerplate.
+   *
+   * @example
+   * private get client() {
+   *   return this.initClient(MyGrpcClient)
+   * }
+   */
+  protected initClient<TClient>(
+    ClientClass: new (transport: GrpcWebRpcTransport) => TClient,
+  ): TClient {
+    if (!this._client) {
+      this._client = new ClientClass(this.transport)
+    }
+    return this._client as TClient
   }
 
   /**

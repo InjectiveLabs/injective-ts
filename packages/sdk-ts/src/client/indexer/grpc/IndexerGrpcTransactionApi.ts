@@ -23,8 +23,6 @@ import {
   base64ToUint8Array,
 } from '../../../utils/encoding.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 interface PrepareTxArgs {
   address: AccountAddress
   chainId: EvmChainId
@@ -44,11 +42,8 @@ interface PrepareTxArgs {
 export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Transaction
 
-  private client: InjectiveExchangeRPCClient
-
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new InjectiveExchangeRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveExchangeRPCClient)
   }
 
   async prepareTxRequest(args: PrepareTxArgs) {

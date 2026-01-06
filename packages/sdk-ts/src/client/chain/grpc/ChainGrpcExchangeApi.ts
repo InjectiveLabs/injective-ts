@@ -5,18 +5,14 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcExchangeTransformer } from '../transformers/index.js'
 import type * as InjectiveExchangeV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/genesis_pb'
 import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Exchange
-  private client: InjectiveExchangeV1Beta1QueryClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new InjectiveExchangeV1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveExchangeV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {

@@ -3,18 +3,14 @@ import { InjectiveArchiverRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcArchiverTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Archiver
-  private client: InjectiveArchiverRPCClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new InjectiveArchiverRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveArchiverRPCClient)
   }
 
   async fetchHistoricalBalance({

@@ -3,18 +3,14 @@ import { QueryClient as InjectiveInsuranceV1Beta1QueryClient } from '@injectivel
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.InsuranceFund
-  private client: InjectiveInsuranceV1Beta1QueryClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new InjectiveInsuranceV1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveInsuranceV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {

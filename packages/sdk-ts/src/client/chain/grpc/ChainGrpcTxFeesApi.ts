@@ -3,18 +3,14 @@ import { QueryClient as InjectiveTxFeesV1Beta1QueryClient } from '@injectivelabs
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcTxFeesTransformer } from '../transformers/index.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcTxFeesApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.TxFees
-  private client: InjectiveTxFeesV1Beta1QueryClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new InjectiveTxFeesV1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveTxFeesV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {

@@ -3,17 +3,12 @@ import * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/dmm_pb'
 import { InjectiveDmmV2RPCClient } from '@injectivelabs/olp-proto-ts-v2/generated/dmm_pb.client'
 import { DmmGrpcTransformer } from './transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 export class OLPGrpcApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerErrorModule.OLP
 
-  private client: InjectiveDmmV2RPCClient
-
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-
-    this.client = new InjectiveDmmV2RPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveDmmV2RPCClient)
   }
 
   async fetchEpochs(status?: string) {

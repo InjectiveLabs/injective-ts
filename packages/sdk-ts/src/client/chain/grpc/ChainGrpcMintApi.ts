@@ -5,18 +5,14 @@ import { ChainModule } from '../types/index.js'
 import { uint8ArrayToString } from '../../../utils/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcMintApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Mint
-  private client: CosmosMintV1Beta1QueryClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new CosmosMintV1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(CosmosMintV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {

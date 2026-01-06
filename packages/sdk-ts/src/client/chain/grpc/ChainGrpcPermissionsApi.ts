@@ -3,18 +3,14 @@ import { QueryClient as InjectivePermissionsV1Beta1QueryClient } from '@injectiv
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcPermissionsTransformer } from '../transformers/index.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcPermissionsApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Permissions
-  private client: InjectivePermissionsV1Beta1QueryClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new InjectivePermissionsV1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(InjectivePermissionsV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {

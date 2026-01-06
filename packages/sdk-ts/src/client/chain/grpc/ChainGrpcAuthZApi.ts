@@ -5,18 +5,14 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcAuthZTransformer } from '../transformers/ChainGrpcAuthZTransformer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 import type { PaginationOption } from '../../../types/pagination.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Authz
-  private client: CosmosAuthzV1BetaQueryClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new CosmosAuthzV1BetaQueryClient(this.transport)
+  private get client() {
+    return this.initClient(CosmosAuthzV1BetaQueryClient)
   }
 
   async fetchGrants({

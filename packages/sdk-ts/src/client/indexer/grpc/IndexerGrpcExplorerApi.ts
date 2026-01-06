@@ -3,18 +3,14 @@ import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { GrpcWebTransportAdditionalOptions } from '../../../types'
-
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Explorer
-  private client: InjectiveExplorerRPCClient
 
-  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    super(endpoint, options)
-    this.client = new InjectiveExplorerRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveExplorerRPCClient)
   }
 
   async fetchTxByHash(hash: string, isEvmHash: boolean = false) {
