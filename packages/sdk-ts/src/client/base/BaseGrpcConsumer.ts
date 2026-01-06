@@ -27,6 +27,9 @@ export default class BaseGrpcConsumer {
     this.transport = new GrpcWebRpcTransport(endpoint, options)
   }
 
+  /**
+   * @deprecated Pass options into the constructor instead
+   */
   public setMetadata(map: Record<string, string>) {
     this.metadata = map
     // Recreate transport with new metadata, preserving existing options
@@ -37,6 +40,9 @@ export default class BaseGrpcConsumer {
     return this
   }
 
+  /**
+   * @deprecated Manage options within the constructor instead
+   */
   public clearMetadata() {
     this.metadata = undefined
   }
@@ -65,6 +71,7 @@ export default class BaseGrpcConsumer {
 
   /**
    * Builds RpcOptions with metadata
+   * @deprecated Options should be managed externally and passed into the constructor instead
    */
   protected getRpcOptions(): RpcOptions {
     const options: RpcOptions = {
