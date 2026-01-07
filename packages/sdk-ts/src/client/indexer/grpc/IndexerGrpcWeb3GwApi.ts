@@ -17,10 +17,6 @@ import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
   protected module: string = IndexerModule.Web3Gw
 
-  constructor(endpoint: string) {
-    super(endpoint)
-  }
-
   async prepareEip712Request({
     address,
     chainId,

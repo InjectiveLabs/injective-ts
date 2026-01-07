@@ -22,11 +22,9 @@ import type {
 
 export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
   protected module: string = 'TxGrpcApi'
-  private client: CosmosTxV1Beta1ServicePbClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new CosmosTxV1Beta1ServicePbClient(this.transport)
+  private get client() {
+    return this.initClient(CosmosTxV1Beta1ServicePbClient)
   }
 
   public async fetchTx(hash: string): Promise<TxResponse> {

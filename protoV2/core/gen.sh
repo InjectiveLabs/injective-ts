@@ -173,7 +173,7 @@ if [ "$SKIP_CLONE" = true ]; then
   echo "📝 Updated: index.ts and tsup.config.ts (proto generation was skipped)"
 else
   echo "📦 Generated files: src/generated/"
-  echo "📦 Built files: proto-ts/esm/"
+  echo "📦 Built files: proto-ts/"
 fi
 if [ "$PERSIST" = true ]; then
   echo "💾 Temporary directories preserved in proto/gen and proto/proto"

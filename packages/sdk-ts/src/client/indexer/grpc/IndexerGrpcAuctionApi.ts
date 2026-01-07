@@ -3,19 +3,14 @@ import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-proto-ts-v2/ge
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Auction
 
-  private client: InjectiveAuctionRPCClient
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveAuctionRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveAuctionRPCClient)
   }
 
   async fetchAuction(round?: number) {

@@ -7,12 +7,8 @@ import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 export class OLPGrpcApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerErrorModule.OLP
 
-  private client: InjectiveDmmV2RPCClient
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveDmmV2RPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveDmmV2RPCClient)
   }
 
   async fetchEpochs(status?: string) {

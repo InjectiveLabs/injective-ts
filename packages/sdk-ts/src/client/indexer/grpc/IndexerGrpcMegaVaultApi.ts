@@ -3,17 +3,14 @@ import { InjectiveMegavaultRPCClient } from '@injectivelabs/indexer-proto-ts-v2/
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.MegaVault
-  private client: InjectiveMegavaultRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new InjectiveMegavaultRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveMegavaultRPCClient)
   }
 
   async fetchVault({ vaultAddress }: { vaultAddress: string }) {

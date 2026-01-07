@@ -8,6 +8,7 @@ import type {
   ClientStreamingCall,
   DuplexStreamingCall,
 } from '@protobuf-ts/runtime-rpc'
+import type { GrpcWebTransportAdditionalOptions } from '../../types'
 
 /**
  * GrpcWebRpcTransport provides a simple wrapper around GrpcWebFetchTransport
@@ -18,15 +19,7 @@ import type {
 export class GrpcWebRpcTransport implements RpcTransport {
   private transport: RpcTransport
 
-  constructor(
-    baseUrl: string,
-    options?: {
-      fetch?: typeof fetch
-      headers?: Record<string, string>
-      timeout?: number
-      credentials?: RequestCredentials
-    },
-  ) {
+  constructor(baseUrl: string, options?: GrpcWebTransportAdditionalOptions) {
     this.transport = getGrpcWebTransport(baseUrl, options)
   }
 

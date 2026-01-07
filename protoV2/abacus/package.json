@@ -4,8 +4,8 @@
     "generate": "sh ./gen.sh",
     "generate:persist": "sh ./gen.sh --persist",
     "generate:skip-clone": "sh ./gen.sh --skip-clone",
-    "build": "tsup && node generate-dts.mjs && node fix-imports.mjs",
-    "build:esm": "tsup --format esm && node generate-dts.mjs && node fix-imports.mjs",
+    "build": "tsup && node ../_scripts/generate-dts.mjs && node ../_scripts/fix-imports.mjs",
+    "build:esm": "tsup --format esm && node ../_scripts/generate-dts.mjs && node ../_scripts/fix-imports.mjs",
     "build:cjs": "tsup --format cjs"
   },
   "devDependencies": {

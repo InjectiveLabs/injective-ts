@@ -3,17 +3,14 @@ import { QueryClient as InjectiveOracleV1Beta1QueryClient } from '@injectivelabs
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import type { OracleModuleParams } from '../types/index.js'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcOracleApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Oracle
-  private client: InjectiveOracleV1Beta1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new InjectiveOracleV1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveOracleV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {

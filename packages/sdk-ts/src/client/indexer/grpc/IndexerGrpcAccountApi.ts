@@ -11,11 +11,9 @@ import type { PaginationOption } from '../../../types/pagination.js'
  */
 export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Account
-  private client: InjectiveAccountsRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new InjectiveAccountsRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveAccountsRPCClient)
   }
 
   /**

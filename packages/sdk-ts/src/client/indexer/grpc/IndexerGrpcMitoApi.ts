@@ -3,17 +3,14 @@ import * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/gener
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Mito
-  private client: MitoAPIClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new MitoAPIClient(this.transport)
+  private get client() {
+    return this.initClient(MitoAPIClient)
   }
 
   async fetchVault({

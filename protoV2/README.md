@@ -75,7 +75,7 @@ npm run generate:skip-clone  # Quick regeneration
 ### 4. Build
 
 ```bash
-npm run build  # Builds to proto-ts/esm/
+pnpm run build  # Builds to proto-ts/
 ```
 
 ## Directory Structure
@@ -83,15 +83,18 @@ npm run build  # Builds to proto-ts/esm/
 ```
 protoV2/
 ├── _scripts/
+│   ├── generate-dts.mjs          # Shared: Generate .d.ts files
+│   ├── fix-imports.mjs           # Shared: Fix ESM import extensions
+│   ├── tsup-base.config.mjs      # Shared: Base tsup configuration
 │   ├── update-index-template.sh  # Auto-generate index templates
 │   └── README.md                 # Script documentation
 ├── core/
 │   ├── src/
 │   │   ├── index.template.ts     # Template for exports (manual)
 │   │   └── generated/            # Generated proto files
-│   ├── proto-ts/esm/             # Built output
+│   ├── proto-ts/                 # Built output
 │   ├── gen.sh                    # Generation script
-│   └── tsup.config.ts            # Build configuration
+│   └── tsup.config.ts            # Build configuration (uses shared base)
 ├── indexer/
 │   ├── src/
 │   │   ├── index.template.ts     # Template for exports (auto-gen)

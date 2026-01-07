@@ -3,18 +3,14 @@ import { InjectiveTradingRPCClient } from '@injectivelabs/indexer-proto-ts-v2/ge
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { MarketType, GridStrategyType } from '../types/index.js'
-
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcTradingApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Trading
 
-  private client: InjectiveTradingRPCClient
-
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new InjectiveTradingRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveTradingRPCClient)
   }
 
   async fetchTradingStats() {

@@ -15,6 +15,7 @@ import MsgExecuteContractCompat from '../../../core/modules/wasm/msgs/MsgExecute
 import ExecArgNeptuneWithdraw from '../../../core/modules/wasm/exec-args/ExecArgNeptuneWithdraw.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { AssetInfo, AssetInfoWithPrice } from './types.js'
+import type { GrpcWebTransportAdditionalOptions } from '../../../types'
 
 const NEPTUNE_USDT_MARKET_CONTRACT =
   'inj1nc7gjkf2mhp34a6gquhurg8qahnw5kxs5u3s4u'
@@ -32,13 +33,14 @@ export class NeptuneService {
   constructor(
     network: Network = Network.MainnetSentry,
     endpoints?: NetworkEndpoints,
+    options?: GrpcWebTransportAdditionalOptions,
   ) {
     if (!isMainnet(network)) {
       throw new GeneralException(new Error('Please switch to mainnet network'))
     }
 
     const networkEndpoints = endpoints || getNetworkEndpoints(network)
-    this.client = new ChainGrpcWasmApi(networkEndpoints.grpc)
+    this.client = new ChainGrpcWasmApi(networkEndpoints.grpc, options)
     this.priceOracleContract = NEPTUNE_PRICE_CONTRACT
   }
 

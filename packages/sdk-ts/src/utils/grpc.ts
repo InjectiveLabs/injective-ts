@@ -1,5 +1,6 @@
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport'
 import type { RpcTransport } from '@protobuf-ts/runtime-rpc'
+import type { GrpcWebTransportAdditionalOptions } from '../types/index.js'
 
 /**
  * Creates a gRPC-Web transport using @protobuf-ts/grpcweb-transport.
@@ -11,24 +12,7 @@ import type { RpcTransport } from '@protobuf-ts/runtime-rpc'
  */
 export const getGrpcWebTransport = (
   baseUrl: string,
-  options?: {
-    /**
-     * Custom fetch implementation (useful for Node.js or React Native)
-     */
-    fetch?: typeof fetch
-    /**
-     * Additional headers to include with every request
-     */
-    headers?: Record<string, string>
-    /**
-     * Timeout in milliseconds
-     */
-    timeout?: number
-    /**
-     * Whether to include credentials (cookies) with requests
-     */
-    credentials?: RequestCredentials
-  },
+  options?: GrpcWebTransportAdditionalOptions,
 ): RpcTransport => {
   return new GrpcWebFetchTransport({
     baseUrl,

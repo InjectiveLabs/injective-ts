@@ -7,35 +7,52 @@ import {
 } from '@injectivelabs/exceptions'
 import { GrpcWebRpcTransport } from './GrpcWebRpcTransport.js'
 import type { UnaryCall, RpcOptions } from '@protobuf-ts/runtime-rpc'
+import type { GrpcWebTransportAdditionalOptions } from '../../types'
 
 /**
  * BaseGrpcConsumer provides base functionality for all gRPC consumers.
  * It uses the GrpcWebRpcTransport with GrpcWebFetchTransport from @protobuf-ts/grpcweb-transport.
  */
 export default class BaseGrpcConsumer {
-  protected transport: GrpcWebRpcTransport
-  protected module: string = ''
-  protected metadata?: Record<string, string>
+  private _client: unknown
   protected endpoint: string
+  protected module: string = ''
+  protected transport: GrpcWebRpcTransport
+  protected metadata?: Record<string, string>
+  protected options?: GrpcWebTransportAdditionalOptions
 
-  constructor(endpoint: string) {
+  constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
+    this.options = options
     this.endpoint = endpoint
-    this.transport = new GrpcWebRpcTransport(endpoint, {
-      headers: {},
-    })
+    this.transport = new GrpcWebRpcTransport(endpoint, options)
   }
 
+  /**
+   * @deprecated Pass options into the constructor instead
+   */
   public setMetadata(map: Record<string, string>) {
     this.metadata = map
-    // Recreate transport with new metadata
+    // Recreate transport with new metadata, preserving existing options
     this.transport = new GrpcWebRpcTransport(this.endpoint, {
-      headers: this.metadata,
+      ...this.options,
+      meta: this.metadata,
     })
+
+    // Invalidate cached client so initClient creates a new client with updated transport
+    this._client = undefined
+
     return this
   }
 
+  /**
+   * @deprecated Manage options within the constructor instead
+   */
   public clearMetadata() {
     this.metadata = undefined
+    // Recreate transport without metadata, preserving existing options
+    this.transport = new GrpcWebRpcTransport(this.endpoint, this.options)
+    // Invalidate cached client so initClient creates a new client with updated transport
+    this._client = undefined
   }
 
   public getTransport(): GrpcWebRpcTransport {
@@ -43,7 +60,27 @@ export default class BaseGrpcConsumer {
   }
 
   /**
+   * Lazily initializes and returns the gRPC client.
+   * Call this from a getter in subclasses to avoid constructor boilerplate.
+   *
+   * @example
+   * private get client() {
+   *   return this.initClient(MyGrpcClient)
+   * }
+   */
+  protected initClient<TClient>(
+    ClientClass: new (transport: GrpcWebRpcTransport) => TClient,
+  ): TClient {
+    if (!this._client) {
+      this._client = new ClientClass(this.transport)
+    }
+
+    return this._client as TClient
+  }
+
+  /**
    * Builds RpcOptions with metadata
+   * @deprecated Options should be managed externally and passed into the constructor instead
    */
   protected getRpcOptions(): RpcOptions {
     const options: RpcOptions = {

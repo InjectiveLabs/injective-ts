@@ -3,18 +3,14 @@ import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-proto-ts-v2/gen
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer.js'
-
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcOracleApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Oracle
-  private client: InjectiveOracleRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveOracleRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveOracleRPCClient)
   }
 
   async fetchOracleList() {

@@ -2,17 +2,14 @@ import * as InjectiveMetaRpcPb from '@injectivelabs/indexer-proto-ts-v2/generate
 import { InjectiveMetaRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_meta_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-
 /**
  * @category Indexer Grpc API
  */
 export class IndexerGrpcMetaApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Meta
-  private client: InjectiveMetaRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new InjectiveMetaRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveMetaRPCClient)
   }
 
   async fetchPing() {

@@ -8,11 +8,9 @@ import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
  */
 export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Explorer
-  private client: InjectiveExplorerRPCClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new InjectiveExplorerRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveExplorerRPCClient)
   }
 
   async fetchTxByHash(hash: string, isEvmHash: boolean = false) {

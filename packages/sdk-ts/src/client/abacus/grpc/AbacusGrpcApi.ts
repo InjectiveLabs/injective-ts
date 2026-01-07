@@ -6,11 +6,9 @@ import { AbacusGrpcTransformer } from './transformers/index.js'
 
 export class AbacusGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.Abacus
-  private client: PointsSvcClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new PointsSvcClient(this.transport)
+  private get client() {
+    return this.initClient(PointsSvcClient)
   }
 
   async fetchAccountLatestPoints(address: string) {

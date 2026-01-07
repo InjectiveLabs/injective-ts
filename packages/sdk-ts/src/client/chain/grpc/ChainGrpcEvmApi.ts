@@ -3,19 +3,14 @@ import { QueryClient as InjectiveEvmV1QueryClient } from '@injectivelabs/core-pr
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcEvmTransformer } from '../transformers/index.js'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcEvmApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Evm
 
-  private client: InjectiveEvmV1QueryClient
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveEvmV1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveEvmV1QueryClient)
   }
 
   async fetchAccount(ethAddress: string) {

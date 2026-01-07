@@ -19,11 +19,8 @@ import type {
 export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Spot
 
-  private client: InjectiveSpotExchangeRPCClient
-
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new InjectiveSpotExchangeRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveSpotExchangeRPCClient)
   }
 
   async fetchMarkets(params?: {

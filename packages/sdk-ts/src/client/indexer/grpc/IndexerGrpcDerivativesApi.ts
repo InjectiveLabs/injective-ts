@@ -19,12 +19,8 @@ import type {
 export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Derivatives
 
-  private client: InjectiveDerivativeExchangeRPCClient
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveDerivativeExchangeRPCClient(this.transport)
+  private get client() {
+    return this.initClient(InjectiveDerivativeExchangeRPCClient)
   }
 
   async fetchMarkets(params?: {

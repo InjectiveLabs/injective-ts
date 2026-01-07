@@ -7,11 +7,9 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
  */
 export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Tendermint
-  private client: CosmosBaseTendermintV1Beta1QueryClient
 
-  constructor(endpoint: string) {
-    super(endpoint)
-    this.client = new CosmosBaseTendermintV1Beta1QueryClient(this.transport)
+  private get client() {
+    return this.initClient(CosmosBaseTendermintV1Beta1QueryClient)
   }
 
   async fetchLatestBlock() {
