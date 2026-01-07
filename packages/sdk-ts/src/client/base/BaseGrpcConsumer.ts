@@ -14,16 +14,16 @@ import type { GrpcWebTransportAdditionalOptions } from '../../types'
  * It uses the GrpcWebRpcTransport with GrpcWebFetchTransport from @protobuf-ts/grpcweb-transport.
  */
 export default class BaseGrpcConsumer {
-  protected transport: GrpcWebRpcTransport
-  protected module: string = ''
-  protected metadata?: Record<string, string>
-  protected endpoint: string
-  protected options?: GrpcWebTransportAdditionalOptions
   private _client: unknown
+  protected endpoint: string
+  protected module: string = ''
+  protected transport: GrpcWebRpcTransport
+  protected metadata?: Record<string, string>
+  protected options?: GrpcWebTransportAdditionalOptions
 
   constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
-    this.endpoint = endpoint
     this.options = options
+    this.endpoint = endpoint
     this.transport = new GrpcWebRpcTransport(endpoint, options)
   }
 
@@ -37,6 +37,10 @@ export default class BaseGrpcConsumer {
       ...this.options,
       meta: this.metadata,
     })
+
+    // Invalidate cached client so initClient creates a new client with updated transport
+    this._client = undefined
+
     return this
   }
 
@@ -45,6 +49,10 @@ export default class BaseGrpcConsumer {
    */
   public clearMetadata() {
     this.metadata = undefined
+    // Recreate transport without metadata, preserving existing options
+    this.transport = new GrpcWebRpcTransport(this.endpoint, this.options)
+    // Invalidate cached client so initClient creates a new client with updated transport
+    this._client = undefined
   }
 
   public getTransport(): GrpcWebRpcTransport {
@@ -66,6 +74,7 @@ export default class BaseGrpcConsumer {
     if (!this._client) {
       this._client = new ClientClass(this.transport)
     }
+
     return this._client as TClient
   }
 
