@@ -51,10 +51,12 @@ for pkg in "${PACKAGES[@]}"; do
     echo "⚠️  Warning: gen.sh doesn't have build step for $pkg"
   fi
   
-  # Test: Verify tsup.config.ts exists and has correct outDir
+  # Test: Verify tsup.config.ts exists and uses shared config
   if [ -f "tsup.config.ts" ]; then
-    if grep -q "outDir.*'proto-ts'" tsup.config.ts && ! grep -q "outDir.*'proto-ts/esm'" tsup.config.ts; then
-      echo "✅ tsup.config.ts configured correctly"
+    if grep -q "createProtoTsupConfig" tsup.config.ts; then
+      echo "✅ tsup.config.ts uses shared configuration"
+    elif grep -q "outDir.*['\"]proto-ts['\"]" tsup.config.ts && ! grep -q "outDir.*['\"]proto-ts/esm['\"]" tsup.config.ts; then
+      echo "✅ tsup.config.ts configured correctly (local config)"
     else
       echo "⚠️  Warning: tsup.config.ts might not have correct outDir"
     fi

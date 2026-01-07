@@ -3,8 +3,8 @@
     "generate": "sh ./gen.sh",
     "generate:skip-clone": "sh ./gen.sh --skip-clone",
     "generate:persist": "sh ./gen.sh --persist",
-    "build": "NODE_OPTIONS='--max-old-space-size=8192' tsup && node generate-dts.mjs && node fix-imports.mjs",
-    "build:esm": "NODE_OPTIONS='--max-old-space-size=8192' tsup --format esm && node generate-dts.mjs && node fix-imports.mjs",
+    "build": "NODE_OPTIONS='--max-old-space-size=8192' tsup && node ../_scripts/generate-dts.mjs && node ../_scripts/fix-imports.mjs",
+    "build:esm": "NODE_OPTIONS='--max-old-space-size=8192' tsup --format esm && node ../_scripts/generate-dts.mjs && node ../_scripts/fix-imports.mjs",
     "build:cjs": "NODE_OPTIONS='--max-old-space-size=8192' tsup --format cjs"
   },
   "devDependencies": {

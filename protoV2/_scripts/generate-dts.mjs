@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+/**
+ * Shared script to generate .d.ts files for proto packages.
+ * Usage: node ../_scripts/generate-dts.mjs
+ *
+ * Must be run from a package directory (e.g., protoV2/core/)
+ */
 import { readdirSync, statSync, copyFileSync, mkdirSync } from 'fs'
 import { join, relative } from 'path'
 

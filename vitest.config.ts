@@ -172,7 +172,7 @@ export default defineConfig({
       ),
       '@injectivelabs/core-proto-ts-v2/generated': join(
         __dirname,
-        'protoV2/core/proto-ts/esm/generated',
+        'protoV2/core/proto-ts/generated',
       ),
       '@injectivelabs/indexer-proto-ts-v2': join(
         __dirname,
@@ -180,12 +180,12 @@ export default defineConfig({
       ),
       '@injectivelabs/indexer-proto-ts-v2/generated': join(
         __dirname,
-        'protoV2/indexer/proto-ts/esm/generated',
+        'protoV2/indexer/proto-ts/generated',
       ),
       '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb':
         join(
           __dirname,
-          'protoV2/indexer/proto-ts/esm/generated/injective_exchange_rpc_pb.mjs',
+          'protoV2/indexer/proto-ts/generated/injective_exchange_rpc_pb.js',
         ),
     },
   },

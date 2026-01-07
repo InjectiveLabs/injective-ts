@@ -1,9 +1,12 @@
 #!/usr/bin/env node
+/**
+ * Shared script to fix ESM imports by adding .js extensions.
+ * Usage: node ../_scripts/fix-imports.mjs
+ *
+ * Must be run from a package directory (e.g., protoV2/core/)
+ */
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs'
-import { join, dirname } from 'path'
-import { fileURLToPath } from 'url'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+import { join } from 'path'
 
 // Recursively find all .js files
 function findJsFiles(dir) {
@@ -24,8 +27,8 @@ function findJsFiles(dir) {
   return results
 }
 
-// Find all .js files in proto-ts
-const outDir = join(__dirname, 'proto-ts')
+// Find all .js files in proto-ts (relative to cwd)
+const outDir = join(process.cwd(), 'proto-ts')
 const files = findJsFiles(outDir)
 
 console.log(`Found ${files.length} .js files to process`)
@@ -60,7 +63,7 @@ files.forEach((fullPath) => {
 
   if (fileReplacements > 0) {
     writeFileSync(fullPath, newContent, 'utf8')
-    const relativePath = fullPath.replace(__dirname + '/', '')
+    const relativePath = fullPath.replace(process.cwd() + '/', '')
     console.log(`  ✓ ${relativePath}: ${fileReplacements} imports fixed`)
     totalReplacements += fileReplacements
   }

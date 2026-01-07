@@ -83,6 +83,9 @@ pnpm run build  # Builds to proto-ts/
 ```
 protoV2/
 ├── _scripts/
+│   ├── generate-dts.mjs          # Shared: Generate .d.ts files
+│   ├── fix-imports.mjs           # Shared: Fix ESM import extensions
+│   ├── tsup-base.config.mjs      # Shared: Base tsup configuration
 │   ├── update-index-template.sh  # Auto-generate index templates
 │   └── README.md                 # Script documentation
 ├── core/
@@ -91,7 +94,7 @@ protoV2/
 │   │   └── generated/            # Generated proto files
 │   ├── proto-ts/                 # Built output
 │   ├── gen.sh                    # Generation script
-│   └── tsup.config.ts            # Build configuration
+│   └── tsup.config.ts            # Build configuration (uses shared base)
 ├── indexer/
 │   ├── src/
 │   │   ├── index.template.ts     # Template for exports (auto-gen)
