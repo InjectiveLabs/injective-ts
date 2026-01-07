@@ -80,7 +80,7 @@ pnpm run build  # Builds to proto-ts/
 
 ## Directory Structure
 
-```
+```text
 protoV2/
 ├── _scripts/
 │   ├── generate-dts.mjs          # Shared: Generate .d.ts files
