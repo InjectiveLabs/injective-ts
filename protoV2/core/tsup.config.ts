@@ -45,7 +45,7 @@ export default defineConfig(() => {
   return [
     {
       entry: entries,
-      outDir: 'proto-ts/esm',
+      outDir: 'proto-ts',
       format: ['esm'],
       dts: false, // Disable DTS generation in tsup (too slow/memory intensive)
       sourcemap: false,

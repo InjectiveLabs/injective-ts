@@ -53,7 +53,7 @@ for pkg in "${PACKAGES[@]}"; do
   
   # Test: Verify tsup.config.ts exists and has correct outDir
   if [ -f "tsup.config.ts" ]; then
-    if grep -q "outDir.*proto-ts/esm" tsup.config.ts; then
+    if grep -q "outDir.*'proto-ts'" tsup.config.ts && ! grep -q "outDir.*'proto-ts/esm'" tsup.config.ts; then
       echo "✅ tsup.config.ts configured correctly"
     else
       echo "⚠️  Warning: tsup.config.ts might not have correct outDir"

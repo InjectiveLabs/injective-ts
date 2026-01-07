@@ -38,12 +38,12 @@ for pkg in "${PACKAGES[@]}"; do
       echo "   ⚠️  src/generated/ is empty or missing"
     fi
     
-    if [ -d "proto-ts/esm/generated" ] && [ "$(ls -A proto-ts/esm/generated 2>/dev/null)" ]; then
-      echo "   ✓ proto-ts/esm/generated/ has files"
-    elif [ -d "proto-ts/esm" ] && [ "$(ls -A proto-ts/esm/*.mjs 2>/dev/null)" ]; then
-      echo "   ✓ proto-ts/esm/ has .mjs files"
+    if [ -d "proto-ts/generated" ] && [ "$(ls -A proto-ts/generated 2>/dev/null)" ]; then
+      echo "   ✓ proto-ts/generated/ has files"
+    elif [ -d "proto-ts" ] && [ "$(ls -A proto-ts/*.js 2>/dev/null)" ]; then
+      echo "   ✓ proto-ts/ has .js files"
     else
-      echo "   ⚠️  proto-ts/esm/ is empty or missing"
+      echo "   ⚠️  proto-ts/ is empty or missing"
     fi
   else
     echo "❌ Failed to generate $pkg"
@@ -63,13 +63,14 @@ for pkg in "${PACKAGES[@]}"; do
   cd "$BASE_DIR/$pkg"
   
   SRC_COUNT=$(find src/generated -name "*.ts" 2>/dev/null | wc -l | tr -d ' ')
-  ESM_COUNT=$(find proto-ts/esm -name "*.mjs" 2>/dev/null | wc -l | tr -d ' ')
-  DTS_COUNT=$(find proto-ts/esm -name "*.d.mts" 2>/dev/null | wc -l | tr -d ' ')
+  JS_COUNT=$(find proto-ts -maxdepth 1 -name "*.js" 2>/dev/null | wc -l | tr -d ' ')
+  JS_COUNT=$((JS_COUNT + $(find proto-ts/generated -name "*.js" 2>/dev/null | wc -l | tr -d ' ')))
+  DTS_COUNT=$(find proto-ts -name "*.d.ts" 2>/dev/null | wc -l | tr -d ' ')
   
   echo "📦 $pkg:"
   echo "   - TypeScript files (src/generated/): $SRC_COUNT"
-  echo "   - JavaScript files (proto-ts/esm/): $ESM_COUNT"
-  echo "   - Type definitions (proto-ts/esm/): $DTS_COUNT"
+  echo "   - JavaScript files (proto-ts/): $JS_COUNT"
+  echo "   - Type definitions (proto-ts/): $DTS_COUNT"
   echo ""
 done
 

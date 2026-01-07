@@ -75,7 +75,7 @@ npm run generate:skip-clone  # Quick regeneration
 ### 4. Build
 
 ```bash
-npm run build  # Builds to proto-ts/esm/
+pnpm run build  # Builds to proto-ts/
 ```
 
 ## Directory Structure
@@ -89,7 +89,7 @@ protoV2/
 │   ├── src/
 │   │   ├── index.template.ts     # Template for exports (manual)
 │   │   └── generated/            # Generated proto files
-│   ├── proto-ts/esm/             # Built output
+│   ├── proto-ts/                 # Built output
 │   ├── gen.sh                    # Generation script
 │   └── tsup.config.ts            # Build configuration
 ├── indexer/

@@ -2,23 +2,25 @@
   "name": "@injectivelabs/abacus-proto-ts-v2",
   "version": "1.0.0",
   "type": "module",
-  "main": "./esm/index.js",
-  "types": "./esm/index.d.ts",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
-      "types": "./esm/index.d.ts",
-      "import": "./esm/index.js",
-      "default": "./esm/index.js"
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "default": "./index.js"
     },
     "./generated/*": {
-      "types": "./esm/generated/*.d.ts",
-      "import": "./esm/generated/*.js",
-      "default": "./esm/generated/*.js"
+      "types": "./generated/*.d.ts",
+      "import": "./generated/*.js",
+      "default": "./generated/*.js"
     },
-    "./generated/*.js": "./esm/generated/*.js"
+    "./generated/*.js": "./generated/*.js"
   },
   "files": [
-    "esm"
+    "index.js",
+    "index.d.ts",
+    "generated"
   ],
   "sideEffects": false,
   "license": "Apache-2.0",

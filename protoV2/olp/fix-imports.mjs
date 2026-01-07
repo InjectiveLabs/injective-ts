@@ -24,9 +24,9 @@ function findJsFiles(dir) {
   return results
 }
 
-// Find all .js files in proto-ts/esm
-const esmDir = join(__dirname, 'proto-ts/esm')
-const files = findJsFiles(esmDir)
+// Find all .js files in proto-ts
+const outDir = join(__dirname, 'proto-ts')
+const files = findJsFiles(outDir)
 
 console.log(`Found ${files.length} .js files to process`)
 

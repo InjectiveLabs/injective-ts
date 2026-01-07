@@ -87,4 +87,4 @@ cp ./package.json.template ./proto-ts/package.json
 echo ""
 echo "✅ Generation complete!"
 echo "📦 Generated files: src/generated/"
-echo "📦 Built files: proto-ts/esm/"
+echo "📦 Built files: proto-ts/"
