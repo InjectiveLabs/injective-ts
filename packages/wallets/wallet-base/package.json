@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-base",
-  "version": "1.17.3-alpha.0",
+  "version": "1.17.3",
   "description": "Base wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
