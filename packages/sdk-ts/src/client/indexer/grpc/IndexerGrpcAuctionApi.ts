@@ -140,4 +140,31 @@ export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
       response,
     )
   }
+
+  async fetchAccountAuctionStatus({
+    address,
+    round = -1,
+  }: {
+    address: string
+    round?: string | number
+  }) {
+    const request = InjectiveAuctionRpcPb.AuctionAccountStatusRequest.create()
+
+    if (round) {
+      request.round = BigInt(round)
+    }
+
+    if (address) {
+      request.address = address
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveAuctionRpcPb.AuctionAccountStatusRequest,
+      InjectiveAuctionRpcPb.AuctionAccountStatusResponse
+    >(request, this.client.auctionAccountStatus.bind(this.client))
+
+    return IndexerGrpcAuctionTransformer.auctionAccountStatusResponseToAuctionAccountStatus(
+      response,
+    )
+  }
 }

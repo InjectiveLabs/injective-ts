@@ -11,6 +11,7 @@ import type {
   AuctionCoinPrices,
   IndexerAuctionBid,
   GrpcAccountAuctionV2,
+  AccountAuctionStatus,
   GrpcIndexerAuctionBid,
   GrpcAuctionCoinPrices,
 } from '../types/auction.js'
@@ -152,6 +153,14 @@ export class IndexerGrpcAuctionTransformer {
     return {
       totalBurnt: response.totalBurnt,
       totalBurntInUsd: response.totalUsdValue,
+    }
+  }
+
+  static auctionAccountStatusResponseToAuctionAccountStatus(
+    response: InjectiveAuctionRpcPb.AuctionAccountStatusResponse,
+  ): AccountAuctionStatus {
+    return {
+      status: response.status,
     }
   }
 }
