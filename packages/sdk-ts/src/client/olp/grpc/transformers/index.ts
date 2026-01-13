@@ -1,5 +1,4 @@
-import { protobufTimestampToDate } from '../../../../utils/time.js'
-import type * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/dmm_pb'
+import type * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/goagen_olp_injective_dmm_v2_pb'
 import type {
   EpochV2,
   TotalScore,
@@ -42,13 +41,19 @@ export class DmmGrpcTransformer {
       resultCount: epoch.resultCount,
       config: epoch.config
         ? {
-            startDate: protobufTimestampToDate(epoch.config.startDate),
-            endDate: protobufTimestampToDate(epoch.config.endDate),
+            startDate: epoch.config.startDate
+              ? new Date(epoch.config.startDate)
+              : undefined,
+            endDate: epoch.config.endDate
+              ? new Date(epoch.config.endDate)
+              : undefined,
             rewardInj: epoch.config.rewardInj,
             markets: epoch.config.markets.map((market) => ({
               marketId: market.marketId,
               ticker: market.ticker,
-              startDate: protobufTimestampToDate(market.startDate),
+              startDate: market.startDate
+                ? new Date(market.startDate)
+                : undefined,
               preAllocatedReward: market.preAllocatedReward,
             })),
             liquidityScoreExponent: epoch.config.liquidityScoreExponent,
@@ -60,8 +65,8 @@ export class DmmGrpcTransformer {
             isMiniEpoch: epoch.config.isMiniEpoch,
           }
         : undefined,
-      createdAt: protobufTimestampToDate(epoch.createdAt),
-      updatedAt: protobufTimestampToDate(epoch.updatedAt),
+      createdAt: epoch.createdAt ? new Date(epoch.createdAt) : undefined,
+      updatedAt: epoch.updatedAt ? new Date(epoch.updatedAt) : undefined,
     }
   }
 
@@ -83,11 +88,19 @@ export class DmmGrpcTransformer {
       reward: marketReward.reward,
       rewardPercentage: marketReward.rewardPercentage,
       liquidity: marketReward.liquidity,
-      startDate: protobufTimestampToDate(marketReward.startDate),
-      endDate: protobufTimestampToDate(marketReward.endDate),
+      startDate: marketReward.startDate
+        ? new Date(marketReward.startDate)
+        : undefined,
+      endDate: marketReward.endDate
+        ? new Date(marketReward.endDate)
+        : undefined,
       totalScore: marketReward.totalScore,
-      createdAt: protobufTimestampToDate(marketReward.createdAt),
-      updatedAt: protobufTimestampToDate(marketReward.updatedAt),
+      createdAt: marketReward.createdAt
+        ? new Date(marketReward.createdAt)
+        : undefined,
+      updatedAt: marketReward.updatedAt
+        ? new Date(marketReward.updatedAt)
+        : undefined,
       miniEpochsReward: marketReward.miniEpochsReward,
     }
   }
@@ -113,8 +126,12 @@ export class DmmGrpcTransformer {
       accountAddress: eligibleAddress.accountAddress,
       height: eligibleAddress.height?.toString(),
       source: eligibleAddress.source,
-      createdAt: protobufTimestampToDate(eligibleAddress.createdAt),
-      updatedAt: protobufTimestampToDate(eligibleAddress.updatedAt),
+      createdAt: eligibleAddress.createdAt
+        ? new Date(eligibleAddress.createdAt)
+        : undefined,
+      updatedAt: eligibleAddress.updatedAt
+        ? new Date(eligibleAddress.updatedAt)
+        : undefined,
     }
   }
 
@@ -134,7 +151,7 @@ export class DmmGrpcTransformer {
       epochId: score.epochId,
       accountAddress: score.accountAddress,
       height: score.height?.toString(),
-      blockTime: protobufTimestampToDate(score.blockTime),
+      blockTime: score.blockTime ? new Date(score.blockTime) : undefined,
       startHeight: score.startHeight?.toString(),
       liquidityScore: score.liquidityScore,
       liquidityScorePonderated: score.liquidityScorePonderated,
@@ -151,8 +168,8 @@ export class DmmGrpcTransformer {
       rewardPercentage: score.rewardPercentage,
       qualifies: score.qualifies,
       volumePercentage: score.volumePercentage,
-      createdAt: protobufTimestampToDate(score.createdAt),
-      updatedAt: protobufTimestampToDate(score.updatedAt),
+      createdAt: score.createdAt ? new Date(score.createdAt) : undefined,
+      updatedAt: score.updatedAt ? new Date(score.updatedAt) : undefined,
     }
   }
 
@@ -185,7 +202,7 @@ export class DmmGrpcTransformer {
       accountAddress: score.accountAddress,
       height: score.height?.toString(),
       startHeight: score.startHeight?.toString(),
-      blockTime: protobufTimestampToDate(score.blockTime),
+      blockTime: score.blockTime ? new Date(score.blockTime) : undefined,
       bid: score.bid,
       ask: score.ask,
       depth: score.depth,
@@ -209,8 +226,8 @@ export class DmmGrpcTransformer {
       totalScore: score.totalScore,
       reward: score.reward,
       rewardPercentage: score.rewardPercentage,
-      createdAt: protobufTimestampToDate(score.createdAt),
-      updatedAt: protobufTimestampToDate(score.updatedAt),
+      createdAt: score.createdAt ? new Date(score.createdAt) : undefined,
+      updatedAt: score.updatedAt ? new Date(score.updatedAt) : undefined,
     }
   }
 
@@ -246,11 +263,11 @@ export class DmmGrpcTransformer {
       accountAddress: reward.accountAddress,
       height: reward.height?.toString(),
       startHeight: reward.startHeight?.toString(),
-      blockTime: protobufTimestampToDate(reward.blockTime),
+      blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
       depth: reward.depth,
       reward: reward.reward,
-      createdAt: protobufTimestampToDate(reward.createdAt),
-      updatedAt: protobufTimestampToDate(reward.updatedAt),
+      createdAt: reward.createdAt ? new Date(reward.createdAt) : undefined,
+      updatedAt: reward.updatedAt ? new Date(reward.updatedAt) : undefined,
     }
   }
 
@@ -269,9 +286,11 @@ export class DmmGrpcTransformer {
       epochId: reward.epochId,
       accountAddress: reward.accountAddress,
       height: reward.height?.toString(),
-      blockTime: protobufTimestampToDate(reward.blockTime),
+      blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
       date: reward.date,
-      dateTimestamp: protobufTimestampToDate(reward.dateTimestamp),
+      dateTimestamp: reward.dateTimestamp
+        ? new Date(reward.dateTimestamp)
+        : undefined,
       volume: reward.volume,
       takerVolume: reward.takerVolume,
       makerVolume: reward.makerVolume,
@@ -285,8 +304,8 @@ export class DmmGrpcTransformer {
       dailyMakerVolumePercentage: reward.dailyMakerVolumePercentage,
       dailyTakerVolumePercentage: reward.dailyTakerVolumePercentage,
       dailyQualified: reward.dailyQualified,
-      createdAt: protobufTimestampToDate(reward.createdAt),
-      updatedAt: protobufTimestampToDate(reward.updatedAt),
+      createdAt: reward.createdAt ? new Date(reward.createdAt) : undefined,
+      updatedAt: reward.updatedAt ? new Date(reward.updatedAt) : undefined,
     }
   }
 
@@ -305,7 +324,7 @@ export class DmmGrpcTransformer {
       eligibleForNextEpoch: response.eligibleForNextEpoch,
       eligibleForCurrentEpoch: response.eligibleForCurrentEpoch,
       estimatedReward: response.estimatedReward,
-      updatedAt: protobufTimestampToDate(response.updatedAt),
+      updatedAt: response.updatedAt ? new Date(response.updatedAt) : undefined,
     }
   }
 
