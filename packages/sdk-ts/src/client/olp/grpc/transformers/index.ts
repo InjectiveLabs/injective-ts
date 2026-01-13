@@ -33,36 +33,36 @@ export class DmmGrpcTransformer {
 
   static grpcEpochToEpoch(epoch: GrpcEpochV2): EpochV2 {
     return {
-      epochId: epoch.epochId,
       status: epoch.status,
-      startHeight: epoch.startHeight?.toString(),
-      endHeight: epoch.endHeight?.toString(),
-      snapshotCount: epoch.snapshotCount,
+      epochId: epoch.epochId,
       resultCount: epoch.resultCount,
+      snapshotCount: epoch.snapshotCount,
+      endHeight: epoch.endHeight?.toString(),
+      startHeight: epoch.startHeight?.toString(),
       config: epoch.config
         ? {
+            number: epoch.config.number,
+            rewardInj: epoch.config.rewardInj,
+            isMiniEpoch: epoch.config.isMiniEpoch,
+            uptimeExponent: epoch.config.uptimeExponent,
+            volumeExponent: epoch.config.volumeExponent,
+            liquidityScoreExponent: epoch.config.liquidityScoreExponent,
+            permanenceVolumeThreshold: epoch.config.permanenceVolumeThreshold,
+            qualifyingVolumeThreshold: epoch.config.qualifyingVolumeThreshold,
             startDate: epoch.config.startDate
               ? new Date(epoch.config.startDate)
               : undefined,
             endDate: epoch.config.endDate
               ? new Date(epoch.config.endDate)
               : undefined,
-            rewardInj: epoch.config.rewardInj,
             markets: epoch.config.markets.map((market) => ({
-              marketId: market.marketId,
               ticker: market.ticker,
+              marketId: market.marketId,
               startDate: market.startDate
                 ? new Date(market.startDate)
                 : undefined,
               preAllocatedReward: market.preAllocatedReward,
             })),
-            liquidityScoreExponent: epoch.config.liquidityScoreExponent,
-            uptimeExponent: epoch.config.uptimeExponent,
-            volumeExponent: epoch.config.volumeExponent,
-            permanenceVolumeThreshold: epoch.config.permanenceVolumeThreshold,
-            qualifyingVolumeThreshold: epoch.config.qualifyingVolumeThreshold,
-            number: epoch.config.number,
-            isMiniEpoch: epoch.config.isMiniEpoch,
           }
         : undefined,
       createdAt: epoch.createdAt ? new Date(epoch.createdAt) : undefined,
@@ -82,26 +82,26 @@ export class DmmGrpcTransformer {
     marketReward: GrpcMarketReward,
   ): MarketReward {
     return {
+      reward: marketReward.reward,
       epochId: marketReward.epochId,
       marketId: marketReward.marketId,
-      height: marketReward.height?.toString(),
-      reward: marketReward.reward,
-      rewardPercentage: marketReward.rewardPercentage,
       liquidity: marketReward.liquidity,
+      totalScore: marketReward.totalScore,
+      height: marketReward.height?.toString(),
+      rewardPercentage: marketReward.rewardPercentage,
+      miniEpochsReward: marketReward.miniEpochsReward,
       startDate: marketReward.startDate
         ? new Date(marketReward.startDate)
         : undefined,
       endDate: marketReward.endDate
         ? new Date(marketReward.endDate)
         : undefined,
-      totalScore: marketReward.totalScore,
       createdAt: marketReward.createdAt
         ? new Date(marketReward.createdAt)
         : undefined,
       updatedAt: marketReward.updatedAt
         ? new Date(marketReward.updatedAt)
         : undefined,
-      miniEpochsReward: marketReward.miniEpochsReward,
     }
   }
 
@@ -122,10 +122,10 @@ export class DmmGrpcTransformer {
     eligibleAddress: GrpcEligibleAddress,
   ): EligibleAddress {
     return {
-      epochId: eligibleAddress.epochId,
-      accountAddress: eligibleAddress.accountAddress,
-      height: eligibleAddress.height?.toString(),
       source: eligibleAddress.source,
+      epochId: eligibleAddress.epochId,
+      height: eligibleAddress.height?.toString(),
+      accountAddress: eligibleAddress.accountAddress,
       createdAt: eligibleAddress.createdAt
         ? new Date(eligibleAddress.createdAt)
         : undefined,
@@ -148,26 +148,26 @@ export class DmmGrpcTransformer {
 
   static grpcEpochScoresToEpochScores(score: GrpcEpochScore): EpochScore {
     return {
-      epochId: score.epochId,
-      accountAddress: score.accountAddress,
-      height: score.height?.toString(),
-      blockTime: score.blockTime ? new Date(score.blockTime) : undefined,
-      startHeight: score.startHeight?.toString(),
-      liquidityScore: score.liquidityScore,
-      liquidityScorePonderated: score.liquidityScorePonderated,
-      uptimeScore: score.uptimeScore,
-      uptimeScorePonderated: score.uptimeScorePonderated,
-      uptimePercentage: score.uptimePercentage,
-      volumeScore: score.volumeScore,
-      volumeScorePonderated: score.volumeScorePonderated,
-      totalScore: score.totalScore,
       volume: score.volume,
+      reward: score.reward,
+      epochId: score.epochId,
+      qualifies: score.qualifies,
+      totalScore: score.totalScore,
+      uptimeScore: score.uptimeScore,
+      volumeScore: score.volumeScore,
       makerVolume: score.makerVolume,
       takerVolume: score.takerVolume,
-      reward: score.reward,
+      height: score.height?.toString(),
+      accountAddress: score.accountAddress,
+      liquidityScore: score.liquidityScore,
+      uptimePercentage: score.uptimePercentage,
       rewardPercentage: score.rewardPercentage,
-      qualifies: score.qualifies,
       volumePercentage: score.volumePercentage,
+      startHeight: score.startHeight?.toString(),
+      uptimeScorePonderated: score.uptimeScorePonderated,
+      volumeScorePonderated: score.volumeScorePonderated,
+      liquidityScorePonderated: score.liquidityScorePonderated,
+      blockTime: score.blockTime ? new Date(score.blockTime) : undefined,
       createdAt: score.createdAt ? new Date(score.createdAt) : undefined,
       updatedAt: score.updatedAt ? new Date(score.updatedAt) : undefined,
     }
@@ -197,35 +197,35 @@ export class DmmGrpcTransformer {
 
   static grpcTotalScoresToTotalScores(score: GrpcTotalScore): TotalScore {
     return {
-      epochId: score.epochId,
-      marketId: score.marketId,
-      accountAddress: score.accountAddress,
-      height: score.height?.toString(),
-      startHeight: score.startHeight?.toString(),
-      blockTime: score.blockTime ? new Date(score.blockTime) : undefined,
       bid: score.bid,
       ask: score.ask,
       depth: score.depth,
-      snapshotCount: score.snapshotCount,
-      liquidityScore: score.liquidityScore,
-      liquidityScorePonderated: score.liquidityScorePonderated,
-      uptimeScore: score.uptimeScore,
-      uptimeScorePonderated: score.uptimeScorePonderated,
-      uptimePercentage: score.uptimePercentage,
-      startVolume: score.startVolume,
-      currentVolume: score.currentVolume,
       volume: score.volume,
-      volumeScore: score.volumeScore,
-      volumeScorePonderated: score.volumeScorePonderated,
-      takerStartVolume: score.takerStartVolume,
-      takerCurrentVolume: score.takerCurrentVolume,
-      takerVolume: score.takerVolume,
-      makerStartVolume: score.makerStartVolume,
-      makerCurrentVolume: score.makerCurrentVolume,
-      makerVolume: score.makerVolume,
-      totalScore: score.totalScore,
       reward: score.reward,
+      epochId: score.epochId,
+      marketId: score.marketId,
+      totalScore: score.totalScore,
+      uptimeScore: score.uptimeScore,
+      startVolume: score.startVolume,
+      volumeScore: score.volumeScore,
+      takerVolume: score.takerVolume,
+      makerVolume: score.makerVolume,
+      height: score.height?.toString(),
+      snapshotCount: score.snapshotCount,
+      currentVolume: score.currentVolume,
+      accountAddress: score.accountAddress,
+      liquidityScore: score.liquidityScore,
+      uptimePercentage: score.uptimePercentage,
+      takerStartVolume: score.takerStartVolume,
+      makerStartVolume: score.makerStartVolume,
       rewardPercentage: score.rewardPercentage,
+      startHeight: score.startHeight?.toString(),
+      takerCurrentVolume: score.takerCurrentVolume,
+      makerCurrentVolume: score.makerCurrentVolume,
+      uptimeScorePonderated: score.uptimeScorePonderated,
+      volumeScorePonderated: score.volumeScorePonderated,
+      liquidityScorePonderated: score.liquidityScorePonderated,
+      blockTime: score.blockTime ? new Date(score.blockTime) : undefined,
       createdAt: score.createdAt ? new Date(score.createdAt) : undefined,
       updatedAt: score.updatedAt ? new Date(score.updatedAt) : undefined,
     }
@@ -259,13 +259,13 @@ export class DmmGrpcTransformer {
     reward: GrpcRewardDistribution,
   ): RewardDistribution {
     return {
-      epochId: reward.epochId,
-      accountAddress: reward.accountAddress,
-      height: reward.height?.toString(),
-      startHeight: reward.startHeight?.toString(),
-      blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
       depth: reward.depth,
       reward: reward.reward,
+      epochId: reward.epochId,
+      height: reward.height?.toString(),
+      accountAddress: reward.accountAddress,
+      startHeight: reward.startHeight?.toString(),
+      blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
       createdAt: reward.createdAt ? new Date(reward.createdAt) : undefined,
       updatedAt: reward.updatedAt ? new Date(reward.updatedAt) : undefined,
     }
@@ -283,29 +283,29 @@ export class DmmGrpcTransformer {
     reward: GrpcAccountVolume,
   ): AccountVolume {
     return {
-      epochId: reward.epochId,
-      accountAddress: reward.accountAddress,
-      height: reward.height?.toString(),
-      blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
       date: reward.date,
-      dateTimestamp: reward.dateTimestamp
-        ? new Date(reward.dateTimestamp)
-        : undefined,
       volume: reward.volume,
+      epochId: reward.epochId,
       takerVolume: reward.takerVolume,
       makerVolume: reward.makerVolume,
-      volumePercentage: reward.volumePercentage,
-      makerVolumePercentage: reward.makerVolumePercentage,
-      takerVolumePercentage: reward.takerVolumePercentage,
       dailyVolume: reward.dailyVolume,
+      height: reward.height?.toString(),
+      accountAddress: reward.accountAddress,
+      dailyQualified: reward.dailyQualified,
+      volumePercentage: reward.volumePercentage,
       dailyMakerVolume: reward.dailyMakerVolume,
       dailyTakerVolume: reward.dailyTakerVolume,
+      makerVolumePercentage: reward.makerVolumePercentage,
+      takerVolumePercentage: reward.takerVolumePercentage,
       dailyVolumePercentage: reward.dailyVolumePercentage,
       dailyMakerVolumePercentage: reward.dailyMakerVolumePercentage,
       dailyTakerVolumePercentage: reward.dailyTakerVolumePercentage,
-      dailyQualified: reward.dailyQualified,
+      blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
       createdAt: reward.createdAt ? new Date(reward.createdAt) : undefined,
       updatedAt: reward.updatedAt ? new Date(reward.updatedAt) : undefined,
+      dateTimestamp: reward.dateTimestamp
+        ? new Date(reward.dateTimestamp)
+        : undefined,
     }
   }
 
@@ -315,16 +315,16 @@ export class DmmGrpcTransformer {
     const volumes = response.volumes
 
     return {
+      estimatedReward: response.estimatedReward,
+      eligibleForNextEpoch: response.eligibleForNextEpoch,
+      eligibleForCurrentEpoch: response.eligibleForCurrentEpoch,
+      currentMakerVolumePercentage: response.currentMakerVolumePercentage,
+      updatedAt: response.updatedAt ? new Date(response.updatedAt) : undefined,
+      averageDailyMakerVolumePercentage:
+        response.averageDailyMakerVolumePercentage,
       volumes: volumes.map(
         DmmGrpcTransformer.grpcAccountVolumesToAccountVolumes,
       ),
-      currentMakerVolumePercentage: response.currentMakerVolumePercentage,
-      averageDailyMakerVolumePercentage:
-        response.averageDailyMakerVolumePercentage,
-      eligibleForNextEpoch: response.eligibleForNextEpoch,
-      eligibleForCurrentEpoch: response.eligibleForCurrentEpoch,
-      estimatedReward: response.estimatedReward,
-      updatedAt: response.updatedAt ? new Date(response.updatedAt) : undefined,
     }
   }
 
