@@ -57,10 +57,7 @@ var __importStar =
     }
   })()
 Object.defineProperty(exports, '__esModule', { value: true })
-exports.DmmPb =
-  exports.InjectiveVolatilityRPCClient =
-  exports.InjectiveDmmV2Client =
-    void 0
+exports.DmmPb = exports.InjectiveDmmV2Client = void 0
 // Export all client classes
 var dmm_pb_client_js_1 = require('./generated/goagen_olp_injective_dmm_v2_pb.client.js')
 Object.defineProperty(exports, 'InjectiveDmmV2Client', {
