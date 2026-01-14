@@ -1,6 +1,6 @@
 import { IndexerErrorModule } from '@injectivelabs/exceptions'
-import * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/dmm_pb'
-import { InjectiveDmmV2RPCClient } from '@injectivelabs/olp-proto-ts-v2/generated/dmm_pb.client'
+import * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/goagen_olp_injective_dmm_v2_pb'
+import { InjectiveDmmV2Client } from '@injectivelabs/olp-proto-ts-v2/generated/goagen_olp_injective_dmm_v2_pb.client'
 import { DmmGrpcTransformer } from './transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 
@@ -8,7 +8,7 @@ export class OLPGrpcApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerErrorModule.OLP
 
   private get client() {
-    return this.initClient(InjectiveDmmV2RPCClient)
+    return this.initClient(InjectiveDmmV2Client)
   }
 
   async fetchEpochs(status?: string) {
@@ -264,7 +264,7 @@ export class OLPGrpcApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       DmmPb.GetMarketRewardsRangeRequest,
       DmmPb.GetMarketRewardsRangeResponse
-    >(request, this.client.getMarketRewardRanges.bind(this.client))
+    >(request, this.client.getMarketRewardsRange.bind(this.client))
 
     return DmmGrpcTransformer.marketRewardsRangeResponseToMarketRewardsRange(
       response,
