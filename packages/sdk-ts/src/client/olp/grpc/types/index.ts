@@ -179,6 +179,7 @@ export interface RewardDistribution {
   blockTime?: Date | undefined
   depth: string
   reward: string
+  miniEpochsReward?: string
   createdAt?: Date
   updatedAt?: Date
 }

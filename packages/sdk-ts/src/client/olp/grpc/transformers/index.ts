@@ -264,6 +264,7 @@ export class DmmGrpcTransformer {
       epochId: reward.epochId,
       height: reward.height?.toString(),
       accountAddress: reward.accountAddress,
+      miniEpochsReward: reward.miniEpochsReward,
       startHeight: reward.startHeight?.toString(),
       blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
       createdAt: reward.createdAt ? new Date(reward.createdAt) : undefined,
