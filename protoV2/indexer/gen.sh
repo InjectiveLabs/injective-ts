@@ -12,7 +12,8 @@ cd "$SCRIPT_DIR"
 # Check if node_modules exists, if not install dependencies
 if [ ! -d "node_modules" ] || [ ! -f "node_modules/.bin/protoc" ]; then
   echo "📥 Installing dependencies..."
-  npm install || pnpm install || {
+  rm -f package-lock.json pnpm-lock.yaml
+  npm install || {
     echo "❌ Failed to install dependencies"
     exit 1
   }
@@ -32,7 +33,7 @@ ROOT_DIR="./proto"
 PROTO_DIR="./proto/proto"
 BUILD_DIR="./proto/gen"
 
-injective_indexer_branch=dev
+injective_indexer_branch=f/rfq
 
 ## Clone current proto definitions from core
 git clone https://github.com/InjectiveLabs/injective-indexer.git $BUILD_DIR/indexer -b $injective_indexer_branch --depth 1 --single-branch > /dev/null

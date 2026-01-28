@@ -28,11 +28,27 @@ else
   fi
 fi
 
-v1="${v%.*}.$((${v##*.}+1))"
-echo "new package version: $v1"
+# Use provided version or auto-increment
+if [ -n "$1" ]; then
+  v1="$1"
+  echo "using provided version: $v1"
+else
+  v1="${v%.*}.$((${v##*.}+1))"
+  echo "auto-incremented version: $v1"
+fi
 
 # Change to proto-ts directory for publishing
 cd "$SCRIPT_DIR/proto-ts" || exit
 
-npm version $v1
-npm publish .
+# Update version in package.json
+npm version "$v1" --no-git-tag-version
+
+# Detect prerelease tag (alpha, beta, rc, etc.)
+if [[ "$v1" =~ -([a-z]+) ]]; then
+  tag="${BASH_REMATCH[1]}"
+  echo "publishing prerelease version with tag: $tag"
+  npm publish . --tag "$tag"
+else
+  echo "publishing release version"
+  npm publish .
+fi
