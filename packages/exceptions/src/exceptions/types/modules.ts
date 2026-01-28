@@ -37,6 +37,7 @@ export const IndexerErrorModule = {
   Dmm: 'dmm',
   OLP: 'olp',
   Abacus: 'abacus',
+  RFQ: 'indexer-rfq',
   Meta: 'indexer-meta',
   Mito: 'indexer-mito',
   Referral: 'referral',
