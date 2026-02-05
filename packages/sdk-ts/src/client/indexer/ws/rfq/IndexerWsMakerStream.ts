@@ -6,11 +6,13 @@ import {
   RFQ_GRPC_PATHS,
   GrpcDecodeError,
   WsDisconnectReason,
-  type RFQQuoteInput,
-  type RFQStreamAckData,
-  type MakerStreamEvents,
-  type WsTransportConfig,
-  type RFQStreamErrorData,
+} from '../types.js'
+import type {
+  RFQQuoteInput,
+  RFQStreamAckData,
+  MakerStreamEvents,
+  WsTransportConfig,
+  RFQStreamErrorData,
 } from '../types.js'
 
 type MakerEventListener<T extends keyof MakerStreamEvents> = (

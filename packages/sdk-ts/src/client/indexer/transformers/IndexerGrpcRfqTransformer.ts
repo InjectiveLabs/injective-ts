@@ -35,6 +35,8 @@ export class IndexerGrpcRfqTransformer {
 
   static grpcRfqQuoteToRfqQuote(grpcQuote: GrpcRFQQuote): RFQQuote {
     return {
+      chainId: grpcQuote.chainId,
+      contractAddress: grpcQuote.contractAddress,
       marketId: grpcQuote.marketId,
       rfqId: grpcQuote.rfqId.toString(),
       takerDirection: grpcQuote.takerDirection,

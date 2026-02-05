@@ -17,6 +17,8 @@ export interface RFQRequest {
 }
 
 export interface RFQQuote {
+  chainId: string
+  contractAddress: string
   marketId: string
   rfqId: string
   takerDirection: string

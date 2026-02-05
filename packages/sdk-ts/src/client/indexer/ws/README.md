@@ -145,6 +145,8 @@ makerStream.on('request', ({ request, operation }) => {
 
   // Respond with a quote
   makerStream.sendQuote({
+    chainId: request.chainId,
+    contractAddress: request.contractAddress,
     marketId: request.marketId,
     rfqId: request.rfqId,
     takerDirection: request.direction,

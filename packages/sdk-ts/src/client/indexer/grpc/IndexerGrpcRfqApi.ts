@@ -131,6 +131,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     expiry,
     status,
     height,
+    chainId,
     marketId,
     quantity,
     signature,
@@ -138,6 +139,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     updatedAt,
     eventTime,
     takerDirection,
+    contractAddress,
     transactionTime,
   }: {
     rfqId?: bigint
@@ -148,6 +150,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     expiry?: bigint
     status?: string
     height?: bigint
+    chainId: string
     marketId: string
     quantity: string
     signature: string
@@ -155,9 +158,18 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     updatedAt?: bigint
     eventTime?: bigint
     takerDirection: string
+    contractAddress: string
     transactionTime?: bigint
   }): Promise<{ status: string }> {
     const request = InjectiveRFQExchangeRpcPb.RFQQuoteType.create()
+
+    if (chainId) {
+      request.chainId = chainId
+    }
+
+    if (contractAddress) {
+      request.contractAddress = contractAddress
+    }
 
     if (marketId) {
       request.marketId = marketId

@@ -239,6 +239,10 @@ export type MakerResponseType =
  */
 export interface RFQQuoteInput {
   /** Market ID */
+  chainId: string
+  /** Market ID */
+  contractAddress: string
+  /** Market ID */
   marketId: string
   /** RFQ ID being quoted */
   rfqId: string

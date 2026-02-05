@@ -74,6 +74,8 @@ export const GrpcWebSocketCodec = {
 
   encodeMakerQuote(input: RFQQuoteInput): Uint8Array {
     const quote = RFQQuoteType.create({
+      chainId: input.chainId,
+      contractAddress: input.contractAddress,
       marketId: input.marketId,
       rfqId: BigInt(input.rfqId),
       takerDirection: input.takerDirection,
