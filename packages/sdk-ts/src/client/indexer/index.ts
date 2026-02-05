@@ -1,3 +1,4 @@
+export * from './ws/index.js'
 // export * from './ExchangeGrpcClient'
 // export * from './ExchangeRestClient'
 // export * from './ExchangeGrpcStreamClient'

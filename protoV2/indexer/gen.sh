@@ -33,7 +33,7 @@ ROOT_DIR="./proto"
 PROTO_DIR="./proto/proto"
 BUILD_DIR="./proto/gen"
 
-injective_indexer_branch=f/rfq
+injective_indexer_branch=dev
 
 ## Clone current proto definitions from core
 git clone https://github.com/InjectiveLabs/injective-indexer.git $BUILD_DIR/indexer -b $injective_indexer_branch --depth 1 --single-branch > /dev/null

@@ -34,5 +34,10 @@ echo "new package version: $v1"
 # Change to proto-ts directory for publishing
 cd "$SCRIPT_DIR/proto-ts" || exit
 
-npm version 1.17.7-alpha.0
-npm publish . --tag alpha
+npm version $v1
+npm publish
+
+# note: making alpha versions
+# npm version 1.17.7-alpha.1
+# npm publish . --tag alpha
+

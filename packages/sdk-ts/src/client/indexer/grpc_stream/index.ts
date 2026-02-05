@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 // V1 Streams (RxJS-based, backwards compatibility)
-export * from './stream/IndexerGrpcRfqStream.js'
 export * from './stream/IndexerGrpcSpotStream.js'
 export * from './stream/IndexerGrpcMitoStream.js'
 export * from './stream/IndexerGrpcOracleStream.js'

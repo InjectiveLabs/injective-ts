@@ -1,6 +1,5 @@
 import { IndexerGrpcRfqTransformer } from './IndexerGrpcRfqTransformer.js'
 import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfqrpc_pb'
-import type { StreamOperation } from '../../../types/index.js'
 
 /**
  * @category Indexer Stream Transformer
@@ -15,7 +14,6 @@ export class IndexerRfqStreamTransformer {
       request: request
         ? IndexerGrpcRfqTransformer.grpcRfqRequestToRfqRequest(request)
         : undefined,
-      operation: response.streamOperation as StreamOperation,
     }
   }
 
@@ -28,7 +26,6 @@ export class IndexerRfqStreamTransformer {
       quote: quote
         ? IndexerGrpcRfqTransformer.grpcRfqQuoteToRfqQuote(quote)
         : undefined,
-      operation: response.streamOperation as StreamOperation,
     }
   }
 
@@ -41,7 +38,6 @@ export class IndexerRfqStreamTransformer {
       settlement: settlement
         ? IndexerGrpcRfqTransformer.grpcRfqSettlementToRfqSettlement(settlement)
         : undefined,
-      operation: response.streamOperation as StreamOperation,
     }
   }
 }
