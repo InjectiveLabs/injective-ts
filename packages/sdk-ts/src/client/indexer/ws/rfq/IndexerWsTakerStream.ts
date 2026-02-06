@@ -1,3 +1,4 @@
+import { log } from 'console'
 import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
@@ -77,11 +78,13 @@ export class IndexerWsTakerStream {
   }
 
   sendRequest(request: RFQRequestInput): void {
+    console.log('sendRequest', request)
     if (!this.isConnected()) {
       throw new Error('Cannot send request: stream is not connected')
     }
 
     const encoded = GrpcWebSocketCodec.encodeTakerRequest(request)
+    console.log('connected - sendRequest', encoded)
     this.transport.send(encoded)
   }
 
@@ -106,6 +109,8 @@ export class IndexerWsTakerStream {
     event: T,
     data: TakerStreamEvents[T],
   ): void {
+    console.log('emit', event, data)
+
     this.listeners.get(event)?.forEach((listener) => {
       try {
         listener(data)
@@ -117,16 +122,19 @@ export class IndexerWsTakerStream {
 
   private setupTransportHandlers(): void {
     this.transport.on('connect', ({ isReconnect }) => {
+      console.log('transport - connect')
       this.startPingInterval()
       this.emit('connect', { isReconnect })
     })
 
     this.transport.on('disconnect', ({ reason, willRetry }) => {
+      console.log('transport - disconnect')
       this.stopPingInterval()
       this.emit('disconnect', { reason, willRetry })
     })
 
     this.transport.on('state_change', ({ from, to }) => {
+      console.log('transport - state_change', from, to)
       this.emit('state_change', { from, to })
     })
 
@@ -135,6 +143,7 @@ export class IndexerWsTakerStream {
     })
 
     this.transport.on('error', (error) => {
+      console.log('transport - error', error)
       this.emit('error', {
         code: 'TRANSPORT_ERROR',
         message: error.message,
@@ -152,8 +161,16 @@ export class IndexerWsTakerStream {
 
       const response = frame.message
 
+      if (response?.messageType !== 'pong') {
+        console.log('handleMessage - response', response)
+      }
+
       if (!response) {
         return
+      }
+
+      if (response.messageType !== 'pong') {
+        console.log('handleMessage messageType', response.messageType)
       }
 
       switch (response.messageType) {
@@ -162,6 +179,7 @@ export class IndexerWsTakerStream {
           break
 
         case 'quote':
+          console.log('handleMessage quote')
           if (response.quote) {
             const quote = IndexerGrpcRfqTransformer.grpcRfqQuoteToRfqQuote(
               response.quote,
