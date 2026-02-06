@@ -33,25 +33,6 @@ describe('IndexerGrpcRFQApi', () => {
     }
   })
 
-  test('fetchOpenRequests', async () => {
-    try {
-      const response = await indexerGrpcRfqApi.fetchOpenRequests()
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcRfqTransformer.openRequestsResponseToOpenRequests
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'IndexerGrpcRFQApi.fetchOpenRequests => ' + (e as any).message,
-      )
-    }
-  })
-
   test('submitQuote', async () => {
     try {
       const response = await indexerGrpcRfqApi.submitRequest({
@@ -78,26 +59,6 @@ describe('IndexerGrpcRFQApi', () => {
       console.error('IndexerGrpcRFQApi.submitRequest => ' + (e as any).message)
     }
   })
-
-  test('fetchPendingQuotes', async () => {
-    try {
-      const response = await indexerGrpcRfqApi.fetchPendingQuotes()
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof IndexerGrpcRfqTransformer.pendingQuotesResponseToPendingQuotes
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'IndexerGrpcRFQApi.fetchPendingQuotes => ' + (e as any).message,
-      )
-    }
-  })
-
   test('fetchSettlements', async () => {
     try {
       const response = await indexerGrpcRfqApi.fetchSettlements({

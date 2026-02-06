@@ -109,19 +109,6 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     return { status: response.status }
   }
 
-  async fetchOpenRequests() {
-    const request = InjectiveRFQExchangeRpcPb.GetOpenRequestsRequest.create()
-
-    const response = await this.executeGrpcCall<
-      InjectiveRFQExchangeRpcPb.GetOpenRequestsRequest,
-      InjectiveRFQExchangeRpcPb.GetOpenRequestsResponse
-    >(request, this.client.getOpenRequests.bind(this.client))
-
-    return IndexerGrpcRfqTransformer.openRequestsResponseToOpenRequests(
-      response,
-    )
-  }
-
   async submitQuote({
     rfqId,
     price,
@@ -244,19 +231,6 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     >(quoteMessage, this.client.quote.bind(this.client))
 
     return { status: response.status }
-  }
-
-  async fetchPendingQuotes() {
-    const request = InjectiveRFQExchangeRpcPb.GetPendingQuotesRequest.create()
-
-    const response = await this.executeGrpcCall<
-      InjectiveRFQExchangeRpcPb.GetPendingQuotesRequest,
-      InjectiveRFQExchangeRpcPb.GetPendingQuotesResponse
-    >(request, this.client.getPendingQuotes.bind(this.client))
-
-    return IndexerGrpcRfqTransformer.pendingQuotesResponseToPendingQuotes(
-      response,
-    )
   }
 
   async fetchSettlements(params?: {
