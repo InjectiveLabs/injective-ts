@@ -45,9 +45,11 @@ export interface RFQSettlement {
   margin: string
   quantity: string
   worstPrice: string
-  maker: string
-  price: string
+  fallbackQuantity: string
+  fallbackMargin: string
+  transactionTime: number
   createdAt: number
+  updatedAt: number
   eventTime: number
   height: number
 }

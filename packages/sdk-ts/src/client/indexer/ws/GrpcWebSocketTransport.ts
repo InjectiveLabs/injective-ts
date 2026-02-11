@@ -126,7 +126,11 @@ export class GrpcWebSocketTransport {
       }, this.config.connectionTimeoutMs)
 
       try {
-        this.ws = this.createWebSocket(url, this.config.protocol)
+        this.ws = this.createWebSocket(
+          url,
+          this.config.protocol,
+          this.config.metadata,
+        )
 
         if ('binaryType' in this.ws) {
           ;(this.ws as WebSocket).binaryType = 'arraybuffer'
@@ -156,13 +160,35 @@ export class GrpcWebSocketTransport {
     })
   }
 
-  private createWebSocket(url: string, protocol: string): IsomorphicWebSocket {
+  private createWebSocket(
+    url: string,
+    protocol: string,
+    metadata?: Record<string, string>,
+  ): IsomorphicWebSocket {
     if (typeof WebSocket !== 'undefined') {
-      return new WebSocket(url, protocol)
+      const urlWithMetadata = this.addMetadataToUrl(url, metadata)
+      return new WebSocket(urlWithMetadata, protocol)
     }
 
     const WS = require('ws')
-    return new WS(url, protocol)
+    return new WS(url, protocol, {
+      headers: metadata || {},
+    })
+  }
+
+  private addMetadataToUrl(
+    url: string,
+    metadata?: Record<string, string>,
+  ): string {
+    if (!metadata || Object.keys(metadata).length === 0) {
+      return url
+    }
+
+    const params = new URLSearchParams(metadata)
+
+    const separator = url.includes('?') ? '&' : '?'
+
+    return `${url}${separator}${params.toString()}`
   }
 
   /**
@@ -387,6 +413,7 @@ export class GrpcWebSocketTransport {
         config.connectionTimeoutMs ??
         DEFAULT_TRANSPORT_CONFIG.connectionTimeoutMs,
       reconnect,
+      metadata: config.metadata,
     }
   }
 }

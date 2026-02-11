@@ -21,6 +21,7 @@ type MakerEventListener<T extends keyof MakerStreamEvents> = (
 
 export interface MakerStreamConfig {
   url: string
+  makerAddress: string
   pingIntervalMs?: number
   connectionTimeoutMs?: number
   reconnect?: WsTransportConfig['reconnect']
@@ -45,6 +46,9 @@ export class IndexerWsMakerStream {
       pingIntervalMs: this.pingIntervalMs,
       connectionTimeoutMs: config.connectionTimeoutMs,
       reconnect: config.reconnect,
+      metadata: {
+        maker_address: config.makerAddress,
+      },
     })
 
     this.setupTransportHandlers()

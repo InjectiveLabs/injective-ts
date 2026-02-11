@@ -69,6 +69,8 @@ export interface WsTransportConfig {
   connectionTimeoutMs?: number
   /** Reconnection configuration */
   reconnect?: Partial<WsReconnectConfig>
+  /** gRPC metadata (e.g., request_address for TakerStream) */
+  metadata?: Record<string, string>
 }
 
 /**
@@ -80,6 +82,7 @@ export interface ResolvedWsTransportConfig {
   pingIntervalMs: number
   connectionTimeoutMs: number
   reconnect: WsReconnectConfig
+  metadata?: Record<string, string>
 }
 
 /**

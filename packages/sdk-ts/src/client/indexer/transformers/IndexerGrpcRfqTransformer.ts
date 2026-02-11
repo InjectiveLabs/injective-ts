@@ -67,9 +67,11 @@ export class IndexerGrpcRfqTransformer {
       margin: grpcSettlement.margin,
       quantity: grpcSettlement.quantity,
       worstPrice: grpcSettlement.worstPrice,
-      maker: grpcSettlement.maker,
-      price: grpcSettlement.price,
+      fallbackQuantity: grpcSettlement.fallbackQuantity,
+      fallbackMargin: grpcSettlement.fallbackMargin,
+      transactionTime: Number(grpcSettlement.transactionTime),
       createdAt: Number(grpcSettlement.createdAt),
+      updatedAt: Number(grpcSettlement.updatedAt),
       eventTime: Number(grpcSettlement.eventTime),
       height: Number(grpcSettlement.height),
     }

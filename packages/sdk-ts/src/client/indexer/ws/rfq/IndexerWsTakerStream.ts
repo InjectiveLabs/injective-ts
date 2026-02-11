@@ -19,6 +19,7 @@ type TakerEventListener<T extends keyof TakerStreamEvents> = (
 
 export interface TakerStreamConfig {
   url: string
+  requestAddress: string
   pingIntervalMs?: number
   connectionTimeoutMs?: number
   reconnect?: WsTransportConfig['reconnect']
@@ -43,6 +44,9 @@ export class IndexerWsTakerStream {
       pingIntervalMs: this.pingIntervalMs,
       connectionTimeoutMs: config.connectionTimeoutMs,
       reconnect: config.reconnect,
+      metadata: {
+        request_address: config.requestAddress,
+      },
     })
 
     this.setupTransportHandlers()
