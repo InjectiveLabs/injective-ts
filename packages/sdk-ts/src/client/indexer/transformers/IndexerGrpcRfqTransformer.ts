@@ -17,41 +17,41 @@ import type {
 export class IndexerGrpcRfqTransformer {
   static grpcRfqRequestToRfqRequest(grpcRequest: GrpcRFQRequest): RFQRequest {
     return {
-      rfqId: grpcRequest.rfqId.toString(),
-      marketId: grpcRequest.marketId,
-      direction: grpcRequest.direction,
       margin: grpcRequest.margin,
-      quantity: grpcRequest.quantity,
-      worstPrice: grpcRequest.worstPrice,
-      requestAddress: grpcRequest.requestAddress,
-      expiry: Number(grpcRequest.expiry),
       status: grpcRequest.status,
+      marketId: grpcRequest.marketId,
+      quantity: grpcRequest.quantity,
+      direction: grpcRequest.direction,
+      worstPrice: grpcRequest.worstPrice,
+      expiry: Number(grpcRequest.expiry),
+      height: Number(grpcRequest.height),
+      rfqId: grpcRequest.rfqId.toString(),
       createdAt: Number(grpcRequest.createdAt),
       updatedAt: Number(grpcRequest.updatedAt),
+      requestAddress: grpcRequest.requestAddress,
       transactionTime: Number(grpcRequest.transactionTime),
-      height: Number(grpcRequest.height),
     }
   }
 
   static grpcRfqQuoteToRfqQuote(grpcQuote: GrpcRFQQuote): RFQQuote {
     return {
-      chainId: grpcQuote.chainId,
-      contractAddress: grpcQuote.contractAddress,
-      marketId: grpcQuote.marketId,
-      rfqId: grpcQuote.rfqId.toString(),
-      takerDirection: grpcQuote.takerDirection,
-      margin: grpcQuote.margin,
-      quantity: grpcQuote.quantity,
       price: grpcQuote.price,
-      expiry: Number(grpcQuote.expiry),
       maker: grpcQuote.maker,
       taker: grpcQuote.taker,
-      signature: grpcQuote.signature,
+      margin: grpcQuote.margin,
       status: grpcQuote.status,
+      chainId: grpcQuote.chainId,
+      marketId: grpcQuote.marketId,
+      quantity: grpcQuote.quantity,
+      signature: grpcQuote.signature,
+      expiry: Number(grpcQuote.expiry),
+      height: Number(grpcQuote.height),
+      rfqId: grpcQuote.rfqId.toString(),
       createdAt: Number(grpcQuote.createdAt),
       updatedAt: Number(grpcQuote.updatedAt),
-      height: Number(grpcQuote.height),
       eventTime: Number(grpcQuote.eventTime),
+      takerDirection: grpcQuote.takerDirection,
+      contractAddress: grpcQuote.contractAddress,
       transactionTime: Number(grpcQuote.transactionTime),
     }
   }
@@ -60,20 +60,20 @@ export class IndexerGrpcRfqTransformer {
     grpcSettlement: GrpcRFQSettlement,
   ): RFQSettlement {
     return {
-      rfqId: grpcSettlement.rfqId.toString(),
-      marketId: grpcSettlement.marketId,
       taker: grpcSettlement.taker,
-      direction: grpcSettlement.direction,
       margin: grpcSettlement.margin,
+      marketId: grpcSettlement.marketId,
       quantity: grpcSettlement.quantity,
+      direction: grpcSettlement.direction,
       worstPrice: grpcSettlement.worstPrice,
-      fallbackQuantity: grpcSettlement.fallbackQuantity,
-      fallbackMargin: grpcSettlement.fallbackMargin,
-      transactionTime: Number(grpcSettlement.transactionTime),
+      height: Number(grpcSettlement.height),
+      rfqId: grpcSettlement.rfqId.toString(),
       createdAt: Number(grpcSettlement.createdAt),
       updatedAt: Number(grpcSettlement.updatedAt),
       eventTime: Number(grpcSettlement.eventTime),
-      height: Number(grpcSettlement.height),
+      fallbackMargin: grpcSettlement.fallbackMargin,
+      fallbackQuantity: grpcSettlement.fallbackQuantity,
+      transactionTime: Number(grpcSettlement.transactionTime),
     }
   }
 

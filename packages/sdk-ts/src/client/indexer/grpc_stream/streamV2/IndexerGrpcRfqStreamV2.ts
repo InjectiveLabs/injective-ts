@@ -21,10 +21,6 @@ export type SettlementStreamCallbackV2 = (
   >,
 ) => void
 
-/**
- * @category Indexer Grpc Stream
- * @description Provides streaming access to RFQ data from Injective Indexer (V2 Event-based)
- */
 export class IndexerGrpcRfqStreamV2 {
   private client: InjectiveRFQRPCClient
   private transport: GrpcWebRpcTransport
@@ -34,12 +30,6 @@ export class IndexerGrpcRfqStreamV2 {
     this.client = new InjectiveRFQRPCClient(this.transport)
   }
 
-  /**
-   * Stream RFQ requests
-   * @param params.marketIds - Filter by market IDs (optional)
-   * @param params.callback - Called for each request update
-   * @returns StreamSubscription
-   */
   streamRequests({
     marketIds,
     callback,
@@ -67,12 +57,6 @@ export class IndexerGrpcRfqStreamV2 {
     })
   }
 
-  /**
-   * Stream RFQ quotes
-   * @param params.addresses - Filter by addresses (optional)
-   * @param params.callback - Called for each quote update
-   * @returns StreamSubscription
-   */
   streamQuotes({
     addresses,
     callback,
@@ -100,12 +84,6 @@ export class IndexerGrpcRfqStreamV2 {
     })
   }
 
-  /**
-   * Stream RFQ settlements
-   * @param params.addresses - Filter by addresses (optional)
-   * @param params.callback - Called for each settlement update
-   * @returns StreamSubscription
-   */
   streamSettlements({
     addresses,
     callback,

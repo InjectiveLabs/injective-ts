@@ -1,16 +1,11 @@
 // Low-level components (advanced usage)
-export { GrpcWebSocketCodec } from './GrpcWebSocketCodec.js'
-export { GrpcWebSocketTransport } from './GrpcWebSocketTransport.js'
+export { GrpcWebSocketCodec } from './GrpcWebSocketCodec'
+export { GrpcWebSocketTransport } from './GrpcWebSocketTransport'
 
 // High-level stream clients
-export {
-  IndexerWsTakerStream,
-  type TakerStreamConfig,
-} from './rfq/IndexerWsTakerStream.js'
-export {
-  IndexerWsMakerStream,
-  type MakerStreamConfig,
-} from './rfq/IndexerWsMakerStream.js'
+export { IndexerWsTakerStream } from './rfq/IndexerWsTakerStream'
+export { IndexerWsMakerStream } from './rfq/IndexerWsMakerStream'
+export { type TakerStreamConfig, type MakerStreamConfig } from './types'
 
 // Types
 export {
@@ -36,4 +31,4 @@ export {
   // Message input types
   type RFQRequestInput,
   type RFQQuoteInput,
-} from './types.js'
+} from './types'

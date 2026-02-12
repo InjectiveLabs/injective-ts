@@ -118,7 +118,7 @@ export class GrpcWebSocketTransport {
   }
 
   private async createConnection(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       const url = this.config.url
 
       this.connectionTimeout = setTimeout(() => {
@@ -126,7 +126,7 @@ export class GrpcWebSocketTransport {
       }, this.config.connectionTimeoutMs)
 
       try {
-        this.ws = this.createWebSocket(
+        this.ws = await this.createWebSocket(
           url,
           this.config.protocol,
           this.config.metadata,
@@ -143,7 +143,7 @@ export class GrpcWebSocketTransport {
         this.ws.onclose = (
           event: CloseEvent | { code: number; reason: string },
         ) => {
-          this.handleClose(event)
+          this.handleClose(event, reject)
         }
 
         this.ws.onerror = (error: Event | Error) => {
@@ -160,18 +160,18 @@ export class GrpcWebSocketTransport {
     })
   }
 
-  private createWebSocket(
+  private async createWebSocket(
     url: string,
     protocol: string,
     metadata?: Record<string, string>,
-  ): IsomorphicWebSocket {
+  ): Promise<IsomorphicWebSocket> {
     if (typeof WebSocket !== 'undefined') {
       const urlWithMetadata = this.addMetadataToUrl(url, metadata)
       return new WebSocket(urlWithMetadata, protocol)
     }
 
-    const WS = require('ws')
-    return new WS(url, protocol, {
+    const WS = await import('ws')
+    return new WS.default(url, protocol, {
       headers: metadata || {},
     })
   }
@@ -211,8 +211,22 @@ export class GrpcWebSocketTransport {
 
   private handleClose(
     event: CloseEvent | { code: number; reason: string },
+    reject?: (error: Error) => void,
   ): void {
     this.clearPingInterval()
+
+    // Handle close during connection attempt
+    if (this.state === WsState.Connecting) {
+      this.clearConnectionTimeout()
+      if (reject) {
+        reject(
+          new Error(
+            `WebSocket closed before open: code=${event.code}, reason=${event.reason}`,
+          ),
+        )
+      }
+      return
+    }
 
     if (this.state === WsState.Disconnected || this.isDestroyed) {
       return
@@ -254,7 +268,7 @@ export class GrpcWebSocketTransport {
       data.arrayBuffer().then((buffer) => {
         this.emit('message', buffer)
       })
-    } else if (Buffer.isBuffer(data)) {
+    } else if (typeof Buffer !== 'undefined' && Buffer.isBuffer(data)) {
       const buffer = new Uint8Array(data).buffer
       this.emit('message', buffer)
     }

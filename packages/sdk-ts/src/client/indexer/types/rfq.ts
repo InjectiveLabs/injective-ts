@@ -2,56 +2,56 @@ import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/gene
 
 export interface RFQRequest {
   rfqId: string
-  marketId: string
-  direction: string
   margin: string
-  quantity: string
-  worstPrice: string
-  requestAddress: string
   expiry: number
   status: string
+  height: number
+  marketId: string
+  quantity: string
+  direction: string
   createdAt: number
   updatedAt: number
+  worstPrice: string
+  requestAddress: string
   transactionTime: number
-  height: number
 }
 
 export interface RFQQuote {
-  chainId: string
-  contractAddress: string
-  marketId: string
   rfqId: string
-  takerDirection: string
-  margin: string
-  quantity: string
   price: string
-  expiry: number
   maker: string
   taker: string
-  signature: string
+  margin: string
+  expiry: number
   status: string
+  height: number
+  chainId: string
+  marketId: string
+  quantity: string
+  signature: string
   createdAt: number
   updatedAt: number
-  height: number
   eventTime: number
+  takerDirection: string
+  contractAddress: string
   transactionTime: number
 }
 
 export interface RFQSettlement {
   rfqId: string
-  marketId: string
   taker: string
-  direction: string
   margin: string
+  height: number
+  marketId: string
   quantity: string
-  worstPrice: string
-  fallbackQuantity: string
-  fallbackMargin: string
-  transactionTime: number
+  direction: string
   createdAt: number
   updatedAt: number
   eventTime: number
-  height: number
+  worstPrice: string
+  fallbackMargin: string
+  transactionTime: number
+  fallbackQuantity: string
 }
 
 export interface OpenRequestsResponse {
@@ -63,8 +63,8 @@ export interface PendingQuotesResponse {
 }
 
 export interface SettlementsResponse {
-  settlements: RFQSettlement[]
   total: number
+  settlements: RFQSettlement[]
 }
 
 export type GrpcRFQRequest = InjectiveRFQRpcPb.RFQRequestType

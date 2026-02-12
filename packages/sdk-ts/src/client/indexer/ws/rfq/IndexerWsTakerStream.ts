@@ -6,24 +6,18 @@ import {
   RFQ_GRPC_PATHS,
   GrpcDecodeError,
   WsDisconnectReason,
-  type RFQRequestInput,
-  type RFQStreamAckData,
-  type TakerStreamEvents,
-  type WsTransportConfig,
-  type RFQStreamErrorData,
+} from '../types.js'
+import type {
+  RFQRequestInput,
+  RFQStreamAckData,
+  TakerStreamEvents,
+  TakerStreamConfig,
+  RFQStreamErrorData,
 } from '../types.js'
 
 type TakerEventListener<T extends keyof TakerStreamEvents> = (
   data: TakerStreamEvents[T],
 ) => void
-
-export interface TakerStreamConfig {
-  url: string
-  requestAddress: string
-  pingIntervalMs?: number
-  connectionTimeoutMs?: number
-  reconnect?: WsTransportConfig['reconnect']
-}
 
 export class IndexerWsTakerStream {
   private transport: GrpcWebSocketTransport

@@ -348,7 +348,8 @@
     "http-status-codes": "catalog:",
     "rxjs": "7.8.2",
     "snakecase-keys": "^5.4.1",
-    "viem": "catalog:"
+    "viem": "catalog:",
+    "ws": "^8.18.0"
   },
   "publishConfig": {
     "access": "public"

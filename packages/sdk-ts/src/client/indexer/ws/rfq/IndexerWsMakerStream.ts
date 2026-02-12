@@ -11,21 +11,13 @@ import type {
   RFQQuoteInput,
   RFQStreamAckData,
   MakerStreamEvents,
-  WsTransportConfig,
+  MakerStreamConfig,
   RFQStreamErrorData,
 } from '../types.js'
 
 type MakerEventListener<T extends keyof MakerStreamEvents> = (
   data: MakerStreamEvents[T],
 ) => void
-
-export interface MakerStreamConfig {
-  url: string
-  makerAddress: string
-  pingIntervalMs?: number
-  connectionTimeoutMs?: number
-  reconnect?: WsTransportConfig['reconnect']
-}
 
 export class IndexerWsMakerStream {
   private transport: GrpcWebSocketTransport

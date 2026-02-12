@@ -56,7 +56,7 @@ describe('IndexerGrpcRFQApi', () => {
         expect.objectContaining<{ status: string }>(response),
       )
     } catch (e) {
-      console.error('IndexerGrpcRFQApi.submitRequest => ' + (e as any).message)
+      console.error('IndexerGrpcRFQApi.submitQuote => ' + (e as any).message)
     }
   })
   test('fetchSettlements', async () => {

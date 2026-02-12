@@ -208,6 +208,14 @@ export interface TakerStreamEvents {
   }
 }
 
+export interface TakerStreamConfig {
+  url: string
+  requestAddress: string
+  pingIntervalMs?: number
+  connectionTimeoutMs?: number
+  reconnect?: WsTransportConfig['reconnect']
+}
+
 // ============================================
 // Maker Stream Types
 // ============================================
@@ -241,9 +249,9 @@ export type MakerResponseType =
  * All fields are required as per design decision
  */
 export interface RFQQuoteInput {
-  /** Market ID */
+  /** Chain ID */
   chainId: string
-  /** Market ID */
+  /** Contract Address */
   contractAddress: string
   /** Market ID */
   marketId: string
@@ -297,6 +305,14 @@ export interface MakerStreamEvents {
     from: WsState
     to: WsState
   }
+}
+
+export interface MakerStreamConfig {
+  url: string
+  makerAddress: string
+  pingIntervalMs?: number
+  connectionTimeoutMs?: number
+  reconnect?: WsTransportConfig['reconnect']
 }
 
 // ============================================
