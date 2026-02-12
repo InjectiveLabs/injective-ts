@@ -68,6 +68,10 @@ export interface AuctionsStats {
   totalBurntInUsd: string
 }
 
+export interface AccountAuctionStatus {
+  status: string
+}
+
 export type GrpcAuction = InjectiveAuctionRpcPb.Auction
 export type GrpcAuctionCoin = InjectiveAuctionRpcPb.Coin
 export type GrpcIndexerAuctionBid = InjectiveAuctionRpcPb.Bid

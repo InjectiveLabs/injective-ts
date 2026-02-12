@@ -211,8 +211,8 @@ importers:
         specifier: workspace:*
         version: link:../networks
       '@injectivelabs/olp-proto-ts-v2':
-        specifier: 1.17.3
-        version: 1.17.3
+        specifier: 1.17.6
+        version: 1.17.6
       '@injectivelabs/ts-types':
         specifier: workspace:*
         version: link:../ts-types
@@ -1138,8 +1138,8 @@ packages:
   '@injectivelabs/mito-proto-ts-v2@1.17.3':
     resolution: {integrity: sha512-Fo6k1MCPT3CKUS9tbMbl/poGv7R8KHtA7RfU7mvxxVWS7MpF+LLZA6UgegfEA1iiJgIrhe+eEwEvhIOe6SiUzw==}
 
-  '@injectivelabs/olp-proto-ts-v2@1.17.3':
-    resolution: {integrity: sha512-ZWRkwxh+KKypAqXGUuLosRl/4bmShk892PLqxJBcRrIEPKq8xVrJT9iMVEtdkf1WOstIhG1+kmqlcSaL0UcR3A==}
+  '@injectivelabs/olp-proto-ts-v2@1.17.6':
+    resolution: {integrity: sha512-3jTAyj342TXVe8qsVcDzAUnH5vAbqoHy5jqTUxHvJtfDaJ+X0uvN6d/yj60CxmrDOyKrn6pFx0prZ6J3Tl8S6g==}
 
   '@inquirer/ansi@1.0.2':
     resolution: {integrity: sha512-S8qNSZiYzFd0wAcyG5AXCvUHC5Sr7xpZ9wZ2py9XR88jUz8wooStVx5M6dRzczbBWjic9NP7+rY0Xi7qqK/aMQ==}
@@ -9073,7 +9073,7 @@ snapshots:
       '@protobuf-ts/runtime': 2.11.1
       '@protobuf-ts/runtime-rpc': 2.11.1
 
-  '@injectivelabs/olp-proto-ts-v2@1.17.3':
+  '@injectivelabs/olp-proto-ts-v2@1.17.6':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

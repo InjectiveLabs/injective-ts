@@ -38,7 +38,7 @@ olp_indexer_branch=dev
 git clone https://github.com/InjectiveLabs/injective-dmm-be.git $BUILD_DIR -b $olp_indexer_branch --depth 1 --single-branch > /dev/null
 
 # collecting indexer proto files
-find $ROOT_DIR/gen/api/proto -type f -name "*.proto" -exec cp {} $PROTO_DIR/ \;
+find $ROOT_DIR/gen -type f -name "*.proto" -exec cp {} $PROTO_DIR/ \;
 
 proto_dirs=$(find $PROTO_DIR -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
 echo "proto_dirs: $proto_dirs"

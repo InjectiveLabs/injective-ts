@@ -1,4 +1,4 @@
-import type * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/dmm_pb'
+import type * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/goagen_olp_injective_dmm_v2_pb'
 
 export interface DmmPagination {
   from?: number
@@ -52,7 +52,7 @@ export interface AccountVolumes {
 export interface RewardsEligibility {
   volumes: AccountVolume[]
   currentMakerVolumePercentage: string
-  averageDailyMakerVolumePercentage: string
+  averageDailyMakerVolumePercentage?: string
   eligibleForNextEpoch: boolean
   eligibleForCurrentEpoch: boolean
   estimatedReward: string
@@ -86,8 +86,8 @@ export interface EpochConfigV2 {
   liquidityScoreExponent: string
   uptimeExponent: string
   volumeExponent: string
-  permanenceVolumeThreshold: string
-  qualifyingVolumeThreshold: string
+  permanenceVolumeThreshold?: string
+  qualifyingVolumeThreshold?: string
   number: number
   isMiniEpoch: boolean
 }
@@ -179,6 +179,7 @@ export interface RewardDistribution {
   blockTime?: Date | undefined
   depth: string
   reward: string
+  miniEpochsReward?: string
   createdAt?: Date
   updatedAt?: Date
 }
