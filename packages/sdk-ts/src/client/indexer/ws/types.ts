@@ -63,8 +63,6 @@ export interface WsTransportConfig {
   url: string
   /** WebSocket subprotocol (default: 'grpc-ws') */
   protocol?: string
-  /** Ping interval in milliseconds (default: 1000) */
-  pingIntervalMs?: number
   /** Connection timeout in milliseconds (default: 10000) */
   connectionTimeoutMs?: number
   /** Reconnection configuration */
@@ -79,7 +77,6 @@ export interface WsTransportConfig {
 export interface ResolvedWsTransportConfig {
   url: string
   protocol: string
-  pingIntervalMs: number
   connectionTimeoutMs: number
   reconnect: WsReconnectConfig
   metadata?: Record<string, string>
@@ -101,7 +98,6 @@ export const DEFAULT_RECONNECT_CONFIG: WsReconnectConfig = {
  */
 export const DEFAULT_TRANSPORT_CONFIG = {
   protocol: 'grpc-ws',
-  pingIntervalMs: 1000, // 1 second (server timeout is 2 seconds)
   connectionTimeoutMs: 10000, // 10 seconds
 }
 

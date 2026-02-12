@@ -19,7 +19,6 @@ import type {
  *
  * Handles:
  * - WebSocket connection lifecycle
- * - Automatic ping/pong to keep connection alive
  * - Reconnection with exponential backoff
  * - State management
  * - Binary message framing
@@ -30,7 +29,6 @@ export class GrpcWebSocketTransport {
   private config: ResolvedWsTransportConfig
   private ws: IsomorphicWebSocket | null = null
   private state: WsState = WsState.Idle
-  private pingInterval: ReturnType<typeof setInterval> | null = null
   private connectionTimeout: ReturnType<typeof setTimeout> | null = null
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null
   private reconnectAttempts = 0
@@ -203,8 +201,6 @@ export class GrpcWebSocketTransport {
     const isReconnect = this.hasConnectedOnce
     this.hasConnectedOnce = true
 
-    this.startPingInterval()
-
     this.emit('connect', { isReconnect })
     resolve()
   }
@@ -213,8 +209,6 @@ export class GrpcWebSocketTransport {
     event: CloseEvent | { code: number; reason: string },
     reject?: (error: Error) => void,
   ): void {
-    this.clearPingInterval()
-
     // Handle close during connection attempt
     if (this.state === WsState.Connecting) {
       this.clearConnectionTimeout()
@@ -284,26 +278,6 @@ export class GrpcWebSocketTransport {
       this.scheduleReconnect()
     } else {
       this.cleanup(WsDisconnectReason.ConnectionTimeout, false)
-    }
-  }
-
-  private startPingInterval(): void {
-    this.clearPingInterval()
-
-    this.pingInterval = setInterval(() => {
-      if (this.isConnected()) {
-        // Send an empty ping frame - the actual ping message should be
-        // handled by the higher-level stream classes using the codec
-        // This is just to keep the connection alive at the transport level
-        // The stream classes will handle the gRPC-level ping/pong
-      }
-    }, this.config.pingIntervalMs)
-  }
-
-  private clearPingInterval(): void {
-    if (this.pingInterval) {
-      clearInterval(this.pingInterval)
-      this.pingInterval = null
     }
   }
 
@@ -381,7 +355,6 @@ export class GrpcWebSocketTransport {
 
   private cleanup(reason: WsDisconnectReason, willRetry: boolean): void {
     this.clearConnectionTimeout()
-    this.clearPingInterval()
     this.clearReconnectTimeout()
 
     if (this.ws) {
@@ -421,8 +394,6 @@ export class GrpcWebSocketTransport {
     return {
       url: config.url,
       protocol: config.protocol ?? DEFAULT_TRANSPORT_CONFIG.protocol,
-      pingIntervalMs:
-        config.pingIntervalMs ?? DEFAULT_TRANSPORT_CONFIG.pingIntervalMs,
       connectionTimeoutMs:
         config.connectionTimeoutMs ??
         DEFAULT_TRANSPORT_CONFIG.connectionTimeoutMs,

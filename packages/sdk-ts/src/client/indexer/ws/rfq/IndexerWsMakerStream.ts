@@ -35,7 +35,6 @@ export class IndexerWsMakerStream {
 
     this.transport = new GrpcWebSocketTransport({
       url: fullUrl,
-      pingIntervalMs: this.pingIntervalMs,
       connectionTimeoutMs: config.connectionTimeoutMs,
       reconnect: config.reconnect,
       metadata: {
