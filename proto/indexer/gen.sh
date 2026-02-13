@@ -7,7 +7,7 @@ BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto
 TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
-injective_indexer_branch=f/rfq
+injective_indexer_branch=dev
 
 # remove old gen
 rm -rf $BUILD_DIR
