@@ -147,11 +147,7 @@ function encodeGrpcFrame(payload: Uint8Array): Uint8Array {
 
   frame[0] = COMPRESSION_FLAG_NONE
 
-  const length = payload.length
-  frame[1] = (length >>> 24) & 0xff
-  frame[2] = (length >>> 16) & 0xff
-  frame[3] = (length >>> 8) & 0xff
-  frame[4] = length & 0xff
+  new DataView(frame.buffer).setUint32(1, payload.length, false)
 
   frame.set(payload, GRPC_HEADER_SIZE)
 
@@ -162,36 +158,35 @@ function decodeGrpcFrame<T>(
   data: Uint8Array,
   messageType: { fromBinary(bytes: Uint8Array): T },
 ): GrpcFrame<T> {
-  if (data.length < GRPC_HEADER_SIZE) {
+  if (data.byteLength < GRPC_HEADER_SIZE) {
     throw new GrpcDecodeError(
-      `Frame too short: expected at least ${GRPC_HEADER_SIZE} bytes, got ${data.length}`,
+      `Frame too short: expected at least ${GRPC_HEADER_SIZE} bytes, got ${data.byteLength}`,
     )
   }
 
-  const compressionFlag = data[0]
+  // DataView over the *exact bytes* in this Uint8Array (handles non-zero byteOffset)
+  const view = new DataView(data.buffer, data.byteOffset, data.byteLength)
+
+  const compressionFlag = view.getUint8(0)
   const isTrailer = (compressionFlag & COMPRESSION_FLAG_TRAILER) !== 0
+  const payloadLength = view.getUint32(1, false) // false = big-endian
 
-  const payloadLength =
-    (data[1] << 24) | (data[2] << 16) | (data[3] << 8) | data[4]
-
-  if (data.length < GRPC_HEADER_SIZE + payloadLength) {
+  const totalLength = GRPC_HEADER_SIZE + payloadLength
+  if (data.byteLength < totalLength) {
     throw new GrpcDecodeError(
-      `Incomplete frame: expected ${GRPC_HEADER_SIZE + payloadLength} bytes, got ${data.length}`,
+      `Incomplete frame: expected ${totalLength} bytes, got ${data.byteLength}`,
     )
   }
 
-  const payload = data.subarray(
-    GRPC_HEADER_SIZE,
-    GRPC_HEADER_SIZE + payloadLength,
-  )
+  const payload = data.subarray(GRPC_HEADER_SIZE, totalLength)
 
+  // Trailer frames: return raw payload (you likely parse it elsewhere)
   if (isTrailer) {
-    return {
-      isTrailer: true,
-      payload,
-    }
+    return { isTrailer: true, payload }
   }
 
+  // For non-trailer messages, require "no compression"
+  // If you want to allow other bits, mask instead of strict compare.
   if (compressionFlag !== COMPRESSION_FLAG_NONE) {
     throw new GrpcDecodeError(
       `Unsupported compression flag: 0x${compressionFlag.toString(16)}`,
@@ -200,14 +195,12 @@ function decodeGrpcFrame<T>(
 
   try {
     const message = messageType.fromBinary(payload)
-    return {
-      isTrailer: false,
-      message,
-      payload,
-    }
+    return { isTrailer: false, message, payload }
   } catch (error) {
     throw new GrpcDecodeError(
-      `Failed to decode protobuf message: ${error instanceof Error ? error.message : String(error)}`,
+      `Failed to decode protobuf message: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
     )
   }
 }

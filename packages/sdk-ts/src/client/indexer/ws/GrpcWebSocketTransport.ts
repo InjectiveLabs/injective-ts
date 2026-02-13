@@ -63,8 +63,21 @@ export class GrpcWebSocketTransport {
       return
     }
 
-    this.setState(WsState.Connecting)
-    await this.createConnection()
+    try {
+      await this.createConnection()
+    } catch (error) {
+      const reason = WsDisconnectReason.ConnectionFailed
+
+      if (this.shouldAttemptReconnect(reason)) {
+        this.setState(WsState.Reconnecting)
+        this.emit('disconnect', { reason, willRetry: true })
+        this.scheduleReconnect()
+      } else {
+        this.cleanup(reason, false)
+      }
+
+      throw error
+    }
   }
 
   disconnect(): void {

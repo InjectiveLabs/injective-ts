@@ -35,20 +35,25 @@ describe('IndexerGrpcRFQApi', () => {
 
   test('submitQuote', async () => {
     try {
-      const response = await indexerGrpcRfqApi.submitRequest({
-        direction: 'LONG',
-        status: 'PENDING',
+      const response = await indexerGrpcRfqApi.submitQuote({
         rfqId: BigInt(1717000000),
-        height: BigInt(1717000000),
-        expiry: BigInt(1717000000),
+        price: '1000000000000000000',
+        maker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
         margin: '1000000000000000000',
-        updatedAt: BigInt(1717000000),
-        createdAt: BigInt(1717000000),
-        quantity: '1000000000000000000',
-        worstPrice: '1000000000000000000',
-        transactionTime: BigInt(1717000000),
+        expiry: BigInt(1717000000),
+        status: 'PENDING',
+        height: BigInt(1717000000),
+        chainId: 'injective-1',
         marketId: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-        requestAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        quantity: '1000000000000000000',
+        signature: '0x1234567890abcdef',
+        createdAt: BigInt(1717000000),
+        updatedAt: BigInt(1717000000),
+        eventTime: BigInt(1717000000),
+        takerDirection: 'LONG',
+        contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        transactionTime: BigInt(1717000000),
       })
 
       expect(response).toBeDefined()
@@ -59,6 +64,7 @@ describe('IndexerGrpcRFQApi', () => {
       console.error('IndexerGrpcRFQApi.submitQuote => ' + (e as any).message)
     }
   })
+
   test('fetchSettlements', async () => {
     try {
       const response = await indexerGrpcRfqApi.fetchSettlements({
