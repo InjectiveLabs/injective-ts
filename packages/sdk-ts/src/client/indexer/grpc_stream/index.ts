@@ -16,6 +16,7 @@ export * from './stream/streamHelpers.js'
 export { default as StreamManager } from './stream/StreamManager.js'
 
 // V2 Streams (Event-based, for StreamManagerV2)
+export * from './streamV2/IndexerGrpcRfqStreamV2.js'
 export * from './streamV2/IndexerGrpcSpotStreamV2.js'
 export * from './streamV2/IndexerGrpcMitoStreamV2.js'
 export * from './streamV2/IndexerGrpcOracleStreamV2.js'

@@ -1,3 +1,4 @@
+export { IndexerGrpcRFQApi } from './IndexerGrpcRfqApi.js'
 export { IndexerGrpcMitoApi } from './IndexerGrpcMitoApi.js'
 export { IndexerGrpcMetaApi } from './IndexerGrpcMetaApi.js'
 export { IndexerGrpcSpotApi } from './IndexerGrpcSpotApi.js'

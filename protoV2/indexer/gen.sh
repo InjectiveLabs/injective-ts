@@ -12,7 +12,8 @@ cd "$SCRIPT_DIR"
 # Check if node_modules exists, if not install dependencies
 if [ ! -d "node_modules" ] || [ ! -f "node_modules/.bin/protoc" ]; then
   echo "📥 Installing dependencies..."
-  npm install || pnpm install || {
+  rm -f package-lock.json pnpm-lock.yaml
+  npm install || {
     echo "❌ Failed to install dependencies"
     exit 1
   }

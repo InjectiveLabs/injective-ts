@@ -328,7 +328,7 @@
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",
     "@injectivelabs/grpc-web-react-native-transport": "^0.0.2",
-    "@injectivelabs/indexer-proto-ts-v2": "1.17.6",
+    "@injectivelabs/indexer-proto-ts-v2": "1.17.7-alpha.4",
     "@injectivelabs/mito-proto-ts-v2": "1.17.3",
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/olp-proto-ts-v2": "1.17.6",
@@ -348,7 +348,8 @@
     "http-status-codes": "catalog:",
     "rxjs": "7.8.2",
     "snakecase-keys": "^5.4.1",
-    "viem": "catalog:"
+    "viem": "catalog:",
+    "ws": "^8.18.0"
   },
   "publishConfig": {
     "access": "public"
