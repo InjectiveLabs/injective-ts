@@ -6,6 +6,7 @@
 set -e
 
 PACKAGES=("abacus" "indexer" "mito" "olp" "core")
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 FAILED_PACKAGES=()
 SUCCESS_PACKAGES=()
 
@@ -17,7 +18,7 @@ for pkg in "${PACKAGES[@]}"; do
   echo "📦 Testing package: $pkg"
   echo "----------------------------------------"
   
-  cd "/Users/leeruianthomas/Public/injective/injective-ts/protoV2/$pkg"
+  cd "$BASE_DIR/$pkg"
   
   # Check if gen.sh exists
   if [ ! -f "gen.sh" ]; then

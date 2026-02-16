@@ -1,6 +1,8 @@
+import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import * as InjectiveTokenFactoryV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import type { TypedDataField } from '../../../tx/index.js'
 
 export declare namespace MsgMint {
   export interface Params {
@@ -34,7 +36,7 @@ export default class MsgMint extends MsgBase<MsgMint.Params, MsgMint.Proto> {
     const message = InjectiveTokenFactoryV1Beta1TxPb.MsgMint.create({
       sender: params.sender,
       amount: coin,
-      ...(params.receiver && { receiver: params.receiver }),
+      receiver: params.receiver || '',
     })
 
     return message
@@ -54,7 +56,9 @@ export default class MsgMint extends MsgBase<MsgMint.Params, MsgMint.Proto> {
     const message = {
       sender: proto.sender,
       amount: proto.amount,
-      ...(proto.receiver && { receiver: proto.receiver }),
+      ...(proto.receiver !== undefined
+        ? { receiver: proto.receiver }
+        : { receiver: '' }),
     }
 
     return {
@@ -71,6 +75,44 @@ export default class MsgMint extends MsgBase<MsgMint.Params, MsgMint.Proto> {
       '@type': '/injective.tokenfactory.v1beta1.MsgMint',
       ...value,
     }
+  }
+
+  public toEip712Types() {
+    const map = new Map<string, TypedDataField[]>()
+
+    map.set('TypeAmount', [
+      {
+        name: 'denom',
+        type: 'string',
+      },
+      {
+        name: 'amount',
+        type: 'string',
+      },
+    ])
+
+    map.set('MsgValue', [
+      {
+        name: 'sender',
+        type: 'string',
+      },
+      {
+        name: 'amount',
+        type: 'TypeAmount',
+      },
+      {
+        name: 'receiver',
+        type: 'string',
+      },
+    ])
+
+    return map
+  }
+
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error('EIP712_v1 is not supported for MsgMint. Please use EIP712_v2'),
+    )
   }
 
   public toDirectSign() {

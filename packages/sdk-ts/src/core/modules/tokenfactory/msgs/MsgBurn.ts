@@ -1,3 +1,4 @@
+import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import * as InjectiveTokenFactoryV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
@@ -57,7 +58,7 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
     const message = {
       sender: proto.sender,
       amount: proto.amount,
-      ...(proto.burnFromAddress && { burnFromAddress: proto.burnFromAddress }),
+      burnFromAddress: proto.burnFromAddress || '',
     }
 
     return {
@@ -106,6 +107,12 @@ export default class MsgBurn extends MsgBase<MsgBurn.Params, MsgBurn.Proto> {
     ])
 
     return map
+  }
+
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error('EIP712_v1 is not supported for MsgBurn. Please use EIP712_v2'),
+    )
   }
 
   public toDirectSign() {

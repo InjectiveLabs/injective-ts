@@ -165,28 +165,6 @@ export default defineConfig({
         __dirname,
         'packages/wallets/wallet-wallet-connect/src/index.ts',
       ),
-      // Map proto-v2 packages
-      '@injectivelabs/core-proto-ts-v2': join(
-        __dirname,
-        'protoV2/core/src/index.ts',
-      ),
-      '@injectivelabs/core-proto-ts-v2/generated': join(
-        __dirname,
-        'protoV2/core/proto-ts/generated',
-      ),
-      '@injectivelabs/indexer-proto-ts-v2': join(
-        __dirname,
-        'protoV2/indexer/src/index.ts',
-      ),
-      '@injectivelabs/indexer-proto-ts-v2/generated': join(
-        __dirname,
-        'protoV2/indexer/proto-ts/generated',
-      ),
-      '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb':
-        join(
-          __dirname,
-          'protoV2/indexer/proto-ts/generated/injective_exchange_rpc_pb.js',
-        ),
     },
   },
 })

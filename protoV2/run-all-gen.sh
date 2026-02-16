@@ -6,7 +6,7 @@
 set -e
 
 PACKAGES=("abacus" "indexer" "mito" "olp" "core")
-BASE_DIR="/Users/leeruianthomas/Public/injective/injective-ts/protoV2"
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "🚀 Running generation for all protoV2 packages"
 echo "=============================================="
