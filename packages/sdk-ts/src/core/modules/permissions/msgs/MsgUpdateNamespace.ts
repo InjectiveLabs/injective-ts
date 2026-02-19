@@ -119,9 +119,6 @@ export default class MsgUpdateNamespace extends MsgBase<
     const message = {
       sender: proto.sender,
       denom: proto.denom,
-      evm_hook: proto.evmHook
-        ? { new_value: proto.evmHook.newValue }
-        : undefined,
       wasm_hook: proto.wasmHook
         ? { new_value: proto.wasmHook.newValue }
         : undefined,
@@ -147,6 +144,9 @@ export default class MsgUpdateNamespace extends MsgBase<
           can_seal: pmc.canSeal,
         }),
       ),
+      evm_hook: proto.evmHook
+        ? { new_value: proto.evmHook.newValue }
+        : undefined,
     }
 
     return {
