@@ -13,7 +13,8 @@ export declare namespace MsgUpdateNamespace {
   export interface Params {
     sender: string
     denom: string
-    contractHook?: string
+    evmHook?: string
+    wasmHook?: string
     rolePermissions: PermissionRole[]
     roleManagers: PermissionRoleManager[]
     policyStatuses: PermissionPolicyStatus[]
@@ -37,10 +38,18 @@ export default class MsgUpdateNamespace extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const contractHook = params.contractHook
+    const evmHook = params.evmHook
       ? InjectivePermissionsV1Beta1TxPb.MsgUpdateNamespace_SetContractHook.create(
           {
-            newValue: params.contractHook,
+            newValue: params.evmHook,
+          },
+        )
+      : undefined
+
+    const wasmHook = params.wasmHook
+      ? InjectivePermissionsV1Beta1TxPb.MsgUpdateNamespace_SetContractHook.create(
+          {
+            newValue: params.wasmHook,
           },
         )
       : undefined
@@ -84,7 +93,8 @@ export default class MsgUpdateNamespace extends MsgBase<
     const message = InjectivePermissionsV1Beta1TxPb.MsgUpdateNamespace.create({
       sender: params.sender,
       denom: params.denom,
-      contractHook: contractHook,
+      evmHook: evmHook,
+      wasmHook: wasmHook,
       rolePermissions: permissions,
       roleManagers: roleManagers,
       policyStatuses: policyStatuses,
@@ -109,8 +119,8 @@ export default class MsgUpdateNamespace extends MsgBase<
     const message = {
       sender: proto.sender,
       denom: proto.denom,
-      contract_hook: proto.contractHook
-        ? { new_value: proto.contractHook.newValue }
+      wasm_hook: proto.wasmHook
+        ? { new_value: proto.wasmHook.newValue }
         : undefined,
       role_permissions: proto.rolePermissions.map((role) => ({
         name: role.name,
@@ -134,6 +144,9 @@ export default class MsgUpdateNamespace extends MsgBase<
           can_seal: pmc.canSeal,
         }),
       ),
+      evm_hook: proto.evmHook
+        ? { new_value: proto.evmHook.newValue }
+        : undefined,
     }
 
     return {

@@ -85,7 +85,8 @@ export class ChainGrpcPermissionsTransformer {
   ): PermissionNamespace {
     return {
       denom: grpcNamespace.denom,
-      contractHook: grpcNamespace.contractHook,
+      evmHook: grpcNamespace.evmHook,
+      wasmHook: grpcNamespace.wasmHook,
       rolePermissions: grpcNamespace.rolePermissions.map(
         ChainGrpcPermissionsTransformer.grpcRoleToRole,
       ),
@@ -114,7 +115,7 @@ export class ChainGrpcPermissionsTransformer {
     }
 
     return {
-      wasmHookQueryMaxGas: params.wasmHookQueryMaxGas.toString(),
+      wasmHookQueryMaxGas: params.contractHookMaxGas.toString(),
     }
   }
 

@@ -9,7 +9,8 @@ const params: MsgCreateNamespace['params'] = {
   sender: mockFactory.injectiveAddress,
   namespace: {
     denom: 'inj',
-    contractHook: 'wasmHookAddress',
+    evmHook: 'evmHookAddress',
+    wasmHook: 'wasmHookAddress',
     rolePermissions: [{ name: 'admin', roleId: 1, permissions: 1 }],
     actorRoles: [{ actor: mockFactory.injectiveAddress2, roles: ['admin'] }],
     roleManagers: [

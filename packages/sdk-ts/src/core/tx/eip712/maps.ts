@@ -32,7 +32,7 @@ export const objectKeysToEip712Types = ({
     'option',
     'proposal_id',
     'creation_height',
-    'wasm_hook_query_max_gas',
+    'contract_hook_max_gas',
   ]
   const stringFieldsWithNumberValue = [
     'timeout_timestamp',

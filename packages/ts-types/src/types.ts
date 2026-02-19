@@ -178,6 +178,10 @@ export const MsgType = {
     'injective.exchange.v1beta1.MsgBatchCreateDerivativeLimitOrders',
   MsgInstantBinaryOptionsMarketLaunch:
     'injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
+  MsgInstantExpiryFuturesMarketLaunch:
+    'injective.exchange.v1beta1.MsgInstantExpiryFuturesMarketLaunch',
+  MsgInstantPerpetualMarketLaunch:
+    'injective.exchange.v1beta1.MsgInstantPerpetualMarketLaunch',
 
   // Exchange v1beta1 - Proposals
   MsgBatchExchangeModificationProposal:
@@ -249,6 +253,7 @@ export const MsgType = {
   MsgUpdateSpotMarketV2: 'injective.exchange.v2.MsgUpdateSpotMarket',
   MsgBatchUpdateOrdersV2: 'injective.exchange.v2.MsgBatchUpdateOrders',
   MsgLiquidatePositionV2: 'injective.exchange.v2.MsgLiquidatePosition',
+  MsgActivatePostOnlyModeV2: 'injective.exchange.v2.MsgActivatePostOnlyMode',
   MsgCancelPostOnlyModeV2: 'injective.exchange.v2.MsgCancelPostOnlyMode',
   MsgActivateStakeGrantV2: 'injective.exchange.v2.MsgActivateStakeGrant',
   MsgReclaimLockedFundsV2: 'injective.exchange.v2.MsgReclaimLockedFunds',
@@ -268,6 +273,7 @@ export const MsgType = {
     'injective.exchange.v2.MsgIncreasePositionMargin',
   MsgMarketForcedSettlementV2:
     'injective.exchange.v2.MsgMarketForcedSettlement',
+  MsgOffsetPositionV2: 'injective.exchange.v2.MsgOffsetPosition',
   MsgUpdateDerivativeMarketV2:
     'injective.exchange.v2.MsgUpdateDerivativeMarket',
   MsgBatchCommunityPoolSpendV2:
@@ -333,6 +339,7 @@ export const MsgType = {
 
   // Oracle
   MsgRelayBandRates: 'injective.oracle.v1beta1.MsgRelayBandRates',
+  MsgRelayChainlinkPrices: 'injective.oracle.v1beta1.MsgRelayChainlinkPrices',
   MsgRelayPythPrices: 'injective.oracle.v1beta1.MsgRelayPythPrices',
   MsgOracleUpdateParams: 'injective.oracle.v1beta1.MsgUpdateParams',
   MsgRelayStorkPrices: 'injective.oracle.v1beta1.MsgRelayStorkPrices',
@@ -365,9 +372,13 @@ export const MsgType = {
   MsgSetOrchestratorAddresses: 'injective.peggy.v1.MsgSetOrchestratorAddresses',
   MsgBlacklistEthereumAddresses:
     'injective.peggy.v1.MsgBlacklistEthereumAddresses',
-  MsgCancelSendToEth: 'injective.peggy.v1beta1.MsgCancelSendToEth',
+  MsgCancelSendToEth: 'injective.peggy.v1.MsgCancelSendToEth',
+  MsgCreateRateLimit: 'injective.peggy.v1.MsgCreateRateLimit',
+  MsgPeggyUpdateParams: 'injective.peggy.v1.MsgUpdateParams',
+  MsgRemoveRateLimit: 'injective.peggy.v1.MsgRemoveRateLimit',
   MsgSubmitBadSignatureEvidence:
-    'injective.peggy.v1beta1.MsgSubmitBadSignatureEvidence',
+    'injective.peggy.v1.MsgSubmitBadSignatureEvidence',
+  MsgUpdateRateLimit: 'injective.peggy.v1.MsgUpdateRateLimit',
 
   // Peggy - Proposals
   MsgBlacklistEthereumAddressesProposal:

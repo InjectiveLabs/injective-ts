@@ -7,6 +7,7 @@ export declare namespace MsgUpdateParams {
     authority: string
     params: {
       wasmHookQueryMaxGas: string
+      enforcedRestrictionsContracts?: string[]
     }
   }
 
@@ -28,7 +29,7 @@ export default class MsgUpdateParams extends MsgBase<
     const { params } = this
 
     const messageParams = InjectivePermissionsV1Beta1ParamsPb.Params.create({
-      wasmHookQueryMaxGas: BigInt(params.params.wasmHookQueryMaxGas),
+      contractHookMaxGas: BigInt(params.params.wasmHookQueryMaxGas),
     })
 
     const message = InjectivePermissionsV1Beta1TxPb.MsgUpdateParams.create({
@@ -53,8 +54,8 @@ export default class MsgUpdateParams extends MsgBase<
     const message = {
       authority: proto.authority,
       params: {
-        wasm_hook_query_max_gas:
-          proto.params?.wasmHookQueryMaxGas.toString() || '0',
+        contract_hook_max_gas:
+          proto.params?.contractHookMaxGas.toString() || '0',
       },
     }
 
@@ -71,6 +72,11 @@ export default class MsgUpdateParams extends MsgBase<
     return {
       '@type': '/injective.permissions.v1beta1.MsgUpdateParams',
       ...value,
+      params: {
+        ...value.params,
+        enforced_restrictions_contracts:
+          this.params.params.enforcedRestrictionsContracts || [],
+      },
     }
   }
 

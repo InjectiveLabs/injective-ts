@@ -15,7 +15,8 @@ export declare namespace MsgCreateNamespace {
     sender: string
     namespace: {
       denom: string
-      contractHook: string
+      evmHook: string
+      wasmHook: string
       rolePermissions: PermissionRole[]
       actorRoles: PermissionActorRoles[]
       roleManagers: PermissionRoleManager[]
@@ -91,7 +92,8 @@ export default class MsgCreateNamespace extends MsgBase<
     const namespace = InjectivePermissionsV1Beta1PermissionsPb.Namespace.create(
       {
         denom: params.namespace.denom,
-        contractHook: params.namespace.contractHook,
+        evmHook: params.namespace.evmHook,
+        wasmHook: params.namespace.wasmHook,
         rolePermissions: rolePermissions,
         actorRoles: actorRoles,
         roleManagers: roleManagers,
@@ -125,7 +127,7 @@ export default class MsgCreateNamespace extends MsgBase<
       sender: proto.sender,
       namespace: {
         denom: ns?.denom,
-        contract_hook: ns?.contractHook,
+        wasm_hook: ns?.wasmHook,
         role_permissions: (ns?.rolePermissions || []).map((role) => ({
           name: role.name,
           role_id: role.roleId,
@@ -152,6 +154,7 @@ export default class MsgCreateNamespace extends MsgBase<
             can_seal: pmc.canSeal,
           }),
         ),
+        evm_hook: ns?.evmHook,
       },
     }
 
@@ -205,12 +208,13 @@ export default class MsgCreateNamespace extends MsgBase<
       ...web3gw,
       namespace: {
         denom: namespace.denom,
-        contract_hook: namespace.contract_hook,
+        wasm_hook: namespace.wasm_hook,
         role_permissions: namespace.role_permissions,
         actor_roles: namespace.actor_roles,
         role_managers: namespace.role_managers,
         policy_statuses: policyStatuses,
         policy_manager_capabilities: policyManagerCapabilities,
+        evm_hook: namespace.evm_hook,
       },
     }
 

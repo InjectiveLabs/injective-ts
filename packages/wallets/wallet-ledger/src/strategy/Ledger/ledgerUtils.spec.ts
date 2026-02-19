@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { domainHash, messageHash, isEIP712PayloadTooBig } from './utils.js'
 
 const tooBigPayload = {
@@ -150,6 +151,15 @@ describe('Ledger Utils', () => {
 })
 
 describe('isEIP712PayloadTooBig', () => {
+  beforeEach(() => {
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   test('returns true if payload is too big', () => {
     const result = isEIP712PayloadTooBig(tooBigPayload)
     expect(result).toBe(true)

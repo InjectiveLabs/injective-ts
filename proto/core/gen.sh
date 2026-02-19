@@ -13,8 +13,8 @@ TS_STUB_DIR=$ROOT_DIR/stub
 
 # https://github.com/InjectiveLabs/injective-core/blob/release/v1.16.x/go.mod
 # remote branches/tags
-injective_core_branch=release/v1.17.x
-cosmos_sdk_branch=v0.50.14-inj
+injective_core_branch=release/v1.18.x
+cosmos_sdk_branch=v0.50.14-inj.4
 wasmd_branch=v0.53.3-inj.2
 ibc_go_branch=v8.7.0-inj.3
 
