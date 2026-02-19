@@ -51,7 +51,8 @@ export interface PermissionAddressVoucher {
 
 export interface PermissionNamespace {
   denom: string
-  contractHook: string
+  evmHook: string
+  wasmHook: string
   rolePermissions: PermissionRole[]
   actorRoles: PermissionActorRoles[]
   roleManagers: PermissionRoleManager[]

@@ -8,7 +8,8 @@ import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerG
 const params: MsgUpdateNamespace['params'] = {
   sender: mockFactory.injectiveAddress,
   denom: 'inj',
-  contractHook: 'wasm',
+  evmHook: 'evm',
+  wasmHook: 'wasm',
   rolePermissions: [{ name: 'admin', roleId: 1, permissions: 1 }],
   roleManagers: [
     {

@@ -40,6 +40,7 @@ fi
 # Change to proto-ts directory for publishing
 cd "$SCRIPT_DIR/proto-ts" || exit
 
+
 # Update version in package.json
 npm version "$v1" --no-git-tag-version
 

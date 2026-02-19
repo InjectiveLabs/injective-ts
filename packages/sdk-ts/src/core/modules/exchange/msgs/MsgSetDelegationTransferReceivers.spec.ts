@@ -24,14 +24,15 @@ const protoParamsAmino = {
 }
 const message = MsgSetDelegationTransferReceivers.fromJSON(params)
 
+// hidden in chain v1.18.0
 describe('MsgSetDelegationTransferReceivers', () => {
-  it('generates proper proto', () => {
+  it.skip('generates proper proto', () => {
     const proto = message.toProto()
 
     expect(proto).toStrictEqual(protoParams)
   })
 
-  it('generates proper data', () => {
+  it.skip('generates proper data', () => {
     const data = message.toData()
 
     expect(data).toStrictEqual({
@@ -40,7 +41,7 @@ describe('MsgSetDelegationTransferReceivers', () => {
     })
   })
 
-  it('generates proper amino', () => {
+  it.skip('generates proper amino', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
@@ -49,7 +50,7 @@ describe('MsgSetDelegationTransferReceivers', () => {
     })
   })
 
-  it('generates proper web3Gw', () => {
+  it.skip('generates proper web3Gw', () => {
     const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
@@ -63,7 +64,7 @@ describe('MsgSetDelegationTransferReceivers', () => {
       messages: message,
     })
 
-    it('EIP712 v1', async () => {
+    it.skip('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
@@ -77,7 +78,7 @@ describe('MsgSetDelegationTransferReceivers', () => {
     })
 
     // will be resolved in chain v1.17.1
-    it('EIP712 v2', async () => {
+    it.skip('EIP712 v2', async () => {
       const eip712TypedData = getEip712TypedDataV2(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(
