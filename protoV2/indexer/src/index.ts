@@ -19,7 +19,7 @@ export { InjectivePortfolioRPCClient } from './generated/injective_portfolio_rpc
 export { InjectiveReferralRPCClient } from './generated/injective_referral_rpc_pb.client.js'
 export { InjectiveSpotExchangeRPCClient } from './generated/injective_spot_exchange_rpc_pb.client.js'
 export { InjectiveTradingRPCClient } from './generated/injective_trading_rpc_pb.client.js'
-export { InjectiveRFQRPCClient } from './generated/injective_rfqrpc_pb.client.js'
+export { InjectiveRfqRPCClient } from './generated/injective_rfq_rpc_pb.client.js'
 
 // Export all types as namespaces for easy import
 export * as EventProviderApiPb from './generated/event_provider_api_pb.js'
@@ -40,4 +40,4 @@ export * as InjectivePortfolioRpcPb from './generated/injective_portfolio_rpc_pb
 export * as InjectiveReferralRpcPb from './generated/injective_referral_rpc_pb.js'
 export * as InjectiveSpotExchangeRpcPb from './generated/injective_spot_exchange_rpc_pb.js'
 export * as InjectiveTradingRpcPb from './generated/injective_trading_rpc_pb.js'
-export * as InjectiveRFQRpcPb from './generated/injective_rfqrpc_pb.js'
+export * as InjectiveRfqRpcPb from './generated/injective_rfq_rpc_pb.js'

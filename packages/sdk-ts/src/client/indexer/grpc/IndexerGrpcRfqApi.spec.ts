@@ -69,10 +69,7 @@ describe('IndexerGrpcRFQApi', () => {
     try {
       const response = await indexerGrpcRfqApi.fetchSettlements({
         addresses: ['inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49'],
-        pagination: {
-          skip: 0,
-          limit: 10,
-        },
+        perPage: 10,
       })
 
       expect(response).toBeDefined()

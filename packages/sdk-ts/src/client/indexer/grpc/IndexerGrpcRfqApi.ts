@@ -1,9 +1,8 @@
-import * as InjectiveRFQExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfqrpc_pb'
-import { InjectiveRFQRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfqrpc_pb.client'
+import * as InjectiveRFQExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
+import { InjectiveRfqRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcRfqTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { PaginationOption } from '../../../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -12,7 +11,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.RFQ
 
   private get client() {
-    return this.initClient(InjectiveRFQRPCClient)
+    return this.initClient(InjectiveRfqRPCClient)
   }
 
   async submitRequest({
@@ -235,21 +234,22 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
 
   async fetchSettlements(params?: {
     addresses?: string[]
-    pagination?: PaginationOption
+    token?: string
+    perPage?: number
   }) {
-    const { addresses, pagination } = params || {}
+    const { addresses, token, perPage } = params || {}
     const request = InjectiveRFQExchangeRpcPb.ListSettlementRequest.create()
 
     if (addresses && addresses.length > 0) {
       request.addresses = addresses
     }
 
-    if (pagination?.skip) {
-      request.skip = BigInt(pagination.skip)
+    if (token) {
+      request.token = token
     }
 
-    if (pagination?.limit) {
-      request.limit = BigInt(pagination.limit)
+    if (perPage) {
+      request.perPage = perPage
     }
 
     const response = await this.executeGrpcCall<

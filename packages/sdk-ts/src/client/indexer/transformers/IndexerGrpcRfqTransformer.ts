@@ -1,4 +1,4 @@
-import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfqrpc_pb'
+import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
 import type {
   RFQQuote,
   RFQRequest,
@@ -104,7 +104,7 @@ export class IndexerGrpcRfqTransformer {
       settlements: response.settlements.map(
         IndexerGrpcRfqTransformer.grpcRfqSettlementToRfqSettlement,
       ),
-      total: Number(response.total),
+      next: response.next,
     }
   }
 }

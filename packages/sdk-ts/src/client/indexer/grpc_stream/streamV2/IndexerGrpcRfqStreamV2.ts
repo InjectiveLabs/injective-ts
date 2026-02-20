@@ -1,5 +1,5 @@
-import * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfqrpc_pb'
-import { InjectiveRFQRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfqrpc_pb.client'
+import * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
+import { InjectiveRfqRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb.client'
 import { createStreamSubscriptionV2 } from './streamHelpersV2.js'
 import { IndexerRfqStreamTransformer } from '../../transformers/index.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
@@ -22,12 +22,12 @@ export type SettlementStreamCallbackV2 = (
 ) => void
 
 export class IndexerGrpcRfqStreamV2 {
-  private client: InjectiveRFQRPCClient
+  private client: InjectiveRfqRPCClient
   private transport: GrpcWebRpcTransport
 
   constructor(endpoint: string, metadata?: Record<string, string>) {
     this.transport = new GrpcWebRpcTransport(endpoint, metadata)
-    this.client = new InjectiveRFQRPCClient(this.transport)
+    this.client = new InjectiveRfqRPCClient(this.transport)
   }
 
   streamRequests({

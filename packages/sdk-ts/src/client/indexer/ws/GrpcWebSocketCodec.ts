@@ -5,7 +5,7 @@ import {
   MakerStreamResponse,
   TakerStreamStreamingRequest,
   MakerStreamStreamingRequest,
-} from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfqrpc_pb.js'
+} from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb.js'
 import { GrpcDecodeError } from './types.js'
 import type { GrpcFrame, RFQQuoteInput, RFQRequestInput } from './types.js'
 
