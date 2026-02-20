@@ -30,20 +30,22 @@ export type BatchCancelDerivativeOrdersAuthz =
 
 export interface GrantWithDecodedAuthorization extends Omit<
   Grant,
-  'authorization'
+  'authorization' | 'expiration'
 > {
   authorization:
     | GenericAuthorization
     | undefined /** Todo: add more authorizations */
   authorizationType: string
+  expiration: number
 }
 
 export interface GrantAuthorizationWithDecodedAuthorization extends Omit<
   GrantAuthorization,
-  'authorization'
+  'authorization' | 'expiration'
 > {
   authorization:
     | GenericAuthorization
     | undefined /** Todo: add more authorizations */
   authorizationType: string
+  expiration: number
 }

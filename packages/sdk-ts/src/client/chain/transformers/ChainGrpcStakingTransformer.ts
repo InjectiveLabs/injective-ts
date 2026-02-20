@@ -225,7 +225,7 @@ export class ChainGrpcStakingTransformer {
           validator.description,
         ),
       unbondingHeight: Number(validator.unbondingHeight),
-      unbondingTime: validator.unbondingTime,
+      unbondingTime: protobufTimestampToUnixSeconds(validator.unbondingTime),
       commission:
         ChainGrpcStakingTransformer.grpcValidatorCommissionToCommission(
           validator.commission,

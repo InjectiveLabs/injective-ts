@@ -77,7 +77,7 @@ export interface Validator {
   delegatorShares: string
   description: ValidatorDescription
   unbondingHeight: number
-  unbondingTime: any
+  unbondingTime: number
   commission: ValidatorCommission
   minSelfDelegation: string
 }

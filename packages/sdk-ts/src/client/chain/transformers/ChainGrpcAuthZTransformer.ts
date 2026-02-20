@@ -1,5 +1,6 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb'
+import { protobufTimestampToUnixSeconds } from '../../../utils/time.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import type * as CosmosAuthzV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb'
@@ -20,7 +21,7 @@ export class ChainGrpcAuthZTransformer {
     return {
       authorization: authorization?.authorization,
       authorizationType: authorization?.authorizationType || '',
-      expiration: grant.expiration,
+      expiration: protobufTimestampToUnixSeconds(grant.expiration),
     }
   }
 
@@ -34,7 +35,7 @@ export class ChainGrpcAuthZTransformer {
       grantee: grant.grantee,
       authorization: authorization?.authorization,
       authorizationType: authorization?.authorizationType || '',
-      expiration: grant.expiration,
+      expiration: protobufTimestampToUnixSeconds(grant.expiration),
     }
   }
 
