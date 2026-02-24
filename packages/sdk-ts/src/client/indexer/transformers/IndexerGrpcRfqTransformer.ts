@@ -24,10 +24,7 @@ export class IndexerGrpcRfqTransformer {
       direction: grpcRequest.direction,
       worstPrice: grpcRequest.worstPrice,
       expiry: Number(grpcRequest.expiry),
-      height: Number(grpcRequest.height),
-      rfqId: grpcRequest.rfqId.toString(),
-      createdAt: Number(grpcRequest.createdAt),
-      updatedAt: Number(grpcRequest.updatedAt),
+      clientId: grpcRequest.clientId.toString(),
       requestAddress: grpcRequest.requestAddress,
       transactionTime: Number(grpcRequest.transactionTime),
     }
@@ -46,7 +43,7 @@ export class IndexerGrpcRfqTransformer {
       signature: grpcQuote.signature,
       expiry: Number(grpcQuote.expiry),
       height: Number(grpcQuote.height),
-      rfqId: grpcQuote.rfqId.toString(),
+      rfqId: Number(grpcQuote.rfqId),
       createdAt: Number(grpcQuote.createdAt),
       updatedAt: Number(grpcQuote.updatedAt),
       eventTime: Number(grpcQuote.eventTime),
@@ -64,16 +61,26 @@ export class IndexerGrpcRfqTransformer {
       margin: grpcSettlement.margin,
       marketId: grpcSettlement.marketId,
       quantity: grpcSettlement.quantity,
+      rfqId: Number(grpcSettlement.rfqId),
       direction: grpcSettlement.direction,
       worstPrice: grpcSettlement.worstPrice,
       height: Number(grpcSettlement.height),
-      rfqId: grpcSettlement.rfqId.toString(),
       createdAt: Number(grpcSettlement.createdAt),
       updatedAt: Number(grpcSettlement.updatedAt),
       eventTime: Number(grpcSettlement.eventTime),
       fallbackMargin: grpcSettlement.fallbackMargin,
       fallbackQuantity: grpcSettlement.fallbackQuantity,
       transactionTime: Number(grpcSettlement.transactionTime),
+      unfilledAction: grpcSettlement.unfilledAction
+        ? {
+            limit: grpcSettlement.unfilledAction.limit
+              ? {
+                  price: grpcSettlement.unfilledAction.limit.price,
+                }
+              : undefined,
+            market: grpcSettlement.unfilledAction.market ? {} : undefined,
+          }
+        : undefined,
     }
   }
 

@@ -130,37 +130,16 @@ export type TakerResponseType =
   (typeof TakerResponseType)[keyof typeof TakerResponseType]
 
 /**
- * Input parameters for creating an RFQ request
- * All fields are required as per design decision
- */
-export interface RFQRequestInput {
-  /** Unique RFQ identifier (required from client) */
-  rfqId: string
-  /** Market ID */
-  marketId: string
-  /** Direction: 'LONG' or 'SHORT' */
-  direction: string
-  /** Margin amount as string */
-  margin: string
-  /** Quantity as string */
-  quantity: string
-  /** Worst acceptable price as string */
-  worstPrice: string
-  /** Requester's Injective address */
-  requestAddress: string
-  /** Expiry timestamp in seconds */
-  expiry: number
-  /** Status (typically 'open' for new requests) */
-  status: string
-}
-
-/**
  * RFQ stream acknowledgment data
  */
-export interface RFQStreamAckData {
-  /** RFQ ID that was acknowledged */
-  rfqId: string
-  /** Status of the operation */
+export interface RFQTakerStreamAckData {
+  rfqId: number
+  status: string
+  clientId: string
+}
+
+export interface RFQMakerStreamAckData {
+  rfqId: number
   status: string
 }
 
@@ -168,9 +147,7 @@ export interface RFQStreamAckData {
  * RFQ stream error data
  */
 export interface RFQStreamErrorData {
-  /** Error code */
   code: string
-  /** Error message */
   message: string
 }
 
@@ -183,7 +160,7 @@ export interface TakerStreamEvents {
     quote: RFQQuote
   }
   /** Request was acknowledged by server */
-  request_ack: RFQStreamAckData
+  request_ack: RFQTakerStreamAckData
   /** Error received from server */
   error: RFQStreamErrorData
   /** Pong received (response to ping) */
@@ -241,39 +218,6 @@ export type MakerResponseType =
   (typeof MakerResponseType)[keyof typeof MakerResponseType]
 
 /**
- * Input parameters for creating a quote
- * All fields are required as per design decision
- */
-export interface RFQQuoteInput {
-  /** Chain ID */
-  chainId: string
-  /** Contract Address */
-  contractAddress: string
-  /** Market ID */
-  marketId: string
-  /** RFQ ID being quoted */
-  rfqId: string
-  /** Taker's direction: 'LONG' or 'SHORT' */
-  takerDirection: string
-  /** Margin amount as string */
-  margin: string
-  /** Quantity as string */
-  quantity: string
-  /** Quote price as string */
-  price: string
-  /** Expiry timestamp in seconds */
-  expiry: number
-  /** Maker's Injective address */
-  maker: string
-  /** Taker's Injective address */
-  taker: string
-  /** Cryptographic signature */
-  signature: string
-  /** Status (typically 'pending' for new quotes) */
-  status: string
-}
-
-/**
  * Event payloads for MakerStream
  */
 export interface MakerStreamEvents {
@@ -282,7 +226,7 @@ export interface MakerStreamEvents {
     request: RFQRequest
   }
   /** Quote was acknowledged by server */
-  quote_ack: RFQStreamAckData
+  quote_ack: RFQMakerStreamAckData
   /** Error received from server */
   error: RFQStreamErrorData
   /** Pong received (response to ping) */

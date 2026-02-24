@@ -7,7 +7,9 @@ import {
   MakerStreamStreamingRequest,
 } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb.js'
 import { GrpcDecodeError } from './types.js'
-import type { GrpcFrame, RFQQuoteInput, RFQRequestInput } from './types.js'
+import type { GrpcFrame } from './types.js'
+import type { RFQQuote } from '../types/rfq.js'
+import type { RFQRequest } from '../types/rfq.js'
 
 const COMPRESSION_FLAG_NONE = 0x00
 const COMPRESSION_FLAG_TRAILER = 0x80
@@ -28,9 +30,9 @@ export const GrpcWebSocketCodec = {
     return encodeGrpcFrame(TakerStreamStreamingRequest.toBinary(message))
   },
 
-  encodeTakerRequest(input: RFQRequestInput): Uint8Array {
+  encodeTakerRequest(input: RFQRequest): Uint8Array {
     const request = RFQRequestType.create({
-      rfqId: BigInt(input.rfqId),
+      clientId: input.clientId,
       marketId: input.marketId,
       direction: input.direction,
       margin: input.margin,
@@ -72,7 +74,7 @@ export const GrpcWebSocketCodec = {
     return encodeGrpcFrame(MakerStreamStreamingRequest.toBinary(message))
   },
 
-  encodeMakerQuote(input: RFQQuoteInput): Uint8Array {
+  encodeMakerQuote(input: RFQQuote): Uint8Array {
     const quote = RFQQuoteType.create({
       chainId: input.chainId,
       contractAddress: input.contractAddress,

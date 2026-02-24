@@ -1,18 +1,14 @@
 import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
+import { RFQ_GRPC_PATHS, GrpcDecodeError } from '../types.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
-import {
-  WsState,
-  RFQ_GRPC_PATHS,
-  GrpcDecodeError,
-  WsDisconnectReason,
-} from '../types.js'
+import type { RFQQuote } from '../../types'
 import type {
-  RFQQuoteInput,
-  RFQStreamAckData,
-  MakerStreamEvents,
+  WsState,
   MakerStreamConfig,
+  MakerStreamEvents,
   RFQStreamErrorData,
+  RFQMakerStreamAckData,
 } from '../types.js'
 
 type MakerEventListener<T extends keyof MakerStreamEvents> = (
@@ -73,7 +69,7 @@ export class IndexerWsMakerStream {
     this.listeners.clear()
   }
 
-  sendQuote(quote: RFQQuoteInput): void {
+  sendQuote(quote: RFQQuote): void {
     if (!this.isConnected()) {
       throw new Error('Cannot send quote: stream is not connected')
     }
@@ -171,8 +167,8 @@ export class IndexerWsMakerStream {
 
         case 'quote_ack':
           if (response.quoteAck) {
-            const ack: RFQStreamAckData = {
-              rfqId: response.quoteAck.rfqId.toString(),
+            const ack: RFQMakerStreamAckData = {
+              rfqId: Number(response.quoteAck.rfqId),
               status: response.quoteAck.status,
             }
             this.emit('quote_ack', ack)
@@ -236,13 +232,4 @@ export class IndexerWsMakerStream {
     const path = grpcPath.startsWith('/') ? grpcPath : `/${grpcPath}`
     return `${base}${path}`
   }
-}
-
-export {
-  WsState,
-  WsDisconnectReason,
-  type MakerStreamEvents,
-  type RFQQuoteInput,
-  type RFQStreamAckData,
-  type RFQStreamErrorData,
 }

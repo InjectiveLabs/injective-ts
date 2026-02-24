@@ -25,10 +25,5 @@ export {
   type MakerStreamEvents,
 
   // Response data types
-  type RFQStreamAckData,
   type RFQStreamErrorData,
-
-  // Message input types
-  type RFQRequestInput,
-  type RFQQuoteInput,
 } from './types'

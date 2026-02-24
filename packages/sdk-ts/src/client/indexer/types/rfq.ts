@@ -1,11 +1,12 @@
 import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
 
-export interface RFQRequest {
-  rfqId: string
+export interface RFQRequestType {
+  rfqId: number
   margin: string
   expiry: number
   status: string
   height: number
+  clientId: string
   marketId: string
   quantity: string
   direction: string
@@ -16,8 +17,21 @@ export interface RFQRequest {
   transactionTime: number
 }
 
-export interface RFQQuote {
-  rfqId: string
+export interface RFQRequestInputType {
+  margin: string
+  expiry: number
+  status: string
+  clientId: string
+  marketId: string
+  quantity: string
+  direction: string
+  worstPrice: string
+  requestAddress: string
+  transactionTime: number
+}
+
+export interface RFQQuoteType {
+  rfqId: number
   price: string
   maker: string
   taker: string
@@ -37,8 +51,17 @@ export interface RFQQuote {
   transactionTime: number
 }
 
-export interface RFQSettlement {
-  rfqId: string
+export interface RFQSettlementLimitActionType {
+  price: string
+}
+
+export interface RFQSettlementUnfilledActionType {
+  limit?: RFQSettlementLimitActionType
+  market?: {}
+}
+
+export interface RFQSettlementType {
+  rfqId: number
   taker: string
   margin: string
   height: number
@@ -52,21 +75,22 @@ export interface RFQSettlement {
   fallbackMargin: string
   transactionTime: number
   fallbackQuantity: string
+  unfilledAction?: RFQSettlementUnfilledActionType
 }
 
 export interface OpenRequestsResponse {
-  requests: RFQRequest[]
+  requests: RFQRequestType[]
 }
 
 export interface PendingQuotesResponse {
-  quotes: RFQQuote[]
+  quotes: RFQQuoteType[]
 }
 
 export interface SettlementsResponse {
   next: string[]
-  settlements: RFQSettlement[]
+  settlements: RFQSettlementType[]
 }
 
-export type GrpcRFQRequest = InjectiveRFQRpcPb.RFQRequestType
 export type GrpcRFQQuote = InjectiveRFQRpcPb.RFQQuoteType
+export type GrpcRFQRequest = InjectiveRFQRpcPb.RFQRequestType
 export type GrpcRFQSettlement = InjectiveRFQRpcPb.RFQSettlementType

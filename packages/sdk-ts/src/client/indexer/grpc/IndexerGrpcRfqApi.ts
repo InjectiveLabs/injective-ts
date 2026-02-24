@@ -15,7 +15,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   }
 
   async submitRequest({
-    rfqId,
+    clientId,
     margin,
     expiry,
     status,
@@ -29,7 +29,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     requestAddress,
     transactionTime,
   }: {
-    rfqId?: bigint
+    clientId?: string
     margin: string
     expiry?: bigint
     status?: string
@@ -45,8 +45,8 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   }) {
     const request = InjectiveRFQExchangeRpcPb.RFQRequestType.create()
 
-    if (rfqId !== undefined) {
-      request.rfqId = rfqId
+    if (clientId !== undefined) {
+      request.clientId = clientId
     }
 
     if (marketId) {
