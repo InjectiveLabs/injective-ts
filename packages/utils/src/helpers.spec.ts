@@ -1,4 +1,4 @@
-import { splitArrayToChunks, awaitForAll } from './helpers.js'
+import { awaitForAll , splitArrayToChunks} from './helpers.js'
 
 describe('awaitForAll', () => {
   it('should resolve all items when no errors occur', async () => {
