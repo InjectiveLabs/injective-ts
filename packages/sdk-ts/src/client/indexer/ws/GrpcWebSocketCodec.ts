@@ -1,15 +1,7 @@
-import {
-  RFQQuoteType,
-  RFQRequestType,
-  TakerStreamResponse,
-  MakerStreamResponse,
-  TakerStreamStreamingRequest,
-  MakerStreamStreamingRequest,
-} from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb.js'
-import { GrpcDecodeError } from './types.js'
-import type { GrpcFrame } from './types.js'
-import type { RFQQuote } from '../types/rfq.js'
-import type { RFQRequest } from '../types/rfq.js'
+import * as InjectiveRFQExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
+import { GrpcDecodeError } from '../types'
+import type { GrpcFrame } from '../types'
+import type { RFQQuoteType, RFQRequestType } from '../types'
 
 const COMPRESSION_FLAG_NONE = 0x00
 const COMPRESSION_FLAG_TRAILER = 0x80
@@ -24,14 +16,17 @@ export const GrpcWebSocketCodec = {
   // ============================================
 
   encodeTakerPing(): Uint8Array {
-    const message = TakerStreamStreamingRequest.create({
-      messageType: 'ping',
-    })
-    return encodeGrpcFrame(TakerStreamStreamingRequest.toBinary(message))
+    const message =
+      InjectiveRFQExchangeRpcPb.TakerStreamStreamingRequest.create({
+        messageType: 'ping',
+      })
+    return encodeGrpcFrame(
+      InjectiveRFQExchangeRpcPb.TakerStreamStreamingRequest.toBinary(message),
+    )
   },
 
-  encodeTakerRequest(input: RFQRequest): Uint8Array {
-    const request = RFQRequestType.create({
+  encodeTakerRequest(input: RFQRequestType): Uint8Array {
+    const request = InjectiveRFQExchangeRpcPb.RFQRequestType.create({
       clientId: input.clientId,
       marketId: input.marketId,
       direction: input.direction,
@@ -48,19 +43,22 @@ export const GrpcWebSocketCodec = {
       height: 0n,
     })
 
-    const message = TakerStreamStreamingRequest.create({
-      messageType: 'request',
-      request,
-    })
+    const message =
+      InjectiveRFQExchangeRpcPb.TakerStreamStreamingRequest.create({
+        messageType: 'request',
+        request,
+      })
 
-    return encodeGrpcFrame(TakerStreamStreamingRequest.toBinary(message))
+    return encodeGrpcFrame(
+      InjectiveRFQExchangeRpcPb.TakerStreamStreamingRequest.toBinary(message),
+    )
   },
 
   decodeTakerResponse(
     data: ArrayBuffer | Uint8Array,
-  ): GrpcFrame<TakerStreamResponse> {
+  ): GrpcFrame<InjectiveRFQExchangeRpcPb.TakerStreamResponse> {
     const bytes = data instanceof ArrayBuffer ? new Uint8Array(data) : data
-    return decodeGrpcFrame(bytes, TakerStreamResponse)
+    return decodeGrpcFrame(bytes, InjectiveRFQExchangeRpcPb.TakerStreamResponse)
   },
 
   // ============================================
@@ -68,14 +66,17 @@ export const GrpcWebSocketCodec = {
   // ============================================
 
   encodeMakerPing(): Uint8Array {
-    const message = MakerStreamStreamingRequest.create({
-      messageType: 'ping',
-    })
-    return encodeGrpcFrame(MakerStreamStreamingRequest.toBinary(message))
+    const message =
+      InjectiveRFQExchangeRpcPb.MakerStreamStreamingRequest.create({
+        messageType: 'ping',
+      })
+    return encodeGrpcFrame(
+      InjectiveRFQExchangeRpcPb.MakerStreamStreamingRequest.toBinary(message),
+    )
   },
 
-  encodeMakerQuote(input: RFQQuote): Uint8Array {
-    const quote = RFQQuoteType.create({
+  encodeMakerQuote(input: RFQQuoteType): Uint8Array {
+    const quote = InjectiveRFQExchangeRpcPb.RFQQuoteType.create({
       chainId: input.chainId,
       contractAddress: input.contractAddress,
       marketId: input.marketId,
@@ -97,19 +98,22 @@ export const GrpcWebSocketCodec = {
       transactionTime: 0n,
     })
 
-    const message = MakerStreamStreamingRequest.create({
-      messageType: 'quote',
-      quote,
-    })
+    const message =
+      InjectiveRFQExchangeRpcPb.MakerStreamStreamingRequest.create({
+        messageType: 'quote',
+        quote,
+      })
 
-    return encodeGrpcFrame(MakerStreamStreamingRequest.toBinary(message))
+    return encodeGrpcFrame(
+      InjectiveRFQExchangeRpcPb.MakerStreamStreamingRequest.toBinary(message),
+    )
   },
 
   decodeMakerResponse(
     data: ArrayBuffer | Uint8Array,
-  ): GrpcFrame<MakerStreamResponse> {
+  ): GrpcFrame<InjectiveRFQExchangeRpcPb.MakerStreamResponse> {
     const bytes = data instanceof ArrayBuffer ? new Uint8Array(data) : data
-    return decodeGrpcFrame(bytes, MakerStreamResponse)
+    return decodeGrpcFrame(bytes, InjectiveRFQExchangeRpcPb.MakerStreamResponse)
   },
 
   // ============================================

@@ -1,15 +1,16 @@
+import { RFQ_GRPC_PATHS } from '../constants.js'
+import { GrpcDecodeError } from '../../types/ws.js'
 import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
-import { RFQ_GRPC_PATHS, GrpcDecodeError } from '../types.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
-import type { RFQRequest } from '../../types'
+import type { WsState } from '../../types/ws.js'
+import type { RFQRequestType } from '../../types'
 import type {
-  WsState,
   TakerStreamConfig,
   TakerStreamEvents,
   RFQStreamErrorData,
   RFQTakerStreamAckData,
-} from '../types.js'
+} from '../../types/rfq.js'
 
 type TakerEventListener<T extends keyof TakerStreamEvents> = (
   data: TakerStreamEvents[T],
@@ -69,7 +70,7 @@ export class IndexerWsTakerStream {
     this.listeners.clear()
   }
 
-  sendRequest(request: RFQRequest): void {
+  sendRequest(request: RFQRequestType): void {
     if (!this.isConnected()) {
       throw new Error('Cannot send request: stream is not connected')
     }

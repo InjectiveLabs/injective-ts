@@ -1,36 +1,40 @@
 import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
 import type {
-  RFQQuote,
-  RFQRequest,
+  RFQQuoteType,
   GrpcRFQQuote,
-  RFQSettlement,
+  RFQRequestType,
   GrpcRFQRequest,
+  RFQSettlementType,
   GrpcRFQSettlement,
   SettlementsResponse,
-  OpenRequestsResponse,
-  PendingQuotesResponse,
-} from '../types/rfq.js'
+} from '../types'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcRfqTransformer {
-  static grpcRfqRequestToRfqRequest(grpcRequest: GrpcRFQRequest): RFQRequest {
+  static grpcRfqRequestToRfqRequest(
+    grpcRequest: GrpcRFQRequest,
+  ): RFQRequestType {
     return {
       margin: grpcRequest.margin,
       status: grpcRequest.status,
       marketId: grpcRequest.marketId,
       quantity: grpcRequest.quantity,
       direction: grpcRequest.direction,
+      rfqId: Number(grpcRequest.rfqId),
       worstPrice: grpcRequest.worstPrice,
       expiry: Number(grpcRequest.expiry),
+      height: Number(grpcRequest.height),
+      createdAt: Number(grpcRequest.createdAt),
+      updatedAt: Number(grpcRequest.updatedAt),
       clientId: grpcRequest.clientId.toString(),
       requestAddress: grpcRequest.requestAddress,
       transactionTime: Number(grpcRequest.transactionTime),
     }
   }
 
-  static grpcRfqQuoteToRfqQuote(grpcQuote: GrpcRFQQuote): RFQQuote {
+  static grpcRfqQuoteToRfqQuote(grpcQuote: GrpcRFQQuote): RFQQuoteType {
     return {
       price: grpcQuote.price,
       maker: grpcQuote.maker,
@@ -55,7 +59,7 @@ export class IndexerGrpcRfqTransformer {
 
   static grpcRfqSettlementToRfqSettlement(
     grpcSettlement: GrpcRFQSettlement,
-  ): RFQSettlement {
+  ): RFQSettlementType {
     return {
       taker: grpcSettlement.taker,
       margin: grpcSettlement.margin,
@@ -81,26 +85,6 @@ export class IndexerGrpcRfqTransformer {
             market: grpcSettlement.unfilledAction.market ? {} : undefined,
           }
         : undefined,
-    }
-  }
-
-  static openRequestsResponseToOpenRequests(
-    response: InjectiveRFQRpcPb.GetOpenRequestsResponse,
-  ): OpenRequestsResponse {
-    return {
-      requests: response.requests.map(
-        IndexerGrpcRfqTransformer.grpcRfqRequestToRfqRequest,
-      ),
-    }
-  }
-
-  static pendingQuotesResponseToPendingQuotes(
-    response: InjectiveRFQRpcPb.GetPendingQuotesResponse,
-  ): PendingQuotesResponse {
-    return {
-      quotes: response.quotes.map(
-        IndexerGrpcRfqTransformer.grpcRfqQuoteToRfqQuote,
-      ),
     }
   }
 

@@ -1,15 +1,16 @@
+import { RFQ_GRPC_PATHS } from '../constants.js'
+import { GrpcDecodeError } from '../../types/ws.js'
 import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
-import { RFQ_GRPC_PATHS, GrpcDecodeError } from '../types.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
-import type { RFQQuote } from '../../types'
+import type { RFQQuoteType } from '../../types'
+import type { WsState } from '../../types/ws.js'
 import type {
-  WsState,
   MakerStreamConfig,
   MakerStreamEvents,
   RFQStreamErrorData,
   RFQMakerStreamAckData,
-} from '../types.js'
+} from '../../types/rfq.js'
 
 type MakerEventListener<T extends keyof MakerStreamEvents> = (
   data: MakerStreamEvents[T],
@@ -69,7 +70,7 @@ export class IndexerWsMakerStream {
     this.listeners.clear()
   }
 
-  sendQuote(quote: RFQQuote): void {
+  sendQuote(quote: RFQQuoteType): void {
     if (!this.isConnected()) {
       throw new Error('Cannot send quote: stream is not connected')
     }

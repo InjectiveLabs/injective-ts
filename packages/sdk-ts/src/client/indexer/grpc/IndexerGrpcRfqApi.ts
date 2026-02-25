@@ -233,9 +233,9 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   }
 
   async fetchSettlements(params?: {
-    addresses?: string[]
     token?: string
     perPage?: number
+    addresses?: string[]
   }) {
     const { addresses, token, perPage } = params || {}
     const request = InjectiveRFQExchangeRpcPb.ListSettlementRequest.create()

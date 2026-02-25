@@ -1,4 +1,5 @@
 import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
+import type { WsState, WsTransportConfig, WsDisconnectReason } from './ws.js'
 
 export interface RFQRequestType {
   rfqId: number
@@ -78,14 +79,6 @@ export interface RFQSettlementType {
   unfilledAction?: RFQSettlementUnfilledActionType
 }
 
-export interface OpenRequestsResponse {
-  requests: RFQRequestType[]
-}
-
-export interface PendingQuotesResponse {
-  quotes: RFQQuoteType[]
-}
-
 export interface SettlementsResponse {
   next: string[]
   settlements: RFQSettlementType[]
@@ -94,3 +87,104 @@ export interface SettlementsResponse {
 export type GrpcRFQQuote = InjectiveRFQRpcPb.RFQQuoteType
 export type GrpcRFQRequest = InjectiveRFQRpcPb.RFQRequestType
 export type GrpcRFQSettlement = InjectiveRFQRpcPb.RFQSettlementType
+
+// ============================================
+// RFQ Taker/Maker WebSocket Stream Types
+// ============================================
+/**
+ * RFQ stream error data
+ */
+export interface RFQStreamErrorData {
+  code: string
+  message: string
+}
+
+/**
+ * RFQ stream acknowledgment data
+ */
+export interface RFQTakerStreamAckData {
+  rfqId: number
+  status: string
+  clientId: string
+}
+
+export interface RFQMakerStreamAckData {
+  rfqId: number
+  status: string
+}
+
+/**
+ * Event payloads for TakerStream
+ */
+export interface TakerStreamEvents {
+  /** Received a quote from a maker */
+  quote: {
+    quote: RFQQuoteType
+  }
+  /** Request was acknowledged by server */
+  request_ack: RFQTakerStreamAckData
+  /** Error received from server */
+  error: RFQStreamErrorData
+  /** Pong received (response to ping) */
+  pong: void
+  /** Connection established */
+  connect: {
+    isReconnect: boolean
+  }
+  /** Connection closed */
+  disconnect: {
+    reason: WsDisconnectReason
+    willRetry: boolean
+  }
+  /** State changed */
+  state_change: {
+    from: WsState
+    to: WsState
+  }
+}
+
+export interface TakerStreamConfig {
+  url: string
+  requestAddress: string
+  pingIntervalMs?: number
+  connectionTimeoutMs?: number
+  reconnect?: WsTransportConfig['reconnect']
+}
+
+/**
+ * Event payloads for MakerStream
+ */
+export interface MakerStreamEvents {
+  /** Received an RFQ request from a taker */
+  request: {
+    request: RFQRequestType
+  }
+  /** Quote was acknowledged by server */
+  quote_ack: RFQMakerStreamAckData
+  /** Error received from server */
+  error: RFQStreamErrorData
+  /** Pong received (response to ping) */
+  pong: void
+  /** Connection established */
+  connect: {
+    isReconnect: boolean
+  }
+  /** Connection closed */
+  disconnect: {
+    reason: WsDisconnectReason
+    willRetry: boolean
+  }
+  /** State changed */
+  state_change: {
+    from: WsState
+    to: WsState
+  }
+}
+
+export interface MakerStreamConfig {
+  url: string
+  makerAddress: string
+  pingIntervalMs?: number
+  connectionTimeoutMs?: number
+  reconnect?: WsTransportConfig['reconnect']
+}
