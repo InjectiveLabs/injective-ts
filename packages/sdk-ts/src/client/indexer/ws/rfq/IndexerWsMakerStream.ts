@@ -197,12 +197,14 @@ export class IndexerWsMakerStream {
           code: 'DECODE_ERROR',
           message: error.message,
         })
-      } else {
-        this.emit('error', {
-          code: 'UNKNOWN_ERROR',
-          message: error instanceof Error ? error.message : String(error),
-        })
+
+        return
       }
+
+      this.emit('error', {
+        code: 'UNKNOWN_ERROR',
+        message: error instanceof Error ? error.message : String(error),
+      })
     }
   }
 

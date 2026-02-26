@@ -3,6 +3,7 @@ import { InjectiveRfqRPCClient } from '@injectivelabs/indexer-proto-ts-v2/genera
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcRfqTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcRFQExpiry } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -133,7 +134,6 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     maker: string
     taker: string
     margin: string
-    expiry?: bigint
     status?: string
     height?: bigint
     chainId: string
@@ -146,6 +146,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     takerDirection: string
     contractAddress: string
     transactionTime?: bigint
+    expiry?: Partial<GrpcRFQExpiry>
   }): Promise<{ status: string }> {
     const request = InjectiveRFQExchangeRpcPb.RFQQuoteType.create()
 
@@ -182,7 +183,10 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     }
 
     if (expiry) {
-      request.expiry = expiry
+      request.expiry = {
+        height: expiry.height ? BigInt(expiry.height) : BigInt(0),
+        timestamp: expiry.timestamp ? BigInt(expiry.timestamp) : BigInt(0),
+      }
     }
 
     if (maker) {

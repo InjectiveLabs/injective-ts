@@ -1,7 +1,8 @@
 import * as InjectiveRFQExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
 import { GrpcDecodeError } from '../types'
+import type { MessageType } from '@protobuf-ts/runtime'
 import type { GrpcFrame } from '../types'
-import type { RFQQuoteType, RFQRequestType } from '../types'
+import type { RFQQuoteType, RFQRequestInputType } from '../types'
 
 const COMPRESSION_FLAG_NONE = 0x00
 const COMPRESSION_FLAG_TRAILER = 0x80
@@ -25,7 +26,7 @@ export const GrpcWebSocketCodec = {
     )
   },
 
-  encodeTakerRequest(input: RFQRequestType): Uint8Array {
+  encodeTakerRequest(input: RFQRequestInputType): Uint8Array {
     const request = InjectiveRFQExchangeRpcPb.RFQRequestType.create({
       clientId: input.clientId,
       marketId: input.marketId,
@@ -85,7 +86,10 @@ export const GrpcWebSocketCodec = {
       margin: input.margin,
       quantity: input.quantity,
       price: input.price,
-      expiry: BigInt(input.expiry),
+      expiry: {
+        height: BigInt(input.expiry.height || 0),
+        timestamp: BigInt(input.expiry.timestamp || 0),
+      },
       maker: input.maker,
       taker: input.taker,
       signature: input.signature,
@@ -160,9 +164,9 @@ function encodeGrpcFrame(payload: Uint8Array): Uint8Array {
   return frame
 }
 
-function decodeGrpcFrame<T>(
+function decodeGrpcFrame<T extends object>(
   data: Uint8Array,
-  messageType: { fromBinary(bytes: Uint8Array): T },
+  messageType: MessageType<T>,
 ): GrpcFrame<T> {
   if (data.byteLength < GRPC_HEADER_SIZE) {
     throw new GrpcDecodeError(

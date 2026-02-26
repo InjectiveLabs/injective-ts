@@ -245,9 +245,11 @@ export class GrpcWebSocketTransport {
       this.setState(WsState.Reconnecting)
       this.scheduleReconnect()
       this.emit('disconnect', { reason, willRetry: true })
-    } else {
-      this.cleanup(reason, false)
+
+      return
     }
+
+    this.cleanup(reason, false)
   }
 
   private handleError(
@@ -288,9 +290,11 @@ export class GrpcWebSocketTransport {
     if (this.shouldAttemptReconnect(WsDisconnectReason.ConnectionTimeout)) {
       this.setState(WsState.Reconnecting)
       this.scheduleReconnect()
-    } else {
-      this.cleanup(WsDisconnectReason.ConnectionTimeout, false)
+
+      return
     }
+
+    this.cleanup(WsDisconnectReason.ConnectionTimeout, false)
   }
 
   private clearConnectionTimeout(): void {

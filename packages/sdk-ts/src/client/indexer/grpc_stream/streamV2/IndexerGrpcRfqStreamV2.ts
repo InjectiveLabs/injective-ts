@@ -59,9 +59,11 @@ export class IndexerGrpcRfqStreamV2 {
 
   streamQuotes({
     addresses,
+    marketIds,
     callback,
   }: {
     addresses?: string[]
+    marketIds?: string[]
     callback: QuoteStreamCallbackV2
   }): StreamSubscription {
     if (typeof callback !== 'function') {
@@ -72,6 +74,10 @@ export class IndexerGrpcRfqStreamV2 {
 
     if (addresses && addresses.length > 0) {
       request.addresses = addresses
+    }
+
+    if (marketIds && marketIds.length > 0) {
+      request.marketIds = marketIds
     }
 
     const stream = this.client.streamQuote(request)

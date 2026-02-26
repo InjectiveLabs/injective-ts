@@ -35,13 +35,15 @@ describe('IndexerGrpcRFQApi', () => {
 
   test('submitQuote', async () => {
     try {
-      const response = await indexerGrpcRfqApi.submitQuote({
+      const timestampResponse = await indexerGrpcRfqApi.submitQuote({
         rfqId: BigInt(1717000000),
         price: '1000000000000000000',
         maker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
         taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
         margin: '1000000000000000000',
-        expiry: BigInt(1717000000),
+        expiry: {
+          timestamp: BigInt(1717000000),
+        },
         status: 'PENDING',
         height: BigInt(1717000000),
         chainId: 'injective-1',
@@ -56,9 +58,37 @@ describe('IndexerGrpcRFQApi', () => {
         transactionTime: BigInt(1717000000),
       })
 
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<{ status: string }>(response),
+      expect(timestampResponse).toBeDefined()
+      expect(timestampResponse).toEqual(
+        expect.objectContaining<{ status: string }>(timestampResponse),
+      )
+
+      const blockHeightResponse = await indexerGrpcRfqApi.submitQuote({
+        rfqId: BigInt(1717000000),
+        price: '1000000000000000000',
+        maker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        margin: '1000000000000000000',
+        expiry: {
+          height: BigInt(1717000000),
+        },
+        status: 'PENDING',
+        height: BigInt(1717000000),
+        chainId: 'injective-1',
+        marketId: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        quantity: '1000000000000000000',
+        signature: '0x1234567890abcdef',
+        createdAt: BigInt(1717000000),
+        updatedAt: BigInt(1717000000),
+        eventTime: BigInt(1717000000),
+        takerDirection: 'LONG',
+        contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        transactionTime: BigInt(1717000000),
+      })
+
+      expect(blockHeightResponse).toBeDefined()
+      expect(blockHeightResponse).toEqual(
+        expect.objectContaining<{ status: string }>(blockHeightResponse),
       )
     } catch (e) {
       console.error('IndexerGrpcRFQApi.submitQuote => ' + (e as any).message)

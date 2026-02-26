@@ -28,7 +28,12 @@ export interface RFQRequestInputType {
   direction: string
   worstPrice: string
   requestAddress: string
-  transactionTime: number
+  transactionTime?: number
+}
+
+export interface RFQExpiryType {
+  height: number
+  timestamp: number
 }
 
 export interface RFQQuoteType {
@@ -37,7 +42,6 @@ export interface RFQQuoteType {
   maker: string
   taker: string
   margin: string
-  expiry: number
   status: string
   height: number
   chainId: string
@@ -47,6 +51,7 @@ export interface RFQQuoteType {
   createdAt: number
   updatedAt: number
   eventTime: number
+  expiry: RFQExpiryType
   takerDirection: string
   contractAddress: string
   transactionTime: number
@@ -85,6 +90,7 @@ export interface SettlementsResponse {
 }
 
 export type GrpcRFQQuote = InjectiveRFQRpcPb.RFQQuoteType
+export type GrpcRFQExpiry = InjectiveRFQRpcPb.RFQExpiryType
 export type GrpcRFQRequest = InjectiveRFQRpcPb.RFQRequestType
 export type GrpcRFQSettlement = InjectiveRFQRpcPb.RFQSettlementType
 

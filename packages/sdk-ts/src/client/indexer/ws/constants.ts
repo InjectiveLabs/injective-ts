@@ -14,6 +14,6 @@ export const DEFAULT_TRANSPORT_CONFIG = {
 }
 
 export const RFQ_GRPC_PATHS = {
-  TakerStream: '/injective_rfqrpc.InjectiveRFQRPC/TakerStream',
-  MakerStream: '/injective_rfqrpc.InjectiveRFQRPC/MakerStream',
+  TakerStream: '/injective_rfq_rpc.InjectiveRfqRPC/TakerStream',
+  MakerStream: '/injective_rfq_rpc.InjectiveRfqRPC/MakerStream',
 } as const
