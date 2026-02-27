@@ -87,8 +87,10 @@ export const GrpcWebSocketCodec = {
       quantity: input.quantity,
       price: input.price,
       expiry: {
-        height: BigInt(input.expiry.height || 0),
-        timestamp: BigInt(input.expiry.timestamp || 0),
+        ...(input.expiry?.height && { height: BigInt(input.expiry.height) }),
+        ...(input.expiry?.timestamp && {
+          timestamp: BigInt(input.expiry.timestamp),
+        }),
       },
       maker: input.maker,
       taker: input.taker,

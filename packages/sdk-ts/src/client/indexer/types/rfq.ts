@@ -32,8 +32,8 @@ export interface RFQRequestInputType {
 }
 
 export interface RFQExpiryType {
-  height: number
-  timestamp: number
+  height?: number
+  timestamp?: number
 }
 
 export interface RFQQuoteType {

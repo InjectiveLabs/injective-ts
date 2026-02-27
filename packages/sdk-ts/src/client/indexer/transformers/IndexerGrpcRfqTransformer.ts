@@ -46,8 +46,12 @@ export class IndexerGrpcRfqTransformer {
       quantity: grpcQuote.quantity,
       signature: grpcQuote.signature,
       expiry: {
-        height: Number(grpcQuote.expiry?.height || 0),
-        timestamp: Number(grpcQuote.expiry?.timestamp || 0),
+        ...(grpcQuote.expiry?.height && {
+          height: Number(grpcQuote.expiry.height),
+        }),
+        ...(grpcQuote.expiry?.timestamp && {
+          timestamp: Number(grpcQuote.expiry.timestamp),
+        }),
       },
       height: Number(grpcQuote.height),
       rfqId: Number(grpcQuote.rfqId),
