@@ -1,9 +1,8 @@
+import { WsState, WsDisconnectReason } from '../types'
 import {
-  WsState,
-  WsDisconnectReason,
   DEFAULT_RECONNECT_CONFIG,
   DEFAULT_TRANSPORT_CONFIG,
-} from './types.js'
+} from './constants.js'
 import type {
   TransportEvents,
   WsReconnectConfig,
@@ -12,7 +11,7 @@ import type {
   IsomorphicWebSocket,
   TransportEventListener,
   ResolvedWsTransportConfig,
-} from './types.js'
+} from '../types'
 
 /**
  * Low-level gRPC-over-WebSocket transport layer.
@@ -246,9 +245,11 @@ export class GrpcWebSocketTransport {
       this.setState(WsState.Reconnecting)
       this.scheduleReconnect()
       this.emit('disconnect', { reason, willRetry: true })
-    } else {
-      this.cleanup(reason, false)
+
+      return
     }
+
+    this.cleanup(reason, false)
   }
 
   private handleError(
@@ -289,9 +290,11 @@ export class GrpcWebSocketTransport {
     if (this.shouldAttemptReconnect(WsDisconnectReason.ConnectionTimeout)) {
       this.setState(WsState.Reconnecting)
       this.scheduleReconnect()
-    } else {
-      this.cleanup(WsDisconnectReason.ConnectionTimeout, false)
+
+      return
     }
+
+    this.cleanup(WsDisconnectReason.ConnectionTimeout, false)
   }
 
   private clearConnectionTimeout(): void {

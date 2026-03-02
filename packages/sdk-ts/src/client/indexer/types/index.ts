@@ -1,5 +1,6 @@
 import { IndexerErrorModule } from '@injectivelabs/exceptions'
 
+export * from './ws.js'
 export * from './mito.js'
 export * from './account.js'
 export * from './trading.js'

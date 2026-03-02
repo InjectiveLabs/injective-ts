@@ -3,6 +3,7 @@ import { InjectiveRfqRPCClient } from '@injectivelabs/indexer-proto-ts-v2/genera
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcRfqTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcRFQExpiry } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -15,38 +16,32 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   }
 
   async submitRequest({
-    rfqId,
     margin,
     expiry,
     status,
-    height,
+    clientId,
     marketId,
     quantity,
     direction,
-    createdAt,
-    updatedAt,
     worstPrice,
     requestAddress,
     transactionTime,
   }: {
-    rfqId?: bigint
     margin: string
     expiry?: bigint
     status?: string
-    height?: bigint
     marketId: string
     quantity: string
     direction: string
+    clientId?: string
     worstPrice: string
-    createdAt?: bigint
-    updatedAt?: bigint
     requestAddress?: string
     transactionTime?: bigint
   }) {
     const request = InjectiveRFQExchangeRpcPb.RFQRequestType.create()
 
-    if (rfqId !== undefined) {
-      request.rfqId = rfqId
+    if (clientId) {
+      request.clientId = clientId
     }
 
     if (marketId) {
@@ -81,20 +76,8 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       request.status = status
     }
 
-    if (createdAt) {
-      request.createdAt = createdAt
-    }
-
-    if (updatedAt) {
-      request.updatedAt = updatedAt
-    }
-
     if (transactionTime) {
       request.transactionTime = transactionTime
-    }
-
-    if (height) {
-      request.height = height
     }
 
     const requestMessage = InjectiveRFQExchangeRpcPb.RequestRequest.create()
@@ -133,7 +116,6 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     maker: string
     taker: string
     margin: string
-    expiry?: bigint
     status?: string
     height?: bigint
     chainId: string
@@ -146,6 +128,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     takerDirection: string
     contractAddress: string
     transactionTime?: bigint
+    expiry?: Partial<GrpcRFQExpiry>
   }): Promise<{ status: string }> {
     const request = InjectiveRFQExchangeRpcPb.RFQQuoteType.create()
 
@@ -161,7 +144,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       request.marketId = marketId
     }
 
-    if (rfqId !== undefined) {
+    if (rfqId !== null && rfqId !== undefined) {
       request.rfqId = rfqId
     }
 
@@ -182,7 +165,10 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     }
 
     if (expiry) {
-      request.expiry = expiry
+      request.expiry = {
+        height: expiry.height ? BigInt(expiry.height) : BigInt(0),
+        timestamp: expiry.timestamp ? BigInt(expiry.timestamp) : BigInt(0),
+      }
     }
 
     if (maker) {
@@ -233,9 +219,9 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   }
 
   async fetchSettlements(params?: {
-    addresses?: string[]
     token?: string
     perPage?: number
+    addresses?: string[]
   }) {
     const { addresses, token, perPage } = params || {}
     const request = InjectiveRFQExchangeRpcPb.ListSettlementRequest.create()

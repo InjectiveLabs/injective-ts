@@ -1,19 +1,16 @@
+import { GrpcDecodeError } from '../../types'
+import { RFQ_GRPC_PATHS } from '../constants.js'
 import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
-import {
-  WsState,
-  RFQ_GRPC_PATHS,
-  GrpcDecodeError,
-  WsDisconnectReason,
-} from '../types.js'
+import type { WsState } from '../../types'
+import type { RFQRequestInputType } from '../../types'
 import type {
-  RFQRequestInput,
-  RFQStreamAckData,
-  TakerStreamEvents,
   TakerStreamConfig,
+  TakerStreamEvents,
   RFQStreamErrorData,
-} from '../types.js'
+  RFQTakerStreamAckData,
+} from '../../types'
 
 type TakerEventListener<T extends keyof TakerStreamEvents> = (
   data: TakerStreamEvents[T],
@@ -73,7 +70,7 @@ export class IndexerWsTakerStream {
     this.listeners.clear()
   }
 
-  sendRequest(request: RFQRequestInput): void {
+  sendRequest(request: RFQRequestInputType): void {
     if (!this.isConnected()) {
       throw new Error('Cannot send request: stream is not connected')
     }
@@ -171,9 +168,10 @@ export class IndexerWsTakerStream {
 
         case 'request_ack':
           if (response.requestAck) {
-            const ack: RFQStreamAckData = {
-              rfqId: response.requestAck.rfqId.toString(),
+            const ack: RFQTakerStreamAckData = {
               status: response.requestAck.status,
+              rfqId: Number(response.requestAck.rfqId),
+              clientId: response.requestAck.clientId.toString(),
             }
             this.emit('request_ack', ack)
           }
@@ -200,12 +198,14 @@ export class IndexerWsTakerStream {
           code: 'DECODE_ERROR',
           message: error.message,
         })
-      } else {
-        this.emit('error', {
-          code: 'UNKNOWN_ERROR',
-          message: error instanceof Error ? error.message : String(error),
-        })
+
+        return
       }
+
+      this.emit('error', {
+        code: 'UNKNOWN_ERROR',
+        message: error instanceof Error ? error.message : String(error),
+      })
     }
   }
 
@@ -236,13 +236,4 @@ export class IndexerWsTakerStream {
     const path = grpcPath.startsWith('/') ? grpcPath : `/${grpcPath}`
     return `${base}${path}`
   }
-}
-
-export {
-  WsState,
-  WsDisconnectReason,
-  type TakerStreamEvents,
-  type RFQRequestInput,
-  type RFQStreamAckData,
-  type RFQStreamErrorData,
 }

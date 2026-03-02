@@ -30,14 +30,17 @@ export const awaitAll = async <T, S>(
 export const awaitForAll = async <T, S>(
   array: Array<T>,
   callback: (item: T) => Promise<S>,
+  onError?: (error: unknown, item: T, index: number) => void,
 ): Promise<S[]> => {
   const result = [] as S[]
 
   for (let i = 0; i < array.length; i += 1) {
     try {
       result.push(await callback(array[i]))
-    } catch {
-      //
+    } catch (e: unknown) {
+      if (onError) {
+        onError(e, array[i], i)
+      }
     }
   }
 
