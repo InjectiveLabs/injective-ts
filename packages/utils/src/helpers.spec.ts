@@ -1,4 +1,57 @@
-import { splitArrayToChunks } from './helpers.js'
+import { awaitForAll , splitArrayToChunks} from './helpers.js'
+
+describe('awaitForAll', () => {
+  it('should resolve all items when no errors occur', async () => {
+    const array = [1, 2, 3]
+    const result = await awaitForAll(array, async (item) => item * 2)
+    expect(result).toEqual([2, 4, 6])
+  })
+
+  it('should skip errored items and return only successful results', async () => {
+    const array = [1, 2, 3, 4, 5]
+    const result = await awaitForAll(array, async (item) => {
+      if (item === 3) {
+        throw new Error('Item 3 failed')
+      }
+      return item * 2
+    })
+    expect(result).toEqual([2, 4, 8, 10])
+  })
+
+  it('should call onError with the correct arguments when an item fails', async () => {
+    const array = ['a', 'b', 'c']
+    const errors: Array<{ error: unknown; item: string; index: number }> = []
+
+    await awaitForAll(
+      array,
+      async (item) => {
+        if (item === 'b') {
+          throw new Error('b failed')
+        }
+        return item.toUpperCase()
+      },
+      (error, item, index) => {
+        errors.push({ error, item, index })
+      },
+    )
+
+    expect(errors).toHaveLength(1)
+    expect(errors[0].item).toBe('b')
+    expect(errors[0].index).toBe(1)
+    expect((errors[0].error as Error).message).toBe('b failed')
+  })
+
+  it('should not throw when onError is not provided and items fail', async () => {
+    const array = [1, 2, 3]
+    const result = await awaitForAll(array, async (item) => {
+      if (item === 2) {
+        throw new Error('fail')
+      }
+      return item
+    })
+    expect(result).toEqual([1, 3])
+  })
+})
 
 describe('helpers', () => {
   it('should split array to chunks', () => {
