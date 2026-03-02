@@ -69,11 +69,6 @@ export abstract class ConcreteException extends Error implements Exception {
   public message: string = ''
 
   /**
-   * The original stack of the error
-   */
-  public stack?: string = ''
-
-  /**
    * The original message of the error
    */
   public originalMessage: string = ''
@@ -135,22 +130,16 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public setStack(stack: string) {
-    try {
-      this.stack = stack
-    } catch {
-      // throw nothing here
-    }
+    this.stack = stack
   }
 
   public setName(name: string) {
     this.name = name
     this.errorClass = name
-    super.name = name
   }
 
   public setMessage(message: string) {
     this.message = message
-    super.message = message
   }
 
   public setContextModule(contextModule: string) {
