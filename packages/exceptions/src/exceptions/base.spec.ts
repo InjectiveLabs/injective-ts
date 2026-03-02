@@ -1,5 +1,5 @@
-import { GrpcUnaryRequestException } from './exceptions/GrpcUnaryRequestException.js'
 import { GeneralException } from './exceptions/GeneralException.js'
+import { GrpcUnaryRequestException } from './exceptions/GrpcUnaryRequestException.js'
 
 describe('ConcreteException - Issue #259 Regression', () => {
   it('does not throw TypeError when constructing from Error', () => {
