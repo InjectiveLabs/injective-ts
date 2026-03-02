@@ -103,7 +103,7 @@ export type TransportEventListener<T extends TransportEventType> = (
   data: TransportEvents[T],
 ) => void
 
-export type IsomorphicWebSocket = WebSocket | import('ws')
+export type IsomorphicWebSocket = WebSocket | InstanceType<typeof import('ws')>
 
 // ============================================
 // Codec Types

@@ -30,14 +30,11 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     margin: string
     expiry?: bigint
     status?: string
-    height?: bigint
     marketId: string
     quantity: string
     direction: string
     clientId?: string
     worstPrice: string
-    createdAt?: bigint
-    updatedAt?: bigint
     requestAddress?: string
     transactionTime?: bigint
   }) {
@@ -147,7 +144,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       request.marketId = marketId
     }
 
-    if (rfqId) {
+    if (rfqId !== null && rfqId !== undefined) {
       request.rfqId = rfqId
     }
 
