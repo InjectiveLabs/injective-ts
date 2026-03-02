@@ -36,26 +36,26 @@ describe('IndexerGrpcRFQApi', () => {
   test('submitQuote', async () => {
     try {
       const timestampResponse = await indexerGrpcRfqApi.submitQuote({
-        rfqId: BigInt(1717000000),
-        price: '1000000000000000000',
-        maker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-        taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-        margin: '1000000000000000000',
-        expiry: {
-          timestamp: BigInt(1717000000),
-        },
         status: 'PENDING',
-        height: BigInt(1717000000),
         chainId: 'injective-1',
-        marketId: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-        quantity: '1000000000000000000',
-        signature: '0x1234567890abcdef',
+        takerDirection: 'LONG',
+        rfqId: BigInt(1717000000),
+        height: BigInt(1717000000),
+        price: '1000000000000000000',
+        margin: '1000000000000000000',
         createdAt: BigInt(1717000000),
         updatedAt: BigInt(1717000000),
         eventTime: BigInt(1717000000),
-        takerDirection: 'LONG',
-        contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        quantity: '1000000000000000000',
+        signature: '0x1234567890abcdef',
         transactionTime: BigInt(1717000000),
+        maker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        marketId: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        expiry: {
+          timestamp: BigInt(1717000000),
+        },
       })
 
       expect(timestampResponse).toBeDefined()
@@ -64,26 +64,26 @@ describe('IndexerGrpcRFQApi', () => {
       )
 
       const blockHeightResponse = await indexerGrpcRfqApi.submitQuote({
-        rfqId: BigInt(1717000000),
-        price: '1000000000000000000',
-        maker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-        taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-        margin: '1000000000000000000',
-        expiry: {
-          height: BigInt(1717000000),
-        },
         status: 'PENDING',
-        height: BigInt(1717000000),
         chainId: 'injective-1',
-        marketId: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-        quantity: '1000000000000000000',
-        signature: '0x1234567890abcdef',
+        takerDirection: 'LONG',
+        rfqId: BigInt(1717000000),
+        height: BigInt(1717000000),
+        price: '1000000000000000000',
+        margin: '1000000000000000000',
         createdAt: BigInt(1717000000),
         updatedAt: BigInt(1717000000),
         eventTime: BigInt(1717000000),
-        takerDirection: 'LONG',
-        contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        quantity: '1000000000000000000',
+        signature: '0x1234567890abcdef',
         transactionTime: BigInt(1717000000),
+        maker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        marketId: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        expiry: {
+          height: BigInt(1717000000),
+        },
       })
 
       expect(blockHeightResponse).toBeDefined()
@@ -98,8 +98,8 @@ describe('IndexerGrpcRFQApi', () => {
   test('fetchSettlements', async () => {
     try {
       const response = await indexerGrpcRfqApi.fetchSettlements({
-        addresses: ['inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49'],
         perPage: 10,
+        addresses: ['inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49'],
       })
 
       expect(response).toBeDefined()

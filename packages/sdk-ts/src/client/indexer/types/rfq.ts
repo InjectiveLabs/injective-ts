@@ -97,17 +97,13 @@ export type GrpcRFQSettlement = InjectiveRFQRpcPb.RFQSettlementType
 // ============================================
 // RFQ Taker/Maker WebSocket Stream Types
 // ============================================
-/**
- * RFQ stream error data
- */
+// # RFQ stream error data
 export interface RFQStreamErrorData {
   code: string
   message: string
 }
 
-/**
- * RFQ stream acknowledgment data
- */
+// # RFQ stream acknowledgment data
 export interface RFQTakerStreamAckData {
   rfqId: number
   status: string
@@ -119,9 +115,7 @@ export interface RFQMakerStreamAckData {
   status: string
 }
 
-/**
- * Event payloads for TakerStream
- */
+// # Event payloads for TakerStream
 export interface TakerStreamEvents {
   /** Received a quote from a maker */
   quote: {
@@ -133,16 +127,13 @@ export interface TakerStreamEvents {
   error: RFQStreamErrorData
   /** Pong received (response to ping) */
   pong: void
-  /** Connection established */
   connect: {
     isReconnect: boolean
   }
-  /** Connection closed */
   disconnect: {
     reason: WsDisconnectReason
     willRetry: boolean
   }
-  /** State changed */
   state_change: {
     from: WsState
     to: WsState
@@ -157,9 +148,7 @@ export interface TakerStreamConfig {
   reconnect?: WsTransportConfig['reconnect']
 }
 
-/**
- * Event payloads for MakerStream
- */
+// # Event payloads for MakerStream
 export interface MakerStreamEvents {
   /** Received an RFQ request from a taker */
   request: {
@@ -171,16 +160,13 @@ export interface MakerStreamEvents {
   error: RFQStreamErrorData
   /** Pong received (response to ping) */
   pong: void
-  /** Connection established */
   connect: {
     isReconnect: boolean
   }
-  /** Connection closed */
   disconnect: {
     reason: WsDisconnectReason
     willRetry: boolean
   }
-  /** State changed */
   state_change: {
     from: WsState
     to: WsState

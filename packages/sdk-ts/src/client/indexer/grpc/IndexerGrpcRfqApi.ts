@@ -16,21 +16,17 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   }
 
   async submitRequest({
-    clientId,
     margin,
     expiry,
     status,
-    height,
+    clientId,
     marketId,
     quantity,
     direction,
-    createdAt,
-    updatedAt,
     worstPrice,
     requestAddress,
     transactionTime,
   }: {
-    clientId?: string
     margin: string
     expiry?: bigint
     status?: string
@@ -38,6 +34,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     marketId: string
     quantity: string
     direction: string
+    clientId?: string
     worstPrice: string
     createdAt?: bigint
     updatedAt?: bigint
@@ -46,7 +43,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   }) {
     const request = InjectiveRFQExchangeRpcPb.RFQRequestType.create()
 
-    if (clientId !== undefined) {
+    if (clientId) {
       request.clientId = clientId
     }
 
@@ -82,20 +79,8 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       request.status = status
     }
 
-    if (createdAt) {
-      request.createdAt = createdAt
-    }
-
-    if (updatedAt) {
-      request.updatedAt = updatedAt
-    }
-
     if (transactionTime) {
       request.transactionTime = transactionTime
-    }
-
-    if (height) {
-      request.height = height
     }
 
     const requestMessage = InjectiveRFQExchangeRpcPb.RequestRequest.create()
@@ -162,7 +147,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       request.marketId = marketId
     }
 
-    if (rfqId !== undefined) {
+    if (rfqId) {
       request.rfqId = rfqId
     }
 

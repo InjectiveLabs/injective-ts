@@ -45,6 +45,14 @@ export class IndexerGrpcRfqTransformer {
       marketId: grpcQuote.marketId,
       quantity: grpcQuote.quantity,
       signature: grpcQuote.signature,
+      rfqId: Number(grpcQuote.rfqId),
+      height: Number(grpcQuote.height),
+      createdAt: Number(grpcQuote.createdAt),
+      updatedAt: Number(grpcQuote.updatedAt),
+      eventTime: Number(grpcQuote.eventTime),
+      takerDirection: grpcQuote.takerDirection,
+      contractAddress: grpcQuote.contractAddress,
+      transactionTime: Number(grpcQuote.transactionTime),
       expiry: {
         ...(grpcQuote.expiry?.height && {
           height: Number(grpcQuote.expiry.height),
@@ -53,14 +61,6 @@ export class IndexerGrpcRfqTransformer {
           timestamp: Number(grpcQuote.expiry.timestamp),
         }),
       },
-      height: Number(grpcQuote.height),
-      rfqId: Number(grpcQuote.rfqId),
-      createdAt: Number(grpcQuote.createdAt),
-      updatedAt: Number(grpcQuote.updatedAt),
-      eventTime: Number(grpcQuote.eventTime),
-      takerDirection: grpcQuote.takerDirection,
-      contractAddress: grpcQuote.contractAddress,
-      transactionTime: Number(grpcQuote.transactionTime),
     }
   }
 

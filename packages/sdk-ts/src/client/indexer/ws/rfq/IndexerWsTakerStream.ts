@@ -1,16 +1,16 @@
+import { GrpcDecodeError } from '../../types'
 import { RFQ_GRPC_PATHS } from '../constants.js'
-import { GrpcDecodeError } from '../../types/ws.js'
 import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
-import type { WsState } from '../../types/ws.js'
+import type { WsState } from '../../types'
 import type { RFQRequestInputType } from '../../types'
 import type {
   TakerStreamConfig,
   TakerStreamEvents,
   RFQStreamErrorData,
   RFQTakerStreamAckData,
-} from '../../types/rfq.js'
+} from '../../types'
 
 type TakerEventListener<T extends keyof TakerStreamEvents> = (
   data: TakerStreamEvents[T],
