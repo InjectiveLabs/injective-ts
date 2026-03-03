@@ -61,10 +61,15 @@ overrides:
   '@ethereumjs/tx': ^4.1.1
   '@solana/web3.js': 1.98.0
   '@ethereumjs/common': 3.2.0
+  '@injectivelabs/sdk-ts': link:packages/sdk-ts
 
 importers:
 
   .:
+    dependencies:
+      '@injectivelabs/sdk-ts':
+        specifier: link:packages/sdk-ts
+        version: link:packages/sdk-ts
     devDependencies:
       '@commitlint/cli':
         specifier: ^20.1.0
@@ -300,7 +305,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -321,7 +326,7 @@ importers:
         specifier: workspace:*
         version: link:../../networks
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -351,7 +356,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -390,7 +395,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -405,7 +410,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -432,7 +437,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -474,7 +479,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -498,7 +503,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -549,7 +554,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -573,7 +578,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
@@ -600,7 +605,7 @@ importers:
         specifier: workspace:*
         version: link:../../exceptions
       '@injectivelabs/sdk-ts':
-        specifier: workspace:*
+        specifier: link:../../sdk-ts
         version: link:../../sdk-ts
       '@injectivelabs/ts-types':
         specifier: workspace:*
