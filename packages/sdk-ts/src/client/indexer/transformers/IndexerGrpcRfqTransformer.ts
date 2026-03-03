@@ -7,6 +7,8 @@ import type {
   RFQSettlementType,
   GrpcRFQSettlement,
   SettlementsResponse,
+  RFQProcessedQuoteType,
+  GrpcRFQProcessedQuote,
 } from '../types'
 
 /**
@@ -68,6 +70,7 @@ export class IndexerGrpcRfqTransformer {
     grpcSettlement: GrpcRFQSettlement,
   ): RFQSettlementType {
     return {
+      cid: grpcSettlement.cid,
       taker: grpcSettlement.taker,
       margin: grpcSettlement.margin,
       marketId: grpcSettlement.marketId,
@@ -90,6 +93,43 @@ export class IndexerGrpcRfqTransformer {
                 }
               : undefined,
             market: grpcSettlement.unfilledAction.market ? {} : undefined,
+          }
+        : undefined,
+    }
+  }
+
+  static grpcRfqProcessedQuoteToRfqProcessedQuote(
+    grpcProcessedQuote: GrpcRFQProcessedQuote,
+  ): RFQProcessedQuoteType {
+    return {
+      error: grpcProcessedQuote.error,
+      price: grpcProcessedQuote.price,
+      maker: grpcProcessedQuote.maker,
+      taker: grpcProcessedQuote.taker,
+      margin: grpcProcessedQuote.margin,
+      status: grpcProcessedQuote.status,
+      chainId: grpcProcessedQuote.chainId,
+      marketId: grpcProcessedQuote.marketId,
+      quantity: grpcProcessedQuote.quantity,
+      signature: grpcProcessedQuote.signature,
+      rfqId: Number(grpcProcessedQuote.rfqId),
+      height: Number(grpcProcessedQuote.height),
+      createdAt: Number(grpcProcessedQuote.createdAt),
+      updatedAt: Number(grpcProcessedQuote.updatedAt),
+      eventTime: Number(grpcProcessedQuote.eventTime),
+      executedMargin: grpcProcessedQuote.executedMargin,
+      takerDirection: grpcProcessedQuote.takerDirection,
+      contractAddress: grpcProcessedQuote.contractAddress,
+      transactionTime: Number(grpcProcessedQuote.transactionTime),
+      executedQuantity: grpcProcessedQuote.executedQuantity,
+      expiry: grpcProcessedQuote.expiry
+        ? {
+            ...(grpcProcessedQuote.expiry.height && {
+              height: Number(grpcProcessedQuote.expiry.height),
+            }),
+            ...(grpcProcessedQuote.expiry.timestamp && {
+              timestamp: Number(grpcProcessedQuote.expiry.timestamp),
+            }),
           }
         : undefined,
     }

@@ -57,6 +57,30 @@ export interface RFQQuoteType {
   transactionTime: number
 }
 
+export interface RFQProcessedQuoteType {
+  error: string
+  rfqId: number
+  price: string
+  maker: string
+  taker: string
+  margin: string
+  status: string
+  height: number
+  chainId: string
+  marketId: string
+  quantity: string
+  signature: string
+  createdAt: number
+  updatedAt: number
+  eventTime: number
+  executedMargin: string
+  takerDirection: string
+  expiry?: RFQExpiryType
+  contractAddress: string
+  transactionTime: number
+  executedQuantity: string
+}
+
 export interface RFQSettlementLimitActionType {
   price: string
 }
@@ -67,6 +91,7 @@ export interface RFQSettlementUnfilledActionType {
 }
 
 export interface RFQSettlementType {
+  cid: string
   rfqId: number
   taker: string
   margin: string
@@ -93,6 +118,7 @@ export type GrpcRFQQuote = InjectiveRFQRpcPb.RFQQuoteType
 export type GrpcRFQExpiry = InjectiveRFQRpcPb.RFQExpiryType
 export type GrpcRFQRequest = InjectiveRFQRpcPb.RFQRequestType
 export type GrpcRFQSettlement = InjectiveRFQRpcPb.RFQSettlementType
+export type GrpcRFQProcessedQuote = InjectiveRFQRpcPb.RFQProcessedQuoteType
 
 // ============================================
 // RFQ Taker/Maker WebSocket Stream Types
@@ -156,6 +182,14 @@ export interface MakerStreamEvents {
   }
   /** Quote was acknowledged by server */
   quote_ack: RFQMakerStreamAckData
+  /** Processed quote update for maker */
+  processed_quote: {
+    processedQuote: RFQProcessedQuoteType
+  }
+  /** Settlement update for maker */
+  settlement: {
+    settlement: RFQSettlementType
+  }
   /** Error received from server */
   error: RFQStreamErrorData
   /** Pong received (response to ping) */

@@ -176,6 +176,30 @@ export class IndexerWsMakerStream {
           }
           break
 
+        case 'processed_quote':
+          if ((response as any).processedQuote) {
+            const processedQuote =
+              IndexerGrpcRfqTransformer.grpcRfqProcessedQuoteToRfqProcessedQuote(
+                (response as any).processedQuote,
+              )
+            this.emit('processed_quote', {
+              processedQuote,
+            })
+          }
+          break
+
+        case 'settlement':
+          if ((response as any).settlement) {
+            const settlement =
+              IndexerGrpcRfqTransformer.grpcRfqSettlementToRfqSettlement(
+                (response as any).settlement,
+              )
+            this.emit('settlement', {
+              settlement,
+            })
+          }
+          break
+
         case 'error':
           if (response.error) {
             const error: RFQStreamErrorData = {
