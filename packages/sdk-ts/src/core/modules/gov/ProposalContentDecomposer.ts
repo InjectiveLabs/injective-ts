@@ -17,6 +17,12 @@ export class ProposalDecomposer {
     )
   }
 
+  static grantProviderPrivilegeProposal(content: Uint8Array) {
+    return InjectiveOracleV1Beta1ProposalPb.GrantProviderPrivilegeProposal.fromBinary(
+      content,
+    )
+  }
+
   static removeBandOraclePrivilegeProposal(content: Uint8Array) {
     return InjectiveOracleV1Beta1ProposalPb.RevokeBandOraclePrivilegeProposal.fromBinary(
       content,
