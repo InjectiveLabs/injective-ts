@@ -1,10 +1,7 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgRelayProviderPrices from './MsgRelayProviderPrices.js'
-import {
-  getEip712TypedData,
-  getEip712TypedDataV2,
-} from '../../../tx/eip712/eip712.js'
+import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from '../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const params: MsgRelayProviderPrices['params'] = {
