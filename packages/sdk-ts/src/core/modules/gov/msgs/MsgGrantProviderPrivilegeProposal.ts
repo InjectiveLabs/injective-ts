@@ -53,7 +53,8 @@ export default class MsgGrantProviderPrivilegeProposal extends MsgBase<
     })
 
     const content = this.getContent()
-    const proposalType = '/cosmos.gov.v1beta1.TextProposal'
+    const proposalType =
+      '/injective.oracle.v1beta1.GrantProviderPrivilegeProposal'
 
     const contentAny = GoogleProtobufAnyPbPb.Any.create({
       typeUrl: proposalType,
@@ -86,6 +87,8 @@ export default class MsgGrantProviderPrivilegeProposal extends MsgBase<
       content: {
         type: 'oracle/GrantProviderPrivilegeProposal',
         value: {
+          title: params.title,
+          description: params.description,
           provider: content.provider,
           relayers: content.relayers,
         },
@@ -146,8 +149,10 @@ export default class MsgGrantProviderPrivilegeProposal extends MsgBase<
 
     const content =
       InjectiveOracleV1Beta1ProposalPb.GrantProviderPrivilegeProposal.create({
+        title: params.title,
         provider: params.provider,
         relayers: params.relayers,
+        description: params.description,
       })
 
     return content
