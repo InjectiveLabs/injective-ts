@@ -1,5 +1,6 @@
 import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import { BondStatus } from '../types/staking.js'
+import { uint8ArrayToBase64 } from '../../../utils/encoding.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import {
   protobufTimestampToDate,
@@ -215,6 +216,9 @@ export class ChainGrpcStakingTransformer {
     return {
       operatorAddress: validator.operatorAddress,
       jailed: validator.jailed,
+      consensusPubKey: uint8ArrayToBase64(
+        validator.consensusPubkey?.value?.slice(2) || new Uint8Array(),
+      ),
       status: ChainGrpcStakingTransformer.grpcValidatorStatusToStatus(
         validator.status,
       ),
