@@ -1,4 +1,4 @@
-import { TradeDirection } from 'packages/sdk-ts/src/types/exchange.js'
+import { TradeDirection } from '../../../types/index.js'
 import type * as InjectiveTCDerivativesRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_tc_derivatives_rpc_pb'
 import type {
   TCPositionDelta,
