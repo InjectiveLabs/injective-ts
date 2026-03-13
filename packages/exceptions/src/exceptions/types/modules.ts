@@ -55,6 +55,7 @@ export const IndexerErrorModule = {
   Derivatives: 'indexer-derivatives',
   Transaction: 'indexer-transaction',
   ChronosSpot: 'indexer-chronos-spot',
+  TcDerivatives: 'indexer-tc-derivatives',
   InsuranceFund: 'indexer-insurance-fund',
   ChronosMarkets: 'indexer-chronos-markets',
   ChronosDerivative: 'indexer-chronos-derivative',
