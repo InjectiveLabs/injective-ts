@@ -26,6 +26,9 @@ import type MsgChangeAdmin from './tokenfactory/msgs/MsgChangeAdmin.js'
 import type MsgCreateDenom from './tokenfactory/msgs/MsgCreateDenom.js'
 import type MsgExecuteContract from './wasm/msgs/MsgExecuteContract.js'
 import type MsgMigrateContract from './wasm/msgs/MsgMigrateContract.js'
+import type MsgCreateRateLimit from './peggy/msgs/MsgCreateRateLimit.js'
+import type MsgUpdateRateLimit from './peggy/msgs/MsgUpdateRateLimit.js'
+import type MsgRemoveRateLimit from './peggy/msgs/MsgRemoveRateLimit.js'
 import type MsgCreateTokenPair from './erc20/msgs/MsgCreateTokenPair.js'
 import type MsgGrantAllowance from './feegrant/msgs/MsgGrantAllowance.js'
 import type MsgBeginRedelegate from './staking/msgs/MsgBeginRedelegate.js'
@@ -70,7 +73,11 @@ import type MsgSetDelegationTransferReceivers from './exchange/msgs/MsgSetDelega
 
 export type AuctionMsgs = MsgBid
 export type IbcMsgs = MsgTransfer
-export type PeggyMsgs = MsgSendToEth
+export type PeggyMsgs =
+  | MsgSendToEth
+  | MsgCreateRateLimit
+  | MsgUpdateRateLimit
+  | MsgRemoveRateLimit
 export type Erc20Msgs = MsgCreateTokenPair
 export type BankMsgs = MsgSend | MsgMultiSend
 export type OracleMsgs = MsgRelayProviderPrices
