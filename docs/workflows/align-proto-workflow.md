@@ -20,37 +20,56 @@ That's it! The AI will handle everything automatically.
 
 ## Detailed Implementation Flow
 
-**Scope**: Only `@injectivelabs/indexer-proto-ts-v2` package
+**Supported Packages**:
+
+- `@injectivelabs/indexer-proto-ts-v2` - Indexer gRPC services
+- `@injectivelabs/abacus-proto-ts-v2` - Abacus gRPC services
+- `@injectivelabs/tc-abacus-proto-ts-v2` - TC Abacus gRPC services (Trading Competition)
 
 When you run `/align-proto`, the AI follows this exact workflow:
 
-**0. Initialization**
+**Task Tracking**: The AI creates a todo list at the start and updates it in real-time as each step completes, giving you full visibility into progress.
+
+**0. Package Selection**
+
+- AI asks: "Which proto package do you want to sync?"
+- Options:
+  - `indexer-proto-ts-v2` - For Indexer services
+  - `abacus-proto-ts-v2` - For Abacus services
+  - `tc-abacus-proto-ts-v2` - For TC Abacus services (Trading Competition)
+- You select ONE package to work with
+
+**1. Initialization**
 
 - AI detects current proto package version in `packages/sdk-ts/package.json`
+- Shows current version of selected package
 
-**1. Version Selection**
+**2. Version Selection**
 
 - AI asks: "What proto version should we bump to?"
 - You answer with target version (e.g., `1.18.7`)
 
-**2. Backup Current Proto Files**
+**3. Backup Current Proto Files**
 
-- AI creates backup directory: `scripts/.align-proto-backup/{current-version}/`
-- AI copies all proto files from `node_modules/.pnpm/@injectivelabs+indexer-proto-ts-v2@{current-version}/node_modules/@injectivelabs/indexer-proto-ts-v2/generated/` to backup
+- AI creates backup directory: `scripts/.align-proto-backup/{package-name}/{current-version}/`
+- AI copies all proto files from node_modules to backup:
+  - **Indexer**: `node_modules/.pnpm/@injectivelabs+indexer-proto-ts-v2@{version}/node_modules/@injectivelabs/indexer-proto-ts-v2/generated/`
+  - **Abacus**: `node_modules/.pnpm/@injectivelabs+abacus-proto-ts-v2@{version}/node_modules/@injectivelabs/abacus-proto-ts-v2/generated/`
+  - **TC Abacus**: `node_modules/.pnpm/@injectivelabs+tc-abacus-proto-ts-v2@{version}/node_modules/@injectivelabs/tc-abacus-proto-ts-v2/generated/`
 - This allows comparison after the bump
 
-**3. Bump Package Version (PERMANENT)**
+**4. Bump Package Version (PERMANENT)**
 
-- AI updates `packages/sdk-ts/package.json` with new version
+- AI updates `packages/sdk-ts/package.json` with new version for selected package
 - This change is permanent (no rollback unless install fails)
 
-**4. Install New Package**
+**5. Install New Package**
 
 - AI runs `pnpm install` in project root
 - Downloads new proto files from npm
 - If install fails → Show error, exit (user fixes manually)
 
-**5. Compare Proto Files**
+**6. Compare Proto Files**
 
 - AI compares backup vs new proto files
 - Detects:
@@ -58,13 +77,13 @@ When you run `/align-proto`, the AI follows this exact workflow:
   - ✅ Modified services (existing files with changes)
   - ✅ Removed services (files that disappeared)
 
-**6. Show Changes & Ask Which to Implement**
+**7. Show Changes & Ask Which to Implement**
 
 - AI presents detected changes
 - AI asks: "Which services should I implement?"
 - You select which ones to implement (skip old missing services)
 
-**7. Generate Detailed Proposal**
+**8. Generate Detailed Proposal**
 
 - AI analyzes selected services
 - AI parses proto files to extract RPC methods, types, fields
@@ -74,7 +93,7 @@ When you run `/align-proto`, the AI follows this exact workflow:
   - Field breakdowns
   - Export updates needed
 
-**8. User Approval → Implementation**
+**9. User Approval → Implementation**
 
 - AI asks: "Proceed with implementation?"
 - If you approve → AI creates all files:
@@ -82,11 +101,11 @@ When you run `/align-proto`, the AI follows this exact workflow:
   - Transformer classes
   - API classes (fetch methods)
   - Stream API classes (if streaming methods exist)
-  - Updates 4 index.ts files with exports
+  - Updates index.ts files with exports
 
-**9. Validation**
+**10. Validation**
 
-- **Important**: If you modified `@injectivelabs/exceptions` (e.g., added IndexerModule), build it first:
+- **Important**: If you modified `@injectivelabs/exceptions` (e.g., added IndexerModule or AbacusModule), build it first:
   ```bash
   cd packages/exceptions && pnpm build
   ```
@@ -96,10 +115,10 @@ When you run `/align-proto`, the AI follows this exact workflow:
 - Distinguishes between new errors (in your files) vs pre-existing errors (in other files)
 - You can iterate and fix issues if needed
 
-**10. Cleanup**
+**11. Cleanup**
 
 - AI asks: "Delete backup files?"
-- If approved → AI deletes `scripts/.align-proto-backup/{version}/`
+- If approved → AI deletes `scripts/.align-proto-backup/{package-name}/{version}/`
 - Done!
 
 **Key Principles:**
@@ -109,6 +128,7 @@ When you run `/align-proto`, the AI follows this exact workflow:
 - ✅ User chooses what to implement (if multiple services added)
 - ✅ Keep files on validation errors (let user fix)
 - ✅ No shell scripts needed (AI-driven workflow)
+- ✅ **Real-time todo list tracking** - See progress at every step with checkmarks
 
 ## Commands
 
@@ -131,7 +151,30 @@ When you run `/align-proto`, the AI follows this exact workflow:
 ```
 You: /align-proto
 
-AI: 🔍 Align-Proto: Detecting package changes...
+AI: 🔍 Align-Proto: Package Selection
+
+    Which proto package do you want to sync?
+
+    1. indexer-proto-ts-v2 (Indexer gRPC services)
+    2. abacus-proto-ts-v2 (Abacus gRPC services)
+    3. tc-abacus-proto-ts-v2 (TC Abacus gRPC services)
+
+You: indexer-proto-ts-v2
+
+AI: ✅ Creating task list...
+
+    📋 Todo List:
+    [ ] Select package version
+    [ ] Backup current proto files
+    [ ] Update package.json
+    [ ] Install new package
+    [ ] Compare proto files
+    [ ] Analyze changes
+    [ ] Implement changes
+    [ ] Validate implementation
+    [ ] Cleanup backup files
+
+AI: 🔍 Detecting package version...
 
     Current version: @injectivelabs/indexer-proto-ts-v2@1.18.6
 
@@ -139,20 +182,52 @@ AI: 🔍 Align-Proto: Detecting package changes...
 
 You: 1.18.7
 
+AI: 📋 Todo List:
+    [✓] Select package version (1.18.7)
+    [→] Backup current proto files
+    [ ] Update package.json
+    [ ] Install new package
+    [ ] Compare proto files
+    [ ] Analyze changes
+    [ ] Implement changes
+    [ ] Validate implementation
+    [ ] Cleanup backup files
+
 AI: 📦 Bumping proto package version...
 
     ⚠️  This will permanently update package.json. Continue? (yes/no)
 
 You: yes
 
-AI: ✅ Updated packages/sdk-ts/package.json to 1.18.7
-    💾 Backing up current proto files...
+AI: 💾 Backing up current proto files...
     📁 Source: node_modules/.pnpm/@injectivelabs+indexer-proto-ts-v2@1.18.6/
-    📁 Backup: scripts/.align-proto-backup/1.18.6/
-    ✅ Backed up 18 proto files
+    📁 Backup: scripts/.align-proto-backup/indexer-proto-ts-v2/1.18.6/
+    ✅ Backed up 80 proto files
+
+    📋 Todo List:
+    [✓] Select package version (1.18.7)
+    [✓] Backup current proto files
+    [✓] Update package.json
+    [→] Install new package
+    [ ] Compare proto files
+    [ ] Analyze changes
+    [ ] Implement changes
+    [ ] Validate implementation
+    [ ] Cleanup backup files
 
     📥 Running pnpm install...
     ✅ Package installed successfully
+
+    📋 Todo List:
+    [✓] Select package version (1.18.7)
+    [✓] Backup current proto files
+    [✓] Update package.json
+    [✓] Install new package
+    [→] Compare proto files
+    [ ] Analyze changes
+    [ ] Implement changes
+    [ ] Validate implementation
+    [ ] Cleanup backup files
 
     🔍 Comparing proto files (1.18.6 vs 1.18.7)...
 
@@ -165,6 +240,17 @@ AI: ✅ Updated packages/sdk-ts/package.json to 1.18.7
 
     📝 Modified Services: None
     ❌ Removed Services: None
+
+    📋 Todo List:
+    [✓] Select package version (1.18.7)
+    [✓] Backup current proto files
+    [✓] Update package.json
+    [✓] Install new package
+    [✓] Compare proto files
+    [→] Analyze changes
+    [ ] Implement changes
+    [ ] Validate implementation
+    [ ] Cleanup backup files
 
     Which services should I implement?
       [x] InjectiveTCDerivativesRPC
@@ -208,6 +294,17 @@ AI: 📋 Analyzing TC Derivatives service...
 
     Total: 5 new files, 4 updates, ~527 lines of code
 
+    📋 Todo List:
+    [✓] Select package version (1.18.7)
+    [✓] Backup current proto files
+    [✓] Update package.json
+    [✓] Install new package
+    [✓] Compare proto files
+    [✓] Analyze changes (TC Derivatives: 5 files, 527 lines)
+    [→] Implement changes
+    [ ] Validate implementation
+    [ ] Cleanup backup files
+
     Proceed with implementation? (yes/no)
 
 You: yes
@@ -228,6 +325,17 @@ AI: ✅ Implementing TC Derivatives...
 
     ✅ Implementation complete!
 
+    📋 Todo List:
+    [✓] Select package version (1.18.7)
+    [✓] Backup current proto files
+    [✓] Update package.json
+    [✓] Install new package
+    [✓] Compare proto files
+    [✓] Analyze changes (TC Derivatives: 5 files, 527 lines)
+    [✓] Implement changes (5 files created, 4 exports updated)
+    [→] Validate implementation
+    [ ] Cleanup backup files
+
     🧪 Validating implementation...
 
     Running type-check...
@@ -238,11 +346,33 @@ AI: ✅ Implementing TC Derivatives...
 
     🎉 TC Derivatives implementation validated successfully!
 
-    🧹 Delete backup files at scripts/.align-proto-backup/1.18.6/? (yes/no)
+    📋 Todo List:
+    [✓] Select package version (1.18.7)
+    [✓] Backup current proto files
+    [✓] Update package.json
+    [✓] Install new package
+    [✓] Compare proto files
+    [✓] Analyze changes (TC Derivatives: 5 files, 527 lines)
+    [✓] Implement changes (5 files created, 4 exports updated)
+    [✓] Validate implementation (type-check & build passed)
+    [→] Cleanup backup files
+
+    🧹 Delete backup files at scripts/.align-proto-backup/indexer-proto-ts-v2/1.18.6/? (yes/no)
 
 You: yes
 
 AI: ✅ Cleaned up backup directory
+
+    📋 Final Todo List:
+    [✓] Select package version (1.18.7)
+    [✓] Backup current proto files
+    [✓] Update package.json
+    [✓] Install new package
+    [✓] Compare proto files
+    [✓] Analyze changes (TC Derivatives: 5 files, 527 lines)
+    [✓] Implement changes (5 files created, 4 exports updated)
+    [✓] Validate implementation (type-check & build passed)
+    [✓] Cleanup backup files
 
     ✨ Align-proto complete!
 
@@ -270,6 +400,16 @@ AI: ✅ Cleaned up backup directory
 
 ```
 You: /align-proto --check-only
+
+AI: 🔍 Package Selection
+
+    Which proto package do you want to check?
+
+    1. indexer-proto-ts-v2 (Indexer gRPC services)
+    2. abacus-proto-ts-v2 (Abacus gRPC services)
+    3. tc-abacus-proto-ts-v2 (TC Abacus gRPC services)
+
+You: indexer-proto-ts-v2
 
 AI: 🔍 Checking proto package status...
 
@@ -404,7 +544,7 @@ Files are created in dependency order:
 
 The AI uses these established patterns:
 
-#### Template 1: Types File
+#### Template 1: Types File (Indexer)
 
 ```typescript
 import type * as ProtoPackagePb from '@injectivelabs/indexer-proto-ts-v2/generated/[proto_file]_pb'
@@ -425,6 +565,46 @@ export interface ListResponse {
 export type GrpcDataType = ProtoPackagePb.DataType
 ```
 
+#### Template 1b: Types File (Abacus)
+
+```typescript
+import type * as ProtoPackagePb from '@injectivelabs/abacus-proto-ts-v2/generated/[proto_file]_pb'
+
+// Main data interfaces
+export interface DataType {
+  field1: string
+  field2: number // Convert bigint to number for timestamps
+  // ... all fields from proto
+}
+
+export interface ListResponse {
+  items: DataType[]
+}
+
+// gRPC type aliases
+export type GrpcDataType = ProtoPackagePb.DataType
+```
+
+#### Template 1c: Types File (TC Abacus)
+
+```typescript
+import type * as TcAbacusPb from '@injectivelabs/tc-abacus-proto-ts-v2/generated/[proto_file]_pb'
+
+// Main data interfaces
+export interface DataType {
+  field1: string
+  field2: number // Convert bigint to number for timestamps
+  // ... all fields from proto
+}
+
+export interface ListResponse {
+  items: DataType[]
+}
+
+// gRPC type aliases
+export type GrpcDataType = TcAbacusPb.DataType
+```
+
 **Handling Type Naming Conflicts:**
 
 If the new service introduces types with names that conflict with existing types (e.g., `PositionDelta` already exists in derivatives), use a prefix based on the service name:
@@ -441,7 +621,7 @@ export type GrpcTCPositionDelta = ...         // ✅ Unique
 
 Check for conflicts before implementing by searching existing type files.
 
-#### Template 2: Main Transformer
+#### Template 2: Main Transformer (Indexer)
 
 ```typescript
 import type * as ProtoPackagePb from '@injectivelabs/indexer-proto-ts-v2/generated/[proto_file]_pb'
@@ -478,7 +658,79 @@ export class IndexerGrpc[Service]Transformer {
 }
 ```
 
-#### Template 3: API Class
+#### Template 2b: Main Transformer (Abacus)
+
+```typescript
+import type * as ProtoPackagePb from '@injectivelabs/abacus-proto-ts-v2/generated/[proto_file]_pb'
+import type {
+  DataType,
+  GrpcDataType,
+  ListResponse,
+} from '../types'
+
+/**
+ * @category Abacus Grpc Transformer
+ */
+export class AbacusGrpc[Service]Transformer {
+  static grpcDataTypeToDataType(
+    grpcData: GrpcDataType,
+  ): DataType {
+    return {
+      field1: grpcData.field1,
+      field2: Number(grpcData.field2),  // Convert bigint
+      // ... transform all fields
+    }
+  }
+
+  static listResponseToItems(
+    response: ProtoPackagePb.ListResponse,
+  ): ListResponse {
+    return {
+      items: response.items.map(
+        AbacusGrpc[Service]Transformer.grpcDataTypeToDataType,
+      ),
+    }
+  }
+}
+```
+
+#### Template 2c: Main Transformer (TC Abacus)
+
+```typescript
+import type * as TcAbacusPb from '@injectivelabs/tc-abacus-proto-ts-v2/generated/[proto_file]_pb'
+import type {
+  DataType,
+  GrpcDataType,
+  ListResponse,
+} from '../types'
+
+/**
+ * @category TC Abacus Grpc Transformer
+ */
+export class TcAbacusGrpc[Service]Transformer {
+  static grpcDataTypeToDataType(
+    grpcData: GrpcDataType,
+  ): DataType {
+    return {
+      field1: grpcData.field1,
+      field2: Number(grpcData.field2),  // Convert bigint
+      // ... transform all fields
+    }
+  }
+
+  static listResponseToItems(
+    response: TcAbacusPb.ListResponse,
+  ): ListResponse {
+    return {
+      items: response.items.map(
+        TcAbacusGrpc[Service]Transformer.grpcDataTypeToDataType,
+      ),
+    }
+  }
+}
+```
+
+#### Template 3: API Class (Indexer)
 
 ```typescript
 import * as ProtoPackagePb from '@injectivelabs/indexer-proto-ts-v2/generated/[proto_file]_pb'
@@ -498,9 +750,51 @@ export class IndexerGrpc[Service]Api extends BaseIndexerGrpcConsumer {
   }
 ```
 
+#### Template 3b: API Class (Abacus)
+
+```typescript
+import * as ProtoPackagePb from '@injectivelabs/abacus-proto-ts-v2/generated/[proto_file]_pb'
+import { [ServiceClient] } from '@injectivelabs/abacus-proto-ts-v2/generated/[proto_file]_pb.client'
+import { AbacusModule } from '../types/index.js'
+import { AbacusGrpc[Service]Transformer } from '../transformers/index.js'
+import BaseAbacusGrpcConsumer from '../../base/BaseAbacusGrpcConsumer.js'
+
+/**
+ * @category Abacus Grpc API
+ */
+export class AbacusGrpc[Service]Api extends BaseAbacusGrpcConsumer {
+  protected module: string = '[module-name]'
+
+  private get client() {
+    return this.initClient([ServiceClient])
+  }
+```
+
+#### Template 3c: API Class (TC Abacus)
+
+```typescript
+import * as TcAbacusPb from '@injectivelabs/tc-abacus-proto-ts-v2/generated/[proto_file]_pb'
+import { [ServiceClient] } from '@injectivelabs/tc-abacus-proto-ts-v2/generated/[proto_file]_pb.client'
+import { IndexerErrorModule } from '@injectivelabs/exceptions'
+import { TcAbacusGrpc[Service]Transformer } from './transformers/index.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+
+/**
+ * @category TC Abacus Grpc API
+ */
+export class TcAbacusGrpc[Service]Api extends BaseGrpcConsumer {
+  protected module: string = '[module-name]'
+
+  private get client() {
+    return this.initClient([ServiceClient])
+  }
+```
+
 **Module Naming Convention:**
 
-The `module` field references `IndexerModule` enum from `@injectivelabs/exceptions`:
+The `module` field references module enums from `@injectivelabs/exceptions`:
+
+**For Indexer services:**
 
 ```typescript
 // In your API class:
@@ -513,10 +807,36 @@ export const IndexerErrorModule = {
 } as const
 ```
 
+**For Abacus services:**
+
+```typescript
+// In your API class:
+protected module: string = AbacusModule.VaultOracle
+
+// This maps to packages/exceptions/src/exceptions/types/modules.ts:
+export const AbacusErrorModule = {
+  // ... existing modules
+  VaultOracle: 'abacus-vault-oracle',  // ← Add new service here
+} as const
+```
+
+**For TC Abacus services:**
+
+```typescript
+// In your API class:
+protected module: string = IndexerErrorModule.Abacus
+
+// This maps to packages/exceptions/src/exceptions/types/modules.ts:
+export const IndexerErrorModule = {
+  // ... existing modules
+  Abacus: 'abacus',  // ← TC Abacus uses this module
+} as const
+```
+
 **When implementing a new service:**
 
 1. Add the module to `packages/exceptions/src/exceptions/types/modules.ts`
-2. Use kebab-case naming: `indexer-{service-name}`
+2. Use kebab-case naming: `indexer-{service-name}`, `abacus-{service-name}`, or `tc-abacus-{service-name}`
 3. Build the exceptions package before building sdk-ts
 
 ```typescript
@@ -925,18 +1245,30 @@ AI: Running validation...
 
 ## Backup Strategy
 
-**Location**: `scripts/.align-proto-backup/{version}/`
+**Location**: `scripts/.align-proto-backup/{package-name}/{version}/`
 
 **What gets backed up**: All proto files from the npm package in node_modules:
 
+**For Indexer:**
+
 - Source: `node_modules/.pnpm/@injectivelabs+indexer-proto-ts-v2@{version}/node_modules/@injectivelabs/indexer-proto-ts-v2/generated/`
+- All `*_rpc_pb.d.ts`, `*_rpc_pb.js`, and related files
+
+**For Abacus:**
+
+- Source: `node_modules/.pnpm/@injectivelabs+abacus-proto-ts-v2@{version}/node_modules/@injectivelabs/abacus-proto-ts-v2/generated/`
+- All `*_rpc_pb.d.ts`, `*_rpc_pb.js`, and related files
+
+**For TC Abacus:**
+
+- Source: `node_modules/.pnpm/@injectivelabs+tc-abacus-proto-ts-v2@{version}/node_modules/@injectivelabs/tc-abacus-proto-ts-v2/generated/`
 - All `*_rpc_pb.d.ts`, `*_rpc_pb.js`, and related files
 
 **Backup process**:
 
 1. Before running `pnpm install`, AI copies all current proto files to backup directory
-2. Backup directory is named after the current version (e.g., `1.18.6`)
-3. After install completes, new version appears at `@injectivelabs+indexer-proto-ts-v2@{new-version}/`
+2. Backup directory is named after the package and version (e.g., `indexer-proto-ts-v2/1.18.6`)
+3. After install completes, new version appears at the appropriate package location
 4. AI compares backup vs new files to detect changes
 
 **Cleanup**:
@@ -952,7 +1284,7 @@ AI: Running validation...
 - Need to compare old vs new to detect what changed
 - Backup preserves old version for comparison
 
-**Note**: The `protoV2/indexer/proto-ts/` directory in the repo is a separate workspace package (used for publishing), NOT used by the SDK. The SDK imports from `@injectivelabs/indexer-proto-ts-v2` npm package.
+**Note**: The `protoV2/` directories in the repo are separate workspace packages (used for publishing), NOT used by the SDK. The SDK imports from npm packages.
 
 ## Error Handling
 
@@ -1001,9 +1333,11 @@ Potential improvements to the align-proto workflow:
 - When in doubt, find the **most similar** existing implementation and copy its structure
 - The pattern matching phase is **critical** - spend time finding the right reference
 - **No shell scripts required** - Everything is AI-driven through OpenCode
+- **Todo list provides visibility** - Track progress in real-time with `[✓]` completed, `[→]` in progress, `[ ]` pending
+- **Single package per run** - Choose either indexer, abacus, or tc-abacus, not multiple simultaneously
 
 ---
 
-**Version**: 2.0
-**Last Updated**: 2026-03-14
+**Version**: 2.2
+**Last Updated**: 2026-03-17
 **Maintainer**: SDK Team
