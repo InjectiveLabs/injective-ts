@@ -13,6 +13,7 @@ export default defineConfig({
     'client/chain': './src/client/chain/index.ts',
     'client/wasm': './src/client/wasm/index.ts',
     'client/abacus': './src/client/abacus/index.ts',
+    'client/tcAbacus': './src/client/tcAbacus/index.ts',
     'client/olp': './src/client/olp/index.ts',
     'core/modules': './src/core/modules/index.ts',
     'core/accounts': './src/core/accounts/index.ts',
