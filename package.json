@@ -19,6 +19,8 @@
     "publish:core-proto-ts": "./protoV2/core/publish.sh",
     "generate:abacus-proto-ts": "./protoV2/abacus/gen.sh",
     "publish:abacus-proto-ts": "./protoV2/abacus/publish.sh",
+    "generate:tc-abacus-proto-ts": "./protoV2/tcAbacus/gen.sh",
+    "publish:tc-abacus-proto-ts": "./protoV2/tcAbacus/publish.sh",
     "generate:indexer-proto-ts": "./protoV2/indexer/gen.sh",
     "publish:indexer-proto-ts": "./protoV2/indexer/publish.sh",
     "release:patch": "pnpm build:fresh && lerna version patch --conventional-commits --force-git-tag --yes && pnpm publish -r --access public --tag latest --no-git-checks",
