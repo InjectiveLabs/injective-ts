@@ -34,4 +34,33 @@ export class IndexerTcDerivativesStreamTransformer {
         : undefined,
     }
   }
+
+  static positionsStreamCallback = (
+    response: InjectiveTCDerivativesRpcPb.StreamPositionsResponse,
+  ) => {
+    const position = response.position
+
+    return {
+      timestamp: Number(response.timestamp),
+      position: position
+        ? IndexerGrpcTcDerivativesTransformer.grpcPositionToPosition(position)
+        : undefined,
+    }
+  }
+
+  static ordersStreamCallback = (
+    response: InjectiveTCDerivativesRpcPb.StreamOrdersResponse,
+  ) => {
+    const order = response.order
+
+    return {
+      operationType: response.operationType,
+      timestamp: Number(response.timestamp),
+      order: order
+        ? IndexerGrpcTcDerivativesTransformer.grpcDerivativeLimitOrderToDerivativeLimitOrder(
+            order,
+          )
+        : undefined,
+    }
+  }
 }

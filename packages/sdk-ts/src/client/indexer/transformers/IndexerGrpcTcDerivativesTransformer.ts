@@ -1,17 +1,20 @@
 import { TradeDirection } from '../../../types/index.js'
 import type * as InjectiveTCDerivativesRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_tc_derivatives_rpc_pb'
 import type {
-  TCPositionDelta,
-  TCDerivativeTrade,
-  GrpcTCPositionDelta,
-  TCDerivativePosition,
-  GrpcTCDerivativeTrade,
-  TCDerivativeOrderHistory,
-  GrpcTCDerivativePosition,
-  TCDerivativesTradesResponse,
-  GrpcTCDerivativeOrderHistory,
-  TCDerivativesPositionsResponse,
-  TCDerivativesOrdersHistoryResponse,
+  TcPositionDelta,
+  GrpcTcPositionDelta,
+  TcDerivativePosition,
+  TcDerivativeLimitOrder,
+  TcDerivativeTradeHistory,
+  TcDerivativeOrderHistory,
+  GrpcTcDerivativePosition,
+  GrpcTcDerivativeLimitOrder,
+  TcDerivativeTradesResponse,
+  TcDerivativeOrdersResponse,
+  GrpcTcDerivativeTradeHistory,
+  GrpcTcDerivativeOrderHistory,
+  TcDerivativesPositionsResponse,
+  TcDerivativesOrdersHistoryResponse,
 } from '../types/tc-derivatives.js'
 
 const zeroPositionDelta = () => ({
@@ -26,8 +29,8 @@ const zeroPositionDelta = () => ({
  */
 export class IndexerGrpcTcDerivativesTransformer {
   static grpcPositionDeltaToPositionDelta(
-    positionDelta: GrpcTCPositionDelta | undefined,
-  ): TCPositionDelta | undefined {
+    positionDelta: GrpcTcPositionDelta | undefined,
+  ): TcPositionDelta | undefined {
     if (!positionDelta) {
       return undefined
     }
@@ -41,8 +44,8 @@ export class IndexerGrpcTcDerivativesTransformer {
   }
 
   static grpcOrderHistoryToOrderHistory(
-    order: GrpcTCDerivativeOrderHistory,
-  ): TCDerivativeOrderHistory {
+    order: GrpcTcDerivativeOrderHistory,
+  ): TcDerivativeOrderHistory {
     return {
       cid: order.cid,
       price: order.price,
@@ -68,7 +71,9 @@ export class IndexerGrpcTcDerivativesTransformer {
     }
   }
 
-  static grpcTradeToTrade(trade: GrpcTCDerivativeTrade): TCDerivativeTrade {
+  static grpcTradeToTrade(
+    trade: GrpcTcDerivativeTradeHistory,
+  ): TcDerivativeTradeHistory {
     const positionDelta = trade.positionDelta
     const mappedPositionDelta = positionDelta
       ? IndexerGrpcTcDerivativesTransformer.grpcPositionDeltaToPositionDelta(
@@ -95,8 +100,8 @@ export class IndexerGrpcTcDerivativesTransformer {
   }
 
   static grpcPositionToPosition(
-    position: GrpcTCDerivativePosition,
-  ): TCDerivativePosition {
+    position: GrpcTcDerivativePosition,
+  ): TcDerivativePosition {
     return {
       denom: position.denom,
       ticker: position.ticker,
@@ -116,9 +121,36 @@ export class IndexerGrpcTcDerivativesTransformer {
     }
   }
 
+  static grpcDerivativeLimitOrderToDerivativeLimitOrder(
+    order: GrpcTcDerivativeLimitOrder,
+  ): TcDerivativeLimitOrder {
+    return {
+      price: order.price,
+      state: order.state,
+      margin: order.margin,
+      marketId: order.marketId,
+      quantity: order.quantity,
+      orderHash: order.orderHash,
+      orderSide: order.orderSide,
+      orderType: order.orderType,
+      subaccountId: order.subaccountId,
+      isReduceOnly: order.isReduceOnly,
+      triggerPrice: order.triggerPrice,
+      feeRecipient: order.feeRecipient,
+      createdAt: Number(order.createdAt),
+      updatedAt: Number(order.updatedAt),
+      isConditional: order.isConditional,
+      triggerAt: Number(order.triggerAt),
+      executionType: order.executionType,
+      orderNumber: Number(order.orderNumber),
+      placedOrderHash: order.placedOrderHash,
+      unfilledQuantity: order.unfilledQuantity,
+    }
+  }
+
   static ordersHistoryResponseToOrdersHistory(
     response: InjectiveTCDerivativesRpcPb.OrdersHistoryResponse,
-  ): TCDerivativesOrdersHistoryResponse {
+  ): TcDerivativesOrdersHistoryResponse {
     return {
       orders: response.orders.map(
         IndexerGrpcTcDerivativesTransformer.grpcOrderHistoryToOrderHistory,
@@ -127,9 +159,20 @@ export class IndexerGrpcTcDerivativesTransformer {
     }
   }
 
+  static ordersResponseToOrders(
+    response: InjectiveTCDerivativesRpcPb.OrdersResponse,
+  ): TcDerivativeOrdersResponse {
+    return {
+      next: response.next,
+      orders: response.orders.map(
+        IndexerGrpcTcDerivativesTransformer.grpcDerivativeLimitOrderToDerivativeLimitOrder,
+      ),
+    }
+  }
+
   static tradesResponseToTrades(
     response: InjectiveTCDerivativesRpcPb.TradesResponse,
-  ): TCDerivativesTradesResponse {
+  ): TcDerivativeTradesResponse {
     return {
       trades: response.trades.map(
         IndexerGrpcTcDerivativesTransformer.grpcTradeToTrade,
@@ -140,12 +183,13 @@ export class IndexerGrpcTcDerivativesTransformer {
 
   static positionsResponseToPositions(
     response: InjectiveTCDerivativesRpcPb.PositionsResponse,
-  ): TCDerivativesPositionsResponse {
+  ): TcDerivativesPositionsResponse {
     return {
       positions: response.positions.map(
         IndexerGrpcTcDerivativesTransformer.grpcPositionToPosition,
       ),
       next: response.next,
+      total: response.total ? Number(response.total) : undefined,
     }
   }
 }

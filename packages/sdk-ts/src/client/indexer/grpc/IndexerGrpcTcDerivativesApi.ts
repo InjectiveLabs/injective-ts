@@ -17,15 +17,15 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
   async fetchOrdersHistory(params?: {
     token?: string
     perPage?: number
+    marketId?: string
     direction?: string
-    marketIds?: string[]
   }) {
-    const { marketIds, direction, perPage, token } = params || {}
+    const { marketId, direction, perPage, token } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.OrdersHistoryRequest.create()
 
-    if (marketIds) {
-      request.marketIds = marketIds
+    if (marketId) {
+      request.marketIds = [marketId]
     }
 
     if (direction) {
@@ -50,18 +50,18 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     )
   }
 
-  async fetchTrades(params?: {
+  async fetchTradesHistory(params?: {
     token?: string
     perPage?: number
+    marketId?: string
     direction?: string
-    marketIds?: string[]
   }) {
-    const { marketIds, direction, perPage, token } = params || {}
+    const { marketId, direction, perPage, token } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.TradesRequest.create()
 
-    if (marketIds) {
-      request.marketIds = marketIds
+    if (marketId) {
+      request.marketIds = [marketId]
     }
 
     if (direction) {
@@ -87,19 +87,30 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
   async fetchPositions(params?: {
     token?: string
     perPage?: number
+    marketId?: string
     direction?: string
-    marketIds?: string[]
+    withCount?: boolean
+    accountAddress?: string
   }) {
-    const { marketIds, direction, perPage, token } = params || {}
+    const { marketId, direction, perPage, token, accountAddress, withCount } =
+      params || {}
 
     const request = InjectiveTCDerivativesRpcPb.PositionsRequest.create()
 
-    if (marketIds) {
-      request.marketIds = marketIds
+    if (marketId) {
+      request.marketIds = [marketId]
     }
 
     if (direction) {
       request.direction = direction
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
+    }
+
+    if (withCount !== undefined) {
+      request.withCount = withCount
     }
 
     if (perPage) {
@@ -118,5 +129,39 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     return IndexerGrpcTcDerivativesTransformer.positionsResponseToPositions(
       response,
     )
+  }
+
+  async fetchOrders(params?: {
+    token?: string
+    perPage?: number
+    marketId?: string
+    direction?: string
+  }) {
+    const { marketId, direction, perPage, token } = params || {}
+
+    const request = InjectiveTCDerivativesRpcPb.OrdersRequest.create()
+
+    if (marketId) {
+      request.marketIds = [marketId]
+    }
+
+    if (direction) {
+      request.direction = direction
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveTCDerivativesRpcPb.OrdersRequest,
+      InjectiveTCDerivativesRpcPb.OrdersResponse
+    >(request, this.client.orders.bind(this.client))
+
+    return IndexerGrpcTcDerivativesTransformer.ordersResponseToOrders(response)
   }
 }

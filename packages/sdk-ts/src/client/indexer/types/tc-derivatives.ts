@@ -1,13 +1,13 @@
 import type * as InjectiveTCDerivativesRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_tc_derivatives_rpc_pb'
 
-export interface TCPositionDelta {
+export interface TcPositionDelta {
   tradeDirection: string
   executionPrice: string
   executionQuantity: string
   executionMargin: string
 }
 
-export interface TCDerivativeOrderHistory {
+export interface TcDerivativeOrderHistory {
   cid: string
   price: string
   state: string
@@ -31,7 +31,7 @@ export interface TCDerivativeOrderHistory {
   placedOrderHash: string
 }
 
-export interface TCDerivativeTrade {
+export interface TcDerivativeTradeHistory {
   fee: string
   cid: string
   pnl: string
@@ -45,10 +45,10 @@ export interface TCDerivativeTrade {
   executionSide: string
   isLiquidation: boolean
   tradeExecutionType: string
-  positionDelta?: TCPositionDelta
+  positionDelta?: TcPositionDelta
 }
 
-export interface TCDerivativePosition {
+export interface TcDerivativePosition {
   denom: string
   ticker: string
   margin: string
@@ -66,30 +66,64 @@ export interface TCDerivativePosition {
   effectiveCumulativeFundingEntry: string
 }
 
-export interface TCDerivativesOrdersHistoryResponse {
-  next: string[]
-  orders: TCDerivativeOrderHistory[]
+export interface TcDerivativeLimitOrder {
+  orderHash: string
+  orderSide: string
+  marketId: string
+  subaccountId: string
+  isReduceOnly: boolean
+  margin: string
+  price: string
+  quantity: string
+  unfilledQuantity: string
+  triggerPrice: string
+  feeRecipient: string
+  state: string
+  createdAt: number
+  updatedAt: number
+  orderNumber: number
+  orderType: string
+  isConditional: boolean
+  triggerAt: number
+  placedOrderHash: string
+  executionType: string
 }
 
-export interface TCDerivativesTradesResponse {
+export interface TcDerivativesOrdersHistoryResponse {
   next: string[]
-  trades: TCDerivativeTrade[]
+  orders: TcDerivativeOrderHistory[]
 }
 
-export interface TCDerivativesPositionsResponse {
+export interface TcDerivativeOrdersResponse {
   next: string[]
-  positions: TCDerivativePosition[]
+  orders: TcDerivativeLimitOrder[]
 }
 
-export type GrpcTCPositionDelta = InjectiveTCDerivativesRpcPb.PositionDelta
-export type GrpcTCDerivativeTrade = InjectiveTCDerivativesRpcPb.DerivativeTrade
-export type GrpcTCDerivativePosition =
+export interface TcDerivativeTradesResponse {
+  next: string[]
+  trades: TcDerivativeTradeHistory[]
+}
+
+export interface TcDerivativesPositionsResponse {
+  next: string[]
+  total?: number
+  positions: TcDerivativePosition[]
+}
+
+export type GrpcTcPositionDelta = InjectiveTCDerivativesRpcPb.PositionDelta
+export type GrpcTcDerivativeLimitOrder =
+  InjectiveTCDerivativesRpcPb.DerivativeLimitOrder
+export type GrpcTcDerivativeTradeHistory =
+  InjectiveTCDerivativesRpcPb.DerivativeTrade
+export type GrpcTcDerivativePosition =
   InjectiveTCDerivativesRpcPb.DerivativePositionV2
-export type GrpcTCDerivativeOrderHistory =
+export type GrpcTcDerivativeOrderHistory =
   InjectiveTCDerivativesRpcPb.TCDerivativeOrderHistoryType
-export type GrpcTCDerivativesTradesResponse =
+export type GrpcTcDerivativeOrdersResponse =
+  InjectiveTCDerivativesRpcPb.OrdersResponse
+export type GrpcTcDerivativeTradesResponse =
   InjectiveTCDerivativesRpcPb.TradesResponse
-export type GrpcTCDerivativesPositionsResponse =
+export type GrpcTcDerivativesPositionsResponse =
   InjectiveTCDerivativesRpcPb.PositionsResponse
-export type GrpcTCDerivativesOrdersHistoryResponse =
+export type GrpcTcDerivativesOrdersHistoryResponse =
   InjectiveTCDerivativesRpcPb.OrdersHistoryResponse
