@@ -41,7 +41,7 @@ git clone https://github.com/InjectiveLabs/injective-abacus.git $BUILD_DIR -b $a
 find $BUILD_DIR/api/gen_tc/gen/grpc/injective_tc_abacus_rpc/pb -type f -name "*.proto" -exec cp {} $PROTO_DIR/ \;
 
 mkdir -p $PROTO_DIR/danielvladco/protobuf
-cp ./graphql.stub.proto $PROTO_DIR/danielvladco/protobuf/graphql.proto
+cp ./danielvladco/protobuf/graphql.stub.proto $PROTO_DIR/danielvladco/protobuf/graphql.proto
 
 proto_dirs=$(find $PROTO_DIR -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
 echo "proto_dirs: $proto_dirs"

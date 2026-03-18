@@ -34,5 +34,5 @@ echo "new package version: $v1"
 # Change to proto-ts directory for publishing
 cd "$SCRIPT_DIR/proto-ts" || exit
 
-npm version 1.18.1
+npm version $v1
 npm publish .

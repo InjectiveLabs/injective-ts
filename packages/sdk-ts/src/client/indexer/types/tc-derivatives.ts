@@ -44,8 +44,11 @@ export interface TcDerivativeTradeHistory {
   feeRecipient: string
   executionSide: string
   isLiquidation: boolean
+  tradeDirection: string
+  executionPrice: string
+  executionMargin: string
+  executionQuantity: string
   tradeExecutionType: string
-  positionDelta?: TcPositionDelta
 }
 
 export interface TcDerivativePosition {

@@ -18,10 +18,10 @@ import type {
 } from '../types/tc-derivatives.js'
 
 const zeroPositionDelta = () => ({
-  tradeDirection: TradeDirection.Buy,
   executionPrice: '0',
-  executionQuantity: '0',
   executionMargin: '0',
+  executionQuantity: '0',
+  tradeDirection: TradeDirection.Buy,
 })
 
 /**
@@ -29,12 +29,8 @@ const zeroPositionDelta = () => ({
  */
 export class IndexerGrpcTcDerivativesTransformer {
   static grpcPositionDeltaToPositionDelta(
-    positionDelta: GrpcTcPositionDelta | undefined,
-  ): TcPositionDelta | undefined {
-    if (!positionDelta) {
-      return undefined
-    }
-
+    positionDelta: GrpcTcPositionDelta,
+  ): TcPositionDelta {
     return {
       tradeDirection: positionDelta.tradeDirection,
       executionPrice: positionDelta.executionPrice,
