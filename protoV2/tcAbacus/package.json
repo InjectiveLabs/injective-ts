@@ -1,0 +1,20 @@
+{
+  "version": "1.18.0",
+  "scripts": {
+    "generate": "sh ./gen.sh",
+    "generate:persist": "sh ./gen.sh --persist",
+    "generate:skip-clone": "sh ./gen.sh --skip-clone",
+    "build": "tsup && node ../_scripts/generate-dts.mjs && node ../_scripts/fix-imports.mjs",
+    "build:esm": "tsup --format esm && node ../_scripts/generate-dts.mjs && node ../_scripts/fix-imports.mjs",
+    "build:cjs": "tsup --format cjs"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "glob": "^11.0.3",
+    "protoc": "^32.0.0",
+    "typescript": "^5.0.0",
+    "@protobuf-ts/plugin": "^2.11.1",
+    "@protobuf-ts/runtime": "^2.11.1",
+    "@protobuf-ts/runtime-rpc": "^2.11.1"
+  }
+}

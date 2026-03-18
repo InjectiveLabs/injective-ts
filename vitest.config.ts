@@ -84,6 +84,10 @@ export default defineConfig({
         __dirname,
         'packages/sdk-ts/src/client/olp/index.ts',
       ),
+      '@injectivelabs/sdk-ts/client/tcAbacus': join(
+        __dirname,
+        'packages/sdk-ts/src/client/tcAbacus/index.ts',
+      ),
       '@injectivelabs/sdk-ts/core/modules': join(
         __dirname,
         'packages/sdk-ts/src/core/modules/index.ts',
