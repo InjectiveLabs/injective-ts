@@ -58,7 +58,7 @@ ${constMembers},
           messageId: 'preferTypeConst',
           data: { enumName },
           fix(fixer) {
-            return fixer.replaceText(node, suggestedCode)
+            return fixer.replaceText(isExported ? parentNode : node, suggestedCode)
           },
         })
       },
