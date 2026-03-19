@@ -30,14 +30,14 @@ export default {
         const parentNode = node.parent
         const isExported =
           parentNode && parentNode.type === 'ExportNamedDeclaration'
-        const exportKeyword = isExported ? '' : 'export '
+        const exportKeyword = isExported ? 'export ' : ''
 
         // Get the enum members
         const members = node.members.map((member) => {
           const key = member.id.name
           const value = member.initializer
             ? sourceCode.getText(member.initializer)
-            : `'${key.toLowerCase()}'`
+            : `'${key}'`
           return { key, value }
         })
 
