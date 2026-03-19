@@ -55,6 +55,8 @@ export interface RFQQuoteType {
   takerDirection: string
   contractAddress: string
   transactionTime: number
+  makerSubaccountNonce: number
+  minFillQuantity: string
 }
 
 export interface RFQProcessedQuoteType {
@@ -79,6 +81,8 @@ export interface RFQProcessedQuoteType {
   contractAddress: string
   transactionTime: number
   executedQuantity: string
+  makerSubaccountNonce: number
+  minFillQuantity: string
 }
 
 export interface RFQSettlementLimitActionType {

@@ -54,7 +54,9 @@ export class IndexerGrpcRfqTransformer {
       eventTime: Number(grpcQuote.eventTime),
       takerDirection: grpcQuote.takerDirection,
       contractAddress: grpcQuote.contractAddress,
+      minFillQuantity: grpcQuote.minFillQuantity,
       transactionTime: Number(grpcQuote.transactionTime),
+      makerSubaccountNonce: Number(grpcQuote.makerSubaccountNonce),
       expiry: {
         ...(grpcQuote.expiry?.height && {
           height: Number(grpcQuote.expiry.height),
@@ -120,8 +122,10 @@ export class IndexerGrpcRfqTransformer {
       executedMargin: grpcProcessedQuote.executedMargin,
       takerDirection: grpcProcessedQuote.takerDirection,
       contractAddress: grpcProcessedQuote.contractAddress,
-      transactionTime: Number(grpcProcessedQuote.transactionTime),
+      minFillQuantity: grpcProcessedQuote.minFillQuantity,
       executedQuantity: grpcProcessedQuote.executedQuantity,
+      transactionTime: Number(grpcProcessedQuote.transactionTime),
+      makerSubaccountNonce: Number(grpcProcessedQuote.makerSubaccountNonce),
       expiry: grpcProcessedQuote.expiry
         ? {
             ...(grpcProcessedQuote.expiry.height && {

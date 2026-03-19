@@ -19,8 +19,9 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     perPage?: number
     marketId?: string
     direction?: string
+    accountAddress?: string
   }) {
-    const { marketId, direction, perPage, token } = params || {}
+    const { marketId, direction, perPage, token, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.OrdersHistoryRequest.create()
 
@@ -30,6 +31,10 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     if (direction) {
       request.direction = direction
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
     }
 
     if (perPage) {
@@ -55,8 +60,9 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     perPage?: number
     marketId?: string
     direction?: string
+    accountAddress?: string
   }) {
-    const { marketId, direction, perPage, token } = params || {}
+    const { marketId, direction, perPage, token, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.TradesRequest.create()
 
@@ -66,6 +72,10 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     if (direction) {
       request.direction = direction
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
     }
 
     if (perPage) {
@@ -136,8 +146,9 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     perPage?: number
     marketId?: string
     direction?: string
+    accountAddress?: string
   }) {
-    const { marketId, direction, perPage, token } = params || {}
+    const { marketId, direction, perPage, token, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.OrdersRequest.create()
 
@@ -147,6 +158,10 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     if (direction) {
       request.direction = direction
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
     }
 
     if (perPage) {
