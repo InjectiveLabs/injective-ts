@@ -121,6 +121,7 @@ export class IndexerGrpcTcDerivativesTransformer {
     order: GrpcTcDerivativeLimitOrder,
   ): TcDerivativeLimitOrder {
     return {
+      cid: order.cid,
       price: order.price,
       state: order.state,
       margin: order.margin,

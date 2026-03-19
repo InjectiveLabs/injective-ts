@@ -70,26 +70,27 @@ export interface TcDerivativePosition {
 }
 
 export interface TcDerivativeLimitOrder {
+  cid: string
+  price: string
+  state: string
+  margin: string
+  marketId: string
+  quantity: string
   orderHash: string
   orderSide: string
-  marketId: string
-  subaccountId: string
-  isReduceOnly: boolean
-  margin: string
-  price: string
-  quantity: string
-  unfilledQuantity: string
-  triggerPrice: string
-  feeRecipient: string
-  state: string
   createdAt: number
   updatedAt: number
-  orderNumber: number
   orderType: string
-  isConditional: boolean
   triggerAt: number
-  placedOrderHash: string
+  orderNumber: number
+  subaccountId: string
+  triggerPrice: string
+  feeRecipient: string
+  isReduceOnly: boolean
   executionType: string
+  isConditional: boolean
+  placedOrderHash: string
+  unfilledQuantity: string
 }
 
 export interface TcDerivativesOrdersHistoryResponse {

@@ -40,9 +40,11 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
   streamOrdersHistory({
     marketId,
+    accountAddress,
     callback,
   }: {
     marketId?: string
+    accountAddress?: string
     callback: TcDerivativeOrderHistoryStreamCallbackV2
   }): StreamSubscription {
     if (typeof callback !== 'function') {
@@ -54,6 +56,10 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
     if (marketId) {
       request.marketIds = [marketId]
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
     }
 
     const stream = this.client.streamOrdersHistory(request)
@@ -70,9 +76,11 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
   streamTrades({
     marketId,
+    accountAddress,
     callback,
   }: {
     marketId?: string
+    accountAddress?: string
     callback: TcDerivativeTradesStreamCallbackV2
   }): StreamSubscription {
     if (typeof callback !== 'function') {
@@ -83,6 +91,10 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
     if (marketId) {
       request.marketIds = [marketId]
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
     }
 
     const stream = this.client.streamTrades(request)
@@ -134,9 +146,11 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
   streamOrders({
     marketId,
+    accountAddress,
     callback,
   }: {
     marketId?: string
+    accountAddress?: string
     callback: TcDerivativeOrdersStreamCallbackV2
   }): StreamSubscription {
     if (typeof callback !== 'function') {
@@ -147,6 +161,10 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
     if (marketId) {
       request.marketIds = [marketId]
+    }
+
+    if (accountAddress) {
+      request.accountAddress = accountAddress
     }
 
     const stream = this.client.streamOrders(request)
