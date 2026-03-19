@@ -271,9 +271,6 @@ importers:
       viem:
         specifier: 'catalog:'
         version: 2.45.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.24.2)
-      ws:
-        specifier: ^8.18.0
-        version: 8.19.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
 
   packages/ts-types: {}
 

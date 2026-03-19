@@ -136,15 +136,13 @@ export class GrpcWebSocketTransport {
       }, this.config.connectionTimeoutMs)
 
       try {
-        this.ws = await this.createWebSocket(
+        this.ws = this.createWebSocket(
           url,
           this.config.protocol,
           this.config.metadata,
         )
 
-        if ('binaryType' in this.ws) {
-          ;(this.ws as WebSocket).binaryType = 'arraybuffer'
-        }
+        this.ws.binaryType = 'arraybuffer'
 
         this.ws.onopen = () => {
           this.handleOpen(resolve)
@@ -170,20 +168,13 @@ export class GrpcWebSocketTransport {
     })
   }
 
-  private async createWebSocket(
+  private createWebSocket(
     url: string,
     protocol: string,
     metadata?: Record<string, string>,
-  ): Promise<IsomorphicWebSocket> {
-    if (typeof WebSocket !== 'undefined') {
-      const urlWithMetadata = this.addMetadataToUrl(url, metadata)
-      return new WebSocket(urlWithMetadata, protocol)
-    }
-
-    const WS = await import('ws')
-    return new WS.default(url, protocol, {
-      headers: metadata || {},
-    })
+  ): IsomorphicWebSocket {
+    const urlWithMetadata = this.addMetadataToUrl(url, metadata)
+    return new WebSocket(urlWithMetadata, protocol)
   }
 
   private addMetadataToUrl(
