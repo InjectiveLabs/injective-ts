@@ -1,26 +1,32 @@
 import type * as InjectiveTCDerivativesRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_tc_derivatives_rpc_pb'
+import type {
+  OrderSide,
+  OrderState,
+  TradeDirection,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '../../../types/index.js'
 
 export interface TcPositionDelta {
-  tradeDirection: string
   executionPrice: string
-  executionQuantity: string
   executionMargin: string
+  executionQuantity: string
+  tradeDirection: TradeDirection
 }
 
 export interface TcDerivativeOrderHistory {
   cid: string
   price: string
-  state: string
   margin: string
   txHash: string
   marketId: string
   quantity: string
+  state: OrderState
   orderHash: string
   isActive: boolean
   orderType: string
   createdAt: number
   updatedAt: number
-  direction: string
   triggerAt: number
   subaccountId: string
   triggerPrice: string
@@ -29,6 +35,7 @@ export interface TcDerivativeOrderHistory {
   filledQuantity: string
   isConditional: boolean
   placedOrderHash: string
+  direction: TradeDirection
 }
 
 export interface TcDerivativeTradeHistory {
@@ -42,13 +49,13 @@ export interface TcDerivativeTradeHistory {
   executedAt: number
   subaccountId: string
   feeRecipient: string
-  executionSide: string
   isLiquidation: boolean
-  tradeDirection: string
   executionPrice: string
   executionMargin: string
   executionQuantity: string
-  tradeExecutionType: string
+  tradeDirection: TradeDirection
+  executionSide: TradeExecutionSide
+  tradeExecutionType: TradeExecutionType
 }
 
 export interface TcDerivativePosition {
@@ -57,7 +64,6 @@ export interface TcDerivativePosition {
   margin: string
   marketId: string
   quantity: string
-  direction: string
   markPrice: string
   updatedAt: number
   entryPrice: string
@@ -65,6 +71,7 @@ export interface TcDerivativePosition {
   fundingLast: string
   subaccountId: string
   liquidationPrice: string
+  direction: TradeDirection
   cumulativeFundingEntry: string
   effectiveCumulativeFundingEntry: string
 }
@@ -72,17 +79,17 @@ export interface TcDerivativePosition {
 export interface TcDerivativeLimitOrder {
   cid: string
   price: string
-  state: string
   margin: string
   marketId: string
   quantity: string
+  state: OrderState
   orderHash: string
-  orderSide: string
   createdAt: number
   updatedAt: number
   orderType: string
   triggerAt: number
   orderNumber: number
+  orderSide: OrderSide
   subaccountId: string
   triggerPrice: string
   feeRecipient: string
