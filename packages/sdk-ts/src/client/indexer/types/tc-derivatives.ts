@@ -8,10 +8,10 @@ import type {
 } from '../../../types/index.js'
 
 export interface TcPositionDelta {
-  tradeDirection: TradeDirection
   executionPrice: string
-  executionQuantity: string
   executionMargin: string
+  executionQuantity: string
+  tradeDirection: TradeDirection
 }
 
 export interface TcDerivativeOrderHistory {
