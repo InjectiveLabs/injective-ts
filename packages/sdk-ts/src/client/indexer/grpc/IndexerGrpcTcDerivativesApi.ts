@@ -21,7 +21,7 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     direction?: string
     accountAddress?: string
   }) {
-    const { marketId, direction, perPage, token, accountAddress } = params || {}
+    const { token, perPage, marketId, direction, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.OrdersHistoryRequest.create()
 

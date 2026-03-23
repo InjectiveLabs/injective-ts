@@ -1,13 +1,18 @@
-import { TradeDirection } from '../../../types/index.js'
+import { OrderState, TradeDirection } from '../../../types/index.js'
 import type * as InjectiveTCDerivativesRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_tc_derivatives_rpc_pb'
+import type {
+  OrderSide,
+  TradeExecutionSide,
+  TradeExecutionType,
+} from '../../../types/index.js'
 import type {
   TcPositionDelta,
   GrpcTcPositionDelta,
   TcDerivativePosition,
   TcDerivativeLimitOrder,
   TcDerivativeTradeHistory,
-  TcDerivativeOrderHistory,
   GrpcTcDerivativePosition,
+  TcDerivativeOrderHistory,
   GrpcTcDerivativeLimitOrder,
   TcDerivativeTradesResponse,
   TcDerivativeOrdersResponse,
@@ -32,10 +37,10 @@ export class IndexerGrpcTcDerivativesTransformer {
     positionDelta: GrpcTcPositionDelta,
   ): TcPositionDelta {
     return {
-      tradeDirection: positionDelta.tradeDirection,
       executionPrice: positionDelta.executionPrice,
       executionMargin: positionDelta.executionMargin,
       executionQuantity: positionDelta.executionQuantity,
+      tradeDirection: positionDelta.tradeDirection as TradeDirection,
     }
   }
 
@@ -45,7 +50,6 @@ export class IndexerGrpcTcDerivativesTransformer {
     return {
       cid: order.cid,
       price: order.price,
-      state: order.state,
       margin: order.margin,
       txHash: order.txHash,
       marketId: order.marketId,
@@ -53,7 +57,7 @@ export class IndexerGrpcTcDerivativesTransformer {
       quantity: order.quantity,
       orderHash: order.orderHash,
       orderType: order.orderType,
-      direction: order.direction,
+      state: order.state as OrderState,
       subaccountId: order.subaccountId,
       triggerPrice: order.triggerPrice,
       isReduceOnly: order.isReduceOnly,
@@ -64,6 +68,7 @@ export class IndexerGrpcTcDerivativesTransformer {
       triggerAt: Number(order.triggerAt),
       filledQuantity: order.filledQuantity,
       placedOrderHash: order.placedOrderHash,
+      direction: order.direction as TradeDirection,
     }
   }
 
@@ -88,9 +93,9 @@ export class IndexerGrpcTcDerivativesTransformer {
       subaccountId: trade.subaccountId,
       feeRecipient: trade.feeRecipient,
       isLiquidation: trade.isLiquidation,
-      executionSide: trade.executionSide,
       executedAt: Number(trade.executedAt),
-      tradeExecutionType: trade.tradeExecutionType,
+      executionSide: trade.executionSide as TradeExecutionSide,
+      tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
       ...mappedPositionDelta,
     }
   }
@@ -104,7 +109,6 @@ export class IndexerGrpcTcDerivativesTransformer {
       margin: position.margin,
       marketId: position.marketId,
       quantity: position.quantity,
-      direction: position.direction,
       markPrice: position.markPrice,
       entryPrice: position.entryPrice,
       fundingSum: position.fundingSum,
@@ -112,6 +116,7 @@ export class IndexerGrpcTcDerivativesTransformer {
       subaccountId: position.subaccountId,
       updatedAt: Number(position.updatedAt),
       liquidationPrice: position.liquidationPrice,
+      direction: position.direction as TradeDirection,
       cumulativeFundingEntry: position.cumulativeFundingEntry,
       effectiveCumulativeFundingEntry: position.effectiveCumulativeFundingEntry,
     }
@@ -123,17 +128,16 @@ export class IndexerGrpcTcDerivativesTransformer {
     return {
       cid: order.cid,
       price: order.price,
-      state: order.state,
       margin: order.margin,
       marketId: order.marketId,
       quantity: order.quantity,
       orderHash: order.orderHash,
-      orderSide: order.orderSide,
       orderType: order.orderType,
       subaccountId: order.subaccountId,
       isReduceOnly: order.isReduceOnly,
       triggerPrice: order.triggerPrice,
       feeRecipient: order.feeRecipient,
+      state: order.state as OrderState,
       createdAt: Number(order.createdAt),
       updatedAt: Number(order.updatedAt),
       isConditional: order.isConditional,
@@ -141,6 +145,7 @@ export class IndexerGrpcTcDerivativesTransformer {
       executionType: order.executionType,
       orderNumber: Number(order.orderNumber),
       placedOrderHash: order.placedOrderHash,
+      orderSide: order.orderSide as OrderSide,
       unfilledQuantity: order.unfilledQuantity,
     }
   }
@@ -148,11 +153,15 @@ export class IndexerGrpcTcDerivativesTransformer {
   static ordersHistoryResponseToOrdersHistory(
     response: InjectiveTCDerivativesRpcPb.OrdersHistoryResponse,
   ): TcDerivativesOrdersHistoryResponse {
+    const filteredOrderHistory = response.orders?.filter(
+      (order) => order.state !== OrderState.Booked,
+    )
+
     return {
-      orders: response.orders.map(
+      next: response.next,
+      orders: filteredOrderHistory.map(
         IndexerGrpcTcDerivativesTransformer.grpcOrderHistoryToOrderHistory,
       ),
-      next: response.next,
     }
   }
 
@@ -171,10 +180,10 @@ export class IndexerGrpcTcDerivativesTransformer {
     response: InjectiveTCDerivativesRpcPb.TradesResponse,
   ): TcDerivativeTradesResponse {
     return {
+      next: response.next,
       trades: response.trades.map(
         IndexerGrpcTcDerivativesTransformer.grpcTradeToTrade,
       ),
-      next: response.next,
     }
   }
 
@@ -182,11 +191,11 @@ export class IndexerGrpcTcDerivativesTransformer {
     response: InjectiveTCDerivativesRpcPb.PositionsResponse,
   ): TcDerivativesPositionsResponse {
     return {
+      next: response.next,
+      total: response.total ? Number(response.total) : undefined,
       positions: response.positions.map(
         IndexerGrpcTcDerivativesTransformer.grpcPositionToPosition,
       ),
-      next: response.next,
-      total: response.total ? Number(response.total) : undefined,
     }
   }
 }
