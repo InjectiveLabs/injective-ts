@@ -3,6 +3,7 @@ import * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/gener
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcMitoTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,13 +14,16 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     return this.initClient(MitoAPIClient)
   }
 
-  async fetchVault({
-    contractAddress,
-    slug,
-  }: {
-    contractAddress?: string
-    slug?: string
-  }) {
+  async fetchVault(
+    {
+      contractAddress,
+      slug,
+    }: {
+      contractAddress?: string
+      slug?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetVaultRequest.create()
 
     if (slug) {
@@ -33,20 +37,23 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetVaultRequest,
       GoadesignGoagenMitoApiPb.GetVaultResponse
-    >(request, this.client.getVault.bind(this.client))
+    >(request, this.client.getVault.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.vaultResponseToVault(response)
   }
 
-  async fetchVaults({
-    limit,
-    codeId,
-    pageIndex,
-  }: {
-    limit?: number
-    codeId?: string
-    pageIndex?: number
-  }) {
+  async fetchVaults(
+    {
+      limit,
+      codeId,
+      pageIndex,
+    }: {
+      limit?: number
+      codeId?: string
+      pageIndex?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetVaultsRequest.create()
 
     if (codeId) {
@@ -64,20 +71,23 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetVaultsRequest,
       GoadesignGoagenMitoApiPb.GetVaultsResponse
-    >(request, this.client.getVaults.bind(this.client))
+    >(request, this.client.getVaults.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.vaultsResponseToVaults(response)
   }
 
-  async fetchLpTokenPriceChart({
-    to,
-    from,
-    vaultAddress,
-  }: {
-    to?: string
-    from?: string
-    vaultAddress: string
-  }) {
+  async fetchLpTokenPriceChart(
+    {
+      to,
+      from,
+      vaultAddress,
+    }: {
+      to?: string
+      from?: string
+      vaultAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.LPTokenPriceChartRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -93,22 +103,25 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.LPTokenPriceChartRequest,
       GoadesignGoagenMitoApiPb.LPTokenPriceChartResponse
-    >(request, this.client.lPTokenPriceChart.bind(this.client))
+    >(request, this.client.lPTokenPriceChart.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
       response,
     )
   }
 
-  async fetchTVLChartRequest({
-    to,
-    from,
-    vaultAddress,
-  }: {
-    to?: string
-    from?: string
-    vaultAddress: string
-  }) {
+  async fetchTVLChartRequest(
+    {
+      to,
+      from,
+      vaultAddress,
+    }: {
+      to?: string
+      from?: string
+      vaultAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.TVLChartRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -124,24 +137,27 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.TVLChartRequest,
       GoadesignGoagenMitoApiPb.TVLChartResponse
-    >(request, this.client.tVLChart.bind(this.client))
+    >(request, this.client.tVLChart.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.lpTokenPriceChartResponseToLPTokenPriceChart(
       response,
     )
   }
 
-  async fetchVaultsByHolderAddress({
-    skip,
-    limit,
-    holderAddress,
-    vaultAddress,
-  }: {
-    skip?: number
-    limit?: number
-    holderAddress: string
-    vaultAddress?: string
-  }) {
+  async fetchVaultsByHolderAddress(
+    {
+      skip,
+      limit,
+      holderAddress,
+      vaultAddress,
+    }: {
+      skip?: number
+      limit?: number
+      holderAddress: string
+      vaultAddress?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       GoadesignGoagenMitoApiPb.VaultsByHolderAddressRequest.create()
 
@@ -162,24 +178,31 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.VaultsByHolderAddressRequest,
       GoadesignGoagenMitoApiPb.VaultsByHolderAddressResponse
-    >(request, this.client.vaultsByHolderAddress.bind(this.client))
+    >(
+      request,
+      this.client.vaultsByHolderAddress.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcMitoTransformer.vaultsByHolderAddressResponseToVaultsByHolderAddress(
       response,
     )
   }
 
-  async fetchLPHolders({
-    skip,
-    limit,
-    vaultAddress,
-    stakingContractAddress,
-  }: {
-    skip?: number
-    limit?: number
-    vaultAddress: string
-    stakingContractAddress: string
-  }) {
+  async fetchLPHolders(
+    {
+      skip,
+      limit,
+      vaultAddress,
+      stakingContractAddress,
+    }: {
+      skip?: number
+      limit?: number
+      vaultAddress: string
+      stakingContractAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.LPHoldersRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -196,18 +219,21 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.LPHoldersRequest,
       GoadesignGoagenMitoApiPb.LPHoldersResponse
-    >(request, this.client.lPHolders.bind(this.client))
+    >(request, this.client.lPHolders.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.lpHoldersResponseToLPHolders(response)
   }
 
-  async fetchHolderPortfolio({
-    holderAddress,
-    stakingContractAddress,
-  }: {
-    holderAddress: string
-    stakingContractAddress: string
-  }) {
+  async fetchHolderPortfolio(
+    {
+      holderAddress,
+      stakingContractAddress,
+    }: {
+      holderAddress: string
+      stakingContractAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.PortfolioRequest.create()
 
     request.holderAddress = holderAddress
@@ -216,12 +242,12 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.PortfolioRequest,
       GoadesignGoagenMitoApiPb.PortfolioResponse
-    >(request, this.client.portfolio.bind(this.client))
+    >(request, this.client.portfolio.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.portfolioResponseToPortfolio(response)
   }
 
-  async fetchLeaderboard(epochId?: number) {
+  async fetchLeaderboard(epochId?: number, options?: GrpcCallOptions) {
     const request = GoadesignGoagenMitoApiPb.LeaderboardRequest.create()
 
     if (epochId) {
@@ -231,24 +257,27 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.LeaderboardRequest,
       GoadesignGoagenMitoApiPb.LeaderboardResponse
-    >(request, this.client.leaderboard.bind(this.client))
+    >(request, this.client.leaderboard.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.leaderboardResponseToLeaderboard(response)
   }
 
-  async fetchTransferHistory({
-    vault,
-    account,
-    limit,
-    toNumber,
-    fromNumber,
-  }: {
-    vault?: string
-    account?: string
-    limit?: number
-    toNumber?: number
-    fromNumber?: number
-  }) {
+  async fetchTransferHistory(
+    {
+      vault,
+      account,
+      limit,
+      toNumber,
+      fromNumber,
+    }: {
+      vault?: string
+      account?: string
+      limit?: number
+      toNumber?: number
+      fromNumber?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.TransfersHistoryRequest.create()
 
     if (vault) {
@@ -274,22 +303,25 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.TransfersHistoryRequest,
       GoadesignGoagenMitoApiPb.TransfersHistoryResponse
-    >(request, this.client.transfersHistory.bind(this.client))
+    >(request, this.client.transfersHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.transferHistoryResponseToTransfer(
       response,
     )
   }
 
-  async fetchLeaderboardEpochs({
-    limit,
-    toEpochId,
-    fromEpochId,
-  }: {
-    limit?: number
-    toEpochId?: number
-    fromEpochId?: number
-  }) {
+  async fetchLeaderboardEpochs(
+    {
+      limit,
+      toEpochId,
+      fromEpochId,
+    }: {
+      limit?: number
+      toEpochId?: number
+      fromEpochId?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.LeaderboardEpochsRequest.create()
 
     if (limit) {
@@ -307,20 +339,23 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.LeaderboardEpochsRequest,
       GoadesignGoagenMitoApiPb.LeaderboardEpochsResponse
-    >(request, this.client.leaderboardEpochs.bind(this.client))
+    >(request, this.client.leaderboardEpochs.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.leaderboardEpochsResponseToLeaderboardEpochs(
       response,
     )
   }
 
-  async fetchStakingPools({
-    staker,
-    stakingContractAddress,
-  }: {
-    staker?: string
-    stakingContractAddress: string
-  }) {
+  async fetchStakingPools(
+    {
+      staker,
+      stakingContractAddress,
+    }: {
+      staker?: string
+      stakingContractAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetStakingPoolsRequest.create()
 
     request.stakingContractAddress = stakingContractAddress
@@ -332,24 +367,27 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetStakingPoolsRequest,
       GoadesignGoagenMitoApiPb.GetStakingPoolsResponse
-    >(request, this.client.getStakingPools.bind(this.client))
+    >(request, this.client.getStakingPools.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.stakingPoolsResponseToStakingPools(
       response,
     )
   }
 
-  async fetchStakingHistory({
-    staker,
-    toNumber,
-    limit,
-    fromNumber,
-  }: {
-    staker?: string
-    limit?: number
-    toNumber?: number
-    fromNumber?: number
-  } = {}) {
+  async fetchStakingHistory(
+    {
+      staker,
+      toNumber,
+      limit,
+      fromNumber,
+    }: {
+      staker?: string
+      limit?: number
+      toNumber?: number
+      fromNumber?: number
+    } = {},
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.StakingHistoryRequest.create()
 
     if (limit) {
@@ -371,20 +409,23 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.StakingHistoryRequest,
       GoadesignGoagenMitoApiPb.StakingHistoryResponse
-    >(request, this.client.stakingHistory.bind(this.client))
+    >(request, this.client.stakingHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.mitoStakingHistoryResponseTpStakingHistory(
       response,
     )
   }
 
-  async fetchStakingRewardsByAccount({
-    staker,
-    stakingContractAddress,
-  }: {
-    staker: string
-    stakingContractAddress: string
-  }) {
+  async fetchStakingRewardsByAccount(
+    {
+      staker,
+      stakingContractAddress,
+    }: {
+      staker: string
+      stakingContractAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       GoadesignGoagenMitoApiPb.StakingRewardByAccountRequest.create()
 
@@ -394,14 +435,21 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.StakingRewardByAccountRequest,
       GoadesignGoagenMitoApiPb.StakingRewardByAccountResponse
-    >(request, this.client.stakingRewardByAccount.bind(this.client))
+    >(
+      request,
+      this.client.stakingRewardByAccount.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcMitoTransformer.stakingRewardByAccountResponseToStakingRewardByAccount(
       response,
     )
   }
 
-  async fetchMissions({ accountAddress }: { accountAddress: string }) {
+  async fetchMissions(
+    { accountAddress }: { accountAddress: string },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.MissionsRequest.create()
 
     request.accountAddress = accountAddress
@@ -409,12 +457,15 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.MissionsRequest,
       GoadesignGoagenMitoApiPb.MissionsResponse
-    >(request, this.client.missions.bind(this.client))
+    >(request, this.client.missions.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.mitoMissionsResponseMissions(response)
   }
 
-  async fetchMissionLeaderboard(userAddress?: string) {
+  async fetchMissionLeaderboard(
+    userAddress?: string,
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.MissionLeaderboardRequest.create()
 
     if (userAddress) {
@@ -424,20 +475,27 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.MissionLeaderboardRequest,
       GoadesignGoagenMitoApiPb.MissionLeaderboardResponse
-    >(request, this.client.missionLeaderboard.bind(this.client))
+    >(
+      request,
+      this.client.missionLeaderboard.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcMitoTransformer.mitoMissionLeaderboardResponseToMissionLeaderboard(
       response,
     )
   }
 
-  async fetchIDO({
-    contractAddress,
-    accountAddress,
-  }: {
-    contractAddress: string
-    accountAddress?: string
-  }) {
+  async fetchIDO(
+    {
+      contractAddress,
+      accountAddress,
+    }: {
+      contractAddress: string
+      accountAddress?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetIDORequest.create()
 
     request.contractAddress = contractAddress
@@ -449,24 +507,27 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetIDORequest,
       GoadesignGoagenMitoApiPb.GetIDOResponse
-    >(request, this.client.getIDO.bind(this.client))
+    >(request, this.client.getIDO.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.mitoIDOResponseToIDO(response)
   }
 
-  async fetchIDOs({
-    status,
-    limit,
-    toNumber,
-    accountAddress,
-    ownerAddress,
-  }: {
-    status?: string
-    limit?: number
-    toNumber?: number
-    accountAddress?: string
-    ownerAddress?: string
-  } = {}) {
+  async fetchIDOs(
+    {
+      status,
+      limit,
+      toNumber,
+      accountAddress,
+      ownerAddress,
+    }: {
+      status?: string
+      limit?: number
+      toNumber?: number
+      accountAddress?: string
+      ownerAddress?: string
+    } = {},
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.ListIDOsRequest.create()
 
     if (status) {
@@ -492,22 +553,25 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.ListIDOsRequest,
       GoadesignGoagenMitoApiPb.ListIDOsResponse
-    >(request, this.client.listIDOs.bind(this.client))
+    >(request, this.client.listIDOs.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.mitoListIDOsResponseToIDOs(response)
   }
 
-  async fetchIDOSubscribers({
-    skip,
-    limit,
-    sortBy,
-    contractAddress,
-  }: {
-    skip?: number
-    limit?: number
-    sortBy?: string
-    contractAddress: string
-  }) {
+  async fetchIDOSubscribers(
+    {
+      skip,
+      limit,
+      sortBy,
+      contractAddress,
+    }: {
+      skip?: number
+      limit?: number
+      sortBy?: string
+      contractAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetIDOSubscribersRequest.create()
 
     request.contractAddress = contractAddress
@@ -527,20 +591,23 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetIDOSubscribersRequest,
       GoadesignGoagenMitoApiPb.GetIDOSubscribersResponse
-    >(request, this.client.getIDOSubscribers.bind(this.client))
+    >(request, this.client.getIDOSubscribers.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.mitoIDOSubscribersResponseToIDOSubscribers(
       response,
     )
   }
 
-  async fetchIDOSubscription({
-    contractAddress,
-    accountAddress,
-  }: {
-    contractAddress: string
-    accountAddress: string
-  }) {
+  async fetchIDOSubscription(
+    {
+      contractAddress,
+      accountAddress,
+    }: {
+      contractAddress: string
+      accountAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetIDOSubscriptionRequest.create()
 
     request.accountAddress = accountAddress
@@ -549,24 +616,31 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetIDOSubscriptionRequest,
       GoadesignGoagenMitoApiPb.GetIDOSubscriptionResponse
-    >(request, this.client.getIDOSubscription.bind(this.client))
+    >(
+      request,
+      this.client.getIDOSubscription.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcMitoTransformer.mitoIDOSubscriptionResponseToIDOSubscription(
       response,
     )
   }
 
-  async fetchIDOActivities({
-    contractAddress,
-    accountAddress,
-    limit,
-    toNumber,
-  }: {
-    contractAddress?: string
-    accountAddress?: string
-    limit?: number
-    toNumber?: string
-  } = {}) {
+  async fetchIDOActivities(
+    {
+      contractAddress,
+      accountAddress,
+      limit,
+      toNumber,
+    }: {
+      contractAddress?: string
+      accountAddress?: string
+      limit?: number
+      toNumber?: string
+    } = {},
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetIDOActivitiesRequest.create()
 
     if (contractAddress) {
@@ -588,22 +662,25 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetIDOActivitiesRequest,
       GoadesignGoagenMitoApiPb.GetIDOActivitiesResponse
-    >(request, this.client.getIDOActivities.bind(this.client))
+    >(request, this.client.getIDOActivities.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.mitoIDOActivitiesResponseToIDOActivities(
       response,
     )
   }
 
-  async fetchIDOWhitelist({
-    skip,
-    limit,
-    idoAddress,
-  }: {
-    skip?: number
-    limit?: number
-    idoAddress: string
-  }) {
+  async fetchIDOWhitelist(
+    {
+      skip,
+      limit,
+      idoAddress,
+    }: {
+      skip?: number
+      limit?: number
+      idoAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetWhitelistRequest.create()
 
     request.idoAddress = idoAddress
@@ -619,24 +696,27 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetWhitelistRequest,
       GoadesignGoagenMitoApiPb.GetWhitelistResponse
-    >(request, this.client.getWhitelist.bind(this.client))
+    >(request, this.client.getWhitelist.bind(this.client), options?.signal)
 
     return IndexerGrpcMitoTransformer.mitoWhitelistAccountResponseToWhitelistAccount(
       response,
     )
   }
 
-  async fetchClaimReferences({
-    skip,
-    limit,
-    idoAddress,
-    accountAddress,
-  }: {
-    skip?: number
-    limit?: number
-    idoAddress: string
-    accountAddress: string
-  }) {
+  async fetchClaimReferences(
+    {
+      skip,
+      limit,
+      idoAddress,
+      accountAddress,
+    }: {
+      skip?: number
+      limit?: number
+      idoAddress: string
+      accountAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = GoadesignGoagenMitoApiPb.GetClaimReferencesRequest.create()
 
     request.idoAddress = idoAddress
@@ -653,7 +733,11 @@ export class IndexerGrpcMitoApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoadesignGoagenMitoApiPb.GetClaimReferencesRequest,
       GoadesignGoagenMitoApiPb.GetClaimReferencesResponse
-    >(request, this.client.getClaimReferences.bind(this.client))
+    >(
+      request,
+      this.client.getClaimReferences.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcMitoTransformer.claimReferencesResponseToClaimReferences(
       response,

@@ -3,6 +3,7 @@ import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-proto-ts-v2/ge
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcAuctionTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,7 +14,7 @@ export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveAuctionRPCClient)
   }
 
-  async fetchAuction(round?: number) {
+  async fetchAuction(round?: number, options?: GrpcCallOptions) {
     const request = InjectiveAuctionRpcPb.AuctionEndpointRequest.create()
 
     /**
@@ -27,42 +28,45 @@ export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAuctionRpcPb.AuctionEndpointRequest,
       InjectiveAuctionRpcPb.AuctionEndpointResponse
-    >(request, this.client.auctionEndpoint.bind(this.client))
+    >(request, this.client.auctionEndpoint.bind(this.client), options?.signal)
 
     return IndexerGrpcAuctionTransformer.auctionResponseToAuction(response)
   }
 
-  async fetchAuctions() {
+  async fetchAuctions(options?: GrpcCallOptions) {
     const request = InjectiveAuctionRpcPb.AuctionsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveAuctionRpcPb.AuctionsRequest,
       InjectiveAuctionRpcPb.AuctionsResponse
-    >(request, this.client.auctions.bind(this.client))
+    >(request, this.client.auctions.bind(this.client), options?.signal)
 
     return IndexerGrpcAuctionTransformer.auctionsResponseToAuctions(response)
   }
 
-  async fetchInjBurnt() {
+  async fetchInjBurnt(options?: GrpcCallOptions) {
     const request = InjectiveAuctionRpcPb.InjBurntEndpointRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveAuctionRpcPb.InjBurntEndpointRequest,
       InjectiveAuctionRpcPb.InjBurntEndpointResponse
-    >(request, this.client.injBurntEndpoint.bind(this.client))
+    >(request, this.client.injBurntEndpoint.bind(this.client), options?.signal)
 
     return Number(response.totalInjBurnt)
   }
 
-  async fetchAuctionsHistoryV2({
-    token,
-    endTime,
-    perPage = 5,
-  }: {
-    token?: string
-    endTime?: string
-    perPage?: number
-  }) {
+  async fetchAuctionsHistoryV2(
+    {
+      token,
+      endTime,
+      perPage = 5,
+    }: {
+      token?: string
+      endTime?: string
+      perPage?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveAuctionRpcPb.AuctionsHistoryV2Request.create()
 
     request.perPage = perPage
@@ -78,14 +82,14 @@ export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAuctionRpcPb.AuctionsHistoryV2Request,
       InjectiveAuctionRpcPb.AuctionsHistoryV2Response
-    >(request, this.client.auctionsHistoryV2.bind(this.client))
+    >(request, this.client.auctionsHistoryV2.bind(this.client), options?.signal)
 
     return IndexerGrpcAuctionTransformer.auctionsHistoryV2ResponseToAuctionHistory(
       response,
     )
   }
 
-  async fetchAuctionV2(round: number | string = -1) {
+  async fetchAuctionV2(round: number | string = -1, options?: GrpcCallOptions) {
     const request = InjectiveAuctionRpcPb.AuctionV2Request.create()
 
     if (round) {
@@ -95,20 +99,23 @@ export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAuctionRpcPb.AuctionV2Request,
       InjectiveAuctionRpcPb.AuctionV2Response
-    >(request, this.client.auctionV2.bind(this.client))
+    >(request, this.client.auctionV2.bind(this.client), options?.signal)
 
     return IndexerGrpcAuctionTransformer.grpcAuctionV2ToAuctionV2(response)
   }
 
-  async fetchAccountAuctionsV2({
-    token,
-    address,
-    perPage = 5,
-  }: {
-    token?: string
-    address: string
-    perPage?: number
-  }) {
+  async fetchAccountAuctionsV2(
+    {
+      token,
+      address,
+      perPage = 5,
+    }: {
+      token?: string
+      address: string
+      perPage?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveAuctionRpcPb.AccountAuctionsV2Request.create()
 
     request.address = address
@@ -121,33 +128,36 @@ export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAuctionRpcPb.AccountAuctionsV2Request,
       InjectiveAuctionRpcPb.AccountAuctionsV2Response
-    >(request, this.client.accountAuctionsV2.bind(this.client))
+    >(request, this.client.accountAuctionsV2.bind(this.client), options?.signal)
 
     return IndexerGrpcAuctionTransformer.accountAuctionsV2ResponseToAccountAuctionsV2(
       response,
     )
   }
 
-  async fetchAuctionStats() {
+  async fetchAuctionStats(options?: GrpcCallOptions) {
     const request = InjectiveAuctionRpcPb.AuctionsStatsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveAuctionRpcPb.AuctionsStatsRequest,
       InjectiveAuctionRpcPb.AuctionsStatsResponse
-    >(request, this.client.auctionsStats.bind(this.client))
+    >(request, this.client.auctionsStats.bind(this.client), options?.signal)
 
     return IndexerGrpcAuctionTransformer.auctionStatsResponseToAuctionStats(
       response,
     )
   }
 
-  async fetchAccountAuctionStatus({
-    address,
-    round = -1,
-  }: {
-    address: string
-    round?: string | number
-  }) {
+  async fetchAccountAuctionStatus(
+    {
+      address,
+      round = -1,
+    }: {
+      address: string
+      round?: string | number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveAuctionRpcPb.AuctionAccountStatusRequest.create()
 
     if (round) {
@@ -161,7 +171,11 @@ export class IndexerGrpcAuctionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAuctionRpcPb.AuctionAccountStatusRequest,
       InjectiveAuctionRpcPb.AuctionAccountStatusResponse
-    >(request, this.client.auctionAccountStatus.bind(this.client))
+    >(
+      request,
+      this.client.auctionAccountStatus.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcAuctionTransformer.auctionAccountStatusResponseToAuctionAccountStatus(
       response,

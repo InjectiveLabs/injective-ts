@@ -2,6 +2,7 @@ import * as InjectiveTradingRpcPb from '@injectivelabs/indexer-proto-ts-v2/gener
 import { InjectiveTradingRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 import type { MarketType, GridStrategyType } from '../types/index.js'
 /**
  * @category Indexer Grpc API
@@ -13,50 +14,53 @@ export class IndexerGrpcTradingApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveTradingRPCClient)
   }
 
-  async fetchTradingStats() {
+  async fetchTradingStats(options?: GrpcCallOptions) {
     const request = InjectiveTradingRpcPb.GetTradingStatsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveTradingRpcPb.GetTradingStatsRequest,
       InjectiveTradingRpcPb.GetTradingStatsResponse
-    >(request, this.client.getTradingStats.bind(this.client))
+    >(request, this.client.getTradingStats.bind(this.client), options?.signal)
 
     return response
   }
 
-  async fetchGridStrategies({
-    skip,
-    state,
-    limit,
-    withTvl,
-    endTime,
-    marketId,
-    startTime,
-    marketType,
-    strategyType,
-    subaccountId,
-    accountAddress,
-    withPerformance,
-    pendingExecution,
-    lastExecutedTime,
-    isTrailingStrategy,
-  }: {
-    skip?: number
-    state?: string
-    limit?: number
-    endTime?: number
-    withTvl?: boolean
-    marketId?: string
-    startTime?: number
-    marketType?: MarketType
-    subaccountId?: string
-    strategyType?: GridStrategyType[]
-    accountAddress?: string
-    withPerformance?: boolean
-    pendingExecution?: boolean
-    lastExecutedTime?: number
-    isTrailingStrategy?: boolean
-  }) {
+  async fetchGridStrategies(
+    {
+      skip,
+      state,
+      limit,
+      withTvl,
+      endTime,
+      marketId,
+      startTime,
+      marketType,
+      strategyType,
+      subaccountId,
+      accountAddress,
+      withPerformance,
+      pendingExecution,
+      lastExecutedTime,
+      isTrailingStrategy,
+    }: {
+      skip?: number
+      state?: string
+      limit?: number
+      endTime?: number
+      withTvl?: boolean
+      marketId?: string
+      startTime?: number
+      marketType?: MarketType
+      subaccountId?: string
+      strategyType?: GridStrategyType[]
+      accountAddress?: string
+      withPerformance?: boolean
+      pendingExecution?: boolean
+      lastExecutedTime?: number
+      isTrailingStrategy?: boolean
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveTradingRpcPb.ListTradingStrategiesRequest.create()
 
     if (accountAddress) {
@@ -122,7 +126,11 @@ export class IndexerGrpcTradingApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTradingRpcPb.ListTradingStrategiesRequest,
       InjectiveTradingRpcPb.ListTradingStrategiesResponse
-    >(request, this.client.listTradingStrategies.bind(this.client))
+    >(
+      request,
+      this.client.listTradingStrategies.bind(this.client),
+      options?.signal,
+    )
 
     return response
   }

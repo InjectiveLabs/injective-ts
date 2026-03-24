@@ -3,6 +3,7 @@ import { QueryClient as InjectiveTokenFactoryV1Beta1QueryClient } from '@injecti
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcTokenFactoryTransformer } from '../index.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category TokenFactory Grpc API
  */
@@ -13,7 +14,7 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     return this.initClient(InjectiveTokenFactoryV1Beta1QueryClient)
   }
 
-  async fetchDenomsFromCreator(creator: string) {
+  async fetchDenomsFromCreator(creator: string, options?: GrpcCallOptions) {
     const request =
       InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomsFromCreatorRequest.create()
 
@@ -22,14 +23,18 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomsFromCreatorRequest,
       InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomsFromCreatorResponse
-    >(request, this.client.denomsFromCreator.bind(this.client))
+    >(request, this.client.denomsFromCreator.bind(this.client), options?.signal)
 
     return ChainGrpcTokenFactoryTransformer.denomsCreatorResponseToDenomsString(
       response,
     )
   }
 
-  async fetchDenomAuthorityMetadata(creator: string, subDenom: string) {
+  async fetchDenomAuthorityMetadata(
+    creator: string,
+    subDenom: string,
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomAuthorityMetadataRequest.create()
 
@@ -39,35 +44,43 @@ export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomAuthorityMetadataRequest,
       InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomAuthorityMetadataResponse
-    >(request, this.client.denomAuthorityMetadata.bind(this.client))
+    >(
+      request,
+      this.client.denomAuthorityMetadata.bind(this.client),
+      options?.signal,
+    )
 
     return ChainGrpcTokenFactoryTransformer.authorityMetadataResponseToAuthorityMetadata(
       response,
     )
   }
 
-  async fetchModuleParams() {
+  async fetchModuleParams(options?: GrpcCallOptions) {
     const request =
       InjectiveTokenFactoryV1Beta1QueryPb.QueryParamsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveTokenFactoryV1Beta1QueryPb.QueryParamsRequest,
       InjectiveTokenFactoryV1Beta1QueryPb.QueryParamsResponse
-    >(request, this.client.params.bind(this.client))
+    >(request, this.client.params.bind(this.client), options?.signal)
 
     return ChainGrpcTokenFactoryTransformer.moduleParamsResponseToModuleParams(
       response,
     )
   }
 
-  async fetchModuleState() {
+  async fetchModuleState(options?: GrpcCallOptions) {
     const request =
       InjectiveTokenFactoryV1Beta1QueryPb.QueryModuleStateRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveTokenFactoryV1Beta1QueryPb.QueryModuleStateRequest,
       InjectiveTokenFactoryV1Beta1QueryPb.QueryModuleStateResponse
-    >(request, this.client.tokenfactoryModuleState.bind(this.client))
+    >(
+      request,
+      this.client.tokenfactoryModuleState.bind(this.client),
+      options?.signal,
+    )
 
     return ChainGrpcTokenFactoryTransformer.moduleStateResponseToModuleState(
       response,

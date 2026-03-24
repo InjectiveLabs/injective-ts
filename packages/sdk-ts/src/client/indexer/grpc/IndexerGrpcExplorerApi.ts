@@ -3,6 +3,7 @@ import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,7 +14,11 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveExplorerRPCClient)
   }
 
-  async fetchTxByHash(hash: string, isEvmHash: boolean = false) {
+  async fetchTxByHash(
+    hash: string,
+    isEvmHash: boolean = false,
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetTxByTxHashRequest.create()
 
     request.hash = hash
@@ -22,28 +27,31 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetTxByTxHashRequest,
       InjectiveExplorerRpcPb.GetTxByTxHashResponse
-    >(request, this.client.getTxByTxHash.bind(this.client))
+    >(request, this.client.getTxByTxHash.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
   }
 
-  async fetchAccountTx({
-    address,
-    limit,
-    type,
-    before,
-    after,
-    startTime,
-    endTime,
-  }: {
-    address: string
-    limit?: number
-    type?: string
-    before?: number
-    after?: number
-    startTime?: number
-    endTime?: number
-  }) {
+  async fetchAccountTx(
+    {
+      address,
+      limit,
+      type,
+      before,
+      after,
+      startTime,
+      endTime,
+    }: {
+      address: string
+      limit?: number
+      type?: string
+      before?: number
+      after?: number
+      startTime?: number
+      endTime?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetAccountTxsRequest.create()
 
     request.address = address
@@ -75,14 +83,14 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetAccountTxsRequest,
       InjectiveExplorerRpcPb.GetAccountTxsResponse
-    >(request, this.client.getAccountTxs.bind(this.client))
+    >(request, this.client.getAccountTxs.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
       response,
     )
   }
 
-  async fetchValidator(validatorAddress: string) {
+  async fetchValidator(validatorAddress: string, options?: GrpcCallOptions) {
     const request = InjectiveExplorerRpcPb.GetValidatorRequest.create()
 
     request.address = validatorAddress
@@ -90,12 +98,15 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetValidatorRequest,
       InjectiveExplorerRpcPb.GetValidatorResponse
-    >(request, this.client.getValidator.bind(this.client))
+    >(request, this.client.getValidator.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.validatorResponseToValidator(response)
   }
 
-  async fetchValidatorUptime(validatorAddress: string) {
+  async fetchValidatorUptime(
+    validatorAddress: string,
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetValidatorUptimeRequest.create()
 
     request.address = validatorAddress
@@ -103,24 +114,31 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetValidatorUptimeRequest,
       InjectiveExplorerRpcPb.GetValidatorUptimeResponse
-    >(request, this.client.getValidatorUptime.bind(this.client))
+    >(
+      request,
+      this.client.getValidatorUptime.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
       response,
     )
   }
 
-  async fetchPeggyDepositTxs({
-    sender,
-    receiver,
-    limit,
-    skip,
-  }: {
-    receiver?: string
-    sender?: string
-    limit?: number
-    skip?: number
-  }) {
+  async fetchPeggyDepositTxs(
+    {
+      sender,
+      receiver,
+      limit,
+      skip,
+    }: {
+      receiver?: string
+      sender?: string
+      limit?: number
+      skip?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetPeggyDepositTxsRequest.create()
 
     if (sender) {
@@ -142,24 +160,31 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetPeggyDepositTxsRequest,
       InjectiveExplorerRpcPb.GetPeggyDepositTxsResponse
-    >(request, this.client.getPeggyDepositTxs.bind(this.client))
+    >(
+      request,
+      this.client.getPeggyDepositTxs.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
       response,
     )
   }
 
-  async fetchPeggyWithdrawalTxs({
-    sender,
-    receiver,
-    limit,
-    skip,
-  }: {
-    sender?: string
-    receiver?: string
-    limit?: number
-    skip?: number
-  }) {
+  async fetchPeggyWithdrawalTxs(
+    {
+      sender,
+      receiver,
+      limit,
+      skip,
+    }: {
+      sender?: string
+      receiver?: string
+      limit?: number
+      skip?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetPeggyWithdrawalTxsRequest.create()
 
     if (sender) {
@@ -181,26 +206,33 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetPeggyWithdrawalTxsRequest,
       InjectiveExplorerRpcPb.GetPeggyWithdrawalTxsResponse
-    >(request, this.client.getPeggyWithdrawalTxs.bind(this.client))
+    >(
+      request,
+      this.client.getPeggyWithdrawalTxs.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
       response,
     )
   }
 
-  async fetchBlocks({
-    before,
-    after,
-    limit,
-    from,
-    to,
-  }: {
-    before?: number
-    after?: number
-    limit?: number
-    from?: number
-    to?: number
-  }) {
+  async fetchBlocks(
+    {
+      before,
+      after,
+      limit,
+      from,
+      to,
+    }: {
+      before?: number
+      after?: number
+      limit?: number
+      from?: number
+      to?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetBlocksRequest.create()
 
     if (before) {
@@ -226,12 +258,12 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetBlocksRequest,
       InjectiveExplorerRpcPb.GetBlocksResponse
-    >(request, this.client.getBlocks.bind(this.client))
+    >(request, this.client.getBlocks.bind(this.client), options?.signal)
 
     return response
   }
 
-  async fetchBlock(id: string) {
+  async fetchBlock(id: string, options?: GrpcCallOptions) {
     const request = InjectiveExplorerRpcPb.GetBlockRequest.create()
 
     request.id = id
@@ -239,30 +271,33 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetBlockRequest,
       InjectiveExplorerRpcPb.GetBlockResponse
-    >(request, this.client.getBlock.bind(this.client))
+    >(request, this.client.getBlock.bind(this.client), options?.signal)
 
     return response
   }
 
-  async fetchTxs({
-    before,
-    after,
-    limit,
-    skip,
-    type,
-    chainModule,
-    startTime,
-    endTime,
-  }: {
-    before?: number
-    after?: number
-    limit?: number
-    skip?: number
-    type?: string
-    startTime?: number
-    endTime?: number
-    chainModule?: string
-  }) {
+  async fetchTxs(
+    {
+      before,
+      after,
+      limit,
+      skip,
+      type,
+      chainModule,
+      startTime,
+      endTime,
+    }: {
+      before?: number
+      after?: number
+      limit?: number
+      skip?: number
+      type?: string
+      startTime?: number
+      endTime?: number
+      chainModule?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetTxsRequest.create()
 
     if (before) {
@@ -300,30 +335,33 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetTxsRequest,
       InjectiveExplorerRpcPb.GetTxsResponse
-    >(request, this.client.getTxs.bind(this.client))
+    >(request, this.client.getTxs.bind(this.client), options?.signal)
 
     return response
   }
 
-  async fetchIBCTransferTxs({
-    sender,
-    receiver,
-    srcChannel,
-    srcPort,
-    destChannel,
-    destPort,
-    limit,
-    skip,
-  }: {
-    sender?: string
-    receiver?: string
-    srcChannel?: string
-    srcPort?: string
-    destChannel?: string
-    destPort?: string
-    limit?: number
-    skip?: number
-  }) {
+  async fetchIBCTransferTxs(
+    {
+      sender,
+      receiver,
+      srcChannel,
+      srcPort,
+      destChannel,
+      destPort,
+      limit,
+      skip,
+    }: {
+      sender?: string
+      receiver?: string
+      srcChannel?: string
+      srcPort?: string
+      destChannel?: string
+      destPort?: string
+      limit?: number
+      skip?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetIBCTransferTxsRequest.create()
 
     if (sender) {
@@ -361,43 +399,46 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetIBCTransferTxsRequest,
       InjectiveExplorerRpcPb.GetIBCTransferTxsResponse
-    >(request, this.client.getIBCTransferTxs.bind(this.client))
+    >(request, this.client.getIBCTransferTxs.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
       response,
     )
   }
 
-  async fetchExplorerStats() {
+  async fetchExplorerStats(options?: GrpcCallOptions) {
     const request = InjectiveExplorerRpcPb.GetStatsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetStatsRequest,
       InjectiveExplorerRpcPb.GetStatsResponse
-    >(request, this.client.getStats.bind(this.client))
+    >(request, this.client.getStats.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.getExplorerStatsResponseToExplorerStats(
       response,
     )
   }
 
-  async fetchTxsV2({
-    type,
-    token,
-    status,
-    perPage,
-    endTime,
-    startTime,
-    blockNumber,
-  }: {
-    type?: string
-    token?: string
-    status?: string
-    perPage?: number
-    endTime?: number
-    startTime?: number
-    blockNumber?: number
-  }) {
+  async fetchTxsV2(
+    {
+      type,
+      token,
+      status,
+      perPage,
+      endTime,
+      startTime,
+      blockNumber,
+    }: {
+      type?: string
+      token?: string
+      status?: string
+      perPage?: number
+      endTime?: number
+      startTime?: number
+      blockNumber?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetTxsV2Request.create()
 
     if (token) {
@@ -431,26 +472,29 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetTxsV2Request,
       InjectiveExplorerRpcPb.GetTxsV2Response
-    >(request, this.client.getTxsV2.bind(this.client))
+    >(request, this.client.getTxsV2.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.getTxsV2ResponseToTxs(response)
   }
 
-  async fetchAccountTxsV2({
-    type,
-    token,
-    address,
-    endTime,
-    perPage,
-    startTime,
-  }: {
-    type?: string
-    token?: string
-    address: string
-    endTime?: number
-    perPage?: number
-    startTime?: number
-  }) {
+  async fetchAccountTxsV2(
+    {
+      type,
+      token,
+      address,
+      endTime,
+      perPage,
+      startTime,
+    }: {
+      type?: string
+      token?: string
+      address: string
+      endTime?: number
+      perPage?: number
+      startTime?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetAccountTxsV2Request.create()
 
     request.address = address
@@ -478,20 +522,23 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetAccountTxsV2Request,
       InjectiveExplorerRpcPb.GetAccountTxsV2Response
-    >(request, this.client.getAccountTxsV2.bind(this.client))
+    >(request, this.client.getAccountTxsV2.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.getAccountTxsV2ResponseToAccountTxs(
       response,
     )
   }
 
-  async fetchBlocksV2({
-    token,
-    perPage,
-  }: {
-    token?: string
-    perPage?: number
-  }) {
+  async fetchBlocksV2(
+    {
+      token,
+      perPage,
+    }: {
+      token?: string
+      perPage?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetBlocksV2Request.create({})
 
     if (perPage) {
@@ -505,28 +552,31 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetBlocksV2Request,
       InjectiveExplorerRpcPb.GetBlocksV2Response
-    >(request, this.client.getBlocksV2.bind(this.client))
+    >(request, this.client.getBlocksV2.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.getBlocksV2ResponseToBlocks(response)
   }
 
-  async fetchContractTxsV2({
-    to,
-    from,
-    token,
-    height,
-    status,
-    perPage,
-    contractAddress,
-  }: {
-    to?: number
-    from?: number
-    token?: string
-    height?: string
-    status?: string
-    perPage?: number
-    contractAddress: string
-  }) {
+  async fetchContractTxsV2(
+    {
+      to,
+      from,
+      token,
+      height,
+      status,
+      perPage,
+      contractAddress,
+    }: {
+      to?: number
+      from?: number
+      token?: string
+      height?: string
+      status?: string
+      perPage?: number
+      contractAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveExplorerRpcPb.GetContractTxsV2Request.create()
 
     request.address = contractAddress
@@ -558,7 +608,7 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExplorerRpcPb.GetContractTxsV2Request,
       InjectiveExplorerRpcPb.GetContractTxsV2Response
-    >(request, this.client.getContractTxsV2.bind(this.client))
+    >(request, this.client.getContractTxsV2.bind(this.client), options?.signal)
 
     return IndexerGrpcExplorerTransformer.getContractTxsV2ResponseToContractTxs(
       response,

@@ -8,6 +8,7 @@ import type {
   OrderSide,
   OrderState,
   TradeDirection,
+  GrpcCallOptions,
   PaginationOption,
   TradeExecutionSide,
   TradeExecutionType,
@@ -23,11 +24,14 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveDerivativeExchangeRPCClient)
   }
 
-  async fetchMarkets(params?: {
-    quoteDenom?: string
-    marketStatus?: string
-    marketStatuses?: string[]
-  }) {
+  async fetchMarkets(
+    params?: {
+      quoteDenom?: string
+      marketStatus?: string
+      marketStatuses?: string[]
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketStatus, quoteDenom, marketStatuses } = params || {}
 
     const request = InjectiveDerivativeExchangeRpcPb.MarketsRequest.create()
@@ -47,12 +51,12 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.MarketsRequest,
       InjectiveDerivativeExchangeRpcPb.MarketsResponse
-    >(request, this.client.markets.bind(this.client))
+    >(request, this.client.markets.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.marketsResponseToMarkets(response)
   }
 
-  async fetchMarket(marketId: string) {
+  async fetchMarket(marketId: string, options?: GrpcCallOptions) {
     const request = InjectiveDerivativeExchangeRpcPb.MarketRequest.create()
 
     request.marketId = marketId
@@ -60,16 +64,19 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.MarketRequest,
       InjectiveDerivativeExchangeRpcPb.MarketResponse
-    >(request, this.client.market.bind(this.client))
+    >(request, this.client.market.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.marketResponseToMarket(response)
   }
 
-  async fetchBinaryOptionsMarkets(params?: {
-    marketStatus?: string
-    quoteDenom?: string
-    pagination?: PaginationOption
-  }) {
+  async fetchBinaryOptionsMarkets(
+    params?: {
+      marketStatus?: string
+      quoteDenom?: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketStatus, quoteDenom, pagination } = params || {}
 
     const request =
@@ -96,14 +103,18 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketsRequest,
       InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketsResponse
-    >(request, this.client.binaryOptionsMarkets.bind(this.client))
+    >(
+      request,
+      this.client.binaryOptionsMarkets.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
       response,
     )
   }
 
-  async fetchBinaryOptionsMarket(marketId: string) {
+  async fetchBinaryOptionsMarket(marketId: string, options?: GrpcCallOptions) {
     const request =
       InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketRequest.create()
 
@@ -112,7 +123,11 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketRequest,
       InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketResponse
-    >(request, this.client.binaryOptionsMarket.bind(this.client))
+    >(
+      request,
+      this.client.binaryOptionsMarket.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcDerivativeTransformer.binaryOptionsMarketResponseToBinaryOptionsMarket(
       response,
@@ -124,16 +139,19 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     throw new GeneralException(new Error('deprecated - use fetchOrderbookV2'))
   }
 
-  async fetchOrders(params?: {
-    cid?: string
-    tradeId?: string
-    marketId?: string
-    marketIds?: string[]
-    orderSide?: OrderSide
-    pagination?: PaginationOption
-    subaccountId?: string
-    isConditional?: boolean
-  }) {
+  async fetchOrders(
+    params?: {
+      cid?: string
+      tradeId?: string
+      marketId?: string
+      marketIds?: string[]
+      orderSide?: OrderSide
+      pagination?: PaginationOption
+      subaccountId?: string
+      isConditional?: boolean
+    },
+    options?: GrpcCallOptions,
+  ) {
     const {
       cid,
       marketId,
@@ -196,24 +214,27 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.OrdersRequest,
       InjectiveDerivativeExchangeRpcPb.OrdersResponse
-    >(request, this.client.orders.bind(this.client))
+    >(request, this.client.orders.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
   }
 
-  async fetchOrderHistory(params?: {
-    cid?: string
-    state?: OrderState
-    tradeId?: string
-    marketId?: string
-    marketIds?: string[]
-    orderTypes?: OrderSide[]
-    direction?: TradeDirection
-    pagination?: PaginationOption
-    subaccountId?: string
-    isConditional?: boolean
-    executionTypes?: TradeExecutionType[]
-  }) {
+  async fetchOrderHistory(
+    params?: {
+      cid?: string
+      state?: OrderState
+      tradeId?: string
+      marketId?: string
+      marketIds?: string[]
+      orderTypes?: OrderSide[]
+      direction?: TradeDirection
+      pagination?: PaginationOption
+      subaccountId?: string
+      isConditional?: boolean
+      executionTypes?: TradeExecutionType[]
+    },
+    options?: GrpcCallOptions,
+  ) {
     const {
       cid,
       state,
@@ -292,7 +313,7 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.OrdersHistoryRequest,
       InjectiveDerivativeExchangeRpcPb.OrdersHistoryResponse
-    >(request, this.client.ordersHistory.bind(this.client))
+    >(request, this.client.ordersHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.orderHistoryResponseToOrderHistory(
       response,
@@ -300,13 +321,16 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     )
   }
 
-  async fetchPositions(params?: {
-    marketId?: string
-    marketIds?: string[]
-    subaccountId?: string
-    direction?: TradeDirection
-    pagination?: PaginationOption
-  }) {
+  async fetchPositions(
+    params?: {
+      marketId?: string
+      marketIds?: string[]
+      subaccountId?: string
+      direction?: TradeDirection
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketId, marketIds, subaccountId, direction, pagination } =
       params || {}
 
@@ -349,21 +373,24 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.PositionsRequest,
       InjectiveDerivativeExchangeRpcPb.PositionsResponse
-    >(request, this.client.positions.bind(this.client))
+    >(request, this.client.positions.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.positionsResponseToPositions(
       response,
     )
   }
 
-  async fetchPositionsV2(params?: {
-    address?: string
-    marketId?: string
-    marketIds?: string[]
-    subaccountId?: string
-    direction?: TradeDirection
-    pagination?: PaginationOption
-  }) {
+  async fetchPositionsV2(
+    params?: {
+      address?: string
+      marketId?: string
+      marketIds?: string[]
+      subaccountId?: string
+      direction?: TradeDirection
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const {
       marketId,
       marketIds,
@@ -416,27 +443,30 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.PositionsV2Request,
       InjectiveDerivativeExchangeRpcPb.PositionsV2Response
-    >(request, this.client.positionsV2.bind(this.client))
+    >(request, this.client.positionsV2.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.positionsV2ResponseToPositionsV2(
       response,
     )
   }
 
-  async fetchTrades(params?: {
-    endTime?: number
-    tradeId?: string
-    marketId?: string
-    startTime?: number
-    marketIds?: string[]
-    subaccountId?: string
-    accountAddress?: string
-    direction?: TradeDirection
-    pagination?: PaginationOption
-    executionSide?: TradeExecutionSide
-    executionTypes?: TradeExecutionType[]
-    cid?: string
-  }) {
+  async fetchTrades(
+    params?: {
+      endTime?: number
+      tradeId?: string
+      marketId?: string
+      startTime?: number
+      marketIds?: string[]
+      subaccountId?: string
+      accountAddress?: string
+      direction?: TradeDirection
+      pagination?: PaginationOption
+      executionSide?: TradeExecutionSide
+      executionTypes?: TradeExecutionType[]
+      cid?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const {
       endTime,
       tradeId,
@@ -519,17 +549,20 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.TradesRequest,
       InjectiveDerivativeExchangeRpcPb.TradesResponse
-    >(request, this.client.trades.bind(this.client))
+    >(request, this.client.trades.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.tradesResponseToTrades(response)
   }
 
-  async fetchFundingPayments(params?: {
-    marketId?: string
-    marketIds?: string[]
-    subaccountId?: string
-    pagination?: PaginationOption
-  }) {
+  async fetchFundingPayments(
+    params?: {
+      marketId?: string
+      marketIds?: string[]
+      subaccountId?: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketId, marketIds, subaccountId, pagination } = params || {}
 
     const request =
@@ -564,17 +597,20 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.FundingPaymentsRequest,
       InjectiveDerivativeExchangeRpcPb.FundingPaymentsResponse
-    >(request, this.client.fundingPayments.bind(this.client))
+    >(request, this.client.fundingPayments.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.fundingPaymentsResponseToFundingPayments(
       response,
     )
   }
 
-  async fetchFundingRates(params?: {
-    marketId?: string
-    pagination?: PaginationOption
-  }) {
+  async fetchFundingRates(
+    params?: {
+      marketId?: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketId, pagination } = params || {}
 
     const request =
@@ -597,18 +633,21 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.FundingRatesRequest,
       InjectiveDerivativeExchangeRpcPb.FundingRatesResponse
-    >(request, this.client.fundingRates.bind(this.client))
+    >(request, this.client.fundingRates.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.fundingRatesResponseToFundingRates(
       response,
     )
   }
 
-  async fetchSubaccountOrdersList(params?: {
-    marketId?: string
-    subaccountId?: string
-    pagination?: PaginationOption
-  }) {
+  async fetchSubaccountOrdersList(
+    params?: {
+      marketId?: string
+      subaccountId?: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketId, subaccountId, pagination } = params || {}
 
     const request =
@@ -635,18 +674,25 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.SubaccountOrdersListRequest,
       InjectiveDerivativeExchangeRpcPb.SubaccountOrdersListResponse
-    >(request, this.client.subaccountOrdersList.bind(this.client))
+    >(
+      request,
+      this.client.subaccountOrdersList.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcDerivativeTransformer.ordersResponseToOrders(response)
   }
 
-  async fetchSubaccountTradesList(params: {
-    marketId?: string
-    subaccountId?: string
-    direction?: TradeDirection
-    executionType?: TradeExecutionType
-    pagination?: PaginationOption
-  }) {
+  async fetchSubaccountTradesList(
+    params: {
+      marketId?: string
+      subaccountId?: string
+      direction?: TradeDirection
+      executionType?: TradeExecutionType
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketId, subaccountId, direction, executionType, pagination } =
       params || {}
 
@@ -682,7 +728,11 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.SubaccountTradesListRequest,
       InjectiveDerivativeExchangeRpcPb.SubaccountTradesListResponse
-    >(request, this.client.subaccountTradesList.bind(this.client))
+    >(
+      request,
+      this.client.subaccountTradesList.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcDerivativeTransformer.subaccountTradesListResponseToSubaccountTradesList(
       response,
@@ -694,7 +744,7 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     throw new GeneralException(new Error('deprecated - use fetchOrderbooksV2'))
   }
 
-  async fetchOrderbooksV2(marketIds: string[]) {
+  async fetchOrderbooksV2(marketIds: string[], options?: GrpcCallOptions) {
     const request =
       InjectiveDerivativeExchangeRpcPb.OrderbooksV2Request.create()
 
@@ -705,14 +755,14 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.OrderbooksV2Request,
       InjectiveDerivativeExchangeRpcPb.OrderbooksV2Response
-    >(request, this.client.orderbooksV2.bind(this.client))
+    >(request, this.client.orderbooksV2.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.orderbooksV2ResponseToOrderbooksV2(
       response,
     )
   }
 
-  async fetchOrderbookV2(marketId: string) {
+  async fetchOrderbookV2(marketId: string, options?: GrpcCallOptions) {
     const request = InjectiveDerivativeExchangeRpcPb.OrderbookV2Request.create()
 
     request.marketId = marketId
@@ -720,7 +770,7 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveDerivativeExchangeRpcPb.OrderbookV2Request,
       InjectiveDerivativeExchangeRpcPb.OrderbookV2Response
-    >(request, this.client.orderbookV2.bind(this.client))
+    >(request, this.client.orderbookV2.bind(this.client), options?.signal)
 
     return IndexerGrpcDerivativeTransformer.orderbookV2ResponseToOrderbookV2(
       response,

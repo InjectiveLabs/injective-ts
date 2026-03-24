@@ -8,6 +8,7 @@ import type {
   OrderSide,
   OrderState,
   TradeDirection,
+  GrpcCallOptions,
   PaginationOption,
   TradeExecutionSide,
   TradeExecutionType,
@@ -23,12 +24,15 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveSpotExchangeRPCClient)
   }
 
-  async fetchMarkets(params?: {
-    baseDenom?: string
-    marketStatus?: string
-    quoteDenom?: string
-    marketStatuses?: string[]
-  }) {
+  async fetchMarkets(
+    params?: {
+      baseDenom?: string
+      marketStatus?: string
+      quoteDenom?: string
+      marketStatuses?: string[]
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { baseDenom, marketStatus, quoteDenom, marketStatuses } = params || {}
     const request = InjectiveSpotExchangeRpcPb.MarketsRequest.create()
 
@@ -51,12 +55,12 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.MarketsRequest,
       InjectiveSpotExchangeRpcPb.MarketsResponse
-    >(request, this.client.markets.bind(this.client))
+    >(request, this.client.markets.bind(this.client), options?.signal)
 
     return IndexerGrpcSpotTransformer.marketsResponseToMarkets(response)
   }
 
-  async fetchMarket(marketId: string) {
+  async fetchMarket(marketId: string, options?: GrpcCallOptions) {
     const request = InjectiveSpotExchangeRpcPb.MarketRequest.create()
 
     request.marketId = marketId
@@ -64,7 +68,7 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.MarketRequest,
       InjectiveSpotExchangeRpcPb.MarketResponse
-    >(request, this.client.market.bind(this.client))
+    >(request, this.client.market.bind(this.client), options?.signal)
 
     return IndexerGrpcSpotTransformer.marketResponseToMarket(response)
   }
@@ -74,16 +78,19 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     throw new GeneralException(new Error('deprecated - use fetchOrderbookV2'))
   }
 
-  async fetchOrders(params?: {
-    marketId?: string
-    marketIds?: string[]
-    subaccountId?: string
-    orderSide?: OrderSide
-    isConditional?: boolean
-    pagination?: PaginationOption
-    cid?: string
-    tradeId?: string
-  }) {
+  async fetchOrders(
+    params?: {
+      marketId?: string
+      marketIds?: string[]
+      subaccountId?: string
+      orderSide?: OrderSide
+      isConditional?: boolean
+      pagination?: PaginationOption
+      cid?: string
+      tradeId?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const {
       cid,
       tradeId,
@@ -144,24 +151,27 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.OrdersRequest,
       InjectiveSpotExchangeRpcPb.OrdersResponse
-    >(request, this.client.orders.bind(this.client))
+    >(request, this.client.orders.bind(this.client), options?.signal)
 
     return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
   }
 
-  async fetchOrderHistory(params?: {
-    cid?: string
-    state?: OrderState
-    tradeId?: string
-    marketId?: string
-    marketIds?: string[]
-    direction?: TradeDirection
-    orderTypes?: OrderSide[]
-    pagination?: PaginationOption
-    isConditional?: boolean
-    executionTypes?: TradeExecutionType[]
-    subaccountId?: string
-  }) {
+  async fetchOrderHistory(
+    params?: {
+      cid?: string
+      state?: OrderState
+      tradeId?: string
+      marketId?: string
+      marketIds?: string[]
+      direction?: TradeDirection
+      orderTypes?: OrderSide[]
+      pagination?: PaginationOption
+      isConditional?: boolean
+      executionTypes?: TradeExecutionType[]
+      subaccountId?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const {
       cid,
       state,
@@ -240,27 +250,30 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.OrdersHistoryRequest,
       InjectiveSpotExchangeRpcPb.OrdersHistoryResponse
-    >(request, this.client.ordersHistory.bind(this.client))
+    >(request, this.client.ordersHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcSpotTransformer.orderHistoryResponseToOrderHistory(
       response,
     )
   }
 
-  async fetchTrades(params?: {
-    endTime?: number
-    tradeId?: string
-    marketId?: string
-    startTime?: number
-    marketIds?: string[]
-    subaccountId?: string
-    accountAddress?: string
-    direction?: TradeDirection
-    pagination?: PaginationOption
-    executionSide?: TradeExecutionSide
-    executionTypes?: TradeExecutionType[]
-    cid?: string
-  }) {
+  async fetchTrades(
+    params?: {
+      endTime?: number
+      tradeId?: string
+      marketId?: string
+      startTime?: number
+      marketIds?: string[]
+      subaccountId?: string
+      accountAddress?: string
+      direction?: TradeDirection
+      pagination?: PaginationOption
+      executionSide?: TradeExecutionSide
+      executionTypes?: TradeExecutionType[]
+      cid?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const {
       endTime,
       tradeId,
@@ -343,16 +356,19 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.TradesRequest,
       InjectiveSpotExchangeRpcPb.TradesResponse
-    >(request, this.client.trades.bind(this.client))
+    >(request, this.client.trades.bind(this.client), options?.signal)
 
     return IndexerGrpcSpotTransformer.tradesResponseToTrades(response)
   }
 
-  async fetchSubaccountOrdersList(params?: {
-    subaccountId?: string
-    marketId?: string
-    pagination?: PaginationOption
-  }) {
+  async fetchSubaccountOrdersList(
+    params?: {
+      subaccountId?: string
+      marketId?: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { subaccountId, marketId, pagination } = params || {}
     const request =
       InjectiveSpotExchangeRpcPb.SubaccountOrdersListRequest.create()
@@ -378,18 +394,25 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.SubaccountOrdersListRequest,
       InjectiveSpotExchangeRpcPb.SubaccountOrdersListResponse
-    >(request, this.client.subaccountOrdersList.bind(this.client))
+    >(
+      request,
+      this.client.subaccountOrdersList.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcSpotTransformer.ordersResponseToOrders(response)
   }
 
-  async fetchSubaccountTradesList(params?: {
-    subaccountId?: string
-    marketId?: string
-    direction?: TradeDirection
-    executionType?: TradeExecutionType
-    pagination?: PaginationOption
-  }) {
+  async fetchSubaccountTradesList(
+    params?: {
+      subaccountId?: string
+      marketId?: string
+      direction?: TradeDirection
+      executionType?: TradeExecutionType
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { subaccountId, marketId, direction, executionType, pagination } =
       params || {}
     const request =
@@ -424,7 +447,11 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.SubaccountTradesListRequest,
       InjectiveSpotExchangeRpcPb.SubaccountTradesListResponse
-    >(request, this.client.subaccountTradesList.bind(this.client))
+    >(
+      request,
+      this.client.subaccountTradesList.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcSpotTransformer.subaccountTradesListResponseToTradesList(
       response,
@@ -436,7 +463,7 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     throw new GeneralException(new Error('deprecated - use fetchOrderbooksV2'))
   }
 
-  async fetchOrderbooksV2(marketIds: string[]) {
+  async fetchOrderbooksV2(marketIds: string[], options?: GrpcCallOptions) {
     const request = InjectiveSpotExchangeRpcPb.OrderbooksV2Request.create()
 
     if (marketIds.length > 0) {
@@ -446,14 +473,14 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.OrderbooksV2Request,
       InjectiveSpotExchangeRpcPb.OrderbooksV2Response
-    >(request, this.client.orderbooksV2.bind(this.client))
+    >(request, this.client.orderbooksV2.bind(this.client), options?.signal)
 
     return IndexerGrpcSpotTransformer.orderbooksV2ResponseToOrderbooksV2(
       response,
     )
   }
 
-  async fetchOrderbookV2(marketId: string) {
+  async fetchOrderbookV2(marketId: string, options?: GrpcCallOptions) {
     const request = InjectiveSpotExchangeRpcPb.OrderbookV2Request.create()
 
     request.marketId = marketId
@@ -461,16 +488,19 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.OrderbookV2Request,
       InjectiveSpotExchangeRpcPb.OrderbookV2Response
-    >(request, this.client.orderbookV2.bind(this.client))
+    >(request, this.client.orderbookV2.bind(this.client), options?.signal)
 
     return IndexerGrpcSpotTransformer.orderbookV2ResponseToOrderbookV2(response)
   }
 
-  async fetchAtomicSwapHistory(params: {
-    address: string
-    contractAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchAtomicSwapHistory(
+    params: {
+      address: string
+      contractAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { address, contractAddress, pagination } = params || {}
     const request = InjectiveSpotExchangeRpcPb.AtomicSwapHistoryRequest.create()
 
@@ -498,7 +528,7 @@ export class IndexerGrpcSpotApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveSpotExchangeRpcPb.AtomicSwapHistoryRequest,
       InjectiveSpotExchangeRpcPb.AtomicSwapHistoryResponse
-    >(request, this.client.atomicSwapHistory.bind(this.client))
+    >(request, this.client.atomicSwapHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcSpotTransformer.grpcAtomicSwapHistoryListToAtomicSwapHistoryList(
       response,

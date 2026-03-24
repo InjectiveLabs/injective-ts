@@ -4,6 +4,7 @@ import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcAuthZTransformer } from '../transformers/ChainGrpcAuthZTransformer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
@@ -15,17 +16,20 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     return this.initClient(CosmosAuthzV1BetaQueryClient)
   }
 
-  async fetchGrants({
-    pagination,
-    granter,
-    grantee,
-    msgTypeUrl,
-  }: {
-    pagination?: PaginationOption
-    granter: string
-    grantee: string
-    msgTypeUrl?: string
-  }) {
+  async fetchGrants(
+    {
+      pagination,
+      granter,
+      grantee,
+      msgTypeUrl,
+    }: {
+      pagination?: PaginationOption
+      granter: string
+      grantee: string
+      msgTypeUrl?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmosAuthzV1Beta1QueryPb.QueryGrantsRequest.create()
 
     if (granter) {
@@ -50,12 +54,16 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosAuthzV1Beta1QueryPb.QueryGrantsRequest,
       CosmosAuthzV1Beta1QueryPb.QueryGrantsResponse
-    >(request, this.client.grants.bind(this.client))
+    >(request, this.client.grants.bind(this.client), options?.signal)
 
     return ChainGrpcAuthZTransformer.grpcGrantsToGrants(response)
   }
 
-  async fetchGranterGrants(granter: string, pagination?: PaginationOption) {
+  async fetchGranterGrants(
+    granter: string,
+    pagination?: PaginationOption,
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmosAuthzV1Beta1QueryPb.QueryGranterGrantsRequest.create()
 
     if (granter) {
@@ -72,12 +80,16 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosAuthzV1Beta1QueryPb.QueryGranterGrantsRequest,
       CosmosAuthzV1Beta1QueryPb.QueryGranterGrantsResponse
-    >(request, this.client.granterGrants.bind(this.client))
+    >(request, this.client.granterGrants.bind(this.client), options?.signal)
 
     return ChainGrpcAuthZTransformer.grpcGranterGrantsToGranterGrants(response)
   }
 
-  async fetchGranteeGrants(grantee: string, pagination?: PaginationOption) {
+  async fetchGranteeGrants(
+    grantee: string,
+    pagination?: PaginationOption,
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmosAuthzV1Beta1QueryPb.QueryGranteeGrantsRequest.create()
 
     if (grantee) {
@@ -94,7 +106,7 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosAuthzV1Beta1QueryPb.QueryGranteeGrantsRequest,
       CosmosAuthzV1Beta1QueryPb.QueryGranteeGrantsResponse
-    >(request, this.client.granteeGrants.bind(this.client))
+    >(request, this.client.granteeGrants.bind(this.client), options?.signal)
 
     return ChainGrpcAuthZTransformer.grpcGranteeGrantsToGranteeGrants(response)
   }

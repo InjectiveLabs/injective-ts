@@ -3,6 +3,7 @@ import { InjectiveArchiverRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcArchiverTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,13 +14,16 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveArchiverRPCClient)
   }
 
-  async fetchHistoricalBalance({
-    account,
-    resolution,
-  }: {
-    account: string
-    resolution: string
-  }) {
+  async fetchHistoricalBalance(
+    {
+      account,
+      resolution,
+    }: {
+      account: string
+      resolution: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveArchiverRpcPb.BalanceRequest.create()
 
     request.account = account
@@ -28,20 +32,23 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.BalanceRequest,
       InjectiveArchiverRpcPb.BalanceResponse
-    >(request, this.client.balance.bind(this.client))
+    >(request, this.client.balance.bind(this.client), options?.signal)
 
     return IndexerGrpcArchiverTransformer.grpcHistoricalBalanceResponseToHistoricalBalances(
       response,
     )
   }
 
-  async fetchHistoricalRpnl({
-    account,
-    resolution,
-  }: {
-    account: string
-    resolution: string
-  }) {
+  async fetchHistoricalRpnl(
+    {
+      account,
+      resolution,
+    }: {
+      account: string
+      resolution: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveArchiverRpcPb.RpnlRequest.create()
 
     request.account = account
@@ -50,20 +57,23 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.RpnlRequest,
       InjectiveArchiverRpcPb.RpnlResponse
-    >(request, this.client.rpnl.bind(this.client))
+    >(request, this.client.rpnl.bind(this.client), options?.signal)
 
     return IndexerGrpcArchiverTransformer.grpcHistoricalRPNLResponseToHistoricalRPNL(
       response,
     )
   }
 
-  async fetchHistoricalVolumes({
-    account,
-    resolution,
-  }: {
-    account: string
-    resolution: string
-  }) {
+  async fetchHistoricalVolumes(
+    {
+      account,
+      resolution,
+    }: {
+      account: string
+      resolution: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveArchiverRpcPb.VolumesRequest.create()
 
     request.account = account
@@ -72,24 +82,27 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.VolumesRequest,
       InjectiveArchiverRpcPb.VolumesResponse
-    >(request, this.client.volumes.bind(this.client))
+    >(request, this.client.volumes.bind(this.client), options?.signal)
 
     return IndexerGrpcArchiverTransformer.grpcHistoricalVolumesResponseToHistoricalVolumes(
       response,
     )
   }
 
-  async fetchPnlLeaderboard({
-    startDate,
-    endDate,
-    limit,
-    account,
-  }: {
-    startDate: string
-    endDate: string
-    limit?: number
-    account?: string
-  }) {
+  async fetchPnlLeaderboard(
+    {
+      startDate,
+      endDate,
+      limit,
+      account,
+    }: {
+      startDate: string
+      endDate: string
+      limit?: number
+      account?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveArchiverRpcPb.PnlLeaderboardRequest.create()
 
     request.startDate = BigInt(startDate)
@@ -106,24 +119,27 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.PnlLeaderboardRequest,
       InjectiveArchiverRpcPb.PnlLeaderboardResponse
-    >(request, this.client.pnlLeaderboard.bind(this.client))
+    >(request, this.client.pnlLeaderboard.bind(this.client), options?.signal)
 
     return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardResponseToPnlLeaderboard(
       response,
     )
   }
 
-  async fetchVolLeaderboard({
-    startDate,
-    endDate,
-    limit,
-    account,
-  }: {
-    startDate: string
-    endDate: string
-    limit?: number
-    account?: string
-  }) {
+  async fetchVolLeaderboard(
+    {
+      startDate,
+      endDate,
+      limit,
+      account,
+    }: {
+      startDate: string
+      endDate: string
+      limit?: number
+      account?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveArchiverRpcPb.VolLeaderboardRequest.create()
 
     request.startDate = BigInt(startDate)
@@ -140,22 +156,25 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.VolLeaderboardRequest,
       InjectiveArchiverRpcPb.VolLeaderboardResponse
-    >(request, this.client.volLeaderboard.bind(this.client))
+    >(request, this.client.volLeaderboard.bind(this.client), options?.signal)
 
     return IndexerGrpcArchiverTransformer.grpcVolLeaderboardResponseToVolLeaderboard(
       response,
     )
   }
 
-  async fetchPnlLeaderboardFixedResolution({
-    resolution,
-    limit,
-    account,
-  }: {
-    resolution: string
-    limit?: number
-    account?: string
-  }) {
+  async fetchPnlLeaderboardFixedResolution(
+    {
+      resolution,
+      limit,
+      account,
+    }: {
+      resolution: string
+      limit?: number
+      account?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveArchiverRpcPb.PnlLeaderboardFixedResolutionRequest.create()
 
@@ -172,22 +191,29 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.PnlLeaderboardFixedResolutionRequest,
       InjectiveArchiverRpcPb.PnlLeaderboardFixedResolutionResponse
-    >(request, this.client.pnlLeaderboardFixedResolution.bind(this.client))
+    >(
+      request,
+      this.client.pnlLeaderboardFixedResolution.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcArchiverTransformer.grpcPnlLeaderboardFixedResolutionResponseToPnlLeaderboard(
       response,
     )
   }
 
-  async fetchVolLeaderboardFixedResolution({
-    resolution,
-    limit,
-    account,
-  }: {
-    resolution: string
-    limit?: number
-    account?: string
-  }) {
+  async fetchVolLeaderboardFixedResolution(
+    {
+      resolution,
+      limit,
+      account,
+    }: {
+      resolution: string
+      limit?: number
+      account?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveArchiverRpcPb.VolLeaderboardFixedResolutionRequest.create()
 
@@ -204,22 +230,29 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.VolLeaderboardFixedResolutionRequest,
       InjectiveArchiverRpcPb.VolLeaderboardFixedResolutionResponse
-    >(request, this.client.volLeaderboardFixedResolution.bind(this.client))
+    >(
+      request,
+      this.client.volLeaderboardFixedResolution.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcArchiverTransformer.grpcVolLeaderboardFixedResolutionResponseToVolLeaderboard(
       response,
     )
   }
 
-  async fetchDenomHolders({
-    denom,
-    token,
-    limit,
-  }: {
-    denom: string
-    token?: string
-    limit?: number
-  }) {
+  async fetchDenomHolders(
+    {
+      denom,
+      token,
+      limit,
+    }: {
+      denom: string
+      token?: string
+      limit?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveArchiverRpcPb.DenomHoldersRequest.create()
 
     request.denom = denom
@@ -235,20 +268,23 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.DenomHoldersRequest,
       InjectiveArchiverRpcPb.DenomHoldersResponse
-    >(request, this.client.denomHolders.bind(this.client))
+    >(request, this.client.denomHolders.bind(this.client), options?.signal)
 
     return IndexerGrpcArchiverTransformer.grpcDenomHoldersResponseToDenomHolders(
       response,
     )
   }
 
-  async fetchAccountStats({
-    account,
-    period,
-  }: {
-    account: string
-    period?: string
-  }) {
+  async fetchAccountStats(
+    {
+      account,
+      period,
+    }: {
+      account: string
+      period?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveArchiverRpcPb.AccountStatsRequest.create()
 
     request.account = account
@@ -260,7 +296,7 @@ export class IndexerGrpcArchiverApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveArchiverRpcPb.AccountStatsRequest,
       InjectiveArchiverRpcPb.AccountStatsResponse
-    >(request, this.client.accountStats.bind(this.client))
+    >(request, this.client.accountStats.bind(this.client), options?.signal)
 
     return IndexerGrpcArchiverTransformer.grpcAccountStatsResponseToAccountStats(
       response,

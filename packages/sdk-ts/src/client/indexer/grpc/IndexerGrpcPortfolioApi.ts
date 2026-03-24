@@ -3,6 +3,7 @@ import { InjectivePortfolioRPCClient } from '@injectivelabs/indexer-proto-ts-v2/
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,7 +14,7 @@ export class IndexerGrpcAccountPortfolioApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectivePortfolioRPCClient)
   }
 
-  async fetchAccountPortfolio(address: string) {
+  async fetchAccountPortfolio(address: string, options?: GrpcCallOptions) {
     const request = InjectivePortfolioRpcPb.AccountPortfolioRequest.create()
     request.accountAddress = address
 
@@ -21,7 +22,11 @@ export class IndexerGrpcAccountPortfolioApi extends BaseIndexerGrpcConsumer {
       const response = await this.executeGrpcCall<
         InjectivePortfolioRpcPb.AccountPortfolioRequest,
         InjectivePortfolioRpcPb.AccountPortfolioResponse
-      >(request, this.client.accountPortfolio.bind(this.client))
+      >(
+        request,
+        this.client.accountPortfolio.bind(this.client),
+        options?.signal,
+      )
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
@@ -41,7 +46,10 @@ export class IndexerGrpcAccountPortfolioApi extends BaseIndexerGrpcConsumer {
     }
   }
 
-  async fetchAccountPortfolioBalances(address: string) {
+  async fetchAccountPortfolioBalances(
+    address: string,
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectivePortfolioRpcPb.AccountPortfolioBalancesRequest.create()
     request.accountAddress = address
@@ -50,7 +58,11 @@ export class IndexerGrpcAccountPortfolioApi extends BaseIndexerGrpcConsumer {
       const response = await this.executeGrpcCall<
         InjectivePortfolioRpcPb.AccountPortfolioBalancesRequest,
         InjectivePortfolioRpcPb.AccountPortfolioBalancesResponse
-      >(request, this.client.accountPortfolioBalances.bind(this.client))
+      >(
+        request,
+        this.client.accountPortfolioBalances.bind(this.client),
+        options?.signal,
+      )
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioBalancesResponseToAccountPortfolioBalances(
         response,

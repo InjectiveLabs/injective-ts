@@ -3,6 +3,7 @@ import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-proto-ts-v2/gen
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,28 +14,31 @@ export class IndexerGrpcOracleApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveOracleRPCClient)
   }
 
-  async fetchOracleList() {
+  async fetchOracleList(options?: GrpcCallOptions) {
     const request = InjectiveOracleRpcPb.OracleListRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveOracleRpcPb.OracleListRequest,
       InjectiveOracleRpcPb.OracleListResponse
-    >(request, this.client.oracleList.bind(this.client))
+    >(request, this.client.oracleList.bind(this.client), options?.signal)
 
     return IndexerGrpcOracleTransformer.oraclesResponseToOracles(response)
   }
 
-  async fetchOraclePrice({
-    baseSymbol,
-    quoteSymbol,
-    oracleScaleFactor,
-    oracleType,
-  }: {
-    baseSymbol: string
-    quoteSymbol: string
-    oracleType: string
-    oracleScaleFactor?: number
-  }) {
+  async fetchOraclePrice(
+    {
+      baseSymbol,
+      quoteSymbol,
+      oracleScaleFactor,
+      oracleType,
+    }: {
+      baseSymbol: string
+      quoteSymbol: string
+      oracleType: string
+      oracleScaleFactor?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveOracleRpcPb.PriceRequest.create()
 
     request.baseSymbol = baseSymbol
@@ -48,22 +52,25 @@ export class IndexerGrpcOracleApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveOracleRpcPb.PriceRequest,
       InjectiveOracleRpcPb.PriceResponse
-    >(request, this.client.price.bind(this.client))
+    >(request, this.client.price.bind(this.client), options?.signal)
 
     return response
   }
 
-  async fetchOraclePriceNoThrow({
-    baseSymbol,
-    quoteSymbol,
-    oracleScaleFactor,
-    oracleType,
-  }: {
-    baseSymbol: string
-    quoteSymbol: string
-    oracleType: string
-    oracleScaleFactor?: number
-  }) {
+  async fetchOraclePriceNoThrow(
+    {
+      baseSymbol,
+      quoteSymbol,
+      oracleScaleFactor,
+      oracleType,
+    }: {
+      baseSymbol: string
+      quoteSymbol: string
+      oracleType: string
+      oracleScaleFactor?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveOracleRpcPb.PriceRequest.create()
 
     request.baseSymbol = baseSymbol
@@ -78,7 +85,7 @@ export class IndexerGrpcOracleApi extends BaseIndexerGrpcConsumer {
       const response = await this.executeGrpcCall<
         InjectiveOracleRpcPb.PriceRequest,
         InjectiveOracleRpcPb.PriceResponse
-      >(request, this.client.price.bind(this.client))
+      >(request, this.client.price.bind(this.client), options?.signal)
 
       return response
     } catch (e: unknown) {

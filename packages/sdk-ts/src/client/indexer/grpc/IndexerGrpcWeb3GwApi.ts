@@ -10,6 +10,7 @@ import { stringToUint8Array } from '../../../utils/encoding.js'
 import { safeBigIntStringify } from '../../../utils/helpers.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type { GrpcCallOptions } from '../../../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -17,33 +18,36 @@ import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
   protected module: string = IndexerModule.Web3Gw
 
-  async prepareEip712Request({
-    address,
-    chainId,
-    message,
-    memo,
-    sequence,
-    accountNumber,
-    estimateGas = false,
-    gasLimit = DEFAULT_GAS_LIMIT,
-    feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
-    feePrice = DEFAULT_BRIDGE_FEE_PRICE,
-    timeoutHeight,
-    eip712Version = 'v1',
-  }: {
-    address: AccountAddress
-    chainId: EvmChainId
-    message: any
-    estimateGas?: boolean
-    gasLimit?: number
-    memo?: string | number
-    timeoutHeight?: number
-    feeDenom?: string
-    feePrice?: string
-    sequence?: number
-    accountNumber?: number
-    eip712Version?: string
-  }) {
+  async prepareEip712Request(
+    {
+      address,
+      chainId,
+      message,
+      memo,
+      sequence,
+      accountNumber,
+      estimateGas = false,
+      gasLimit = DEFAULT_GAS_LIMIT,
+      feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
+      feePrice = DEFAULT_BRIDGE_FEE_PRICE,
+      timeoutHeight,
+      eip712Version = 'v1',
+    }: {
+      address: AccountAddress
+      chainId: EvmChainId
+      message: any
+      estimateGas?: boolean
+      gasLimit?: number
+      memo?: string | number
+      timeoutHeight?: number
+      feeDenom?: string
+      feePrice?: string
+      sequence?: number
+      accountNumber?: number
+      eip712Version?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create({
       denom: feeDenom,
       amount: feePrice,
@@ -95,6 +99,7 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     >(
       prepareTxRequest,
       (this as any).client.prepareEip712.bind((this as any).client),
+      options?.signal,
     )
 
     return response

@@ -5,6 +5,7 @@ import { ChainModule } from '../types/index.js'
 import { uint8ArrayToString } from '../../../utils/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Chain Grpc API
  */
@@ -15,38 +16,38 @@ export class ChainGrpcMintApi extends BaseGrpcConsumer {
     return this.initClient(CosmosMintV1Beta1QueryClient)
   }
 
-  async fetchModuleParams() {
+  async fetchModuleParams(options?: GrpcCallOptions) {
     const request = CosmosMintV1Beta1QueryPb.QueryParamsRequest.create()
 
     const response = await this.executeGrpcCall<
       CosmosMintV1Beta1QueryPb.QueryParamsRequest,
       CosmosMintV1Beta1QueryPb.QueryParamsResponse
-    >(request, this.client.params.bind(this.client))
+    >(request, this.client.params.bind(this.client), options?.signal)
 
     return ChainGrpcMintTransformer.moduleParamsResponseToModuleParams(response)
   }
 
-  async fetchInflation() {
+  async fetchInflation(options?: GrpcCallOptions) {
     const request = CosmosMintV1Beta1QueryPb.QueryInflationRequest.create()
 
     const response = await this.executeGrpcCall<
       CosmosMintV1Beta1QueryPb.QueryInflationRequest,
       CosmosMintV1Beta1QueryPb.QueryInflationResponse
-    >(request, this.client.inflation.bind(this.client))
+    >(request, this.client.inflation.bind(this.client), options?.signal)
 
     return {
       inflation: toHumanReadable(uint8ArrayToString(response.inflation)),
     }
   }
 
-  async fetchAnnualProvisions() {
+  async fetchAnnualProvisions(options?: GrpcCallOptions) {
     const request =
       CosmosMintV1Beta1QueryPb.QueryAnnualProvisionsRequest.create()
 
     const response = await this.executeGrpcCall<
       CosmosMintV1Beta1QueryPb.QueryAnnualProvisionsRequest,
       CosmosMintV1Beta1QueryPb.QueryAnnualProvisionsResponse
-    >(request, this.client.annualProvisions.bind(this.client))
+    >(request, this.client.annualProvisions.bind(this.client), options?.signal)
 
     return {
       annualProvisions: toHumanReadable(

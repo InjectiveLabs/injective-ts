@@ -3,6 +3,7 @@ import { InjectiveInsuranceRPCClient } from '@injectivelabs/indexer-proto-ts-v2/
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,15 +14,18 @@ export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveInsuranceRPCClient)
   }
 
-  async fetchRedemptions({
-    denom,
-    address,
-    status,
-  }: {
-    address: string
-    denom?: string
-    status?: string
-  }) {
+  async fetchRedemptions(
+    {
+      denom,
+      address,
+      status,
+    }: {
+      address: string
+      denom?: string
+      status?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveInsuranceRpcPb.RedemptionsRequest.create()
 
     request.redeemer = address
@@ -37,20 +41,20 @@ export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveInsuranceRpcPb.RedemptionsRequest,
       InjectiveInsuranceRpcPb.RedemptionsResponse
-    >(request, this.client.redemptions.bind(this.client))
+    >(request, this.client.redemptions.bind(this.client), options?.signal)
 
     return IndexerGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
       response,
     )
   }
 
-  async fetchInsuranceFunds() {
+  async fetchInsuranceFunds(options?: GrpcCallOptions) {
     const request = InjectiveInsuranceRpcPb.FundsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveInsuranceRpcPb.FundsRequest,
       InjectiveInsuranceRpcPb.FundsResponse
-    >(request, this.client.funds.bind(this.client))
+    >(request, this.client.funds.bind(this.client), options?.signal)
 
     return IndexerGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
       response,

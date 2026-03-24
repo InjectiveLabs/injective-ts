@@ -6,6 +6,7 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { base64ToUint8Array } from '../../../utils/encoding.js'
 import { ChainGrpcWasmTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
@@ -17,13 +18,16 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     return this.initClient(CosmwasmWasmV1QueryClient)
   }
 
-  async fetchContractAccountsBalance({
-    contractAddress,
-    pagination,
-  }: {
-    contractAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchContractAccountsBalance(
+    {
+      contractAddress,
+      pagination,
+    }: {
+      contractAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmwasmWasmV1QueryPb.QueryAllContractStateRequest.create()
 
     request.address = contractAddress
@@ -38,20 +42,23 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QueryAllContractStateRequest,
       CosmwasmWasmV1QueryPb.QueryAllContractStateResponse
-    >(request, this.client.allContractState.bind(this.client))
+    >(request, this.client.allContractState.bind(this.client), options?.signal)
 
     return ChainGrpcWasmTransformer.allContractStateResponseToContractAccountsBalanceWithPagination(
       response,
     )
   }
 
-  async fetchContractState({
-    contractAddress,
-    pagination,
-  }: {
-    contractAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchContractState(
+    {
+      contractAddress,
+      pagination,
+    }: {
+      contractAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmwasmWasmV1QueryPb.QueryAllContractStateRequest.create()
 
     request.address = contractAddress
@@ -66,14 +73,14 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QueryAllContractStateRequest,
       CosmwasmWasmV1QueryPb.QueryAllContractStateResponse
-    >(request, this.client.allContractState.bind(this.client))
+    >(request, this.client.allContractState.bind(this.client), options?.signal)
 
     return ChainGrpcWasmTransformer.allContractStateResponseToContractState(
       response,
     )
   }
 
-  async fetchContractInfo(contractAddress: string) {
+  async fetchContractInfo(contractAddress: string, options?: GrpcCallOptions) {
     const request = CosmwasmWasmV1QueryPb.QueryContractInfoRequest.create()
 
     request.address = contractAddress
@@ -81,7 +88,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QueryContractInfoRequest,
       CosmwasmWasmV1QueryPb.QueryContractInfoResponse
-    >(request, this.client.contractInfo.bind(this.client))
+    >(request, this.client.contractInfo.bind(this.client), options?.signal)
 
     const contractInfo = response.contractInfo
 
@@ -94,7 +101,10 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchContractHistory(contractAddress: string) {
+  async fetchContractHistory(
+    contractAddress: string,
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmwasmWasmV1QueryPb.QueryContractHistoryRequest.create()
 
     request.address = contractAddress
@@ -102,7 +112,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QueryContractHistoryRequest,
       CosmwasmWasmV1QueryPb.QueryContractHistoryResponse
-    >(request, this.client.contractHistory.bind(this.client))
+    >(request, this.client.contractHistory.bind(this.client), options?.signal)
 
     return ChainGrpcWasmTransformer.contactHistoryResponseToContractHistory(
       response,
@@ -112,6 +122,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
   async fetchSmartContractState(
     contractAddress: string,
     query?: string | Record<string, any>,
+    options?: GrpcCallOptions,
   ) {
     const request =
       CosmwasmWasmV1QueryPb.QuerySmartContractStateRequest.create()
@@ -127,12 +138,20 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QuerySmartContractStateRequest,
       CosmwasmWasmV1QueryPb.QuerySmartContractStateResponse
-    >(request, this.client.smartContractState.bind(this.client))
+    >(
+      request,
+      this.client.smartContractState.bind(this.client),
+      options?.signal,
+    )
 
     return response
   }
 
-  async fetchRawContractState(contractAddress: string, query?: string) {
+  async fetchRawContractState(
+    contractAddress: string,
+    query?: string,
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmwasmWasmV1QueryPb.QueryRawContractStateRequest.create()
 
     request.address = contractAddress
@@ -144,12 +163,15 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QueryRawContractStateRequest,
       CosmwasmWasmV1QueryPb.QueryRawContractStateResponse
-    >(request, this.client.rawContractState.bind(this.client))
+    >(request, this.client.rawContractState.bind(this.client), options?.signal)
 
     return response
   }
 
-  async fetchContractCodes(pagination?: PaginationOption) {
+  async fetchContractCodes(
+    pagination?: PaginationOption,
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmwasmWasmV1QueryPb.QueryCodesRequest.create()
 
     const paginationForRequest =
@@ -162,14 +184,14 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QueryCodesRequest,
       CosmwasmWasmV1QueryPb.QueryCodesResponse
-    >(request, this.client.codes.bind(this.client))
+    >(request, this.client.codes.bind(this.client), options?.signal)
 
     return ChainGrpcWasmTransformer.contractCodesResponseToContractCodes(
       response,
     )
   }
 
-  async fetchContractCode(codeId: number) {
+  async fetchContractCode(codeId: number, options?: GrpcCallOptions) {
     const request = CosmwasmWasmV1QueryPb.QueryCodeRequest.create()
 
     request.codeId = BigInt(codeId)
@@ -177,7 +199,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QueryCodeRequest,
       CosmwasmWasmV1QueryPb.QueryCodeResponse
-    >(request, this.client.code.bind(this.client))
+    >(request, this.client.code.bind(this.client), options?.signal)
 
     return ChainGrpcWasmTransformer.contractCodeResponseToContractCode(response)
   }
@@ -185,6 +207,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
   async fetchContractCodeContracts(
     codeId: number,
     pagination?: PaginationOption,
+    options?: GrpcCallOptions,
   ) {
     const request = CosmwasmWasmV1QueryPb.QueryContractsByCodeRequest.create()
 
@@ -200,7 +223,7 @@ export class ChainGrpcWasmApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmwasmWasmV1QueryPb.QueryContractsByCodeRequest,
       CosmwasmWasmV1QueryPb.QueryContractsByCodeResponse
-    >(request, this.client.contractsByCode.bind(this.client))
+    >(request, this.client.contractsByCode.bind(this.client), options?.signal)
 
     return ChainGrpcWasmTransformer.contractByCodeResponseToContractByCode(
       response,

@@ -4,6 +4,7 @@ import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcStakingTransformer } from '../transformers/index.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
@@ -15,31 +16,34 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     return this.initClient(CosmosStakingV1Beta1QueryClient)
   }
 
-  async fetchModuleParams() {
+  async fetchModuleParams(options?: GrpcCallOptions) {
     const request = CosmosStakingV1Beta1QueryPb.QueryParamsRequest.create()
 
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryParamsRequest,
       CosmosStakingV1Beta1QueryPb.QueryParamsResponse
-    >(request, this.client.params.bind(this.client))
+    >(request, this.client.params.bind(this.client), options?.signal)
 
     return ChainGrpcStakingTransformer.moduleParamsResponseToModuleParams(
       response,
     )
   }
 
-  async fetchPool() {
+  async fetchPool(options?: GrpcCallOptions) {
     const request = CosmosStakingV1Beta1QueryPb.QueryPoolRequest.create()
 
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryPoolRequest,
       CosmosStakingV1Beta1QueryPb.QueryPoolResponse
-    >(request, this.client.pool.bind(this.client))
+    >(request, this.client.pool.bind(this.client), options?.signal)
 
     return ChainGrpcStakingTransformer.poolResponseToPool(response)
   }
 
-  async fetchValidators(pagination?: PaginationOption) {
+  async fetchValidators(
+    pagination?: PaginationOption,
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmosStakingV1Beta1QueryPb.QueryValidatorsRequest.create()
 
     const paginationForRequest =
@@ -52,12 +56,12 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryValidatorsRequest,
       CosmosStakingV1Beta1QueryPb.QueryValidatorsResponse
-    >(request, this.client.validators.bind(this.client))
+    >(request, this.client.validators.bind(this.client), options?.signal)
 
     return ChainGrpcStakingTransformer.validatorsResponseToValidators(response)
   }
 
-  async fetchValidator(address: string) {
+  async fetchValidator(address: string, options?: GrpcCallOptions) {
     const request = CosmosStakingV1Beta1QueryPb.QueryValidatorRequest.create()
 
     request.validatorAddr = address
@@ -65,18 +69,21 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryValidatorRequest,
       CosmosStakingV1Beta1QueryPb.QueryValidatorResponse
-    >(request, this.client.validator.bind(this.client))
+    >(request, this.client.validator.bind(this.client), options?.signal)
 
     return ChainGrpcStakingTransformer.validatorResponseToValidator(response)
   }
 
-  async fetchValidatorDelegations({
-    validatorAddress,
-    pagination,
-  }: {
-    validatorAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchValidatorDelegations(
+    {
+      validatorAddress,
+      pagination,
+    }: {
+      validatorAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsRequest.create()
 
@@ -92,20 +99,27 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsRequest,
       CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsResponse
-    >(request, this.client.validatorDelegations.bind(this.client))
+    >(
+      request,
+      this.client.validatorDelegations.bind(this.client),
+      options?.signal,
+    )
 
     return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
       response,
     )
   }
 
-  async fetchValidatorDelegationsNoThrow({
-    validatorAddress,
-    pagination,
-  }: {
-    validatorAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchValidatorDelegationsNoThrow(
+    {
+      validatorAddress,
+      pagination,
+    }: {
+      validatorAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsRequest.create()
 
@@ -122,7 +136,11 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsRequest,
         CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsResponse
-      >(request, this.client.validatorDelegations.bind(this.client))
+      >(
+        request,
+        this.client.validatorDelegations.bind(this.client),
+        options?.signal,
+      )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -136,13 +154,16 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchValidatorUnbondingDelegations({
-    validatorAddress,
-    pagination,
-  }: {
-    validatorAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchValidatorUnbondingDelegations(
+    {
+      validatorAddress,
+      pagination,
+    }: {
+      validatorAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryValidatorUnbondingDelegationsRequest.create()
 
@@ -158,20 +179,27 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryValidatorUnbondingDelegationsRequest,
       CosmosStakingV1Beta1QueryPb.QueryValidatorUnbondingDelegationsResponse
-    >(request, this.client.validatorUnbondingDelegations.bind(this.client))
+    >(
+      request,
+      this.client.validatorUnbondingDelegations.bind(this.client),
+      options?.signal,
+    )
 
     return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
       response,
     )
   }
 
-  async fetchValidatorUnbondingDelegationsNoThrow({
-    validatorAddress,
-    pagination,
-  }: {
-    validatorAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchValidatorUnbondingDelegationsNoThrow(
+    {
+      validatorAddress,
+      pagination,
+    }: {
+      validatorAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryValidatorUnbondingDelegationsRequest.create()
 
@@ -188,7 +216,11 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosStakingV1Beta1QueryPb.QueryValidatorUnbondingDelegationsRequest,
         CosmosStakingV1Beta1QueryPb.QueryValidatorUnbondingDelegationsResponse
-      >(request, this.client.validatorUnbondingDelegations.bind(this.client))
+      >(
+        request,
+        this.client.validatorUnbondingDelegations.bind(this.client),
+        options?.signal,
+      )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -202,13 +234,16 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchDelegation({
-    injectiveAddress,
-    validatorAddress,
-  }: {
-    injectiveAddress: string
-    validatorAddress: string
-  }) {
+  async fetchDelegation(
+    {
+      injectiveAddress,
+      validatorAddress,
+    }: {
+      injectiveAddress: string
+      validatorAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = CosmosStakingV1Beta1QueryPb.QueryDelegationRequest.create()
 
     request.delegatorAddr = injectiveAddress
@@ -217,18 +252,21 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryDelegationRequest,
       CosmosStakingV1Beta1QueryPb.QueryDelegationResponse
-    >(request, this.client.delegation.bind(this.client))
+    >(request, this.client.delegation.bind(this.client), options?.signal)
 
     return ChainGrpcStakingTransformer.delegationResponseToDelegation(response)
   }
 
-  async fetchDelegations({
-    injectiveAddress,
-    pagination,
-  }: {
-    injectiveAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchDelegations(
+    {
+      injectiveAddress,
+      pagination,
+    }: {
+      injectiveAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryDelegatorDelegationsRequest.create()
 
@@ -244,20 +282,27 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryDelegatorDelegationsRequest,
       CosmosStakingV1Beta1QueryPb.QueryDelegatorDelegationsResponse
-    >(request, this.client.delegatorDelegations.bind(this.client))
+    >(
+      request,
+      this.client.delegatorDelegations.bind(this.client),
+      options?.signal,
+    )
 
     return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
       response,
     )
   }
 
-  async fetchDelegationsNoThrow({
-    injectiveAddress,
-    pagination,
-  }: {
-    injectiveAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchDelegationsNoThrow(
+    {
+      injectiveAddress,
+      pagination,
+    }: {
+      injectiveAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryDelegatorDelegationsRequest.create()
 
@@ -274,7 +319,11 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosStakingV1Beta1QueryPb.QueryDelegatorDelegationsRequest,
         CosmosStakingV1Beta1QueryPb.QueryDelegatorDelegationsResponse
-      >(request, this.client.delegatorDelegations.bind(this.client))
+      >(
+        request,
+        this.client.delegatorDelegations.bind(this.client),
+        options?.signal,
+      )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -288,13 +337,16 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchDelegators({
-    validatorAddress,
-    pagination,
-  }: {
-    validatorAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchDelegators(
+    {
+      validatorAddress,
+      pagination,
+    }: {
+      validatorAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsRequest.create()
 
@@ -310,20 +362,27 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsRequest,
       CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsResponse
-    >(request, this.client.validatorDelegations.bind(this.client))
+    >(
+      request,
+      this.client.validatorDelegations.bind(this.client),
+      options?.signal,
+    )
 
     return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
       response,
     )
   }
 
-  async fetchDelegatorsNoThrow({
-    validatorAddress,
-    pagination,
-  }: {
-    validatorAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchDelegatorsNoThrow(
+    {
+      validatorAddress,
+      pagination,
+    }: {
+      validatorAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsRequest.create()
 
@@ -340,7 +399,11 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsRequest,
         CosmosStakingV1Beta1QueryPb.QueryValidatorDelegationsResponse
-      >(request, this.client.validatorDelegations.bind(this.client))
+      >(
+        request,
+        this.client.validatorDelegations.bind(this.client),
+        options?.signal,
+      )
 
       return ChainGrpcStakingTransformer.delegationsResponseToDelegations(
         response,
@@ -354,13 +417,16 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchUnbondingDelegations({
-    injectiveAddress,
-    pagination,
-  }: {
-    injectiveAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchUnbondingDelegations(
+    {
+      injectiveAddress,
+      pagination,
+    }: {
+      injectiveAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryDelegatorUnbondingDelegationsRequest.create()
 
@@ -376,20 +442,27 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryDelegatorUnbondingDelegationsRequest,
       CosmosStakingV1Beta1QueryPb.QueryDelegatorUnbondingDelegationsResponse
-    >(request, this.client.delegatorUnbondingDelegations.bind(this.client))
+    >(
+      request,
+      this.client.delegatorUnbondingDelegations.bind(this.client),
+      options?.signal,
+    )
 
     return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
       response,
     )
   }
 
-  async fetchUnbondingDelegationsNoThrow({
-    injectiveAddress,
-    pagination,
-  }: {
-    injectiveAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchUnbondingDelegationsNoThrow(
+    {
+      injectiveAddress,
+      pagination,
+    }: {
+      injectiveAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryDelegatorUnbondingDelegationsRequest.create()
 
@@ -406,7 +479,11 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosStakingV1Beta1QueryPb.QueryDelegatorUnbondingDelegationsRequest,
         CosmosStakingV1Beta1QueryPb.QueryDelegatorUnbondingDelegationsResponse
-      >(request, this.client.delegatorUnbondingDelegations.bind(this.client))
+      >(
+        request,
+        this.client.delegatorUnbondingDelegations.bind(this.client),
+        options?.signal,
+      )
 
       return ChainGrpcStakingTransformer.unBondingDelegationsResponseToUnBondingDelegations(
         response,
@@ -420,13 +497,16 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchReDelegations({
-    injectiveAddress,
-    pagination,
-  }: {
-    injectiveAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchReDelegations(
+    {
+      injectiveAddress,
+      pagination,
+    }: {
+      injectiveAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryRedelegationsRequest.create()
 
@@ -442,20 +522,23 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosStakingV1Beta1QueryPb.QueryRedelegationsRequest,
       CosmosStakingV1Beta1QueryPb.QueryRedelegationsResponse
-    >(request, this.client.redelegations.bind(this.client))
+    >(request, this.client.redelegations.bind(this.client), options?.signal)
 
     return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
       response,
     )
   }
 
-  async fetchReDelegationsNoThrow({
-    injectiveAddress,
-    pagination,
-  }: {
-    injectiveAddress: string
-    pagination?: PaginationOption
-  }) {
+  async fetchReDelegationsNoThrow(
+    {
+      injectiveAddress,
+      pagination,
+    }: {
+      injectiveAddress: string
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosStakingV1Beta1QueryPb.QueryRedelegationsRequest.create()
 
@@ -472,7 +555,7 @@ export class ChainGrpcStakingApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosStakingV1Beta1QueryPb.QueryRedelegationsRequest,
         CosmosStakingV1Beta1QueryPb.QueryRedelegationsResponse
-      >(request, this.client.redelegations.bind(this.client))
+      >(request, this.client.redelegations.bind(this.client), options?.signal)
 
       return ChainGrpcStakingTransformer.reDelegationsResponseToReDelegations(
         response,

@@ -2,6 +2,7 @@ import * as InjectiveMetaRpcPb from '@injectivelabs/indexer-proto-ts-v2/generate
 import { InjectiveMetaRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_meta_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -12,29 +13,29 @@ export class IndexerGrpcMetaApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveMetaRPCClient)
   }
 
-  async fetchPing() {
+  async fetchPing(options?: GrpcCallOptions) {
     const request = InjectiveMetaRpcPb.PingRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveMetaRpcPb.PingRequest,
       InjectiveMetaRpcPb.PingResponse
-    >(request, this.client.ping.bind(this.client))
+    >(request, this.client.ping.bind(this.client), options?.signal)
 
     return response
   }
 
-  async fetchVersion() {
+  async fetchVersion(options?: GrpcCallOptions) {
     const request = InjectiveMetaRpcPb.VersionRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveMetaRpcPb.VersionRequest,
       InjectiveMetaRpcPb.VersionResponse
-    >(request, this.client.version.bind(this.client))
+    >(request, this.client.version.bind(this.client), options?.signal)
 
     return response
   }
 
-  async fetchInfo() {
+  async fetchInfo(options?: GrpcCallOptions) {
     const request = InjectiveMetaRpcPb.InfoRequest.create()
 
     request.timestamp = BigInt(Date.now())
@@ -42,7 +43,7 @@ export class IndexerGrpcMetaApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveMetaRpcPb.InfoRequest,
       InjectiveMetaRpcPb.InfoResponse
-    >(request, this.client.info.bind(this.client))
+    >(request, this.client.info.bind(this.client), options?.signal)
 
     return response
   }

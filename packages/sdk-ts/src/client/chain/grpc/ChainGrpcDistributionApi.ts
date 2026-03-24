@@ -5,6 +5,7 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcDistributionTransformer } from '../transformers/index.js'
 import type { Coin } from '@injectivelabs/ts-types'
 import type { ValidatorRewards } from '../types/index.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Chain Grpc API
  */
@@ -15,26 +16,29 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     return this.initClient(CosmosDistributionV1Beta1QueryClient)
   }
 
-  async fetchModuleParams() {
+  async fetchModuleParams(options?: GrpcCallOptions) {
     const request = CosmosDistributionV1Beta1QueryPb.QueryParamsRequest.create()
 
     const response = await this.executeGrpcCall<
       CosmosDistributionV1Beta1QueryPb.QueryParamsRequest,
       CosmosDistributionV1Beta1QueryPb.QueryParamsResponse
-    >(request, this.client.params.bind(this.client))
+    >(request, this.client.params.bind(this.client), options?.signal)
 
     return ChainGrpcDistributionTransformer.moduleParamsResponseToModuleParams(
       response,
     )
   }
 
-  async fetchDelegatorRewardsForValidator({
-    delegatorAddress,
-    validatorAddress,
-  }: {
-    delegatorAddress: string
-    validatorAddress: string
-  }) {
+  async fetchDelegatorRewardsForValidator(
+    {
+      delegatorAddress,
+      validatorAddress,
+    }: {
+      delegatorAddress: string
+      validatorAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsRequest.create()
 
@@ -44,20 +48,23 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsRequest,
       CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsResponse
-    >(request, this.client.delegationRewards.bind(this.client))
+    >(request, this.client.delegationRewards.bind(this.client), options?.signal)
 
     return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
       response,
     )
   }
 
-  async fetchDelegatorRewardsForValidatorNoThrow({
-    delegatorAddress,
-    validatorAddress,
-  }: {
-    delegatorAddress: string
-    validatorAddress: string
-  }) {
+  async fetchDelegatorRewardsForValidatorNoThrow(
+    {
+      delegatorAddress,
+      validatorAddress,
+    }: {
+      delegatorAddress: string
+      validatorAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsRequest.create()
 
@@ -68,7 +75,11 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsRequest,
         CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsResponse
-      >(request, this.client.delegationRewards.bind(this.client))
+      >(
+        request,
+        this.client.delegationRewards.bind(this.client),
+        options?.signal,
+      )
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
@@ -85,7 +96,10 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchDelegatorRewards(injectiveAddress: string) {
+  async fetchDelegatorRewards(
+    injectiveAddress: string,
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsRequest.create()
 
@@ -94,14 +108,21 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsRequest,
       CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsResponse
-    >(request, this.client.delegationTotalRewards.bind(this.client))
+    >(
+      request,
+      this.client.delegationTotalRewards.bind(this.client),
+      options?.signal,
+    )
 
     return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
       response,
     )
   }
 
-  async fetchDelegatorRewardsNoThrow(injectiveAddress: string) {
+  async fetchDelegatorRewardsNoThrow(
+    injectiveAddress: string,
+    options?: GrpcCallOptions,
+  ) {
     const request =
       CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsRequest.create()
 
@@ -111,7 +132,11 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsRequest,
         CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsResponse
-      >(request, this.client.delegationTotalRewards.bind(this.client))
+      >(
+        request,
+        this.client.delegationTotalRewards.bind(this.client),
+        options?.signal,
+      )
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,

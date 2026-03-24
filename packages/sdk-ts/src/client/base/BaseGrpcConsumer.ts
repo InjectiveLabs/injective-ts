@@ -1,5 +1,6 @@
 import { RpcError } from '@protobuf-ts/runtime-rpc'
 import {
+  GrpcErrorCode,
   UnspecifiedErrorCode,
   TransactionException,
   grpcErrorCodeToErrorCode,
@@ -79,12 +80,16 @@ export default class BaseGrpcConsumer {
   }
 
   /**
-   * Builds RpcOptions with metadata
+   * Builds RpcOptions with metadata and optional abort signal
    * @deprecated Options should be managed externally and passed into the constructor instead
    */
-  protected getRpcOptions(): RpcOptions {
+  protected getRpcOptions(signal?: AbortSignal): RpcOptions {
     const options: RpcOptions = {
       meta: this.metadata || {},
+    }
+
+    if (signal) {
+      options.abort = signal
     }
 
     return options
@@ -97,21 +102,53 @@ export default class BaseGrpcConsumer {
     grpcCall: () => Promise<TResponse>,
     retries: number = 3,
     delay: number = 1000,
+    signal?: AbortSignal,
   ): Promise<TResponse> {
     const retryGrpcCall = async (attempt = 1): Promise<TResponse> => {
+      if (signal?.aborted) {
+        throw (
+          signal.reason ??
+          new DOMException('The operation was aborted.', 'AbortError')
+        )
+      }
+
       try {
         return await grpcCall()
       } catch (e: unknown) {
+        if (signal?.aborted) {
+          throw (
+            signal.reason ??
+            new DOMException('The operation was aborted.', 'AbortError')
+          )
+        }
+
         if (attempt >= retries) {
           throw e
         }
 
-        return new Promise((resolve) =>
-          setTimeout(
+        return new Promise<TResponse>((resolve, reject) => {
+          const timeoutId = setTimeout(
             () => resolve(retryGrpcCall(attempt + 1)),
             delay * attempt,
-          ),
-        )
+          )
+
+          if (signal) {
+            signal.addEventListener(
+              'abort',
+              () => {
+                clearTimeout(timeoutId)
+                reject(
+                  signal.reason ??
+                    new DOMException(
+                      'The operation was aborted.',
+                      'AbortError',
+                    ),
+                )
+              },
+              { once: true },
+            )
+          }
+        })
       }
     }
 
@@ -155,6 +192,14 @@ export default class BaseGrpcConsumer {
    * Otherwise throws a GrpcUnaryRequestException for generic gRPC errors.
    */
   protected handleGrpcError(e: unknown, context: string): never {
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      throw new GrpcUnaryRequestException(new Error(e.message), {
+        code: GrpcErrorCode.Canceled,
+        context,
+        contextModule: this.module,
+      })
+    }
+
     if (e instanceof RpcError) {
       const message = e.message
       const abciCode = this.getABCICodeFromMessage(message)
@@ -223,12 +268,18 @@ export default class BaseGrpcConsumer {
       req: TRequest,
       options?: RpcOptions,
     ) => UnaryCall<TRequest, TResponse>,
+    signal?: AbortSignal,
   ): Promise<TResponse> {
     try {
-      return await this.retry(async () => {
-        const call = clientMethod(request, this.getRpcOptions())
-        return await call.response
-      })
+      return await this.retry(
+        async () => {
+          const call = clientMethod(request, this.getRpcOptions(signal))
+          return await call.response
+        },
+        3,
+        1000,
+        signal,
+      )
     } catch (e: unknown) {
       // Derive context from method name if not provided
       const errorContext = clientMethod.name || 'UnknownMethod'

@@ -7,6 +7,7 @@ import {
   ChainGrpcErc20Transformer,
   ChainGrpcCommonTransformer,
 } from '../transformers/index.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 const MAX_LIMIT_FOR_SUPPLY = 10000
 
@@ -20,18 +21,21 @@ export class ChainGrpcErc20Api extends BaseGrpcConsumer {
     return this.initClient(InjectiveErc20V1Beta1QueryClient)
   }
 
-  async fetchModuleParams() {
+  async fetchModuleParams(options?: GrpcCallOptions) {
     const request = InjectiveErc20V1Beta1QueryPb.QueryParamsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveErc20V1Beta1QueryPb.QueryParamsRequest,
       InjectiveErc20V1Beta1QueryPb.QueryParamsResponse
-    >(request, this.client.params.bind(this.client))
+    >(request, this.client.params.bind(this.client), options?.signal)
 
     return ChainGrpcErc20Transformer.paramsResponseToParams(response)
   }
 
-  async fetchTokenPairs(pagination?: PaginationOption) {
+  async fetchTokenPairs(
+    pagination?: PaginationOption,
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveErc20V1Beta1QueryPb.QueryAllTokenPairsRequest.create()
     const paginationForRequest =
@@ -44,18 +48,24 @@ export class ChainGrpcErc20Api extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveErc20V1Beta1QueryPb.QueryAllTokenPairsRequest,
       InjectiveErc20V1Beta1QueryPb.QueryAllTokenPairsResponse
-    >(request, this.client.allTokenPairs.bind(this.client))
+    >(request, this.client.allTokenPairs.bind(this.client), options?.signal)
 
     return ChainGrpcErc20Transformer.tokenPairsResponseToTokenPairs(response)
   }
 
   async fetchAllTokenPairsWithPagination(
     pagination: PaginationOption = { limit: MAX_LIMIT_FOR_SUPPLY },
+    options?: GrpcCallOptions,
   ) {
-    return fetchAllWithPagination(pagination, this.fetchTokenPairs.bind(this))
+    return fetchAllWithPagination(
+      pagination,
+      (args) => this.fetchTokenPairs(args, options),
+      [],
+      options?.signal,
+    )
   }
 
-  async fetchTokenPairByDenom(denom: string) {
+  async fetchTokenPairByDenom(denom: string, options?: GrpcCallOptions) {
     const request =
       InjectiveErc20V1Beta1QueryPb.QueryTokenPairByDenomRequest.create()
     request.bankDenom = denom
@@ -63,7 +73,7 @@ export class ChainGrpcErc20Api extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveErc20V1Beta1QueryPb.QueryTokenPairByDenomRequest,
       InjectiveErc20V1Beta1QueryPb.QueryTokenPairByDenomResponse
-    >(request, this.client.tokenPairByDenom.bind(this.client))
+    >(request, this.client.tokenPairByDenom.bind(this.client), options?.signal)
 
     if (!response.tokenPair) {
       return undefined
@@ -74,7 +84,10 @@ export class ChainGrpcErc20Api extends BaseGrpcConsumer {
     )
   }
 
-  async fetchTokenPairByErc20Address(erc20Address: string) {
+  async fetchTokenPairByErc20Address(
+    erc20Address: string,
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveErc20V1Beta1QueryPb.QueryTokenPairByERC20AddressRequest.create()
     request.erc20Address = erc20Address
@@ -82,7 +95,11 @@ export class ChainGrpcErc20Api extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveErc20V1Beta1QueryPb.QueryTokenPairByERC20AddressRequest,
       InjectiveErc20V1Beta1QueryPb.QueryTokenPairByERC20AddressResponse
-    >(request, this.client.tokenPairByERC20Address.bind(this.client))
+    >(
+      request,
+      this.client.tokenPairByERC20Address.bind(this.client),
+      options?.signal,
+    )
 
     if (!response.tokenPair) {
       return undefined

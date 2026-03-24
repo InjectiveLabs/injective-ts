@@ -3,6 +3,7 @@ import { InjectiveMegavaultRPCClient } from '@injectivelabs/indexer-proto-ts-v2/
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcMegaVaultTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,7 +14,10 @@ export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveMegavaultRPCClient)
   }
 
-  async fetchVault({ vaultAddress }: { vaultAddress: string }) {
+  async fetchVault(
+    { vaultAddress }: { vaultAddress: string },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveMegavaultRpcPb.GetVaultRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -21,18 +25,21 @@ export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveMegavaultRpcPb.GetVaultRequest,
       InjectiveMegavaultRpcPb.GetVaultResponse
-    >(request, this.client.getVault.bind(this.client))
+    >(request, this.client.getVault.bind(this.client), options?.signal)
 
     return IndexerGrpcMegaVaultTransformer.vaultResponseToVault(response)
   }
 
-  async fetchVaultUser({
-    vaultAddress,
-    userAddress,
-  }: {
-    userAddress: string
-    vaultAddress: string
-  }) {
+  async fetchVaultUser(
+    {
+      vaultAddress,
+      userAddress,
+    }: {
+      userAddress: string
+      vaultAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveMegavaultRpcPb.GetUserRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -41,24 +48,27 @@ export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveMegavaultRpcPb.GetUserRequest,
       InjectiveMegavaultRpcPb.GetUserResponse
-    >(request, this.client.getUser.bind(this.client))
+    >(request, this.client.getUser.bind(this.client), options?.signal)
 
     return IndexerGrpcMegaVaultTransformer.userResponseToUser(response)
   }
 
-  async fetchVaultSubscriptions({
-    token,
-    status,
-    perPage,
-    userAddress,
-    vaultAddress,
-  }: {
-    token?: string
-    status?: string
-    perPage?: number
-    userAddress: string
-    vaultAddress: string
-  }) {
+  async fetchVaultSubscriptions(
+    {
+      token,
+      status,
+      perPage,
+      userAddress,
+      vaultAddress,
+    }: {
+      token?: string
+      status?: string
+      perPage?: number
+      userAddress: string
+      vaultAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveMegavaultRpcPb.ListSubscriptionsRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -79,26 +89,29 @@ export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveMegavaultRpcPb.ListSubscriptionsRequest,
       InjectiveMegavaultRpcPb.ListSubscriptionsResponse
-    >(request, this.client.listSubscriptions.bind(this.client))
+    >(request, this.client.listSubscriptions.bind(this.client), options?.signal)
 
     return IndexerGrpcMegaVaultTransformer.subscriptionsResponseToSubscriptions(
       response,
     )
   }
 
-  async fetchVaultRedemptions({
-    token,
-    status,
-    perPage,
-    userAddress,
-    vaultAddress,
-  }: {
-    token?: string
-    status?: string
-    perPage?: number
-    vaultAddress: string
-    userAddress: string
-  }) {
+  async fetchVaultRedemptions(
+    {
+      token,
+      status,
+      perPage,
+      userAddress,
+      vaultAddress,
+    }: {
+      token?: string
+      status?: string
+      perPage?: number
+      vaultAddress: string
+      userAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveMegavaultRpcPb.ListRedemptionsRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -119,20 +132,23 @@ export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveMegavaultRpcPb.ListRedemptionsRequest,
       InjectiveMegavaultRpcPb.ListRedemptionsResponse
-    >(request, this.client.listRedemptions.bind(this.client))
+    >(request, this.client.listRedemptions.bind(this.client), options?.signal)
 
     return IndexerGrpcMegaVaultTransformer.redemptionsResponseToRedemptions(
       response,
     )
   }
 
-  async fetchOperatorRedemptionBuckets({
-    vaultAddress,
-    operatorAddress,
-  }: {
-    vaultAddress: string
-    operatorAddress: string
-  }) {
+  async fetchOperatorRedemptionBuckets(
+    {
+      vaultAddress,
+      operatorAddress,
+    }: {
+      vaultAddress: string
+      operatorAddress: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveMegavaultRpcPb.GetOperatorRedemptionBucketsRequest.create()
 
@@ -142,22 +158,29 @@ export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveMegavaultRpcPb.GetOperatorRedemptionBucketsRequest,
       InjectiveMegavaultRpcPb.GetOperatorRedemptionBucketsResponse
-    >(request, this.client.getOperatorRedemptionBuckets.bind(this.client))
+    >(
+      request,
+      this.client.getOperatorRedemptionBuckets.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcMegaVaultTransformer.operatorRedemptionBucketsResponseToOperatorRedemptionBuckets(
       response,
     )
   }
 
-  async fetchVaultTvlHistory({
-    since,
-    vaultAddress,
-    maxDataPoints,
-  }: {
-    since: number
-    vaultAddress: string
-    maxDataPoints?: number
-  }) {
+  async fetchVaultTvlHistory(
+    {
+      since,
+      vaultAddress,
+      maxDataPoints,
+    }: {
+      since: number
+      vaultAddress: string
+      maxDataPoints?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveMegavaultRpcPb.TvlHistoryRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -170,22 +193,25 @@ export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveMegavaultRpcPb.TvlHistoryRequest,
       InjectiveMegavaultRpcPb.TvlHistoryResponse
-    >(request, this.client.tvlHistory.bind(this.client))
+    >(request, this.client.tvlHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcMegaVaultTransformer.tvlHistoryResponseToTvlHistory(
       response,
     )
   }
 
-  async fetchVaultPnlHistory({
-    since,
-    vaultAddress,
-    maxDataPoints,
-  }: {
-    since: number
-    vaultAddress: string
-    maxDataPoints?: number
-  }) {
+  async fetchVaultPnlHistory(
+    {
+      since,
+      vaultAddress,
+      maxDataPoints,
+    }: {
+      since: number
+      vaultAddress: string
+      maxDataPoints?: number
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveMegavaultRpcPb.PnlHistoryRequest.create()
 
     request.vaultAddress = vaultAddress
@@ -198,7 +224,7 @@ export class IndexerGrpcMegaVaultApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveMegavaultRpcPb.PnlHistoryRequest,
       InjectiveMegavaultRpcPb.PnlHistoryResponse
-    >(request, this.client.pnlHistory.bind(this.client))
+    >(request, this.client.pnlHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcMegaVaultTransformer.pnlHistoryResponseToPnlHistory(
       response,

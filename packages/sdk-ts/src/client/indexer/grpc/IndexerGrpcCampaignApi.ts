@@ -3,6 +3,7 @@ import { InjectiveCampaignRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { IndexerModule } from '../types/index.js'
 import { IndexerCampaignTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 /**
  * @category Indexer Grpc API
  */
@@ -13,21 +14,24 @@ export class IndexerGrpcCampaignApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveCampaignRPCClient)
   }
 
-  async fetchCampaign({
-    skip,
-    limit,
-    marketId,
-    campaignId,
-    accountAddress,
-    contractAddress,
-  }: {
-    skip?: string
-    limit?: number
-    marketId?: string
-    campaignId: string
-    accountAddress?: string
-    contractAddress?: string
-  }) {
+  async fetchCampaign(
+    {
+      skip,
+      limit,
+      marketId,
+      campaignId,
+      accountAddress,
+      contractAddress,
+    }: {
+      skip?: string
+      limit?: number
+      marketId?: string
+      campaignId: string
+      accountAddress?: string
+      contractAddress?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveCampaignRpcPb.RankingRequest.create()
 
     request.campaignId = campaignId
@@ -54,24 +58,27 @@ export class IndexerGrpcCampaignApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveCampaignRpcPb.RankingRequest,
       InjectiveCampaignRpcPb.RankingResponse
-    >(request, this.client.ranking.bind(this.client))
+    >(request, this.client.ranking.bind(this.client), options?.signal)
 
     return IndexerCampaignTransformer.CampaignResponseToCampaign(response)
   }
 
-  async fetchCampaigns({
-    type,
-    active,
-    limit,
-    cursor,
-    status,
-  }: {
-    type?: string
-    active?: boolean
-    limit?: number
-    cursor?: string
-    status?: string
-  }) {
+  async fetchCampaigns(
+    {
+      type,
+      active,
+      limit,
+      cursor,
+      status,
+    }: {
+      type?: string
+      active?: boolean
+      limit?: number
+      cursor?: string
+      status?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveCampaignRpcPb.CampaignsV2Request.create()
 
     if (type) {
@@ -97,22 +104,25 @@ export class IndexerGrpcCampaignApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveCampaignRpcPb.CampaignsV2Request,
       InjectiveCampaignRpcPb.CampaignsV2Response
-    >(request, this.client.campaignsV2.bind(this.client))
+    >(request, this.client.campaignsV2.bind(this.client), options?.signal)
 
     return IndexerCampaignTransformer.CampaignsV2ResponseToCampaigns(response)
   }
 
-  async fetchRound({
-    roundId,
-    toRoundId,
-    accountAddress,
-    contractAddress,
-  }: {
-    roundId?: string
-    toRoundId?: number
-    accountAddress?: string
-    contractAddress?: string
-  }) {
+  async fetchRound(
+    {
+      roundId,
+      toRoundId,
+      accountAddress,
+      contractAddress,
+    }: {
+      roundId?: string
+      toRoundId?: number
+      accountAddress?: string
+      contractAddress?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveCampaignRpcPb.CampaignsRequest.create()
 
     if (roundId) {
@@ -134,22 +144,25 @@ export class IndexerGrpcCampaignApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveCampaignRpcPb.CampaignsRequest,
       InjectiveCampaignRpcPb.CampaignsResponse
-    >(request, this.client.campaigns.bind(this.client))
+    >(request, this.client.campaigns.bind(this.client), options?.signal)
 
     return IndexerCampaignTransformer.RoundsResponseToRounds(response)
   }
 
-  async fetchGuilds({
-    skip,
-    limit,
-    sortBy,
-    campaignContract,
-  }: {
-    skip?: number
-    limit?: number
-    sortBy: string
-    campaignContract: string
-  }) {
+  async fetchGuilds(
+    {
+      skip,
+      limit,
+      sortBy,
+      campaignContract,
+    }: {
+      skip?: number
+      limit?: number
+      sortBy: string
+      campaignContract: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveCampaignRpcPb.ListGuildsRequest.create()
 
     request.sortBy = sortBy
@@ -166,18 +179,21 @@ export class IndexerGrpcCampaignApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveCampaignRpcPb.ListGuildsRequest,
       InjectiveCampaignRpcPb.ListGuildsResponse
-    >(request, this.client.listGuilds.bind(this.client))
+    >(request, this.client.listGuilds.bind(this.client), options?.signal)
 
     return IndexerCampaignTransformer.GuildsResponseToGuilds(response)
   }
 
-  async fetchGuildMember({
-    address,
-    campaignContract,
-  }: {
-    address: string
-    campaignContract: string
-  }) {
+  async fetchGuildMember(
+    {
+      address,
+      campaignContract,
+    }: {
+      address: string
+      campaignContract: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveCampaignRpcPb.GetGuildMemberRequest.create()
 
     request.address = address
@@ -186,26 +202,29 @@ export class IndexerGrpcCampaignApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveCampaignRpcPb.GetGuildMemberRequest,
       InjectiveCampaignRpcPb.GetGuildMemberResponse
-    >(request, this.client.getGuildMember.bind(this.client))
+    >(request, this.client.getGuildMember.bind(this.client), options?.signal)
 
     return IndexerCampaignTransformer.GuildMemberResponseToGuildMember(response)
   }
 
-  async fetchGuildMembers({
-    skip,
-    limit,
-    sortBy,
-    guildId,
-    campaignContract,
-    includeGuildInfo,
-  }: {
-    skip?: number
-    limit?: number
-    sortBy?: string
-    guildId: string
-    campaignContract: string
-    includeGuildInfo: boolean
-  }) {
+  async fetchGuildMembers(
+    {
+      skip,
+      limit,
+      sortBy,
+      guildId,
+      campaignContract,
+      includeGuildInfo,
+    }: {
+      skip?: number
+      limit?: number
+      sortBy?: string
+      guildId: string
+      campaignContract: string
+      includeGuildInfo: boolean
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveCampaignRpcPb.ListGuildMembersRequest.create()
 
     request.guildId = guildId
@@ -227,7 +246,7 @@ export class IndexerGrpcCampaignApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveCampaignRpcPb.ListGuildMembersRequest,
       InjectiveCampaignRpcPb.ListGuildMembersResponse
-    >(request, this.client.listGuildMembers.bind(this.client))
+    >(request, this.client.listGuildMembers.bind(this.client), options?.signal)
 
     return IndexerCampaignTransformer.GuildMembersResponseToGuildMembers(
       response,

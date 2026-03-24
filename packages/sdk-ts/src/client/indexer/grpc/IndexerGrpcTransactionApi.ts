@@ -23,6 +23,7 @@ import {
   base64ToUint8Array,
 } from '../../../utils/encoding.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type { GrpcCallOptions } from '../../../types/index.js'
 interface PrepareTxArgs {
   address: AccountAddress
   chainId: EvmChainId
@@ -46,7 +47,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveExchangeRPCClient)
   }
 
-  async prepareTxRequest(args: PrepareTxArgs) {
+  async prepareTxRequest(args: PrepareTxArgs, options?: GrpcCallOptions) {
     const {
       address,
       chainId,
@@ -92,37 +93,50 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExchangeRpcPb.PrepareTxRequest,
       InjectiveExchangeRpcPb.PrepareTxResponse
-    >(prepareTxRequest, this.client.prepareTx.bind(this.client))
+    >(
+      prepareTxRequest,
+      this.client.prepareTx.bind(this.client),
+      options?.signal,
+    )
 
     return response
   }
 
-  async prepareExchangeTxRequest(args: PrepareTxArgs) {
-    return this.prepareTxRequest({
-      ...args,
-      gasLimit: args.gasLimit || DEFAULT_EXCHANGE_LIMIT,
-    })
+  async prepareExchangeTxRequest(
+    args: PrepareTxArgs,
+    options?: GrpcCallOptions,
+  ) {
+    return this.prepareTxRequest(
+      {
+        ...args,
+        gasLimit: args.gasLimit || DEFAULT_EXCHANGE_LIMIT,
+      },
+      options,
+    )
   }
 
-  async prepareCosmosTxRequest({
-    memo,
-    address,
-    message,
-    estimateGas = true,
-    gasLimit = DEFAULT_GAS_LIMIT,
-    feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
-    feePrice = DEFAULT_BRIDGE_FEE_PRICE,
-    timeoutHeight,
-  }: {
-    address: string
-    message: any
-    estimateGas?: boolean
-    gasLimit?: number
-    memo?: string | number
-    timeoutHeight?: number
-    feeDenom?: string
-    feePrice?: string
-  }) {
+  async prepareCosmosTxRequest(
+    {
+      memo,
+      address,
+      message,
+      estimateGas = true,
+      gasLimit = DEFAULT_GAS_LIMIT,
+      feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
+      feePrice = DEFAULT_BRIDGE_FEE_PRICE,
+      timeoutHeight,
+    }: {
+      address: string
+      message: any
+      estimateGas?: boolean
+      gasLimit?: number
+      memo?: string | number
+      timeoutHeight?: number
+      feeDenom?: string
+      feePrice?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create()
     txFeeAmount.denom = feeDenom
     txFeeAmount.amount = feePrice
@@ -157,7 +171,11 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExchangeRpcPb.PrepareCosmosTxRequest,
       InjectiveExchangeRpcPb.PrepareCosmosTxResponse
-    >(prepareTxRequest, this.client.prepareCosmosTx.bind(this.client))
+    >(
+      prepareTxRequest,
+      this.client.prepareCosmosTx.bind(this.client),
+      options?.signal,
+    )
 
     return response
   }
@@ -168,18 +186,21 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
    * if we want to ensure that the transaction is included
    * in the block
    */
-  async broadcastTxRequest({
-    signature,
-    chainId,
-    message,
-    txResponse,
-  }: {
-    signature: string
-    chainId: EvmChainId
-    useCorrectEIP712Hash?: boolean
-    txResponse: InjectiveExchangeRpcPb.PrepareTxResponse
-    message: Record<string, any>
-  }) {
+  async broadcastTxRequest(
+    {
+      signature,
+      chainId,
+      message,
+      txResponse,
+    }: {
+      signature: string
+      chainId: EvmChainId
+      useCorrectEIP712Hash?: boolean
+      txResponse: InjectiveExchangeRpcPb.PrepareTxResponse
+      message: Record<string, any>
+    },
+    options?: GrpcCallOptions,
+  ) {
     const parsedTypedData = JSON.parse(txResponse.data)
     let publicKeyHex: string
     try {
@@ -225,7 +246,11 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExchangeRpcPb.BroadcastTxRequest,
       InjectiveExchangeRpcPb.BroadcastTxResponse
-    >(broadcastTxRequest, this.client.broadcastTx.bind(this.client))
+    >(
+      broadcastTxRequest,
+      this.client.broadcastTx.bind(this.client),
+      options?.signal,
+    )
 
     return response
   }
@@ -236,20 +261,23 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
    * if we want to ensure that the transaction is included
    * in the block
    */
-  async broadcastCosmosTxRequest({
-    address,
-    signature,
-    txRaw,
-    pubKey,
-  }: {
-    address: string
-    signature: string // base64
-    txRaw: CosmosTxV1Beta1TxPb.TxRaw
-    pubKey: {
-      type: string
-      value: string // base64
-    }
-  }) {
+  async broadcastCosmosTxRequest(
+    {
+      address,
+      signature,
+      txRaw,
+      pubKey,
+    }: {
+      address: string
+      signature: string // base64
+      txRaw: CosmosTxV1Beta1TxPb.TxRaw
+      pubKey: {
+        type: string
+        value: string // base64
+      }
+    },
+    options?: GrpcCallOptions,
+  ) {
     const pubKeyInHex = uint8ArrayToHex(base64ToUint8Array(pubKey.value))
     const signatureInHex = uint8ArrayToHex(base64ToUint8Array(signature))
     const cosmosPubKey = InjectiveExchangeRpcPb.CosmosPubKey.create()
@@ -268,18 +296,22 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveExchangeRpcPb.BroadcastCosmosTxRequest,
       InjectiveExchangeRpcPb.BroadcastCosmosTxResponse
-    >(broadcastTxRequest, this.client.broadcastCosmosTx.bind(this.client))
+    >(
+      broadcastTxRequest,
+      this.client.broadcastCosmosTx.bind(this.client),
+      options?.signal,
+    )
 
     return response
   }
 
-  async fetchFeePayer() {
+  async fetchFeePayer(options?: GrpcCallOptions) {
     const request = InjectiveExchangeRpcPb.GetFeePayerRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveExchangeRpcPb.GetFeePayerRequest,
       InjectiveExchangeRpcPb.GetFeePayerResponse
-    >(request, this.client.getFeePayer.bind(this.client))
+    >(request, this.client.getFeePayer.bind(this.client), options?.signal)
 
     return response
   }

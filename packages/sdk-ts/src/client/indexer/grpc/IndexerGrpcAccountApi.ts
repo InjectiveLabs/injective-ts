@@ -4,6 +4,7 @@ import { InjectiveAccountsRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcAccountTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 import type { PaginationOption } from '../../../types/pagination.js'
 
 /**
@@ -27,7 +28,10 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
     )
   }
 
-  async fetchRewards({ address, epoch }: { address: string; epoch: number }) {
+  async fetchRewards(
+    { address, epoch }: { address: string; epoch: number },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveAccountsRpcPb.RewardsRequest.create()
 
     request.accountAddress = address
@@ -39,14 +43,14 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAccountsRpcPb.RewardsRequest,
       InjectiveAccountsRpcPb.RewardsResponse
-    >(request, this.client.rewards.bind(this.client))
+    >(request, this.client.rewards.bind(this.client), options?.signal)
 
     return IndexerGrpcAccountTransformer.tradingRewardsResponseToTradingRewards(
       response,
     )
   }
 
-  async fetchSubaccountsList(address: string) {
+  async fetchSubaccountsList(address: string, options?: GrpcCallOptions) {
     const request = InjectiveAccountsRpcPb.SubaccountsListRequest.create()
 
     request.accountAddress = address
@@ -54,12 +58,16 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAccountsRpcPb.SubaccountsListRequest,
       InjectiveAccountsRpcPb.SubaccountsListResponse
-    >(request, this.client.subaccountsList.bind(this.client))
+    >(request, this.client.subaccountsList.bind(this.client), options?.signal)
 
     return response.subaccounts
   }
 
-  async fetchSubaccountBalance(subaccountId: string, denom: string) {
+  async fetchSubaccountBalance(
+    subaccountId: string,
+    denom: string,
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveAccountsRpcPb.SubaccountBalanceEndpointRequest.create()
 
@@ -69,12 +77,19 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAccountsRpcPb.SubaccountBalanceEndpointRequest,
       InjectiveAccountsRpcPb.SubaccountBalanceEndpointResponse
-    >(request, this.client.subaccountBalanceEndpoint.bind(this.client))
+    >(
+      request,
+      this.client.subaccountBalanceEndpoint.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcAccountTransformer.balanceResponseToBalance(response)
   }
 
-  async fetchSubaccountBalancesList(subaccountId: string) {
+  async fetchSubaccountBalancesList(
+    subaccountId: string,
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveAccountsRpcPb.SubaccountBalancesListRequest.create()
 
@@ -83,22 +98,29 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAccountsRpcPb.SubaccountBalancesListRequest,
       InjectiveAccountsRpcPb.SubaccountBalancesListResponse
-    >(request, this.client.subaccountBalancesList.bind(this.client))
+    >(
+      request,
+      this.client.subaccountBalancesList.bind(this.client),
+      options?.signal,
+    )
 
     return IndexerGrpcAccountTransformer.balancesResponseToBalances(response)
   }
 
-  async fetchSubaccountHistory({
-    subaccountId,
-    denom,
-    transferTypes = [],
-    pagination,
-  }: {
-    subaccountId: string
-    denom?: string
-    transferTypes?: string[]
-    pagination?: PaginationOption
-  }) {
+  async fetchSubaccountHistory(
+    {
+      subaccountId,
+      denom,
+      transferTypes = [],
+      pagination,
+    }: {
+      subaccountId: string
+      denom?: string
+      transferTypes?: string[]
+      pagination?: PaginationOption
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveAccountsRpcPb.SubaccountHistoryRequest.create()
 
     request.subaccountId = subaccountId
@@ -128,22 +150,25 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAccountsRpcPb.SubaccountHistoryRequest,
       InjectiveAccountsRpcPb.SubaccountHistoryResponse
-    >(request, this.client.subaccountHistory.bind(this.client))
+    >(request, this.client.subaccountHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcAccountTransformer.transferHistoryResponseToTransferHistory(
       response,
     )
   }
 
-  async fetchSubaccountOrderSummary({
-    subaccountId,
-    marketId,
-    orderDirection,
-  }: {
-    subaccountId: string
-    marketId?: string
-    orderDirection?: string
-  }) {
+  async fetchSubaccountOrderSummary(
+    {
+      subaccountId,
+      marketId,
+      orderDirection,
+    }: {
+      subaccountId: string
+      marketId?: string
+      orderDirection?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request =
       InjectiveAccountsRpcPb.SubaccountOrderSummaryRequest.create()
 
@@ -160,15 +185,22 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAccountsRpcPb.SubaccountOrderSummaryRequest,
       InjectiveAccountsRpcPb.SubaccountOrderSummaryResponse
-    >(request, this.client.subaccountOrderSummary.bind(this.client))
+    >(
+      request,
+      this.client.subaccountOrderSummary.bind(this.client),
+      options?.signal,
+    )
 
     return response
   }
 
-  async fetchOrderStates(params?: {
-    spotOrderHashes?: string[]
-    derivativeOrderHashes?: string[]
-  }) {
+  async fetchOrderStates(
+    params?: {
+      spotOrderHashes?: string[]
+      derivativeOrderHashes?: string[]
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { spotOrderHashes = [], derivativeOrderHashes = [] } = params || {}
     const request = InjectiveAccountsRpcPb.OrderStatesRequest.create()
 
@@ -178,7 +210,7 @@ export class IndexerGrpcAccountApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveAccountsRpcPb.OrderStatesRequest,
       InjectiveAccountsRpcPb.OrderStatesResponse
-    >(request, this.client.orderStates.bind(this.client))
+    >(request, this.client.orderStates.bind(this.client), options?.signal)
 
     return response
   }

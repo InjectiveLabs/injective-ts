@@ -4,6 +4,7 @@ import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcRfqTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import type { GrpcRFQExpiry } from '../types/index.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -15,29 +16,32 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveRfqRPCClient)
   }
 
-  async submitRequest({
-    margin,
-    expiry,
-    status,
-    clientId,
-    marketId,
-    quantity,
-    direction,
-    worstPrice,
-    requestAddress,
-    transactionTime,
-  }: {
-    margin: string
-    expiry?: bigint
-    status?: string
-    marketId: string
-    quantity: string
-    direction: string
-    clientId?: string
-    worstPrice: string
-    requestAddress?: string
-    transactionTime?: bigint
-  }) {
+  async submitRequest(
+    {
+      margin,
+      expiry,
+      status,
+      clientId,
+      marketId,
+      quantity,
+      direction,
+      worstPrice,
+      requestAddress,
+      transactionTime,
+    }: {
+      margin: string
+      expiry?: bigint
+      status?: string
+      marketId: string
+      quantity: string
+      direction: string
+      clientId?: string
+      worstPrice: string
+      requestAddress?: string
+      transactionTime?: bigint
+    },
+    options?: GrpcCallOptions,
+  ) {
     const request = InjectiveRFQExchangeRpcPb.RFQRequestType.create()
 
     if (clientId) {
@@ -86,50 +90,53 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveRFQExchangeRpcPb.RequestRequest,
       InjectiveRFQExchangeRpcPb.RequestResponse
-    >(requestMessage, this.client.request.bind(this.client))
+    >(requestMessage, this.client.request.bind(this.client), options?.signal)
 
     return { status: response.status }
   }
 
-  async submitQuote({
-    rfqId,
-    price,
-    maker,
-    taker,
-    margin,
-    expiry,
-    status,
-    height,
-    chainId,
-    marketId,
-    quantity,
-    signature,
-    createdAt,
-    updatedAt,
-    eventTime,
-    takerDirection,
-    contractAddress,
-    transactionTime,
-  }: {
-    rfqId?: bigint
-    price: string
-    maker: string
-    taker: string
-    margin: string
-    status?: string
-    height?: bigint
-    chainId: string
-    marketId: string
-    quantity: string
-    signature: string
-    createdAt?: bigint
-    updatedAt?: bigint
-    eventTime?: bigint
-    takerDirection: string
-    contractAddress: string
-    transactionTime?: bigint
-    expiry?: Partial<GrpcRFQExpiry>
-  }): Promise<{ status: string }> {
+  async submitQuote(
+    {
+      rfqId,
+      price,
+      maker,
+      taker,
+      margin,
+      expiry,
+      status,
+      height,
+      chainId,
+      marketId,
+      quantity,
+      signature,
+      createdAt,
+      updatedAt,
+      eventTime,
+      takerDirection,
+      contractAddress,
+      transactionTime,
+    }: {
+      rfqId?: bigint
+      price: string
+      maker: string
+      taker: string
+      margin: string
+      status?: string
+      height?: bigint
+      chainId: string
+      marketId: string
+      quantity: string
+      signature: string
+      createdAt?: bigint
+      updatedAt?: bigint
+      eventTime?: bigint
+      takerDirection: string
+      contractAddress: string
+      transactionTime?: bigint
+      expiry?: Partial<GrpcRFQExpiry>
+    },
+    options?: GrpcCallOptions,
+  ): Promise<{ status: string }> {
     const request = InjectiveRFQExchangeRpcPb.RFQQuoteType.create()
 
     if (chainId) {
@@ -213,16 +220,19 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveRFQExchangeRpcPb.QuoteRequest,
       InjectiveRFQExchangeRpcPb.QuoteResponse
-    >(quoteMessage, this.client.quote.bind(this.client))
+    >(quoteMessage, this.client.quote.bind(this.client), options?.signal)
 
     return { status: response.status }
   }
 
-  async fetchSettlements(params?: {
-    token?: string
-    perPage?: number
-    addresses?: string[]
-  }) {
+  async fetchSettlements(
+    params?: {
+      token?: string
+      perPage?: number
+      addresses?: string[]
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { addresses, token, perPage } = params || {}
     const request = InjectiveRFQExchangeRpcPb.ListSettlementRequest.create()
 
@@ -241,7 +251,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveRFQExchangeRpcPb.ListSettlementRequest,
       InjectiveRFQExchangeRpcPb.ListSettlementResponse
-    >(request, this.client.listSettlement.bind(this.client))
+    >(request, this.client.listSettlement.bind(this.client), options?.signal)
 
     return IndexerGrpcRfqTransformer.listSettlementsResponseToSettlements(
       response,

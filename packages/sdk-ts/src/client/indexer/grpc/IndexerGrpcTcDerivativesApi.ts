@@ -3,6 +3,7 @@ import { InjectiveTCDerivativesRPCClient } from '@injectivelabs/indexer-proto-ts
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcTcDerivativesTransformer } from '../transformers/index.js'
+import type { GrpcCallOptions } from '../../../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -14,13 +15,16 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveTCDerivativesRPCClient)
   }
 
-  async fetchOrdersHistory(params?: {
-    token?: string
-    perPage?: number
-    marketId?: string
-    direction?: string
-    accountAddress?: string
-  }) {
+  async fetchOrdersHistory(
+    params?: {
+      token?: string
+      perPage?: number
+      marketId?: string
+      direction?: string
+      accountAddress?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { token, perPage, marketId, direction, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.OrdersHistoryRequest.create()
@@ -48,20 +52,23 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.OrdersHistoryRequest,
       InjectiveTCDerivativesRpcPb.OrdersHistoryResponse
-    >(request, this.client.ordersHistory.bind(this.client))
+    >(request, this.client.ordersHistory.bind(this.client), options?.signal)
 
     return IndexerGrpcTcDerivativesTransformer.ordersHistoryResponseToOrdersHistory(
       response,
     )
   }
 
-  async fetchTradesHistory(params?: {
-    token?: string
-    perPage?: number
-    marketId?: string
-    direction?: string
-    accountAddress?: string
-  }) {
+  async fetchTradesHistory(
+    params?: {
+      token?: string
+      perPage?: number
+      marketId?: string
+      direction?: string
+      accountAddress?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketId, direction, perPage, token, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.TradesRequest.create()
@@ -89,19 +96,22 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.TradesRequest,
       InjectiveTCDerivativesRpcPb.TradesResponse
-    >(request, this.client.trades.bind(this.client))
+    >(request, this.client.trades.bind(this.client), options?.signal)
 
     return IndexerGrpcTcDerivativesTransformer.tradesResponseToTrades(response)
   }
 
-  async fetchPositions(params?: {
-    token?: string
-    perPage?: number
-    marketId?: string
-    direction?: string
-    withCount?: boolean
-    accountAddress?: string
-  }) {
+  async fetchPositions(
+    params?: {
+      token?: string
+      perPage?: number
+      marketId?: string
+      direction?: string
+      withCount?: boolean
+      accountAddress?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketId, direction, perPage, token, accountAddress, withCount } =
       params || {}
 
@@ -134,20 +144,23 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.PositionsRequest,
       InjectiveTCDerivativesRpcPb.PositionsResponse
-    >(request, this.client.positions.bind(this.client))
+    >(request, this.client.positions.bind(this.client), options?.signal)
 
     return IndexerGrpcTcDerivativesTransformer.positionsResponseToPositions(
       response,
     )
   }
 
-  async fetchOrders(params?: {
-    token?: string
-    perPage?: number
-    marketId?: string
-    direction?: string
-    accountAddress?: string
-  }) {
+  async fetchOrders(
+    params?: {
+      token?: string
+      perPage?: number
+      marketId?: string
+      direction?: string
+      accountAddress?: string
+    },
+    options?: GrpcCallOptions,
+  ) {
     const { marketId, direction, perPage, token, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.OrdersRequest.create()
@@ -175,7 +188,7 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.OrdersRequest,
       InjectiveTCDerivativesRpcPb.OrdersResponse
-    >(request, this.client.orders.bind(this.client))
+    >(request, this.client.orders.bind(this.client), options?.signal)
 
     return IndexerGrpcTcDerivativesTransformer.ordersResponseToOrders(response)
   }

@@ -102,7 +102,15 @@ export const fetchAllWithPagination = async <
   args: T,
   method: (args: T) => Promise<Q>,
   result: Array<unknown> = [],
+  signal?: AbortSignal,
 ): Promise<Q> => {
+  if (signal?.aborted) {
+    throw (
+      signal.reason ??
+      new DOMException('The operation was aborted.', 'AbortError')
+    )
+  }
+
   let response = await method(args)
 
   if (!args) {
@@ -123,6 +131,7 @@ export const fetchAllWithPagination = async <
       { ...paginationOption, key: response.pagination.next } as T,
       method,
       result,
+      signal,
     )
   }
 
