@@ -4,18 +4,22 @@ import {
 } from '@injectivelabs/exceptions'
 import { IndexerModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import type { CallOptions } from '../../../types/index.js'
 import type { ChronosMarketHistoryResponse } from '../types/markets-history-rest.js'
 
 export class IndexerRestMarketChronosApi extends BaseRestConsumer {
-  async fetchMarketsHistory({
-    marketIds,
-    resolution,
-    countback,
-  }: {
-    marketIds: string[]
-    resolution: string | number
-    countback: string | number
-  }) {
+  async fetchMarketsHistory(
+    {
+      marketIds,
+      resolution,
+      countback,
+    }: {
+      marketIds: string[]
+      resolution: string | number
+      countback: string | number
+    },
+    options?: CallOptions,
+  ) {
     const path = `history`
     const queryMarketIds = marketIds.map((marketId) => ({
       marketIDs: marketId,
@@ -32,8 +36,11 @@ export class IndexerRestMarketChronosApi extends BaseRestConsumer {
     const pathWithParams = `${path}?${stringifiedParams}`
 
     try {
-      const { data } = await this.retry<ChronosMarketHistoryResponse>(() =>
-        this.get(pathWithParams),
+      const { data } = await this.retry<ChronosMarketHistoryResponse>(
+        () => this.get(pathWithParams, undefined, options?.signal),
+        3,
+        1000,
+        options?.signal,
       )
 
       return data

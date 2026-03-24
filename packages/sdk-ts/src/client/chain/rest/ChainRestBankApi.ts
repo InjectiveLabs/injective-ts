@@ -8,6 +8,7 @@ import {
 import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type { RestApiResponse } from '../types/index.js'
+import type { CallOptions } from '../../../types/index.js'
 import type {
   DenomBalance,
   BalancesResponse,
@@ -26,12 +27,16 @@ export class ChainRestBankApi extends BaseRestConsumer {
   public async fetchBalances(
     address: string,
     params: Record<string, any> = {},
+    options?: CallOptions,
   ): Promise<BalancesResponse> {
     const endpoint = `cosmos/bank/v1beta1/balances/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<BalancesResponse>>(() =>
-        this.get(endpoint, params),
+      const response = await this.retry<RestApiResponse<BalancesResponse>>(
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
       )
 
       return response.data
@@ -57,12 +62,16 @@ export class ChainRestBankApi extends BaseRestConsumer {
     address: string,
     denom: string,
     params: Record<string, any> = {},
+    options?: CallOptions,
   ): Promise<DenomBalance> {
     const endpoint = `cosmos/bank/v1beta1/balances/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<BalancesResponse>>(() =>
-        this.get(endpoint, params),
+      const response = await this.retry<RestApiResponse<BalancesResponse>>(
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
       )
 
       const balance = response.data.balances.find(
@@ -100,12 +109,16 @@ export class ChainRestBankApi extends BaseRestConsumer {
   public async fetchDenomOwners(
     denom: string,
     params: Record<string, any> = {},
+    options?: CallOptions,
   ): Promise<DenomOwnersResponse['denom_owners']> {
     const endpoint = `cosmos/bank/v1beta1/denom_owners/${denom}`
 
     try {
       const response = await this.retry<RestApiResponse<DenomOwnersResponse>>(
-        () => this.get(endpoint, params),
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
       )
 
       return response.data.denom_owners

@@ -4,6 +4,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { IndexerModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import type { CallOptions } from '../../../types/index.js'
 import type {
   AllDerivativeMarketSummaryResponse,
   ChronosDerivativeMarketSummaryResponse,
@@ -13,16 +14,23 @@ import type {
  * @category Indexer Chronos API
  */
 export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
-  async fetchMarketSummary(marketId: string) {
+  async fetchMarketSummary(marketId: string, options?: CallOptions) {
     const path = `market_summary`
 
     try {
       const { data } = await this.retry<ChronosDerivativeMarketSummaryResponse>(
         () =>
-          this.get(path, {
-            marketId,
-            resolution: '24h',
-          }),
+          this.get(
+            path,
+            {
+              marketId,
+              resolution: '24h',
+            },
+            options?.signal,
+          ),
+        3,
+        1000,
+        options?.signal,
       )
 
       return data
@@ -39,15 +47,22 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
     }
   }
 
-  async fetchMarketsSummary() {
+  async fetchMarketsSummary(options?: CallOptions) {
     const path = `market_summary_all`
 
     try {
       const { data } = await this.retry<AllDerivativeMarketSummaryResponse>(
         () =>
-          this.get(path, {
-            resolution: '24h',
-          }),
+          this.get(
+            path,
+            {
+              resolution: '24h',
+            },
+            options?.signal,
+          ),
+        3,
+        1000,
+        options?.signal,
       )
 
       return data

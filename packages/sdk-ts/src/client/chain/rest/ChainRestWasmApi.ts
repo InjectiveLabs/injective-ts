@@ -5,6 +5,7 @@ import {
 import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type { RestApiResponse } from '../types/index.js'
+import type { CallOptions } from '../../../types/index.js'
 
 export type SmartContractStateResponse = unknown
 
@@ -16,13 +17,19 @@ export class ChainRestWasmApi extends BaseRestConsumer {
     contractAddress: string,
     query: string,
     params: Record<string, any> = {},
+    options?: CallOptions,
   ): Promise<SmartContractStateResponse> {
     const endpoint = `cosmwasm/wasm/v1/contract/${contractAddress}/smart/${query}`
 
     try {
       const response = await this.retry<
         RestApiResponse<SmartContractStateResponse>
-      >(() => this.get(endpoint, params))
+      >(
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
+      )
 
       return response.data
     } catch (e) {

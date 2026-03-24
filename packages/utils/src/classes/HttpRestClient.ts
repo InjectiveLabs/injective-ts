@@ -42,13 +42,21 @@ export default class HttpRestClient {
   public async get<T>(
     endpoint: string,
     params: Record<string, any> = {},
+    signal?: AbortSignal,
   ): Promise<T> {
     try {
-      return await this.client.get(endpoint, params)
+      return await this.client.get(endpoint, params, signal)
     } catch (e: unknown) {
       const error = e as Error | AxiosError
 
       if (axios.isAxiosError(error)) {
+        if (error.code === 'ERR_CANCELED') {
+          throw new HttpRequestException(new Error(error.message), {
+            code: UnspecifiedErrorCode,
+            context: endpoint,
+          })
+        }
+
         if (error.code === 'ECONNABORTED') {
           throw new HttpRequestException(new Error(error.message), {
             code: StatusCodes.REQUEST_TOO_LONG,
@@ -77,27 +85,63 @@ export default class HttpRestClient {
     httpCall: Function,
     retries: number = 3,
     delay: number = 1000,
+    signal?: AbortSignal,
   ): Promise<TResponse> {
     const retryHttpCall = async (attempt = 1): Promise<any> => {
+      if (signal?.aborted) {
+        throw (
+          signal.reason ??
+          new DOMException('The operation was aborted.', 'AbortError')
+        )
+      }
+
       try {
         return (await httpCall()) as TResponse
       } catch (e: any) {
+        if (signal?.aborted) {
+          throw (
+            signal.reason ??
+            new DOMException('The operation was aborted.', 'AbortError')
+          )
+        }
+
         if (e instanceof HttpRequestException) {
           if (e.code === StatusCodes.REQUEST_TOO_LONG) {
             throw e
           }
         }
 
+        if (axios.isCancel(e)) {
+          throw e
+        }
+
         if (attempt >= retries) {
           throw e
         }
 
-        return new Promise((resolve) =>
-          setTimeout(
+        return new Promise((resolve, reject) => {
+          const timeoutId = setTimeout(
             () => resolve(retryHttpCall(attempt + 1)),
             delay * attempt,
-          ),
-        )
+          )
+
+          if (signal) {
+            signal.addEventListener(
+              'abort',
+              () => {
+                clearTimeout(timeoutId)
+                reject(
+                  signal.reason ??
+                    new DOMException(
+                      'The operation was aborted.',
+                      'AbortError',
+                    ),
+                )
+              },
+              { once: true },
+            )
+          }
+        })
       }
     }
 
@@ -107,13 +151,21 @@ export default class HttpRestClient {
   public async post<T>(
     endpoint: string,
     params: Record<string, any> = {},
+    signal?: AbortSignal,
   ): Promise<T> {
     try {
-      return await this.client.post(endpoint, params)
+      return await this.client.post(endpoint, params, signal)
     } catch (e: unknown) {
       const error = e as Error | AxiosError
 
       if (axios.isAxiosError(error)) {
+        if (error.code === 'ERR_CANCELED') {
+          throw new HttpRequestException(new Error(error.message), {
+            code: UnspecifiedErrorCode,
+            method: HttpRequestMethod.Post,
+          })
+        }
+
         if (error.code === 'ECONNABORTED') {
           throw new HttpRequestException(new Error(error.message), {
             code: StatusCodes.REQUEST_TOO_LONG,

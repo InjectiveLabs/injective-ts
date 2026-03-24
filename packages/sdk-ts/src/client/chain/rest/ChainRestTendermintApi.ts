@@ -5,6 +5,7 @@ import {
 import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type { RestApiResponse } from '../types/index.js'
+import type { CallOptions } from '../../../types/index.js'
 import type {
   NodeInfoRestResponse,
   BlockLatestRestResponse,
@@ -16,13 +17,19 @@ import type {
 export class ChainRestTendermintApi extends BaseRestConsumer {
   async fetchLatestBlock(
     params: Record<string, any> = {},
+    options?: CallOptions,
   ): Promise<BlockLatestRestResponse['block']> {
     const endpoint = `cosmos/base/tendermint/v1beta1/blocks/latest`
 
     try {
       const response = await this.retry<
         RestApiResponse<BlockLatestRestResponse>
-      >(() => this.get(endpoint, params))
+      >(
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
+      )
 
       return response.data.sdk_block || response.data.block
     } catch (e) {
@@ -41,13 +48,19 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
   async fetchBlock(
     height: number | string,
     params: Record<string, any> = {},
+    options?: CallOptions,
   ): Promise<BlockLatestRestResponse['block']> {
     const endpoint = `cosmos/base/tendermint/v1beta1/blocks/${height}`
 
     try {
       const response = await this.retry<
         RestApiResponse<BlockLatestRestResponse>
-      >(() => this.get(endpoint, params))
+      >(
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
+      )
 
       return response.data.sdk_block || response.data.block
     } catch (e) {
@@ -63,7 +76,10 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
     }
   }
 
-  async fetchNodeInfo(params: Record<string, any> = {}): Promise<{
+  async fetchNodeInfo(
+    params: Record<string, any> = {},
+    options?: CallOptions,
+  ): Promise<{
     nodeInfo: NodeInfoRestResponse['default_node_info']
     applicationVersion: NodeInfoRestResponse['application_version']
   }> {
@@ -71,7 +87,10 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
 
     try {
       const response = await this.retry<RestApiResponse<NodeInfoRestResponse>>(
-        () => this.get(endpoint, params),
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
       )
 
       return {

@@ -29,19 +29,35 @@ export default class HttpClient {
     return this
   }
 
-  get<T, P>(endpoint: string, params: T = {} as T): Promise<P> {
-    return this.client.get(endpoint, { params, ...this.config })
+  get<T, P>(
+    endpoint: string,
+    params: T = {} as T,
+    signal?: AbortSignal,
+  ): Promise<P> {
+    return this.client.get(endpoint, { params, signal, ...this.config })
   }
 
-  post<T, P>(endpoint: string, data: T = {} as T): Promise<P> {
-    return this.client.post(endpoint, data, this.config)
+  post<T, P>(
+    endpoint: string,
+    data: T = {} as T,
+    signal?: AbortSignal,
+  ): Promise<P> {
+    return this.client.post(endpoint, data, { signal, ...this.config })
   }
 
-  put<T, P>(endpoint: string, data: T = {} as T): Promise<P> {
-    return this.client.put(endpoint, data, this.config)
+  put<T, P>(
+    endpoint: string,
+    data: T = {} as T,
+    signal?: AbortSignal,
+  ): Promise<P> {
+    return this.client.put(endpoint, data, { signal, ...this.config })
   }
 
-  delete<T, P>(endpoint: string, params: T = {} as T): Promise<P> {
-    return this.client.delete(endpoint, { params, ...this.config })
+  delete<T, P>(
+    endpoint: string,
+    params: T = {} as T,
+    signal?: AbortSignal,
+  ): Promise<P> {
+    return this.client.delete(endpoint, { params, signal, ...this.config })
   }
 }

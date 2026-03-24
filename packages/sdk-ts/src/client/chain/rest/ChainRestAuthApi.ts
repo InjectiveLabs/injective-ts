@@ -5,6 +5,7 @@ import {
 import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import type { RestApiResponse } from '../types/index.js'
+import type { CallOptions } from '../../../types/index.js'
 import type {
   AccountResponse,
   BaseAccountRestResponse,
@@ -23,12 +24,16 @@ export class ChainRestAuthApi extends BaseRestConsumer {
   public async fetchAccount(
     address: string,
     params: Record<string, any> = {},
+    options?: CallOptions,
   ): Promise<AccountResponse> {
     const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<AccountResponse>>(() =>
-        this.get(endpoint, params),
+      const response = await this.retry<RestApiResponse<AccountResponse>>(
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
       )
 
       return response.data
@@ -53,6 +58,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
   public async fetchCosmosAccount(
     address: string,
     params: Record<string, any> = {},
+    options?: CallOptions,
   ): Promise<BaseAccountRestResponse> {
     const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
 
@@ -62,7 +68,12 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       const response = await this.retry<
         RestApiResponse<AccountResponse | CosmosAccountRestResponse>
-      >(() => this.get(endpoint, params))
+      >(
+        () => this.get(endpoint, params, options?.signal),
+        3,
+        1000,
+        options?.signal,
+      )
 
       const baseAccount = isInjectiveAddress
         ? (response.data as AccountResponse).account.base_account

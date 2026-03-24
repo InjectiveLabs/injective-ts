@@ -19,6 +19,7 @@ import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
 import type { AxiosError } from 'axios'
 import type { TxResponse } from '../types/tx.js'
+import type { CallOptions } from '../../../types/index.js'
 import type { TxConcreteApi, TxClientBroadcastOptions } from '../types/tx.js'
 import type {
   TxInfoResponse,
@@ -41,11 +42,16 @@ export class TxRestApi implements TxConcreteApi {
     })
   }
 
-  public async fetchTx(txHash: string, params: any = {}): Promise<TxResponse> {
+  public async fetchTx(
+    txHash: string,
+    params: any = {},
+    options?: CallOptions,
+  ): Promise<TxResponse> {
     try {
       const response = await this.getRaw<TxResultResponse>(
         `/cosmos/tx/v1beta1/txs/${txHash}`,
         params,
+        options?.signal,
       )
 
       const { tx_response: txResponse } = response
@@ -100,12 +106,20 @@ export class TxRestApi implements TxConcreteApi {
   public async fetchTxPoll(
     txHash: string,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
+    options?: CallOptions,
   ): Promise<TxResponse> {
     const POLL_INTERVAL = DEFAULT_BLOCK_TIME_IN_SECONDS * 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
+      if (options?.signal?.aborted) {
+        throw (
+          options.signal.reason ??
+          new DOMException('The operation was aborted.', 'AbortError')
+        )
+      }
+
       try {
-        const txInfo = await this.fetchTx(txHash)
+        const txInfo = await this.fetchTx(txHash, {}, options)
         const txResponse = txInfo
 
         if (txResponse) {
@@ -132,7 +146,10 @@ export class TxRestApi implements TxConcreteApi {
     )
   }
 
-  public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
+  public async simulate(
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
+    options?: CallOptions,
+  ) {
     const txRawClone = CosmosTxV1Beta1TxPb.TxRaw.create({ ...txRaw })
 
     if (txRawClone.signatures.length === 0) {
@@ -145,6 +162,7 @@ export class TxRestApi implements TxConcreteApi {
         {
           tx_bytes: TxClient.encode(txRawClone),
         },
+        options?.signal,
       )
 
       return {
@@ -166,6 +184,7 @@ export class TxRestApi implements TxConcreteApi {
   public async broadcast(
     tx: CosmosTxV1Beta1TxPb.TxRaw,
     options?: TxClientBroadcastOptions,
+    callOptions?: CallOptions,
   ): Promise<TxResponse> {
     const timeout =
       options?.timeout ||
@@ -176,7 +195,7 @@ export class TxRestApi implements TxConcreteApi {
     try {
       const { tx_response: txResponse } = await this.broadcastTx<{
         tx_response: TxInfoResponse
-      }>(tx, BroadcastMode.Sync)
+      }>(tx, BroadcastMode.Sync, callOptions?.signal)
 
       if (!txResponse) {
         throw new HttpRequestException(
@@ -195,7 +214,7 @@ export class TxRestApi implements TxConcreteApi {
         })
       }
 
-      return this.fetchTxPoll(txResponse.txhash, timeout)
+      return this.fetchTxPoll(txResponse.txhash, timeout, callOptions)
     } catch (e) {
       if (e instanceof HttpRequestException) {
         if (e.code !== StatusCodes.OK) {
@@ -213,10 +232,13 @@ export class TxRestApi implements TxConcreteApi {
    *
    * @deprecated - the BLOCk mode broadcasting is deprecated now, use either sync or async
    */
-  public async broadcastBlock(tx: CosmosTxV1Beta1TxPb.TxRaw) {
+  public async broadcastBlock(
+    tx: CosmosTxV1Beta1TxPb.TxRaw,
+    options?: CallOptions,
+  ) {
     const response = await this.broadcastTx<{
       tx_response: TxInfoResponse
-    }>(tx, BroadcastMode.Block)
+    }>(tx, BroadcastMode.Block, options?.signal)
 
     try {
       const { tx_response: txResponse } = response
@@ -253,11 +275,16 @@ export class TxRestApi implements TxConcreteApi {
   private async broadcastTx<T>(
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     mode: BroadcastMode = BroadcastMode.Sync,
+    signal?: AbortSignal,
   ): Promise<T> {
-    const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {
-      tx_bytes: TxClient.encode(txRaw),
-      mode,
-    })
+    const response = await this.postRaw<T>(
+      'cosmos/tx/v1beta1/txs',
+      {
+        tx_bytes: TxClient.encode(txRaw),
+        mode,
+      },
+      signal,
+    )
 
     return response
   }
@@ -265,10 +292,11 @@ export class TxRestApi implements TxConcreteApi {
   private async getRaw<T>(
     endpoint: string,
     params: URLSearchParams | any = {},
+    signal?: AbortSignal,
   ): Promise<T> {
     try {
       return await this.httpClient
-        .get<URLSearchParams | any, { data: T }>(endpoint, params)
+        .get<URLSearchParams | any, { data: T }>(endpoint, params, signal)
         .then((d) => d.data)
     } catch (e) {
       const error = e as Error | AxiosError
@@ -301,10 +329,11 @@ export class TxRestApi implements TxConcreteApi {
   private async postRaw<T>(
     endpoint: string,
     params: URLSearchParams | any = {},
+    signal?: AbortSignal,
   ): Promise<T> {
     try {
       return await this.httpClient
-        .post<URLSearchParams | any, { data: T }>(endpoint, params)
+        .post<URLSearchParams | any, { data: T }>(endpoint, params, signal)
         .then((d) => d.data)
     } catch (e) {
       const error = e as Error | AxiosError

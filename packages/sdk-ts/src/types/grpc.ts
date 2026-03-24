@@ -8,6 +8,8 @@ export type GrpcWebTransportAdditionalOptions = Omit<
   meta?: Record<string, string>
 } & RpcOptions
 
-export interface GrpcCallOptions {
+export interface CallOptions {
   signal?: AbortSignal
 }
+
+export type GrpcCallOptions = CallOptions
