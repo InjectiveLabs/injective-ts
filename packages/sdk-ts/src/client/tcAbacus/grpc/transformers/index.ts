@@ -4,6 +4,7 @@ import type {
   SnapshotPoints,
   ReferrerInvitee,
   HealthCheckResponse,
+  CurrentEpochResponse,
   AccountStatsResponse,
   AccountPointsResponse,
   ListReferrersResponse,
@@ -11,6 +12,15 @@ import type {
 } from '../../types/index.js'
 
 export class TcAbacusGrpcTransformer {
+  static grpcCurrentEpochToCurrentEpoch(
+    response: TcAbacusPb.GetCurrentEpochResponse,
+  ): CurrentEpochResponse {
+    return {
+      epochEnd: response.epochEnd,
+      epochPoints: response.epochPoints,
+    }
+  }
+
   static grpcHealthCheckToHealthCheck(
     response: TcAbacusPb.HealthCheckResponse,
   ): HealthCheckResponse {
@@ -41,6 +51,7 @@ export class TcAbacusGrpcTransformer {
       updatedAt: response.updatedAt,
       nextCursor: response.nextCursor,
       totalPoints: response.totalPoints,
+      totalReferralPoints: response.totalReferralPoints,
       snapshots: response.snapshots.map((snapshot) =>
         TcAbacusGrpcTransformer.grpcSnapshotPointsToSnapshotPoints(snapshot),
       ),

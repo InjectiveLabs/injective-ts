@@ -11,6 +11,17 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     return this.initClient(InjectiveTCAbacusRPCClient)
   }
 
+  async fetchCurrentEpoch() {
+    const request = TcAbacusPb.GetCurrentEpochRequest.create({})
+
+    const response = await this.executeGrpcCall<
+      TcAbacusPb.GetCurrentEpochRequest,
+      TcAbacusPb.GetCurrentEpochResponse
+    >(request, this.client.getCurrentEpoch.bind(this.client))
+
+    return TcAbacusGrpcTransformer.grpcCurrentEpochToCurrentEpoch(response)
+  }
+
   async fetchHealthCheck() {
     const request = TcAbacusPb.HealthCheckRequest.create({})
 

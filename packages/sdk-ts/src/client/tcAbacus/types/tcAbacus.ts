@@ -1,3 +1,8 @@
+export interface CurrentEpochResponse {
+  epochEnd: string
+  epochPoints: string
+}
+
 export interface HealthCheckResponse {
   uptime: string
   uptimeSeconds: number
@@ -17,6 +22,7 @@ export interface AccountPointsResponse {
   updatedAt: string
   totalPoints: string
   nextCursor?: string
+  totalReferralPoints: string
   snapshots: SnapshotPoints[]
 }
 
