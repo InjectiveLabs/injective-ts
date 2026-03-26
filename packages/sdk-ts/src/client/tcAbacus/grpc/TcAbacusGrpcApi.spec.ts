@@ -8,6 +8,25 @@ const tcAbacusGrpcApi = new TcAbacusGrpcApi(
 )
 
 describe('TcAbacusGrpcApi', () => {
+  test('fetchCurrentEpoch', async () => {
+    try {
+      const response = await tcAbacusGrpcApi.fetchCurrentEpoch()
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof TcAbacusGrpcTransformer.grpcCurrentEpochToCurrentEpoch
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'TcAbacusGrpcApi.fetchCurrentEpoch => ' + (e as any).message,
+      )
+    }
+  })
+
   test('fetchHealthCheck', async () => {
     try {
       const response = await tcAbacusGrpcApi.fetchHealthCheck()
