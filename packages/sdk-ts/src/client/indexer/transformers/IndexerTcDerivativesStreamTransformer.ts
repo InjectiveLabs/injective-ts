@@ -1,3 +1,4 @@
+import { OrderState } from '../../../types/index.js'
 import { IndexerGrpcTcDerivativesTransformer } from './IndexerGrpcTcDerivativesTransformer.js'
 import type * as InjectiveTCDerivativesRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_tc_derivatives_rpc_pb'
 
@@ -9,6 +10,10 @@ export class IndexerTcDerivativesStreamTransformer {
     response: InjectiveTCDerivativesRpcPb.StreamOrdersHistoryResponse,
   ) => {
     const order = response.order
+
+    if (order?.state === OrderState.Booked) {
+      return
+    }
 
     return {
       operationType: response.operationType,
