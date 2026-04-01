@@ -60,3 +60,21 @@ export interface AccountInviteesResponse {
   nextCursor?: string
   invitees: ReferrerInvitee[]
 }
+
+export interface ReferrerEligibilityResponse {
+  volume: string
+  isEligible: boolean
+  volumeThreshold: string
+}
+
+export interface ReferrerCode {
+  code: string
+  cap?: number
+  createdAt: string
+  invitees: string[]
+}
+
+export interface ListReferrerCodesResponse {
+  nextCursor?: string
+  codes: ReferrerCode[]
+}
