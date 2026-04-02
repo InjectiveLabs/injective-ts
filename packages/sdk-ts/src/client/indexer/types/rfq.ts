@@ -21,13 +21,13 @@ export interface RFQRequestType {
 export interface RFQRequestInputType {
   margin: string
   expiry: number
-  status: string
   clientId: string
   marketId: string
   quantity: string
   direction: string
   worstPrice: string
-  requestAddress: string
+  priceCheck?: boolean
+  requestAddress?: string
   transactionTime?: number
 }
 
@@ -47,16 +47,18 @@ export interface RFQQuoteType {
   chainId: string
   marketId: string
   quantity: string
+  clientId: string
   signature: string
   createdAt: number
   updatedAt: number
   eventTime: number
+  priceCheck: boolean
   expiry: RFQExpiryType
   takerDirection: string
   contractAddress: string
   transactionTime: number
-  makerSubaccountNonce: number
   minFillQuantity: string
+  makerSubaccountNonce: number
 }
 
 export interface RFQProcessedQuoteType {
@@ -74,15 +76,17 @@ export interface RFQProcessedQuoteType {
   signature: string
   createdAt: number
   updatedAt: number
+  clientId: string
   eventTime: number
+  priceCheck: boolean
   executedMargin: string
   takerDirection: string
   expiry?: RFQExpiryType
   contractAddress: string
   transactionTime: number
+  minFillQuantity: string
   executedQuantity: string
   makerSubaccountNonce: number
-  minFillQuantity: string
 }
 
 export interface RFQSettlementLimitActionType {
@@ -118,11 +122,47 @@ export interface SettlementsResponse {
   settlements: RFQSettlementType[]
 }
 
+export interface RFQConditionalOrderInput {
+  margin: string
+  orderId: string
+  marketId: string
+  quantity: string
+  direction: string
+  orderType: string
+  signature: string
+  worstPrice: string
+  triggerPrice: string
+  requestAddress: string
+}
+
+export interface RFQConditionalOrder {
+  orderId: string
+  margin: string
+  status: string
+  marketId: string
+  quantity: string
+  direction: string
+  orderType: string
+  createdAt: number
+  updatedAt: number
+  expiresAt: number
+  worstPrice: string
+  triggerPrice: string
+  requestAddress: string
+}
+
+export interface RFQConditionalOrdersResponse {
+  next: string[]
+  orders: RFQConditionalOrder[]
+}
+
 export type GrpcRFQQuote = InjectiveRFQRpcPb.RFQQuoteType
 export type GrpcRFQExpiry = InjectiveRFQRpcPb.RFQExpiryType
 export type GrpcRFQRequest = InjectiveRFQRpcPb.RFQRequestType
 export type GrpcRFQSettlement = InjectiveRFQRpcPb.RFQSettlementType
 export type GrpcRFQProcessedQuote = InjectiveRFQRpcPb.RFQProcessedQuoteType
+export type GrpcRFQConditionalOrder =
+  InjectiveRFQRpcPb.ConditionalOrderResponseType
 
 // ============================================
 // RFQ Taker/Maker WebSocket Stream Types

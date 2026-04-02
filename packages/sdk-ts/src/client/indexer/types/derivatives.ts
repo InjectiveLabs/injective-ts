@@ -34,6 +34,7 @@ export interface PositionV2 extends Omit<
   Position,
   'aggregateReduceOnlyQuantity'
 > {
+  upnl: string
   denom: string
   fundingSum: string
   fundingLast: string
