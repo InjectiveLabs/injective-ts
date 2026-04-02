@@ -59,6 +59,7 @@ export interface TcDerivativeTradeHistory {
 }
 
 export interface TcDerivativePosition {
+  upnl: string
   denom: string
   ticker: string
   margin: string

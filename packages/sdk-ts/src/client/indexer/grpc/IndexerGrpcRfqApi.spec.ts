@@ -10,7 +10,6 @@ describe('IndexerGrpcRFQApi', () => {
     try {
       const response = await indexerGrpcRfqApi.submitRequest({
         direction: 'LONG',
-        status: 'PENDING',
         clientId: '1717000000',
         expiry: BigInt(1717000000),
         margin: '1000000000000000000',

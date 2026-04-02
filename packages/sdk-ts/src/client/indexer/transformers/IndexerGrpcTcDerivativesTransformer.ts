@@ -104,6 +104,7 @@ export class IndexerGrpcTcDerivativesTransformer {
     position: GrpcTcDerivativePosition,
   ): TcDerivativePosition {
     return {
+      upnl: position.upnl,
       denom: position.denom,
       ticker: position.ticker,
       margin: position.margin,

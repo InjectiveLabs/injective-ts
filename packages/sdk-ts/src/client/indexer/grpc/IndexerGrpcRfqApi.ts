@@ -18,27 +18,27 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   async submitRequest({
     margin,
     expiry,
-    status,
     clientId,
     marketId,
     quantity,
     direction,
     worstPrice,
+    priceCheck,
     requestAddress,
     transactionTime,
   }: {
     margin: string
     expiry?: bigint
-    status?: string
     marketId: string
     quantity: string
     direction: string
     clientId?: string
     worstPrice: string
+    priceCheck?: boolean
     requestAddress?: string
     transactionTime?: bigint
   }) {
-    const request = InjectiveRFQExchangeRpcPb.RFQRequestType.create()
+    const request = InjectiveRFQExchangeRpcPb.RFQRequestInputType.create()
 
     if (clientId) {
       request.clientId = clientId
@@ -72,12 +72,12 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       request.expiry = expiry
     }
 
-    if (status) {
-      request.status = status
-    }
-
     if (transactionTime) {
       request.transactionTime = transactionTime
+    }
+
+    if (priceCheck) {
+      request.priceCheck = priceCheck
     }
 
     const requestMessage = InjectiveRFQExchangeRpcPb.RequestRequest.create()
@@ -246,5 +246,130 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     return IndexerGrpcRfqTransformer.listSettlementsResponseToSettlements(
       response,
     )
+  }
+
+  async createConditionalOrder({
+    margin,
+    orderId,
+    marketId,
+    quantity,
+    direction,
+    orderType,
+    signature,
+    worstPrice,
+    triggerPrice,
+    requestAddress,
+  }: {
+    margin: string
+    orderId: string
+    marketId: string
+    quantity: string
+    direction: string
+    orderType: string
+    signature: string
+    worstPrice: string
+    triggerPrice: string
+    requestAddress: string
+  }) {
+    const order = InjectiveRFQExchangeRpcPb.ConditionalOrderInputType.create()
+
+    order.margin = margin
+    order.orderId = orderId
+    order.marketId = marketId
+    order.quantity = quantity
+    order.direction = direction
+    order.orderType = orderType
+    order.signature = signature
+    order.worstPrice = worstPrice
+    order.triggerPrice = triggerPrice
+    order.requestAddress = requestAddress
+
+    const request =
+      InjectiveRFQExchangeRpcPb.CreateConditionalOrderRequest.create()
+    request.order = order
+
+    const response = await this.executeGrpcCall<
+      InjectiveRFQExchangeRpcPb.CreateConditionalOrderRequest,
+      InjectiveRFQExchangeRpcPb.CreateConditionalOrderResponse
+    >(request, this.client.createConditionalOrder.bind(this.client))
+
+    return {
+      order: response.order
+        ? IndexerGrpcRfqTransformer.grpcConditionalOrderToConditionalOrder(
+            response.order,
+          )
+        : undefined,
+    }
+  }
+
+  async listConditionalOrders(params?: {
+    token?: string
+    status?: string
+    perPage?: number
+    marketId?: string
+    requestAddress?: string
+  }) {
+    const { requestAddress, status, marketId, perPage, token } = params || {}
+    const request =
+      InjectiveRFQExchangeRpcPb.ListConditionalOrdersRequest.create()
+
+    if (requestAddress) {
+      request.requestAddress = requestAddress
+    }
+
+    if (status) {
+      request.status = status
+    }
+
+    if (marketId) {
+      request.marketId = marketId
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveRFQExchangeRpcPb.ListConditionalOrdersRequest,
+      InjectiveRFQExchangeRpcPb.ListConditionalOrdersResponse
+    >(request, this.client.listConditionalOrders.bind(this.client))
+
+    return IndexerGrpcRfqTransformer.listConditionalOrdersResponseToConditionalOrders(
+      response,
+    )
+  }
+
+  async cancelConditionalOrder({
+    orderId,
+    requestAddress,
+    signature,
+  }: {
+    orderId: string
+    requestAddress: string
+    signature: string
+  }) {
+    const request =
+      InjectiveRFQExchangeRpcPb.CancelConditionalOrderRequest.create()
+
+    request.orderId = orderId
+    request.requestAddress = requestAddress
+    request.signature = signature
+
+    const response = await this.executeGrpcCall<
+      InjectiveRFQExchangeRpcPb.CancelConditionalOrderRequest,
+      InjectiveRFQExchangeRpcPb.CancelConditionalOrderResponse
+    >(request, this.client.cancelConditionalOrder.bind(this.client))
+
+    return {
+      order: response.order
+        ? IndexerGrpcRfqTransformer.grpcConditionalOrderToConditionalOrder(
+            response.order,
+          )
+        : undefined,
+    }
   }
 }

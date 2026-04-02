@@ -27,21 +27,15 @@ export const GrpcWebSocketCodec = {
   },
 
   encodeTakerRequest(input: RFQRequestInputType): Uint8Array {
-    const request = InjectiveRFQExchangeRpcPb.RFQRequestType.create({
+    const request = InjectiveRFQExchangeRpcPb.CreateRFQRequestType.create({
       margin: input.margin,
-      status: input.status,
       clientId: input.clientId,
       marketId: input.marketId,
       quantity: input.quantity,
       direction: input.direction,
       worstPrice: input.worstPrice,
       expiry: BigInt(input.expiry),
-      requestAddress: input.requestAddress,
-      // Server-side fields (set to 0/defaults for client requests)
-      createdAt: 0n,
-      updatedAt: 0n,
-      transactionTime: 0n,
-      height: 0n,
+      priceCheck: input.priceCheck ?? false,
     })
 
     const message =
