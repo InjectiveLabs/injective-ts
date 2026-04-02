@@ -662,10 +662,13 @@ export class MsgBroadcaster {
         .toNumber()
     }
 
+    const totalStart = Date.now()
+
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionPreparationStart,
     )
 
+    const prepareStart = Date.now()
     const prepareTxResponse = await transactionApi.prepareTxRequest({
       timeoutHeight,
       memo: tx.memo,
@@ -675,16 +678,21 @@ export class MsgBroadcaster {
       gasLimit: getGasPriceBasedOnMessage(msgs),
       estimateGas: simulateTx,
     })
+    console.log(
+      `[MsgBroadcaster] Prepare exchange TX: ${Date.now() - prepareStart}ms`,
+    )
 
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionPreparationEnd,
     )
 
+    const signStart = Date.now()
     const signature = await walletStrategy.signEip712TypedData(
       prepareTxResponse.data,
       tx.ethereumAddress,
       { txTimeout: txTimeoutTimeInSeconds },
     )
+    console.log(`[MsgBroadcaster] Sign: ${Date.now() - signStart}ms`)
 
     const broadcast = async () =>
       await transactionApi.broadcastTxRequest({
@@ -699,16 +707,25 @@ export class MsgBroadcaster {
         WalletStrategyEmitterEventType.TransactionBroadcastStart,
       )
 
+      const broadcastStart = Date.now()
       const response = await broadcast()
 
       walletStrategy.emit(
         WalletStrategyEmitterEventType.TransactionBroadcastEnd,
       )
 
-      return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+      const txResponse = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
         response.txHash,
         txTimeoutTimeInMilliSeconds,
       )
+      console.log(
+        `[MsgBroadcaster] Broadcast + chain inclusion: ${Date.now() - broadcastStart}ms`,
+      )
+      console.log(
+        `[MsgBroadcaster] Total quote-to-chain: ${Date.now() - totalStart}ms`,
+      )
+
+      return txResponse
     } catch (e) {
       const error = e as any
 
@@ -1052,6 +1069,9 @@ export class MsgBroadcaster {
       }
     }
 
+    const totalStart = Date.now()
+    const prepareStart = Date.now()
+
     const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
     const canDisableCosmosGasCheck = (
       [Wallet.Keplr, Wallet.OWallet] as WalletType[]
@@ -1113,16 +1133,22 @@ export class MsgBroadcaster {
       cosmosWallet.disableGasCheck(chainId)
     }
 
+    console.log(
+      `[MsgBroadcaster] Prepare exchange TX: ${Date.now() - prepareStart}ms`,
+    )
+
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionPreparationStart,
     )
 
+    const signStart = Date.now()
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
       txRaw,
       chainId,
       address: tx.injectiveAddress,
       accountNumber: baseAccount.accountNumber,
     })) as DirectSignResponse
+    console.log(`[MsgBroadcaster] Sign: ${Date.now() - signStart}ms`)
 
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionPreparationEnd,
@@ -1152,6 +1178,7 @@ export class MsgBroadcaster {
         WalletStrategyEmitterEventType.TransactionBroadcastStart,
       )
 
+      const broadcastStart = Date.now()
       const response = await broadcast()
 
       walletStrategy.emit(
@@ -1163,10 +1190,18 @@ export class MsgBroadcaster {
         cosmosWallet.enableGasCheck(chainId)
       }
 
-      return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+      const txResponse = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
         response.txHash,
         txTimeoutTimeInMilliSeconds,
       )
+      console.log(
+        `[MsgBroadcaster] Broadcast + chain inclusion: ${Date.now() - broadcastStart}ms`,
+      )
+      console.log(
+        `[MsgBroadcaster] Total quote-to-chain: ${Date.now() - totalStart}ms`,
+      )
+
+      return txResponse
     } catch (e) {
       const error = e as any
 
