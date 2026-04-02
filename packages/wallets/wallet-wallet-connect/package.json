@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-wallet-connect",
-  "version": "1.18.15",
+  "version": "1.18.16",
   "description": "Wallet connect strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
