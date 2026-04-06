@@ -352,7 +352,7 @@
     "@injectivelabs/mito-proto-ts-v2": "1.17.3",
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/olp-proto-ts-v2": "1.17.6",
-    "@injectivelabs/tc-abacus-proto-ts-v2": "1.18.2",
+    "@injectivelabs/tc-abacus-proto-ts-v2": "1.18.4",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/utils": "workspace:*",
     "@noble/curves": "catalog:",
