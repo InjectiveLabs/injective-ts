@@ -98,12 +98,20 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     token?: string
     perPage?: number
     marketId?: string
+    withUpnl?: boolean
     direction?: string
     withCount?: boolean
     accountAddress?: string
   }) {
-    const { marketId, direction, perPage, token, accountAddress, withCount } =
-      params || {}
+    const {
+      marketId,
+      direction,
+      perPage,
+      token,
+      accountAddress,
+      withCount,
+      withUpnl,
+    } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.PositionsRequest.create()
 
@@ -121,6 +129,10 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     if (withCount !== undefined) {
       request.withCount = withCount
+    }
+
+    if (withUpnl !== undefined) {
+      request.withUpnl = withUpnl
     }
 
     if (perPage) {

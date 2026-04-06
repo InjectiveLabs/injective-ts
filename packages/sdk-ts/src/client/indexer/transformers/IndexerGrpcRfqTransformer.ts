@@ -7,8 +7,11 @@ import type {
   RFQSettlementType,
   GrpcRFQSettlement,
   SettlementsResponse,
+  RFQConditionalOrder,
   RFQProcessedQuoteType,
   GrpcRFQProcessedQuote,
+  GrpcRFQConditionalOrder,
+  RFQConditionalOrdersResponse,
 } from '../types'
 
 /**
@@ -46,9 +49,11 @@ export class IndexerGrpcRfqTransformer {
       chainId: grpcQuote.chainId,
       marketId: grpcQuote.marketId,
       quantity: grpcQuote.quantity,
+      clientId: grpcQuote.clientId,
       signature: grpcQuote.signature,
       rfqId: Number(grpcQuote.rfqId),
       height: Number(grpcQuote.height),
+      priceCheck: grpcQuote.priceCheck,
       createdAt: Number(grpcQuote.createdAt),
       updatedAt: Number(grpcQuote.updatedAt),
       eventTime: Number(grpcQuote.eventTime),
@@ -114,8 +119,10 @@ export class IndexerGrpcRfqTransformer {
       marketId: grpcProcessedQuote.marketId,
       quantity: grpcProcessedQuote.quantity,
       signature: grpcProcessedQuote.signature,
+      clientId: grpcProcessedQuote.clientId,
       rfqId: Number(grpcProcessedQuote.rfqId),
       height: Number(grpcProcessedQuote.height),
+      priceCheck: grpcProcessedQuote.priceCheck,
       createdAt: Number(grpcProcessedQuote.createdAt),
       updatedAt: Number(grpcProcessedQuote.updatedAt),
       eventTime: Number(grpcProcessedQuote.eventTime),
@@ -145,6 +152,37 @@ export class IndexerGrpcRfqTransformer {
     return {
       settlements: response.settlements.map(
         IndexerGrpcRfqTransformer.grpcRfqSettlementToRfqSettlement,
+      ),
+      next: response.next,
+    }
+  }
+
+  static grpcConditionalOrderToConditionalOrder(
+    grpcOrder: GrpcRFQConditionalOrder,
+  ): RFQConditionalOrder {
+    return {
+      orderId: grpcOrder.orderId,
+      marketId: grpcOrder.marketId,
+      direction: grpcOrder.direction,
+      margin: grpcOrder.margin,
+      quantity: grpcOrder.quantity,
+      worstPrice: grpcOrder.worstPrice,
+      requestAddress: grpcOrder.requestAddress,
+      orderType: grpcOrder.orderType,
+      triggerPrice: grpcOrder.triggerPrice,
+      status: grpcOrder.status,
+      createdAt: Number(grpcOrder.createdAt),
+      updatedAt: Number(grpcOrder.updatedAt),
+      expiresAt: Number(grpcOrder.expiresAt),
+    }
+  }
+
+  static listConditionalOrdersResponseToConditionalOrders(
+    response: InjectiveRFQRpcPb.ListConditionalOrdersResponse,
+  ): RFQConditionalOrdersResponse {
+    return {
+      orders: response.orders.map(
+        IndexerGrpcRfqTransformer.grpcConditionalOrderToConditionalOrder,
       ),
       next: response.next,
     }
