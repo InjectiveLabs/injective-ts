@@ -1,6 +1,7 @@
 import type * as TcAbacusPb from '@injectivelabs/tc-abacus-proto-ts-v2/generated/injective_tc_abacus_rpc_pb'
 import type {
   Referrer,
+  ReferrerCode,
   SnapshotPoints,
   ReferrerInvitee,
   HealthCheckResponse,
@@ -9,6 +10,8 @@ import type {
   AccountPointsResponse,
   ListReferrersResponse,
   AccountInviteesResponse,
+  ListReferrerCodesResponse,
+  ReferrerEligibilityResponse,
 } from '../../types/index.js'
 
 export class TcAbacusGrpcTransformer {
@@ -18,6 +21,7 @@ export class TcAbacusGrpcTransformer {
     return {
       epochEnd: response.epochEnd,
       epochPoints: response.epochPoints,
+      epochPointsDistributedAt: response.epochPointsDistributedAt,
     }
   }
 
@@ -111,6 +115,38 @@ export class TcAbacusGrpcTransformer {
       nextCursor: response.nextCursor,
       invitees: response.invitees.map((invitee) =>
         TcAbacusGrpcTransformer.grpcReferrerInviteeToReferrerInvitee(invitee),
+      ),
+    }
+  }
+
+  static grpcReferrerEligibilityToReferrerEligibility(
+    response: TcAbacusPb.GetReferrerElegibilityResponse,
+  ): ReferrerEligibilityResponse {
+    return {
+      volume: response.volume,
+      isEligible: response.isEligible,
+      volumeThreshold: response.volumeThreshold,
+    }
+  }
+
+  static grpcReferrerCodeToReferrerCode(
+    code: TcAbacusPb.ReferrerCode,
+  ): ReferrerCode {
+    return {
+      cap: code.cap,
+      code: code.code,
+      invitees: code.invitees,
+      createdAt: code.createdAt,
+    }
+  }
+
+  static grpcListReferrerCodesToListReferrerCodes(
+    response: TcAbacusPb.ListReferrerCodesResponse,
+  ): ListReferrerCodesResponse {
+    return {
+      nextCursor: response.nextCursor,
+      codes: response.codes.map((code) =>
+        TcAbacusGrpcTransformer.grpcReferrerCodeToReferrerCode(code),
       ),
     }
   }

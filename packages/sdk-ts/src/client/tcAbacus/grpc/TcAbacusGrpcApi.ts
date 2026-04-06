@@ -91,4 +91,50 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
       response,
     )
   }
+
+  async fetchReferrerEligibility(address: string) {
+    const request = TcAbacusPb.GetReferrerElegibilityRequest.create({
+      address,
+    })
+
+    const response = await this.executeGrpcCall<
+      TcAbacusPb.GetReferrerElegibilityRequest,
+      TcAbacusPb.GetReferrerElegibilityResponse
+    >(request, this.client.getReferrerElegibility.bind(this.client))
+
+    return TcAbacusGrpcTransformer.grpcReferrerEligibilityToReferrerEligibility(
+      response,
+    )
+  }
+
+  async createReferrerCode(address: string, code: string) {
+    const request = TcAbacusPb.CreateReferrerCodeRequest.create({
+      code,
+      address,
+    })
+
+    const response = await this.executeGrpcCall<
+      TcAbacusPb.CreateReferrerCodeRequest,
+      TcAbacusPb.CreateReferrerCodeResponse
+    >(request, this.client.createReferrerCode.bind(this.client))
+
+    return response // has no response fields
+  }
+
+  async fetchReferrerCodes(address: string, cursor?: string, limit?: number) {
+    const request = TcAbacusPb.ListReferrerCodesRequest.create({
+      limit,
+      cursor,
+      address,
+    })
+
+    const response = await this.executeGrpcCall<
+      TcAbacusPb.ListReferrerCodesRequest,
+      TcAbacusPb.ListReferrerCodesResponse
+    >(request, this.client.listReferrerCodes.bind(this.client))
+
+    return TcAbacusGrpcTransformer.grpcListReferrerCodesToListReferrerCodes(
+      response,
+    )
+  }
 }
