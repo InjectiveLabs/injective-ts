@@ -1,6 +1,7 @@
 export interface CurrentEpochResponse {
   epochEnd: string
   epochPoints: string
+  epochPointsDistributedAt: string
 }
 
 export interface HealthCheckResponse {

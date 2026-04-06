@@ -21,6 +21,7 @@ export class TcAbacusGrpcTransformer {
     return {
       epochEnd: response.epochEnd,
       epochPoints: response.epochPoints,
+      epochPointsDistributedAt: response.epochPointsDistributedAt,
     }
   }
 
