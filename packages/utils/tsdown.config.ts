@@ -15,6 +15,7 @@ export default defineConfig({
   outDir: 'dist',
   external: [
     // External workspace dependencies
+    'bignumber.js',
     '@injectivelabs/exceptions',
     '@injectivelabs/networks',
     '@injectivelabs/ts-types',
