@@ -3,7 +3,7 @@ name: Package Bump
 # This workflow bumps package versions across all downstream repositories.
 # Can be triggered:
 # 1. Manually via GitHub UI (workflow_dispatch)
-# 2. Automatically called from dev.yaml after successful latest publish
+# 2. Automatically called from publish.yaml after successful latest publish
 
 on:
   workflow_dispatch:
