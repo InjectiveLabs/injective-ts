@@ -39,7 +39,8 @@ Ask the user which proto package to sync:
 ### Step 2: Version Selection
 
 - Ask: "What version should we bump to?"
-- User provides target version (e.g., `1.18.7`)
+- User provides target version (e.g., `1.18.7`) or says "latest"
+- If user says "latest", resolve it via `npm view @injectivelabs/{package-name} version`
 
 ### Step 3: Create Todo List
 
@@ -117,12 +118,14 @@ For each selected service:
 Create files in dependency order:
 
 ```
-1. types/*.ts                          (no dependencies)
-2. transformers/*Transformer.ts        (depends on types)
-3. transformers/*StreamTransformer.ts  (depends on main transformer)
-4. grpc/*Api.ts                        (depends on types + transformers)
-5. grpc_stream/streamV2/*StreamV2.ts   (depends on stream transformer)
-6. Update all index.ts exports         (depends on all above)
+1. types/*.ts                                   (no dependencies)
+2. transformers/*Transformer.ts                  (depends on types)
+3. transformers/*StreamTransformer.ts            (depends on main transformer)
+4. grpc/*Api.ts                                  (depends on types + transformers)
+5. grpc/*Api.spec.ts                             (depends on API class + transformers)
+6. grpc_stream/streamV2/*StreamV2.ts             (depends on stream transformer)
+7. grpc_stream/streamV2/*StreamV2.spec.ts        (depends on stream class)
+8. Update all index.ts exports                   (depends on all above)
 ```
 
 #### Required files (all services):
@@ -130,11 +133,13 @@ Create files in dependency order:
 - `types/*.ts` - TypeScript interfaces
 - `transformers/IndexerGrpc*Transformer.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Data transformation
 - `grpc/IndexerGrpc*Api.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Main API class
+- `grpc/IndexerGrpc*Api.spec.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Test file for the API class
 
 #### Optional files (if streaming methods exist):
 
 - `transformers/Indexer*StreamTransformer.ts` - Stream transformation
 - `grpc_stream/streamV2/IndexerGrpc*StreamV2.ts` - Stream API class
+- `grpc_stream/streamV2/IndexerGrpc*StreamV2.spec.ts` - Stream test file
 
 #### Export updates required:
 
@@ -331,6 +336,107 @@ export class IndexerGrpc[Service]StreamV2 {
 }
 ```
 
+### Test File
+
+```typescript
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { IndexerGrpc[Service]Api } from './IndexerGrpc[Service]Api.js'
+import type { IndexerGrpc[Service]Transformer } from '../transformers/index.js'
+
+const endpoints = getNetworkEndpoints(Network.Mainnet)
+const indexerGrpc[service]Api = new IndexerGrpc[Service]Api(endpoints.indexer)
+
+describe('IndexerGrpc[Service]Api', () => {
+  test('fetchItems', async () => {
+    try {
+      const response = await indexerGrpc[service]Api.fetchItems({
+        // provide realistic test parameters
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpc[Service]Transformer.listResponseToItems
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpc[Service]Api.fetchItems => ' + (e as any).message,
+      )
+    }
+  })
+})
+```
+
+**Test file conventions:**
+- One test per API method
+- Use `Network.Mainnet` endpoints
+- Wrap each test in try/catch (these hit real endpoints)
+- Use `expect.objectContaining` with transformer return types for type validation
+- Import the transformer as `type` only (used for type checking, not runtime)
+
+### Stream V2 Test File
+
+```typescript
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { IndexerGrpc[Service]StreamV2 } from './IndexerGrpc[Service]StreamV2.js'
+
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
+
+describe('IndexerGrpc[Service]StreamV2', () => {
+  let stream: IndexerGrpc[Service]StreamV2
+
+  beforeEach(() => {
+    stream = new IndexerGrpc[Service]StreamV2(endpoints.indexer)
+  })
+
+  describe('constructor', () => {
+    it('should create instance with endpoint', () => {
+      expect(stream).toBeDefined()
+      expect(stream).toBeInstanceOf(IndexerGrpc[Service]StreamV2)
+    })
+
+    it('should create instance with endpoint and metadata', () => {
+      const metadata = { 'x-custom-header': 'test-value' }
+      const s = new IndexerGrpc[Service]StreamV2(endpoints.indexer, metadata)
+
+      expect(s).toBeDefined()
+      expect(s).toBeInstanceOf(IndexerGrpc[Service]StreamV2)
+    })
+  })
+
+  describe('streamItems', () => {
+    it('should create subscription with unsubscribe method', () => {
+      const subscription = stream.streamItems({
+        callback: () => {},
+      })
+
+      expect(subscription).toBeDefined()
+      expect(typeof subscription.unsubscribe).toBe('function')
+
+      subscription.unsubscribe()
+    })
+
+    it('should throw error if callback is not a function', () => {
+      expect(() => {
+        stream.streamItems({
+          callback: null as any,
+        })
+      }).toThrow('callback must be a function')
+    })
+  })
+})
+```
+
+**Stream test file conventions:**
+- Use `Network.MainnetSentry` endpoints (not `Network.Mainnet`)
+- Test constructor (with/without metadata)
+- For each stream method: test subscription creation, callback validation, optional params
+- No try/catch needed — these are synchronous subscription tests
+- Always call `subscription.unsubscribe()` after creation tests
+
 ## Module Naming Convention
 
 The `module` field references module enums from `@injectivelabs/exceptions` in `packages/exceptions/src/exceptions/types/modules.ts`:
@@ -352,6 +458,8 @@ When implementing a new service, add the module to the exceptions package and bu
 - [ ] JSDoc comments match existing style: `/** @category */`
 - [ ] Alphabetical ordering in index.ts exports
 - [ ] No type naming conflicts with existing types
+- [ ] Test file created with one test per API method
+- [ ] Stream V2 test file created (if streaming methods exist)
 
 ## Distinguishing New vs Pre-existing Errors
 

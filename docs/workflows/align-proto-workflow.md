@@ -47,7 +47,7 @@ When you run `/align-proto`, the AI follows this exact workflow:
 **2. Version Selection**
 
 - AI asks: "What proto version should we bump to?"
-- You answer with target version (e.g., `1.18.7`)
+- You answer with target version (e.g., `1.18.7`) or say "latest" (AI resolves via npm)
 
 **3. Backup Current Proto Files**
 
@@ -100,7 +100,9 @@ When you run `/align-proto`, the AI follows this exact workflow:
   - Types interfaces
   - Transformer classes
   - API classes (fetch methods)
+  - Test files for API classes (one test per method, following existing `.spec.ts` patterns)
   - Stream API classes (if streaming methods exist)
+  - Stream V2 test files (constructor, subscription, callback validation tests)
   - Updates index.ts files with exports
 
 **10. Validation**

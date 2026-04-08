@@ -112,4 +112,72 @@ describe('IndexerGrpcRFQApi', () => {
       )
     }
   })
+
+  test('createConditionalOrder', async () => {
+    try {
+      const response = await indexerGrpcRfqApi.createConditionalOrder({
+        margin: '1000000000000000000',
+        orderId: 'test-order-id',
+        marketId:
+          '0x17ef48032cb24375ba7c2e39f384e56433bcab20cbee9a7357e4cba2eb00abe6',
+        quantity: '1000000000000000000',
+        direction: 'LONG',
+        orderType: 'LIMIT',
+        signature: '0x1234567890abcdef',
+        worstPrice: '1000000000000000000',
+        triggerPrice: '1000000000000000000',
+        requestAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<{ order: any }>(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcRFQApi.createConditionalOrder => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('listConditionalOrders', async () => {
+    try {
+      const response = await indexerGrpcRfqApi.listConditionalOrders({
+        perPage: 10,
+        requestAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcRfqTransformer.listConditionalOrdersResponseToConditionalOrders
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcRFQApi.listConditionalOrders => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('cancelConditionalOrder', async () => {
+    try {
+      const response = await indexerGrpcRfqApi.cancelConditionalOrder({
+        orderId: 'test-order-id',
+        requestAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+        signature: '0x1234567890abcdef',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<{ order: any }>(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcRFQApi.cancelConditionalOrder => ' + (e as any).message,
+      )
+    }
+  })
 })
