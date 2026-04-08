@@ -1,21 +1,34 @@
 name: Publish
 
 # Unified publish workflow for all release types:
-# - latest: Triggered on push to dev branch (npm tag: latest)
+# - latest: Triggered on push to master branch (npm tag: latest)
+#   - Default: patch bump
+#   - With "release-minor" in commit message: minor bump
 # - canary: Triggered on feature branches with "canary" in commit message (npm tag: alpha)
 # - beta: Triggered on feature branches with "beta" in commit message (npm tag: beta)
 #
 # Uses OIDC trusted publishing - no NPM_TOKEN required.
 # Configured as trusted publisher on npm: https://docs.npmjs.com/trusted-publishers
+#
+# Creates a single consolidated GitHub Release per publish (no CHANGELOG files modified).
 
 on:
   push:
-    branches-ignore:
-      - master
+    branches:
+      - '**'
   workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        type: choice
+        options:
+          - canary
+          - beta
+          - prod
 
 # OIDC requires id-token: write permission
-# contents: write is needed for git push --follow-tags
+# contents: write is needed for git push --follow-tags and creating GitHub Releases
 permissions:
   contents: write
   id-token: write
@@ -28,19 +41,20 @@ jobs:
     name: 'Publish'
     runs-on: ubuntu-latest
     # Skip if:
-    # - Contains skip keywords (for dev branch)
-    # - Is workflow_dispatch on dev branch
-    # - Is a feature branch without canary/beta keyword
+    # - Contains skip keywords (for master branch)
+    # - Is a feature branch without canary/beta keyword and not a workflow_dispatch
+    # - Is workflow_dispatch on master with a non-prod release type
     if: |
       !contains(github.event.head_commit.message, 'GITBOOK') &&
       !contains(github.event.head_commit.message, 'skip-deploy') &&
       !contains(github.event.head_commit.message, 'skip deploy') &&
       (
-        github.ref == 'refs/heads/dev' ||
+        github.ref == 'refs/heads/master' ||
         contains(github.event.head_commit.message, 'canary') ||
-        contains(github.event.head_commit.message, 'beta')
+        contains(github.event.head_commit.message, 'beta') ||
+        github.event_name == 'workflow_dispatch'
       ) &&
-      !(github.ref == 'refs/heads/dev' && github.event_name == 'workflow_dispatch')
+      !(github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.release_type != 'prod')
     outputs:
       publish_type: ${{ steps.determine-publish-type.outputs.type }}
       dist_tag: ${{ steps.determine-publish-type.outputs.dist_tag }}
@@ -90,9 +104,36 @@ jobs:
           COMMIT_MSG: ${{ github.event.head_commit.message }}
           BRANCH: ${{ github.ref }}
         run: |
-          # Check for conflicting keywords
+          # Handle workflow_dispatch input
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            RELEASE_TYPE="${{ inputs.release_type }}"
+            if [[ "$RELEASE_TYPE" == "prod" ]]; then
+              if [[ "$BRANCH" != "refs/heads/master" ]]; then
+                echo "::error::prod releases can only be triggered from the master branch"
+                exit 1
+              fi
+              TYPE="latest"
+              DIST_TAG="latest"
+              VERSION_ARGS="patch --force-publish --force-git-tag --no-changelog --yes --no-push"
+            elif [[ "$RELEASE_TYPE" == "canary" ]]; then
+              TYPE="canary"
+              DIST_TAG="alpha"
+              VERSION_ARGS="prerelease --preid alpha --force-publish --force-git-tag --no-changelog --yes --no-push"
+            elif [[ "$RELEASE_TYPE" == "beta" ]]; then
+              TYPE="beta"
+              DIST_TAG="beta"
+              VERSION_ARGS="prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes --no-push"
+            fi
+            echo "type=$TYPE" >> $GITHUB_OUTPUT
+            echo "dist_tag=$DIST_TAG" >> $GITHUB_OUTPUT
+            echo "version_args=$VERSION_ARGS" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Check for keywords
           HAS_CANARY=false
           HAS_BETA=false
+          HAS_RELEASE_MINOR=false
 
           if echo "$COMMIT_MSG" | grep -qi "canary"; then
             HAS_CANARY=true
@@ -102,11 +143,21 @@ jobs:
             HAS_BETA=true
           fi
 
+          if echo "$COMMIT_MSG" | grep -qi "release-minor"; then
+            HAS_RELEASE_MINOR=true
+          fi
+
           # Determine publish type based on branch and commit message
-          if [[ "$BRANCH" == "refs/heads/dev" ]]; then
+          if [[ "$BRANCH" == "refs/heads/master" ]]; then
+            # Determine bump type: minor if "release-minor" keyword, otherwise patch
+            if [[ "$HAS_RELEASE_MINOR" == "true" ]]; then
+              BUMP_TYPE="minor"
+            else
+              BUMP_TYPE="patch"
+            fi
             TYPE="latest"
             DIST_TAG="latest"
-            VERSION_ARGS="patch --force-publish --force-git-tag --no-changelog --yes --no-push"
+            VERSION_ARGS="$BUMP_TYPE --force-publish --force-git-tag --no-changelog --yes --no-push"
           elif [[ "$HAS_CANARY" == "true" && "$HAS_BETA" == "true" ]]; then
             echo "::error::Commit message contains both 'canary' and 'beta'. Please use only one."
             exit 1
@@ -149,14 +200,14 @@ jobs:
             pkg_dir=$(dirname "$pkg_json")
             pkg_name=$(node -p "require('./$pkg_json').name")
             pkg_version=$(node -p "require('./$pkg_json').version")
-            
+
             echo "📦 Publishing $pkg_name@$pkg_version"
-            
+
             # Pack with pnpm to resolve catalog: dependencies
             pnpm --dir "$pkg_dir" pack --pack-destination "$ROOT_DIR"
-            
+
             tarball_name=$(echo "$pkg_name" | sed 's/@//;s/\//-/')-$pkg_version.tgz
-            
+
             if [ -f "$tarball_name" ]; then
               if npm publish "$tarball_name" --access public --tag "$DIST_TAG" --provenance; then
                 PUBLISHED_PACKAGES=$(echo "$PUBLISHED_PACKAGES" | node -p "JSON.stringify([...JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')), {name:'$pkg_name',version:'$pkg_version'}])")
@@ -181,6 +232,29 @@ jobs:
         run: |
           git push origin HEAD --follow-tags
 
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Read version from sdk-ts (all packages are version-synced)
+          VERSION=$(node -p "require('./packages/sdk-ts/package.json').version")
+          TAG="v${VERSION}"
+
+          # Create and push tag only if it doesn't exist
+          if ! git rev-parse --verify "refs/tags/$TAG" >/dev/null 2>&1; then
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
+
+          # Create GitHub Release only if it doesn't exist
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" \
+              --title "$TAG" \
+              --generate-notes \
+              --latest
+          fi
+
       - name: Broadcast published versions on Slack
         run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
         env:
@@ -189,7 +263,7 @@ jobs:
           GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
 
   # ============================================
-  # Package Bump Jobs (only after latest publish on dev branch)
+  # Package Bump Jobs (only after latest publish on master branch)
   # ============================================
   trigger-package-bumps:
     name: 'Trigger Package Bumps'
