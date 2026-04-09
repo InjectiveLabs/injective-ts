@@ -61,6 +61,7 @@ import {
   getAminoStdSignDoc,
   getEip712TypedData,
   createWeb3Extension,
+  CosmosTxV1Beta1TxPb,
   getEip712TypedDataV2,
   createTxRawFromSigResponse,
   createTransactionWithSigners,
@@ -68,7 +69,6 @@ import {
 import { checkIfTxRunOutOfGas } from '../utils/index.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ThrownException } from '@injectivelabs/exceptions'
-import type { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@injectivelabs/sdk-ts/types'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
 import type {
@@ -345,6 +345,108 @@ export class MsgBroadcaster {
       }
 
       throw new TransactionException(new Error(error))
+    }
+  }
+
+  /**
+   * Sign and broadcast a pre-built transaction that already includes
+   * a fee payer's signature, directly to chain (bypassing web3gw).
+   */
+  async broadcastWithFeePayerSig({
+    tx,
+    feePayerSig,
+    accountNumber,
+    injectiveAddress,
+  }: {
+    feePayerSig: string
+    accountNumber: number
+    tx: Uint8Array | string
+    injectiveAddress: string
+  }): Promise<TxResponse> {
+    const {
+      chainId,
+      endpoints,
+      walletStrategy,
+      txTimeout: txTimeoutInBlocks,
+    } = this
+
+    if (!isCosmosWallet(walletStrategy.wallet)) {
+      throw new GeneralException(
+        new Error(
+          'broadcastWithFeePayerSig only supports Cosmos wallets (Keplr, Leap, etc.). EVM wallets are not supported for SIGN_MODE_DIRECT.',
+        ),
+      )
+    }
+
+    const txBytes = typeof tx === 'string' ? base64ToUint8Array(tx) : tx
+    const txRaw = CosmosTxV1Beta1TxPb.TxRaw.fromBinary(txBytes)
+
+    const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
+    const canDisableCosmosGasCheck = (
+      [Wallet.Keplr, Wallet.OWallet] as WalletType[]
+    ).includes(walletStrategy.wallet)
+
+    if (canDisableCosmosGasCheck && cosmosWallet.disableGasCheck) {
+      cosmosWallet.disableGasCheck(chainId)
+    }
+
+    try {
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionPreparationStart,
+      )
+
+      const directSignResponse = (await walletStrategy.signCosmosTransaction({
+        txRaw,
+        chainId,
+        accountNumber,
+        address: injectiveAddress,
+      })) as DirectSignResponse
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionPreparationEnd,
+      )
+
+      const signedTxRaw = CosmosTxV1Beta1TxPb.TxRaw.create()
+      signedTxRaw.bodyBytes = directSignResponse.signed.bodyBytes
+      signedTxRaw.authInfoBytes = directSignResponse.signed.authInfoBytes
+
+      const takerSig = base64ToUint8Array(
+        directSignResponse.signature.signature,
+      )
+      const feePayerSigBytes = feePayerSig.startsWith('0x')
+        ? hexToUint8Array(feePayerSig.slice(2))
+        : base64ToUint8Array(feePayerSig)
+
+      signedTxRaw.signatures = [takerSig, feePayerSigBytes]
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionBroadcastStart,
+      )
+
+      const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(
+        signedTxRaw,
+        { txTimeout: txTimeoutInBlocks },
+      )
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+      )
+
+      return txResponse
+    } catch (e) {
+      const error = e as any
+
+      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    } finally {
+      if (canDisableCosmosGasCheck && cosmosWallet.enableGasCheck) {
+        cosmosWallet.enableGasCheck(chainId)
+      }
     }
   }
 
