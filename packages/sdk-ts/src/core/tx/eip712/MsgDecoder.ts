@@ -3,6 +3,7 @@ import { getInjectiveAddress } from '../../../utils/index.js'
 import { toUtf8, uint8ArrayToHex } from '../../../utils/encoding.js'
 import {
   MsgSignData,
+  MsgDecreasePositionMargin,
   MsgIncreasePositionMargin,
 } from '../../modules/exchange/index.js'
 import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
@@ -20,6 +21,21 @@ export class MsgDecoder {
           )
 
         return MsgIncreasePositionMargin.fromJSON({
+          marketId: msg.marketId,
+          injectiveAddress: msg.sender,
+          srcSubaccountId: msg.sourceSubaccountId,
+          dstSubaccountId: msg.destinationSubaccountId,
+          amount: msg.amount,
+        })
+      }
+
+      case type.includes('MsgDecreasePositionMargin'): {
+        const msg =
+          InjectiveExchangeV1Beta1TxPb.MsgDecreasePositionMargin.fromBinary(
+            message.value,
+          )
+
+        return MsgDecreasePositionMargin.fromJSON({
           marketId: msg.marketId,
           injectiveAddress: msg.sender,
           srcSubaccountId: msg.sourceSubaccountId,
