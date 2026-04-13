@@ -52,6 +52,7 @@ jobs:
       !contains(github.event.head_commit.message, 'GITBOOK') &&
       !contains(github.event.head_commit.message, 'skip-deploy') &&
       !contains(github.event.head_commit.message, 'skip deploy') &&
+      !startsWith(github.event.head_commit.message, 'chore: release') &&
       (
         github.ref == 'refs/heads/master' ||
         contains(github.event.head_commit.message, 'canary') ||
@@ -255,6 +256,17 @@ jobs:
 
           echo "✅ Successfully published $PUBLISH_COUNT packages"
 
+      - name: Broadcast published versions on Slack
+        run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
+        env:
+          GIT_ACTOR: ${{ github.actor }}
+          SLACK_API: ${{ secrets.SLACK_API }}
+          GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+
+      # Run last so a flaky GitHub releases/notes API can't block the actual
+      # publish (npm) or the Slack broadcast. The release is a nice-to-have
+      # artifact; if this step fails, retry it manually with:
+      #   gh release create vX.Y.Z --title vX.Y.Z --generate-notes --latest --verify-tag
       - name: Create GitHub Release
         if: github.ref == 'refs/heads/master'
         env:
@@ -264,19 +276,36 @@ jobs:
           TAG="v${VERSION}"
 
           if ! gh release view "$TAG" >/dev/null 2>&1; then
+            # GitHub's notes-generation pipeline returns 502s intermittently.
+            # Pre-compute notes with retries; fall back to a git-log changelog
+            # so release creation is never blocked by the notes API.
+            NOTES=""
+            for i in 1 2 3 4 5; do
+              NOTES=$(gh api -X POST "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
+                        -f tag_name="$TAG" --jq '.body' 2>/dev/null) || NOTES=""
+              [ -n "$NOTES" ] && break
+              echo "generate-notes attempt $i failed; retrying in $((i * 5))s..."
+              sleep $((i * 5))
+            done
+
+            if [ -z "$NOTES" ]; then
+              echo "generate-notes API unavailable; building changelog from git log"
+              PREV_TAG=$(git tag -l 'v*' --sort=-v:refname | grep -v "^${TAG}$" | head -n1)
+              if [ -n "$PREV_TAG" ]; then
+                NOTES=$(printf '## Changes since %s\n\n%s\n' \
+                          "$PREV_TAG" \
+                          "$(git log --pretty=format:'- %s (%h)' "${PREV_TAG}..HEAD")")
+              else
+                NOTES="Release $TAG"
+              fi
+            fi
+
             gh release create "$TAG" \
               --title "$TAG" \
-              --generate-notes \
+              --notes "$NOTES" \
               --latest \
               --verify-tag
           fi
-
-      - name: Broadcast published versions on Slack
-        run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
-        env:
-          GIT_ACTOR: ${{ github.actor }}
-          SLACK_API: ${{ secrets.SLACK_API }}
-          GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
 
   # ============================================
   # Package Bump Jobs (only after latest publish on master branch)
