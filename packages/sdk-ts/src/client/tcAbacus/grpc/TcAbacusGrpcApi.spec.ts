@@ -197,4 +197,24 @@ describe('TcAbacusGrpcApi', () => {
       )
     }
   })
+
+  test('fetchInviteeReferrer', async () => {
+    try {
+      const response =
+        await tcAbacusGrpcApi.fetchInviteeReferrer(injectiveAddress)
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof TcAbacusGrpcTransformer.grpcInviteeReferrerToInviteeReferrer
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'TcAbacusGrpcApi.fetchInviteeReferrer => ' + (e as any).message,
+      )
+    }
+  })
 })
