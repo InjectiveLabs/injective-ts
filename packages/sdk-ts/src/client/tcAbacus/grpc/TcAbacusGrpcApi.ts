@@ -137,4 +137,19 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
       response,
     )
   }
+
+  async fetchInviteeReferrer(address: string) {
+    const request = TcAbacusPb.GetInviteeReferrerRequest.create({
+      address,
+    })
+
+    const response = await this.executeGrpcCall<
+      TcAbacusPb.GetInviteeReferrerRequest,
+      TcAbacusPb.GetInviteeReferrerResponse
+    >(request, this.client.getInviteeReferrer.bind(this.client))
+
+    return TcAbacusGrpcTransformer.grpcInviteeReferrerToInviteeReferrer(
+      response,
+    )
+  }
 }

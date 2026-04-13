@@ -4,6 +4,7 @@ import type {
   ReferrerCode,
   SnapshotPoints,
   ReferrerInvitee,
+  InviteeReferrer,
   HealthCheckResponse,
   CurrentEpochResponse,
   AccountStatsResponse,
@@ -67,6 +68,7 @@ export class TcAbacusGrpcTransformer {
   ): AccountStatsResponse {
     return {
       cap: response.cap,
+      code: response.code,
       address: response.address,
       last7DVolume: response.last7DVolume,
       inviteeCount: response.inviteeCount,
@@ -103,6 +105,7 @@ export class TcAbacusGrpcTransformer {
       address: invitee.address,
       createdAt: invitee.createdAt,
       height: invitee.height.toString(),
+      allTimeVolume: invitee.allTimeVolume,
       referralPoints: invitee.referralPoints,
     }
   }
@@ -148,6 +151,18 @@ export class TcAbacusGrpcTransformer {
       codes: response.codes.map((code) =>
         TcAbacusGrpcTransformer.grpcReferrerCodeToReferrerCode(code),
       ),
+    }
+  }
+
+  static grpcInviteeReferrerToInviteeReferrer(
+    response: TcAbacusPb.GetInviteeReferrerResponse,
+  ): InviteeReferrer {
+    return {
+      code: response.code,
+      address: response.address,
+      createdAt: response.createdAt,
+      height: response.height.toString(),
+      referrerAddress: response.referrerAddress,
     }
   }
 }

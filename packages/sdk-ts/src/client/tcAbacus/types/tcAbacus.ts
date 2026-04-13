@@ -29,6 +29,7 @@ export interface AccountPointsResponse {
 
 export interface AccountStatsResponse {
   cap: number
+  code: string
   address: string
   last7DVolume: string
   inviteeCount: number
@@ -53,6 +54,7 @@ export interface ReferrerInvitee {
   height: string
   address: string
   createdAt: string
+  allTimeVolume: string
   referralPoints: string
 }
 
@@ -78,4 +80,12 @@ export interface ReferrerCode {
 export interface ListReferrerCodesResponse {
   nextCursor?: string
   codes: ReferrerCode[]
+}
+
+export interface InviteeReferrer {
+  code: string
+  height: string
+  address: string
+  createdAt: string
+  referrerAddress: string
 }
