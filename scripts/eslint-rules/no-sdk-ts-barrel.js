@@ -85,6 +85,7 @@ const SUBPATH_MAPPINGS = {
   MsgBatchCancelDerivativeOrders: '/core/modules',
   MsgBatchUpdateOrders: '/core/modules',
   MsgIncreasePositionMargin: '/core/modules',
+  MsgDecreasePositionMargin: '/core/modules',
   MsgLiquidatePosition: '/core/modules',
   MsgSubaccountTransfer: '/core/modules',
   MsgExternalTransfer: '/core/modules',
