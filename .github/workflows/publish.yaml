@@ -56,7 +56,7 @@ jobs:
         github.ref == 'refs/heads/master' ||
         contains(github.event.head_commit.message, 'canary') ||
         contains(github.event.head_commit.message, 'beta') ||
-        github.event_name == 'workflow_dispatch'
+        (github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/'))
       ) &&
       !(github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.release_type != 'prod')
     outputs:
@@ -127,6 +127,9 @@ jobs:
               TYPE="beta"
               DIST_TAG="beta"
               VERSION_ARGS="prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes --no-push"
+            else
+              echo "::error::Unrecognized release_type '$RELEASE_TYPE'"
+              exit 1
             fi
             echo "type=$TYPE" >> $GITHUB_OUTPUT
             echo "dist_tag=$DIST_TAG" >> $GITHUB_OUTPUT
@@ -202,9 +205,11 @@ jobs:
           VERSION=$(node -p "require('./packages/sdk-ts/package.json').version")
           TAG="v${VERSION}"
 
-          if ! git rev-parse --verify "refs/tags/$TAG" >/dev/null 2>&1; then
-            git tag "$TAG"
-            git push origin "$TAG"
+          if ! git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            if ! git rev-parse --verify "refs/tags/$TAG" >/dev/null 2>&1; then
+              git tag "$TAG"
+            fi
+            git push origin "refs/tags/$TAG"
           fi
 
       # pnpm pack resolves catalog: protocol, npm publish handles OIDC authentication
@@ -259,7 +264,8 @@ jobs:
             gh release create "$TAG" \
               --title "$TAG" \
               --generate-notes \
-              --latest
+              --latest \
+              --verify-tag
           fi
 
       - name: Broadcast published versions on Slack
