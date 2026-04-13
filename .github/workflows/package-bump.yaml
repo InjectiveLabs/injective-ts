@@ -128,3 +128,16 @@ jobs:
           gh_token: ${{ secrets.DO_UI_GH_TOKEN }}
           repository_url: injectiveLabs/injective-do-ui
           repository_branch: master
+
+  package-true-current:
+    name: 'Package bump True Current'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump True Current
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.TRUE_CURRENT_GH_TOKEN }}
+          repository_url: injectiveLabs/injective-true-current
+          repository_branch: master
