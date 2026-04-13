@@ -11,7 +11,7 @@ _Accessing decentralized finance through TypeScript (for Web, Node and React Nat
 ### 📚 Installation
 
 ```bash
-yarn add @injectivelabs/networks
+pnpm add @injectivelabs/networks
 ```
 
 ---

@@ -1,12 +1,9 @@
-import {
-  dataToExecData,
-  ExecArgBase,
-  ExecDataRepresentation,
-} from '../ExecArgBase.js'
-import {
+import { StrategyType } from '../types.js'
+import { ExecArgBase, dataToExecData } from '../ExecArgBase.js'
+import type { ExecDataRepresentation } from '../ExecArgBase.js'
+import type {
   ExitType,
   ExitConfig,
-  StrategyType,
   TrailingArithmetic,
   TrailingArithmeticLP,
 } from '../types.js'
@@ -78,7 +75,7 @@ export default class ExecArgCreateSpotGridStrategy extends ExecArgBase<
         ? params.trailingArithmetic.lpMode
           ? { trailing_arithmetic_l_p: trailingBounds }
           : { trailing_arithmetic: trailingBounds }
-        : params.strategyType ?? StrategyType.Arithmetic
+        : (params.strategyType ?? StrategyType.Arithmetic)
 
     return {
       subaccount_id: params.subaccountId,

@@ -1,116 +1,51 @@
-import { ExchangePagination, PaginationOption } from '../types/pagination.js'
-import { Pagination, PagePagination } from '../types/pagination.js'
-import { CosmosBaseQueryV1Beta1Pagination } from '@injectivelabs/core-proto-ts'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import { bigIntToNumber } from './helpers.js'
+import { ChainGrpcCommonTransformer } from '../client/chain/transformers/ChainGrpcCommonTransformer.js'
+import type * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
+import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
+import type * as CosmosBaseQueryV1Beta1PaginationPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/query/v1beta1/pagination_pb'
+import type {
+  Pagination,
+  PaginationOption,
+  ExchangePagination,
+} from '../types/pagination.js'
+
+/**
+ * @deprecated Use ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest instead
+ */
 
 export const paginationRequestFromPagination = (
   pagination?: PaginationOption,
-): CosmosBaseQueryV1Beta1Pagination.PageRequest | undefined => {
-  const paginationForRequest =
-    CosmosBaseQueryV1Beta1Pagination.PageRequest.create()
-
-  if (!pagination) {
-    return
-  }
-
-  if (pagination.key) {
-    paginationForRequest.key = Buffer.from(pagination.key, 'base64')
-  }
-
-  if (pagination.limit !== undefined) {
-    paginationForRequest.limit = pagination.limit.toString()
-  }
-
-  if (pagination.offset !== undefined) {
-    paginationForRequest.offset = pagination.offset.toString()
-  }
-
-  if (pagination.reverse !== undefined) {
-    paginationForRequest.reverse = pagination.reverse
-  }
-
-  if (pagination.countTotal !== undefined) {
-    paginationForRequest.countTotal = pagination.countTotal
-  }
-
-  return paginationForRequest
+): CosmosBaseQueryV1Beta1PaginationPb.PageRequest | undefined => {
+  return ChainGrpcCommonTransformer.pageRequestToGrpcPageRequest(pagination)
 }
 
-export const generatePagination = (
-  pagination: Pagination | PagePagination | undefined,
-) => {
-  if (!pagination) {
-    return
-  }
-
-  if (!pagination.next) {
-    return
-  }
-
-  return {
-    pagination: {
-      key: pagination.next,
-    },
-  }
+export const pageRequestToGrpcPageRequestV2 = (
+  pagination?: PaginationOption,
+): CosmosBaseQueryV1Beta1PaginationPb.PageRequest | undefined => {
+  return ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 }
 
+/**
+ * @deprecated Use ChainGrpcCommonTransformer.paginationUint8ArrayToString instead
+ */
 export const paginationUint8ArrayToString = (key: any) => {
-  if (!key) {
-    return ''
-  }
-
-  if (key.constructor !== Uint8Array) {
-    return key as string
-  }
-
-  return Buffer.from(key).toString('base64')
+  return ChainGrpcCommonTransformer.paginationUint8ArrayToString(key)
 }
 
-export const pageResponseToPagination = ({
-  newPagination,
-  oldPagination,
-}: {
-  oldPagination: PagePagination | undefined
-  newPagination?: Pagination | undefined
-}): PagePagination => {
-  if (!newPagination) {
-    return {
-      prev: null,
-      current: null,
-      next: null,
-    }
-  }
-
-  const next = paginationUint8ArrayToString(newPagination.next)
-
-  if (!oldPagination) {
-    return {
-      prev: null,
-      current: null,
-      next,
-    }
-  }
-
-  return {
-    prev: oldPagination.current,
-    current: oldPagination.next,
-    next,
-  }
-}
-
+/**
+ * @deprecated Use ChainGrpcCommonTransformer.grpcPaginationToPagination instead
+ */
 export const grpcPaginationToPagination = (
-  pagination: CosmosBaseQueryV1Beta1Pagination.PageResponse | undefined,
+  pagination: CosmosBaseQueryV1Beta1PaginationPb.PageResponse | undefined,
 ): Pagination => {
-  return {
-    total: pagination
-      ? parseInt(paginationUint8ArrayToString(pagination.total), 10)
-      : 0,
-    next: pagination ? paginationUint8ArrayToString(pagination.nextKey) : '',
-  }
+  return ChainGrpcCommonTransformer.grpcPaginationToPagination(pagination)
 }
 
+/**
+ * @deprecated Use grpcPagingToPagingV2 instead (V1 proto package)
+ */
 export const grpcPagingToPaging = (
-  pagination: InjectiveExplorerRpc.Paging | undefined,
+  pagination: InjectiveExplorerRpcPb.Paging | undefined,
 ): ExchangePagination => {
   if (!pagination) {
     return {
@@ -122,9 +57,38 @@ export const grpcPagingToPaging = (
 
   return {
     ...pagination,
+    total: bigIntToNumber(pagination.total),
     to: parseInt(pagination.to.toString() || '0', 10),
     from: parseInt(pagination.from.toString() || '0', 10),
-    total: parseInt(pagination.total || '0', 10),
+    countBySubaccount: bigIntToNumber(pagination.countBySubaccount),
+  }
+}
+
+/**
+ * Converts gRPC Paging to ExchangePagination for V2 proto packages.
+ * Handles both InjectiveAccountsRpcPb.Paging and InjectiveExplorerRpcPb.Paging types.
+ * Supports bigint and string types for the total and countBySubaccount fields.
+ */
+export const grpcPagingToPagingV2 = (
+  pagination:
+    | InjectiveAccountsRpcPb.Paging
+    | InjectiveExplorerRpcPb.Paging
+    | undefined,
+): ExchangePagination => {
+  if (!pagination) {
+    return {
+      to: 0,
+      from: 0,
+      total: 0,
+    }
+  }
+
+  return {
+    ...pagination,
+    total: bigIntToNumber(pagination.total),
+    to: parseInt(pagination.to.toString() || '0', 10),
+    from: parseInt(pagination.from.toString() || '0', 10),
+    countBySubaccount: bigIntToNumber(pagination.countBySubaccount),
   }
 }
 
@@ -137,19 +101,11 @@ export const fetchAllWithPagination = async <
 >(
   args: T,
   method: (args: T) => Promise<Q>,
+  result: Array<unknown> = [],
 ): Promise<Q> => {
-  let result = [] as Array<unknown>
   let response = await method(args)
 
   if (!args) {
-    return response
-  }
-
-  const paginationOption = (
-    args as { pagination: PaginationOption | undefined }
-  ).pagination
-
-  if (!paginationOption) {
     return response
   }
 
@@ -158,13 +114,16 @@ export const fetchAllWithPagination = async <
     (key) => key !== 'pagination',
   ) as keyof typeof response
 
-  while (response.pagination.next) {
-    result.push(response[valueKey])
+  result.push(...(response[valueKey] as Array<unknown>))
 
-    response = await method({
-      ...args,
-      pagination: { ...paginationOption, key: response.pagination.next },
-    })
+  const paginationOption = args as PaginationOption
+
+  if (response.pagination.next) {
+    return fetchAllWithPagination(
+      { ...paginationOption, key: response.pagination.next } as T,
+      method,
+      result,
+    )
   }
 
   return { [valueKey]: result, pagination: response.pagination } as Q

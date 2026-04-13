@@ -1,9 +1,5 @@
-import {
-  TokenType,
-  TokenSource,
-  TokenStatic,
-  TokenVerification,
-} from './../types/index.js'
+import { TokenVerification } from './../types/index.js'
+import type { TokenType, TokenSource, TokenStatic } from './../types/index.js'
 
 /** @deprecated */
 export class TokenFactoryStatic {
@@ -14,47 +10,56 @@ export class TokenFactoryStatic {
 
   constructor(registry: TokenStatic[]) {
     this.registry = registry
-    this.tokensByDenom = registry.reduce((list, token) => {
-      const denom = token.denom.toLowerCase()
+    this.tokensByDenom = registry.reduce(
+      (list, token) => {
+        const denom = token.denom.toLowerCase()
 
-      if (list[denom]) {
-        return list
-      }
+        if (list[denom]) {
+          return list
+        }
 
-      list[denom] = token
-
-      return list
-    }, {} as Record<string, TokenStatic>)
-
-    this.tokensBySymbol = registry.reduce((list, token) => {
-      const symbol = token.symbol.toLowerCase()
-
-      if (list[symbol]) {
-        list[symbol] = [...list[symbol], token]
+        list[denom] = token
 
         return list
-      }
+      },
+      {} as Record<string, TokenStatic>,
+    )
 
-      list[symbol] = [token]
+    this.tokensBySymbol = registry.reduce(
+      (list, token) => {
+        const symbol = token.symbol.toLowerCase()
 
-      return list
-    }, {} as Record<string, TokenStatic[]>)
+        if (list[symbol]) {
+          list[symbol] = [...list[symbol], token]
 
-    this.tokensByAddress = registry.reduce((list, token) => {
-      const address = token.address.toLowerCase()
+          return list
+        }
 
-      if (!address) {
+        list[symbol] = [token]
+
         return list
-      }
+      },
+      {} as Record<string, TokenStatic[]>,
+    )
 
-      if (list[address]) {
+    this.tokensByAddress = registry.reduce(
+      (list, token) => {
+        const address = token.address.toLowerCase()
+
+        if (!address) {
+          return list
+        }
+
+        if (list[address]) {
+          return list
+        }
+
+        list[address] = [token]
+
         return list
-      }
-
-      list[address] = [token]
-
-      return list
-    }, {} as Record<string, TokenStatic[]>)
+      },
+      {} as Record<string, TokenStatic[]>,
+    )
   }
 
   toToken(denom: string): TokenStatic | undefined {

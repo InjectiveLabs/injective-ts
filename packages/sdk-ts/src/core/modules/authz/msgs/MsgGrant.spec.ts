@@ -1,12 +1,12 @@
-import MsgGrant from './MsgGrant.js'
 import snakecaseKeys from 'snakecase-keys'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgGrant from './MsgGrant.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
@@ -55,18 +55,44 @@ describe('MsgGrant', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto).toStrictEqual({
-      ...protoParams,
-    })
+    expect(proto).toEqual(
+      expect.objectContaining({
+        grantee: protoParams.grantee,
+        granter: protoParams.granter,
+        grant: expect.objectContaining({
+          authorization: expect.objectContaining({
+            typeUrl: '/cosmos.authz.v1beta1.GenericAuthorization',
+            value: expect.any(Uint8Array),
+          }),
+          expiration: expect.objectContaining({
+            nanos: 0,
+            seconds: expect.any(BigInt),
+          }),
+        }),
+      }),
+    )
   })
 
   it('generates proper data', () => {
     const data = message.toData()
 
-    expect(data).toStrictEqual({
-      '@type': protoType,
-      ...protoParams,
-    })
+    expect(data).toEqual(
+      expect.objectContaining({
+        '@type': protoType,
+        grantee: protoParams.grantee,
+        granter: protoParams.granter,
+        grant: expect.objectContaining({
+          authorization: expect.objectContaining({
+            typeUrl: '/cosmos.authz.v1beta1.GenericAuthorization',
+            value: expect.any(Uint8Array),
+          }),
+          expiration: expect.objectContaining({
+            nanos: 0,
+            seconds: expect.any(BigInt),
+          }),
+        }),
+      }),
+    )
   })
 
   it('generates proper amino', () => {
@@ -76,6 +102,16 @@ describe('MsgGrant', () => {
       type: protoTypeShort,
       value: protoParamsAmino,
     })
+  })
+
+  it('generates JSON without BigInt serialization error', () => {
+    expect(() => message.toJSON()).not.toThrow()
+
+    const json = message.toJSON()
+    const parsed = JSON.parse(json)
+
+    expect(typeof parsed.grant.expiration.seconds).toBe('string')
+    expect(parsed.grant.expiration.seconds).toBe(params.expiration!.toString())
   })
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {

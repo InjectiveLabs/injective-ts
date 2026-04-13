@@ -1,6 +1,7 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcMintApi } from './ChainGrpcMintApi.js'
-import { ChainGrpcMintTransformer } from '../transformers/index.js'
+import type { BigNumber } from 'bignumber.js'
+import type { ChainGrpcMintTransformer } from '../transformers/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcMintApi = new ChainGrpcMintApi(endpoints.grpc)
@@ -31,7 +32,7 @@ describe('ChainGrpcMintApi', () => {
 
       expect(response).toBeDefined()
       expect(response).toEqual(
-        expect.objectContaining<{ inflation: string }>(response),
+        expect.objectContaining<{ inflation: BigNumber }>(response),
       )
     } catch (e) {
       console.error('chainGrpcMintApi.fetchInflation => ' + (e as any).message)

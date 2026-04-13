@@ -13,7 +13,7 @@ _Package to use Private Wallet on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-evm
+pnpm add @injectivelabs/wallet-evm
 ```
 
 ---
@@ -30,9 +30,9 @@ dependencies and implementations for their specific wallets.
 Here's a brief example of how to use this package to send 1 INJ.:
 
 ```typescript
-import { Wallet } from '@injectivelabs/wallet-base';
-import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core';
-import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key';
+import { Wallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
 
 
 const strategyArgs: WalletStrategyArguments = {
@@ -68,7 +68,7 @@ const sendTX = async () => {
       },
     })
 
-    return await msgBroadcaster.broadcast({ msgs: message })
+    return await msgBroadcaster.broadcastV2({ msgs: message })
   }
 
   const result = await sendTX()

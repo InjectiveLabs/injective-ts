@@ -1,4 +1,4 @@
-import BigNumber from './classes/BigNumber/BigNumber.js'
+import BigNumber from './classes/BigNumber.js'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -17,11 +17,18 @@ export const DEFAULT_BRIDGE_FEE_AMOUNT = '200000000000000'
 
 export const DEFAULT_BLOCK_TIMEOUT_HEIGHT = 120
 export const DEFAULT_BLOCK_TIME_IN_SECONDS = 0.7
-export const DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS =
-  Math.floor(DEFAULT_BLOCK_TIMEOUT_HEIGHT * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
+
+/**
+ * Default timeout for transaction block inclusion polling.
+ *
+ * Calculation: 120 blocks × 0.7 seconds/block = 84 seconds = 84,000ms
+ */
+export const DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS = Math.floor(
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
+)
 export const DEFAULT_TIMESTAMP_TIMEOUT_MS = 60 * 1000 * 3
 
-export const DEFAULT_STD_FEE = {
+export const getDefaultStdFee = () => ({
   amount: [
     {
       amount: new BigNumber(DEFAULT_GAS_LIMIT)
@@ -34,7 +41,7 @@ export const DEFAULT_STD_FEE = {
   payer: '',
   granter: '',
   feePayer: '',
-}
+})
 
 export const DEFAULT_STD_FEE_BY_DENOM = (denom: string = 'inj') => ({
   amount: [

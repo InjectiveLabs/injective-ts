@@ -1,6 +1,5 @@
+import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
-import { CosmwasmWasmV1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgUpdateAdmin {
   export interface Params {
@@ -9,7 +8,7 @@ export declare namespace MsgUpdateAdmin {
     contract: string
   }
 
-  export type Proto = CosmwasmWasmV1Tx.MsgUpdateAdmin
+  export type Proto = CosmwasmWasmV1TxPb.MsgUpdateAdmin
 }
 
 /**
@@ -26,13 +25,13 @@ export default class MsgUpdateAdmin extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = CosmwasmWasmV1Tx.MsgUpdateAdmin.create()
+    const message = CosmwasmWasmV1TxPb.MsgUpdateAdmin.create({
+      sender: params.sender,
+      newAdmin: params.newAdmin,
+      contract: params.contract,
+    })
 
-    message.sender = params.sender
-    message.newAdmin = params.newAdmin
-    message.contract = params.contract
-
-    return CosmwasmWasmV1Tx.MsgUpdateAdmin.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -47,7 +46,9 @@ export default class MsgUpdateAdmin extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      new_admin: proto.newAdmin,
+      contract: proto.contract,
     }
 
     return {
@@ -76,6 +77,6 @@ export default class MsgUpdateAdmin extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmwasmWasmV1Tx.MsgUpdateAdmin.encode(this.toProto()).finish()
+    return CosmwasmWasmV1TxPb.MsgUpdateAdmin.toBinary(this.toProto())
   }
 }

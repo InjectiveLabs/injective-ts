@@ -1,16 +1,28 @@
+/**
+ * @deprecated Use StreamStatusResponse from @injectivelabs/sdk-ts/types instead
+ */
 export interface StreamStatusResponse {
   details: string
   code: number
   metadata: any
 }
 
-export enum StreamOperation {
-  Insert = 'insert',
-  Delete = 'delete',
-  Replace = 'replace',
-  Update = 'update',
-  Invalidate = 'invalidate',
-}
+/**
+ * @deprecated Use StreamOperation from @injectivelabs/sdk-ts/types instead
+ */
+export const StreamOperation = {
+  Insert: 'insert',
+  Delete: 'delete',
+  Replace: 'replace',
+  Update: 'update',
+  Invalidate: 'invalidate',
+} as const
+
+/**
+ * @deprecated Use StreamOperation from @injectivelabs/sdk-ts/types instead
+ */
+export type StreamOperation =
+  (typeof StreamOperation)[keyof typeof StreamOperation]
 
 export interface PaginationOption {
   key: string

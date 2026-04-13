@@ -1,13 +1,8 @@
-import {
-  amountToCosmosSdkDecAmount,
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { toChainFormat } from '@injectivelabs/utils'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
+import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
-import {
-  InjectiveExchangeV1Beta1Tx,
-  InjectiveOracleV1Beta1Oracle,
-} from '@injectivelabs/core-proto-ts'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgInstantBinaryOptionsMarketLaunch {
   export interface Params {
@@ -18,7 +13,7 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
       oracleSymbol: string
       oracleProvider: string
       oracleScaleFactor: number
-      oracleType: InjectiveOracleV1Beta1Oracle.OracleType
+      oracleType: InjectiveOracleV1Beta1OraclePb.OracleType
       quoteDenom: string
       makerFeeRate: string
       takerFeeRate: string
@@ -31,32 +26,30 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunch {
   }
 
   export type Proto =
-    InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch
+    InjectiveExchangeV1Beta1TxPb.MsgInstantBinaryOptionsMarketLaunch
 }
 
 const createMessage = (params: MsgInstantBinaryOptionsMarketLaunch.Params) => {
   const message =
-    InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch.create()
+    InjectiveExchangeV1Beta1TxPb.MsgInstantBinaryOptionsMarketLaunch.create({
+      sender: params.proposer,
+      ticker: params.market.ticker,
+      oracleSymbol: params.market.oracleSymbol,
+      oracleProvider: params.market.oracleProvider,
+      oracleType: params.market.oracleType,
+      oracleScaleFactor: params.market.oracleScaleFactor,
+      makerFeeRate: params.market.makerFeeRate,
+      takerFeeRate: params.market.takerFeeRate,
+      expirationTimestamp: BigInt(params.market.expirationTimestamp),
+      settlementTimestamp: BigInt(params.market.settlementTimestamp),
+      admin: params.market.admin,
+      quoteDenom: params.market.quoteDenom,
+      minPriceTickSize: params.market.minPriceTickSize,
+      minQuantityTickSize: params.market.minQuantityTickSize,
+      minNotional: params.market.minNotional,
+    })
 
-  message.sender = params.proposer
-  message.ticker = params.market.ticker
-  message.oracleSymbol = params.market.oracleSymbol
-  message.oracleProvider = params.market.oracleProvider
-  message.oracleType = params.market.oracleType
-  message.oracleScaleFactor = params.market.oracleScaleFactor
-  message.makerFeeRate = params.market.makerFeeRate
-  message.takerFeeRate = params.market.takerFeeRate
-  message.expirationTimestamp = params.market.expirationTimestamp.toString()
-  message.settlementTimestamp = params.market.settlementTimestamp.toString()
-  message.admin = params.market.admin
-  message.quoteDenom = params.market.quoteDenom
-  message.minPriceTickSize = params.market.minPriceTickSize
-  message.minQuantityTickSize = params.market.minQuantityTickSize
-  message.minNotional = params.market.minNotional
-
-  return InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch.fromPartial(
-    message,
-  )
+  return message
 }
 
 /**
@@ -79,21 +72,19 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
       ...initialParams,
       market: {
         ...initialParams.market,
-        minPriceTickSize: amountToCosmosSdkDecAmount(
+        minPriceTickSize: toChainFormat(
           initialParams.market.minPriceTickSize,
         ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
+        makerFeeRate: toChainFormat(
           initialParams.market.makerFeeRate,
         ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
+        takerFeeRate: toChainFormat(
           initialParams.market.takerFeeRate,
         ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
+        minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
-          initialParams.market.minNotional,
-        ).toFixed(),
+        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
       },
     } as MsgInstantBinaryOptionsMarketLaunch.Params
 
@@ -112,9 +103,22 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const msg = createMessage(params)
     const message = {
-      ...snakecaseKeys(msg),
+      sender: params.proposer,
+      ticker: params.market.ticker,
+      oracle_symbol: params.market.oracleSymbol,
+      oracle_provider: params.market.oracleProvider,
+      oracle_type: params.market.oracleType,
+      oracle_scale_factor: params.market.oracleScaleFactor,
+      maker_fee_rate: params.market.makerFeeRate,
+      taker_fee_rate: params.market.takerFeeRate,
+      expiration_timestamp: params.market.expirationTimestamp.toString(),
+      settlement_timestamp: params.market.settlementTimestamp.toString(),
+      admin: params.market.admin,
+      quote_denom: params.market.quoteDenom,
+      min_price_tick_size: params.market.minPriceTickSize,
+      min_quantity_tick_size: params.market.minQuantityTickSize,
+      min_notional: params.market.minNotional,
     }
 
     return {
@@ -140,19 +144,13 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      min_price_tick_size: amountToCosmosSdkDecAmount(
-        value.min_price_tick_size,
-      ).toFixed(),
-      min_quantity_tick_size: amountToCosmosSdkDecAmount(
+      min_price_tick_size: toChainFormat(value.min_price_tick_size).toFixed(),
+      min_quantity_tick_size: toChainFormat(
         value.min_quantity_tick_size,
       ).toFixed(),
-      min_notional: amountToCosmosSdkDecAmount(value.min_notional).toFixed(),
-      taker_fee_rate: amountToCosmosSdkDecAmount(
-        value.taker_fee_rate,
-      ).toFixed(),
-      maker_fee_rate: amountToCosmosSdkDecAmount(
-        value.maker_fee_rate,
-      ).toFixed(),
+      min_notional: toChainFormat(value.min_notional).toFixed(),
+      taker_fee_rate: toChainFormat(value.taker_fee_rate).toFixed(),
+      maker_fee_rate: toChainFormat(value.maker_fee_rate).toFixed(),
     }
 
     return {
@@ -176,9 +174,8 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
       min_notional: numberToCosmosSdkDecString(params.market.minNotional),
       taker_fee_rate: numberToCosmosSdkDecString(params.market.takerFeeRate),
       maker_fee_rate: numberToCosmosSdkDecString(params.market.makerFeeRate),
-      oracle_type: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-        params.market.oracleType,
-      ),
+      oracle_type:
+        InjectiveOracleV1Beta1OraclePb.OracleType[params.market.oracleType],
     }
 
     return messageAdjusted
@@ -194,8 +191,8 @@ export default class MsgInstantBinaryOptionsMarketLaunch extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgInstantBinaryOptionsMarketLaunch.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgInstantBinaryOptionsMarketLaunch.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

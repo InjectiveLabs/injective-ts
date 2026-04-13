@@ -5,11 +5,12 @@ import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
+import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
-import { ChainModule, RestApiResponse } from '../types/index.js'
-import {
-  BalancesResponse,
+import type { RestApiResponse } from '../types/index.js'
+import type {
   DenomBalance,
+  BalancesResponse,
   DenomOwnersResponse,
 } from './../types/bank-rest.js'
 

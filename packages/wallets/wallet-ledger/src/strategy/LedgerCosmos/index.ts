@@ -1,39 +1,47 @@
-/* eslint-disable class-methods-use-this */
-import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
+import { CosmosWalletException } from '@injectivelabs/exceptions'
 import {
   ErrorType,
-  LedgerCosmosException,
-  TransactionException,
-  UnspecifiedErrorCode,
   WalletException,
+  UnspecifiedErrorCode,
+  TransactionException,
+  LedgerCosmosException,
 } from '@injectivelabs/exceptions'
 import {
-  TxRaw,
   toUtf8,
-  TxGrpcApi,
-  TxResponse,
+  hexToUint8Array,
+  uint8ArrayToHex,
   sortObjectByKeys,
-  AminoSignResponse,
-  DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
+  uint8ArrayToBase64,
+  stringToUint8Array,
+  safeBigIntStringify,
+} from '@injectivelabs/sdk-ts/utils'
 import {
-  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
-  DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_ADDRESS_SEARCH_LIMIT,
+  DEFAULT_BASE_DERIVATION_PATH,
   DEFAULT_NUM_ADDRESSES_TO_FETCH,
+} from '@injectivelabs/wallet-base'
+import LedgerHW from './hw/index.js'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
+import type {
+  ChainId,
+  EvmChainId,
+  AccountAddress,
+} from '@injectivelabs/ts-types'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
+import type {
+  StdSignDoc,
   ConcreteWalletStrategy,
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
-import { LedgerWalletInfo } from '../../types.js'
-import LedgerHW from './hw/index.js'
-import { CosmosWalletException } from '@injectivelabs/exceptions'
+import type { LedgerWalletInfo } from '../../types.js'
 
 export class LedgerCosmos
   extends BaseConcreteStrategy
@@ -79,28 +87,43 @@ export class LedgerCosmos
     }
   }
 
-  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
-    return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+  public async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new LedgerCosmosException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
     )
   }
 
-  async sendEthereumTransaction(
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
+    return Promise.resolve(
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
+    )
+  }
+
+  async sendEvmTransaction(
     _txData: any,
     _options: {
       address: string
-      ethereumChainId: EthereumChainId
+      evmChainId: EvmChainId
     },
   ): Promise<string> {
     throw new CosmosWalletException(
       new Error(
-        'sendEthereumTransaction is not supported. LedgerCosmos only supports sending cosmos transactions',
+        'sendEvmTransaction is not supported. LedgerCosmos only supports sending cosmos transactions',
       ),
       {
         code: UnspecifiedErrorCode,
-        context: WalletAction.SendEthereumTransaction,
+        context: WalletAction.SendEvmTransaction,
       },
     )
   }
@@ -145,13 +168,13 @@ export class LedgerCosmos
 
       const result = await ledger.sign(
         derivationPath,
-        JSON.stringify(sortObjectByKeys(transaction.signDoc)),
+        safeBigIntStringify(sortObjectByKeys(transaction.signDoc)),
       )
 
       return {
         signed: undefined,
         signature: {
-          signature: Buffer.from(result.signature!).toString('base64'),
+          signature: uint8ArrayToBase64(result.signature!),
           pub_key: undefined,
         },
       } as unknown as AminoSignResponse
@@ -184,7 +207,7 @@ export class LedgerCosmos
     _address: AccountAddress,
   ): Promise<string> {
     throw new CosmosWalletException(
-      new Error('This wallet does not support signing Ethereum transactions'),
+      new Error('This wallet does not support signing Evm transactions'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,
@@ -202,7 +225,7 @@ export class LedgerCosmos
       const ledger = await this.ledger.getInstance()
       const result = await ledger.sign(derivationPath, toUtf8(data))
 
-      return Buffer.from(result.signature!).toString('base64')
+      return uint8ArrayToBase64(result.signature!)
     } catch (e: unknown) {
       throw new LedgerCosmosException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -214,7 +237,7 @@ export class LedgerCosmos
 
   async getEthereumChainId(): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEthereumChainId is not supported on Keplr'),
+      new Error('getEthereumChainId is not supported on LedgerCosmos'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.GetChainId,
@@ -222,12 +245,12 @@ export class LedgerCosmos
     )
   }
 
-  async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
+  async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEthereumTransactionReceipt is not supported on Keplr'),
+      new Error('getEvmTransactionReceipt is not supported on LedgerCosmos'),
       {
         code: UnspecifiedErrorCode,
-        context: WalletAction.GetEthereumTransactionReceipt,
+        context: WalletAction.GetEvmTransactionReceipt,
       },
     )
   }
@@ -241,9 +264,7 @@ export class LedgerCosmos
 
     const ledgerWalletInfo = await this.getWalletForAddress(address)
 
-    return Buffer.from(ledgerWalletInfo.publicKey || '', 'hex').toString(
-      'base64',
-    )
+    return uint8ArrayToBase64(hexToUint8Array(ledgerWalletInfo.publicKey || ''))
   }
 
   private async getWalletForAddress(

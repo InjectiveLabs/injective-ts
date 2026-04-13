@@ -1,7 +1,7 @@
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import MsgInstantSpotMarketLaunch from './MsgInstantSpotMarketLaunch.js'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const market = mockFactory.injUsdtSpotMarket
 
@@ -25,13 +25,11 @@ const message = MsgInstantSpotMarketLaunch.fromJSON(params)
 describe('MsgInstantSpotMarketLaunch', () => {
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      sequence: 0,
-      accountNumber: 3,
       messages: message,
     })
 
-    // TODO
-    it('EIP712 v1', async () => {
+    // TODO: invalid Go type math.LegacyDec for field injective.exchange.v1beta1.MsgInstantSpotMarketLaunch.min_price_tick_size
+    it.skip('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
       const txResponse = await new IndexerGrpcWeb3GwApi(

@@ -1,8 +1,8 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcStakingApi } from './ChainGrpcStakingApi.js'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { ChainGrpcStakingTransformer } from '../transformers/index.js'
-import { Delegation, Validator } from '../types/index.js'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { ChainGrpcStakingApi } from './ChainGrpcStakingApi.js'
+import type { Validator, Delegation } from '../types/index.js'
+import type { ChainGrpcStakingTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)

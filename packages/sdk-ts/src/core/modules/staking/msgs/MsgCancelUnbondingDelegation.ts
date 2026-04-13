@@ -1,9 +1,6 @@
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as CosmosStakingV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  CosmosStakingV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCancelUnbondingDelegation {
   export interface Params {
@@ -16,7 +13,7 @@ export declare namespace MsgCancelUnbondingDelegation {
     creationHeight: string
   }
 
-  export type Proto = CosmosStakingV1Beta1Tx.MsgCancelUnbondingDelegation
+  export type Proto = CosmosStakingV1Beta1TxPb.MsgCancelUnbondingDelegation
 }
 
 /**
@@ -35,21 +32,20 @@ export default class MsgCancelUnbondingDelegation extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const coinAmount = CosmosBaseV1Beta1Coin.Coin.create()
+    const coinAmount = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    coinAmount.denom = params.amount.denom
-    coinAmount.amount = params.amount.amount
+    const message =
+      CosmosStakingV1Beta1TxPb.MsgCancelUnbondingDelegation.create({
+        delegatorAddress: params.delegatorAddress,
+        validatorAddress: params.validatorAddress,
+        amount: coinAmount,
+        creationHeight: BigInt(params.creationHeight),
+      })
 
-    const message = CosmosStakingV1Beta1Tx.MsgCancelUnbondingDelegation.create()
-
-    message.delegatorAddress = params.delegatorAddress
-    message.validatorAddress = params.validatorAddress
-    message.amount = coinAmount
-    message.creationHeight = params.creationHeight
-
-    return CosmosStakingV1Beta1Tx.MsgCancelUnbondingDelegation.fromPartial(
-      message,
-    )
+    return message
   }
 
   public toData() {
@@ -64,7 +60,10 @@ export default class MsgCancelUnbondingDelegation extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      delegator_address: proto.delegatorAddress,
+      validator_address: proto.validatorAddress,
+      amount: proto.amount,
+      creation_height: proto.creationHeight?.toString(),
     }
 
     return {
@@ -93,8 +92,8 @@ export default class MsgCancelUnbondingDelegation extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosStakingV1Beta1Tx.MsgCancelUnbondingDelegation.encode(
+    return CosmosStakingV1Beta1TxPb.MsgCancelUnbondingDelegation.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

@@ -1,17 +1,24 @@
-import { fromRpcSig, ecrecover } from 'ethereumjs-util'
-import * as secp256k1 from 'secp256k1'
-import { TypedDataUtils, SignTypedDataVersion } from '@metamask/eth-sig-util'
+import { secp256k1 } from '@noble/curves/secp256k1'
+import { hashTypedData, recoverPublicKey } from 'viem'
+import { uint8ArrayToHex } from './encoding.js'
+import type { Hash, TypedDataDefinition } from 'viem'
 
-export const recoverTypedSignaturePubKey = (
-  data: any,
+export const recoverTypedSignaturePubKey = async (
+  data: TypedDataDefinition,
   signature: string,
-): string => {
-  const compressedPubKeyPrefix = Buffer.from('04', 'hex')
-  const message = TypedDataUtils.eip712Hash(data, SignTypedDataVersion.V4)
-  const sigParams = fromRpcSig(signature)
-  const publicKey = ecrecover(message, sigParams.v, sigParams.r, sigParams.s)
-  const prefixedKey = Buffer.concat([compressedPubKeyPrefix, publicKey])
-  const compressedKey = Buffer.from(secp256k1.publicKeyConvert(prefixedKey))
+): Promise<string> => {
+  const messageHash = hashTypedData(data)
+  const publicKeyHex = await recoverPublicKey({
+    hash: messageHash,
+    signature: signature as Hash,
+  })
 
-  return `0x${compressedKey.toString('hex')}`
+  // viem's recoverPublicKey returns uncompressed public key (65 bytes with 0x04 prefix)
+  // Use @noble/curves to convert uncompressed to compressed format
+  // @noble/curves: ProjectivePoint handles conversion
+  // Uncompressed key (64 bytes without prefix) -> compressed (33 bytes)
+  const point = secp256k1.ProjectivePoint.fromHex(publicKeyHex.slice(2))
+  const compressedKey = point.toRawBytes(true) // true = compressed format
+
+  return `0x${uint8ArrayToHex(compressedKey)}`
 }

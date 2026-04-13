@@ -1,4 +1,4 @@
-import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
+import type * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/goagen_olp_injective_dmm_v2_pb'
 
 export interface DmmPagination {
   from?: number
@@ -52,7 +52,7 @@ export interface AccountVolumes {
 export interface RewardsEligibility {
   volumes: AccountVolume[]
   currentMakerVolumePercentage: string
-  averageDailyMakerVolumePercentage: string
+  averageDailyMakerVolumePercentage?: string
   eligibleForNextEpoch: boolean
   eligibleForCurrentEpoch: boolean
   estimatedReward: string
@@ -86,8 +86,8 @@ export interface EpochConfigV2 {
   liquidityScoreExponent: string
   uptimeExponent: string
   volumeExponent: string
-  permanenceVolumeThreshold: string
-  qualifyingVolumeThreshold: string
+  permanenceVolumeThreshold?: string
+  qualifyingVolumeThreshold?: string
   number: number
   isMiniEpoch: boolean
 }
@@ -179,6 +179,7 @@ export interface RewardDistribution {
   blockTime?: Date | undefined
   depth: string
   reward: string
+  miniEpochsReward?: string
   createdAt?: Date
   updatedAt?: Date
 }
@@ -211,41 +212,37 @@ export interface MinMaxRewards {
   maxRewards: Record<string, string>
 }
 
-export type GrpcEpochsV2 = InjectiveDmmRpc.GetEpochsResponse
-export type GrpcEpochV2 = InjectiveDmmRpc.EpochV2
+export type GrpcEpochsV2 = DmmPb.GetEpochsResponse
+export type GrpcEpochV2 = DmmPb.EpochV2
 
-export type GrpcEpochConfigV2 = InjectiveDmmRpc.EpochConfigV2
+export type GrpcEpochConfigV2 = DmmPb.EpochConfigV2
 
-export type GrpcMarketReward = InjectiveDmmRpc.MarketReward
+export type GrpcMarketReward = DmmPb.MarketReward
 
-export type GrpcMarketRewards = InjectiveDmmRpc.GetMarketRewardsResponse
+export type GrpcMarketRewards = DmmPb.GetMarketRewardsResponse
 
-export type GrpcDmmPagination = InjectiveDmmRpc.Pagination
+export type GrpcDmmPagination = DmmPb.Pagination
 
-export type GrpcEligibleAddresses = InjectiveDmmRpc.GetEligibleAddressesResponse
+export type GrpcEligibleAddresses = DmmPb.GetEligibleAddressesResponse
 
-export type GrpcEligibleAddress = InjectiveDmmRpc.EligibleAddress
+export type GrpcEligibleAddress = DmmPb.EligibleAddress
 
-export type GrpcEpochScores = InjectiveDmmRpc.GetEpochScoresResponse
+export type GrpcEpochScores = DmmPb.GetEpochScoresResponse
 
-export type GrpcEpochScore = InjectiveDmmRpc.EpochScore
+export type GrpcEpochScore = DmmPb.EpochScore
 
-export type GrpcEpochScoresHistory =
-  InjectiveDmmRpc.GetEpochScoresHistoryResponse
+export type GrpcEpochScoresHistory = DmmPb.GetEpochScoresHistoryResponse
 
-export type GrpcTotalScores = InjectiveDmmRpc.GetTotalScoresHistoryResponse
+export type GrpcTotalScores = DmmPb.GetTotalScoresHistoryResponse
 
-export type GrpcTotalScore = InjectiveDmmRpc.TotalScore
+export type GrpcTotalScore = DmmPb.TotalScore
 
-export type GrpcTotalScoresHistory =
-  InjectiveDmmRpc.GetTotalScoresHistoryResponse
+export type GrpcTotalScoresHistory = DmmPb.GetTotalScoresHistoryResponse
 
-export type GrpcRewardsDistribution =
-  InjectiveDmmRpc.GetRewardsDistributionResponse
+export type GrpcRewardsDistribution = DmmPb.GetRewardsDistributionResponse
 
-export type GrpcRewardDistribution = InjectiveDmmRpc.RewardDistribution
+export type GrpcRewardDistribution = DmmPb.RewardDistribution
 
-export type GrpcAccountVolume = InjectiveDmmRpc.AccountVolume
+export type GrpcAccountVolume = DmmPb.AccountVolume
 
-export type GrpcRewardsEligibility =
-  InjectiveDmmRpc.GetRewardsEligibilityResponse
+export type GrpcRewardsEligibility = DmmPb.GetRewardsEligibilityResponse

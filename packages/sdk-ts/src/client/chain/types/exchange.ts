@@ -1,9 +1,8 @@
-import {
-  InjectiveExchangeV1Beta1Exchange,
-  InjectiveExchangeV1Beta1Query,
-  InjectiveExchangeV1Beta1Genesis,
-} from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import * as ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
+import type { Coin } from '@injectivelabs/ts-types'
+import type * as InjectiveExchangeV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb'
+import type * as InjectiveExchangeV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/genesis_pb'
+import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 
 export interface DepositProposalParams {
   amount: string
@@ -130,48 +129,47 @@ export interface ChainDenomMinNotional {
   minNotional: string
 }
 
-export type GrpcOrderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo
-export type GrpcSpotMarket = InjectiveExchangeV1Beta1Exchange.SpotMarket
+export type GrpcOrderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo
+export type GrpcSpotMarket = InjectiveExchangeV1Beta1ExchangePb.SpotMarket
 export type GrpcSpotMarketOrder =
-  InjectiveExchangeV1Beta1Exchange.SpotMarketOrder
-export type GrpcSpotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder
-export type GrpcExchangeParams = InjectiveExchangeV1Beta1Exchange.Params
+  InjectiveExchangeV1Beta1ExchangePb.SpotMarketOrder
+export type GrpcSpotOrder = InjectiveExchangeV1Beta1ExchangePb.SpotOrder
+export type GrpcExchangeParams = InjectiveExchangeV1Beta1ExchangePb.Params
 export type GrpcFeeDiscountTierInfo =
-  InjectiveExchangeV1Beta1Exchange.FeeDiscountTierInfo
+  InjectiveExchangeV1Beta1ExchangePb.FeeDiscountTierInfo
 export type GrpcFeeDiscountTierTTL =
-  InjectiveExchangeV1Beta1Exchange.FeeDiscountTierTTL
+  InjectiveExchangeV1Beta1ExchangePb.FeeDiscountTierTTL
 export type GrpcFeeDiscountSchedule =
-  InjectiveExchangeV1Beta1Exchange.FeeDiscountSchedule
+  InjectiveExchangeV1Beta1ExchangePb.FeeDiscountSchedule
 export type GrpcPointsMultiplier =
-  InjectiveExchangeV1Beta1Exchange.PointsMultiplier
+  InjectiveExchangeV1Beta1ExchangePb.PointsMultiplier
 export type GrpcTradingRewardCampaignBoostInfo =
-  InjectiveExchangeV1Beta1Exchange.TradingRewardCampaignBoostInfo
+  InjectiveExchangeV1Beta1ExchangePb.TradingRewardCampaignBoostInfo
 export type GrpcTradingRewardCampaignInfo =
-  InjectiveExchangeV1Beta1Exchange.TradingRewardCampaignInfo
+  InjectiveExchangeV1Beta1ExchangePb.TradingRewardCampaignInfo
 export type GrpcCampaignRewardPool =
-  InjectiveExchangeV1Beta1Exchange.CampaignRewardPool
-export type GrpcChainPosition = InjectiveExchangeV1Beta1Exchange.Position
+  InjectiveExchangeV1Beta1ExchangePb.CampaignRewardPool
+export type GrpcChainPosition = InjectiveExchangeV1Beta1ExchangePb.Position
 export type GrpcChainDerivativePosition =
-  InjectiveExchangeV1Beta1Genesis.DerivativePosition
+  InjectiveExchangeV1Beta1GenesisPb.DerivativePosition
 export type GrpcFeeDiscountAccountInfo =
-  InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse
+  InjectiveExchangeV1Beta1QueryPb.QueryFeeDiscountAccountInfoResponse
 export type GrpcTradeRewardCampaign =
-  InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse
-export type GrpcDenomDecimals = InjectiveExchangeV1Beta1Exchange.DenomDecimals
+  InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignResponse
+export type GrpcDenomDecimals = InjectiveExchangeV1Beta1ExchangePb.DenomDecimals
 export type GrpcDenomMinNotional =
-  InjectiveExchangeV1Beta1Exchange.DenomMinNotional
+  InjectiveExchangeV1Beta1ExchangePb.DenomMinNotional
 export type GrpcChainFullDerivativeMarket =
-  InjectiveExchangeV1Beta1Query.FullDerivativeMarket
+  InjectiveExchangeV1Beta1QueryPb.FullDerivativeMarket
 export type GrpcChainFullSpotMarket =
-  InjectiveExchangeV1Beta1Query.FullSpotMarket
+  InjectiveExchangeV1Beta1QueryPb.FullSpotMarket
 export type GrpcChainDerivativeMarket =
-  InjectiveExchangeV1Beta1Exchange.DerivativeMarket
-export type GrpcChainSpotMarket =
-  InjectiveExchangeV1Beta1Exchange.SpotMarket
+  InjectiveExchangeV1Beta1ExchangePb.DerivativeMarket
+export type GrpcChainSpotMarket = InjectiveExchangeV1Beta1ExchangePb.SpotMarket
 
-export type GrpcOrderType = InjectiveExchangeV1Beta1Exchange.OrderType
-export const GrpcOrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
-export type OrderType = InjectiveExchangeV1Beta1Exchange.OrderType
-export const OrderTypeMap = InjectiveExchangeV1Beta1Exchange.OrderType
-export type GrpcMarketStatus = InjectiveExchangeV1Beta1Exchange.MarketStatus
-export const GrpcMarketStatusMap = InjectiveExchangeV1Beta1Exchange.MarketStatus
+export type GrpcOrderType = InjectiveExchangeV1Beta1ExchangePb.OrderType
+export const GrpcOrderTypeMap = ExchangePb.OrderType
+export type OrderType = InjectiveExchangeV1Beta1ExchangePb.OrderType
+export const OrderTypeMap = ExchangePb.OrderType
+export type GrpcMarketStatus = InjectiveExchangeV1Beta1ExchangePb.MarketStatus
+export const GrpcMarketStatusMap = ExchangePb.MarketStatus

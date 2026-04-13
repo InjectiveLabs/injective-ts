@@ -1,8 +1,9 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { ChainGrpcBankApi } from './ChainGrpcBankApi.js'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { ChainGrpcBankTransformer } from '../transformers/index.js'
-import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { ChainGrpcBankApi } from './ChainGrpcBankApi.js'
+import type * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import type { ChainGrpcBankTransformer } from '../transformers/index.js'
+import type { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
@@ -37,7 +38,7 @@ describe('ChainGrpcBankApi', () => {
 
       expect(response).toBeDefined()
       expect(response).toEqual(
-        expect.objectContaining<CosmosBaseV1Beta1Coin.Coin>(response),
+        expect.objectContaining<CosmosBaseV1Beta1CoinPb.Coin>(response),
       )
     } catch (e) {
       console.error(
@@ -87,7 +88,7 @@ describe('ChainGrpcBankApi', () => {
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
-          ReturnType<typeof ChainGrpcBankTransformer.grpcCoinToCoin>
+          ReturnType<typeof ChainGrpcCommonTransformer.grpcCoinToCoin>
         >(response),
       )
     } catch (e) {

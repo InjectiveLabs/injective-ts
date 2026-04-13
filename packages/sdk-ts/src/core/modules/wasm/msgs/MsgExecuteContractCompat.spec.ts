@@ -1,11 +1,11 @@
-import MsgExecuteContractCompat from './MsgExecuteContractCompat.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgExecuteContractCompat from './MsgExecuteContractCompat.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgExecuteContractCompat['params'] = {
   sender: mockFactory.injectiveAddress,
@@ -54,6 +54,32 @@ describe('MsgExecuteContractCompat', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+  })
+
+  describe('handles BigInt values in message', () => {
+    it('should serialize BigInt values without throwing', () => {
+      const paramsWithBigInt: MsgExecuteContractCompat['params'] = {
+        sender: mockFactory.injectiveAddress,
+        contractAddress: mockFactory.injectiveAddress,
+        msg: {
+          amount: BigInt('1000000000000000000'),
+          nested: {
+            value: BigInt(12345),
+          },
+        },
+      }
+
+      const messageWithBigInt =
+        MsgExecuteContractCompat.fromJSON(paramsWithBigInt)
+
+      // Should not throw "Do not know how to serialize a BigInt"
+      expect(() => messageWithBigInt.toProto()).not.toThrow()
+      expect(() => messageWithBigInt.toAmino()).not.toThrow()
+
+      const proto = messageWithBigInt.toProto()
+      expect(proto.msg).toContain('1000000000000000000')
+      expect(proto.msg).toContain('12345')
     })
   })
 })

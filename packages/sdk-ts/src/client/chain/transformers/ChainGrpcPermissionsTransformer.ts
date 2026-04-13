@@ -1,22 +1,22 @@
-import {
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type * as InjectivePermissionsV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/query_pb'
+import type {
   PermissionRole,
+  GrpcPermissionRole,
   PermissionNamespace,
   PermissionActorRoles,
   PermissionRoleManager,
   PermissionPolicyStatus,
   PermissionsModuleParams,
-  PermissionAddressVoucher,
-  PermissionPolicyManagerCapability,
-  GrpcPermissionRole,
   GrpcPermissionNamespace,
+  PermissionAddressVoucher,
   GrpcPermissionActorRoles,
   GrpcPermissionRoleManager,
   GrpcPermissionPolicyStatus,
   GrpcPermissionAddressVoucher,
+  PermissionPolicyManagerCapability,
   GrpcPermissionPolicyStatusManagerCapability,
 } from '../types/permissions.js'
-import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import { InjectivePermissionsV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
@@ -85,7 +85,8 @@ export class ChainGrpcPermissionsTransformer {
   ): PermissionNamespace {
     return {
       denom: grpcNamespace.denom,
-      contractHook: grpcNamespace.contractHook,
+      evmHook: grpcNamespace.evmHook,
+      wasmHook: grpcNamespace.wasmHook,
       rolePermissions: grpcNamespace.rolePermissions.map(
         ChainGrpcPermissionsTransformer.grpcRoleToRole,
       ),
@@ -105,23 +106,27 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static moduleParamsResponseToModuleParams(
-    response: InjectivePermissionsV1Beta1Query.QueryParamsResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryParamsResponse,
   ): PermissionsModuleParams {
-    const params = response.params!
+    const params = response.params
+
+    if (!params) {
+      throw new Error('Params not found in response')
+    }
 
     return {
-      wasmHookQueryMaxGas: params.wasmHookQueryMaxGas,
+      wasmHookQueryMaxGas: params.contractHookMaxGas.toString(),
     }
   }
 
   static nameSpaceDenomsResponseToNameSpaceDenoms(
-    response: InjectivePermissionsV1Beta1Query.QueryNamespaceDenomsResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryNamespaceDenomsResponse,
   ) {
     return response.denoms.map((denom) => denom)
   }
 
   static namespaceResponseToNamespaces(
-    response: InjectivePermissionsV1Beta1Query.QueryNamespaceResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryNamespaceResponse,
   ) {
     if (!response.namespace) {
       return
@@ -133,7 +138,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static namespacesResponseToNamespaces(
-    response: InjectivePermissionsV1Beta1Query.QueryNamespacesResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryNamespacesResponse,
   ) {
     return response.namespaces.map((namespace) => {
       ChainGrpcPermissionsTransformer.grpcNamespaceToNamespace(namespace)
@@ -141,7 +146,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static actorsByRoleResponseToActorsByRole(
-    response: InjectivePermissionsV1Beta1Query.QueryActorsByRoleResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryActorsByRoleResponse,
   ) {
     return response.actors.map((role) => {
       return {
@@ -151,7 +156,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static rolesByActorResponseToRolesByActor(
-    response: InjectivePermissionsV1Beta1Query.QueryRolesByActorResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryRolesByActorResponse,
   ) {
     return response.roles.map((role) => {
       return {
@@ -161,7 +166,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static roleManagerResponseToRoleManager(
-    response: InjectivePermissionsV1Beta1Query.QueryRoleManagerResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryRoleManagerResponse,
   ) {
     if (!response.roleManager) {
       return
@@ -173,7 +178,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static roleManagersResponseToRoleManagers(
-    response: InjectivePermissionsV1Beta1Query.QueryRoleManagersResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryRoleManagersResponse,
   ) {
     return response.roleManagers.map(
       ChainGrpcPermissionsTransformer.grpcRoleManagerToRoleManager,
@@ -181,7 +186,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static policyStatusesResponseToPolicyStatuses(
-    response: InjectivePermissionsV1Beta1Query.QueryPolicyStatusesResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryPolicyStatusesResponse,
   ) {
     return response.policyStatuses.map(
       ChainGrpcPermissionsTransformer.grpcPolicyStatusToPolicyStatus,
@@ -189,7 +194,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static policyManagerCapabilitiesResponseToPolicyManagerCapabilities(
-    response: InjectivePermissionsV1Beta1Query.QueryPolicyManagerCapabilitiesResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryPolicyManagerCapabilitiesResponse,
   ) {
     return response.policyManagerCapabilities.map(
       ChainGrpcPermissionsTransformer.grpcPolicyManagerCapabilityToPolicyManagerCapability,
@@ -197,7 +202,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static voucherResponseToVoucher(
-    response: InjectivePermissionsV1Beta1Query.QueryVoucherResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryVoucherResponse,
   ) {
     if (!response.voucher) {
       return
@@ -207,7 +212,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static vouchersResponseToVouchers(
-    response: InjectivePermissionsV1Beta1Query.QueryVouchersResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryVouchersResponse,
   ) {
     return response.vouchers.map(
       ChainGrpcPermissionsTransformer.grpcAddressVoucherToAddressVoucher,
@@ -215,7 +220,7 @@ export class ChainGrpcPermissionsTransformer {
   }
 
   static moduleStateResponseToModuleState(
-    response: InjectivePermissionsV1Beta1Query.QueryModuleStateResponse,
+    response: InjectivePermissionsV1Beta1QueryPb.QueryModuleStateResponse,
   ) {
     if (!response.state) {
       return

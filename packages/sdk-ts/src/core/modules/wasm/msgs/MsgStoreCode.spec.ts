@@ -1,15 +1,15 @@
-import MsgStoreCode from './MsgStoreCode.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import * as CosmwasmWasmV1TypesPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/types_pb'
+import MsgStoreCode from './MsgStoreCode.js'
 import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
-import { CosmwasmWasmV1Types } from '@injectivelabs/core-proto-ts'
 
 const params: MsgStoreCode['params'] = {
   sender: mockFactory.injectiveAddress,
   wasmBytes: new Uint8Array([1, 2, 3]),
   instantiatePermission: {
-    permission: CosmwasmWasmV1Types.AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES,
+    permission: CosmwasmWasmV1TypesPb.AccessType.ANY_OF_ADDRESSES,
     addresses: [mockFactory.injectiveAddress],
   },
 }

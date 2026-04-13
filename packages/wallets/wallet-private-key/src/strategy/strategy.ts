@@ -1,15 +1,20 @@
-/* eslint-disable class-methods-use-this */
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { PrivateKey as PrivateKeySigner } from '@injectivelabs/sdk-ts/core/accounts'
 import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
-import {
-  AminoSignResponse,
-  DirectSignResponse,
-  PrivateKey as PrivateKeySigner,
+  TxGrpcApi,
   getInjectiveSignerAddress,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/core/tx'
+import {
+  WalletAction,
+  WalletDeviceType,
+  BaseConcreteStrategy,
+} from '@injectivelabs/wallet-base'
+import {
+  toUtf8,
+  uint8ArrayToHex,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
@@ -17,34 +22,24 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
 } from '@injectivelabs/exceptions'
-import {
+import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
+import type {
   StdSignDoc,
-  WalletAction,
-  WalletDeviceType,
-  BaseConcreteStrategy,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  ConcreteEthereumWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { TxRaw, toUtf8, TxGrpcApi, TxResponse } from '@injectivelabs/sdk-ts'
-
-interface PrivateKeyArgs extends ConcreteEthereumWalletStrategyArgs {
-  privateKey?: string
-}
 
 export class PrivateKeyWallet
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
   private privateKey?: PrivateKeySigner | undefined
-
-  constructor(args: PrivateKeyArgs) {
-    super(args)
-
-    this.privateKey = args.privateKey
-      ? PrivateKeySigner.fromHex(args.privateKey)
-      : undefined
-  }
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Other)
@@ -72,25 +67,39 @@ export class PrivateKeyWallet
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
-    return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
-    )
-  }
-
-  async sendEthereumTransaction(
-    _transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
-  ): Promise<string> {
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
     throw new WalletException(
-      new Error('This wallet does not support sending Ethereum transactions'),
+      new Error('getAddressesInfo is not implemented'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SendEthereumTransaction,
+        contextModule: WalletAction.GetAccounts,
+      },
+    )
+  }
+
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
+    return Promise.resolve(
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
+    )
+  }
+
+  async sendEvmTransaction(
+    _transaction: unknown,
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
+  ): Promise<string> {
+    throw new WalletException(
+      new Error('This wallet does not support sending Evm transactions'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.SendEvmTransaction,
       },
     )
   }
@@ -143,7 +152,7 @@ export class PrivateKeyWallet
     try {
       const signature = await pk.signTypedData(JSON.parse(eip712json))
 
-      return `0x${Buffer.from(signature).toString('hex')}`
+      return `0x${uint8ArrayToHex(signature)}`
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -167,7 +176,6 @@ export class PrivateKeyWallet
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -202,9 +210,9 @@ export class PrivateKeyWallet
     }
 
     try {
-      const signature = await pk.signHashed(Buffer.from(toUtf8(data), 'utf-8'))
+      const signature = await pk.signHashed(stringToUint8Array(toUtf8(data)))
 
-      return `0x${Buffer.from(signature).toString('base64')}`
+      return `0x${uint8ArrayToBase64(signature)}`
     } catch (e: unknown) {
       throw new MetamaskException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -218,8 +226,8 @@ export class PrivateKeyWallet
     try {
       return Promise.resolve(
         (this.chainId === ChainId.Mainnet
-          ? EthereumChainId.Mainnet
-          : EthereumChainId.Sepolia
+          ? EvmChainId.Mainnet
+          : EvmChainId.Sepolia
         ).toString(16),
       )
     } catch (e: unknown) {
@@ -231,11 +239,10 @@ export class PrivateKeyWallet
     }
   }
 
-  async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
+  async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new WalletException(new Error('Not supported'))
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     const pk = this.getPrivateKey()
 
@@ -254,13 +261,19 @@ export class PrivateKeyWallet
 
   private getPrivateKey(): PrivateKeySigner {
     if (!this.privateKey) {
-      throw new WalletException(
-        new Error('Please provide private key in the constructor'),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletNotInstalledError,
-          contextModule: WalletAction.GetAccounts,
-        },
+      if (!this.metadata?.privateKey?.privateKey) {
+        throw new WalletException(
+          new Error('Please provide private key in the constructor'),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletNotInstalledError,
+            contextModule: WalletAction.GetAccounts,
+          },
+        )
+      }
+
+      this.privateKey = PrivateKeySigner.fromHex(
+        this.metadata.privateKey.privateKey,
       )
     }
 

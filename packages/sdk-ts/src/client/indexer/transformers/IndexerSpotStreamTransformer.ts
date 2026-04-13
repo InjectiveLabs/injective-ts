@@ -1,13 +1,13 @@
-import { StreamOperation } from '../../../types/index.js'
 import { IndexerGrpcSpotTransformer } from './IndexerGrpcSpotTransformer.js'
-import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type * as InjectiveSpotExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb'
+import type { StreamOperation } from '../../../types/index.js'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerSpotStreamTransformer {
   static tradesStreamCallback = (
-    response: InjectiveSpotExchangeRpc.StreamTradesResponse,
+    response: InjectiveSpotExchangeRpcPb.StreamTradesResponse,
   ) => {
     const trade = response.trade
 
@@ -21,7 +21,7 @@ export class IndexerSpotStreamTransformer {
   }
 
   static ordersStreamCallback = (
-    response: InjectiveSpotExchangeRpc.StreamOrdersResponse,
+    response: InjectiveSpotExchangeRpcPb.StreamOrdersResponse,
   ) => {
     const order = response.order
 
@@ -35,7 +35,7 @@ export class IndexerSpotStreamTransformer {
   }
 
   static orderHistoryStreamCallback = (
-    response: InjectiveSpotExchangeRpc.StreamOrdersHistoryResponse,
+    response: InjectiveSpotExchangeRpcPb.StreamOrdersHistoryResponse,
   ) => {
     const order = response.order
 
@@ -49,14 +49,14 @@ export class IndexerSpotStreamTransformer {
   }
 
   static orderbookV2StreamCallback = (
-    response: InjectiveSpotExchangeRpc.StreamOrderbookV2Response,
+    response: InjectiveSpotExchangeRpcPb.StreamOrderbookV2Response,
   ) => {
     const orderbook = response.orderbook
 
     return {
       orderbook: orderbook
         ? IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-            sequence: parseInt(orderbook.sequence, 10),
+            sequence: Number(orderbook.sequence),
             buys: orderbook.buys,
             sells: orderbook.sells,
           })
@@ -68,14 +68,14 @@ export class IndexerSpotStreamTransformer {
   }
 
   static orderbookUpdateStreamCallback = (
-    response: InjectiveSpotExchangeRpc.StreamOrderbookUpdateResponse,
+    response: InjectiveSpotExchangeRpcPb.StreamOrderbookUpdateResponse,
   ) => {
     const orderbook = response.orderbookLevelUpdates
 
     return {
       orderbook: orderbook
         ? IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-            sequence: parseInt(orderbook.sequence, 10),
+            sequence: Number(orderbook.sequence),
             buys: orderbook.buys,
             sells: orderbook.sells,
           })

@@ -1,6 +1,5 @@
+import * as InjectivePermissionsV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
-import { InjectivePermissionsV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgClaimVoucher {
   export interface Params {
@@ -8,7 +7,7 @@ export declare namespace MsgClaimVoucher {
     denom: string
   }
 
-  export type Proto = InjectivePermissionsV1Beta1Tx.MsgClaimVoucher
+  export type Proto = InjectivePermissionsV1Beta1TxPb.MsgClaimVoucher
 }
 
 /**
@@ -25,11 +24,12 @@ export default class MsgClaimVoucher extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectivePermissionsV1Beta1Tx.MsgClaimVoucher.create()
-    message.sender = params.sender
-    message.denom = params.denom
+    const message = InjectivePermissionsV1Beta1TxPb.MsgClaimVoucher.create({
+      sender: params.sender,
+      denom: params.denom,
+    })
 
-    return InjectivePermissionsV1Beta1Tx.MsgClaimVoucher.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -44,7 +44,8 @@ export default class MsgClaimVoucher extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      denom: proto.denom,
     }
 
     return {
@@ -73,8 +74,8 @@ export default class MsgClaimVoucher extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectivePermissionsV1Beta1Tx.MsgClaimVoucher.encode(
+    return InjectivePermissionsV1Beta1TxPb.MsgClaimVoucher.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

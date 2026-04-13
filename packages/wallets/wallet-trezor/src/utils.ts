@@ -2,10 +2,10 @@ import { TrezorException } from '@injectivelabs/exceptions'
 import {
   sanitizeTypedData,
   type TypedMessageV4,
-  TypedDataUtilsHashStruct,
   SignTypedDataVersionV4,
+  TypedDataUtilsHashStruct,
   TypedDataUtilsSanitizeData,
-} from '@injectivelabs/sdk-ts'
+} from '@injectivelabs/sdk-ts/utils'
 
 /**
  * Calculates the domain_separator_hash and message_hash from an EIP-712 Typed Data object.
@@ -43,10 +43,12 @@ export const transformTypedData = <T extends TypedMessageV4>(
   let messageHash = null
 
   if (primaryType !== 'EIP712Domain') {
+    // For message hash, we need to pass the domain data as well
+    // We'll modify the hashStruct function to handle this
     messageHash = TypedDataUtilsHashStruct(
       primaryType as string,
       sanitizeTypedData(message),
-      types,
+      { ...types, domain: sanitizeTypedData(domain) },
       version,
     ).toString('hex')
   }

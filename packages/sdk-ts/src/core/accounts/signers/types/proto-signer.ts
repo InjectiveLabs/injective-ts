@@ -1,4 +1,4 @@
-import {
+import type {
   Algo as CosmjsAlgo,
   AccountData as CosmjsAccountData,
   OfflineDirectSigner as CosmjsOfflineDirectSigner,
@@ -10,7 +10,9 @@ export interface AccountData extends Omit<CosmjsAccountData, 'algo'> {
   algo: Algo
 }
 
-export interface OfflineDirectSigner
-  extends Omit<CosmjsOfflineDirectSigner, 'getAccounts'> {
+export interface OfflineDirectSigner extends Omit<
+  CosmjsOfflineDirectSigner,
+  'getAccounts'
+> {
   readonly getAccounts: () => Promise<readonly AccountData[]>
 }

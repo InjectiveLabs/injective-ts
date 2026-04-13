@@ -1,27 +1,27 @@
-import { IndexerGrpcExplorerTransformer } from './IndexerGrpcExplorerTransformer.js'
 import { StreamOperation } from '../../../types/index.js'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+import { IndexerGrpcExplorerTransformer } from './IndexerGrpcExplorerTransformer.js'
+import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class ExplorerStreamTransformer {
   static blocksStreamCallback = (
-    response: InjectiveExplorerRpc.StreamBlocksResponse,
+    response: InjectiveExplorerRpcPb.StreamBlocksResponse,
   ) => ({
     block: IndexerGrpcExplorerTransformer.grpcBlockToBlock(response),
     operation: StreamOperation.Insert,
   })
 
   static blocksWithTxsStreamCallback = (
-    response: InjectiveExplorerRpc.StreamBlocksResponse,
+    response: InjectiveExplorerRpcPb.StreamBlocksResponse,
   ) => ({
     block: IndexerGrpcExplorerTransformer.grpcBlockToBlockWithTxs(response),
     operation: StreamOperation.Insert,
   })
 
   static transactionsStreamCallback = (
-    response: InjectiveExplorerRpc.StreamTxsResponse,
+    response: InjectiveExplorerRpcPb.StreamTxsResponse,
   ) => ({
     block: IndexerGrpcExplorerTransformer.streamTxResponseToTxs(response),
     operation: StreamOperation.Insert,

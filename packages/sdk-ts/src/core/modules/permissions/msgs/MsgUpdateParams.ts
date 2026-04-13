@@ -1,8 +1,5 @@
-import {
-  InjectivePermissionsV1Beta1Tx,
-  InjectivePermissionsV1Beta1Params,
-} from '@injectivelabs/core-proto-ts'
-import snakecaseKeys from 'snakecase-keys'
+import * as InjectivePermissionsV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/tx_pb'
+import * as InjectivePermissionsV1Beta1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/params_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgUpdateParams {
@@ -10,10 +7,11 @@ export declare namespace MsgUpdateParams {
     authority: string
     params: {
       wasmHookQueryMaxGas: string
+      enforcedRestrictionsContracts?: string[]
     }
   }
 
-  export type Proto = InjectivePermissionsV1Beta1Tx.MsgUpdateParams
+  export type Proto = InjectivePermissionsV1Beta1TxPb.MsgUpdateParams
 }
 
 /**
@@ -30,16 +28,16 @@ export default class MsgUpdateParams extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectivePermissionsV1Beta1Tx.MsgUpdateParams.create()
-    message.authority = params.authority
-    message.params = params.params
+    const messageParams = InjectivePermissionsV1Beta1ParamsPb.Params.create({
+      contractHookMaxGas: BigInt(params.params.wasmHookQueryMaxGas),
+    })
 
-    const messageParams = InjectivePermissionsV1Beta1Params.Params.create()
-    messageParams.wasmHookQueryMaxGas = params.params.wasmHookQueryMaxGas
+    const message = InjectivePermissionsV1Beta1TxPb.MsgUpdateParams.create({
+      authority: params.authority,
+      params: messageParams,
+    })
 
-    message.params = messageParams
-
-    return InjectivePermissionsV1Beta1Tx.MsgUpdateParams.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -54,7 +52,11 @@ export default class MsgUpdateParams extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      authority: proto.authority,
+      params: {
+        contract_hook_max_gas:
+          proto.params?.contractHookMaxGas.toString() || '0',
+      },
     }
 
     return {
@@ -70,6 +72,11 @@ export default class MsgUpdateParams extends MsgBase<
     return {
       '@type': '/injective.permissions.v1beta1.MsgUpdateParams',
       ...value,
+      params: {
+        ...value.params,
+        enforced_restrictions_contracts:
+          this.params.params.enforcedRestrictionsContracts || [],
+      },
     }
   }
 
@@ -83,8 +90,8 @@ export default class MsgUpdateParams extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectivePermissionsV1Beta1Tx.MsgUpdateParams.encode(
+    return InjectivePermissionsV1Beta1TxPb.MsgUpdateParams.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

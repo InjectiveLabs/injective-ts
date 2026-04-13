@@ -1,11 +1,12 @@
+import { ErrorType } from '../types/index.js'
 import { ConcreteException } from '../base.js'
-import { ErrorContext, ErrorType } from '../types/index.js'
-import { mapMetamaskMessage } from '../utils/maps.js'
+import { mapErrorMessage } from '../utils/maps.js'
+import type { ErrorContext } from '../types/index.js'
 
 const removeTrustWalletFromErrorString = (message: string): string =>
   message
-    .replaceAll('TrustWallet', '')
     .replaceAll('Trust Wallet', '')
+    .replaceAll('TrustWallet', '')
     .replaceAll('Trustwallet', '')
     .replaceAll('TrustWallet:', '')
     .replaceAll('Trust Wallet:', '')
@@ -22,9 +23,18 @@ export class TrustWalletException extends ConcreteException {
   public parse(): void {
     const { message } = this
 
-    this.setMessage(
-      mapMetamaskMessage(removeTrustWalletFromErrorString(message)),
-    )
+    if (
+      message
+        .trim()
+        .toLowerCase()
+        .includes('missing or invalid parameters'.toLowerCase())
+    ) {
+      this.setMessage('Please make sure you are using TrustWallet')
+    } else {
+      this.setMessage(
+        mapErrorMessage(removeTrustWalletFromErrorString(message)),
+      )
+    }
 
     this.setName(TrustWalletException.errorClass)
   }

@@ -1,0 +1,7 @@
+node_modules
+.build-cache
+.gitbook
+.github
+.vscode
+docs
+dist

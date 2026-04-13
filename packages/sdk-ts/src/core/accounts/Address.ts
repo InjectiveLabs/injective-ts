@@ -1,10 +1,11 @@
-import { bech32 } from 'bech32'
-import { Address as EthereumUtilsAddress } from 'ethereumjs-util'
+import { toBytes } from 'viem'
+import { bech32 } from '@scure/base'
 import { ErrorType, GeneralException } from '@injectivelabs/exceptions'
+import { uint8ArrayToHex } from '../../utils/encoding.js'
 import {
   BECH32_ADDR_ACC_PREFIX,
-  BECH32_ADDR_CONS_PREFIX,
   BECH32_ADDR_VAL_PREFIX,
+  BECH32_ADDR_CONS_PREFIX,
 } from '../../utils/constants.js'
 
 /**
@@ -37,18 +38,17 @@ export class Address {
     prefix: string = BECH32_ADDR_ACC_PREFIX,
   ): Address {
     try {
-      const address = Buffer.from(
-        bech32.fromWords(bech32.decode(bech).words),
-      ).toString('hex')
+      const bytes = bech32.fromWords(
+        bech32.decode(bech as `${string}1${string}`).words,
+      )
+      const address = uint8ArrayToHex(bytes)
       const addressInHex = address.startsWith('0x') ? address : `0x${address}`
-      const addressBuffer = EthereumUtilsAddress.fromString(
-        addressInHex.toString(),
-      ).toBuffer()
+      const addressBuffer = toBytes(addressInHex.toString())
       const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
       return new Address(bech32Address)
     } catch (e) {
-      throw new GeneralException(new Error((e as any)), {
+      throw new GeneralException(new Error(e as any), {
         type: ErrorType.ValidationError,
       })
     }
@@ -66,9 +66,7 @@ export class Address {
     prefix: string = BECH32_ADDR_ACC_PREFIX,
   ): Address {
     const addressHex = hex.startsWith('0x') ? hex : `0x${hex}`
-    const addressBuffer = EthereumUtilsAddress.fromString(
-      addressHex.toString(),
-    ).toBuffer()
+    const addressBuffer = toBytes(addressHex.toString())
     const bech32Address = bech32.encode(prefix, bech32.toWords(addressBuffer))
 
     return new Address(bech32Address)
@@ -82,7 +80,7 @@ export class Address {
   toBech32(prefix: string = BECH32_ADDR_ACC_PREFIX): string {
     const address = this.toHex()
     const addressHex = address.startsWith('0x') ? address : `0x${address}`
-    const addressBuffer = EthereumUtilsAddress.fromString(addressHex).toBuffer()
+    const addressBuffer = toBytes(addressHex)
 
     return bech32.encode(prefix, bech32.toWords(addressBuffer))
   }
@@ -121,9 +119,10 @@ export class Address {
    * */
   toHex(): string {
     const { bech32Address } = this
-    const address = Buffer.from(
-      bech32.fromWords(bech32.decode(bech32Address).words),
-    ).toString('hex')
+    const bytes = bech32.fromWords(
+      bech32.decode(bech32Address as `${string}1${string}`).words,
+    )
+    const address = uint8ArrayToHex(bytes)
 
     return address.startsWith('0x') ? address : `0x${address}`
   }

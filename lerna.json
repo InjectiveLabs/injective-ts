@@ -1,8 +1,8 @@
 {
-  "npmClient": "yarn",
+  "npmClient": "pnpm",
   "name": "injective-ts",
-  "packages": ["packages/*", "packages/wallets/*"],
   "version": "independent",
+  "useNx": true,
   "command": {
     "version": {
       "message": "chore: release"

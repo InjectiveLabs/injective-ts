@@ -1,9 +1,14 @@
-import { TransportWebHID } from '@bangjelkoski/ledgerhq-hw-transport-webhid'
-import { TransportWebUSB } from '@bangjelkoski/ledgerhq-hw-transport-webusb'
-import { Eth as EthereumApp } from '@bangjelkoski/ledgerhq-hw-app-eth'
-import { Transport } from '@bangjelkoski/ledgerhq-hw-transport'
 import { LedgerException } from '@injectivelabs/exceptions'
 import AccountManager from './AccountManager.js'
+import {
+  loadEthType,
+  loadTransportWebUSB,
+  loadTransportWebHIDType,
+} from '../../lib.js'
+import type Eth from '@ledgerhq/hw-app-eth'
+import type Transport from '@ledgerhq/hw-transport'
+
+type EthereumApp = Eth
 
 export default class LedgerTransport {
   private ledger: EthereumApp | null = null
@@ -11,6 +16,9 @@ export default class LedgerTransport {
   private accountManager: AccountManager | null = null
 
   protected static async getTransport(): Promise<Transport> {
+    const TransportWebUSB = await loadTransportWebUSB()
+    const TransportWebHID = await loadTransportWebHIDType()
+
     try {
       if (await TransportWebHID.isSupported()) {
         const list = await TransportWebHID.list()
@@ -45,6 +53,8 @@ export default class LedgerTransport {
   }
 
   async getInstance(): Promise<EthereumApp> {
+    const EthereumApp = await loadEthType()
+
     if (!this.ledger) {
       const transport = await LedgerTransport.getTransport()
 

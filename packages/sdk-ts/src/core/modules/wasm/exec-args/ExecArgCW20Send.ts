@@ -1,9 +1,7 @@
-import { fromUtf8 } from '../../../../utils/utf8.js'
-import {
-  dataToExecData,
-  ExecArgBase,
-  ExecDataRepresentation,
-} from '../ExecArgBase.js'
+import { ExecArgBase, dataToExecData } from '../ExecArgBase.js'
+import { safeBigIntStringify } from '../../../../utils/helpers.js'
+import { fromUtf8, uint8ArrayToBase64 } from '../../../../utils/encoding.js'
+import type { ExecDataRepresentation } from '../ExecArgBase.js'
 
 /**
  * When we execute the `send` action on
@@ -53,9 +51,7 @@ export default class ExecArgCW20Send extends ExecArgBase<
     return {
       contract: params.contractAddress,
       amount: params.amount,
-      msg: Buffer.from(fromUtf8(JSON.stringify(params.msg || {}))).toString(
-        'base64',
-      ),
+      msg: uint8ArrayToBase64(fromUtf8(safeBigIntStringify(params.msg || {}))),
     }
   }
 

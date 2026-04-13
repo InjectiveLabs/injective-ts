@@ -1,10 +1,15 @@
-import {
-  InjectiveExchangeV1Beta1Query,
-  InjectiveExchangeV1Beta1Exchange,
-  InjectiveOracleV1Beta1Oracle,
-} from '@injectivelabs/core-proto-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import {
+import { toHumanReadable } from '@injectivelabs/utils'
+import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
+import type * as InjectiveExchangeV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb'
+import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
+import type { SpotMarket } from '../../indexer/types/spot.js'
+import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
+import type {
+  GrpcChainSpotMarket,
+  GrpcChainFullSpotMarket,
+  GrpcChainFullDerivativeMarket,
+} from '../types/exchange.js'
+import type {
   ChainPosition,
   PointsMultiplier,
   ChainDenomDecimal,
@@ -15,32 +20,25 @@ import {
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
   TradeRewardCampaign,
-  ChainDenomMinNotional,
   GrpcPointsMultiplier,
   ExchangeModuleParams,
+  ChainDenomMinNotional,
   GrpcCampaignRewardPool,
   FeeDiscountAccountInfo,
   GrpcFeeDiscountTierTTL,
-  GrpcFeeDiscountTierInfo,
   ChainDerivativePosition,
   TradingRewardCampaignInfo,
   GrpcTradingRewardCampaignInfo,
   TradingRewardCampaignBoostInfo,
   GrpcTradingRewardCampaignBoostInfo,
-  type GrpcChainFullDerivativeMarket,
-  type GrpcChainFullSpotMarket,
-  type GrpcChainSpotMarket,
 } from '../types/exchange.js'
-import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
-import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
-import type { SpotMarket } from '../../indexer/types/spot.js'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcExchangeTransformer {
   static moduleParamsResponseToParams(
-    response: InjectiveExchangeV1Beta1Query.QueryExchangeParamsResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryExchangeParamsResponse,
   ): ExchangeModuleParams {
     const params = response.params!
     const spotMarketInstantListingFee = params.spotMarketInstantListingFee
@@ -66,8 +64,11 @@ export class ChainGrpcExchangeTransformer {
       defaultDerivativeTakerFeeRate: params.defaultDerivativeTakerFeeRate,
       defaultInitialMarginRatio: params.defaultInitialMarginRatio,
       defaultMaintenanceMarginRatio: params.defaultMaintenanceMarginRatio,
-      defaultFundingInterval: parseInt(params.defaultFundingInterval, 10),
-      fundingMultiple: parseInt(params.fundingMultiple, 10),
+      defaultFundingInterval: parseInt(
+        params.defaultFundingInterval.toString(),
+        10,
+      ),
+      fundingMultiple: parseInt(params.fundingMultiple.toString(), 10),
       relayerFeeShareRate: params.relayerFeeShareRate,
       defaultHourlyFundingRateCap: params.defaultHourlyFundingRateCap,
       defaultHourlyInterestRate: params.defaultHourlyInterestRate,
@@ -75,7 +76,7 @@ export class ChainGrpcExchangeTransformer {
       injRewardStakedRequirementThreshold:
         params.injRewardStakedRequirementThreshold,
       tradingRewardsVestingDuration: parseInt(
-        params.tradingRewardsVestingDuration,
+        params.tradingRewardsVestingDuration.toString(),
         10,
       ),
       liquidatorRewardShareRate: params.liquidatorRewardShareRate,
@@ -87,9 +88,7 @@ export class ChainGrpcExchangeTransformer {
             }
           : undefined,
       atomicMarketOrderAccessLevel:
-        InjectiveExchangeV1Beta1Exchange.atomicMarketOrderAccessLevelToJSON(
-          params.atomicMarketOrderAccessLevel,
-        ),
+        params.atomicMarketOrderAccessLevel.toString(),
       spotAtomicMarketOrderFeeMultiplier:
         params.spotAtomicMarketOrderFeeMultiplier,
       derivativeAtomicMarketOrderFeeMultiplier:
@@ -99,33 +98,38 @@ export class ChainGrpcExchangeTransformer {
       minimalProtocolFeeRate: params.minimalProtocolFeeRate,
       isInstantDerivativeMarketLaunchEnabled:
         params.isInstantDerivativeMarketLaunchEnabled,
-      postOnlyModeHeightThreshold: params.postOnlyModeHeightThreshold,
+      postOnlyModeHeightThreshold:
+        params.postOnlyModeHeightThreshold.toString(),
       marginDecreasePriceTimestampThresholdSeconds:
-        params.marginDecreasePriceTimestampThresholdSeconds,
+        params.marginDecreasePriceTimestampThresholdSeconds.toString(),
       exchangeAdmins: params.exchangeAdmins,
     }
   }
 
   static feeDiscountScheduleResponseToFeeDiscountSchedule(
-    response: InjectiveExchangeV1Beta1Query.QueryFeeDiscountScheduleResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryFeeDiscountScheduleResponse,
   ): FeeDiscountSchedule {
     const schedule = response.feeDiscountSchedule!
 
     return {
-      bucketCount: parseInt(schedule.bucketCount, 10),
-      bucketDuration: parseInt(schedule.bucketDuration, 10),
+      bucketCount: parseInt(schedule.bucketCount.toString(), 10),
+      bucketDuration: parseInt(schedule.bucketDuration.toString(), 10),
       quoteDenomsList: schedule.quoteDenoms,
       tierInfosList: schedule.tierInfos
         .map(
           ChainGrpcExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo,
         )
-        .filter((info) => info) as FeeDiscountTierInfo[],
+        .filter(
+          (
+            info: FeeDiscountTierInfo | undefined,
+          ): info is FeeDiscountTierInfo => info !== undefined,
+        ) as FeeDiscountTierInfo[],
       disqualifiedMarketIdsList: schedule.disqualifiedMarketIds,
     }
   }
 
   static tradingRewardsCampaignResponseToTradingRewardsCampaign(
-    response: InjectiveExchangeV1Beta1Query.QueryTradeRewardCampaignResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignResponse,
   ): TradeRewardCampaign {
     return {
       tradingRewardCampaignInfo:
@@ -146,10 +150,10 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
-    response: InjectiveExchangeV1Beta1Query.QueryFeeDiscountAccountInfoResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryFeeDiscountAccountInfoResponse,
   ): FeeDiscountAccountInfo {
     return {
-      tierLevel: parseInt(response.tierLevel, 10),
+      tierLevel: Number(response.tierLevel),
       accountInfo:
         ChainGrpcExchangeTransformer.grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
           response.accountInfo,
@@ -162,7 +166,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static grpcFeeDiscountTierInfoToFeeDiscountTierInfo(
-    info?: GrpcFeeDiscountTierInfo,
+    info?: FeeDiscountTierInfo,
   ): FeeDiscountTierInfo | undefined {
     if (!info) {
       return
@@ -184,8 +188,8 @@ export class ChainGrpcExchangeTransformer {
     }
 
     return {
-      tier: parseInt(info.tier, 10),
-      ttlTimestamp: parseInt(info.ttlTimestamp, 10),
+      tier: parseInt(info.tier.toString(), 10),
+      ttlTimestamp: parseInt(info.ttlTimestamp.toString(), 10),
     }
   }
 
@@ -225,7 +229,10 @@ export class ChainGrpcExchangeTransformer {
     }
 
     return {
-      campaignDurationSeconds: parseInt(info.campaignDurationSeconds, 10),
+      campaignDurationSeconds: parseInt(
+        info.campaignDurationSeconds.toString(),
+        10,
+      ),
       quoteDenomsList: info.quoteDenoms,
       tradingRewardBoostInfo:
         ChainGrpcExchangeTransformer.grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
@@ -239,7 +246,7 @@ export class ChainGrpcExchangeTransformer {
     pool: GrpcCampaignRewardPool,
   ): CampaignRewardPool {
     return {
-      startTimestamp: parseInt(pool.startTimestamp, 10),
+      startTimestamp: parseInt(pool.startTimestamp.toString(), 10),
       maxCampaignRewardsList: pool.maxCampaignRewards.map((coin) => ({
         amount: coin.amount,
         denom: coin.denom,
@@ -255,7 +262,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static positionsResponseToPositions(
-    response: InjectiveExchangeV1Beta1Query.QueryPositionsResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryPositionsResponse,
   ): ChainDerivativePosition[] {
     return response.state.map((position) => {
       return {
@@ -269,7 +276,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
-    response: InjectiveExchangeV1Beta1Query.QueryIsOptedOutOfRewardsResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryIsOptedOutOfRewardsResponse,
   ): IsOptedOutOfRewards {
     return {
       isOptedOut: response.isOptedOut,
@@ -277,10 +284,10 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static activeStakeGrantResponseToActiveStakeGrant(
-    response: InjectiveExchangeV1Beta1Query.QueryActiveStakeGrantResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryActiveStakeGrantResponse,
   ): {
-    grant: InjectiveExchangeV1Beta1Exchange.ActiveGrant
-    effectiveGrant: InjectiveExchangeV1Beta1Exchange.EffectiveGrant
+    grant: InjectiveExchangeV1Beta1ExchangePb.ActiveGrant
+    effectiveGrant: InjectiveExchangeV1Beta1ExchangePb.EffectiveGrant
   } {
     return {
       grant: response.grant!,
@@ -289,33 +296,31 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static denomMinNotionalResponseToDenomMinNotional(
-    response: InjectiveExchangeV1Beta1Query.QueryDenomMinNotionalResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryDenomMinNotionalResponse,
   ): string {
     return response.amount
   }
 
   static denomDecimalsResponseToDenomDecimals(
-    response: InjectiveExchangeV1Beta1Query.QueryDenomDecimalsResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryDenomDecimalsResponse,
   ): ChainDenomDecimal[] {
     return response.denomDecimals.map((denomDecimals) => ({
       denom: denomDecimals.denom,
-      decimals: denomDecimals.decimals,
+      decimals: denomDecimals.decimals.toString(),
     }))
   }
 
   static denomMinNotionalsResponseToDenomMinNotionals(
-    response: InjectiveExchangeV1Beta1Query.QueryDenomMinNotionalsResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryDenomMinNotionalsResponse,
   ): ChainDenomMinNotional[] {
     return response.denomMinNotionals.map((denomDecimals) => ({
       denom: denomDecimals.denom,
-      minNotional: new BigNumberInBase(denomDecimals.minNotional)
-        .dividedBy(10 ** 18)
-        .toFixed(),
+      minNotional: toHumanReadable(denomDecimals.minNotional).toFixed(),
     }))
   }
 
   static spotMarketsResponseToSpotMarkets(
-    response: InjectiveExchangeV1Beta1Query.QuerySpotMarketsResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QuerySpotMarketsResponse,
   ): SpotMarket[] {
     return response.markets.map((market) => {
       return ChainGrpcExchangeTransformer.grpcSpotMarketToSpotMarket(market)
@@ -327,9 +332,7 @@ export class ChainGrpcExchangeTransformer {
 
     return {
       marketId: marketInfo.marketId,
-      marketStatus: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
-        marketInfo.status,
-      ),
+      marketStatus: marketInfo.status.toString(),
       ticker: marketInfo.ticker,
       baseDenom: marketInfo.baseDenom,
       quoteDenom: marketInfo.quoteDenom,
@@ -355,7 +358,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static fullSpotMarketsResponseToSpotMarkets(
-    response: InjectiveExchangeV1Beta1Query.QueryFullSpotMarketsResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryFullSpotMarketsResponse,
   ): SpotMarket[] {
     return response.markets.map((market) => {
       return ChainGrpcExchangeTransformer.grpcFullSpotMarketToSpotMarket(market)
@@ -369,9 +372,7 @@ export class ChainGrpcExchangeTransformer {
 
     return {
       marketId: marketInfo.marketId,
-      marketStatus: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
-        marketInfo.status,
-      ),
+      marketStatus: marketInfo.status.toString(),
       ticker: marketInfo.ticker,
       baseDenom: marketInfo.baseDenom,
       quoteDenom: marketInfo.quoteDenom,
@@ -387,7 +388,7 @@ export class ChainGrpcExchangeTransformer {
   }
 
   static fullDerivativeMarketsResponseToDerivativeMarkets(
-    response: InjectiveExchangeV1Beta1Query.QueryDerivativeMarketsResponse,
+    response: InjectiveExchangeV1Beta1QueryPb.QueryDerivativeMarketsResponse,
   ): DerivativeMarket[] {
     return response.markets.map((market) => {
       return ChainGrpcExchangeTransformer.grpcFullDerivativeMarketToDerivativeMarket(
@@ -402,13 +403,9 @@ export class ChainGrpcExchangeTransformer {
     const marketInfo = market.market!
 
     return {
-      oracleType: InjectiveOracleV1Beta1Oracle.oracleTypeToJSON(
-        marketInfo.oracleType,
-      ),
+      oracleType: marketInfo.oracleType.toString(),
       marketId: marketInfo.marketId,
-      marketStatus: InjectiveExchangeV1Beta1Exchange.marketStatusToJSON(
-        marketInfo.status,
-      ),
+      marketStatus: marketInfo.status.toString(),
       ticker: marketInfo.ticker,
       quoteDenom: marketInfo.quoteDenom,
       makerFeeRate: denomAmountFromGrpcChainDenomAmount(
@@ -428,6 +425,9 @@ export class ChainGrpcExchangeTransformer {
       minNotional: denomAmountFromGrpcChainDenomAmount(
         marketInfo.minNotional,
       ).toNumber(),
+      reduceMarginRatio: denomAmountFromGrpcChainDenomAmount(
+        marketInfo.reduceMarginRatio,
+      ).toFixed(),
       initialMarginRatio: denomAmountFromGrpcChainDenomAmount(
         marketInfo.initialMarginRatio,
       ).toFixed(),
@@ -440,29 +440,29 @@ export class ChainGrpcExchangeTransformer {
       oracleScaleFactor: marketInfo.oracleScaleFactor,
       perpetualMarketInfo: {
         hourlyFundingRateCap: denomAmountFromGrpcChainDenomAmount(
-          market.perpetualInfo?.marketInfo?.hourlyFundingRateCap ?? '0',
+          market.info?.oneofKind === 'perpetualInfo'
+            ? (market.info.perpetualInfo.marketInfo?.hourlyFundingRateCap?.toString() ??
+                '0')
+            : '0',
         ).toFixed(),
         hourlyInterestRate: denomAmountFromGrpcChainDenomAmount(
-          market.perpetualInfo?.marketInfo?.hourlyInterestRate ?? '0',
+          market.info?.oneofKind === 'perpetualInfo'
+            ? (market.info.perpetualInfo.marketInfo?.hourlyInterestRate?.toString() ??
+                '0')
+            : '0',
         ).toFixed(),
         nextFundingTimestamp: parseInt(
-          market.perpetualInfo?.marketInfo?.nextFundingTimestamp ?? '',
+          market.info?.oneofKind === 'perpetualInfo'
+            ? (market.info.perpetualInfo.marketInfo?.nextFundingTimestamp?.toString() ??
+                '')
+            : '',
           10,
         ),
         fundingInterval: parseInt(
-          market.perpetualInfo?.marketInfo?.fundingInterval ?? '',
-          10,
-        ),
-      },
-      perpetualMarketFunding: {
-        cumulativeFunding: denomAmountFromGrpcChainDenomAmount(
-          market.perpetualInfo?.fundingInfo?.cumulativeFunding ?? '0',
-        ).toFixed(),
-        cumulativePrice: denomAmountFromGrpcChainDenomAmount(
-          market.perpetualInfo?.fundingInfo?.cumulativePrice ?? '0',
-        ).toFixed(),
-        lastTimestamp: parseInt(
-          market.perpetualInfo?.fundingInfo?.lastTimestamp ?? '',
+          market.info?.oneofKind === 'perpetualInfo'
+            ? (market.info.perpetualInfo.marketInfo?.fundingInterval?.toString() ??
+                '')
+            : '',
           10,
         ),
       },

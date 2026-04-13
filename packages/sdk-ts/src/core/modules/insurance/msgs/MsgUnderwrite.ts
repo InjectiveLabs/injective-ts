@@ -1,9 +1,6 @@
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
-import {
-  CosmosBaseV1Beta1Coin,
-  InjectiveInsuranceV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgUnderwrite {
   export interface Params {
@@ -15,7 +12,7 @@ export declare namespace MsgUnderwrite {
     injectiveAddress: string
   }
 
-  export type Proto = InjectiveInsuranceV1Beta1Tx.MsgUnderwrite
+  export type Proto = InjectiveInsuranceV1Beta1TxPb.MsgUnderwrite
 }
 
 /**
@@ -32,16 +29,16 @@ export default class MsgUnderwrite extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const amountCoin = CosmosBaseV1Beta1Coin.Coin.create()
+    const amountCoin = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.amount.denom,
+      amount: params.amount.amount,
+    })
 
-    amountCoin.denom = params.amount.denom
-    amountCoin.amount = params.amount.amount
-
-    const message = InjectiveInsuranceV1Beta1Tx.MsgUnderwrite.create()
-
-    message.sender = params.injectiveAddress
-    message.marketId = params.marketId
-    message.deposit = amountCoin
+    const message = InjectiveInsuranceV1Beta1TxPb.MsgUnderwrite.create({
+      sender: params.injectiveAddress,
+      marketId: params.marketId,
+      deposit: amountCoin,
+    })
 
     return message
   }
@@ -58,7 +55,9 @@ export default class MsgUnderwrite extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      market_id: proto.marketId,
+      deposit: proto.deposit,
     }
 
     return {
@@ -87,8 +86,6 @@ export default class MsgUnderwrite extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveInsuranceV1Beta1Tx.MsgUnderwrite.encode(
-      this.toProto(),
-    ).finish()
+    return InjectiveInsuranceV1Beta1TxPb.MsgUnderwrite.toBinary(this.toProto())
   }
 }

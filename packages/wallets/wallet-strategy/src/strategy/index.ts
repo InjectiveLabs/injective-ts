@@ -1,155 +1,174 @@
+import { GeneralException } from '@injectivelabs/exceptions'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
+import { Wallet, isEvmWallet } from '@injectivelabs/wallet-base'
 import {
-  Wallet,
-  isEvmWallet,
-  MagicMetadata,
+  loadEvmStrategy,
+  loadMagicStrategy,
+  loadCosmosStrategy,
+  loadTurnkeyStrategy,
+  loadLedgerStrategies,
+  loadTrezorStrategies,
+  loadPrivateKeyStrategy,
+  loadWalletConnectStrategy,
+} from './loaders.js'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  WalletMetadata,
+  StrategyEmitter,
+} from '@injectivelabs/wallet-base'
+import type {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
-  ConcreteWalletStrategyOptions,
-  WalletStrategyEthereumOptions,
-  ConcreteEthereumWalletStrategyArgs,
+  WalletStrategyEvmOptions,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import {
-  LedgerLiveStrategy,
-  LedgerLegacyStrategy,
-} from '@injectivelabs/wallet-ledger'
-import { MagicStrategy } from '@injectivelabs/wallet-magic'
-import { EvmWalletStrategy } from '@injectivelabs/wallet-evm'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
-import { TrezorBip32Strategy, TrezorBip44Strategy } from '@injectivelabs/wallet-trezor'
-import { WalletConnectStrategy } from '@injectivelabs/wallet-wallet-connect'
-import { PrivateKeyWalletStrategy } from '@injectivelabs/wallet-private-key'
-import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
-  const { ethereumOptions } = args
+  const { evmOptions } = args
 
-  if (!ethereumOptions) {
+  if (!evmOptions) {
     return true
   }
 
-  const { ethereumChainId } = ethereumOptions
+  const { evmChainId } = evmOptions
 
-  if (!ethereumChainId) {
+  if (!evmChainId) {
     return true
   }
 
   return false
 }
 
-const createStrategy = ({
+const createStrategy = async ({
   args,
   wallet,
+  emitter,
 }: {
-  args: WalletStrategyArguments
   wallet: Wallet
-}): ConcreteWalletStrategy | undefined => {
+  args: WalletStrategyArguments
+  emitter?: StrategyEmitter
+}): Promise<ConcreteWalletStrategy | undefined> => {
   /**
    * If we only want to use Cosmos Native Wallets
    * We are not creating strategies for Ethereum Native Wallets
    */
   if (isEvmWallet(wallet) && ethereumWalletsDisabled(args)) {
+    console.log(
+      'Skipping EVM wallet strategy creation due to disabled EVM options',
+    )
+
     return undefined
   }
 
   const ethWalletArgs = {
+    ...args,
     chainId: args.chainId,
-    ethereumOptions: args.ethereumOptions as WalletStrategyEthereumOptions,
-  } as ConcreteEthereumWalletStrategyArgs
+    evmOptions: args.evmOptions as WalletStrategyEvmOptions,
+    emitter,
+  } as ConcreteEvmWalletStrategyArgs
+
+  const cosmosWalletArgs = {
+    ...args,
+    emitter,
+  }
 
   switch (wallet) {
     case Wallet.Metamask:
-      return new EvmWalletStrategy({
-        ...ethWalletArgs,
-        wallet: Wallet.Metamask,
-      })
-    case Wallet.Ledger:
-      return new LedgerLiveStrategy(ethWalletArgs)
-    case Wallet.LedgerLegacy:
-      return new LedgerLegacyStrategy(ethWalletArgs)
     case Wallet.TrustWallet:
-      return new EvmWalletStrategy({
-        ...ethWalletArgs,
-        wallet: Wallet.TrustWallet,
-      })
-    case Wallet.TrezorBip32:
-      return new TrezorBip32Strategy(ethWalletArgs)
-    case Wallet.TrezorBip44:
-      return new TrezorBip44Strategy(ethWalletArgs)
     case Wallet.Phantom:
-      return new EvmWalletStrategy({
-        ...ethWalletArgs,
-        wallet: Wallet.Phantom,
-      })
     case Wallet.OkxWallet:
-      return new EvmWalletStrategy({
-        ...ethWalletArgs,
-        wallet: Wallet.OkxWallet,
-      })
     case Wallet.BitGet:
+    case Wallet.Rainbow:
+    case Wallet.Rabby: {
+      const EvmWalletStrategy = await loadEvmStrategy()
+
       return new EvmWalletStrategy({
         ...ethWalletArgs,
-        wallet: Wallet.BitGet,
+        wallet,
       })
-    case Wallet.WalletConnect:
-      return new WalletConnectStrategy({
-        ...ethWalletArgs,
-        metadata: args.options?.metadata,
-      })
-    case Wallet.PrivateKey:
-      return new PrivateKeyWalletStrategy({
-        ...ethWalletArgs,
-        privateKey: args.options?.privateKey,
-      })
+    }
+
     case Wallet.Keplr:
-      return new CosmosWalletStrategy({ ...args, wallet: Wallet.Keplr })
-    case Wallet.Cosmostation:
-      return new CosmostationWalletStrategy({ ...args })
     case Wallet.Leap:
-      return new CosmosWalletStrategy({ ...args, wallet: Wallet.Leap })
     case Wallet.Ninji:
-      return new CosmosWalletStrategy({ ...args, wallet: Wallet.Ninji })
     case Wallet.OWallet:
-      return new CosmosWalletStrategy({ ...args, wallet: Wallet.OWallet })
-    case Wallet.Magic:
-      if (
-        !args.options?.metadata?.magic ||
-        !(args.options?.metadata.magic as MagicMetadata)?.apiKey ||
-        !(args.options?.metadata.magic as MagicMetadata)?.rpcEndpoint
-      ) {
+    case Wallet.Cosmostation: {
+      const CosmosWalletStrategy = await loadCosmosStrategy()
+
+      return new CosmosWalletStrategy({ ...cosmosWalletArgs, wallet })
+    }
+
+    case Wallet.Ledger: {
+      const { LedgerLiveStrategy } = await loadLedgerStrategies()
+
+      return new LedgerLiveStrategy(ethWalletArgs)
+    }
+
+    case Wallet.LedgerLegacy: {
+      const { LedgerLegacyStrategy } = await loadLedgerStrategies()
+
+      return new LedgerLegacyStrategy(ethWalletArgs)
+    }
+
+    case Wallet.TrezorBip32: {
+      const { TrezorBip32Strategy } = await loadTrezorStrategies()
+
+      return new TrezorBip32Strategy(ethWalletArgs)
+    }
+
+    case Wallet.TrezorBip44: {
+      const { TrezorBip44Strategy } = await loadTrezorStrategies()
+
+      return new TrezorBip44Strategy(ethWalletArgs)
+    }
+
+    case Wallet.PrivateKey: {
+      const PrivateKeyWalletStrategy = await loadPrivateKeyStrategy()
+
+      return new PrivateKeyWalletStrategy(ethWalletArgs)
+    }
+
+    case Wallet.Turnkey: {
+      if (!args.metadata?.turnkey?.defaultOrganizationId) {
         return undefined
       }
+      const TurnkeyWalletStrategy = await loadTurnkeyStrategy()
 
-      return new MagicStrategy({
-        ...args,
-        metadata: args.options.metadata.magic as MagicMetadata,
-      })
+      return new TurnkeyWalletStrategy(ethWalletArgs)
+    }
+
+    case Wallet.Magic: {
+      if (!args.metadata?.magic?.apiKey || !args.metadata?.magic?.rpcEndpoint) {
+        return undefined
+      }
+      const MagicStrategy = await loadMagicStrategy()
+
+      return new MagicStrategy(cosmosWalletArgs)
+    }
+
+    case Wallet.WalletConnect: {
+      if (!args.metadata?.walletConnect?.projectId) {
+        return undefined
+      }
+      const WalletConnectStrategy = await loadWalletConnectStrategy()
+
+      return new WalletConnectStrategy(ethWalletArgs)
+    }
+
     default:
       return undefined
   }
 }
 
-const createAllStrategies = (
-  args: WalletStrategyArguments,
-): ConcreteStrategiesArg => {
-  return Object.values(Wallet).reduce(
-    (strategies, wallet) => {
-      if (strategies[wallet]) {
-        return strategies
-      }
-
-      strategies[wallet] = createStrategy({ args, wallet: wallet as Wallet })
-
-      return strategies
-    },
-    {} as ConcreteStrategiesArg,
-  )
-}
-
 export class WalletStrategy extends BaseWalletStrategy {
+  private loadingStrategies: Map<
+    Wallet,
+    Promise<ConcreteWalletStrategy | undefined>
+  > = new Map()
+
   constructor(args: WalletStrategyArguments) {
-    const strategies = createAllStrategies(args)
+    const strategies = {} as ConcreteStrategiesArg
 
     super({
       ...args,
@@ -158,27 +177,143 @@ export class WalletStrategy extends BaseWalletStrategy {
   }
 
   /**
+   * Set the current wallet and load its strategy.
+   * This method is async because strategies are lazy-loaded.
+   *
+   * @param wallet - The wallet to set as active
+   * @throws GeneralException if the wallet strategy cannot be loaded
+   */
+  public async setWallet(wallet: Wallet): Promise<void> {
+    this.wallet = wallet
+
+    // Preload the strategy for the new wallet
+    const strategy = await this.loadStrategy(wallet)
+    await strategy?.initStrategy?.()
+  }
+
+  /**
+   * This method is used to set the metadata for the wallet strategies.
+   * In some cases we are going to set the metadata dynamically on the fly, and in
+   * some cases we are recreating the wallet strategies from scratch using the new
+   * metadata
+   *
    * Case 1: Private Key is set dynamically
    * If we have a dynamically set private key,
    * we are creating a new PrivateKey strategy
-   * with the specified private key
+   * with the specified private key (passed as metadata)
    *
-   * Case 2: Wallet Connect Metadata set dynamically
+   * Case 2: Similar to Case 1, but for Wallet Connect Metadata
+   *
    */
-  public setOptions(options?: ConcreteWalletStrategyOptions) {
-    if (options?.privateKey) {
-      this.strategies[Wallet.PrivateKey] = createStrategy({
-        args: { ...this.args, options: { privateKey: options.privateKey } },
-        wallet: Wallet.PrivateKey,
-      })
+  public async setMetadata(metadata?: WalletMetadata): Promise<void> {
+    const shouldRecreateStrategyOnMetadataChange = [
+      Wallet.PrivateKey,
+      Wallet.WalletConnect,
+    ] as WalletType[]
+
+    const strategiesWithPlaceholders = {
+      ...this.strategies,
+      [Wallet.PrivateKey]: undefined,
+      [Wallet.WalletConnect]: undefined,
     }
 
-    if (options?.metadata) {
-      this.strategies[Wallet.WalletConnect] = createStrategy({
-        args: { ...this.args, options: { metadata: options.metadata } },
-        wallet: Wallet.WalletConnect,
-      })
+    for (const wallet of Object.keys(strategiesWithPlaceholders)) {
+      const walletEnum = wallet as Wallet
+
+      if (shouldRecreateStrategyOnMetadataChange.includes(walletEnum)) {
+        // Clear loading cache for this wallet
+        this.loadingStrategies.delete(walletEnum)
+
+        this.strategies[walletEnum] = await createStrategy({
+          args: {
+            ...this.args,
+            metadata: { ...this.args.metadata, ...metadata },
+          },
+          wallet: walletEnum,
+          emitter: this.getEmitter(),
+        })
+
+        continue
+      }
+
+      this.strategies[walletEnum]?.setMetadata?.(metadata)
     }
+  }
+
+  /**
+   * Get the strategy for the current wallet.
+   *
+   * NOTE: Ensure the strategy is loaded first by calling setWallet() or loadStrategy().
+   * This method throws if the strategy hasn't been loaded yet.
+   *
+   * @throws GeneralException if the strategy hasn't been loaded
+   */
+  public getStrategy(): ConcreteWalletStrategy {
+    if (this.strategies[this.wallet]) {
+      const strategy = this.strategies[this.wallet] as ConcreteWalletStrategy
+
+      return strategy
+    }
+
+    throw new GeneralException(
+      new Error(
+        `Wallet ${this.wallet} strategy not loaded. Call setWallet() or loadStrategy() first.`,
+      ),
+    )
+  }
+
+  /**
+   * Load a wallet strategy. Strategies are lazy-loaded to reduce initial bundle size.
+   * Call this method before using getStrategy() for a wallet.
+   *
+   * @param wallet - The wallet strategy to load (defaults to current wallet)
+   * @returns The loaded strategy
+   */
+  public async loadStrategy(
+    wallet: Wallet = this.wallet,
+  ): Promise<ConcreteWalletStrategy | undefined> {
+    // Return cached strategy if available
+    if (this.strategies[wallet]) {
+      return this.strategies[wallet]
+    }
+
+    // Check if we're already loading this strategy (dedup concurrent calls)
+    const existingLoad = this.loadingStrategies.get(wallet)
+    if (existingLoad) {
+      return existingLoad
+    }
+
+    // Start loading the strategy
+    const loadPromise = createStrategy({
+      args: this.args,
+      wallet,
+      emitter: this.getEmitter(),
+    })
+
+    this.loadingStrategies.set(wallet, loadPromise)
+
+    try {
+      const strategy = await loadPromise
+
+      if (strategy) {
+        this.strategies[wallet] = strategy
+      }
+
+      return strategy
+    } finally {
+      // Clean up loading state
+      this.loadingStrategies.delete(wallet)
+    }
+  }
+
+  /**
+   * Load multiple wallet strategies in parallel.
+   * Useful for preloading commonly used wallets during app initialization.
+   *
+   * @param wallets - Array of wallets to preload
+   */
+  public async loadStrategies(wallets: Wallet[]): Promise<void> {
+    await Promise.all(wallets.map((wallet) => this.loadStrategy(wallet)))
   }
 }
 

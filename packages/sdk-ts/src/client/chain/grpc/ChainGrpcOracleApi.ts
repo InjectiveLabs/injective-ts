@@ -1,52 +1,26 @@
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
-import { InjectiveOracleV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import * as InjectiveOracleV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/query_pb'
+import { QueryClient as InjectiveOracleV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/query_pb.client'
+import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { ChainModule, OracleModuleParams } from '../types/index.js'
-
+import type { OracleModuleParams } from '../types/index.js'
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcOracleApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Oracle
 
-  protected client: InjectiveOracleV1Beta1Query.QueryClientImpl
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveOracleV1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+  private get client() {
+    return this.initClient(InjectiveOracleV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {
-    const request = InjectiveOracleV1Beta1Query.QueryParamsRequest.create()
+    const request = InjectiveOracleV1Beta1QueryPb.QueryParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveOracleV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveOracleV1Beta1QueryPb.QueryParamsRequest,
+      InjectiveOracleV1Beta1QueryPb.QueryParamsResponse
+    >(request, this.client.params.bind(this.client))
 
-      return response.params as OracleModuleParams
-    } catch (e: unknown) {
-      if (e instanceof InjectiveOracleV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Params',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Params',
-        contextModule: this.module,
-      })
-    }
+    return response.params as OracleModuleParams
   }
 }

@@ -1,151 +1,76 @@
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
-import { InjectiveTokenFactoryV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import * as InjectiveTokenFactoryV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/query_pb'
+import { QueryClient as InjectiveTokenFactoryV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcTokenFactoryTransformer } from '../index.js'
-
 /**
  * @category TokenFactory Grpc API
  */
 export class ChainGrpcTokenFactoryApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.WasmX
 
-  protected client: InjectiveTokenFactoryV1Beta1Query.QueryClientImpl
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveTokenFactoryV1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+  private get client() {
+    return this.initClient(InjectiveTokenFactoryV1Beta1QueryClient)
   }
 
   async fetchDenomsFromCreator(creator: string) {
     const request =
-      InjectiveTokenFactoryV1Beta1Query.QueryDenomsFromCreatorRequest.create()
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomsFromCreatorRequest.create()
 
     request.creator = creator
 
-    try {
-      const response =
-        await this.retry<InjectiveTokenFactoryV1Beta1Query.QueryDenomsFromCreatorResponse>(
-          () => this.client.DenomsFromCreator(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomsFromCreatorRequest,
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomsFromCreatorResponse
+    >(request, this.client.denomsFromCreator.bind(this.client))
 
-      return ChainGrpcTokenFactoryTransformer.denomsCreatorResponseToDenomsString(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveTokenFactoryV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TokenFactoryDenomsFromCreator',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TokenFactoryDenomsFromCreator',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcTokenFactoryTransformer.denomsCreatorResponseToDenomsString(
+      response,
+    )
   }
 
   async fetchDenomAuthorityMetadata(creator: string, subDenom: string) {
     const request =
-      InjectiveTokenFactoryV1Beta1Query.QueryDenomAuthorityMetadataRequest.create()
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomAuthorityMetadataRequest.create()
 
     request.creator = creator
     request.subDenom = subDenom
 
-    try {
-      const response =
-        await this.retry<InjectiveTokenFactoryV1Beta1Query.QueryDenomAuthorityMetadataResponse>(
-          () => this.client.DenomAuthorityMetadata(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomAuthorityMetadataRequest,
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryDenomAuthorityMetadataResponse
+    >(request, this.client.denomAuthorityMetadata.bind(this.client))
 
-      return ChainGrpcTokenFactoryTransformer.authorityMetadataResponseToAuthorityMetadata(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveTokenFactoryV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TokenFactoryDenomsFromCreator',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TokenFactoryDenomsFromCreator',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcTokenFactoryTransformer.authorityMetadataResponseToAuthorityMetadata(
+      response,
+    )
   }
 
   async fetchModuleParams() {
     const request =
-      InjectiveTokenFactoryV1Beta1Query.QueryParamsRequest.create()
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveTokenFactoryV1Beta1Query.QueryParamsResponse>(
-          () => this.client.Params(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryParamsRequest,
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryParamsResponse
+    >(request, this.client.params.bind(this.client))
 
-      return ChainGrpcTokenFactoryTransformer.moduleParamsResponseToModuleParams(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveTokenFactoryV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TokenFactoryParams',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TokenFactoryParams',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcTokenFactoryTransformer.moduleParamsResponseToModuleParams(
+      response,
+    )
   }
 
   async fetchModuleState() {
     const request =
-      InjectiveTokenFactoryV1Beta1Query.QueryModuleStateRequest.create()
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryModuleStateRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveTokenFactoryV1Beta1Query.QueryModuleStateResponse>(
-          () => this.client.TokenfactoryModuleState(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryModuleStateRequest,
+      InjectiveTokenFactoryV1Beta1QueryPb.QueryModuleStateResponse
+    >(request, this.client.tokenfactoryModuleState.bind(this.client))
 
-      return ChainGrpcTokenFactoryTransformer.moduleStateResponseToModuleState(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveTokenFactoryV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'TokenFactoryModuleState',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'TokenFactoryModuleState',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcTokenFactoryTransformer.moduleStateResponseToModuleState(
+      response,
+    )
   }
 }

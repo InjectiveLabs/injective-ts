@@ -1,7 +1,5 @@
-import {
-  InjectiveInsuranceV1Beta1Insurance,
-  InjectiveOracleV1Beta1Oracle,
-} from '@injectivelabs/core-proto-ts'
+import { OracleType } from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
+import type * as InjectiveInsuranceV1Beta1InsurancePb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/insurance_pb'
 
 export interface InsuranceModuleParams {
   defaultRedemptionNoticePeriodDuration: number
@@ -17,14 +15,15 @@ export interface InsuranceFund {
   marketTicker: string
   oracleBase: string
   oracleQuote: string
-  oracleType: InjectiveOracleV1Beta1Oracle.OracleType
+  oracleType: OracleType
   expiry: number
 }
 
-export type GrpcInsuranceParams = InjectiveInsuranceV1Beta1Insurance.Params
-export type GrpcInsuranceFund = InjectiveInsuranceV1Beta1Insurance.InsuranceFund
+export type GrpcInsuranceParams = InjectiveInsuranceV1Beta1InsurancePb.Params
+export type GrpcInsuranceFund =
+  InjectiveInsuranceV1Beta1InsurancePb.InsuranceFund
 export type GrpcRedemptionSchedule =
-  InjectiveInsuranceV1Beta1Insurance.RedemptionSchedule
+  InjectiveInsuranceV1Beta1InsurancePb.RedemptionSchedule
 
-export type OracleType = InjectiveOracleV1Beta1Oracle.OracleType
-export const OracleTypeMap = InjectiveOracleV1Beta1Oracle.OracleType
+export { OracleType }
+export const OracleTypeMap = OracleType

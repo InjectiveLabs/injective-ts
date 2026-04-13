@@ -33,7 +33,7 @@ We highly suggest using the `@injectivelabs/sdk-ts` with TypeScript, or JavaScri
 ### 📚 Installation
 
 ```bash
-yarn add @injectivelabs/sdk-ts
+pnpm add @injectivelabs/sdk-ts
 ```
 
 ---

@@ -1,20 +1,27 @@
-import LocalStorage from './LocalStorage.js'
-import BigNumberInBase from './BigNumber/BigNumberInBase.js'
-import BigNumberInWei from './BigNumber/BigNumberInWei.js'
-import BigNumber from './BigNumber/BigNumber.js'
+import Status from './Status.js'
+import { StatusType } from '../enum.js'
 import HttpClient from './HttpClient.js'
+import LocalStorage from './LocalStorage.js'
+import BigNumberInWei from './BigNumberInWei.js'
 import HttpRestClient from './HttpRestClient.js'
-import StreamManager from './StreamManager.js'
-import Status, { StatusType } from './Status.js'
+import BigNumberInBase from './BigNumberInBase.js'
+import {
+  toBigNumber,
+  toChainFormat,
+  toHumanReadable,
+  default as BigNumber,
+} from './BigNumber.js'
 
 export {
   Status,
-  StatusType,
-  LocalStorage,
-  BigNumberInBase,
-  BigNumberInWei,
   BigNumber,
   HttpClient,
+  StatusType,
+  toBigNumber,
+  LocalStorage,
+  toChainFormat,
+  BigNumberInWei,
   HttpRestClient,
-  StreamManager,
+  toHumanReadable,
+  BigNumberInBase,
 }

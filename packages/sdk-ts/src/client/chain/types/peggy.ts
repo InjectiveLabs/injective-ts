@@ -1,4 +1,4 @@
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
 
 // TODO: Import from InjectivePeggyV1Beta1Params
 export type GrpcPeggyParams = {

@@ -1,6 +1,6 @@
-import {
-  ExitConfig,
+import type {
   ExitType,
+  ExitConfig,
   StrategyType,
   TrailingArithmetic,
 } from '../../../core/modules/wasm/types.js'

@@ -1,10 +1,10 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgUpdateActorRoles from './MsgUpdateActorRoles.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
-import MsgUpdateActorRoles from './MsgUpdateActorRoles.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 export interface PermissionRoleActors {
@@ -24,8 +24,6 @@ const message = MsgUpdateActorRoles.fromJSON(params)
 describe('MsgCreateNamespace', () => {
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      sequence: 0,
-      accountNumber: 3,
       messages: message,
     })
 

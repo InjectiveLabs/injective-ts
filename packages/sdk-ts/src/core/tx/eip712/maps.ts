@@ -1,7 +1,7 @@
-import { GeneralException } from '@injectivelabs/exceptions'
 import snakecaseKeys from 'snakecase-keys'
 import { snakeToPascal } from '@injectivelabs/utils'
-import { TypedDataField } from './types.js'
+import { GeneralException } from '@injectivelabs/exceptions'
+import type { TypedDataField } from './types.js'
 
 const msgExecuteContractType = 'wasm/MsgExecuteContract'
 
@@ -32,7 +32,7 @@ export const objectKeysToEip712Types = ({
     'option',
     'proposal_id',
     'creation_height',
-    'wasm_hook_query_max_gas',
+    'contract_hook_max_gas',
   ]
   const stringFieldsWithNumberValue = [
     'timeout_timestamp',
@@ -237,8 +237,6 @@ export const numberTypeToReflectionNumberType = (
       return 'uint32'
     case 'round':
       return 'uint64'
-    case 'oracle_scale_factor':
-      return 'uint64'
     case 'expiry':
       return 'int64'
     case 'creation_height':
@@ -370,6 +368,8 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'exchange/MsgExternalTransfer'
     case 'injective.exchange.v1beta1.MsgIncreasePositionMargin':
       return 'exchange/MsgIncreasePositionMargin'
+    case 'injective.exchange.v1beta1.MsgDecreasePositionMargin':
+      return 'exchange/MsgDecreasePositionMargin'
     case 'injective.exchange.v1beta1.MsgLiquidatePosition':
       return 'exchange/MsgLiquidatePosition'
     case 'injective.exchange.v1beta1.MsgBatchUpdateOrders':
@@ -422,6 +422,10 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'exchange/BinaryOptionsMarketLaunchProposal'
     case 'injective.exchange.v1beta1.MsgTransferAndExecute':
       return 'exchange/MsgTransferAndExecute'
+    case 'injective.exchange.v2.MsgUpdateSpotMarket':
+      return 'exchange/MsgUpdateSpotMarket'
+    case 'injective.exchange.v2.MsgUpdateDerivativeMarket':
+      return 'exchange/MsgUpdateDerivativeMarket'
 
     case 'injective.exchange.v1beta1.CreateSpotLimitOrderAuthz':
       return 'exchange/CreateSpotLimitOrderAuthz'
@@ -445,6 +449,10 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'exchange/BatchCancelDerivativeOrdersAuthz'
     case 'injective.exchange.v1beta1.BatchUpdateOrdersAuthz':
       return 'exchange/BatchUpdateOrdersAuthz'
+
+    // Exchange v2
+    case 'injective.exchange.v2.MsgSetDelegationTransferReceivers':
+      return 'exchange/MsgSetDelegationTransferReceivers'
 
     // Auction
     case 'injective.auction.v1beta1.MsgBid':
@@ -571,6 +579,8 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'cosmos-sdk/MsgUndelegate'
     case 'cosmos.staking.v1beta1.MsgBeginRedelegate':
       return 'cosmos-sdk/MsgBeginRedelegate'
+    case 'cosmos.staking.v1beta1.MsgTransferDelegation':
+      return 'cosmos-sdk/MsgTransferDelegation'
     case 'cosmos.staking.v1beta1.MsgCancelUnbondingDelegation':
       return 'cosmos-sdk/MsgCancelUnbondingDelegation'
     case 'cosmos.staking.v1beta1.MsgUpdateParams':

@@ -1,13 +1,10 @@
-import snakecaseKeys from 'snakecase-keys'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as GoogleProtobufTimestampPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/timestamp_pb'
+import * as CosmosFeegrantV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/feegrant/v1beta1/tx_pb'
+import * as CosmosFeegrantV1Beta1FeegrantPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/feegrant/v1beta1/feegrant_pb'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  GoogleProtobufAny,
-  CosmosBaseV1Beta1Coin,
-  CosmosFeegrantV1Beta1Tx,
-  GoogleProtobufTimestamp,
-  CosmosFeegrantV1Beta1Feegrant,
-} from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
 
 const basicAllowanceType = '/cosmos.feegrant.v1beta1.BasicAllowance'
 export declare namespace MsgGrantAllowance {
@@ -20,10 +17,10 @@ export declare namespace MsgGrantAllowance {
     }
   }
 
-  export type Proto = CosmosFeegrantV1Beta1Tx.MsgGrantAllowance
+  export type Proto = CosmosFeegrantV1Beta1TxPb.MsgGrantAllowance
 
   export type Object = Omit<
-    CosmosFeegrantV1Beta1Tx.MsgGrantAllowance,
+    CosmosFeegrantV1Beta1TxPb.MsgGrantAllowance,
     'allowance'
   > & {
     allowance: any
@@ -45,36 +42,33 @@ export default class MsgGrantAllowance extends MsgBase<
     const { params } = this
 
     const timestamp = this.getTimestamp()
-    const basicAllowance = CosmosFeegrantV1Beta1Feegrant.BasicAllowance.create()
+    const basicAllowance =
+      CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.create({
+        spendLimit: params.allowance.spendLimit.map(({ denom, amount }) => {
+          return CosmosBaseV1Beta1CoinPb.Coin.create({
+            denom,
+            amount,
+          })
+        }),
+        expiration: {
+          seconds: timestamp.seconds,
+          nanos: timestamp.nanos,
+        },
+      })
 
-    basicAllowance.spendLimit = params.allowance.spendLimit.map(
-      ({ denom, amount }) => {
-        const coin = CosmosBaseV1Beta1Coin.Coin.create()
+    const allowance = GoogleProtobufAnyPbPb.Any.create({
+      typeUrl: basicAllowanceType,
+      value:
+        CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.toBinary(basicAllowance),
+    })
 
-        coin.denom = denom
-        coin.amount = amount
+    const message = CosmosFeegrantV1Beta1TxPb.MsgGrantAllowance.create({
+      granter: params.granter,
+      grantee: params.grantee,
+      allowance,
+    })
 
-        return coin
-      },
-    )
-    basicAllowance.expiration = new Date(Number(timestamp.seconds) * 1000)
-
-    const allowance = GoogleProtobufAny.Any.create()
-
-    allowance.typeUrl = basicAllowanceType
-    allowance.value = Buffer.from(
-      CosmosFeegrantV1Beta1Feegrant.BasicAllowance.encode(
-        basicAllowance,
-      ).finish(),
-    )
-
-    const message = CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.create()
-
-    message.granter = params.granter
-    message.grantee = params.grantee
-    message.allowance = allowance
-
-    return CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.fromJSON(message)
+    return message
   }
 
   public toData() {
@@ -93,12 +87,13 @@ export default class MsgGrantAllowance extends MsgBase<
     const timestamp = this.getTimestamp()
     const message = proto
 
-    const messageWithAllowance = snakecaseKeys({
-      ...message,
+    const messageWithAllowance = {
+      granter: message.granter,
+      grantee: message.grantee,
       allowance: {
         type: 'cosmos-sdk/BasicAllowance',
         value: {
-          spendLimit: params.allowance.spendLimit.map(({ denom, amount }) => ({
+          spend_limit: params.allowance.spendLimit.map(({ denom, amount }) => ({
             denom,
             amount,
           })),
@@ -107,7 +102,7 @@ export default class MsgGrantAllowance extends MsgBase<
             .replace('.000Z', 'Z'),
         },
       },
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgGrantAllowance',
@@ -169,9 +164,9 @@ export default class MsgGrantAllowance extends MsgBase<
     const { params } = this
 
     if (params.allowance.expiration) {
-      const timestamp = GoogleProtobufTimestamp.Timestamp.create()
-
-      timestamp.seconds = params.allowance.expiration.toString()
+      const timestamp = GoogleProtobufTimestampPb.Timestamp.create({
+        seconds: BigInt(params.allowance.expiration),
+      })
 
       return timestamp
     }
@@ -184,17 +179,14 @@ export default class MsgGrantAllowance extends MsgBase<
       dateNow.getDate(),
     )
 
-    const timestamp = GoogleProtobufTimestamp.Timestamp.create()
-    const timestampInSeconds = (expiration.getTime() / 1000).toString()
-
-    timestamp.seconds = timestampInSeconds
+    const timestamp = GoogleProtobufTimestampPb.Timestamp.create({
+      seconds: BigInt(Math.floor(expiration.getTime() / 1000)),
+    })
 
     return timestamp
   }
 
   public toBinary(): Uint8Array {
-    return CosmosFeegrantV1Beta1Tx.MsgGrantAllowance.encode(
-      this.toProto(),
-    ).finish()
+    return CosmosFeegrantV1Beta1TxPb.MsgGrantAllowance.toBinary(this.toProto())
   }
 }

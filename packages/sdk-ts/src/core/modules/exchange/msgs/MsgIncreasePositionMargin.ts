@@ -1,10 +1,7 @@
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
-import {
-  amountToCosmosSdkDecAmount,
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { toChainFormat } from '@injectivelabs/utils'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgIncreasePositionMargin {
   export interface Params {
@@ -15,21 +12,21 @@ export declare namespace MsgIncreasePositionMargin {
     amount: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgIncreasePositionMargin
 }
 
 const createMessage = (params: MsgIncreasePositionMargin.Params) => {
-  const message = InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.create()
-
-  message.sender = params.injectiveAddress
-  message.sourceSubaccountId = params.srcSubaccountId
-  message.destinationSubaccountId = params.dstSubaccountId
-  message.marketId = params.marketId
-  message.amount = params.amount
-
-  return InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.fromPartial(
-    message,
+  const message = InjectiveExchangeV1Beta1TxPb.MsgIncreasePositionMargin.create(
+    {
+      sender: params.injectiveAddress,
+      sourceSubaccountId: params.srcSubaccountId,
+      destinationSubaccountId: params.dstSubaccountId,
+      marketId: params.marketId,
+      amount: params.amount,
+    },
   )
+
+  return message
 }
 
 /**
@@ -47,9 +44,10 @@ export default class MsgIncreasePositionMargin extends MsgBase<
 
   public toProto() {
     const { params: initialParams } = this
+
     const params = {
       ...initialParams,
-      amount: amountToCosmosSdkDecAmount(initialParams.amount).toFixed(),
+      amount: toChainFormat(initialParams.amount).toFixed(),
     } as MsgIncreasePositionMargin.Params
 
     return createMessage(params)
@@ -66,9 +64,12 @@ export default class MsgIncreasePositionMargin extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const msg = createMessage(params)
     const message = {
-      ...snakecaseKeys(msg),
+      sender: params.injectiveAddress,
+      source_subaccount_id: params.srcSubaccountId,
+      destination_subaccount_id: params.dstSubaccountId,
+      market_id: params.marketId,
+      amount: params.amount,
     }
 
     return {
@@ -93,7 +94,7 @@ export default class MsgIncreasePositionMargin extends MsgBase<
 
     const messageAdjusted = {
       ...value,
-      amount: amountToCosmosSdkDecAmount(value.amount).toFixed(),
+      amount: toChainFormat(value.amount).toFixed(),
     }
 
     return {
@@ -124,8 +125,8 @@ export default class MsgIncreasePositionMargin extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgIncreasePositionMargin.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgIncreasePositionMargin.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

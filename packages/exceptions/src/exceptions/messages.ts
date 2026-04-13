@@ -1,5 +1,4 @@
 import {
-  ErrorContextCode,
   ChainOcrErrorCodes,
   ChainGovErrorCodes,
   ChainBankErrorCodes,
@@ -17,6 +16,7 @@ import {
   TransactionChainErrorModule,
   ChainExchangeModuleErrorCode,
 } from './types/index.js'
+import type { ErrorContextCode } from './types/index.js'
 
 const auctionErrorMap = {
   [ChainAuctionErrorCodes.ErrBidInvalid]:
@@ -288,6 +288,8 @@ const exchangeErrorMap = {
     'Client order id already exists',
   [ChainExchangeModuleErrorCode.ErrInvalidCid]:
     'Client order id is invalid. Max length is 36 chars',
+  [ChainExchangeModuleErrorCode.ErrInvalidClosingDirection]:
+    'Invalid closing direction',
 }
 
 const insuranceErrorMap = {

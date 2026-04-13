@@ -13,7 +13,7 @@ _Package to use All Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-strategy
+pnpm add @injectivelabs/wallet-strategy
 ```
 
 ---

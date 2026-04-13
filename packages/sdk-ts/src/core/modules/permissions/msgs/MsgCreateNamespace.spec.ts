@@ -1,15 +1,16 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import { InjectivePermissionsV1Beta1Permissions } from '@injectivelabs/core-proto-ts'
-import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
+import * as InjectivePermissionsV1Beta1PermissionsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/permissions_pb'
 import MsgCreateNamespace from './MsgCreateNamespace.js'
+import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const params: MsgCreateNamespace['params'] = {
   sender: mockFactory.injectiveAddress,
   namespace: {
     denom: 'inj',
-    contractHook: 'wasmHookAddress',
+    evmHook: 'evmHookAddress',
+    wasmHook: 'wasmHookAddress',
     rolePermissions: [{ name: 'admin', roleId: 1, permissions: 1 }],
     actorRoles: [{ actor: mockFactory.injectiveAddress2, roles: ['admin'] }],
     roleManagers: [
@@ -20,7 +21,7 @@ const params: MsgCreateNamespace['params'] = {
     ],
     policyStatuses: [
       {
-        action: InjectivePermissionsV1Beta1Permissions.Action.SEND,
+        action: InjectivePermissionsV1Beta1PermissionsPb.Action.SEND,
         isDisabled: false,
         isSealed: false,
       },
@@ -28,7 +29,7 @@ const params: MsgCreateNamespace['params'] = {
     policyManagerCapabilities: [
       {
         manager: mockFactory.injectiveAddress2,
-        action: InjectivePermissionsV1Beta1Permissions.Action.SEND,
+        action: InjectivePermissionsV1Beta1PermissionsPb.Action.SEND,
         canDisable: false,
         canSeal: false,
       },
@@ -46,7 +47,7 @@ describe('MsgCreateNamespace', () => {
 
     it('EIP712 v1', async () => {
       expect(() => message.toEip712()).toThrow(
-      'EIP712_v1 is not supported for MsgCreateNamespace. Please use EIP712_v2',
+        'EIP712_v1 is not supported for MsgCreateNamespace. Please use EIP712_v2',
       )
     })
 

@@ -1,8 +1,8 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 // import { INJ_DENOM } from '@injectivelabs/utils'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcAccountPortfolioApi } from './IndexerGrpcPortfolioApi.js'
+import type { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
@@ -13,9 +13,8 @@ const indexerGrpcPortfolioApi = new IndexerGrpcAccountPortfolioApi(
 describe('IndexerGrpcAccountPortfolioApi', () => {
   test('fetchAccountPortfolio', async () => {
     try {
-      const response = await indexerGrpcPortfolioApi.fetchAccountPortfolio(
-        injectiveAddress,
-      )
+      const response =
+        await indexerGrpcPortfolioApi.fetchAccountPortfolio(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(

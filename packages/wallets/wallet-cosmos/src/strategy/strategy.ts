@@ -1,46 +1,62 @@
-/* eslint-disable class-methods-use-this */
+import { capitalize } from '@injectivelabs/utils'
 import {
-  TxRaw,
-  TxResponse,
-  waitTxBroadcasted,
-  AminoSignResponse,
-  DirectSignResponse,
-  createTxRawFromSigResponse,
-  createSignDocFromTransaction,
-} from '@injectivelabs/sdk-ts'
-import {
-  ChainId,
-  CosmosChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+  uint8ArrayToHex,
+  uint8ArrayToBase64,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   UnspecifiedErrorCode,
-  CosmosWalletException,
   TransactionException,
+  CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import {
+  waitTxBroadcasted,
+  createTxRawFromSigResponse,
+  createSignDocFromTransaction,
+} from '@injectivelabs/sdk-ts/core/tx'
+import {
   Wallet,
-  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   WalletEventListener,
   BaseConcreteStrategy,
-  ConcreteWalletStrategy,
-  SendTransactionOptions,
   createCosmosSignDocFromSignDoc,
 } from '@injectivelabs/wallet-base'
-import { capitalize } from '@injectivelabs/utils'
 import { CosmosWallet } from './../wallet.js'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
+import type {
+  ChainId,
+  EvmChainId,
+  CosmosChainId,
+  AccountAddress,
+} from '@injectivelabs/ts-types'
+import type {
+  StdSignDoc,
+  ConcreteWalletStrategy,
+  SendTransactionOptions,
+} from '@injectivelabs/wallet-base'
 
-const cosmosWallets = [Wallet.Leap, Wallet.Ninji, Wallet.Keplr, Wallet.OWallet]
+const cosmosWallets = [
+  Wallet.Leap,
+  Wallet.Ninji,
+  Wallet.Keplr,
+  Wallet.OWallet,
+] as WalletType[]
 
 export class CosmosWalletStrategy
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
   public wallet: Wallet
+
   private cosmosWallet: CosmosWallet
 
   constructor(
@@ -49,7 +65,7 @@ export class CosmosWalletStrategy
       endpoints?: { rest: string; rpc: string }
     } & { wallet: Wallet },
   ) {
-    super(args)
+    super({ ...args, chainId: args.chainId as ChainId })
 
     if (!cosmosWallets.includes(args.wallet)) {
       throw new CosmosWalletException(
@@ -60,7 +76,7 @@ export class CosmosWalletStrategy
     }
 
     this.wallet = args.wallet
-    this.chainId = args.chainId || CosmosChainId.Injective
+    this.chainId = args.chainId as ChainId
     this.cosmosWallet = new CosmosWallet({
       wallet: args.wallet,
       chainId: args.chainId,
@@ -93,7 +109,7 @@ export class CosmosWalletStrategy
         )
       }
 
-      if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+      if (([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
         window.removeEventListener(
           'keplr_keystorechange',
           this.listeners[WalletEventListener.AccountChange],
@@ -103,6 +119,13 @@ export class CosmosWalletStrategy
       if (wallet === Wallet.Leap) {
         window.removeEventListener(
           'leap_keystorechange',
+          this.listeners[WalletEventListener.AccountChange],
+        )
+      }
+
+      if (wallet === Wallet.Cosmostation) {
+        window.removeEventListener(
+          'cosmostation_keystorechange',
           this.listeners[WalletEventListener.AccountChange],
         )
       }
@@ -126,30 +149,43 @@ export class CosmosWalletStrategy
     }
   }
 
-  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
-    return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new CosmosWalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.GetAccounts,
+      },
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async sendEthereumTransaction(
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
+    return Promise.resolve(
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
+    )
+  }
+
+  async sendEvmTransaction(
     _transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     const { wallet } = this
 
     throw new CosmosWalletException(
       new Error(
-        `sendEthereumTransaction is not supported. ${capitalize(
+        `sendEvmTransaction is not supported. ${capitalize(
           wallet,
         )} only supports sending cosmos transactions`,
       ),
       {
         code: UnspecifiedErrorCode,
-        context: WalletAction.SendEthereumTransaction,
+        context: WalletAction.SendEvmTransaction,
       },
     )
   }
@@ -209,10 +245,17 @@ export class CosmosWalletStrategy
     address: AccountAddress
   }) {
     const cosmosWallet = this.getCurrentCosmosWallet()
-    const signer = await cosmosWallet.getOfflineSigner()
+    const signer = await cosmosWallet.getOfflineSigner(this.chainId)
     const signDoc = createSignDocFromTransaction(transaction)
 
     try {
+      if (!('signDirect' in signer)) {
+        throw new CosmosWalletException(new Error('signDirect not available'), {
+          code: UnspecifiedErrorCode,
+          context: WalletAction.SendTransaction,
+        })
+      }
+
       return await signer.signDirect(
         transaction.address,
         createCosmosSignDocFromSignDoc(signDoc),
@@ -230,7 +273,7 @@ export class CosmosWalletStrategy
     _address: AccountAddress,
   ): Promise<string> {
     throw new CosmosWalletException(
-      new Error('This wallet does not support signing Ethereum transactions'),
+      new Error('This wallet does not support signing Evm transactions'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,
@@ -268,18 +311,16 @@ export class CosmosWalletStrategy
     )
   }
 
-  async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
+  async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     const { wallet } = this
 
     throw new CosmosWalletException(
       new Error(
-        `getEthereumTransactionReceipt is not supported on ${capitalize(
-          wallet,
-        )}`,
+        `getEvmTransactionReceipt is not supported on ${capitalize(wallet)}`,
       ),
       {
         code: UnspecifiedErrorCode,
-        context: WalletAction.GetEthereumTransactionReceipt,
+        context: WalletAction.GetEvmTransactionReceipt,
       },
     )
   }
@@ -288,7 +329,7 @@ export class CosmosWalletStrategy
     const cosmosWallet = this.getCurrentCosmosWallet()
     const key = await cosmosWallet.getKey()
 
-    return Buffer.from(key.pubKey).toString('base64')
+    return uint8ArrayToBase64(key.pubKey)
   }
 
   async onAccountChange(
@@ -310,12 +351,16 @@ export class CosmosWalletStrategy
       window.ninji.on('accountsChanged', listener)
     }
 
-    if ([Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       window.addEventListener('keplr_keystorechange', listener)
     }
 
     if (wallet === Wallet.Leap) {
       window.addEventListener('leap_keystorechange', listener)
+    }
+
+    if (wallet === Wallet.Cosmostation) {
+      window.addEventListener('cosmostation_keystorechange', listener)
     }
   }
 
@@ -323,6 +368,17 @@ export class CosmosWalletStrategy
     const { wallet, cosmosWallet } = this
 
     return !cosmosWallet ? new CosmosWallet({ chainId, wallet }) : cosmosWallet
+  }
+
+  public async getOfflineSigner(chainId?: string): Promise<OfflineSigner> {
+    const cosmosWallet = await this.getCosmosWallet(
+      (chainId as ChainId) || this.chainId,
+    )
+    if (!cosmosWallet) {
+      throw new Error('no cosmos wallet')
+    }
+
+    return await cosmosWallet.getOfflineSigner(chainId || this.chainId)
   }
 
   private getCurrentCosmosWallet(): CosmosWallet {

@@ -1,7 +1,7 @@
-import { InjectiveCampaignRpc } from '@injectivelabs/indexer-proto-ts'
-import { grpcPagingToPaging } from '../../..//utils/pagination.js'
+import { grpcPagingToPagingV2 } from '../../..//utils/pagination.js'
 import { IndexerCommonTransformer } from './IndexerCommonTransformer.js'
-import {
+import type * as InjectiveCampaignRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_campaign_rpc_pb'
+import type {
   Guild,
   Campaign,
   CampaignV2,
@@ -12,7 +12,7 @@ import {
 
 export class IndexerCampaignTransformer {
   static GrpcCampaignUserToCampaignUser(
-    campaignUser: InjectiveCampaignRpc.CampaignUser,
+    campaignUser: InjectiveCampaignRpcPb.CampaignUser,
   ): CampaignUser {
     return {
       campaignId: campaignUser.campaignId,
@@ -20,23 +20,23 @@ export class IndexerCampaignTransformer {
       accountAddress: campaignUser.accountAddress,
       score: campaignUser.score,
       contractUpdated: campaignUser.contractUpdated,
-      blockHeight: campaignUser.blockHeight,
-      blockTime: parseInt(campaignUser.blockTime, 10),
+      blockHeight: campaignUser.blockHeight.toString(),
+      blockTime: Number(campaignUser.blockTime),
       purchasedAmount: campaignUser.purchasedAmount,
       galxeUpdated: campaignUser.galxeUpdated,
     }
   }
 
   static GrpcCampaignToCampaign(
-    campaign: InjectiveCampaignRpc.Campaign,
+    campaign: InjectiveCampaignRpcPb.Campaign,
   ): Campaign {
     return {
       campaignId: campaign.campaignId,
       marketId: campaign.marketId,
       totalScore: campaign.totalScore,
-      lastUpdated: parseInt(campaign.lastUpdated, 10),
-      startDate: parseInt(campaign.startDate, 10),
-      endDate: parseInt(campaign.endDate, 10),
+      lastUpdated: Number(campaign.lastUpdated),
+      startDate: Number(campaign.startDate),
+      endDate: Number(campaign.endDate),
       isClaimable: campaign.isClaimable,
       rewards: campaign.rewards,
       roundId: campaign.roundId,
@@ -47,19 +47,19 @@ export class IndexerCampaignTransformer {
     }
   }
 
-  static GrpcGuildToGuild(guild: InjectiveCampaignRpc.Guild): Guild {
+  static GrpcGuildToGuild(guild: InjectiveCampaignRpcPb.Guild): Guild {
     return {
       campaignContract: guild.campaignContract,
       guildId: guild.guildId,
       masterAddress: guild.masterAddress,
-      createdAt: parseInt(guild.createdAt, 10),
+      createdAt: Number(guild.createdAt),
       tvlScore: guild.tvlScore,
       volumeScore: guild.volumeScore,
       rankByVolume: guild.rankByVolume,
       rankByTvl: guild.rankByTvl,
       logo: guild.logo,
       totalTvl: guild.totalTvl,
-      updatedAt: parseInt(guild.updatedAt, 10),
+      updatedAt: Number(guild.updatedAt),
       name: guild.name,
       isActive: guild.isActive,
       masterBalance: guild.masterBalance,
@@ -68,13 +68,13 @@ export class IndexerCampaignTransformer {
   }
 
   static GrpcGuildMemberToGuildMember(
-    member: InjectiveCampaignRpc.GuildMember,
+    member: InjectiveCampaignRpcPb.GuildMember,
   ): GuildMember {
     return {
       campaignContract: member.campaignContract,
       guildId: member.guildId,
       address: member.address,
-      joinedAt: parseInt(member.joinedAt, 10),
+      joinedAt: Number(member.joinedAt),
       tvlScore: member.tvlScore,
       volumeScore: member.volumeScore,
       totalTvl: member.totalTvl,
@@ -88,7 +88,7 @@ export class IndexerCampaignTransformer {
   }
 
   static GrpcGuildCampaignSummaryToGuildCampaignSummary(
-    campaignSummary: InjectiveCampaignRpc.CampaignSummary,
+    campaignSummary: InjectiveCampaignRpcPb.CampaignSummary,
   ): GuildCampaignSummary {
     return {
       campaignId: campaignSummary.campaignId,
@@ -97,15 +97,15 @@ export class IndexerCampaignTransformer {
       totalTvl: campaignSummary.totalTvl,
       totalAverageTvl: campaignSummary.totalAverageTvl,
       totalVolume: campaignSummary.totalVolume,
-      updatedAt: parseInt(campaignSummary.updatedAt, 10),
+      updatedAt: Number(campaignSummary.updatedAt),
       totalMembersCount: campaignSummary.totalMembersCount,
-      startTime: parseInt(campaignSummary.startTime, 10),
-      endTime: parseInt(campaignSummary.endTime, 10),
+      startTime: Number(campaignSummary.startTime),
+      endTime: Number(campaignSummary.endTime),
     }
   }
 
   static CampaignResponseToCampaign(
-    response: InjectiveCampaignRpc.RankingResponse,
+    response: InjectiveCampaignRpcPb.RankingResponse,
   ) {
     return {
       campaign: response.campaign
@@ -114,12 +114,12 @@ export class IndexerCampaignTransformer {
       users: response.users.map(
         IndexerCampaignTransformer.GrpcCampaignUserToCampaignUser,
       ),
-      paging: grpcPagingToPaging(response.paging),
+      paging: grpcPagingToPagingV2(response.paging),
     }
   }
 
   static RoundsResponseToRounds(
-    response: InjectiveCampaignRpc.CampaignsResponse,
+    response: InjectiveCampaignRpcPb.CampaignsResponse,
   ) {
     return {
       campaigns: response.campaigns.map((campaign) =>
@@ -131,12 +131,12 @@ export class IndexerCampaignTransformer {
   }
 
   static GuildsResponseToGuilds(
-    response: InjectiveCampaignRpc.ListGuildsResponse,
+    response: InjectiveCampaignRpcPb.ListGuildsResponse,
   ) {
     return {
       guilds: response.guilds.map(IndexerCampaignTransformer.GrpcGuildToGuild),
-      paging: grpcPagingToPaging(response.paging),
-      updatedAt: parseInt(response.updatedAt, 10),
+      paging: grpcPagingToPagingV2(response.paging),
+      updatedAt: Number(response.updatedAt),
       summary: response.campaignSummary
         ? IndexerCampaignTransformer.GrpcGuildCampaignSummaryToGuildCampaignSummary(
             response.campaignSummary,
@@ -146,7 +146,7 @@ export class IndexerCampaignTransformer {
   }
 
   static GuildMemberResponseToGuildMember(
-    response: InjectiveCampaignRpc.GetGuildMemberResponse,
+    response: InjectiveCampaignRpcPb.GetGuildMemberResponse,
   ) {
     return {
       info: response.info
@@ -156,13 +156,13 @@ export class IndexerCampaignTransformer {
   }
 
   static GuildMembersResponseToGuildMembers(
-    response: InjectiveCampaignRpc.ListGuildMembersResponse,
+    response: InjectiveCampaignRpcPb.ListGuildMembersResponse,
   ) {
     return {
       members: response.members.map(
         IndexerCampaignTransformer.GrpcGuildMemberToGuildMember,
       ),
-      paging: grpcPagingToPaging(response.paging),
+      paging: grpcPagingToPagingV2(response.paging),
       guildInfo: response.guildInfo
         ? IndexerCampaignTransformer.GrpcGuildToGuild(response.guildInfo)
         : undefined,
@@ -170,16 +170,16 @@ export class IndexerCampaignTransformer {
   }
 
   static GrpcCampaignV2ToCampaignV2(
-    campaign: InjectiveCampaignRpc.CampaignV2,
+    campaign: InjectiveCampaignRpcPb.CampaignV2,
   ): CampaignV2 {
     return {
       campaignId: campaign.campaignId,
       marketId: campaign.marketId,
       totalScore: campaign.totalScore,
-      createdAt: campaign.createdAt,
-      updatedAt: campaign.updatedAt,
-      startDate: campaign.startDate,
-      endDate: campaign.endDate,
+      createdAt: Number(campaign.createdAt),
+      updatedAt: Number(campaign.updatedAt),
+      startDate: Number(campaign.startDate),
+      endDate: Number(campaign.endDate),
       isClaimable: campaign.isClaimable,
       roundId: campaign.roundId,
       managerContract: campaign.managerContract,
@@ -194,7 +194,7 @@ export class IndexerCampaignTransformer {
   }
 
   static CampaignsV2ResponseToCampaigns(
-    response: InjectiveCampaignRpc.CampaignsV2Response,
+    response: InjectiveCampaignRpcPb.CampaignsV2Response,
   ) {
     return {
       campaigns: response.campaigns.map(

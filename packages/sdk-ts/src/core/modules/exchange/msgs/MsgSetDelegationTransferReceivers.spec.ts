@@ -1,0 +1,94 @@
+import { EIP712Version } from '@injectivelabs/ts-types'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgSetDelegationTransferReceivers from './MsgSetDelegationTransferReceivers.js'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+
+const params: MsgSetDelegationTransferReceivers['params'] = {
+  sender: mockFactory.injectiveAddress,
+  receivers: [mockFactory.injectiveAddress2],
+}
+
+const protoType = '/injective.exchange.v2.MsgSetDelegationTransferReceivers'
+const protoTypeAmino = 'exchange/MsgSetDelegationTransferReceivers'
+const protoParams = {
+  sender: params.sender,
+  receivers: params.receivers,
+}
+const protoParamsAmino = {
+  sender: params.sender,
+  receivers: params.receivers,
+}
+const message = MsgSetDelegationTransferReceivers.fromJSON(params)
+
+// hidden in chain v1.18.0
+describe('MsgSetDelegationTransferReceivers', () => {
+  it.skip('generates proper proto', () => {
+    const proto = message.toProto()
+
+    expect(proto).toStrictEqual(protoParams)
+  })
+
+  it.skip('generates proper data', () => {
+    const data = message.toData()
+
+    expect(data).toStrictEqual({
+      '@type': protoType,
+      ...protoParams,
+    })
+  })
+
+  it.skip('generates proper amino', () => {
+    const amino = message.toAmino()
+
+    expect(amino).toStrictEqual({
+      type: protoTypeAmino,
+      value: protoParamsAmino,
+    })
+  })
+
+  it.skip('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
+
+    expect(web3).toStrictEqual({
+      '@type': protoType,
+      ...protoParamsAmino,
+    })
+  })
+
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: message,
+    })
+
+    it.skip('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    // will be resolved in chain v1.17.1
+    it.skip('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+  })
+})

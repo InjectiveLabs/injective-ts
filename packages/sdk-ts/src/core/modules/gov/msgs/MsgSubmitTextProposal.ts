@@ -1,10 +1,7 @@
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-import {
-  GoogleProtobufAny,
-  CosmosGovV1Beta1Tx,
-  CosmosGovV1Beta1Gov,
-  CosmosBaseV1Beta1Coin,
-} from '@injectivelabs/core-proto-ts'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb'
+import * as CosmosGovV1Beta1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/gov_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgSubmitTextProposal {
@@ -18,9 +15,12 @@ export declare namespace MsgSubmitTextProposal {
     }
   }
 
-  export type Proto = CosmosGovV1Beta1Tx.MsgSubmitProposal
+  export type Proto = CosmosGovV1Beta1TxPb.MsgSubmitProposal
 
-  export type Object = Omit<CosmosGovV1Beta1Tx.MsgSubmitProposal, 'content'> & {
+  export type Object = Omit<
+    CosmosGovV1Beta1TxPb.MsgSubmitProposal,
+    'content'
+  > & {
     content: {
       type_url: string
       value: any
@@ -33,8 +33,7 @@ export declare namespace MsgSubmitTextProposal {
  */
 export default class MsgSubmitTextProposal extends MsgBase<
   MsgSubmitTextProposal.Params,
-  MsgSubmitTextProposal.Proto,
-  MsgSubmitTextProposal.Object
+  MsgSubmitTextProposal.Proto
 > {
   static fromJSON(params: MsgSubmitTextProposal.Params): MsgSubmitTextProposal {
     return new MsgSubmitTextProposal(params)
@@ -43,26 +42,26 @@ export default class MsgSubmitTextProposal extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
-
-    depositParams.denom = params.deposit.denom
-    depositParams.amount = params.deposit.amount
+    const depositParams = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.deposit.denom,
+      amount: params.deposit.amount,
+    })
 
     const content = this.getContent()
     const proposalType = '/cosmos.gov.v1beta1.TextProposal'
 
-    const contentAny = GoogleProtobufAny.Any.create()
+    const contentAny = GoogleProtobufAnyPbPb.Any.create({
+      typeUrl: proposalType,
+      value: CosmosGovV1Beta1GovPb.TextProposal.toBinary(content),
+    })
 
-    contentAny.typeUrl = proposalType
-    contentAny.value = CosmosGovV1Beta1Gov.TextProposal.encode(content).finish()
+    const message = CosmosGovV1Beta1TxPb.MsgSubmitProposal.create({
+      content: contentAny,
+      initialDeposit: [depositParams],
+      proposer: params.proposer,
+    })
 
-    const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
-
-    message.content = contentAny
-    message.initialDeposit = [depositParams]
-    message.proposer = params.proposer
-
-    return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -76,11 +75,15 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
   public toAmino() {
     const { params } = this
+    const content = this.getContent()
 
-    const messageWithProposalType = snakecaseKeys({
+    const messageWithProposalType = {
       content: {
         type: 'cosmos-sdk/TextProposal',
-        value: this.getContent(),
+        value: {
+          title: content.title,
+          description: content.description,
+        },
       },
       initial_deposit: [
         {
@@ -89,12 +92,11 @@ export default class MsgSubmitTextProposal extends MsgBase<
         },
       ],
       proposer: params.proposer,
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitTextProposal.Object>,
+      value: messageWithProposalType,
     }
   }
 
@@ -117,7 +119,7 @@ export default class MsgSubmitTextProposal extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitTextProposal.Object>),
+      ...messageWithProposalType,
     }
   }
 
@@ -131,17 +133,17 @@ export default class MsgSubmitTextProposal extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1TxPb.MsgSubmitProposal.toBinary(this.toProto())
   }
 
   private getContent() {
     const { params } = this
 
-    const content = CosmosGovV1Beta1Gov.TextProposal.create()
+    const content = CosmosGovV1Beta1GovPb.TextProposal.create({
+      title: params.title,
+      description: params.description,
+    })
 
-    content.title = params.title
-    content.description = params.description
-
-    return CosmosGovV1Beta1Gov.TextProposal.fromPartial(content)
+    return content
   }
 }

@@ -1,19 +1,28 @@
-import {
-  TxRaw,
-  TxResponse,
-  AminoSignResponse,
-  DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
-import {
-  ChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
-import { GeneralException, WalletException } from '@injectivelabs/exceptions'
+import { EventEmitter } from 'eventemitter3'
+import { WalletException, GeneralException } from '@injectivelabs/exceptions'
 import {
   Wallet,
   isEvmWallet,
   isCosmosWallet,
+  WalletStrategyEmitterEventType,
+} from '@injectivelabs/wallet-base'
+import type { StdSignDoc } from '@keplr-wallet/types'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
+import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
+import type {
+  WalletMetadata,
+  WalletStrategyEmitter,
+  WalletStrategyEmitterEvents,
+} from '@injectivelabs/wallet-base'
+import type {
+  Eip1193Provider,
   WalletDeviceType,
   ConcreteStrategiesArg,
   SendTransactionOptions,
@@ -22,10 +31,8 @@ import {
   onChainIdChangeCallback,
   WalletStrategyArguments,
   CosmosWalletAbstraction,
-  ConcreteWalletStrategyOptions,
   WalletStrategy as WalletStrategyInterface,
 } from '@injectivelabs/wallet-base'
-import { StdSignDoc } from '@keplr-wallet/types'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {
@@ -35,16 +42,14 @@ const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   const keys = Object.keys(args.strategies || {})
 
   if (keys.length === 0) {
-    throw new GeneralException(
-      new Error('No strategies provided to BaseWalletStrategy'),
-    )
-  }
-
-  if (keys.includes(Wallet.Metamask) && args.ethereumOptions) {
     return Wallet.Metamask
   }
 
-  if (keys.includes(Wallet.Keplr) && !args.ethereumOptions) {
+  if (keys.includes(Wallet.Metamask) && args.evmOptions) {
+    return Wallet.Metamask
+  }
+
+  if (keys.includes(Wallet.Keplr) && !args.evmOptions) {
     return Wallet.Keplr
   }
 
@@ -58,24 +63,50 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
 
   public args: WalletStrategyArguments
 
+  public metadata?: WalletMetadata
+
   public wallets?: Wallet[]
+
+  private emitter: WalletStrategyEmitter
+  public on: WalletStrategyEmitter['on']
+  public off: WalletStrategyEmitter['off']
+  public emit: WalletStrategyEmitter['emit']
 
   constructor(args: WalletStrategyArguments) {
     this.args = args
     this.strategies = args.strategies
     this.wallet = getInitialWallet(args)
+    this.metadata = args.metadata
+
+    this.emitter = new EventEmitter<WalletStrategyEmitterEvents>()
+    this.on = this.emitter.on.bind(this.emitter)
+    this.off = this.emitter.off.bind(this.emitter)
+    this.emit = this.emitter.emit.bind(this.emitter)
+  }
+
+  /**
+   * Get the emitter instance.
+   * Used to pass to strategies so they can emit events directly.
+   */
+  public getEmitter(): WalletStrategyEmitter {
+    return this.emitter
   }
 
   public getWallet(): Wallet {
     return this.wallet
   }
 
-  public setWallet(wallet: Wallet) {
+  public async setWallet(wallet: Wallet): Promise<void> {
     this.wallet = wallet
+
+    const strategy = this.getStrategy()
+    await strategy?.initStrategy?.()
   }
 
-  public setOptions(_options?: ConcreteWalletStrategyOptions) {
-    //
+  public setMetadata(metadata?: WalletMetadata) {
+    this.metadata = metadata
+
+    this.getStrategy().setMetadata?.(metadata)
   }
 
   public getStrategy(): ConcreteWalletStrategy {
@@ -90,6 +121,15 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
 
   public getAddresses(args?: unknown): Promise<AccountAddress[]> {
     return this.getStrategy().getAddresses(args)
+  }
+
+  public getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    const strategy = this.getStrategy()
+    return strategy.getAddressesInfo(args)
   }
 
   public getWalletDeviceType(): Promise<WalletDeviceType> {
@@ -116,12 +156,28 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     return this.getStrategy().getEthereumChainId()
   }
 
-  public async getEthereumTransactionReceipt(txHash: string): Promise<void> {
-    return this.getStrategy().getEthereumTransactionReceipt(txHash)
+  public async getEvmTransactionReceipt(
+    txHash: string,
+    evmChainId?: EvmChainId,
+  ): Promise<void> {
+    return this.getStrategy().getEvmTransactionReceipt(txHash, evmChainId)
   }
 
   public async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
     return this.getStrategy().getSessionOrConfirm(address)
+  }
+
+  public async getWalletClient<T>(): Promise<T> {
+    if (this.getStrategy()?.getWalletClient) {
+      const result = this.getStrategy()?.getWalletClient<T>?.()
+      if (result) {
+        return result
+      }
+    }
+
+    throw new WalletException(
+      new Error('Wallet client not found. Please check your wallet strategy.'),
+    )
   }
 
   public async sendTransaction(
@@ -131,19 +187,20 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     return this.getStrategy().sendTransaction(tx, options)
   }
 
-  public async sendEthereumTransaction(
+  public async sendEvmTransaction(
     tx: any /* TODO */,
     options: {
+      evmChainId: EvmChainId
       address: AccountAddress /* Ethereum address */
-      ethereumChainId: EthereumChainId
     },
   ): Promise<string> {
-    return this.getStrategy().sendEthereumTransaction(tx, options)
+    return this.getStrategy().sendEvmTransaction(tx, options)
   }
 
   public async signEip712TypedData(
     eip712TypedData: string,
     address: AccountAddress,
+    options: { txTimeout?: number } = {},
   ): Promise<string> {
     if (isCosmosWallet(this.wallet)) {
       throw new WalletException(
@@ -156,7 +213,17 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
       await this.enable()
     }
 
-    return this.getStrategy().signEip712TypedData(eip712TypedData, address)
+    this.emit(WalletStrategyEmitterEventType.TransactionSignStart)
+
+    const response = await this.getStrategy().signEip712TypedData(
+      eip712TypedData,
+      address,
+      options,
+    )
+
+    this.emit(WalletStrategyEmitterEventType.TransactionSigned)
+
+    return response
   }
 
   public async signAminoCosmosTransaction(transaction: {
@@ -169,7 +236,14 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
       )
     }
 
-    return this.getStrategy().signAminoCosmosTransaction(transaction)
+    this.emit(WalletStrategyEmitterEventType.TransactionSignStart)
+
+    const response =
+      await this.getStrategy().signAminoCosmosTransaction(transaction)
+
+    this.emit(WalletStrategyEmitterEventType.TransactionSigned)
+
+    return response
   }
 
   public async signCosmosTransaction(transaction: {
@@ -184,7 +258,13 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
       )
     }
 
-    return this.getStrategy().signCosmosTransaction(transaction)
+    this.emit(WalletStrategyEmitterEventType.TransactionSignStart)
+
+    const response = await this.getStrategy().signCosmosTransaction(transaction)
+
+    this.emit(WalletStrategyEmitterEventType.TransactionSigned)
+
+    return response
   }
 
   public async signArbitrary(
@@ -192,7 +272,13 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     data: string | Uint8Array,
   ): Promise<string | void> {
     if (this.getStrategy().signArbitrary) {
-      return this.getStrategy().signArbitrary!(signer, data)
+      this.emit(WalletStrategyEmitterEventType.TransactionSignStart)
+
+      const response = await this.getStrategy().signArbitrary!(signer, data)
+
+      this.emit(WalletStrategyEmitterEventType.TransactionSigned)
+
+      return response
     }
   }
 
@@ -215,6 +301,8 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
   public async disconnect() {
     if (this.getStrategy().disconnect) {
       await this.getStrategy().disconnect!()
+
+      this.emit(WalletStrategyEmitterEventType.WalletStrategyDisconnect)
     }
   }
 
@@ -230,5 +318,27 @@ export default class BaseWalletStrategy implements WalletStrategyInterface {
     }
 
     return strategy.getCosmosWallet(chainId)
+  }
+
+  public async getEip1193Provider(): Promise<Eip1193Provider> {
+    if (this.getStrategy().getEip1193Provider) {
+      return this.getStrategy().getEip1193Provider!()
+    }
+
+    throw new WalletException(
+      new Error(
+        'EIP1193 provider not found. Please check your wallet strategy.',
+      ),
+    )
+  }
+
+  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
+    if (this.getStrategy().getOfflineSigner) {
+      return this.getStrategy().getOfflineSigner!(chainId)
+    }
+
+    throw new WalletException(
+      new Error('Offline signer not found. Please check your wallet strategy.'),
+    )
   }
 }

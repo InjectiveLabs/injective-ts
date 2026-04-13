@@ -3,21 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ledger@1.15.42...@injectivelabs/wallet-ledger@1.16.0) (2025-07-28)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ledger
+
+## [1.15.10](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ledger@1.15.9...@injectivelabs/wallet-ledger@1.15.10) (2025-05-19)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ledger
+
+## [1.15.9](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ledger@1.15.8...@injectivelabs/wallet-ledger@1.15.9) (2025-05-19)
+
+**Note:** Version bump only for package @injectivelabs/wallet-ledger
+
 ## [1.15.1](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ledger@1.15.0...@injectivelabs/wallet-ledger@1.15.1) (2025-04-22)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ledger
 
-
-
-
-
 # [1.15.0](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ledger@1.14.57...@injectivelabs/wallet-ledger@1.15.0) (2025-04-22)
 
 **Note:** Version bump only for package @injectivelabs/wallet-ledger
-
-
-
-
 
 ## [1.14.42](https://github.com/InjectiveLabs/injective-ts/compare/@injectivelabs/wallet-ledger@1.14.41-alpha.18...@injectivelabs/wallet-ledger@1.14.42) (2025-03-06)
 

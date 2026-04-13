@@ -1,44 +1,50 @@
-import { BigNumberInWei } from '@injectivelabs/utils'
+import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
+import { BondStatus } from '../types/staking.js'
+import { uint8ArrayToBase64 } from '../../../utils/encoding.js'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 import {
+  protobufTimestampToDate,
+  protobufTimestampToUnixSeconds,
+} from '../../../utils/time.js'
+import type * as CosmosStakingV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/staking/v1beta1/query_pb'
+import type { Pagination } from '../../../types/index.js'
+import type {
+  Pool,
+  Validator,
+  Delegation,
+  ReDelegation,
   GrpcValidator,
+  ValidatorCommission,
+  UnBondingDelegation,
+  StakingModuleParams,
+  ValidatorDescription,
   GrpcValidatorCommission,
   GrpcValidatorDescription,
-  BondStatus,
-  Validator,
-  ValidatorCommission,
-  ValidatorDescription,
-  Delegation,
-  UnBondingDelegation,
-  ReDelegation,
-  Pool,
-  StakingModuleParams,
+  GrpcUnbondingDelegationEntry,
+  GrpcReDelegationEntryResponse,
 } from '../types/staking.js'
-import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { Pagination } from '../../../types/index.js'
-import { CosmosStakingV1Beta1Query } from '@injectivelabs/core-proto-ts'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcStakingTransformer {
   static moduleParamsResponseToModuleParams(
-    response: CosmosStakingV1Beta1Query.QueryParamsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryParamsResponse,
   ): StakingModuleParams {
-    const params = response.params!
+    const params = response.params
 
     return {
-      unbondingTime: parseInt(params.unbondingTime!.seconds, 10),
-      minCommissionRate: params.minCommissionRate,
-      maxValidators: params.maxValidators,
-      maxEntries: params.maxEntries,
-      historicalEntries: params.historicalEntries,
-      bondDenom: params.bondDenom,
+      unbondingTime: protobufTimestampToUnixSeconds(params!.unbondingTime),
+      minCommissionRate: params!.minCommissionRate,
+      maxValidators: params!.maxValidators,
+      maxEntries: params!.maxEntries,
+      historicalEntries: params!.historicalEntries,
+      bondDenom: params!.bondDenom,
     }
   }
 
   static validatorResponseToValidator(
-    response: CosmosStakingV1Beta1Query.QueryValidatorResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryValidatorResponse,
   ): Validator {
     return ChainGrpcStakingTransformer.grpcValidatorToValidator(
       response.validator!,
@@ -46,7 +52,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static validatorsResponseToValidators(
-    response: CosmosStakingV1Beta1Query.QueryValidatorsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryValidatorsResponse,
   ): {
     validators: Validator[]
     pagination: Pagination
@@ -57,12 +63,14 @@ export class ChainGrpcStakingTransformer {
 
     return {
       validators,
-      pagination: grpcPaginationToPagination(response.pagination!),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
+        response.pagination!,
+      ),
     }
   }
 
   static delegationResponseToDelegation(
-    response: CosmosStakingV1Beta1Query.QueryDelegationResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryDelegationResponse,
   ): Delegation {
     const grpcDelegation = response.delegationResponse!
     const delegation = grpcDelegation.delegation
@@ -72,19 +80,17 @@ export class ChainGrpcStakingTransformer {
       delegation: {
         delegatorAddress: delegation ? delegation.delegatorAddress : '',
         validatorAddress: delegation ? delegation.validatorAddress : '',
-        shares: cosmosSdkDecToBigNumber(
-          delegation ? delegation.shares : 0,
-        ).toFixed(),
+        shares: toHumanReadable(delegation ? delegation.shares : 0).toFixed(),
       },
       balance: {
         denom: balance ? balance.denom : '',
-        amount: new BigNumberInWei(balance ? balance.amount : 0).toFixed(),
+        amount: toBigNumber(balance ? balance.amount : 0).toFixed(),
       },
     }
   }
 
   static delegationsResponseToDelegations(
-    response: CosmosStakingV1Beta1Query.QueryDelegatorDelegationsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryDelegatorDelegationsResponse,
   ): { delegations: Delegation[]; pagination: Pagination } {
     const grpcDelegations = response.delegationResponses
 
@@ -96,25 +102,25 @@ export class ChainGrpcStakingTransformer {
         delegation: {
           delegatorAddress: delegation ? delegation.delegatorAddress : '',
           validatorAddress: delegation ? delegation.validatorAddress : '',
-          shares: cosmosSdkDecToBigNumber(
-            delegation ? delegation.shares : 0,
-          ).toFixed(),
+          shares: toHumanReadable(delegation ? delegation.shares : 0).toFixed(),
         },
         balance: {
           denom: balance ? balance.denom : '',
-          amount: new BigNumberInWei(balance ? balance.amount : 0).toFixed(),
+          amount: toBigNumber(balance ? balance.amount : 0).toFixed(),
         },
       }
     })
 
     return {
       delegations,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
+        response.pagination,
+      ),
     }
   }
 
   static unBondingDelegationsResponseToUnBondingDelegations(
-    response: CosmosStakingV1Beta1Query.QueryDelegatorUnbondingDelegationsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryDelegatorUnbondingDelegationsResponse,
   ): {
     unbondingDelegations: UnBondingDelegation[]
     pagination: Pagination
@@ -122,21 +128,28 @@ export class ChainGrpcStakingTransformer {
     const grpcUnbondingDelegations = response.unbondingResponses
 
     const unbondingDelegations = grpcUnbondingDelegations.reduce(
-      (unbondingDelegations, grpcUnBondingDelegation) => {
+      (
+        unbondingDelegations: UnBondingDelegation[],
+        grpcUnBondingDelegation,
+      ) => {
         const entries = grpcUnBondingDelegation.entries
 
-        const mappedEntries = entries.map((entry) => ({
-          delegatorAddress: grpcUnBondingDelegation
-            ? grpcUnBondingDelegation.delegatorAddress
-            : '',
-          validatorAddress: grpcUnBondingDelegation
-            ? grpcUnBondingDelegation.validatorAddress
-            : '',
-          creationHeight: parseInt(entry.creationHeight, 10),
-          completionTime: Math.floor(entry.completionTime!.getTime() / 1000),
-          initialBalance: new BigNumberInWei(entry.initialBalance).toFixed(),
-          balance: new BigNumberInWei(entry.balance).toFixed(),
-        }))
+        const mappedEntries = entries.map(
+          (entry: GrpcUnbondingDelegationEntry) => ({
+            delegatorAddress: grpcUnBondingDelegation
+              ? grpcUnBondingDelegation.delegatorAddress
+              : '',
+            validatorAddress: grpcUnBondingDelegation
+              ? grpcUnBondingDelegation.validatorAddress
+              : '',
+            creationHeight: parseInt(entry.creationHeight.toString(), 10),
+            completionTime: protobufTimestampToUnixSeconds(
+              entry.completionTime,
+            ),
+            initialBalance: toBigNumber(entry.initialBalance).toFixed(),
+            balance: toBigNumber(entry.balance).toFixed(),
+          }),
+        )
 
         return [...unbondingDelegations, ...mappedEntries]
       },
@@ -145,42 +158,41 @@ export class ChainGrpcStakingTransformer {
 
     return {
       unbondingDelegations,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
+        response.pagination,
+      ),
     }
   }
 
   static reDelegationsResponseToReDelegations(
-    response: CosmosStakingV1Beta1Query.QueryRedelegationsResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryRedelegationsResponse,
   ): { redelegations: ReDelegation[]; pagination: Pagination } {
     const grpcReDelegations = response.redelegationResponses
 
     const redelegations = grpcReDelegations.reduce(
-      (uiReDelegator, grpcReDelegationCurrent) => {
-        const grpcRedelegation = grpcReDelegationCurrent.redelegation!
+      (uiReDelegator: ReDelegation[], grpcReDelegationCurrent) => {
+        const grpcRedelegation = grpcReDelegationCurrent.redelegation
 
         if (!grpcRedelegation) {
           return uiReDelegator
         }
 
         const uiRedelegations = grpcReDelegationCurrent.entries.reduce(
-          (acc, entry) => {
+          (acc: ReDelegation[], entry: GrpcReDelegationEntryResponse) => {
             return [
               ...acc,
               {
                 delegation: {
-                  completionTime: entry.redelegationEntry
-                    ? Math.floor(
-                        entry.redelegationEntry.completionTime!.getTime() /
-                          1000,
-                      )
-                    : 0,
+                  completionTime: protobufTimestampToUnixSeconds(
+                    entry.redelegationEntry?.completionTime,
+                  ),
                   delegatorAddress: grpcRedelegation.delegatorAddress || '',
                   sourceValidatorAddress:
                     grpcRedelegation.validatorSrcAddress || '',
                   destinationValidatorAddress:
                     grpcRedelegation?.validatorDstAddress || '',
                 },
-                balance: new BigNumberInWei(entry.balance).toFixed(),
+                balance: toBigNumber(entry.balance).toFixed(),
               },
             ]
           },
@@ -194,7 +206,9 @@ export class ChainGrpcStakingTransformer {
 
     return {
       redelegations,
-      pagination: grpcPaginationToPagination(response.pagination),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
+        response.pagination,
+      ),
     }
   }
 
@@ -202,19 +216,20 @@ export class ChainGrpcStakingTransformer {
     return {
       operatorAddress: validator.operatorAddress,
       jailed: validator.jailed,
+      consensusPubKey: uint8ArrayToBase64(
+        validator.consensusPubkey?.value?.slice(2) || new Uint8Array(),
+      ),
       status: ChainGrpcStakingTransformer.grpcValidatorStatusToStatus(
         validator.status,
       ),
-      tokens: cosmosSdkDecToBigNumber(validator.tokens).toFixed(),
-      delegatorShares: cosmosSdkDecToBigNumber(
-        validator.delegatorShares,
-      ).toFixed(),
+      tokens: toHumanReadable(validator.tokens).toFixed(),
+      delegatorShares: toHumanReadable(validator.delegatorShares).toFixed(),
       description:
         ChainGrpcStakingTransformer.grpcValidatorDescriptionToDescription(
           validator.description,
         ),
-      unbondingHeight: parseInt(validator.unbondingHeight, 10),
-      unbondingTime: validator.unbondingTime,
+      unbondingHeight: Number(validator.unbondingHeight),
+      unbondingTime: protobufTimestampToUnixSeconds(validator.unbondingTime),
       commission:
         ChainGrpcStakingTransformer.grpcValidatorCommissionToCommission(
           validator.commission,
@@ -224,7 +239,7 @@ export class ChainGrpcStakingTransformer {
   }
 
   static poolResponseToPool(
-    response: CosmosStakingV1Beta1Query.QueryPoolResponse,
+    response: CosmosStakingV1Beta1QueryPb.QueryPoolResponse,
   ): Pool {
     const pool = response.pool
 
@@ -236,8 +251,8 @@ export class ChainGrpcStakingTransformer {
     }
 
     return {
-      notBondedTokens: cosmosSdkDecToBigNumber(pool.notBondedTokens).toFixed(),
-      bondedTokens: cosmosSdkDecToBigNumber(pool.bondedTokens).toFixed(),
+      notBondedTokens: toHumanReadable(pool.notBondedTokens).toFixed(),
+      bondedTokens: toHumanReadable(pool.bondedTokens).toFixed(),
     }
   }
 
@@ -260,17 +275,17 @@ export class ChainGrpcStakingTransformer {
 
     return {
       commissionRates: {
-        rate: cosmosSdkDecToBigNumber(
+        rate: toHumanReadable(
           commissionRates ? commissionRates.rate : '0',
         ).toFixed(),
-        maxRate: cosmosSdkDecToBigNumber(
+        maxRate: toHumanReadable(
           commissionRates ? commissionRates.maxRate : '0',
         ).toFixed(),
-        maxChangeRate: cosmosSdkDecToBigNumber(
+        maxChangeRate: toHumanReadable(
           commissionRates ? commissionRates.maxChangeRate : '0',
         ).toFixed(),
       },
-      updateTime: commission ? commission.updateTime! : new Date(),
+      updateTime: protobufTimestampToDate(commission?.updateTime) ?? new Date(),
     }
   }
 

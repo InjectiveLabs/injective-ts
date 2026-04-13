@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# DEPRECATION WARNING
+echo "❌ ERROR: This script is deprecated, use protoV2/mito/publish.sh instead" >&2
+exit 1
+
 cd ./proto/mito
 cd ./proto-ts || exit
 

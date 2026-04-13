@@ -1,23 +1,25 @@
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
-export enum Network {
-  MainnetK8s = 'mainnetK8s',
-  MainnetLB = 'mainnetLB',
-  Mainnet = 'mainnet',
-  MainnetSentry = 'mainnetSentry',
-  MainnetOld = 'mainnetOld',
-  Staging = 'staging',
-  Internal = 'internal', // @deprecated
-  TestnetK8s = 'testnetK8s',
-  TestnetOld = 'testnetOld',
-  TestnetSentry = 'testnetSentry',
-  Testnet = 'testnet',
-  Devnet1 = 'devnet1',
-  Devnet2 = 'devnet2',
-  Devnet3 = 'devnet3',
-  Devnet = 'devnet',
-  Local = 'local',
-}
+export const Network = {
+  MainnetK8s: 'mainnetK8s',
+  MainnetLB: 'mainnetLB',
+  Mainnet: 'mainnet',
+  MainnetSentry: 'mainnetSentry',
+  MainnetOld: 'mainnetOld',
+  Staging: 'staging',
+  Internal: 'internal', // @deprecated
+  TestnetK8s: 'testnetK8s',
+  TestnetOld: 'testnetOld',
+  TestnetSentry: 'testnetSentry',
+  Testnet: 'testnet',
+  Devnet1: 'devnet1',
+  Devnet2: 'devnet2',
+  Devnet3: 'devnet3',
+  Devnet: 'devnet',
+  Local: 'local',
+} as const
+
+export type Network = (typeof Network)[keyof typeof Network]
 
 export type NetworkEndpoints = {
   indexer: string // Indexer API
@@ -38,5 +40,5 @@ export type ChainInfo = {
   feeDenom: string
   chainId: ChainId
   env: string
-  ethereumChainId?: EthereumChainId
+  evmChainId?: EvmChainId
 }

@@ -3,6 +3,11 @@ export function prepareSignBytes(obj: any): any {
     return obj.map(prepareSignBytes)
   }
 
+  // Handle BigInt - convert to string for JSON serialization
+  if (typeof obj === 'bigint') {
+    return obj.toString()
+  }
+
   // string, number, or null
   if (typeof obj !== `object` || obj === null) {
     return obj

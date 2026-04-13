@@ -1,19 +1,18 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgBid from './MsgBid.js'
-import snakecaseKeys from 'snakecase-keys'
+import { toChainFormat } from '@injectivelabs/utils'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgBid from './MsgBid.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgBid['params'] = {
   round: 1,
   injectiveAddress: mockFactory.injectiveAddress,
   amount: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
 }
@@ -23,9 +22,8 @@ const protoTypeAmino = 'auction/MsgBid'
 const protoParams = {
   sender: params.injectiveAddress,
   bidAmount: params.amount,
-  round: params.round.toString(),
+  round: BigInt(params.round),
 }
-const aminoParams = snakecaseKeys(protoParams)
 
 const message = MsgBid.fromJSON(params)
 
@@ -50,7 +48,11 @@ describe('MsgBid', () => {
 
     expect(amino).toStrictEqual({
       type: protoTypeAmino,
-      value: aminoParams,
+      value: {
+        sender: protoParams.sender,
+        bid_amount: protoParams.bidAmount,
+        round: protoParams.round.toString(),
+      },
     })
   })
 
@@ -59,7 +61,9 @@ describe('MsgBid', () => {
 
     expect(web3).toStrictEqual({
       '@type': protoType,
-      ...aminoParams,
+      sender: protoParams.sender,
+      bid_amount: protoParams.bidAmount,
+      round: protoParams.round.toString(),
     })
   })
 

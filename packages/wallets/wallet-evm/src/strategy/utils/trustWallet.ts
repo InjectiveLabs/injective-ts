@@ -1,12 +1,12 @@
-import { isServerSide } from '@injectivelabs/sdk-ts'
-import {
+import type {
   BrowserEip1993Provider,
   WindowWithEip1193Provider,
 } from '@injectivelabs/wallet-base'
 
-const $window = (isServerSide()
-  ? {}
-  : window) as unknown as WindowWithEip1193Provider
+const getWindow = () =>
+  (typeof window === 'undefined'
+    ? {}
+    : window) as unknown as WindowWithEip1193Provider
 
 export async function getTrustWalletProvider({ timeout } = { timeout: 3000 }) {
   const provider = getTrustWalletFromWindow()
@@ -28,6 +28,8 @@ async function listenForTrustWalletInitialized(
       resolve(getTrustWalletFromWindow())
     }
 
+    const $window = getWindow()
+
     $window.addEventListener('trustwallet#initialized', handleInitialization, {
       once: true,
     })
@@ -43,6 +45,7 @@ async function listenForTrustWalletInitialized(
 }
 
 function getTrustWalletFromWindow() {
+  const $window = getWindow()
   const injectedProviderExist =
     typeof window !== 'undefined' &&
     (typeof $window.ethereum !== 'undefined' ||

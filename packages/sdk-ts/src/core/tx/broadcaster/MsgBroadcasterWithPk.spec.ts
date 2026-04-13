@@ -1,8 +1,8 @@
 import { Network } from '@injectivelabs/networks'
-import { PrivateKey } from '../../accounts/PrivateKey.js'
+import { EvmChainId } from '@injectivelabs/ts-types'
 import { MsgSend } from '../../modules/bank/index.js'
+import { PrivateKey } from '../../accounts/PrivateKey.js'
 import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk.js'
-import { EthereumChainId } from '@injectivelabs/ts-types'
 
 // TODO
 describe.skip('MsgBroadcasterWithPk', () => {
@@ -53,7 +53,7 @@ describe.skip('MsgBroadcasterWithPk', () => {
       network,
       privateKey,
       simulateTx: true,
-      ethereumChainId: EthereumChainId.Sepolia,
+      evmChainId: EvmChainId.Sepolia,
     }).broadcastWithFeeDelegation({ msgs: message })
 
     expect(response.txHash).toBeDefined()

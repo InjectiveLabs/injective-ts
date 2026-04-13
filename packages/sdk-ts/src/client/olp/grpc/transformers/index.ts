@@ -1,33 +1,31 @@
-import { InjectiveDmmRpc } from '@injectivelabs/olp-proto-ts'
-import {
-  GrpcEpochV2,
+import type * as DmmPb from '@injectivelabs/olp-proto-ts-v2/generated/goagen_olp_injective_dmm_v2_pb'
+import type {
   EpochV2,
-  MarketReward,
-  EligibleAddress,
-  EligibleAddresses,
-  EpochScoresHistory,
-  GrpcMarketReward,
-  GrpcEligibleAddress,
-  GrpcTotalScore,
-  EpochScores,
   TotalScore,
-  AccountVolume,
-  TotalScores,
-  GrpcEpochScore,
   EpochScore,
+  GrpcEpochV2,
+  EpochScores,
+  TotalScores,
+  MarketReward,
+  AccountVolume,
+  MinMaxRewards,
+  GrpcTotalScore,
+  GrpcEpochScore,
+  EligibleAddress,
+  GrpcMarketReward,
+  EligibleAddresses,
+  GrpcAccountVolume,
+  EpochScoresHistory,
   TotalScoresHistory,
-  GrpcRewardDistribution,
-  RewardsDistribution,
   RewardDistribution,
   RewardsEligibility,
-  GrpcAccountVolume,
-  MinMaxRewards,
+  GrpcEligibleAddress,
+  RewardsDistribution,
+  GrpcRewardDistribution,
 } from '../types/index.js'
 
 export class DmmGrpcTransformer {
-  static epochsResponseToEpochs(
-    response: InjectiveDmmRpc.GetEpochsResponse,
-  ): EpochV2[] {
+  static epochsResponseToEpochs(response: DmmPb.GetEpochsResponse): EpochV2[] {
     const epochs = response.epochs
 
     return epochs.map(DmmGrpcTransformer.grpcEpochToEpoch)
@@ -35,20 +33,45 @@ export class DmmGrpcTransformer {
 
   static grpcEpochToEpoch(epoch: GrpcEpochV2): EpochV2 {
     return {
-      epochId: epoch.epochId,
       status: epoch.status,
-      startHeight: epoch.startHeight,
-      endHeight: epoch.endHeight,
-      snapshotCount: epoch.snapshotCount,
+      epochId: epoch.epochId,
       resultCount: epoch.resultCount,
-      config: epoch.config,
-      createdAt: epoch.createdAt,
-      updatedAt: epoch.updatedAt,
+      snapshotCount: epoch.snapshotCount,
+      endHeight: epoch.endHeight?.toString(),
+      startHeight: epoch.startHeight?.toString(),
+      config: epoch.config
+        ? {
+            number: epoch.config.number,
+            rewardInj: epoch.config.rewardInj,
+            isMiniEpoch: epoch.config.isMiniEpoch,
+            uptimeExponent: epoch.config.uptimeExponent,
+            volumeExponent: epoch.config.volumeExponent,
+            liquidityScoreExponent: epoch.config.liquidityScoreExponent,
+            permanenceVolumeThreshold: epoch.config.permanenceVolumeThreshold,
+            qualifyingVolumeThreshold: epoch.config.qualifyingVolumeThreshold,
+            startDate: epoch.config.startDate
+              ? new Date(epoch.config.startDate)
+              : undefined,
+            endDate: epoch.config.endDate
+              ? new Date(epoch.config.endDate)
+              : undefined,
+            markets: epoch.config.markets.map((market) => ({
+              ticker: market.ticker,
+              marketId: market.marketId,
+              startDate: market.startDate
+                ? new Date(market.startDate)
+                : undefined,
+              preAllocatedReward: market.preAllocatedReward,
+            })),
+          }
+        : undefined,
+      createdAt: epoch.createdAt ? new Date(epoch.createdAt) : undefined,
+      updatedAt: epoch.updatedAt ? new Date(epoch.updatedAt) : undefined,
     }
   }
 
   static marketRewardsResponseToMarketRewards(
-    response: InjectiveDmmRpc.GetMarketRewardsResponse,
+    response: DmmPb.GetMarketRewardsResponse,
   ): MarketReward[] {
     const rewards = response.rewards
 
@@ -59,23 +82,31 @@ export class DmmGrpcTransformer {
     marketReward: GrpcMarketReward,
   ): MarketReward {
     return {
+      reward: marketReward.reward,
       epochId: marketReward.epochId,
       marketId: marketReward.marketId,
-      height: marketReward.height,
-      reward: marketReward.reward,
-      rewardPercentage: marketReward.rewardPercentage,
       liquidity: marketReward.liquidity,
-      startDate: marketReward.startDate,
-      endDate: marketReward.endDate,
       totalScore: marketReward.totalScore,
-      createdAt: marketReward.createdAt,
-      updatedAt: marketReward.updatedAt,
+      height: marketReward.height?.toString(),
+      rewardPercentage: marketReward.rewardPercentage,
       miniEpochsReward: marketReward.miniEpochsReward,
+      startDate: marketReward.startDate
+        ? new Date(marketReward.startDate)
+        : undefined,
+      endDate: marketReward.endDate
+        ? new Date(marketReward.endDate)
+        : undefined,
+      createdAt: marketReward.createdAt
+        ? new Date(marketReward.createdAt)
+        : undefined,
+      updatedAt: marketReward.updatedAt
+        ? new Date(marketReward.updatedAt)
+        : undefined,
     }
   }
 
   static eligibleAddressesResponseToEligibleAddresses(
-    response: InjectiveDmmRpc.GetEligibleAddressesResponse,
+    response: DmmPb.GetEligibleAddressesResponse,
   ): EligibleAddresses {
     const addresses = response.addresses
 
@@ -91,17 +122,21 @@ export class DmmGrpcTransformer {
     eligibleAddress: GrpcEligibleAddress,
   ): EligibleAddress {
     return {
-      epochId: eligibleAddress.epochId,
-      accountAddress: eligibleAddress.accountAddress,
-      height: eligibleAddress.height,
       source: eligibleAddress.source,
-      createdAt: eligibleAddress.createdAt,
-      updatedAt: eligibleAddress.updatedAt,
+      epochId: eligibleAddress.epochId,
+      height: eligibleAddress.height?.toString(),
+      accountAddress: eligibleAddress.accountAddress,
+      createdAt: eligibleAddress.createdAt
+        ? new Date(eligibleAddress.createdAt)
+        : undefined,
+      updatedAt: eligibleAddress.updatedAt
+        ? new Date(eligibleAddress.updatedAt)
+        : undefined,
     }
   }
 
   static epochScoresResponseToEpochScores(
-    response: InjectiveDmmRpc.GetEpochScoresResponse,
+    response: DmmPb.GetEpochScoresResponse,
   ): EpochScores {
     const scores = response.scores
 
@@ -113,33 +148,33 @@ export class DmmGrpcTransformer {
 
   static grpcEpochScoresToEpochScores(score: GrpcEpochScore): EpochScore {
     return {
-      epochId: score.epochId,
-      accountAddress: score.accountAddress,
-      height: score.height,
-      blockTime: score.blockTime,
-      startHeight: score.startHeight,
-      liquidityScore: score.liquidityScore,
-      liquidityScorePonderated: score.liquidityScorePonderated,
-      uptimeScore: score.uptimeScore,
-      uptimeScorePonderated: score.uptimeScorePonderated,
-      uptimePercentage: score.uptimePercentage,
-      volumeScore: score.volumeScore,
-      volumeScorePonderated: score.volumeScorePonderated,
-      totalScore: score.totalScore,
       volume: score.volume,
+      reward: score.reward,
+      epochId: score.epochId,
+      qualifies: score.qualifies,
+      totalScore: score.totalScore,
+      uptimeScore: score.uptimeScore,
+      volumeScore: score.volumeScore,
       makerVolume: score.makerVolume,
       takerVolume: score.takerVolume,
-      reward: score.reward,
+      height: score.height?.toString(),
+      accountAddress: score.accountAddress,
+      liquidityScore: score.liquidityScore,
+      uptimePercentage: score.uptimePercentage,
       rewardPercentage: score.rewardPercentage,
-      qualifies: score.qualifies,
       volumePercentage: score.volumePercentage,
-      createdAt: score.createdAt,
-      updatedAt: score.updatedAt,
+      startHeight: score.startHeight?.toString(),
+      uptimeScorePonderated: score.uptimeScorePonderated,
+      volumeScorePonderated: score.volumeScorePonderated,
+      liquidityScorePonderated: score.liquidityScorePonderated,
+      blockTime: score.blockTime ? new Date(score.blockTime) : undefined,
+      createdAt: score.createdAt ? new Date(score.createdAt) : undefined,
+      updatedAt: score.updatedAt ? new Date(score.updatedAt) : undefined,
     }
   }
 
   static epochScoresHistoryResponseToEpochScoresHistory(
-    response: InjectiveDmmRpc.GetEpochScoresHistoryResponse,
+    response: DmmPb.GetEpochScoresHistoryResponse,
   ): EpochScoresHistory {
     const scores = response.scores
 
@@ -150,7 +185,7 @@ export class DmmGrpcTransformer {
   }
 
   static totalScoresResponseToTotalScores(
-    response: InjectiveDmmRpc.GetTotalScoresResponse,
+    response: DmmPb.GetTotalScoresResponse,
   ): TotalScores {
     const scores = response.scores
 
@@ -162,42 +197,42 @@ export class DmmGrpcTransformer {
 
   static grpcTotalScoresToTotalScores(score: GrpcTotalScore): TotalScore {
     return {
-      epochId: score.epochId,
-      marketId: score.marketId,
-      accountAddress: score.accountAddress,
-      height: score.height,
-      startHeight: score.startHeight,
-      blockTime: score.blockTime,
       bid: score.bid,
       ask: score.ask,
       depth: score.depth,
-      snapshotCount: score.snapshotCount,
-      liquidityScore: score.liquidityScore,
-      liquidityScorePonderated: score.liquidityScorePonderated,
-      uptimeScore: score.uptimeScore,
-      uptimeScorePonderated: score.uptimeScorePonderated,
-      uptimePercentage: score.uptimePercentage,
-      startVolume: score.startVolume,
-      currentVolume: score.currentVolume,
       volume: score.volume,
-      volumeScore: score.volumeScore,
-      volumeScorePonderated: score.volumeScorePonderated,
-      takerStartVolume: score.takerStartVolume,
-      takerCurrentVolume: score.takerCurrentVolume,
-      takerVolume: score.takerVolume,
-      makerStartVolume: score.makerStartVolume,
-      makerCurrentVolume: score.makerCurrentVolume,
-      makerVolume: score.makerVolume,
-      totalScore: score.totalScore,
       reward: score.reward,
+      epochId: score.epochId,
+      marketId: score.marketId,
+      totalScore: score.totalScore,
+      uptimeScore: score.uptimeScore,
+      startVolume: score.startVolume,
+      volumeScore: score.volumeScore,
+      takerVolume: score.takerVolume,
+      makerVolume: score.makerVolume,
+      height: score.height?.toString(),
+      snapshotCount: score.snapshotCount,
+      currentVolume: score.currentVolume,
+      accountAddress: score.accountAddress,
+      liquidityScore: score.liquidityScore,
+      uptimePercentage: score.uptimePercentage,
+      takerStartVolume: score.takerStartVolume,
+      makerStartVolume: score.makerStartVolume,
       rewardPercentage: score.rewardPercentage,
-      createdAt: score.createdAt,
-      updatedAt: score.updatedAt,
+      startHeight: score.startHeight?.toString(),
+      takerCurrentVolume: score.takerCurrentVolume,
+      makerCurrentVolume: score.makerCurrentVolume,
+      uptimeScorePonderated: score.uptimeScorePonderated,
+      volumeScorePonderated: score.volumeScorePonderated,
+      liquidityScorePonderated: score.liquidityScorePonderated,
+      blockTime: score.blockTime ? new Date(score.blockTime) : undefined,
+      createdAt: score.createdAt ? new Date(score.createdAt) : undefined,
+      updatedAt: score.updatedAt ? new Date(score.updatedAt) : undefined,
     }
   }
 
   static totalScoresHistoryResponseToTotalScoresHistory(
-    response: InjectiveDmmRpc.GetTotalScoresHistoryResponse,
+    response: DmmPb.GetTotalScoresHistoryResponse,
   ): TotalScoresHistory {
     const scores = response.scores
 
@@ -208,7 +243,7 @@ export class DmmGrpcTransformer {
   }
 
   static rewardsDistributionResponseToRewardsDistribution(
-    response: InjectiveDmmRpc.GetRewardsDistributionResponse,
+    response: DmmPb.GetRewardsDistributionResponse,
   ): RewardsDistribution {
     const rewards = response.rewards
 
@@ -224,20 +259,21 @@ export class DmmGrpcTransformer {
     reward: GrpcRewardDistribution,
   ): RewardDistribution {
     return {
-      epochId: reward.epochId,
-      accountAddress: reward.accountAddress,
-      height: reward.height,
-      startHeight: reward.startHeight,
-      blockTime: reward.blockTime,
       depth: reward.depth,
       reward: reward.reward,
-      createdAt: reward.createdAt,
-      updatedAt: reward.updatedAt,
+      epochId: reward.epochId,
+      height: reward.height?.toString(),
+      accountAddress: reward.accountAddress,
+      miniEpochsReward: reward.miniEpochsReward,
+      startHeight: reward.startHeight?.toString(),
+      blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
+      createdAt: reward.createdAt ? new Date(reward.createdAt) : undefined,
+      updatedAt: reward.updatedAt ? new Date(reward.updatedAt) : undefined,
     }
   }
 
   static accountVolumesResponseToAccountVolumes(
-    response: InjectiveDmmRpc.GetAccountVolumesResponse,
+    response: DmmPb.GetAccountVolumesResponse,
   ): AccountVolume[] {
     const volumes = response.volumes
 
@@ -248,51 +284,53 @@ export class DmmGrpcTransformer {
     reward: GrpcAccountVolume,
   ): AccountVolume {
     return {
-      epochId: reward.epochId,
-      accountAddress: reward.accountAddress,
-      height: reward.height,
-      blockTime: reward.blockTime,
       date: reward.date,
-      dateTimestamp: reward.dateTimestamp,
       volume: reward.volume,
+      epochId: reward.epochId,
       takerVolume: reward.takerVolume,
       makerVolume: reward.makerVolume,
-      volumePercentage: reward.volumePercentage,
-      makerVolumePercentage: reward.makerVolumePercentage,
-      takerVolumePercentage: reward.takerVolumePercentage,
       dailyVolume: reward.dailyVolume,
+      height: reward.height?.toString(),
+      accountAddress: reward.accountAddress,
+      dailyQualified: reward.dailyQualified,
+      volumePercentage: reward.volumePercentage,
       dailyMakerVolume: reward.dailyMakerVolume,
       dailyTakerVolume: reward.dailyTakerVolume,
+      makerVolumePercentage: reward.makerVolumePercentage,
+      takerVolumePercentage: reward.takerVolumePercentage,
       dailyVolumePercentage: reward.dailyVolumePercentage,
       dailyMakerVolumePercentage: reward.dailyMakerVolumePercentage,
       dailyTakerVolumePercentage: reward.dailyTakerVolumePercentage,
-      dailyQualified: reward.dailyQualified,
-      createdAt: reward.createdAt,
-      updatedAt: reward.updatedAt,
+      blockTime: reward.blockTime ? new Date(reward.blockTime) : undefined,
+      createdAt: reward.createdAt ? new Date(reward.createdAt) : undefined,
+      updatedAt: reward.updatedAt ? new Date(reward.updatedAt) : undefined,
+      dateTimestamp: reward.dateTimestamp
+        ? new Date(reward.dateTimestamp)
+        : undefined,
     }
   }
 
   static rewardsEligibilityResponseToRewardsEligibility(
-    response: InjectiveDmmRpc.GetRewardsEligibilityResponse,
+    response: DmmPb.GetRewardsEligibilityResponse,
   ): RewardsEligibility {
     const volumes = response.volumes
 
     return {
+      estimatedReward: response.estimatedReward,
+      eligibleForNextEpoch: response.eligibleForNextEpoch,
+      eligibleForCurrentEpoch: response.eligibleForCurrentEpoch,
+      currentMakerVolumePercentage: response.currentMakerVolumePercentage,
+      updatedAt: response.updatedAt ? new Date(response.updatedAt) : undefined,
+      averageDailyMakerVolumePercentage:
+        response.averageDailyMakerVolumePercentage,
       volumes: volumes.map(
         DmmGrpcTransformer.grpcAccountVolumesToAccountVolumes,
       ),
-      currentMakerVolumePercentage: response.currentMakerVolumePercentage,
-      averageDailyMakerVolumePercentage:
-        response.averageDailyMakerVolumePercentage,
-      eligibleForNextEpoch: response.eligibleForNextEpoch,
-      eligibleForCurrentEpoch: response.eligibleForCurrentEpoch,
-      estimatedReward: response.estimatedReward,
-      updatedAt: response.updatedAt,
     }
   }
 
   static marketRewardsRangeResponseToMarketRewardsRange(
-    response: InjectiveDmmRpc.GetMarketRewardsRangeResponse,
+    response: DmmPb.GetMarketRewardsRangeResponse,
   ): MinMaxRewards {
     const formattedMinCurrentEpochRewards: Record<string, string> = {}
     const formattedMaxCurrentEpochRewards: Record<string, string> = {}

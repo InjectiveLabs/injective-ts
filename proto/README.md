@@ -1,6 +1,6 @@
 # 🌟 TS Proto Generation
 
-Within this folder we have the logic to generate proto definitions from the `injective-core` and `injective-indexer` repos. Within the `core/gen.sh` and `indexer/gen.sh` files, you can find the branches variables and change them as per your need. Then, you can simply just run `yarn generate:core-proto-ts` or `yarn generate:indexer-proto-ts` to generate the TypeScript proto definitions and finally, publish them using `yarn publish:core-proto-ts` or `yarn publish:indexer-proto-ts`
+Within this folder we have the logic to generate proto definitions from the `injective-core` and `injective-indexer` repos. Within the `core/gen.sh` and `indexer/gen.sh` files, you can find the branches variables and change them as per your need. Then, you can simply just run `pnpm generate:core-proto-ts` or `pnpm generate:indexer-proto-ts` to generate the TypeScript proto definitions and finally, publish them using `pnpm publish:core-proto-ts` or `pnpm publish:indexer-proto-ts`
 
 ---
 

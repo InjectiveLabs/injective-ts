@@ -1,72 +1,73 @@
 {
   "name": "@injectivelabs/wallet-wallet-connect",
+  "version": "1.18.17",
   "description": "Wallet connect strategy for use with @injectivelabs/wallet-core.",
-  "version": "1.15.1",
-  "sideEffects": false,
-  "type": "module",
+  "license": "Apache-2.0",
   "author": {
     "name": "InjectiveLabs",
     "email": "admin@injectivelabs.org"
   },
-  "license": "Apache-2.0",
-  "types": "dist/cjs/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
-  "_moduleAliases": {
-    "~wallet-wallet-connect": "dist"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InjectiveLabs/injective-ts"
   },
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "react-native": {
         "import": "./dist/esm/index.js",
-        "require": "./dist/cjs/index.js",
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "require": "./dist/cjs/index.cjs",
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "require": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "default": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
       }
     }
   },
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.cts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "yarn build:cjs && yarn build:esm && yarn build:post",
-    "build:cjs": "tsc --build --force tsconfig.build.json",
-    "build:esm": "tsc --build --force tsconfig.build.esm.json",
-    "build:watch": "tsc --build -w tsconfig.build.json && tsc -w --build tsconfig.build.esm.json && yarn build:post",
-    "build:post": "shx cp ../../../etc/stub/package.json.stub dist/cjs/package.json && shx cp ../../../etc/stub/package.esm.json.stub dist/esm/package.json",
-    "clean": "tsc --build tsconfig.build.json --clean && tsc --build tsconfig.build.esm.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache && shx mkdir -p dist",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
-    "coverage": "jest --coverage",
+    "build": "pnpm type-check && tsdown",
+    "build:fast": "tsdown",
+    "build:watch": "tsdown --watch",
+    "clean": "shx rm -rf dist coverage *.log junit.xml && shx mkdir -p dist",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ci": "vitest run --coverage --reporter=verbose",
+    "coverage": "vitest run --coverage",
     "coverage:show": "live-server coverage",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "lint": "eslint . --ext .ts,.js"
   },
   "dependencies": {
-    "@bangjelkoski/wallet-connect-ethereum-provider": "2.17.2",
-    "@bangjelkoski/wc-ethereum-provider": "2.18.1",
-    "@injectivelabs/exceptions": "^1.15.1",
-    "@injectivelabs/sdk-ts": "^1.15.1",
-    "@injectivelabs/ts-types": "^1.15.1",
-    "@injectivelabs/wallet-base": "^1.15.1"
+    "@injectivelabs/exceptions": "workspace:*",
+    "@injectivelabs/sdk-ts": "workspace:*",
+    "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/wallet-base": "workspace:*",
+    "@reown/appkit": "1.8.15",
+    "@reown/appkit-adapter-ethers": "1.8.15"
   },
-  "gitHead": "6442ae377bbfb3459d2fb3a44c650630a5b7f445",
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md",
-    "displayName": "wallet-connect API Documentation"
+  "publishConfig": {
+    "access": "public"
+  },
+  "_moduleAliases": {
+    "~wallet-wallet-connect": "dist"
   }
 }

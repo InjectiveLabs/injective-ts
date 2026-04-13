@@ -1,120 +1,57 @@
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
-import { CosmosMintV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import { cosmosSdkDecToBigNumber, uint8ArrayToString } from '../../../utils/index.js'
-
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
+import { toHumanReadable } from '@injectivelabs/utils'
+import * as CosmosMintV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb'
+import { QueryClient as CosmosMintV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/mint/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
+import { uint8ArrayToString } from '../../../utils/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-
+import { ChainGrpcMintTransformer } from './../transformers/ChainGrpcMintTransformer.js'
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcMintApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Mint
 
-  protected client: CosmosMintV1Beta1Query.QueryClientImpl
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new CosmosMintV1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+  private get client() {
+    return this.initClient(CosmosMintV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {
-    const request = CosmosMintV1Beta1Query.QueryParamsRequest.create()
+    const request = CosmosMintV1Beta1QueryPb.QueryParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<CosmosMintV1Beta1Query.QueryParamsResponse>(() =>
-          this.client.Params(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosMintV1Beta1QueryPb.QueryParamsRequest,
+      CosmosMintV1Beta1QueryPb.QueryParamsResponse
+    >(request, this.client.params.bind(this.client))
 
-      return ChainGrpcMintTransformer.moduleParamsResponseToModuleParams(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Params',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Params',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcMintTransformer.moduleParamsResponseToModuleParams(response)
   }
 
   async fetchInflation() {
-    const request = CosmosMintV1Beta1Query.QueryInflationRequest.create()
+    const request = CosmosMintV1Beta1QueryPb.QueryInflationRequest.create()
 
-    try {
-      const response =
-        await this.retry<CosmosMintV1Beta1Query.QueryInflationResponse>(() =>
-          this.client.Inflation(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosMintV1Beta1QueryPb.QueryInflationRequest,
+      CosmosMintV1Beta1QueryPb.QueryInflationResponse
+    >(request, this.client.inflation.bind(this.client))
 
-      return {
-        inflation: cosmosSdkDecToBigNumber(
-          new BigNumberInBase(uint8ArrayToString(response.inflation)),
-        ).toFixed(),
-      }
-    } catch (e: unknown) {
-      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Inflation',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Inflation',
-        contextModule: this.module,
-      })
+    return {
+      inflation: toHumanReadable(uint8ArrayToString(response.inflation)),
     }
   }
 
   async fetchAnnualProvisions() {
-    const request = CosmosMintV1Beta1Query.QueryAnnualProvisionsRequest.create()
+    const request =
+      CosmosMintV1Beta1QueryPb.QueryAnnualProvisionsRequest.create()
 
-    try {
-      const response =
-        await this.retry<CosmosMintV1Beta1Query.QueryAnnualProvisionsResponse>(
-          () => this.client.AnnualProvisions(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosMintV1Beta1QueryPb.QueryAnnualProvisionsRequest,
+      CosmosMintV1Beta1QueryPb.QueryAnnualProvisionsResponse
+    >(request, this.client.annualProvisions.bind(this.client))
 
-      return {
-        annualProvisions: cosmosSdkDecToBigNumber(
-          new BigNumberInBase(uint8ArrayToString(response.annualProvisions)),
-        ).toFixed(),
-      }
-    } catch (e: unknown) {
-      if (e instanceof CosmosMintV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AnnualProvisions',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AnnualProvisions',
-        contextModule: this.module,
-      })
+    return {
+      annualProvisions: toHumanReadable(
+        uint8ArrayToString(response.annualProvisions),
+      ).toFixed(),
     }
   }
 }

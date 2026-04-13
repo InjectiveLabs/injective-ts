@@ -1,8 +1,8 @@
-import { Cosmos } from '@cosmostation/extension-client'
+import type { CosmostationProvider } from './../types.js'
 
 export const isCosmosStationWalletInstalled = () => {
   const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
-    cosmostation?: Cosmos
+    cosmostation?: CosmostationProvider
   }
 
   return $window.cosmostation !== undefined

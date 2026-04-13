@@ -1,4 +1,8 @@
-import {
+import { GeneralException } from '@injectivelabs/exceptions'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type * as InjectiveAuctionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/query_pb'
+import type * as InjectiveAuctionV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/genesis_pb'
+import type {
   AuctionBid,
   GrpcAuctionBid,
   AuctionModuleState,
@@ -7,16 +11,11 @@ import {
   AuctionLastAuctionResult,
   GrpcAuctionLastAuctionResult,
 } from '../types/auction.js'
-import {
-  InjectiveAuctionV1Beta1Genesis,
-  InjectiveAuctionV1Beta1Query,
-} from '@injectivelabs/core-proto-ts'
-import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
 
 /**
+ * Transformer for Auction module gRPC responses
  * @category Chain Grpc Transformer
  */
-
 export class ChainGrpcAuctionTransformer {
   static grpcBidToBid(grpcBid: GrpcAuctionBid): AuctionBid {
     return {
@@ -37,52 +36,69 @@ export class ChainGrpcAuctionTransformer {
             grpcLastAuctionResult.amount,
           )
         : undefined,
-      round: grpcLastAuctionResult.round,
+      round: grpcLastAuctionResult.round.toString(),
     }
   }
 
   static moduleParamsResponseToModuleParams(
-    response: InjectiveAuctionV1Beta1Query.QueryAuctionParamsResponse,
+    response: InjectiveAuctionV1Beta1QueryPb.QueryAuctionParamsResponse,
   ): AuctionModuleStateParams {
-    const params = response.params!
+    if (!response.params) {
+      throw new GeneralException(
+        new Error('Auction params not found in response'),
+      )
+    }
+
+    const params = response.params
 
     return {
-      auctionPeriod: parseInt(params?.auctionPeriod || '0', 10),
-      minNextBidIncrementRate: params?.minNextBidIncrementRate || '0',
+      auctionPeriod: Number(params.auctionPeriod ?? 0n),
+      minNextBidIncrementRate: params.minNextBidIncrementRate ?? '0',
     }
   }
 
   static currentBasketResponseToCurrentBasket(
-    response: InjectiveAuctionV1Beta1Query.QueryCurrentAuctionBasketResponse,
+    response: InjectiveAuctionV1Beta1QueryPb.QueryCurrentAuctionBasketResponse,
   ): AuctionCurrentBasket {
     return {
       amountList: response.amount.map(
         ChainGrpcCommonTransformer.grpcCoinToCoin,
       ),
-      auctionRound: parseInt(response.auctionRound, 10),
-      auctionClosingTime: parseInt(response.auctionClosingTime, 10),
+      auctionRound: Number(response.auctionRound),
+      auctionClosingTime: Number(response.auctionClosingTime),
       highestBidder: response.highestBidAmount,
       highestBidAmount: response.highestBidAmount,
     }
   }
 
   static auctionModuleStateResponseToAuctionModuleState(
-    response: InjectiveAuctionV1Beta1Query.QueryModuleStateResponse,
+    response: InjectiveAuctionV1Beta1QueryPb.QueryModuleStateResponse,
   ): AuctionModuleState {
-    const state = response.state as InjectiveAuctionV1Beta1Genesis.GenesisState
+    if (!response.state) {
+      throw new GeneralException(
+        new Error('Auction module state not found in response'),
+      )
+    }
 
-    const params = state.params!
+    const state =
+      response.state as InjectiveAuctionV1Beta1GenesisPb.GenesisState
+
+    if (!state.params) {
+      throw new GeneralException(new Error('Auction params not found in state'))
+    }
+
+    const params = state.params
 
     return {
       params: {
-        auctionPeriod: parseInt(params.auctionPeriod, 10),
+        auctionPeriod: Number(params.auctionPeriod),
         minNextBidIncrementRate: params.minNextBidIncrementRate,
       },
-      auctionRound: parseInt(state.auctionRound, 10),
+      auctionRound: Number(state.auctionRound),
       highestBid: state.highestBid
         ? ChainGrpcAuctionTransformer.grpcBidToBid(state.highestBid)
         : undefined,
-      auctionEndingTimestamp: parseInt(state.auctionEndingTimestamp, 10),
+      auctionEndingTimestamp: Number(state.auctionEndingTimestamp),
       lastAuctionResult: state.lastAuctionResult
         ? ChainGrpcAuctionTransformer.grpcLastAuctionResultToLastAuctionResult(
             state.lastAuctionResult,
@@ -91,11 +107,11 @@ export class ChainGrpcAuctionTransformer {
     }
   }
 
-  static LastAuctionResultResponseToLastAuctionResult(
-    response: InjectiveAuctionV1Beta1Query.QueryLastAuctionResultResponse,
-  ) {
+  static lastAuctionResultResponseToLastAuctionResult(
+    response: InjectiveAuctionV1Beta1QueryPb.QueryLastAuctionResultResponse,
+  ): AuctionLastAuctionResult | undefined {
     if (!response.lastAuctionResult) {
-      return
+      return undefined
     }
 
     return ChainGrpcAuctionTransformer.grpcLastAuctionResultToLastAuctionResult(

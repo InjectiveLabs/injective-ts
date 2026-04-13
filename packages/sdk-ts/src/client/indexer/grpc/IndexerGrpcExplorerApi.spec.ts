@@ -1,12 +1,12 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerRestExplorerApi } from '../rest/index.js'
-import { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
-import { ExplorerValidator } from '../types/index.js'
 import { IndexerGrpcExplorerApi } from './IndexerGrpcExplorerApi.js'
+import type { ExplorerValidator } from '../types/index.js'
+import type { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.MainnetSentry)
+const endpoints = getNetworkEndpoints(Network.Devnet1)
 const indexerGrpcExplorerApi = new IndexerGrpcExplorerApi(endpoints.indexer)
 
 describe('IndexerGrpcExplorerApi', () => {
@@ -87,7 +87,9 @@ describe('IndexerGrpcExplorerApi', () => {
         limit: 1,
       })
       const [block] = data
-      const response = await indexerGrpcExplorerApi.fetchBlock(block.height)
+      const response = await indexerGrpcExplorerApi.fetchBlock(
+        block.height.toString(),
+      )
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -238,6 +240,87 @@ describe('IndexerGrpcExplorerApi', () => {
     } catch (e) {
       console.error(
         'IndexerGrpcExplorerApi.fetchExplorerStats => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchTxsV2', async () => {
+    try {
+      const response = await indexerGrpcExplorerApi.fetchTxsV2({
+        perPage: 10,
+        type: 'cosmos.gov.v1beta1.MsgVote,cosmos.gov.v1.MsgVote',
+      })
+
+      const { data: txs } = response
+
+      expect(response).toBeDefined()
+
+      expect(txs).toBeDefined()
+      expect(txs).toEqual(expect.objectContaining<typeof txs>(txs))
+    } catch (e) {
+      console.error('IndexerGrpcExplorerApi.fetchTxV2 => ' + (e as any).message)
+    }
+  })
+
+  test('fetchAccountTxsV2', async () => {
+    try {
+      const response = await indexerGrpcExplorerApi.fetchAccountTxsV2({
+        address: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+        perPage: 10,
+      })
+
+      expect(response).toBeDefined()
+    } catch (e) {
+      console.error(
+        'IndexerGrpcExplorerApi.fetchAccountTxsV2 => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchAccountTxsV2WithBlockDetails', async () => {
+    try {
+      const response = await new IndexerGrpcExplorerApi(
+        getNetworkEndpoints(Network.Testnet).indexer,
+      ).fetchAccountTxsV2({
+        address: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+        perPage: 10,
+        type: 'cosmos.bank.v1beta1.MsgSend,cosmos.bank.v1beta1.MsgMultiSend',
+        startTime: 1752096761985,
+      })
+
+      expect(response).toBeDefined()
+    } catch (e) {
+      console.error(
+        'IndexerGrpcExplorerApi.fetchAccountTxsV2 => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchBlocksV2', async () => {
+    try {
+      const response = await indexerGrpcExplorerApi.fetchBlocksV2({
+        perPage: 10,
+      })
+
+      expect(response).toBeDefined()
+    } catch (e) {
+      console.error(
+        'IndexerGrpcExplorerApi.fetchBlocksV2 => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('fetchContractTxsV2', async () => {
+    try {
+      const response = await indexerGrpcExplorerApi.fetchContractTxsV2({
+        contractAddress: 'inj1qk00h5atutpsv900x202pxx42npjr9thrzhgxn',
+        perPage: 10,
+      })
+
+      expect(response).toBeDefined()
+    } catch (e) {
+      console.error(
+        'IndexerGrpcExplorerApi.fetchContractTxsV2 => ' + (e as any).message,
       )
     }
   })

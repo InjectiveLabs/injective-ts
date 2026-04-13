@@ -1,23 +1,27 @@
-import { generateMnemonic } from 'bip39'
-import { Wallet, HDNodeWallet } from 'ethers'
-import secp256k1 from 'secp256k1'
-import keccak256 from 'keccak256'
-import { PublicKey } from './PublicKey.js'
+import { generateMnemonic } from '@scure/bip39'
+import { secp256k1 } from '@noble/curves/secp256k1'
+import { toBytes, keccak256, hashTypedData } from 'viem'
+import { wordlist } from '@scure/bip39/wordlists/english'
+import { GeneralException } from '@injectivelabs/exceptions'
+import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { Wallet, concat, getBytes, Signature, HDNodeWallet } from 'ethers'
+import * as InjectiveTypesV1Beta1TxExtPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/tx_ext_pb'
 import { Address } from './Address.js'
-import * as BytesUtils from '@ethersproject/bytes'
-import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
+import { PublicKey } from './PublicKey.js'
+import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
+import { MsgDecoder, getEip712TypedData } from '../tx/eip712/index.js'
+import {
+  hexToUint8Array,
+  uint8ArrayToHex,
+  base64ToUint8Array,
+} from '../../utils/encoding.js'
 import {
   DEFAULT_DERIVATION_PATH,
+  TypedDataUtilsSanitizeData,
   recoverTypedSignaturePubKey,
 } from '../../utils/index.js'
-import {
-  CosmosTxV1Beta1Tx,
-  InjectiveTypesV1Beta1TxExt,
-} from '@injectivelabs/core-proto-ts'
-import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
-import { getEip712TypedData, MsgDecoder } from '../tx/eip712/index.js'
-import { GeneralException } from '@injectivelabs/exceptions'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
+import type { Hash, TypedDataDefinition } from 'viem'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 
 /**
  * Class for wrapping SigningKey that is used for signature creation and public key derivation.
@@ -36,7 +40,7 @@ export class PrivateKey {
    * @returns { privateKey: PrivateKey, mnemonic: string }
    */
   static generate(): { privateKey: PrivateKey; mnemonic: string } {
-    const mnemonic = generateMnemonic()
+    const mnemonic = generateMnemonic(wordlist)
     const privateKey = PrivateKey.fromMnemonic(mnemonic)
 
     return {
@@ -84,12 +88,10 @@ export class PrivateKey {
     const privateKeyHex =
       isString && privateKey.startsWith('0x') ? privateKey.slice(2) : privateKey
     const privateKeyBuff = isString
-      ? Buffer.from(privateKeyHex.toString(), 'hex')
+      ? hexToUint8Array(privateKeyHex.toString())
       : privateKey
 
-    return new PrivateKey(
-      new Wallet(Buffer.from(privateKeyBuff).toString('hex')),
-    )
+    return new PrivateKey(new Wallet(uint8ArrayToHex(privateKeyBuff)))
   }
 
   /**
@@ -141,16 +143,14 @@ export class PrivateKey {
    * @param {string} messageBytes: the message that will be hashed and signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  sign(messageBytes: Buffer): Uint8Array {
+  sign(messageBytes: Uint8Array): Uint8Array {
     const { wallet } = this
 
     const msgHash = keccak256(messageBytes)
     const signature = wallet.signingKey.sign(msgHash)
-    const splitSignature = BytesUtils.splitSignature(signature)
+    const splittedSignature = Signature.from(signature)
 
-    return BytesUtils.arrayify(
-      BytesUtils.concat([splitSignature.r, splitSignature.s]),
-    )
+    return getBytes(concat([splittedSignature.r, splittedSignature.s]))
   }
 
   /**
@@ -158,17 +158,19 @@ export class PrivateKey {
    * @param {Buffer} messageBytes: the message that will be hashed and signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  signEcda(messageBytes: Buffer): Uint8Array {
+
+  signEcda(messageBytes: Uint8Array): Uint8Array {
     const { wallet } = this
 
     const msgHash = keccak256(messageBytes)
     const privateKeyHex = wallet.privateKey.startsWith('0x')
       ? wallet.privateKey.slice(2)
       : wallet.privateKey
-    const privateKey = Uint8Array.from(Buffer.from(privateKeyHex, 'hex'))
-    const { signature } = secp256k1.ecdsaSign(msgHash, privateKey)
+    const privateKey = hexToUint8Array(privateKeyHex)
+    // @noble/curves: sign() returns Signature object, use toCompactRawBytes() for compact format
+    const signature = secp256k1.sign(toBytes(msgHash), privateKey)
 
-    return signature
+    return signature.toCompactRawBytes()
   }
 
   /**
@@ -176,15 +178,13 @@ export class PrivateKey {
    * @param {string} messageHashedBytes: the message that will be signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  signHashed(messageHashedBytes: Buffer): Uint8Array {
+  signHashed(messageHashedBytes: Uint8Array): Uint8Array {
     const { wallet } = this
 
     const signature = wallet.signingKey.sign(messageHashedBytes)
-    const splitSignature = BytesUtils.splitSignature(signature)
+    const splittedSignature = Signature.from(signature)
 
-    return BytesUtils.arrayify(
-      BytesUtils.concat([splitSignature.r, splitSignature.s]),
-    )
+    return getBytes(concat([splittedSignature.r, splittedSignature.s]))
   }
 
   /**
@@ -192,36 +192,48 @@ export class PrivateKey {
    * @param {Buffer} messageHashedBytes: the message that will be signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  signHashedEcda(messageHashedBytes: Buffer): Uint8Array {
+  signHashedEcda(messageHashedBytes: Uint8Array): Uint8Array {
     const { wallet } = this
 
     const privateKeyHex = wallet.privateKey.startsWith('0x')
       ? wallet.privateKey.slice(2)
       : wallet.privateKey
-    const privateKey = Uint8Array.from(Buffer.from(privateKeyHex, 'hex'))
-    const { signature } = secp256k1.ecdsaSign(messageHashedBytes, privateKey)
+    const privateKey = hexToUint8Array(privateKeyHex)
+    // @noble/curves: sign() returns Signature object
+    const signature = secp256k1.sign(messageHashedBytes, privateKey)
 
-    return signature
+    return signature.toCompactRawBytes()
   }
 
   /**
    * Sign the given typed data using the edcsa sign_deterministic function.
-   * @param {Buffer} eip712Data: the typed data that will be hashed and signed, a Buffer made of bytes
+   * @param {TypedDataDefinition | any} eip712Data: the typed data that will be hashed and signed
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  signTypedData(eip712Data: any): Uint8Array {
+  async signTypedData(
+    eip712Data: TypedDataDefinition | any,
+  ): Promise<Uint8Array> {
     const { wallet } = this
 
     const privateKeyHex = wallet.privateKey.startsWith('0x')
       ? wallet.privateKey.slice(2)
       : wallet.privateKey
-    const signature = signTypedData({
-      privateKey: Buffer.from(privateKeyHex, 'hex'),
-      data: eip712Data,
-      version: SignTypedDataVersion.V4,
-    })
 
-    return Buffer.from(signature.replace('0x', ''), 'hex')
+    // Use viem's hashTypedData but with sanitized data to match @metamask/eth-sig-util behavior
+    const sanitizedData = TypedDataUtilsSanitizeData(eip712Data)
+    const msgHashBytes = hashTypedData(sanitizedData)
+
+    const privateKey = hexToUint8Array(privateKeyHex)
+    // @noble/curves: sign() returns Signature object with recovery property
+    const sig = secp256k1.sign(toBytes(msgHashBytes), privateKey)
+
+    // Append recovery ID to match @metamask/eth-sig-util format
+    const signature = sig.toCompactRawBytes()
+    const signatureWithRecovery = new Uint8Array(signature.length + 1)
+    signatureWithRecovery.set(signature)
+    signatureWithRecovery[signature.length] = sig.recovery + 27 // EIP155 recovery ID format
+
+    return signatureWithRecovery
   }
 
   /**
@@ -229,16 +241,17 @@ export class PrivateKey {
    * @param {Buffer} eip712Data: the typed data that will be signed, a Buffer made of bytes
    * @returns {Uint8Array} a signature of this private key over the given message
    */
-  signHashedTypedData(eip712Data: Buffer): Uint8Array {
+  signHashedTypedData(eip712Data: Uint8Array): Uint8Array {
     const { wallet } = this
 
     const privateKeyHex = wallet.privateKey.startsWith('0x')
       ? wallet.privateKey.slice(2)
       : wallet.privateKey
-    const privateKey = Uint8Array.from(Buffer.from(privateKeyHex, 'hex'))
-    const { signature } = secp256k1.ecdsaSign(eip712Data, privateKey)
+    const privateKey = hexToUint8Array(privateKeyHex)
+    // @noble/curves: sign() returns Signature object
+    const signature = secp256k1.sign(eip712Data, privateKey)
 
-    return signature
+    return signature.toCompactRawBytes()
   }
 
   /**
@@ -251,7 +264,7 @@ export class PrivateKey {
    * @param {any} eip712: the EIP712 typed data to verify against
    * @param {string} publicKey: the public key to verify against in hex
    * */
-  public static verifySignature({
+  public static async verifySignature({
     signature,
     eip712,
     publicKey,
@@ -259,12 +272,12 @@ export class PrivateKey {
     signature: string /* in hex */
     eip712: any
     publicKey: string /* in hex */
-  }): boolean {
+  }): Promise<boolean> {
     const publicKeyInHex = publicKey.startsWith('0x')
       ? publicKey
       : `0x${publicKey}`
 
-    const recoveredPubKey = recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKey = await recoverTypedSignaturePubKey(eip712, signature)
     const recoveredPubKeyInHex = recoveredPubKey.startsWith('0x')
       ? recoveredPubKey
       : `0x${recoveredPubKey}`
@@ -290,15 +303,15 @@ export class PrivateKey {
    * @param {any} eip712: the EIP712 typed data to verify against
    * @param {string} publicKey: the public key to verify against in hex
    * */
-  public verifyThisPkSignature({
+  public async verifyThisPkSignature({
     signature,
     eip712,
   }: {
     signature: string /* in hex */
     eip712: any
-  }): boolean {
+  }): Promise<boolean> {
     const publicKeyInHex = `0x${this.toPublicKey().toHex()}`
-    const recoveredPubKey = recoverTypedSignaturePubKey(eip712, signature)
+    const recoveredPubKey = await recoverTypedSignaturePubKey(eip712, signature)
     const recoveredPubKeyInHex = recoveredPubKey.startsWith('0x')
       ? recoveredPubKey
       : `0x${recoveredPubKey}`
@@ -321,19 +334,19 @@ export class PrivateKey {
    *
    * (params are passed as an object)
    *
-   * @param {CosmosTxV1Beta1Tx.TxRaw} txRaw: the signature to verify in hex
+   * @param {CosmosTxV1Beta1TxPb.TxRaw} txRaw: the signature to verify in hex
    * @param {object} signer: the public key and the account number to verify against
    **/
-  public static verifyCosmosSignature({
+  public static async verifyCosmosSignature({
     txRaw,
     signer,
   }: {
-    txRaw: CosmosTxV1Beta1Tx.TxRaw
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw
     signer: {
       accountNumber: number | string
       publicKey: string /* in base64 */
     }
-  }): boolean {
+  }): Promise<boolean> {
     const { body, authInfo, signatures } = getTransactionPartsFromTxRaw(txRaw)
 
     if (authInfo.signerInfos.length > 1 || signatures.length > 1) {
@@ -351,8 +364,8 @@ export class PrivateKey {
     const getChainIds = () => {
       if (!body.extensionOptions.length) {
         return {
-          ethereumChainId: EthereumChainId.Mainnet,
           chainId: ChainId.Mainnet,
+          EvmChainId: EvmChainId.Mainnet,
         }
       }
 
@@ -362,31 +375,33 @@ export class PrivateKey {
 
       if (!extension) {
         return {
-          ethereumChainId: EthereumChainId.Mainnet,
           chainId: ChainId.Mainnet,
+          EvmChainId: EvmChainId.Mainnet,
         }
       }
 
       const decodedExtension =
-        InjectiveTypesV1Beta1TxExt.ExtensionOptionsWeb3Tx.decode(extension.value)
+        InjectiveTypesV1Beta1TxExtPb.ExtensionOptionsWeb3Tx.fromBinary(
+          extension.value,
+        )
 
-      const ethereumChainId = Number(
-        decodedExtension.typedDataChainID,
-      ) as EthereumChainId
+      const evmChainId = Number(decodedExtension.typedDataChainID) as EvmChainId
+
+      const testnetChainIds: EvmChainId[] = [
+        EvmChainId.Kovan,
+        EvmChainId.Goerli,
+        EvmChainId.Sepolia,
+      ]
 
       return {
-        ethereumChainId: ethereumChainId,
-        chainId: [
-          EthereumChainId.Goerli,
-          EthereumChainId.Kovan,
-          EthereumChainId.Sepolia,
-        ].includes(ethereumChainId)
+        evmChainId: EvmChainId,
+        chainId: testnetChainIds.includes(evmChainId)
           ? ChainId.Testnet
           : ChainId.Mainnet,
       }
     }
 
-    const { ethereumChainId, chainId } = getChainIds()
+    const { evmChainId, chainId } = getChainIds()
     const [signerInfo] = authInfo.signerInfos
     const [signature] = signatures
     const [msg] = body.messages
@@ -402,13 +417,13 @@ export class PrivateKey {
         timeoutHeight: body.timeoutHeight.toString(),
         chainId,
       },
-      ethereumChainId,
+      evmChainId: evmChainId as unknown as EvmChainId,
     })
 
-    return this.verifySignature({
+    return await this.verifySignature({
       eip712: eip712TypedData,
-      signature: Buffer.from(signature).toString('hex'),
-      publicKey: Buffer.from(signer.publicKey, 'base64').toString('hex'),
+      signature: uint8ArrayToHex(signature),
+      publicKey: uint8ArrayToHex(base64ToUint8Array(signer.publicKey)),
     })
   }
 
@@ -428,13 +443,16 @@ export class PrivateKey {
     publicKey,
   }: {
     signature: string /* in hex */
-    signDoc: Buffer
+    signDoc: Uint8Array
     publicKey: string /* in hex */
   }): boolean {
-    return secp256k1.ecdsaVerify(
-      Buffer.from(signature, 'hex'),
-      keccak256(signDoc),
-      Buffer.from(publicKey, 'hex'),
+    const sigHex = signature.startsWith('0x') ? signature : `0x${signature}`
+    const pubHex = publicKey.startsWith('0x') ? publicKey : `0x${publicKey}`
+    // @noble/curves: verify(signature, msgHash, publicKey) returns boolean
+    return secp256k1.verify(
+      toBytes(sigHex as Hash),
+      toBytes(keccak256(signDoc)),
+      toBytes(pubHex as Hash),
     )
   }
 }

@@ -1,13 +1,12 @@
-import MsgWithdrawValidatorCommission from './MsgWithdrawValidatorCommission.js'
 import snakecaseKeys from 'snakecase-keys'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgWithdrawValidatorCommission from './MsgWithdrawValidatorCommission.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
-
 
 const params: MsgWithdrawValidatorCommission['params'] = {
   validatorAddress: mockFactory.validatorAddress,
@@ -31,19 +30,23 @@ describe('MsgWithdrawValidatorCommission', () => {
 
   it('generates proper data', () => {
     const data = message.toData()
+    const proto = message.toProto()
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...proto,
     })
   })
 
   it('generates proper amino', () => {
     const amino = message.toAmino()
+    const proto = message.toProto()
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      value: aminoParams,
+      value: {
+        validator_address: proto.validatorAddress,
+      },
     })
   })
 
@@ -57,10 +60,13 @@ describe('MsgWithdrawValidatorCommission', () => {
 
   it('generates proper Eip712 values', () => {
     const eip712 = message.toEip712()
+    const proto = message.toProto()
 
     expect(eip712).toStrictEqual({
       type: protoTypeShort,
-      value: aminoParams,
+      value: {
+        validator_address: proto.validatorAddress,
+      },
     })
   })
 

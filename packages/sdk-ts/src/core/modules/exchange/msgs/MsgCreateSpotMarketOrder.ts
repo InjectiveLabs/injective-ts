@@ -1,17 +1,15 @@
+import { toChainFormat } from '@injectivelabs/utils'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
-import { amountToCosmosSdkDecAmount, numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-import {
-  InjectiveExchangeV1Beta1Exchange,
-  InjectiveExchangeV1Beta1Tx,
-} from '@injectivelabs/core-proto-ts'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgCreateSpotMarketOrder {
   export interface Params {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: InjectiveExchangeV1Beta1Exchange.OrderType
+    orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -19,36 +17,31 @@ export declare namespace MsgCreateSpotMarketOrder {
     cid?: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgCreateSpotMarketOrder
 }
 
 const createMarketOrder = (params: MsgCreateSpotMarketOrder.Params) => {
-  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
+  const orderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo.create({
+    subaccountId: params.subaccountId,
+    feeRecipient: params.feeRecipient,
+    price: params.price,
+    quantity: params.quantity,
+    cid: params.cid || '',
+  })
 
-  orderInfo.subaccountId = params.subaccountId
-  orderInfo.feeRecipient = params.feeRecipient
-  orderInfo.price = params.price
-  orderInfo.quantity = params.quantity
+  const spotOrder = InjectiveExchangeV1Beta1ExchangePb.SpotOrder.create({
+    marketId: params.marketId,
+    orderInfo: orderInfo,
+    orderType: params.orderType,
+    triggerPrice: params.triggerPrice || '0',
+  })
 
-  if (params.cid) {
-    orderInfo.cid = params.cid
-  }
+  const message = InjectiveExchangeV1Beta1TxPb.MsgCreateSpotMarketOrder.create({
+    sender: params.injectiveAddress,
+    order: spotOrder,
+  })
 
-  const spotOrder = InjectiveExchangeV1Beta1Exchange.SpotOrder.create()
-
-  spotOrder.marketId = params.marketId
-  spotOrder.orderInfo = orderInfo
-  spotOrder.orderType = params.orderType
-  spotOrder.triggerPrice = params.triggerPrice || '0'
-
-  const message = InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder.create()
-
-  message.sender = params.injectiveAddress
-  message.order = spotOrder
-
-  return InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder.fromPartial(
-    message,
-  )
+  return message
 }
 
 /**
@@ -68,11 +61,9 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
     const { params: initialParams } = this
     const params = {
       ...initialParams,
-      price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
-      triggerPrice: amountToCosmosSdkDecAmount(
-        initialParams.triggerPrice || 0,
-      ).toFixed(),
-      quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
+      price: toChainFormat(initialParams.price).toFixed(),
+      triggerPrice: toChainFormat(initialParams.triggerPrice || 0).toFixed(),
+      quantity: toChainFormat(initialParams.quantity).toFixed(),
     } as MsgCreateSpotMarketOrder.Params
 
     return createMarketOrder(params)
@@ -89,15 +80,25 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const order = createMarketOrder(params)
     const message = {
-      ...snakecaseKeys(order),
+      sender: params.injectiveAddress,
+      order: {
+        market_id: params.marketId,
+        order_info: {
+          subaccount_id: params.subaccountId,
+          fee_recipient: params.feeRecipient,
+          price: params.price,
+          quantity: params.quantity,
+          cid: params.cid || '',
+        },
+        order_type: params.orderType,
+        trigger_price: params.triggerPrice || '0',
+      },
     }
 
     return {
       type: 'exchange/MsgCreateSpotMarketOrder',
-      value:
-        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder>,
+      value: message,
     }
   }
 
@@ -126,9 +127,8 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
           quantity: numberToCosmosSdkDecString(params.quantity),
         },
         trigger_price: numberToCosmosSdkDecString(params.triggerPrice || '0'),
-        order_type: InjectiveExchangeV1Beta1Exchange.orderTypeToJSON(
-          params.orderType,
-        ),
+        order_type:
+          InjectiveExchangeV1Beta1ExchangePb.OrderType[params.orderType],
       },
     }
 
@@ -146,12 +146,10 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
         ...value.order,
         order_info: {
           ...value.order?.order_info,
-          price: amountToCosmosSdkDecAmount(params.price).toFixed(),
-          quantity: amountToCosmosSdkDecAmount(params.quantity).toFixed(),
+          price: toChainFormat(params.price).toFixed(),
+          quantity: toChainFormat(params.quantity).toFixed(),
         },
-        trigger_price: amountToCosmosSdkDecAmount(
-          params.triggerPrice || '0',
-        ).toFixed(),
+        trigger_price: toChainFormat(params.triggerPrice || '0').toFixed(),
       },
     }
 
@@ -171,8 +169,8 @@ export default class MsgCreateSpotMarketOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgCreateSpotMarketOrder.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgCreateSpotMarketOrder.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

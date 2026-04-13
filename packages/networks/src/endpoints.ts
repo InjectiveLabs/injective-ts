@@ -1,6 +1,6 @@
-import { NetworkEndpoints } from './types.js'
+import type { NetworkEndpoints } from './types.js'
 
-export const endpointsMainnetSentry: NetworkEndpoints = {
+export const getEndpointsMainnetSentry = (): NetworkEndpoints => ({
   indexer: 'https://sentry.exchange.grpc-web.injective.network',
   grpc: 'https://sentry.chain.grpc-web.injective.network',
   rpc: 'https://sentry.tm.injective.network',
@@ -11,26 +11,22 @@ export const endpointsMainnetSentry: NetworkEndpoints = {
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://sentry.exchange.grpc-web.injective.network',
   chart: 'https://sentry.exchange.grpc-web.injective.network',
-}
+})
 
-export const endpointsMainnet: NetworkEndpoints = {
-  ...endpointsMainnetSentry,
-}
-
-export const endpointsStaging: NetworkEndpoints = {
-  indexer: 'https://staging.api.injective.network',
-  grpc: 'https://staging.grpc.injective.network',
-  rpc: 'https://staging.tm.injective.network',
-  rest: 'https://staging.lcd.injective.network',
-  chronos: 'https://staging.api.injective.network',
-  explorer: 'https://staging.api.injective.network',
-  cacheGrpc: 'https://staging.grpc.injective.network',
-  cacheRest: 'https://staging.gateway.grpc-web.injective.network',
-  web3gw: 'https://staging.api.injective.network',
+export const getEndpointsStaging = (): NetworkEndpoints => ({
+  indexer: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
+  grpc: 'https://k8s.global.mainnet.chain.grpc-web.injective.network',
+  rpc: 'https://k8s.global.mainnet.tm.injective.network',
+  rest: 'https://k8s.global.mainnet.lcd.injective.network',
+  chronos: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
+  explorer: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
+  cacheGrpc: 'https://k8s.global.mainnet.chain.grpc-web.injective.network',
+  cacheRest: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
+  web3gw: 'https://k8s.mainnet.staging.exchange.grpc-web.injective.network',
   chart: 'https://k8s.mainnet.staging.chart.grpc-web.injective.network',
-}
+})
 
-export const endpointsInternal: NetworkEndpoints = {
+export const getEndpointsInternal = (): NetworkEndpoints => ({
   indexer: 'https://products.exchange.grpc-web.injective.network',
   grpc: 'https://products.chain.grpc-web.injective.network',
   rpc: 'https://products.tm.injective.network',
@@ -41,9 +37,9 @@ export const endpointsInternal: NetworkEndpoints = {
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://products.web3-gateway.injective.network',
   chart: 'https://products.exchange.grpc-web.injective.network',
-}
+})
 
-export const endpointsTestnetSentry: NetworkEndpoints = {
+export const getEndpointsTestnetSentry = (): NetworkEndpoints => ({
   indexer: 'https://testnet.sentry.exchange.grpc-web.injective.network',
   grpc: 'https://testnet.sentry.chain.grpc-web.injective.network',
   rpc: 'https://testnet.sentry.tm.injective.network',
@@ -53,13 +49,10 @@ export const endpointsTestnetSentry: NetworkEndpoints = {
   cacheGrpc: 'https://testnet.sentry.chain.grpc-web.injective.network',
   cacheRest: 'https://testnet.sentry.exchange.grpc-web.injective.network',
   web3gw: 'https://testnet.sentry.exchange.grpc-web.injective.network',
-}
+  chart: 'https://k8s.testnet.chart.grpc-web.injective.network',
+})
 
-export const endpointsTestnet: NetworkEndpoints = {
-  ...endpointsTestnetSentry,
-}
-
-export const endpointsDevnet: NetworkEndpoints = {
+export const getEndpointsDevnet = (): NetworkEndpoints => ({
   indexer: 'https://devnet.api.injective.dev',
   grpc: 'https://devnet.grpc.injective.dev',
   rpc: 'https://devnet.tm.injective.dev',
@@ -69,9 +62,10 @@ export const endpointsDevnet: NetworkEndpoints = {
   cacheGrpc: 'https://devnet.grpc.injective.dev',
   cacheRest: 'https://devnet.api.injective.dev',
   web3gw: 'https://devnet.api.injective.dev',
-}
+  chart: 'https://devnet.api.injective.dev',
+})
 
-export const endpointsDevnet1: NetworkEndpoints = {
+export const getEndpointsDevnet1 = (): NetworkEndpoints => ({
   indexer: 'https://devnet-1.api.injective.dev',
   grpc: 'https://devnet-1.grpc.injective.dev',
   rpc: 'https://devnet-1.tm.injective.dev',
@@ -81,9 +75,10 @@ export const endpointsDevnet1: NetworkEndpoints = {
   cacheGrpc: 'https://devnet-1.grpc.injective.dev',
   cacheRest: 'https://devnet-1.api.injective.dev',
   web3gw: 'https://devnet-1.api.injective.dev',
-}
+  chart: 'https://devnet-1.api.injective.dev',
+})
 
-export const endpointsDevnet2: NetworkEndpoints = {
+export const getEndpointsDevnet2 = (): NetworkEndpoints => ({
   indexer: 'https://devnet-2.api.injective.dev',
   grpc: 'https://devnet-2.grpc.injective.dev',
   rpc: 'https://devnet-2.tm.injective.dev',
@@ -93,9 +88,10 @@ export const endpointsDevnet2: NetworkEndpoints = {
   cacheGrpc: 'https://devnet-2.grpc.injective.dev',
   cacheRest: 'https://devnet-2.api.injective.dev',
   web3gw: 'https://devnet-2.api.injective.dev',
-}
+  chart: 'https://devnet-2.api.injective.dev',
+})
 
-export const endpointsDevnet3: NetworkEndpoints = {
+export const getEndpointsDevnet3 = (): NetworkEndpoints => ({
   indexer: 'https://devnet-3.api.injective.dev',
   grpc: 'https://devnet-3.grpc.injective.dev',
   rpc: 'https://devnet-3.tm.injective.dev',
@@ -105,9 +101,10 @@ export const endpointsDevnet3: NetworkEndpoints = {
   cacheGrpc: 'https://devnet-3.grpc.injective.dev',
   cacheRest: 'https://devnet-3.api.injective.dev',
   web3gw: 'https://devnet-3.api.injective.dev',
-}
+  chart: 'https://devnet-3.api.injective.dev',
+})
 
-export const endpointsLocal: NetworkEndpoints = {
+export const getEndpointsLocal = (): NetworkEndpoints => ({
   indexer: 'https://localhost:4444',
   grpc: 'http://localhost:10337',
   rpc: 'http://localhost:9092',
@@ -117,12 +114,12 @@ export const endpointsLocal: NetworkEndpoints = {
   cacheGrpc: 'http://localhost:10337',
   cacheRest: 'https://localhost:4444',
   web3gw: 'https://localhost:4444',
-}
+})
 
 /**
  * @deprecated use TestnetSentry instead
  */
-export const endpointsTestnetOld: NetworkEndpoints = {
+export const getEndpointsTestnetOld = (): NetworkEndpoints => ({
   indexer: 'https://testnet.exchange.grpc-web.injective.network',
   grpc: 'https://testnet.chain.grpc-web.injective.network',
   rpc: 'https://testnet.tm.injective.network',
@@ -132,12 +129,12 @@ export const endpointsTestnetOld: NetworkEndpoints = {
   web3gw: 'https://testnet.exchange.grpc-web.injective.network',
   cacheGrpc: 'https://testnet.exchange.grpc-web.injective.network/',
   cacheRest: 'https://testnet.exchange.grpc-web.injective.network',
-}
+})
 
 /**
  * @deprecated use TestnetSentry instead
  */
-export const endpointsTestnetK8s: NetworkEndpoints = {
+export const getEndpointsTestnetK8s = (): NetworkEndpoints => ({
   indexer: 'https://k8s.testnet.exchange.grpc-web.injective.network',
   grpc: 'https://k8s.testnet.chain.grpc-web.injective.network',
   rpc: 'https://k8s.testnet.tm.injective.network',
@@ -147,12 +144,12 @@ export const endpointsTestnetK8s: NetworkEndpoints = {
   cacheGrpc: 'https://k8s.testnet.gateway.grpc.injective.network',
   cacheRest: 'https://k8s.testnet.gateway.grpc-web.injective.network',
   web3gw: 'https://k8s.testnet.exchange.grpc-web.injective.network',
-}
+})
 
 /**
  * @deprecated use MainnetSentry instead
  */
-export const endpointsMainnetLB: NetworkEndpoints = {
+export const getEndpointsMainnetLB = (): NetworkEndpoints => ({
   indexer: 'https://k8s.global.mainnet.exchange.grpc-web.injective.network',
   grpc: 'https://k8s.global.mainnet.chain.grpc-web.injective.network',
   rpc: 'https://k8s.global.mainnet.tm.injective.network',
@@ -163,12 +160,12 @@ export const endpointsMainnetLB: NetworkEndpoints = {
   cacheRest: 'https://k8s.global.mainnet.exchange.grpc-web.injective.network',
   web3gw: 'https://k8s.global.mainnet.exchange.grpc-web.injective.network',
   chart: 'https://k8s.global.mainnet.chart.grpc-web.injective.network',
-}
+})
 
 /**
  * @deprecated use MainnetSentry instead
  */
-export const endpointsMainnetOld: NetworkEndpoints = {
+export const getEndpointsMainnetOld = (): NetworkEndpoints => ({
   indexer: 'https://api.injective.network',
   grpc: 'https://grpc.injective.network',
   cacheGrpc: 'https://grpc.injective.network',
@@ -178,12 +175,12 @@ export const endpointsMainnetOld: NetworkEndpoints = {
   chronos: 'https://api.injective.network',
   explorer: 'https://api.injective.network',
   web3gw: 'https://api.injective.network',
-}
+})
 
 /**
  * @deprecated use MainnetSentry instead
  */
-export const endpointsMainnetK8s: NetworkEndpoints = {
+export const getEndpointsMainnetK8s = (): NetworkEndpoints => ({
   indexer: 'https://k8s.mainnet.exchange.grpc-web.injective.network',
   grpc: 'https://k8s.mainnet.chain.grpc-web.injective.network',
   rpc: 'https://k8s.mainnet.tm.injective.network',
@@ -193,4 +190,4 @@ export const endpointsMainnetK8s: NetworkEndpoints = {
   cacheGrpc: 'https://k8s.mainnet.chain.grpc-web.injective.network',
   cacheRest: 'https://k8s.mainnet.exchange.grpc-web.injective.network',
   web3gw: 'https://k8s.mainnet.exchange.grpc-web.injective.network',
-}
+})

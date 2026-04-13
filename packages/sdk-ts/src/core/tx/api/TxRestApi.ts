@@ -1,29 +1,30 @@
-import {
-  HttpClient,
-  BigNumberInBase,
-  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-  DEFAULT_BLOCK_TIME_IN_SECONDS,
-  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-} from '@injectivelabs/utils'
-import {
-  BroadcastMode,
-  TxInfoResponse,
-  TxResultResponse,
-  SimulationResponse,
-} from '../types/tx-rest-client.js'
-import { TxClient } from '../utils/classes/TxClient.js'
-import { TxClientBroadcastOptions, TxConcreteApi } from '../types/tx.js'
+import axios from 'axios'
+import { StatusCodes } from 'http-status-codes'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import {
   HttpRequestMethod,
   HttpRequestException,
   TransactionException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import axios, { AxiosError } from 'axios'
-import { StatusCodes } from 'http-status-codes'
-import { TxResponse } from '../types/tx.js'
+import {
+  HttpClient,
+  toBigNumber,
+  DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_BLOCK_TIME_IN_SECONDS,
+  DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+} from '@injectivelabs/utils'
+import { TxClient } from '../utils/classes/TxClient.js'
+import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import type { AxiosError } from 'axios'
+import type { TxResponse } from '../types/tx.js'
+import type { TxConcreteApi, TxClientBroadcastOptions } from '../types/tx.js'
+import type {
+  TxInfoResponse,
+  TxResultResponse,
+  SimulationResponse,
+} from '../types/tx-rest-client.js'
 
 /**
  * It is recommended to use TxGrpcClient instead of TxRestApi
@@ -131,8 +132,8 @@ export class TxRestApi implements TxConcreteApi {
     )
   }
 
-  public async simulate(txRaw: CosmosTxV1Beta1Tx.TxRaw) {
-    const txRawClone = CosmosTxV1Beta1Tx.TxRaw.fromPartial({ ...txRaw })
+  public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
+    const txRawClone = CosmosTxV1Beta1TxPb.TxRaw.create({ ...txRaw })
 
     if (txRawClone.signatures.length === 0) {
       txRawClone.signatures = [new Uint8Array(0)]
@@ -163,12 +164,12 @@ export class TxRestApi implements TxConcreteApi {
   }
 
   public async broadcast(
-    tx: CosmosTxV1Beta1Tx.TxRaw,
+    tx: CosmosTxV1Beta1TxPb.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
     const timeout =
       options?.timeout ||
-      new BigNumberInBase(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
+      toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
 
@@ -176,6 +177,16 @@ export class TxRestApi implements TxConcreteApi {
       const { tx_response: txResponse } = await this.broadcastTx<{
         tx_response: TxInfoResponse
       }>(tx, BroadcastMode.Sync)
+
+      if (!txResponse) {
+        throw new HttpRequestException(
+          new Error('The transaction has failed to be broadcasted'),
+          {
+            context: 'TxRestApi.broadcast',
+            contextModule: 'broadcast',
+          },
+        )
+      }
 
       if (txResponse.code !== 0) {
         throw new TransactionException(new Error(txResponse.raw_log), {
@@ -202,7 +213,7 @@ export class TxRestApi implements TxConcreteApi {
    *
    * @deprecated - the BLOCk mode broadcasting is deprecated now, use either sync or async
    */
-  public async broadcastBlock(tx: CosmosTxV1Beta1Tx.TxRaw) {
+  public async broadcastBlock(tx: CosmosTxV1Beta1TxPb.TxRaw) {
     const response = await this.broadcastTx<{
       tx_response: TxInfoResponse
     }>(tx, BroadcastMode.Block)
@@ -240,7 +251,7 @@ export class TxRestApi implements TxConcreteApi {
   }
 
   private async broadcastTx<T>(
-    txRaw: CosmosTxV1Beta1Tx.TxRaw,
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     mode: BroadcastMode = BroadcastMode.Sync,
   ): Promise<T> {
     const response = await this.postRaw<T>('cosmos/tx/v1beta1/txs', {

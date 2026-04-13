@@ -1,9 +1,13 @@
-import { MsgStatus, MsgType } from '@injectivelabs/ts-types'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
-import {
+import { IndexerModule } from '../types/index.js'
+import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import { IndexerRestExplorerTransformer } from '../transformers/index.js'
+import type { MsgType, MsgStatus } from '@injectivelabs/ts-types'
+import type { Block, ExplorerValidator } from '../types/explorer.js'
+import type {
   Paging,
   Contract,
   WasmCode,
@@ -15,7 +19,7 @@ import {
   ExplorerCW20BalanceWithToken,
   ContractTransactionWithMessages,
 } from '../types/explorer.js'
-import {
+import type {
   ExplorerApiResponse,
   ContractExplorerApiResponse,
   WasmCodeExplorerApiResponse,
@@ -27,10 +31,6 @@ import {
   ValidatorUptimeFromExplorerApiResponse,
   ContractTransactionExplorerApiResponse,
 } from '../types/explorer-rest.js'
-import BaseRestConsumer from '../../base/BaseRestConsumer.js'
-import { Block, ExplorerValidator } from '../types/explorer.js'
-import { IndexerRestExplorerTransformer } from '../transformers/index.js'
-import { IndexerModule } from '../types/index.js'
 
 const explorerEndpointSuffix = 'api/explorer/v1'
 
@@ -299,13 +299,16 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchTransaction(hash: string): Promise<ExplorerTransaction> {
+  async fetchTransaction(
+    hash: string,
+    isEvmTx = false,
+  ): Promise<ExplorerTransaction> {
     const endpoint = `txs/${hash}`
 
     try {
       const response = await this.retry<
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse>
-      >(() => this.get(endpoint))
+      >(() => this.get(endpoint, { is_evm_hash: isEvmTx }))
 
       return IndexerRestExplorerTransformer.transactionToTransaction(
         response.data.data,
@@ -413,6 +416,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     limit?: number
     skip?: number
     label?: string
+    token?: string
+    lookup?: string
   }): Promise<{
     paging: Paging
     contracts: Contract[]
@@ -420,7 +425,16 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/contracts`
 
     try {
-      const { assetsOnly, fromNumber, limit, skip, label, codeId } = params || {
+      const {
+        skip,
+        limit,
+        label,
+        token,
+        codeId,
+        lookup,
+        assetsOnly,
+        fromNumber,
+      } = params || {
         limit: 12,
       }
 
@@ -431,9 +445,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           skip,
           limit,
           label,
-          code_id: codeId?.toString(),
+          token,
+          lookup,
           assets_only: assetsOnly,
           from_number: fromNumber,
+          code_id: codeId?.toString(),
         }),
       )
       const { paging, data } = response.data

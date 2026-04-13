@@ -48,17 +48,20 @@ export class TokenPrice {
 
     const tokenPriceMap: Record<string, number> = Object.values(
       response.data,
-    ).reduce((prices, tokenWithPrice) => {
-      const id = tokenWithPrice.coingecko_id || tokenWithPrice.denom
+    ).reduce(
+      (prices, tokenWithPrice) => {
+        const id = tokenWithPrice.coingecko_id || tokenWithPrice.denom
 
-      if (prices[id]) {
+        if (prices[id]) {
+          return prices
+        }
+
+        prices[id] = tokenWithPrice.price.price
+
         return prices
-      }
-
-      prices[id] = tokenWithPrice.price.price
-
-      return prices
-    }, {} as Record<string, number>)
+      },
+      {} as Record<string, number>,
+    )
 
     return tokenPriceMap
   }

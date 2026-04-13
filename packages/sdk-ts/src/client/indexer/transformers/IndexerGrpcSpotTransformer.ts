@@ -1,24 +1,16 @@
-import {
+import { BigNumber } from '@injectivelabs/utils'
+import { TokenType } from '../../../types/index.js'
+import { grpcPagingToPagingV2 } from '../../../utils/pagination.js'
+import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
+import type * as InjectiveSpotExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_spot_exchange_rpc_pb'
+import type {
   OrderSide,
   OrderState,
   TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
-} from '@injectivelabs/ts-types'
-import { BigNumber } from '@injectivelabs/utils'
-import {
-  AtomicSwap,
-  SpotTrade,
-  SpotMarket,
-  GrpcSpotTrade,
-  SpotLimitOrder,
-  SpotOrderHistory,
-  GrpcSpotMarketInfo,
-  GrpcSpotLimitOrder,
-  GrpcSpotOrderHistory,
-  GrpcAtomicSwap,
-} from '../types/spot.js'
-import {
+} from '../../../types/index.js'
+import type {
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
@@ -26,9 +18,18 @@ import {
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange.js'
-import { TokenType } from '../../../types/token.js'
-import { grpcPagingToPaging } from '../../../utils/pagination.js'
-import { InjectiveSpotExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
+  SpotTrade,
+  AtomicSwap,
+  SpotMarket,
+  GrpcSpotTrade,
+  SpotLimitOrder,
+  GrpcAtomicSwap,
+  SpotOrderHistory,
+  GrpcSpotMarketInfo,
+  GrpcSpotLimitOrder,
+  GrpcSpotOrderHistory,
+} from '../types/spot.js'
 
 const zeroPriceLevel = () => ({
   price: '0',
@@ -53,14 +54,14 @@ export class IndexerGrpcSpotTransformer {
       symbol: tokenMeta.symbol,
       logo: tokenMeta.logo,
       decimals: tokenMeta.decimals,
-      updatedAt: tokenMeta.updatedAt,
+      updatedAt: Number(tokenMeta.updatedAt),
       coinGeckoId: '',
       tokenType: TokenType.Unknown,
     }
   }
 
   static marketResponseToMarket(
-    response: InjectiveSpotExchangeRpc.MarketResponse,
+    response: InjectiveSpotExchangeRpcPb.MarketResponse,
   ) {
     const market = response.market!
 
@@ -68,7 +69,7 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static marketsResponseToMarkets(
-    response: InjectiveSpotExchangeRpc.MarketsResponse,
+    response: InjectiveSpotExchangeRpcPb.MarketsResponse,
   ) {
     const markets = response.markets
 
@@ -76,19 +77,21 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static ordersResponseToOrders(
-    response: InjectiveSpotExchangeRpc.OrdersResponse,
+    response: InjectiveSpotExchangeRpcPb.OrdersResponse,
   ) {
     const orders = response.orders
     const pagination = response.paging
 
     return {
       orders: IndexerGrpcSpotTransformer.grpcOrdersToOrders(orders),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(
+        pagination as InjectiveExplorerRpcPb.Paging,
+      ),
     }
   }
 
   static orderHistoryResponseToOrderHistory(
-    response: InjectiveSpotExchangeRpc.OrdersHistoryResponse,
+    response: InjectiveSpotExchangeRpcPb.OrdersHistoryResponse,
   ) {
     const orderHistory = response.orders
     const pagination = response.paging
@@ -98,24 +101,28 @@ export class IndexerGrpcSpotTransformer {
         IndexerGrpcSpotTransformer.grpcOrderHistoryListToOrderHistoryList(
           orderHistory,
         ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(
+        pagination as InjectiveExplorerRpcPb.Paging,
+      ),
     }
   }
 
   static tradesResponseToTrades(
-    response: InjectiveSpotExchangeRpc.TradesResponse,
+    response: InjectiveSpotExchangeRpcPb.TradesResponse,
   ) {
     const trades = response.trades
     const pagination = response.paging
 
     return {
       trades: IndexerGrpcSpotTransformer.grpcTradesToTrades(trades),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(
+        pagination as InjectiveExplorerRpcPb.Paging,
+      ),
     }
   }
 
   static subaccountTradesListResponseToTradesList(
-    response: InjectiveSpotExchangeRpc.SubaccountTradesListResponse,
+    response: InjectiveSpotExchangeRpcPb.SubaccountTradesListResponse,
   ) {
     const tradesList = response.trades
 
@@ -123,19 +130,19 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static orderbookV2ResponseToOrderbookV2(
-    response: InjectiveSpotExchangeRpc.OrderbookV2Response,
+    response: InjectiveSpotExchangeRpcPb.OrderbookV2Response,
   ) {
     const orderbook = response.orderbook!
 
     return IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-      sequence: parseInt(orderbook.sequence, 10),
+      sequence: Number(orderbook.sequence),
       buys: orderbook?.buys,
       sells: orderbook?.sells,
     })
   }
 
   static orderbooksV2ResponseToOrderbooksV2(
-    response: InjectiveSpotExchangeRpc.OrderbooksV2Response,
+    response: InjectiveSpotExchangeRpcPb.OrderbooksV2Response,
   ) {
     const orderbooks = response.orderbooks!
 
@@ -145,7 +152,7 @@ export class IndexerGrpcSpotTransformer {
       return {
         marketId: o.marketId,
         orderbook: IndexerGrpcSpotTransformer.grpcOrderbookV2ToOrderbookV2({
-          sequence: parseInt(orderbook.sequence, 10),
+          sequence: Number(orderbook.sequence),
           buys: orderbook.buys,
           sells: orderbook.sells,
         }),
@@ -185,7 +192,7 @@ export class IndexerGrpcSpotTransformer {
     return {
       price: priceLevel.price,
       quantity: priceLevel.quantity,
-      timestamp: parseInt(priceLevel.timestamp, 10),
+      timestamp: Number(priceLevel.timestamp),
     }
   }
 
@@ -239,8 +246,8 @@ export class IndexerGrpcSpotTransformer {
       unfilledQuantity: order.unfilledQuantity,
       triggerPrice: order.triggerPrice,
       feeRecipient: order.feeRecipient,
-      createdAt: parseInt(order.createdAt, 10),
-      updatedAt: parseInt(order.updatedAt, 10),
+      createdAt: Number(order.createdAt),
+      updatedAt: Number(order.updatedAt),
     }
   }
 
@@ -266,8 +273,8 @@ export class IndexerGrpcSpotTransformer {
       quantity: orderHistory.quantity,
       filledQuantity: orderHistory.filledQuantity,
       state: orderHistory.state,
-      createdAt: parseInt(orderHistory.createdAt, 10),
-      updatedAt: parseInt(orderHistory.updatedAt, 10),
+      createdAt: Number(orderHistory.createdAt),
+      updatedAt: Number(orderHistory.updatedAt),
       direction: orderHistory.direction,
     }
   }
@@ -283,7 +290,11 @@ export class IndexerGrpcSpotTransformer {
   static grpcTradeToTrade(trade: GrpcSpotTrade): SpotTrade {
     const price = trade.price
     const mappedPrice = price
-      ? IndexerGrpcSpotTransformer.grpcPriceLevelToPriceLevel(price)
+      ? {
+          price: price.price,
+          quantity: price.quantity,
+          timestamp: Number(price.timestamp),
+        }
       : zeroPriceLevel()
 
     return {
@@ -292,13 +303,15 @@ export class IndexerGrpcSpotTransformer {
       marketId: trade.marketId,
       tradeId: trade.tradeId,
       cid: trade.cid,
-      executedAt: parseInt(trade.executedAt, 10),
+      executedAt: Number(trade.executedAt),
       feeRecipient: trade.feeRecipient,
       tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
       executionSide: trade.executionSide as TradeExecutionSide,
       tradeDirection: trade.tradeDirection as TradeDirection,
       fee: trade.fee,
-      ...mappedPrice,
+      price: mappedPrice.price,
+      quantity: mappedPrice.quantity,
+      timestamp: mappedPrice.timestamp,
     }
   }
 
@@ -309,7 +322,7 @@ export class IndexerGrpcSpotTransformer {
   }
 
   static grpcAtomicSwapHistoryListToAtomicSwapHistoryList(
-    response: InjectiveSpotExchangeRpc.AtomicSwapHistoryResponse,
+    response: InjectiveSpotExchangeRpcPb.AtomicSwapHistoryResponse,
   ) {
     const swapHistory = response.data
     const pagination = response.paging
@@ -318,7 +331,9 @@ export class IndexerGrpcSpotTransformer {
       swapHistory: swapHistory.map(
         IndexerGrpcSpotTransformer.grpcAtomicSwapHistoryToAtomicSwapHistory,
       ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(
+        pagination as InjectiveExplorerRpcPb.Paging,
+      ),
     }
   }
 
@@ -328,14 +343,14 @@ export class IndexerGrpcSpotTransformer {
     return {
       sender: swapHistory.sender,
       route: swapHistory.route,
-      sourceCoin: swapHistory.sourceCoin,
-      destinationCoin: swapHistory.destCoin,
+      sourceCoin: swapHistory.sourceCoin || undefined,
+      destinationCoin: swapHistory.destCoin || undefined,
       fees: swapHistory.fees,
       contractAddress: swapHistory.contractAddress,
       indexBySender: swapHistory.indexBySender,
       indexBySenderContract: swapHistory.indexBySenderContract,
       txHash: swapHistory.txHash,
-      executedAt: parseInt(swapHistory.executedAt, 10),
+      executedAt: Number(swapHistory.executedAt),
     }
   }
 }

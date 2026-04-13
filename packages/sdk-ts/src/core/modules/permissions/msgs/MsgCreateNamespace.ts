@@ -1,24 +1,22 @@
-import snakecaseKeys from 'snakecase-keys'
-import {
-  InjectivePermissionsV1Beta1Tx,
-  InjectivePermissionsV1Beta1Permissions,
-} from '@injectivelabs/core-proto-ts'
+import { GeneralException } from '@injectivelabs/exceptions'
+import * as InjectivePermissionsV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/tx_pb'
+import * as InjectivePermissionsV1Beta1PermissionsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/permissions_pb'
 import { MsgBase } from '../../MsgBase.js'
-import {
+import type {
   PermissionRole,
   PermissionActorRoles,
   PermissionRoleManager,
   PermissionPolicyStatus,
   PermissionPolicyManagerCapability,
 } from './../../../../client/chain/types/permissions.js'
-import { GeneralException } from '@injectivelabs/exceptions'
 
 export declare namespace MsgCreateNamespace {
   export interface Params {
     sender: string
     namespace: {
       denom: string
-      contractHook: string
+      evmHook: string
+      wasmHook: string
       rolePermissions: PermissionRole[]
       actorRoles: PermissionActorRoles[]
       roleManagers: PermissionRoleManager[]
@@ -27,7 +25,7 @@ export declare namespace MsgCreateNamespace {
     }
   }
 
-  export type Proto = InjectivePermissionsV1Beta1Tx.MsgCreateNamespace
+  export type Proto = InjectivePermissionsV1Beta1TxPb.MsgCreateNamespace
 }
 
 /**
@@ -44,85 +42,72 @@ export default class MsgCreateNamespace extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectivePermissionsV1Beta1Tx.MsgCreateNamespace.create()
-
-    message.sender = params.sender
-
-    const namespace = InjectivePermissionsV1Beta1Permissions.Namespace.create()
-
-    namespace.denom = params.namespace.denom
-    namespace.contractHook = params.namespace.contractHook
-
     const rolePermissions =
       params.namespace.rolePermissions.map((rolePermission) => {
-        const permission = InjectivePermissionsV1Beta1Permissions.Role.create()
-
-        permission.name = rolePermission.name
-        permission.roleId = rolePermission.roleId
-        permission.permissions = rolePermission.permissions
-
-        return permission
+        return InjectivePermissionsV1Beta1PermissionsPb.Role.create({
+          name: rolePermission.name,
+          roleId: rolePermission.roleId,
+          permissions: rolePermission.permissions,
+        })
       }) || []
 
-    namespace.rolePermissions = rolePermissions
-
     const actorRoles = params.namespace.actorRoles.map((actorRole) => {
-      const role = InjectivePermissionsV1Beta1Permissions.ActorRoles.create()
-
-      role.roles = actorRole.roles
-      role.actor = actorRole.actor
-
-      return role
+      return InjectivePermissionsV1Beta1PermissionsPb.ActorRoles.create({
+        roles: actorRole.roles,
+        actor: actorRole.actor,
+      })
     })
-
-    namespace.actorRoles = actorRoles
 
     const roleManagers = params.namespace.roleManagers.map((roleManager) => {
-      const role = InjectivePermissionsV1Beta1Permissions.RoleManager.create()
-
-      role.roles = roleManager.roles
-      role.manager = roleManager.manager
-
-      return role
+      return InjectivePermissionsV1Beta1PermissionsPb.RoleManager.create({
+        roles: roleManager.roles,
+        manager: roleManager.manager,
+      })
     })
-
-    namespace.roleManagers = roleManagers
 
     const policyStatuses = params.namespace.policyStatuses.map(
       (policyStatus) => {
-        const policy =
-          InjectivePermissionsV1Beta1Permissions.PolicyStatus.create()
-
-        policy.action = policyStatus.action
-        policy.isDisabled = policyStatus.isDisabled
-        policy.isSealed = policyStatus.isSealed
-
-        return policy
+        return InjectivePermissionsV1Beta1PermissionsPb.PolicyStatus.create({
+          action: policyStatus.action,
+          isDisabled: policyStatus.isDisabled,
+          isSealed: policyStatus.isSealed,
+        })
       },
     )
-
-    namespace.policyStatuses = policyStatuses
 
     const policyManagerCapabilities =
       params.namespace.policyManagerCapabilities.map(
         (policyManagerCapability) => {
-          const capability =
-            InjectivePermissionsV1Beta1Permissions.PolicyManagerCapability.create()
-
-          capability.manager = policyManagerCapability.manager
-          capability.action = policyManagerCapability.action
-          capability.canDisable = policyManagerCapability.canDisable
-          capability.canSeal = policyManagerCapability.canSeal
-
-          return capability
+          return InjectivePermissionsV1Beta1PermissionsPb.PolicyManagerCapability.create(
+            {
+              manager: policyManagerCapability.manager,
+              action: policyManagerCapability.action,
+              canDisable: policyManagerCapability.canDisable,
+              canSeal: policyManagerCapability.canSeal,
+            },
+          )
         },
       )
 
-    namespace.policyManagerCapabilities = policyManagerCapabilities
+    const namespace = InjectivePermissionsV1Beta1PermissionsPb.Namespace.create(
+      {
+        denom: params.namespace.denom,
+        evmHook: params.namespace.evmHook,
+        wasmHook: params.namespace.wasmHook,
+        rolePermissions: rolePermissions,
+        actorRoles: actorRoles,
+        roleManagers: roleManagers,
+        policyStatuses: policyStatuses,
+        policyManagerCapabilities: policyManagerCapabilities,
+      },
+    )
 
-    message.namespace = namespace
+    const message = InjectivePermissionsV1Beta1TxPb.MsgCreateNamespace.create({
+      sender: params.sender,
+      namespace: namespace,
+    })
 
-    return InjectivePermissionsV1Beta1Tx.MsgCreateNamespace.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -136,15 +121,42 @@ export default class MsgCreateNamespace extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
-    const message = snakecaseKeys({
-      ...proto,
+    const ns = proto.namespace
+
+    const message = {
+      sender: proto.sender,
       namespace: {
-        ...proto.namespace,
-        policyStatuses: proto.namespace?.policyStatuses || [],
-        policyManagerCapabilities:
-          proto.namespace?.policyManagerCapabilities || [],
+        denom: ns?.denom,
+        wasm_hook: ns?.wasmHook,
+        role_permissions: (ns?.rolePermissions || []).map((role) => ({
+          name: role.name,
+          role_id: role.roleId,
+          permissions: role.permissions,
+        })),
+        actor_roles: (ns?.actorRoles || []).map((ar) => ({
+          actor: ar.actor,
+          roles: ar.roles,
+        })),
+        role_managers: (ns?.roleManagers || []).map((rm) => ({
+          manager: rm.manager,
+          roles: rm.roles,
+        })),
+        policy_statuses: (ns?.policyStatuses || []).map((ps) => ({
+          action: ps.action,
+          is_disabled: ps.isDisabled,
+          is_sealed: ps.isSealed,
+        })),
+        policy_manager_capabilities: (ns?.policyManagerCapabilities || []).map(
+          (pmc) => ({
+            manager: pmc.manager,
+            action: pmc.action,
+            can_disable: pmc.canDisable,
+            can_seal: pmc.canSeal,
+          }),
+        ),
+        evm_hook: ns?.evmHook,
       },
-    })
+    }
 
     return {
       type: 'permissions/MsgCreateNamespace',
@@ -177,9 +189,8 @@ export default class MsgCreateNamespace extends MsgBase<
     const policyStatuses = (namespace?.policy_statuses || []).map(
       (policyStatus: any) => ({
         ...policyStatus,
-        action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
-          policyStatus.action,
-        ),
+        action:
+          InjectivePermissionsV1Beta1PermissionsPb.Action[policyStatus.action],
       }),
     )
 
@@ -187,21 +198,23 @@ export default class MsgCreateNamespace extends MsgBase<
       namespace?.policy_manager_capabilities || []
     ).map((policyManagerCapability: any) => ({
       ...policyManagerCapability,
-      action: InjectivePermissionsV1Beta1Permissions.actionToJSON(
-        policyManagerCapability.action,
-      ),
+      action:
+        InjectivePermissionsV1Beta1PermissionsPb.Action[
+          policyManagerCapability.action
+        ],
     }))
 
     const messageAdjusted = {
       ...web3gw,
       namespace: {
         denom: namespace.denom,
-        contract_hook: namespace.contract_hook,
+        wasm_hook: namespace.wasm_hook,
         role_permissions: namespace.role_permissions,
         actor_roles: namespace.actor_roles,
         role_managers: namespace.role_managers,
         policy_statuses: policyStatuses,
         policy_manager_capabilities: policyManagerCapabilities,
+        evm_hook: namespace.evm_hook,
       },
     }
 
@@ -218,8 +231,8 @@ export default class MsgCreateNamespace extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectivePermissionsV1Beta1Tx.MsgCreateNamespace.encode(
+    return InjectivePermissionsV1Beta1TxPb.MsgCreateNamespace.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

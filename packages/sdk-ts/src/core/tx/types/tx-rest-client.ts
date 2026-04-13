@@ -1,18 +1,15 @@
-import {
-  CosmosTxV1Beta1Tx,
-  CometCryptoV1Keys,
-} from '@injectivelabs/core-proto-ts'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
+import type * as CometCryptoV1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/cometbft/crypto/v1/keys_pb'
 
-/* eslint-disable camelcase */
 export interface RestSignerInfo {
-  public_key: CometCryptoV1Keys.PublicKey | null
-  mode_info: CosmosTxV1Beta1Tx.ModeInfo
+  public_key: CometCryptoV1KeysPb.PublicKey | null
+  mode_info: CosmosTxV1Beta1TxPb.ModeInfo
   sequence: string
 }
 
 export interface RestAuthInfo {
   signer_infos: RestSignerInfo[]
-  fee: CosmosTxV1Beta1Tx.Fee
+  fee: CosmosTxV1Beta1TxPb.Fee
 }
 
 export interface RestTxBody {
@@ -63,17 +60,22 @@ export interface TxInfo {
   timestamp: string
 }
 
-export enum BroadcastMode {
-  Sync = 'BROADCAST_MODE_SYNC',
-  Async = 'BROADCAST_MODE_ASYNC',
-  Block = 'BROADCAST_MODE_BLOCK',
-}
+export const BroadcastMode = {
+  Sync: 'BROADCAST_MODE_SYNC',
+  Async: 'BROADCAST_MODE_ASYNC',
+  Block: 'BROADCAST_MODE_BLOCK',
+} as const
 
-export enum BroadcastModeKeplr {
-  Sync = 'sync',
-  Async = 'async',
-  Block = 'block',
-}
+export type BroadcastMode = (typeof BroadcastMode)[keyof typeof BroadcastMode]
+
+export const BroadcastModeKeplr = {
+  Sync: 'sync',
+  Async: 'async',
+  Block: 'block',
+} as const
+
+export type BroadcastModeKeplr =
+  (typeof BroadcastModeKeplr)[keyof typeof BroadcastModeKeplr]
 
 export interface TxResultResponse {
   tx: RestTx

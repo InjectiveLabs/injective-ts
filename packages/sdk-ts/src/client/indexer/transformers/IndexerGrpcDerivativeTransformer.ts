@@ -1,40 +1,13 @@
-import {
+import { BigNumber } from '@injectivelabs/utils'
+import { grpcPagingToPagingV2 } from '../../../utils/pagination.js'
+import { TokenType, OrderState, TradeDirection } from '../../../types/index.js'
+import type * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
+import type {
   OrderSide,
-  OrderState,
-  TradeDirection,
   TradeExecutionSide,
   TradeExecutionType,
-} from '@injectivelabs/ts-types'
-import { BigNumber } from '@injectivelabs/utils'
-import {
-  GrpcDerivativeMarketInfo,
-  GrpcDerivativeLimitOrder,
-  GrpcDerivativeTrade,
-  DerivativeMarket,
-  DerivativeLimitOrder,
-  DerivativeTrade,
-  PositionDelta,
-  GrpcDerivativePosition,
-  Position,
-  GrpcPositionDelta,
-  PerpetualMarketInfo,
-  GrpcPerpetualMarketInfo,
-  GrpcPerpetualMarketFunding,
-  PerpetualMarketFunding,
-  GrpcExpiryFuturesMarketInfo,
-  GrpcFundingPayment,
-  GrpcFundingRate,
-  FundingPayment,
-  FundingRate,
-  ExpiryFuturesMarketInfo,
-  GrpcBinaryOptionsMarketInfo,
-  BinaryOptionsMarket,
-  GrpcDerivativeOrderHistory,
-  DerivativeOrderHistory,
-  GrpcDerivativePositionV2,
-  PositionV2,
-} from '../types/derivatives.js'
-import {
+} from '../../../types/index.js'
+import type {
   Orderbook,
   PriceLevel,
   GrpcTokenMeta,
@@ -42,9 +15,34 @@ import {
   IndexerTokenMeta,
   OrderbookWithSequence,
 } from '../types/exchange.js'
-import { TokenType } from '../../../types/token.js'
-import { grpcPagingToPaging } from '../../../utils/pagination.js'
-import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+import type {
+  Position,
+  PositionV2,
+  FundingRate,
+  PositionDelta,
+  FundingPayment,
+  DerivativeTrade,
+  GrpcFundingRate,
+  DerivativeMarket,
+  GrpcPositionDelta,
+  GrpcFundingPayment,
+  GrpcDerivativeTrade,
+  PerpetualMarketInfo,
+  BinaryOptionsMarket,
+  DerivativeLimitOrder,
+  GrpcDerivativePosition,
+  PerpetualMarketFunding,
+  DerivativeOrderHistory,
+  GrpcPerpetualMarketInfo,
+  ExpiryFuturesMarketInfo,
+  GrpcDerivativeMarketInfo,
+  GrpcDerivativeLimitOrder,
+  GrpcDerivativePositionV2,
+  GrpcPerpetualMarketFunding,
+  GrpcDerivativeOrderHistory,
+  GrpcExpiryFuturesMarketInfo,
+  GrpcBinaryOptionsMarketInfo,
+} from '../types/derivatives.js'
 
 const zeroPositionDelta = () => ({
   tradeDirection: TradeDirection.Buy,
@@ -70,7 +68,7 @@ export class IndexerGrpcDerivativeTransformer {
       symbol: tokenMeta.symbol,
       logo: tokenMeta.logo,
       decimals: tokenMeta.decimals,
-      updatedAt: tokenMeta.updatedAt,
+      updatedAt: Number(tokenMeta.updatedAt),
       coinGeckoId: '',
       tokenType: TokenType.Unknown,
     }
@@ -86,11 +84,8 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       hourlyFundingRateCap: perpetualMarketInfo.hourlyFundingRateCap,
       hourlyInterestRate: perpetualMarketInfo.hourlyInterestRate,
-      nextFundingTimestamp: parseInt(
-        perpetualMarketInfo.nextFundingTimestamp,
-        10,
-      ),
-      fundingInterval: parseInt(perpetualMarketInfo.fundingInterval, 10),
+      nextFundingTimestamp: Number(perpetualMarketInfo.nextFundingTimestamp),
+      fundingInterval: Number(perpetualMarketInfo.fundingInterval),
     }
   }
 
@@ -104,7 +99,7 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       cumulativeFunding: perpetualMarketFunding.cumulativeFunding,
       cumulativePrice: perpetualMarketFunding.cumulativePrice,
-      lastTimestamp: parseInt(perpetualMarketFunding.lastTimestamp, 10),
+      lastTimestamp: Number(perpetualMarketFunding.lastTimestamp),
     }
   }
 
@@ -116,16 +111,13 @@ export class IndexerGrpcDerivativeTransformer {
     }
 
     return {
-      expirationTimestamp: parseInt(
-        expiryFuturesMarketInfo.expirationTimestamp,
-        10,
-      ),
+      expirationTimestamp: Number(expiryFuturesMarketInfo.expirationTimestamp),
       settlementPrice: expiryFuturesMarketInfo.settlementPrice,
     }
   }
 
   static marketResponseToMarket(
-    response: InjectiveDerivativeExchangeRpc.MarketResponse,
+    response: InjectiveDerivativeExchangeRpcPb.MarketResponse,
   ) {
     const market = response.market!
 
@@ -133,7 +125,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static marketsResponseToMarkets(
-    response: InjectiveDerivativeExchangeRpc.MarketsResponse,
+    response: InjectiveDerivativeExchangeRpcPb.MarketsResponse,
   ) {
     const markets = response.markets
 
@@ -141,19 +133,19 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static ordersResponseToOrders(
-    response: InjectiveDerivativeExchangeRpc.OrdersResponse,
+    response: InjectiveDerivativeExchangeRpcPb.OrdersResponse,
   ) {
     const orders = response.orders
     const pagination = response.paging
 
     return {
       orders: IndexerGrpcDerivativeTransformer.grpcOrdersToOrders(orders),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static orderHistoryResponseToOrderHistory(
-    response: InjectiveDerivativeExchangeRpc.OrdersHistoryResponse,
+    response: InjectiveDerivativeExchangeRpcPb.OrdersHistoryResponse,
     isConditional?: boolean,
   ) {
     const orderHistory = response.orders
@@ -165,12 +157,12 @@ export class IndexerGrpcDerivativeTransformer {
           orderHistory,
           isConditional,
         ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static positionsResponseToPositions(
-    response: InjectiveDerivativeExchangeRpc.PositionsResponse,
+    response: InjectiveDerivativeExchangeRpcPb.PositionsResponse,
   ) {
     const positions = response.positions
     const pagination = response.paging
@@ -178,12 +170,12 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       positions:
         IndexerGrpcDerivativeTransformer.grpcPositionsToPositions(positions),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static positionsV2ResponseToPositionsV2(
-    response: InjectiveDerivativeExchangeRpc.PositionsV2Response,
+    response: InjectiveDerivativeExchangeRpcPb.PositionsV2Response,
   ) {
     const positions = response.positions
     const pagination = response.paging
@@ -193,24 +185,24 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcPositionsV2ToPositionsV2(
           positions,
         ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static tradesResponseToTrades(
-    response: InjectiveDerivativeExchangeRpc.TradesResponse,
+    response: InjectiveDerivativeExchangeRpcPb.TradesResponse,
   ) {
     const trades = response.trades
     const pagination = response.paging
 
     return {
       trades: IndexerGrpcDerivativeTransformer.grpcTradesToTrades(trades),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static subaccountTradesListResponseToSubaccountTradesList(
-    response: InjectiveDerivativeExchangeRpc.SubaccountTradesListResponse,
+    response: InjectiveDerivativeExchangeRpcPb.SubaccountTradesListResponse,
   ) {
     const tradesList = response.trades
 
@@ -218,7 +210,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static fundingPaymentsResponseToFundingPayments(
-    response: InjectiveDerivativeExchangeRpc.FundingPaymentsResponse,
+    response: InjectiveDerivativeExchangeRpcPb.FundingPaymentsResponse,
   ) {
     const fundingPayments = response.payments
     const pagination = response.paging
@@ -228,12 +220,12 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcFundingPaymentsToFundingPayments(
           fundingPayments,
         ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static fundingRatesResponseToFundingRates(
-    response: InjectiveDerivativeExchangeRpc.FundingRatesResponse,
+    response: InjectiveDerivativeExchangeRpcPb.FundingRatesResponse,
   ) {
     const fundingRates = response.fundingRates
     const pagination = response.paging
@@ -243,24 +235,24 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcFundingRatesToFundingRates(
           fundingRates,
         ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static orderbookV2ResponseToOrderbookV2(
-    response: InjectiveDerivativeExchangeRpc.OrderbookV2Response,
+    response: InjectiveDerivativeExchangeRpcPb.OrderbookV2Response,
   ) {
     const orderbook = response.orderbook!
 
     return IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
-      sequence: parseInt(orderbook.sequence, 10),
-      buys: orderbook?.buys,
-      sells: orderbook?.sells,
+      sequence: Number(orderbook.sequence),
+      buys: orderbook?.buys || [],
+      sells: orderbook?.sells || [],
     })
   }
 
   static orderbooksV2ResponseToOrderbooksV2(
-    response: InjectiveDerivativeExchangeRpc.OrderbooksV2Response,
+    response: InjectiveDerivativeExchangeRpcPb.OrderbooksV2Response,
   ) {
     const orderbooks = response.orderbooks!
 
@@ -271,16 +263,16 @@ export class IndexerGrpcDerivativeTransformer {
         marketId: o.marketId,
         orderbook:
           IndexerGrpcDerivativeTransformer.grpcOrderbookV2ToOrderbookV2({
-            sequence: parseInt(orderbook.sequence, 10),
-            buys: orderbook.buys,
-            sells: orderbook.sells,
+            sequence: Number(orderbook.sequence),
+            buys: orderbook.buys || [],
+            sells: orderbook.sells || [],
           }),
       }
     })
   }
 
   static binaryOptionsMarketResponseToBinaryOptionsMarket(
-    response: InjectiveDerivativeExchangeRpc.BinaryOptionsMarketResponse,
+    response: InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketResponse,
   ) {
     const market = response.market!
 
@@ -290,7 +282,7 @@ export class IndexerGrpcDerivativeTransformer {
   }
 
   static binaryOptionsMarketResponseWithPaginationToBinaryOptionsMarket(
-    response: InjectiveDerivativeExchangeRpc.BinaryOptionsMarketsResponse,
+    response: InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketsResponse,
   ) {
     const markets = response.markets
     const pagination = response.paging
@@ -300,18 +292,12 @@ export class IndexerGrpcDerivativeTransformer {
         IndexerGrpcDerivativeTransformer.grpcBinaryOptionsMarketsToBinaryOptionsMarkets(
           markets,
         ),
-      pagination: {
-        to: pagination?.to || 0,
-        from: pagination?.from || 0,
-        total: parseInt(pagination?.total || '0', 10),
-        countBySubaccount: parseInt(pagination?.countBySubaccount || '0', 10),
-        next: pagination?.next || [],
-      },
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static binaryOptionsMarketsResponseToBinaryOptionsMarkets(
-    response: InjectiveDerivativeExchangeRpc.BinaryOptionsMarketsResponse,
+    response: InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketsResponse,
   ) {
     const markets = response.markets
 
@@ -331,8 +317,8 @@ export class IndexerGrpcDerivativeTransformer {
       oracleProvider: market.oracleProvider,
       oracleType: market.oracleType,
       oracleScaleFactor: market.oracleScaleFactor,
-      expirationTimestamp: parseInt(market.expirationTimestamp, 10),
-      settlementTimestamp: parseInt(market.settlementTimestamp, 10),
+      expirationTimestamp: Number(market.expirationTimestamp),
+      settlementTimestamp: Number(market.settlementTimestamp),
       quoteDenom: market.quoteDenom,
       quoteToken: IndexerGrpcDerivativeTransformer.grpcTokenMetaToTokenMeta(
         market.quoteTokenMeta,
@@ -363,6 +349,7 @@ export class IndexerGrpcDerivativeTransformer {
       oracleQuote: market.oracleQuote,
       oracleType: market.oracleType,
       oracleScaleFactor: market.oracleScaleFactor,
+      reduceMarginRatio: market.reduceMarginRatio,
       initialMarginRatio: market.initialMarginRatio,
       maintenanceMarginRatio: market.maintenanceMarginRatio,
       isPerpetual: market.isPerpetual,
@@ -417,7 +404,7 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       price: priceLevel.price,
       quantity: priceLevel.quantity,
-      timestamp: parseInt(priceLevel.timestamp, 10),
+      timestamp: Number(priceLevel.timestamp),
     }
   }
 
@@ -460,6 +447,16 @@ export class IndexerGrpcDerivativeTransformer {
     }
   }
 
+  static priceLevelsToGrpcPriceLevels(
+    priceLevels: PriceLevel[],
+  ): GrpcPriceLevel[] {
+    return priceLevels.map((priceLevel) => ({
+      price: priceLevel.price,
+      quantity: priceLevel.quantity,
+      timestamp: BigInt(priceLevel.timestamp),
+    }))
+  }
+
   static grpcOrderToOrder(
     order: GrpcDerivativeLimitOrder,
   ): DerivativeLimitOrder {
@@ -477,10 +474,10 @@ export class IndexerGrpcDerivativeTransformer {
       triggerPrice: order.triggerPrice,
       feeRecipient: order.feeRecipient,
       state: order.state as OrderState,
-      createdAt: parseInt(order.createdAt, 10),
-      updatedAt: parseInt(order.updatedAt, 10),
-      orderNumber: parseInt(order.orderNumber, 10),
-      triggerAt: parseInt(order.triggerAt, 10),
+      createdAt: Number(order.createdAt),
+      updatedAt: Number(order.updatedAt),
+      orderNumber: Number(order.orderNumber),
+      triggerAt: Number(order.triggerAt),
       orderType: order.orderType,
       isConditional: order.isConditional,
       placedOrderHash: order.placedOrderHash,
@@ -512,9 +509,9 @@ export class IndexerGrpcDerivativeTransformer {
       quantity: orderHistory.quantity,
       filledQuantity: orderHistory.filledQuantity,
       state: orderHistory.state,
-      createdAt: parseInt(orderHistory.createdAt, 10),
-      updatedAt: parseInt(orderHistory.updatedAt, 10),
-      triggerAt: parseInt(orderHistory.triggerAt, 10),
+      createdAt: Number(orderHistory.createdAt),
+      updatedAt: Number(orderHistory.updatedAt),
+      triggerAt: Number(orderHistory.triggerAt),
       isReduceOnly: orderHistory.isReduceOnly,
       direction: orderHistory.direction,
       isConditional: orderHistory.isConditional,
@@ -550,7 +547,7 @@ export class IndexerGrpcDerivativeTransformer {
       aggregateReduceOnlyQuantity: position.aggregateReduceOnlyQuantity,
       markPrice: position.markPrice,
       ticker: position.ticker,
-      updatedAt: parseInt(position.updatedAt, 10),
+      updatedAt: Number(position.updatedAt),
     }
   }
 
@@ -558,17 +555,22 @@ export class IndexerGrpcDerivativeTransformer {
     position: GrpcDerivativePositionV2,
   ): PositionV2 {
     return {
-      marketId: position.marketId,
-      subaccountId: position.subaccountId,
-      direction: position.direction as TradeDirection,
-      quantity: position.quantity,
-      entryPrice: position.entryPrice,
-      margin: position.margin,
+      upnl: position.upnl,
       denom: position.denom,
-      liquidationPrice: position.liquidationPrice,
-      markPrice: position.markPrice,
+      margin: position.margin,
       ticker: position.ticker,
-      updatedAt: parseInt(position.updatedAt, 10),
+      marketId: position.marketId,
+      quantity: position.quantity,
+      markPrice: position.markPrice,
+      entryPrice: position.entryPrice,
+      fundingSum: position.fundingSum,
+      fundingLast: position.fundingLast,
+      subaccountId: position.subaccountId,
+      updatedAt: Number(position.updatedAt),
+      liquidationPrice: position.liquidationPrice,
+      direction: position.direction as TradeDirection,
+      cumulativeFundingEntry: position.cumulativeFundingEntry,
+      effectiveCumulativeFundingEntry: position.effectiveCumulativeFundingEntry,
     }
   }
 
@@ -597,18 +599,19 @@ export class IndexerGrpcDerivativeTransformer {
       : zeroPositionDelta()
 
     return {
-      orderHash: trade.orderHash,
-      tradeId: trade.tradeId,
       cid: trade.cid,
-      subaccountId: trade.subaccountId,
-      marketId: trade.marketId,
-      executedAt: parseInt(trade.executedAt, 10),
-      tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
-      executionSide: trade.executionSide as TradeExecutionSide,
       fee: trade.fee,
+      pnl: trade.pnl,
+      payout: trade.payout,
+      tradeId: trade.tradeId,
+      marketId: trade.marketId,
+      orderHash: trade.orderHash,
+      subaccountId: trade.subaccountId,
       feeRecipient: trade.feeRecipient,
       isLiquidation: trade.isLiquidation,
-      payout: trade.payout,
+      executedAt: Number(trade.executedAt),
+      executionSide: trade.executionSide as TradeExecutionSide,
+      tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
       ...mappedPositionDelta,
     }
   }
@@ -626,7 +629,7 @@ export class IndexerGrpcDerivativeTransformer {
       marketId: fundingPayment.marketId,
       subaccountId: fundingPayment.subaccountId,
       amount: fundingPayment.amount,
-      timestamp: parseInt(fundingPayment.timestamp, 10),
+      timestamp: Number(fundingPayment.timestamp),
     }
   }
 
@@ -644,7 +647,7 @@ export class IndexerGrpcDerivativeTransformer {
     return {
       marketId: fundingRate.marketId,
       rate: fundingRate.rate,
-      timestamp: parseInt(fundingRate.timestamp, 10),
+      timestamp: Number(fundingRate.timestamp),
     }
   }
 

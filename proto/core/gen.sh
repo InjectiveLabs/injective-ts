@@ -1,17 +1,28 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# DEPRECATION WARNING
+echo "❌ ERROR: This script is deprecated, use protoV2/core/gen.sh instead" >&2
+exit 1
+
 ROOT_DIR=./proto/core
 BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto
 TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
 
+# https://github.com/InjectiveLabs/injective-core/blob/release/v1.16.x/go.mod
 # remote branches/tags
-injective_core_branch=release/v1.14.x
-cosmos_sdk_branch=v0.50.x-inj
-wasmd_branch=v0.53.x-inj
-ibc_go_branch=v8.3.x-inj
+injective_core_branch=release/v1.18.x
+cosmos_sdk_branch=v0.50.14-inj.4
+wasmd_branch=v0.53.3-inj.2
+ibc_go_branch=v8.7.0-inj.3
+
+# evm branch
+# injective_core_branch=master
+# cosmos_sdk_branch=v0.50.13-evm-comet1-inj
+# wasmd_branch=v0.53.2-evm-comet1-inj
+# ibc_go_branch=v8.7.0-evm-comet1-inj
 
 # remove old gen
 rm -rf $BUILD_DIR
@@ -68,6 +79,7 @@ for dir in $proto_dirs; do
     --ts_proto_opt="esModuleInterop=true" \
     --ts_proto_opt="forceLong=string" \
     --ts_proto_opt="env=both" \
+    --ts_proto_opt="enumsAsLiterals=true" \
     --ts_proto_opt="useExactTypes=false" \
     --ts_proto_opt="outputClientImpl=grpc-web" \
     --ts_proto_out="$TS_OUTPUT_DIR/proto" \

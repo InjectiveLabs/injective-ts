@@ -1,29 +1,18 @@
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
-import { CosmosAuthzV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import * as CosmosAuthzV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb'
+import { QueryClient as CosmosAuthzV1BetaQueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
-import { PaginationOption } from '../../../types/pagination.js'
-import { paginationRequestFromPagination } from '../../../utils/pagination.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcAuthZTransformer } from '../transformers/ChainGrpcAuthZTransformer.js'
-
+import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
+import type { PaginationOption } from '../../../types/pagination.js'
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.Authz
 
-  protected client: CosmosAuthzV1Beta1Query.QueryClientImpl
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new CosmosAuthzV1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+  private get client() {
+    return this.initClient(CosmosAuthzV1BetaQueryClient)
   }
 
   async fetchGrants({
@@ -37,7 +26,7 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
     grantee: string
     msgTypeUrl?: string
   }) {
-    const request = CosmosAuthzV1Beta1Query.QueryGrantsRequest.create()
+    const request = CosmosAuthzV1Beta1QueryPb.QueryGrantsRequest.create()
 
     if (granter) {
       request.granter = granter
@@ -51,111 +40,62 @@ export class ChainGrpcAuthZApi extends BaseGrpcConsumer {
       request.msgTypeUrl = msgTypeUrl
     }
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<CosmosAuthzV1Beta1Query.QueryGrantsResponse>(() =>
-          this.client.Grants(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosAuthzV1Beta1QueryPb.QueryGrantsRequest,
+      CosmosAuthzV1Beta1QueryPb.QueryGrantsResponse
+    >(request, this.client.grants.bind(this.client))
 
-      return ChainGrpcAuthZTransformer.grpcGrantsToGrants(response)
-    } catch (e: unknown) {
-      if (e instanceof CosmosAuthzV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'Grants',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'Grants',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuthZTransformer.grpcGrantsToGrants(response)
   }
 
   async fetchGranterGrants(granter: string, pagination?: PaginationOption) {
-    const request = CosmosAuthzV1Beta1Query.QueryGranterGrantsRequest.create()
+    const request = CosmosAuthzV1Beta1QueryPb.QueryGranterGrantsRequest.create()
 
     if (granter) {
       request.granter = granter
     }
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<CosmosAuthzV1Beta1Query.QueryGranterGrantsResponse>(
-          () => this.client.GranterGrants(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosAuthzV1Beta1QueryPb.QueryGranterGrantsRequest,
+      CosmosAuthzV1Beta1QueryPb.QueryGranterGrantsResponse
+    >(request, this.client.granterGrants.bind(this.client))
 
-      return ChainGrpcAuthZTransformer.grpcGranterGrantsToGranterGrants(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmosAuthzV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GranterGrants',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GranterGrants',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuthZTransformer.grpcGranterGrantsToGranterGrants(response)
   }
 
   async fetchGranteeGrants(grantee: string, pagination?: PaginationOption) {
-    const request = CosmosAuthzV1Beta1Query.QueryGranteeGrantsRequest.create()
+    const request = CosmosAuthzV1Beta1QueryPb.QueryGranteeGrantsRequest.create()
 
     if (grantee) {
       request.grantee = grantee
     }
 
-    const paginationForRequest = paginationRequestFromPagination(pagination)
+    const paginationForRequest =
+      ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
 
     if (paginationForRequest) {
       request.pagination = paginationForRequest
     }
 
-    try {
-      const response =
-        await this.retry<CosmosAuthzV1Beta1Query.QueryGranteeGrantsResponse>(
-          () => this.client.GranteeGrants(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      CosmosAuthzV1Beta1QueryPb.QueryGranteeGrantsRequest,
+      CosmosAuthzV1Beta1QueryPb.QueryGranteeGrantsResponse
+    >(request, this.client.granteeGrants.bind(this.client))
 
-      return ChainGrpcAuthZTransformer.grpcGranteeGrantsToGranteeGrants(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof CosmosAuthzV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GranteeGrants',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GranteeGrants',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcAuthZTransformer.grpcGranteeGrantsToGranteeGrants(response)
   }
 }

@@ -1,16 +1,14 @@
-import {
-  Wallet,
-  isEvmBrowserWallet,
-  BrowserEip1993Provider,
-} from '@injectivelabs/wallet-base'
 import { capitalize } from '@injectivelabs/utils'
-import { EthereumChainId } from '@injectivelabs/ts-types'
 import { WalletException } from '@injectivelabs/exceptions'
+import { Wallet, isEvmBrowserWallet } from '@injectivelabs/wallet-base'
+import { getRabbyProvider } from '../strategy/utils/rabby.js'
 import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
 import { getBitGetProvider } from '../strategy/utils/bitget.js'
 import { getPhantomProvider } from '../strategy/utils/phantom.js'
 import { getMetamaskProvider } from '../strategy/utils/metamask.js'
 import { getTrustWalletProvider } from '../strategy/utils/trustWallet.js'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 
 export const getEvmProvider = async (
   wallet: Wallet,
@@ -26,6 +24,10 @@ export const getEvmProvider = async (
 
     if (wallet === Wallet.Metamask) {
       provider = (await getMetamaskProvider()) as BrowserEip1993Provider
+    }
+
+    if (wallet === Wallet.Rabby) {
+      provider = (await getRabbyProvider()) as BrowserEip1993Provider
     }
 
     if (wallet === Wallet.BitGet) {
@@ -51,18 +53,15 @@ export const getEvmProvider = async (
     }
 
     return provider
-  } catch (e) {
+  } catch {
     throw new WalletException(
       new Error(`Please install ${capitalize(wallet)} Extension`),
     )
   }
 }
 
-export const updateEvmNetwork = async (
-  wallet: Wallet,
-  chainId: EthereumChainId,
-) => {
-   if (!isEvmBrowserWallet(wallet)) {
+export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
+  if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(
       new Error(`Evm Wallet for ${capitalize(wallet)} is not supported.`),
     )
@@ -92,7 +91,7 @@ export const updateEvmNetwork = async (
         }),
       ),
     ])
-  } catch (e) {
+  } catch {
     throw new WalletException(
       new Error(`Please update your ${capitalize(wallet)} network`),
     )

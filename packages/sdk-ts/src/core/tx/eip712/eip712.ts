@@ -1,27 +1,28 @@
-import { Msgs } from '../../modules/msgs.js'
-import { EthereumChainId } from '@injectivelabs/ts-types'
-import { Eip712ConvertFeeArgs, Eip712ConvertTxArgs } from './types.js'
+import { getEipTxContext } from './utils.js'
+import { safeBigIntStringify } from '../../../utils/helpers.js'
 import {
   getEip712Fee,
   getEipTxDetails,
   getEip712Domain,
   getEip712DomainV2,
   getDefaultEip712Types,
-  getTypesIncludingFeePayer,
   getDefaultEip712TypesV2,
+  getTypesIncludingFeePayer,
 } from './utils.js'
-import { getEipTxContext } from './utils.js'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type { Msgs } from '../../modules/msgs.js'
+import type { Eip712ConvertTxArgs, Eip712ConvertFeeArgs } from './types.js'
 
 export const getEip712TypedData = ({
   msgs,
   tx,
   fee,
-  ethereumChainId,
+  evmChainId,
 }: {
   msgs: Msgs | Msgs[]
   tx: Eip712ConvertTxArgs
   fee?: Eip712ConvertFeeArgs
-  ethereumChainId: EthereumChainId
+  evmChainId: EvmChainId
 }) => {
   const messages = Array.isArray(msgs) ? msgs : [msgs]
   const eip712Msgs = messages.map((m) => m.toEip712())
@@ -42,7 +43,7 @@ export const getEip712TypedData = ({
   return {
     ...typesWithFeePayer,
     primaryType: 'Tx',
-    ...getEip712Domain(ethereumChainId),
+    ...getEip712Domain(evmChainId),
     message: {
       ...getEipTxDetails(tx),
       ...getEip712Fee(fee),
@@ -55,12 +56,12 @@ export const getEip712TypedDataV2 = ({
   msgs,
   tx,
   fee,
-  ethereumChainId,
+  evmChainId,
 }: {
   msgs: Msgs | Msgs[]
   tx: Eip712ConvertTxArgs
   fee?: Eip712ConvertFeeArgs
-  ethereumChainId: EthereumChainId
+  evmChainId: EvmChainId
 }) => {
   const messages = Array.isArray(msgs) ? msgs : [msgs]
   const eip712Msgs = messages.map((m) => m.toEip712V2())
@@ -69,10 +70,11 @@ export const getEip712TypedDataV2 = ({
   return {
     ...types,
     primaryType: 'Tx',
-    ...getEip712DomainV2(ethereumChainId),
+    ...getEip712DomainV2(evmChainId),
     message: {
-      context: JSON.stringify(getEipTxContext({ ...tx, fee })),
-      msgs: JSON.stringify(eip712Msgs),
+      context: safeBigIntStringify(getEipTxContext({ ...tx, fee })),
+
+      msgs: safeBigIntStringify(eip712Msgs),
     },
   }
 }

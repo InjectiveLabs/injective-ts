@@ -1,18 +1,18 @@
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgDeposit from './MsgDeposit.js'
+import { toChainFormat } from '@injectivelabs/utils'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgDeposit from './MsgDeposit.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgDeposit['params'] = {
   proposalId: 1,
   depositor: mockFactory.injectiveAddress,
   amount: {
-    amount: new BigNumberInBase(1).toFixed(),
+    amount: toChainFormat(1).toFixed(),
     denom: 'inj',
   },
 }
@@ -20,7 +20,7 @@ const params: MsgDeposit['params'] = {
 const protoType = '/cosmos.gov.v1beta1.MsgDeposit'
 const protoTypeAmino = 'cosmos-sdk/MsgDeposit'
 const protoParams = {
-  proposalId: params.proposalId.toString(),
+  proposalId: BigInt(params.proposalId),
   depositor: params.depositor,
   amount: [params.amount],
 }

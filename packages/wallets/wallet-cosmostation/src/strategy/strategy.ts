@@ -1,36 +1,134 @@
-/* eslint-disable class-methods-use-this */
+import { CosmosChainId } from '@injectivelabs/ts-types'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import {
-  toUtf8,
-  TxResponse,
-  AminoSignResponse,
-  DirectSignResponse,
+  uint8ArrayToHex,
+  stringToUint8Array,
+  uint8ArrayToBase64,
+} from '@injectivelabs/sdk-ts/utils'
+import {
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
-} from '@injectivelabs/sdk-ts'
-import {
-  ChainId,
-  CosmosChainId,
-  AccountAddress,
-  EthereumChainId,
-} from '@injectivelabs/ts-types'
+} from '@injectivelabs/sdk-ts/core/tx'
 import {
   ErrorType,
   UnspecifiedErrorCode,
-  CosmosWalletException,
   TransactionException,
+  CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import {
-  StdSignDoc,
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
+  type onAccountChangeCallback,
+  type ConcreteCosmosWalletStrategyArgs,
+} from '@injectivelabs/wallet-base'
+import { loadMakeSignDoc } from './lib.js'
+import { requestAccount, getCosmostationProvider } from './../wallet.js'
+import {
+  SEND_TRANSACTION_MODE,
+  type CosmostationCosmos,
+  type CosmostationAccount,
+  type CosmostationSignDirectDoc,
+  type CosmostationSignAminoResponse,
+  type CosmostationSignDirectResponse,
+  type CosmostationSignMessageResponse,
+  type CosmostationSendTransactionResponse,
+} from './../types.js'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
+import type {
+  ChainId,
+  EvmChainId,
+  AccountAddress,
+} from '@injectivelabs/ts-types'
+import type {
+  StdSignDoc,
   ConcreteWalletStrategy,
 } from '@injectivelabs/wallet-base'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
-import { InstallError, Cosmos } from '@cosmostation/extension-client'
-import { makeSignDoc } from '@cosmjs/proto-signing'
-import { SEND_TRANSACTION_MODE } from '@cosmostation/extension-client/cosmos.js'
-import { CosmostationWallet } from './../wallet.js'
+import type {
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
+
+/**
+ * Get an offline signer from the Cosmostation extension.
+ * This uses the vanilla window.cosmostation API directly.
+ */
+async function getExtensionOfflineSigner(chainId: string): Promise<{
+  getAccounts: () => Promise<
+    { address: string; pubkey: Uint8Array; algo: string }[]
+  >
+  signAmino: (
+    signerAddress: string,
+    signDoc: any,
+  ) => Promise<{ signed: any; signature: { pub_key: any; signature: string } }>
+  signDirect: (
+    signerAddress: string,
+    signDoc: any,
+  ) => Promise<{ signed: any; signature: { pub_key: any; signature: string } }>
+}> {
+  const provider = getCosmostationProvider()
+
+  return {
+    getAccounts: async () => {
+      const response = await provider.request<CosmostationAccount>({
+        method: 'cos_account',
+        params: { chainName: chainId },
+      })
+
+      return [
+        {
+          address: response.address,
+          pubkey: response.publicKey,
+          algo: 'secp256k1',
+        },
+      ]
+    },
+    signAmino: async (_signerAddress: string, signDoc: any) => {
+      const response = await provider.request<CosmostationSignAminoResponse>({
+        method: 'cos_signAmino',
+        params: {
+          chainName: chainId,
+          doc: signDoc,
+          isEditFee: true,
+          isEditMemo: true,
+        },
+      })
+
+      return {
+        signed: response.signed_doc,
+        signature: { pub_key: response.pub_key, signature: response.signature },
+      }
+    },
+    signDirect: async (_signerAddress: string, signDoc: any) => {
+      const doc: CosmostationSignDirectDoc = {
+        account_number: String(signDoc.accountNumber),
+        auth_info_bytes: signDoc.authInfoBytes,
+        body_bytes: signDoc.bodyBytes,
+        chain_id: signDoc.chainId,
+      }
+      const response = await provider.request<CosmostationSignDirectResponse>({
+        method: 'cos_signDirect',
+        params: {
+          chainName: chainId,
+          doc,
+          isEditFee: true,
+          isEditMemo: true,
+        },
+      })
+
+      return {
+        signed: {
+          accountNumber: response.signed_doc.account_number,
+          chainId: response.signed_doc.chain_id,
+          authInfoBytes: response.signed_doc.auth_info_bytes,
+          bodyBytes: response.signed_doc.body_bytes,
+        },
+        signature: { pub_key: response.pub_key, signature: response.signature },
+      }
+    },
+  }
+}
 
 const getChainNameFromChainId = (chainId: CosmosChainId | ChainId) => {
   const [chainName] = chainId.split('-')
@@ -58,11 +156,12 @@ export class Cosmostation
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  private cosmostationWallet?: Cosmos
+  private cosmostationProvider?: CosmostationCosmos
   public chainName: string
 
   constructor(args: { chainId: ChainId | CosmosChainId }) {
-    super(args)
+    super(args as ConcreteCosmosWalletStrategyArgs)
+
     this.chainId = args.chainId || CosmosChainId.Injective
     this.chainName = getChainNameFromChainId(this.chainId)
   }
@@ -76,20 +175,21 @@ export class Cosmostation
   }
 
   async getAddresses(): Promise<string[]> {
-    const cosmostationWallet = await this.getCosmostationWallet()
+    this.getProvider()
 
     try {
-      const accounts = await cosmostationWallet.requestAccount(this.chainName)
+      const account = await requestAccount(this.chainName)
 
-      return [accounts.address]
+      return [account.address]
     } catch (e: unknown) {
       if ((e as any).code === 4001) {
-        throw new CosmosWalletException(new Error('The user rejected the request'),
-        {
-          code: UnspecifiedErrorCode,
-          context: WalletAction.GetAccounts,
-        },
-      )
+        throw new CosmosWalletException(
+          new Error('The user rejected the request'),
+          {
+            code: UnspecifiedErrorCode,
+            context: WalletAction.GetAccounts,
+          },
+        )
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
@@ -99,41 +199,63 @@ export class Cosmostation
     }
   }
 
-  async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
-    return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new CosmosWalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        context: WalletAction.GetAccounts,
+      },
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async sendEthereumTransaction(
+  async getSessionOrConfirm(address?: AccountAddress): Promise<string> {
+    return Promise.resolve(
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
+    )
+  }
+
+  async sendEvmTransaction(
     _transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     throw new CosmosWalletException(
-      new Error('sendEthereumTransaction is not supported. Cosmostation only supports sending cosmos transactions'),
+      new Error(
+        'sendEvmTransaction is not supported. Cosmostation only supports sending cosmos transactions',
+      ),
       {
         code: UnspecifiedErrorCode,
-        context: WalletAction.SendEthereumTransaction,
+        context: WalletAction.SendEvmTransaction,
       },
     )
   }
 
   async sendTransaction(
-    transaction: DirectSignResponse | CosmosTxV1Beta1Tx.TxRaw,
+    transaction: DirectSignResponse | CosmosTxV1Beta1TxPb.TxRaw,
     _options: { address: AccountAddress; chainId: ChainId },
   ): Promise<TxResponse> {
-    const cosmostationWallet = await this.getCosmostationWallet()
+    const provider = this.getProvider()
     const txRaw = createTxRawFromSigResponse(transaction)
+    const txBytes = uint8ArrayToBase64(
+      CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw),
+    )
 
     try {
-      const response = await cosmostationWallet.sendTransaction(
-        this.chainName,
-        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-        SEND_TRANSACTION_MODE.SYNC,
-      )
+      const response =
+        await provider.request<CosmostationSendTransactionResponse>({
+          method: 'cos_sendTransaction',
+          params: {
+            chainName: this.chainName,
+            txBytes,
+            mode: SEND_TRANSACTION_MODE.SYNC,
+          },
+        })
 
       return {
         ...response.tx_response,
@@ -145,6 +267,7 @@ export class Cosmostation
         height: parseInt((response.tx_response.height || '0') as string, 10),
         txHash: response.tx_response.txhash as string,
         rawLog: response.tx_response.raw_log as string,
+        timestamp: '',
       } as TxResponse
     } catch (e: unknown) {
       if (e instanceof TransactionException) {
@@ -172,27 +295,37 @@ export class Cosmostation
   }
 
   async signCosmosTransaction(transaction: {
-    txRaw: CosmosTxV1Beta1Tx.TxRaw
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw
     chainId: string
     address: string
     accountNumber: number
   }) {
     const { chainId } = this
-    const cosmostationWallet = await this.getCosmostationWallet()
+    const provider = this.getProvider()
     const signDoc = createSignDocFromTransaction(transaction)
+
+    const doc: CosmostationSignDirectDoc = {
+      chain_id: chainId,
+      body_bytes: signDoc.bodyBytes,
+      auth_info_bytes: signDoc.authInfoBytes,
+      account_number: signDoc.accountNumber.toString(),
+    }
 
     try {
       /* Sign the transaction */
-      const signDirectResponse = await cosmostationWallet.signDirect(
-        this.chainName,
-        {
-          chain_id: chainId,
-          body_bytes: signDoc.bodyBytes,
-          auth_info_bytes: signDoc.authInfoBytes,
-          account_number: signDoc.accountNumber.toString(),
-        },
-        { fee: true, memo: true },
-      )
+      const signDirectResponse =
+        await provider.request<CosmostationSignDirectResponse>({
+          method: 'cos_signDirect',
+          params: {
+            chainName: this.chainName,
+            doc,
+            isEditFee: true,
+            isEditMemo: true,
+          },
+        })
+
+      // Lazy load makeSignDoc to avoid bundling @cosmjs in the initial bundle
+      const makeSignDoc = await loadMakeSignDoc()
 
       return {
         signed: makeSignDoc(
@@ -214,18 +347,19 @@ export class Cosmostation
   }
 
   async getPubKey(): Promise<string> {
-    const cosmostationWallet = await this.getCosmostationWallet()
-
     try {
-      const account = await cosmostationWallet.requestAccount(this.chainName)
+      const account = await requestAccount(this.chainName)
 
-      return Buffer.from(account.publicKey).toString('base64')
+      return uint8ArrayToBase64(account.publicKey)
     } catch (e: unknown) {
       if ((e as any).code === 4001) {
-        throw new CosmosWalletException(new Error('The user rejected the request'), {
-          code: UnspecifiedErrorCode,
-          context: WalletAction.GetAccounts,
-        })
+        throw new CosmosWalletException(
+          new Error('The user rejected the request'),
+          {
+            code: UnspecifiedErrorCode,
+            context: WalletAction.GetAccounts,
+          },
+        )
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {
@@ -240,7 +374,7 @@ export class Cosmostation
     _address: AccountAddress,
   ): Promise<string> {
     throw new CosmosWalletException(
-      new Error('This wallet does not support signing Ethereum transactions'),
+      new Error('This wallet does not support signing Evm transactions'),
       {
         code: UnspecifiedErrorCode,
         context: WalletAction.SendTransaction,
@@ -253,15 +387,22 @@ export class Cosmostation
     data: string | Uint8Array,
   ): Promise<string> {
     try {
-      const cosmostationWallet = await this.getCosmostationWallet()
+      const provider = this.getProvider()
 
-      const signature = await cosmostationWallet.signMessage(
-        this.chainName,
-        signer,
-        toUtf8(data),
-      )
+      // Convert data to string - the vanilla API expects a string message
+      const message =
+        data instanceof Uint8Array ? new TextDecoder().decode(data) : data
 
-      return signature.signature
+      const response = await provider.request<CosmostationSignMessageResponse>({
+        method: 'cos_signMessage',
+        params: {
+          chainName: this.chainName,
+          signer,
+          message,
+        },
+      })
+
+      return response.signature
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
@@ -280,39 +421,64 @@ export class Cosmostation
     )
   }
 
-  async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
+  async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new CosmosWalletException(
-      new Error('getEthereumTransactionReceipt is not supported on Cosmostation'),
+      new Error('getEvmTransactionReceipt is not supported on Cosmostation'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        context: WalletAction.GetEthereumTransactionReceipt,
+        context: WalletAction.GetEvmTransactionReceipt,
       },
     )
   }
 
-  private async getCosmostationWallet(): Promise<Cosmos> {
-    if (this.cosmostationWallet) {
-      return this.cosmostationWallet
+  public async getOfflineSigner(chainId: string): Promise<OfflineSigner> {
+    return (await getExtensionOfflineSigner(
+      chainId,
+    )) as unknown as OfflineSigner
+  }
+
+  /**
+   * Subscribe to account change events.
+   */
+  public onAccountChange(callback: onAccountChangeCallback): void {
+    const provider = this.getProvider()
+    const handler = async () => {
+      try {
+        const account = await requestAccount(this.chainName)
+        callback(account.address)
+      } catch {
+        // Silently ignore errors during account change detection
+      }
+    }
+    provider.on('cosmostation_keystorechange', handler)
+  }
+
+  /**
+   * Unsubscribe from account change events.
+   */
+  public offAccountChange(callback: onAccountChangeCallback): void {
+    const provider = this.getProvider()
+    // Note: The vanilla API requires the exact handler reference to remove.
+    // Since we wrap the callback, we cast to any for compatibility.
+    provider.off('cosmostation_keystorechange', callback as any)
+  }
+
+  private getProvider(): CosmostationCosmos {
+    if (this.cosmostationProvider) {
+      return this.cosmostationProvider
     }
 
-    const cosmostationWallet = new CosmostationWallet(this.chainId)
-
     try {
-      const provider = await cosmostationWallet.getCosmostationWallet()
-
-      this.cosmostationWallet = provider
-
+      const provider = getCosmostationProvider()
+      this.cosmostationProvider = provider
       return provider
     } catch (e) {
-      if (e instanceof InstallError) {
-        throw new CosmosWalletException(
-          new Error('Please install the Cosmostation extension'),
-          {
-            code: UnspecifiedErrorCode,
-            type: ErrorType.WalletNotInstalledError,
-          },
-        )
+      if (
+        e instanceof CosmosWalletException &&
+        e.type === ErrorType.WalletNotInstalledError
+      ) {
+        throw e
       }
 
       throw new CosmosWalletException(new Error((e as any).message), {

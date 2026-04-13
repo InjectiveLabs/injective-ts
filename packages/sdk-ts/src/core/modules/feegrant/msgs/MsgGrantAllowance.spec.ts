@@ -1,13 +1,12 @@
-import MsgGrantAllowance from './MsgGrantAllowance.js'
-import { CosmosFeegrantV1Beta1Feegrant } from '@injectivelabs/core-proto-ts'
 import snakecaseKeys from 'snakecase-keys'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgGrantAllowance from './MsgGrantAllowance.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
@@ -27,19 +26,9 @@ const params: MsgGrantAllowance['params'] = {
 
 const protoType = '/cosmos.feegrant.v1beta1.MsgGrantAllowance'
 const protoTypeShort = 'cosmos-sdk/MsgGrantAllowance'
-const protoParams = {
-  grantee: params.grantee,
-  granter: params.granter,
-  allowance: {
-    typeUrl: '/cosmos.feegrant.v1beta1.BasicAllowance',
-    value: Uint8Array.from(
-      CosmosFeegrantV1Beta1Feegrant.BasicAllowance.encode({
-        spendLimit: params.allowance.spendLimit,
-        expiration: new Date(params.allowance.expiration! * 1000),
-      }).finish(),
-    ),
-  },
-}
+// Create the actual proto to get the correct V2 encoding
+const messageForProto = MsgGrantAllowance.fromJSON(params)
+const protoParams = messageForProto.toProto()
 
 const protoParamsAmino = snakecaseKeys({
   grantee: params.grantee,

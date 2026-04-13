@@ -1,13 +1,13 @@
-import { MitoApi } from '@injectivelabs/mito-proto-ts'
 import { IndexerGrpcMitoTransformer } from './IndexerGrpcMitoTransformer.js'
-import { StreamOperation } from '../../../types/index.js'
+import type * as GoadesignGoagenMitoApiPb from '@injectivelabs/mito-proto-ts-v2/generated/goadesign_goagen_mito_api_pb'
+import type { StreamOperation } from '../../../types/index.js'
 
 /**
  * @category Indexer Stream Transformer
  */
 export class IndexerGrpcMitoStreamTransformer {
   static transfersStreamCallback = (
-    response: MitoApi.StreamTransfersResponse,
+    response: GoadesignGoagenMitoApiPb.StreamTransfersResponse,
   ) => ({
     transfer: response.data
       ? IndexerGrpcMitoTransformer.mitoTransferHistoryToTransferHistory(
@@ -17,7 +17,9 @@ export class IndexerGrpcMitoStreamTransformer {
     opType: response.opType as StreamOperation,
   })
 
-  static vaultStreamCallback = (response: MitoApi.StreamVaultResponse) => ({
+  static vaultStreamCallback = (
+    response: GoadesignGoagenMitoApiPb.StreamVaultResponse,
+  ) => ({
     vault: response.data
       ? IndexerGrpcMitoTransformer.mitoVaultToVault(response.data)
       : undefined,
@@ -25,7 +27,7 @@ export class IndexerGrpcMitoStreamTransformer {
   })
 
   static vaultHolderSubscriptionStreamCallback = (
-    response: MitoApi.StreamHolderSubscriptionResponse,
+    response: GoadesignGoagenMitoApiPb.StreamHolderSubscriptionResponse,
   ) => ({
     subscription: response.data
       ? IndexerGrpcMitoTransformer.mitoSubscriptionToSubscription(response.data)
@@ -34,7 +36,7 @@ export class IndexerGrpcMitoStreamTransformer {
   })
 
   static stakingRewardByAccountStreamCallback = (
-    response: MitoApi.StreamStakingRewardByAccountResponse,
+    response: GoadesignGoagenMitoApiPb.StreamStakingRewardByAccountResponse,
   ) => ({
     stakingReward: response.data
       ? IndexerGrpcMitoTransformer.mitoStakingRewardToStakingReward(
@@ -45,7 +47,7 @@ export class IndexerGrpcMitoStreamTransformer {
   })
 
   static historicalStakingStreamCallback = (
-    response: MitoApi.StreamHistoricalStakingResponse,
+    response: GoadesignGoagenMitoApiPb.StreamHistoricalStakingResponse,
   ) => ({
     historicalStaking: response.data
       ? IndexerGrpcMitoTransformer.mitoStakingActivityToStakingActivity(

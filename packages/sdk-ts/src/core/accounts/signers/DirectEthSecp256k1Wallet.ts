@@ -1,8 +1,10 @@
-import { DirectSignResponse, makeSignBytes } from '@cosmjs/proto-signing'
-import { PrivateKey } from '../PrivateKey.js'
+import { makeSignBytes } from '@cosmjs/proto-signing'
 import { PublicKey } from '../PublicKey.js'
-import { AccountData, OfflineDirectSigner } from './types/proto-signer.js'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import { PrivateKey } from '../PrivateKey.js'
+import { uint8ArrayToHex, uint8ArrayToBase64 } from '../../../utils/encoding.js'
+import type { DirectSignResponse } from '@cosmjs/proto-signing'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
+import type { AccountData, OfflineDirectSigner } from './types/proto-signer.js'
 
 export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {
   /**
@@ -15,7 +17,7 @@ export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {
     privKey: Uint8Array,
     prefix = 'inj',
   ): Promise<DirectEthSecp256k1Wallet> {
-    const publicKey = PrivateKey.fromHex(Buffer.from(privKey).toString('hex'))
+    const publicKey = PrivateKey.fromHex(uint8ArrayToHex(privKey))
       .toPublicKey()
       .toPubKeyBytes()
 
@@ -29,7 +31,7 @@ export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {
   private readonly prefix: string
 
   private constructor(privKey: Uint8Array, pubKey: Uint8Array, prefix: string) {
-    this.privateKey = PrivateKey.fromHex(Buffer.from(privKey).toString('hex'))
+    this.privateKey = PrivateKey.fromHex(uint8ArrayToHex(privKey))
     this.publicKey = PublicKey.fromBytes(pubKey)
     this.prefix = prefix
   }
@@ -50,7 +52,7 @@ export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {
 
   public async signDirect(
     address: string,
-    signDoc: Omit<CosmosTxV1Beta1Tx.SignDoc, 'accountNumber'> & {
+    signDoc: Omit<CosmosTxV1Beta1TxPb.SignDoc, 'accountNumber'> & {
       accountNumber: bigint
     },
   ): Promise<DirectSignResponse> {
@@ -60,7 +62,7 @@ export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {
       throw new Error(`Address ${address} not found in wallet`)
     }
 
-    const signature = await this.privateKey.sign(Buffer.from(signBytes))
+    const signature = await this.privateKey.sign(signBytes)
 
     return {
       signed: signDoc,
@@ -69,7 +71,7 @@ export class DirectEthSecp256k1Wallet implements OfflineDirectSigner {
           type: 'tendermint/PubKeyEthSecp256k1',
           value: this.publicKey.toBase64(),
         },
-        signature: Buffer.from(signature).toString('base64'),
+        signature: uint8ArrayToBase64(signature),
       },
     }
   }

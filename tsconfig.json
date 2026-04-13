@@ -2,12 +2,16 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     "paths": {
       "@injectivelabs/ts-types": ["packages/ts-types"],
       "@injectivelabs/exceptions": ["packages/exceptions"],
       "@injectivelabs/networks": ["packages/networks"],
       "@injectivelabs/utils": ["packages/utils"],
+      "@injectivelabs/utils/test-utils": ["packages/utils/src/test-utils"],
       "@injectivelabs/sdk-ts": ["packages/sdk-ts"],
+      "@injectivelabs/sdk-ts/*": ["packages/sdk-ts/src/*"],
       "@injectivelabs/wallet-base": ["packages/wallets/wallet-base"],
       "@injectivelabs/wallet-core": ["packages/wallets/wallet-core"],
       "@injectivelabs/wallet-evm": ["packages/wallets/wallet-evm"],

@@ -1,6 +1,5 @@
+import * as InjectiveTokenFactoryV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/tokenfactory/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
-import { InjectiveTokenFactoryV1Beta1Tx } from '@injectivelabs/core-proto-ts'
 
 export declare namespace MsgCreateDenom {
   export interface Params {
@@ -12,7 +11,7 @@ export declare namespace MsgCreateDenom {
     allowAdminBurn?: boolean
   }
 
-  export type Proto = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom
+  export type Proto = InjectiveTokenFactoryV1Beta1TxPb.MsgCreateDenom
 }
 
 /**
@@ -29,19 +28,18 @@ export default class MsgCreateDenom extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.create()
+    const message = InjectiveTokenFactoryV1Beta1TxPb.MsgCreateDenom.create({
+      sender: params.sender,
+      subdenom: params.subdenom,
+      name: params.name || '',
+      symbol: params.symbol || '',
+      decimals: params.decimals || 0,
+      ...(params.allowAdminBurn !== undefined && {
+        allowAdminBurn: params.allowAdminBurn,
+      }),
+    })
 
-    message.sender = params.sender
-    message.subdenom = params.subdenom
-    message.name = params.name || ''
-    message.symbol = params.symbol || ''
-    message.decimals = params.decimals || 0
-
-    if (params.allowAdminBurn !== undefined) {
-      message.allowAdminBurn = params.allowAdminBurn
-    }
-
-    return InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -56,7 +54,14 @@ export default class MsgCreateDenom extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      subdenom: proto.subdenom,
+      name: proto.name,
+      symbol: proto.symbol,
+      decimals: proto.decimals,
+      ...(proto.allowAdminBurn !== undefined && {
+        allow_admin_burn: proto.allowAdminBurn,
+      }),
     }
 
     return {
@@ -85,8 +90,8 @@ export default class MsgCreateDenom extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveTokenFactoryV1Beta1Tx.MsgCreateDenom.encode(
+    return InjectiveTokenFactoryV1Beta1TxPb.MsgCreateDenom.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

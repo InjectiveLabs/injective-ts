@@ -1,119 +1,60 @@
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
-import { InjectiveInsuranceV1Beta1Query } from '@injectivelabs/core-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import * as InjectiveInsuranceV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/query_pb'
+import { QueryClient as InjectiveInsuranceV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
+import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer.js'
-
 /**
  * @category Chain Grpc API
  */
 export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
   protected module: string = ChainModule.InsuranceFund
 
-  protected client: InjectiveInsuranceV1Beta1Query.QueryClientImpl
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveInsuranceV1Beta1Query.QueryClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+  private get client() {
+    return this.initClient(InjectiveInsuranceV1Beta1QueryClient)
   }
 
   async fetchModuleParams() {
     const request =
-      InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsRequest.create()
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceParamsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceParamsResponse>(
-          () => this.client.InsuranceParams(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceParamsRequest,
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceParamsResponse
+    >(request, this.client.insuranceParams.bind(this.client))
 
-      return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'InsuranceParams',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'InsuranceParams',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
+      response,
+    )
   }
 
   async fetchInsuranceFunds() {
     const request =
-      InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsRequest.create()
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundsRequest.create()
 
-    try {
-      const response =
-        await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceFundsResponse>(
-          () => this.client.InsuranceFunds(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundsRequest,
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundsResponse
+    >(request, this.client.insuranceFunds.bind(this.client))
 
-      return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'InsuranceFunds',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'InsuranceFunds',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
+      response,
+    )
   }
 
   async fetchInsuranceFund(marketId: string) {
     const request =
-      InjectiveInsuranceV1Beta1Query.QueryInsuranceFundRequest.create()
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundRequest.create()
 
     request.marketId = marketId
 
-    try {
-      const response =
-        await this.retry<InjectiveInsuranceV1Beta1Query.QueryInsuranceFundResponse>(
-          () => this.client.InsuranceFund(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundRequest,
+      InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundResponse
+    >(request, this.client.insuranceFund.bind(this.client))
 
-      return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'InsuranceFund',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'InsuranceFund',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
+      response,
+    )
   }
 
   async fetchEstimatedRedemptions({
@@ -124,35 +65,19 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     address: string
   }) {
     const request =
-      InjectiveInsuranceV1Beta1Query.QueryEstimatedRedemptionsRequest.create()
+      InjectiveInsuranceV1Beta1QueryPb.QueryEstimatedRedemptionsRequest.create()
 
     request.marketId = marketId
     request.address = address
 
-    try {
-      const response =
-        await this.retry<InjectiveInsuranceV1Beta1Query.QueryEstimatedRedemptionsResponse>(
-          () => this.client.EstimatedRedemptions(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveInsuranceV1Beta1QueryPb.QueryEstimatedRedemptionsRequest,
+      InjectiveInsuranceV1Beta1QueryPb.QueryEstimatedRedemptionsResponse
+    >(request, this.client.estimatedRedemptions.bind(this.client))
 
-      return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'EstimatedRedemptions',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'EstimatedRedemptions',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
+      response,
+    )
   }
 
   async fetchPendingRedemptions({
@@ -163,34 +88,18 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     address: string
   }) {
     const request =
-      InjectiveInsuranceV1Beta1Query.QueryPendingRedemptionsRequest.create()
+      InjectiveInsuranceV1Beta1QueryPb.QueryPendingRedemptionsRequest.create()
 
     request.marketId = marketId
     request.address = address
 
-    try {
-      const response =
-        await this.retry<InjectiveInsuranceV1Beta1Query.QueryPendingRedemptionsResponse>(
-          () => this.client.PendingRedemptions(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveInsuranceV1Beta1QueryPb.QueryPendingRedemptionsRequest,
+      InjectiveInsuranceV1Beta1QueryPb.QueryPendingRedemptionsResponse
+    >(request, this.client.pendingRedemptions.bind(this.client))
 
-      return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveInsuranceV1Beta1Query.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'PendingRedemptions',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'PendingRedemptions',
-        contextModule: this.module,
-      })
-    }
+    return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
+      response,
+    )
   }
 }

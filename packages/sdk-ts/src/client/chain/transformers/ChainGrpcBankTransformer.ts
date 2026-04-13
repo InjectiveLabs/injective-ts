@@ -1,22 +1,22 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { Pagination } from '../../../types/index.js'
 import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
-import { BankModuleParams, Metadata, TotalSupply } from '../types/index.js'
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
-import { CosmosBankV1Beta1Bank, CosmosBankV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import type { Coin } from '@injectivelabs/ts-types'
+import type * as CosmosBankV1Beta1BankPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/bank_pb'
+import type * as CosmosBankV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/bank/v1beta1/query_pb'
+import type { Pagination } from '../../../types/index.js'
+import type { Metadata, TotalSupply, BankModuleParams } from '../types/index.js'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcBankTransformer {
   static metadataToMetadata(
-    metadata: CosmosBankV1Beta1Bank.Metadata,
+    metadata: CosmosBankV1Beta1BankPb.Metadata,
   ): Metadata {
     return metadata
   }
 
   static moduleParamsResponseToModuleParams(
-    response: CosmosBankV1Beta1Query.QueryParamsResponse,
+    response: CosmosBankV1Beta1QueryPb.QueryParamsResponse,
   ): BankModuleParams {
     const params = response.params!
 
@@ -27,7 +27,7 @@ export class ChainGrpcBankTransformer {
   }
 
   static denomOwnersResponseToDenomOwners(
-    response: CosmosBankV1Beta1Query.QueryDenomOwnersResponse,
+    response: CosmosBankV1Beta1QueryPb.QueryDenomOwnersResponse,
   ): {
     denomOwners: { address: string; balance: Coin | undefined }[]
     pagination: Pagination
@@ -36,13 +36,19 @@ export class ChainGrpcBankTransformer {
     const pagination = response.pagination
 
     return {
-      denomOwners,
-      pagination: grpcPaginationToPagination(pagination),
+      denomOwners: denomOwners.map((denomOwner) => ({
+        address: denomOwner.address,
+        balance: denomOwner.balance
+          ? ChainGrpcCommonTransformer.grpcCoinToCoin(denomOwner.balance)
+          : undefined,
+      })),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(pagination),
     }
   }
 
   static totalSupplyResponseToTotalSupply(
-    response: CosmosBankV1Beta1Query.QueryTotalSupplyResponse,
+    response: CosmosBankV1Beta1QueryPb.QueryTotalSupplyResponse,
   ): {
     supply: TotalSupply
     pagination: Pagination
@@ -52,12 +58,13 @@ export class ChainGrpcBankTransformer {
 
     return {
       supply: balances.map(ChainGrpcCommonTransformer.grpcCoinToCoin),
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(pagination),
     }
   }
 
   static denomsMetadataResponseToDenomsMetadata(
-    response: CosmosBankV1Beta1Query.QueryDenomsMetadataResponse,
+    response: CosmosBankV1Beta1QueryPb.QueryDenomsMetadataResponse,
   ): {
     metadatas: Metadata[]
     pagination: Pagination
@@ -67,18 +74,19 @@ export class ChainGrpcBankTransformer {
 
     return {
       metadatas: metadatas.map(ChainGrpcBankTransformer.metadataToMetadata),
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(pagination),
     }
   }
 
   static balanceResponseToBalance(
-    response: CosmosBankV1Beta1Query.QueryBalanceResponse,
+    response: CosmosBankV1Beta1QueryPb.QueryBalanceResponse,
   ): Coin {
     return ChainGrpcCommonTransformer.grpcCoinToCoin(response.balance!)
   }
 
   static balancesResponseToBalances(
-    response: CosmosBankV1Beta1Query.QueryAllBalancesResponse,
+    response: CosmosBankV1Beta1QueryPb.QueryAllBalancesResponse,
   ): {
     balances: Coin[]
     pagination: Pagination
@@ -88,7 +96,8 @@ export class ChainGrpcBankTransformer {
 
     return {
       balances: balances.map(ChainGrpcCommonTransformer.grpcCoinToCoin),
-      pagination: grpcPaginationToPagination(pagination),
+      pagination:
+        ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(pagination),
     }
   }
 }

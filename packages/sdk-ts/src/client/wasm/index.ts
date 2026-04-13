@@ -1,4 +1,4 @@
-export * from './types.js'
+export type * from './types.js'
 export * from './swap/index.js'
 export * from './neptune/index.js'
 export * from './incentives/index.js'

@@ -1,20 +1,15 @@
+import { toChainFormat } from '@injectivelabs/utils'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  numberToCosmosSdkDecString,
-  amountToCosmosSdkDecAmount,
-} from '../../../../utils/numbers.js'
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-import {
-  InjectiveExchangeV1Beta1Tx,
-  InjectiveExchangeV1Beta1Exchange,
-} from '@injectivelabs/core-proto-ts'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgCreateDerivativeLimitOrder {
   export interface Params {
     marketId: string
     subaccountId: string
     injectiveAddress: string
-    orderType: InjectiveExchangeV1Beta1Exchange.OrderType
+    orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType
     triggerPrice?: string
     feeRecipient: string
     price: string
@@ -23,35 +18,32 @@ export declare namespace MsgCreateDerivativeLimitOrder {
     cid?: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeLimitOrder
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgCreateDerivativeLimitOrder
 }
 
 const createLimitOrder = (params: MsgCreateDerivativeLimitOrder.Params) => {
-  const orderInfo = InjectiveExchangeV1Beta1Exchange.OrderInfo.create()
-
-  orderInfo.subaccountId = params.subaccountId
-  orderInfo.feeRecipient = params.feeRecipient
-  orderInfo.price = params.price
-  orderInfo.quantity = params.quantity
-
-  if (params.cid) {
-    orderInfo.cid = params.cid
-  }
+  const orderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo.create({
+    subaccountId: params.subaccountId,
+    feeRecipient: params.feeRecipient,
+    price: params.price,
+    quantity: params.quantity,
+    cid: params.cid || '',
+  })
 
   const derivativeOrder =
-    InjectiveExchangeV1Beta1Exchange.DerivativeOrder.create()
-
-  derivativeOrder.marketId = params.marketId
-  derivativeOrder.orderInfo = orderInfo
-  derivativeOrder.orderType = params.orderType
-  derivativeOrder.margin = params.margin
-  derivativeOrder.triggerPrice = params.triggerPrice || '0'
+    InjectiveExchangeV1Beta1ExchangePb.DerivativeOrder.create({
+      marketId: params.marketId,
+      orderInfo: orderInfo,
+      orderType: params.orderType,
+      margin: params.margin,
+      triggerPrice: params.triggerPrice || '0',
+    })
 
   const message =
-    InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeLimitOrder.create()
-
-  message.sender = params.injectiveAddress
-  message.order = derivativeOrder
+    InjectiveExchangeV1Beta1TxPb.MsgCreateDerivativeLimitOrder.create({
+      sender: params.injectiveAddress,
+      order: derivativeOrder,
+    })
 
   return message
 }
@@ -74,12 +66,10 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
 
     const params = {
       ...initialParams,
-      price: amountToCosmosSdkDecAmount(initialParams.price).toFixed(),
-      margin: amountToCosmosSdkDecAmount(initialParams.margin).toFixed(),
-      triggerPrice: amountToCosmosSdkDecAmount(
-        initialParams.triggerPrice || 0,
-      ).toFixed(),
-      quantity: amountToCosmosSdkDecAmount(initialParams.quantity).toFixed(),
+      price: toChainFormat(initialParams.price).toFixed(),
+      margin: toChainFormat(initialParams.margin).toFixed(),
+      triggerPrice: toChainFormat(initialParams.triggerPrice || 0).toFixed(),
+      quantity: toChainFormat(initialParams.quantity).toFixed(),
     } as MsgCreateDerivativeLimitOrder.Params
 
     return createLimitOrder(params)
@@ -96,15 +86,26 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
 
   public toAmino() {
     const { params } = this
-    const order = createLimitOrder(params)
     const message = {
-      ...snakecaseKeys(order),
+      sender: params.injectiveAddress,
+      order: {
+        market_id: params.marketId,
+        order_info: {
+          subaccount_id: params.subaccountId,
+          fee_recipient: params.feeRecipient,
+          price: params.price,
+          quantity: params.quantity,
+          cid: params.cid || '',
+        },
+        order_type: params.orderType,
+        margin: params.margin,
+        trigger_price: params.triggerPrice || '0',
+      },
     }
 
     return {
       type: 'exchange/MsgCreateDerivativeLimitOrder',
-      value:
-        message as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeLimitOrder>,
+      value: message,
     }
   }
 
@@ -134,9 +135,8 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
         },
         margin: numberToCosmosSdkDecString(params.margin),
         trigger_price: numberToCosmosSdkDecString(params.triggerPrice || '0'),
-        order_type: InjectiveExchangeV1Beta1Exchange.orderTypeToJSON(
-          params.orderType,
-        ),
+        order_type:
+          InjectiveExchangeV1Beta1ExchangePb.OrderType[params.orderType],
       },
     }
 
@@ -154,13 +154,11 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
         ...value.order,
         order_info: {
           ...value.order?.order_info,
-          price: amountToCosmosSdkDecAmount(params.price).toFixed(),
-          quantity: amountToCosmosSdkDecAmount(params.quantity).toFixed(),
+          price: toChainFormat(params.price).toFixed(),
+          quantity: toChainFormat(params.quantity).toFixed(),
         },
-        margin: amountToCosmosSdkDecAmount(params.margin).toFixed(),
-        trigger_price: amountToCosmosSdkDecAmount(
-          params.triggerPrice || '0',
-        ).toFixed(),
+        margin: toChainFormat(params.margin).toFixed(),
+        trigger_price: toChainFormat(params.triggerPrice || '0').toFixed(),
       },
     }
 
@@ -180,8 +178,8 @@ export default class MsgCreateDerivativeLimitOrder extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgCreateDerivativeLimitOrder.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgCreateDerivativeLimitOrder.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

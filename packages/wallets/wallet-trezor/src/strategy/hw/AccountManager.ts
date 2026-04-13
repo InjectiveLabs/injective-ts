@@ -1,18 +1,24 @@
-/* eslint-disable class-methods-use-this */
-import { AccountAddress } from '@injectivelabs/ts-types'
-import HDNode from 'hdkey'
 import { TrezorException } from '@injectivelabs/exceptions'
-import { TrezorWalletInfo, TrezorDerivationPathType } from '../../types.js'
-import { addHexPrefix, publicKeyToAddress } from '@injectivelabs/sdk-ts'
 import { DEFAULT_NUM_ADDRESSES_TO_FETCH } from '@injectivelabs/wallet-base'
-import { TrezorConnect } from '@bangjelkoski/trezor-connect-web'
+import {
+  addHexPrefix,
+  hexToUint8Array,
+  uint8ArrayToHex,
+  publicKeyToAddress,
+} from '@injectivelabs/sdk-ts/utils'
+import { loadTrezorConnect } from '../lib.js'
+import { TrezorDerivationPathType } from '../../types.js'
+import type { AccountAddress } from '@injectivelabs/ts-types'
+import type { HDNodeLike, TrezorWalletInfo } from '../../types.js'
 
-const addressOfHDKey = (hdKey: HDNode): string => {
+const addressOfHDKey = (hdKey: HDNodeLike): string => {
   const shouldSanitizePublicKey = true
   const derivedPublicKey = hdKey.publicKey
-  const ethereumAddressWithoutPrefix = Buffer.from(
-    publicKeyToAddress(derivedPublicKey, shouldSanitizePublicKey),
-  ).toString('hex')
+  const ethereumAddress = publicKeyToAddress(
+    derivedPublicKey,
+    shouldSanitizePublicKey,
+  )
+  const ethereumAddressWithoutPrefix = uint8ArrayToHex(ethereumAddress)
   const address = addHexPrefix(ethereumAddressWithoutPrefix)
 
   return address
@@ -78,6 +84,8 @@ export default class AccountManager {
     baseDerivationPath: string
     derivationPathType: TrezorDerivationPathType
   }) {
+    const TrezorConnect = await loadTrezorConnect()
+
     const pathsToFetch = []
 
     for (let index = start; index < end; index += 1) {
@@ -107,9 +115,10 @@ export default class AccountManager {
     }
 
     for (const item of result.payload) {
-      const hdKey = new HDNode()
-      hdKey.publicKey = Buffer.from(item.publicKey, 'hex')
-      hdKey.chainCode = Buffer.from(item.chainCode, 'hex')
+      const hdKey: HDNodeLike = {
+        publicKey: hexToUint8Array(item.publicKey),
+        chainCode: hexToUint8Array(item.chainCode),
+      }
       const address = addressOfHDKey(hdKey)
 
       this.wallets.push({

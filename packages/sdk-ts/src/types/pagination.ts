@@ -26,4 +26,6 @@ export interface ExchangePagination {
   to: number
   from: number
   total: number
+  countBySubaccount?: number
+  next?: string[]
 }

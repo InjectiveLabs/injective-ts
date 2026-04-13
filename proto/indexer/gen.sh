@@ -1,3 +1,7 @@
+# DEPRECATION WARNING
+echo "❌ ERROR: This script is deprecated, use protoV2/indexer/gen.sh instead" >&2
+exit 1
+
 ROOT_DIR=./proto/indexer
 BUILD_DIR=$ROOT_DIR/gen
 PROTO_DIR=$ROOT_DIR/proto
@@ -39,6 +43,7 @@ for dir in $proto_dirs; do
     --ts_proto_opt="esModuleInterop=true" \
     --ts_proto_opt="forceLong=string" \
     --ts_proto_opt="env=both" \
+    --ts_proto_opt="enumsAsLiterals=true" \
     --ts_proto_opt="useExactTypes=false" \
     --ts_proto_opt="outputClientImpl=grpc-web" \
     --ts_proto_out="$TS_OUTPUT_DIR/proto" \

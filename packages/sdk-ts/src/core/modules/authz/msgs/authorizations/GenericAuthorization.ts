@@ -1,20 +1,18 @@
-import {
-  GoogleProtobufAny,
-  CosmosAuthzV1Beta1Authz,
-} from '@injectivelabs/core-proto-ts'
-import { BaseAuthorization } from './Base.js'
 import { GeneralException } from '@injectivelabs/exceptions'
+import * as CosmosAuthzV1Beta1AuthzPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/authz_pb'
+import { BaseAuthorization } from './Base.js'
 import { getGenericAuthorizationFromMessageType } from '../../utils.js'
+import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 
 export declare namespace GenericAuthorization {
   export interface Params {
     messageTypeUrl?: string
-    authorization?: GoogleProtobufAny.Any
+    authorization?: GoogleProtobufAnyPb.Any
   }
 
-  export type Any = GoogleProtobufAny.Any
+  export type Any = GoogleProtobufAnyPb.Any
 
-  export type Proto = CosmosAuthzV1Beta1Authz.GenericAuthorization
+  export type Proto = CosmosAuthzV1Beta1AuthzPb.GenericAuthorization
 
   export type Amino = Object
 }
@@ -33,14 +31,18 @@ export default class GenericAuthorization extends BaseAuthorization<
 
   public toProto(): GenericAuthorization.Proto {
     const genericAuthorization =
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(this.toAny().value)
+      CosmosAuthzV1Beta1AuthzPb.GenericAuthorization.fromBinary(
+        this.toAny().value,
+      )
 
     return genericAuthorization
   }
 
   public toAmino(): GenericAuthorization.Amino {
     const genericAuthorization =
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(this.toAny().value)
+      CosmosAuthzV1Beta1AuthzPb.GenericAuthorization.fromBinary(
+        this.toAny().value,
+      )
 
     return {
       type: 'cosmos-sdk/GenericAuthorization',
@@ -50,7 +52,9 @@ export default class GenericAuthorization extends BaseAuthorization<
 
   public toWeb3(): GenericAuthorization.Amino {
     const genericAuthorization =
-      CosmosAuthzV1Beta1Authz.GenericAuthorization.decode(this.toAny().value)
+      CosmosAuthzV1Beta1AuthzPb.GenericAuthorization.fromBinary(
+        this.toAny().value,
+      )
 
     return {
       '@type': '/cosmos.authz.v1beta1.GenericAuthorization',
@@ -58,7 +62,7 @@ export default class GenericAuthorization extends BaseAuthorization<
     }
   }
 
-  public toAny(): GoogleProtobufAny.Any {
+  public toAny(): GoogleProtobufAnyPb.Any {
     const { params } = this
 
     if (!params.authorization && !params.messageTypeUrl) {

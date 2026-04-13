@@ -1,6 +1,6 @@
-import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
-import { Position } from './derivatives.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type * as InjectivePortfolioRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_portfolio_rpc_pb'
+import type { Position } from './derivatives.js'
 
 export interface SubaccountDepositV2 {
   totalBalance: string
@@ -31,9 +31,9 @@ export interface AccountPortfolioBalances {
   subaccountsList: PortfolioSubaccountBalanceV2[]
 }
 
-export type GrpcPositionV2 = InjectivePortfolioRpc.DerivativePosition
-export type GrpcAccountPortfolioV2 = InjectivePortfolioRpc.Portfolio
-export type GrpcSubaccountDepositV2 = InjectivePortfolioRpc.SubaccountDeposit
-export type GrpcPositionsWithUPNL = InjectivePortfolioRpc.PositionsWithUPNL
+export type GrpcPositionV2 = InjectivePortfolioRpcPb.DerivativePosition
+export type GrpcAccountPortfolioV2 = InjectivePortfolioRpcPb.Portfolio
+export type GrpcSubaccountDepositV2 = InjectivePortfolioRpcPb.SubaccountDeposit
+export type GrpcPositionsWithUPNL = InjectivePortfolioRpcPb.PositionsWithUPNL
 export type GrpcPortfolioSubaccountBalanceV2 =
-  InjectivePortfolioRpc.SubaccountBalanceV2
+  InjectivePortfolioRpcPb.SubaccountBalanceV2

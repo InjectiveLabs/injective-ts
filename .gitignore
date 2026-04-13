@@ -2,7 +2,10 @@ reports
 junit.xml
 dist
 .build-cache
+.nx/
 .DS_STORE
+.eslintcache
+.tsbuildinfo
 # Created by https://www.gitignore.io/api/node,intellij+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,intellij+all,visualstudiocode
 
@@ -197,3 +200,5 @@ typings/
 .yarn
 .DS_Store
 packages/**/patches
+bundle-analysis/reports/
+proto/gen/

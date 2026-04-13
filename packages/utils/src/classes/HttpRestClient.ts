@@ -1,11 +1,12 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
+import axios from 'axios'
+import { StatusCodes } from 'http-status-codes'
 import {
+  HttpRequestMethod,
   HttpRequestException,
   UnspecifiedErrorCode,
-  HttpRequestMethod,
 } from '@injectivelabs/exceptions'
-import { StatusCodes } from 'http-status-codes'
 import HttpClient from './HttpClient.js'
+import type { AxiosError, AxiosRequestConfig } from 'axios'
 
 const getErrorMessage = (error: any, endpoint: string): string => {
   if (!error.response) {
@@ -13,7 +14,9 @@ const getErrorMessage = (error: any, endpoint: string): string => {
   }
 
   return error.response.data
-    ? error.response.data.message || error.response.data
+    ? error.response.data.message ||
+        error.response.data.statusMessage ||
+        error.response.data
     : error.response.statusText
 }
 

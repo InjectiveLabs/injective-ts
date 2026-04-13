@@ -1,5 +1,5 @@
-import { CosmosBaseV1Beta1Coin } from '@injectivelabs/core-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
+import type * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 
 export const isServerSide = () => typeof window === 'undefined'
 
@@ -39,52 +39,44 @@ export const objectToJson = (
   object: Record<string, any>,
   params?:
     | {
-        replacer?: any
+        replacer?: (key: string, value: unknown) => unknown
         indentation?: number
       }
     | undefined,
 ): string => {
-  const { replacer, indentation } = params || { replacer: null, indentation: 2 }
+  const { replacer, indentation } = params || {
+    replacer: undefined,
+    indentation: 2,
+  }
 
-  return JSON.stringify(object, replacer, indentation)
+  return safeBigIntStringify(object, replacer, indentation)
 }
 
 export const protoObjectToJson = (
   object: any,
   params?:
     | {
-        replacer?: any
+        replacer?: (key: string, value: unknown) => unknown
         indentation?: number
       }
     | undefined,
 ): string => {
-  const { replacer, indentation } = params || { replacer: null, indentation: 2 }
+  const { replacer, indentation } = params || {
+    replacer: undefined,
+    indentation: 2,
+  }
 
   if (object.toObject !== undefined) {
-    return JSON.stringify(object.toObject(), replacer, indentation)
+    return safeBigIntStringify(object.toObject(), replacer, indentation)
   }
 
   return objectToJson(object, { replacer, indentation })
 }
 
-export const grpcCoinToUiCoin = (coin: CosmosBaseV1Beta1Coin.Coin): Coin => ({
+export const grpcCoinToUiCoin = (coin: CosmosBaseV1Beta1CoinPb.Coin): Coin => ({
   amount: coin.amount,
   denom: coin.denom,
 })
-
-export const uint8ArrayToString = (
-  string: string | Uint8Array | null | undefined,
-): string => {
-  if (!string) {
-    return ''
-  }
-
-  if (string.constructor !== Uint8Array) {
-    return string as string
-  }
-
-  return new TextDecoder().decode(string)
-}
 
 export const sortObjectByKeysWithReduce = <T>(obj: T): T => {
   if (typeof obj !== 'object' || obj === null) return obj
@@ -98,6 +90,7 @@ export const sortObjectByKeysWithReduce = <T>(obj: T): T => {
     .reduce((sorted, k) => {
       const key = k as keyof typeof obj
       sorted[key] = sortObjectByKeysWithReduce(obj[key])
+
       return sorted
     }, {} as T)
 }
@@ -158,9 +151,89 @@ export function isJsonString<T>(str: T): boolean {
 
   try {
     JSON.parse(str)
-  } catch (e) {
+  } catch {
     return false
   }
 
   return true
+}
+
+/**
+ * BigInt-safe JSON replacer function.
+ * Converts BigInt values to strings during JSON serialization.
+ */
+export const bigIntReplacer = (_key: string, value: unknown): unknown =>
+  typeof value === 'bigint' ? bigIntToString(value) : value
+
+/**
+ * Converts a potentially bigint value to a number.
+ * Handles bigint, string, and other number-like types.
+ * Returns 0 for null/undefined values.
+ */
+export const bigIntToNumber = (value: unknown): number => {
+  if (value === null || value === undefined) {
+    return 0
+  }
+
+  if (typeof value === 'bigint') {
+    return Number(value)
+  }
+
+  if (typeof value === 'string') {
+    return parseInt(value || '0', 10)
+  }
+
+  if (typeof value === 'number') {
+    return value
+  }
+
+  return parseInt(String(value || '0'), 10)
+}
+
+/**
+ * Converts a potentially bigint value to a string.
+ * Handles bigint, string, and other types that can be converted to string.
+ * Returns empty string for null/undefined values.
+ */
+export const bigIntToString = (value: unknown): string => {
+  if (value === null || value === undefined) {
+    return ''
+  }
+
+  if (typeof value === 'bigint') {
+    return value.toString()
+  }
+
+  if (typeof value === 'string') {
+    return value
+  }
+
+  if (typeof value === 'number') {
+    return value.toString()
+  }
+
+  return String(value || '')
+}
+
+/**
+ * Stringify an object to JSON with BigInt support.
+ * Converts BigInt values to strings during serialization to prevent
+ * "Do not know how to serialize a BigInt" errors.
+ *
+ * @param value - The value to serialize
+ * @param replacer - Optional custom replacer function (BigInt handling is applied first)
+ * @param space - Optional indentation for pretty printing
+ * @returns JSON string
+ */
+export const safeBigIntStringify = (
+  value: unknown,
+  replacer?: ((key: string, value: unknown) => unknown) | null,
+  space?: string | number,
+): string => {
+  const combinedReplacer = (key: string, val: unknown): unknown => {
+    const bigIntHandled = bigIntReplacer(key, val)
+    return replacer ? replacer(key, bigIntHandled) : bigIntHandled
+  }
+
+  return JSON.stringify(value, combinedReplacer, space)
 }

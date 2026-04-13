@@ -1,0 +1,130 @@
+name: Package Bump
+
+# This workflow bumps package versions across all downstream repositories.
+# Can be triggered:
+# 1. Manually via GitHub UI (workflow_dispatch)
+# 2. Automatically called from publish.yaml after successful latest publish
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  package-bump-layer:
+    name: 'Package bump layer'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Package bump layer
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.LAYER_GH_TOKEN }}
+          repository_url: injectiveLabs/injective-ui
+          repository_branch: master
+
+  package-bump-hub:
+    name: 'Package bump hub'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump Hub
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.HUB_GH_TOKEN }}
+          repository_url: injectiveLabs/injective-hub
+          repository_branch: dev
+
+  package-bump-helix:
+    name: 'Package bump Helix'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump Helix
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.HELIX_GH_TOKEN }}
+          repository_url: injectiveLabs/injective-helix
+          repository_branch: dev
+
+  package-bump-explorer:
+    name: 'Package bump Explorer'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump Explorer
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.EXPLORER_GH_TOKEN }}
+          repository_url: injectiveLabs/injective-explorer
+          repository_branch: dev
+
+  package-bump-trading-ui:
+    name: 'Package bump Trading UI'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump Trading UI
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.TRADING_UI_GH_TOKEN }}
+          repository_url: injectiveLabs/injective-trading-ui
+          repository_branch: dev
+
+  package-bump-mito:
+    name: 'Package bump Mito'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump Mito
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.MITO_GH_TOKEN }}
+          repository_url: mitoFinance/mito-ui
+          repository_branch: dev
+
+  package-bump-ui-api:
+    name: 'Package bump UI API'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump UI API
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.UI_API_GH_TOKEN }}
+          repository_url: injectiveLabs/injective-ui-api
+          repository_branch: staging
+
+  package-bump-admin-ui:
+    name: 'Package bump Admin UI'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump Admin UI
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.ADMIN_UI_GH_TOKEN }}
+          repository_url: InjectiveLabs/injective-admin-ui
+          repository_branch: dev
+
+  package-bump-do-ui:
+    name: 'Package bump DO UI'
+    runs-on: ubuntu-latest
+    needs: package-bump-layer
+
+    steps:
+      - name: Package bump DO UI
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.DO_UI_GH_TOKEN }}
+          repository_url: injectiveLabs/injective-do-ui
+          repository_branch: master

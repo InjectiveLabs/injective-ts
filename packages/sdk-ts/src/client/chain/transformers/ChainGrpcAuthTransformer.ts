@@ -1,33 +1,32 @@
-import { grpcPaginationToPagination } from '../../../utils/pagination.js'
+import * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb'
+import * as InjectiveCryptoV1Beta1Ethsecp256k1KeysPb from '@injectivelabs/core-proto-ts-v2/generated/injective/crypto/v1beta1/ethsecp256k1/keys_pb'
 import { uint8ArrayToString } from '../../../utils/index.js'
-import { Account, AuthModuleParams } from '../types/auth.js'
-import {
-  GoogleProtobufAny,
-  CosmosAuthV1Beta1Query,
-  InjectiveTypesV1Beta1Account,
-  InjectiveCryptoV1Beta1Ethsecp256k1Keys,
-} from '@injectivelabs/core-proto-ts'
+import { uint8ArrayToBase64 } from '../../../utils/encoding.js'
+import { ChainGrpcCommonTransformer } from './ChainGrpcCommonTransformer.js'
+import type * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import type * as CosmosAuthV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/auth/v1beta1/query_pb'
+import type { Account, AuthModuleParams } from '../types/auth.js'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcAuthTransformer {
   static moduleParamsResponseToModuleParams(
-    response: CosmosAuthV1Beta1Query.QueryParamsResponse,
+    response: CosmosAuthV1Beta1QueryPb.QueryParamsResponse,
   ): AuthModuleParams {
     const params = response.params!
 
     return {
-      maxMemoCharacters: parseInt(params.maxMemoCharacters, 10),
-      txSigLimit: parseInt(params.txSigLimit, 10),
-      txSizeCostPerByte: parseInt(params.txSizeCostPerByte, 10),
-      sigVerifyCostEd25519: parseInt(params.sigVerifyCostEd25519, 10),
-      sigVerifyCostSecp256k1: parseInt(params.sigVerifyCostSecp256k1, 10),
+      maxMemoCharacters: Number(params.maxMemoCharacters),
+      txSigLimit: Number(params.txSigLimit),
+      txSizeCostPerByte: Number(params.txSizeCostPerByte),
+      sigVerifyCostEd25519: Number(params.sigVerifyCostEd25519),
+      sigVerifyCostSecp256k1: Number(params.sigVerifyCostSecp256K1),
     }
   }
 
-  static grpcAccountToAccount(ethAccount: GoogleProtobufAny.Any): Account {
-    const account = InjectiveTypesV1Beta1Account.EthAccount.decode(
+  static grpcAccountToAccount(ethAccount: GoogleProtobufAnyPbPb.Any): Account {
+    const account = InjectiveTypesV1Beta1AccountPb.EthAccount.fromBinary(
       ethAccount.value,
     )
     const baseAccount = account.baseAccount!
@@ -39,31 +38,33 @@ export class ChainGrpcAuthTransformer {
         address: baseAccount.address,
         pubKey: pubKey
           ? {
-              key: Buffer.from(
-                InjectiveCryptoV1Beta1Ethsecp256k1Keys.PubKey.decode(
+              key: uint8ArrayToBase64(
+                InjectiveCryptoV1Beta1Ethsecp256k1KeysPb.PubKey.fromBinary(
                   pubKey.value,
                 ).key,
-              ).toString('base64'),
+              ),
               typeUrl: pubKey.typeUrl,
             }
           : undefined,
-        accountNumber: parseInt(baseAccount.accountNumber, 10),
-        sequence: parseInt(baseAccount.sequence, 10),
+        accountNumber: Number(baseAccount.accountNumber),
+        sequence: Number(baseAccount.sequence),
       },
     }
   }
 
   static accountResponseToAccount(
-    response: CosmosAuthV1Beta1Query.QueryAccountResponse,
+    response: CosmosAuthV1Beta1QueryPb.QueryAccountResponse,
   ): Account {
     return ChainGrpcAuthTransformer.grpcAccountToAccount(response.account!)
   }
 
   static accountsResponseToAccounts(
-    response: CosmosAuthV1Beta1Query.QueryAccountsResponse,
+    response: CosmosAuthV1Beta1QueryPb.QueryAccountsResponse,
   ) {
     return {
-      pagination: grpcPaginationToPagination(response.pagination!),
+      pagination: ChainGrpcCommonTransformer.grpcPaginationToPaginationV2(
+        response.pagination!,
+      ),
       accounts: response.accounts.map(
         ChainGrpcAuthTransformer.grpcAccountToAccount,
       ),

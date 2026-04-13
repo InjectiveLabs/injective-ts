@@ -1,15 +1,10 @@
-import snakecaseKeys, { SnakeCaseKeys } from 'snakecase-keys'
-import {
-  GoogleProtobufAny,
-  CosmosGovV1Beta1Tx,
-  CosmosBaseV1Beta1Coin,
-  InjectiveExchangeV1Beta1Proposal,
-} from '@injectivelabs/core-proto-ts'
+import { toChainFormat } from '@injectivelabs/utils'
+import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
+import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb'
 import { MsgBase } from '../../MsgBase.js'
-import {
-  amountToCosmosSdkDecAmount,
-  numberToCosmosSdkDecString,
-} from '../../../../utils/numbers.js'
+import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalSpotMarketLaunch {
   export interface Params {
@@ -38,9 +33,12 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
     }
   }
 
-  export type Proto = CosmosGovV1Beta1Tx.MsgSubmitProposal
+  export type Proto = CosmosGovV1Beta1TxPb.MsgSubmitProposal
 
-  export type Object = Omit<CosmosGovV1Beta1Tx.MsgSubmitProposal, 'content'> & {
+  export type Object = Omit<
+    CosmosGovV1Beta1TxPb.MsgSubmitProposal,
+    'content'
+  > & {
     content: {
       type_url: string
       value: any
@@ -51,31 +49,29 @@ export declare namespace MsgSubmitProposalSpotMarketLaunch {
 const createSpotMarketLaunchContent = (
   params: MsgSubmitProposalSpotMarketLaunch.Params,
 ) => {
-  const content =
-    InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.create()
-
-  content.title = params.market.title
-  content.description = params.market.description
-  content.ticker = params.market.ticker
-  content.baseDenom = params.market.baseDenom
-  content.quoteDenom = params.market.quoteDenom
-  content.minPriceTickSize = params.market.minPriceTickSize
-  content.minQuantityTickSize = params.market.minQuantityTickSize
-  content.makerFeeRate = params.market.makerFeeRate
-  content.takerFeeRate = params.market.takerFeeRate
-  content.minNotional = params.market.minNotional
-  content.baseDecimals = Number(params.market.baseDecimals)
-  content.quoteDecimals = Number(params.market.quoteDecimals)
-
-  if (params.market.adminInfo) {
-    const adminInfo = InjectiveExchangeV1Beta1Proposal.AdminInfo.create()
-
-    adminInfo.admin = params.market.adminInfo.admin
-    adminInfo.adminPermissions = params.market.adminInfo.adminPermissions
-    content.adminInfo = adminInfo
+  const content: any = {
+    title: params.market.title,
+    description: params.market.description,
+    ticker: params.market.ticker,
+    baseDenom: params.market.baseDenom,
+    quoteDenom: params.market.quoteDenom,
+    minPriceTickSize: params.market.minPriceTickSize,
+    minQuantityTickSize: params.market.minQuantityTickSize,
+    makerFeeRate: params.market.makerFeeRate,
+    takerFeeRate: params.market.takerFeeRate,
+    minNotional: params.market.minNotional,
+    baseDecimals: Number(params.market.baseDecimals),
+    quoteDecimals: Number(params.market.quoteDecimals),
   }
 
-  return InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.fromPartial(
+  if (params.market.adminInfo) {
+    content.adminInfo = {
+      admin: params.market.adminInfo.admin,
+      adminPermissions: params.market.adminInfo.adminPermissions,
+    }
+  }
+
+  return InjectiveExchangeV1Beta1ProposalPb.SpotMarketLaunchProposal.create(
     content,
   )
 }
@@ -85,8 +81,7 @@ const createSpotMarketLaunchContent = (
  */
 export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   MsgSubmitProposalSpotMarketLaunch.Params,
-  MsgSubmitProposalSpotMarketLaunch.Proto,
-  MsgSubmitProposalSpotMarketLaunch.Object
+  MsgSubmitProposalSpotMarketLaunch.Proto
 > {
   static fromJSON(
     params: MsgSubmitProposalSpotMarketLaunch.Params,
@@ -101,43 +96,42 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
       ...initialParams,
       market: {
         ...initialParams.market,
-        minPriceTickSize: amountToCosmosSdkDecAmount(
+        minPriceTickSize: toChainFormat(
           initialParams.market.minPriceTickSize,
         ).toFixed(),
-        minQuantityTickSize: amountToCosmosSdkDecAmount(
+        minQuantityTickSize: toChainFormat(
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
-        makerFeeRate: amountToCosmosSdkDecAmount(
+        makerFeeRate: toChainFormat(
           initialParams.market.makerFeeRate,
         ).toFixed(),
-        takerFeeRate: amountToCosmosSdkDecAmount(
+        takerFeeRate: toChainFormat(
           initialParams.market.takerFeeRate,
         ).toFixed(),
-        minNotional: amountToCosmosSdkDecAmount(
-          initialParams.market.minNotional,
-        ).toFixed(),
+        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
       },
     }
 
-    const depositParams = CosmosBaseV1Beta1Coin.Coin.create()
+    const depositParams = CosmosBaseV1Beta1CoinPb.Coin.create({
+      denom: params.deposit.denom,
+      amount: params.deposit.amount,
+    })
 
-    depositParams.denom = params.deposit.denom
-    depositParams.amount = params.deposit.amount
+    const contentAny = GoogleProtobufAnyPbPb.Any.create({
+      typeUrl: '/injective.exchange.v1beta1.SpotMarketLaunchProposal',
+      value:
+        InjectiveExchangeV1Beta1ProposalPb.SpotMarketLaunchProposal.toBinary(
+          createSpotMarketLaunchContent(params),
+        ),
+    })
 
-    const contentAny = GoogleProtobufAny.Any.create()
-    contentAny.typeUrl = '/injective.exchange.v1beta1.SpotMarketLaunchProposal'
-    contentAny.value =
-      InjectiveExchangeV1Beta1Proposal.SpotMarketLaunchProposal.encode(
-        createSpotMarketLaunchContent(params),
-      ).finish()
+    const message = CosmosGovV1Beta1TxPb.MsgSubmitProposal.create({
+      content: contentAny,
+      initialDeposit: [depositParams],
+      proposer: params.proposer,
+    })
 
-    const message = CosmosGovV1Beta1Tx.MsgSubmitProposal.create()
-
-    message.content = contentAny
-    message.initialDeposit = [depositParams]
-    message.proposer = params.proposer
-
-    return CosmosGovV1Beta1Tx.MsgSubmitProposal.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -154,10 +148,24 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
     const content = createSpotMarketLaunchContent(params)
 
-    const messageWithProposalType = snakecaseKeys({
+    const messageWithProposalType = {
       content: {
         type: 'exchange/SpotMarketLaunchProposal',
-        value: content,
+        value: {
+          title: content.title,
+          description: content.description,
+          ticker: content.ticker,
+          base_denom: content.baseDenom,
+          quote_denom: content.quoteDenom,
+          min_price_tick_size: content.minPriceTickSize,
+          min_quantity_tick_size: content.minQuantityTickSize,
+          maker_fee_rate: content.makerFeeRate,
+          taker_fee_rate: content.takerFeeRate,
+          min_notional: content.minNotional,
+          admin_info: content.adminInfo || null,
+          base_decimals: content.baseDecimals,
+          quote_decimals: content.quoteDecimals,
+        },
       },
       initial_deposit: [
         {
@@ -166,12 +174,11 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
         },
       ],
       proposer: params.proposer,
-    })
+    }
 
     return {
       type: 'cosmos-sdk/MsgSubmitProposal',
-      value:
-        messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketLaunch.Object>,
+      value: messageWithProposalType,
     }
   }
 
@@ -189,7 +196,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
     return {
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
-      ...(messageWithProposalType as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketLaunch.Object>),
+      ...messageWithProposalType,
     }
   }
 
@@ -204,19 +211,13 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
         type: 'exchange/SpotMarketLaunchProposal',
         value: {
           ...value.content.value,
-          maker_fee_rate: amountToCosmosSdkDecAmount(
-            params.market.makerFeeRate,
-          ).toFixed(),
-          taker_fee_rate: amountToCosmosSdkDecAmount(
-            params.market.takerFeeRate,
-          ).toFixed(),
-          min_price_tick_size: amountToCosmosSdkDecAmount(
+          maker_fee_rate: toChainFormat(params.market.makerFeeRate).toFixed(),
+          taker_fee_rate: toChainFormat(params.market.takerFeeRate).toFixed(),
+          min_price_tick_size: toChainFormat(
             params.market.minPriceTickSize,
           ).toFixed(),
-          min_notional: amountToCosmosSdkDecAmount(
-            params.market.minNotional,
-          ).toFixed(),
-          min_quantity_tick_size: amountToCosmosSdkDecAmount(
+          min_notional: toChainFormat(params.market.minNotional).toFixed(),
+          min_quantity_tick_size: toChainFormat(
             params.market.minQuantityTickSize,
           ).toFixed(),
         },
@@ -225,8 +226,7 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
 
     return {
       type,
-      value:
-        messageAdjusted as unknown as SnakeCaseKeys<MsgSubmitProposalSpotMarketLaunch.Object>,
+      value: messageAdjusted,
     }
   }
 
@@ -265,6 +265,6 @@ export default class MsgSubmitProposalSpotMarketLaunch extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmosGovV1Beta1Tx.MsgSubmitProposal.encode(this.toProto()).finish()
+    return CosmosGovV1Beta1TxPb.MsgSubmitProposal.toBinary(this.toProto())
   }
 }

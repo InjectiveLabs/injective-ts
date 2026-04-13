@@ -1,39 +1,27 @@
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
-import { InjectivePortfolioRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import * as InjectivePortfolioRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_portfolio_rpc_pb'
+import { InjectivePortfolioRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_portfolio_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcAccountPortfolioTransformer } from '../transformers/index.js'
-
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
+export class IndexerGrpcAccountPortfolioApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Portfolio
 
-  protected client: InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectivePortfolioRpc.InjectivePortfolioRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+  private get client() {
+    return this.initClient(InjectivePortfolioRPCClient)
   }
 
   async fetchAccountPortfolio(address: string) {
-    const request = InjectivePortfolioRpc.AccountPortfolioRequest.create()
-
+    const request = InjectivePortfolioRpcPb.AccountPortfolioRequest.create()
     request.accountAddress = address
 
     try {
-      const response =
-        await this.retry<InjectivePortfolioRpc.AccountPortfolioResponse>(() =>
-          this.client.AccountPortfolio(request, this.metadata),
-        )
+      const response = await this.executeGrpcCall<
+        InjectivePortfolioRpcPb.AccountPortfolioRequest,
+        InjectivePortfolioRpcPb.AccountPortfolioResponse
+      >(request, this.client.accountPortfolio.bind(this.client))
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioResponseToAccountPortfolio(
         response,
@@ -49,33 +37,20 @@ export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
         }
       }
 
-      if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AccountPortfolio',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AccountPortfolio',
-        contextModule: this.module,
-      })
+      throw e
     }
   }
 
   async fetchAccountPortfolioBalances(address: string) {
     const request =
-      InjectivePortfolioRpc.AccountPortfolioBalancesRequest.create()
-
+      InjectivePortfolioRpcPb.AccountPortfolioBalancesRequest.create()
     request.accountAddress = address
 
     try {
-      const response =
-        await this.retry<InjectivePortfolioRpc.AccountPortfolioBalancesResponse>(
-          () => this.client.AccountPortfolioBalances(request, this.metadata),
-        )
+      const response = await this.executeGrpcCall<
+        InjectivePortfolioRpcPb.AccountPortfolioBalancesRequest,
+        InjectivePortfolioRpcPb.AccountPortfolioBalancesResponse
+      >(request, this.client.accountPortfolioBalances.bind(this.client))
 
       return IndexerGrpcAccountPortfolioTransformer.accountPortfolioBalancesResponseToAccountPortfolioBalances(
         response,
@@ -90,19 +65,7 @@ export class IndexerGrpcAccountPortfolioApi extends BaseGrpcConsumer {
         }
       }
 
-      if (e instanceof InjectivePortfolioRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'AccountPortfolio',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'AccountPortfolio',
-        contextModule: this.module,
-      })
+      throw e
     }
   }
 }

@@ -1,7 +1,7 @@
-import { Msgs } from '@injectivelabs/sdk-ts'
-import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
-import { Network, NetworkEndpoints } from '@injectivelabs/networks'
-import BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
+import type { Msgs } from '@injectivelabs/sdk-ts/core/modules'
+import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import type { Network, NetworkEndpoints } from '@injectivelabs/networks'
+import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
@@ -16,8 +16,7 @@ export interface MsgBroadcasterTxOptions {
   }
 }
 
-export interface MsgBroadcasterTxOptionsWithAddresses
-  extends MsgBroadcasterTxOptions {
+export interface MsgBroadcasterTxOptionsWithAddresses extends MsgBroadcasterTxOptions {
   ethereumAddress: string
   injectiveAddress: string
 }
@@ -26,11 +25,12 @@ export interface MsgBroadcasterOptions {
   network: Network
   endpoints?: NetworkEndpoints
   chainId?: ChainId
-  ethereumChainId?: EthereumChainId
+  evmChainId?: EvmChainId
   feePayerPubKey?: string
   simulateTx?: boolean
   txTimeoutOnFeeDelegation?: boolean
   txTimeout?: number // blocks to wait for tx to be included in a block
   walletStrategy: BaseWalletStrategy
   gasBufferCoefficient?: number
+  httpHeaders?: Record<string, string>
 }

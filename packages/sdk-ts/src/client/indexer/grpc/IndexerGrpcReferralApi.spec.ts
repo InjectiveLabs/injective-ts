@@ -1,7 +1,7 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { IndexerGrpcReferralTransformer } from '../transformers/index.js'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcReferralApi } from './IndexerGrpcReferralApi.js'
+import type { IndexerGrpcReferralTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
@@ -10,9 +10,8 @@ const indexerGrpcReferralApi = new IndexerGrpcReferralApi(endpoints.indexer)
 describe('IndexerGrpcReferralApi', () => {
   test('fetchReferrerDetails', async () => {
     try {
-      const response = await indexerGrpcReferralApi.fetchReferrerDetails(
-        injectiveAddress,
-      )
+      const response =
+        await indexerGrpcReferralApi.fetchReferrerDetails(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -31,9 +30,8 @@ describe('IndexerGrpcReferralApi', () => {
 
   test('fetchInviteeDetails', async () => {
     try {
-      const response = await indexerGrpcReferralApi.fetchInviteeDetails(
-        injectiveAddress,
-      )
+      const response =
+        await indexerGrpcReferralApi.fetchInviteeDetails(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -52,9 +50,8 @@ describe('IndexerGrpcReferralApi', () => {
 
   test('fetchReferrerByCode', async () => {
     try {
-      const response = await indexerGrpcReferralApi.fetchReferrerByCode(
-        injectiveAddress,
-      )
+      const response =
+        await indexerGrpcReferralApi.fetchReferrerByCode(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(

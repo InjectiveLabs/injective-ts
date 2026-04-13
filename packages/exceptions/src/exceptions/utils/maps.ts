@@ -1,12 +1,12 @@
+import { UnspecifiedErrorCode } from '../types/index.js'
 import {
   chainErrorMessagesMap,
   chainModuleCodeErrorMessagesMap,
 } from '../messages.js'
-import {
+import type {
   ErrorContext,
   ErrorContextCode,
   TransactionChainErrorModule,
-  UnspecifiedErrorCode,
 } from '../types/index.js'
 
 export const parseErrorMessage = (message: string): string => {
@@ -130,7 +130,8 @@ export const mapFailedTransactionMessage = (
     return reason
   }
 
-  const ABCICode = context && context.code ? context.code : getABCICode(message)
+  const ABCICode =
+    context && context.contextCode ? context.contextCode : getABCICode(message)
   const contextModule = context?.contextModule || getContextModule(message)
   const reason = getReason(message)
 
@@ -148,20 +149,21 @@ export const mapFailedTransactionMessage = (
 
   if (!codespaceErrorMessages) {
     return {
-      message: reason || message,
+      message: reason || parseErrorMessage(message),
       code: ABCICode,
       contextModule,
     }
   }
 
   return {
-    message: codespaceErrorMessages[ABCICode] || reason || message,
+    message:
+      codespaceErrorMessages[ABCICode] || reason || parseErrorMessage(message),
     code: ABCICode,
     contextModule,
   }
 }
 
-export const mapMetamaskMessage = (message: string): string => {
+export const mapErrorMessage = (message: string): string => {
   const parsedMessage = message.trim().toLowerCase()
 
   if (parsedMessage.includes('User denied message signature'.toLowerCase())) {
@@ -173,15 +175,7 @@ export const mapMetamaskMessage = (message: string): string => {
   }
 
   if (parsedMessage.toLowerCase().includes('provided chain'.toLowerCase())) {
-    return 'Your Metamask selected network is incorrect'
-  }
-
-  if (
-    parsedMessage
-      .toLowerCase()
-      .includes('missing or invalid parameters'.toLowerCase())
-  ) {
-    return 'Please make sure you are using Metamask'
+    return 'Your selected network is incorrect'
   }
 
   if (

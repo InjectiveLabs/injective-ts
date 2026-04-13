@@ -1,12 +1,14 @@
-import { InjectiveAccountRpc } from '@injectivelabs/indexer-proto-ts'
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
+import type * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
 
-export enum TransferType {
-  Internal = 'internal',
-  External = 'external',
-  Withdraw = 'withdraw',
-  Deposit = 'deposit',
-}
+export const TransferType = {
+  Internal: 'internal',
+  External: 'external',
+  Withdraw: 'withdraw',
+  Deposit: 'deposit',
+} as const
+
+export type TransferType = (typeof TransferType)[keyof typeof TransferType]
 
 export interface SubaccountTransfer {
   transferType: TransferType
@@ -54,10 +56,10 @@ export interface TradingReward {
   distributedAt: number
 }
 
-export type GrpcTradingReward = InjectiveAccountRpc.Reward
-export type GrpcAccountPortfolio = InjectiveAccountRpc.AccountPortfolio
-export type GrpcSubaccountDeposit = InjectiveAccountRpc.SubaccountDeposit
-export type GrpcSubaccountBalance = InjectiveAccountRpc.SubaccountBalance
-export type GrpcSubaccountPortfolio = InjectiveAccountRpc.SubaccountPortfolio
+export type GrpcTradingReward = InjectiveAccountsRpcPb.Reward
+export type GrpcAccountPortfolio = InjectiveAccountsRpcPb.AccountPortfolio
+export type GrpcSubaccountDeposit = InjectiveAccountsRpcPb.SubaccountDeposit
+export type GrpcSubaccountBalance = InjectiveAccountsRpcPb.SubaccountBalance
+export type GrpcSubaccountPortfolio = InjectiveAccountsRpcPb.SubaccountPortfolio
 export type GrpcSubaccountBalanceTransfer =
-  InjectiveAccountRpc.SubaccountBalanceTransfer
+  InjectiveAccountsRpcPb.SubaccountBalanceTransfer

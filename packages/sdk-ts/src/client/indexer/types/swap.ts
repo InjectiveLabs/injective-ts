@@ -1,4 +1,4 @@
-import { Coin } from '@injectivelabs/ts-types'
+import type { Coin } from '@injectivelabs/ts-types'
 
 export interface Route {
   steps: string[]

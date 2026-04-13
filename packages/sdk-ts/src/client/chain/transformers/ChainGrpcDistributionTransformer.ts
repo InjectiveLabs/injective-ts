@@ -1,20 +1,23 @@
-import { cosmosSdkDecToBigNumber } from '../../../utils/index.js'
-import { Coin } from '@injectivelabs/ts-types'
-import { DistributionModuleParams } from '../types/distribution.js'
-import { ValidatorRewards } from '../types/distribution.js'
-import { CosmosDistributionV1Beta1Query } from '@injectivelabs/core-proto-ts'
+import { toHumanReadable } from '@injectivelabs/utils'
+import type { Coin } from '@injectivelabs/ts-types'
+import type * as CosmosDistributionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/query_pb'
+import type {
+  GrpcDecCoin,
+  ValidatorRewards,
+  DistributionModuleParams,
+} from '../types/distribution.js'
 
 /**
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcDistributionTransformer {
   static moduleParamsResponseToModuleParams(
-    response: CosmosDistributionV1Beta1Query.QueryParamsResponse,
+    response: CosmosDistributionV1Beta1QueryPb.QueryParamsResponse,
   ): DistributionModuleParams {
     const params = response.params!
 
     return {
-      communityTax: cosmosSdkDecToBigNumber(params.communityTax).toFixed(),
+      communityTax: toHumanReadable(params.communityTax).toFixed(),
       baseProposerReward: params.baseProposerReward,
       bonusProposerReward: params.bonusProposerReward,
       withdrawAddrEnabled: params.withdrawAddrEnabled,
@@ -22,26 +25,26 @@ export class ChainGrpcDistributionTransformer {
   }
 
   static delegationRewardResponseToReward(
-    response: CosmosDistributionV1Beta1Query.QueryDelegationRewardsResponse,
+    response: CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsResponse,
   ): Coin[] {
     const grpcRewards = response.rewards
 
     return grpcRewards.map((grpcReward) => {
       return {
-        amount: cosmosSdkDecToBigNumber(grpcReward.amount).toFixed(),
+        amount: toHumanReadable(grpcReward.amount).toFixed(),
         denom: grpcReward.denom,
       }
     })
   }
 
   static totalDelegationRewardResponseToTotalReward(
-    response: CosmosDistributionV1Beta1Query.QueryDelegationTotalRewardsResponse,
+    response: CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsResponse,
   ): ValidatorRewards[] {
     const grpcRewards = response.rewards
 
     return grpcRewards.map((grpcReward) => {
-      const rewards = grpcReward.reward.map((reward) => ({
-        amount: cosmosSdkDecToBigNumber(reward.amount).toFixed(),
+      const rewards = grpcReward.reward.map((reward: GrpcDecCoin) => ({
+        amount: toHumanReadable(reward.amount).toFixed(),
         denom: reward.denom,
       }))
 

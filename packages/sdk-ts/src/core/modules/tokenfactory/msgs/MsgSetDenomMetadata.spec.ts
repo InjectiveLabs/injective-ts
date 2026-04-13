@@ -1,12 +1,11 @@
-import MsgSetDenomMetadata from './MsgSetDenomMetadata.js'
-import snakecaseKeys from 'snakecase-keys'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgSetDenomMetadata from './MsgSetDenomMetadata.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgSetDenomMetadata['params'] = {
   sender: mockFactory.injectiveAddress,
@@ -40,7 +39,23 @@ const protoParams = {
   },
 }
 
-const protoParamsAmino = snakecaseKeys(protoParams)
+const protoParamsAmino = {
+  sender: params.sender,
+  metadata: {
+    description: params.metadata.description,
+    denom_units: params.metadata.denomUnits,
+    base: params.metadata.base,
+    display: params.metadata.display,
+    name: params.metadata.name,
+    symbol: params.metadata.symbol,
+    uri: params.metadata.uri,
+    uri_hash: params.metadata.uriHash,
+    decimals: params.metadata.decimals,
+  },
+  admin_burn_disabled: {
+    should_disable: params.adminBurnDisabled,
+  },
+}
 const message = MsgSetDenomMetadata.fromJSON(params)
 
 describe('MsgSetDenomMetadata', () => {

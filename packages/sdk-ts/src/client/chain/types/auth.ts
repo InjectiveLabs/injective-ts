@@ -1,4 +1,4 @@
-import { InjectiveTypesV1Beta1Account } from '@injectivelabs/core-proto-ts'
+import type * as InjectiveTypesV1Beta1AccountPb from '@injectivelabs/core-proto-ts-v2/generated/injective/types/v1beta1/account_pb'
 
 export interface AuthModuleParams {
   maxMemoCharacters: number
@@ -25,4 +25,4 @@ export interface Account {
   baseAccount: AuthBaseAccount
 }
 
-export type EthAccount = InjectiveTypesV1Beta1Account.EthAccount
+export type EthAccount = InjectiveTypesV1Beta1AccountPb.EthAccount

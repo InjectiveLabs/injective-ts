@@ -1,12 +1,12 @@
-import MsgWithdrawDelegatorReward from './MsgWithdrawDelegatorReward.js'
 import snakecaseKeys from 'snakecase-keys'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgWithdrawDelegatorReward from './MsgWithdrawDelegatorReward.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgWithdrawDelegatorReward['params'] = {
   delegatorAddress: mockFactory.injectiveAddress,
@@ -32,19 +32,24 @@ describe('MsgWithdrawDelegatorReward', () => {
 
   it('generates proper data', () => {
     const data = message.toData()
+    const proto = message.toProto()
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...proto,
     })
   })
 
   it('generates proper amino', () => {
     const amino = message.toAmino()
+    const proto = message.toProto()
 
     expect(amino).toStrictEqual({
       type: protoTypeShort,
-      value: aminoParams,
+      value: {
+        delegator_address: proto.delegatorAddress,
+        validator_address: proto.validatorAddress,
+      },
     })
   })
 

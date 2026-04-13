@@ -1,5 +1,5 @@
-import { InjectiveOracleV1Beta1Oracle } from '@injectivelabs/core-proto-ts'
-import { InjectiveInsuranceRpc } from '@injectivelabs/indexer-proto-ts'
+import type * as InjectiveInsuranceRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb'
+import type * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 
 export interface IndexerInsuranceFund {
   depositDenom: string
@@ -12,14 +12,16 @@ export interface IndexerInsuranceFund {
   marketTicker: string
   oracleBase: string
   oracleQuote: string
-  oracleType: InjectiveOracleV1Beta1Oracle.OracleType
+  oracleType: InjectiveOracleV1Beta1OraclePb.OracleType
   expiry: number
 }
 
-export enum RedemptionStatus {
-  Pending = 'pending',
-  Disbursed = 'disbursed',
-}
+export type RedemptionStatus = 'pending' | 'disbursed'
+
+export const RedemptionStatus = {
+  Pending: 'pending',
+  Disbursed: 'disbursed',
+} as const
 
 export interface Redemption {
   redemptionId: number
@@ -39,10 +41,10 @@ export interface InsuranceFundCreateParams {
   quoteDenom: string
   oracleBase: string
   oracleQuote: string
-  oracleType: InjectiveOracleV1Beta1Oracle.OracleType
+  oracleType: InjectiveOracleV1Beta1OraclePb.OracleType
   expiry?: number
 }
 
-export type GrpcIndexerInsuranceFund = InjectiveInsuranceRpc.InsuranceFund
+export type GrpcIndexerInsuranceFund = InjectiveInsuranceRpcPb.InsuranceFund
 export type GrpcIndexerRedemptionSchedule =
-  InjectiveInsuranceRpc.RedemptionSchedule
+  InjectiveInsuranceRpcPb.RedemptionSchedule

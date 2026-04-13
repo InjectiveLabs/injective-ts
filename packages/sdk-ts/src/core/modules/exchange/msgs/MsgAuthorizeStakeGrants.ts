@@ -1,6 +1,5 @@
-import { InjectiveExchangeV1Beta1Tx } from '@injectivelabs/core-proto-ts'
+import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
-import snakecaseKeys from 'snakecase-keys'
 
 export declare namespace MsgAuthorizeStakeGrants {
   export interface Params {
@@ -9,7 +8,7 @@ export declare namespace MsgAuthorizeStakeGrants {
     amount: string
   }
 
-  export type Proto = InjectiveExchangeV1Beta1Tx.MsgAuthorizeStakeGrants
+  export type Proto = InjectiveExchangeV1Beta1TxPb.MsgAuthorizeStakeGrants
 }
 
 /**
@@ -28,19 +27,19 @@ export default class MsgAuthorizeStakeGrants extends MsgBase<
   public toProto() {
     const { params } = this
 
-    const message = InjectiveExchangeV1Beta1Tx.MsgAuthorizeStakeGrants.create()
-
-    message.sender = params.injectiveAddress
-    message.grants = [
+    const message = InjectiveExchangeV1Beta1TxPb.MsgAuthorizeStakeGrants.create(
       {
-        grantee: params.grantee,
-        amount: params.amount,
+        sender: params.injectiveAddress,
+        grants: [
+          {
+            grantee: params.grantee,
+            amount: params.amount,
+          },
+        ],
       },
-    ]
-
-    return InjectiveExchangeV1Beta1Tx.MsgAuthorizeStakeGrants.fromPartial(
-      message,
     )
+
+    return message
   }
 
   public toData() {
@@ -55,7 +54,8 @@ export default class MsgAuthorizeStakeGrants extends MsgBase<
   public toAmino() {
     const proto = this.toProto()
     const message = {
-      ...snakecaseKeys(proto),
+      sender: proto.sender,
+      grants: proto.grants,
     }
 
     return {
@@ -84,8 +84,8 @@ export default class MsgAuthorizeStakeGrants extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return InjectiveExchangeV1Beta1Tx.MsgAuthorizeStakeGrants.encode(
+    return InjectiveExchangeV1Beta1TxPb.MsgAuthorizeStakeGrants.toBinary(
       this.toProto(),
-    ).finish()
+    )
   }
 }

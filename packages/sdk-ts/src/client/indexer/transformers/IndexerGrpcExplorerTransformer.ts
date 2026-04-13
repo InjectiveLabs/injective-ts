@@ -1,6 +1,19 @@
+import { toBigNumber, toHumanReadable } from '@injectivelabs/utils'
 import {
+  uint8ArrayToString,
+  grpcPagingToPagingV2,
+} from '../../../utils/index.js'
+import {
+  isJsonString,
+  bigIntToNumber,
+  bigIntToString,
+} from '../../../utils/helpers.js'
+import type { BigNumber } from '@injectivelabs/utils'
+import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
+import type {
   Block,
   GasFee,
+  Message,
   GrpcGasFee,
   Transaction,
   BlockWithTxs,
@@ -13,6 +26,8 @@ import {
   GrpcIBCTransferTx,
   GrpcPeggyDepositTx,
   GrpcValidatorUptime,
+  ExplorerTransaction,
+  ContractTransaction,
   GrpcPeggyWithdrawalTx,
   BankMsgSendTransaction,
   GrpcBankMsgSendMessage,
@@ -22,21 +37,83 @@ import {
   ExplorerValidatorDescription,
   GrpcIndexerValidatorDescription,
 } from '../types/explorer.js'
-import { grpcPagingToPaging } from '../../../utils/index.js'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
+
+const ZERO_IN_BASE = toBigNumber(0)
+
+const getContractTransactionV2Amount = (
+  ApiTransaction: InjectiveExplorerRpcPb.TxDetailData,
+): BigNumber => {
+  const messages = JSON.parse(uint8ArrayToString(ApiTransaction.messages))
+
+  const { type, value } = messages[0]
+
+  const { msg } = value
+
+  if (!type.includes('MsgExecuteContract')) {
+    return ZERO_IN_BASE
+  }
+
+  if (typeof msg === 'string' && !isJsonString(msg)) {
+    return ZERO_IN_BASE
+  }
+
+  const msgObj = typeof msg === 'string' ? JSON.parse(msg) : msg
+
+  if (!msgObj.transfer) {
+    return ZERO_IN_BASE
+  }
+
+  return toHumanReadable(msgObj.transfer.amount)
+}
+
+const parseStringToObjectLikeNoThrow = (
+  object: string | Uint8Array<ArrayBufferLike>,
+  defaultValue: any[] = [],
+): any[] => {
+  if (!object) {
+    return defaultValue
+  }
+
+  if (typeof object === 'string') {
+    try {
+      return JSON.parse(object)
+    } catch {
+      return defaultValue
+    }
+  }
+
+  try {
+    return JSON.parse(uint8ArrayToString(object))
+  } catch {
+    return defaultValue
+  }
+}
+
+const transactionV2MessagesToMessagesNoThrow = (messages: any): Message[] => {
+  const messagesArray = parseStringToObjectLikeNoThrow(messages)
+  const nonNullMessages = messagesArray.filter((msg) => !!msg)
+
+  return nonNullMessages.map(
+    (msg: any) =>
+      ({
+        type: msg.type,
+        message: msg.value,
+      }) as Message,
+  )
+}
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcExplorerTransformer {
   static getTxByTxHashResponseToTx(
-    tx: InjectiveExplorerRpc.GetTxByTxHashResponse,
+    tx: InjectiveExplorerRpcPb.GetTxByTxHashResponse,
   ): Transaction {
     return IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx)
   }
 
   static getAccountTxsResponseToAccountTxs(
-    response: InjectiveExplorerRpc.GetAccountTxsResponse,
+    response: InjectiveExplorerRpcPb.GetAccountTxsResponse,
   ) {
     const txs = response.data
     const pagination = response.paging
@@ -45,12 +122,12 @@ export class IndexerGrpcExplorerTransformer {
       txs: IndexerGrpcExplorerTransformer.grpcTransactionsToTransactionsFromDetail(
         txs,
       ),
-      pagination: grpcPagingToPaging(pagination),
+      pagination: grpcPagingToPagingV2(pagination),
     }
   }
 
   static getValidatorUptimeResponseToValidatorUptime(
-    response: InjectiveExplorerRpc.GetValidatorUptimeResponse,
+    response: InjectiveExplorerRpcPb.GetValidatorUptimeResponse,
   ) {
     const data = response.data
 
@@ -62,7 +139,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static getPeggyDepositTxsResponseToPeggyDepositTxs(
-    response: InjectiveExplorerRpc.GetPeggyDepositTxsResponse,
+    response: InjectiveExplorerRpcPb.GetPeggyDepositTxsResponse,
   ) {
     return response.field.map((field) =>
       IndexerGrpcExplorerTransformer.grpcPeggyDepositTx(field),
@@ -70,7 +147,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
-    response: InjectiveExplorerRpc.GetPeggyWithdrawalTxsResponse,
+    response: InjectiveExplorerRpcPb.GetPeggyWithdrawalTxsResponse,
   ) {
     return response.field.map((field) =>
       IndexerGrpcExplorerTransformer.grpcPeggyWithdrawalTx(field),
@@ -78,7 +155,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static getIBCTransferTxsResponseToIBCTransferTxs(
-    response: InjectiveExplorerRpc.GetIBCTransferTxsResponse,
+    response: InjectiveExplorerRpcPb.GetIBCTransferTxsResponse,
   ) {
     return response.field.map((field) =>
       IndexerGrpcExplorerTransformer.grpcIBCTransferTxToIBCTransferTx(field),
@@ -86,7 +163,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static validatorResponseToValidator(
-    validator: InjectiveExplorerRpc.GetValidatorResponse,
+    validator: InjectiveExplorerRpcPb.GetValidatorResponse,
   ): ExplorerValidator {
     const data = validator.data!
 
@@ -103,15 +180,15 @@ export class IndexerGrpcExplorerTransformer {
         IndexerGrpcExplorerTransformer.grpcValidatorDescriptionToValidatorDescription(
           data.description!,
         ),
-      unbondingHeight: parseInt(data.unbondingHeight, 10),
+      unbondingHeight: bigIntToNumber(data.unbondingHeight),
       unbondingTime: data.unbondingTime,
       commissionRate: data.commissionRate,
       commissionMaxRate: data.commissionMaxRate,
       commissionMaxChangeRate: data.commissionMaxChangeRate,
       commissionUpdateTime: data.commissionUpdateTime,
-      proposed: parseInt(data.proposed, 10),
-      signed: parseInt(data.signed, 10),
-      missed: parseInt(data.missed, 10),
+      signed: bigIntToNumber(data.signed),
+      missed: bigIntToNumber(data.missed),
+      proposed: bigIntToNumber(data.proposed),
       uptimePercentage: data.uptimePercentage,
       imageUrl: data.imageUrl,
       timestamp: data.timestamp,
@@ -125,18 +202,18 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static streamTxResponseToTxs(
-    response: InjectiveExplorerRpc.StreamTxsResponse,
+    response: InjectiveExplorerRpcPb.StreamTxsResponse,
   ): IndexerStreamTransaction {
     return {
       id: response.id,
-      blockNumber: parseInt(response.blockNumber, 10),
-      blockTimestamp: response.blockTimestamp,
       hash: response.hash,
-      codespace: response.codespace,
-      messages: response.messages,
-      txNumber: parseInt(response.txNumber, 10),
-      errorLog: response.errorLog,
       code: response.code,
+      messages: response.messages,
+      errorLog: response.errorLog,
+      codespace: response.codespace,
+      blockTimestamp: response.blockTimestamp,
+      txNumber: bigIntToNumber(response.txNumber),
+      blockNumber: bigIntToNumber(response.blockNumber),
     }
   }
 
@@ -148,65 +225,66 @@ export class IndexerGrpcExplorerTransformer {
 
     return {
       amounts,
-      gasLimit: parseInt(gasFee.gasLimit, 10),
       payer: gasFee.payer,
       granter: gasFee.granter,
+      gasLimit: bigIntToNumber(gasFee.gasLimit),
     }
   }
 
   static grpcTransactionToBankMsgSendTransaction(
-    tx: InjectiveExplorerRpc.GetTxByTxHashResponse,
+    tx: InjectiveExplorerRpcPb.GetTxByTxHashResponse,
   ): BankMsgSendTransaction {
     const data = tx.data!
+
     const [message] = JSON.parse(
-      Buffer.from(data.messages).toString() as string,
+      uint8ArrayToString(data.messages) as string,
     ) as GrpcBankMsgSendMessage[]
 
     return {
-      blockNumber: parseInt(data.blockNumber, 10),
-      blockTimestamp: data.blockTimestamp,
       hash: data.hash,
-      amount: message.value.amount[0].amount,
-      denom: message.value.amount[0].denom,
       sender: message.value.from_address,
       receiver: message.value.to_address,
+      blockTimestamp: data.blockTimestamp,
+      denom: message.value.amount[0].denom,
+      amount: message.value.amount[0].amount,
+      blockNumber: bigIntToNumber(data.blockNumber),
     }
   }
 
   static grpcTransactionToTransaction(
-    tx: InjectiveExplorerRpc.GetTxByTxHashResponse,
+    tx: InjectiveExplorerRpcPb.GetTxByTxHashResponse,
   ): Transaction {
     const data = tx.data!
 
     return {
       id: data.id,
-      blockNumber: parseInt(data.blockNumber, 10),
-      blockTimestamp: data.blockTimestamp,
       hash: data.hash,
       code: data.code,
       info: data.info,
-      gasWanted: parseInt(data.gasWanted, 10),
-      gasUsed: parseInt(data.gasUsed, 10),
-      codespace: data.codespace,
       data: data.data,
-      gasFee: IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(data.gasFee!),
       txType: data.txType,
+      codespace: data.codespace,
+      blockTimestamp: data.blockTimestamp,
+      gasUsed: bigIntToNumber(data.gasUsed),
+      gasWanted: bigIntToNumber(data.gasWanted),
+      blockNumber: bigIntToNumber(data.blockNumber),
+      gasFee: IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(data.gasFee!),
       signatures: data.signatures.map((signature) => ({
         pubkey: signature.pubkey,
         address: signature.address,
-        sequence: parseInt(signature.sequence, 10),
+        sequence: bigIntToNumber(signature.sequence),
         signature: signature.signature,
       })),
       events: data.events.map((event) => ({
         type: event.type,
         attributes: event.attributes,
       })),
-      messages: JSON.parse(Buffer.from(data.messages).toString() as string),
+      messages: JSON.parse(uint8ArrayToString(data.messages) as string),
     }
   }
 
   static grpcTransactionsToTransactions(
-    txs: Array<InjectiveExplorerRpc.GetTxByTxHashResponse>,
+    txs: Array<InjectiveExplorerRpcPb.GetTxByTxHashResponse>,
   ): Array<Transaction> {
     return txs.map((tx) =>
       IndexerGrpcExplorerTransformer.grpcTransactionToTransaction(tx),
@@ -214,20 +292,20 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionToTransactionFromDetail(
-    tx: InjectiveExplorerRpc.TxDetailData,
+    tx: InjectiveExplorerRpcPb.TxDetailData,
   ): Transaction {
-    const messages = JSON.parse(Buffer.from(tx.messages).toString('utf8'))
+    const messages = JSON.parse(uint8ArrayToString(tx.messages))
 
     return {
       ...tx,
-      gasWanted: parseInt(tx.gasWanted, 10),
-      gasUsed: parseInt(tx.gasUsed, 10),
-      blockNumber: parseInt(tx.blockNumber, 10),
+      gasUsed: bigIntToNumber(tx.gasUsed),
+      gasWanted: bigIntToNumber(tx.gasWanted),
+      blockNumber: bigIntToNumber(tx.blockNumber),
       signatures: tx.signatures.map((signature) => ({
         pubkey: signature.pubkey,
         address: signature.address,
-        sequence: parseInt(signature.sequence, 10),
         signature: signature.signature,
+        sequence: bigIntToNumber(signature.sequence),
       })),
       gasFee: tx.gasFee
         ? IndexerGrpcExplorerTransformer.grpcGasFeeToGasFee(tx.gasFee!)
@@ -246,43 +324,43 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcTransactionsToTransactionsFromDetail(
-    txs: InjectiveExplorerRpc.TxDetailData[],
+    txs: InjectiveExplorerRpcPb.TxDetailData[],
   ): Array<Transaction> {
     return txs.map(
       IndexerGrpcExplorerTransformer.grpcTransactionToTransactionFromDetail,
     )
   }
 
-  static grpcBlockToBlock(block: InjectiveExplorerRpc.BlockInfo): Block {
+  static grpcBlockToBlock(block: InjectiveExplorerRpcPb.BlockInfo): Block {
     return {
-      height: parseInt(block.height, 10),
-      proposer: block.proposer,
       moniker: block.moniker,
+      proposer: block.proposer,
       blockHash: block.blockHash,
-      parentHash: block.parentHash,
-      numPreCommits: parseInt(block.numPreCommits, 10),
-      numTxs: parseInt(block.numTxs, 10),
       timestamp: block.timestamp,
+      parentHash: block.parentHash,
+      height: bigIntToNumber(block.height),
+      numTxs: bigIntToNumber(block.numTxs),
+      numPreCommits: bigIntToNumber(block.numPreCommits),
     }
   }
 
   static grpcBlockToBlockWithTxs(
-    block: InjectiveExplorerRpc.BlockInfo,
+    block: InjectiveExplorerRpcPb.BlockInfo,
   ): BlockWithTxs {
     return {
-      height: parseInt(block.height, 10),
-      proposer: block.proposer,
       moniker: block.moniker,
+      proposer: block.proposer,
       blockHash: block.blockHash,
-      parentHash: block.parentHash,
-      numPreCommits: parseInt(block.numPreCommits, 10),
-      numTxs: parseInt(block.numTxs, 10),
       timestamp: block.timestamp,
+      parentHash: block.parentHash,
+      height: bigIntToNumber(block.height),
+      numTxs: bigIntToNumber(block.numTxs),
+      numPreCommits: bigIntToNumber(block.numPreCommits),
     }
   }
 
   static grpcBlocksToBlocks(
-    blocks: Array<InjectiveExplorerRpc.BlockInfo>,
+    blocks: Array<InjectiveExplorerRpcPb.BlockInfo>,
   ): Array<Block> {
     return blocks.map((block) =>
       IndexerGrpcExplorerTransformer.grpcBlockToBlock(block),
@@ -290,7 +368,7 @@ export class IndexerGrpcExplorerTransformer {
   }
 
   static grpcBlocksToBlocksWithTxs(
-    blocks: Array<InjectiveExplorerRpc.BlockInfo>,
+    blocks: Array<InjectiveExplorerRpcPb.BlockInfo>,
   ): Array<BlockWithTxs> {
     return blocks.map((block) =>
       IndexerGrpcExplorerTransformer.grpcBlockToBlockWithTxs(block),
@@ -313,8 +391,8 @@ export class IndexerGrpcExplorerTransformer {
     validatorUptime: GrpcValidatorUptime,
   ): ValidatorUptime {
     return {
-      blockNumber: parseInt(validatorUptime.blockNumber, 10),
       status: validatorUptime.status,
+      blockNumber: bigIntToNumber(validatorUptime.blockNumber),
     }
   }
 
@@ -322,13 +400,13 @@ export class IndexerGrpcExplorerTransformer {
     validatorUptime: GrpcValidatorSlashingEvent,
   ): ValidatorSlashingEvent {
     return {
-      blockNumber: parseInt(validatorUptime.blockNumber, 10),
-      blockTimestamp: validatorUptime.blockTimestamp,
-      address: validatorUptime.address,
-      power: parseInt(validatorUptime.power, 10),
       reason: validatorUptime.reason,
       jailed: validatorUptime.jailed,
-      missedBlocks: parseInt(validatorUptime.missedBlocks, 10),
+      address: validatorUptime.address,
+      power: bigIntToNumber(validatorUptime.power),
+      blockTimestamp: validatorUptime.blockTimestamp,
+      blockNumber: bigIntToNumber(validatorUptime.blockNumber),
+      missedBlocks: bigIntToNumber(validatorUptime.missedBlocks),
     }
   }
 
@@ -336,22 +414,22 @@ export class IndexerGrpcExplorerTransformer {
     grpcIBCTransferTx: GrpcIBCTransferTx,
   ): IBCTransferTx {
     return {
-      sender: grpcIBCTransferTx.sender,
-      receiver: grpcIBCTransferTx.receiver,
-      sourcePort: grpcIBCTransferTx.sourcePort,
-      sourceChannel: grpcIBCTransferTx.sourceChannel,
-      destinationPort: grpcIBCTransferTx.destinationPort,
-      destinationChannel: grpcIBCTransferTx.destinationChannel,
-      amount: grpcIBCTransferTx.amount,
       denom: grpcIBCTransferTx.denom,
-      timeoutHeight: grpcIBCTransferTx.timeoutHeight,
-      timeoutTimestamp: parseInt(grpcIBCTransferTx.timeoutTimestamp, 10),
-      packetSequence: parseInt(grpcIBCTransferTx.packetSequence, 10),
-      dataHex: grpcIBCTransferTx.dataHex,
       state: grpcIBCTransferTx.state,
-      txHashesList: grpcIBCTransferTx.txHashes,
+      sender: grpcIBCTransferTx.sender,
+      amount: grpcIBCTransferTx.amount,
+      dataHex: grpcIBCTransferTx.dataHex,
+      receiver: grpcIBCTransferTx.receiver,
       createdAt: grpcIBCTransferTx.createdAt,
       updatedAt: grpcIBCTransferTx.updatedAt,
+      sourcePort: grpcIBCTransferTx.sourcePort,
+      txHashesList: grpcIBCTransferTx.txHashes,
+      sourceChannel: grpcIBCTransferTx.sourceChannel,
+      timeoutHeight: grpcIBCTransferTx.timeoutHeight,
+      destinationPort: grpcIBCTransferTx.destinationPort,
+      destinationChannel: grpcIBCTransferTx.destinationChannel,
+      packetSequence: bigIntToNumber(grpcIBCTransferTx.packetSequence),
+      timeoutTimestamp: bigIntToNumber(grpcIBCTransferTx.timeoutTimestamp),
     }
   }
 
@@ -359,18 +437,18 @@ export class IndexerGrpcExplorerTransformer {
     grpcPeggyDepositTx: GrpcPeggyDepositTx,
   ): PeggyDepositTx {
     return {
-      sender: grpcPeggyDepositTx.sender,
-      receiver: grpcPeggyDepositTx.receiver,
-      eventNonce: parseInt(grpcPeggyDepositTx.eventNonce, 10),
-      eventHeight: parseInt(grpcPeggyDepositTx.eventHeight, 10),
-      amount: grpcPeggyDepositTx.amount,
       denom: grpcPeggyDepositTx.denom,
-      orchestratorAddress: grpcPeggyDepositTx.orchestratorAddress,
       state: grpcPeggyDepositTx.state,
+      sender: grpcPeggyDepositTx.sender,
+      amount: grpcPeggyDepositTx.amount,
+      receiver: grpcPeggyDepositTx.receiver,
       claimType: grpcPeggyDepositTx.claimType,
-      txHashesList: grpcPeggyDepositTx.txHashes,
       createdAt: grpcPeggyDepositTx.createdAt,
       updatedAt: grpcPeggyDepositTx.updatedAt,
+      txHashesList: grpcPeggyDepositTx.txHashes,
+      eventNonce: bigIntToNumber(grpcPeggyDepositTx.eventNonce),
+      eventHeight: bigIntToNumber(grpcPeggyDepositTx.eventHeight),
+      orchestratorAddress: grpcPeggyDepositTx.orchestratorAddress,
     }
   }
 
@@ -378,38 +456,214 @@ export class IndexerGrpcExplorerTransformer {
     grpcPeggyWithdrawalTx: GrpcPeggyWithdrawalTx,
   ): PeggyWithdrawalTx {
     return {
-      sender: grpcPeggyWithdrawalTx.sender,
-      receiver: grpcPeggyWithdrawalTx.receiver,
-      amount: grpcPeggyWithdrawalTx.amount,
       denom: grpcPeggyWithdrawalTx.denom,
-      bridgeFee: grpcPeggyWithdrawalTx.bridgeFee,
-      outgoingTxId: parseInt(grpcPeggyWithdrawalTx.outgoingTxId, 10),
-      batchTimeout: parseInt(grpcPeggyWithdrawalTx.batchTimeout, 10),
-      batchNonce: parseInt(grpcPeggyWithdrawalTx.batchNonce, 10),
-      eventNonce: parseInt(grpcPeggyWithdrawalTx.eventNonce, 10),
-      eventHeight: parseInt(grpcPeggyWithdrawalTx.eventHeight, 10),
-      orchestratorAddress: grpcPeggyWithdrawalTx.orchestratorAddress,
       state: grpcPeggyWithdrawalTx.state,
+      sender: grpcPeggyWithdrawalTx.sender,
+      amount: grpcPeggyWithdrawalTx.amount,
+      receiver: grpcPeggyWithdrawalTx.receiver,
+      bridgeFee: grpcPeggyWithdrawalTx.bridgeFee,
       claimType: grpcPeggyWithdrawalTx.claimType,
-      txHashesList: grpcPeggyWithdrawalTx.txHashes,
       createdAt: grpcPeggyWithdrawalTx.createdAt,
       updatedAt: grpcPeggyWithdrawalTx.updatedAt,
+      txHashesList: grpcPeggyWithdrawalTx.txHashes,
+      batchNonce: bigIntToNumber(grpcPeggyWithdrawalTx.batchNonce),
+      eventNonce: bigIntToNumber(grpcPeggyWithdrawalTx.eventNonce),
+      eventHeight: bigIntToNumber(grpcPeggyWithdrawalTx.eventHeight),
+      orchestratorAddress: grpcPeggyWithdrawalTx.orchestratorAddress,
+      outgoingTxId: bigIntToNumber(grpcPeggyWithdrawalTx.outgoingTxId),
+      batchTimeout: bigIntToNumber(grpcPeggyWithdrawalTx.batchTimeout),
     }
   }
 
   static getExplorerStatsResponseToExplorerStats(
-    response: InjectiveExplorerRpc.GetStatsResponse,
+    response: InjectiveExplorerRpcPb.GetStatsResponse,
   ): ExplorerStats {
     return {
-      assets: response.assets,
-      txsTotal: response.txsTotal,
-      addresses: response.addresses,
-      injSupply: response.injSupply,
-      txsInPast24Hours: response.txs24H,
-      txsInPast30Days: response.txs30D,
-      blockCountInPast24Hours: response.blockCount24H,
-      txsPerSecondInPast24Hours: response.txsPs24H,
-      txsPerSecondInPast100Blocks: response.txsPs100B,
+      assets: bigIntToString(response.assets),
+      txsTotal: bigIntToString(response.txsTotal),
+      addresses: bigIntToString(response.addresses),
+      injSupply: bigIntToString(response.injSupply),
+      txsInPast30Days: bigIntToString(response.txs30D),
+      txsInPast24Hours: bigIntToString(response.txs24H),
+      txsPerSecondInPast24Hours: bigIntToString(response.txsPs24H),
+      blockCountInPast24Hours: bigIntToString(response.blockCount24H),
+      txsPerSecondInPast100Blocks: bigIntToString(response.txsPs100B),
+    }
+  }
+
+  static getTxsV2ResponseToTxs(
+    response: InjectiveExplorerRpcPb.GetTxsV2Response,
+  ) {
+    return {
+      data: response.data.map((tx) =>
+        IndexerGrpcExplorerTransformer.grpcTxV2ToTransaction(tx),
+      ),
+      paging: response.paging,
+    }
+  }
+
+  static grpcTxV2ToTransaction(
+    tx: InjectiveExplorerRpcPb.TxData,
+  ): ExplorerTransaction {
+    const logs = parseStringToObjectLikeNoThrow(tx.logs)
+    const txType = parseStringToObjectLikeNoThrow(tx.txMsgTypes)
+    const messages = transactionV2MessagesToMessagesNoThrow(tx.messages)
+
+    const signatures = tx.signatures.map((signature) => ({
+      address: signature.address,
+      pubkey: signature.pubkey,
+      signature: signature.signature,
+      sequence: (() => {
+        try {
+          return bigIntToNumber(signature.sequence)
+        } catch {
+          return 0
+        }
+      })(),
+    }))
+
+    const claimIds = tx.claimIds.map((claimId) => {
+      try {
+        return bigIntToNumber(claimId)
+      } catch {
+        return 0
+      }
+    })
+
+    const blockNumber = bigIntToNumber(tx.blockNumber)
+
+    return {
+      logs,
+      info: '',
+      memo: '',
+      claimIds,
+      messages,
+      id: tx.id,
+      signatures,
+      blockNumber,
+      gasUsed: 0,
+      gasWanted: 0,
+      hash: tx.hash,
+      code: tx.code,
+      errorLog: tx.errorLog,
+      codespace: tx.codespace,
+      blockTimestamp: tx.blockTimestamp,
+      txType: Array.isArray(txType) ? txType.join(',') : txType,
+      gasFee: { amounts: [], gasLimit: 0, granter: '', payer: '' },
+    }
+  }
+
+  static getAccountTxsV2ResponseToAccountTxs(
+    response: InjectiveExplorerRpcPb.GetAccountTxsV2Response,
+  ) {
+    return {
+      data: response.data.map((tx) =>
+        IndexerGrpcExplorerTransformer.grpcAccountTxV2ToTransaction(tx),
+      ),
+      paging: response.paging,
+    }
+  }
+
+  static grpcAccountTxV2ToTransaction(
+    tx: InjectiveExplorerRpcPb.TxDetailData,
+  ): ExplorerTransaction {
+    return {
+      id: tx.id,
+      hash: tx.hash,
+      code: tx.code,
+      info: tx.info,
+      memo: tx.memo,
+      txType: tx.txType,
+      gasFee: {
+        amounts: (tx.gasFee?.amount || []).map((amount) => ({
+          amount: amount.amount,
+          denom: amount.denom,
+        })),
+        gasLimit: bigIntToNumber(tx.gasFee?.gasLimit),
+        granter: tx.gasFee?.granter ?? '',
+        payer: tx.gasFee?.payer ?? '',
+      },
+      events: tx.events,
+      errorLog: tx.errorLog,
+      codespace: tx.codespace,
+      gasUsed: bigIntToNumber(tx.gasUsed),
+
+      blockTimestamp: tx.blockTimestamp,
+      gasWanted: bigIntToNumber(tx.gasWanted),
+      blockNumber: bigIntToNumber(tx.blockNumber),
+      signatures: tx.signatures.map((signature) => ({
+        address: signature.address,
+        pubkey: signature.pubkey,
+        signature: signature.signature,
+        sequence: bigIntToNumber(signature.sequence),
+      })),
+      messages: transactionV2MessagesToMessagesNoThrow(tx.messages),
+      logs: parseStringToObjectLikeNoThrow(tx.logs),
+      data: '/' + uint8ArrayToString(tx.data).split('/').pop(),
+      claimIds: tx.claimIds.map((claimId) => bigIntToNumber(claimId)),
+    }
+  }
+
+  static getBlocksV2ResponseToBlocks(
+    response: InjectiveExplorerRpcPb.GetBlocksV2Response,
+  ) {
+    return {
+      paging: response.paging,
+      data: response.data.map((block) =>
+        IndexerGrpcExplorerTransformer.grpcBlockV2ToBlock(block),
+      ),
+    }
+  }
+
+  static grpcBlockV2ToBlock(block: InjectiveExplorerRpcPb.BlockInfo): Block {
+    return {
+      moniker: block.moniker,
+      proposer: block.proposer,
+      blockHash: block.blockHash,
+      timestamp: block.timestamp,
+      parentHash: block.parentHash,
+      height: bigIntToNumber(block.height),
+      numTxs: bigIntToNumber(block.numTxs),
+      numPreCommits: bigIntToNumber(block.numPreCommits),
+    }
+  }
+
+  static getContractTxsV2ResponseToContractTxs(
+    response: InjectiveExplorerRpcPb.GetContractTxsV2Response,
+  ) {
+    return {
+      data: response.data.map((tx) =>
+        IndexerGrpcExplorerTransformer.grpcContractTxV2ToTransaction(tx),
+      ),
+      paging: response.paging,
+    }
+  }
+
+  static grpcContractTxV2ToTransaction(
+    tx: InjectiveExplorerRpcPb.TxDetailData,
+  ): ContractTransaction {
+    const messages = transactionV2MessagesToMessagesNoThrow(tx.messages)
+
+    return {
+      messages,
+      code: tx.code,
+      memo: tx.memo,
+      type: tx.txType,
+      txHash: tx.hash,
+      error_log: tx.errorLog,
+      height: bigIntToNumber(tx.blockNumber),
+      tx_number: bigIntToNumber(tx.txNumber),
+      time: bigIntToNumber(tx.blockUnixTimestamp),
+      amount: getContractTransactionV2Amount(tx),
+      logs: JSON.parse(uint8ArrayToString(tx.logs)),
+      data: '/' + uint8ArrayToString(tx.data).split('/').pop(),
+      fee: toHumanReadable(tx.gasFee?.amount[0]?.amount || '0'),
+      signatures: tx.signatures.map((signature) => ({
+        address: signature.address,
+        pubkey: signature.pubkey,
+        signature: signature.signature,
+        sequence: bigIntToNumber(signature.sequence),
+      })),
     }
   }
 }

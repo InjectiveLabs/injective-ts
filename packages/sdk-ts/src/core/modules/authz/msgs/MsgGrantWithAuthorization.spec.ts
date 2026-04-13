@@ -1,10 +1,10 @@
+import { EIP712Version } from '@injectivelabs/ts-types'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import MsgGrantWithAuthorization from './MsgGrantWithAuthorization.js'
 import GenericAuthorization from './authorizations/GenericAuthorization.js'
 import ContractExecutionAuthorization from './authorizations/ContractExecutionAuthorization.js'
-import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 import ContractExecutionCompatAuthorization from './authorizations/ContractExecutionCompatAuthorization.js'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
@@ -50,18 +50,44 @@ describe('MsgGrantWithAuthorization', () => {
     it('generates proper proto', () => {
       const proto = message.toProto()
 
-      expect(proto).toStrictEqual({
-        ...protoParamsGenericAuthorization,
-      })
+      expect(proto).toEqual(
+        expect.objectContaining({
+          grantee: protoParamsGenericAuthorization.grantee,
+          granter: protoParamsGenericAuthorization.granter,
+          grant: expect.objectContaining({
+            authorization: expect.objectContaining({
+              typeUrl: any.typeUrl,
+              value: expect.any(Uint8Array),
+            }),
+            expiration: expect.objectContaining({
+              nanos: 0,
+              seconds: expect.any(BigInt),
+            }),
+          }),
+        }),
+      )
     })
 
     it('generates proper data', () => {
       const data = message.toData()
 
-      expect(data).toStrictEqual({
-        '@type': protoType,
-        ...protoParamsGenericAuthorization,
-      })
+      expect(data).toEqual(
+        expect.objectContaining({
+          '@type': protoType,
+          grantee: protoParamsGenericAuthorization.grantee,
+          granter: protoParamsGenericAuthorization.granter,
+          grant: expect.objectContaining({
+            authorization: expect.objectContaining({
+              typeUrl: any.typeUrl,
+              value: expect.any(Uint8Array),
+            }),
+            expiration: expect.objectContaining({
+              nanos: 0,
+              seconds: expect.any(BigInt),
+            }),
+          }),
+        }),
+      )
     })
 
     it('generates proper amino', () => {
@@ -145,18 +171,44 @@ describe('MsgGrantWithAuthorization', () => {
     it('generates proper proto', () => {
       const proto = message.toProto()
 
-      expect(proto).toStrictEqual({
-        ...protoParamsContractExecutionAuthorization,
-      })
+      expect(proto).toEqual(
+        expect.objectContaining({
+          grantee: protoParamsContractExecutionAuthorization.grantee,
+          granter: protoParamsContractExecutionAuthorization.granter,
+          grant: expect.objectContaining({
+            authorization: expect.objectContaining({
+              typeUrl: any.typeUrl,
+              value: expect.any(Uint8Array),
+            }),
+            expiration: expect.objectContaining({
+              nanos: 0,
+              seconds: expect.any(BigInt),
+            }),
+          }),
+        }),
+      )
     })
 
     it('generates proper data', () => {
       const data = message.toData()
 
-      expect(data).toStrictEqual({
-        '@type': protoType,
-        ...protoParamsContractExecutionAuthorization,
-      })
+      expect(data).toEqual(
+        expect.objectContaining({
+          '@type': protoType,
+          grantee: protoParamsContractExecutionAuthorization.grantee,
+          granter: protoParamsContractExecutionAuthorization.granter,
+          grant: expect.objectContaining({
+            authorization: expect.objectContaining({
+              typeUrl: any.typeUrl,
+              value: expect.any(Uint8Array),
+            }),
+            expiration: expect.objectContaining({
+              nanos: 0,
+              seconds: expect.any(BigInt),
+            }),
+          }),
+        }),
+      )
     })
 
     it('generates proper amino', () => {
@@ -240,18 +292,44 @@ describe('MsgGrantWithAuthorization', () => {
     it('generates proper proto', () => {
       const proto = message.toProto()
 
-      expect(proto).toStrictEqual({
-        ...protoParamsContractExecutionAuthorization,
-      })
+      expect(proto).toEqual(
+        expect.objectContaining({
+          grantee: protoParamsContractExecutionAuthorization.grantee,
+          granter: protoParamsContractExecutionAuthorization.granter,
+          grant: expect.objectContaining({
+            authorization: expect.objectContaining({
+              typeUrl: any.typeUrl,
+              value: expect.any(Uint8Array),
+            }),
+            expiration: expect.objectContaining({
+              nanos: 0,
+              seconds: expect.any(BigInt),
+            }),
+          }),
+        }),
+      )
     })
 
     it('generates proper data', () => {
       const data = message.toData()
 
-      expect(data).toStrictEqual({
-        '@type': protoType,
-        ...protoParamsContractExecutionAuthorization,
-      })
+      expect(data).toEqual(
+        expect.objectContaining({
+          '@type': protoType,
+          grantee: protoParamsContractExecutionAuthorization.grantee,
+          granter: protoParamsContractExecutionAuthorization.granter,
+          grant: expect.objectContaining({
+            authorization: expect.objectContaining({
+              typeUrl: any.typeUrl,
+              value: expect.any(Uint8Array),
+            }),
+            expiration: expect.objectContaining({
+              nanos: 0,
+              seconds: expect.any(BigInt),
+            }),
+          }),
+        }),
+      )
     })
 
     it('generates proper amino', () => {

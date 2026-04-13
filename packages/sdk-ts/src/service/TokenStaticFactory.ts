@@ -1,10 +1,6 @@
 import { isCw20ContractAddress } from './../utils/index.js'
-import {
-  TokenType,
-  TokenSource,
-  TokenStatic,
-  TokenVerification,
-} from './../types/index.js'
+import { TokenType, TokenVerification } from './../types/index.js'
+import type { TokenSource, TokenStatic } from './../types/index.js'
 
 export class TokenStaticFactory {
   public registry: TokenStatic[]
@@ -15,6 +11,8 @@ export class TokenStaticFactory {
 
   public cw20AddressVerifiedMap: Record<string, TokenStatic>
   public cw20AddressUnverifiedMap: Record<string, TokenStatic>
+  public evmAddressVerifiedMap: Record<string, TokenStatic>
+  public evmAddressUnverifiedMap: Record<string, TokenStatic>
 
   public factoryTokenDenomVerifiedMap: Record<string, TokenStatic>
   public factoryTokenDenomUnverifiedMap: Record<string, TokenStatic>
@@ -36,6 +34,8 @@ export class TokenStaticFactory {
 
     this.cw20AddressVerifiedMap = {}
     this.cw20AddressUnverifiedMap = {}
+    this.evmAddressVerifiedMap = {}
+    this.evmAddressUnverifiedMap = {}
 
     this.factoryTokenDenomVerifiedMap = {}
     this.factoryTokenDenomUnverifiedMap = {}
@@ -53,23 +53,6 @@ export class TokenStaticFactory {
   }
 
   mapRegistry(registry: TokenStatic[]) {
-    this.denomVerifiedMap = {}
-    this.denomBlacklistedMap = {}
-    this.denomUnverifiedMap = {}
-
-    this.cw20AddressVerifiedMap = {}
-    this.cw20AddressUnverifiedMap = {}
-
-    this.factoryTokenDenomVerifiedMap = {}
-    this.factoryTokenDenomUnverifiedMap = {}
-
-    this.ibcDenomsVerifiedMap = {}
-    this.ibcDenomsUnverifiedMap = {}
-    this.ibcBaseDenomsVerifiedMap = {}
-    this.ibcBaseDenomsUnverifiedMap = {}
-    this.symbolTokensMap = {}
-    this.insuranceTokensMap = {}
-
     for (const token of registry) {
       const {
         denom,
@@ -104,6 +87,14 @@ export class TokenStaticFactory {
           this.cw20AddressVerifiedMap[address] = token
         } else {
           this.cw20AddressUnverifiedMap[address] = token
+        }
+      }
+
+      if (tokenType === TokenType.Evm) {
+        if (tokenVerification === TokenVerification.Verified) {
+          this.evmAddressVerifiedMap[address] = token
+        } else {
+          this.evmAddressUnverifiedMap[address] = token
         }
       }
 
@@ -184,6 +175,24 @@ export class TokenStaticFactory {
     )
   }
 
+  getEvmToken(
+    denom: string,
+    { tokenVerification }: { tokenVerification?: TokenVerification } = {},
+  ): TokenStatic | undefined {
+    const address = denom.replace('erc20:', '')
+
+    if (tokenVerification === TokenVerification.Verified) {
+      return this.evmAddressVerifiedMap[address] || this.denomVerifiedMap[denom]
+    }
+
+    return (
+      this.evmAddressVerifiedMap[address] ||
+      this.denomVerifiedMap[denom] ||
+      this.evmAddressUnverifiedMap[address] ||
+      this.denomUnverifiedMap[denom]
+    )
+  }
+
   getCw20Token(
     address: string,
     { tokenVerification }: { tokenVerification?: TokenVerification } = {},
@@ -260,6 +269,12 @@ export class TokenStaticFactory {
 
     if (denomOrSymbolTrimmed.startsWith('factory/')) {
       return this.getTokenFactoryToken(denomOrSymbolTrimmed, {
+        tokenVerification: verification,
+      })
+    }
+
+    if (denomOrSymbolTrimmed.startsWith('erc20:')) {
+      return this.getEvmToken(denomOrSymbolTrimmed, {
         tokenVerification: verification,
       })
     }

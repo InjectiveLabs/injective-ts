@@ -1,12 +1,11 @@
-import MsgVote from './MsgVote.js'
-import snakecaseKeys from 'snakecase-keys'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgVote from './MsgVote.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgVote['params'] = {
   proposalId: 1,
@@ -18,15 +17,17 @@ const params: MsgVote['params'] = {
 const protoType = '/cosmos.gov.v1.MsgVote'
 const protoTypeAmino = 'cosmos-sdk/v1/MsgVote'
 const protoParams = {
-  proposalId: params.proposalId.toString(),
+  proposalId: BigInt(params.proposalId),
   voter: params.voter,
   metadata: params.metadata,
   option: params.vote,
 }
-const protoParamsAmino = snakecaseKeys({
-  ...protoParams,
+const protoParamsAmino = {
+  proposal_id: params.proposalId.toString(),
+  voter: params.voter,
+  metadata: params.metadata,
   option: 3,
-})
+}
 const message = MsgVote.fromJSON(params)
 
 describe('MsgVote', () => {
@@ -65,8 +66,6 @@ describe('MsgVote', () => {
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      sequence: 0,
-      accountNumber: 3,
       messages: message,
     })
 

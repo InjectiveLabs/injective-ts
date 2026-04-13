@@ -1,53 +1,30 @@
-import {
-  UnspecifiedErrorCode,
-  grpcErrorCodeToErrorCode,
-  GrpcUnaryRequestException,
-} from '@injectivelabs/exceptions'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import BaseGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
+import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
-
+import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 /**
  * @category Indexer Grpc API
  */
-export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
+export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
   protected module: string = IndexerModule.Explorer
 
-  protected client: InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl
-
-  constructor(endpoint: string) {
-    super(endpoint)
-
-    this.client = new InjectiveExplorerRpc.InjectiveExplorerRPCClientImpl(
-      this.getGrpcWebImpl(endpoint),
-    )
+  private get client() {
+    return this.initClient(InjectiveExplorerRPCClient)
   }
 
-  async fetchTxByHash(hash: string) {
-    const request = InjectiveExplorerRpc.GetTxByTxHashRequest.create()
+  async fetchTxByHash(hash: string, isEvmHash: boolean = false) {
+    const request = InjectiveExplorerRpcPb.GetTxByTxHashRequest.create()
 
     request.hash = hash
+    request.isEvmHash = isEvmHash
 
-    try {
-      const response = await this.client.GetTxByTxHash(request, this.metadata)
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetTxByTxHashRequest,
+      InjectiveExplorerRpcPb.GetTxByTxHashResponse
+    >(request, this.client.getTxByTxHash.bind(this.client))
 
-      return IndexerGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetTxByTxHash',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetTxByTxHash',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcExplorerTransformer.getTxByTxHashResponseToTx(response)
   }
 
   async fetchAccountTx({
@@ -67,7 +44,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     startTime?: number
     endTime?: number
   }) {
-    const request = InjectiveExplorerRpc.GetAccountTxsRequest.create()
+    const request = InjectiveExplorerRpcPb.GetAccountTxsRequest.create()
 
     request.address = address
 
@@ -76,115 +53,61 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     }
 
     if (before) {
-      request.before = before.toString()
+      request.before = BigInt(before)
     }
 
     if (after) {
-      request.after = after.toString()
-    }
-
-    if (before) {
-      request.before = before.toString()
+      request.after = BigInt(after)
     }
 
     if (startTime) {
-      request.startTime = startTime.toString()
+      request.startTime = BigInt(startTime)
     }
 
     if (endTime) {
-      request.endTime = endTime.toString()
+      request.endTime = BigInt(endTime)
     }
 
     if (type) {
       request.type = type
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveExplorerRpc.GetAccountTxsResponse>(() =>
-          this.client.GetAccountTxs(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetAccountTxsRequest,
+      InjectiveExplorerRpcPb.GetAccountTxsResponse
+    >(request, this.client.getAccountTxs.bind(this.client))
 
-      return IndexerGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetAccountTxs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetAccountTxs',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcExplorerTransformer.getAccountTxsResponseToAccountTxs(
+      response,
+    )
   }
 
   async fetchValidator(validatorAddress: string) {
-    const request = InjectiveExplorerRpc.GetValidatorRequest.create()
+    const request = InjectiveExplorerRpcPb.GetValidatorRequest.create()
 
     request.address = validatorAddress
 
-    try {
-      const response =
-        await this.retry<InjectiveExplorerRpc.GetValidatorResponse>(() =>
-          this.client.GetValidator(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetValidatorRequest,
+      InjectiveExplorerRpcPb.GetValidatorResponse
+    >(request, this.client.getValidator.bind(this.client))
 
-      return IndexerGrpcExplorerTransformer.validatorResponseToValidator(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetValidator',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetValidator',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcExplorerTransformer.validatorResponseToValidator(response)
   }
 
   async fetchValidatorUptime(validatorAddress: string) {
-    const request = InjectiveExplorerRpc.GetValidatorUptimeRequest.create()
+    const request = InjectiveExplorerRpcPb.GetValidatorUptimeRequest.create()
 
     request.address = validatorAddress
 
-    try {
-      const response =
-        await this.retry<InjectiveExplorerRpc.GetValidatorUptimeResponse>(() =>
-          this.client.GetValidatorUptime(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetValidatorUptimeRequest,
+      InjectiveExplorerRpcPb.GetValidatorUptimeResponse
+    >(request, this.client.getValidatorUptime.bind(this.client))
 
-      return IndexerGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetValidatorUptime',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetValidatorUptime',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcExplorerTransformer.getValidatorUptimeResponseToValidatorUptime(
+      response,
+    )
   }
 
   async fetchPeggyDepositTxs({
@@ -198,7 +121,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     limit?: number
     skip?: number
   }) {
-    const request = InjectiveExplorerRpc.GetPeggyDepositTxsRequest.create()
+    const request = InjectiveExplorerRpcPb.GetPeggyDepositTxsRequest.create()
 
     if (sender) {
       request.sender = sender
@@ -213,33 +136,17 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     }
 
     if (skip) {
-      request.skip = skip.toString()
+      request.skip = BigInt(skip)
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveExplorerRpc.GetPeggyDepositTxsResponse>(() =>
-          this.client.GetPeggyDepositTxs(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetPeggyDepositTxsRequest,
+      InjectiveExplorerRpcPb.GetPeggyDepositTxsResponse
+    >(request, this.client.getPeggyDepositTxs.bind(this.client))
 
-      return IndexerGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetPeggyDepositTxs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetPeggyDepositTxs',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcExplorerTransformer.getPeggyDepositTxsResponseToPeggyDepositTxs(
+      response,
+    )
   }
 
   async fetchPeggyWithdrawalTxs({
@@ -253,7 +160,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     limit?: number
     skip?: number
   }) {
-    const request = InjectiveExplorerRpc.GetPeggyWithdrawalTxsRequest.create()
+    const request = InjectiveExplorerRpcPb.GetPeggyWithdrawalTxsRequest.create()
 
     if (sender) {
       request.sender = sender
@@ -268,33 +175,17 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     }
 
     if (skip) {
-      request.skip = skip.toString()
+      request.skip = BigInt(skip)
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveExplorerRpc.GetPeggyWithdrawalTxsResponse>(
-          () => this.client.GetPeggyWithdrawalTxs(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetPeggyWithdrawalTxsRequest,
+      InjectiveExplorerRpcPb.GetPeggyWithdrawalTxsResponse
+    >(request, this.client.getPeggyWithdrawalTxs.bind(this.client))
 
-      return IndexerGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetPeggyWithdrawalTxs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetPeggyWithdrawalTxs',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcExplorerTransformer.getPeggyWithdrawalTxsResponseToPeggyWithdrawalTxs(
+      response,
+    )
   }
 
   async fetchBlocks({
@@ -310,77 +201,47 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     from?: number
     to?: number
   }) {
-    const request = InjectiveExplorerRpc.GetBlocksRequest.create()
+    const request = InjectiveExplorerRpcPb.GetBlocksRequest.create()
 
     if (before) {
-      request.before = before.toString()
+      request.before = BigInt(before)
     }
 
     if (after) {
-      request.after = after.toString()
+      request.after = BigInt(after)
     }
 
     if (from) {
-      request.from = from.toString()
+      request.from = BigInt(from)
     }
 
     if (to) {
-      request.to = to.toString()
+      request.to = BigInt(to)
     }
 
     if (limit) {
       request.limit = limit
     }
 
-    try {
-      const response = await this.retry<InjectiveExplorerRpc.GetBlocksResponse>(
-        () => this.client.GetBlocks(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetBlocksRequest,
+      InjectiveExplorerRpcPb.GetBlocksResponse
+    >(request, this.client.getBlocks.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetBlocks',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetBlocks',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchBlock(id: string) {
-    const request = InjectiveExplorerRpc.GetBlockRequest.create()
+    const request = InjectiveExplorerRpcPb.GetBlockRequest.create()
 
     request.id = id
 
-    try {
-      const response = await this.retry<InjectiveExplorerRpc.GetBlockResponse>(
-        () => this.client.GetBlock(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetBlockRequest,
+      InjectiveExplorerRpcPb.GetBlockResponse
+    >(request, this.client.getBlock.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetBlock',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetBlock',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchTxs({
@@ -402,14 +263,14 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     endTime?: number
     chainModule?: string
   }) {
-    const request = InjectiveExplorerRpc.GetTxsRequest.create()
+    const request = InjectiveExplorerRpcPb.GetTxsRequest.create()
 
     if (before) {
-      request.before = before.toString()
+      request.before = BigInt(before)
     }
 
     if (after) {
-      request.after = after.toString()
+      request.after = BigInt(after)
     }
 
     if (limit) {
@@ -417,7 +278,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     }
 
     if (skip) {
-      request.skip = skip.toString()
+      request.skip = BigInt(skip)
     }
 
     if (type) {
@@ -428,39 +289,20 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
       request.module = chainModule
     }
 
-    if (before) {
-      request.before = before.toString()
-    }
-
     if (startTime) {
-      request.startTime = startTime.toString()
+      request.startTime = BigInt(startTime)
     }
 
     if (endTime) {
-      request.endTime = endTime.toString()
+      request.endTime = BigInt(endTime)
     }
 
-    try {
-      const response = await this.retry<InjectiveExplorerRpc.GetTxsResponse>(
-        () => this.client.GetTxs(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetTxsRequest,
+      InjectiveExplorerRpcPb.GetTxsResponse
+    >(request, this.client.getTxs.bind(this.client))
 
-      return response
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetTxs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetTxs',
-        contextModule: this.module,
-      })
-    }
+    return response
   }
 
   async fetchIBCTransferTxs({
@@ -482,7 +324,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     limit?: number
     skip?: number
   }) {
-    const request = InjectiveExplorerRpc.GetIBCTransferTxsRequest.create()
+    const request = InjectiveExplorerRpcPb.GetIBCTransferTxsRequest.create()
 
     if (sender) {
       request.sender = sender
@@ -497,7 +339,7 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
     }
 
     if (skip) {
-      request.skip = skip.toString()
+      request.skip = BigInt(skip)
     }
 
     if (srcChannel) {
@@ -516,57 +358,210 @@ export class IndexerGrpcExplorerApi extends BaseGrpcConsumer {
       request.destPort = destPort
     }
 
-    try {
-      const response =
-        await this.retry<InjectiveExplorerRpc.GetIBCTransferTxsResponse>(() =>
-          this.client.GetIBCTransferTxs(request, this.metadata),
-        )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetIBCTransferTxsRequest,
+      InjectiveExplorerRpcPb.GetIBCTransferTxsResponse
+    >(request, this.client.getIBCTransferTxs.bind(this.client))
 
-      return IndexerGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetIBCTransferTxs',
-          contextModule: this.module,
-        })
-      }
-
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetIBCTransferTxs',
-        contextModule: this.module,
-      })
-    }
+    return IndexerGrpcExplorerTransformer.getIBCTransferTxsResponseToIBCTransferTxs(
+      response,
+    )
   }
 
   async fetchExplorerStats() {
-    const request = InjectiveExplorerRpc.GetStatsRequest.create()
+    const request = InjectiveExplorerRpcPb.GetStatsRequest.create()
 
-    try {
-      const response = await this.retry<InjectiveExplorerRpc.GetStatsResponse>(
-        () => this.client.GetStats(request, this.metadata),
-      )
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetStatsRequest,
+      InjectiveExplorerRpcPb.GetStatsResponse
+    >(request, this.client.getStats.bind(this.client))
 
-      return IndexerGrpcExplorerTransformer.getExplorerStatsResponseToExplorerStats(
-        response,
-      )
-    } catch (e: unknown) {
-      if (e instanceof InjectiveExplorerRpc.GrpcWebError) {
-        throw new GrpcUnaryRequestException(new Error(e.toString()), {
-          code: grpcErrorCodeToErrorCode(e.code),
-          context: 'GetExplorerStats',
-          contextModule: this.module,
-        })
-      }
+    return IndexerGrpcExplorerTransformer.getExplorerStatsResponseToExplorerStats(
+      response,
+    )
+  }
 
-      throw new GrpcUnaryRequestException(e as Error, {
-        code: UnspecifiedErrorCode,
-        context: 'GetExplorerStats',
-        contextModule: this.module,
-      })
+  async fetchTxsV2({
+    type,
+    token,
+    status,
+    perPage,
+    endTime,
+    startTime,
+    blockNumber,
+  }: {
+    type?: string
+    token?: string
+    status?: string
+    perPage?: number
+    endTime?: number
+    startTime?: number
+    blockNumber?: number
+  }) {
+    const request = InjectiveExplorerRpcPb.GetTxsV2Request.create()
+
+    if (token) {
+      request.token = token
     }
+
+    if (blockNumber) {
+      request.blockNumber = BigInt(blockNumber)
+    }
+
+    if (endTime) {
+      request.endTime = BigInt(endTime)
+    }
+
+    if (startTime) {
+      request.startTime = BigInt(startTime)
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (status) {
+      request.status = status
+    }
+
+    if (type) {
+      request.type = type
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetTxsV2Request,
+      InjectiveExplorerRpcPb.GetTxsV2Response
+    >(request, this.client.getTxsV2.bind(this.client))
+
+    return IndexerGrpcExplorerTransformer.getTxsV2ResponseToTxs(response)
+  }
+
+  async fetchAccountTxsV2({
+    type,
+    token,
+    address,
+    endTime,
+    perPage,
+    startTime,
+  }: {
+    type?: string
+    token?: string
+    address: string
+    endTime?: number
+    perPage?: number
+    startTime?: number
+  }) {
+    const request = InjectiveExplorerRpcPb.GetAccountTxsV2Request.create()
+
+    request.address = address
+
+    if (startTime) {
+      request.startTime = BigInt(startTime)
+    }
+
+    if (endTime) {
+      request.endTime = BigInt(endTime)
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    if (type) {
+      request.type = type
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetAccountTxsV2Request,
+      InjectiveExplorerRpcPb.GetAccountTxsV2Response
+    >(request, this.client.getAccountTxsV2.bind(this.client))
+
+    return IndexerGrpcExplorerTransformer.getAccountTxsV2ResponseToAccountTxs(
+      response,
+    )
+  }
+
+  async fetchBlocksV2({
+    token,
+    perPage,
+  }: {
+    token?: string
+    perPage?: number
+  }) {
+    const request = InjectiveExplorerRpcPb.GetBlocksV2Request.create({})
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetBlocksV2Request,
+      InjectiveExplorerRpcPb.GetBlocksV2Response
+    >(request, this.client.getBlocksV2.bind(this.client))
+
+    return IndexerGrpcExplorerTransformer.getBlocksV2ResponseToBlocks(response)
+  }
+
+  async fetchContractTxsV2({
+    to,
+    from,
+    token,
+    height,
+    status,
+    perPage,
+    contractAddress,
+  }: {
+    to?: number
+    from?: number
+    token?: string
+    height?: string
+    status?: string
+    perPage?: number
+    contractAddress: string
+  }) {
+    const request = InjectiveExplorerRpcPb.GetContractTxsV2Request.create()
+
+    request.address = contractAddress
+
+    if (from) {
+      request.from = BigInt(from)
+    }
+
+    if (to) {
+      request.to = BigInt(to)
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    if (height) {
+      request.height = BigInt(height)
+    }
+
+    if (status) {
+      request.status = status
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetContractTxsV2Request,
+      InjectiveExplorerRpcPb.GetContractTxsV2Response
+    >(request, this.client.getContractTxsV2.bind(this.client))
+
+    return IndexerGrpcExplorerTransformer.getContractTxsV2ResponseToContractTxs(
+      response,
+    )
   }
 }

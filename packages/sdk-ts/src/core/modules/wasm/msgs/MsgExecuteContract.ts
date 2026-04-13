@@ -1,25 +1,16 @@
-import { ExecArgs } from '../exec-args.js'
-import { MsgBase } from '../../MsgBase.js'
 import { GeneralException } from '@injectivelabs/exceptions'
-import snakecaseKeys from 'snakecase-keys'
-import { fromUtf8 } from '../../../../utils/utf8.js'
-import {
-  CosmwasmWasmV1Tx,
-  CosmosBaseV1Beta1Coin,
-} from '@injectivelabs/core-proto-ts'
+import * as CosmwasmWasmV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmwasm/wasm/v1/tx_pb'
+import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
+import { MsgBase } from '../../MsgBase.js'
+import { fromUtf8 } from '../../../../utils/encoding.js'
+import { safeBigIntStringify } from '../../../../utils/helpers.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { ExecArgs } from '../exec-args.js'
 
 export declare namespace MsgExecuteContract {
   export interface Params {
     /* Keep in mind that funds have to be lexicographically sorted by denom */
-    funds?:
-      | {
-          denom: string
-          amount: string
-        }
-      | {
-          denom: string
-          amount: string
-        }[]
+    funds?: Coin | Coin[]
     sender: string
     contractAddress: string
     /* Used to provide type safety for execution messages */
@@ -37,9 +28,9 @@ export declare namespace MsgExecuteContract {
     msg?: object
   }
 
-  export type Proto = CosmwasmWasmV1Tx.MsgExecuteContract
+  export type Proto = CosmwasmWasmV1TxPb.MsgExecuteContract
 
-  export type Object = Omit<CosmwasmWasmV1Tx.MsgExecuteContract, 'msg'> & {
+  export type Object = Omit<CosmwasmWasmV1TxPb.MsgExecuteContract, 'msg'> & {
     msg: any
   }
 }
@@ -58,32 +49,26 @@ export default class MsgExecuteContract extends MsgBase<
 
   public toProto() {
     const { params } = this
-
-    const message = CosmwasmWasmV1Tx.MsgExecuteContract.create()
     const msg = this.getMsgObject()
 
-    message.sender = params.sender
-    message.contract = params.contractAddress
-    message.msg = fromUtf8(JSON.stringify(msg))
+    const funds = params.funds
+      ? (Array.isArray(params.funds) ? params.funds : [params.funds]).map(
+          (coin) =>
+            CosmosBaseV1Beta1CoinPb.Coin.create({
+              denom: coin.denom,
+              amount: coin.amount,
+            }),
+        )
+      : []
 
-    if (params.funds) {
-      const fundsToArray = Array.isArray(params.funds)
-        ? params.funds
-        : [params.funds]
+    const message = CosmwasmWasmV1TxPb.MsgExecuteContract.create({
+      sender: params.sender,
+      contract: params.contractAddress,
+      msg: fromUtf8(safeBigIntStringify(msg)),
+      funds: funds,
+    })
 
-      const funds = fundsToArray.map((coin) => {
-        const funds = CosmosBaseV1Beta1Coin.Coin.create()
-
-        funds.denom = coin.denom
-        funds.amount = coin.amount
-
-        return funds
-      })
-
-      message.funds = funds
-    }
-
-    return CosmwasmWasmV1Tx.MsgExecuteContract.fromPartial(message)
+    return message
   }
 
   public toData() {
@@ -97,10 +82,13 @@ export default class MsgExecuteContract extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
+    const msg = this.getMsgObject()
 
     const message = {
-      ...snakecaseKeys(proto),
-      msg: this.getMsgObject(),
+      sender: proto.sender,
+      contract: proto.contract,
+      msg: msg,
+      funds: proto.funds,
     }
 
     return {
@@ -119,13 +107,13 @@ export default class MsgExecuteContract extends MsgBase<
     }
   }
 
-  // public toEip712(): never {
-  //   throw new GeneralException(
-  //     new Error(
-  //       'EIP712_v1 is not supported for MsgExecuteContract. Please use EIP712_v2',
-  //     ),
-  //   )
-  // }
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712_v1 is not supported for MsgExecuteContract. Please use EIP712_v2',
+      ),
+    )
+  }
 
   public toDirectSign() {
     const proto = this.toProto()
@@ -137,7 +125,7 @@ export default class MsgExecuteContract extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    return CosmwasmWasmV1Tx.MsgExecuteContract.encode(this.toProto()).finish()
+    return CosmwasmWasmV1TxPb.MsgExecuteContract.toBinary(this.toProto())
   }
 
   private getMsgObject() {

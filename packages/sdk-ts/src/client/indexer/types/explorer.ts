@@ -1,29 +1,37 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import { InjectiveExplorerRpc } from '@injectivelabs/indexer-proto-ts'
-import { TokenStatic } from '../../../types/token.js'
+import type { Coin } from '@injectivelabs/ts-types'
+import type { BigNumber } from '@injectivelabs/utils'
+import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
+import type { TokenStatic } from '../../../types/token.js'
 
-export enum AccessTypeCode {
-  AccessTypeUnspecified = 0,
-  AccessTypeNobody = 1,
-  AccessTypeOnlyAddress = 2,
-  AccessTypeEverybody = 3,
-  AccessTypeAnyOfAddresses = 4,
-}
+export const AccessTypeCode = {
+  AccessTypeUnspecified: 0,
+  AccessTypeNobody: 1,
+  AccessTypeOnlyAddress: 2,
+  AccessTypeEverybody: 3,
+  AccessTypeAnyOfAddresses: 4,
+} as const
 
-export enum AccessType {
-  AccessTypeUnspecified = 'Unspecified',
-  AccessTypeNobody = 'Nobody',
-  AccessTypeOnlyAddress = 'Only Address',
-  AccessTypeEverybody = 'Everybody',
-  AccessTypeAnyOfAddresses = 'Any of Addresses',
-}
+export type AccessTypeCode =
+  (typeof AccessTypeCode)[keyof typeof AccessTypeCode]
 
-export enum ValidatorUptimeStatus {
-  Proposed = 'proposed',
-  Signed = 'signed',
-  Missed = 'missed',
-}
+export const AccessType = {
+  AccessTypeUnspecified: 'Unspecified',
+  AccessTypeNobody: 'Nobody',
+  AccessTypeOnlyAddress: 'Only Address',
+  AccessTypeEverybody: 'Everybody',
+  AccessTypeAnyOfAddresses: 'Any of Addresses',
+} as const
+
+export type AccessType = (typeof AccessType)[keyof typeof AccessType]
+
+export const ValidatorUptimeStatus = {
+  Proposed: 'proposed',
+  Signed: 'signed',
+  Missed: 'missed',
+} as const
+
+export type ValidatorUptimeStatus =
+  (typeof ValidatorUptimeStatus)[keyof typeof ValidatorUptimeStatus]
 
 export interface Paging {
   from: number
@@ -301,8 +309,10 @@ export interface Contract {
   }
 }
 
-export interface ContractTransactionWithMessages
-  extends Omit<ContractTransaction, 'messages'> {
+export interface ContractTransactionWithMessages extends Omit<
+  ContractTransaction,
+  'messages'
+> {
   messages: Array<{
     type: string
     value: {
@@ -340,8 +350,8 @@ export interface ContractTransaction {
   type: string
   code: number
   messages: Message[]
-  amount: BigNumberInBase
-  fee: BigNumberInBase
+  amount: BigNumber
+  fee: BigNumber
   height: number
   time: number
   data: string
@@ -364,8 +374,10 @@ export interface ExplorerBlockWithTxs extends Omit<BlockWithTxs, 'txs'> {
   txs: ExplorerTransaction[]
 }
 
-export interface ExplorerValidatorUptime
-  extends Omit<ValidatorUptime, 'status'> {
+export interface ExplorerValidatorUptime extends Omit<
+  ValidatorUptime,
+  'status'
+> {
   status: ValidatorUptimeStatus
 }
 
@@ -380,23 +392,45 @@ export interface CosmWasmChecksum {
 }
 
 export interface ExplorerStats {
-  assets: string
-  txsTotal: string
+  assets: string | bigint
+  txsTotal: string | bigint
   addresses: string
-  injSupply: string
-  txsInPast30Days: string
-  txsInPast24Hours: string
-  blockCountInPast24Hours: string
-  txsPerSecondInPast24Hours: string
-  txsPerSecondInPast100Blocks: string
+  injSupply: string | bigint
+  txsInPast30Days: string | bigint
+  txsInPast24Hours: string | bigint
+  blockCountInPast24Hours: string | bigint
+  txsPerSecondInPast24Hours: string | bigint
+  txsPerSecondInPast100Blocks: string | bigint
 }
 
-export type GrpcIBCTransferTx = InjectiveExplorerRpc.IBCTransferTx
-export type GrpcPeggyDepositTx = InjectiveExplorerRpc.PeggyDepositTx
-export type GrpcPeggyWithdrawalTx = InjectiveExplorerRpc.PeggyWithdrawalTx
-export type GrpcGasFee = InjectiveExplorerRpc.GasFee
-export type GrpcValidatorUptime = InjectiveExplorerRpc.ValidatorUptime
+export interface ExplorerTxsV2Response {
+  data: ExplorerTransactionV2[]
+  paging?: InjectiveExplorerRpcPb.Paging
+}
+
+export interface ExplorerTransactionV2 {
+  logs: any
+  id: string
+  code: number
+  hash: string
+  messages: any
+  txNumber: number
+  errorLog?: string
+  codespace: string
+  claimIds: string[]
+  blockNumber: number
+  txMsgTypes: string[]
+  blockTimestamp: number
+  blockUnixTimestamp: number
+  signatures: InjectiveExplorerRpcPb.Signature[]
+}
+
+export type GrpcIBCTransferTx = InjectiveExplorerRpcPb.IBCTransferTx
+export type GrpcPeggyDepositTx = InjectiveExplorerRpcPb.PeggyDepositTx
+export type GrpcPeggyWithdrawalTx = InjectiveExplorerRpcPb.PeggyWithdrawalTx
+export type GrpcGasFee = InjectiveExplorerRpcPb.GasFee
+export type GrpcValidatorUptime = InjectiveExplorerRpcPb.ValidatorUptime
 export type GrpcIndexerValidatorDescription =
-  InjectiveExplorerRpc.ValidatorDescription
-export type GrpcValidatorSlashingEvent = InjectiveExplorerRpc.SlashingEvent
-export type GrpcExplorerStats = InjectiveExplorerRpc.GetStatsResponse
+  InjectiveExplorerRpcPb.ValidatorDescription
+export type GrpcValidatorSlashingEvent = InjectiveExplorerRpcPb.SlashingEvent
+export type GrpcExplorerStats = InjectiveExplorerRpcPb.GetStatsResponse

@@ -1,56 +1,72 @@
-/* eslint-disable class-methods-use-this */
-import { isEvmBrowserWallet } from '@injectivelabs/wallet-base'
+import { capitalize } from '@injectivelabs/utils'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
-  TxRaw,
   toUtf8,
-  TxGrpcApi,
-  TxResponse,
-  DirectSignResponse,
-  AminoSignResponse,
-} from '@injectivelabs/sdk-ts'
+  isServerSide,
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
+import {
+  Wallet,
+  WalletAction,
+  WalletDeviceType,
+  getEvmChainConfig,
+  isEvmBrowserWallet,
+  WalletEventListener,
+  BaseConcreteStrategy,
+  getViemPublicClientFromEip1193Provider,
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
-  ErrorContext,
   WalletException,
-  ThrownException,
   BitGetException,
+  KeplrEvmException,
   MetamaskException,
   OkxWalletException,
   UnspecifiedErrorCode,
   TransactionException,
   TrustWalletException,
+  RainbowWalletException,
 } from '@injectivelabs/exceptions'
 import {
-  Wallet,
+  getRabbyProvider,
+  getBitGetProvider,
+  getPhantomProvider,
+  getRainbowProvider,
+  getMetamaskProvider,
+  getKeplrEvmProvider,
+  getOkxWalletProvider,
+  getTrustWalletProvider,
+} from './utils/index.js'
+import type { Hash } from 'viem'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type { ErrorContext, ThrownException } from '@injectivelabs/exceptions'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
+import type {
   StdSignDoc,
-  WalletAction,
-  WalletDeviceType,
-  WalletEventListener,
-  BaseConcreteStrategy,
+  Eip1193Provider,
   SendTransactionOptions,
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
   ConcreteWalletStrategyArgs,
-  ConcreteEthereumWalletStrategyArgs,
+  EIP6963AnnounceProviderEvent,
+  ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
-import { sleep, capitalize } from '@injectivelabs/utils'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import {
-  getBitGetProvider,
-  getPhantomProvider,
-  getMetamaskProvider,
-  getOkxWalletProvider,
-  getTrustWalletProvider,
-} from './utils/index.js'
 
 export class EvmWallet
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
   public wallet?: Wallet
+  public evmProviders: Partial<Record<Wallet, BrowserEip1993Provider>> = {}
 
   constructor(
-    args: (ConcreteWalletStrategyArgs | ConcreteEthereumWalletStrategyArgs) & {
+    args: (ConcreteWalletStrategyArgs | ConcreteEvmWalletStrategyArgs) & {
       wallet: Wallet
     },
   ) {
@@ -62,6 +78,50 @@ export class EvmWallet
           `Evm Wallet for ${capitalize(args.wallet)} is not supported.`,
         ),
       )
+    }
+
+    if (!isServerSide()) {
+      window.addEventListener(
+        'eip6963:announceProvider',
+        (announcement: any) => {
+          const event = announcement as unknown as EIP6963AnnounceProviderEvent
+          const walletName = event.detail.info.name.toLowerCase()
+
+          // Keplr announces as "Keplr" via EIP6963, not "keplr-evm"
+          if (walletName === 'keplr') {
+            this.evmProviders[Wallet.KeplrEvm] = event.detail.provider
+          }
+
+          if (walletName === Wallet.Metamask.toLowerCase()) {
+            this.evmProviders[Wallet.Metamask] = event.detail.provider
+          }
+
+          if (walletName === Wallet.Rabby.toLowerCase()) {
+            this.evmProviders[Wallet.Rabby] = event.detail.provider
+          }
+
+          if (walletName === Wallet.Rainbow.toLowerCase()) {
+            this.evmProviders[Wallet.Rainbow] = event.detail.provider
+          }
+
+          if (walletName === Wallet.Phantom.toLowerCase()) {
+            this.evmProviders[Wallet.Phantom] = event.detail.provider
+          }
+
+          if (walletName === Wallet.OkxWallet.toLowerCase()) {
+            this.evmProviders[Wallet.OkxWallet] = event.detail.provider
+          }
+
+          if (walletName === Wallet.BitGet.toLowerCase()) {
+            this.evmProviders[Wallet.BitGet] = event.detail.provider
+          }
+
+          if (walletName === Wallet.TrustWallet.toLowerCase()) {
+            this.evmProviders[Wallet.TrustWallet] = event.detail.provider
+          }
+        },
+      )
+      window.dispatchEvent(new Event('eip6963:requestProvider'))
     }
 
     this.wallet = args.wallet
@@ -89,6 +149,14 @@ export class EvmWallet
 
     if (this.wallet === Wallet.TrustWallet) {
       return new TrustWalletException(error, context)
+    }
+
+    if (this.wallet === Wallet.Rainbow) {
+      return new RainbowWalletException(error, context)
+    }
+
+    if (this.wallet === Wallet.KeplrEvm) {
+      return new KeplrEvmException(error, context)
     }
 
     return new WalletException(error, context)
@@ -140,18 +208,32 @@ export class EvmWallet
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
-    return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
     )
   }
 
-  async sendEthereumTransaction(
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
+    return Promise.resolve(
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
+    )
+  }
+
+  async sendEvmTransaction(
     transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     const ethereum = await this.getEthereum()
 
@@ -164,7 +246,7 @@ export class EvmWallet
       throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SendEthereumTransaction,
+        contextModule: WalletAction.SendEvmTransaction,
       })
     }
   }
@@ -248,7 +330,6 @@ export class EvmWallet
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -301,36 +382,33 @@ export class EvmWallet
     }
   }
 
-  async getEthereumTransactionReceipt(txHash: string): Promise<string> {
+  async getEvmTransactionReceipt(txHash: string): Promise<string> {
     const ethereum = await this.getEthereum()
+    const chainIdHex = (await ethereum.request({
+      method: 'eth_chainId',
+    })) as string
+    const chainId = parseInt(chainIdHex, 16)
 
-    const interval = 1000
-    const transactionReceiptRetry = async () => {
-      const receipt = (await ethereum.request({
-        method: 'eth_getTransactionReceipt',
-        params: [txHash],
-      })) as string
-
-      if (!receipt) {
-        await sleep(interval)
-        await transactionReceiptRetry()
-      }
-
-      return receipt
-    }
+    const publicClient = getViemPublicClientFromEip1193Provider(
+      chainId,
+      ethereum,
+    )
 
     try {
-      return await transactionReceiptRetry()
-    } catch (e: unknown) {
-      throw this.EvmWalletException(new Error((e as any).message), {
-        code: UnspecifiedErrorCode,
-        type: ErrorType.WalletError,
-        contextModule: WalletAction.GetEthereumTransactionReceipt,
+      await publicClient.waitForTransactionReceipt({
+        hash: txHash as Hash,
+        timeout: 30_000,
+        pollingInterval: 3_000,
       })
+
+      return txHash
+    } catch {
+      throw new Error(
+        `Failed to retrieve transaction receipt for txHash: ${txHash}`,
+      )
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),
@@ -359,21 +437,117 @@ export class EvmWallet
     ethereum.on('accountsChanged', callback)
   }
 
+  async getEip1193Provider(): Promise<Eip1193Provider> {
+    return this.getEthereum() as unknown as Eip1193Provider
+  }
+
+  async addEvmNetwork(chainId: EvmChainId): Promise<void> {
+    const ethereum = await this.getEthereum()
+    const chainIdHex = `0x${chainId.toString(16)}`
+    const chain = getEvmChainConfig(chainId)
+
+    const params = {
+      chainId: chainIdHex,
+      chainName: chain.name,
+      rpcUrls: [...(chain.rpcUrls?.default?.http || [])],
+      blockExplorerUrls: chain.blockExplorers?.default?.url
+        ? [chain.blockExplorers.default.url]
+        : [],
+      nativeCurrency: chain.nativeCurrency,
+    }
+
+    const TIMEOUT_MS = 30_000
+
+    try {
+      await Promise.race([
+        ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: chainIdHex }],
+        }),
+        new Promise<void>((resolve, reject) => {
+          const handleChainChanged = (newChainId: string) => {
+            if (newChainId.toLowerCase() === chainIdHex.toLowerCase()) {
+              cleanup()
+              resolve()
+            }
+          }
+
+          const timeoutId = setTimeout(() => {
+            cleanup()
+            reject(new Error('Chain switch timed out'))
+          }, TIMEOUT_MS)
+
+          const cleanup = () => {
+            ethereum.removeListener('chainChanged', handleChainChanged)
+            clearTimeout(timeoutId)
+          }
+
+          ethereum.on('chainChanged', handleChainChanged)
+        }),
+      ])
+    } catch (error) {
+      const errorCode =
+        (error as any).code ?? (error as any)?.data?.originalError?.code
+
+      if (errorCode === 4902) {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [params],
+        })
+
+        return
+      }
+
+      if ((error as Error).message === 'Chain switch timed out') {
+        throw this.EvmWalletException(new Error('Chain switch timed out'), {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetChainId,
+        })
+      }
+
+      throw this.EvmWalletException(
+        new Error(
+          `Something went wrong while adding ${capitalize(
+            this.wallet || 'wallet',
+          )} network`,
+        ),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletError,
+          contextModule: WalletAction.GetChainId,
+        },
+      )
+    }
+  }
+
   private async getEthereum(): Promise<BrowserEip1993Provider> {
-    const provider =
+    const evmProvider = this.evmProviders[this.wallet as Wallet]
+
+    if (evmProvider) {
+      return evmProvider
+    }
+
+    const backUpProvider =
       this.wallet === Wallet.Metamask
         ? await getMetamaskProvider()
-        : this.wallet === Wallet.Phantom
-        ? await getPhantomProvider()
-        : this.wallet === Wallet.BitGet
-        ? await getBitGetProvider()
-        : this.wallet === Wallet.OkxWallet
-        ? await getOkxWalletProvider()
-        : this.wallet === Wallet.TrustWallet
-        ? await getTrustWalletProvider()
-        : undefined
+        : this.wallet === Wallet.Rabby
+          ? await getRabbyProvider()
+          : this.wallet === Wallet.Phantom
+            ? await getPhantomProvider()
+            : this.wallet === Wallet.BitGet
+              ? await getBitGetProvider()
+              : this.wallet === Wallet.OkxWallet
+                ? await getOkxWalletProvider()
+                : this.wallet === Wallet.TrustWallet
+                  ? await getTrustWalletProvider()
+                  : this.wallet === Wallet.Rainbow
+                    ? await getRainbowProvider()
+                    : this.wallet === Wallet.KeplrEvm
+                      ? await getKeplrEvmProvider()
+                      : undefined
 
-    if (!provider) {
+    if (!backUpProvider) {
       throw this.EvmWalletException(
         new Error(`Please install the ${this.wallet} wallet extension.`),
         {
@@ -384,6 +558,6 @@ export class EvmWallet
       )
     }
 
-    return provider
+    return backUpProvider
   }
 }

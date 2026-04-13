@@ -1,8 +1,8 @@
-import MsgInstantiateContract from './MsgInstantiateContract.js'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgInstantiateContract from './MsgInstantiateContract.js'
 import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
-import { EIP712Version } from '@injectivelabs/ts-types'
 
 const params: MsgInstantiateContract['params'] = {
   sender: mockFactory.injectiveAddress,
@@ -43,6 +43,29 @@ describe('MsgInstantiateContract', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+  })
+
+  describe('handles BigInt values in message', () => {
+    it('should serialize BigInt values without throwing', () => {
+      const paramsWithBigInt: MsgInstantiateContract['params'] = {
+        sender: mockFactory.injectiveAddress,
+        admin: mockFactory.injectiveAddress,
+        codeId: 1,
+        label: 'test',
+        msg: {
+          amount: BigInt('1000000000000000000'),
+          nested: {
+            value: BigInt(12345),
+          },
+        },
+      }
+
+      const messageWithBigInt =
+        MsgInstantiateContract.fromJSON(paramsWithBigInt)
+
+      // Should not throw "Do not know how to serialize a BigInt"
+      expect(() => messageWithBigInt.toProto()).not.toThrow()
     })
   })
 })

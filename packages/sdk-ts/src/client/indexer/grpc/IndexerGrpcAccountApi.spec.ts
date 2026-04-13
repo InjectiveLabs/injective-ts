@@ -1,9 +1,9 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { getDefaultSubaccountId } from '../../../utils/address.js'
 import { INJ_DENOM } from '@injectivelabs/utils'
-import { IndexerGrpcAccountTransformer } from '../transformers/index.js'
+import { mockFactory } from '@injectivelabs/utils/test-utils'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { getDefaultSubaccountId } from '../../../utils/address.js'
 import { IndexerGrpcAccountApi } from './IndexerGrpcAccountApi.js'
+import type { IndexerGrpcAccountTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
 const subaccountId = getDefaultSubaccountId(injectiveAddress)
@@ -39,9 +39,8 @@ describe('IndexerGrpcAccountApi', () => {
 
   test('fetchSubaccountsList', async () => {
     try {
-      const response = await indexerGrpcAccountApi.fetchSubaccountsList(
-        injectiveAddress,
-      )
+      const response =
+        await indexerGrpcAccountApi.fetchSubaccountsList(injectiveAddress)
 
       expect(response).toBeDefined()
       expect(response).toEqual(expect.objectContaining<string[]>(response))
@@ -80,9 +79,8 @@ describe('IndexerGrpcAccountApi', () => {
 
   test('fetchSubaccountBalancesList', async () => {
     try {
-      const response = await indexerGrpcAccountApi.fetchSubaccountBalancesList(
-        subaccountId,
-      )
+      const response =
+        await indexerGrpcAccountApi.fetchSubaccountBalancesList(subaccountId)
 
       expect(response).toBeDefined()
       expect(response).toEqual(
@@ -131,11 +129,11 @@ describe('IndexerGrpcAccountApi', () => {
         subaccountId,
       })
 
-      if (response.spotOrdersTotal.length === 0) {
+      if (response.spotOrdersTotal === 0n) {
         console.warn('fetchSubaccountHistory.spotOrdersTotalEmpty')
       }
 
-      if (response.derivativeOrdersTotal.length === 0) {
+      if (response.derivativeOrdersTotal === 0n) {
         console.warn('fetchSubaccountHistory.derivativeOrdersTotalEmpty')
       }
 

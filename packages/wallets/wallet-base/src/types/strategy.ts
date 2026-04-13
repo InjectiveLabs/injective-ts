@@ -1,20 +1,30 @@
-import {
+import type { StdSignDoc } from '@keplr-wallet/types'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
+import type {
   ChainId,
-  CosmosChainId,
+  EvmChainId,
   AccountAddress,
-  EthereumChainId,
 } from '@injectivelabs/ts-types'
 import type {
   TxRaw,
-  TxResponse,
   AminoSignResponse,
   DirectSignResponse,
-} from '@injectivelabs/sdk-ts'
-import { StdSignDoc } from '@keplr-wallet/types'
-import { WalletDeviceType, Wallet } from './enums.js'
+} from '@injectivelabs/sdk-ts/types'
+import type { Wallet, WalletDeviceType } from './enums.js'
+
+export interface StrategyEmitter {
+  emit(event: string, data?: Record<string, any>): boolean
+}
 
 export type onAccountChangeCallback = (account: string | string[]) => void
 export type onChainIdChangeCallback = () => void
+
+export type Eip1193Provider = {
+  request: (args: { method: string; params: any[] }) => Promise<any>
+  on: (event: string, listener: (...args: any[]) => void) => void
+  removeListener: (event: string, listener: (...args: any[]) => void) => void
+}
 
 export type CosmosWalletAbstraction = {
   enableGasCheck?(chainId: ChainId): Promise<void> | void
@@ -30,14 +40,18 @@ export type MagicMetadata = {
   rpcEndpoint?: string
 }
 
-export type WalletConnectMetadata = Record<
-  string,
-  string | Record<string, string> | Record<string, string[]>
->
+export type PrivateKeyMetadata = {
+  privateKey: string
+}
 
-export interface WalletStrategyEthereumOptions {
-  ethereumChainId: EthereumChainId
+export type WalletConnectMetadata = {
+  projectId?: string
+}
+
+export interface WalletStrategyEvmOptions {
+  evmChainId: EvmChainId
   rpcUrl?: string
+  rpcUrls?: Partial<Record<EvmChainId, string>>
 }
 
 export interface SendTransactionOptions {
@@ -51,32 +65,77 @@ export interface SendTransactionOptions {
   }
 }
 
-export interface ConcreteWalletStrategyOptions {
-  privateKey?: string
-  metadata?: Record<string, string | Record<string, string>>
+export const TurnkeyProvider = {
+  Email: 'email',
+  Google: 'google',
+  Apple: 'apple',
+} as const
+
+export type TurnkeyProvider =
+  (typeof TurnkeyProvider)[keyof typeof TurnkeyProvider]
+
+export type TurnkeySession = {
+  sessionType: any
+  userId: string
+  organizationId: string
+  expiry: number
+  token: string
+}
+
+export interface TurnkeyMetadata {
+  apiBaseUrl: string
+  otpInitPath?: string
+  otpVerifyPath?: string
+  googleClientId?: string
+  oauthLoginPath?: string
+  session?: TurnkeySession
+  apiServerEndpoint: string
+  credentialBundle?: string
+  googleRedirectUri?: string
+  expirationSeconds?: string
+  defaultOrganizationId: string
+}
+
+export interface WalletMetadata {
+  magic?: MagicMetadata
+  turnkey?: Partial<TurnkeyMetadata>
+  walletConnect?: WalletConnectMetadata
+  privateKey?: PrivateKeyMetadata
+  derivationPath?: string
+  baseDerivationPath?: string
 }
 
 export interface ConcreteWalletStrategyArgs {
   chainId: ChainId
-  options?: ConcreteWalletStrategyOptions
+  metadata?: WalletMetadata
+  emitter?: StrategyEmitter
 }
 
-export interface ConcreteCosmosWalletStrategyArgs {
-  chainId: CosmosChainId | ChainId
+export interface ConcreteEvmWalletStrategyArgs extends ConcreteWalletStrategyArgs {
+  evmOptions: WalletStrategyEvmOptions
+}
+
+export interface ConcreteCosmosWalletStrategyArgs extends ConcreteWalletStrategyArgs {
   wallet?: Wallet
-  options?: ConcreteWalletStrategyOptions
-}
-
-export interface ConcreteEthereumWalletStrategyArgs
-  extends ConcreteWalletStrategyArgs {
-  ethereumOptions: WalletStrategyEthereumOptions
 }
 
 export interface ConcreteCosmosWalletStrategy {
+  metadata?: WalletMetadata
+
+  setMetadata?(metadata?: WalletMetadata): void
   /**
    * The accounts from the wallet (addresses)
    */
   getAddresses(args?: unknown): Promise<string[]>
+
+  /**
+   * The accounts from the wallet with derivation path info (for hardware wallets)
+   */
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
 
   /**
    * Return the WalletDeviceType connected on the
@@ -125,20 +184,26 @@ export type ConcreteStrategiesArg = {
 
 export interface WalletStrategyArguments {
   chainId: ChainId
-  options?: ConcreteWalletStrategyOptions
-  ethereumOptions?: WalletStrategyEthereumOptions
+  metadata?: WalletMetadata
+  evmOptions?: WalletStrategyEvmOptions
   disabledWallets?: Wallet[]
   wallet?: Wallet
   strategies: ConcreteStrategiesArg
 }
 
-export interface ConcreteWalletStrategy
-  extends Omit<
-    ConcreteCosmosWalletStrategy,
-    | 'sendTransaction'
-    | 'isChainIdSupported'
-    | 'signAminoTransaction'
-  > {
+export interface ConcreteWalletStrategy extends Omit<
+  ConcreteCosmosWalletStrategy,
+  'sendTransaction' | 'isChainIdSupported' | 'signAminoTransaction'
+> {
+  /**
+   * The accounts from the wallet with derivation path info (for hardware wallets)
+   */
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
+
   /**
    * Sends Cosmos transaction. Returns a transaction hash
    * @param transaction should implement TransactionConfig
@@ -169,9 +234,9 @@ export interface ConcreteWalletStrategy
    * @param transaction should implement TransactionConfig
    * @param options
    */
-  sendEthereumTransaction(
+  sendEvmTransaction(
     transaction: unknown,
-    options: { address: string; ethereumChainId: EthereumChainId },
+    options: { address: string; evmChainId: EvmChainId },
   ): Promise<string>
 
   /**
@@ -203,51 +268,74 @@ export interface ConcreteWalletStrategy
    * @param eip712TypedData
    * @param address - ethereum address
    */
-  signEip712TypedData(eip712TypedData: string, address: string): Promise<string>
+  signEip712TypedData(
+    eip712TypedData: string,
+    address: string,
+    options?: { txTimeout?: number },
+  ): Promise<string>
 
   signArbitrary(signer: string, data: string | Uint8Array): Promise<string>
 
   getEthereumChainId(): Promise<string>
 
-  getEthereumTransactionReceipt(txHash: string): void
+  getEvmTransactionReceipt(txHash: string, evmChainId?: EvmChainId): void
 
   onAccountChange?(callback: onAccountChangeCallback): Promise<void> | void
 
   onChainIdChange?(callback: onChainIdChangeCallback): Promise<void> | void
 
+  initStrategy?(): Promise<void> | void
+
   disconnect?(): Promise<void> | void
 
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
+
+  getWalletClient?<T>(): Promise<T>
+
+  getEip1193Provider?(): Promise<Eip1193Provider>
+
+  getOfflineSigner?(chainId: string): Promise<OfflineSigner>
 }
 
 export interface WalletStrategy {
   strategies: ConcreteStrategiesArg
   wallet: Wallet
   args: WalletStrategyArguments
+  metadata?: WalletMetadata
 
   getWallet(): Wallet
-  setWallet(wallet: Wallet): void
-  setOptions(options?: ConcreteWalletStrategyOptions): void
+  getWalletClient?<T>(): Promise<T>
+  setWallet(wallet: Wallet): Promise<void>
+  setMetadata(metadata?: WalletMetadata): void
   getStrategy(): ConcreteWalletStrategy
   getAddresses(args?: unknown): Promise<AccountAddress[]>
+  getAddressesInfo(
+    args?: unknown,
+  ): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  >
   getWalletDeviceType(): Promise<WalletDeviceType>
   getPubKey(address?: string): Promise<string>
   enable(args?: unknown): Promise<boolean>
   enableAndGetAddresses(args?: unknown): Promise<AccountAddress[]>
   getEthereumChainId(): Promise<string>
-  getEthereumTransactionReceipt(txHash: string): Promise<void>
+  getEvmTransactionReceipt(
+    txHash: string,
+    evmChainId?: EvmChainId,
+  ): Promise<void>
   getSessionOrConfirm(address?: AccountAddress): Promise<string>
   sendTransaction(
     tx: DirectSignResponse | TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse>
-  sendEthereumTransaction(
+  sendEvmTransaction(
     tx: any,
-    options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string>
   signEip712TypedData(
     eip712TypedData: string,
     address: AccountAddress,
+    options?: { txTimeout?: number },
   ): Promise<string>
   signAminoCosmosTransaction(transaction: {
     signDoc: StdSignDoc
@@ -267,6 +355,8 @@ export interface WalletStrategy {
   onChainIdChange(callback: onChainIdChangeCallback): Promise<void>
   disconnect(): Promise<void>
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
+  getEip1193Provider?(): Promise<Eip1193Provider>
+  getOfflineSigner?(chainId: string): Promise<OfflineSigner>
 }
 
-export { StdSignDoc}
+export type { StdSignDoc }

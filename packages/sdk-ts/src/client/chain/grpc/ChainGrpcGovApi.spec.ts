@@ -1,8 +1,7 @@
-import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb'
 import { ChainGrpcGovApi } from './ChainGrpcGovApi.js'
-// import { mockFactory } from '@injectivelabs/utils/test-utils'
-import { ChainGrpcGovTransformer } from '../transformers/index.js'
-import { CosmosGovV1Gov } from '@injectivelabs/core-proto-ts'
+import type { ChainGrpcGovTransformer } from '../transformers/index.js'
 
 const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcGovApi = new ChainGrpcGovApi(endpoints.grpc)
@@ -31,7 +30,7 @@ describe('ChainGrpcGovApi', () => {
   test('fetchProposals', async () => {
     try {
       const response = await chainGrpcGovApi.fetchProposals({
-        status: CosmosGovV1Gov.ProposalStatus.PROPOSAL_STATUS_PASSED,
+        status: CosmosGovV1GovPb.ProposalStatus.PASSED,
       })
 
       if (response.proposals.length === 0) {

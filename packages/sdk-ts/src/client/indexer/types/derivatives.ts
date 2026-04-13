@@ -1,13 +1,13 @@
-import {
-  OrderState,
+import type * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
+import type { GrpcOrderType } from '../../chain/types/exchange.js'
+import type {
   OrderSide,
+  TokenMeta,
+  OrderState,
   TradeDirection,
   TradeExecutionType,
   TradeExecutionSide,
-} from '@injectivelabs/ts-types'
-import { GrpcOrderType } from '../../chain/types/exchange.js'
-import { TokenMeta } from './../../../types/token.js'
-import { InjectiveDerivativeExchangeRpc } from '@injectivelabs/indexer-proto-ts'
+} from '../../../types/index.js'
 
 export interface PositionDelta {
   tradeDirection: TradeDirection
@@ -30,9 +30,16 @@ export interface Position {
   updatedAt: number
 }
 
-export interface PositionV2
-  extends Omit<Position, 'aggregateReduceOnlyQuantity'> {
+export interface PositionV2 extends Omit<
+  Position,
+  'aggregateReduceOnlyQuantity'
+> {
+  upnl: string
   denom: string
+  fundingSum: string
+  fundingLast: string
+  cumulativeFundingEntry: string
+  effectiveCumulativeFundingEntry: string
 }
 
 export interface PerpetualMarketInfo {
@@ -69,6 +76,7 @@ export interface BaseDerivativeMarket {
 }
 
 export interface PerpetualMarket extends BaseDerivativeMarket {
+  reduceMarginRatio: string
   initialMarginRatio: string
   maintenanceMarginRatio: string
   isPerpetual: boolean
@@ -80,6 +88,7 @@ export interface PerpetualMarket extends BaseDerivativeMarket {
 }
 
 export interface ExpiryFuturesMarket extends BaseDerivativeMarket {
+  reduceMarginRatio: string
   initialMarginRatio: string
   maintenanceMarginRatio: string
   isPerpetual: boolean
@@ -89,11 +98,10 @@ export interface ExpiryFuturesMarket extends BaseDerivativeMarket {
   expiryFuturesMarketInfo?: ExpiryFuturesMarketInfo
 }
 
-export interface BinaryOptionsMarket
-  extends Omit<
-    BaseDerivativeMarket,
-    'minPriceTickSize' | 'minQuantityTickSize'
-  > {
+export interface BinaryOptionsMarket extends Omit<
+  BaseDerivativeMarket,
+  'minPriceTickSize' | 'minQuantityTickSize'
+> {
   oracleSymbol: string
   oracleProvider: string
   oracleScaleFactor: number
@@ -176,6 +184,7 @@ export interface DerivativeTrade extends PositionDelta {
   feeRecipient: string
   isLiquidation: boolean
   payout: string
+  pnl: string
 }
 
 export interface DerivativeLimitOrderParams {
@@ -210,25 +219,26 @@ export interface FundingRate {
   timestamp: number
 }
 
-export type GrpcFundingRate = InjectiveDerivativeExchangeRpc.FundingRate
-export type GrpcPositionDelta = InjectiveDerivativeExchangeRpc.PositionDelta
-export type GrpcFundingPayment = InjectiveDerivativeExchangeRpc.FundingPayment
-export type GrpcDerivativeTrade = InjectiveDerivativeExchangeRpc.DerivativeTrade
+export type GrpcFundingRate = InjectiveDerivativeExchangeRpcPb.FundingRate
+export type GrpcPositionDelta = InjectiveDerivativeExchangeRpcPb.PositionDelta
+export type GrpcFundingPayment = InjectiveDerivativeExchangeRpcPb.FundingPayment
+export type GrpcDerivativeTrade =
+  InjectiveDerivativeExchangeRpcPb.DerivativeTrade
 export type GrpcDerivativePosition =
-  InjectiveDerivativeExchangeRpc.DerivativePosition
+  InjectiveDerivativeExchangeRpcPb.DerivativePosition
 export type GrpcDerivativePositionV2 =
-  InjectiveDerivativeExchangeRpc.DerivativePositionV2
+  InjectiveDerivativeExchangeRpcPb.DerivativePositionV2
 export type GrpcPerpetualMarketInfo =
-  InjectiveDerivativeExchangeRpc.PerpetualMarketInfo
+  InjectiveDerivativeExchangeRpcPb.PerpetualMarketInfo
 export type GrpcDerivativeMarketInfo =
-  InjectiveDerivativeExchangeRpc.DerivativeMarketInfo
+  InjectiveDerivativeExchangeRpcPb.DerivativeMarketInfo
 export type GrpcDerivativeLimitOrder =
-  InjectiveDerivativeExchangeRpc.DerivativeLimitOrder
+  InjectiveDerivativeExchangeRpcPb.DerivativeLimitOrder
 export type GrpcPerpetualMarketFunding =
-  InjectiveDerivativeExchangeRpc.PerpetualMarketFunding
+  InjectiveDerivativeExchangeRpcPb.PerpetualMarketFunding
 export type GrpcExpiryFuturesMarketInfo =
-  InjectiveDerivativeExchangeRpc.ExpiryFuturesMarketInfo
+  InjectiveDerivativeExchangeRpcPb.ExpiryFuturesMarketInfo
 export type GrpcBinaryOptionsMarketInfo =
-  InjectiveDerivativeExchangeRpc.BinaryOptionsMarketInfo
+  InjectiveDerivativeExchangeRpcPb.BinaryOptionsMarketInfo
 export type GrpcDerivativeOrderHistory =
-  InjectiveDerivativeExchangeRpc.DerivativeOrderHistory
+  InjectiveDerivativeExchangeRpcPb.DerivativeOrderHistory

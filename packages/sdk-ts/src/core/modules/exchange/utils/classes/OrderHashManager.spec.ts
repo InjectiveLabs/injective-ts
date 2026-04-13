@@ -1,17 +1,10 @@
 import { Network } from '@injectivelabs/networks'
-import { Address } from '../../../../accounts/Address.js'
+import { toBigNumber, toChainFormat } from '@injectivelabs/utils'
+import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { OrderHashManager } from './OrderHashManager.js'
-import { InjectiveExchangeV1Beta1Exchange } from '@injectivelabs/core-proto-ts'
-import {
-  derivativeMarginToChainMargin,
-  derivativePriceToChainPrice,
-  spotPriceToChainPrice,
-  spotQuantityToChainQuantity,
-  derivativeQuantityToChainQuantity,
-} from '@injectivelabs/sdk-ts'
-import { BigNumberInBase } from '@injectivelabs/utils'
-import MsgCreateDerivativeLimitOrder from '../../../exchange/msgs/MsgCreateDerivativeLimitOrder.js'
+import { Address } from '../../../../accounts/Address.js'
 import MsgCreateSpotLimitOrder from '../../../exchange/msgs/MsgCreateSpotLimitOrder.js'
+import MsgCreateDerivativeLimitOrder from '../../../exchange/msgs/MsgCreateDerivativeLimitOrder.js'
 
 const address = Address.fromBech32('inj1hkhdaj2a2clmq5jq6mspsggqs32vynpk228q3r')
 const orderHashManager = new OrderHashManager({
@@ -38,19 +31,22 @@ const derivativeInfo = {
 const spotOrder = {
   orderInfo: {
     subaccountId: subaccountId,
-    price: spotPriceToChainPrice({
-      value: spotInfo.price,
-      baseDecimals: spotInfo.baseDecimals,
-      quoteDecimals: spotInfo.quoteDecimals,
-    }).toFixed(),
-    quantity: spotQuantityToChainQuantity({
-      value: spotInfo.quantity,
-      baseDecimals: spotInfo.baseDecimals,
-    }).toFixed(),
+    price: toChainFormat(
+      spotInfo.price,
+      toBigNumber(spotInfo.quoteDecimals)
+        .minus(spotInfo.baseDecimals)
+        .toNumber(),
+    ).toFixed(),
+    quantity: toChainFormat(
+      spotInfo.quantity,
+      toBigNumber(spotInfo.quoteDecimals)
+        .minus(spotInfo.baseDecimals)
+        .toNumber(),
+    ).toFixed(),
     feeRecipient: address.bech32Address,
   },
   marketId: marketId,
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY,
 }
 
 const spotMsg = MsgCreateSpotLimitOrder.fromJSON({
@@ -58,58 +54,53 @@ const spotMsg = MsgCreateSpotLimitOrder.fromJSON({
   injectiveAddress: address.bech32Address,
   marketId: marketId,
   feeRecipient: address.bech32Address,
-  price: spotPriceToChainPrice({
-    value: spotInfo.price,
-    baseDecimals: spotInfo.baseDecimals,
-    quoteDecimals: spotInfo.quoteDecimals,
-  }).toFixed(),
-  quantity: spotQuantityToChainQuantity({
-    value: spotInfo.quantity,
-    baseDecimals: spotInfo.baseDecimals,
-  }).toFixed(),
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+  price: toChainFormat(
+    spotInfo.price,
+    toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
+  ).toFixed(),
+  quantity: toChainFormat(
+    spotInfo.quantity,
+    toBigNumber(spotInfo.quoteDecimals).minus(spotInfo.baseDecimals).toNumber(),
+  ).toFixed(),
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY,
 })
 
 const derivativeOrder = {
   orderInfo: {
     subaccountId: subaccountId,
-    price: derivativePriceToChainPrice({
-      value: derivativeInfo.price,
-      quoteDecimals: derivativeInfo.quoteDecimals,
-    }).toFixed(),
-    quantity: derivativeQuantityToChainQuantity({
-      value: derivativeInfo.quantity,
-    }).toFixed(),
+    price: toChainFormat(
+      derivativeInfo.price,
+      derivativeInfo.quoteDecimals,
+    ).toFixed(),
+    quantity: toBigNumber(derivativeInfo.quantity).toFixed(),
     feeRecipient: address.bech32Address,
   },
-  margin: derivativeMarginToChainMargin({
-    value: new BigNumberInBase(derivativeInfo.price)
+  margin: toChainFormat(
+    toBigNumber(derivativeInfo.price)
       .times(derivativeInfo.quantity)
       .div(derivativeInfo.leverage),
-    quoteDecimals: derivativeInfo.quoteDecimals,
-  }).toFixed(),
+    derivativeInfo.quoteDecimals,
+  ).toFixed(),
   marketId: marketId,
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY,
 }
 
 const derivativeMsg = MsgCreateDerivativeLimitOrder.fromJSON({
   subaccountId: subaccountId,
   injectiveAddress: address.bech32Address,
-  orderType: InjectiveExchangeV1Beta1Exchange.OrderType.BUY,
-  price: derivativePriceToChainPrice({
-    value: derivativeInfo.price,
-    quoteDecimals: derivativeInfo.quoteDecimals,
-  }).toFixed(),
+  orderType: InjectiveExchangeV1Beta1ExchangePb.OrderType.BUY,
+  price: toChainFormat(
+    derivativeInfo.price,
+    derivativeInfo.quoteDecimals,
+  ).toFixed(),
   triggerPrice: '0',
-  quantity: derivativeQuantityToChainQuantity({
-    value: derivativeInfo.quantity,
-  }).toFixed(),
-  margin: derivativeMarginToChainMargin({
-    value: new BigNumberInBase(derivativeInfo.price)
+  quantity: toBigNumber(derivativeInfo.quantity).toFixed(),
+  margin: toChainFormat(
+    toBigNumber(derivativeInfo.price)
       .times(derivativeInfo.quantity)
       .div(derivativeInfo.leverage),
-    quoteDecimals: derivativeInfo.quoteDecimals,
-  }).toFixed(),
+    derivativeInfo.quoteDecimals,
+  ).toFixed(),
   marketId: marketId,
   feeRecipient: address.bech32Address,
 })
@@ -135,9 +126,8 @@ describe.skip('OrderHashManager', () => {
   it('generates proper hash from msg', async () => {
     orderHashManager.setNonce(78)
 
-    const spotOrderHashes = await orderHashManager.getSpotOrderHashFromMsg(
-      spotMsg,
-    )
+    const spotOrderHashes =
+      await orderHashManager.getSpotOrderHashFromMsg(spotMsg)
     const derivativeOrderHashes =
       await orderHashManager.getDerivativeOrderHashFromMsg(derivativeMsg)
 

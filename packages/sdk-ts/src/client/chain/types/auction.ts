@@ -1,5 +1,5 @@
-import { Coin } from '@injectivelabs/ts-types'
-import { InjectiveAuctionV1Beta1Auction } from '@injectivelabs/core-proto-ts'
+import type { Coin } from '@injectivelabs/ts-types'
+import type * as InjectiveAuctionV1Beta1AuctionPb from '@injectivelabs/core-proto-ts-v2/generated/injective/auction/v1beta1/auction_pb'
 
 export interface AuctionParams {
   auctionPeriod: number
@@ -69,12 +69,12 @@ export interface AuctionModuleStateResponse {
   lastAuctionResult?: AuctionLastAuctionResult
 }
 
-export type GrpcAuctionParams = InjectiveAuctionV1Beta1Auction.Params
-export type GrpcAuctionBid = InjectiveAuctionV1Beta1Auction.Bid
+export type GrpcAuctionParams = InjectiveAuctionV1Beta1AuctionPb.Params
+export type GrpcAuctionBid = InjectiveAuctionV1Beta1AuctionPb.Bid
 export type GrpcAuctionLastAuctionResult =
-  InjectiveAuctionV1Beta1Auction.LastAuctionResult
-export type GrpcAuctionEventBid = InjectiveAuctionV1Beta1Auction.EventBid
+  InjectiveAuctionV1Beta1AuctionPb.LastAuctionResult
+export type GrpcAuctionEventBid = InjectiveAuctionV1Beta1AuctionPb.EventBid
 export type GrpcAuctionEventAuctionResult =
-  InjectiveAuctionV1Beta1Auction.EventAuctionResult
+  InjectiveAuctionV1Beta1AuctionPb.EventAuctionResult
 export type GrpcAuctionEventAuctionStart =
-  InjectiveAuctionV1Beta1Auction.EventAuctionStart
+  InjectiveAuctionV1Beta1AuctionPb.EventAuctionStart

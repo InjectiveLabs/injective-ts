@@ -1,15 +1,7 @@
-/* eslint-disable class-methods-use-this */
-import type {
-  Keplr,
-  StdSignDoc,
-  AminoSignResponse,
-  OfflineAminoSigner,
-} from '@keplr-wallet/types'
-import {
-  ChainId,
-  CosmosChainId,
-  TestnetCosmosChainId,
-} from '@injectivelabs/ts-types'
+import { capitalize } from '@injectivelabs/utils'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
+import { uint8ArrayToHex } from '@injectivelabs/sdk-ts/utils'
+import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   GeneralException,
@@ -18,19 +10,37 @@ import {
   CosmosWalletException,
   WalletErrorActionModule,
 } from '@injectivelabs/exceptions'
-import { capitalize } from '@injectivelabs/utils'
-import { BroadcastMode } from '@cosmjs/launchpad'
-import { CosmosTxV1Beta1Tx } from '@injectivelabs/sdk-ts'
-import { Wallet } from '@injectivelabs/wallet-base'
-import { SigningStargateClient, StdFee } from '@cosmjs/stargate'
-import type { EncodeObject, OfflineDirectSigner } from '@cosmjs/proto-signing'
+import { loadSigningStargateClient } from './lib.js'
+import type { StdFee } from '@cosmjs/stargate'
+import type { EncodeObject } from '@cosmjs/proto-signing'
+import type { OfflineSigner } from '@cosmjs/proto-signing'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type {
+  ChainId,
+  CosmosChainId,
+  TestnetCosmosChainId,
+} from '@injectivelabs/ts-types'
+import type {
+  Keplr,
+  StdSignDoc,
+  AminoSignResponse,
+  OfflineAminoSigner,
+  BroadcastMode as BroadcastModeType,
+} from '@keplr-wallet/types'
 
-const $window = (typeof window !== 'undefined' ? window : {}) as Window & {
-  keplr?: Keplr
-  ninji?: Keplr
-  leap?: Keplr
-  owallet?: Keplr
-}
+const getWindow = () =>
+  (typeof window !== 'undefined' ? window : {}) as Window & {
+    keplr?: Keplr
+    ninji?: Keplr
+    leap?: Keplr
+    owallet?: Keplr
+    cosmostation?: {
+      cosmos: {
+        request<T>(message: { method: string; params?: unknown }): Promise<T>
+      }
+      providers: { keplr?: Keplr }
+    }
+  }
 
 export class CosmosWallet {
   public wallet: Wallet
@@ -74,8 +84,8 @@ export class CosmosWallet {
       wallet === Wallet.Keplr
         ? 'https://chains.keplr.app/'
         : wallet === Wallet.OWallet
-        ? 'https://owallet.io/'
-        : undefined
+          ? 'https://owallet.io/'
+          : undefined
 
     throw new CosmosWalletException(
       new Error(
@@ -120,14 +130,13 @@ export class CosmosWallet {
     }
   }
 
-  public async getOfflineSigner(): Promise<OfflineDirectSigner> {
-    const { chainId, wallet } = this
-    const cosmosWallet = await this.getCosmosWallet()
+  public async getOfflineSigner(chainId?: string): Promise<OfflineSigner> {
+    const { wallet } = this
 
     try {
-      return cosmosWallet.getOfflineSigner(
-        chainId,
-      ) as unknown as OfflineDirectSigner
+      return this.getCosmos().getOfflineSigner(
+        chainId || this.chainId,
+      ) as OfflineSigner
     } catch (e: unknown) {
       throw new CosmosWalletException(new Error((e as any).message), {
         contextModule: wallet,
@@ -138,7 +147,7 @@ export class CosmosWallet {
   public async getOfflineAminoSigner(): Promise<OfflineAminoSigner> {
     const { chainId, wallet } = this
 
-    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (!([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       throw new CosmosWalletException(
         new Error(
           `getOfflineAminoSigner is not support on ${capitalize(wallet)}`,
@@ -167,15 +176,15 @@ export class CosmosWallet {
    * @param txRaw - raw transaction to broadcast
    * @returns tx hash
    */
-  public async broadcastTx(txRaw: CosmosTxV1Beta1Tx.TxRaw): Promise<string> {
+  public async broadcastTx(txRaw: CosmosTxV1Beta1TxPb.TxRaw): Promise<string> {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
     try {
       const result = await cosmosWallet.sendTx(
         chainId,
-        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-        BroadcastMode.Sync,
+        CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw),
+        BroadcastMode.Sync as BroadcastModeType,
       )
 
       if (!result || result.length === 0) {
@@ -185,7 +194,7 @@ export class CosmosWallet {
         )
       }
 
-      return Buffer.from(result).toString('hex')
+      return uint8ArrayToHex(result)
     } catch (e) {
       if (e instanceof TransactionException) {
         throw e
@@ -206,7 +215,7 @@ export class CosmosWallet {
    * @returns tx hash
    */
   public async broadcastTxBlock(
-    txRaw: CosmosTxV1Beta1Tx.TxRaw,
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
   ): Promise<string> {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
@@ -214,8 +223,8 @@ export class CosmosWallet {
     try {
       const result = await cosmosWallet.sendTx(
         chainId,
-        CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
-        BroadcastMode.Block,
+        CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw),
+        BroadcastMode.Block as BroadcastModeType,
       )
 
       if (!result || result.length === 0) {
@@ -225,7 +234,7 @@ export class CosmosWallet {
         )
       }
 
-      return Buffer.from(result).toString('hex')
+      return uint8ArrayToHex(result)
     } catch (e) {
       if (e instanceof TransactionException) {
         throw e
@@ -246,7 +255,7 @@ export class CosmosWallet {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (!([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       throw new CosmosWalletException(
         new Error(
           `signAndBroadcastAminoUsingCosmjs is not support on ${capitalize(
@@ -259,6 +268,8 @@ export class CosmosWallet {
     if (!endpoints.rpc) {
       throw new GeneralException(new Error(`Please provide rpc endpoint`))
     }
+
+    const SigningStargateClient = await loadSigningStargateClient()
 
     const offlineSigner = cosmosWallet.getOfflineSignerOnlyAmino(chainId)
     const [account] = await offlineSigner.getAccounts()
@@ -286,7 +297,9 @@ export class CosmosWallet {
     const { chainId, wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (wallet !== Wallet.Keplr) {
+    if (
+      !([Wallet.Keplr, Wallet.Cosmostation] as WalletType[]).includes(wallet)
+    ) {
       throw new CosmosWalletException(
         new Error(`signArbitrary is not supported on ${capitalize(wallet)}`),
       )
@@ -332,12 +345,18 @@ export class CosmosWallet {
 
   public async checkChainIdSupport() {
     const { chainId, wallet } = this
-    const cosmos = this.getCosmos()
     const chainName = chainId.split('-')
+
+    // Cosmostation has a dedicated API for checking chain support
+    if (wallet === Wallet.Cosmostation) {
+      return this.checkCosmostationChainSupport()
+    }
+
+    const cosmos = this.getCosmos()
 
     try {
       return !!(await cosmos.getKey(chainId))
-    } catch (e) {
+    } catch {
       throw new CosmosWalletException(
         new Error(
           `${capitalize(wallet)} doesn't support ${
@@ -348,8 +367,50 @@ export class CosmosWallet {
     }
   }
 
+  private async checkCosmostationChainSupport(): Promise<boolean> {
+    const { chainId } = this
+    const $window = getWindow()
+    const chainName = chainId.split('-')
+
+    if (!$window.cosmostation?.cosmos) {
+      throw new CosmosWalletException(
+        new Error('Please install the Cosmostation extension'),
+        {
+          code: UnspecifiedErrorCode,
+          type: ErrorType.WalletNotInstalledError,
+          contextModule: Wallet.Cosmostation,
+        },
+      )
+    }
+
+    try {
+      const supportedChainIds = await $window.cosmostation.cosmos.request<{
+        official: string[]
+        unofficial: string[]
+      }>({ method: 'cos_supportedChainIds' })
+
+      const isSupported = supportedChainIds.official.includes(chainId)
+
+      if (!isSupported) {
+        throw new CosmosWalletException(
+          new Error(
+            `Cosmostation doesn't support ${
+              chainName[0] || chainId
+            } network. Please use another Cosmos wallet`,
+          ),
+        )
+      }
+
+      return true
+    } catch (e) {
+      if (e instanceof CosmosWalletException) throw e
+      throw new CosmosWalletException(new Error((e as any).message))
+    }
+  }
+
   private getCosmos() {
     const { wallet } = this
+    const $window = getWindow()
 
     if (!$window) {
       throw new CosmosWalletException(
@@ -380,6 +441,10 @@ export class CosmosWallet {
       cosmos = $window.leap
     }
 
+    if (wallet === Wallet.Cosmostation) {
+      cosmos = $window.cosmostation?.providers?.keplr
+    }
+
     if (!cosmos) {
       throw new CosmosWalletException(
         new Error(`Please install ${capitalize(wallet)} extension`),
@@ -398,7 +463,7 @@ export class CosmosWallet {
     const { wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (!([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       throw new CosmosWalletException(
         new Error(`disableGasCheck is not support on ${capitalize(wallet)}`),
       )
@@ -418,7 +483,7 @@ export class CosmosWallet {
     const { wallet } = this
     const cosmosWallet = await this.getCosmosWallet()
 
-    if (![Wallet.Keplr, Wallet.OWallet].includes(wallet)) {
+    if (!([Wallet.Keplr, Wallet.OWallet] as WalletType[]).includes(wallet)) {
       throw new CosmosWalletException(
         new Error(`EnableGasCheck is not support on ${capitalize(wallet)}`),
       )

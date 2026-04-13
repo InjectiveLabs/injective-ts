@@ -1,20 +1,22 @@
-import {
+import type * as InjectiveArchiverRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_archiver_rpc_pb'
+import type {
+  AccountStats,
   DenomHolders,
   HistoricalRPNL,
   LeaderboardRow,
   PnlLeaderboard,
   VolLeaderboard,
+  SpotAverageEntry,
   HistoricalBalance,
   HistoricalVolumes,
 } from '../types/archiver.js'
-import { InjectiveArchiverRpc } from '@injectivelabs/indexer-proto-ts'
 
 /**
  * @category Indexer Grpc Transformer
  */
 export class IndexerGrpcArchiverTransformer {
   static grpcHistoricalBalanceToHistoricalBalance(
-    historicalBalance: InjectiveArchiverRpc.HistoricalBalance,
+    historicalBalance: InjectiveArchiverRpcPb.HistoricalBalance,
   ): HistoricalBalance {
     return {
       t: historicalBalance.t,
@@ -23,7 +25,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalRPNLToHistoricalRPNL(
-    historicalRPNL: InjectiveArchiverRpc.HistoricalRPNL,
+    historicalRPNL: InjectiveArchiverRpcPb.HistoricalRPNL,
   ): HistoricalRPNL {
     return {
       t: historicalRPNL.t,
@@ -32,7 +34,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalVolumesToHistoricalVolumes(
-    historicalVolumes: InjectiveArchiverRpc.HistoricalVolumes,
+    historicalVolumes: InjectiveArchiverRpcPb.HistoricalVolumes,
   ): HistoricalVolumes {
     return {
       t: historicalVolumes.t,
@@ -41,7 +43,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcLeaderboardRowToLeaderboardRow(
-    leaderboardRow: InjectiveArchiverRpc.LeaderboardRow,
+    leaderboardRow: InjectiveArchiverRpcPb.LeaderboardRow,
   ): LeaderboardRow {
     return {
       account: leaderboardRow.account,
@@ -52,7 +54,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalBalanceResponseToHistoricalBalances(
-    response: InjectiveArchiverRpc.BalanceResponse,
+    response: InjectiveArchiverRpcPb.BalanceResponse,
   ): HistoricalBalance {
     if (!response.historicalBalance) {
       return { t: [], v: [] }
@@ -64,7 +66,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalRPNLResponseToHistoricalRPNL(
-    response: InjectiveArchiverRpc.RpnlResponse,
+    response: InjectiveArchiverRpcPb.RpnlResponse,
   ): HistoricalRPNL {
     if (!response.historicalRpnl) {
       return { t: [], v: [] }
@@ -76,7 +78,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcHistoricalVolumesResponseToHistoricalVolumes(
-    response: InjectiveArchiverRpc.VolumesResponse,
+    response: InjectiveArchiverRpcPb.VolumesResponse,
   ): HistoricalVolumes {
     if (!response.historicalVolumes) {
       return { t: [], v: [] }
@@ -88,7 +90,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcPnlLeaderboardResponseToPnlLeaderboard(
-    response: InjectiveArchiverRpc.PnlLeaderboardResponse,
+    response: InjectiveArchiverRpcPb.PnlLeaderboardResponse,
   ): PnlLeaderboard {
     return {
       firstDate: response.firstDate,
@@ -105,7 +107,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcVolLeaderboardResponseToVolLeaderboard(
-    response: InjectiveArchiverRpc.VolLeaderboardResponse,
+    response: InjectiveArchiverRpcPb.VolLeaderboardResponse,
   ): VolLeaderboard {
     return {
       firstDate: response.firstDate,
@@ -122,7 +124,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcPnlLeaderboardFixedResolutionResponseToPnlLeaderboard(
-    response: InjectiveArchiverRpc.PnlLeaderboardFixedResolutionResponse,
+    response: InjectiveArchiverRpcPb.PnlLeaderboardFixedResolutionResponse,
   ): PnlLeaderboard {
     return {
       firstDate: response.firstDate,
@@ -139,7 +141,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcVolLeaderboardFixedResolutionResponseToVolLeaderboard(
-    response: InjectiveArchiverRpc.VolLeaderboardFixedResolutionResponse,
+    response: InjectiveArchiverRpcPb.VolLeaderboardFixedResolutionResponse,
   ): VolLeaderboard {
     return {
       firstDate: response.firstDate,
@@ -156,7 +158,7 @@ export class IndexerGrpcArchiverTransformer {
   }
 
   static grpcDenomHoldersResponseToDenomHolders(
-    response: InjectiveArchiverRpc.DenomHoldersResponse,
+    response: InjectiveArchiverRpcPb.DenomHoldersResponse,
   ): DenomHolders {
     return {
       holders: response.holders.map((holder) => ({
@@ -165,6 +167,27 @@ export class IndexerGrpcArchiverTransformer {
       })),
       next: response.next,
       total: response.total,
+    }
+  }
+
+  static grpcAccountStatsResponseToAccountStats(
+    response: InjectiveArchiverRpcPb.AccountStatsResponse,
+  ): AccountStats {
+    return {
+      pnl: response.pnl,
+      stake: response.stake,
+      volume: response.volume,
+    }
+  }
+
+  static grpcSpotAverageEntryToSpotAverageEntry(
+    averageEntry: InjectiveArchiverRpcPb.SpotAverageEntry,
+  ): SpotAverageEntry {
+    return {
+      marketId: averageEntry.marketId,
+      averageEntryPrice: averageEntry.averageEntryPrice,
+      quantity: averageEntry.quantity,
+      usdValue: averageEntry.usdValue,
     }
   }
 }

@@ -1,5 +1,17 @@
 # 🌟 Injective Protocol - Wallet Cosmostation
 
+> **DEPRECATED**: This package is deprecated. Please use `@injectivelabs/wallet-cosmos` with `Wallet.Cosmostation` instead.
+>
+> ```typescript
+> import { Wallet } from '@injectivelabs/wallet-base'
+> import { CosmosWalletStrategy } from '@injectivelabs/wallet-cosmos'
+>
+> const strategy = new CosmosWalletStrategy({
+>   chainId: ChainId.Mainnet,
+>   wallet: Wallet.Cosmostation,
+> })
+> ```
+
 <!-- TODO -->
 
 [![downloads](https://img.shields.io/npm/dm/@injectivelabs/wallet-cosmostation.svg)](https://www.npmjs.com/package/@injectivelabs/wallet-cosmostation)
@@ -13,7 +25,7 @@ _Package to use Magic Wallets on Injective via the wallet strategy._
 ## 📚 Installation
 
 ```bash
-yarn add @injectivelabs/wallet-cosmostation
+pnpm add @injectivelabs/wallet-cosmostation
 ```
 
 ---
@@ -30,10 +42,9 @@ dependencies and implementations for their specific wallets.
 Here's a brief example of how to use this package to send 1 INJ.:
 
 ```typescript
-import { Wallet } from '@injectivelabs/wallet-base';
-import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core';
-import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation';
-
+import { Wallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy, MsgBroadcaster } from '@injectivelabs/wallet-core'
+import { CosmostationWalletStrategy } from '@injectivelabs/wallet-cosmostation'
 
 const strategyArgs: WalletStrategyArguments = {
   chainId: ChainId.Mainnet,
@@ -53,21 +64,21 @@ const msgBroadcaster = new MsgBroadcaster({
 })
 
 const sendTX = async () => {
-    const injectiveAddress = 'someInjectiveAddress'
+  const injectiveAddress = 'someInjectiveAddress'
 
-    const message = MsgSend.fromJSON({
-      srcInjectiveAddress: injectiveAddress,
-      dstInjectiveAddress: injectiveAddress,
-      amount: {
-        amount: '1',
-        denom: 'inj',
-      },
-    })
+  const message = MsgSend.fromJSON({
+    srcInjectiveAddress: injectiveAddress,
+    dstInjectiveAddress: injectiveAddress,
+    amount: {
+      amount: '1',
+      denom: 'inj',
+    },
+  })
 
-    return await msgBroadcaster.broadcast({ msgs: message })
-  }
+  return await msgBroadcaster.broadcastV2({ msgs: message })
+}
 
-  const result = await sendTX()
+const result = await sendTX()
 ```
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)

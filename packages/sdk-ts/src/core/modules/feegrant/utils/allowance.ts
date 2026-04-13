@@ -1,33 +1,34 @@
-import {
-  GoogleProtobufAny,
-  CosmosFeegrantV1Beta1Feegrant,
-} from '@injectivelabs/core-proto-ts'
 import { GeneralException } from '@injectivelabs/exceptions'
+import * as CosmosFeegrantV1Beta1FeegrantPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/feegrant/v1beta1/feegrant_pb'
+import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 
 export type AllowedMsgAllowance = Omit<
-  CosmosFeegrantV1Beta1Feegrant.AllowedMsgAllowance,
+  CosmosFeegrantV1Beta1FeegrantPb.AllowedMsgAllowance,
   'allowance'
 > & {
   allowance:
-    | CosmosFeegrantV1Beta1Feegrant.BasicAllowance
-    | CosmosFeegrantV1Beta1Feegrant.PeriodicAllowance
+    | CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance
+    | CosmosFeegrantV1Beta1FeegrantPb.PeriodicAllowance
 }
 
 export type Allowance =
-  | CosmosFeegrantV1Beta1Feegrant.BasicAllowance
-  | CosmosFeegrantV1Beta1Feegrant.PeriodicAllowance
+  | CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance
+  | CosmosFeegrantV1Beta1FeegrantPb.PeriodicAllowance
   | AllowedMsgAllowance
   | undefined
 
-export enum AllowanceTypes {
-  BasicAllowance = 'spendLimit',
-  PeriodicAllowance = 'periodSpendLimit',
-  AllowedMsgAllowance = 'allowedMessages',
-}
+export const AllowanceTypes = {
+  BasicAllowance: 'spendLimit',
+  PeriodicAllowance: 'periodSpendLimit',
+  AllowedMsgAllowance: 'allowedMessages',
+} as const
+
+export type AllowanceTypes =
+  (typeof AllowanceTypes)[keyof typeof AllowanceTypes]
 
 function isBasicAllowance(
   allowance: Allowance,
-): allowance is CosmosFeegrantV1Beta1Feegrant.BasicAllowance {
+): allowance is CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance {
   if (!allowance) {
     return false
   }
@@ -37,7 +38,7 @@ function isBasicAllowance(
 
 function isPeriodicAllowance(
   allowance: Allowance,
-): allowance is CosmosFeegrantV1Beta1Feegrant.PeriodicAllowance {
+): allowance is CosmosFeegrantV1Beta1FeegrantPb.PeriodicAllowance {
   if (!allowance) {
     return false
   }
@@ -56,41 +57,36 @@ function isAllowedMsgAllowance(
 }
 
 function encodeBasicAllowance(
-  allowance: CosmosFeegrantV1Beta1Feegrant.BasicAllowance,
-): GoogleProtobufAny.Any {
+  allowance: CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance,
+): GoogleProtobufAnyPb.Any {
   return {
     typeUrl: '/cosmos.feegrant.v1beta1.BasicAllowance',
-    value: Buffer.from(
-      CosmosFeegrantV1Beta1Feegrant.BasicAllowance.encode(allowance).finish(),
-    ),
+    value: CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance.toBinary(allowance),
   }
 }
 
 function encodePeriodicAllowance(
-  allowance: CosmosFeegrantV1Beta1Feegrant.PeriodicAllowance,
-): GoogleProtobufAny.Any {
+  allowance: CosmosFeegrantV1Beta1FeegrantPb.PeriodicAllowance,
+): GoogleProtobufAnyPb.Any {
   return {
     typeUrl: '/cosmos.feegrant.v1beta1.PeriodicAllowance',
-    value: Buffer.from(
-      CosmosFeegrantV1Beta1Feegrant.PeriodicAllowance.encode(
-        allowance,
-      ).finish(),
-    ),
+    value:
+      CosmosFeegrantV1Beta1FeegrantPb.PeriodicAllowance.toBinary(allowance),
   }
 }
 
 function encodeAllowedMsgAllowance(
   allowance: AllowedMsgAllowance,
-): GoogleProtobufAny.Any | undefined {
-  let internalAllowance: GoogleProtobufAny.Any
+): GoogleProtobufAnyPb.Any | undefined {
+  let internalAllowance: GoogleProtobufAnyPb.Any
 
   if (isBasicAllowance(allowance.allowance as Allowance)) {
     internalAllowance = encodeBasicAllowance(
-      allowance.allowance as unknown as CosmosFeegrantV1Beta1Feegrant.BasicAllowance,
+      allowance.allowance as unknown as CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance,
     )
   } else if (isPeriodicAllowance(allowance.allowance as Allowance)) {
     internalAllowance = encodePeriodicAllowance(
-      allowance.allowance as unknown as CosmosFeegrantV1Beta1Feegrant.PeriodicAllowance,
+      allowance.allowance as unknown as CosmosFeegrantV1Beta1FeegrantPb.PeriodicAllowance,
     )
   } else {
     throw new Error(
@@ -102,27 +98,25 @@ function encodeAllowedMsgAllowance(
 
   return {
     typeUrl: '/cosmos.feegrant.v1beta1.AllowedMsgAllowance',
-    value: Buffer.from(
-      CosmosFeegrantV1Beta1Feegrant.AllowedMsgAllowance.encode({
-        allowedMessages: allowance.allowedMessages,
-        allowance: internalAllowance,
-      }).finish(),
-    ),
+    value: CosmosFeegrantV1Beta1FeegrantPb.AllowedMsgAllowance.toBinary({
+      allowedMessages: allowance.allowedMessages,
+      allowance: internalAllowance,
+    }),
   }
 }
 
 export function encodeAllowance(
   allowance: Allowance,
-): GoogleProtobufAny.Any | undefined {
+): GoogleProtobufAnyPb.Any | undefined {
   if (isBasicAllowance(allowance)) {
     return encodeBasicAllowance(
-      allowance as CosmosFeegrantV1Beta1Feegrant.BasicAllowance,
+      allowance as CosmosFeegrantV1Beta1FeegrantPb.BasicAllowance,
     )
   }
 
   if (isPeriodicAllowance(allowance)) {
     return encodePeriodicAllowance(
-      allowance as CosmosFeegrantV1Beta1Feegrant.PeriodicAllowance,
+      allowance as CosmosFeegrantV1Beta1FeegrantPb.PeriodicAllowance,
     )
   }
 

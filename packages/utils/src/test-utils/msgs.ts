@@ -1,13 +1,13 @@
-import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '../constants.js'
-import { BigNumberInBase } from '../classes/index.js'
 import {
   Network,
   getNetworkInfo,
-  NetworkEndpoints,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
 import { mockFactory } from './mocks/index.js'
-import { ChainId, Coin, EthereumChainId } from '@injectivelabs/ts-types'
+import BigNumber from '../classes/BigNumber.js'
+import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '../constants.js'
+import type { NetworkEndpoints } from '@injectivelabs/networks'
+import type { Coin, ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
 export const prepareEip712 = <T>({
   messages,
@@ -39,21 +39,21 @@ export const prepareEip712 = <T>({
       memo: string
       chainId: ChainId
       sequence: string
-      ethereumChainId: EthereumChainId
+      evmChainId: EvmChainId
       accountNumber: string
       timeoutHeight: string
     }
-    ethereumChainId: EthereumChainId
+    evmChainId: EvmChainId
     fee: { amount: Coin[]; gas: string; payer: string }
   }
   prepareEip712Request: {
-    chainId: EthereumChainId
+    chainId: EvmChainId
     message: any[]
     address: string
     memo: string
     sequence: number
     accountNumber: number
-    ethereumChainId: EthereumChainId
+    evmChainId: EvmChainId
     timeoutHeight: number
   }
 } => {
@@ -61,6 +61,7 @@ export const prepareEip712 = <T>({
   const actualEndpoints = { ...getNetworkEndpoints(network), ...endpoints }
   const msgs = Array.isArray(messages) ? messages : [messages]
   const web3Msgs = msgs.map((msg) => msg.toWeb3())
+
   const { tx, eip712 } = mockFactory.eip712Tx({
     ...chainInfo,
     accountNumber,
@@ -68,13 +69,14 @@ export const prepareEip712 = <T>({
     timeoutHeight,
     memo,
   })
+
   const eip712Args = {
     msgs,
     fee: {
       amount: [
         {
           denom: 'inj',
-          amount: new BigNumberInBase(gas.toString())
+          amount: new BigNumber(gas.toString())
             .times(DEFAULT_GAS_PRICE)
             .toFixed(),
         },
@@ -88,11 +90,12 @@ export const prepareEip712 = <T>({
       timeoutHeight: timeoutHeight.toString(),
       accountNumber: accountNumber.toString(),
     },
-    ethereumChainId: eip712.ethereumChainId,
+    evmChainId: eip712.evmChainId,
   }
+
   const prepareEip712Request = {
     ...eip712,
-    chainId: eip712.ethereumChainId,
+    chainId: eip712.evmChainId,
     message: web3Msgs,
     gasLimit: gas,
     address: ethereumAddress,

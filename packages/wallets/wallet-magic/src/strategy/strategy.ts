@@ -1,4 +1,17 @@
-/* eslint-disable class-methods-use-this */
+import { Magic as MagicWallet } from 'magic-sdk'
+import { OAuthExtension } from '@magic-ext/oauth2'
+import { CosmosExtension } from '@magic-ext/cosmos'
+import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
+import {
+  uint8ArrayToHex,
+  stringToUint8Array,
+} from '@injectivelabs/sdk-ts/utils'
+import {
+  WalletAction,
+  MagicProvider,
+  WalletDeviceType,
+  BaseConcreteStrategy,
+} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -6,68 +19,26 @@ import {
   TransactionException,
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
-import { Magic as MagicWallet } from 'magic-sdk'
-import {
+import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type {
   TxRaw,
-  TxGrpcApi,
-  DirectSignResponse,
   AminoSignResponse,
-} from '@injectivelabs/sdk-ts'
-import { OAuthExtension } from '@magic-ext/oauth2'
-import { CosmosExtension } from '@magic-ext/cosmos'
-import { AccountAddress, EthereumChainId } from '@injectivelabs/ts-types'
-import {
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
+import type {
   StdSignDoc,
-  WalletAction,
-  MagicMetadata,
-  MagicProvider,
-  WalletDeviceType,
-  BaseConcreteStrategy,
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
   SendTransactionOptions,
-  WalletStrategyArguments,
 } from '@injectivelabs/wallet-base'
 
-interface MagicConnectArgs extends WalletStrategyArguments {
-  metadata?: MagicMetadata
-}
-
-export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrategy {
+export class Magic
+  extends BaseConcreteStrategy
+  implements ConcreteWalletStrategy
+{
   public provider: BrowserEip1993Provider | undefined
-  public metadata?: MagicMetadata
-  private magicWallet: MagicWallet
 
-  constructor(args: MagicConnectArgs) {
-    if (!args.metadata?.apiKey) {
-      throw new WalletException(
-        new Error(
-          'You have to pass the apiKey within metadata to use Magic wallet',
-        ),
-      )
-    }
-
-    if (!args.metadata.rpcEndpoint) {
-      throw new WalletException(
-        new Error(
-          'You have to pass the rpc url endpoint within metadata to use Magic wallet',
-        ),
-      )
-    }
-
-    super(args)
-
-    this.metadata = args.metadata
-    this.magicWallet = new MagicWallet(args.metadata.apiKey, {
-      extensions: [
-        new OAuthExtension(),
-        new CosmosExtension({
-          rpcUrl: args.metadata.rpcEndpoint,
-          chain: 'inj',
-        }),
-      ],
-    }) as unknown as MagicWallet
-  }
+  private magicWallet: MagicWallet | undefined
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
@@ -104,30 +75,36 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
   }
 
   async connectViaEmail(email?: string) {
+    const magicWallet = await this.getMagicWallet()
+
     if (!email) {
       throw new WalletException(
         new Error('You have to pass the email for using Magic wallet'),
       )
     }
 
-    return this.magicWallet.auth.loginWithMagicLink({ email })
+    return magicWallet.auth.loginWithMagicLink({ email })
   }
 
   async connectViaOauth(provider: MagicProvider) {
-    return (this.magicWallet.oauth2 as any).loginWithRedirect({
+    const magicWallet = await this.getMagicWallet()
+
+    return (magicWallet.oauth2 as any).loginWithRedirect({
       provider: provider,
       redirectURI: window.location.origin,
     })
   }
 
   public async disconnect() {
-    const isUserLoggedIn = await this.magicWallet.user.isLoggedIn()
+    const magicWallet = await this.getMagicWallet()
+
+    const isUserLoggedIn = await magicWallet.user.isLoggedIn()
 
     if (!isUserLoggedIn) {
       return
     }
 
-    await this.magicWallet.user.logout()
+    await magicWallet.user.logout()
   }
 
   async getAddresses({
@@ -135,21 +112,21 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
   }: {
     provider: MagicProvider
   }): Promise<string[]> {
+    const magicWallet = await this.getMagicWallet()
+
     if (!provider) {
       try {
-        await (this.magicWallet.oauth2 as any).getRedirectResult()
+        await (magicWallet.oauth2 as any).getRedirectResult()
       } catch {
         // fail silently
       }
     }
 
     try {
-      const { publicAddress } = await this.magicWallet.user.getInfo()
+      const { publicAddress } = await magicWallet.user.getInfo()
 
       if (!publicAddress?.startsWith('inj')) {
-        const address = await (this.magicWallet.cosmos as any).changeAddress(
-          'inj',
-        )
+        const address = await (magicWallet.cosmos as any).changeAddress('inj')
 
         return [address || '']
       }
@@ -164,26 +141,40 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
-    return Promise.resolve(
-      `0x${Buffer.from(
-        `Confirmation for ${address} at time: ${Date.now()}`,
-      ).toString('hex')}`,
+  async getAddressesInfo(): Promise<
+    { address: string; derivationPath: string; baseDerivationPath: string }[]
+  > {
+    throw new WalletException(
+      new Error('getAddressesInfo is not implemented'),
+      {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: WalletAction.GetAccounts,
+      },
     )
   }
 
-  async sendEthereumTransaction(
+  async getSessionOrConfirm(address: AccountAddress): Promise<string> {
+    return Promise.resolve(
+      `0x${uint8ArrayToHex(
+        stringToUint8Array(
+          `Confirmation for ${address} at time: ${Date.now()}`,
+        ),
+      )}`,
+    )
+  }
+
+  async sendEvmTransaction(
     _transaction: unknown,
-    _options: { address: AccountAddress; ethereumChainId: EthereumChainId },
+    _options: { address: AccountAddress; evmChainId: EvmChainId },
   ): Promise<string> {
     throw new CosmosWalletException(
       new Error(
-        'sendEthereumTransaction is not supported. Leap only supports sending cosmos transactions',
+        'sendEvmTransaction is not supported. Leap only supports sending cosmos transactions',
       ),
       {
         code: UnspecifiedErrorCode,
-        context: WalletAction.SendEthereumTransaction,
+        context: WalletAction.SendEvmTransaction,
       },
     )
   }
@@ -220,14 +211,15 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     eip712json: string,
     _address: AccountAddress,
   ): Promise<string> {
-    const signature = await (this.magicWallet.cosmos as any).signTypedData(
+    const magicWallet = await this.getMagicWallet()
+
+    const signature = await (magicWallet.cosmos as any).signTypedData(
       eip712json,
     )
 
     return `0x${signature}`
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async signCosmosTransaction(_transaction: {
     txRaw: TxRaw
     accountNumber: number
@@ -282,20 +274,17 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
     )
   }
 
-  async getEthereumTransactionReceipt(_txHash: string): Promise<string> {
+  async getEvmTransactionReceipt(_txHash: string): Promise<string> {
     throw new CosmosWalletException(
-      new Error(
-        'getEthereumTransactionReceipt is not supported on Cosmostation',
-      ),
+      new Error('getEvmTransactionReceipt is not supported on Cosmostation'),
       {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        context: WalletAction.GetEthereumTransactionReceipt,
+        context: WalletAction.GetEvmTransactionReceipt,
       },
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getPubKey(): Promise<string> {
     throw new WalletException(
       new Error('You can only fetch PubKey from Cosmos native wallets'),
@@ -303,11 +292,12 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
   }
 
   private async pollUserLoggedInState(timeout = 60 * 1000): Promise<any> {
+    const magicWallet = await this.getMagicWallet()
     const POLL_INTERVAL = 3 * 1000
 
     for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
       try {
-        const result = await this.magicWallet.user.isLoggedIn()
+        const result = await magicWallet.user.isLoggedIn()
 
         if (result) {
           return result
@@ -330,5 +320,39 @@ export class Magic extends BaseConcreteStrategy implements ConcreteWalletStrateg
         contextModule: 'Magic-Wallet-pollUserLoggedInState',
       },
     )
+  }
+
+  private async getMagicWallet(): Promise<MagicWallet> {
+    const { metadata } = this
+
+    if (!this.magicWallet) {
+      if (!metadata?.magic?.apiKey) {
+        throw new WalletException(
+          new Error(
+            'You have to pass the apiKey within metadata to use Magic wallet',
+          ),
+        )
+      }
+
+      if (!metadata?.magic?.rpcEndpoint) {
+        throw new WalletException(
+          new Error(
+            'You have to pass the rpc url endpoint within metadata to use Magic wallet',
+          ),
+        )
+      }
+
+      this.magicWallet = new MagicWallet(metadata.magic.apiKey, {
+        extensions: [
+          new OAuthExtension(),
+          new CosmosExtension({
+            rpcUrl: metadata.magic.rpcEndpoint,
+            chain: 'inj',
+          }),
+        ],
+      }) as unknown as MagicWallet
+    }
+
+    return this.magicWallet
   }
 }
