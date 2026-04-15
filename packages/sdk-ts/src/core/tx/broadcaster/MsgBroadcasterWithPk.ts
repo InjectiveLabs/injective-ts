@@ -455,10 +455,50 @@ export class MsgBroadcasterWithPk {
     accountNumber: number
     tx: Uint8Array | string
   }) {
+    return this.broadcastDirectSignWithFeePayerSig({
+      tx,
+      feePayerSig,
+      accountNumber,
+    })
+  }
+
+  /**
+   * EIP-712 (EVM wallet) path for broadcastWithFeePayerSig.
+   * Not yet implemented — EVM wallets sign via eth_signTypedData_v4,
+   * which requires a different pre-built tx format.
+   */
+  private async broadcastEip712WithFeePayerSig(_params: {
+    tx: Uint8Array | string
+    feePayerSig: string
+    accountNumber: number
+  }): Promise<never> {
+    throw new GeneralException(
+      new Error(
+        'broadcastWithFeePayerSig for EVM wallets is not yet implemented.',
+      ),
+    )
+  }
+
+  /**
+   * SIGN_MODE_DIRECT path for broadcastWithFeePayerSig.
+   * Signs the pre-built tx with the private key directly, appends the fee payer
+   * signature, and broadcasts to chain.
+   */
+  private async broadcastDirectSignWithFeePayerSig({
+    tx,
+    feePayerSig,
+    accountNumber,
+  }: {
+    feePayerSig: string
+    accountNumber: number
+    tx: Uint8Array | string
+  }) {
     const { chainId, privateKey } = this
 
     const txBytes = typeof tx === 'string' ? base64ToUint8Array(tx) : tx
     const txRaw = CosmosTxV1Beta1TxPb.TxRaw.fromBinary(txBytes)
+
+    console.log('injective-ts, autosign - doing signing')
 
     const signDoc = CosmosTxV1Beta1TxPb.SignDoc.create({
       chainId,
@@ -470,11 +510,15 @@ export class MsgBroadcasterWithPk {
     const signDocBytes = CosmosTxV1Beta1TxPb.SignDoc.toBinary(signDoc)
     const signature = await privateKey.sign(signDocBytes)
 
+    console.log('injective-ts - autosign - privateKey.sign response', signature)
+
     const feePayerSigBytes = feePayerSig.startsWith('0x')
       ? hexToUint8Array(feePayerSig.slice(2))
       : base64ToUint8Array(feePayerSig)
 
     txRaw.signatures = [signature, feePayerSigBytes]
+
+    console.log('injective-ts - autosign - broadcast txRaw', txRaw)
 
     return await this.broadcastTxRaw(txRaw)
   }

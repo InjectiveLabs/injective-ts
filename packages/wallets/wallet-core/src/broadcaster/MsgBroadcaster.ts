@@ -458,6 +458,13 @@ export class MsgBroadcaster {
         WalletStrategyEmitterEventType.TransactionPreparationStart,
       )
 
+      console.log('injective-ts - doing signing', {
+        txRaw,
+        chainId,
+        accountNumber,
+        address: injectiveAddress,
+      })
+
       const directSignResponse = (await walletStrategy.signCosmosTransaction({
         txRaw,
         chainId,
@@ -468,6 +475,8 @@ export class MsgBroadcaster {
       walletStrategy.emit(
         WalletStrategyEmitterEventType.TransactionPreparationEnd,
       )
+
+      console.log('injective-ts - directSignResponse', directSignResponse)
 
       const signedTxRaw = CosmosTxV1Beta1TxPb.TxRaw.create()
       signedTxRaw.bodyBytes = directSignResponse.signed.bodyBytes
@@ -485,6 +494,8 @@ export class MsgBroadcaster {
       walletStrategy.emit(
         WalletStrategyEmitterEventType.TransactionBroadcastStart,
       )
+
+      console.log('injective-ts - endpoints.grpc', endpoints.grpc)
 
       const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(
         signedTxRaw,
