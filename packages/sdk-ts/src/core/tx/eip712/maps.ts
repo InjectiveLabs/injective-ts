@@ -368,8 +368,6 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'exchange/MsgExternalTransfer'
     case 'injective.exchange.v1beta1.MsgIncreasePositionMargin':
       return 'exchange/MsgIncreasePositionMargin'
-    case 'injective.exchange.v1beta1.MsgDecreasePositionMargin':
-      return 'exchange/MsgDecreasePositionMargin'
     case 'injective.exchange.v1beta1.MsgLiquidatePosition':
       return 'exchange/MsgLiquidatePosition'
     case 'injective.exchange.v1beta1.MsgBatchUpdateOrders':

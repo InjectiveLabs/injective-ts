@@ -142,8 +142,6 @@ export const MsgType = {
     'injective.exchange.v1beta1.MsgCreateSpotMarketOrder',
   MsgEmergencySettleMarket:
     'injective.exchange.v1beta1.MsgEmergencySettleMarket',
-  MsgDecreasePositionMargin:
-    'injective.exchange.v1beta1.MsgDecreasePositionMargin',
   MsgIncreasePositionMargin:
     'injective.exchange.v1beta1.MsgIncreasePositionMargin',
   MsgUpdateDerivativeMarket:
