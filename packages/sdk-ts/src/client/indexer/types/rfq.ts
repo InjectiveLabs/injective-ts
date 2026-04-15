@@ -123,32 +123,43 @@ export interface SettlementsResponse {
 }
 
 export interface RFQConditionalOrderInput {
-  margin: string
-  orderId: string
+  version: number
+  chainId: string
+  contractAddress: string
+  taker: string
+  epoch: bigint
+  rfqId: bigint
   marketId: string
-  quantity: string
+  subaccountNonce: number
+  laneVersion: bigint
+  deadlineMs: bigint
   direction: string
-  orderType: string
-  signature: string
+  quantity: string
+  margin: string
   worstPrice: string
+  minTotalFillQuantity: string
+  triggerType: string
   triggerPrice: string
-  requestAddress: string
+  unfilledAction: string
+  cid: string
+  allowedRelayer: string
 }
 
 export interface RFQConditionalOrder {
-  orderId: string
-  margin: string
-  status: string
+  rfqId: number
   marketId: string
-  quantity: string
   direction: string
-  orderType: string
+  margin: string
+  quantity: string
+  worstPrice: string
+  requestAddress: string
+  triggerPrice: string
+  status: string
   createdAt: number
   updatedAt: number
   expiresAt: number
-  worstPrice: string
-  triggerPrice: string
-  requestAddress: string
+  triggerType: string
+  minTotalFillQuantity: string
 }
 
 export interface RFQConditionalOrdersResponse {
