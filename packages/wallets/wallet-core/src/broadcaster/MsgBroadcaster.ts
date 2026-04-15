@@ -351,6 +351,7 @@ export class MsgBroadcaster {
   /**
    * Sign and broadcast a pre-built transaction that already includes
    * a fee payer's signature, directly to chain (bypassing web3gw).
+   * Routes to the appropriate signing path based on wallet type.
    */
   async broadcastWithFeePayerSig({
     tx,
@@ -363,20 +364,82 @@ export class MsgBroadcaster {
     tx: Uint8Array | string
     injectiveAddress: string
   }): Promise<TxResponse> {
+    const { walletStrategy } = this
+
+    const ethereumAddress = getEthereumSignerAddress(injectiveAddress)
+
+    if (ofacList.includes(ethereumAddress)) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
+    try {
+      return isCosmosWallet(walletStrategy.wallet)
+        ? await this.broadcastDirectSignWithFeePayerSig({
+            tx,
+            feePayerSig,
+            accountNumber,
+            injectiveAddress,
+          })
+        : await this.broadcastEip712WithFeePayerSig({
+            tx,
+            feePayerSig,
+            accountNumber,
+            injectiveAddress,
+          })
+    } catch (e) {
+      const error = e as any
+
+      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    }
+  }
+
+  /**
+   * EIP-712 (EVM wallet) path for broadcastWithFeePayerSig.
+   * Not yet implemented — EVM wallets sign via eth_signTypedData_v4,
+   * which requires a different pre-built tx format.
+   */
+  private async broadcastEip712WithFeePayerSig(_params: {
+    tx: Uint8Array | string
+    feePayerSig: string
+    accountNumber: number
+    injectiveAddress: string
+  }): Promise<TxResponse> {
+    throw new GeneralException(
+      new Error(
+        'broadcastWithFeePayerSig for EVM wallets is not yet implemented.',
+      ),
+    )
+  }
+
+  /**
+   * Cosmos (SIGN_MODE_DIRECT) path for broadcastWithFeePayerSig.
+   * Signs the pre-built tx, appends the fee payer signature, and broadcasts.
+   */
+  private async broadcastDirectSignWithFeePayerSig({
+    tx,
+    feePayerSig,
+    accountNumber,
+    injectiveAddress,
+  }: {
+    tx: Uint8Array | string
+    feePayerSig: string
+    accountNumber: number
+    injectiveAddress: string
+  }): Promise<TxResponse> {
     const {
       chainId,
       endpoints,
       walletStrategy,
       txTimeout: txTimeoutInBlocks,
     } = this
-
-    if (!isCosmosWallet(walletStrategy.wallet)) {
-      throw new GeneralException(
-        new Error(
-          'broadcastWithFeePayerSig only supports Cosmos wallets (Keplr, Leap, etc.). EVM wallets are not supported for SIGN_MODE_DIRECT.',
-        ),
-      )
-    }
 
     const txBytes = typeof tx === 'string' ? base64ToUint8Array(tx) : tx
     const txRaw = CosmosTxV1Beta1TxPb.TxRaw.fromBinary(txBytes)
@@ -433,16 +496,6 @@ export class MsgBroadcaster {
       )
 
       return txResponse
-    } catch (e) {
-      const error = e as any
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
     } finally {
       if (canDisableCosmosGasCheck && cosmosWallet.enableGasCheck) {
         cosmosWallet.enableGasCheck(chainId)
