@@ -80,7 +80,6 @@
   "pnpm": {
     "overrides": {
       "zod": "3.24.2",
-      "ox": "0.9.6",
       "rxjs": "7.8.2",
       "rpc-websockets": "9.0.4",
       "next": "file:./etc/noop",
