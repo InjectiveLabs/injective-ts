@@ -57,12 +57,22 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
   async fetchTradesHistory(params?: {
     token?: string
+    sortBy?: string
     perPage?: number
     marketId?: string
     direction?: string
+    sortDirection?: string
     accountAddress?: string
   }) {
-    const { marketId, direction, perPage, token, accountAddress } = params || {}
+    const {
+      marketId,
+      direction,
+      perPage,
+      token,
+      sortBy,
+      sortDirection,
+      accountAddress,
+    } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.TradesRequest.create()
 
@@ -84,6 +94,14 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     if (token) {
       request.token = token
+    }
+
+    if (sortBy) {
+      request.sortBy = sortBy
+    }
+
+    if (sortDirection) {
+      request.sortDirection = sortDirection
     }
 
     const response = await this.executeGrpcCall<

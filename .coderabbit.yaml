@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: 'en-US'
+early_access: false
+reviews:
+  profile: 'chill'
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: false
+  collapse_walkthrough: true
+  changed_files_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  assess_linked_issues: false
+  related_issues: false
+  related_prs: false
+  suggested_labels: false
+  suggested_reviewers: false
+  path_filters:
+    - '!pnpm-lock.yaml'
+    - '!**/*.lock'
+    - '!**/dist/**'
+    - '!**/build/**'
+    - '!**/node_modules/**'
+    - '!**/*.generated.*'
+    - '!**/*.tsbuildinfo'
+    - '!proto/**'
+    - '!protoV2/**'
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    base_branches:
+      - '.*'
+    ignore_title_keywords:
+      - 'WIP'
+      - 'DO NOT REVIEW'
+      - '[skip-coderabbit]'
+      - '[skip ci]'
+  tools:
+    eslint:
+      enabled: false
+    biome:
+      enabled: false
+    gitleaks:
+      enabled: true
+    yamllint:
+      enabled: false
+    shellcheck:
+      enabled: true
+    github-checks:
+      enabled: false
+      timeout_ms: 90000
+    languagetool:
+      enabled: false
+    actionlint:
+      enabled: false
+    markdownlint:
+      enabled: false
+chat:
+  auto_reply: true

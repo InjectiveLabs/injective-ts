@@ -161,19 +161,20 @@ export class IndexerGrpcRfqTransformer {
     grpcOrder: GrpcRFQConditionalOrder,
   ): RFQConditionalOrder {
     return {
-      orderId: grpcOrder.orderId,
+      rfqId: Number(grpcOrder.rfqId),
       marketId: grpcOrder.marketId,
       direction: grpcOrder.direction,
       margin: grpcOrder.margin,
       quantity: grpcOrder.quantity,
       worstPrice: grpcOrder.worstPrice,
       requestAddress: grpcOrder.requestAddress,
-      orderType: grpcOrder.orderType,
       triggerPrice: grpcOrder.triggerPrice,
       status: grpcOrder.status,
       createdAt: Number(grpcOrder.createdAt),
       updatedAt: Number(grpcOrder.updatedAt),
       expiresAt: Number(grpcOrder.expiresAt),
+      triggerType: grpcOrder.triggerType,
+      minTotalFillQuantity: grpcOrder.minTotalFillQuantity,
     }
   }
 

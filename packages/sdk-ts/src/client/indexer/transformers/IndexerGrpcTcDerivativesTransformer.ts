@@ -96,6 +96,9 @@ export class IndexerGrpcTcDerivativesTransformer {
       executedAt: Number(trade.executedAt),
       executionSide: trade.executionSide as TradeExecutionSide,
       tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
+      positionIsLong: trade.positionIsLong,
+      positionOpenedAt: Number(trade.positionOpenedAt),
+      positionEntryPrice: trade.positionEntryPrice,
       ...mappedPositionDelta,
     }
   }

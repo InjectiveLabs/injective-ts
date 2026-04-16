@@ -1,0 +1,335 @@
+name: Publish
+
+# Unified publish workflow for all release types:
+# - latest: Triggered on push to master branch (npm tag: latest)
+#   - Default: patch bump
+#   - With "release-minor" in commit message: minor bump
+# - canary: Triggered on feature branches with "canary" in commit message (npm tag: alpha)
+# - beta: Triggered on feature branches with "beta" in commit message (npm tag: beta)
+#
+# Uses OIDC trusted publishing - no NPM_TOKEN required.
+# Configured as trusted publisher on npm: https://docs.npmjs.com/trusted-publishers
+#
+# Creates a single consolidated GitHub Release per publish (no CHANGELOG files modified).
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        type: choice
+        options:
+          - canary
+          - beta
+          - prod
+
+concurrency:
+  group: publish-${{ github.repository }}
+  cancel-in-progress: false
+
+# OIDC requires id-token: write permission
+# contents: write is needed for git push --follow-tags and creating GitHub Releases
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  # ============================================
+  # Publish Job - Handles latest, canary, and beta
+  # ============================================
+  publish:
+    name: 'Publish'
+    runs-on: ubuntu-latest
+    # Skip if:
+    # - Contains skip keywords (for master branch)
+    # - Is a feature branch without canary/beta keyword and not a workflow_dispatch
+    # - Is workflow_dispatch on master with a non-prod release type
+    if: |
+      !contains(github.event.head_commit.message, 'GITBOOK') &&
+      !contains(github.event.head_commit.message, 'skip-deploy') &&
+      !contains(github.event.head_commit.message, 'skip deploy') &&
+      !startsWith(github.event.head_commit.message, 'chore: release') &&
+      (
+        github.ref == 'refs/heads/master' ||
+        contains(github.event.head_commit.message, 'canary') ||
+        contains(github.event.head_commit.message, 'beta') ||
+        (github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/'))
+      ) &&
+      !(github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.release_type != 'prod')
+    outputs:
+      publish_type: ${{ steps.determine-publish-type.outputs.type }}
+      dist_tag: ${{ steps.determine-publish-type.outputs.dist_tag }}
+      version_args: ${{ steps.determine-publish-type.outputs.version_args }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # TS_GH_TOKEN must belong to an actor on the master branch-protection
+          # bypass list so lerna's version-bump commit can be pushed directly.
+          token: ${{ secrets.TS_GH_TOKEN }}
+
+      - name: Using Node from .nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      # OIDC trusted publishing requires npm 11.5.1+
+      - name: Update npm for OIDC trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Set up Git user
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Determine publish type
+        id: determine-publish-type
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          BRANCH: ${{ github.ref }}
+        run: |
+          # Handle workflow_dispatch input
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            RELEASE_TYPE="${{ inputs.release_type }}"
+            if [[ "$RELEASE_TYPE" == "prod" ]]; then
+              if [[ "$BRANCH" != "refs/heads/master" ]]; then
+                echo "::error::prod releases can only be triggered from the master branch"
+                exit 1
+              fi
+              TYPE="latest"
+              DIST_TAG="latest"
+              VERSION_ARGS="patch --force-publish --force-git-tag --no-changelog --yes --no-push"
+            elif [[ "$RELEASE_TYPE" == "canary" ]]; then
+              TYPE="canary"
+              DIST_TAG="alpha"
+              VERSION_ARGS="prerelease --preid alpha --force-publish --force-git-tag --no-changelog --yes --no-push"
+            elif [[ "$RELEASE_TYPE" == "beta" ]]; then
+              TYPE="beta"
+              DIST_TAG="beta"
+              VERSION_ARGS="prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes --no-push"
+            else
+              echo "::error::Unrecognized release_type '$RELEASE_TYPE'"
+              exit 1
+            fi
+            echo "type=$TYPE" >> $GITHUB_OUTPUT
+            echo "dist_tag=$DIST_TAG" >> $GITHUB_OUTPUT
+            echo "version_args=$VERSION_ARGS" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Check for keywords
+          HAS_CANARY=false
+          HAS_BETA=false
+          HAS_RELEASE_MINOR=false
+
+          if echo "$COMMIT_MSG" | grep -qi "canary"; then
+            HAS_CANARY=true
+          fi
+
+          if echo "$COMMIT_MSG" | grep -qi "beta"; then
+            HAS_BETA=true
+          fi
+
+          if echo "$COMMIT_MSG" | grep -qi "release-minor"; then
+            HAS_RELEASE_MINOR=true
+          fi
+
+          # Determine publish type based on branch and commit message
+          if [[ "$BRANCH" == "refs/heads/master" ]]; then
+            # Determine bump type: minor if "release-minor" keyword, otherwise patch
+            if [[ "$HAS_RELEASE_MINOR" == "true" ]]; then
+              BUMP_TYPE="minor"
+            else
+              BUMP_TYPE="patch"
+            fi
+            TYPE="latest"
+            DIST_TAG="latest"
+            VERSION_ARGS="$BUMP_TYPE --force-publish --force-git-tag --no-changelog --yes --no-push"
+          elif [[ "$HAS_CANARY" == "true" && "$HAS_BETA" == "true" ]]; then
+            echo "::error::Commit message contains both 'canary' and 'beta'. Please use only one."
+            exit 1
+          elif [[ "$HAS_CANARY" == "true" ]]; then
+            TYPE="canary"
+            DIST_TAG="alpha"
+            VERSION_ARGS="prerelease --preid alpha --force-publish --force-git-tag --no-changelog --yes --no-push"
+          elif [[ "$HAS_BETA" == "true" ]]; then
+            TYPE="beta"
+            DIST_TAG="beta"
+            VERSION_ARGS="prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes --no-push"
+          else
+            echo "::error::No valid publish type determined. This should not happen."
+            exit 1
+          fi
+
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+          echo "dist_tag=$DIST_TAG" >> $GITHUB_OUTPUT
+          echo "version_args=$VERSION_ARGS" >> $GITHUB_OUTPUT
+
+      - name: Build dependencies
+        run: |
+          node etc/bootstrapEnv
+          pnpm install
+          pnpm build
+
+      - name: Version packages
+        run: |
+          pnpm exec lerna version ${{ steps.determine-publish-type.outputs.version_args }}
+
+      - name: Push version commits and tags to git
+        run: |
+          git push origin HEAD --follow-tags
+
+      - name: Create and push release tag
+        if: github.ref == 'refs/heads/master'
+        run: |
+          VERSION=$(node -p "require('./packages/sdk-ts/package.json').version")
+          TAG="v${VERSION}"
+
+          if ! git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            if ! git rev-parse --verify "refs/tags/$TAG" >/dev/null 2>&1; then
+              git tag "$TAG"
+            fi
+            git push origin "refs/tags/$TAG"
+          fi
+
+      # pnpm pack resolves catalog: protocol, npm publish handles OIDC authentication
+      - name: Publish to npm (OIDC)
+        run: |
+          DIST_TAG="${{ steps.determine-publish-type.outputs.dist_tag }}"
+          PUBLISHED_PACKAGES="[]"
+          ROOT_DIR="$(pwd)"
+          PUBLISH_COUNT=0
+
+          for pkg_json in packages/*/package.json packages/wallets/*/package.json; do
+            pkg_dir=$(dirname "$pkg_json")
+            pkg_name=$(node -p "require('./$pkg_json').name")
+            pkg_version=$(node -p "require('./$pkg_json').version")
+
+            echo "📦 Publishing $pkg_name@$pkg_version"
+
+            # Pack with pnpm to resolve catalog: dependencies
+            pnpm --dir "$pkg_dir" pack --pack-destination "$ROOT_DIR"
+
+            tarball_name=$(echo "$pkg_name" | sed 's/@//;s/\//-/')-$pkg_version.tgz
+
+            if [ -f "$tarball_name" ]; then
+              if npm publish "$tarball_name" --access public --tag "$DIST_TAG" --provenance; then
+                PUBLISHED_PACKAGES=$(echo "$PUBLISHED_PACKAGES" | node -p "JSON.stringify([...JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')), {name:'$pkg_name',version:'$pkg_version'}])")
+                PUBLISH_COUNT=$((PUBLISH_COUNT + 1))
+              fi
+              rm -f "$tarball_name"
+            else
+              echo "⚠️ No tarball found for $pkg_name"
+            fi
+          done
+
+          echo "{\"publishedPackages\":$PUBLISHED_PACKAGES}" > pnpm-publish-summary.json
+
+          if [ "$PUBLISH_COUNT" -eq 0 ]; then
+            echo "::error::No packages were published. Check npm OIDC trusted publisher configuration."
+            exit 1
+          fi
+
+          echo "✅ Successfully published $PUBLISH_COUNT packages"
+
+      - name: Broadcast published versions on Slack
+        run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
+        env:
+          GIT_ACTOR: ${{ github.actor }}
+          SLACK_API: ${{ secrets.SLACK_API }}
+          GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+
+      # Run last so a flaky GitHub releases/notes API can't block the actual
+      # publish (npm) or the Slack broadcast. The release is a nice-to-have
+      # artifact; if this step fails, retry it manually with:
+      #   gh release create vX.Y.Z --title vX.Y.Z --generate-notes --latest --verify-tag
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ secrets.TS_GH_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./packages/sdk-ts/package.json').version")
+          TAG="v${VERSION}"
+
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            # GitHub's generate-notes endpoint 502s when previous_tag_name is
+            # omitted (its auto-detection of the previous tag is unreliable).
+            # Compute PREV_TAG ourselves and pass it explicitly so the API
+            # responds correctly on the first call.
+            # Filter to strict-semver v-tags only (vX.Y.Z[-pre]); a non-semver
+            # tag like `vnull` or `vold` would otherwise sort first under
+            # -v:refname and be picked as PREV_TAG.
+            PREV_TAG=$(git tag -l 'v[0-9]*' --sort=-v:refname \
+                        | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+' \
+                        | grep -v "^${TAG}$" \
+                        | head -n1)
+
+            NOTES=""
+            if [ -n "$PREV_TAG" ]; then
+              for i in 1 2 3; do
+                # `.body // empty` converts JSON null to empty string so the
+                # -n check below falls through to the retry/fallback, rather
+                # than breaking the loop with the literal string "null".
+                NOTES=$(gh api -X POST "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
+                          -f tag_name="$TAG" \
+                          -f previous_tag_name="$PREV_TAG" \
+                          --jq '.body // empty' 2>/dev/null) || NOTES=""
+                [ -n "$NOTES" ] && break
+                echo "generate-notes attempt $i failed; retrying in $((i * 5))s..."
+                sleep $((i * 5))
+              done
+            fi
+
+            # Fallback: build a changelog from git log if the API is still down
+            # or this is the first-ever release (no PREV_TAG).
+            if [ -z "$NOTES" ]; then
+              echo "generate-notes unavailable; building changelog from git log"
+              if [ -n "$PREV_TAG" ]; then
+                NOTES=$(printf '## Changes since %s\n\n%s\n' \
+                          "$PREV_TAG" \
+                          "$(git log --pretty=format:'- %s (%h)' "${PREV_TAG}..HEAD")")
+              else
+                NOTES="Release $TAG"
+              fi
+            fi
+
+            gh release create "$TAG" \
+              --title "$TAG" \
+              --notes "$NOTES" \
+              --latest \
+              --verify-tag
+          fi
+
+  # ============================================
+  # Package Bump Jobs (only after latest publish on master branch)
+  # ============================================
+  trigger-package-bumps:
+    name: 'Trigger Package Bumps'
+    needs: publish
+    if: needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest'
+    uses: ./.github/workflows/package-bump.yaml
+    secrets: inherit

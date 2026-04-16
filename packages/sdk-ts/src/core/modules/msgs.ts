@@ -56,6 +56,7 @@ import type MsgBatchCancelSpotOrders from './exchange/msgs/MsgBatchCancelSpotOrd
 import type MsgCancelDerivativeOrder from './exchange/msgs/MsgCancelDerivativeOrder.js'
 import type MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder.js'
 import type MsgIncreasePositionMargin from './exchange/msgs/MsgIncreasePositionMargin.js'
+import type MsgDecreasePositionMargin from './exchange/msgs/MsgDecreasePositionMargin.js'
 import type MsgInstantSpotMarketLaunch from './exchange/msgs/MsgInstantSpotMarketLaunch.js'
 import type MsgCancelBinaryOptionsOrder from './exchange/msgs/MsgCancelBinaryOptionsOrder.js'
 import type MsgUpdateDerivativeMarketV2 from './exchange/msgs/MsgUpdateDerivativeMarketV2.js'
@@ -107,6 +108,7 @@ export type ExchangeV1Msgs =
   | MsgBatchCancelSpotOrders
   | MsgCancelDerivativeOrder
   | MsgCreateSpotMarketOrder
+  | MsgDecreasePositionMargin
   | MsgIncreasePositionMargin
   | MsgInstantSpotMarketLaunch
   | MsgCancelBinaryOptionsOrder

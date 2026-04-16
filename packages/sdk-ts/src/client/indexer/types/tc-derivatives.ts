@@ -56,6 +56,9 @@ export interface TcDerivativeTradeHistory {
   tradeDirection: TradeDirection
   executionSide: TradeExecutionSide
   tradeExecutionType: TradeExecutionType
+  positionIsLong: boolean
+  positionOpenedAt: number
+  positionEntryPrice: string
 }
 
 export interface TcDerivativePosition {
@@ -126,7 +129,7 @@ export type GrpcTcPositionDelta = InjectiveTCDerivativesRpcPb.PositionDelta
 export type GrpcTcDerivativeLimitOrder =
   InjectiveTCDerivativesRpcPb.DerivativeLimitOrder
 export type GrpcTcDerivativeTradeHistory =
-  InjectiveTCDerivativesRpcPb.DerivativeTrade
+  InjectiveTCDerivativesRpcPb.TCDerivativeTrade
 export type GrpcTcDerivativePosition =
   InjectiveTCDerivativesRpcPb.DerivativePositionV2
 export type GrpcTcDerivativeOrderHistory =

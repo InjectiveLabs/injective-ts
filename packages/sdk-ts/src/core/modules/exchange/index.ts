@@ -15,6 +15,7 @@ import MsgBatchCancelSpotOrders from './msgs/MsgBatchCancelSpotOrders.js'
 import MsgCancelDerivativeOrder from './msgs/MsgCancelDerivativeOrder.js'
 import MsgCreateSpotMarketOrder from './msgs/MsgCreateSpotMarketOrder.js'
 import MsgIncreasePositionMargin from './msgs/MsgIncreasePositionMargin.js'
+import MsgDecreasePositionMargin from './msgs/MsgDecreasePositionMargin.js'
 import MsgInstantSpotMarketLaunch from './msgs/MsgInstantSpotMarketLaunch.js'
 import MsgUpdateDerivativeMarketV2 from './msgs/MsgUpdateDerivativeMarketV2.js'
 import MsgCancelBinaryOptionsOrder from './msgs/MsgCancelBinaryOptionsOrder.js'
@@ -46,6 +47,7 @@ export {
   MsgBatchCancelSpotOrders,
   MsgCreateSpotMarketOrder,
   MsgIncreasePositionMargin,
+  MsgDecreasePositionMargin,
   MsgInstantSpotMarketLaunch,
   MsgCancelBinaryOptionsOrder,
   MsgUpdateDerivativeMarketV2,
