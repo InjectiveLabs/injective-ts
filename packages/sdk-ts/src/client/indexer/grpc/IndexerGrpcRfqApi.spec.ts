@@ -112,4 +112,63 @@ describe('IndexerGrpcRFQApi', () => {
       )
     }
   })
+
+  test('createConditionalOrder', async () => {
+    try {
+      const response = await indexerGrpcRfqApi.createConditionalOrder({
+        order: {
+          version: 1,
+          chainId: 'injective-1',
+          contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+          taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+          epoch: BigInt(1),
+          rfqId: BigInt(1717000000),
+          marketId:
+            '0x17ef48032cb24375ba7c2e39f384e56433bcab20cbee9a7357e4cba2eb00abe6',
+          subaccountNonce: 0,
+          laneVersion: BigInt(1),
+          deadlineMs: BigInt(1717000000),
+          direction: 'long',
+          quantity: '1',
+          margin: '1000000000000000000',
+          worstPrice: '1000000000000000000',
+          minTotalFillQuantity: '1',
+          triggerType: 'mark_price_gte',
+          triggerPrice: '1000000000000000000',
+        },
+        signature: '0x1234567890abcdef',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<{ order: any }>(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcRFQApi.createConditionalOrder => ' + (e as any).message,
+      )
+    }
+  })
+
+  test('listConditionalOrders', async () => {
+    try {
+      const response = await indexerGrpcRfqApi.listConditionalOrders({
+        perPage: 10,
+        requestAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcRfqTransformer.listConditionalOrdersResponseToConditionalOrders
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcRFQApi.listConditionalOrders => ' + (e as any).message,
+      )
+    }
+  })
 })

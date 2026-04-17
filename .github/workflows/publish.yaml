@@ -276,21 +276,38 @@ jobs:
           TAG="v${VERSION}"
 
           if ! gh release view "$TAG" >/dev/null 2>&1; then
-            # GitHub's notes-generation pipeline returns 502s intermittently.
-            # Pre-compute notes with retries; fall back to a git-log changelog
-            # so release creation is never blocked by the notes API.
-            NOTES=""
-            for i in 1 2 3 4 5; do
-              NOTES=$(gh api -X POST "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
-                        -f tag_name="$TAG" --jq '.body' 2>/dev/null) || NOTES=""
-              [ -n "$NOTES" ] && break
-              echo "generate-notes attempt $i failed; retrying in $((i * 5))s..."
-              sleep $((i * 5))
-            done
+            # GitHub's generate-notes endpoint 502s when previous_tag_name is
+            # omitted (its auto-detection of the previous tag is unreliable).
+            # Compute PREV_TAG ourselves and pass it explicitly so the API
+            # responds correctly on the first call.
+            # Filter to strict-semver v-tags only (vX.Y.Z[-pre]); a non-semver
+            # tag like `vnull` or `vold` would otherwise sort first under
+            # -v:refname and be picked as PREV_TAG.
+            PREV_TAG=$(git tag -l 'v[0-9]*' --sort=-v:refname \
+                        | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+' \
+                        | grep -v "^${TAG}$" \
+                        | head -n1)
 
+            NOTES=""
+            if [ -n "$PREV_TAG" ]; then
+              for i in 1 2 3; do
+                # `.body // empty` converts JSON null to empty string so the
+                # -n check below falls through to the retry/fallback, rather
+                # than breaking the loop with the literal string "null".
+                NOTES=$(gh api -X POST "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
+                          -f tag_name="$TAG" \
+                          -f previous_tag_name="$PREV_TAG" \
+                          --jq '.body // empty' 2>/dev/null) || NOTES=""
+                [ -n "$NOTES" ] && break
+                echo "generate-notes attempt $i failed; retrying in $((i * 5))s..."
+                sleep $((i * 5))
+              done
+            fi
+
+            # Fallback: build a changelog from git log if the API is still down
+            # or this is the first-ever release (no PREV_TAG).
             if [ -z "$NOTES" ]; then
-              echo "generate-notes API unavailable; building changelog from git log"
-              PREV_TAG=$(git tag -l 'v*' --sort=-v:refname | grep -v "^${TAG}$" | head -n1)
+              echo "generate-notes unavailable; building changelog from git log"
               if [ -n "$PREV_TAG" ]; then
                 NOTES=$(printf '## Changes since %s\n\n%s\n' \
                           "$PREV_TAG" \

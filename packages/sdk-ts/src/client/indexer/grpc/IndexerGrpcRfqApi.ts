@@ -249,44 +249,70 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
   }
 
   async createConditionalOrder({
-    margin,
-    orderId,
-    marketId,
-    quantity,
-    direction,
-    orderType,
+    order,
     signature,
-    worstPrice,
-    triggerPrice,
-    requestAddress,
   }: {
-    margin: string
-    orderId: string
-    marketId: string
-    quantity: string
-    direction: string
-    orderType: string
+    order: {
+      version: number
+      chainId: string
+      contractAddress: string
+      taker: string
+      epoch: bigint
+      rfqId: bigint
+      marketId: string
+      subaccountNonce: number
+      laneVersion: bigint
+      deadlineMs: bigint
+      direction: string
+      quantity: string
+      margin: string
+      worstPrice: string
+      minTotalFillQuantity: string
+      triggerType: string
+      triggerPrice: string
+      unfilledAction?: string
+      cid?: string
+      allowedRelayer?: string
+    }
     signature: string
-    worstPrice: string
-    triggerPrice: string
-    requestAddress: string
   }) {
-    const order = InjectiveRFQExchangeRpcPb.ConditionalOrderInputType.create()
+    const conditionalOrderInput =
+      InjectiveRFQExchangeRpcPb.ConditionalOrderInput.create()
 
-    order.margin = margin
-    order.orderId = orderId
-    order.marketId = marketId
-    order.quantity = quantity
-    order.direction = direction
-    order.orderType = orderType
-    order.signature = signature
-    order.worstPrice = worstPrice
-    order.triggerPrice = triggerPrice
-    order.requestAddress = requestAddress
+    conditionalOrderInput.version = order.version
+    conditionalOrderInput.chainId = order.chainId
+    conditionalOrderInput.contractAddress = order.contractAddress
+    conditionalOrderInput.taker = order.taker
+    conditionalOrderInput.epoch = order.epoch
+    conditionalOrderInput.rfqId = order.rfqId
+    conditionalOrderInput.marketId = order.marketId
+    conditionalOrderInput.subaccountNonce = order.subaccountNonce
+    conditionalOrderInput.laneVersion = order.laneVersion
+    conditionalOrderInput.deadlineMs = order.deadlineMs
+    conditionalOrderInput.direction = order.direction
+    conditionalOrderInput.quantity = order.quantity
+    conditionalOrderInput.margin = order.margin
+    conditionalOrderInput.worstPrice = order.worstPrice
+    conditionalOrderInput.minTotalFillQuantity = order.minTotalFillQuantity
+    conditionalOrderInput.triggerType = order.triggerType
+    conditionalOrderInput.triggerPrice = order.triggerPrice
+
+    if (order.unfilledAction) {
+      conditionalOrderInput.unfilledAction = order.unfilledAction
+    }
+
+    if (order.cid) {
+      conditionalOrderInput.cid = order.cid
+    }
+
+    if (order.allowedRelayer) {
+      conditionalOrderInput.allowedRelayer = order.allowedRelayer
+    }
 
     const request =
       InjectiveRFQExchangeRpcPb.CreateConditionalOrderRequest.create()
-    request.order = order
+    request.order = conditionalOrderInput
+    request.signature = signature
 
     const response = await this.executeGrpcCall<
       InjectiveRFQExchangeRpcPb.CreateConditionalOrderRequest,
@@ -341,35 +367,5 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     return IndexerGrpcRfqTransformer.listConditionalOrdersResponseToConditionalOrders(
       response,
     )
-  }
-
-  async cancelConditionalOrder({
-    orderId,
-    requestAddress,
-    signature,
-  }: {
-    orderId: string
-    requestAddress: string
-    signature: string
-  }) {
-    const request =
-      InjectiveRFQExchangeRpcPb.CancelConditionalOrderRequest.create()
-
-    request.orderId = orderId
-    request.requestAddress = requestAddress
-    request.signature = signature
-
-    const response = await this.executeGrpcCall<
-      InjectiveRFQExchangeRpcPb.CancelConditionalOrderRequest,
-      InjectiveRFQExchangeRpcPb.CancelConditionalOrderResponse
-    >(request, this.client.cancelConditionalOrder.bind(this.client))
-
-    return {
-      order: response.order
-        ? IndexerGrpcRfqTransformer.grpcConditionalOrderToConditionalOrder(
-            response.order,
-          )
-        : undefined,
-    }
   }
 }
