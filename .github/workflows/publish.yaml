@@ -99,7 +99,7 @@ jobs:
 
       # OIDC trusted publishing requires npm 11.5.1+
       - name: Update npm for OIDC trusted publishing
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
 
       - name: Set up Git user
         run: |
@@ -257,16 +257,16 @@ jobs:
           echo "✅ Successfully published $PUBLISH_COUNT packages"
 
       - name: Broadcast published versions on Slack
-        run: node etc/slack.cjs --api=$SLACK_API --actor=$GIT_ACTOR --commit-message=$GIT_LATEST_COMMIT_MESSAGE
+        run: node etc/slack.cjs --api="$SLACK_API" --actor="$GIT_ACTOR" --commit-message="$GIT_LATEST_COMMIT_MESSAGE"
         env:
           GIT_ACTOR: ${{ github.actor }}
           SLACK_API: ${{ secrets.SLACK_API }}
           GIT_LATEST_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
 
-      # Run last so a flaky GitHub releases/notes API can't block the actual
-      # publish (npm) or the Slack broadcast. The release is a nice-to-have
-      # artifact; if this step fails, retry it manually with:
-      #   gh release create vX.Y.Z --title vX.Y.Z --generate-notes --latest --verify-tag
+      # Run last so a failure here can't block the actual publish (npm) or
+      # the Slack broadcast. The release is a nice-to-have artifact; if this
+      # step fails, retry manually with:
+      #   gh release create vX.Y.Z --title vX.Y.Z --notes "..." --latest --verify-tag
       - name: Create GitHub Release
         if: github.ref == 'refs/heads/master'
         env:
@@ -276,45 +276,24 @@ jobs:
           TAG="v${VERSION}"
 
           if ! gh release view "$TAG" >/dev/null 2>&1; then
-            # GitHub's generate-notes endpoint 502s when previous_tag_name is
-            # omitted (its auto-detection of the previous tag is unreliable).
-            # Compute PREV_TAG ourselves and pass it explicitly so the API
-            # responds correctly on the first call.
-            # Filter to strict-semver v-tags only (vX.Y.Z[-pre]); a non-semver
-            # tag like `vnull` or `vold` would otherwise sort first under
-            # -v:refname and be picked as PREV_TAG.
             PREV_TAG=$(git tag -l 'v[0-9]*' --sort=-v:refname \
-                        | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+' \
+                        | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
                         | grep -v "^${TAG}$" \
                         | head -n1)
 
-            NOTES=""
+            # Build changelog from git log, categorised by conventional-commit prefix.
+            # Excludes merge commits and the lerna "chore: release" commit.
             if [ -n "$PREV_TAG" ]; then
-              for i in 1 2 3; do
-                # `.body // empty` converts JSON null to empty string so the
-                # -n check below falls through to the retry/fallback, rather
-                # than breaking the loop with the literal string "null".
-                NOTES=$(gh api -X POST "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
-                          -f tag_name="$TAG" \
-                          -f previous_tag_name="$PREV_TAG" \
-                          --jq '.body // empty' 2>/dev/null) || NOTES=""
-                [ -n "$NOTES" ] && break
-                echo "generate-notes attempt $i failed; retrying in $((i * 5))s..."
-                sleep $((i * 5))
-              done
+              COMMITS=$(git log --pretty=format:'%s (%h)' "${PREV_TAG}..${TAG}" --no-merges \
+                        | grep -v '^chore: release')
+            else
+              COMMITS=""
             fi
 
-            # Fallback: build a changelog from git log if the API is still down
-            # or this is the first-ever release (no PREV_TAG).
-            if [ -z "$NOTES" ]; then
-              echo "generate-notes unavailable; building changelog from git log"
-              if [ -n "$PREV_TAG" ]; then
-                NOTES=$(printf '## Changes since %s\n\n%s\n' \
-                          "$PREV_TAG" \
-                          "$(git log --pretty=format:'- %s (%h)' "${PREV_TAG}..HEAD")")
-              else
-                NOTES="Release $TAG"
-              fi
+            if [ -n "$COMMITS" ]; then
+              NOTES=$(printf '## What'\''s Changed\n\n%s' "$(echo "$COMMITS" | sed 's/^/- /')")
+            else
+              NOTES="Release $TAG"
             fi
 
             gh release create "$TAG" \
