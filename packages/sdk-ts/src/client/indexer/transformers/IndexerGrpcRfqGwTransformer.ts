@@ -3,8 +3,10 @@ import type {
   CosmosPubKeyType,
   GrpcCosmosPubKey,
   RFQGwPrepareResponseType,
-  RFQGwPrepareQuoteResultType,
   GrpcRFQGwPrepareQuoteResult,
+  RFQGwPrepareQuoteResultType,
+  RFQGwPrepareEip712ResponseType,
+  RFQGwPrepareAutoSignResponseType,
 } from '../types'
 
 /**
@@ -43,6 +45,53 @@ export class IndexerGrpcRfqGwTransformer {
       feePayerSig: response.feePayerSig,
       takerAccountNumber: Number(response.takerAccountNumber),
       takerAccountSequence: Number(response.takerAccountSequence),
+      feePayerPubKey: response.feePayerPubKey
+        ? IndexerGrpcRfqGwTransformer.grpcCosmosPubKeyToCosmosPubKey(
+            response.feePayerPubKey,
+          )
+        : undefined,
+      quotes: response.quotes.map(
+        IndexerGrpcRfqGwTransformer.grpcPrepareQuoteResultToPrepareQuoteResult,
+      ),
+    }
+  }
+
+  static prepareAutoSignResponseToResponse(
+    response: InjectiveRfqGwRpcPb.PrepareAutoSignResponse,
+  ): RFQGwPrepareAutoSignResponseType {
+    return {
+      tx: response.tx,
+      feePayer: response.feePayer,
+      signMode: response.signMode,
+      rfqId: Number(response.rfqId),
+      pubKeyType: response.pubKeyType,
+      feePayerSig: response.feePayerSig,
+      quotesWaitMs: Number(response.quotesWaitMs),
+      autosignAccountNumber: Number(response.autosignAccountNumber),
+      feePayerAccountNumber: Number(response.feePayerAccountNumber),
+      autosignAccountSequence: Number(response.autosignAccountSequence),
+      feePayerAccountSequence: Number(response.feePayerAccountSequence),
+      feePayerPubKey: response.feePayerPubKey
+        ? IndexerGrpcRfqGwTransformer.grpcCosmosPubKeyToCosmosPubKey(
+            response.feePayerPubKey,
+          )
+        : undefined,
+      quotes: response.quotes.map(
+        IndexerGrpcRfqGwTransformer.grpcPrepareQuoteResultToPrepareQuoteResult,
+      ),
+    }
+  }
+
+  static prepareEip712ResponseToResponse(
+    response: InjectiveRfqGwRpcPb.PrepareEip712Response,
+  ): RFQGwPrepareEip712ResponseType {
+    return {
+      data: response.data,
+      feePayer: response.feePayer,
+      signMode: response.signMode,
+      rfqId: Number(response.rfqId),
+      pubKeyType: response.pubKeyType,
+      feePayerSig: response.feePayerSig,
       feePayerPubKey: response.feePayerPubKey
         ? IndexerGrpcRfqGwTransformer.grpcCosmosPubKeyToCosmosPubKey(
             response.feePayerPubKey,

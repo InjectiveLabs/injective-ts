@@ -223,12 +223,16 @@ export default class BaseGrpcConsumer {
       req: TRequest,
       options?: RpcOptions,
     ) => UnaryCall<TRequest, TResponse>,
+    options?: { noRetry?: boolean },
   ): Promise<TResponse> {
+    const doCall = async () => {
+      const call = clientMethod(request, this.getRpcOptions())
+
+      return await call.response
+    }
+
     try {
-      return await this.retry(async () => {
-        const call = clientMethod(request, this.getRpcOptions())
-        return await call.response
-      })
+      return options?.noRetry ? await doCall() : await this.retry(doCall)
     } catch (e: unknown) {
       // Derive context from method name if not provided
       const errorContext = clientMethod.name || 'UnknownMethod'

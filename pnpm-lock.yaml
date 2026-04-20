@@ -207,8 +207,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
       '@injectivelabs/indexer-proto-ts-v2':
-        specifier: 1.18.14
-        version: 1.18.14
+        specifier: 1.18.14-alpha.2
+        version: 1.18.14-alpha.2
       '@injectivelabs/mito-proto-ts-v2':
         specifier: 1.17.3
         version: 1.17.3
@@ -621,18 +621,6 @@ importers:
         version: 1.8.15(@ethersproject/sha2@5.8.0)(@types/react@19.2.10)(bufferutil@4.1.0)(encoding@0.1.13)(ethers@6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(fastestsmallesttextencoderdecoder@1.0.22)(immer@10.2.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.24.2)
 
   protoV2/abacus/proto-ts:
-    dependencies:
-      '@protobuf-ts/grpcweb-transport':
-        specifier: ^2.11.1
-        version: 2.11.1
-      '@protobuf-ts/runtime':
-        specifier: ^2.11.1
-        version: 2.11.1
-      '@protobuf-ts/runtime-rpc':
-        specifier: ^2.11.1
-        version: 2.11.1
-
-  protoV2/core/proto-ts:
     dependencies:
       '@protobuf-ts/grpcweb-transport':
         specifier: ^2.11.1
@@ -1188,8 +1176,8 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-  '@injectivelabs/indexer-proto-ts-v2@1.18.14':
-    resolution: {integrity: sha512-Kc46fyS76WA1wz2x7apT6neMSJcO53HsSg5M1SKWopbS42XQx+G/8vb9fFhxHPYwcsDbHXUNA5ul0xLJOuNlFQ==}
+  '@injectivelabs/indexer-proto-ts-v2@1.18.14-alpha.2':
+    resolution: {integrity: sha512-wlK+xXzcByXP3/3oHqNlFCYKZpfR5/XMX/1pOHVjqYDx5A+KQjIQi49vE1T9aHEFa7273pL3mktzxq1HKb6E1w==}
 
   '@injectivelabs/mito-proto-ts-v2@1.17.3':
     resolution: {integrity: sha512-Fo6k1MCPT3CKUS9tbMbl/poGv7R8KHtA7RfU7mvxxVWS7MpF+LLZA6UgegfEA1iiJgIrhe+eEwEvhIOe6SiUzw==}
@@ -9153,7 +9141,7 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.4
 
-  '@injectivelabs/indexer-proto-ts-v2@1.18.14':
+  '@injectivelabs/indexer-proto-ts-v2@1.18.14-alpha.2':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

@@ -350,18 +350,31 @@ export class MsgBroadcaster {
 
   /**
    * Sign and broadcast a pre-built transaction that already includes
-   * a fee payer's signature, directly to chain (bypassing web3gw).
-   * Routes to the appropriate signing path based on wallet type.
+   * a fee payer's signature. Routes to the appropriate signing path
+   * based on wallet type:
+   *   - Cosmos wallets: SIGN_MODE_DIRECT, direct broadcast to chain (pass `tx` + `accountNumber`)
+   *   - EVM wallets: EIP-712, broadcast via web3gw (pass `data` + `feePayer` + `pubKeyType`)
    */
   async broadcastWithFeePayerSig({
     tx,
+    data,
+    feePayer,
+    pubKeyType,
     feePayerSig,
     accountNumber,
     injectiveAddress,
   }: {
+    /** Pre-built EIP-712 JSON — for EVM wallets (from fetchPrepareEip712AutoSign) */
+    data?: string
     feePayerSig: string
-    accountNumber: number
-    tx: Uint8Array | string
+    /** Fee payer address — required for EVM path */
+    feePayer?: string
+    /** Fee payer pub key type — required for EVM path */
+    pubKeyType?: string
+    /** Taker account number — required for cosmos path */
+    accountNumber?: number
+    /** Pre-built tx bytes — for SIGN_MODE_DIRECT (cosmos wallets) */
+    tx?: Uint8Array | string
     injectiveAddress: string
   }): Promise<TxResponse> {
     const { walletStrategy } = this
@@ -377,16 +390,17 @@ export class MsgBroadcaster {
     try {
       return isCosmosWallet(walletStrategy.wallet)
         ? await this.broadcastDirectSignWithFeePayerSig({
-            tx,
+            tx: tx!,
             feePayerSig,
-            accountNumber,
             injectiveAddress,
+            accountNumber: accountNumber!,
           })
         : await this.broadcastEip712WithFeePayerSig({
-            tx,
+            data: data!,
             feePayerSig,
-            accountNumber,
             injectiveAddress,
+            feePayer: feePayer!,
+            pubKeyType: pubKeyType!,
           })
     } catch (e) {
       const error = e as any
@@ -403,20 +417,64 @@ export class MsgBroadcaster {
 
   /**
    * EIP-712 (EVM wallet) path for broadcastWithFeePayerSig.
-   * Not yet implemented — EVM wallets sign via eth_signTypedData_v4,
-   * which requires a different pre-built tx format.
+   * Signs the pre-built EIP-712 typed data returned by the indexer's
+   * fetchPrepareEip712AutoSign endpoint, then broadcasts via web3gw
+   * which already handles fee payer sig assembly.
    */
-  private async broadcastEip712WithFeePayerSig(_params: {
-    tx: Uint8Array | string
+  private async broadcastEip712WithFeePayerSig({
+    data,
+    feePayer,
+    pubKeyType,
+    feePayerSig,
+    injectiveAddress,
+  }: {
+    data: string
+    feePayer: string
+    pubKeyType: string
     feePayerSig: string
-    accountNumber: number
     injectiveAddress: string
   }): Promise<TxResponse> {
-    throw new GeneralException(
-      new Error(
-        'broadcastWithFeePayerSig for EVM wallets is not yet implemented.',
-      ),
+    const { endpoints, walletStrategy } = this
+    const ethereumAddress = getEthereumSignerAddress(injectiveAddress)
+
+    const evmChainId = await this.getEvmChainId()
+
+    if (!evmChainId) {
+      throw new GeneralException(new Error('Please provide evmChainId'))
+    }
+
+    walletStrategy.emit(
+      WalletStrategyEmitterEventType.TransactionPreparationStart,
     )
+
+    const signature = await walletStrategy.signEip712TypedData(
+      data,
+      ethereumAddress,
+    )
+
+    walletStrategy.emit(
+      WalletStrategyEmitterEventType.TransactionPreparationEnd,
+    )
+    walletStrategy.emit(
+      WalletStrategyEmitterEventType.TransactionBroadcastStart,
+    )
+
+    const transactionApi = new IndexerGrpcWeb3GwApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
+
+    const txResponse = { data, feePayer, feePayerSig, pubKeyType } as any
+
+    const response = await transactionApi.broadcastTxRequest({
+      signature,
+      message: [],
+      txResponse,
+      chainId: evmChainId,
+    })
+
+    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
   }
 
   /**

@@ -65,11 +65,11 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     accountAddress?: string
   }) {
     const {
-      marketId,
-      direction,
-      perPage,
       token,
       sortBy,
+      perPage,
+      marketId,
+      direction,
       sortDirection,
       accountAddress,
     } = params || {}

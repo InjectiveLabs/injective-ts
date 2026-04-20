@@ -116,27 +116,27 @@ describe('IndexerGrpcRFQApi', () => {
   test('createConditionalOrder', async () => {
     try {
       const response = await indexerGrpcRfqApi.createConditionalOrder({
+        signature: '0x1234567890abcdef',
         order: {
           version: 1,
+          rfqId: BigInt(1),
+          epoch: BigInt(0),
+          direction: 'long',
+          subaccountNonce: 0,
           chainId: 'injective-1',
-          contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+          laneVersion: BigInt(0),
+          minTotalFillQuantity: '0',
+          margin: '1000000000000000000',
+          triggerType: 'mark_price_gte',
+          quantity: '1000000000000000000',
+          worstPrice: '1000000000000000000',
+          deadlineMs: BigInt(1717000000000),
+          triggerPrice: '1000000000000000000',
           taker: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
-          epoch: BigInt(1),
-          rfqId: BigInt(1717000000),
+          contractAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
           marketId:
             '0x17ef48032cb24375ba7c2e39f384e56433bcab20cbee9a7357e4cba2eb00abe6',
-          subaccountNonce: 0,
-          laneVersion: BigInt(1),
-          deadlineMs: BigInt(1717000000),
-          direction: 'long',
-          quantity: '1',
-          margin: '1000000000000000000',
-          worstPrice: '1000000000000000000',
-          minTotalFillQuantity: '1',
-          triggerType: 'mark_price_gte',
-          triggerPrice: '1000000000000000000',
         },
-        signature: '0x1234567890abcdef',
       })
 
       expect(response).toBeDefined()

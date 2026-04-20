@@ -452,48 +452,19 @@ export class MsgBroadcasterWithPk {
     accountNumber,
   }: {
     feePayerSig: string
-    accountNumber: number
+    accountNumber?: number
     tx: Uint8Array | string
   }) {
-    return this.broadcastDirectSignWithFeePayerSig({
-      tx,
-      feePayerSig,
-      accountNumber,
-    })
-  }
+    if (ofacList.includes(this.privateKey.toHex())) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
 
-  /**
-   * EIP-712 (EVM wallet) path for broadcastWithFeePayerSig.
-   * Not yet implemented — EVM wallets sign via eth_signTypedData_v4,
-   * which requires a different pre-built tx format.
-   */
-  private async broadcastEip712WithFeePayerSig(_params: {
-    tx: Uint8Array | string
-    feePayerSig: string
-    accountNumber: number
-  }): Promise<never> {
-    throw new GeneralException(
-      new Error(
-        'broadcastWithFeePayerSig for EVM wallets is not yet implemented.',
-      ),
-    )
-  }
-
-  /**
-   * SIGN_MODE_DIRECT path for broadcastWithFeePayerSig.
-   * Signs the pre-built tx with the private key directly, appends the fee payer
-   * signature, and broadcasts to chain.
-   */
-  private async broadcastDirectSignWithFeePayerSig({
-    tx,
-    feePayerSig,
-    accountNumber,
-  }: {
-    feePayerSig: string
-    accountNumber: number
-    tx: Uint8Array | string
-  }) {
     const { chainId, privateKey } = this
+
+    const resolvedAccountNumber =
+      accountNumber ?? (await this.getAccountDetails()).accountNumber
 
     const txBytes = typeof tx === 'string' ? base64ToUint8Array(tx) : tx
     const txRaw = CosmosTxV1Beta1TxPb.TxRaw.fromBinary(txBytes)
@@ -504,7 +475,7 @@ export class MsgBroadcasterWithPk {
       chainId,
       bodyBytes: txRaw.bodyBytes,
       authInfoBytes: txRaw.authInfoBytes,
-      accountNumber: BigInt(accountNumber),
+      accountNumber: BigInt(resolvedAccountNumber),
     })
 
     const signDocBytes = CosmosTxV1Beta1TxPb.SignDoc.toBinary(signDoc)
