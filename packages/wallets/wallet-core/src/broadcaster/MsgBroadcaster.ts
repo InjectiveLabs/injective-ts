@@ -68,17 +68,17 @@ import {
 import { checkIfTxRunOutOfGas } from '../utils/index.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ThrownException } from '@injectivelabs/exceptions'
-import type { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import type { DirectSignResponse } from '@injectivelabs/sdk-ts/types'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
-import type {
-  TxResponse,
-  CreateTransactionWithSignersArgs,
-} from '@injectivelabs/sdk-ts/core/tx'
 import type {
   ChainId as ChainIdType,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
+import type {
+  TxResponse,
+  CosmosTxV1Beta1TxPb,
+  CreateTransactionWithSignersArgs,
+} from '@injectivelabs/sdk-ts/core/tx'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type {
   MsgBroadcasterOptions,

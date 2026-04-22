@@ -252,54 +252,50 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     order,
     signature,
   }: {
+    signature: string
     order: {
+      cid?: string
+      taker: string
+      rfqId: bigint
+      epoch: bigint
+      margin: string
       version: number
       chainId: string
-      contractAddress: string
-      taker: string
-      epoch: bigint
-      rfqId: bigint
       marketId: string
-      subaccountNonce: number
-      laneVersion: bigint
-      deadlineMs: bigint
-      direction: string
       quantity: string
-      margin: string
+      direction: string
       worstPrice: string
-      minTotalFillQuantity: string
+      deadlineMs: bigint
       triggerType: string
+      laneVersion: bigint
       triggerPrice: string
-      unfilledAction?: string
-      cid?: string
+      contractAddress: string
+      subaccountNonce: number
       allowedRelayer?: string
+      unfilledAction?: string
+      minTotalFillQuantity: string
     }
-    signature: string
   }) {
     const conditionalOrderInput =
       InjectiveRFQExchangeRpcPb.ConditionalOrderInput.create()
 
+    conditionalOrderInput.taker = order.taker
+    conditionalOrderInput.rfqId = order.rfqId
+    conditionalOrderInput.epoch = order.epoch
+    conditionalOrderInput.margin = order.margin
     conditionalOrderInput.version = order.version
     conditionalOrderInput.chainId = order.chainId
-    conditionalOrderInput.contractAddress = order.contractAddress
-    conditionalOrderInput.taker = order.taker
-    conditionalOrderInput.epoch = order.epoch
-    conditionalOrderInput.rfqId = order.rfqId
     conditionalOrderInput.marketId = order.marketId
-    conditionalOrderInput.subaccountNonce = order.subaccountNonce
-    conditionalOrderInput.laneVersion = order.laneVersion
-    conditionalOrderInput.deadlineMs = order.deadlineMs
-    conditionalOrderInput.direction = order.direction
     conditionalOrderInput.quantity = order.quantity
-    conditionalOrderInput.margin = order.margin
+    conditionalOrderInput.direction = order.direction
     conditionalOrderInput.worstPrice = order.worstPrice
-    conditionalOrderInput.minTotalFillQuantity = order.minTotalFillQuantity
+    conditionalOrderInput.deadlineMs = order.deadlineMs
     conditionalOrderInput.triggerType = order.triggerType
+    conditionalOrderInput.laneVersion = order.laneVersion
     conditionalOrderInput.triggerPrice = order.triggerPrice
-
-    if (order.unfilledAction) {
-      conditionalOrderInput.unfilledAction = order.unfilledAction
-    }
+    conditionalOrderInput.contractAddress = order.contractAddress
+    conditionalOrderInput.subaccountNonce = order.subaccountNonce
+    conditionalOrderInput.minTotalFillQuantity = order.minTotalFillQuantity
 
     if (order.cid) {
       conditionalOrderInput.cid = order.cid
@@ -309,8 +305,13 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       conditionalOrderInput.allowedRelayer = order.allowedRelayer
     }
 
+    if (order.unfilledAction) {
+      conditionalOrderInput.unfilledAction = order.unfilledAction
+    }
+
     const request =
       InjectiveRFQExchangeRpcPb.CreateConditionalOrderRequest.create()
+
     request.order = conditionalOrderInput
     request.signature = signature
 

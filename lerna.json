@@ -5,7 +5,7 @@
   "useNx": true,
   "command": {
     "version": {
-      "message": "chore: release"
+      "message": "chore: release [skip ci]"
     },
     "publish": {
       "conventionalCommits": true

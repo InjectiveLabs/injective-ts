@@ -210,6 +210,9 @@ export default class BaseGrpcConsumer {
    * ```
    * @template TRequest - The request message type
    * @template TResponse - The response message type
+   * @param options.noRetry - Set to true for non-idempotent RPCs (e.g. broadcast,
+   * prepare-auto-sign) where retrying after a server-side success could cause
+   * duplicate side effects. Defaults to false (retry with exponential backoff).
    */
   protected async executeGrpcCall<
     TRequest extends object = object,
@@ -220,12 +223,18 @@ export default class BaseGrpcConsumer {
       req: TRequest,
       options?: RpcOptions,
     ) => UnaryCall<TRequest, TResponse>,
+    options?: { noRetry?: boolean },
   ): Promise<TResponse> {
+    const executeCall = async () => {
+      const call = clientMethod(request, this.getRpcOptions())
+
+      return await call.response
+    }
+
     try {
-      return await this.retry(async () => {
-        const call = clientMethod(request, this.getRpcOptions())
-        return await call.response
-      })
+      return options?.noRetry
+        ? await executeCall()
+        : await this.retry(executeCall)
     } catch (e: unknown) {
       // Derive context from method name if not provided
       const errorContext = clientMethod.name || 'UnknownMethod'

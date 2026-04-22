@@ -1,0 +1,61 @@
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { IndexerGrpcTcDerivativesApi } from './IndexerGrpcTcDerivativesApi.js'
+
+const endpoints = getNetworkEndpoints(Network.Mainnet)
+const indexerGrpcTcDerivativesApi = new IndexerGrpcTcDerivativesApi(
+  endpoints.indexer,
+)
+
+describe('IndexerGrpcTcDerivativesApi', () => {
+  test('fetchOrdersHistory', async () => {
+    const response = await indexerGrpcTcDerivativesApi.fetchOrdersHistory({
+      perPage: 10,
+      accountAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+    })
+
+    expect(response).toBeDefined()
+    expect(response).toMatchObject({
+      next: expect.any(Array),
+      orders: expect.any(Array),
+    })
+  })
+
+  test('fetchTradesHistory', async () => {
+    const response = await indexerGrpcTcDerivativesApi.fetchTradesHistory({
+      perPage: 10,
+      accountAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+    })
+
+    expect(response).toBeDefined()
+    expect(response).toMatchObject({
+      next: expect.any(Array),
+      trades: expect.any(Array),
+    })
+  })
+
+  test('fetchPositions', async () => {
+    const response = await indexerGrpcTcDerivativesApi.fetchPositions({
+      perPage: 10,
+      accountAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+    })
+
+    expect(response).toBeDefined()
+    expect(response).toMatchObject({
+      next: expect.any(Array),
+      positions: expect.any(Array),
+    })
+  })
+
+  test('fetchOrders', async () => {
+    const response = await indexerGrpcTcDerivativesApi.fetchOrders({
+      perPage: 10,
+      accountAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+    })
+
+    expect(response).toBeDefined()
+    expect(response).toMatchObject({
+      next: expect.any(Array),
+      orders: expect.any(Array),
+    })
+  })
+})

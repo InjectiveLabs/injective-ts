@@ -147,18 +147,20 @@ export interface RFQConditionalOrderInput {
 
 export interface RFQConditionalOrder {
   rfqId: number
-  marketId: string
-  direction: string
+  error?: string
   margin: string
-  quantity: string
-  worstPrice: string
-  requestAddress: string
-  triggerPrice: string
   status: string
+  marketId: string
+  quantity: string
+  direction: string
   createdAt: number
   updatedAt: number
   expiresAt: number
+  eventTime: number
+  worstPrice: string
   triggerType: string
+  triggerPrice: string
+  requestAddress: string
   minTotalFillQuantity: string
 }
 
@@ -204,6 +206,14 @@ export interface TakerStreamEvents {
   }
   /** Request was acknowledged by server */
   request_ack: RFQTakerStreamAckData
+  /** Conditional order creation was acknowledged by server */
+  conditional_order_ack: {
+    order: RFQConditionalOrder
+  }
+  /** Conditional order lifecycle update (status transition, trigger, error) */
+  conditional_order_update: {
+    order: RFQConditionalOrder
+  }
   /** Error received from server */
   error: RFQStreamErrorData
   /** Pong received (response to ping) */

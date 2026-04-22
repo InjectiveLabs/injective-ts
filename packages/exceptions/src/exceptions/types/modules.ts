@@ -43,6 +43,7 @@ export const IndexerErrorModule = {
   Referral: 'referral',
   Spot: 'indexer-spot',
   Web3Gw: 'web3-gateway',
+  RfqGw: 'indexer-rfq-gw',
   Oracle: 'indexer-oracle',
   Account: 'indexer-account',
   Auction: 'indexer-auction',
