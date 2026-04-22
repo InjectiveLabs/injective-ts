@@ -177,6 +177,26 @@ export class IndexerWsTakerStream {
           }
           break
 
+        case 'conditional_order_ack':
+          if (response.conditionalOrderAck?.order) {
+            const order =
+              IndexerGrpcRfqTransformer.grpcConditionalOrderToConditionalOrder(
+                response.conditionalOrderAck.order,
+              )
+            this.emit('conditional_order_ack', { order })
+          }
+          break
+
+        case 'conditional_order_update':
+          if (response.conditionalOrder) {
+            const order =
+              IndexerGrpcRfqTransformer.grpcConditionalOrderToConditionalOrder(
+                response.conditionalOrder,
+              )
+            this.emit('conditional_order_update', { order })
+          }
+          break
+
         case 'error':
           if (response.error) {
             const error: RFQStreamErrorData = {

@@ -161,6 +161,7 @@ export class IndexerGrpcRfqTransformer {
     grpcOrder: GrpcRFQConditionalOrder,
   ): RFQConditionalOrder {
     return {
+      error: grpcOrder.error,
       margin: grpcOrder.margin,
       status: grpcOrder.status,
       marketId: grpcOrder.marketId,
@@ -173,6 +174,7 @@ export class IndexerGrpcRfqTransformer {
       createdAt: Number(grpcOrder.createdAt),
       updatedAt: Number(grpcOrder.updatedAt),
       expiresAt: Number(grpcOrder.expiresAt),
+      eventTime: Number(grpcOrder.eventTime),
       requestAddress: grpcOrder.requestAddress,
       minTotalFillQuantity: grpcOrder.minTotalFillQuantity,
     }

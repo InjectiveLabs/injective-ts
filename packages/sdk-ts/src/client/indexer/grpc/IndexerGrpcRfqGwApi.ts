@@ -15,128 +15,6 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveRfqGwRPCClient)
   }
 
-  async fetchPrepare({
-    cid,
-    margin,
-    expiry,
-    clientId,
-    marketId,
-    quantity,
-    direction,
-    worstPrice,
-    takerPubKey,
-    takerAddress,
-    unfilledAction,
-    subaccountNonce,
-    quotesWaitTimeMs,
-    takerAccountNumber,
-    takerAccountSequence,
-  }: {
-    cid?: string
-    margin: string
-    expiry?: number
-    clientId: string
-    marketId: string
-    quantity: string
-    direction: string
-    worstPrice: string
-    takerPubKey: string
-    takerAddress: string
-    subaccountNonce?: number
-    quotesWaitTimeMs?: number
-    takerAccountNumber?: number
-    takerAccountSequence?: number
-    unfilledAction?: {
-      limit?: { price: string }
-      market?: {}
-    }
-  }) {
-    const request = InjectiveRfqGwRpcPb.RFQGwPrepareRequestType.create()
-
-    if (clientId) {
-      request.clientId = clientId
-    }
-
-    if (marketId) {
-      request.marketId = marketId
-    }
-
-    if (direction) {
-      request.direction = direction
-    }
-
-    if (margin) {
-      request.margin = margin
-    }
-
-    if (quantity) {
-      request.quantity = quantity
-    }
-
-    if (worstPrice) {
-      request.worstPrice = worstPrice
-    }
-
-    if (takerAddress) {
-      request.takerAddress = takerAddress
-    }
-
-    if (takerPubKey) {
-      request.takerPubKey = takerPubKey
-    }
-
-    if (takerAccountNumber) {
-      request.takerAccountNumber = BigInt(takerAccountNumber)
-    }
-
-    if (takerAccountSequence) {
-      request.takerAccountSequence = BigInt(takerAccountSequence)
-    }
-
-    if (expiry) {
-      request.expiry = BigInt(expiry)
-    }
-
-    if (quotesWaitTimeMs) {
-      request.quotesWaitTimeMs = BigInt(quotesWaitTimeMs)
-    }
-
-    if (unfilledAction) {
-      const action =
-        InjectiveRfqGwRpcPb.RFQSettlementUnfilledActionType.create()
-
-      if (unfilledAction.limit) {
-        action.limit = unfilledAction.limit
-      }
-
-      if (unfilledAction.market) {
-        action.market = unfilledAction.market
-      }
-
-      request.unfilledAction = action
-    }
-
-    if (subaccountNonce !== undefined) {
-      request.subaccountNonce = subaccountNonce
-    }
-
-    if (cid) {
-      request.cid = cid
-    }
-
-    const requestMessage = InjectiveRfqGwRpcPb.PrepareRequest.create()
-    requestMessage.request = request
-
-    const response = await this.executeGrpcCall<
-      InjectiveRfqGwRpcPb.PrepareRequest,
-      InjectiveRfqGwRpcPb.PrepareResponse
-    >(requestMessage, this.client.prepare.bind(this.client), { noRetry: true })
-
-    return IndexerGrpcRfqGwTransformer.prepareResponseToPrepareResponse(
-      response,
-    )
-  }
-
   async fetchPrepareAutoSign({
     cid,
     margin,
@@ -153,7 +31,9 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     subaccountNonce,
     quotesWaitTimeMs,
     autosignAccountNumber,
+    feePayerAccountNumber,
     autosignAccountSequence,
+    feePayerAccountSequence,
   }: {
     cid?: string
     margin: string
@@ -169,7 +49,9 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     subaccountNonce?: number
     quotesWaitTimeMs?: number
     autosignAccountNumber?: number
+    feePayerAccountNumber?: number
     autosignAccountSequence?: number
+    feePayerAccountSequence?: number
     unfilledAction?: RFQSettlementUnfilledActionType
   }) {
     const request = InjectiveRfqGwRpcPb.RFQGwPrepareAutoSignRequestType.create()
@@ -212,6 +94,14 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
 
     if (autosignAccountSequence) {
       request.autosignAccountSequence = BigInt(autosignAccountSequence)
+    }
+
+    if (feePayerAccountNumber) {
+      request.feePayerAccountNumber = BigInt(feePayerAccountNumber)
+    }
+
+    if (feePayerAccountSequence) {
+      request.feePayerAccountSequence = BigInt(feePayerAccountSequence)
     }
 
     if (takerAddress) {
@@ -262,124 +152,5 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     return IndexerGrpcRfqGwTransformer.prepareAutoSignResponseToResponse(
       response,
     )
-  }
-
-  async fetchPrepareEip712({
-    cid,
-    margin,
-    expiry,
-    clientId,
-    marketId,
-    quantity,
-    direction,
-    worstPrice,
-    takerPubKey,
-    takerAddress,
-    unfilledAction,
-    subaccountNonce,
-    quotesWaitTimeMs,
-    takerAccountNumber,
-    takerAccountSequence,
-  }: {
-    cid?: string
-    margin: string
-    expiry?: number
-    clientId: string
-    marketId: string
-    quantity: string
-    direction: string
-    worstPrice: string
-    takerPubKey: string
-    takerAddress: string
-    subaccountNonce?: number
-    quotesWaitTimeMs?: number
-    takerAccountNumber?: number
-    takerAccountSequence?: number
-    unfilledAction?: RFQSettlementUnfilledActionType
-  }) {
-    const request = InjectiveRfqGwRpcPb.RFQGwPrepareEip712RequestType.create()
-
-    if (clientId) {
-      request.clientId = clientId
-    }
-
-    if (marketId) {
-      request.marketId = marketId
-    }
-
-    if (direction) {
-      request.direction = direction
-    }
-
-    if (margin) {
-      request.margin = margin
-    }
-
-    if (quantity) {
-      request.quantity = quantity
-    }
-
-    if (worstPrice) {
-      request.worstPrice = worstPrice
-    }
-
-    if (takerAddress) {
-      request.takerAddress = takerAddress
-    }
-
-    if (takerPubKey) {
-      request.takerPubKey = takerPubKey
-    }
-
-    if (takerAccountNumber) {
-      request.takerAccountNumber = BigInt(takerAccountNumber)
-    }
-
-    if (takerAccountSequence) {
-      request.takerAccountSequence = BigInt(takerAccountSequence)
-    }
-
-    if (expiry) {
-      request.expiry = BigInt(expiry)
-    }
-
-    if (quotesWaitTimeMs) {
-      request.quotesWaitTimeMs = BigInt(quotesWaitTimeMs)
-    }
-
-    if (unfilledAction) {
-      const action =
-        InjectiveRfqGwRpcPb.RFQSettlementUnfilledActionType.create()
-
-      if (unfilledAction.limit) {
-        action.limit = unfilledAction.limit
-      }
-
-      if (unfilledAction.market) {
-        action.market = unfilledAction.market
-      }
-
-      request.unfilledAction = action
-    }
-
-    if (subaccountNonce !== undefined) {
-      request.subaccountNonce = subaccountNonce
-    }
-
-    if (cid) {
-      request.cid = cid
-    }
-
-    const requestMessage = InjectiveRfqGwRpcPb.PrepareEip712Request.create()
-    requestMessage.request = request
-
-    const response = await this.executeGrpcCall<
-      InjectiveRfqGwRpcPb.PrepareEip712Request,
-      InjectiveRfqGwRpcPb.PrepareEip712Response
-    >(requestMessage, this.client.prepareEip712.bind(this.client), {
-      noRetry: true,
-    })
-
-    return IndexerGrpcRfqGwTransformer.prepareEip712ResponseToResponse(response)
   }
 }
