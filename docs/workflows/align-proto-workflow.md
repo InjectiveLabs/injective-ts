@@ -76,6 +76,34 @@ When you run `/align-proto`, the AI follows this exact workflow:
   - ✅ New services (new `*_rpc_pb.d.ts` files)
   - ✅ Modified services (existing files with changes)
   - ✅ Removed services (files that disappeared)
+- For modified services, AI does a **field-level audit** (see 6a) instead of assuming additive-only
+
+**6a. Field-Level Audit of Modified Services**
+
+When an existing `*_rpc_pb.d.ts` is modified, diff each message body individually using
+`awk '/^export interface MessageName/,/^}/'` on old and new versions (raw `diff` is noisy
+because the generator reorders messages between runs). For each modified service, check:
+
+- ✅ **New / renamed / removed RPC methods** — compare `protobuf rpc:` entries in `*_rpc_pb.client.d.ts`
+- ✅ **New / renamed / removed message types** — compare `export interface` declarations
+- ✅ **Field additions, removals, renumberings on request / response messages**
+- ✅ **New enum values in `messageType` string fields** — WS stream wrappers (e.g.
+  `TakerStreamResponse.messageType`) encode event kinds as strings in a doc comment like
+  `Type: 'a', 'b', 'c'`. Added values need new `case` arms in the WS stream handler, even when
+  no new gRPC method was added.
+- ✅ **New sibling payload fields on stream wrappers** (e.g. a new `conditionalOrder?: ...`
+  next to existing `quote?`, `requestAck?`) — these deliver the payload for new `messageType` values
+- ✅ **Pre-existing gaps in WS stream switches** — message types already in the proto that the
+  SDK never handled; flag them and offer to close while editing the file
+
+Map each detected change to SDK-side updates:
+
+| Change | SDK-side action |
+|---|---|
+| New field on request | Add optional param to `fetch*` / `stream*`; wire onto request builder |
+| New field on response | Extend SDK type interface + map it in the transformer |
+| Removed method / type | Prune `fetch*` / `stream*`, transformer method, type interface(s), spec tests |
+| New `messageType` enum value | Add `case` arm in WS handler + new key in `*StreamEvents` |
 
 **7. Show Changes & Ask Which to Implement**
 
@@ -88,7 +116,8 @@ When you run `/align-proto`, the AI follows this exact workflow:
 - AI analyzes selected services
 - AI parses proto files to extract RPC methods, types, fields
 - AI generates proposal showing:
-  - Files to create with line estimates
+  - For **new services**: files to create with line estimates
+  - For **modified services**: a surgical edit list — specific add / remove / rename per field per existing file. Call out breaking removals explicitly (they affect downstream consumers)
   - Methods to implement
   - Field breakdowns
   - Export updates needed
@@ -96,13 +125,14 @@ When you run `/align-proto`, the AI follows this exact workflow:
 **9. User Approval → Implementation**
 
 - AI asks: "Proceed with implementation?"
-- If you approve → AI creates all files:
+- If you approve → AI creates or edits files:
   - Types interfaces
   - Transformer classes
   - API classes (fetch methods)
   - Test files for API classes (one test per method, following existing `.spec.ts` patterns)
   - Stream API classes (if streaming methods exist)
   - Stream V2 test files (constructor, subscription, callback validation tests)
+  - WS stream handler (`IndexerWs*Stream.ts`) `switch` arms for bidirectional streams — do NOT generate a new `*StreamV2.ts` class for these
   - Updates index.ts files with exports
 
 **10. Validation**

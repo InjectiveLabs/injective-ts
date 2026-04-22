@@ -81,9 +81,28 @@ Run `pnpm install` in project root. If install fails, show error and exit.
 
 Compare backup vs new proto files. Detect:
 
-- New services (new `*_rpc_pb.d.ts` files)
-- Modified services (existing files with changes)
-- Removed services (files that disappeared)
+- **New services** (new `*_rpc_pb.d.ts` files)
+- **Modified services** (existing files with changes) — see Step 7a for field-level audit
+- **Removed services** (files that disappeared)
+
+Use `diff -rq` for a file-level summary, then `diff` individual files for details. For modified services, use `awk '/^export interface MessageName/,/^}/'` on both versions to isolate and compare individual message definitions cleanly (raw `.d.ts` diffs are hard to read because messages are reordered between generator runs).
+
+### Step 7a: Field-Level Audit of Modified Services
+
+When an existing `*_rpc_pb.d.ts` is modified, do NOT assume the changes are purely additive. Check for each of these change types:
+
+1. **New/renamed/removed RPC methods** — compare `protobuf rpc:` entries in `*_rpc_pb.client.d.ts`
+2. **New/renamed/removed message types** — compare `export interface` declarations
+3. **New/renamed/removed fields on request/response messages** — diff each message body individually
+4. **New enum values in `messageType` string fields** — check doc comments like `Type: 'a', 'b', 'c'` on bidirectional/WS stream wrapper responses (e.g. `TakerStreamResponse.messageType`). Added values require new `case` arms in the corresponding WS stream handler, even when no new gRPC method was added.
+5. **New oneof/payload fields on stream wrappers** — e.g. a new `conditionalOrder?: ...` sibling to existing `quote?`, `requestAck?`. These deliver payload for the new `messageType` value above.
+
+For each detected change, map it to SDK-side updates:
+- New field on request → add optional param to the existing `fetch*` / `stream*` method; wire onto the request builder
+- New field on response → extend the SDK type interface + map it in the transformer
+- Removed method/type → prune the `fetch*` / `stream*` method, transformer method, type interface(s), and spec tests
+- New `messageType` value → add `case` arm in WS stream handler + new event key in the `*StreamEvents` interface
+- Pre-existing gaps in WS stream switches (message types in proto that the SDK never handled) — flag them; offer to close while you're already editing the file
 
 ### Step 8: Show Changes & Ask Which to Implement
 
@@ -104,14 +123,18 @@ For each selected service:
 2. Categorize methods:
    - **Unary RPC** → implement as `fetch*` method
    - **Server Streaming** → implement as `stream*` method
+   - **Bidirectional/WS stream** (e.g. `TakerStream`, `MakerStream`) → extend existing `IndexerWs*Stream.ts` handlers; do NOT generate a new `*StreamV2.ts` class
 
 3. Find the most similar existing implementation as reference:
    - Simple query: like `IndexerGrpcMetaApi`
    - Paginated: like `IndexerGrpcRfqApi`
    - Stream-heavy: like `IndexerGrpcSpotStreamV2`
    - Complex nested: like `IndexerGrpcDerivativesApi`
+   - WS bidirectional: like `IndexerWsTakerStream` / `IndexerWsMakerStream`
 
-4. Show file list, method breakdown, line estimates. Ask for approval.
+4. For **modified services**, the proposal is a surgical edit list — NOT a file-creation list. Enumerate each existing file that needs editing with the specific add/remove/rename per field. Call out breaking removals explicitly (they affect downstream consumers).
+
+5. Show file list (or edit list), method breakdown, line estimates. Ask for approval.
 
 ### Step 10: Implementation
 
