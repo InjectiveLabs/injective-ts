@@ -56,51 +56,28 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
   }) {
     const request = InjectiveRfqGwRpcPb.RFQGwPrepareAutoSignRequestType.create()
 
-    if (clientId) {
-      request.clientId = clientId
-    }
+    request.clientId = clientId
+    request.marketId = marketId
+    request.direction = direction
+    request.margin = margin
+    request.quantity = quantity
+    request.worstPrice = worstPrice
+    request.autosignAddress = autosignAddress
+    request.autosignPubKey = autosignPubKey
 
-    if (marketId) {
-      request.marketId = marketId
-    }
-
-    if (direction) {
-      request.direction = direction
-    }
-
-    if (margin) {
-      request.margin = margin
-    }
-
-    if (quantity) {
-      request.quantity = quantity
-    }
-
-    if (worstPrice) {
-      request.worstPrice = worstPrice
-    }
-
-    if (autosignAddress) {
-      request.autosignAddress = autosignAddress
-    }
-
-    if (autosignPubKey) {
-      request.autosignPubKey = autosignPubKey
-    }
-
-    if (autosignAccountNumber) {
+    if (autosignAccountNumber !== undefined) {
       request.autosignAccountNumber = BigInt(autosignAccountNumber)
     }
 
-    if (autosignAccountSequence) {
+    if (autosignAccountSequence !== undefined) {
       request.autosignAccountSequence = BigInt(autosignAccountSequence)
     }
 
-    if (feePayerAccountNumber) {
+    if (feePayerAccountNumber !== undefined) {
       request.feePayerAccountNumber = BigInt(feePayerAccountNumber)
     }
 
-    if (feePayerAccountSequence) {
+    if (feePayerAccountSequence !== undefined) {
       request.feePayerAccountSequence = BigInt(feePayerAccountSequence)
     }
 
@@ -108,11 +85,11 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       request.takerAddress = takerAddress
     }
 
-    if (expiry) {
+    if (expiry !== undefined) {
       request.expiry = BigInt(expiry)
     }
 
-    if (quotesWaitTimeMs) {
+    if (quotesWaitTimeMs !== undefined) {
       request.quotesWaitTimeMs = BigInt(quotesWaitTimeMs)
     }
 

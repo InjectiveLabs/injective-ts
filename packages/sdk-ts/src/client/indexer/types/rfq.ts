@@ -147,7 +147,7 @@ export interface RFQConditionalOrderInput {
 
 export interface RFQConditionalOrder {
   rfqId: number
-  error: string
+  error?: string
   margin: string
   status: string
   marketId: string

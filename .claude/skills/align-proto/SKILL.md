@@ -479,7 +479,7 @@ When implementing a new service, add the module to the exceptions package and bu
 - [ ] Client methods bound: `this.client.method.bind(this.client)`
 - [ ] Stream callbacks validated: `typeof callback !== 'function'`
 - [ ] JSDoc comments match existing style: `/** @category */`
-- [ ] Alphabetical ordering in index.ts exports
+- [ ] Length-sorted (shortest → longest) ordering in index.ts exports (visual pyramid, matches existing sdk-ts convention — not alphabetical)
 - [ ] No type naming conflicts with existing types
 - [ ] Test file created with one test per API method
 - [ ] Stream V2 test file created (if streaming methods exist)

@@ -108,11 +108,11 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
       request.sortDirection = sortDirection
     }
 
-    if (startTime) {
+    if (startTime !== undefined && startTime !== null) {
       request.startTime = BigInt(startTime)
     }
 
-    if (endTime) {
+    if (endTime !== undefined && endTime !== null) {
       request.endTime = BigInt(endTime)
     }
 
