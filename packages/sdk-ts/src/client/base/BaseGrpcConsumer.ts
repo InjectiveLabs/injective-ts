@@ -27,9 +27,6 @@ export default class BaseGrpcConsumer {
     this.transport = new GrpcWebRpcTransport(endpoint, options)
   }
 
-  /**
-   * @deprecated Pass options into the constructor instead
-   */
   public setMetadata(map: Record<string, string>) {
     this.metadata = map
     // Recreate transport with new metadata, preserving existing options

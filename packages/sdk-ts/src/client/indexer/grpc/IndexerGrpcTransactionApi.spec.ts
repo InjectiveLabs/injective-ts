@@ -4,6 +4,8 @@ import {
   DEFAULT_BRIDGE_FEE_DENOM,
   DEFAULT_BRIDGE_FEE_PRICE,
 } from '@injectivelabs/utils'
+import { getEthereumAddress } from '../../../utils/index.js'
+import MsgSend from '../../../core/modules/bank/msgs/MsgSend.js'
 import { IndexerGrpcTransactionApi } from './IndexerGrpcTransactionApi.js'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb'
@@ -12,6 +14,14 @@ const endpoints = getNetworkEndpoints(Network.Mainnet)
 const indexerGrpcTransactionApi = new IndexerGrpcTransactionApi(
   endpoints.indexer,
 )
+const msg = MsgSend.fromJSON({
+  srcInjectiveAddress: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+  dstInjectiveAddress: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+  amount: {
+    amount: '1000000000000000000',
+    denom: 'inj',
+  },
+})
 
 describe('IndexerGrpcTransactionApi', () => {
   test('fetchFeePayer', async () => {
@@ -34,9 +44,11 @@ describe('IndexerGrpcTransactionApi', () => {
   test('prepareTxRequest', async () => {
     try {
       const args = {
-        address: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z' as AccountAddress,
+        address: getEthereumAddress(
+          'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+        ) as AccountAddress,
         chainId: 1 as EvmChainId,
-        message: { test: 'message' },
+        message: msg.toWeb3Gw(),
         estimateGas: true,
         gasLimit: DEFAULT_GAS_LIMIT,
         feeDenom: DEFAULT_BRIDGE_FEE_DENOM,
@@ -62,9 +74,11 @@ describe('IndexerGrpcTransactionApi', () => {
   test('prepareExchangeTxRequest', async () => {
     try {
       const args = {
-        address: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z' as AccountAddress,
+        address: getEthereumAddress(
+          'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
+        ) as AccountAddress,
         chainId: 1 as EvmChainId,
-        message: { test: 'exchange message' },
+        message: msg.toWeb3Gw(),
         estimateGas: false,
         gasLimit: 200000,
         feeDenom: DEFAULT_BRIDGE_FEE_DENOM,
@@ -93,7 +107,7 @@ describe('IndexerGrpcTransactionApi', () => {
     try {
       const args = {
         address: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
-        message: { test: 'cosmos message' },
+        message: msg.toWeb3Gw(),
         estimateGas: true,
         gasLimit: DEFAULT_GAS_LIMIT,
         feeDenom: DEFAULT_BRIDGE_FEE_DENOM,
