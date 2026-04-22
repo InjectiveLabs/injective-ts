@@ -61,7 +61,6 @@ import {
   getAminoStdSignDoc,
   getEip712TypedData,
   createWeb3Extension,
-  CosmosTxV1Beta1TxPb,
   getEip712TypedDataV2,
   createTxRawFromSigResponse,
   createTransactionWithSigners,
@@ -72,13 +71,14 @@ import type { ThrownException } from '@injectivelabs/exceptions'
 import type { DirectSignResponse } from '@injectivelabs/sdk-ts/types'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
 import type {
-  TxResponse,
-  CreateTransactionWithSignersArgs,
-} from '@injectivelabs/sdk-ts/core/tx'
-import type {
   ChainId as ChainIdType,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
+import type {
+  TxResponse,
+  CosmosTxV1Beta1TxPb,
+  CreateTransactionWithSignersArgs,
+} from '@injectivelabs/sdk-ts/core/tx'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type {
   MsgBroadcasterOptions,
@@ -345,230 +345,6 @@ export class MsgBroadcaster {
       }
 
       throw new TransactionException(new Error(error))
-    }
-  }
-
-  /**
-   * Sign and broadcast a pre-built transaction that already includes
-   * a fee payer's signature. Routes to the appropriate signing path
-   * based on wallet type:
-   *   - Cosmos wallets: SIGN_MODE_DIRECT, direct broadcast to chain (pass `tx` + `accountNumber`)
-   *   - EVM wallets: EIP-712, broadcast via web3gw (pass `data` + `feePayer` + `pubKeyType`)
-   */
-  async broadcastWithFeePayerSig({
-    tx,
-    data,
-    feePayer,
-    pubKeyType,
-    feePayerSig,
-    accountNumber,
-    injectiveAddress,
-  }: {
-    /** Pre-built EIP-712 JSON — for EVM wallets (from fetchPrepareEip712AutoSign) */
-    data?: string
-    feePayerSig: string
-    /** Fee payer address — required for EVM path */
-    feePayer?: string
-    /** Fee payer pub key type — required for EVM path */
-    pubKeyType?: string
-    /** Taker account number — required for cosmos path */
-    accountNumber?: number
-    /** Pre-built tx bytes — for SIGN_MODE_DIRECT (cosmos wallets) */
-    tx?: Uint8Array | string
-    injectiveAddress: string
-  }): Promise<TxResponse> {
-    const { walletStrategy } = this
-
-    const ethereumAddress = getEthereumSignerAddress(injectiveAddress)
-
-    if (ofacList.includes(ethereumAddress)) {
-      throw new GeneralException(
-        new Error('You cannot execute this transaction'),
-      )
-    }
-
-    try {
-      return isCosmosWallet(walletStrategy.wallet)
-        ? await this.broadcastDirectSignWithFeePayerSig({
-            tx: tx!,
-            feePayerSig,
-            injectiveAddress,
-            accountNumber: accountNumber!,
-          })
-        : await this.broadcastEip712WithFeePayerSig({
-            data: data!,
-            feePayerSig,
-            injectiveAddress,
-            feePayer: feePayer!,
-            pubKeyType: pubKeyType!,
-          })
-    } catch (e) {
-      const error = e as any
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
-    }
-  }
-
-  /**
-   * EIP-712 (EVM wallet) path for broadcastWithFeePayerSig.
-   * Signs the pre-built EIP-712 typed data returned by the indexer's
-   * fetchPrepareEip712AutoSign endpoint, then broadcasts via web3gw
-   * which already handles fee payer sig assembly.
-   */
-  private async broadcastEip712WithFeePayerSig({
-    data,
-    feePayer,
-    pubKeyType,
-    feePayerSig,
-    injectiveAddress,
-  }: {
-    data: string
-    feePayer: string
-    pubKeyType: string
-    feePayerSig: string
-    injectiveAddress: string
-  }): Promise<TxResponse> {
-    const { endpoints, walletStrategy } = this
-    const ethereumAddress = getEthereumSignerAddress(injectiveAddress)
-
-    const evmChainId = await this.getEvmChainId()
-
-    if (!evmChainId) {
-      throw new GeneralException(new Error('Please provide evmChainId'))
-    }
-
-    walletStrategy.emit(
-      WalletStrategyEmitterEventType.TransactionPreparationStart,
-    )
-
-    const signature = await walletStrategy.signEip712TypedData(
-      data,
-      ethereumAddress,
-    )
-
-    walletStrategy.emit(
-      WalletStrategyEmitterEventType.TransactionPreparationEnd,
-    )
-    walletStrategy.emit(
-      WalletStrategyEmitterEventType.TransactionBroadcastStart,
-    )
-
-    const transactionApi = new IndexerGrpcWeb3GwApi(
-      endpoints.web3gw || endpoints.indexer,
-    )
-
-    const txResponse = { data, feePayer, feePayerSig, pubKeyType } as any
-
-    const response = await transactionApi.broadcastTxRequest({
-      signature,
-      message: [],
-      txResponse,
-      chainId: evmChainId,
-    })
-
-    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
-
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
-  }
-
-  /**
-   * Cosmos (SIGN_MODE_DIRECT) path for broadcastWithFeePayerSig.
-   * Signs the pre-built tx, appends the fee payer signature, and broadcasts.
-   */
-  private async broadcastDirectSignWithFeePayerSig({
-    tx,
-    feePayerSig,
-    accountNumber,
-    injectiveAddress,
-  }: {
-    tx: Uint8Array | string
-    feePayerSig: string
-    accountNumber: number
-    injectiveAddress: string
-  }): Promise<TxResponse> {
-    const {
-      chainId,
-      endpoints,
-      walletStrategy,
-      txTimeout: txTimeoutInBlocks,
-    } = this
-
-    const txBytes = typeof tx === 'string' ? base64ToUint8Array(tx) : tx
-    const txRaw = CosmosTxV1Beta1TxPb.TxRaw.fromBinary(txBytes)
-
-    const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
-    const canDisableCosmosGasCheck = (
-      [Wallet.Keplr, Wallet.OWallet] as WalletType[]
-    ).includes(walletStrategy.wallet)
-
-    if (canDisableCosmosGasCheck && cosmosWallet.disableGasCheck) {
-      cosmosWallet.disableGasCheck(chainId)
-    }
-
-    try {
-      walletStrategy.emit(
-        WalletStrategyEmitterEventType.TransactionPreparationStart,
-      )
-
-      console.log('injective-ts - doing signing', {
-        txRaw,
-        chainId,
-        accountNumber,
-        address: injectiveAddress,
-      })
-
-      const directSignResponse = (await walletStrategy.signCosmosTransaction({
-        txRaw,
-        chainId,
-        accountNumber,
-        address: injectiveAddress,
-      })) as DirectSignResponse
-
-      walletStrategy.emit(
-        WalletStrategyEmitterEventType.TransactionPreparationEnd,
-      )
-
-      console.log('injective-ts - directSignResponse', directSignResponse)
-
-      const signedTxRaw = CosmosTxV1Beta1TxPb.TxRaw.create()
-      signedTxRaw.bodyBytes = directSignResponse.signed.bodyBytes
-      signedTxRaw.authInfoBytes = directSignResponse.signed.authInfoBytes
-
-      const takerSig = base64ToUint8Array(
-        directSignResponse.signature.signature,
-      )
-      const feePayerSigBytes = feePayerSig.startsWith('0x')
-        ? hexToUint8Array(feePayerSig.slice(2))
-        : base64ToUint8Array(feePayerSig)
-
-      signedTxRaw.signatures = [takerSig, feePayerSigBytes]
-
-      walletStrategy.emit(
-        WalletStrategyEmitterEventType.TransactionBroadcastStart,
-      )
-
-      console.log('injective-ts - endpoints.grpc', endpoints.grpc)
-
-      const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(
-        signedTxRaw,
-        { txTimeout: txTimeoutInBlocks },
-      )
-
-      walletStrategy.emit(
-        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
-      )
-
-      return txResponse
-    } finally {
-      if (canDisableCosmosGasCheck && cosmosWallet.enableGasCheck) {
-        cosmosWallet.enableGasCheck(chainId)
-      }
     }
   }
 
