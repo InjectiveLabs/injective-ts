@@ -150,10 +150,10 @@ export class IndexerGrpcRfqTransformer {
     response: InjectiveRFQRpcPb.ListSettlementResponse,
   ): SettlementsResponse {
     return {
+      next: response.next,
       settlements: response.settlements.map(
         IndexerGrpcRfqTransformer.grpcRfqSettlementToRfqSettlement,
       ),
-      next: response.next,
     }
   }
 
@@ -161,19 +161,21 @@ export class IndexerGrpcRfqTransformer {
     grpcOrder: GrpcRFQConditionalOrder,
   ): RFQConditionalOrder {
     return {
-      rfqId: Number(grpcOrder.rfqId),
-      marketId: grpcOrder.marketId,
-      direction: grpcOrder.direction,
+      error: grpcOrder.error,
       margin: grpcOrder.margin,
-      quantity: grpcOrder.quantity,
-      worstPrice: grpcOrder.worstPrice,
-      requestAddress: grpcOrder.requestAddress,
-      triggerPrice: grpcOrder.triggerPrice,
       status: grpcOrder.status,
+      marketId: grpcOrder.marketId,
+      quantity: grpcOrder.quantity,
+      rfqId: Number(grpcOrder.rfqId),
+      direction: grpcOrder.direction,
+      worstPrice: grpcOrder.worstPrice,
+      triggerType: grpcOrder.triggerType,
+      triggerPrice: grpcOrder.triggerPrice,
       createdAt: Number(grpcOrder.createdAt),
       updatedAt: Number(grpcOrder.updatedAt),
       expiresAt: Number(grpcOrder.expiresAt),
-      triggerType: grpcOrder.triggerType,
+      eventTime: Number(grpcOrder.eventTime),
+      requestAddress: grpcOrder.requestAddress,
       minTotalFillQuantity: grpcOrder.minTotalFillQuantity,
     }
   }
@@ -182,10 +184,10 @@ export class IndexerGrpcRfqTransformer {
     response: InjectiveRFQRpcPb.ListConditionalOrdersResponse,
   ): RFQConditionalOrdersResponse {
     return {
+      next: response.next,
       orders: response.orders.map(
         IndexerGrpcRfqTransformer.grpcConditionalOrderToConditionalOrder,
       ),
-      next: response.next,
     }
   }
 }

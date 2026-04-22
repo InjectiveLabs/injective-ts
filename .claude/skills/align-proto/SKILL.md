@@ -39,7 +39,8 @@ Ask the user which proto package to sync:
 ### Step 2: Version Selection
 
 - Ask: "What version should we bump to?"
-- User provides target version (e.g., `1.18.7`)
+- User provides target version (e.g., `1.18.7`) or says "latest"
+- If user says "latest", resolve it via `npm view @injectivelabs/{package-name} version`
 
 ### Step 3: Create Todo List
 
@@ -80,9 +81,28 @@ Run `pnpm install` in project root. If install fails, show error and exit.
 
 Compare backup vs new proto files. Detect:
 
-- New services (new `*_rpc_pb.d.ts` files)
-- Modified services (existing files with changes)
-- Removed services (files that disappeared)
+- **New services** (new `*_rpc_pb.d.ts` files)
+- **Modified services** (existing files with changes) — see Step 7a for field-level audit
+- **Removed services** (files that disappeared)
+
+Use `diff -rq` for a file-level summary, then `diff` individual files for details. For modified services, use `awk '/^export interface MessageName/,/^}/'` on both versions to isolate and compare individual message definitions cleanly (raw `.d.ts` diffs are hard to read because messages are reordered between generator runs).
+
+### Step 7a: Field-Level Audit of Modified Services
+
+When an existing `*_rpc_pb.d.ts` is modified, do NOT assume the changes are purely additive. Check for each of these change types:
+
+1. **New/renamed/removed RPC methods** — compare `protobuf rpc:` entries in `*_rpc_pb.client.d.ts`
+2. **New/renamed/removed message types** — compare `export interface` declarations
+3. **New/renamed/removed fields on request/response messages** — diff each message body individually
+4. **New enum values in `messageType` string fields** — check doc comments like `Type: 'a', 'b', 'c'` on bidirectional/WS stream wrapper responses (e.g. `TakerStreamResponse.messageType`). Added values require new `case` arms in the corresponding WS stream handler, even when no new gRPC method was added.
+5. **New oneof/payload fields on stream wrappers** — e.g. a new `conditionalOrder?: ...` sibling to existing `quote?`, `requestAck?`. These deliver payload for the new `messageType` value above.
+
+For each detected change, map it to SDK-side updates:
+- New field on request → add optional param to the existing `fetch*` / `stream*` method; wire onto the request builder
+- New field on response → extend the SDK type interface + map it in the transformer
+- Removed method/type → prune the `fetch*` / `stream*` method, transformer method, type interface(s), and spec tests
+- New `messageType` value → add `case` arm in WS stream handler + new event key in the `*StreamEvents` interface
+- Pre-existing gaps in WS stream switches (message types in proto that the SDK never handled) — flag them; offer to close while you're already editing the file
 
 ### Step 8: Show Changes & Ask Which to Implement
 
@@ -103,26 +123,32 @@ For each selected service:
 2. Categorize methods:
    - **Unary RPC** → implement as `fetch*` method
    - **Server Streaming** → implement as `stream*` method
+   - **Bidirectional/WS stream** (e.g. `TakerStream`, `MakerStream`) → extend existing `IndexerWs*Stream.ts` handlers; do NOT generate a new `*StreamV2.ts` class
 
 3. Find the most similar existing implementation as reference:
    - Simple query: like `IndexerGrpcMetaApi`
    - Paginated: like `IndexerGrpcRfqApi`
    - Stream-heavy: like `IndexerGrpcSpotStreamV2`
    - Complex nested: like `IndexerGrpcDerivativesApi`
+   - WS bidirectional: like `IndexerWsTakerStream` / `IndexerWsMakerStream`
 
-4. Show file list, method breakdown, line estimates. Ask for approval.
+4. For **modified services**, the proposal is a surgical edit list — NOT a file-creation list. Enumerate each existing file that needs editing with the specific add/remove/rename per field. Call out breaking removals explicitly (they affect downstream consumers).
+
+5. Show file list (or edit list), method breakdown, line estimates. Ask for approval.
 
 ### Step 10: Implementation
 
 Create files in dependency order:
 
 ```
-1. types/*.ts                          (no dependencies)
-2. transformers/*Transformer.ts        (depends on types)
-3. transformers/*StreamTransformer.ts  (depends on main transformer)
-4. grpc/*Api.ts                        (depends on types + transformers)
-5. grpc_stream/streamV2/*StreamV2.ts   (depends on stream transformer)
-6. Update all index.ts exports         (depends on all above)
+1. types/*.ts                                   (no dependencies)
+2. transformers/*Transformer.ts                  (depends on types)
+3. transformers/*StreamTransformer.ts            (depends on main transformer)
+4. grpc/*Api.ts                                  (depends on types + transformers)
+5. grpc/*Api.spec.ts                             (depends on API class + transformers)
+6. grpc_stream/streamV2/*StreamV2.ts             (depends on stream transformer)
+7. grpc_stream/streamV2/*StreamV2.spec.ts        (depends on stream class)
+8. Update all index.ts exports                   (depends on all above)
 ```
 
 #### Required files (all services):
@@ -130,11 +156,13 @@ Create files in dependency order:
 - `types/*.ts` - TypeScript interfaces
 - `transformers/IndexerGrpc*Transformer.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Data transformation
 - `grpc/IndexerGrpc*Api.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Main API class
+- `grpc/IndexerGrpc*Api.spec.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Test file for the API class
 
 #### Optional files (if streaming methods exist):
 
 - `transformers/Indexer*StreamTransformer.ts` - Stream transformation
 - `grpc_stream/streamV2/IndexerGrpc*StreamV2.ts` - Stream API class
+- `grpc_stream/streamV2/IndexerGrpc*StreamV2.spec.ts` - Stream test file
 
 #### Export updates required:
 
@@ -331,6 +359,107 @@ export class IndexerGrpc[Service]StreamV2 {
 }
 ```
 
+### Test File
+
+```typescript
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { IndexerGrpc[Service]Api } from './IndexerGrpc[Service]Api.js'
+import type { IndexerGrpc[Service]Transformer } from '../transformers/index.js'
+
+const endpoints = getNetworkEndpoints(Network.Mainnet)
+const indexerGrpc[service]Api = new IndexerGrpc[Service]Api(endpoints.indexer)
+
+describe('IndexerGrpc[Service]Api', () => {
+  test('fetchItems', async () => {
+    try {
+      const response = await indexerGrpc[service]Api.fetchItems({
+        // provide realistic test parameters
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpc[Service]Transformer.listResponseToItems
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpc[Service]Api.fetchItems => ' + (e as any).message,
+      )
+    }
+  })
+})
+```
+
+**Test file conventions:**
+- One test per API method
+- Use `Network.Mainnet` endpoints
+- Wrap each test in try/catch (these hit real endpoints)
+- Use `expect.objectContaining` with transformer return types for type validation
+- Import the transformer as `type` only (used for type checking, not runtime)
+
+### Stream V2 Test File
+
+```typescript
+import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import { IndexerGrpc[Service]StreamV2 } from './IndexerGrpc[Service]StreamV2.js'
+
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
+
+describe('IndexerGrpc[Service]StreamV2', () => {
+  let stream: IndexerGrpc[Service]StreamV2
+
+  beforeEach(() => {
+    stream = new IndexerGrpc[Service]StreamV2(endpoints.indexer)
+  })
+
+  describe('constructor', () => {
+    it('should create instance with endpoint', () => {
+      expect(stream).toBeDefined()
+      expect(stream).toBeInstanceOf(IndexerGrpc[Service]StreamV2)
+    })
+
+    it('should create instance with endpoint and metadata', () => {
+      const metadata = { 'x-custom-header': 'test-value' }
+      const s = new IndexerGrpc[Service]StreamV2(endpoints.indexer, metadata)
+
+      expect(s).toBeDefined()
+      expect(s).toBeInstanceOf(IndexerGrpc[Service]StreamV2)
+    })
+  })
+
+  describe('streamItems', () => {
+    it('should create subscription with unsubscribe method', () => {
+      const subscription = stream.streamItems({
+        callback: () => {},
+      })
+
+      expect(subscription).toBeDefined()
+      expect(typeof subscription.unsubscribe).toBe('function')
+
+      subscription.unsubscribe()
+    })
+
+    it('should throw error if callback is not a function', () => {
+      expect(() => {
+        stream.streamItems({
+          callback: null as any,
+        })
+      }).toThrow('callback must be a function')
+    })
+  })
+})
+```
+
+**Stream test file conventions:**
+- Use `Network.MainnetSentry` endpoints (not `Network.Mainnet`)
+- Test constructor (with/without metadata)
+- For each stream method: test subscription creation, callback validation, optional params
+- No try/catch needed — these are synchronous subscription tests
+- Always call `subscription.unsubscribe()` after creation tests
+
 ## Module Naming Convention
 
 The `module` field references module enums from `@injectivelabs/exceptions` in `packages/exceptions/src/exceptions/types/modules.ts`:
@@ -350,8 +479,10 @@ When implementing a new service, add the module to the exceptions package and bu
 - [ ] Client methods bound: `this.client.method.bind(this.client)`
 - [ ] Stream callbacks validated: `typeof callback !== 'function'`
 - [ ] JSDoc comments match existing style: `/** @category */`
-- [ ] Alphabetical ordering in index.ts exports
+- [ ] Length-sorted (shortest → longest) ordering in index.ts exports (visual pyramid, matches existing sdk-ts convention — not alphabetical)
 - [ ] No type naming conflicts with existing types
+- [ ] Test file created with one test per API method
+- [ ] Stream V2 test file created (if streaming methods exist)
 
 ## Distinguishing New vs Pre-existing Errors
 
