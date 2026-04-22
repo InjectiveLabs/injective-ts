@@ -1027,6 +1027,7 @@ export class MsgBroadcaster {
       options,
       chainId,
       endpoints,
+      simulateTx,
       httpHeaders,
       walletStrategy,
       txTimeoutOnFeeDelegation,
@@ -1062,9 +1063,48 @@ export class MsgBroadcaster {
     const feePayerPublicKey = PublicKey.fromBase64(feePayerPubKey)
     const feePayer = feePayerPublicKey.toAddress().address
 
+    const transactionApi = new IndexerGrpcWeb3GwApi(
+      endpoints.web3gw || endpoints.indexer,
+    )
+
+    if (httpHeaders) {
+      transactionApi.setMetadata(httpHeaders)
+    }
+
+    const fetchAccountBlockDetails = async () => {
+      try {
+        const { baseAccount, latestHeight } =
+          await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
+
+        return { baseAccount, latestHeight }
+      } catch (e) {
+        const error = e as ThrownException
+
+        if (
+          isThrownException(error) &&
+          error.message
+            .toLowerCase()
+            .includes(`account ${tx.injectiveAddress} not found`)
+        ) {
+          await transactionApi.prepareCosmosTxRequest({
+            address: tx.injectiveAddress,
+            message: msgs.map((msg) => msg.toWeb3Gw()),
+            memo: tx.memo,
+            estimateGas: simulateTx,
+          })
+
+          const { baseAccount, latestHeight } =
+            await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
+
+          return { baseAccount, latestHeight }
+        }
+
+        throw e
+      }
+    }
+
     /** Account Details * */
-    const { baseAccount, latestHeight } =
-      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
+    const { baseAccount, latestHeight } = await fetchAccountBlockDetails()
 
     const chainGrpcAuthApi = new ChainGrpcAuthApi(endpoints.grpc)
 
@@ -1127,14 +1167,6 @@ export class MsgBroadcaster {
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionPreparationEnd,
     )
-
-    const transactionApi = new IndexerGrpcWeb3GwApi(
-      endpoints.web3gw || endpoints.indexer,
-    )
-
-    if (httpHeaders) {
-      transactionApi.setMetadata(httpHeaders)
-    }
 
     const broadcast = async () =>
       await transactionApi.broadcastCosmosTxRequest({

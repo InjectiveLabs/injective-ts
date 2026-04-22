@@ -11,15 +11,18 @@ export class IndexerTcDerivativesStreamTransformer {
   ) => {
     const order = response.order
 
+    if (order?.state === OrderState.Booked) {
+      return
+    }
+
     return {
       operationType: response.operationType,
       timestamp: Number(response.timestamp),
-      order:
-        order && order.state !== OrderState.Booked
-          ? IndexerGrpcTcDerivativesTransformer.grpcOrderHistoryToOrderHistory(
-              order,
-            )
-          : undefined,
+      order: order
+        ? IndexerGrpcTcDerivativesTransformer.grpcOrderHistoryToOrderHistory(
+            order,
+          )
+        : undefined,
     }
   }
 

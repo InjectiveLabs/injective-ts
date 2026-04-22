@@ -1,5 +1,5 @@
 import type * as InjectiveRfqGwRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_gw_rpc_pb'
-import type { RFQSettlementUnfilledActionType } from '../types'
+import type { RFQSettlementUnfilledActionType } from './rfq.js'
 
 export interface RFQGwPrepareAutoSignRequestType {
   cid?: string

@@ -27,9 +27,6 @@ export default class BaseGrpcConsumer {
     this.transport = new GrpcWebRpcTransport(endpoint, options)
   }
 
-  /**
-   * @deprecated Pass options into the constructor instead
-   */
   public setMetadata(map: Record<string, string>) {
     this.metadata = map
     // Recreate transport with new metadata, preserving existing options
@@ -213,6 +210,9 @@ export default class BaseGrpcConsumer {
    * ```
    * @template TRequest - The request message type
    * @template TResponse - The response message type
+   * @param options.noRetry - Set to true for non-idempotent RPCs (e.g. broadcast,
+   * prepare-auto-sign) where retrying after a server-side success could cause
+   * duplicate side effects. Defaults to false (retry with exponential backoff).
    */
   protected async executeGrpcCall<
     TRequest extends object = object,
@@ -225,14 +225,16 @@ export default class BaseGrpcConsumer {
     ) => UnaryCall<TRequest, TResponse>,
     options?: { noRetry?: boolean },
   ): Promise<TResponse> {
-    const doCall = async () => {
+    const executeCall = async () => {
       const call = clientMethod(request, this.getRpcOptions())
 
       return await call.response
     }
 
     try {
-      return options?.noRetry ? await doCall() : await this.retry(doCall)
+      return options?.noRetry
+        ? await executeCall()
+        : await this.retry(executeCall)
     } catch (e: unknown) {
       // Derive context from method name if not provided
       const errorContext = clientMethod.name || 'UnknownMethod'
