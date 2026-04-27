@@ -86,19 +86,34 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
 
   const chainIdToHex = `0x${chainId.toString(16)}`
 
+  const TIMEOUT_MS = 30_000
+
   try {
     return await Promise.race([
       provider.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: chainIdToHex }],
       }),
-      new Promise<void>((resolve) =>
-        provider.on('chainChanged', ({ chain }: any) => {
-          if (chain?.id === chainId.toString(16)) {
+      new Promise<void>((resolve, reject) => {
+        const handleChainChanged = (newChainId: string) => {
+          if (newChainId.toLowerCase() === chainIdToHex.toLowerCase()) {
+            cleanup()
             resolve()
           }
-        }),
-      ),
+        }
+
+        const timeoutId = setTimeout(() => {
+          cleanup()
+          reject(new Error('Chain switch timed out'))
+        }, TIMEOUT_MS)
+
+        const cleanup = () => {
+          provider.removeListener('chainChanged', handleChainChanged)
+          clearTimeout(timeoutId)
+        }
+
+        provider.on('chainChanged', handleChainChanged)
+      }),
     ])
   } catch (switchError: any) {
     const errorCode =
