@@ -39,6 +39,26 @@ export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
     } as Chain
   }
 
+  if (chainId === EvmChainId.TestnetEvm) {
+    return {
+      id: EvmChainId.TestnetEvm,
+      name: 'Injective Testnet',
+      nativeCurrency: injective.nativeCurrency,
+      rpcUrls: {
+        default: {
+          http: ['https://k8s.testnet.json-rpc.injective.network'],
+        },
+      },
+      blockExplorers: {
+        default: {
+          name: 'Blockscout',
+          url: 'https://testnet.blockscout.injective.network',
+        },
+      },
+      testnet: true,
+    } as Chain
+  }
+
   try {
     return extractChain({
       id: chainId,
