@@ -70,9 +70,11 @@ export class TcAbacusGrpcTransformer {
       cap: response.cap,
       code: response.code,
       address: response.address,
+      isKol: response.isKol,
       last7DVolume: response.last7DVolume,
       inviteeCount: response.inviteeCount,
       allTimeVolume: response.allTimeVolume,
+      creatorAddress: response.creatorAddress,
       activeInviteeCount: response.activeInviteeCount,
     }
   }
@@ -84,6 +86,10 @@ export class TcAbacusGrpcTransformer {
       address: referrer.address,
       createdAt: referrer.createdAt,
       height: referrer.height.toString(),
+      isKol: referrer.isKol,
+      status: referrer.status,
+      inviteeCount: referrer.inviteeCount,
+      creatorAddress: referrer.creatorAddress,
     }
   }
 

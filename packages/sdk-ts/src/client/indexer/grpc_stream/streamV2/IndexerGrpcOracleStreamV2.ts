@@ -5,6 +5,12 @@ import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerOracleStreamTransformer } from '../../transformers/IndexerOracleStreamTransformer.js'
 import type { StreamSubscription } from '../../../../types/index.js'
 
+export type OracleListStreamCallbackV2 = (
+  response: ReturnType<
+    typeof IndexerOracleStreamTransformer.oracleListStreamCallback
+  >,
+) => void
+
 export type OraclePriceStreamCallbackV2 = (
   response: ReturnType<
     typeof IndexerOracleStreamTransformer.pricesStreamCallback
@@ -101,6 +107,38 @@ export class IndexerGrpcOracleStreamV2 {
     return createStreamSubscriptionV2(stream, (response) => {
       const transformed =
         IndexerOracleStreamTransformer.pricesByMarketsCallback(response)
+      callback(transformed)
+    })
+  }
+
+  streamOracleList({
+    oracleType,
+    symbols,
+    callback,
+  }: {
+    oracleType?: string
+    symbols?: string[]
+    callback: OracleListStreamCallbackV2
+  }): StreamSubscription {
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = InjectiveOracleRpcPb.StreamOracleListRequest.create()
+
+    if (oracleType) {
+      request.oracleType = oracleType
+    }
+
+    if (symbols && symbols.length > 0) {
+      request.symbols = symbols
+    }
+
+    const stream = this.client.streamOracleList(request)
+
+    return createStreamSubscriptionV2(stream, (response) => {
+      const transformed =
+        IndexerOracleStreamTransformer.oracleListStreamCallback(response)
       callback(transformed)
     })
   }

@@ -308,7 +308,7 @@ export class EvmWallet
         )
       }
 
-      throw new MetamaskException(new Error((e as any).message), {
+      throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,
@@ -459,32 +459,44 @@ export class EvmWallet
     const TIMEOUT_MS = 30_000
 
     try {
-      await Promise.race([
-        ethereum.request({
+      let timeoutId: ReturnType<typeof setTimeout> | undefined
+      let handleChainChanged: ((newChainId: string) => void) | undefined
+
+      const cleanup = () => {
+        if (handleChainChanged) {
+          ethereum.removeListener('chainChanged', handleChainChanged)
+          handleChainChanged = undefined
+        }
+        if (timeoutId !== undefined) {
+          clearTimeout(timeoutId)
+          timeoutId = undefined
+        }
+      }
+
+      const switchRequest = ethereum
+        .request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: chainIdHex }],
-        }),
-        new Promise<void>((resolve, reject) => {
-          const handleChainChanged = (newChainId: string) => {
-            if (newChainId.toLowerCase() === chainIdHex.toLowerCase()) {
-              cleanup()
-              resolve()
-            }
-          }
+        })
+        .finally(cleanup)
 
-          const timeoutId = setTimeout(() => {
+      const chainChangedWaiter = new Promise<void>((resolve, reject) => {
+        handleChainChanged = (newChainId: string) => {
+          if (newChainId.toLowerCase() === chainIdHex.toLowerCase()) {
             cleanup()
-            reject(new Error('Chain switch timed out'))
-          }, TIMEOUT_MS)
-
-          const cleanup = () => {
-            ethereum.removeListener('chainChanged', handleChainChanged)
-            clearTimeout(timeoutId)
+            resolve()
           }
+        }
 
-          ethereum.on('chainChanged', handleChainChanged)
-        }),
-      ])
+        timeoutId = setTimeout(() => {
+          cleanup()
+          reject(new Error('Chain switch timed out'))
+        }, TIMEOUT_MS)
+
+        ethereum.on('chainChanged', handleChainChanged)
+      })
+
+      await Promise.race([switchRequest, chainChangedWaiter])
     } catch (error) {
       const errorCode =
         (error as any).code ?? (error as any)?.data?.originalError?.code
@@ -494,6 +506,18 @@ export class EvmWallet
           method: 'wallet_addEthereumChain',
           params: [params],
         })
+
+        try {
+          await ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: chainIdHex }],
+          })
+        } catch (switchError) {
+          console.warn(
+            `Failed to switch to chain ${chainIdHex} after adding it:`,
+            switchError,
+          )
+        }
 
         return
       }

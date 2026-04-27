@@ -80,7 +80,8 @@ const createStrategy = async ({
     case Wallet.OkxWallet:
     case Wallet.BitGet:
     case Wallet.Rainbow:
-    case Wallet.Rabby: {
+    case Wallet.Rabby:
+    case Wallet.KeplrEvm: {
       const EvmWalletStrategy = await loadEvmStrategy()
 
       return new EvmWalletStrategy({

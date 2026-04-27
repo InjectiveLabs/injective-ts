@@ -13,7 +13,11 @@ export interface BrowserEip1993Provider extends EIP1193Provider {
 }
 
 // Use Omit to avoid conflict with viem's stricter Window.ethereum type
-export interface WindowWithEip1193Provider extends Omit<Window, 'ethereum'> {
+// and @keplr-wallet/types' Window.keplr type
+export interface WindowWithEip1193Provider extends Omit<
+  Window,
+  'ethereum' | 'keplr'
+> {
   rainbow: BrowserEip1993Provider
   rabby: BrowserEip1993Provider
   ethereum: BrowserEip1993Provider
@@ -22,6 +26,7 @@ export interface WindowWithEip1193Provider extends Omit<Window, 'ethereum'> {
   trustWallet?: BrowserEip1993Provider
   bitkeep: { ethereum: BrowserEip1993Provider }
   phantom?: { ethereum?: BrowserEip1993Provider }
+  keplr?: { ethereum?: BrowserEip1993Provider }
 }
 
 export interface EIP6963ProviderInfo {

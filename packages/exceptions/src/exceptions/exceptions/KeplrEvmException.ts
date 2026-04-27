@@ -4,13 +4,10 @@ import { mapErrorMessage } from '../utils/maps.js'
 import type { ErrorContext } from '../types/index.js'
 
 const removeKeplrFromErrorString = (message: string): string =>
-  message
-    .replaceAll('Keplr', '')
-    .replaceAll('Keplr', '')
-    .replaceAll('Keplr:', '')
+  message.replaceAll('Keplr:', '').replaceAll('Keplr', '')
 
 export class KeplrEvmException extends ConcreteException {
-  public static errorClass: string = 'KeplrException'
+  public static errorClass: string = 'KeplrEvmException'
 
   constructor(error: Error, context?: ErrorContext) {
     super(error, context)
