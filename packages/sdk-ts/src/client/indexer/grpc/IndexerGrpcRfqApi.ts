@@ -331,7 +331,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
 
   async listConditionalOrders(params?: {
     token?: string
-    status?: string
+    status?: string[]
     perPage?: number
     marketId?: string
     requestAddress?: string
@@ -344,7 +344,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       request.requestAddress = requestAddress
     }
 
-    if (status) {
+    if (status && status.length > 0) {
       request.status = status
     }
 

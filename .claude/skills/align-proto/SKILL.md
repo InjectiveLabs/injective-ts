@@ -75,7 +75,7 @@ Update `packages/sdk-ts/package.json` with the new version. This change is perma
 
 ### Step 6: Install New Package
 
-Run `pnpm install` in project root. If install fails, show error and exit.
+Run `pnpm install --force` in project root. The `--force` flag ensures all packages are properly re-linked from the pnpm store, preventing empty package directories from stale/corrupted installs. If install fails, show error and exit.
 
 ### Step 7: Compare Proto Files
 

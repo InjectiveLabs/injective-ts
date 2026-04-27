@@ -19,4 +19,13 @@ export class IndexerOracleStreamTransformer {
   ) => ({
     ...response,
   })
+
+  static oracleListStreamCallback = (
+    response: InjectiveOracleRpcPb.StreamOracleListResponse,
+  ) => ({
+    symbol: response.symbol,
+    oracleType: response.oracleType,
+    price: response.price,
+    timestamp: bigIntToNumber(response.timestamp),
+  })
 }

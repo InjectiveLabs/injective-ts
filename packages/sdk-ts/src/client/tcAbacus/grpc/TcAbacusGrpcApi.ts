@@ -61,10 +61,20 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     return TcAbacusGrpcTransformer.grpcAccountStatsToAccountStats(response)
   }
 
-  async fetchReferrers(cursor?: string, limit?: number) {
+  async fetchReferrers(params?: {
+    cursor?: string
+    limit?: number
+    address?: string
+    code?: string
+    status?: string
+  }) {
+    const { cursor, limit, address, code, status } = params || {}
     const request = TcAbacusPb.ListReferrersRequest.create({
       limit,
       cursor,
+      address,
+      code,
+      status,
     })
 
     const response = await this.executeGrpcCall<

@@ -31,9 +31,11 @@ export interface AccountStatsResponse {
   cap: number
   code: string
   address: string
+  isKol: boolean
   last7DVolume: string
   inviteeCount: number
   allTimeVolume: string
+  creatorAddress: string
   activeInviteeCount: number
 }
 
@@ -43,6 +45,10 @@ export interface Referrer {
   height: string
   address: string
   createdAt: string
+  isKol: boolean
+  status: string
+  inviteeCount: number
+  creatorAddress: string
 }
 
 export interface ListReferrersResponse {

@@ -127,7 +127,7 @@ describe('TcAbacusGrpcApi', () => {
 
   test('fetchReferrers with pagination', async () => {
     try {
-      const response = await tcAbacusGrpcApi.fetchReferrers(undefined, 20)
+      const response = await tcAbacusGrpcApi.fetchReferrers({ limit: 20 })
 
       expect(response).toBeDefined()
       expect(Array.isArray(response.referrers)).toBe(true)
