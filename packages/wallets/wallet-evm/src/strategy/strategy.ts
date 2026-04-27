@@ -308,7 +308,7 @@ export class EvmWallet
         )
       }
 
-      throw new MetamaskException(new Error((e as any).message), {
+      throw this.EvmWalletException(new Error((e as any).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,

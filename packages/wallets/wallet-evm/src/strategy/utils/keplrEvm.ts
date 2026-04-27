@@ -44,7 +44,7 @@ function getKeplrEvmFromWindow() {
   const injectedProviderExist =
     typeof window !== 'undefined' &&
     (typeof $window.ethereum !== 'undefined' ||
-      typeof ($window as any).keplr?.ethereum !== 'undefined')
+      typeof $window.keplr?.ethereum !== 'undefined')
 
   // No injected providers exist.
   if (!injectedProviderExist) {
@@ -52,8 +52,8 @@ function getKeplrEvmFromWindow() {
   }
 
   // Keplr exposes its EVM provider via window.keplr.ethereum
-  if (($window as any).keplr?.ethereum) {
-    return ($window as any).keplr.ethereum as BrowserEip1993Provider
+  if ($window.keplr?.ethereum) {
+    return $window.keplr.ethereum
   }
 
   if ($window.ethereum?.isKeplr) {

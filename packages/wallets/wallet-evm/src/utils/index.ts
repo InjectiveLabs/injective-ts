@@ -1,10 +1,15 @@
 import { capitalize } from '@injectivelabs/utils'
 import { WalletException } from '@injectivelabs/exceptions'
-import { Wallet, isEvmBrowserWallet } from '@injectivelabs/wallet-base'
+import {
+  Wallet,
+  getEvmChainConfig,
+  isEvmBrowserWallet,
+} from '@injectivelabs/wallet-base'
 import { getRabbyProvider } from '../strategy/utils/rabby.js'
 import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
 import { getBitGetProvider } from '../strategy/utils/bitget.js'
 import { getPhantomProvider } from '../strategy/utils/phantom.js'
+import { getKeplrEvmProvider } from '../strategy/utils/keplrEvm.js'
 import { getMetamaskProvider } from '../strategy/utils/metamask.js'
 import { getTrustWalletProvider } from '../strategy/utils/trustWallet.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
@@ -46,6 +51,10 @@ export const getEvmProvider = async (
       provider = (await getOkxWalletProvider()) as BrowserEip1993Provider
     }
 
+    if (wallet === Wallet.KeplrEvm) {
+      provider = (await getKeplrEvmProvider()) as BrowserEip1993Provider
+    }
+
     if (!provider) {
       throw new WalletException(
         new Error(`Please install ${capitalize(wallet)} Extension`),
@@ -75,23 +84,57 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
     )
   }
 
-  try {
-    const chainIdToHex = chainId.toString(16)
+  const chainIdToHex = `0x${chainId.toString(16)}`
 
+  try {
     return await Promise.race([
       provider.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: `0x${chainIdToHex}` }],
+        params: [{ chainId: chainIdToHex }],
       }),
       new Promise<void>((resolve) =>
         provider.on('chainChanged', ({ chain }: any) => {
-          if (chain?.id === chainIdToHex) {
+          if (chain?.id === chainId.toString(16)) {
             resolve()
           }
         }),
       ),
     ])
-  } catch {
+  } catch (switchError: any) {
+    const errorCode =
+      switchError?.code ?? switchError?.data?.originalError?.code
+
+    if (errorCode === 4902) {
+      const chainConfig = getEvmChainConfig(chainId)
+
+      try {
+        const rpcUrl = chainConfig.rpcUrls?.default?.http?.[0]
+        const explorerUrl =
+          chainConfig.blockExplorers?.default?.url || undefined
+
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: chainIdToHex,
+              chainName: chainConfig.name,
+              nativeCurrency: chainConfig.nativeCurrency,
+              rpcUrls: rpcUrl ? [rpcUrl] : [],
+              blockExplorerUrls: explorerUrl ? [explorerUrl] : undefined,
+            },
+          ],
+        })
+
+        return
+      } catch {
+        throw new WalletException(
+          new Error(
+            `Failed to add ${chainConfig.name} network to ${capitalize(wallet)}`,
+          ),
+        )
+      }
+    }
+
     throw new WalletException(
       new Error(`Please update your ${capitalize(wallet)} network`),
     )
