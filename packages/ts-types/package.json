@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/ts-types",
-  "version": "1.18.22",
+  "version": "1.18.23",
   "description": "List of types that can be reused throughout Injective.",
   "license": "Apache-2.0",
   "author": {
