@@ -23,6 +23,46 @@ export const ChainId = {
 
 export type ChainId = (typeof ChainId)[keyof typeof ChainId]
 
+export const DeprecatedMsgType = {
+  // Exchange v2
+  MsgSetDelegationTransferReceivers:
+    'injective.exchange.v2.MsgSetDelegationTransferReceivers',
+
+  // Oracle
+  MsgRelayBandRates: 'injective.oracle.v1beta1.MsgRelayBandRates',
+  MsgRequestBandIBCRates: 'injective.oracle.v1beta1.MsgRequestBandIBCRates',
+
+  // Peggy - Proposals
+  MsgBlacklistEthereumAddressesProposal:
+    'injective.peggy.v1beta1.BlacklistEthereumAddressesProposal',
+  MsgRevokeEthereumBlacklistProposal:
+    'injective.peggy.v1beta1.RevokeEthereumBlacklistProposal',
+
+  // Permissions
+  MsgDeleteNamespace: 'injective.permissions.v1beta1.MsgDeleteNamespace',
+  MsgUpdateNamespaceRoles:
+    'injective.permissions.v1beta1.MsgUpdateNamespaceRoles',
+  MsgRevokeNamespaceRoles:
+    'injective.permissions.v1beta1.MsgRevokeNamespaceRoles',
+  MsgSetWasmHook:
+    'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetWasmHook',
+  MsgSetMintsPaused:
+    'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetMintsPaused',
+  MsgSetSendsPaused:
+    'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetSendsPaused',
+  MsgSetBurnsPaused:
+    'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetBurnsPaused',
+
+  // WasmX - Proposals
+  MsgContractRegistrationRequestProposal:
+    'injective.wasmx.v1beta1.ContractRegistrationRequestProposal',
+  MsgBatchContractRegistrationRequestProposal:
+    'injective.wasmx.v1beta1.BatchContractRegistrationRequestProposal',
+} as const
+
+export type DeprecatedMsgType =
+  (typeof DeprecatedMsgType)[keyof typeof DeprecatedMsgType]
+
 export const MsgType = {
   // Authz
   MsgExec: 'cosmos.authz.v1beta1.MsgExec',
@@ -100,6 +140,7 @@ export const MsgType = {
 
   // Auction
   MsgBid: 'injective.auction.v1beta1.MsgBid',
+  MsgAuctionClaimVoucher: 'injective.auction.v1beta1.MsgClaimVoucher',
   MsgAuctionUpdateParams: 'injective.auction.v1beta1.MsgUpdateParams',
 
   // ERC20
@@ -328,24 +369,21 @@ export const MsgType = {
     'injective.exchange.v2.MsgTradingRewardPendingPointsUpdate',
   MsgAtomicMarketOrderFeeMultiplierScheduleV2:
     'injective.exchange.v2.MsgAtomicMarketOrderFeeMultiplierSchedule',
-  MsgSetDelegationTransferReceivers:
-    'injective.exchange.v2.MsgSetDelegationTransferReceivers',
 
   // Insurance
   MsgUnderwrite: 'injective.insurance.v1beta1.MsgUnderwrite',
   MsgInsuranceUpdateParams: 'injective.insurance.v1beta1.MsgUpdateParams',
+  MsgInsuranceClaimVoucher: 'injective.insurance.v1beta1.MsgClaimVoucher',
   MsgRequestRedemption: 'injective.insurance.v1beta1.MsgRequestRedemption',
   MsgCreateInsuranceFund: 'injective.insurance.v1beta1.MsgCreateInsuranceFund',
 
   // Oracle
-  MsgRelayBandRates: 'injective.oracle.v1beta1.MsgRelayBandRates',
   MsgRelayChainlinkPrices: 'injective.oracle.v1beta1.MsgRelayChainlinkPrices',
   MsgRelayPythPrices: 'injective.oracle.v1beta1.MsgRelayPythPrices',
   MsgOracleUpdateParams: 'injective.oracle.v1beta1.MsgUpdateParams',
   MsgRelayStorkPrices: 'injective.oracle.v1beta1.MsgRelayStorkPrices',
   MsgRelayProviderPrices: 'injective.oracle.v1beta1.MsgRelayProviderPrices',
   MsgRelayPriceFeedPrice: 'injective.oracle.v1beta1.MsgRelayPriceFeedPrice',
-  MsgRequestBandIBCRates: 'injective.oracle.v1beta1.MsgRequestBandIBCRates',
   MsgRelayCoinbaseMessages: 'injective.oracle.v1beta1.MsgRelayCoinbaseMessages',
 
   // OCR
@@ -380,31 +418,12 @@ export const MsgType = {
     'injective.peggy.v1.MsgSubmitBadSignatureEvidence',
   MsgUpdateRateLimit: 'injective.peggy.v1.MsgUpdateRateLimit',
 
-  // Peggy - Proposals
-  MsgBlacklistEthereumAddressesProposal:
-    'injective.peggy.v1beta1.BlacklistEthereumAddressesProposal',
-  MsgRevokeEthereumBlacklistProposal:
-    'injective.peggy.v1beta1.RevokeEthereumBlacklistProposal',
-
   // Permissions
   MsgClaimVoucher: 'injective.permissions.v1beta1.MsgClaimVoucher',
   MsgCreateNamespace: 'injective.permissions.v1beta1.MsgCreateNamespace',
-  MsgDeleteNamespace: 'injective.permissions.v1beta1.MsgDeleteNamespace',
   MsgUpdateNamespace: 'injective.permissions.v1beta1.MsgUpdateNamespace',
   MsgUpdateActorRoles: 'injective.permissions.v1beta1.MsgUpdateActorRoles',
   MsgPermissionsUpdateParams: 'injective.permissions.v1beta1.MsgUpdateParams',
-  MsgUpdateNamespaceRoles:
-    'injective.permissions.v1beta1.MsgUpdateNamespaceRoles',
-  MsgRevokeNamespaceRoles:
-    'injective.permissions.v1beta1.MsgRevokeNamespaceRoles',
-  MsgSetWasmHook:
-    'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetWasmHook',
-  MsgSetMintsPaused:
-    'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetMintsPaused',
-  MsgSetSendsPaused:
-    'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetSendsPaused',
-  MsgSetBurnsPaused:
-    'injective.permissions.v1beta1.MsgUpdateNamespace.MsgSetBurnsPaused',
   MsgUpdateNamespaceSetContractHook:
     'injective.permissions.v1beta1.MsgUpdateNamespace.SetContractHook',
 
@@ -426,14 +445,10 @@ export const MsgType = {
   MsgDeactivateContract: 'injective.wasmx.v1.MsgDeactivateContract',
   MsgExecuteContractCompat: 'injective.wasmx.v1.MsgExecuteContractCompat',
 
-  // WasmX - Proposals
-  MsgContractRegistrationRequestProposal:
-    'injective.wasmx.v1beta1.ContractRegistrationRequestProposal',
-  MsgBatchContractRegistrationRequestProposal:
-    'injective.wasmx.v1beta1.BatchContractRegistrationRequestProposal',
-
   // TxFees
   MsgTxFeesUpdateParams: 'injective.txfees.v1beta1.MsgUpdateParams',
+
+  ...DeprecatedMsgType,
 } as const
 
 export type MsgType = (typeof MsgType)[keyof typeof MsgType]
