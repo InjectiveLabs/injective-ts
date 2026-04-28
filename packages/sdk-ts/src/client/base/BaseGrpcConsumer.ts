@@ -5,9 +5,37 @@ import {
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
+import { GrpcStatusCode } from '../../types/stream.js'
 import { GrpcWebRpcTransport } from './GrpcWebRpcTransport.js'
 import type { UnaryCall, RpcOptions } from '@protobuf-ts/runtime-rpc'
 import type { GrpcWebTransportAdditionalOptions } from '../../types'
+
+const GRPC_STATUS_CODE_BY_NAME: Partial<Record<string, GrpcStatusCode>> = {
+  OK: GrpcStatusCode.OK,
+  CANCELLED: GrpcStatusCode.CANCELLED,
+  UNKNOWN: GrpcStatusCode.UNKNOWN,
+  INVALID_ARGUMENT: GrpcStatusCode.INVALID_ARGUMENT,
+  DEADLINE_EXCEEDED: GrpcStatusCode.DEADLINE_EXCEEDED,
+  NOT_FOUND: GrpcStatusCode.NOT_FOUND,
+  ALREADY_EXISTS: GrpcStatusCode.ALREADY_EXISTS,
+  PERMISSION_DENIED: GrpcStatusCode.PERMISSION_DENIED,
+  RESOURCE_EXHAUSTED: GrpcStatusCode.RESOURCE_EXHAUSTED,
+  FAILED_PRECONDITION: GrpcStatusCode.FAILED_PRECONDITION,
+  ABORTED: GrpcStatusCode.ABORTED,
+  OUT_OF_RANGE: GrpcStatusCode.OUT_OF_RANGE,
+  UNIMPLEMENTED: GrpcStatusCode.UNIMPLEMENTED,
+  INTERNAL: GrpcStatusCode.INTERNAL,
+  UNAVAILABLE: GrpcStatusCode.UNAVAILABLE,
+  DATA_LOSS: GrpcStatusCode.DATA_LOSS,
+  UNAUTHENTICATED: GrpcStatusCode.UNAUTHENTICATED,
+}
+
+const GRPC_RETRYABLE_STATUS_CODES = new Set<GrpcStatusCode>([
+  GrpcStatusCode.UNAVAILABLE,
+  GrpcStatusCode.DEADLINE_EXCEEDED,
+  GrpcStatusCode.RESOURCE_EXHAUSTED,
+  GrpcStatusCode.ABORTED,
+])
 
 /**
  * BaseGrpcConsumer provides base functionality for all gRPC consumers.
@@ -88,7 +116,43 @@ export default class BaseGrpcConsumer {
   }
 
   /**
-   * Retry a gRPC call with exponential backoff
+   * Converts gRPC status names or numeric status values into numeric codes.
+   */
+  private getGrpcStatusCode(code: unknown): GrpcStatusCode | undefined {
+    if (typeof code === 'number') {
+      return Number.isFinite(code) ? (code as GrpcStatusCode) : undefined
+    }
+
+    if (typeof code !== 'string') {
+      return undefined
+    }
+
+    const numericCode = Number(code)
+
+    if (Number.isFinite(numericCode)) {
+      return numericCode as GrpcStatusCode
+    }
+
+    return GRPC_STATUS_CODE_BY_NAME[code]
+  }
+
+  /**
+   * Determines whether a gRPC error is safe to retry.
+   */
+  private isRetryableGrpcError(e: unknown): boolean {
+    if (!(e instanceof RpcError)) {
+      return false
+    }
+
+    const statusCode = this.getGrpcStatusCode(e.code)
+
+    return (
+      statusCode !== undefined && GRPC_RETRYABLE_STATUS_CODES.has(statusCode)
+    )
+  }
+
+  /**
+   * Retry a gRPC call with backoff, only for retryable gRPC statuses.
    */
   protected retry<TResponse>(
     grpcCall: () => Promise<TResponse>,
@@ -99,7 +163,7 @@ export default class BaseGrpcConsumer {
       try {
         return await grpcCall()
       } catch (e: unknown) {
-        if (attempt >= retries) {
+        if (attempt >= retries || !this.isRetryableGrpcError(e)) {
           throw e
         }
 
@@ -154,6 +218,7 @@ export default class BaseGrpcConsumer {
   protected handleGrpcError(e: unknown, context: string): never {
     if (e instanceof RpcError) {
       const message = e.message
+      const grpcStatusCode = this.getGrpcStatusCode(e.code)
       const abciCode = this.getABCICodeFromMessage(message)
       const codespace = this.getCodespaceFromMessage(message)
 
@@ -161,7 +226,10 @@ export default class BaseGrpcConsumer {
       // which will map the error to a user-friendly message
       if (abciCode && codespace) {
         throw new TransactionException(new Error(message), {
-          code: grpcErrorCodeToErrorCode(Number(e.code)),
+          code:
+            grpcStatusCode !== undefined
+              ? grpcErrorCodeToErrorCode(grpcStatusCode)
+              : UnspecifiedErrorCode,
           context,
           contextModule: codespace,
           contextCode: abciCode,
@@ -169,7 +237,10 @@ export default class BaseGrpcConsumer {
       }
 
       throw new GrpcUnaryRequestException(new Error(message), {
-        code: grpcErrorCodeToErrorCode(Number(e.code)),
+        code:
+          grpcStatusCode !== undefined
+            ? grpcErrorCodeToErrorCode(grpcStatusCode)
+            : UnspecifiedErrorCode,
         context,
         contextModule: this.module,
       })
