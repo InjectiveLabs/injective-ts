@@ -11,12 +11,12 @@ PROTO_DIR=$ROOT_DIR/proto
 TS_OUTPUT_DIR=$ROOT_DIR/proto-ts
 TS_STUB_DIR=$ROOT_DIR/stub
 
-# https://github.com/InjectiveLabs/injective-core/blob/release/v1.16.x/go.mod
+# https://github.com/InjectiveLabs/injective-core/blob/release/v1.19.x/go.mod
 # remote branches/tags
-injective_core_branch=release/v1.18.x
-cosmos_sdk_branch=v0.50.14-inj.4
-wasmd_branch=v0.53.3-inj.2
-ibc_go_branch=v8.7.0-inj.3
+injective_core_branch=release/v1.19.x
+cosmos_sdk_branch=v0.50.14-inj.9
+wasmd_branch=v0.5.0-inj.4
+ibc_go_branch=v8.7.0-inj.4
 
 # evm branch
 # injective_core_branch=master

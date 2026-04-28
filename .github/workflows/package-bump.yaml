@@ -140,4 +140,4 @@ jobs:
         with:
           gh_token: ${{ secrets.TRUE_CURRENT_GH_TOKEN }}
           repository_url: injectiveLabs/injective-true-current
-          repository_branch: master
+          repository_branch: dev

@@ -14,6 +14,7 @@ export declare namespace MsgSetDelegationTransferReceivers {
 }
 
 /**
+ * @deprecated no longer supported on chain
  * @category Messages
  */
 export default class MsgSetDelegationTransferReceivers extends MsgBase<
