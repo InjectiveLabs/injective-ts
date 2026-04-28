@@ -1,5 +1,5 @@
 import { RpcError } from '@protobuf-ts/runtime-rpc'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { it, vi, expect, describe, afterEach } from 'vitest'
 import BaseGrpcConsumer from './BaseGrpcConsumer.js'
 
 class TestGrpcConsumer extends BaseGrpcConsumer {
