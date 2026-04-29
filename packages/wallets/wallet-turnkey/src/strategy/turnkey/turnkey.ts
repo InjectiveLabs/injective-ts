@@ -18,6 +18,7 @@ import {
   TURNKEY_OAUTH_PATH,
   TURNKEY_OTP_INIT_PATH,
   TURNKEY_OTP_VERIFY_PATH,
+  DEFAULT_TURNKEY_REFRESH_SECONDS,
 } from '../consts.js'
 import type { TurnkeyMetadata } from '@injectivelabs/wallet-base'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
@@ -326,7 +327,8 @@ export class TurnkeyWallet {
     if (session.session?.token) {
       await indexedDbClient.refreshSession({
         sessionType: SessionType.READ_WRITE,
-        expirationSeconds: this.metadata.expirationSeconds,
+        expirationSeconds:
+          this.metadata.expirationSeconds || DEFAULT_TURNKEY_REFRESH_SECONDS,
       })
       this.userOrganizationId = session.organizationId
       return session.session.token
