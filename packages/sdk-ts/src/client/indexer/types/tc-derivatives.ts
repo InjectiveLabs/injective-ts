@@ -53,6 +53,7 @@ export interface TcDerivativeTradeHistory {
   executionPrice: string
   positionIsLong: boolean
   executionMargin: string
+  isPositionClosed: boolean
   positionOpenedAt: number
   executionQuantity: string
   positionEntryPrice: string

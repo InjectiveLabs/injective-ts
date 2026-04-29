@@ -250,8 +250,10 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
 
   async createConditionalOrder({
     order,
+    signMode,
     signature,
   }: {
+    signMode: string
     signature: string
     order: {
       cid?: string
@@ -314,6 +316,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
 
     request.order = conditionalOrderInput
     request.signature = signature
+    request.signMode = signMode
 
     const response = await this.executeGrpcCall<
       InjectiveRFQExchangeRpcPb.CreateConditionalOrderRequest,

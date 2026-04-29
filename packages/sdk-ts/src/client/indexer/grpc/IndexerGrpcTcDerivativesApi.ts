@@ -58,6 +58,7 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
   async fetchTradesHistory(params?: {
     token?: string
     sortBy?: string
+    withPnl?: boolean
     endTime?: number
     perPage?: number
     marketId?: string
@@ -69,6 +70,7 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const {
       token,
       sortBy,
+      withPnl,
       endTime,
       perPage,
       marketId,
@@ -106,6 +108,10 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     if (sortDirection) {
       request.sortDirection = sortDirection
+    }
+
+    if (withPnl) {
+      request.withPnl = withPnl
     }
 
     if (startTime !== undefined) {
