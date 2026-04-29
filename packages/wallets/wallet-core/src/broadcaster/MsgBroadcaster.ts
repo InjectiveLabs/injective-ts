@@ -1,5 +1,5 @@
 import { EvmChainId } from '@injectivelabs/ts-types'
-import { PublicKey } from '@injectivelabs/sdk-ts/core/accounts'
+import { PublicKey, PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { ofacList, safeBigIntStringify } from '@injectivelabs/sdk-ts/utils'
 import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
 import {
@@ -61,6 +61,7 @@ import {
   getAminoStdSignDoc,
   getEip712TypedData,
   createWeb3Extension,
+  CosmosTxV1Beta1TxPb,
   getEip712TypedDataV2,
   createTxRawFromSigResponse,
   createTransactionWithSigners,
@@ -71,14 +72,13 @@ import type { ThrownException } from '@injectivelabs/exceptions'
 import type { DirectSignResponse } from '@injectivelabs/sdk-ts/types'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
 import type {
+  TxResponse,
+  CreateTransactionWithSignersArgs,
+} from '@injectivelabs/sdk-ts/core/tx'
+import type {
   ChainId as ChainIdType,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
-import type {
-  TxResponse,
-  CosmosTxV1Beta1TxPb,
-  CreateTransactionWithSignersArgs,
-} from '@injectivelabs/sdk-ts/core/tx'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type {
   MsgBroadcasterOptions,
@@ -335,6 +335,115 @@ export class MsgBroadcaster {
       return isCosmosWallet(walletStrategy.wallet)
         ? await this.broadcastDirectSignWithFeeDelegation(txWithAddresses)
         : await this.broadcastEip712WithFeeDelegation(txWithAddresses)
+    } catch (e) {
+      const error = e as any
+
+      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
+
+      if (isThrownException(error)) {
+        throw error
+      }
+
+      throw new TransactionException(new Error(error))
+    }
+  }
+
+  /**
+   * Sign and broadcast a pre-built transaction whose fee payer signature
+   * is already provided (e.g. from the RFQ executor / web3-gw `prepare`
+   * endpoint). The taker is signed locally with the supplied private key.
+   *
+   * Autosign-only: the caller passes the autosign private key directly
+   * (e.g. `sharedWalletStore.autoSign.privateKey`). We don't go through
+   * `walletStrategy.signCosmosTransaction` because the PK strategy stubs
+   * that out — and going through the wallet strategy would defeat the
+   * point of autosign (no popups).
+   *
+   * @param tx Base64-encoded or raw `TxRaw` bytes returned by the prepare endpoint
+   * @param feePayerSig Hex (`0x...`) or base64 fee payer signature
+   * @param accountNumber Account number of the taker
+   * @param privateKey Taker (autosign) private key — hex, with or without `0x`
+   * @returns transaction response with txHash
+   */
+  async broadcastWithFeePayerSig({
+    tx,
+    privateKey,
+    feePayerSig,
+    accountNumber,
+  }: {
+    privateKey: string
+    feePayerSig: string
+    accountNumber: number
+    tx: Uint8Array | string
+  }): Promise<TxResponse> {
+    const {
+      chainId,
+      endpoints,
+      walletStrategy,
+      txTimeout: txTimeoutInBlocks,
+    } = this
+
+    const pk = PrivateKey.fromHex(privateKey)
+
+    if (ofacList.includes(pk.toHex().toLowerCase())) {
+      throw new GeneralException(
+        new Error('You cannot execute this transaction'),
+      )
+    }
+
+    const txBytes = typeof tx === 'string' ? base64ToUint8Array(tx) : tx
+    const txRaw = CosmosTxV1Beta1TxPb.TxRaw.fromBinary(txBytes)
+
+    try {
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionPreparationStart,
+      )
+
+      const signDoc = CosmosTxV1Beta1TxPb.SignDoc.create({
+        chainId,
+        bodyBytes: txRaw.bodyBytes,
+        authInfoBytes: txRaw.authInfoBytes,
+        accountNumber: BigInt(accountNumber),
+      })
+      const signDocBytes = CosmosTxV1Beta1TxPb.SignDoc.toBinary(signDoc)
+      const takerSig = await pk.sign(signDocBytes)
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionPreparationEnd,
+      )
+
+      const feePayerSigBytes = feePayerSig.startsWith('0x')
+        ? hexToUint8Array(feePayerSig.slice(2))
+        : base64ToUint8Array(feePayerSig)
+
+      txRaw.signatures = [takerSig, feePayerSigBytes]
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionBroadcastStart,
+      )
+
+      const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw, {
+        txTimeout: txTimeoutInBlocks,
+      })
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+      )
+
+      if (txResponse.code !== 0) {
+        throw new TransactionException(
+          new Error(
+            `Transaction failed - ${txResponse.rawLog} - ${txResponse.txHash}`,
+          ),
+          {
+            code: UnspecifiedErrorCode,
+            contextCode: txResponse.code,
+            contextModule: txResponse.codespace,
+          },
+        )
+      }
+
+      return txResponse
     } catch (e) {
       const error = e as any
 
