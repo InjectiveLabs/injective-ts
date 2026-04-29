@@ -116,6 +116,7 @@ describe('IndexerGrpcRFQApi', () => {
   test('createConditionalOrder', async () => {
     try {
       const response = await indexerGrpcRfqApi.createConditionalOrder({
+        signMode: 'v1',
         signature: '0x1234567890abcdef',
         order: {
           version: 1,

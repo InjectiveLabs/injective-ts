@@ -42,6 +42,7 @@ export interface RFQGwPrepareAutoSignResponseType {
   pubKeyType: string
   feePayerSig: string
   quotesWaitMs: number
+  expiredQuotesCount: number
   autosignAccountNumber: number
   feePayerAccountNumber: number
   autosignAccountSequence: number

@@ -95,6 +95,7 @@ export class IndexerGrpcTcDerivativesTransformer {
       isLiquidation: trade.isLiquidation,
       executedAt: Number(trade.executedAt),
       positionIsLong: trade.positionIsLong,
+      isPositionClosed: trade.isPositionClosed,
       positionEntryPrice: trade.positionEntryPrice,
       positionOpenedAt: Number(trade.positionOpenedAt),
       executionSide: trade.executionSide as TradeExecutionSide,

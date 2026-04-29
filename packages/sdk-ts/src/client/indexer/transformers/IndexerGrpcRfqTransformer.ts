@@ -50,6 +50,7 @@ export class IndexerGrpcRfqTransformer {
       marketId: grpcQuote.marketId,
       quantity: grpcQuote.quantity,
       clientId: grpcQuote.clientId,
+      signMode: grpcQuote.signMode,
       signature: grpcQuote.signature,
       rfqId: Number(grpcQuote.rfqId),
       height: Number(grpcQuote.height),
@@ -118,6 +119,7 @@ export class IndexerGrpcRfqTransformer {
       chainId: grpcProcessedQuote.chainId,
       marketId: grpcProcessedQuote.marketId,
       quantity: grpcProcessedQuote.quantity,
+      signMode: grpcProcessedQuote.signMode,
       signature: grpcProcessedQuote.signature,
       clientId: grpcProcessedQuote.clientId,
       rfqId: Number(grpcProcessedQuote.rfqId),
@@ -162,6 +164,7 @@ export class IndexerGrpcRfqTransformer {
   ): RFQConditionalOrder {
     return {
       error: grpcOrder.error,
+      txHash: grpcOrder.txHash,
       margin: grpcOrder.margin,
       status: grpcOrder.status,
       marketId: grpcOrder.marketId,

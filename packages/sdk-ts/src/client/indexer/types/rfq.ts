@@ -48,6 +48,7 @@ export interface RFQQuoteType {
   marketId: string
   quantity: string
   clientId: string
+  signMode: string
   signature: string
   createdAt: number
   updatedAt: number
@@ -73,6 +74,7 @@ export interface RFQProcessedQuoteType {
   chainId: string
   marketId: string
   quantity: string
+  signMode: string
   signature: string
   createdAt: number
   updatedAt: number
@@ -148,6 +150,7 @@ export interface RFQConditionalOrderInput {
 export interface RFQConditionalOrder {
   rfqId: number
   error?: string
+  txHash: string
   margin: string
   status: string
   marketId: string

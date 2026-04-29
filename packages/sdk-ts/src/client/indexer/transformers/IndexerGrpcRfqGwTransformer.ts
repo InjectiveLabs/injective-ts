@@ -42,6 +42,7 @@ export class IndexerGrpcRfqGwTransformer {
       pubKeyType: response.pubKeyType,
       feePayerSig: response.feePayerSig,
       quotesWaitMs: Number(response.quotesWaitMs),
+      expiredQuotesCount: Number(response.expiredQuotesCount),
       autosignAccountNumber: Number(response.autosignAccountNumber),
       feePayerAccountNumber: Number(response.feePayerAccountNumber),
       autosignAccountSequence: Number(response.autosignAccountSequence),
