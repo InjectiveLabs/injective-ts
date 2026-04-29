@@ -4,7 +4,6 @@ import {
   getNetworkInfo,
   getNetworkEndpoints,
 } from '@injectivelabs/networks'
-import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import {
   getStdFee,
   toBigNumber,
@@ -15,6 +14,7 @@ import { createTransaction } from '../tx.js'
 import { TxGrpcApi } from '../api/TxGrpcApi.js'
 import { ofacList } from '../../../utils/ofac.js'
 import { PrivateKey } from '../../accounts/index.js'
+import { uint8ArrayToHex } from '../../../utils/encoding.js'
 import { IndexerGrpcWeb3GwApi } from '../../../client/index.js'
 import { getGasPriceBasedOnMessage } from '../../../utils/msgs.js'
 import {
@@ -25,13 +25,9 @@ import {
   ChainRestAuthApi,
   ChainRestTendermintApi,
 } from '../../../client/chain/rest/index.js'
-import {
-  uint8ArrayToHex,
-  hexToUint8Array,
-  base64ToUint8Array,
-} from '../../../utils/encoding.js'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import type { Msgs } from '../../modules/msgs.js'
 import type { AccountDetails } from '../../../types/auth.js'
 import type { CreateTransactionArgs } from '../types/index.js'
@@ -444,48 +440,6 @@ export class MsgBroadcasterWithPk {
     const latestHeight = latestBlock!.header!.height
 
     return toBigNumber(latestHeight.toString()).plus(txTimeout)
-  }
-
-  async broadcastWithFeePayerSig({
-    tx,
-    feePayerSig,
-    accountNumber,
-  }: {
-    feePayerSig: string
-    accountNumber?: number
-    tx: Uint8Array | string
-  }) {
-    if (ofacList.includes(this.privateKey.toHex())) {
-      throw new GeneralException(
-        new Error('You cannot execute this transaction'),
-      )
-    }
-
-    const { chainId, privateKey } = this
-
-    const resolvedAccountNumber =
-      accountNumber ?? (await this.getAccountDetails()).accountNumber
-
-    const txBytes = typeof tx === 'string' ? base64ToUint8Array(tx) : tx
-    const txRaw = CosmosTxV1Beta1TxPb.TxRaw.fromBinary(txBytes)
-
-    const signDoc = CosmosTxV1Beta1TxPb.SignDoc.create({
-      chainId,
-      bodyBytes: txRaw.bodyBytes,
-      authInfoBytes: txRaw.authInfoBytes,
-      accountNumber: BigInt(resolvedAccountNumber),
-    })
-
-    const signDocBytes = CosmosTxV1Beta1TxPb.SignDoc.toBinary(signDoc)
-    const signature = await privateKey.sign(signDocBytes)
-
-    const feePayerSigBytes = feePayerSig.startsWith('0x')
-      ? hexToUint8Array(feePayerSig.slice(2))
-      : base64ToUint8Array(feePayerSig)
-
-    txRaw.signatures = [signature, feePayerSigBytes]
-
-    return await this.broadcastTxRaw(txRaw)
   }
 
   private async broadcastTxRaw(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
