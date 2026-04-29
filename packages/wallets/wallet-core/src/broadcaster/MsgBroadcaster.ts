@@ -385,7 +385,7 @@ export class MsgBroadcaster {
 
     const pk = PrivateKey.fromHex(privateKey)
 
-    if (ofacList.includes(pk.toHex())) {
+    if (ofacList.includes(pk.toHex().toLowerCase())) {
       throw new GeneralException(
         new Error('You cannot execute this transaction'),
       )
