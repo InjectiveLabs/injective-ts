@@ -1,5 +1,6 @@
 import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
 import type {
+  RFQSignMode,
   RFQQuoteType,
   GrpcRFQQuote,
   RFQRequestType,
@@ -50,7 +51,6 @@ export class IndexerGrpcRfqTransformer {
       marketId: grpcQuote.marketId,
       quantity: grpcQuote.quantity,
       clientId: grpcQuote.clientId,
-      signMode: grpcQuote.signMode,
       signature: grpcQuote.signature,
       rfqId: Number(grpcQuote.rfqId),
       height: Number(grpcQuote.height),
@@ -62,6 +62,7 @@ export class IndexerGrpcRfqTransformer {
       takerDirection: grpcQuote.takerDirection,
       contractAddress: grpcQuote.contractAddress,
       minFillQuantity: grpcQuote.minFillQuantity,
+      signMode: grpcQuote.signMode as RFQSignMode,
       transactionTime: Number(grpcQuote.transactionTime),
       makerSubaccountNonce: Number(grpcQuote.makerSubaccountNonce),
       expiry: {
@@ -121,7 +122,6 @@ export class IndexerGrpcRfqTransformer {
       chainId: grpcProcessedQuote.chainId,
       marketId: grpcProcessedQuote.marketId,
       quantity: grpcProcessedQuote.quantity,
-      signMode: grpcProcessedQuote.signMode,
       signature: grpcProcessedQuote.signature,
       clientId: grpcProcessedQuote.clientId,
       rfqId: Number(grpcProcessedQuote.rfqId),
@@ -135,6 +135,7 @@ export class IndexerGrpcRfqTransformer {
       takerDirection: grpcProcessedQuote.takerDirection,
       contractAddress: grpcProcessedQuote.contractAddress,
       minFillQuantity: grpcProcessedQuote.minFillQuantity,
+      signMode: grpcProcessedQuote.signMode as RFQSignMode,
       executedQuantity: grpcProcessedQuote.executedQuantity,
       transactionTime: Number(grpcProcessedQuote.transactionTime),
       makerSubaccountNonce: Number(grpcProcessedQuote.makerSubaccountNonce),
