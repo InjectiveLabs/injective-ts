@@ -53,6 +53,7 @@ export interface RFQQuoteType {
   createdAt: number
   updatedAt: number
   eventTime: number
+  evmChainId: number
   priceCheck: boolean
   expiry: RFQExpiryType
   takerDirection: string
@@ -80,6 +81,7 @@ export interface RFQProcessedQuoteType {
   updatedAt: number
   clientId: string
   eventTime: number
+  evmChainId: number
   priceCheck: boolean
   executedMargin: string
   takerDirection: string
@@ -106,6 +108,7 @@ export interface RFQSettlementType {
   taker: string
   margin: string
   height: number
+  txHash: string
   marketId: string
   quantity: string
   direction: string
@@ -160,6 +163,8 @@ export interface RFQConditionalOrder {
   updatedAt: number
   expiresAt: number
   eventTime: number
+  terminalAt: number
+  evmChainId: number
   worstPrice: string
   triggerType: string
   triggerPrice: string

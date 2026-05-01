@@ -252,9 +252,11 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     order,
     signMode,
     signature,
+    evmChainId,
   }: {
     signMode: string
     signature: string
+    evmChainId: bigint
     order: {
       cid?: string
       taker: string
@@ -317,6 +319,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     request.order = conditionalOrderInput
     request.signature = signature
     request.signMode = signMode
+    request.evmChainId = evmChainId
 
     const response = await this.executeGrpcCall<
       InjectiveRFQExchangeRpcPb.CreateConditionalOrderRequest,

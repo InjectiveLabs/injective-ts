@@ -118,6 +118,7 @@ describe('IndexerGrpcRFQApi', () => {
       const response = await indexerGrpcRfqApi.createConditionalOrder({
         signMode: 'v1',
         signature: '0x1234567890abcdef',
+        evmChainId: BigInt(1439),
         order: {
           version: 1,
           rfqId: BigInt(1),
