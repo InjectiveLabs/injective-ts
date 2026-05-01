@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-turnkey",
-  "version": "1.19.2",
+  "version": "1.19.3",
   "description": "Turnkey wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
