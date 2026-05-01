@@ -89,4 +89,94 @@ describe('IndexerGrpcRfqGwApi', () => {
 
     executeGrpcCall.mockRestore()
   })
+
+  test('fetchPrepare', async () => {
+    const response = await indexerGrpcRfqGwApi.fetchPrepare({
+      direction: 'LONG',
+      takerAccountNumber: 0,
+      takerAccountSequence: 0,
+      clientId: 'test-client-id',
+      margin: '1000000000000000000',
+      quantity: '1000000000000000000',
+      worstPrice: '1000000000000000000',
+      takerPubKey: '0x1234567890abcdef',
+      takerAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+      marketId:
+        '0x17ef48032cb24375ba7c2e39f384e56433bcab20cbee9a7357e4cba2eb00abe6',
+    })
+
+    expect(response).toBeDefined()
+    expect(response).toMatchObject({
+      tx: expect.any(String),
+      feePayer: expect.any(String),
+      feePayerSig: expect.any(String),
+      rfqId: expect.any(Number),
+      quotesWaitMs: expect.any(Number),
+      takerAccountNumber: expect.any(Number),
+      takerAccountSequence: expect.any(Number),
+      feePayerAccountNumber: expect.any(Number),
+      feePayerAccountSequence: expect.any(Number),
+      quotes: expect.any(Array),
+    })
+  })
+
+  test('fetchPrepareEip712', async () => {
+    const response = await indexerGrpcRfqGwApi.fetchPrepareEip712({
+      direction: 'LONG',
+      ethChainId: 1,
+      eip712Wrapper: 'v2',
+      takerAccountNumber: 0,
+      takerAccountSequence: 0,
+      clientId: 'test-client-id',
+      margin: '1000000000000000000',
+      quantity: '1000000000000000000',
+      worstPrice: '1000000000000000000',
+      takerPubKey: '0x1234567890abcdef',
+      takerAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+      marketId:
+        '0x17ef48032cb24375ba7c2e39f384e56433bcab20cbee9a7357e4cba2eb00abe6',
+    })
+
+    expect(response).toBeDefined()
+    expect(response).toMatchObject({
+      data: expect.any(String),
+      feePayer: expect.any(String),
+      feePayerSig: expect.any(String),
+      rfqId: expect.any(Number),
+      quotesWaitMs: expect.any(Number),
+      takerAccountNumber: expect.any(Number),
+      takerAccountSequence: expect.any(Number),
+      quotes: expect.any(Array),
+    })
+  })
+
+  test('fetchPrepareEip712AutoSign', async () => {
+    const response = await indexerGrpcRfqGwApi.fetchPrepareEip712AutoSign({
+      direction: 'LONG',
+      ethChainId: 1,
+      eip712Wrapper: 'v2',
+      autosignAccountNumber: 0,
+      autosignAccountSequence: 0,
+      clientId: 'test-client-id',
+      margin: '1000000000000000000',
+      quantity: '1000000000000000000',
+      worstPrice: '1000000000000000000',
+      autosignPubKey: '0x1234567890abcdef',
+      autosignAddress: 'inj1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqe2hm49',
+      marketId:
+        '0x17ef48032cb24375ba7c2e39f384e56433bcab20cbee9a7357e4cba2eb00abe6',
+    })
+
+    expect(response).toBeDefined()
+    expect(response).toMatchObject({
+      data: expect.any(String),
+      feePayer: expect.any(String),
+      feePayerSig: expect.any(String),
+      rfqId: expect.any(Number),
+      quotesWaitMs: expect.any(Number),
+      autosignAccountNumber: expect.any(Number),
+      autosignAccountSequence: expect.any(Number),
+      quotes: expect.any(Array),
+    })
+  })
 })
