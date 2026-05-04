@@ -3,7 +3,7 @@ import { InjectiveRfqRPCClient } from '@injectivelabs/indexer-proto-ts-v2/genera
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcRfqTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { GrpcRFQExpiry } from '../types/index.js'
+import type { RFQSignMode, GrpcRFQExpiry } from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -254,9 +254,9 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     signature,
     evmChainId,
   }: {
-    signMode: string
     signature: string
     evmChainId: bigint
+    signMode: RFQSignMode
     order: {
       cid?: string
       taker: string

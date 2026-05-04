@@ -1,6 +1,13 @@
 import type * as InjectiveRFQRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
 import type { WsState, WsTransportConfig, WsDisconnectReason } from './ws.js'
 
+/**
+ * Signature scheme for RFQ quotes and conditional orders.
+ * - `v1`: raw JSON keccak256
+ * - `v2`: EIP-712
+ */
+export type RFQSignMode = 'v1' | 'v2'
+
 export interface RFQRequestType {
   rfqId: number
   margin: string
@@ -48,13 +55,13 @@ export interface RFQQuoteType {
   marketId: string
   quantity: string
   clientId: string
-  signMode: string
   signature: string
   createdAt: number
   updatedAt: number
   eventTime: number
   evmChainId: number
   priceCheck: boolean
+  signMode: RFQSignMode
   expiry: RFQExpiryType
   takerDirection: string
   contractAddress: string
@@ -75,7 +82,6 @@ export interface RFQProcessedQuoteType {
   chainId: string
   marketId: string
   quantity: string
-  signMode: string
   signature: string
   createdAt: number
   updatedAt: number
@@ -83,6 +89,7 @@ export interface RFQProcessedQuoteType {
   eventTime: number
   evmChainId: number
   priceCheck: boolean
+  signMode: RFQSignMode
   executedMargin: string
   takerDirection: string
   expiry?: RFQExpiryType
