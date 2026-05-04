@@ -97,7 +97,7 @@ export class EvmWallet
             this.evmProviders[Wallet.Metamask] = event.detail.provider
           }
 
-          if (walletName === Wallet.Rabby.toLowerCase()) {
+          if (walletName === 'rabby wallet') {
             this.evmProviders[Wallet.Rabby] = event.detail.provider
           }
 
