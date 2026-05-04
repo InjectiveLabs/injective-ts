@@ -26,6 +26,7 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
   TrustWalletException,
+  RabbyWalletException,
   RainbowWalletException,
 } from '@injectivelabs/exceptions'
 import {
@@ -96,7 +97,7 @@ export class EvmWallet
             this.evmProviders[Wallet.Metamask] = event.detail.provider
           }
 
-          if (walletName === Wallet.Rabby.toLowerCase()) {
+          if (walletName === 'rabby wallet') {
             this.evmProviders[Wallet.Rabby] = event.detail.provider
           }
 
@@ -149,6 +150,10 @@ export class EvmWallet
 
     if (this.wallet === Wallet.TrustWallet) {
       return new TrustWalletException(error, context)
+    }
+
+    if (this.wallet === Wallet.Rabby) {
+      return new RabbyWalletException(error, context)
     }
 
     if (this.wallet === Wallet.Rainbow) {
