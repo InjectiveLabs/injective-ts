@@ -4,10 +4,11 @@ import { LedgerException } from './LedgerException.js'
 import { TrezorException } from './TrezorException.js'
 import { WalletException } from './WalletException.js'
 import { GeneralException } from './GeneralException.js'
-import { MetamaskException } from './MetamaskException.js'
 import { KeplrEvmException } from './KeplrEvmException.js'
+import { MetamaskException } from './MetamaskException.js'
 import { OkxWalletException } from './OkxWalletException.js'
 import { HttpRequestException } from './HttpRequestException.js'
+import { RabbyWalletException } from './RabbyWalletException.js'
 import { TransactionException } from './TransactionException.js'
 import { TrustWalletException } from './TrustWalletException.js'
 import { CosmosWalletException } from './CosmosWalletException.js'
@@ -32,6 +33,7 @@ export {
   HttpRequestException,
   LedgerCosmosException,
   CosmosWalletException,
+  RabbyWalletException,
   RainbowWalletException,
   WalletConnectException,
   GrpcUnaryRequestException,

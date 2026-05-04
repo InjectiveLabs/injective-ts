@@ -26,6 +26,7 @@ import {
   UnspecifiedErrorCode,
   TransactionException,
   TrustWalletException,
+  RabbyWalletException,
   RainbowWalletException,
 } from '@injectivelabs/exceptions'
 import {
@@ -149,6 +150,10 @@ export class EvmWallet
 
     if (this.wallet === Wallet.TrustWallet) {
       return new TrustWalletException(error, context)
+    }
+
+    if (this.wallet === Wallet.Rabby) {
+      return new RabbyWalletException(error, context)
     }
 
     if (this.wallet === Wallet.Rainbow) {
