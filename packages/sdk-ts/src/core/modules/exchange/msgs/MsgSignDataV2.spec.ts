@@ -1,0 +1,51 @@
+import { EIP712Version } from '@injectivelabs/ts-types'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import MsgSignDataV2 from './MsgSignDataV2.js'
+import {
+  getEip712TypedData,
+  getEip712TypedDataV2,
+} from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+
+const params: MsgSignDataV2['params'] = {
+  sender: mockFactory.injectiveAddress,
+  data: 'test-data',
+}
+
+const message = MsgSignDataV2.fromJSON(params)
+
+describe('MsgSignDataV2', () => {
+  describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: message,
+    })
+
+    // not supported on chain (cannot resolve type URL /injective.exchange.v2.MsgSignData)
+    it.skip('EIP712 v1', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    // not supported on chain (cannot resolve type URL /injective.exchange.v2.MsgSignData)
+    it.skip('EIP712 v2', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+  })
+})

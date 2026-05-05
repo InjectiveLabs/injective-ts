@@ -33,6 +33,7 @@ export const objectKeysToEip712Types = ({
     'proposal_id',
     'creation_height',
     'contract_hook_max_gas',
+    'expiration_block',
   ]
   const stringFieldsWithNumberValue = [
     'timeout_timestamp',
@@ -240,6 +241,8 @@ export const numberTypeToReflectionNumberType = (
     case 'expiry':
       return 'int64'
     case 'creation_height':
+      return 'int64'
+    case 'expiration_block':
       return 'int64'
     case 'option':
       return 'int32'
@@ -453,6 +456,58 @@ export const protoTypeToAminoType = (type: string): string => {
     // Exchange v2
     case 'injective.exchange.v2.MsgSetDelegationTransferReceivers':
       return 'exchange/MsgSetDelegationTransferReceivers'
+    case 'injective.exchange.v2.MsgDeposit':
+      return 'exchange/MsgDeposit'
+    case 'injective.exchange.v2.MsgWithdraw':
+      return 'exchange/MsgWithdraw'
+    case 'injective.exchange.v2.MsgSignData':
+      return 'exchange/MsgSignData'
+    case 'injective.exchange.v2.MsgRewardsOptOut':
+      return 'exchange/MsgRewardsOptOut'
+    case 'injective.exchange.v2.MsgCancelSpotOrder':
+      return 'exchange/MsgCancelSpotOrder'
+    case 'injective.exchange.v2.MsgExternalTransfer':
+      return 'exchange/MsgExternalTransfer'
+    case 'injective.exchange.v2.MsgBatchUpdateOrders':
+      return 'exchange/MsgBatchUpdateOrders'
+    case 'injective.exchange.v2.MsgLiquidatePosition':
+      return 'exchange/MsgLiquidatePosition'
+    case 'injective.exchange.v2.MsgReclaimLockedFunds':
+      return 'exchange/MsgReclaimLockedFunds'
+    case 'injective.exchange.v2.MsgAuthorizeStakeGrants':
+      return 'exchange/MsgAuthorizeStakeGrants'
+    case 'injective.exchange.v2.MsgCancelDerivativeOrder':
+      return 'exchange/MsgCancelDerivativeOrder'
+    case 'injective.exchange.v2.MsgBatchCancelSpotOrders':
+      return 'exchange/MsgBatchCancelSpotOrders'
+    case 'injective.exchange.v2.MsgCreateSpotLimitOrder':
+      return 'exchange/MsgCreateSpotLimitOrder'
+    case 'injective.exchange.v2.MsgCreateSpotMarketOrder':
+      return 'exchange/MsgCreateSpotMarketOrder'
+    case 'injective.exchange.v2.MsgIncreasePositionMargin':
+      return 'exchange/MsgIncreasePositionMargin'
+    case 'injective.exchange.v2.MsgDecreasePositionMargin':
+      return 'exchange/MsgDecreasePositionMargin'
+    case 'injective.exchange.v2.MsgInstantSpotMarketLaunch':
+      return 'exchange/MsgInstantSpotMarketLaunch'
+    case 'injective.exchange.v2.MsgCancelBinaryOptionsOrder':
+      return 'exchange/MsgCancelBinaryOptionsOrder'
+    case 'injective.exchange.v2.MsgCreateDerivativeLimitOrder':
+      return 'exchange/MsgCreateDerivativeLimitOrder'
+    case 'injective.exchange.v2.MsgBatchCancelDerivativeOrders':
+      return 'exchange/MsgBatchCancelDerivativeOrders'
+    case 'injective.exchange.v2.MsgCreateDerivativeMarketOrder':
+      return 'exchange/MsgCreateDerivativeMarketOrder'
+    case 'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder':
+      return 'exchange/MsgCreateBinaryOptionsLimitOrder'
+    case 'injective.exchange.v2.MsgAdminUpdateBinaryOptionsMarket':
+      return 'exchange/MsgAdminUpdateBinaryOptionsMarket'
+    case 'injective.exchange.v2.MsgBatchCancelBinaryOptionsOrders':
+      return 'exchange/MsgBatchCancelBinaryOptionsOrders'
+    case 'injective.exchange.v2.MsgCreateBinaryOptionsMarketOrder':
+      return 'exchange/MsgCreateBinaryOptionsMarketOrder'
+    case 'injective.exchange.v2.MsgInstantBinaryOptionsMarketLaunch':
+      return 'exchange/MsgInstantBinaryOptionsMarketLaunch'
 
     // Auction
     case 'injective.auction.v1beta1.MsgBid':
