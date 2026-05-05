@@ -33,6 +33,7 @@ export const objectKeysToEip712Types = ({
     'proposal_id',
     'creation_height',
     'contract_hook_max_gas',
+    'expiration_block',
   ]
   const stringFieldsWithNumberValue = [
     'timeout_timestamp',
@@ -240,6 +241,8 @@ export const numberTypeToReflectionNumberType = (
     case 'expiry':
       return 'int64'
     case 'creation_height':
+      return 'int64'
+    case 'expiration_block':
       return 'int64'
     case 'option':
       return 'int32'
