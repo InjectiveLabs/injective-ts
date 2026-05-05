@@ -36,6 +36,7 @@ export class IndexerWsTakerStream {
       reconnect: config.reconnect,
       metadata: {
         request_address: config.requestAddress,
+        subscribe_to_conditional_order_updates: 'true',
       },
     })
 
