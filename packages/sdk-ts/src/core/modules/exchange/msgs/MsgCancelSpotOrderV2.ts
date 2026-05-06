@@ -15,6 +15,7 @@ export declare namespace MsgCancelSpotOrderV2 {
 
 /**
  * @category Messages
+ * No toEip712/toEip712V2 override needed — spot cancel has no order_mask field, so base-class defaults (toAmino/toWeb3Gw) are correct.
  */
 export default class MsgCancelSpotOrderV2 extends MsgBase<
   MsgCancelSpotOrderV2.Params,
@@ -26,6 +27,10 @@ export default class MsgCancelSpotOrderV2 extends MsgBase<
 
   public toProto() {
     const { params } = this
+
+    if (!params.orderHash && !params.cid) {
+      throw new Error('either orderHash or cid must be provided')
+    }
 
     const message = InjectiveExchangeV2TxPb.MsgCancelSpotOrder.create({
       sender: params.injectiveAddress,

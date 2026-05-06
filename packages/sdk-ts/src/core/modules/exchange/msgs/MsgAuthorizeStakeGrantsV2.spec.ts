@@ -9,15 +9,16 @@ import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerG
 
 const params: MsgAuthorizeStakeGrantsV2['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
-  grantee: mockFactory.injectiveAddress2,
-  amount: '1000000000000000000',
+  grants: [
+    { grantee: mockFactory.injectiveAddress2, amount: '1000000000000000000' },
+  ],
 }
 
 const protoType = '/injective.exchange.v2.MsgAuthorizeStakeGrants'
 const protoTypeShort = 'exchange/MsgAuthorizeStakeGrants'
 const protoParams = {
   sender: params.injectiveAddress,
-  grants: [{ grantee: params.grantee, amount: params.amount }],
+  grants: params.grants.map(({ grantee, amount }) => ({ grantee, amount })),
 }
 const message = MsgAuthorizeStakeGrantsV2.fromJSON(params)
 

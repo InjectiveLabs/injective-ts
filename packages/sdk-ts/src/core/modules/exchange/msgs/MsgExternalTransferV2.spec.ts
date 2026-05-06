@@ -11,7 +11,7 @@ import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerG
 const params: MsgExternalTransferV2['params'] = {
   injectiveAddress: mockFactory.injectiveAddress,
   srcSubaccountId: mockFactory.subaccountId,
-  dstSubaccountId: mockFactory.subaccountId,
+  dstSubaccountId: mockFactory.subaccountId2,
   amount: {
     amount: '1000000',
     denom: 'inj',

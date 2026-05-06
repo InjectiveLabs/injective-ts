@@ -1,4 +1,5 @@
 import { toChainFormat } from '@injectivelabs/utils'
+import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2MarketPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/market_pb'
 import { MsgBase } from '../../MsgBase.js'
@@ -91,19 +92,12 @@ export default class MsgAdminUpdateBinaryOptionsMarketV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const amino = this.toAmino()
-    const { type, value } = amino
-
-    const messageAdjusted = {
-      ...value,
-      settlement_price: toChainFormat(value.settlement_price).toFixed(),
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
-    }
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712 v1 is not supported for MsgAdminUpdateBinaryOptionsMarket, use toEip712V2 instead.',
+      ),
+    )
   }
 
   public toEip712V2() {

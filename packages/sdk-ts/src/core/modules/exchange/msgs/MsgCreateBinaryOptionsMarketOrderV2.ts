@@ -16,6 +16,7 @@ export declare namespace MsgCreateBinaryOptionsMarketOrderV2 {
     margin: string
     quantity: string
     cid?: string
+    expirationBlock?: string
   }
 
   export type Proto = InjectiveExchangeV2TxPb.MsgCreateBinaryOptionsMarketOrder
@@ -38,7 +39,9 @@ const createMarketOrder = (
     orderType: params.orderType,
     margin: params.margin,
     triggerPrice: params.triggerPrice || '0',
-    expirationBlock: BigInt(0),
+    expirationBlock: params.expirationBlock
+      ? BigInt(params.expirationBlock)
+      : BigInt(0),
   })
 
   const message =
@@ -101,7 +104,7 @@ export default class MsgCreateBinaryOptionsMarketOrderV2 extends MsgBase<
         order_type: params.orderType,
         margin: params.margin,
         trigger_price: params.triggerPrice || '0',
-        expiration_block: '0',
+        expiration_block: params.expirationBlock || '0',
       },
     }
 

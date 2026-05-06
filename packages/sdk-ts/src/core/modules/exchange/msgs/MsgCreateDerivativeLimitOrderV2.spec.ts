@@ -95,6 +95,19 @@ describe('MsgCreateDerivativeLimitOrderV2', () => {
     })
   })
 
+  it('round-trips expirationBlock through proto and amino', () => {
+    const msgWithExpiry = MsgCreateDerivativeLimitOrderV2.fromJSON({
+      ...params,
+      expirationBlock: '100',
+    })
+
+    const proto = msgWithExpiry.toProto()
+    expect(proto.order!.expirationBlock).toStrictEqual(BigInt(100))
+
+    const amino = msgWithExpiry.toAmino()
+    expect(amino.value.order.expiration_block).toStrictEqual('100')
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

@@ -62,15 +62,15 @@ export default class MsgBatchCancelBinaryOptionsOrdersV2 extends MsgBase<
   }
 
   public toAmino() {
-    const { params } = this
+    const proto = this.toProto()
     const message = {
-      sender: params.injectiveAddress,
-      data: params.orders.map((order) => ({
-        market_id: order.marketId,
-        subaccount_id: order.subaccountId,
-        order_hash: order.orderHash,
-        order_mask: order.orderMask ?? 0,
-        cid: order.cid,
+      sender: proto.sender,
+      data: proto.data.map((orderData) => ({
+        market_id: orderData.marketId,
+        subaccount_id: orderData.subaccountId,
+        order_hash: orderData.orderHash,
+        order_mask: orderData.orderMask,
+        cid: orderData.cid,
       })),
     }
 
@@ -93,20 +93,24 @@ export default class MsgBatchCancelBinaryOptionsOrdersV2 extends MsgBase<
   public toEip712() {
     const amino = this.toAmino()
     const { value, type } = amino
+    const { params } = this
 
     return {
       type,
       value: {
         ...value,
-        data: (value.data as any[]).map((order) => {
+        data: (value.data as any[]).map((order, i) => {
           const { order_mask, ...rest } = order
-          return order_mask ? { ...rest, order_mask } : rest
+          return params.orders[i].orderMask !== undefined
+            ? { ...rest, order_mask }
+            : rest
         }),
       },
     }
   }
 
   public toEip712V2() {
+    // V2 always includes order_mask for every order (unlike toEip712 v1 which omits it when not explicitly set by the caller)
     return this.toWeb3Gw()
   }
 

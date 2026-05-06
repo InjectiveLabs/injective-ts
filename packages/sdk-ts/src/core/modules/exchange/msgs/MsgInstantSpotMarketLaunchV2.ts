@@ -7,7 +7,6 @@ export declare namespace MsgInstantSpotMarketLaunchV2 {
   export interface Params {
     proposer: string
     market: {
-      sender: string
       ticker: string
       baseDenom: string
       quoteDenom: string

@@ -36,6 +36,8 @@ describe('MsgBatchCancelSpotOrdersV2', () => {
     const data = message.toData()
 
     expect(data['@type']).toStrictEqual(protoType)
+    expect(data.sender).toStrictEqual(params.injectiveAddress)
+    expect(data.data[0].marketId).toStrictEqual(params.orders[0].marketId)
   })
 
   it('generates proper amino', () => {
@@ -52,6 +54,8 @@ describe('MsgBatchCancelSpotOrdersV2', () => {
     const web3 = message.toWeb3Gw()
 
     expect(web3['@type']).toStrictEqual(protoType)
+    expect(web3.sender).toStrictEqual(params.injectiveAddress)
+    expect(web3.data[0].market_id).toStrictEqual(params.orders[0].marketId)
   })
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {

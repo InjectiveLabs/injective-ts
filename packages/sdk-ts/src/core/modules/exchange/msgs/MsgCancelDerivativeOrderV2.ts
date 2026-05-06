@@ -79,6 +79,22 @@ export default class MsgCancelDerivativeOrderV2 extends MsgBase<
     }
   }
 
+  public toEip712() {
+    const amino = this.toAmino()
+    const { type, value } = amino
+    const { order_mask, ...rest } = value
+
+    return {
+      type,
+      value:
+        this.params.orderMask !== undefined ? { ...rest, order_mask } : rest,
+    }
+  }
+
+  public toEip712V2() {
+    return this.toWeb3Gw()
+  }
+
   public toDirectSign() {
     const proto = this.toProto()
 

@@ -15,6 +15,7 @@ export declare namespace MsgCreateSpotLimitOrderV2 {
     price: string
     quantity: string
     cid?: string
+    expirationBlock?: string
   }
 
   export type Proto = InjectiveExchangeV2TxPb.MsgCreateSpotLimitOrder
@@ -34,7 +35,9 @@ const createLimitOrder = (params: MsgCreateSpotLimitOrderV2.Params) => {
     orderInfo: orderInfo,
     orderType: params.orderType,
     triggerPrice: params.triggerPrice || '0',
-    expirationBlock: BigInt(0),
+    expirationBlock: params.expirationBlock
+      ? BigInt(params.expirationBlock)
+      : BigInt(0),
   })
 
   const message = InjectiveExchangeV2TxPb.MsgCreateSpotLimitOrder.create({
@@ -95,7 +98,7 @@ export default class MsgCreateSpotLimitOrderV2 extends MsgBase<
         },
         order_type: params.orderType,
         trigger_price: params.triggerPrice || '0',
-        expiration_block: '0',
+        expiration_block: params.expirationBlock || '0',
       },
     }
 

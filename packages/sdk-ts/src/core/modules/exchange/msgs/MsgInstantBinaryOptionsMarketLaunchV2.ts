@@ -176,7 +176,6 @@ export default class MsgInstantBinaryOptionsMarketLaunchV2 extends MsgBase<
       maker_fee_rate: numberToCosmosSdkDecString(params.market.makerFeeRate),
       oracle_type:
         InjectiveOracleV1Beta1OraclePb.OracleType[params.market.oracleType],
-      open_notional_cap: {},
     }
 
     return messageAdjusted

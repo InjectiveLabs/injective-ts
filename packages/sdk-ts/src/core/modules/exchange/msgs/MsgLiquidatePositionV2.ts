@@ -22,6 +22,7 @@ export declare namespace MsgLiquidatePositionV2 {
       margin: string
       quantity: string
       cid?: string
+      expirationBlock?: string
     }
   }
 
@@ -50,6 +51,9 @@ const createMessage = (params: MsgLiquidatePositionV2.Params) => {
       orderInfo: orderInfo,
       orderType: params.order.orderType,
       triggerPrice: params.order.triggerPrice || '0',
+      expirationBlock: params.order.expirationBlock
+        ? BigInt(params.order.expirationBlock)
+        : BigInt(0),
     })
 
     message.order = order
@@ -120,7 +124,7 @@ export default class MsgLiquidatePositionV2 extends MsgBase<
             order_type: params.order.orderType,
             margin: params.order.margin,
             trigger_price: params.order.triggerPrice || '0',
-            expiration_block: '0',
+            expiration_block: params.order.expirationBlock || '0',
           }
         : undefined,
     }

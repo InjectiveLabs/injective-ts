@@ -11,7 +11,7 @@ import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerG
 const params: MsgCreateSpotLimitOrderV2['params'] = {
   feeRecipient: mockFactory.injectiveAddress2,
   injectiveAddress: mockFactory.injectiveAddress,
-  marketId: mockFactory.injUsdtDerivativeMarket.marketId,
+  marketId: mockFactory.injUsdtSpotMarket.marketId,
   orderType: 1,
   price: '1500000',
   quantity: '100',

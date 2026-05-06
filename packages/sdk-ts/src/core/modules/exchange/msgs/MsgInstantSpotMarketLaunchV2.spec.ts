@@ -13,7 +13,6 @@ const params: MsgInstantSpotMarketLaunchV2['params'] = {
   proposer: mockFactory.injectiveAddress,
   market: {
     minNotional: '1',
-    sender: mockFactory.injectiveAddress,
     ticker: market.ticker,
     baseDenom: market.baseDenom,
     quoteDenom: market.quoteDenom,
@@ -24,9 +23,46 @@ const params: MsgInstantSpotMarketLaunchV2['params'] = {
   },
 }
 
+const protoType = '/injective.exchange.v2.MsgInstantSpotMarketLaunch'
+const protoTypeShort = 'exchange/MsgInstantSpotMarketLaunch'
 const message = MsgInstantSpotMarketLaunchV2.fromJSON(params)
 
 describe('MsgInstantSpotMarketLaunchV2', () => {
+  it('generates proper proto', () => {
+    const proto = message.toProto()
+
+    expect(proto.sender).toStrictEqual(params.proposer)
+    expect(proto.ticker).toStrictEqual(params.market.ticker)
+    expect(proto.baseDenom).toStrictEqual(params.market.baseDenom)
+    expect(proto.quoteDenom).toStrictEqual(params.market.quoteDenom)
+  })
+
+  it('generates proper data', () => {
+    const data = message.toData()
+
+    expect(data['@type']).toStrictEqual(protoType)
+    expect(data.sender).toStrictEqual(params.proposer)
+    expect(data.ticker).toStrictEqual(params.market.ticker)
+  })
+
+  it('generates proper amino', () => {
+    const amino = message.toAmino()
+
+    expect(amino.type).toStrictEqual(protoTypeShort)
+    expect(amino.value.sender).toStrictEqual(params.proposer)
+    expect(amino.value.ticker).toStrictEqual(params.market.ticker)
+    expect(amino.value.base_denom).toStrictEqual(params.market.baseDenom)
+    expect(amino.value.quote_denom).toStrictEqual(params.market.quoteDenom)
+  })
+
+  it('generates proper web3Gw', () => {
+    const web3 = message.toWeb3Gw()
+
+    expect(web3['@type']).toStrictEqual(protoType)
+    expect(web3.sender).toStrictEqual(params.proposer)
+    expect(web3.ticker).toStrictEqual(params.market.ticker)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

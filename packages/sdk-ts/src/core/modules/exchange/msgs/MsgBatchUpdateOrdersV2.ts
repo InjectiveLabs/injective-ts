@@ -13,6 +13,7 @@ interface SpotOrderToCreate {
   price: string
   quantity: string
   cid?: string
+  expirationBlock?: string
 }
 
 interface DerivativeOrderToCreate {
@@ -24,6 +25,7 @@ interface DerivativeOrderToCreate {
   margin: string
   quantity: string
   cid?: string
+  expirationBlock?: string
 }
 
 interface BinaryOptionOrderToCreate {
@@ -35,6 +37,7 @@ interface BinaryOptionOrderToCreate {
   margin: string
   quantity: string
   cid?: string
+  expirationBlock?: string
 }
 
 export declare namespace MsgBatchUpdateOrdersV2 {
@@ -89,7 +92,9 @@ const createSpotOrder = (
     orderType: args.orderType,
     orderInfo: orderInfo,
     triggerPrice: args.triggerPrice,
-    expirationBlock: BigInt(0),
+    expirationBlock: args.expirationBlock
+      ? BigInt(args.expirationBlock)
+      : BigInt(0),
   })
 
   return order
@@ -112,7 +117,9 @@ const createDerivativeOrder = (
     orderInfo: orderInfo,
     margin: args.margin,
     triggerPrice: args.triggerPrice,
-    expirationBlock: BigInt(0),
+    expirationBlock: args.expirationBlock
+      ? BigInt(args.expirationBlock)
+      : BigInt(0),
   })
 
   return order
@@ -129,17 +136,73 @@ const createBinaryOptionOrder = (
     cid: args.cid,
   })
 
+  // Binary options reuse the DerivativeOrder proto type on-chain
   const order = InjectiveExchangeV2OrderPb.DerivativeOrder.create({
     marketId: args.marketId,
     orderType: args.orderType,
     orderInfo: orderInfo,
     margin: args.margin,
     triggerPrice: args.triggerPrice,
-    expirationBlock: BigInt(0),
+    expirationBlock: args.expirationBlock
+      ? BigInt(args.expirationBlock)
+      : BigInt(0),
   })
 
   return order
 }
+
+type OrderFormatFn = (value: string) => string
+type OptionalOrderFormatFn = (value: string | undefined) => string
+
+const buildSpotOrders = (
+  orders: SpotOrderToCreate[],
+  subaccountId: string,
+  fmt: OrderFormatFn,
+  fmtOpt: OptionalOrderFormatFn,
+) =>
+  orders.map((args) =>
+    createSpotOrder({
+      ...args,
+      price: fmt(args.price),
+      triggerPrice: fmtOpt(args.triggerPrice),
+      quantity: fmt(args.quantity),
+      subaccountId,
+    }),
+  )
+
+const buildDerivativeOrders = (
+  orders: DerivativeOrderToCreate[],
+  subaccountId: string,
+  fmt: OrderFormatFn,
+  fmtOpt: OptionalOrderFormatFn,
+) =>
+  orders.map((args) =>
+    createDerivativeOrder({
+      ...args,
+      price: fmt(args.price),
+      margin: fmt(args.margin),
+      triggerPrice: fmtOpt(args.triggerPrice),
+      quantity: fmt(args.quantity),
+      subaccountId,
+    }),
+  )
+
+const buildBinaryOptionOrders = (
+  orders: BinaryOptionOrderToCreate[],
+  subaccountId: string,
+  fmt: OrderFormatFn,
+  fmtOpt: OptionalOrderFormatFn,
+) =>
+  orders.map((args) =>
+    createBinaryOptionOrder({
+      ...args,
+      price: fmt(args.price),
+      margin: fmt(args.margin),
+      triggerPrice: fmtOpt(args.triggerPrice),
+      quantity: fmt(args.quantity),
+      subaccountId,
+    }),
+  )
 
 const createMsgAndCancelOrders = (params: MsgBatchUpdateOrdersV2.Params) => {
   const hasCancelAll =
@@ -236,121 +299,53 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
 
   public toProto() {
     const { params } = this
-
     const message = createMsgAndCancelOrders(params)
 
-    if (params.spotOrdersToCreate) {
-      message.spotOrdersToCreate = params.spotOrdersToCreate.map((args) => {
-        const paramsFromArgs = {
-          ...args,
-          price: toChainFormat(args.price).toFixed(),
-          triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
-          quantity: toChainFormat(args.quantity).toFixed(),
-        }
+    const fmt: OrderFormatFn = (v) => toChainFormat(v).toFixed()
+    const fmtOpt: OptionalOrderFormatFn = (v) => toChainFormat(v || 0).toFixed()
 
-        return createSpotOrder({
-          ...args,
-          ...paramsFromArgs,
-          subaccountId: params.subaccountId,
-        })
-      })
-    }
-
-    if (params.derivativeOrdersToCreate) {
-      message.derivativeOrdersToCreate = params.derivativeOrdersToCreate.map(
-        (args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: toChainFormat(args.price).toFixed(),
-            margin: toChainFormat(args.margin).toFixed(),
-            triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
-            quantity: toChainFormat(args.quantity).toFixed(),
-          }
-
-          return createDerivativeOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        },
+    if (params.spotOrdersToCreate)
+      message.spotOrdersToCreate = buildSpotOrders(
+        params.spotOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
       )
-    }
-
-    if (params.binaryOptionsOrdersToCreate) {
-      message.binaryOptionsOrdersToCreate =
-        params.binaryOptionsOrdersToCreate.map((args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: toChainFormat(args.price).toFixed(),
-            margin: toChainFormat(args.margin).toFixed(),
-            triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
-            quantity: toChainFormat(args.quantity).toFixed(),
-          }
-
-          return createBinaryOptionOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        })
-    }
-
-    if (params.spotMarketOrdersToCreate) {
-      message.spotMarketOrdersToCreate = params.spotMarketOrdersToCreate.map(
-        (args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: toChainFormat(args.price).toFixed(),
-            triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
-            quantity: toChainFormat(args.quantity).toFixed(),
-          }
-
-          return createSpotOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        },
+    if (params.derivativeOrdersToCreate)
+      message.derivativeOrdersToCreate = buildDerivativeOrders(
+        params.derivativeOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
       )
-    }
-
-    if (params.derivativeMarketOrdersToCreate) {
-      message.derivativeMarketOrdersToCreate =
-        params.derivativeMarketOrdersToCreate.map((args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: toChainFormat(args.price).toFixed(),
-            margin: toChainFormat(args.margin).toFixed(),
-            triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
-            quantity: toChainFormat(args.quantity).toFixed(),
-          }
-
-          return createDerivativeOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        })
-    }
-
-    if (params.binaryOptionsMarketOrdersToCreate) {
-      message.binaryOptionsMarketOrdersToCreate =
-        params.binaryOptionsMarketOrdersToCreate.map((args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: toChainFormat(args.price).toFixed(),
-            margin: toChainFormat(args.margin).toFixed(),
-            triggerPrice: toChainFormat(args.triggerPrice || 0).toFixed(),
-            quantity: toChainFormat(args.quantity).toFixed(),
-          }
-
-          return createBinaryOptionOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        })
-    }
+    if (params.binaryOptionsOrdersToCreate)
+      message.binaryOptionsOrdersToCreate = buildBinaryOptionOrders(
+        params.binaryOptionsOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
+      )
+    if (params.spotMarketOrdersToCreate)
+      message.spotMarketOrdersToCreate = buildSpotOrders(
+        params.spotMarketOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
+      )
+    if (params.derivativeMarketOrdersToCreate)
+      message.derivativeMarketOrdersToCreate = buildDerivativeOrders(
+        params.derivativeMarketOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
+      )
+    if (params.binaryOptionsMarketOrdersToCreate)
+      message.binaryOptionsMarketOrdersToCreate = buildBinaryOptionOrders(
+        params.binaryOptionsMarketOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
+      )
 
     return message
   }
@@ -369,118 +364,51 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
 
     const message = createMsgAndCancelOrders(params)
 
-    if (params.spotOrdersToCreate) {
-      message.spotOrdersToCreate = params.spotOrdersToCreate.map((args) => {
-        const paramsFromArgs = {
-          ...args,
-          price: args.price,
-          triggerPrice: args.triggerPrice || '0',
-          quantity: args.quantity,
-        }
+    const fmt: OrderFormatFn = (v) => v
+    const fmtOpt: OptionalOrderFormatFn = (v) => v || '0'
 
-        return createSpotOrder({
-          ...args,
-          ...paramsFromArgs,
-          subaccountId: params.subaccountId,
-        })
-      })
-    }
-
-    if (params.derivativeOrdersToCreate) {
-      message.derivativeOrdersToCreate = params.derivativeOrdersToCreate.map(
-        (args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: args.price,
-            margin: args.margin,
-            triggerPrice: args.triggerPrice || '0',
-            quantity: args.quantity,
-          }
-
-          return createDerivativeOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        },
+    if (params.spotOrdersToCreate)
+      message.spotOrdersToCreate = buildSpotOrders(
+        params.spotOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
       )
-    }
-
-    if (params.binaryOptionsOrdersToCreate) {
-      message.binaryOptionsOrdersToCreate =
-        params.binaryOptionsOrdersToCreate.map((args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: args.price,
-            margin: args.margin,
-            triggerPrice: args.triggerPrice || '0',
-            quantity: args.quantity,
-          }
-
-          return createBinaryOptionOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        })
-    }
-
-    if (params.spotMarketOrdersToCreate) {
-      message.spotMarketOrdersToCreate = params.spotMarketOrdersToCreate.map(
-        (args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: args.price,
-            triggerPrice: args.triggerPrice || '0',
-            quantity: args.quantity,
-          }
-
-          return createSpotOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        },
+    if (params.derivativeOrdersToCreate)
+      message.derivativeOrdersToCreate = buildDerivativeOrders(
+        params.derivativeOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
       )
-    }
-
-    if (params.derivativeMarketOrdersToCreate) {
-      message.derivativeMarketOrdersToCreate =
-        params.derivativeMarketOrdersToCreate.map((args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: args.price,
-            margin: args.margin,
-            triggerPrice: args.triggerPrice || '0',
-            quantity: args.quantity,
-          }
-
-          return createDerivativeOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        })
-    }
-
-    if (params.binaryOptionsMarketOrdersToCreate) {
-      message.binaryOptionsMarketOrdersToCreate =
-        params.binaryOptionsMarketOrdersToCreate.map((args) => {
-          const paramsFromArgs = {
-            ...args,
-            price: args.price,
-            margin: args.margin,
-            triggerPrice: args.triggerPrice || '0',
-            quantity: args.quantity,
-          }
-
-          return createBinaryOptionOrder({
-            ...args,
-            ...paramsFromArgs,
-            subaccountId: params.subaccountId,
-          })
-        })
-    }
+    if (params.binaryOptionsOrdersToCreate)
+      message.binaryOptionsOrdersToCreate = buildBinaryOptionOrders(
+        params.binaryOptionsOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
+      )
+    if (params.spotMarketOrdersToCreate)
+      message.spotMarketOrdersToCreate = buildSpotOrders(
+        params.spotMarketOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
+      )
+    if (params.derivativeMarketOrdersToCreate)
+      message.derivativeMarketOrdersToCreate = buildDerivativeOrders(
+        params.derivativeMarketOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
+      )
+    if (params.binaryOptionsMarketOrdersToCreate)
+      message.binaryOptionsMarketOrdersToCreate = buildBinaryOptionOrders(
+        params.binaryOptionsMarketOrdersToCreate,
+        params.subaccountId,
+        fmt,
+        fmtOpt,
+      )
 
     const orderInfoToSnakeCase = (orderInfo: any) => ({
       subaccount_id: orderInfo.subaccountId,
@@ -495,7 +423,7 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
       order_type: order.orderType,
       order_info: orderInfoToSnakeCase(order.orderInfo),
       trigger_price: order.triggerPrice,
-      expiration_block: '0',
+      expiration_block: String(order.expirationBlock),
     })
 
     const derivativeOrderToSnakeCase = (order: any) => ({
@@ -504,7 +432,7 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
       order_info: orderInfoToSnakeCase(order.orderInfo),
       margin: order.margin,
       trigger_price: order.triggerPrice,
-      expiration_block: '0',
+      expiration_block: String(order.expirationBlock),
     })
 
     const orderDataToSnakeCase = (orderData: any) => ({
@@ -762,7 +690,7 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
       },
       order_type: InjectiveExchangeV2OrderPb.OrderType[args.orderType],
       trigger_price: numberToCosmosSdkDecString(args.triggerPrice || '0'),
-      expiration_block: '0',
+      expiration_block: args.expirationBlock || '0',
     })
 
     const formatDerivativeOrderEip712 = (
@@ -782,7 +710,7 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
         (args as DerivativeOrderToCreate).margin,
       ),
       trigger_price: numberToCosmosSdkDecString(args.triggerPrice || '0'),
-      expiration_block: '0',
+      expiration_block: args.expirationBlock || '0',
     })
 
     return {

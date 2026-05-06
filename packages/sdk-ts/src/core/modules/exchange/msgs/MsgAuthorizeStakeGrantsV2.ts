@@ -3,9 +3,8 @@ import { MsgBase } from '../../MsgBase.js'
 
 export declare namespace MsgAuthorizeStakeGrantsV2 {
   export interface Params {
-    grantee: string
     injectiveAddress: string
-    amount: string
+    grants: Array<{ grantee: string; amount: string }>
   }
 
   export type Proto = InjectiveExchangeV2TxPb.MsgAuthorizeStakeGrants
@@ -29,12 +28,7 @@ export default class MsgAuthorizeStakeGrantsV2 extends MsgBase<
 
     const message = InjectiveExchangeV2TxPb.MsgAuthorizeStakeGrants.create({
       sender: params.injectiveAddress,
-      grants: [
-        {
-          grantee: params.grantee,
-          amount: params.amount,
-        },
-      ],
+      grants: params.grants.map(({ grantee, amount }) => ({ grantee, amount })),
     })
 
     return message

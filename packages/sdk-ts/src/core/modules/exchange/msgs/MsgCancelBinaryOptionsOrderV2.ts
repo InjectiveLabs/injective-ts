@@ -36,7 +36,7 @@ export default class MsgCancelBinaryOptionsOrderV2 extends MsgBase<
       marketId: params.marketId,
       subaccountId: params.subaccountId,
       orderHash: params.orderHash || '',
-      orderMask: InjectiveExchangeV2OrderPb.OrderMask.ANY,
+      orderMask: params.orderMask || InjectiveExchangeV2OrderPb.OrderMask.ANY,
       cid: params.cid || '',
     })
 
@@ -77,6 +77,22 @@ export default class MsgCancelBinaryOptionsOrderV2 extends MsgBase<
       '@type': '/injective.exchange.v2.MsgCancelBinaryOptionsOrder',
       ...value,
     }
+  }
+
+  public toEip712() {
+    const amino = this.toAmino()
+    const { type, value } = amino
+    const { order_mask, ...rest } = value
+
+    return {
+      type,
+      value:
+        this.params.orderMask !== undefined ? { ...rest, order_mask } : rest,
+    }
+  }
+
+  public toEip712V2() {
+    return this.toWeb3Gw()
   }
 
   public toDirectSign() {
