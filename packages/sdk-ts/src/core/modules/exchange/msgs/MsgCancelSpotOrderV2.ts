@@ -1,3 +1,4 @@
+import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 
@@ -29,7 +30,9 @@ export default class MsgCancelSpotOrderV2 extends MsgBase<
     const { params } = this
 
     if (!params.orderHash && !params.cid) {
-      throw new Error('either orderHash or cid must be provided')
+      throw new GeneralException(
+        new Error('either orderHash or cid must be provided'),
+      )
     }
 
     const message = InjectiveExchangeV2TxPb.MsgCancelSpotOrder.create({

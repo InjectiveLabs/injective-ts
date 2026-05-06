@@ -2,8 +2,11 @@ import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2OrderPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/order_pb'
 import { MsgBase } from '../../MsgBase.js'
-import { objectKeysToEip712Types } from '../../../tx/eip712/maps.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
+import {
+  objectKeysToEip712Types,
+  patchOrderTypesWithExpirationBlock,
+} from '../../../tx/eip712/maps.js'
 
 interface SpotOrderToCreate {
   orderType: InjectiveExchangeV2OrderPb.OrderType
@@ -652,27 +655,14 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
       messageType: eip712.type,
     })
 
-    // The chain always includes expiration_block in order type schemas
-    // even when the message value omits zero-valued fields.
-    const expirationBlockField = { name: 'expiration_block', type: 'int64' }
-    const orderTypeKeys = [
+    return patchOrderTypesWithExpirationBlock(result, [
       'TypeSpotOrdersToCreate',
       'TypeDerivativeOrdersToCreate',
       'TypeBinaryOptionsOrdersToCreate',
       'TypeSpotMarketOrdersToCreate',
       'TypeDerivativeMarketOrdersToCreate',
       'TypeBinaryOptionsMarketOrdersToCreate',
-    ]
-    for (const key of orderTypeKeys) {
-      if (result.has(key)) {
-        const fields = result.get(key)!
-        if (!fields.some((f) => f.name === 'expiration_block')) {
-          result.set(key, [...fields, expirationBlockField])
-        }
-      }
-    }
-
-    return result
+    ])
   }
 
   public toEip712V2() {

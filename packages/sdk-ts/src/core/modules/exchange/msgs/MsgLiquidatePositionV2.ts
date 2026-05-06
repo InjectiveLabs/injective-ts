@@ -2,8 +2,11 @@ import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2OrderPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/order_pb'
 import { MsgBase } from '../../MsgBase.js'
-import { objectKeysToEip712Types } from '../../../tx/eip712/maps.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
+import {
+  objectKeysToEip712Types,
+  patchOrderTypesWithExpirationBlock,
+} from '../../../tx/eip712/maps.js'
 
 export declare namespace MsgLiquidatePositionV2 {
   export interface Params {
@@ -212,19 +215,7 @@ export default class MsgLiquidatePositionV2 extends MsgBase<
       messageType: eip712.type,
     })
 
-    // The chain always includes expiration_block in the order type schema
-    // even though the EIP712 v1 message value omits it.
-    if (result.has('TypeOrder')) {
-      const fields = result.get('TypeOrder')!
-      if (!fields.some((f) => f.name === 'expiration_block')) {
-        result.set('TypeOrder', [
-          ...fields,
-          { name: 'expiration_block', type: 'int64' },
-        ])
-      }
-    }
-
-    return result
+    return patchOrderTypesWithExpirationBlock(result, ['TypeOrder'])
   }
 
   public toDirectSign() {

@@ -90,30 +90,6 @@ export default class MsgBatchCancelBinaryOptionsOrdersV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const amino = this.toAmino()
-    const { value, type } = amino
-    const { params } = this
-
-    return {
-      type,
-      value: {
-        ...value,
-        data: (value.data as any[]).map((order, i) => {
-          const { order_mask, ...rest } = order
-          return params.orders[i].orderMask !== undefined
-            ? { ...rest, order_mask }
-            : rest
-        }),
-      },
-    }
-  }
-
-  public toEip712V2() {
-    // V2 always includes order_mask for every order (unlike toEip712 v1 which omits it when not explicitly set by the caller)
-    return this.toWeb3Gw()
-  }
-
   public toDirectSign() {
     const proto = this.toProto()
 

@@ -1,4 +1,5 @@
 import { toChainFormat } from '@injectivelabs/utils'
+import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
@@ -138,25 +139,12 @@ export default class MsgInstantBinaryOptionsMarketLaunchV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const amino = this.toAmino()
-    const { type, value } = amino
-
-    const messageAdjusted = {
-      ...value,
-      min_price_tick_size: toChainFormat(value.min_price_tick_size).toFixed(),
-      min_quantity_tick_size: toChainFormat(
-        value.min_quantity_tick_size,
-      ).toFixed(),
-      min_notional: toChainFormat(value.min_notional).toFixed(),
-      taker_fee_rate: toChainFormat(value.taker_fee_rate).toFixed(),
-      maker_fee_rate: toChainFormat(value.maker_fee_rate).toFixed(),
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
-    }
+  public toEip712(): never {
+    throw new GeneralException(
+      new Error(
+        'EIP712 v1 is not supported for MsgInstantBinaryOptionsMarketLaunch, use toEip712V2 instead.',
+      ),
+    )
   }
 
   public toEip712V2() {
@@ -176,6 +164,7 @@ export default class MsgInstantBinaryOptionsMarketLaunchV2 extends MsgBase<
       maker_fee_rate: numberToCosmosSdkDecString(params.market.makerFeeRate),
       oracle_type:
         InjectiveOracleV1Beta1OraclePb.OracleType[params.market.oracleType],
+      open_notional_cap: {},
     }
 
     return messageAdjusted

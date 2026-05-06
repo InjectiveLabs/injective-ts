@@ -169,6 +169,34 @@ export const objectKeysToEip712Types = ({
 
   return output
 }
+
+/**
+ * The chain always includes expiration_block in order type schemas
+ * even when the EIP712 v1 message value omits zero-valued fields.
+ * Patch the resolved type map to add it to any of the given keys
+ * that are missing it.
+ */
+export const patchOrderTypesWithExpirationBlock = (
+  result: Map<string, TypedDataField[]>,
+  orderTypeKeys: string[],
+) => {
+  const expirationBlockField = { name: 'expiration_block', type: 'int64' }
+
+  for (const key of orderTypeKeys) {
+    if (!result.has(key)) {
+      continue
+    }
+
+    const fields = result.get(key)!
+
+    if (!fields.some((f) => f.name === 'expiration_block')) {
+      result.set(key, [...fields, expirationBlockField])
+    }
+  }
+
+  return result
+}
+
 /**
  * JavaScript doesn't know the exact number types that
  * we represent these fields on chain so we have to map

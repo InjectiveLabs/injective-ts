@@ -19,7 +19,7 @@ describe('MsgSignDataV2', () => {
     it('EIP712 v1 structure is valid', () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
 
-      expect(eip712TypedData.primaryType).toStrictEqual('Cosmos')
+      expect(eip712TypedData.primaryType).toStrictEqual('Tx')
       expect(eip712TypedData.domain).toBeDefined()
       expect((eip712TypedData.message.msgs[0] as any).type).toStrictEqual(
         'sign/MsgSignData',
@@ -29,9 +29,10 @@ describe('MsgSignDataV2', () => {
     it('EIP712 v2 structure is valid', () => {
       const eip712TypedData = getEip712TypedDataV2(eip712Args)
 
-      expect(eip712TypedData.primaryType).toStrictEqual('Cosmos')
+      expect(eip712TypedData.primaryType).toStrictEqual('Tx')
       expect(eip712TypedData.domain).toBeDefined()
-      expect((eip712TypedData.message.msgs[0] as any)['@type']).toStrictEqual(
+      const parsedMsgs = JSON.parse(eip712TypedData.message.msgs as string)
+      expect(parsedMsgs[0]['@type']).toStrictEqual(
         '/injective.exchange.v2.MsgSignData',
       )
     })
