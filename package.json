@@ -6,7 +6,7 @@
   "author": "@InjectiveLabs",
   "type": "module",
   "main": "index.js",
-  "packageManager": "pnpm@10.7.0",
+  "packageManager": "pnpm@10.9.0",
   "scripts": {
     "postinstall": "node etc/bootstrapEnv",
     "build": "node etc/bootstrapEnv && lerna run build",
