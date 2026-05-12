@@ -86,13 +86,27 @@ export default class MsgInstantiateContract extends MsgBase<
     }
   }
 
+  public toEip712V2() {
+    const { params } = this
+    const web3gw = this.toWeb3Gw()
+
+    const messageAdjusted = {
+      ...web3gw,
+      msg: params.msg,
+    }
+
+    return messageAdjusted
+  }
+
   public toWeb3Gw() {
+    const { params } = this
     const amino = this.toAmino()
     const { value } = amino
 
     return {
       '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract',
       ...value,
+      msg: JSON.parse(safeBigIntStringify(params.msg)),
     }
   }
 

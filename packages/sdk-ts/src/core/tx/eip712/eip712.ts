@@ -73,7 +73,6 @@ export const getEip712TypedDataV2 = ({
     ...getEip712DomainV2(evmChainId),
     message: {
       context: safeBigIntStringify(getEipTxContext({ ...tx, fee })),
-
       msgs: safeBigIntStringify(eip712Msgs),
     },
   }
