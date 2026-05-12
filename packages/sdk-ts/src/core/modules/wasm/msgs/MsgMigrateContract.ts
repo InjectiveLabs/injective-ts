@@ -61,7 +61,7 @@ export default class MsgMigrateContract extends MsgBase<
       sender: proto.sender,
       contract: proto.contract,
       code_id: proto.codeId.toString(),
-      msg: params.msg,
+      msg: safeBigIntStringify(params.msg),
     }
 
     return {

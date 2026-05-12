@@ -69,12 +69,14 @@ export default class MsgInstantiateContract extends MsgBase<
 
   public toAmino() {
     const proto = this.toProto()
+    const { params } = this
+
     const message = {
       sender: proto.sender,
       admin: proto.admin,
       code_id: proto.codeId.toString(),
       label: proto.label,
-      msg: proto.msg,
+      msg: safeBigIntStringify(params.msg),
       funds: proto.funds,
     }
 
