@@ -526,8 +526,10 @@ export default class TrezorBase
 
   public async getEip1193Provider(): Promise<Eip1193Provider> {
     return new TrezorEip1193Provider(this.trezor, {
-      chainId: this.evmOptions.evmChainId.toString(),
+      rpcUrl: this.evmOptions.rpcUrl,
+      rpcUrls: this.evmOptions.rpcUrls,
       derivationPath: this.metadata?.derivationPath,
+      chainId: this.evmOptions.evmChainId.toString(),
     })
   }
 
