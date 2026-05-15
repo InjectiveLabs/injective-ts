@@ -27,6 +27,7 @@ export const DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS = Math.floor(
   DEFAULT_BLOCK_TIMEOUT_HEIGHT * DEFAULT_BLOCK_TIME_IN_SECONDS * 1000,
 )
 export const DEFAULT_TIMESTAMP_TIMEOUT_MS = 60 * 1000 * 3
+export const DEFAULT_TWITTER_OAUTH_EXPIRY = 10 * 60 * 1000 // 10 minutes
 
 export const getDefaultStdFee = () => ({
   amount: [
