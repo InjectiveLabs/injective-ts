@@ -189,14 +189,14 @@ jobs:
           echo "dist_tag=$DIST_TAG" >> $GITHUB_OUTPUT
           echo "version_args=$VERSION_ARGS" >> $GITHUB_OUTPUT
 
+      - name: Security scan
+        uses: InjectiveLabs/github-fe/actions/security-scan@master
+        timeout-minutes: 5
+
       - name: Install dependencies
         run: |
           node etc/bootstrapEnv
           pnpm install
-
-      - name: Security scan
-        uses: InjectiveLabs/github-fe/actions/security-scan@master
-        timeout-minutes: 5
 
       - name: Build
         run: pnpm build
