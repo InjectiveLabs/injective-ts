@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-strategy",
-  "version": "1.19.10",
+  "version": "1.19.11",
   "description": "Wallet strategy with instantiated wallets",
   "license": "Apache-2.0",
   "author": {
