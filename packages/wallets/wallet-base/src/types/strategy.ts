@@ -67,8 +67,9 @@ export interface SendTransactionOptions {
 
 export const TurnkeyProvider = {
   Email: 'email',
-  Google: 'google',
   Apple: 'apple',
+  Google: 'google',
+  Twitter: 'twitter',
 } as const
 
 export type TurnkeyProvider =
@@ -89,10 +90,13 @@ export interface TurnkeyMetadata {
   googleClientId?: string
   oauthLoginPath?: string
   session?: TurnkeySession
+  twitterClientId?: string
   apiServerEndpoint: string
   credentialBundle?: string
   googleRedirectUri?: string
   expirationSeconds?: string
+  twitterRedirectUri?: string
+  oauth2ExchangePath?: string
   defaultOrganizationId: string
 }
 
