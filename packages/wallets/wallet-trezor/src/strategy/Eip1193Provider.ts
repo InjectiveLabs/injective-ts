@@ -52,7 +52,7 @@ export class TrezorEip1193Provider implements Eip1193Provider {
   }
 
   private getRpcUrl() {
-    return this.rpcUrl || this.rpcUrls?.[this.chainId as EvmChainId]
+    return this.rpcUrls?.[this.chainId as EvmChainId] || this.rpcUrl
   }
 
   async getClient() {
