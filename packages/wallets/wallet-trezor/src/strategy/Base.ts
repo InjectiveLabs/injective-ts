@@ -528,6 +528,8 @@ export default class TrezorBase
     return new TrezorEip1193Provider(this.trezor, {
       chainId: this.evmOptions.evmChainId.toString(),
       derivationPath: this.metadata?.derivationPath,
+      rpcUrl: this.evmOptions.rpcUrl,
+      rpcUrls: this.evmOptions.rpcUrls,
     })
   }
 

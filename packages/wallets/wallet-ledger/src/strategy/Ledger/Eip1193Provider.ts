@@ -5,30 +5,48 @@ import {
   getViemWalletClient,
 } from '@injectivelabs/wallet-base'
 import type { Hash } from 'viem'
-import type { Eip1193Provider } from '@injectivelabs/wallet-base'
+import type { EvmChainId } from '@injectivelabs/ts-types'
+import type {
+  Eip1193Provider,
+  WalletStrategyEvmOptions,
+} from '@injectivelabs/wallet-base'
 import type LedgerHW from './hw/index.js'
 
 export class LedgerEip1193Provider implements Eip1193Provider {
   private readonly ledger: LedgerHW
   private readonly derivationPath: string
+  private readonly rpcUrl?: string
+  private readonly rpcUrls?: WalletStrategyEvmOptions['rpcUrls']
 
   private address?: string
   private chainId: number
 
   constructor(
     ledger: LedgerHW,
-    params: { derivationPath?: string; chainId?: string },
+    params: {
+      chainId?: string
+      derivationPath?: string
+      rpcUrl?: string
+      rpcUrls?: WalletStrategyEvmOptions['rpcUrls']
+    },
   ) {
     this.ledger = ledger
     this.derivationPath = params.derivationPath || "m/44'/60'/0'/0/0"
+    this.rpcUrl = params.rpcUrl
+    this.rpcUrls = params.rpcUrls
 
     this.chainId = parseInt(params.chainId || '1')
+  }
+
+  private getRpcUrl() {
+    return this.rpcUrl || this.rpcUrls?.[this.chainId as EvmChainId]
   }
 
   async getClient() {
     return getViemWalletClient({
       chainId: this.chainId,
       account: (await this.getAddress()) as Hash,
+      rpcUrl: this.getRpcUrl(),
     })
   }
 
@@ -140,7 +158,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
     }
 
     if (args.method === 'eth_estimateGas') {
-      const client = getViemPublicClient(this.chainId)
+      const client = getViemPublicClient(this.chainId, this.getRpcUrl())
 
       const data = {
         to: args.params[0].to,
@@ -159,7 +177,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      const client = getViemPublicClient(this.chainId)
+      const client = getViemPublicClient(this.chainId, this.getRpcUrl())
 
       const count = await client.getTransactionCount({
         address: (await this.getAddress()) as Hash,
@@ -175,6 +193,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       const walletClient = getViemWalletClient({
         chainId: this.chainId,
         account: address as Hash,
+        rpcUrl: this.getRpcUrl(),
       })
 
       const preparedTransaction = await walletClient.prepareTransactionRequest({

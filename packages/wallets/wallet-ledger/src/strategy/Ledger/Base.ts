@@ -491,6 +491,8 @@ export default class LedgerBase
     return new LedgerEip1193Provider(this.ledger, {
       chainId: this.evmOptions.evmChainId.toString(),
       derivationPath: this.metadata?.derivationPath,
+      rpcUrl: this.evmOptions.rpcUrl,
+      rpcUrls: this.evmOptions.rpcUrls,
     })
   }
 
