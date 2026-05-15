@@ -177,6 +177,7 @@ export interface RFQConditionalOrder {
   triggerPrice: string
   requestAddress: string
   minTotalFillQuantity: string
+  takerNonceTimeWindowMs: number
 }
 
 export interface RFQConditionalOrdersResponse {
@@ -254,6 +255,17 @@ export interface TakerStreamConfig {
   reconnect?: WsTransportConfig['reconnect']
 }
 
+export interface RFQMakerAuth {
+  evmChainId: number
+  signature: string
+}
+
+export interface RFQMakerChallenge {
+  nonce: string
+  evmChainId: number
+  expiresAt: number
+}
+
 // # Event payloads for MakerStream
 export interface MakerStreamEvents {
   /** Received an RFQ request from a taker */
@@ -272,6 +284,10 @@ export interface MakerStreamEvents {
   }
   /** Error received from server */
   error: RFQStreamErrorData
+  /** Auth challenge issued by server before stream loop begins */
+  challenge: {
+    challenge: RFQMakerChallenge
+  }
   /** Pong received (response to ping) */
   pong: void
   connect: {
