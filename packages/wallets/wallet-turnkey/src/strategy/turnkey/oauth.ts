@@ -38,7 +38,7 @@ export class TurnkeyOauthWallet {
     oidcToken: string
     client: HttpRestClient
     oauthLoginPath?: string
-    providerName: 'google' | 'apple'
+    providerName: 'google' | 'apple' | 'twitter'
     indexedDbClient: TurnkeyIndexedDbClient
     expirationSeconds?: number
   }): Promise<
