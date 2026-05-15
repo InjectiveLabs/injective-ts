@@ -2,7 +2,7 @@ import * as InjectiveRFQExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/g
 import { GrpcDecodeError } from '../types'
 import type { MessageType } from '@protobuf-ts/runtime'
 import type { GrpcFrame } from '../types'
-import type { RFQQuoteType, RFQRequestInputType } from '../types'
+import type { RFQMakerAuth, RFQQuoteType, RFQRequestInputType } from '../types'
 
 const COMPRESSION_FLAG_NONE = 0x00
 const COMPRESSION_FLAG_TRAILER = 0x80
@@ -104,6 +104,20 @@ export const GrpcWebSocketCodec = {
         quote,
       })
 
+    return encodeGrpcFrame(
+      InjectiveRFQExchangeRpcPb.MakerStreamStreamingRequest.toBinary(message),
+    )
+  },
+
+  encodeMakerAuth(auth: RFQMakerAuth): Uint8Array {
+    const message =
+      InjectiveRFQExchangeRpcPb.MakerStreamStreamingRequest.create({
+        messageType: 'auth',
+        auth: InjectiveRFQExchangeRpcPb.MakerAuth.create({
+          signature: auth.signature,
+          evmChainId: BigInt(auth.evmChainId),
+        }),
+      })
     return encodeGrpcFrame(
       InjectiveRFQExchangeRpcPb.MakerStreamStreamingRequest.toBinary(message),
     )

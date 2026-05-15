@@ -186,6 +186,7 @@ export class IndexerGrpcRfqTransformer {
       evmChainId: Number(grpcOrder.evmChainId),
       requestAddress: grpcOrder.requestAddress,
       minTotalFillQuantity: grpcOrder.minTotalFillQuantity,
+      takerNonceTimeWindowMs: Number(grpcOrder.takerNonceTimeWindowMs),
     }
   }
 

@@ -4,10 +4,11 @@ import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
 import type { WsState } from '../../types'
-import type { RFQQuoteType } from '../../types'
+import type { RFQMakerAuth, RFQQuoteType } from '../../types'
 import type {
   MakerStreamConfig,
   MakerStreamEvents,
+  RFQMakerChallenge,
   RFQStreamErrorData,
   RFQMakerStreamAckData,
 } from '../../types'
@@ -76,6 +77,15 @@ export class IndexerWsMakerStream {
     }
 
     const encoded = GrpcWebSocketCodec.encodeMakerQuote(quote)
+    this.transport.send(encoded)
+  }
+
+  sendAuth(auth: RFQMakerAuth): void {
+    if (!this.isConnected()) {
+      throw new Error('Cannot send auth: stream is not connected')
+    }
+
+    const encoded = GrpcWebSocketCodec.encodeMakerAuth(auth)
     this.transport.send(encoded)
   }
 
@@ -150,6 +160,17 @@ export class IndexerWsMakerStream {
       }
 
       switch (response.messageType) {
+        case 'challenge':
+          if (response.challenge) {
+            const challenge: RFQMakerChallenge = {
+              nonce: response.challenge.nonce,
+              evmChainId: Number(response.challenge.evmChainId),
+              expiresAt: Number(response.challenge.expiresAt),
+            }
+            this.emit('challenge', { challenge })
+          }
+          break
+
         case 'pong':
           this.emit('pong', undefined)
           break
