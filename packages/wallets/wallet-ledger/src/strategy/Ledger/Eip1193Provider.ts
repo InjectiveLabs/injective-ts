@@ -24,9 +24,9 @@ export class LedgerEip1193Provider implements Eip1193Provider {
   constructor(
     ledger: LedgerHW,
     params: {
+      rpcUrl?: string
       chainId?: string
       derivationPath?: string
-      rpcUrl?: string
       rpcUrls?: WalletStrategyEvmOptions['rpcUrls']
     },
   ) {
@@ -45,8 +45,8 @@ export class LedgerEip1193Provider implements Eip1193Provider {
   async getClient() {
     return getViemWalletClient({
       chainId: this.chainId,
-      account: (await this.getAddress()) as Hash,
       rpcUrl: this.getRpcUrl(),
+      account: (await this.getAddress()) as Hash,
     })
   }
 

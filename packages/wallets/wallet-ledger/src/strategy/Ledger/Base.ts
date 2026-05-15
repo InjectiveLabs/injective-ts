@@ -489,10 +489,10 @@ export default class LedgerBase
 
   public async getEip1193Provider(): Promise<Eip1193Provider> {
     return new LedgerEip1193Provider(this.ledger, {
-      chainId: this.evmOptions.evmChainId.toString(),
-      derivationPath: this.metadata?.derivationPath,
       rpcUrl: this.evmOptions.rpcUrl,
       rpcUrls: this.evmOptions.rpcUrls,
+      derivationPath: this.metadata?.derivationPath,
+      chainId: this.evmOptions.evmChainId.toString(),
     })
   }
 

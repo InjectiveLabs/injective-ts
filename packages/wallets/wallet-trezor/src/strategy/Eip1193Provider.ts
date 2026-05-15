@@ -38,9 +38,9 @@ export class TrezorEip1193Provider implements Eip1193Provider {
   constructor(
     trezor: BaseTrezorTransport,
     params: {
+      rpcUrl?: string
       chainId?: string
       derivationPath?: string
-      rpcUrl?: string
       rpcUrls?: WalletStrategyEvmOptions['rpcUrls']
     },
   ) {
@@ -58,8 +58,8 @@ export class TrezorEip1193Provider implements Eip1193Provider {
   async getClient() {
     return getViemWalletClient({
       chainId: this.chainId,
-      account: (await this.getAddress()) as Hash,
       rpcUrl: this.getRpcUrl(),
+      account: (await this.getAddress()) as Hash,
     })
   }
 
