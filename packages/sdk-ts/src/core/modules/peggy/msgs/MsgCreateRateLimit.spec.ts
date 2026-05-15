@@ -5,7 +5,7 @@ import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from '../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
 const params: MsgCreateRateLimit['params'] = {
-  injectiveAddress: mockFactory.injectiveAddress,
+  authority: mockFactory.injectiveAddress,
   tokenAddress: 'inj',
   tokenPriceId: '1234567890',
   tokenDecimals: '6',

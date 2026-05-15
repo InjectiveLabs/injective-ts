@@ -6,10 +6,10 @@ import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgCreateRateLimit {
   export interface Params {
-    injectiveAddress: string
+    authority: string
     tokenAddress: string
     tokenDecimals: string | number
-    absoluteMintLimit: string | number
+    absoluteMintLimit?: string | number
     tokenPriceId: string /** pyth price id */
     rateLimitInUsd:
       | string
@@ -35,12 +35,12 @@ export default class MsgCreateRateLimit extends MsgBase<
     const { params } = this
 
     const message = InjectivePeggyV1MsgsPb.MsgCreateRateLimit.create({
-      authority: params.injectiveAddress,
+      authority: params.authority,
       tokenAddress: params.tokenAddress,
       tokenDecimals: Number(params.tokenDecimals),
       tokenPriceId: params.tokenPriceId,
       rateLimitUsd: toChainFormat(params.rateLimitInUsd).toFixed(),
-      absoluteMintLimit: toBigNumber(params.absoluteMintLimit).toFixed(),
+      absoluteMintLimit: toBigNumber(params.absoluteMintLimit || 0).toFixed(),
       rateLimitWindow: BigInt(params.rateLimitWindow),
     })
 
@@ -59,7 +59,7 @@ export default class MsgCreateRateLimit extends MsgBase<
   public toAmino() {
     const { params } = this
     const message = {
-      authority: params.injectiveAddress,
+      authority: params.authority,
       token_address: params.tokenAddress,
       token_decimals: Number(params.tokenDecimals),
       token_price_id: params.tokenPriceId,
