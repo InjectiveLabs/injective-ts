@@ -1,11 +1,8 @@
 import { createAccount } from '@turnkey/viem'
+import { HttpRestClient } from '@injectivelabs/utils'
 import { Turnkey, SessionType } from '@turnkey/sdk-browser'
 import { getInjectiveAddress } from '@injectivelabs/sdk-ts/utils'
 import { WalletAction, TurnkeyProvider } from '@injectivelabs/wallet-base'
-import {
-  HttpRestClient,
-  DEFAULT_TWITTER_OAUTH_EXPIRY,
-} from '@injectivelabs/utils'
 import {
   ErrorType,
   WalletException,
@@ -286,31 +283,6 @@ export class TurnkeyWallet {
 
     const indexedDbClient = await this.getIndexedDbClient()
     const nonce = await TurnkeyOauthWallet.generateOAuthNonce(indexedDbClient)
-    const targetPublicKey = await indexedDbClient.getPublicKey()
-
-    if (provider === TurnkeyProvider.Twitter) {
-      if (!this.metadata.twitterClientId || !this.metadata.twitterRedirectUri) {
-        throw new WalletException(
-          new Error('twitterClientId and twitterRedirectUri are required'),
-        )
-      }
-
-      const { state, codeVerifier, codeChallenge } = generateTwitterPkce()
-
-      const expiresAt = String(Date.now() + DEFAULT_TWITTER_OAUTH_EXPIRY)
-
-      localStorage.setItem('twitter_oauth_state', state)
-      localStorage.setItem('twitter_oauth_expires_at', expiresAt)
-      localStorage.setItem('twitter_oauth_code_verifier', codeVerifier)
-      localStorage.setItem('twitter_oauth_target_public_key', targetPublicKey!)
-
-      return generateTwitterUrl({
-        state,
-        codeChallenge,
-        clientId: this.metadata.twitterClientId,
-        redirectUri: this.metadata.twitterRedirectUri,
-      })
-    }
 
     if (!this.metadata?.googleClientId || !this.metadata?.googleRedirectUri) {
       throw new WalletException(
@@ -323,6 +295,34 @@ export class TurnkeyWallet {
       clientId: this.metadata.googleClientId,
       redirectUri: this.metadata.googleRedirectUri,
     })
+  }
+
+  public async initOAuth2(provider: TurnkeyProvider) {
+    if (provider === TurnkeyProvider.Twitter) {
+      if (!this.metadata.twitterClientId || !this.metadata.twitterRedirectUri) {
+        throw new WalletException(
+          new Error('twitterClientId and twitterRedirectUri are required'),
+        )
+      }
+
+      const indexedDbClient = await this.getIndexedDbClient()
+      const targetPublicKey = await indexedDbClient.getPublicKey()
+      const { state, codeVerifier, codeChallenge } = generateTwitterPkce()
+
+      return {
+        pkce: { state, codeVerifier, targetPublicKey: targetPublicKey! },
+        url: generateTwitterUrl({
+          state,
+          codeChallenge,
+          clientId: this.metadata.twitterClientId,
+          redirectUri: this.metadata.twitterRedirectUri,
+        }),
+      }
+    }
+
+    throw new WalletException(
+      new Error(`${provider} is not supported for OAuth2`),
+    )
   }
 
   public async confirmOAuth(provider: TurnkeyProvider, oidcToken: string) {
@@ -338,7 +338,7 @@ export class TurnkeyWallet {
       oidcToken,
       indexedDbClient,
       client: this.client,
-      providerName: provider.toString() as 'google' | 'apple' | 'twitter',
+      providerName: provider,
       oauthLoginPath: this.metadata.oauthLoginPath || TURNKEY_OAUTH_PATH,
     })
 
