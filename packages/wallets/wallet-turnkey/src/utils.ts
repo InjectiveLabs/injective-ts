@@ -28,17 +28,17 @@ export function generateTwitterPkce() {
 }
 
 export function generateTwitterUrl({
+  state,
   clientId,
   redirectUri,
-  state,
   codeChallenge,
   scope = 'tweet.read users.read',
 }: {
+  state: string
+  scope?: string
   clientId: string
   redirectUri: string
-  state: string
   codeChallenge: string
-  scope?: string
 }) {
   const url = new URL('https://twitter.com/i/oauth2/authorize')
 
