@@ -13,7 +13,11 @@ import {
 import { TurnkeyOtpWallet } from './otp.js'
 import { TurnkeyErrorCodes } from '../types.js'
 import { TurnkeyOauthWallet } from './oauth.js'
-import { generateGoogleUrl } from '../../utils.js'
+import {
+  generateGoogleUrl,
+  generateTwitterUrl,
+  generateTwitterPkce,
+} from '../../utils.js'
 import {
   TURNKEY_OAUTH_PATH,
   TURNKEY_OTP_INIT_PATH,
@@ -293,6 +297,34 @@ export class TurnkeyWallet {
     })
   }
 
+  public async initOAuth2(provider: TurnkeyProvider) {
+    if (provider === TurnkeyProvider.Twitter) {
+      if (!this.metadata.twitterClientId || !this.metadata.twitterRedirectUri) {
+        throw new WalletException(
+          new Error('twitterClientId and twitterRedirectUri are required'),
+        )
+      }
+
+      const indexedDbClient = await this.getIndexedDbClient()
+      const targetPublicKey = await indexedDbClient.getPublicKey()
+      const { state, codeVerifier, codeChallenge } = generateTwitterPkce()
+
+      return {
+        pkce: { state, codeVerifier, targetPublicKey: targetPublicKey! },
+        url: generateTwitterUrl({
+          state,
+          codeChallenge,
+          clientId: this.metadata.twitterClientId,
+          redirectUri: this.metadata.twitterRedirectUri,
+        }),
+      }
+    }
+
+    throw new WalletException(
+      new Error(`${provider} is not supported for OAuth2`),
+    )
+  }
+
   public async confirmOAuth(provider: TurnkeyProvider, oidcToken: string) {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
@@ -306,7 +338,7 @@ export class TurnkeyWallet {
       oidcToken,
       indexedDbClient,
       client: this.client,
-      providerName: provider.toString() as 'google' | 'apple',
+      providerName: provider,
       oauthLoginPath: this.metadata.oauthLoginPath || TURNKEY_OAUTH_PATH,
     })
 
@@ -318,6 +350,39 @@ export class TurnkeyWallet {
     this.userOrganizationId = oauthResult.organizationId
 
     return oauthResult.credentialBundle
+  }
+
+  public async confirmOAuth2({
+    authCode,
+    codeVerifier,
+    targetPublicKey,
+    providerName,
+  }: {
+    authCode: string
+    codeVerifier: string
+    targetPublicKey: string
+    providerName: TurnkeyProvider
+  }) {
+    const indexedDbClient = await this.getIndexedDbClient()
+    const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'
+
+    const response = await this.client.post<{
+      data: { credentialBundle: string; organizationId: string }
+    }>(path, { authCode, codeVerifier, targetPublicKey, providerName })
+
+    const { credentialBundle, organizationId } = response.data
+
+    if (!credentialBundle || !organizationId) {
+      throw new WalletException(
+        new Error(`${providerName} OAuth2 exchange failed`),
+      )
+    }
+
+    await indexedDbClient.loginWithSession(credentialBundle)
+
+    this.userOrganizationId = organizationId
+
+    return credentialBundle
   }
 
   public async refreshSession() {

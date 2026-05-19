@@ -1,3 +1,4 @@
+import { hashTypedData } from 'viem'
 import {
   getEvmChainConfig,
   getViemPublicClient,
@@ -12,6 +13,7 @@ export const getEip1193ProviderForTurnkey = async (
 ): Promise<Eip1193Provider> => {
   const provider = new CustomEip1193Provider({
     chainId: parseInt(chainId, 16),
+    sign: account.sign?.bind(account),
     signTypedData: account.signTypedData.bind(account),
     signMessage: account.signMessage.bind(account),
     signTransaction: account.signTransaction.bind(account),
@@ -24,6 +26,7 @@ export const getEip1193ProviderForTurnkey = async (
 
 class CustomEip1193Provider implements Eip1193Provider {
   chainId: number
+  sign: ((...args: any[]) => Promise<any>) | undefined
   signTypedData: (...args: any[]) => Promise<any>
   signMessage: (...args: any[]) => Promise<any>
   signTransaction: (...args: any[]) => Promise<any>
@@ -32,6 +35,7 @@ class CustomEip1193Provider implements Eip1193Provider {
 
   constructor(args: {
     chainId?: number
+    sign: ((...args: any[]) => Promise<any>) | undefined
     signTypedData: (...args: any[]) => Promise<any>
     signMessage: (...args: any[]) => Promise<any>
     signTransaction: (...args: any[]) => Promise<any>
@@ -39,6 +43,7 @@ class CustomEip1193Provider implements Eip1193Provider {
     address: string
   }) {
     this.chainId = args.chainId ?? 1
+    this.sign = args.sign
     this.signTypedData = args.signTypedData
     this.signMessage = args.signMessage
     this.account = args.account
@@ -79,7 +84,23 @@ class CustomEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      return this.signTypedData(args.params[0])
+      // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
+      // account.sign is available in @turnkey/viem >= 0.12.0; older versions hashed client-side inside
+      // signTypedData already, so both paths produce an identical signature.
+      const typedData = args.params[0]
+
+      if (this.sign) {
+        const typedDataHash = hashTypedData({
+          domain: typedData.domain,
+          types: typedData.types,
+          primaryType: typedData.primaryType,
+          message: typedData.message,
+        })
+
+        return this.sign({ hash: typedDataHash })
+      }
+
+      return this.signTypedData(typedData)
     }
 
     if (args.method === 'eth_signMessage') {
