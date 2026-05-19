@@ -3,6 +3,7 @@ import {
   getViemPublicClient,
   getViemWalletClient,
 } from '@injectivelabs/wallet-base'
+import { hashTypedData } from 'viem'
 import type { Hash, LocalAccount } from 'viem'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 
@@ -12,7 +13,7 @@ export const getEip1193ProviderForTurnkey = async (
 ): Promise<Eip1193Provider> => {
   const provider = new CustomEip1193Provider({
     chainId: parseInt(chainId, 16),
-    signTypedData: account.signTypedData.bind(account),
+    sign: account.sign!.bind(account),
     signMessage: account.signMessage.bind(account),
     signTransaction: account.signTransaction.bind(account),
     account,
@@ -24,7 +25,7 @@ export const getEip1193ProviderForTurnkey = async (
 
 class CustomEip1193Provider implements Eip1193Provider {
   chainId: number
-  signTypedData: (...args: any[]) => Promise<any>
+  sign: (...args: any[]) => Promise<any>
   signMessage: (...args: any[]) => Promise<any>
   signTransaction: (...args: any[]) => Promise<any>
   account: LocalAccount
@@ -32,14 +33,14 @@ class CustomEip1193Provider implements Eip1193Provider {
 
   constructor(args: {
     chainId?: number
-    signTypedData: (...args: any[]) => Promise<any>
+    sign: (...args: any[]) => Promise<any>
     signMessage: (...args: any[]) => Promise<any>
     signTransaction: (...args: any[]) => Promise<any>
     account: LocalAccount
     address: string
   }) {
     this.chainId = args.chainId ?? 1
-    this.signTypedData = args.signTypedData
+    this.sign = args.sign
     this.signMessage = args.signMessage
     this.account = args.account
     this.address = args.address
@@ -79,7 +80,16 @@ class CustomEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      return this.signTypedData(args.params[0])
+      // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
+      const typedData = args.params[0]
+      const typedDataHash = hashTypedData({
+        domain: typedData.domain,
+        types: typedData.types,
+        primaryType: typedData.primaryType,
+        message: typedData.message,
+      })
+
+      return this.sign({ hash: typedDataHash })
     }
 
     if (args.method === 'eth_signMessage') {
