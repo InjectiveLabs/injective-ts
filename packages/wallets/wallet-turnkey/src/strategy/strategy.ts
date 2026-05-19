@@ -311,20 +311,21 @@ export class TurnkeyWalletStrategy
       parsedData.domain.chainId = Number(parsedData.domain.chainId)
     }
 
-    if (!account.sign) {
-      throw new WalletException(new Error('Sign method not found on Turnkey account'))
+    // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
+    // account.sign is available in @turnkey/viem >= 0.12.0; older versions hashed client-side inside
+    // signTypedData already, so both paths produce an identical signature.
+    if (account.sign) {
+      const typedDataHash = hashTypedData({
+        domain: parsedData.domain,
+        types: parsedData.types,
+        primaryType: parsedData.primaryType,
+        message: parsedData.message,
+      })
+
+      return account.sign({ hash: typedDataHash })
     }
 
-    // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
-    const typedDataHash = hashTypedData({
-      domain: parsedData.domain,
-      types: parsedData.types,
-      primaryType: parsedData.primaryType,
-      message: parsedData.message,
-    })
-    const signature = await account.sign({ hash: typedDataHash })
-
-    return signature
+    return account.signTypedData(parsedData)
   }
 
   async signCosmosTransaction(_transaction: {
