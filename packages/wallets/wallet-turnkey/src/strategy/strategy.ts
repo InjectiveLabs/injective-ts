@@ -170,7 +170,7 @@ export class TurnkeyWalletStrategy
       const turnkeyWallet = await this.getTurnkeyWallet()
 
       const chainId = args.evmChainId || options.evmChainId
-      const url = options.rpcUrl || options.rpcUrls?.[args.evmChainId]
+      const url = options.rpcUrls?.[chainId] || options.rpcUrl
 
       if (!url) {
         throw new WalletException(
@@ -377,7 +377,7 @@ export class TurnkeyWalletStrategy
     const options = this.evmOptions
 
     const chainId = evmChainId || options.evmChainId
-    const url = options.rpcUrl || options.rpcUrls?.[chainId]
+    const url = options.rpcUrls?.[chainId] || options.rpcUrl
 
     if (!url) {
       throw new WalletException(
@@ -458,6 +458,10 @@ export class TurnkeyWalletStrategy
     const eip1193Provider = await getEip1193ProviderForTurnkey(
       account,
       String(this.evmOptions.evmChainId),
+      {
+        rpcUrl: this.evmOptions.rpcUrl,
+        rpcUrls: this.evmOptions.rpcUrls,
+      },
     )
 
     return eip1193Provider
