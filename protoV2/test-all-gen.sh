@@ -5,7 +5,7 @@
 
 set -e
 
-PACKAGES=("abacus" "indexer" "mito" "olp" "core")
+PACKAGES=("abacus" "indexer" "mito" "olp" "core","ws-price-oracle")
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 FAILED_PACKAGES=()
 SUCCESS_PACKAGES=()

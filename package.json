@@ -16,6 +16,8 @@
     "publish:mito-proto-ts": "./protoV2/mito/publish.sh",
     "generate:olp-proto-ts": "./protoV2/olp/gen.sh",
     "publish:olp-proto-ts": "./protoV2/olp/publish.sh",
+    "generate:ws-price-oracle-proto-ts": "./protoV2/ws-price-oracle/gen.sh",
+    "publish:ws-price-oracle-proto-ts": "./protoV2/ws-price-oracle/publish.sh",
     "generate:core-proto-ts": "./protoV2/core/gen.sh",
     "publish:core-proto-ts": "./protoV2/core/publish.sh",
     "generate:abacus-proto-ts": "./protoV2/abacus/gen.sh",
