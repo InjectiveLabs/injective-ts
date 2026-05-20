@@ -6,15 +6,35 @@ import {
 import type { Hash, LocalAccount } from 'viem'
 import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 
+type RpcUrls = Partial<Record<number, string>>
+
+const parseChainId = (chainId: number | string) => {
+  if (typeof chainId === 'number') {
+    return chainId
+  }
+
+  if (chainId.startsWith('0x')) {
+    return parseInt(chainId.replace('0x', ''), 16)
+  }
+
+  return parseInt(chainId, 10)
+}
+
 export const getEip1193ProviderForTurnkey = async (
   account: LocalAccount,
-  chainId: string,
+  chainId: number | string,
+  params: {
+    rpcUrl?: string
+    rpcUrls?: RpcUrls
+  } = {},
 ): Promise<Eip1193Provider> => {
   const provider = new CustomEip1193Provider({
-    chainId: parseInt(chainId, 16),
+    chainId: parseChainId(chainId),
     signTypedData: account.signTypedData.bind(account),
     signMessage: account.signMessage.bind(account),
     signTransaction: account.signTransaction.bind(account),
+    rpcUrl: params.rpcUrl,
+    rpcUrls: params.rpcUrls,
     account,
     address: account.address,
   })
@@ -27,6 +47,8 @@ class CustomEip1193Provider implements Eip1193Provider {
   signTypedData: (...args: any[]) => Promise<any>
   signMessage: (...args: any[]) => Promise<any>
   signTransaction: (...args: any[]) => Promise<any>
+  private readonly rpcUrl?: string
+  private readonly rpcUrls?: RpcUrls
   account: LocalAccount
   address: string
 
@@ -35,6 +57,8 @@ class CustomEip1193Provider implements Eip1193Provider {
     signTypedData: (...args: any[]) => Promise<any>
     signMessage: (...args: any[]) => Promise<any>
     signTransaction: (...args: any[]) => Promise<any>
+    rpcUrl?: string
+    rpcUrls?: RpcUrls
     account: LocalAccount
     address: string
   }) {
@@ -43,7 +67,13 @@ class CustomEip1193Provider implements Eip1193Provider {
     this.signMessage = args.signMessage
     this.account = args.account
     this.address = args.address
+    this.rpcUrl = args.rpcUrl
+    this.rpcUrls = args.rpcUrls
     this.signTransaction = args.signTransaction
+  }
+
+  private getRpcUrl() {
+    return this.rpcUrls?.[this.chainId] || this.rpcUrl
   }
 
   async requestAccounts() {
@@ -54,6 +84,7 @@ class CustomEip1193Provider implements Eip1193Provider {
     return getViemWalletClient({
       chainId: this.chainId,
       account: this.account as any,
+      rpcUrl: this.getRpcUrl(),
     })
   }
 
@@ -91,7 +122,7 @@ class CustomEip1193Provider implements Eip1193Provider {
     }
 
     if (args.method === 'eth_chainId') {
-      return this.chainId
+      return `0x${this.chainId.toString(16)}`
     }
 
     if (args.method === 'wallet_switchEthereumChain') {
@@ -99,9 +130,7 @@ class CustomEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      const chainId = String(args.params[0].chainId).replace('0x', '')
-
-      this.chainId = parseInt(chainId, 16)
+      this.chainId = parseChainId(args.params[0].chainId)
 
       return true
     }
@@ -114,6 +143,7 @@ class CustomEip1193Provider implements Eip1193Provider {
       const accountClient = getViemWalletClient({
         chainId: this.chainId,
         account: this.account as any,
+        rpcUrl: this.getRpcUrl(),
       })
 
       const client = this.getClient()
@@ -165,7 +195,7 @@ class CustomEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      const client = getViemPublicClient(this.chainId)
+      const client = getViemPublicClient(this.chainId, this.getRpcUrl())
 
       const count = await client.getTransactionCount({
         address: this.address as Hash,
