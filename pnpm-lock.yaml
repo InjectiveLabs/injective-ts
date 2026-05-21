@@ -1498,7 +1498,10 @@ packages:
       }
 
   '@injectivelabs/ws-price-oracle-proto-ts-v2@1.0.3':
-    resolution: {integrity: sha512-zpaJjLVY5vxzafME9lvZZZcwXrYpyyYsFQ96IYKG3a9ANjARPCJvRiSaehy5/YiBxHR2XtEx6Lxvlf8Ca86W0Q==}
+    resolution:
+      {
+        integrity: sha512-zpaJjLVY5vxzafME9lvZZZcwXrYpyyYsFQ96IYKG3a9ANjARPCJvRiSaehy5/YiBxHR2XtEx6Lxvlf8Ca86W0Q==,
+      }
 
   '@inquirer/ansi@1.0.2':
     resolution:
