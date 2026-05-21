@@ -1,12 +1,12 @@
 import { bigIntToNumber } from '../../../utils/helpers.js'
 import type * as GoagenApiOraclePb from '@injectivelabs/ws-price-oracle-proto-ts-v2/generated/goagen_api_oracle_pb'
 import type {
-  GrpcWsPriceOracleMarketStreamLeg,
-  GrpcWsPriceOracleMarketStreamRawPayload,
-  GrpcWsPriceOracleStreamMarketsResponse,
   WsPriceOracleMarketStreamLeg,
-  WsPriceOracleMarketStreamRawPayload,
+  GrpcWsPriceOracleMarketStreamLeg,
   WsPriceOracleStreamMarketsResponse,
+  WsPriceOracleMarketStreamRawPayload,
+  GrpcWsPriceOracleStreamMarketsResponse,
+  GrpcWsPriceOracleMarketStreamRawPayload,
 } from '../types/ws-price-oracle.js'
 
 /**
