@@ -47,6 +47,7 @@ export class IndexerTcDerivativesStreamTransformer {
 
     return {
       timestamp: Number(response.timestamp),
+      operationType: response.operationType,
       position: position
         ? IndexerGrpcTcDerivativesTransformer.grpcPositionToPosition(position)
         : undefined,

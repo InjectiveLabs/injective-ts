@@ -69,6 +69,7 @@ export class IndexerGrpcTcDerivativesTransformer {
       filledQuantity: order.filledQuantity,
       placedOrderHash: order.placedOrderHash,
       direction: order.direction as TradeDirection,
+      accountAddress: order.accountAddress,
     }
   }
 
@@ -100,6 +101,8 @@ export class IndexerGrpcTcDerivativesTransformer {
       positionOpenedAt: Number(trade.positionOpenedAt),
       executionSide: trade.executionSide as TradeExecutionSide,
       tradeExecutionType: trade.tradeExecutionType as TradeExecutionType,
+      rfqMaker: trade.rfqMaker,
+      accountAddress: trade.accountAddress,
       ...mappedPositionDelta,
     }
   }
@@ -152,6 +155,7 @@ export class IndexerGrpcTcDerivativesTransformer {
       placedOrderHash: order.placedOrderHash,
       orderSide: order.orderSide as OrderSide,
       unfilledQuantity: order.unfilledQuantity,
+      accountAddress: order.accountAddress,
     }
   }
 

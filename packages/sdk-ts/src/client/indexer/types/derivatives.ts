@@ -10,24 +10,24 @@ import type {
 } from '../../../types/index.js'
 
 export interface PositionDelta {
-  tradeDirection: TradeDirection
   executionPrice: string
-  executionQuantity: string
   executionMargin: string
+  executionQuantity: string
+  tradeDirection: TradeDirection
 }
 
 export interface Position {
-  marketId: string
-  subaccountId: string
-  direction: TradeDirection
-  quantity: string
-  entryPrice: string
   margin: string
-  liquidationPrice: string
-  markPrice: string
   ticker: string
-  aggregateReduceOnlyQuantity: string
+  marketId: string
+  quantity: string
+  markPrice: string
   updatedAt: number
+  entryPrice: string
+  subaccountId: string
+  liquidationPrice: string
+  direction: TradeDirection
+  aggregateReduceOnlyQuantity: string
 }
 
 export interface PositionV2 extends Omit<
@@ -43,58 +43,58 @@ export interface PositionV2 extends Omit<
 }
 
 export interface PerpetualMarketInfo {
-  hourlyFundingRateCap: string
-  hourlyInterestRate: string
-  nextFundingTimestamp: number
   fundingInterval: number
+  hourlyInterestRate: string
+  hourlyFundingRateCap: string
+  nextFundingTimestamp: number
 }
 
 export interface PerpetualMarketFunding {
-  cumulativeFunding: string
-  cumulativePrice: string
   lastTimestamp: number
+  cumulativePrice: string
+  cumulativeFunding: string
 }
 
 export interface ExpiryFuturesMarketInfo {
-  expirationTimestamp: number
   settlementPrice: string
+  expirationTimestamp: number
 }
 
 export interface BaseDerivativeMarket {
-  oracleType: string
-  marketId: string
-  marketStatus: string
   ticker: string
+  marketId: string
+  oracleType: string
   quoteDenom: string
-  makerFeeRate: string
-  quoteToken: TokenMeta | undefined
-  takerFeeRate: string
-  serviceProviderFee: string
-  minPriceTickSize: number
-  minQuantityTickSize: number
   minNotional: number
+  marketStatus: string
+  makerFeeRate: string
+  takerFeeRate: string
+  minPriceTickSize: number
+  serviceProviderFee: string
+  minQuantityTickSize: number
+  quoteToken: TokenMeta | undefined
 }
 
 export interface PerpetualMarket extends BaseDerivativeMarket {
-  reduceMarginRatio: string
-  initialMarginRatio: string
-  maintenanceMarginRatio: string
-  isPerpetual: boolean
   oracleBase: string
   oracleQuote: string
+  isPerpetual: boolean
+  reduceMarginRatio: string
   oracleScaleFactor: number
+  initialMarginRatio: string
+  maintenanceMarginRatio: string
   perpetualMarketInfo?: PerpetualMarketInfo
   perpetualMarketFunding?: PerpetualMarketFunding
 }
 
 export interface ExpiryFuturesMarket extends BaseDerivativeMarket {
-  reduceMarginRatio: string
-  initialMarginRatio: string
-  maintenanceMarginRatio: string
-  isPerpetual: boolean
   oracleBase: string
   oracleQuote: string
+  isPerpetual: boolean
+  reduceMarginRatio: string
   oracleScaleFactor: number
+  initialMarginRatio: string
+  maintenanceMarginRatio: string
   expiryFuturesMarketInfo?: ExpiryFuturesMarketInfo
 }
 
@@ -102,16 +102,16 @@ export interface BinaryOptionsMarket extends Omit<
   BaseDerivativeMarket,
   'minPriceTickSize' | 'minQuantityTickSize'
 > {
+  minNotional: number
   oracleSymbol: string
   oracleProvider: string
+  settlementPrice: string
+  minPriceTickSize: number
   oracleScaleFactor: number
+  serviceProviderFee: string
   expirationTimestamp: number
   settlementTimestamp: number
-  serviceProviderFee: string
-  minPriceTickSize: number
   minQuantityTickSize: number
-  minNotional: number
-  settlementPrice: string
 }
 
 export type DerivativeMarket =
@@ -124,76 +124,77 @@ export type DerivativeMarketWithoutBinaryOptions =
   | ExpiryFuturesMarket
 
 export interface DerivativeLimitOrder {
-  orderHash: string
-  orderSide: OrderSide
-  marketId: string
   cid: string
-  subaccountId: string
-  isReduceOnly: boolean
-  margin: string
   price: string
+  margin: string
+  marketId: string
   quantity: string
-  unfilledQuantity: string
-  triggerPrice: string
-  feeRecipient: string
+  orderHash: string
   state: OrderState
   createdAt: number
   updatedAt: number
-  orderNumber: number
   orderType: string
-  isConditional: boolean
   triggerAt: number
-  placedOrderHash: string
+  orderNumber: number
+  orderSide: OrderSide
+  subaccountId: string
+  triggerPrice: string
+  feeRecipient: string
+  isReduceOnly: boolean
   executionType: string
+  isConditional: boolean
+  accountAddress: string
+  placedOrderHash: string
+  unfilledQuantity: string
 }
 
 export interface DerivativeOrderHistory {
-  orderHash: string
-  marketId: string
   cid: string
-  isActive: boolean
-  subaccountId: string
-  executionType: string
-  orderType: string
   price: string
-  triggerPrice: string
-  quantity: string
-  filledQuantity: string
   state: string
+  margin: string
+  marketId: string
+  quantity: string
+  orderHash: string
+  isActive: boolean
+  orderType: string
   createdAt: number
   updatedAt: number
-  isReduceOnly: boolean
   direction: string
-  isConditional: boolean
   triggerAt: number
+  subaccountId: string
+  triggerPrice: string
+  executionType: string
+  isReduceOnly: boolean
+  filledQuantity: string
+  isConditional: boolean
   placedOrderHash: string
-  margin: string
 }
 
 export interface DerivativeTrade extends PositionDelta {
-  orderHash: string
-  subaccountId: string
-  tradeId: string
   cid: string
-  marketId: string
-  executedAt: number
-  tradeExecutionType: TradeExecutionType
-  tradeDirection: TradeDirection
-  executionSide: TradeExecutionSide
   fee: string
+  pnl: string
+  payout: string
+  tradeId: string
+  marketId: string
+  orderHash: string
+  executedAt: number
+  subaccountId: string
   feeRecipient: string
   isLiquidation: boolean
-  payout: string
-  pnl: string
+  tradeDirection: TradeDirection
+  executionSide: TradeExecutionSide
+  tradeExecutionType: TradeExecutionType
 }
 
 export interface DerivativeLimitOrderParams {
-  orderType: GrpcOrderType
-  triggerPrice?: string
-  feeRecipient: string
   price: string
   margin: string
   quantity: string
+  feeRecipient: string
+  triggerPrice?: string
+  orderType: GrpcOrderType
 }
 
 export interface DerivativeOrderCancelParams {
@@ -202,20 +203,20 @@ export interface DerivativeOrderCancelParams {
 
 export interface BatchDerivativeOrderCancelParams {
   marketId: string
-  subaccountId: string
   orderHash: string
+  subaccountId: string
 }
 
 export interface FundingPayment {
-  marketId: string
-  subaccountId: string
   amount: string
+  marketId: string
   timestamp: number
+  subaccountId: string
 }
 
 export interface FundingRate {
-  marketId: string
   rate: string
+  marketId: string
   timestamp: number
 }
 

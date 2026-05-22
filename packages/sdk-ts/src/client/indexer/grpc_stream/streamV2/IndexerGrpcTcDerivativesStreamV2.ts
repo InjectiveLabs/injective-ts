@@ -76,10 +76,12 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
   streamTrades({
     marketId,
-    accountAddress,
+    rfqMaker,
     callback,
+    accountAddress,
   }: {
     marketId?: string
+    rfqMaker?: string
     accountAddress?: string
     callback: TcDerivativeTradesStreamCallbackV2
   }): StreamSubscription {
@@ -95,6 +97,10 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
     if (accountAddress) {
       request.accountAddress = accountAddress
+    }
+
+    if (rfqMaker) {
+      request.rfqMaker = rfqMaker
     }
 
     const stream = this.client.streamTrades(request)
