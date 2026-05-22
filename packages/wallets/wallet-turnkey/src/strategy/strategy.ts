@@ -1,4 +1,4 @@
-import { getAddress } from 'viem'
+import { getAddress, hashTypedData } from 'viem'
 import { HttpRestClient } from '@injectivelabs/utils'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
@@ -311,7 +311,18 @@ export class TurnkeyWalletStrategy
       parsedData.domain.chainId = Number(parsedData.domain.chainId)
     }
 
-    const signature = await account.signTypedData(parsedData)
+    if (!account.sign) {
+      throw new WalletException(new Error('Sign method not found on Turnkey account'))
+    }
+
+    // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
+    const typedDataHash = hashTypedData({
+      domain: parsedData.domain,
+      types: parsedData.types,
+      primaryType: parsedData.primaryType,
+      message: parsedData.message,
+    })
+    const signature = await account.sign({ hash: typedDataHash })
 
     return signature
   }
