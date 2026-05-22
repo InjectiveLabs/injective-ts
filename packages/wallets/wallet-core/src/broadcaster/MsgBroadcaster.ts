@@ -1163,6 +1163,8 @@ export class MsgBroadcaster {
       })
     }
 
+    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+
     return response
   }
 
