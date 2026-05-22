@@ -9,7 +9,7 @@ export interface TxClientBroadcastOptions {
   mode?: CosmosTxV1Beta1ServicePb.BroadcastMode
   timeout?: number // timeout in ms
   txTimeout?: number // blocks to wait for tx to be included in a block
-  skipPoll?: boolean // return txHash immediately without polling for block inclusion
+  onBroadcast?: (txHash: string) => void // called after SYNC broadcast, before polling
 }
 
 export interface TxClientBroadcastResponse {

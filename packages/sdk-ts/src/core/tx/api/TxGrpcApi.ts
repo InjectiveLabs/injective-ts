@@ -7,6 +7,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { ServiceClient as CosmosTxV1Beta1ServicePbClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb.client'
 import {
+  sleep,
   toBigNumber,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
@@ -89,23 +90,34 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     txHash: string,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   ): Promise<TxResponse> {
-    const POLL_INTERVAL = DEFAULT_BLOCK_TIME_IN_SECONDS * 1000
+    const STAGGER = 300
+    const POLL_INTERVAL = 500 // minimum time between iterations
+    const CALL_TIMEOUT = 3000 // abort a hung dual-fetch after this long
+    const deadline = Date.now() + timeout
 
-    for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
-      try {
-        const txResponse = await this.fetchTx(txHash)
+    while (Date.now() < deadline) {
+      const start = Date.now()
 
-        if (txResponse) {
-          return txResponse
-        }
-      } catch (e: unknown) {
-        // We throw only if the transaction failed on chain
-        if (e instanceof TransactionException) {
-          throw e
-        }
+      // CALL_TIMEOUT guards against a hung gRPC call stalling the loop
+      // indefinitely — it is much larger than a normal round-trip so it
+      // does not interfere with fetchTxDual completing naturally
+      const result = await Promise.race([
+        this.fetchTxDual(txHash, STAGGER),
+        sleep(CALL_TIMEOUT).then(() => null as TxResponse | null),
+      ])
+
+      if (result) {
+        return result
       }
 
-      await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
+      // POLL_INTERVAL enforces a minimum cycle time on fast nodes;
+      // on slow nodes fetchTxDual already takes longer so remaining ≤ 0
+      const elapsed = Date.now() - start
+      const remaining = POLL_INTERVAL - elapsed
+
+      if (remaining > 0) {
+        await sleep(remaining)
+      }
     }
 
     // Transaction was not included in the block in the desired timeout
@@ -118,6 +130,44 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         contextModule: 'fetch-tx-poll',
       },
     )
+  }
+
+  private fetchTxDual(
+    txHash: string,
+    stagger: number,
+  ): Promise<TxResponse | null> {
+    return new Promise((resolve, reject) => {
+      let pending = 2
+      let timerId: ReturnType<typeof setTimeout> | undefined
+
+      const onResult = (response: TxResponse) => {
+        if (response) {
+          clearTimeout(timerId)
+          return resolve(response)
+        }
+
+        pending -= 1
+        if (pending === 0) {
+          resolve(null)
+        }
+      }
+
+      const onError = (e: unknown) => {
+        if (e instanceof TransactionException) {
+          clearTimeout(timerId)
+          return reject(e)
+        }
+        pending -= 1
+        if (pending === 0) {
+          resolve(null)
+        }
+      }
+
+      this.fetchTx(txHash).then(onResult, onError)
+      timerId = setTimeout(() => {
+        this.fetchTx(txHash).then(onResult, onError)
+      }, stagger)
+    })
   }
 
   public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
@@ -201,18 +251,8 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         })
       }
 
-      if (options?.skipPoll) {
-        return {
-          data: txResponse.data,
-          rawLog: txResponse.rawLog,
-          txHash: txResponse.txhash,
-          code: Number(txResponse.code),
-          codespace: txResponse.codespace,
-          timestamp: txResponse.timestamp,
-          height: Number(txResponse.height),
-          gasUsed: Number(txResponse.gasUsed),
-          gasWanted: Number(txResponse.gasWanted),
-        }
+      if (options?.onBroadcast) {
+        options.onBroadcast(txResponse.txhash)
       }
 
       const result = await this.fetchTxPoll(txResponse.txhash, timeout)

@@ -8,6 +8,7 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import {
+  sleep,
   HttpClient,
   toBigNumber,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
@@ -99,26 +100,32 @@ export class TxRestApi implements TxConcreteApi {
 
   public async fetchTxPoll(
     txHash: string,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS || 60000,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   ): Promise<TxResponse> {
-    const POLL_INTERVAL = DEFAULT_BLOCK_TIME_IN_SECONDS * 1000
+    const POLL_INTERVAL = 500
+    const deadline = Date.now() + timeout
 
-    for (let i = 0; i <= timeout / POLL_INTERVAL; i += 1) {
+    while (Date.now() < deadline) {
+      const start = Date.now()
+
       try {
-        const txInfo = await this.fetchTx(txHash)
-        const txResponse = txInfo
+        const txResponse = await this.fetchTx(txHash)
 
         if (txResponse) {
           return txResponse
         }
       } catch (e: unknown) {
-        // We throw only if the transaction failed on chain
         if (e instanceof TransactionException) {
           throw e
         }
       }
 
-      await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL))
+      const elapsed = Date.now() - start
+      const remaining = POLL_INTERVAL - elapsed
+
+      if (remaining > 0) {
+        await sleep(remaining)
+      }
     }
 
     throw new HttpRequestException(
@@ -158,13 +165,13 @@ export class TxRestApi implements TxConcreteApi {
           gasUsed: parseInt(response.gas_info.gas_used, 10),
         },
       }
-    } catch (e) {
-      throw new TransactionException(new Error(e as any))
+    } catch (e: unknown) {
+      throw new TransactionException(e as Error, { skipParsing: true })
     }
   }
 
   public async broadcast(
-    tx: CosmosTxV1Beta1TxPb.TxRaw,
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
     const timeout =
@@ -176,7 +183,7 @@ export class TxRestApi implements TxConcreteApi {
     try {
       const { tx_response: txResponse } = await this.broadcastTx<{
         tx_response: TxInfoResponse
-      }>(tx, BroadcastMode.Sync)
+      }>(txRaw, BroadcastMode.Sync)
 
       if (!txResponse) {
         throw new HttpRequestException(
@@ -195,22 +202,12 @@ export class TxRestApi implements TxConcreteApi {
         })
       }
 
-      if (options?.skipPoll) {
-        return {
-          code: txResponse.code,
-          data: txResponse.data,
-          txHash: txResponse.txhash,
-          rawLog: txResponse.raw_log,
-          codespace: txResponse.codespace,
-          timestamp: txResponse.timestamp,
-          height: Number(txResponse.height),
-          gasUsed: Number(txResponse.gas_used),
-          gasWanted: Number(txResponse.gas_wanted),
-        }
+      if (options?.onBroadcast) {
+        options.onBroadcast(txResponse.txhash)
       }
 
-      return this.fetchTxPoll(txResponse.txhash, timeout)
-    } catch (e) {
+      return await this.fetchTxPoll(txResponse.txhash, timeout)
+    } catch (e: unknown) {
       if (e instanceof HttpRequestException) {
         if (e.code !== StatusCodes.OK) {
           throw e
@@ -227,10 +224,10 @@ export class TxRestApi implements TxConcreteApi {
    *
    * @deprecated - the BLOCk mode broadcasting is deprecated now, use either sync or async
    */
-  public async broadcastBlock(tx: CosmosTxV1Beta1TxPb.TxRaw) {
+  public async broadcastBlock(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
     const response = await this.broadcastTx<{
       tx_response: TxInfoResponse
-    }>(tx, BroadcastMode.Block)
+    }>(txRaw, BroadcastMode.Block)
 
     try {
       const { tx_response: txResponse } = response
