@@ -62,8 +62,8 @@
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/utils": "workspace:*",
     "@injectivelabs/wallet-base": "workspace:*",
-    "@turnkey/sdk-browser": "5.2.3",
-    "@turnkey/viem": "0.9.10",
+    "@turnkey/sdk-browser": "5.16.1",
+    "@turnkey/viem": "0.13.1",
     "viem": "catalog:"
   },
   "publishConfig": {
