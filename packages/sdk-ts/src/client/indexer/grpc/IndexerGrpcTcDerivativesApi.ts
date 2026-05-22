@@ -58,10 +58,11 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
   async fetchTradesHistory(params?: {
     token?: string
     sortBy?: string
-    withPnl?: boolean
     endTime?: number
     perPage?: number
+    withPnl?: boolean
     marketId?: string
+    rfqMaker?: string
     startTime?: number
     direction?: string
     sortDirection?: string
@@ -78,6 +79,7 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
       direction,
       sortDirection,
       accountAddress,
+      rfqMaker,
     } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.TradesRequest.create()
@@ -112,6 +114,10 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     if (withPnl) {
       request.withPnl = withPnl
+    }
+
+    if (rfqMaker) {
+      request.rfqMaker = rfqMaker
     }
 
     if (startTime !== undefined) {

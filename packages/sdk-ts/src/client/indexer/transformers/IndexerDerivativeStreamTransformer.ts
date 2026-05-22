@@ -109,6 +109,7 @@ export class IndexerDerivativeStreamTransformer {
         ? IndexerGrpcDerivativeTransformer.grpcPositionV2ToPositionV2(position)
         : undefined,
       timestamp: response.timestamp,
+      operationType: response.operationType,
     }
   }
 }

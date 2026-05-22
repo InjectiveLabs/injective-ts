@@ -34,6 +34,7 @@ export interface TcDerivativeOrderHistory {
   isReduceOnly: boolean
   filledQuantity: string
   isConditional: boolean
+  accountAddress: string
   placedOrderHash: string
   direction: TradeDirection
 }
@@ -45,11 +46,13 @@ export interface TcDerivativeTradeHistory {
   payout: string
   tradeId: string
   marketId: string
+  rfqMaker: string
   orderHash: string
   executedAt: number
   subaccountId: string
   feeRecipient: string
   isLiquidation: boolean
+  accountAddress: string
   executionPrice: string
   positionIsLong: boolean
   executionMargin: string
@@ -103,6 +106,7 @@ export interface TcDerivativeLimitOrder {
   isConditional: boolean
   placedOrderHash: string
   unfilledQuantity: string
+  accountAddress: string
 }
 
 export interface TcDerivativesOrdersHistoryResponse {
