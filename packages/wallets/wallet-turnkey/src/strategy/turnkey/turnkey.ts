@@ -26,6 +26,7 @@ import {
 } from '../consts.js'
 import type { TurnkeyMetadata } from '@injectivelabs/wallet-base'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
+import type { TurnkeyOAuthProvider } from '@injectivelabs/wallet-base'
 
 export class TurnkeyWallet {
   private otpId?: string
@@ -294,7 +295,7 @@ export class TurnkeyWallet {
     return result
   }
 
-  public async initOAuth(provider: TurnkeyProvider) {
+  public async initOAuth(provider: TurnkeyOAuthProvider) {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -317,7 +318,7 @@ export class TurnkeyWallet {
     })
   }
 
-  public async initOAuth2(provider: TurnkeyProvider) {
+  public async initOAuth2(provider: TurnkeyOAuthProvider) {
     if (provider === TurnkeyProvider.Twitter) {
       if (!this.metadata.twitterClientId || !this.metadata.twitterRedirectUri) {
         throw new WalletException(
@@ -355,7 +356,7 @@ export class TurnkeyWallet {
     )
   }
 
-  public async confirmOAuth(provider: TurnkeyProvider, oidcToken: string) {
+  public async confirmOAuth(provider: TurnkeyOAuthProvider, oidcToken: string) {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -391,7 +392,7 @@ export class TurnkeyWallet {
     authCode: string
     codeVerifier: string
     targetPublicKey: string
-    providerName: TurnkeyProvider
+    providerName: TurnkeyOAuthProvider
   }) {
     const indexedDbClient = await this.getIndexedDbClient()
     const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'

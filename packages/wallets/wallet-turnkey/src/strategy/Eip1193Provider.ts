@@ -122,7 +122,13 @@ class CustomEip1193Provider implements Eip1193Provider {
 
       if (this.sign) {
         const typedDataHash = hashTypedData({
-          domain: typedData.domain,
+          domain: {
+            ...typedData.domain,
+            chainId:
+              typedData.domain.chainId != null
+                ? parseChainId(typedData.domain.chainId)
+                : undefined,
+          },
           types: typedData.types,
           primaryType: typedData.primaryType,
           message: typedData.message,
