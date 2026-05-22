@@ -195,6 +195,20 @@ export class TxRestApi implements TxConcreteApi {
         })
       }
 
+      if (options?.skipPoll) {
+        return {
+          code: txResponse.code,
+          data: txResponse.data,
+          txHash: txResponse.txhash,
+          rawLog: txResponse.raw_log,
+          codespace: txResponse.codespace,
+          timestamp: txResponse.timestamp,
+          height: Number(txResponse.height),
+          gasUsed: Number(txResponse.gas_used),
+          gasWanted: Number(txResponse.gas_wanted),
+        }
+      }
+
       return this.fetchTxPoll(txResponse.txhash, timeout)
     } catch (e) {
       if (e instanceof HttpRequestException) {
