@@ -306,6 +306,7 @@ export class TurnkeyWallet {
       }
 
       const indexedDbClient = await this.getIndexedDbClient()
+      await indexedDbClient.resetKeyPair()
       const targetPublicKey = await indexedDbClient.getPublicKey()
 
       if (!targetPublicKey) {
@@ -376,10 +377,10 @@ export class TurnkeyWallet {
     const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'
 
     const response = await this.client.post<{
-      data: { credentialBundle: string; organizationId: string }
+      data: { credentialBundle: string; organizationId: string; email?: string }
     }>(path, { authCode, codeVerifier, targetPublicKey, providerName })
 
-    const { credentialBundle, organizationId } = response.data
+    const { credentialBundle, organizationId, email } = response.data
 
     if (!credentialBundle || !organizationId) {
       throw new WalletException(
@@ -391,7 +392,7 @@ export class TurnkeyWallet {
 
     this.userOrganizationId = organizationId
 
-    return credentialBundle
+    return { session: credentialBundle, email }
   }
 
   public async refreshSession() {

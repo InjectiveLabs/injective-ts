@@ -32,10 +32,8 @@ export function generateTwitterUrl({
   clientId,
   redirectUri,
   codeChallenge,
-  scope = 'tweet.read users.read offline.access',
 }: {
   state: string
-  scope?: string
   clientId: string
   redirectUri: string
   codeChallenge: string
@@ -43,12 +41,15 @@ export function generateTwitterUrl({
   const url = new URL('https://twitter.com/i/oauth2/authorize')
 
   url.searchParams.set('state', state)
-  url.searchParams.set('scope', scope)
   url.searchParams.set('client_id', clientId)
   url.searchParams.set('response_type', 'code')
   url.searchParams.set('redirect_uri', redirectUri)
   url.searchParams.set('code_challenge', codeChallenge)
   url.searchParams.set('code_challenge_method', 'S256')
+  url.searchParams.set(
+    'scope',
+    'tweet.read users.read users.email offline.access',
+  )
 
   return url.toString()
 }
