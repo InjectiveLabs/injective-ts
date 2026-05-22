@@ -17,7 +17,16 @@ export type TurnkeyEmailArgs = {
   initEmailOTPEndpoint: string
 }
 
-export type TurnkeyEnableArgs = TurnkeyOAuthArgs | TurnkeyEmailArgs
+export type TurnkeySmsArgs = {
+  provider: 'sms'
+  phone: string
+  initSmsOTPEndpoint: string
+}
+
+export type TurnkeyEnableArgs =
+  | TurnkeyOAuthArgs
+  | TurnkeyEmailArgs
+  | TurnkeySmsArgs
 
 export type TurnkeyOTPCredentialsResponse = {
   otpId: string

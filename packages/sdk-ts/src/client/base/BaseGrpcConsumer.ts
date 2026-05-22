@@ -299,7 +299,7 @@ export default class BaseGrpcConsumer {
     const executeCall = async () => {
       const call = clientMethod(request, this.getRpcOptions())
 
-      return await call.response
+      return (await call).response
     }
 
     try {

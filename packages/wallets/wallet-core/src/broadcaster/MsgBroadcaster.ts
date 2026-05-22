@@ -71,6 +71,7 @@ import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { ThrownException } from '@injectivelabs/exceptions'
 import type { DirectSignResponse } from '@injectivelabs/sdk-ts/types'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
+import type { AuthBaseAccount } from '@injectivelabs/sdk-ts/client/chain'
 import type {
   TxResponse,
   CreateTransactionWithSignersArgs,
@@ -475,15 +476,14 @@ export class MsgBroadcaster {
     } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
-    const evmChainId = await this.getEvmChainId()
+    const [evmChainId, { baseAccount, latestHeight }] = await Promise.all([
+      this.getEvmChainId(),
+      this.fetchAccountAndBlockDetails(tx.injectiveAddress, tx.accountDetails),
+    ])
 
     if (!evmChainId) {
       throw new GeneralException(new Error('Please provide evmChainId'))
     }
-
-    /** Account Details * */
-    const { baseAccount, latestHeight } =
-      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = toBigNumber(latestHeight.toString()).plus(
       txTimeoutInBlocks,
     )
@@ -602,15 +602,15 @@ export class MsgBroadcaster {
     } = this
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
-    const evmChainId = await this.getEvmChainId()
+    const [evmChainId, { baseAccount, latestHeight }] = await Promise.all([
+      this.getEvmChainId(),
+      this.fetchAccountAndBlockDetails(tx.injectiveAddress, tx.accountDetails),
+    ])
 
     if (!evmChainId) {
       throw new GeneralException(new Error('Please provide evmChainId'))
     }
 
-    /** Account Details * */
-    const { baseAccount, latestHeight } =
-      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
     const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
     const txTimeoutTimeInSeconds =
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
@@ -889,8 +889,10 @@ export class MsgBroadcaster {
       }
     }
 
-    const { baseAccount, latestHeight } =
-      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
+    const [{ baseAccount, latestHeight }, pubKey] = await Promise.all([
+      this.fetchAccountAndBlockDetails(tx.injectiveAddress, tx.accountDetails),
+      walletStrategy.getPubKey(tx.injectiveAddress),
+    ])
     const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
     const txTimeoutTimeInSeconds =
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
@@ -899,7 +901,6 @@ export class MsgBroadcaster {
     const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
       ? SIGN_EIP712
       : SIGN_DIRECT
-    const pubKey = await walletStrategy.getPubKey(tx.injectiveAddress)
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     walletStrategy.emit(
@@ -1036,11 +1037,12 @@ export class MsgBroadcaster {
 
     const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
 
-    const { baseAccount, latestHeight } =
-      await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
+    const [{ baseAccount, latestHeight }, pubKey] = await Promise.all([
+      this.fetchAccountAndBlockDetails(tx.injectiveAddress, tx.accountDetails),
+      walletStrategy.getPubKey(),
+    ])
     const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
 
-    const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** EIP712 for signing on Ethereum wallets */
@@ -1183,7 +1185,10 @@ export class MsgBroadcaster {
     const fetchAccountBlockDetails = async () => {
       try {
         const { baseAccount, latestHeight } =
-          await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
+          await this.fetchAccountAndBlockDetails(
+            tx.injectiveAddress,
+            tx.accountDetails,
+          )
 
         return { baseAccount, latestHeight }
       } catch (e) {
@@ -1521,27 +1526,45 @@ export class MsgBroadcaster {
     }
   }
 
-  private async fetchAccountAndBlockDetails(address: string) {
+  private async fetchAccountAndBlockDetails(
+    address: string,
+    existingAccountDetails?: AuthBaseAccount,
+  ) {
     const { endpoints, httpHeaders } = this
 
-    const chainClient = new ChainGrpcAuthApi(endpoints.grpc)
     const tendermintClient = new ChainGrpcTendermintApi(endpoints.grpc)
 
     if (httpHeaders) {
-      chainClient.setMetadata(httpHeaders)
       tendermintClient.setMetadata(httpHeaders)
     }
 
-    const accountDetails = await chainClient.fetchAccount(address)
-    const { baseAccount } = accountDetails
+    if (existingAccountDetails) {
+      const latestBlock = await tendermintClient.fetchLatestBlock()
+      const latestHeight = latestBlock!.header!.height.toString()
 
-    const latestBlock = await tendermintClient.fetchLatestBlock()
+      return {
+        baseAccount: existingAccountDetails,
+        latestHeight,
+      }
+    }
+
+    const chainClient = new ChainGrpcAuthApi(endpoints.grpc)
+
+    if (httpHeaders) {
+      chainClient.setMetadata(httpHeaders)
+    }
+
+    const [accountDetails, latestBlock] = await Promise.all([
+      chainClient.fetchAccount(address),
+      tendermintClient.fetchLatestBlock(),
+    ])
+
+    const { baseAccount } = accountDetails
     const latestHeight = latestBlock!.header!.height.toString()
 
     return {
       baseAccount,
       latestHeight,
-      accountDetails,
     }
   }
 }

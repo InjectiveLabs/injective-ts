@@ -13,7 +13,11 @@ import {
 import { TurnkeyOtpWallet } from './otp.js'
 import { TurnkeyErrorCodes } from '../types.js'
 import { TurnkeyOauthWallet } from './oauth.js'
-import { generateGoogleUrl } from '../../utils.js'
+import {
+  generateGoogleUrl,
+  generateTwitterUrl,
+  generateTwitterPkce,
+} from '../../utils.js'
 import {
   TURNKEY_OAUTH_PATH,
   TURNKEY_OTP_INIT_PATH,
@@ -22,18 +26,14 @@ import {
 } from '../consts.js'
 import type { TurnkeyMetadata } from '@injectivelabs/wallet-base'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
+import type { TurnkeyOAuthProvider } from '@injectivelabs/wallet-base'
 
 export class TurnkeyWallet {
   private otpId?: string
-
   protected turnkey?: Turnkey
-
-  public userOrganizationId?: string
-
   protected client: HttpRestClient
-
   private metadata: TurnkeyMetadata
-
+  public userOrganizationId?: string
   protected indexedDbClient?: TurnkeyIndexedDbClient
 
   private accountMap: Record<
@@ -214,14 +214,39 @@ export class TurnkeyWallet {
     const indexedDbClient = await this.getIndexedDbClient()
 
     const result = await TurnkeyOtpWallet.initEmailOTP({
-      client: this.client,
-      indexedDbClient,
       email,
+      indexedDbClient,
+      client: this.client,
       otpInitPath: this.metadata.otpInitPath || TURNKEY_OTP_INIT_PATH,
     })
 
     if (!result || !result.otpId) {
       throw new WalletException(new Error('Failed to initialize OTP'))
+    }
+
+    if (result?.organizationId) {
+      this.userOrganizationId = result.organizationId
+    }
+
+    if (result?.otpId) {
+      this.otpId = result.otpId
+    }
+
+    return result
+  }
+
+  public async initSms(phone: string) {
+    const indexedDbClient = await this.getIndexedDbClient()
+
+    const result = await TurnkeyOtpWallet.initSmsOTP({
+      phone,
+      indexedDbClient,
+      client: this.client,
+      otpInitPath: this.metadata.otpInitPath || TURNKEY_OTP_INIT_PATH,
+    })
+
+    if (!result || !result.otpId) {
+      throw new WalletException(new Error('Failed to initialize SMS OTP'))
     }
 
     if (result?.organizationId) {
@@ -253,10 +278,10 @@ export class TurnkeyWallet {
 
     const result = await TurnkeyOtpWallet.confirmEmailOTP({
       otpCode,
+      targetPublicKey,
       client: this.client,
       emailOTPId: this.otpId,
       organizationId: this.userOrganizationId,
-      targetPublicKey,
       otpVerifyPath: this.metadata.otpVerifyPath || TURNKEY_OTP_VERIFY_PATH,
     })
 
@@ -270,7 +295,7 @@ export class TurnkeyWallet {
     return result
   }
 
-  public async initOAuth(provider: TurnkeyProvider) {
+  public async initOAuth(provider: TurnkeyOAuthProvider) {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -293,7 +318,45 @@ export class TurnkeyWallet {
     })
   }
 
-  public async confirmOAuth(provider: TurnkeyProvider, oidcToken: string) {
+  public async initOAuth2(provider: TurnkeyOAuthProvider) {
+    if (provider === TurnkeyProvider.Twitter) {
+      if (!this.metadata.twitterClientId || !this.metadata.twitterRedirectUri) {
+        throw new WalletException(
+          new Error('twitterClientId and twitterRedirectUri are required'),
+        )
+      }
+
+      const indexedDbClient = await this.getIndexedDbClient()
+      await indexedDbClient.resetKeyPair()
+      const targetPublicKey = await indexedDbClient.getPublicKey()
+
+      if (!targetPublicKey) {
+        throw new WalletException(
+          new Error(
+            'Target public key is missing. Please ensure your wallet is properly initialized.',
+          ),
+        )
+      }
+
+      const { state, codeVerifier, codeChallenge } = generateTwitterPkce()
+
+      return {
+        pkce: { state, codeVerifier, targetPublicKey },
+        url: generateTwitterUrl({
+          state,
+          codeChallenge,
+          clientId: this.metadata.twitterClientId,
+          redirectUri: this.metadata.twitterRedirectUri,
+        }),
+      }
+    }
+
+    throw new WalletException(
+      new Error(`${provider} is not supported for OAuth2`),
+    )
+  }
+
+  public async confirmOAuth(provider: TurnkeyOAuthProvider, oidcToken: string) {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -306,7 +369,7 @@ export class TurnkeyWallet {
       oidcToken,
       indexedDbClient,
       client: this.client,
-      providerName: provider.toString() as 'google' | 'apple',
+      providerName: provider,
       oauthLoginPath: this.metadata.oauthLoginPath || TURNKEY_OAUTH_PATH,
     })
 
@@ -318,6 +381,39 @@ export class TurnkeyWallet {
     this.userOrganizationId = oauthResult.organizationId
 
     return oauthResult.credentialBundle
+  }
+
+  public async confirmOAuth2({
+    authCode,
+    codeVerifier,
+    providerName,
+    targetPublicKey,
+  }: {
+    authCode: string
+    codeVerifier: string
+    targetPublicKey: string
+    providerName: TurnkeyOAuthProvider
+  }) {
+    const indexedDbClient = await this.getIndexedDbClient()
+    const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'
+
+    const response = await this.client.post<{
+      data: { credentialBundle: string; organizationId: string; email?: string }
+    }>(path, { authCode, codeVerifier, targetPublicKey, providerName })
+
+    if (!response?.data?.credentialBundle || !response?.data?.organizationId) {
+      throw new WalletException(
+        new Error(`${providerName} OAuth2 exchange failed`),
+      )
+    }
+
+    const { credentialBundle, organizationId, email } = response.data
+
+    await indexedDbClient.loginWithSession(credentialBundle)
+
+    this.userOrganizationId = organizationId
+
+    return { session: credentialBundle, email }
   }
 
   public async refreshSession() {

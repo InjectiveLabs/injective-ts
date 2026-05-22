@@ -10,6 +10,7 @@ import {
 } from '../consts.js'
 import type { HttpRestClient } from '@injectivelabs/utils'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
+import type { TurnkeyOAuthProvider } from '@injectivelabs/wallet-base'
 import type { TurnkeyOauthLoginResponse } from '../types.js'
 
 export class TurnkeyOauthWallet {
@@ -38,7 +39,7 @@ export class TurnkeyOauthWallet {
     oidcToken: string
     client: HttpRestClient
     oauthLoginPath?: string
-    providerName: 'google' | 'apple'
+    providerName: TurnkeyOAuthProvider
     indexedDbClient: TurnkeyIndexedDbClient
     expirationSeconds?: number
   }): Promise<

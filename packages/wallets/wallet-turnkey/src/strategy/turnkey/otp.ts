@@ -57,6 +57,46 @@ export class TurnkeyOtpWallet {
     }
   }
 
+  static async initSmsOTP(args: {
+    phone: string
+    subOrgId?: string
+    otpInitPath?: string
+    client: HttpRestClient
+    expirationSeconds?: number
+    invalidateExistingSessions?: boolean
+    indexedDbClient: TurnkeyIndexedDbClient
+  }) {
+    const { client, indexedDbClient, expirationSeconds } = args
+
+    try {
+      await indexedDbClient.resetKeyPair()
+      const publicKey = await indexedDbClient.getPublicKey()
+
+      if (!publicKey) {
+        throw new WalletException(new Error('Public key not found'))
+      }
+
+      const response = await client.post<{
+        data?: TurnkeyOTPCredentialsResponse
+      }>(args.otpInitPath || TURNKEY_OTP_INIT_PATH, {
+        phone: args.phone,
+        isUsingIndexedDB: true,
+        suborgId: args.subOrgId,
+        targetPublicKey: publicKey,
+        invalidateExistingSessions: args.invalidateExistingSessions,
+        expirationSeconds: expirationSeconds || DEFAULT_TURNKEY_REFRESH_SECONDS,
+      })
+
+      return response?.data
+    } catch (e: any) {
+      throw new WalletException(new Error(e.message), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: 'turnkey-init-sms-otp',
+      })
+    }
+  }
+
   static async confirmEmailOTP(args: {
     otpCode: string
     emailOTPId: string

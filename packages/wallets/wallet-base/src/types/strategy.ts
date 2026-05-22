@@ -66,13 +66,20 @@ export interface SendTransactionOptions {
 }
 
 export const TurnkeyProvider = {
+  Sms: 'sms',
+  Apple: 'apple',
   Email: 'email',
   Google: 'google',
-  Apple: 'apple',
+  Twitter: 'twitter',
 } as const
 
 export type TurnkeyProvider =
   (typeof TurnkeyProvider)[keyof typeof TurnkeyProvider]
+
+export type TurnkeyOAuthProvider =
+  | typeof TurnkeyProvider.Apple
+  | typeof TurnkeyProvider.Google
+  | typeof TurnkeyProvider.Twitter
 
 export type TurnkeySession = {
   sessionType: any
@@ -89,10 +96,13 @@ export interface TurnkeyMetadata {
   googleClientId?: string
   oauthLoginPath?: string
   session?: TurnkeySession
+  twitterClientId?: string
   apiServerEndpoint: string
   credentialBundle?: string
   googleRedirectUri?: string
   expirationSeconds?: string
+  twitterRedirectUri?: string
+  oauth2ExchangePath?: string
   defaultOrganizationId: string
 }
 

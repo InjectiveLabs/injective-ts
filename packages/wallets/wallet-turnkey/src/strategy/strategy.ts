@@ -1,4 +1,4 @@
-import { getAddress } from 'viem'
+import { getAddress, hashTypedData } from 'viem'
 import { HttpRestClient } from '@injectivelabs/utils'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
@@ -311,9 +311,21 @@ export class TurnkeyWalletStrategy
       parsedData.domain.chainId = Number(parsedData.domain.chainId)
     }
 
-    const signature = await account.signTypedData(parsedData)
+    // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
+    // account.sign is available in @turnkey/viem >= 0.12.0; older versions hashed client-side inside
+    // signTypedData already, so both paths produce an identical signature.
+    if (account.sign) {
+      const typedDataHash = hashTypedData({
+        types: parsedData.types,
+        domain: parsedData.domain,
+        message: parsedData.message,
+        primaryType: parsedData.primaryType,
+      })
 
-    return signature
+      return account.sign({ hash: typedDataHash })
+    }
+
+    return account.signTypedData(parsedData)
   }
 
   async signCosmosTransaction(_transaction: {
