@@ -307,10 +307,19 @@ export class TurnkeyWallet {
 
       const indexedDbClient = await this.getIndexedDbClient()
       const targetPublicKey = await indexedDbClient.getPublicKey()
+
+      if (!targetPublicKey) {
+        throw new WalletException(
+          new Error(
+            'Target public key is missing. Please ensure your wallet is properly initialized.',
+          ),
+        )
+      }
+
       const { state, codeVerifier, codeChallenge } = generateTwitterPkce()
 
       return {
-        pkce: { state, codeVerifier, targetPublicKey: targetPublicKey! },
+        pkce: { state, codeVerifier, targetPublicKey },
         url: generateTwitterUrl({
           state,
           codeChallenge,

@@ -32,7 +32,7 @@ export function generateTwitterUrl({
   clientId,
   redirectUri,
   codeChallenge,
-  scope = 'tweet.read users.read',
+  scope = 'tweet.read users.read offline.access',
 }: {
   state: string
   scope?: string

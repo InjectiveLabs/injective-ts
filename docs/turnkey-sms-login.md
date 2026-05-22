@@ -19,9 +19,9 @@ activity based on whether it sees `email` or `phone` in the body.
 
 | Step | Email OTP (existing) | SMS OTP (new) |
 |------|---------------------|---------------|
-| 1. Init | `POST /otp/init` `{ email }` | `POST /otp/init` `{ phone }` |
+| 1. Init | `POST turnkey/otp/init` `{ email }` | `POST turnkey/otp/init` `{ phone }` |
 | 2. User receives code | via email | via SMS |
-| 3. Verify | `POST /otp/verify` `{ otpCode, otpId, suborgID, targetPublicKey }` | identical |
+| 3. Verify | `POST turnkey/otp/verify` `{ otpCode, otpId, suborgID, targetPublicKey }` | identical |
 | 4. Create session | `indexedDbClient.loginWithSession(session)` | identical |
 
 ---
@@ -32,14 +32,14 @@ All changes are inside `packages/wallets/wallet-turnkey/src/`.
 
 | File | Change |
 |------|--------|
-| `strategy/types.ts` | Add `TurnkeySmsOTPArgs` type and extend response type |
+| `strategy/types.ts` | Add `TurnkeySmsArgs` type and extend response type |
 | `strategy/turnkey/otp.ts` | Add `initSmsOTP` static method to `TurnkeyOtpWallet` |
 | `strategy/turnkey/turnkey.ts` | Add `initSms` method to `TurnkeyWallet` |
 | `strategy/strategy.ts` | Add `initSmsOTP` method to `TurnkeyWalletStrategy` |
 
-`confirmOTP` / `confirmSms` requires **no new code** — the verify call is identical for both channels.
-The existing `TurnkeyWallet.confirmOTP()` and `TurnkeyWalletStrategy`'s `confirmOTP` flow can be
-reused directly.
+`confirmOTP` requires **no new code** — the verify call is identical for both channels.
+The existing `TurnkeyWallet.confirmOTP()` and `TurnkeyWalletStrategy.confirmOTP()` methods
+are reused directly for SMS OTP.
 
 ---
 

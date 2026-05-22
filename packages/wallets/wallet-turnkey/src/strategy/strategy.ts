@@ -316,10 +316,10 @@ export class TurnkeyWalletStrategy
     // signTypedData already, so both paths produce an identical signature.
     if (account.sign) {
       const typedDataHash = hashTypedData({
-        domain: parsedData.domain,
         types: parsedData.types,
-        primaryType: parsedData.primaryType,
+        domain: parsedData.domain,
         message: parsedData.message,
+        primaryType: parsedData.primaryType,
       })
 
       return account.sign({ hash: typedDataHash })
