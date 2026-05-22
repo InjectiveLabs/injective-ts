@@ -201,6 +201,20 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         })
       }
 
+      if (options?.skipPoll) {
+        return {
+          data: txResponse.data,
+          rawLog: txResponse.rawLog,
+          txHash: txResponse.txhash,
+          code: Number(txResponse.code),
+          codespace: txResponse.codespace,
+          timestamp: txResponse.timestamp,
+          height: Number(txResponse.height),
+          gasUsed: Number(txResponse.gasUsed),
+          gasWanted: Number(txResponse.gasWanted),
+        }
+      }
+
       const result = await this.fetchTxPoll(txResponse.txhash, timeout)
 
       return result
