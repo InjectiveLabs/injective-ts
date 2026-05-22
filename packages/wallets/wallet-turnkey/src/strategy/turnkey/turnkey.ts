@@ -29,15 +29,10 @@ import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 
 export class TurnkeyWallet {
   private otpId?: string
-
   protected turnkey?: Turnkey
-
-  public userOrganizationId?: string
-
   protected client: HttpRestClient
-
   private metadata: TurnkeyMetadata
-
+  public userOrganizationId?: string
   protected indexedDbClient?: TurnkeyIndexedDbClient
 
   private accountMap: Record<
@@ -218,14 +213,39 @@ export class TurnkeyWallet {
     const indexedDbClient = await this.getIndexedDbClient()
 
     const result = await TurnkeyOtpWallet.initEmailOTP({
-      client: this.client,
-      indexedDbClient,
       email,
+      indexedDbClient,
+      client: this.client,
       otpInitPath: this.metadata.otpInitPath || TURNKEY_OTP_INIT_PATH,
     })
 
     if (!result || !result.otpId) {
       throw new WalletException(new Error('Failed to initialize OTP'))
+    }
+
+    if (result?.organizationId) {
+      this.userOrganizationId = result.organizationId
+    }
+
+    if (result?.otpId) {
+      this.otpId = result.otpId
+    }
+
+    return result
+  }
+
+  public async initSms(phone: string) {
+    const indexedDbClient = await this.getIndexedDbClient()
+
+    const result = await TurnkeyOtpWallet.initSmsOTP({
+      phone,
+      indexedDbClient,
+      client: this.client,
+      otpInitPath: this.metadata.otpInitPath || TURNKEY_OTP_INIT_PATH,
+    })
+
+    if (!result || !result.otpId) {
+      throw new WalletException(new Error('Failed to initialize SMS OTP'))
     }
 
     if (result?.organizationId) {
@@ -257,10 +277,10 @@ export class TurnkeyWallet {
 
     const result = await TurnkeyOtpWallet.confirmEmailOTP({
       otpCode,
+      targetPublicKey,
       client: this.client,
       emailOTPId: this.otpId,
       organizationId: this.userOrganizationId,
-      targetPublicKey,
       otpVerifyPath: this.metadata.otpVerifyPath || TURNKEY_OTP_VERIFY_PATH,
     })
 
@@ -365,8 +385,8 @@ export class TurnkeyWallet {
   public async confirmOAuth2({
     authCode,
     codeVerifier,
-    targetPublicKey,
     providerName,
+    targetPublicKey,
   }: {
     authCode: string
     codeVerifier: string
