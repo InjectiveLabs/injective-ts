@@ -400,13 +400,13 @@ export class TurnkeyWallet {
       data: { credentialBundle: string; organizationId: string; email?: string }
     }>(path, { authCode, codeVerifier, targetPublicKey, providerName })
 
-    const { credentialBundle, organizationId, email } = response.data
-
-    if (!credentialBundle || !organizationId) {
+    if (!response?.data?.credentialBundle || !response?.data?.organizationId) {
       throw new WalletException(
         new Error(`${providerName} OAuth2 exchange failed`),
       )
     }
+
+    const { credentialBundle, organizationId, email } = response.data
 
     await indexedDbClient.loginWithSession(credentialBundle)
 
