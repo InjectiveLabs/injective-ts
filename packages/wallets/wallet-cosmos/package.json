@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-cosmos",
-  "version": "1.19.15",
+  "version": "1.19.16",
   "description": "Cosmos wallet strategies for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
