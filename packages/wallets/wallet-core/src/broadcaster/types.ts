@@ -10,8 +10,6 @@ export interface MsgBroadcasterTxOptions {
   injectiveAddress?: string
   msgs: Msgs | Msgs[]
   accountDetails?: AuthBaseAccount
-  /** Return txHash immediately without polling for block inclusion. Note: gasWanted/gasUsed will be 0 in fee-delegation paths. */
-  skipPoll?: boolean
   gas?: {
     gasPrice?: string
     gas?: number /** gas limit */

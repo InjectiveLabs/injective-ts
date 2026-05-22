@@ -368,13 +368,11 @@ export class MsgBroadcaster {
    */
   async broadcastWithFeePayerSig({
     tx,
-    skipPoll,
     privateKey,
     feePayerSig,
     accountNumber,
   }: {
     privateKey: string
-    skipPoll?: boolean
     feePayerSig: string
     accountNumber: number
     tx: Uint8Array | string
@@ -426,8 +424,12 @@ export class MsgBroadcaster {
       )
 
       const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw, {
-        skipPoll,
         txTimeout: txTimeoutInBlocks,
+        onBroadcast: () => {
+          walletStrategy.emit(
+            WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+          )
+        },
       })
 
       walletStrategy.emit(
@@ -577,16 +579,18 @@ export class MsgBroadcaster {
       address: tx.injectiveAddress,
     })
 
-    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+    walletStrategy.emit(
+      WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+    )
 
-    if (tx.skipPoll) {
-      return response
-    }
-
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+    const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
       response.txHash,
       txTimeoutTimeInMilliSeconds,
     )
+
+    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+
+    return confirmedTx
   }
 
   /**
@@ -717,16 +721,18 @@ export class MsgBroadcaster {
       address: tx.injectiveAddress,
     })
 
-    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+    walletStrategy.emit(
+      WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+    )
 
-    if (tx.skipPoll) {
-      return response
-    }
-
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+    const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
       response.txHash,
       txTimeoutTimeInMilliSeconds,
     )
+
+    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+
+    return confirmedTx
   }
 
   /**
@@ -822,26 +828,19 @@ export class MsgBroadcaster {
       const response = await broadcast()
 
       walletStrategy.emit(
-        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+        WalletStrategyEmitterEventType.TransactionBroadcastSynced,
       )
 
-      if (tx.skipPoll) {
-        return {
-          txHash: response.txHash,
-          height: Number(response.height),
-          codespace: response.codespace,
-          code: response.code,
-          rawLog: response.rawLog,
-          timestamp: response.timestamp,
-          gasWanted: 0,
-          gasUsed: 0,
-        }
-      }
-
-      return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+      const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
         response.txHash,
         txTimeoutTimeInMilliSeconds,
       )
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+      )
+
+      return confirmedTx
     } catch (e) {
       const error = e as any
 
@@ -980,17 +979,19 @@ export class MsgBroadcaster {
       })
 
       walletStrategy.emit(
-        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+        WalletStrategyEmitterEventType.TransactionBroadcastSynced,
       )
 
-      if (tx.skipPoll) {
-        return response
-      }
-
-      return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+      const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
         response.txHash,
         txTimeoutTimeInMilliSeconds,
       )
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+      )
+
+      return confirmedTx
     }
 
     const directSignResponse = (await walletStrategy.signCosmosTransaction({
@@ -1011,16 +1012,18 @@ export class MsgBroadcaster {
       address: tx.injectiveAddress,
     })
 
-    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+    walletStrategy.emit(
+      WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+    )
 
-    if (tx.skipPoll) {
-      return response
-    }
-
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+    const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
       response.txHash,
       txTimeoutTimeInMilliSeconds,
     )
+
+    walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
+
+    return confirmedTx
   }
 
   /**
@@ -1142,7 +1145,14 @@ export class MsgBroadcaster {
     /** Broadcast the transaction */
     const response = await new TxGrpcApi(endpoints.grpc).broadcast(
       txRawEip712,
-      { txTimeout: txTimeoutInBlocks, skipPoll: tx.skipPoll },
+      {
+        txTimeout: txTimeoutInBlocks,
+        onBroadcast: () => {
+          walletStrategy.emit(
+            WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+          )
+        },
+      },
     )
 
     if (response.code !== 0) {
@@ -1333,7 +1343,7 @@ export class MsgBroadcaster {
       const response = await broadcast()
 
       walletStrategy.emit(
-        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+        WalletStrategyEmitterEventType.TransactionBroadcastSynced,
       )
 
       // Re-enable tx gas check removed above
@@ -1341,23 +1351,16 @@ export class MsgBroadcaster {
         cosmosWallet.enableGasCheck(chainId)
       }
 
-      if (tx.skipPoll) {
-        return {
-          txHash: response.txHash,
-          height: Number(response.height),
-          codespace: response.codespace,
-          code: response.code,
-          rawLog: response.rawLog,
-          timestamp: response.timestamp,
-          gasWanted: 0,
-          gasUsed: 0,
-        }
-      }
-
-      return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+      const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
         response.txHash,
         txTimeoutTimeInMilliSeconds,
       )
+
+      walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+      )
+
+      return confirmedTx
     } catch (e) {
       const error = e as any
 

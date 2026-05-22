@@ -15,6 +15,7 @@ export const WalletStrategyEmitterEventType = {
   TransactionSignStart: 'transaction-sign-start',
   TransactionBroadcastEnd: 'transaction-broadcast-end',
   TransactionBroadcastStart: 'transaction-broadcast-start',
+  TransactionBroadcastSynced: 'transaction-broadcast-synced',
   TransactionPreparationEnd: 'transaction-preparation-end',
   TransactionPreparationStart: 'transaction-preparation-start',
   WalletStrategyDisconnect: 'wallet-strategy-disconnect',
