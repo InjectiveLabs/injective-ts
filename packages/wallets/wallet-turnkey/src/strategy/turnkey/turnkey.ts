@@ -24,9 +24,11 @@ import {
   TURNKEY_OTP_VERIFY_PATH,
   DEFAULT_TURNKEY_REFRESH_SECONDS,
 } from '../consts.js'
-import type { TurnkeyMetadata } from '@injectivelabs/wallet-base'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
-import type { TurnkeyOAuthProvider } from '@injectivelabs/wallet-base'
+import type {
+  TurnkeyMetadata,
+  TurnkeyOAuthProvider,
+} from '@injectivelabs/wallet-base'
 
 export class TurnkeyWallet {
   private otpId?: string
@@ -295,7 +297,7 @@ export class TurnkeyWallet {
     return result
   }
 
-  public async initOAuth(provider: TurnkeyOAuthProvider) {
+  public async initOAuth(provider: TurnkeyProvider) {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -327,7 +329,7 @@ export class TurnkeyWallet {
       }
 
       const indexedDbClient = await this.getIndexedDbClient()
-      await indexedDbClient.resetKeyPair()
+      const nonce = await TurnkeyOauthWallet.generateOAuthNonce(indexedDbClient)
       const targetPublicKey = await indexedDbClient.getPublicKey()
 
       if (!targetPublicKey) {
@@ -341,9 +343,10 @@ export class TurnkeyWallet {
       const { state, codeVerifier, codeChallenge } = generateTwitterPkce()
 
       return {
-        pkce: { state, codeVerifier, targetPublicKey },
+        pkce: { nonce, state, codeVerifier, targetPublicKey },
         url: generateTwitterUrl({
           state,
+          nonce,
           codeChallenge,
           clientId: this.metadata.twitterClientId,
           redirectUri: this.metadata.twitterRedirectUri,
@@ -384,11 +387,13 @@ export class TurnkeyWallet {
   }
 
   public async confirmOAuth2({
+    nonce,
     authCode,
     codeVerifier,
     providerName,
     targetPublicKey,
   }: {
+    nonce: string
     authCode: string
     codeVerifier: string
     targetPublicKey: string
@@ -398,8 +403,8 @@ export class TurnkeyWallet {
     const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'
 
     const response = await this.client.post<{
-      data: { credentialBundle: string; organizationId: string; email?: string }
-    }>(path, { authCode, codeVerifier, targetPublicKey, providerName })
+      data: { credentialBundle: string; organizationId: string }
+    }>(path, { nonce, authCode, codeVerifier, targetPublicKey, providerName })
 
     if (!response?.data?.credentialBundle || !response?.data?.organizationId) {
       throw new WalletException(
@@ -407,13 +412,13 @@ export class TurnkeyWallet {
       )
     }
 
-    const { credentialBundle, organizationId, email } = response.data
+    const { credentialBundle, organizationId } = response.data
 
     await indexedDbClient.loginWithSession(credentialBundle)
 
     this.userOrganizationId = organizationId
 
-    return { session: credentialBundle, email }
+    return credentialBundle
   }
 
   public async refreshSession() {

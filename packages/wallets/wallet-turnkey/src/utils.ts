@@ -29,11 +29,13 @@ export function generateTwitterPkce() {
 
 export function generateTwitterUrl({
   state,
+  nonce,
   clientId,
   redirectUri,
   codeChallenge,
 }: {
   state: string
+  nonce: string
   clientId: string
   redirectUri: string
   codeChallenge: string
@@ -41,6 +43,7 @@ export function generateTwitterUrl({
   const url = new URL('https://twitter.com/i/oauth2/authorize')
 
   url.searchParams.set('state', state)
+  url.searchParams.set('nonce', nonce)
   url.searchParams.set('client_id', clientId)
   url.searchParams.set('response_type', 'code')
   url.searchParams.set('redirect_uri', redirectUri)
