@@ -125,6 +125,27 @@ describe('MsgBroadcaster event emission order', () => {
       ])
     })
 
+    it('per-call txTimeoutInBlocks overrides the broadcaster default', async () => {
+      broadcaster.txTimeout = 120
+
+      const broadcastSpy = vi
+        .spyOn(TxGrpcApi.prototype, 'broadcast')
+        .mockResolvedValue(makeTxResponse('TIMEOUT_OVERRIDE'))
+
+      await broadcaster.broadcastWithFeePayerSig({
+        tx: validTxBytes,
+        privateKey: '0x' + 'ab'.repeat(32),
+        feePayerSig: 'bW9ja1NpZw==',
+        accountNumber: 1,
+        txTimeoutInBlocks: 5,
+      })
+
+      expect(broadcastSpy).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ txTimeout: 5 }),
+      )
+    })
+
     it('emits TransactionFail on broadcast error — no BroadcastEnd', async () => {
       vi.spyOn(TxGrpcApi.prototype, 'broadcast').mockRejectedValue(
         new TransactionException(new Error('node rejected tx')),
