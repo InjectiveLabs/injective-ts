@@ -33,14 +33,15 @@ export default class MsgCreateRateLimit extends MsgBase<
 
   public toProto() {
     const { params } = this
-
     const message = InjectivePeggyV1MsgsPb.MsgCreateRateLimit.create({
       authority: params.authority,
       tokenAddress: params.tokenAddress,
       tokenDecimals: Number(params.tokenDecimals),
       tokenPriceId: params.tokenPriceId,
       rateLimitUsd: toChainFormat(params.rateLimitInUsd).toFixed(),
-      absoluteMintLimit: toBigNumber(params.absoluteMintLimit || 0).toFixed(),
+      absoluteMintLimit: toBigNumber(
+        this.params.absoluteMintLimit ?? 0,
+      ).toFixed(),
       rateLimitWindow: BigInt(params.rateLimitWindow),
     })
 
@@ -58,13 +59,16 @@ export default class MsgCreateRateLimit extends MsgBase<
 
   public toAmino() {
     const { params } = this
+
     const message = {
       authority: params.authority,
       token_address: params.tokenAddress,
       token_decimals: Number(params.tokenDecimals),
       token_price_id: params.tokenPriceId,
       rate_limit_usd: params.rateLimitInUsd,
-      absolute_mint_limit: params.absoluteMintLimit,
+      absolute_mint_limit: toBigNumber(
+        this.params.absoluteMintLimit ?? 0,
+      ).toFixed(),
       rate_limit_window: params.rateLimitWindow.toString(),
     }
 

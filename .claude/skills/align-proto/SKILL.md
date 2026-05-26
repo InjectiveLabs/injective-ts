@@ -188,6 +188,23 @@ All exports must be in **strict alphabetical order**.
 
 Ask: "Delete backup files?" If approved, delete `scripts/.align-proto-backup/{package-name}/{version}/`.
 
+## SDK Message EIP712 Debugging
+
+When debugging broken EIP712 generation for a `Msg*` abstraction:
+
+1. Get the actual EIP712 JSON that failed from the client, usually from console logs or the chain validation error.
+2. Reproduce the client transaction in the matching `*.spec.ts` by changing the test message params and `prepareEip712` args to match the client payload exactly: account number, chain ID, fee, gas, memo, sequence, timeout height, signer addresses, and every message field. Preserve omitted optional fields as omitted in the SDK params if the client omitted them.
+3. Capture the Web3Gw output in the test with:
+   ```typescript
+   const txResponse = await new IndexerGrpcWeb3GwApi(
+     endpoints.indexer,
+   ).prepareEip712Request({
+   ```
+4. Compare JSON diffs between the client EIP712 and `txResponse`. For EIP712 v2, parse `message.context` and `message.msgs` before diffing when useful because they are stringified JSON.
+5. Watch for fields that Web3Gw or the chain normalizes even when omitted by SDK callers, especially optional numeric fields that become `"0"` or decimal strings. The SDK must sign the normalized value if Web3Gw includes it.
+6. Apply the smallest fix in the `Msg*` abstraction so `toEip712V2()`/`toWeb3Gw()` matches the chain/Web3Gw output. Keep the regression test parameters aligned with the broken client payload and add a focused assertion for any optional-field defaulting behavior.
+7. Remove temporary console logs after the diff is understood. Keep only useful regression coverage.
+
 ## Implementation Templates
 
 ### Types File
