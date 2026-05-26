@@ -11,8 +11,10 @@ import {
   sleep,
   HttpClient,
   toBigNumber,
+  DEFAULT_TX_POLL_INTERVAL_MS,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
+  DEFAULT_TX_POLL_CALL_TIMEOUT_MS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import { TxClient } from '../utils/classes/TxClient.js'
@@ -102,14 +104,19 @@ export class TxRestApi implements TxConcreteApi {
     txHash: string,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   ): Promise<TxResponse> {
-    const POLL_INTERVAL = 500
     const deadline = Date.now() + timeout
 
-    while (Date.now() < deadline) {
-      const start = Date.now()
+    for (let start = Date.now(); start < deadline; start = Date.now()) {
+      const callTimeout = Math.max(
+        0,
+        Math.min(DEFAULT_TX_POLL_CALL_TIMEOUT_MS, deadline - Date.now()),
+      )
 
       try {
-        const txResponse = await this.fetchTx(txHash)
+        const txResponse = await Promise.race([
+          this.fetchTx(txHash),
+          sleep(callTimeout).then(() => null as TxResponse | null),
+        ])
 
         if (txResponse) {
           return txResponse
@@ -121,7 +128,7 @@ export class TxRestApi implements TxConcreteApi {
       }
 
       const elapsed = Date.now() - start
-      const remaining = POLL_INTERVAL - elapsed
+      const remaining = DEFAULT_TX_POLL_INTERVAL_MS - elapsed
 
       if (remaining > 0) {
         await sleep(remaining)
