@@ -9,8 +9,10 @@ import { ServiceClient as CosmosTxV1Beta1ServicePbClient } from '@injectivelabs/
 import {
   sleep,
   toBigNumber,
+  DEFAULT_TX_POLL_INTERVAL_MS,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
+  DEFAULT_TX_POLL_CALL_TIMEOUT_MS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
@@ -90,84 +92,74 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     txHash: string,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
   ): Promise<TxResponse> {
-    const STAGGER = 300
-    const POLL_INTERVAL = 500 // minimum time between iterations
-    const CALL_TIMEOUT = 3000 // abort a hung dual-fetch after this long
     const deadline = Date.now() + timeout
 
-    while (Date.now() < deadline) {
-      const start = Date.now()
+    for (let start = Date.now(); start < deadline; start = Date.now()) {
+      try {
+        const tx = await this.fetchTxDual(txHash, deadline)
 
-      // CALL_TIMEOUT guards against a hung gRPC call stalling the loop
-      // indefinitely — it is much larger than a normal round-trip so it
-      // does not interfere with fetchTxDual completing naturally
-      const result = await Promise.race([
-        this.fetchTxDual(txHash, STAGGER),
-        sleep(CALL_TIMEOUT).then(() => null as TxResponse | null),
-      ])
-
-      if (result) {
-        return result
+        if (tx) {
+          return tx
+        }
+      } catch (e: unknown) {
+        if (e instanceof TransactionException) {
+          throw e
+        }
       }
 
-      // POLL_INTERVAL enforces a minimum cycle time on fast nodes;
-      // on slow nodes fetchTxDual already takes longer so remaining ≤ 0
-      const elapsed = Date.now() - start
-      const remaining = POLL_INTERVAL - elapsed
+      const gap = DEFAULT_TX_POLL_INTERVAL_MS - (Date.now() - start)
 
-      if (remaining > 0) {
-        await sleep(remaining)
+      if (gap > 0) {
+        await sleep(gap)
       }
     }
 
-    // Transaction was not included in the block in the desired timeout
     throw new GrpcUnaryRequestException(
       new Error(
         `Transaction was not included in a block before timeout of ${timeout}ms`,
       ),
-      {
-        context: 'TxGrpcApi',
-        contextModule: 'fetch-tx-poll',
-      },
+      { context: 'TxGrpcApi', contextModule: 'fetch-tx-poll' },
     )
+  }
+
+  private async safeFetchTx(
+    txHash: string,
+    delay?: number,
+  ): Promise<TxResponse | null> {
+    if (delay) {
+      await sleep(delay)
+    }
+
+    return this.fetchTx(txHash).catch((e: unknown) => {
+      if (e instanceof TransactionException) {
+        throw e
+      }
+
+      return null
+    })
   }
 
   private fetchTxDual(
     txHash: string,
-    stagger: number,
+    deadline: number,
   ): Promise<TxResponse | null> {
-    return new Promise((resolve, reject) => {
-      let pending = 2
-      let timerId: ReturnType<typeof setTimeout> | undefined
+    const STAGGER = 300
+    const timeout = Math.max(
+      0,
+      Math.min(DEFAULT_TX_POLL_CALL_TIMEOUT_MS, deadline - Date.now()),
+    )
 
-      const onResult = (response: TxResponse) => {
-        if (response) {
-          clearTimeout(timerId)
-          return resolve(response)
-        }
+    const fetches = Promise.all([
+      this.safeFetchTx(txHash),
+      this.safeFetchTx(txHash, STAGGER),
+    ]).then(([a, b]) => a ?? b)
 
-        pending -= 1
-        if (pending === 0) {
-          resolve(null)
-        }
-      }
+    fetches.catch(() => {})
 
-      const onError = (e: unknown) => {
-        if (e instanceof TransactionException) {
-          clearTimeout(timerId)
-          return reject(e)
-        }
-        pending -= 1
-        if (pending === 0) {
-          resolve(null)
-        }
-      }
-
-      this.fetchTx(txHash).then(onResult, onError)
-      timerId = setTimeout(() => {
-        this.fetchTx(txHash).then(onResult, onError)
-      }, stagger)
-    })
+    return Promise.race([
+      fetches,
+      sleep(timeout).then(() => null as TxResponse | null),
+    ])
   }
 
   public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {

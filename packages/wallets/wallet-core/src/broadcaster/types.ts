@@ -6,10 +6,11 @@ import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
 export interface MsgBroadcasterTxOptions {
   memo?: string
+  msgs: Msgs | Msgs[]
   ethereumAddress?: string
   injectiveAddress?: string
-  msgs: Msgs | Msgs[]
   accountDetails?: AuthBaseAccount
+  txTimeoutInBlocks?: number // blocks to wait for tx to be included in a block
   gas?: {
     gasPrice?: string
     gas?: number /** gas limit */

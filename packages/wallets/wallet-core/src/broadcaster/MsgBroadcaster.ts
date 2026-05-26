@@ -371,18 +371,21 @@ export class MsgBroadcaster {
     privateKey,
     feePayerSig,
     accountNumber,
+    txTimeoutInBlocks: txTimeoutInBlocksParam,
   }: {
     privateKey: string
     feePayerSig: string
     accountNumber: number
     tx: Uint8Array | string
+    txTimeoutInBlocks?: number // blocks to wait for tx to be included in a block
   }): Promise<TxResponse> {
     const {
       chainId,
       endpoints,
       walletStrategy,
-      txTimeout: txTimeoutInBlocks,
+      txTimeout: instanceTxTimeout,
     } = this
+    const txTimeoutInBlocks = txTimeoutInBlocksParam ?? instanceTxTimeout
 
     const pk = PrivateKey.fromHex(privateKey)
 
@@ -473,12 +476,8 @@ export class MsgBroadcaster {
    * @returns transaction hash
    */
   private async broadcastEip712(tx: MsgBroadcasterTxOptionsWithAddresses) {
-    const {
-      chainId,
-      endpoints,
-      walletStrategy,
-      txTimeout: txTimeoutInBlocks,
-    } = this
+    const { chainId, endpoints, walletStrategy } = this
+    const txTimeoutInBlocks = tx.txTimeoutInBlocks ?? this.txTimeout
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     const [evmChainId, { baseAccount, latestHeight }] = await Promise.all([
@@ -605,12 +604,8 @@ export class MsgBroadcaster {
   private async broadcastEip712V2(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ): Promise<TxResponse> {
-    const {
-      chainId,
-      endpoints,
-      walletStrategy,
-      txTimeout: txTimeoutInBlocks,
-    } = this
+    const { chainId, endpoints, walletStrategy } = this
+    const txTimeoutInBlocks = tx.txTimeoutInBlocks ?? this.txTimeout
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     const [evmChainId, { baseAccount, latestHeight }] = await Promise.all([
@@ -751,8 +746,8 @@ export class MsgBroadcaster {
       httpHeaders,
       walletStrategy,
       txTimeoutOnFeeDelegation,
-      txTimeout: txTimeoutInBlocks,
     } = this
+    const txTimeoutInBlocks = tx.txTimeoutInBlocks ?? this.txTimeout
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
 
@@ -887,12 +882,8 @@ export class MsgBroadcaster {
   private async broadcastDirectSign(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ): Promise<TxResponse> {
-    const {
-      chainId,
-      endpoints,
-      walletStrategy,
-      txTimeout: txTimeoutInBlocks,
-    } = this
+    const { chainId, endpoints, walletStrategy } = this
+    const txTimeoutInBlocks = tx.txTimeoutInBlocks ?? this.txTimeout
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
@@ -1035,14 +1026,8 @@ export class MsgBroadcaster {
   private async experimentalBroadcastWalletThroughLedger(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const {
-      chainId,
-      endpoints,
-      evmChainId,
-      simulateTx,
-      walletStrategy,
-      txTimeout: txTimeoutInBlocks,
-    } = this
+    const { chainId, endpoints, evmChainId, simulateTx, walletStrategy } = this
+    const txTimeoutInBlocks = tx.txTimeoutInBlocks ?? this.txTimeout
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
@@ -1186,8 +1171,8 @@ export class MsgBroadcaster {
       httpHeaders,
       walletStrategy,
       txTimeoutOnFeeDelegation,
-      txTimeout: txTimeoutInBlocks,
     } = this
+    const txTimeoutInBlocks = tx.txTimeoutInBlocks ?? this.txTimeout
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
     /**
