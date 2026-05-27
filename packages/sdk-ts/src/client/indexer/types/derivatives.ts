@@ -60,6 +60,10 @@ export interface ExpiryFuturesMarketInfo {
   expirationTimestamp: number
 }
 
+export interface OpenNotionalCap {
+  cap: string
+}
+
 export interface BaseDerivativeMarket {
   ticker: string
   marketId: string
@@ -83,6 +87,7 @@ export interface PerpetualMarket extends BaseDerivativeMarket {
   oracleScaleFactor: number
   initialMarginRatio: string
   maintenanceMarginRatio: string
+  openNotionalCap?: OpenNotionalCap
   perpetualMarketInfo?: PerpetualMarketInfo
   perpetualMarketFunding?: PerpetualMarketFunding
 }
@@ -96,6 +101,7 @@ export interface ExpiryFuturesMarket extends BaseDerivativeMarket {
   initialMarginRatio: string
   maintenanceMarginRatio: string
   expiryFuturesMarketInfo?: ExpiryFuturesMarketInfo
+  openNotionalCap?: OpenNotionalCap
 }
 
 export interface BinaryOptionsMarket extends Omit<

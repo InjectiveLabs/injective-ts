@@ -363,6 +363,9 @@ export class IndexerGrpcDerivativeTransformer {
       minNotional: new BigNumber(market.minNotional).toNumber(),
       minPriceTickSize: new BigNumber(market.minPriceTickSize).toNumber(),
       minQuantityTickSize: new BigNumber(market.minQuantityTickSize).toNumber(),
+      openNotionalCap: market.openNotionalCap
+        ? { cap: market.openNotionalCap.cap }
+        : undefined,
       quoteToken: IndexerGrpcDerivativeTransformer.grpcTokenMetaToTokenMeta(
         market.quoteTokenMeta,
       ),
