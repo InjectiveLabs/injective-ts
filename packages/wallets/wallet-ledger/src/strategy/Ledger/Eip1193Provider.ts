@@ -1,4 +1,4 @@
-import { serializeTransaction, toHex } from 'viem'
+import { toHex, serializeTransaction } from 'viem'
 import {
   getEvmChainConfig,
   getViemPublicClient,
