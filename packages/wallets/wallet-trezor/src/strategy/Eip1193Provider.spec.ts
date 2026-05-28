@@ -68,6 +68,17 @@ describe('Trezor EIP-1193 provider', () => {
     },
   )
 
+  it.each(['eth_sign', 'personal_sign'])(
+    'rejects %s without a message payload',
+    async (method) => {
+      const provider = getProvider()
+
+      await expect(
+        provider.request({ method, params: [address] }),
+      ).rejects.toThrow(`Missing message parameter for ${method}`)
+    },
+  )
+
   it.each([
     'eth_signTypedData',
     'eth_signTypedData_v3',
@@ -85,5 +96,13 @@ describe('Trezor EIP-1193 provider', () => {
 
     await expect(provider.request({ method, params })).resolves.toBe('0xtyped')
     expect(signTypedData).toHaveBeenCalledWith(JSON.stringify(typedData))
+  })
+
+  it('rejects typed data signing without a typed-data payload', async () => {
+    const provider = getProvider()
+
+    await expect(
+      provider.request({ method: 'eth_signTypedData_v4', params: [address] }),
+    ).rejects.toThrow('Missing typed data parameter for eth_signTypedData_v4')
   })
 })

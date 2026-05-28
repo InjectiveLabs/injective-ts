@@ -36,15 +36,46 @@ const parseChainId = (chainId: number | string) => {
 const isEthAddress = (value: unknown) =>
   typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/.test(value)
 
-const getTypedDataParam = (params?: any[]) => {
+const getTypedDataParam = (method: string, params?: any[]) => {
   if (!params?.length) {
     throw new Error('params is required')
   }
 
-  const typedData =
-    params.length > 1 && isEthAddress(params[0]) ? params[1] : params[0]
+  const typedData = isEthAddress(params[0]) ? params[1] : params[0]
 
-  return typeof typedData === 'string' ? JSON.parse(typedData) : typedData
+  if (
+    typedData == null ||
+    (typeof typedData === 'string' && typedData.length === 0) ||
+    (typeof typedData !== 'string' && typeof typedData !== 'object')
+  ) {
+    throw new Error(`Missing typed data parameter for ${method}`)
+  }
+
+  const parsedTypedData = (() => {
+    if (typeof typedData !== 'string') {
+      return typedData
+    }
+
+    try {
+      return JSON.parse(typedData)
+    } catch {
+      throw new Error(`Invalid typed data parameter for ${method}`)
+    }
+  })()
+
+  if (
+    !parsedTypedData ||
+    typeof parsedTypedData !== 'object' ||
+    Array.isArray(parsedTypedData) ||
+    !parsedTypedData.domain ||
+    !parsedTypedData.types ||
+    typeof parsedTypedData.primaryType !== 'string' ||
+    !('message' in parsedTypedData)
+  ) {
+    throw new Error(`Invalid typed data parameter for ${method}`)
+  }
+
+  return parsedTypedData
 }
 
 const getMessageParam = (method: string, params?: any[]) => {
@@ -52,15 +83,25 @@ const getMessageParam = (method: string, params?: any[]) => {
     throw new Error('params is required')
   }
 
+  let message = params[0]
+
   if (method === 'eth_sign') {
-    return params[1] || params[0]
+    message = params[1]
   }
 
-  if (method === 'personal_sign') {
-    return isEthAddress(params[0]) && params[1] ? params[1] : params[0]
+  if (method === 'personal_sign' && isEthAddress(params[0])) {
+    message = params[1]
   }
 
-  return params[0]
+  if (
+    !(message instanceof Uint8Array) &&
+    (typeof message !== 'string' || message.length === 0) &&
+    !(message && typeof message === 'object' && 'message' in message)
+  ) {
+    throw new Error(`Missing message parameter for ${method}`)
+  }
+
+  return message
 }
 
 const getSignableMessage = (message: any) => {
@@ -174,7 +215,7 @@ class CustomEip1193Provider implements Eip1193Provider {
       // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
       // account.sign is available in @turnkey/viem >= 0.12.0; older versions hashed client-side inside
       // signTypedData already, so both paths produce an identical signature.
-      const typedData = getTypedDataParam(args.params)
+      const typedData = getTypedDataParam(args.method, args.params)
 
       if (this.sign) {
         const typedDataHash = hashTypedData({

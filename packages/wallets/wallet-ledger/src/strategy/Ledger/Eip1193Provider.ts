@@ -23,19 +23,34 @@ const signMessageMethods = new Set(['eth_sign', 'personal_sign'])
 const isEthAddress = (value: unknown) =>
   typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/.test(value)
 
-const getTypedDataParam = (params: any[]) => {
-  const typedData =
-    params.length > 1 && isEthAddress(params[0]) ? params[1] : params[0]
+const getTypedDataParam = (method: string, params: any[]) => {
+  const typedData = isEthAddress(params[0]) ? params[1] : params[0]
+
+  if (
+    typedData == null ||
+    (typeof typedData === 'string' && typedData.length === 0)
+  ) {
+    throw new Error(`Missing typed data parameter for ${method}`)
+  }
 
   return typeof typedData === 'string' ? typedData : JSON.stringify(typedData)
 }
 
 const getMessageParam = (method: string, params: any[]) => {
-  if (method === 'eth_sign') {
-    return params[1] || params[0]
+  let message = params[0]
+
+  if (method === 'eth_sign' || isEthAddress(params[0])) {
+    message = params[1]
   }
 
-  return isEthAddress(params[0]) && params[1] ? params[1] : params[0]
+  if (
+    !(message instanceof Uint8Array) &&
+    (typeof message !== 'string' || message.length === 0)
+  ) {
+    throw new Error(`Missing message parameter for ${method}`)
+  }
+
+  return message
 }
 
 const getMessageHex = (message: any) => {
@@ -191,7 +206,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
         throw new Error(`Missing parameter for ${args.method}`)
       }
 
-      return this.signTypedData(getTypedDataParam(args.params))
+      return this.signTypedData(getTypedDataParam(args.method, args.params))
     }
 
     if (args.method === 'eth_chainId') {

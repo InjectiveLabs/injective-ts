@@ -51,7 +51,7 @@ describe('Turnkey EIP-1193 provider', () => {
     },
   )
 
-  it.each(['eth_sign', 'personal_sign'])(
+  it.each(['eth_sign', 'personal_sign', 'eth_signMessage'])(
     'routes %s through the Turnkey message signer',
     async (method) => {
       const signMessage = vi.fn().mockResolvedValue('0xsigned')
@@ -67,12 +67,38 @@ describe('Turnkey EIP-1193 provider', () => {
       )
 
       const params =
-        method === 'eth_sign' ? [address, '0x68656c6c6f'] : ['hello', address]
+        method === 'eth_sign'
+          ? [address, '0x68656c6c6f']
+          : method === 'personal_sign'
+            ? ['hello', address]
+            : ['hello']
 
       await expect(provider.request({ method, params })).resolves.toBe(
         '0xsigned',
       )
       expect(signMessage).toHaveBeenCalledTimes(1)
+    },
+  )
+
+  it.each(['eth_sign', 'personal_sign'])(
+    'rejects %s without a message payload',
+    async (method) => {
+      const signMessage = vi.fn()
+      const provider = await getEip1193ProviderForTurnkey(
+        {
+          ...account,
+          signMessage,
+        } as unknown as LocalAccount,
+        1,
+        {
+          rpcUrl: 'http://127.0.0.1:1',
+        },
+      )
+
+      await expect(
+        provider.request({ method, params: [address] }),
+      ).rejects.toThrow(`Missing message parameter for ${method}`)
+      expect(signMessage).not.toHaveBeenCalled()
     },
   )
 
@@ -100,6 +126,25 @@ describe('Turnkey EIP-1193 provider', () => {
 
     await expect(provider.request({ method, params })).resolves.toBe('0xtyped')
     expect(sign).toHaveBeenCalledTimes(1)
+  })
+
+  it('rejects typed data signing without a typed-data payload', async () => {
+    const sign = vi.fn()
+    const provider = await getEip1193ProviderForTurnkey(
+      {
+        ...account,
+        sign,
+      } as unknown as LocalAccount,
+      1,
+      {
+        rpcUrl: 'http://127.0.0.1:1',
+      },
+    )
+
+    await expect(
+      provider.request({ method: 'eth_signTypedData_v4', params: [address] }),
+    ).rejects.toThrow('Missing typed data parameter for eth_signTypedData_v4')
+    expect(sign).not.toHaveBeenCalled()
   })
 
   it('routes eth_signTransaction through the Turnkey transaction signer', async () => {
