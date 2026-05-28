@@ -9,6 +9,18 @@ import type { Eip1193Provider } from '@injectivelabs/wallet-base'
 
 type RpcUrls = Partial<Record<number, string>>
 
+const signTypedDataMethods = new Set([
+  'eth_signTypedData',
+  'eth_signTypedData_v3',
+  'eth_signTypedData_v4',
+])
+
+const signMessageMethods = new Set([
+  'eth_sign',
+  'personal_sign',
+  'eth_signMessage',
+])
+
 const parseChainId = (chainId: number | string) => {
   if (typeof chainId === 'number') {
     return chainId
@@ -19,6 +31,51 @@ const parseChainId = (chainId: number | string) => {
   }
 
   return parseInt(chainId, 10)
+}
+
+const isEthAddress = (value: unknown) =>
+  typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/.test(value)
+
+const getTypedDataParam = (params?: any[]) => {
+  if (!params?.length) {
+    throw new Error('params is required')
+  }
+
+  const typedData =
+    params.length > 1 && isEthAddress(params[0]) ? params[1] : params[0]
+
+  return typeof typedData === 'string' ? JSON.parse(typedData) : typedData
+}
+
+const getMessageParam = (method: string, params?: any[]) => {
+  if (!params?.length) {
+    throw new Error('params is required')
+  }
+
+  if (method === 'eth_sign') {
+    return params[1] || params[0]
+  }
+
+  if (method === 'personal_sign') {
+    return isEthAddress(params[0]) && params[1] ? params[1] : params[0]
+  }
+
+  return params[0]
+}
+
+const getSignableMessage = (message: any) => {
+  if (message && typeof message === 'object' && 'message' in message) {
+    return message
+  }
+
+  if (
+    message instanceof Uint8Array ||
+    (typeof message === 'string' && message.startsWith('0x'))
+  ) {
+    return { message: { raw: message } }
+  }
+
+  return { message }
 }
 
 export const getEip1193ProviderForTurnkey = async (
@@ -106,19 +163,18 @@ class CustomEip1193Provider implements Eip1193Provider {
   }
 
   async request(args: { method: string; params?: any[] }) {
-    if (args.method === 'eth_requestAccounts') {
+    if (
+      args.method === 'eth_requestAccounts' ||
+      args.method === 'eth_accounts'
+    ) {
       return this.requestAccounts()
     }
 
-    if (args.method === 'eth_signTypedData') {
-      if (!args.params) {
-        throw new Error('params is required')
-      }
-
+    if (signTypedDataMethods.has(args.method)) {
       // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
       // account.sign is available in @turnkey/viem >= 0.12.0; older versions hashed client-side inside
       // signTypedData already, so both paths produce an identical signature.
-      const typedData = args.params[0]
+      const typedData = getTypedDataParam(args.params)
 
       if (this.sign) {
         const typedDataHash = hashTypedData({
@@ -140,12 +196,18 @@ class CustomEip1193Provider implements Eip1193Provider {
       return this.signTypedData(typedData)
     }
 
-    if (args.method === 'eth_signMessage') {
+    if (signMessageMethods.has(args.method)) {
+      const message = getMessageParam(args.method, args.params)
+
+      return this.signMessage(getSignableMessage(message))
+    }
+
+    if (args.method === 'eth_signTransaction') {
       if (!args.params) {
         throw new Error('params is required')
       }
 
-      return this.signMessage(args.params[0])
+      return this.signTransaction(args.params[0])
     }
 
     if (args.method === 'eth_chainId') {

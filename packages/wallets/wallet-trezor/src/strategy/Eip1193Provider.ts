@@ -26,6 +26,32 @@ type EthereumTransactionEIP1559 = {
   maxPriorityFeePerGas: string
 }
 
+const signTypedDataMethods = new Set([
+  'eth_signTypedData',
+  'eth_signTypedData_v3',
+  'eth_signTypedData_v4',
+])
+
+const signMessageMethods = new Set(['eth_sign', 'personal_sign'])
+
+const isEthAddress = (value: unknown) =>
+  typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/.test(value)
+
+const getTypedDataParam = (params: any[]) => {
+  const typedData =
+    params.length > 1 && isEthAddress(params[0]) ? params[1] : params[0]
+
+  return typeof typedData === 'string' ? typedData : JSON.stringify(typedData)
+}
+
+const getMessageParam = (method: string, params: any[]) => {
+  if (method === 'eth_sign') {
+    return params[1] || params[0]
+  }
+
+  return isEthAddress(params[0]) && params[1] ? params[1] : params[0]
+}
+
 export class TrezorEip1193Provider implements Eip1193Provider {
   private readonly trezor: BaseTrezorTransport
   private readonly derivationPath: string
@@ -229,18 +255,21 @@ export class TrezorEip1193Provider implements Eip1193Provider {
   }
 
   async request(args: { method: string; params: any[] }): Promise<any> {
-    if (args.method === 'eth_requestAccounts') {
+    if (
+      args.method === 'eth_requestAccounts' ||
+      args.method === 'eth_accounts'
+    ) {
       const address = await this.getAddress()
 
       return [address]
     }
 
-    if (args.method === 'eth_sign') {
+    if (signMessageMethods.has(args.method)) {
       if (!args.params[0]) {
-        throw new Error('Missing parameter for eth_sign')
+        throw new Error(`Missing parameter for ${args.method}`)
       }
 
-      return this.signMessage(args.params[0])
+      return this.signMessage(getMessageParam(args.method, args.params))
     }
 
     if (args.method === 'eth_signTransaction') {
@@ -251,12 +280,12 @@ export class TrezorEip1193Provider implements Eip1193Provider {
       return this.signTransaction(args.params[0])
     }
 
-    if (args.method === 'eth_signTypedData') {
+    if (signTypedDataMethods.has(args.method)) {
       if (!args.params[0]) {
-        throw new Error('Missing parameter for eth_signTypedData')
+        throw new Error(`Missing parameter for ${args.method}`)
       }
 
-      return this.signTypedData(args.params[0])
+      return this.signTypedData(getTypedDataParam(args.params))
     }
 
     if (args.method === 'eth_chainId') {
