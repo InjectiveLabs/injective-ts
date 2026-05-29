@@ -3,6 +3,28 @@ import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-proto-ts-v2/gen
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcOracleTransformer } from '../transformers/IndexerGrpcOracleTransformer.js'
+import type { OraclePriceV2Filter } from '../types/oracle.js'
+import type { DerivativeMarket } from '../types/derivatives.js'
+
+export function derivativeMarketsToOraclePriceV2Filters(
+  markets: DerivativeMarket[],
+): OraclePriceV2Filter[] {
+  return markets.flatMap((market) => {
+    if (!('oracleBase' in market) || !('oracleQuote' in market)) {
+      return []
+    }
+
+    return [
+      {
+        oracleType: market.oracleType,
+        baseSymbol: market.oracleBase,
+        quoteSymbol: market.oracleQuote,
+        oracleScaleFactor: market.oracleScaleFactor,
+      },
+    ]
+  })
+}
+
 /**
  * @category Indexer Grpc API
  */
@@ -51,6 +73,28 @@ export class IndexerGrpcOracleApi extends BaseIndexerGrpcConsumer {
     >(request, this.client.price.bind(this.client))
 
     return response
+  }
+
+  async fetchOraclePriceV2(filters: OraclePriceV2Filter[]) {
+    const request = InjectiveOracleRpcPb.PriceV2Request.create()
+
+    request.filters = filters.map((filter) => {
+      const pricePayload = InjectiveOracleRpcPb.PricePayloadV2.create()
+
+      pricePayload.baseSymbol = filter.baseSymbol
+      pricePayload.quoteSymbol = filter.quoteSymbol
+      pricePayload.oracleType = filter.oracleType
+      pricePayload.oracleScaleFactor = filter.oracleScaleFactor
+
+      return pricePayload
+    })
+
+    const response = await this.executeGrpcCall<
+      InjectiveOracleRpcPb.PriceV2Request,
+      InjectiveOracleRpcPb.PriceV2Response
+    >(request, this.client.priceV2.bind(this.client))
+
+    return IndexerGrpcOracleTransformer.priceV2ResponseToPriceV2(response)
   }
 
   async fetchOraclePriceNoThrow({
