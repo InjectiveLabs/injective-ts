@@ -503,28 +503,21 @@ export class EvmWallet
 
       await Promise.race([switchRequest, chainChangedWaiter])
     } catch (error) {
-      const errorCode =
+      const rawCode =
         (error as any).code ?? (error as any)?.data?.originalError?.code
+      const errorCode = rawCode != null ? Number(rawCode) : undefined
 
-      if (errorCode === 4902) {
-        await ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [params],
-        })
-
-        try {
-          await ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: chainIdHex }],
-          })
-        } catch (switchError) {
-          console.warn(
-            `Failed to switch to chain ${chainIdHex} after adding it:`,
-            switchError,
-          )
-        }
-
-        return
+      if (errorCode === 4001) {
+        throw this.EvmWalletException(
+          new Error(
+            `${capitalize(this.wallet || 'wallet')} chain switch was rejected`,
+          ),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: WalletAction.GetChainId,
+          },
+        )
       }
 
       if ((error as Error).message === 'Chain switch timed out') {
@@ -535,18 +528,66 @@ export class EvmWallet
         })
       }
 
-      throw this.EvmWalletException(
-        new Error(
-          `Something went wrong while adding ${capitalize(
-            this.wallet || 'wallet',
-          )} network`,
-        ),
-        {
-          code: UnspecifiedErrorCode,
-          type: ErrorType.WalletError,
-          contextModule: WalletAction.GetChainId,
-        },
-      )
+      if (errorCode !== 4902) {
+        throw this.EvmWalletException(
+          new Error(
+            `Something went wrong while switching ${capitalize(
+              this.wallet || 'wallet',
+            )} network`,
+          ),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: WalletAction.GetChainId,
+          },
+        )
+      }
+
+      try {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [params],
+        })
+      } catch {
+        throw this.EvmWalletException(
+          new Error(
+            `Something went wrong while adding ${capitalize(
+              this.wallet || 'wallet',
+            )} network`,
+          ),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: WalletAction.GetChainId,
+          },
+        )
+      }
+
+      const currentChainId = (await ethereum.request({
+        method: 'eth_chainId',
+      })) as string
+
+      if (currentChainId.toLowerCase() !== chainIdHex.toLowerCase()) {
+        try {
+          await ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: chainIdHex }],
+          })
+        } catch {
+          throw this.EvmWalletException(
+            new Error(
+              `Failed to switch to ${capitalize(
+                this.wallet || 'wallet',
+              )} network after adding it`,
+            ),
+            {
+              code: UnspecifiedErrorCode,
+              type: ErrorType.WalletError,
+              contextModule: WalletAction.GetChainId,
+            },
+          )
+        }
+      }
     }
   }
 
