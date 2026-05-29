@@ -69,6 +69,51 @@ export const getEvmProvider = async (
   }
 }
 
+export const switchEthereumChainWithTimeout = async (
+  provider: BrowserEip1993Provider,
+  chainIdHex: string,
+  timeoutMs = 30_000,
+): Promise<void> => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+  let handleChainChanged: ((newChainId: string) => void) | undefined
+
+  const cleanup = () => {
+    if (handleChainChanged) {
+      provider.removeListener('chainChanged', handleChainChanged)
+      handleChainChanged = undefined
+    }
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId)
+      timeoutId = undefined
+    }
+  }
+
+  const switchRequest = provider
+    .request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: chainIdHex }],
+    })
+    .finally(cleanup)
+
+  const chainChangedWaiter = new Promise<void>((resolve, reject) => {
+    handleChainChanged = (newChainId: string) => {
+      if (newChainId.toLowerCase() === chainIdHex.toLowerCase()) {
+        cleanup()
+        resolve()
+      }
+    }
+
+    timeoutId = setTimeout(() => {
+      cleanup()
+      reject(new Error('Chain switch timed out'))
+    }, timeoutMs)
+
+    provider.on('chainChanged', handleChainChanged)
+  })
+
+  await Promise.race([switchRequest, chainChangedWaiter])
+}
+
 export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
   if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(
@@ -89,69 +134,100 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
   const TIMEOUT_MS = 30_000
 
   try {
-    return await Promise.race([
-      provider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: chainIdToHex }],
-      }),
-      new Promise<void>((resolve, reject) => {
-        const handleChainChanged = (newChainId: string) => {
-          if (newChainId.toLowerCase() === chainIdToHex.toLowerCase()) {
-            cleanup()
-            resolve()
-          }
-        }
-
-        const timeoutId = setTimeout(() => {
-          cleanup()
-          reject(new Error('Chain switch timed out'))
-        }, TIMEOUT_MS)
-
-        const cleanup = () => {
-          provider.removeListener('chainChanged', handleChainChanged)
-          clearTimeout(timeoutId)
-        }
-
-        provider.on('chainChanged', handleChainChanged)
-      }),
-    ])
+    await switchEthereumChainWithTimeout(provider, chainIdToHex, TIMEOUT_MS)
   } catch (switchError: any) {
-    const errorCode =
-      switchError?.code ?? switchError?.data?.originalError?.code
+    const rawCode = switchError?.code ?? switchError?.data?.originalError?.code
+    const parsed = rawCode != null ? Number(rawCode) : NaN
+    const errorCode = !isNaN(parsed) ? parsed : undefined
 
-    if (errorCode === 4902) {
-      const chainConfig = getEvmChainConfig(chainId)
+    // 4001 = user rejected the switch request
+    if (errorCode === 4001) {
+      throw new WalletException(
+        new Error(`${capitalize(wallet)} chain switch was rejected`),
+      )
+    }
 
+    if ((switchError as Error).message === 'Chain switch timed out') {
+      throw new WalletException(new Error('Chain switch timed out'))
+    }
+
+    // 4902 = chain not found in wallet — attempt to add it
+    if (errorCode !== 4902) {
+      throw new WalletException(
+        new Error(`Please update your ${capitalize(wallet)} network`),
+      )
+    }
+
+    const chainConfig = getEvmChainConfig(chainId)
+    const rpcUrl = chainConfig.rpcUrls?.default?.http?.[0]
+    const explorerUrl = chainConfig.blockExplorers?.default?.url || undefined
+
+    try {
+      await provider.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: chainIdToHex,
+            chainName: chainConfig.name,
+            nativeCurrency: chainConfig.nativeCurrency,
+            rpcUrls: rpcUrl ? [rpcUrl] : [],
+            blockExplorerUrls: explorerUrl ? [explorerUrl] : [],
+          },
+        ],
+      })
+    } catch {
+      throw new WalletException(
+        new Error(
+          `Failed to add ${chainConfig.name} network to ${capitalize(wallet)}`,
+        ),
+      )
+    }
+
+    let currentChainId: unknown
+    try {
+      currentChainId = await provider.request({ method: 'eth_chainId' })
+    } catch {
+      throw new WalletException(
+        new Error(
+          `Failed to get current chain ID from ${capitalize(wallet)} wallet`,
+        ),
+      )
+    }
+
+    if (
+      typeof currentChainId !== 'string' ||
+      !currentChainId.startsWith('0x')
+    ) {
+      throw new WalletException(
+        new Error(
+          `Invalid chain ID response from ${capitalize(wallet)}: ${String(currentChainId)}`,
+        ),
+      )
+    }
+
+    if (currentChainId.toLowerCase() !== chainIdToHex.toLowerCase()) {
       try {
-        const rpcUrl = chainConfig.rpcUrls?.default?.http?.[0]
-        const explorerUrl =
-          chainConfig.blockExplorers?.default?.url || undefined
+        await switchEthereumChainWithTimeout(provider, chainIdToHex, TIMEOUT_MS)
+      } catch (postAddError: any) {
+        const rawCode =
+          postAddError?.code ?? postAddError?.data?.originalError?.code
+        const parsed = rawCode != null ? Number(rawCode) : NaN
+        const postAddErrorCode = !isNaN(parsed) ? parsed : undefined
 
-        await provider.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: chainIdToHex,
-              chainName: chainConfig.name,
-              nativeCurrency: chainConfig.nativeCurrency,
-              rpcUrls: rpcUrl ? [rpcUrl] : [],
-              blockExplorerUrls: explorerUrl ? [explorerUrl] : undefined,
-            },
-          ],
-        })
+        if (postAddErrorCode === 4001) {
+          throw new WalletException(
+            new Error(
+              `${capitalize(wallet)} chain switch after add was rejected`,
+            ),
+          )
+        }
 
-        return
-      } catch {
         throw new WalletException(
           new Error(
-            `Failed to add ${chainConfig.name} network to ${capitalize(wallet)}`,
+            `Failed to switch to ${chainConfig.name} network after adding it: ${(postAddError as Error).message}`,
           ),
         )
       }
     }
-
-    throw new WalletException(
-      new Error(`Please update your ${capitalize(wallet)} network`),
-    )
   }
 }
