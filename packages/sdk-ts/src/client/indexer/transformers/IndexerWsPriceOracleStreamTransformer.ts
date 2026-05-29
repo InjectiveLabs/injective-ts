@@ -1,12 +1,16 @@
 import { bigIntToNumber } from '../../../utils/helpers.js'
 import type * as GoagenApiOraclePb from '@injectivelabs/ws-price-oracle-proto-ts-v2/generated/goagen_api_oracle_pb'
 import type {
+  WsPriceOracleMarketPrice,
   WsPriceOracleMarketStreamLeg,
   GrpcWsPriceOracleMarketStreamLeg,
   WsPriceOracleStreamMarketsResponse,
   WsPriceOracleMarketStreamRawPayload,
+  GrpcWsPriceOracleMarketStreamMessage,
   GrpcWsPriceOracleStreamMarketsResponse,
+  WsPriceOracleLatestMarketPricesResponse,
   GrpcWsPriceOracleMarketStreamRawPayload,
+  GrpcWsPriceOracleLatestMarketPricesResponse,
 } from '../types/ws-price-oracle.js'
 
 /**
@@ -41,9 +45,9 @@ export class IndexerWsPriceOracleStreamTransformer {
     }
   }
 
-  static streamMarketsResponseToStreamMarkets(
-    response: GrpcWsPriceOracleStreamMarketsResponse,
-  ): WsPriceOracleStreamMarketsResponse {
+  static grpcMarketStreamMessageToMarketPrice(
+    response: GrpcWsPriceOracleMarketStreamMessage,
+  ): WsPriceOracleMarketPrice {
     return {
       type: response.type,
       marketId: response.marketId,
@@ -66,6 +70,24 @@ export class IndexerWsPriceOracleStreamTransformer {
       verificationStatus: response.verificationStatus,
       raw: IndexerWsPriceOracleStreamTransformer.grpcMarketStreamRawPayloadToMarketStreamRawPayload(
         response.raw,
+      ),
+    }
+  }
+
+  static streamMarketsResponseToStreamMarkets(
+    response: GrpcWsPriceOracleStreamMarketsResponse,
+  ): WsPriceOracleStreamMarketsResponse {
+    return IndexerWsPriceOracleStreamTransformer.grpcMarketStreamMessageToMarketPrice(
+      response,
+    )
+  }
+
+  static latestMarketPricesResponseToLatestMarketPrices(
+    response: GrpcWsPriceOracleLatestMarketPricesResponse,
+  ): WsPriceOracleLatestMarketPricesResponse {
+    return {
+      prices: response.prices.map(
+        IndexerWsPriceOracleStreamTransformer.grpcMarketStreamMessageToMarketPrice,
       ),
     }
   }

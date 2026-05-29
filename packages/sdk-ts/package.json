@@ -355,7 +355,7 @@
     "@injectivelabs/tc-abacus-proto-ts-v2": "1.18.6",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/utils": "workspace:*",
-    "@injectivelabs/ws-price-oracle-proto-ts-v2": "^1.0.3",
+    "@injectivelabs/ws-price-oracle-proto-ts-v2": "1.0.4",
     "@noble/curves": "catalog:",
     "@noble/hashes": "catalog:",
     "@protobuf-ts/grpcweb-transport": "^2.11.1",

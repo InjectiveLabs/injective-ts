@@ -6,6 +6,7 @@ import { IndexerGrpcAuctionApi } from './grpc/IndexerGrpcAuctionApi.js'
 import { IndexerGrpcExplorerApi } from './grpc/IndexerGrpcExplorerApi.js'
 import { IndexerGrpcDerivativesApi } from './grpc/IndexerGrpcDerivativesApi.js'
 import { IndexerGrpcAccountPortfolioApi } from './grpc/IndexerGrpcPortfolioApi.js'
+import { IndexerGrpcWsPriceOracleApi } from './grpc/IndexerGrpcWsPriceOracleApi.js'
 import { IndexerGrpcInsuranceFundApi } from './grpc/IndexerGrpcInsuranceFundApi.js'
 
 /**
@@ -25,6 +26,8 @@ export class IndexerGrpcClient {
 
   oracle: IndexerGrpcOracleApi
 
+  wsPriceOracle: IndexerGrpcWsPriceOracleApi
+
   insuranceFund: IndexerGrpcInsuranceFundApi
 
   derivatives: IndexerGrpcDerivativesApi
@@ -38,6 +41,7 @@ export class IndexerGrpcClient {
     this.explorer = new IndexerGrpcExplorerApi(endpoint)
     this.meta = new IndexerGrpcMetaApi(endpoint)
     this.oracle = new IndexerGrpcOracleApi(endpoint)
+    this.wsPriceOracle = new IndexerGrpcWsPriceOracleApi(endpoint)
     this.insuranceFund = new IndexerGrpcInsuranceFundApi(endpoint)
     this.derivatives = new IndexerGrpcDerivativesApi(endpoint)
     this.spot = new IndexerGrpcSpotApi(endpoint)

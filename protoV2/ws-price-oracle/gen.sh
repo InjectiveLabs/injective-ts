@@ -9,10 +9,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Change to script directory to ensure relative paths work
 cd "$SCRIPT_DIR"
 
-# Check if node_modules exists, if not install dependencies
-if [ ! -d "node_modules" ] || [ ! -f "node_modules/.bin/protoc" ]; then
+has_missing_dependencies=false
+
+if [ ! -d "node_modules" ] ||
+  [ ! -f "node_modules/.bin/protoc" ] ||
+  [ ! -f "node_modules/.bin/protoc-gen-ts" ] ||
+  [ ! -f "node_modules/@protobuf-ts/runtime/package.json" ] ||
+  [ ! -f "node_modules/@protobuf-ts/runtime-rpc/package.json" ]; then
+  has_missing_dependencies=true
+fi
+
+# Check if node_modules exists and has complete generator/runtime dependencies.
+if [ "$has_missing_dependencies" = true ]; then
   echo "📥 Installing dependencies..."
-  npm install || pnpm install || {
+  rm -rf node_modules
+  rm -f package-lock.json pnpm-lock.yaml
+  npm install || {
     echo "❌ Failed to install dependencies"
     exit 1
   }
@@ -22,6 +34,7 @@ fi
 rm -rf proto/gen
 rm -rf proto/proto
 rm -rf src/generated
+rm -rf proto-ts/node_modules
 
 # Create output directories if they don't exist
 mkdir -p proto/gen

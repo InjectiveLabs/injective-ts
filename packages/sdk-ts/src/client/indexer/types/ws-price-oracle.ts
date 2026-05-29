@@ -8,6 +8,18 @@ export type GrpcWsPriceOracleMarketStreamRawPayload =
 export type GrpcWsPriceOracleStreamMarketsResponse =
   GoagenApiOraclePb.StreamMarketsResponse
 
+export type GrpcWsPriceOracleMarketStreamMessage =
+  GoagenApiOraclePb.MarketStreamMessage
+
+export type GrpcWsPriceOracleLatestMarketPricesResponse =
+  GoagenApiOraclePb.LatestMarketPricesResponse
+
+export interface WsPriceOracleLatestMarketPricesParams {
+  marketIds?: string[]
+  oracleTypes?: string[]
+  includeInactive?: boolean
+}
+
 export interface WsPriceOracleMarketStreamLeg {
   oracleType?: string
   base?: string
@@ -40,4 +52,10 @@ export interface WsPriceOracleStreamMarketsResponse {
   legs: WsPriceOracleMarketStreamLeg[]
   verificationStatus?: string
   raw?: WsPriceOracleMarketStreamRawPayload
+}
+
+export type WsPriceOracleMarketPrice = WsPriceOracleStreamMarketsResponse
+
+export interface WsPriceOracleLatestMarketPricesResponse {
+  prices: WsPriceOracleMarketPrice[]
 }
