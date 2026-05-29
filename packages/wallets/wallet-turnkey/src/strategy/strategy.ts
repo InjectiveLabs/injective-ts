@@ -1,7 +1,7 @@
 import { getAddress, hashTypedData } from 'viem'
 import { HttpRestClient } from '@injectivelabs/utils'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
-import { getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
+import { toUtf8, getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
 import {
   ErrorType,
   WalletException,
@@ -359,17 +359,34 @@ export class TurnkeyWalletStrategy
   }
 
   async signArbitrary(
-    _signer: AccountAddress,
-    _data: string | Uint8Array,
+    signer: AccountAddress,
+    data: string | Uint8Array,
   ): Promise<string> {
-    throw new WalletException(
-      new Error('This wallet does not support signArbitrary'),
-      {
+    try {
+      const turnkeyWallet = await this.getTurnkeyWallet()
+      const checksumAddress = getAddress(getEthereumAddress(signer))
+      const account =
+        await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
+      const provider = await getEip1193ProviderForTurnkey(
+        account,
+        String(this.evmOptions.evmChainId),
+        {
+          rpcUrl: this.evmOptions.rpcUrl,
+          rpcUrls: this.evmOptions.rpcUrls,
+        },
+      )
+
+      return (await provider.request({
+        method: 'personal_sign',
+        params: [toUtf8(data), checksumAddress],
+      })) as string
+    } catch (e: unknown) {
+      throw new WalletException(new Error((e as Error).message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
-        contextModule: WalletAction.SignTransaction,
-      },
-    )
+        contextModule: WalletAction.SignArbitrary,
+      })
+    }
   }
 
   async getEthereumChainId(): Promise<string> {
