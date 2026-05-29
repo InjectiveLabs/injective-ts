@@ -69,6 +69,51 @@ export const getEvmProvider = async (
   }
 }
 
+export const switchEthereumChainWithTimeout = async (
+  provider: BrowserEip1993Provider,
+  chainIdHex: string,
+  timeoutMs = 30_000,
+): Promise<void> => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+  let handleChainChanged: ((newChainId: string) => void) | undefined
+
+  const cleanup = () => {
+    if (handleChainChanged) {
+      provider.removeListener('chainChanged', handleChainChanged)
+      handleChainChanged = undefined
+    }
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId)
+      timeoutId = undefined
+    }
+  }
+
+  const switchRequest = provider
+    .request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: chainIdHex }],
+    })
+    .finally(cleanup)
+
+  const chainChangedWaiter = new Promise<void>((resolve, reject) => {
+    handleChainChanged = (newChainId: string) => {
+      if (newChainId.toLowerCase() === chainIdHex.toLowerCase()) {
+        cleanup()
+        resolve()
+      }
+    }
+
+    timeoutId = setTimeout(() => {
+      cleanup()
+      reject(new Error('Chain switch timed out'))
+    }, timeoutMs)
+
+    provider.on('chainChanged', handleChainChanged)
+  })
+
+  await Promise.race([switchRequest, chainChangedWaiter])
+}
+
 export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
   if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(
@@ -89,35 +134,11 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
   const TIMEOUT_MS = 30_000
 
   try {
-    await Promise.race([
-      provider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: chainIdToHex }],
-      }),
-      new Promise<void>((resolve, reject) => {
-        const handleChainChanged = (newChainId: string) => {
-          if (newChainId.toLowerCase() === chainIdToHex.toLowerCase()) {
-            cleanup()
-            resolve()
-          }
-        }
-
-        const timeoutId = setTimeout(() => {
-          cleanup()
-          reject(new Error('Chain switch timed out'))
-        }, TIMEOUT_MS)
-
-        const cleanup = () => {
-          provider.removeListener('chainChanged', handleChainChanged)
-          clearTimeout(timeoutId)
-        }
-
-        provider.on('chainChanged', handleChainChanged)
-      }),
-    ])
+    await switchEthereumChainWithTimeout(provider, chainIdToHex, TIMEOUT_MS)
   } catch (switchError: any) {
     const rawCode = switchError?.code ?? switchError?.data?.originalError?.code
-    const errorCode = rawCode != null ? Number(rawCode) : undefined
+    const parsed = rawCode != null ? Number(rawCode) : NaN
+    const errorCode = !isNaN(parsed) ? parsed : undefined
 
     // 4001 = user rejected the switch request
     if (errorCode === 4001) {
@@ -162,20 +183,48 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
       )
     }
 
-    const currentChainId = (await provider.request({
-      method: 'eth_chainId',
-    })) as string
+    let currentChainId: unknown
+    try {
+      currentChainId = await provider.request({ method: 'eth_chainId' })
+    } catch {
+      throw new WalletException(
+        new Error(
+          `Failed to get current chain ID from ${capitalize(wallet)} wallet`,
+        ),
+      )
+    }
+
+    if (
+      typeof currentChainId !== 'string' ||
+      !currentChainId.startsWith('0x')
+    ) {
+      throw new WalletException(
+        new Error(
+          `Invalid chain ID response from ${capitalize(wallet)}: ${String(currentChainId)}`,
+        ),
+      )
+    }
 
     if (currentChainId.toLowerCase() !== chainIdToHex.toLowerCase()) {
       try {
-        await provider.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: chainIdToHex }],
-        })
-      } catch {
+        await switchEthereumChainWithTimeout(provider, chainIdToHex, TIMEOUT_MS)
+      } catch (postAddError: any) {
+        const rawCode =
+          postAddError?.code ?? postAddError?.data?.originalError?.code
+        const parsed = rawCode != null ? Number(rawCode) : NaN
+        const postAddErrorCode = !isNaN(parsed) ? parsed : undefined
+
+        if (postAddErrorCode === 4001) {
+          throw new WalletException(
+            new Error(
+              `${capitalize(wallet)} chain switch after add was rejected`,
+            ),
+          )
+        }
+
         throw new WalletException(
           new Error(
-            `Failed to switch to ${chainConfig.name} network after adding it`,
+            `Failed to switch to ${chainConfig.name} network after adding it: ${(postAddError as Error).message}`,
           ),
         )
       }

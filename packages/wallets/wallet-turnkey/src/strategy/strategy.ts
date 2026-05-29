@@ -381,7 +381,8 @@ export class TurnkeyWalletStrategy
         params: [toUtf8(data), checksumAddress],
       })) as string
     } catch (e: unknown) {
-      throw new WalletException(new Error((e as Error).message), {
+      const message = e instanceof Error ? e.message : String(e)
+      throw new WalletException(new Error(message), {
         code: UnspecifiedErrorCode,
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignArbitrary,
