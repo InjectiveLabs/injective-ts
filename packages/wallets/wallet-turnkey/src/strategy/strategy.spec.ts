@@ -7,10 +7,6 @@ describe('TurnkeyWalletStrategy', () => {
       TxGrpcApi: vi.fn(),
     }))
 
-    vi.doMock('../../../../../sdk-ts/src/core/tx/index.ts', () => ({
-      TxGrpcApi: vi.fn(),
-    }))
-
     vi.doMock('@injectivelabs/wallet-base', () => ({
       WalletAction: {
         SignArbitrary: 'sign-arbitrary',
@@ -32,16 +28,34 @@ describe('TurnkeyWalletStrategy', () => {
       getViemWalletClient: vi.fn(),
     }))
 
-    const { TurnkeyWalletStrategy } = await import('./strategy.js')
-    const address = '0x0000000000000000000000000000000000000001'
     const signMessage = vi.fn().mockResolvedValue('0xsigned')
     const getOrCreateAndGetAccount = vi.fn().mockResolvedValue({
-      address,
+      address: '0x0000000000000000000000000000000000000001',
       sign: vi.fn(),
       signTypedData: vi.fn(),
       signMessage,
       signTransaction: vi.fn(),
     })
+
+    const fakeProvider = {
+      request: vi.fn().mockImplementation(async ({ method, params }) => {
+        if (method === 'personal_sign') {
+          const [message] = params
+          await signMessage({ message })
+
+          return '0xsigned'
+        }
+
+        throw new Error(`Unexpected method: ${method}`)
+      }),
+    }
+
+    vi.doMock('./Eip1193Provider.js', () => ({
+      getEip1193ProviderForTurnkey: vi.fn().mockResolvedValue(fakeProvider),
+    }))
+
+    const { TurnkeyWalletStrategy } = await import('./strategy.js')
+    const address = '0x0000000000000000000000000000000000000001'
 
     const strategy = new TurnkeyWalletStrategy({
       chainId: ChainId.Devnet,

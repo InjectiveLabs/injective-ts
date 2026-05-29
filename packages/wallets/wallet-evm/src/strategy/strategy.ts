@@ -593,9 +593,7 @@ export class EvmWallet
 
           throw this.EvmWalletException(
             new Error(
-              `Failed to switch to ${capitalize(
-                this.wallet || 'wallet',
-              )} network after adding it: ${(postAddError as Error).message}`,
+              `Failed to switch to ${chain.name} network after adding it: ${(postAddError as Error).message}`,
             ),
             {
               code: UnspecifiedErrorCode,
