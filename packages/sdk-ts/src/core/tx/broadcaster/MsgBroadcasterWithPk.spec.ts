@@ -1,11 +1,11 @@
 import { Network } from '@injectivelabs/networks'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import { DEFAULT_BLOCK_TIME_IN_SECONDS } from '@injectivelabs/utils'
-import { IndexerGrpcTransactionApi } from '../../../client/index.js'
+import { TxGrpcApi } from '../api/TxGrpcApi.js'
 import { MsgSend } from '../../modules/bank/index.js'
 import { PrivateKey } from '../../accounts/PrivateKey.js'
-import { TxGrpcApi } from '../api/TxGrpcApi.js'
 import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk.js'
+import { IndexerGrpcTransactionApi } from '../../../client/index.js'
 
 // TODO
 describe.skip('MsgBroadcasterWithPk', () => {
