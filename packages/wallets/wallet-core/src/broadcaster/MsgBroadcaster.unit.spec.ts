@@ -188,6 +188,46 @@ describe('MsgBroadcaster event emission order', () => {
       )
     })
 
+    it('passes per-call tx inclusion options to the SDK broadcaster', async () => {
+      const broadcastSpy = vi
+        .spyOn(TxGrpcApi.prototype, 'broadcast')
+        .mockResolvedValue(makeTxResponse('PER_CALL_INCLUSION'))
+
+      broadcaster = new MsgBroadcaster({
+        network: Network.Devnet,
+        walletStrategy: mockStrategy,
+        endpoints: {
+          indexer: 'http://localhost:8888',
+          grpc: 'http://localhost:9901',
+          rest: 'http://localhost:10337',
+          rpc: 'http://localhost:26657',
+        },
+        txInclusion: {
+          inclusionStrategy: TxInclusionStrategy.Poll,
+        },
+      })
+
+      await broadcaster.broadcastWithFeePayerSig({
+        tx: validTxBytes,
+        privateKey: '0x' + 'ab'.repeat(32),
+        feePayerSig: 'bW9ja1NpZw==',
+        accountNumber: 1,
+        txInclusion: {
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+        },
+      })
+
+      expect(broadcastSpy).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          eventInclusion: expect.objectContaining({
+            rpcEndpoint: 'http://localhost:26657',
+          }),
+        }),
+      )
+    })
+
     it('prepares inclusion waiting with the hash computed from final tx bytes', async () => {
       const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create({
         bodyBytes: new Uint8Array([1]),
@@ -218,7 +258,11 @@ describe('MsgBroadcaster event emission order', () => {
         },
       })
 
-      await (broadcaster as any).prepareTxInclusionWaiter(txRaw, 1000, {})
+      await (broadcaster as any).prepareTxInclusionWaiter({
+        tx: {},
+        timeout: 1000,
+        txRawOrSignResponse: txRaw,
+      })
 
       expect(prepareSpy).toHaveBeenCalledWith(
         txHash,
