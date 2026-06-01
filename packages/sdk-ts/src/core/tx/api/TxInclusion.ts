@@ -1,4 +1,7 @@
-import { TransactionException } from '@injectivelabs/exceptions'
+import {
+  GeneralException,
+  TransactionException,
+} from '@injectivelabs/exceptions'
 import { TxInclusionStrategy } from '../types/tx.js'
 import { subscribeToTendermintTxEvent } from './TxEventInclusion.js'
 import type { TxResponse } from '../types/tx.js'
@@ -53,8 +56,8 @@ export async function prepareTxInclusionWaiter({
   const fallbackToPolling = eventOptions?.fallbackToPolling !== false
 
   if (!rpcEndpoint) {
-    const error = new Error(
-      'Tendermint RPC endpoint is required for event inclusion',
+    const error = new GeneralException(
+      new Error('Tendermint RPC endpoint is required for event inclusion'),
     )
 
     if (!fallbackToPolling) {
@@ -82,8 +85,10 @@ export async function prepareTxInclusionWaiter({
         if (includedTxHash.toUpperCase() !== txHash.toUpperCase()) {
           subscription.close()
           eventOptions?.onFallback?.(
-            new Error(
-              `Broadcast tx hash ${includedTxHash} did not match subscribed tx hash ${txHash}`,
+            new GeneralException(
+              new Error(
+                `Broadcast tx hash ${includedTxHash} did not match subscribed tx hash ${txHash}`,
+              ),
             ),
           )
 
@@ -165,7 +170,10 @@ async function waitForSubscribedTxInclusion({
       throw e
     }
 
-    const error = e instanceof Error ? e : new Error(String(e))
+    const error =
+      e instanceof GeneralException
+        ? e
+        : new GeneralException(new Error(String(e)))
 
     if (!fallbackToPolling) {
       throw createRequestException(error, 'event-inclusion')
@@ -200,7 +208,11 @@ async function waitForSubscribedTxInclusionAndPoll({
         return
       }
 
-      reject(pollError || eventError || new Error('Tx inclusion failed'))
+      reject(
+        pollError ||
+          eventError ||
+          new GeneralException(new Error('Tx inclusion failed')),
+      )
     }
 
     const resolveOnce = (txResponse: TxResponse, source: 'event' | 'poll') => {
