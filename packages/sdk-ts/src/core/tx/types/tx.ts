@@ -5,11 +5,42 @@ import type * as CosmosTxV1Beta1ServicePb from '@injectivelabs/core-proto-ts-v2/
 import type * as CosmosTxSigningV1Beta1SigningPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/signing/v1beta1/signing_pb'
 import type { Msgs } from '../../modules/msgs.js'
 
-export interface TxClientBroadcastOptions {
+export type TxEventWebSocketFactory = (endpoint: string) => WebSocket
+
+export const TxInclusionStrategy = {
+  Poll: 'poll',
+  TendermintEvent: 'tendermint-event',
+  TendermintEventAndPoll: 'tendermint-event-and-poll',
+} as const
+
+export type TxInclusionStrategy =
+  (typeof TxInclusionStrategy)[keyof typeof TxInclusionStrategy]
+
+export interface TxEventInclusionOptions {
+  rpcEndpoint?: string
+  timeout?: number
+  fallbackToPolling?: boolean
+  webSocketFactory?: TxEventWebSocketFactory
+  onFallback?: (error: Error) => void
+}
+
+export interface TxClientInclusionOptions {
+  inclusionStrategy?: TxInclusionStrategy
+  eventInclusion?: TxEventInclusionOptions
+}
+
+export interface TxInclusionWaiter {
+  txHash: string
+  inclusionStrategy: TxInclusionStrategy
+  close: () => void
+  wait: (txHash?: string) => Promise<TxClientBroadcastResponse | undefined>
+}
+
+export interface TxClientBroadcastOptions extends TxClientInclusionOptions {
   mode?: CosmosTxV1Beta1ServicePb.BroadcastMode
   timeout?: number // timeout in ms
   txTimeout?: number // blocks to wait for tx to be included in a block
-  onBroadcast?: (txHash: string) => void // called after SYNC broadcast, before polling
+  onBroadcast?: (txHash: string) => void // called after broadcast, before inclusion detection
 }
 
 export interface TxClientBroadcastResponse {
@@ -48,7 +79,20 @@ export interface TxConcreteApi {
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
   ): Promise<TxClientBroadcastResponse>
   fetchTx(txHash: string): Promise<TxClientBroadcastResponse | undefined>
-  fetchTxPoll(txHash: string): Promise<TxClientBroadcastResponse | undefined>
+  fetchTxPoll(
+    txHash: string,
+    timeout?: number,
+  ): Promise<TxClientBroadcastResponse | undefined>
+  waitForTxInclusion(
+    txHash: string,
+    timeout?: number,
+    options?: TxClientInclusionOptions,
+  ): Promise<TxClientBroadcastResponse | undefined>
+  prepareTxInclusionWait(
+    txHash: string,
+    timeout?: number,
+    options?: TxClientInclusionOptions,
+  ): Promise<TxInclusionWaiter>
   simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw): Promise<TxClientSimulateResponse>
 }
 

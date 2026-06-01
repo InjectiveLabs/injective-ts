@@ -2,7 +2,11 @@ import {
   TransactionException,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
+import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
+import * as CosmosTxV1Beta1ServicePb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb'
 import { TxGrpcApi } from './TxGrpcApi.js'
+import { TxInclusionStrategy } from '../types/tx.js'
+import { TxClient } from '../utils/classes/TxClient.js'
 import type { TxResponse } from '../types/tx.js'
 
 // ---------------------------------------------------------------------------
@@ -30,6 +34,74 @@ const makeTxResponse = (txHash = 'ABC123'): TxResponse =>
 
 /** Delays for `ms` milliseconds */
 const delay = (ms: number) => new Promise<void>((res) => setTimeout(res, ms))
+
+class FakeWebSocket extends EventTarget {
+  public readyState = 0
+  public subscriptionReady = false
+
+  constructor() {
+    super()
+    queueMicrotask(() => {
+      this.readyState = 1
+      this.dispatchEvent(new Event('open'))
+    })
+  }
+
+  send(data: string) {
+    const request = JSON.parse(data)
+    queueMicrotask(() => {
+      this.subscriptionReady = true
+      this.dispatchEvent(
+        new MessageEvent('message', {
+          data: JSON.stringify({
+            id: request.id,
+            jsonrpc: '2.0',
+            result: {},
+          }),
+        }),
+      )
+    })
+  }
+
+  close() {
+    this.readyState = 3
+  }
+
+  emitTx(txHash: string) {
+    this.dispatchEvent(
+      new MessageEvent('message', {
+        data: JSON.stringify({
+          jsonrpc: '2.0',
+          params: {
+            result: {
+              data: {
+                events: {
+                  'tx.hash': [txHash],
+                },
+                value: {
+                  TxResult: {
+                    height: '123',
+                    result: {
+                      code: 0,
+                      log: '',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        }),
+      }),
+    )
+  }
+}
+
+const makeTxRaw = () =>
+  CosmosTxV1Beta1TxPb.TxRaw.create({
+    bodyBytes: new Uint8Array([1]),
+    authInfoBytes: new Uint8Array([2]),
+    signatures: [new Uint8Array([3])],
+  })
 
 describe('TxGrpcApi V2 Migration', () => {
   let txApi: TxGrpcApi
@@ -287,5 +359,140 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     ).rejects.toThrow(TransactionException)
 
     expect(onBroadcast).not.toHaveBeenCalled()
+  })
+
+  it('subscribes before async broadcast and resolves inclusion from the tx event', async () => {
+    const txRaw = makeTxRaw()
+    const txHash = TxClient.hash(txRaw)
+    const socket = new FakeWebSocket()
+    const txResponse = makeTxResponse(txHash)
+    const fetchTxPoll = vi.spyOn(txApi, 'fetchTxPoll')
+    const fetchTx = vi.spyOn(txApi, 'fetchTx').mockResolvedValue(txResponse)
+
+    vi.spyOn(txApi as any, 'executeGrpcCall').mockImplementation(async () => {
+      expect(socket.subscriptionReady).toBe(true)
+
+      queueMicrotask(() => {
+        socket.emitTx(txHash)
+      })
+
+      return {
+        txResponse: {
+          txhash: txHash,
+          code: 0,
+          rawLog: '',
+          codespace: '',
+          height: '0',
+          gasWanted: '0',
+          gasUsed: '0',
+        },
+      }
+    })
+
+    const result = await txApi.broadcast(txRaw, {
+      inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+      eventInclusion: {
+        rpcEndpoint: 'http://localhost:26657',
+        webSocketFactory: () => socket as unknown as WebSocket,
+      },
+    })
+
+    expect(result.txHash).toBe(txHash)
+    expect(fetchTx).toHaveBeenCalledWith(txHash)
+    expect(fetchTxPoll).not.toHaveBeenCalled()
+  })
+
+  it('races event and polling when dual inclusion is enabled', async () => {
+    const txRaw = makeTxRaw()
+    const txHash = TxClient.hash(txRaw)
+    const socket = new FakeWebSocket()
+    const txResponse = makeTxResponse(txHash)
+    const fetchTxPoll = vi.spyOn(txApi, 'fetchTxPoll').mockImplementation(
+      async () =>
+        await new Promise<TxResponse>(() => {
+          // Keep polling pending so the event side wins deterministically.
+        }),
+    )
+    const fetchTx = vi.spyOn(txApi, 'fetchTx').mockResolvedValue(txResponse)
+
+    vi.spyOn(txApi as any, 'executeGrpcCall').mockImplementation(
+      async (request: unknown) => {
+        const broadcastRequest =
+          request as CosmosTxV1Beta1ServicePb.BroadcastTxRequest
+
+        expect(socket.subscriptionReady).toBe(true)
+        expect(broadcastRequest.mode).toBe(
+          CosmosTxV1Beta1ServicePb.BroadcastMode.ASYNC,
+        )
+
+        queueMicrotask(() => {
+          socket.emitTx(txHash)
+        })
+
+        return {
+          txResponse: {
+            txhash: txHash,
+            code: 0,
+            rawLog: '',
+            codespace: '',
+            height: '0',
+            gasWanted: '0',
+            gasUsed: '0',
+          },
+        }
+      },
+    )
+
+    const result = await txApi.broadcast(txRaw, {
+      inclusionStrategy: TxInclusionStrategy.TendermintEventAndPoll,
+      eventInclusion: {
+        rpcEndpoint: 'http://localhost:26657',
+        webSocketFactory: () => socket as unknown as WebSocket,
+      },
+    })
+
+    expect(result.txHash).toBe(txHash)
+    expect(fetchTx).toHaveBeenCalledWith(txHash)
+    expect(fetchTxPoll).toHaveBeenCalledWith(txHash, expect.any(Number))
+  })
+
+  it('falls back to sync polling when event inclusion has no rpc endpoint', async () => {
+    const txRaw = makeTxRaw()
+    const txHash = TxClient.hash(txRaw)
+    const onFallback = vi.fn()
+    const txResponse = makeTxResponse(txHash)
+
+    vi.spyOn(txApi as any, 'executeGrpcCall').mockImplementation(
+      async (request: unknown) => {
+        const broadcastRequest =
+          request as CosmosTxV1Beta1ServicePb.BroadcastTxRequest
+
+        expect(broadcastRequest.mode).toBe(
+          CosmosTxV1Beta1ServicePb.BroadcastMode.SYNC,
+        )
+
+        return {
+          txResponse: {
+            txhash: txHash,
+            code: 0,
+            rawLog: '',
+            codespace: '',
+            height: '0',
+            gasWanted: '0',
+            gasUsed: '0',
+          },
+        }
+      },
+    )
+
+    vi.spyOn(txApi, 'fetchTxPoll').mockResolvedValue(txResponse)
+
+    const result = await txApi.broadcast(txRaw, {
+      inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+      eventInclusion: { onFallback },
+    })
+
+    expect(result.txHash).toBe(txHash)
+    expect(onFallback).toHaveBeenCalledOnce()
   })
 })

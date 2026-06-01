@@ -3,7 +3,12 @@ import { Network } from '@injectivelabs/networks'
 import { TransactionException } from '@injectivelabs/exceptions'
 import { PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { WalletStrategyEmitterEventType } from '@injectivelabs/wallet-base'
-import { TxGrpcApi, CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts/core/tx'
+import {
+  TxClient,
+  TxGrpcApi,
+  TxInclusionStrategy,
+  CosmosTxV1Beta1TxPb,
+} from '@injectivelabs/sdk-ts/core/tx'
 import { MsgBroadcaster } from './MsgBroadcaster.js'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { MsgBroadcasterOptions } from './types.js'
@@ -143,6 +148,87 @@ describe('MsgBroadcaster event emission order', () => {
       expect(broadcastSpy).toHaveBeenCalledWith(
         expect.anything(),
         expect.objectContaining({ txTimeout: 5 }),
+      )
+    })
+
+    it('passes configured tx inclusion options to the SDK broadcaster', async () => {
+      const broadcastSpy = vi
+        .spyOn(TxGrpcApi.prototype, 'broadcast')
+        .mockResolvedValue(makeTxResponse('EVENT_INCLUSION'))
+
+      broadcaster = new MsgBroadcaster({
+        network: Network.Devnet,
+        walletStrategy: mockStrategy,
+        endpoints: {
+          indexer: 'http://localhost:8888',
+          grpc: 'http://localhost:9901',
+          rest: 'http://localhost:10337',
+          rpc: 'http://localhost:26657',
+        },
+        txInclusion: {
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+        },
+      })
+
+      await broadcaster.broadcastWithFeePayerSig({
+        tx: validTxBytes,
+        privateKey: '0x' + 'ab'.repeat(32),
+        feePayerSig: 'bW9ja1NpZw==',
+        accountNumber: 1,
+      })
+
+      expect(broadcastSpy).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          eventInclusion: expect.objectContaining({
+            rpcEndpoint: 'http://localhost:26657',
+          }),
+        }),
+      )
+    })
+
+    it('prepares inclusion waiting with the hash computed from final tx bytes', async () => {
+      const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create({
+        bodyBytes: new Uint8Array([1]),
+        authInfoBytes: new Uint8Array([2]),
+        signatures: [new Uint8Array([3])],
+      })
+      const txHash = TxClient.hash(txRaw)
+      const prepareSpy = vi
+        .spyOn(TxGrpcApi.prototype, 'prepareTxInclusionWait')
+        .mockResolvedValue({
+          txHash,
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          close: vi.fn(),
+          wait: vi.fn().mockResolvedValue(makeTxResponse(txHash)),
+        })
+
+      broadcaster = new MsgBroadcaster({
+        network: Network.Devnet,
+        walletStrategy: mockStrategy,
+        endpoints: {
+          indexer: 'http://localhost:8888',
+          grpc: 'http://localhost:9901',
+          rest: 'http://localhost:10337',
+          rpc: 'http://localhost:26657',
+        },
+        txInclusion: {
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+        },
+      })
+
+      await (broadcaster as any).prepareTxInclusionWaiter(txRaw, 1000, {})
+
+      expect(prepareSpy).toHaveBeenCalledWith(
+        txHash,
+        1000,
+        expect.objectContaining({
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          eventInclusion: expect.objectContaining({
+            rpcEndpoint: 'http://localhost:26657',
+          }),
+        }),
       )
     })
 

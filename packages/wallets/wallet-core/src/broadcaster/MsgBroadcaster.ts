@@ -52,6 +52,7 @@ import {
   WalletStrategyEmitterEventType,
 } from '@injectivelabs/wallet-base'
 import {
+  TxClient,
   TxGrpcApi,
   SIGN_DIRECT,
   SIGN_EIP712,
@@ -73,13 +74,15 @@ import type { DirectSignResponse } from '@injectivelabs/sdk-ts/types'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base'
 import type { AuthBaseAccount } from '@injectivelabs/sdk-ts/client/chain'
 import type {
-  TxResponse,
-  CreateTransactionWithSignersArgs,
-} from '@injectivelabs/sdk-ts/core/tx'
-import type {
   ChainId as ChainIdType,
   EvmChainId as EvmChainIdType,
 } from '@injectivelabs/ts-types'
+import type {
+  TxResponse,
+  TxInclusionWaiter,
+  TxClientInclusionOptions,
+  CreateTransactionWithSignersArgs,
+} from '@injectivelabs/sdk-ts/core/tx'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 import type {
   MsgBroadcasterOptions,
@@ -148,6 +151,8 @@ export class MsgBroadcaster {
 
   public httpHeaders?: Record<string, string>
 
+  public txInclusion?: TxClientInclusionOptions
+
   constructor(options: MsgBroadcasterOptions) {
     const networkInfo = getNetworkInfo(options.network)
 
@@ -165,6 +170,7 @@ export class MsgBroadcaster {
     this.endpoints = options.endpoints || getNetworkEndpoints(options.network)
     this.walletStrategy = options.walletStrategy
     this.httpHeaders = options.httpHeaders
+    this.txInclusion = options.txInclusion
   }
 
   setOptions(options: Partial<MsgBroadcasterOptions>) {
@@ -172,6 +178,7 @@ export class MsgBroadcaster {
     this.txTimeout = options.txTimeout || this.txTimeout
     this.txTimeoutOnFeeDelegation =
       options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
+    this.txInclusion = options.txInclusion || this.txInclusion
   }
 
   async getEvmChainId(): Promise<EvmChainId | undefined> {
@@ -371,12 +378,14 @@ export class MsgBroadcaster {
     privateKey,
     feePayerSig,
     accountNumber,
+    txInclusion,
     txTimeoutInBlocks: txTimeoutInBlocksParam,
   }: {
     privateKey: string
     feePayerSig: string
     accountNumber: number
     tx: Uint8Array | string
+    txInclusion?: TxClientInclusionOptions
     txTimeoutInBlocks?: number // blocks to wait for tx to be included in a block
   }): Promise<TxResponse> {
     const { chainId, endpoints, walletStrategy } = this
@@ -425,6 +434,7 @@ export class MsgBroadcaster {
 
       const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw, {
         txTimeout: txTimeoutInBlocks,
+        ...this.resolveTxInclusionOptions({ txInclusion }),
         onBroadcast: () => {
           walletStrategy.emit(
             WalletStrategyEmitterEventType.TransactionBroadcastSynced,
@@ -469,6 +479,83 @@ export class MsgBroadcaster {
       override > 0
       ? override
       : this.txTimeout
+  }
+
+  private resolveTxInclusionOptions(
+    tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>,
+  ): TxClientInclusionOptions | undefined {
+    const txInclusion = tx?.txInclusion || this.txInclusion
+
+    if (!txInclusion) {
+      return undefined
+    }
+
+    return {
+      ...txInclusion,
+      eventInclusion: {
+        ...txInclusion.eventInclusion,
+        rpcEndpoint:
+          txInclusion.eventInclusion?.rpcEndpoint || this.endpoints.rpc,
+      },
+    }
+  }
+
+  private createTxGrpcApi(): TxGrpcApi {
+    const client = new TxGrpcApi(this.endpoints.grpc)
+
+    if (this.httpHeaders) {
+      client.setMetadata(this.httpHeaders)
+    }
+
+    return client
+  }
+
+  private async waitForTxInclusion(
+    txHash: string,
+    timeout: number,
+    tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>,
+  ): Promise<TxResponse> {
+    return this.createTxGrpcApi().waitForTxInclusion(
+      txHash,
+      timeout,
+      this.resolveTxInclusionOptions(tx),
+    )
+  }
+
+  private async prepareTxInclusionWaiter(
+    txRawOrSignResponse: CosmosTxV1Beta1TxPb.TxRaw | DirectSignResponse,
+    timeout: number,
+    tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>,
+  ): Promise<TxInclusionWaiter> {
+    const txRaw = createTxRawFromSigResponse(txRawOrSignResponse)
+    const txHash = TxClient.hash(txRaw)
+
+    return this.createTxGrpcApi().prepareTxInclusionWait(
+      txHash,
+      timeout,
+      this.resolveTxInclusionOptions(tx),
+    )
+  }
+
+  private async waitForPreparedTxInclusion(
+    responseTxHash: string,
+    timeout: number,
+    tx: Pick<MsgBroadcasterTxOptions, 'txInclusion'>,
+    inclusionWaiter?: TxInclusionWaiter,
+  ): Promise<TxResponse> {
+    if (!inclusionWaiter) {
+      return this.waitForTxInclusion(responseTxHash, timeout, tx)
+    }
+
+    const confirmedTx = await inclusionWaiter.wait(responseTxHash)
+
+    if (!confirmedTx) {
+      throw new TransactionException(
+        new Error(`The transaction with ${responseTxHash} is not found`),
+      )
+    }
+
+    return confirmedTx
   }
 
   /**
@@ -576,20 +663,35 @@ export class MsgBroadcaster {
     /** Append Signatures */
     txRawEip712.signatures = [hexToBuff(signature)]
 
-    const response = await walletStrategy.sendTransaction(txRawEip712, {
-      chainId,
-      endpoints,
-      txTimeout: txTimeoutInBlocks,
-      address: tx.injectiveAddress,
-    })
+    const inclusionWaiter = await this.prepareTxInclusionWaiter(
+      txRawEip712,
+      txTimeoutTimeInMilliSeconds,
+      tx,
+    )
+
+    let response: TxResponse
+
+    try {
+      response = await walletStrategy.sendTransaction(txRawEip712, {
+        chainId,
+        endpoints,
+        txTimeout: txTimeoutInBlocks,
+        address: tx.injectiveAddress,
+      })
+    } catch (e) {
+      inclusionWaiter.close()
+      throw e
+    }
 
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionBroadcastSynced,
     )
 
-    const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+    const confirmedTx = await this.waitForPreparedTxInclusion(
       response.txHash,
       txTimeoutTimeInMilliSeconds,
+      tx,
+      inclusionWaiter,
     )
 
     walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
@@ -714,20 +816,35 @@ export class MsgBroadcaster {
     /** Append Signatures */
     txRawEip712.signatures = [hexToBuff(signature)]
 
-    const response = await walletStrategy.sendTransaction(txRawEip712, {
-      chainId,
-      endpoints,
-      txTimeout: txTimeoutInBlocks,
-      address: tx.injectiveAddress,
-    })
+    const inclusionWaiter = await this.prepareTxInclusionWaiter(
+      txRawEip712,
+      txTimeoutTimeInMilliSeconds,
+      tx,
+    )
+
+    let response: TxResponse
+
+    try {
+      response = await walletStrategy.sendTransaction(txRawEip712, {
+        chainId,
+        endpoints,
+        txTimeout: txTimeoutInBlocks,
+        address: tx.injectiveAddress,
+      })
+    } catch (e) {
+      inclusionWaiter.close()
+      throw e
+    }
 
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionBroadcastSynced,
     )
 
-    const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+    const confirmedTx = await this.waitForPreparedTxInclusion(
       response.txHash,
       txTimeoutTimeInMilliSeconds,
+      tx,
+      inclusionWaiter,
     )
 
     walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
@@ -831,9 +948,10 @@ export class MsgBroadcaster {
         WalletStrategyEmitterEventType.TransactionBroadcastSynced,
       )
 
-      const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+      const confirmedTx = await this.waitForTxInclusion(
         response.txHash,
         txTimeoutTimeInMilliSeconds,
+        tx,
       )
 
       walletStrategy.emit(
@@ -967,20 +1085,35 @@ export class MsgBroadcaster {
         WalletStrategyEmitterEventType.TransactionBroadcastStart,
       )
 
-      const response = await walletStrategy.sendTransaction(txRaw, {
-        chainId,
-        endpoints,
-        address: tx.injectiveAddress,
-        txTimeout: txTimeoutInBlocks,
-      })
+      const inclusionWaiter = await this.prepareTxInclusionWaiter(
+        txRaw,
+        txTimeoutTimeInMilliSeconds,
+        tx,
+      )
+
+      let response: TxResponse
+
+      try {
+        response = await walletStrategy.sendTransaction(txRaw, {
+          chainId,
+          endpoints,
+          address: tx.injectiveAddress,
+          txTimeout: txTimeoutInBlocks,
+        })
+      } catch (e) {
+        inclusionWaiter.close()
+        throw e
+      }
 
       walletStrategy.emit(
         WalletStrategyEmitterEventType.TransactionBroadcastSynced,
       )
 
-      const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+      const confirmedTx = await this.waitForPreparedTxInclusion(
         response.txHash,
         txTimeoutTimeInMilliSeconds,
+        tx,
+        inclusionWaiter,
       )
 
       walletStrategy.emit(
@@ -1001,20 +1134,35 @@ export class MsgBroadcaster {
       WalletStrategyEmitterEventType.TransactionBroadcastStart,
     )
 
-    const response = await walletStrategy.sendTransaction(directSignResponse, {
-      chainId,
-      endpoints,
-      txTimeout: txTimeoutInBlocks,
-      address: tx.injectiveAddress,
-    })
+    const inclusionWaiter = await this.prepareTxInclusionWaiter(
+      directSignResponse,
+      txTimeoutTimeInMilliSeconds,
+      tx,
+    )
+
+    let response: TxResponse
+
+    try {
+      response = await walletStrategy.sendTransaction(directSignResponse, {
+        chainId,
+        endpoints,
+        txTimeout: txTimeoutInBlocks,
+        address: tx.injectiveAddress,
+      })
+    } catch (e) {
+      inclusionWaiter.close()
+      throw e
+    }
 
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionBroadcastSynced,
     )
 
-    const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+    const confirmedTx = await this.waitForPreparedTxInclusion(
       response.txHash,
       txTimeoutTimeInMilliSeconds,
+      tx,
+      inclusionWaiter,
     )
 
     walletStrategy.emit(WalletStrategyEmitterEventType.TransactionBroadcastEnd)
@@ -1137,6 +1285,7 @@ export class MsgBroadcaster {
       txRawEip712,
       {
         txTimeout: txTimeoutInBlocks,
+        ...this.resolveTxInclusionOptions(tx),
         onBroadcast: () => {
           walletStrategy.emit(
             WalletStrategyEmitterEventType.TransactionBroadcastSynced,
@@ -1316,10 +1465,11 @@ export class MsgBroadcaster {
       WalletStrategyEmitterEventType.TransactionPreparationEnd,
     )
 
+    const signedTxRaw = createTxRawFromSigResponse(directSignResponse)
     const broadcast = async () =>
       await transactionApi.broadcastCosmosTxRequest({
         address: tx.injectiveAddress,
-        txRaw: createTxRawFromSigResponse(directSignResponse),
+        txRaw: signedTxRaw,
         signature: directSignResponse.signature.signature,
         pubKey: directSignResponse.signature.pub_key || {
           value: pubKey,
@@ -1332,7 +1482,20 @@ export class MsgBroadcaster {
         WalletStrategyEmitterEventType.TransactionBroadcastStart,
       )
 
-      const response = await broadcast()
+      const inclusionWaiter = await this.prepareTxInclusionWaiter(
+        signedTxRaw,
+        txTimeoutTimeInMilliSeconds,
+        tx,
+      )
+
+      let response: Awaited<ReturnType<typeof broadcast>>
+
+      try {
+        response = await broadcast()
+      } catch (e) {
+        inclusionWaiter.close()
+        throw e
+      }
 
       walletStrategy.emit(
         WalletStrategyEmitterEventType.TransactionBroadcastSynced,
@@ -1343,9 +1506,11 @@ export class MsgBroadcaster {
         cosmosWallet.enableGasCheck(chainId)
       }
 
-      const confirmedTx = await new TxGrpcApi(endpoints.grpc).fetchTxPoll(
+      const confirmedTx = await this.waitForPreparedTxInclusion(
         response.txHash,
         txTimeoutTimeInMilliSeconds,
+        tx,
+        inclusionWaiter,
       )
 
       walletStrategy.emit(
