@@ -1736,11 +1736,11 @@ export class MsgBroadcaster {
     timeout: number
     tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>
   }): Promise<TxResponse> {
-    return this.createTxGrpcApi().waitForTxInclusion(
+    return this.createTxGrpcApi().waitForTxInclusion({
       txHash,
       timeout,
-      this.resolveTxInclusionOptions(tx),
-    )
+      options: this.resolveTxInclusionOptions(tx),
+    })
   }
 
   private async prepareTxInclusionWaiter({
@@ -1755,11 +1755,11 @@ export class MsgBroadcaster {
     const txRaw = createTxRawFromSigResponse(txRawOrSignResponse)
     const txHash = TxClient.hash(txRaw)
 
-    return this.createTxGrpcApi().prepareTxInclusionWait(
+    return this.createTxGrpcApi().prepareTxInclusionWait({
       txHash,
       timeout,
-      this.resolveTxInclusionOptions(tx),
-    )
+      options: this.resolveTxInclusionOptions(tx),
+    })
   }
 
   private async waitForPreparedTxInclusion({

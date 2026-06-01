@@ -26,6 +26,7 @@ export interface TxEventInclusionOptions {
 
 export interface TxClientInclusionOptions {
   inclusionStrategy?: TxInclusionStrategy
+  pollingInterval?: number
   eventInclusion?: TxEventInclusionOptions
 }
 
@@ -39,7 +40,20 @@ export interface TxInclusionWaiter {
 export interface TxFetchTxPollArgs {
   txHash: string
   timeout?: number
+  pollingInterval?: number
   abortSignal?: AbortSignal
+}
+
+export interface TxWaitForTxInclusionArgs {
+  txHash: string
+  timeout?: number
+  options?: TxClientInclusionOptions
+}
+
+export interface TxPrepareTxInclusionWaitArgs {
+  txHash: string
+  timeout?: number
+  options?: TxClientInclusionOptions
 }
 
 export interface TxClientBroadcastOptions extends TxClientInclusionOptions {
@@ -89,14 +103,10 @@ export interface TxConcreteApi {
     args: TxFetchTxPollArgs,
   ): Promise<TxClientBroadcastResponse | undefined>
   waitForTxInclusion(
-    txHash: string,
-    timeout?: number,
-    options?: TxClientInclusionOptions,
+    args: TxWaitForTxInclusionArgs,
   ): Promise<TxClientBroadcastResponse | undefined>
   prepareTxInclusionWait(
-    txHash: string,
-    timeout?: number,
-    options?: TxClientInclusionOptions,
+    args: TxPrepareTxInclusionWaitArgs,
   ): Promise<TxInclusionWaiter>
   simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw): Promise<TxClientSimulateResponse>
 }

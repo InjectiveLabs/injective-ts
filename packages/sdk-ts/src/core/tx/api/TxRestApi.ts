@@ -34,7 +34,8 @@ import type {
   TxInclusionWaiter,
   TxFetchTxPollArgs,
   TxClientBroadcastOptions,
-  TxClientInclusionOptions,
+  TxWaitForTxInclusionArgs,
+  TxPrepareTxInclusionWaitArgs,
 } from '../types/tx.js'
 
 /**
@@ -111,6 +112,7 @@ export class TxRestApi implements TxConcreteApi {
   public async fetchTxPoll({
     txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+    pollingInterval = DEFAULT_TX_POLL_INTERVAL_MS,
     abortSignal,
   }: TxFetchTxPollArgs): Promise<TxResponse> {
     const deadline = Date.now() + timeout
@@ -143,7 +145,7 @@ export class TxRestApi implements TxConcreteApi {
       this.throwIfTxPollingCancelled(abortSignal)
 
       const elapsed = Date.now() - start
-      const remaining = DEFAULT_TX_POLL_INTERVAL_MS - elapsed
+      const remaining = pollingInterval - elapsed
 
       if (remaining > 0) {
         await sleep(remaining)
@@ -169,12 +171,16 @@ export class TxRestApi implements TxConcreteApi {
     throw new Error('Transaction inclusion polling was cancelled')
   }
 
-  public async waitForTxInclusion(
-    txHash: string,
+  public async waitForTxInclusion({
+    txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    options?: TxClientInclusionOptions,
-  ): Promise<TxResponse> {
-    const waiter = await this.prepareTxInclusionWait(txHash, timeout, options)
+    options,
+  }: TxWaitForTxInclusionArgs): Promise<TxResponse> {
+    const waiter = await this.prepareTxInclusionWait({
+      txHash,
+      timeout,
+      options,
+    })
 
     const txResponse = await waiter.wait()
 
@@ -191,11 +197,11 @@ export class TxRestApi implements TxConcreteApi {
     return txResponse
   }
 
-  public async prepareTxInclusionWait(
-    txHash: string,
+  public async prepareTxInclusionWait({
+    txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    options?: TxClientInclusionOptions,
-  ): Promise<TxInclusionWaiter> {
+    options,
+  }: TxPrepareTxInclusionWaitArgs): Promise<TxInclusionWaiter> {
     return prepareTxInclusionWaiter({
       txHash,
       timeout,
@@ -254,11 +260,11 @@ export class TxRestApi implements TxConcreteApi {
     let inclusionWaiter: TxInclusionWaiter | undefined
 
     try {
-      inclusionWaiter = await this.prepareTxInclusionWait(
+      inclusionWaiter = await this.prepareTxInclusionWait({
         txHash,
         timeout,
         options,
-      )
+      })
 
       const { tx_response: txResponse } = await this.broadcastTx<{
         tx_response: TxInfoResponse

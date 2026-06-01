@@ -361,7 +361,10 @@ describe('TxGrpcApi.broadcast event ordering', () => {
         })
       })
 
-    const waiter = await txApi.prepareTxInclusionWait('POLL_CANCEL', 1000)
+    const waiter = await txApi.prepareTxInclusionWait({
+      txHash: 'POLL_CANCEL',
+      timeout: 1000,
+    })
     const waitPromise = waiter.wait()
 
     expect(fetchTxPoll).toHaveBeenCalledWith({
@@ -375,6 +378,29 @@ describe('TxGrpcApi.broadcast event ordering', () => {
 
     expect(pollAbortSignal?.aborted).toBe(true)
     await expect(waitPromise).rejects.toThrow('poll aborted')
+  })
+
+  it('passes custom polling interval to polling waiter', async () => {
+    const txResponse = makeTxResponse('POLL_INTERVAL')
+    const fetchTxPoll = vi
+      .spyOn(txApi, 'fetchTxPoll')
+      .mockResolvedValue(txResponse)
+
+    const waiter = await txApi.prepareTxInclusionWait({
+      txHash: 'POLL_INTERVAL',
+      timeout: 1000,
+      options: {
+        pollingInterval: 100,
+      },
+    })
+
+    await expect(waiter.wait()).resolves.toBe(txResponse)
+    expect(fetchTxPoll).toHaveBeenCalledWith({
+      txHash: 'POLL_INTERVAL',
+      timeout: 1000,
+      pollingInterval: 100,
+      abortSignal: expect.any(Object),
+    })
   })
 
   it('does not fire onBroadcast when SYNC broadcast returns non-zero code', async () => {
@@ -472,11 +498,15 @@ describe('TxGrpcApi.broadcast event ordering', () => {
         })
       })
 
-    const waiter = await txApi.prepareTxInclusionWait(txHash, 1000, {
-      inclusionStrategy: TxInclusionStrategy.TendermintEvent,
-      eventInclusion: {
-        rpcEndpoint: 'http://localhost:26657',
-        webSocketFactory: () => socket as unknown as WebSocket,
+    const waiter = await txApi.prepareTxInclusionWait({
+      txHash,
+      timeout: 1000,
+      options: {
+        inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+        eventInclusion: {
+          rpcEndpoint: 'http://localhost:26657',
+          webSocketFactory: () => socket as unknown as WebSocket,
+        },
       },
     })
     const waitPromise = waiter.wait(includedTxHash)

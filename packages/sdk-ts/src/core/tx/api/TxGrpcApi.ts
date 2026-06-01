@@ -20,13 +20,15 @@ import { TxClient } from '../utils/classes/TxClient.js'
 import { prepareTxInclusionWaiter } from './TxInclusion.js'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
 import type { TxResponse } from '../types/tx.js'
+import type { TxSafeFetchArgs, TxFetchDualArgs } from './types.js'
 import type {
   TxConcreteApi,
   TxInclusionWaiter,
   TxFetchTxPollArgs,
   TxClientBroadcastOptions,
-  TxClientInclusionOptions,
+  TxWaitForTxInclusionArgs,
   TxClientBroadcastResponse,
+  TxPrepareTxInclusionWaitArgs,
 } from '../types/tx.js'
 
 export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
@@ -96,8 +98,9 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
 
   public async fetchTxPoll({
     txHash,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
     abortSignal,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+    pollingInterval = DEFAULT_TX_POLL_INTERVAL_MS,
   }: TxFetchTxPollArgs): Promise<TxResponse> {
     const deadline = Date.now() + timeout
 
@@ -105,7 +108,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       this.throwIfTxPollingCancelled(abortSignal)
 
       try {
-        const tx = await this.fetchTxDual(txHash, deadline, abortSignal)
+        const tx = await this.fetchTxDual({ txHash, deadline, abortSignal })
 
         this.throwIfTxPollingCancelled(abortSignal)
 
@@ -122,7 +125,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
 
       this.throwIfTxPollingCancelled(abortSignal)
 
-      const gap = DEFAULT_TX_POLL_INTERVAL_MS - (Date.now() - start)
+      const gap = pollingInterval - (Date.now() - start)
 
       if (gap > 0) {
         await sleep(gap)
@@ -137,12 +140,16 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     )
   }
 
-  public async waitForTxInclusion(
-    txHash: string,
+  public async waitForTxInclusion({
+    txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    options?: TxClientInclusionOptions,
-  ): Promise<TxResponse> {
-    const waiter = await this.prepareTxInclusionWait(txHash, timeout, options)
+    options,
+  }: TxWaitForTxInclusionArgs): Promise<TxResponse> {
+    const waiter = await this.prepareTxInclusionWait({
+      txHash,
+      timeout,
+      options,
+    })
 
     const txResponse = await waiter.wait()
 
@@ -159,11 +166,11 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     return txResponse
   }
 
-  public async prepareTxInclusionWait(
-    txHash: string,
+  public async prepareTxInclusionWait({
+    txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    options?: TxClientInclusionOptions,
-  ): Promise<TxInclusionWaiter> {
+    options,
+  }: TxPrepareTxInclusionWaitArgs): Promise<TxInclusionWaiter> {
     return prepareTxInclusionWaiter({
       txHash,
       timeout,
@@ -178,11 +185,11 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     })
   }
 
-  private async safeFetchTx(
-    txHash: string,
-    delay?: number,
-    abortSignal?: AbortSignal,
-  ): Promise<TxResponse | null> {
+  private async safeFetchTx({
+    txHash,
+    delay,
+    abortSignal,
+  }: TxSafeFetchArgs): Promise<TxResponse | null> {
     if (delay) {
       await sleep(delay)
     }
@@ -198,11 +205,11 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     })
   }
 
-  private fetchTxDual(
-    txHash: string,
-    deadline: number,
-    abortSignal?: AbortSignal,
-  ): Promise<TxResponse | null> {
+  private fetchTxDual({
+    txHash,
+    deadline,
+    abortSignal,
+  }: TxFetchDualArgs): Promise<TxResponse | null> {
     const STAGGER = 300
     const timeout = Math.max(
       0,
@@ -210,8 +217,8 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     )
 
     const fetches = Promise.all([
-      this.safeFetchTx(txHash, undefined, abortSignal),
-      this.safeFetchTx(txHash, STAGGER, abortSignal),
+      this.safeFetchTx({ txHash, abortSignal }),
+      this.safeFetchTx({ txHash, delay: STAGGER, abortSignal }),
     ]).then(([a, b]) => a ?? b)
 
     fetches.catch(() => {})
@@ -283,11 +290,11 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     let inclusionWaiter: TxInclusionWaiter | undefined
 
     try {
-      inclusionWaiter = await this.prepareTxInclusionWait(
+      inclusionWaiter = await this.prepareTxInclusionWait({
         txHash,
         timeout,
         options,
-      )
+      })
 
       const mode =
         options?.mode ||

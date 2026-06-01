@@ -5,7 +5,11 @@ import {
 import { TxInclusionStrategy } from '../types/tx.js'
 import { subscribeToTendermintTxEvent } from './TxEventInclusion.js'
 import type { PrepareTxInclusionWaiterArgs } from './types.js'
-import type { TxResponse, TxInclusionWaiter } from '../types/tx.js'
+import type {
+  TxResponse,
+  TxFetchTxPollArgs,
+  TxInclusionWaiter,
+} from '../types/tx.js'
 
 export function isTendermintEventStrategy(
   inclusionStrategy?: TxInclusionStrategy,
@@ -27,7 +31,12 @@ export async function prepareTxInclusionWaiter({
   const inclusionStrategy = options?.inclusionStrategy
 
   if (!isTendermintEventStrategy(inclusionStrategy)) {
-    return createPollingInclusionWaiter({ txHash, timeout, fetchTxPoll })
+    return createPollingInclusionWaiter({
+      txHash,
+      timeout,
+      options,
+      fetchTxPoll,
+    })
   }
 
   const eventOptions = options?.eventInclusion
@@ -45,7 +54,12 @@ export async function prepareTxInclusionWaiter({
 
     eventOptions?.onFallback?.(error)
 
-    return createPollingInclusionWaiter({ txHash, timeout, fetchTxPoll })
+    return createPollingInclusionWaiter({
+      txHash,
+      timeout,
+      options,
+      fetchTxPoll,
+    })
   }
 
   try {
@@ -77,11 +91,14 @@ export async function prepareTxInclusionWaiter({
             ),
           )
 
-          return fetchTxPoll({
-            txHash: includedTxHash,
-            timeout,
-            abortSignal: hashMismatchPollAbortController.signal,
-          })
+          return fetchTxPoll(
+            createFetchTxPollArgs({
+              txHash: includedTxHash,
+              timeout,
+              options,
+              abortSignal: hashMismatchPollAbortController.signal,
+            }),
+          )
         }
 
         if (inclusionStrategy === TxInclusionStrategy.TendermintEventAndPoll) {
@@ -119,17 +136,23 @@ export async function prepareTxInclusionWaiter({
 
     eventOptions?.onFallback?.(error)
 
-    return createPollingInclusionWaiter({ txHash, timeout, fetchTxPoll })
+    return createPollingInclusionWaiter({
+      txHash,
+      timeout,
+      options,
+      fetchTxPoll,
+    })
   }
 }
 
 function createPollingInclusionWaiter({
   txHash,
   timeout,
+  options,
   fetchTxPoll,
 }: Pick<
   PrepareTxInclusionWaiterArgs,
-  'txHash' | 'timeout' | 'fetchTxPoll'
+  'txHash' | 'timeout' | 'options' | 'fetchTxPoll'
 >): TxInclusionWaiter {
   const pollAbortController = new AbortController()
 
@@ -140,11 +163,32 @@ function createPollingInclusionWaiter({
       pollAbortController.abort()
     },
     wait: (includedTxHash = txHash) =>
-      fetchTxPoll({
-        txHash: includedTxHash,
-        timeout,
-        abortSignal: pollAbortController.signal,
-      }),
+      fetchTxPoll(
+        createFetchTxPollArgs({
+          txHash: includedTxHash,
+          timeout,
+          options,
+          abortSignal: pollAbortController.signal,
+        }),
+      ),
+  }
+}
+
+function createFetchTxPollArgs({
+  txHash,
+  timeout,
+  options,
+  abortSignal,
+}: Pick<PrepareTxInclusionWaiterArgs, 'txHash' | 'timeout' | 'options'> & {
+  abortSignal?: AbortSignal
+}): TxFetchTxPollArgs & { timeout: number } {
+  return {
+    ...(options?.pollingInterval === undefined
+      ? {}
+      : { pollingInterval: options.pollingInterval }),
+    ...(abortSignal ? { abortSignal } : {}),
+    txHash,
+    timeout,
   }
 }
 
@@ -179,7 +223,7 @@ async function waitForSubscribedTxInclusion({
 
     options?.eventInclusion?.onFallback?.(error)
 
-    return fetchTxPoll({ txHash, timeout })
+    return fetchTxPoll(createFetchTxPollArgs({ txHash, timeout, options }))
   }
 }
 
@@ -264,11 +308,14 @@ async function waitForSubscribedTxInclusionAndPoll({
         rejectIfBothFailed()
       })
 
-    fetchTxPoll({
-      txHash,
-      timeout,
-      abortSignal: pollAbortController.signal,
-    })
+    fetchTxPoll(
+      createFetchTxPollArgs({
+        txHash,
+        timeout,
+        options,
+        abortSignal: pollAbortController.signal,
+      }),
+    )
       .then((txResponse) => resolveOnce(txResponse, 'poll'))
       .catch((error: unknown) => {
         if (rejectTerminal(error)) {

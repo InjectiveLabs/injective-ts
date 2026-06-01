@@ -167,6 +167,7 @@ describe('MsgBroadcaster event emission order', () => {
         },
         txInclusion: {
           inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          pollingInterval: 100,
         },
       })
 
@@ -181,6 +182,7 @@ describe('MsgBroadcaster event emission order', () => {
         expect.anything(),
         expect.objectContaining({
           inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          pollingInterval: 100,
           eventInclusion: expect.objectContaining({
             rpcEndpoint: 'http://localhost:26657',
           }),
@@ -265,12 +267,14 @@ describe('MsgBroadcaster event emission order', () => {
       })
 
       expect(prepareSpy).toHaveBeenCalledWith(
-        txHash,
-        1000,
         expect.objectContaining({
-          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
-          eventInclusion: expect.objectContaining({
-            rpcEndpoint: 'http://localhost:26657',
+          txHash,
+          timeout: 1000,
+          options: expect.objectContaining({
+            inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+            eventInclusion: expect.objectContaining({
+              rpcEndpoint: 'http://localhost:26657',
+            }),
           }),
         }),
       )

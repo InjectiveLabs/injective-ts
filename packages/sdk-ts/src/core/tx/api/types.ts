@@ -33,3 +33,15 @@ export interface PrepareTxInclusionWaiterArgs {
   ) => Promise<TxResponse>
   createRequestException: TxInclusionRequestExceptionFactory
 }
+
+export interface TxSafeFetchArgs {
+  txHash: string
+  delay?: number
+  abortSignal?: AbortSignal
+}
+
+export interface TxFetchDualArgs {
+  txHash: string
+  deadline: number
+  abortSignal?: AbortSignal
+}
