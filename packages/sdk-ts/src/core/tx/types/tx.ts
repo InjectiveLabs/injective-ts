@@ -82,6 +82,7 @@ export interface TxConcreteApi {
   fetchTxPoll(
     txHash: string,
     timeout?: number,
+    abortSignal?: AbortSignal,
   ): Promise<TxClientBroadcastResponse | undefined>
   waitForTxInclusion(
     txHash: string,

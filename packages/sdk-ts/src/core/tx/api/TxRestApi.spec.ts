@@ -284,7 +284,11 @@ describe('TxRestApi.broadcast event inclusion', () => {
     })
 
     expect(result.txHash).toBe(txHash)
-    expect(fetchTxPoll).toHaveBeenCalledWith(txHash, expect.any(Number))
+    expect(fetchTxPoll).toHaveBeenCalledWith(
+      txHash,
+      expect.any(Number),
+      expect.any(Object),
+    )
     expect(fetchTx).not.toHaveBeenCalled()
     expect(socket.readyState).toBe(3)
   })

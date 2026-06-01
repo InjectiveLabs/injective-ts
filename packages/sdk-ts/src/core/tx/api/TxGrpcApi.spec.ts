@@ -407,12 +407,16 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     const txHash = TxClient.hash(txRaw)
     const socket = new FakeWebSocket()
     const txResponse = makeTxResponse(txHash)
-    const fetchTxPoll = vi.spyOn(txApi, 'fetchTxPoll').mockImplementation(
-      async () =>
-        await new Promise<TxResponse>(() => {
+    let pollAbortSignal: AbortSignal | undefined
+    const fetchTxPoll = vi
+      .spyOn(txApi, 'fetchTxPoll')
+      .mockImplementation(async (_txHash, _timeout, abortSignal) => {
+        pollAbortSignal = abortSignal
+
+        return await new Promise<TxResponse>(() => {
           // Keep polling pending so the event side wins deterministically.
-        }),
-    )
+        })
+      })
     const fetchTx = vi.spyOn(txApi, 'fetchTx').mockResolvedValue(txResponse)
 
     vi.spyOn(txApi as any, 'executeGrpcCall').mockImplementation(
@@ -453,7 +457,12 @@ describe('TxGrpcApi.broadcast event ordering', () => {
 
     expect(result.txHash).toBe(txHash)
     expect(fetchTx).toHaveBeenCalledWith(txHash)
-    expect(fetchTxPoll).toHaveBeenCalledWith(txHash, expect.any(Number))
+    expect(fetchTxPoll).toHaveBeenCalledWith(
+      txHash,
+      expect.any(Number),
+      expect.any(Object),
+    )
+    expect(pollAbortSignal?.aborted).toBe(true)
   })
 
   it('falls back to sync polling when event inclusion has no rpc endpoint', async () => {

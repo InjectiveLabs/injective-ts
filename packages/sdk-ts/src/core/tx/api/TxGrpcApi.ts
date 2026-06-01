@@ -17,7 +17,7 @@ import {
 } from '@injectivelabs/utils'
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
-import { subscribeToTendermintTxEvent } from './TxEventInclusion.js'
+import { prepareTxInclusionWaiter } from './TxInclusion.js'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
 import type { TxResponse } from '../types/tx.js'
 import type {
@@ -96,21 +96,30 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
   public async fetchTxPoll(
     txHash: string,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+    abortSignal?: AbortSignal,
   ): Promise<TxResponse> {
     const deadline = Date.now() + timeout
 
     for (let start = Date.now(); start < deadline; start = Date.now()) {
+      this.throwIfTxPollingCancelled(abortSignal)
+
       try {
-        const tx = await this.fetchTxDual(txHash, deadline)
+        const tx = await this.fetchTxDual(txHash, deadline, abortSignal)
+
+        this.throwIfTxPollingCancelled(abortSignal)
 
         if (tx) {
           return tx
         }
       } catch (e: unknown) {
+        this.throwIfTxPollingCancelled(abortSignal)
+
         if (e instanceof TransactionException) {
           throw e
         }
       }
+
+      this.throwIfTxPollingCancelled(abortSignal)
 
       const gap = DEFAULT_TX_POLL_INTERVAL_MS - (Date.now() - start)
 
@@ -154,122 +163,31 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
     options?: TxClientInclusionOptions,
   ): Promise<TxInclusionWaiter> {
-    const inclusionStrategy = options?.inclusionStrategy
-
-    if (!this.isTendermintEventStrategy(inclusionStrategy)) {
-      return this.createPollingInclusionWaiter(txHash, timeout)
-    }
-
-    const eventOptions = options?.eventInclusion
-    const rpcEndpoint = eventOptions?.rpcEndpoint
-    const fallbackToPolling = eventOptions?.fallbackToPolling !== false
-
-    if (!rpcEndpoint) {
-      const error = new Error(
-        'Tendermint RPC endpoint is required for event inclusion',
-      )
-
-      if (!fallbackToPolling) {
-        throw new GrpcUnaryRequestException(error, {
-          context: 'TxGrpcApi',
-          contextModule: 'event-inclusion',
-        })
-      }
-
-      eventOptions?.onFallback?.(error)
-
-      return this.createPollingInclusionWaiter(txHash, timeout)
-    }
-
-    try {
-      const subscription = await subscribeToTendermintTxEvent({
-        txHash,
-        endpoint: rpcEndpoint,
-        timeout: eventOptions?.timeout || timeout,
-        webSocketFactory: eventOptions?.webSocketFactory,
-      })
-
-      return {
-        txHash,
-        inclusionStrategy,
-        close: subscription.close,
-        wait: async (includedTxHash = txHash) => {
-          if (includedTxHash.toUpperCase() !== txHash.toUpperCase()) {
-            subscription.close()
-            eventOptions?.onFallback?.(
-              new Error(
-                `Broadcast tx hash ${includedTxHash} did not match subscribed tx hash ${txHash}`,
-              ),
-            )
-            return this.fetchTxPoll(includedTxHash, timeout)
-          }
-
-          if (
-            inclusionStrategy === TxInclusionStrategy.TendermintEventAndPoll
-          ) {
-            return this.waitForSubscribedTxInclusionAndPoll(
-              txHash,
-              timeout,
-              subscription,
-              options,
-            )
-          }
-
-          return this.waitForSubscribedTxInclusion(
-            txHash,
-            timeout,
-            subscription,
-            options,
-          )
-        },
-      }
-    } catch (e: unknown) {
-      if (e instanceof TransactionException) {
-        throw e
-      }
-
-      const error = e instanceof Error ? e : new Error(String(e))
-
-      if (!fallbackToPolling) {
-        throw new GrpcUnaryRequestException(error, {
-          context: 'TxGrpcApi',
-          contextModule: 'event-inclusion',
-        })
-      }
-
-      eventOptions?.onFallback?.(error)
-
-      return this.createPollingInclusionWaiter(txHash, timeout)
-    }
-  }
-
-  private isTendermintEventStrategy(inclusionStrategy?: TxInclusionStrategy) {
-    return (
-      inclusionStrategy === TxInclusionStrategy.TendermintEvent ||
-      inclusionStrategy === TxInclusionStrategy.TendermintEventAndPoll
-    )
-  }
-
-  private createPollingInclusionWaiter(
-    txHash: string,
-    timeout: number,
-  ): TxInclusionWaiter {
-    return {
+    return prepareTxInclusionWaiter({
       txHash,
-      inclusionStrategy: TxInclusionStrategy.Poll,
-      close: () => {},
-      wait: (includedTxHash = txHash) =>
-        this.fetchTxPoll(includedTxHash, timeout),
-    }
+      timeout,
+      options,
+      fetchTx: (includedTxHash) => this.fetchTx(includedTxHash),
+      fetchTxPoll: (includedTxHash, pollTimeout, abortSignal) =>
+        this.fetchTxPoll(includedTxHash, pollTimeout, abortSignal),
+      createRequestException: (error, contextModule) =>
+        new GrpcUnaryRequestException(error, {
+          context: 'TxGrpcApi',
+          contextModule,
+        }),
+    })
   }
 
   private async safeFetchTx(
     txHash: string,
     delay?: number,
+    abortSignal?: AbortSignal,
   ): Promise<TxResponse | null> {
     if (delay) {
       await sleep(delay)
     }
+
+    this.throwIfTxPollingCancelled(abortSignal)
 
     return this.fetchTx(txHash).catch((e: unknown) => {
       if (e instanceof TransactionException) {
@@ -283,6 +201,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
   private fetchTxDual(
     txHash: string,
     deadline: number,
+    abortSignal?: AbortSignal,
   ): Promise<TxResponse | null> {
     const STAGGER = 300
     const timeout = Math.max(
@@ -291,8 +210,8 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     )
 
     const fetches = Promise.all([
-      this.safeFetchTx(txHash),
-      this.safeFetchTx(txHash, STAGGER),
+      this.safeFetchTx(txHash, undefined, abortSignal),
+      this.safeFetchTx(txHash, STAGGER, abortSignal),
     ]).then(([a, b]) => a ?? b)
 
     fetches.catch(() => {})
@@ -301,6 +220,14 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       fetches,
       sleep(timeout).then(() => null as TxResponse | null),
     ])
+  }
+
+  private throwIfTxPollingCancelled(abortSignal?: AbortSignal) {
+    if (!abortSignal?.aborted) {
+      return
+    }
+
+    throw new Error('Transaction inclusion polling was cancelled')
   }
 
   public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
@@ -426,135 +353,6 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
 
       throw new TransactionException(new Error(e as any))
     }
-  }
-
-  private async waitForSubscribedTxInclusion(
-    txHash: string,
-    timeout: number,
-    subscription: Awaited<ReturnType<typeof subscribeToTendermintTxEvent>>,
-    options?: TxClientInclusionOptions,
-  ): Promise<TxResponse> {
-    const fallbackToPolling =
-      options?.eventInclusion?.fallbackToPolling !== false
-
-    try {
-      return await this.waitForSubscribedTxEvent(txHash, subscription)
-    } catch (e: unknown) {
-      if (e instanceof TransactionException) {
-        throw e
-      }
-
-      const error = e instanceof Error ? e : new Error(String(e))
-
-      if (!fallbackToPolling) {
-        throw new GrpcUnaryRequestException(error, {
-          context: 'TxGrpcApi',
-          contextModule: 'event-inclusion',
-        })
-      }
-
-      options?.eventInclusion?.onFallback?.(error)
-
-      return this.fetchTxPoll(txHash, timeout)
-    }
-  }
-
-  private async waitForSubscribedTxInclusionAndPoll(
-    txHash: string,
-    timeout: number,
-    subscription: Awaited<ReturnType<typeof subscribeToTendermintTxEvent>>,
-    options?: TxClientInclusionOptions,
-  ): Promise<TxResponse> {
-    return new Promise<TxResponse>((resolve, reject) => {
-      let settled = false
-      let finishedCount = 0
-      let eventError: Error | undefined
-      let pollError: Error | undefined
-
-      const rejectIfBothFailed = () => {
-        if (finishedCount < 2 || settled) {
-          return
-        }
-
-        reject(pollError || eventError || new Error('Tx inclusion failed'))
-      }
-
-      const resolveOnce = (
-        txResponse: TxResponse,
-        source: 'event' | 'poll',
-      ) => {
-        if (settled) {
-          return
-        }
-
-        settled = true
-
-        if (source === 'poll') {
-          subscription.close()
-        }
-
-        resolve(txResponse)
-      }
-
-      const rejectTerminal = (error: unknown) => {
-        if (settled) {
-          return true
-        }
-
-        if (error instanceof TransactionException) {
-          settled = true
-          subscription.close()
-          reject(error)
-
-          return true
-        }
-
-        return false
-      }
-
-      this.waitForSubscribedTxEvent(txHash, subscription)
-        .then((txResponse) => resolveOnce(txResponse, 'event'))
-        .catch((error: unknown) => {
-          if (rejectTerminal(error)) {
-            return
-          }
-
-          const fallbackError =
-            error instanceof Error ? error : new Error(String(error))
-          eventError = fallbackError
-          finishedCount += 1
-          options?.eventInclusion?.onFallback?.(fallbackError)
-          rejectIfBothFailed()
-        })
-
-      this.fetchTxPoll(txHash, timeout)
-        .then((txResponse) => resolveOnce(txResponse, 'poll'))
-        .catch((error: unknown) => {
-          if (rejectTerminal(error)) {
-            return
-          }
-
-          pollError = error instanceof Error ? error : new Error(String(error))
-          finishedCount += 1
-          rejectIfBothFailed()
-        })
-    })
-  }
-
-  private async waitForSubscribedTxEvent(
-    txHash: string,
-    subscription: Awaited<ReturnType<typeof subscribeToTendermintTxEvent>>,
-  ): Promise<TxResponse> {
-    const eventTx = await subscription.wait()
-
-    if (eventTx.code !== 0) {
-      throw new TransactionException(new Error(eventTx.rawLog), {
-        contextCode: eventTx.code,
-        contextModule: eventTx.codespace,
-      })
-    }
-
-    return this.fetchTx(txHash)
   }
 
   /** @deprecated - the BLOCK mode broadcasting is deprecated now, use either sync or async */
