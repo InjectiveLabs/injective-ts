@@ -18,6 +18,6 @@ export const waitTxBroadcasted = (
     .toNumber()
 
   return options.endpoints.grpc
-    ? new TxGrpcApi(options.endpoints.grpc).fetchTxPoll(txHash, timeout)
-    : new TxRestApi(options.endpoints.rest).fetchTxPoll(txHash, timeout)
+    ? new TxGrpcApi(options.endpoints.grpc).fetchTxPoll({ txHash, timeout })
+    : new TxRestApi(options.endpoints.rest).fetchTxPoll({ txHash, timeout })
 }

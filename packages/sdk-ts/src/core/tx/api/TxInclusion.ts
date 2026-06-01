@@ -4,29 +4,8 @@ import {
 } from '@injectivelabs/exceptions'
 import { TxInclusionStrategy } from '../types/tx.js'
 import { subscribeToTendermintTxEvent } from './TxEventInclusion.js'
-import type { TxResponse } from '../types/tx.js'
-import type {
-  TxInclusionWaiter,
-  TxClientInclusionOptions,
-} from '../types/tx.js'
-
-type TxInclusionRequestExceptionFactory = (
-  error: Error,
-  contextModule: string,
-) => Error
-
-interface PrepareTxInclusionWaiterArgs {
-  txHash: string
-  timeout: number
-  options?: TxClientInclusionOptions
-  fetchTx: (txHash: string) => Promise<TxResponse>
-  fetchTxPoll: (
-    txHash: string,
-    timeout: number,
-    abortSignal?: AbortSignal,
-  ) => Promise<TxResponse>
-  createRequestException: TxInclusionRequestExceptionFactory
-}
+import type { PrepareTxInclusionWaiterArgs } from './types.js'
+import type { TxResponse, TxInclusionWaiter } from '../types/tx.js'
 
 export function isTendermintEventStrategy(
   inclusionStrategy?: TxInclusionStrategy,
@@ -77,10 +56,16 @@ export async function prepareTxInclusionWaiter({
       webSocketFactory: eventOptions?.webSocketFactory,
     })
 
+    const hashMismatchPollAbortController = new AbortController()
+    const close = () => {
+      hashMismatchPollAbortController.abort()
+      subscription.close()
+    }
+
     return {
       txHash,
       inclusionStrategy,
-      close: subscription.close,
+      close,
       wait: async (includedTxHash = txHash) => {
         if (includedTxHash.toUpperCase() !== txHash.toUpperCase()) {
           subscription.close()
@@ -92,26 +77,30 @@ export async function prepareTxInclusionWaiter({
             ),
           )
 
-          return fetchTxPoll(includedTxHash, timeout)
+          return fetchTxPoll({
+            txHash: includedTxHash,
+            timeout,
+            abortSignal: hashMismatchPollAbortController.signal,
+          })
         }
 
         if (inclusionStrategy === TxInclusionStrategy.TendermintEventAndPoll) {
           return waitForSubscribedTxInclusionAndPoll({
             txHash,
             timeout,
-            subscription,
-            options,
             fetchTx,
+            options,
             fetchTxPoll,
+            subscription,
           })
         }
 
         return waitForSubscribedTxInclusion({
           txHash,
           timeout,
-          subscription,
           options,
           fetchTx,
+          subscription,
           fetchTxPoll,
           createRequestException,
         })
@@ -142,21 +131,30 @@ function createPollingInclusionWaiter({
   PrepareTxInclusionWaiterArgs,
   'txHash' | 'timeout' | 'fetchTxPoll'
 >): TxInclusionWaiter {
+  const pollAbortController = new AbortController()
+
   return {
     txHash,
     inclusionStrategy: TxInclusionStrategy.Poll,
-    close: () => {},
-    wait: (includedTxHash = txHash) => fetchTxPoll(includedTxHash, timeout),
+    close: () => {
+      pollAbortController.abort()
+    },
+    wait: (includedTxHash = txHash) =>
+      fetchTxPoll({
+        txHash: includedTxHash,
+        timeout,
+        abortSignal: pollAbortController.signal,
+      }),
   }
 }
 
 async function waitForSubscribedTxInclusion({
   txHash,
   timeout,
-  subscription,
   options,
   fetchTx,
   fetchTxPoll,
+  subscription,
   createRequestException,
 }: PrepareTxInclusionWaiterArgs & {
   subscription: Awaited<ReturnType<typeof subscribeToTendermintTxEvent>>
@@ -181,17 +179,17 @@ async function waitForSubscribedTxInclusion({
 
     options?.eventInclusion?.onFallback?.(error)
 
-    return fetchTxPoll(txHash, timeout)
+    return fetchTxPoll({ txHash, timeout })
   }
 }
 
 async function waitForSubscribedTxInclusionAndPoll({
   txHash,
   timeout,
-  subscription,
   options,
   fetchTx,
   fetchTxPoll,
+  subscription,
 }: Omit<PrepareTxInclusionWaiterArgs, 'createRequestException'> & {
   subscription: Awaited<ReturnType<typeof subscribeToTendermintTxEvent>>
 }): Promise<TxResponse> {
@@ -200,6 +198,7 @@ async function waitForSubscribedTxInclusionAndPoll({
   return new Promise<TxResponse>((resolve, reject) => {
     let settled = false
     let finishedCount = 0
+
     let eventError: Error | undefined
     let pollError: Error | undefined
 
@@ -224,10 +223,12 @@ async function waitForSubscribedTxInclusionAndPoll({
 
       if (source === 'poll') {
         subscription.close()
-      } else {
-        pollAbortController.abort()
+        resolve(txResponse)
+
+        return
       }
 
+      pollAbortController.abort()
       resolve(txResponse)
     }
 
@@ -263,7 +264,11 @@ async function waitForSubscribedTxInclusionAndPoll({
         rejectIfBothFailed()
       })
 
-    fetchTxPoll(txHash, timeout, pollAbortController.signal)
+    fetchTxPoll({
+      txHash,
+      timeout,
+      abortSignal: pollAbortController.signal,
+    })
       .then((txResponse) => resolveOnce(txResponse, 'poll'))
       .catch((error: unknown) => {
         if (rejectTerminal(error)) {
@@ -279,8 +284,8 @@ async function waitForSubscribedTxInclusionAndPoll({
 
 async function waitForSubscribedTxEvent({
   txHash,
-  subscription,
   fetchTx,
+  subscription,
 }: Pick<PrepareTxInclusionWaiterArgs, 'txHash' | 'fetchTx'> & {
   subscription: Awaited<ReturnType<typeof subscribeToTendermintTxEvent>>
 }): Promise<TxResponse> {

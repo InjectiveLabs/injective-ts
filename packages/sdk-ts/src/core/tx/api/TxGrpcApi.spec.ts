@@ -201,7 +201,10 @@ describe('TxGrpcApi.fetchTxPoll', () => {
     const txResponse = makeTxResponse('FOUND_FAST')
     vi.spyOn(txApi as any, 'fetchTx').mockResolvedValue(txResponse)
 
-    const result = await txApi.fetchTxPoll('FOUND_FAST', 5000)
+    const result = await txApi.fetchTxPoll({
+      txHash: 'FOUND_FAST',
+      timeout: 5000,
+    })
     expect(result.txHash).toBe('FOUND_FAST')
   })
 
@@ -221,7 +224,10 @@ describe('TxGrpcApi.fetchTxPoll', () => {
       return txResponse
     })
 
-    const result = await txApi.fetchTxPoll('FOUND_SLOW', 10000)
+    const result = await txApi.fetchTxPoll({
+      txHash: 'FOUND_SLOW',
+      timeout: 10000,
+    })
     expect(result.txHash).toBe('FOUND_SLOW')
   })
 
@@ -236,9 +242,9 @@ describe('TxGrpcApi.fetchTxPoll', () => {
 
     const timeout = 1500
     const start = Date.now()
-    await expect(txApi.fetchTxPoll('NEVER_FOUND', timeout)).rejects.toThrow(
-      GrpcUnaryRequestException,
-    )
+    await expect(
+      txApi.fetchTxPoll({ txHash: 'NEVER_FOUND', timeout }),
+    ).rejects.toThrow(GrpcUnaryRequestException)
     const elapsed = Date.now() - start
 
     // Should throw close to the deadline — allow 500 ms tolerance for CI
@@ -254,9 +260,9 @@ describe('TxGrpcApi.fetchTxPoll', () => {
       }),
     )
 
-    await expect(txApi.fetchTxPoll('NEVER_FOUND', 1000)).rejects.toThrow(
-      /1000ms/,
-    )
+    await expect(
+      txApi.fetchTxPoll({ txHash: 'NEVER_FOUND', timeout: 1000 }),
+    ).rejects.toThrow(/1000ms/)
   })
 
   // Bug 2 regression: the polling loop must not overshoot the deadline by a
@@ -275,7 +281,7 @@ describe('TxGrpcApi.fetchTxPoll', () => {
     const timeout = 2000
     const start = Date.now()
 
-    const promise = txApi.fetchTxPoll('HUNG_NODE', timeout)
+    const promise = txApi.fetchTxPoll({ txHash: 'HUNG_NODE', timeout })
     const assertion = expect(promise).rejects.toThrow(GrpcUnaryRequestException)
 
     await vi.advanceTimersByTimeAsync(timeout + 100)
@@ -331,6 +337,44 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     })
 
     expect(events).toEqual(['onBroadcast', 'fetchTxPoll:start'])
+  })
+
+  it('allows polling waiter to be cancelled', async () => {
+    let pollAbortSignal: AbortSignal | undefined
+    const fetchTxPoll = vi
+      .spyOn(txApi, 'fetchTxPoll')
+      .mockImplementation(async ({ abortSignal }) => {
+        if (!abortSignal) {
+          throw new Error('missing abort signal')
+        }
+
+        pollAbortSignal = abortSignal
+
+        return await new Promise<TxResponse>((_resolve, reject) => {
+          abortSignal.addEventListener(
+            'abort',
+            () => {
+              reject(new Error('poll aborted'))
+            },
+            { once: true },
+          )
+        })
+      })
+
+    const waiter = await txApi.prepareTxInclusionWait('POLL_CANCEL', 1000)
+    const waitPromise = waiter.wait()
+
+    expect(fetchTxPoll).toHaveBeenCalledWith({
+      txHash: 'POLL_CANCEL',
+      timeout: 1000,
+      abortSignal: expect.any(Object),
+    })
+    expect(pollAbortSignal?.aborted).toBe(false)
+
+    waiter.close()
+
+    expect(pollAbortSignal?.aborted).toBe(true)
+    await expect(waitPromise).rejects.toThrow('poll aborted')
   })
 
   it('does not fire onBroadcast when SYNC broadcast returns non-zero code', async () => {
@@ -402,6 +446,56 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     expect(fetchTxPoll).not.toHaveBeenCalled()
   })
 
+  it('allows hash-mismatch fallback polling to be cancelled', async () => {
+    const txRaw = makeTxRaw()
+    const txHash = TxClient.hash(txRaw)
+    const includedTxHash = 'A'.repeat(64)
+    const socket = new FakeWebSocket()
+    let pollAbortSignal: AbortSignal | undefined
+    const fetchTxPoll = vi
+      .spyOn(txApi, 'fetchTxPoll')
+      .mockImplementation(async ({ abortSignal }) => {
+        if (!abortSignal) {
+          throw new Error('missing abort signal')
+        }
+
+        pollAbortSignal = abortSignal
+
+        return await new Promise<TxResponse>((_resolve, reject) => {
+          abortSignal.addEventListener(
+            'abort',
+            () => {
+              reject(new Error('poll aborted'))
+            },
+            { once: true },
+          )
+        })
+      })
+
+    const waiter = await txApi.prepareTxInclusionWait(txHash, 1000, {
+      inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+      eventInclusion: {
+        rpcEndpoint: 'http://localhost:26657',
+        webSocketFactory: () => socket as unknown as WebSocket,
+      },
+    })
+    const waitPromise = waiter.wait(includedTxHash)
+
+    await Promise.resolve()
+
+    expect(fetchTxPoll).toHaveBeenCalledWith({
+      txHash: includedTxHash,
+      timeout: 1000,
+      abortSignal: expect.any(Object),
+    })
+    expect(pollAbortSignal?.aborted).toBe(false)
+
+    waiter.close()
+
+    expect(pollAbortSignal?.aborted).toBe(true)
+    await expect(waitPromise).rejects.toThrow('poll aborted')
+  })
+
   it('races event and polling when dual inclusion is enabled', async () => {
     const txRaw = makeTxRaw()
     const txHash = TxClient.hash(txRaw)
@@ -410,7 +504,7 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     let pollAbortSignal: AbortSignal | undefined
     const fetchTxPoll = vi
       .spyOn(txApi, 'fetchTxPoll')
-      .mockImplementation(async (_txHash, _timeout, abortSignal) => {
+      .mockImplementation(async ({ abortSignal }) => {
         pollAbortSignal = abortSignal
 
         return await new Promise<TxResponse>(() => {
@@ -457,11 +551,11 @@ describe('TxGrpcApi.broadcast event ordering', () => {
 
     expect(result.txHash).toBe(txHash)
     expect(fetchTx).toHaveBeenCalledWith(txHash)
-    expect(fetchTxPoll).toHaveBeenCalledWith(
+    expect(fetchTxPoll).toHaveBeenCalledWith({
       txHash,
-      expect.any(Number),
-      expect.any(Object),
-    )
+      timeout: expect.any(Number),
+      abortSignal: expect.any(Object),
+    })
     expect(pollAbortSignal?.aborted).toBe(true)
   })
 

@@ -216,7 +216,9 @@ export class MsgBroadcasterWithPk {
       signature: `0x${uint8ArrayToHex(signature)}`,
     })
 
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll({
+      txHash: response.txHash,
+    })
   }
 
   /**

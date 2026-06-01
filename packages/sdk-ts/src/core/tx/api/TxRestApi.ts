@@ -32,6 +32,7 @@ import type {
 import type {
   TxConcreteApi,
   TxInclusionWaiter,
+  TxFetchTxPollArgs,
   TxClientBroadcastOptions,
   TxClientInclusionOptions,
 } from '../types/tx.js'
@@ -107,11 +108,11 @@ export class TxRestApi implements TxConcreteApi {
     }
   }
 
-  public async fetchTxPoll(
-    txHash: string,
+  public async fetchTxPoll({
+    txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    abortSignal?: AbortSignal,
-  ): Promise<TxResponse> {
+    abortSignal,
+  }: TxFetchTxPollArgs): Promise<TxResponse> {
     const deadline = Date.now() + timeout
 
     for (let start = Date.now(); start < deadline; start = Date.now()) {
@@ -200,8 +201,7 @@ export class TxRestApi implements TxConcreteApi {
       timeout,
       options,
       fetchTx: (includedTxHash) => this.fetchTx(includedTxHash),
-      fetchTxPoll: (includedTxHash, pollTimeout, abortSignal) =>
-        this.fetchTxPoll(includedTxHash, pollTimeout, abortSignal),
+      fetchTxPoll: (args) => this.fetchTxPoll(args),
       createRequestException: (error, contextModule) =>
         new HttpRequestException(error, {
           context: 'TxRestApi',

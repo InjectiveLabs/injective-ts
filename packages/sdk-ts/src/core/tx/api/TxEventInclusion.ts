@@ -2,18 +2,10 @@ import type {
   TxEventWebSocketFactory,
   TxClientBroadcastResponse,
 } from '../types/tx.js'
-
-export interface TendermintTxEventSubscription {
-  close: () => void
-  wait: () => Promise<TxClientBroadcastResponse>
-}
-
-interface SubscribeToTendermintTxEventArgs {
-  endpoint: string
-  timeout: number
-  txHash: string
-  webSocketFactory?: TxEventWebSocketFactory
-}
+import type {
+  TendermintTxEventSubscription,
+  SubscribeToTendermintTxEventArgs,
+} from './types.js'
 
 export function normalizeTendermintWebSocketEndpoint(endpoint: string): string {
   let normalized = endpoint
@@ -30,21 +22,23 @@ export function normalizeTendermintWebSocketEndpoint(endpoint: string): string {
 }
 
 export async function subscribeToTendermintTxEvent({
-  endpoint,
-  timeout,
   txHash,
+  timeout,
+  endpoint,
   webSocketFactory,
 }: SubscribeToTendermintTxEventArgs): Promise<TendermintTxEventSubscription> {
+  const normalizedTxHash = normalizeTendermintTxHash(txHash)
   const websocketEndpoint = normalizeTendermintWebSocketEndpoint(endpoint)
   const socket = createTendermintSocket(websocketEndpoint, webSocketFactory)
-  const query = `tm.event='Tx' AND tx.hash='${txHash}'`
+  const query = `tm.event='Tx' AND tx.hash='${normalizedTxHash}'`
   const requestId = `tx-event-${Date.now()}-${Math.random()}`
 
   return new Promise((resolve, reject) => {
     let ready = false
-    let closedIntentionally = false
     let waitSettled = false
+    let closedIntentionally = false
     let timeoutId: ReturnType<typeof setTimeout>
+
     let waitResolve: (response: TxClientBroadcastResponse) => void
     let waitReject: (error: Error) => void
 
@@ -139,7 +133,7 @@ export async function subscribeToTendermintTxEvent({
       void readMessageEventData(event)
         .then((messageData) => {
           const message = JSON.parse(messageData)
-          const eventResponse = parseTxEventResponse(message, txHash)
+          const eventResponse = parseTxEventResponse(message, normalizedTxHash)
 
           if (eventResponse) {
             resolveSubscription()
@@ -152,8 +146,7 @@ export async function subscribeToTendermintTxEvent({
           }
 
           if (message.error) {
-            cleanup()
-            reject(
+            rejectForMessageError(
               new Error(
                 `Tendermint subscribe failed: ${JSON.stringify(message.error)}`,
               ),
@@ -207,6 +200,14 @@ export async function subscribeToTendermintTxEvent({
     socket.addEventListener('error', onError)
     socket.addEventListener('close', onClose)
   })
+}
+
+function normalizeTendermintTxHash(txHash: string): string {
+  if (!/^[0-9a-fA-F]{64}$/.test(txHash)) {
+    throw new Error('Invalid Tendermint tx hash')
+  }
+
+  return txHash.toUpperCase()
 }
 
 function createTendermintSocket(
@@ -272,17 +273,17 @@ function parseTxEventResponse(
 
   return {
     txHash,
-    height: Number(txResult.height || value?.height || 0),
+    logs: [],
+    timestamp: '',
+    data: result.data || '',
+    info: result.info || '',
+    events: result.events || [],
     code: Number(result.code || 0),
     codespace: result.codespace || '',
-    data: result.data || '',
     rawLog: result.log || result.raw_log || '',
-    logs: [],
-    info: result.info || '',
-    gasWanted: Number(result.gas_wanted || result.gasWanted || 0),
+    height: Number(txResult.height || value?.height || 0),
     gasUsed: Number(result.gas_used || result.gasUsed || 0),
-    timestamp: '',
-    events: result.events || [],
+    gasWanted: Number(result.gas_wanted || result.gasWanted || 0),
   }
 }
 

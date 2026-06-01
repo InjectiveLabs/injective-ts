@@ -116,7 +116,10 @@ describe('TxRestApi.fetchTxPoll', () => {
     const txResponse = makeTxResponse('FOUND_FAST')
     vi.spyOn(txApi, 'fetchTx').mockResolvedValue(txResponse)
 
-    const result = await txApi.fetchTxPoll('FOUND_FAST', 5000)
+    const result = await txApi.fetchTxPoll({
+      txHash: 'FOUND_FAST',
+      timeout: 5000,
+    })
     expect(result.txHash).toBe('FOUND_FAST')
   })
 
@@ -135,7 +138,10 @@ describe('TxRestApi.fetchTxPoll', () => {
       return txResponse
     })
 
-    const result = await txApi.fetchTxPoll('FOUND_SLOW', 10000)
+    const result = await txApi.fetchTxPoll({
+      txHash: 'FOUND_SLOW',
+      timeout: 10000,
+    })
     expect(result.txHash).toBe('FOUND_SLOW')
   })
 
@@ -149,9 +155,9 @@ describe('TxRestApi.fetchTxPoll', () => {
 
     const timeout = 1500
     const start = Date.now()
-    await expect(txApi.fetchTxPoll('NEVER_FOUND', timeout)).rejects.toThrow(
-      HttpRequestException,
-    )
+    await expect(
+      txApi.fetchTxPoll({ txHash: 'NEVER_FOUND', timeout }),
+    ).rejects.toThrow(HttpRequestException)
     const elapsed = Date.now() - start
 
     expect(elapsed).toBeGreaterThanOrEqual(timeout - 100)
@@ -166,9 +172,9 @@ describe('TxRestApi.fetchTxPoll', () => {
 
     vi.spyOn(txApi, 'fetchTx').mockRejectedValue(txError)
 
-    await expect(txApi.fetchTxPoll('FAIL_TX', 5000)).rejects.toThrow(
-      TransactionException,
-    )
+    await expect(
+      txApi.fetchTxPoll({ txHash: 'FAIL_TX', timeout: 5000 }),
+    ).rejects.toThrow(TransactionException)
   })
 
   // Validates the Promise.race guard added in Step 2 — a hung REST call
@@ -184,9 +190,9 @@ describe('TxRestApi.fetchTxPoll', () => {
 
     const timeout = 2000
     const start = Date.now()
-    await expect(txApi.fetchTxPoll('HUNG_NODE', timeout)).rejects.toThrow(
-      HttpRequestException,
-    )
+    await expect(
+      txApi.fetchTxPoll({ txHash: 'HUNG_NODE', timeout }),
+    ).rejects.toThrow(HttpRequestException)
     const elapsed = Date.now() - start
 
     // Without the fix the loop overshoots by up to the HTTP timeout (15 000 ms).
@@ -284,11 +290,11 @@ describe('TxRestApi.broadcast event inclusion', () => {
     })
 
     expect(result.txHash).toBe(txHash)
-    expect(fetchTxPoll).toHaveBeenCalledWith(
+    expect(fetchTxPoll).toHaveBeenCalledWith({
       txHash,
-      expect.any(Number),
-      expect.any(Object),
-    )
+      timeout: expect.any(Number),
+      abortSignal: expect.any(Object),
+    })
     expect(fetchTx).not.toHaveBeenCalled()
     expect(socket.readyState).toBe(3)
   })

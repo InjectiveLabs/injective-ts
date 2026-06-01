@@ -36,6 +36,12 @@ export interface TxInclusionWaiter {
   wait: (txHash?: string) => Promise<TxClientBroadcastResponse | undefined>
 }
 
+export interface TxFetchTxPollArgs {
+  txHash: string
+  timeout?: number
+  abortSignal?: AbortSignal
+}
+
 export interface TxClientBroadcastOptions extends TxClientInclusionOptions {
   mode?: CosmosTxV1Beta1ServicePb.BroadcastMode
   timeout?: number // timeout in ms
@@ -80,9 +86,7 @@ export interface TxConcreteApi {
   ): Promise<TxClientBroadcastResponse>
   fetchTx(txHash: string): Promise<TxClientBroadcastResponse | undefined>
   fetchTxPoll(
-    txHash: string,
-    timeout?: number,
-    abortSignal?: AbortSignal,
+    args: TxFetchTxPollArgs,
   ): Promise<TxClientBroadcastResponse | undefined>
   waitForTxInclusion(
     txHash: string,

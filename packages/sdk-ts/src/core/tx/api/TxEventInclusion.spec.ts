@@ -38,6 +38,20 @@ class FakeWebSocket extends EventTarget {
     this.dispatchEvent(new Event('close'))
   }
 
+  emitSubscribeError(error: unknown) {
+    const request = JSON.parse(this.sent[0])
+
+    this.dispatchEvent(
+      new MessageEvent('message', {
+        data: JSON.stringify({
+          id: request.id,
+          jsonrpc: '2.0',
+          error,
+        }),
+      }),
+    )
+  }
+
   emitTx(txHash: string, code = 0) {
     this.dispatchEvent(
       new MessageEvent('message', {
@@ -76,6 +90,14 @@ const makeTxHash = () => {
 
   return TxClient.hash(txRaw)
 }
+
+const waitForImmediateResult = <T>(promise: Promise<T>) =>
+  Promise.race([
+    promise,
+    new Promise<'timeout'>((resolve) => {
+      setTimeout(() => resolve('timeout'), 25)
+    }),
+  ])
 
 describe('Tendermint tx event inclusion', () => {
   it('normalizes Tendermint HTTP endpoints to websocket endpoints', () => {
@@ -116,6 +138,47 @@ describe('Tendermint tx event inclusion', () => {
       height: 123,
       code: 0,
     })
+  })
+
+  it('rejects wait immediately when a confirmed subscription receives an error', async () => {
+    const txHash = makeTxHash()
+    let socket: FakeWebSocket | undefined
+
+    const subscription = await subscribeToTendermintTxEvent({
+      txHash,
+      timeout: 1000,
+      endpoint: 'http://localhost:26657',
+      webSocketFactory: (endpoint) => {
+        socket = new FakeWebSocket(endpoint)
+        return socket as unknown as WebSocket
+      },
+    })
+
+    const waitResult = subscription.wait().then(
+      () => 'resolved',
+      (error: Error) => error.message,
+    )
+
+    socket?.emitSubscribeError({ code: -32000, message: 'subscription failed' })
+
+    await expect(waitForImmediateResult(waitResult)).resolves.toContain(
+      'Tendermint subscribe failed',
+    )
+  })
+
+  it('rejects invalid tx hashes before building a Tendermint query', async () => {
+    const webSocketFactory = vi.fn()
+
+    await expect(
+      subscribeToTendermintTxEvent({
+        txHash: "ABC' OR tm.event='NewBlock",
+        timeout: 1000,
+        endpoint: 'http://localhost:26657',
+        webSocketFactory,
+      }),
+    ).rejects.toThrow('Invalid Tendermint tx hash')
+
+    expect(webSocketFactory).not.toHaveBeenCalled()
   })
 
   it('ignores tx events for other hashes', async () => {

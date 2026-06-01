@@ -23,6 +23,7 @@ import type { TxResponse } from '../types/tx.js'
 import type {
   TxConcreteApi,
   TxInclusionWaiter,
+  TxFetchTxPollArgs,
   TxClientBroadcastOptions,
   TxClientInclusionOptions,
   TxClientBroadcastResponse,
@@ -93,11 +94,11 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     }
   }
 
-  public async fetchTxPoll(
-    txHash: string,
+  public async fetchTxPoll({
+    txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    abortSignal?: AbortSignal,
-  ): Promise<TxResponse> {
+    abortSignal,
+  }: TxFetchTxPollArgs): Promise<TxResponse> {
     const deadline = Date.now() + timeout
 
     for (let start = Date.now(); start < deadline; start = Date.now()) {
@@ -168,8 +169,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       timeout,
       options,
       fetchTx: (includedTxHash) => this.fetchTx(includedTxHash),
-      fetchTxPoll: (includedTxHash, pollTimeout, abortSignal) =>
-        this.fetchTxPoll(includedTxHash, pollTimeout, abortSignal),
+      fetchTxPoll: (args) => this.fetchTxPoll(args),
       createRequestException: (error, contextModule) =>
         new GrpcUnaryRequestException(error, {
           context: 'TxGrpcApi',
