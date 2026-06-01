@@ -2,6 +2,7 @@ import type { Msgs } from '@injectivelabs/sdk-ts/core/modules'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type { Network, NetworkEndpoints } from '@injectivelabs/networks'
 import type { AuthBaseAccount } from '@injectivelabs/sdk-ts/client/chain'
+import type { TxClientInclusionOptions } from '@injectivelabs/sdk-ts/core/tx'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
 export interface MsgBroadcasterTxOptions {
@@ -11,6 +12,7 @@ export interface MsgBroadcasterTxOptions {
   injectiveAddress?: string
   accountDetails?: AuthBaseAccount
   txTimeoutInBlocks?: number // blocks to wait for tx to be included in a block
+  txInclusion?: TxClientInclusionOptions
   gas?: {
     gasPrice?: string
     gas?: number /** gas limit */
@@ -33,6 +35,7 @@ export interface MsgBroadcasterOptions {
   simulateTx?: boolean
   txTimeoutOnFeeDelegation?: boolean
   txTimeout?: number // blocks to wait for tx to be included in a block
+  txInclusion?: TxClientInclusionOptions
   walletStrategy: BaseWalletStrategy
   gasBufferCoefficient?: number
   httpHeaders?: Record<string, string>

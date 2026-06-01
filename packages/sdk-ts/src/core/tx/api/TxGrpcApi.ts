@@ -15,11 +15,17 @@ import {
   DEFAULT_TX_POLL_CALL_TIMEOUT_MS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
+import { TxInclusionStrategy } from '../types/tx.js'
+import { TxClient } from '../utils/classes/TxClient.js'
+import { prepareTxInclusionWaiter } from './TxInclusion.js'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
 import type { TxResponse } from '../types/tx.js'
 import type {
   TxConcreteApi,
+  TxInclusionWaiter,
+  TxFetchTxPollArgs,
   TxClientBroadcastOptions,
+  TxClientInclusionOptions,
   TxClientBroadcastResponse,
 } from '../types/tx.js'
 
@@ -88,24 +94,33 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     }
   }
 
-  public async fetchTxPoll(
-    txHash: string,
+  public async fetchTxPoll({
+    txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-  ): Promise<TxResponse> {
+    abortSignal,
+  }: TxFetchTxPollArgs): Promise<TxResponse> {
     const deadline = Date.now() + timeout
 
     for (let start = Date.now(); start < deadline; start = Date.now()) {
+      this.throwIfTxPollingCancelled(abortSignal)
+
       try {
-        const tx = await this.fetchTxDual(txHash, deadline)
+        const tx = await this.fetchTxDual(txHash, deadline, abortSignal)
+
+        this.throwIfTxPollingCancelled(abortSignal)
 
         if (tx) {
           return tx
         }
       } catch (e: unknown) {
+        this.throwIfTxPollingCancelled(abortSignal)
+
         if (e instanceof TransactionException) {
           throw e
         }
       }
+
+      this.throwIfTxPollingCancelled(abortSignal)
 
       const gap = DEFAULT_TX_POLL_INTERVAL_MS - (Date.now() - start)
 
@@ -122,13 +137,57 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     )
   }
 
+  public async waitForTxInclusion(
+    txHash: string,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+    options?: TxClientInclusionOptions,
+  ): Promise<TxResponse> {
+    const waiter = await this.prepareTxInclusionWait(txHash, timeout, options)
+
+    const txResponse = await waiter.wait()
+
+    if (!txResponse) {
+      throw new GrpcUnaryRequestException(
+        new Error(`The transaction with ${txHash} is not found`),
+        {
+          context: 'TxGrpcApi',
+          contextModule: 'wait-for-tx-inclusion',
+        },
+      )
+    }
+
+    return txResponse
+  }
+
+  public async prepareTxInclusionWait(
+    txHash: string,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+    options?: TxClientInclusionOptions,
+  ): Promise<TxInclusionWaiter> {
+    return prepareTxInclusionWaiter({
+      txHash,
+      timeout,
+      options,
+      fetchTx: (includedTxHash) => this.fetchTx(includedTxHash),
+      fetchTxPoll: (args) => this.fetchTxPoll(args),
+      createRequestException: (error, contextModule) =>
+        new GrpcUnaryRequestException(error, {
+          context: 'TxGrpcApi',
+          contextModule,
+        }),
+    })
+  }
+
   private async safeFetchTx(
     txHash: string,
     delay?: number,
+    abortSignal?: AbortSignal,
   ): Promise<TxResponse | null> {
     if (delay) {
       await sleep(delay)
     }
+
+    this.throwIfTxPollingCancelled(abortSignal)
 
     return this.fetchTx(txHash).catch((e: unknown) => {
       if (e instanceof TransactionException) {
@@ -142,6 +201,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
   private fetchTxDual(
     txHash: string,
     deadline: number,
+    abortSignal?: AbortSignal,
   ): Promise<TxResponse | null> {
     const STAGGER = 300
     const timeout = Math.max(
@@ -150,8 +210,8 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     )
 
     const fetches = Promise.all([
-      this.safeFetchTx(txHash),
-      this.safeFetchTx(txHash, STAGGER),
+      this.safeFetchTx(txHash, undefined, abortSignal),
+      this.safeFetchTx(txHash, STAGGER, abortSignal),
     ]).then(([a, b]) => a ?? b)
 
     fetches.catch(() => {})
@@ -160,6 +220,14 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       fetches,
       sleep(timeout).then(() => null as TxResponse | null),
     ])
+  }
+
+  private throwIfTxPollingCancelled(abortSignal?: AbortSignal) {
+    if (!abortSignal?.aborted) {
+      return
+    }
+
+    throw new Error('Transaction inclusion polling was cancelled')
   }
 
   public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
@@ -206,19 +274,31 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     options?: TxClientBroadcastOptions,
   ): Promise<TxResponse> {
-    const mode = options?.mode || CosmosTxV1Beta1ServicePb.BroadcastMode.SYNC
     const timeout =
       options?.timeout ||
       toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
-
-    const broadcastTxRequest =
-      CosmosTxV1Beta1ServicePb.BroadcastTxRequest.create()
-    broadcastTxRequest.txBytes = CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw)
-    broadcastTxRequest.mode = mode as CosmosTxV1Beta1ServicePb.BroadcastMode
+    const txHash = TxClient.hash(txRaw)
+    let inclusionWaiter: TxInclusionWaiter | undefined
 
     try {
+      inclusionWaiter = await this.prepareTxInclusionWait(
+        txHash,
+        timeout,
+        options,
+      )
+
+      const mode =
+        options?.mode ||
+        (inclusionWaiter.inclusionStrategy !== TxInclusionStrategy.Poll
+          ? CosmosTxV1Beta1ServicePb.BroadcastMode.ASYNC
+          : CosmosTxV1Beta1ServicePb.BroadcastMode.SYNC)
+      const broadcastTxRequest =
+        CosmosTxV1Beta1ServicePb.BroadcastTxRequest.create()
+      broadcastTxRequest.txBytes = CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw)
+      broadcastTxRequest.mode = mode as CosmosTxV1Beta1ServicePb.BroadcastMode
+
       const response = await this.executeGrpcCall<
         CosmosTxV1Beta1ServicePb.BroadcastTxRequest,
         CosmosTxV1Beta1ServicePb.BroadcastTxResponse
@@ -247,10 +327,22 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         options.onBroadcast(txResponse.txhash)
       }
 
-      const result = await this.fetchTxPoll(txResponse.txhash, timeout)
+      const result = await inclusionWaiter.wait(txResponse.txhash)
+
+      if (!result) {
+        throw new GrpcUnaryRequestException(
+          new Error(`The transaction with ${txResponse.txhash} is not found`),
+          {
+            context: 'TxGrpcApi.broadcast',
+            contextModule: 'wait-for-tx-inclusion',
+          },
+        )
+      }
 
       return result
     } catch (e: unknown) {
+      inclusionWaiter?.close()
+
       if (e instanceof TransactionException) {
         throw e
       }

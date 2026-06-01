@@ -17,17 +17,25 @@ import {
   DEFAULT_TX_POLL_CALL_TIMEOUT_MS,
   DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
 } from '@injectivelabs/utils'
+import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
 import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
+import { prepareTxInclusionWaiter } from './TxInclusion.js'
 import type { AxiosError } from 'axios'
 import type { TxResponse } from '../types/tx.js'
-import type { TxConcreteApi, TxClientBroadcastOptions } from '../types/tx.js'
 import type {
   TxInfoResponse,
   TxResultResponse,
   SimulationResponse,
 } from '../types/tx-rest-client.js'
+import type {
+  TxConcreteApi,
+  TxInclusionWaiter,
+  TxFetchTxPollArgs,
+  TxClientBroadcastOptions,
+  TxClientInclusionOptions,
+} from '../types/tx.js'
 
 /**
  * It is recommended to use TxGrpcClient instead of TxRestApi
@@ -100,13 +108,16 @@ export class TxRestApi implements TxConcreteApi {
     }
   }
 
-  public async fetchTxPoll(
-    txHash: string,
+  public async fetchTxPoll({
+    txHash,
     timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-  ): Promise<TxResponse> {
+    abortSignal,
+  }: TxFetchTxPollArgs): Promise<TxResponse> {
     const deadline = Date.now() + timeout
 
     for (let start = Date.now(); start < deadline; start = Date.now()) {
+      this.throwIfTxPollingCancelled(abortSignal)
+
       const callTimeout = Math.max(
         0,
         Math.min(DEFAULT_TX_POLL_CALL_TIMEOUT_MS, deadline - Date.now()),
@@ -122,10 +133,14 @@ export class TxRestApi implements TxConcreteApi {
           return txResponse
         }
       } catch (e: unknown) {
+        this.throwIfTxPollingCancelled(abortSignal)
+
         if (e instanceof TransactionException) {
           throw e
         }
       }
+
+      this.throwIfTxPollingCancelled(abortSignal)
 
       const elapsed = Date.now() - start
       const remaining = DEFAULT_TX_POLL_INTERVAL_MS - elapsed
@@ -144,6 +159,55 @@ export class TxRestApi implements TxConcreteApi {
         contextModule: 'TxRestApi.fetch-tx-poll',
       },
     )
+  }
+
+  private throwIfTxPollingCancelled(abortSignal?: AbortSignal) {
+    if (!abortSignal?.aborted) {
+      return
+    }
+
+    throw new Error('Transaction inclusion polling was cancelled')
+  }
+
+  public async waitForTxInclusion(
+    txHash: string,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+    options?: TxClientInclusionOptions,
+  ): Promise<TxResponse> {
+    const waiter = await this.prepareTxInclusionWait(txHash, timeout, options)
+
+    const txResponse = await waiter.wait()
+
+    if (!txResponse) {
+      throw new HttpRequestException(
+        new Error(`The transaction with ${txHash} is not found`),
+        {
+          context: 'TxRestApi',
+          contextModule: 'wait-for-tx-inclusion',
+        },
+      )
+    }
+
+    return txResponse
+  }
+
+  public async prepareTxInclusionWait(
+    txHash: string,
+    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+    options?: TxClientInclusionOptions,
+  ): Promise<TxInclusionWaiter> {
+    return prepareTxInclusionWaiter({
+      txHash,
+      timeout,
+      options,
+      fetchTx: (includedTxHash) => this.fetchTx(includedTxHash),
+      fetchTxPoll: (args) => this.fetchTxPoll(args),
+      createRequestException: (error, contextModule) =>
+        new HttpRequestException(error, {
+          context: 'TxRestApi',
+          contextModule,
+        }),
+    })
   }
 
   public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
@@ -186,11 +250,24 @@ export class TxRestApi implements TxConcreteApi {
       toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
+    const txHash = TxClient.hash(txRaw)
+    let inclusionWaiter: TxInclusionWaiter | undefined
 
     try {
+      inclusionWaiter = await this.prepareTxInclusionWait(
+        txHash,
+        timeout,
+        options,
+      )
+
       const { tx_response: txResponse } = await this.broadcastTx<{
         tx_response: TxInfoResponse
-      }>(txRaw, BroadcastMode.Sync)
+      }>(
+        txRaw,
+        inclusionWaiter.inclusionStrategy !== TxInclusionStrategy.Poll
+          ? BroadcastMode.Async
+          : BroadcastMode.Sync,
+      )
 
       if (!txResponse) {
         throw new HttpRequestException(
@@ -213,8 +290,22 @@ export class TxRestApi implements TxConcreteApi {
         options.onBroadcast(txResponse.txhash)
       }
 
-      return await this.fetchTxPoll(txResponse.txhash, timeout)
+      const result = await inclusionWaiter.wait(txResponse.txhash)
+
+      if (!result) {
+        throw new HttpRequestException(
+          new Error(`The transaction with ${txResponse.txhash} is not found`),
+          {
+            context: 'TxRestApi.broadcast',
+            contextModule: 'wait-for-tx-inclusion',
+          },
+        )
+      }
+
+      return result
     } catch (e: unknown) {
+      inclusionWaiter?.close()
+
       if (e instanceof HttpRequestException) {
         if (e.code !== StatusCodes.OK) {
           throw e

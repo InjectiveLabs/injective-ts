@@ -9,6 +9,7 @@ import {
   toBigNumber,
   getDefaultStdFee,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
+  DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
 import { createTransaction } from '../tx.js'
 import { TxGrpcApi } from '../api/TxGrpcApi.js'
@@ -216,7 +217,15 @@ export class MsgBroadcasterWithPk {
       signature: `0x${uint8ArrayToHex(signature)}`,
     })
 
-    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll(response.txHash)
+    const timeoutInMs = toBigNumber(txTimeout)
+      .times(DEFAULT_BLOCK_TIME_IN_SECONDS)
+      .times(1000)
+      .toNumber()
+
+    return await new TxGrpcApi(endpoints.grpc).fetchTxPoll({
+      txHash: response.txHash,
+      timeout: timeoutInMs,
+    })
   }
 
   /**
