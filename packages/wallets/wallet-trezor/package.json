@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-trezor",
-  "version": "1.19.28",
+  "version": "1.19.29",
   "description": "Trezor wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
