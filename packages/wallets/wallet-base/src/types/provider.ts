@@ -2,11 +2,14 @@ import type { EIP1193Provider } from 'eip1193-provider'
 
 export interface BrowserEip1993Provider extends EIP1193Provider {
   removeAllListeners(): void
+  providers?: BrowserEip1993Provider[]
   isTrust: boolean
   isKeplr: boolean
   isRabby: boolean
   isRainbow: boolean
   isPhantom: boolean
+  isBitGet?: boolean
+  isBitKeep?: boolean
   isMetaMask: boolean
   isOkxWallet: boolean
   isTrustWallet: boolean

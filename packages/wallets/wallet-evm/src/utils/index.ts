@@ -1,22 +1,15 @@
 import { capitalize } from '@injectivelabs/utils'
 import { ErrorType, WalletException } from '@injectivelabs/exceptions'
 import {
-  Wallet,
   WalletAction,
   getEvmChainConfig,
   isEvmBrowserWallet,
   EvmWalletProviderErrorCode,
 } from '@injectivelabs/wallet-base'
-import { getRabbyProvider } from '../strategy/utils/rabby.js'
-import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
-import { getBitGetProvider } from '../strategy/utils/bitget.js'
-import { getPhantomProvider } from '../strategy/utils/phantom.js'
-import { getKeplrEvmProvider } from '../strategy/utils/keplrEvm.js'
-import { getMetamaskProvider } from '../strategy/utils/metamask.js'
-import { getTrustWalletProvider } from '../strategy/utils/trustWallet.js'
+import { getEvmProviderWithFallback } from '../strategy/utils/providerResolver.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { ErrorCode } from '@injectivelabs/exceptions'
-import type { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
+import type { BrowserEip1993Provider, Wallet } from '@injectivelabs/wallet-base'
 
 export const getEvmProvider = async (
   wallet: Wallet,
@@ -28,35 +21,9 @@ export const getEvmProvider = async (
   }
 
   try {
-    let provider
-
-    if (wallet === Wallet.Metamask) {
-      provider = (await getMetamaskProvider()) as BrowserEip1993Provider
-    }
-
-    if (wallet === Wallet.Rabby) {
-      provider = (await getRabbyProvider()) as BrowserEip1993Provider
-    }
-
-    if (wallet === Wallet.BitGet) {
-      provider = (await getBitGetProvider()) as BrowserEip1993Provider
-    }
-
-    if (wallet === Wallet.Phantom) {
-      provider = (await getPhantomProvider()) as BrowserEip1993Provider
-    }
-
-    if (wallet === Wallet.TrustWallet) {
-      provider = (await getTrustWalletProvider()) as BrowserEip1993Provider
-    }
-
-    if (wallet === Wallet.OkxWallet) {
-      provider = (await getOkxWalletProvider()) as BrowserEip1993Provider
-    }
-
-    if (wallet === Wallet.KeplrEvm) {
-      provider = (await getKeplrEvmProvider()) as BrowserEip1993Provider
-    }
+    const provider = (await getEvmProviderWithFallback(
+      wallet,
+    )) as BrowserEip1993Provider
 
     if (!provider) {
       throw new WalletException(
