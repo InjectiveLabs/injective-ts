@@ -1,9 +1,7 @@
-import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcTcDerivativesApi } from './IndexerGrpcTcDerivativesApi.js'
 
-const endpoints = getNetworkEndpoints(Network.Mainnet)
 const indexerGrpcTcDerivativesApi = new IndexerGrpcTcDerivativesApi(
-  endpoints.indexer,
+  'https://tc-derivatives.grpc-web.mainnet.asia.injective.network',
 )
 
 describe('IndexerGrpcTcDerivativesApi', () => {

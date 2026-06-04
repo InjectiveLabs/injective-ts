@@ -1,3 +1,4 @@
+// import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
@@ -44,6 +45,7 @@ describe('MsgSubmitProposalPerpetualMarketLaunchV2', () => {
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,
+      // network: Network.TestnetSentry,
     })
 
     // EIP712 v1 is not supported for this message type - the chain returns:

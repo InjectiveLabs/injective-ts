@@ -292,8 +292,14 @@ export const MsgType = {
   MsgExternalTransferV2: 'injective.exchange.v2.MsgExternalTransfer',
   MsgSpotMarketLaunchV2: 'injective.exchange.v2.MsgSpotMarketLaunch',
   MsgUpdateSpotMarketV2: 'injective.exchange.v2.MsgUpdateSpotMarket',
+  MsgUpdateSubaccountRiskProfileV2:
+    'injective.exchange.v2.MsgUpdateSubaccountRiskProfile',
   MsgBatchUpdateOrdersV2: 'injective.exchange.v2.MsgBatchUpdateOrders',
   MsgLiquidatePositionV2: 'injective.exchange.v2.MsgLiquidatePosition',
+  MsgBatchLiquidatePositionsV2:
+    'injective.exchange.v2.MsgBatchLiquidatePositions',
+  MsgLiquidateCrossMarginPoolV2:
+    'injective.exchange.v2.MsgLiquidateCrossMarginPool',
   MsgActivatePostOnlyModeV2: 'injective.exchange.v2.MsgActivatePostOnlyMode',
   MsgCancelPostOnlyModeV2: 'injective.exchange.v2.MsgCancelPostOnlyMode',
   MsgActivateStakeGrantV2: 'injective.exchange.v2.MsgActivateStakeGrant',
@@ -325,6 +331,8 @@ export const MsgType = {
     'injective.exchange.v2.MsgCancelBinaryOptionsOrder',
   DerivativeMarketOrderResultsV2:
     'injective.exchange.v2.DerivativeMarketOrderResults',
+  LiquidatePositionDataV2: 'injective.exchange.v2.LiquidatePositionData',
+  LiquidatePositionResultV2: 'injective.exchange.v2.LiquidatePositionResult',
   MsgBatchExchangeModificationV2:
     'injective.exchange.v2.MsgBatchExchangeModification',
   MsgBinaryOptionsMarketLaunchV2:
@@ -380,8 +388,10 @@ export const MsgType = {
   // Oracle
   MsgRelayChainlinkPrices: 'injective.oracle.v1beta1.MsgRelayChainlinkPrices',
   MsgRelayPythPrices: 'injective.oracle.v1beta1.MsgRelayPythPrices',
+  MsgRelayPythProPrices: 'injective.oracle.v1beta1.MsgRelayPythProPrices',
   MsgOracleUpdateParams: 'injective.oracle.v1beta1.MsgUpdateParams',
   MsgRelayStorkPrices: 'injective.oracle.v1beta1.MsgRelayStorkPrices',
+  MsgRelaySedaFastPrices: 'injective.oracle.v1beta1.MsgRelaySedaFastPrices',
   MsgRelayProviderPrices: 'injective.oracle.v1beta1.MsgRelayProviderPrices',
   MsgRelayPriceFeedPrice: 'injective.oracle.v1beta1.MsgRelayPriceFeedPrice',
   MsgRelayCoinbaseMessages: 'injective.oracle.v1beta1.MsgRelayCoinbaseMessages',

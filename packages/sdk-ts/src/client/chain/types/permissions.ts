@@ -1,6 +1,7 @@
 import * as InjectivePermissionsV1Beta1PermissionsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/permissions_pb'
 import type { Coin } from '@injectivelabs/ts-types'
 import type * as InjectivePermissionsV1Beta1ParamsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/permissions/v1beta1/params_pb'
+import type * as InjectiveCommonVouchersV1VouchersPb from '@injectivelabs/core-proto-ts-v2/generated/injective/common/vouchers/v1/vouchers_pb'
 
 export interface PermissionParams {
   wasmHookQueryMaxGas: string
@@ -103,7 +104,7 @@ export type GrpcPermissionRoleManager =
 export type GrpcPermissionPolicyStatus =
   InjectivePermissionsV1Beta1PermissionsPb.PolicyStatus
 export type GrpcPermissionAddressVoucher =
-  InjectivePermissionsV1Beta1PermissionsPb.AddressVoucher
+  InjectiveCommonVouchersV1VouchersPb.AddressVoucher
 export type GrpcPermissionPolicyStatusManagerCapability =
   InjectivePermissionsV1Beta1PermissionsPb.PolicyManagerCapability
 export type GrpcPermissionsParams = InjectivePermissionsV1Beta1ParamsPb.Params
