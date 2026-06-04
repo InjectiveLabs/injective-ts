@@ -46,6 +46,7 @@ describe('MsgUpdateDerivativeMarketV2', () => {
       newInitialMarginRatio: '50000000000000000',
       newMaintenanceMarginRatio: '50000000000000000',
       newReduceMarginRatio: '50000000000000000',
+      crossMarginEligibility: 0,
     })
   })
 
@@ -60,6 +61,7 @@ describe('MsgUpdateDerivativeMarketV2', () => {
       newInitialMarginRatio: '50000000000000000',
       newMaintenanceMarginRatio: '50000000000000000',
       newReduceMarginRatio: '50000000000000000',
+      crossMarginEligibility: 0,
     })
   })
 

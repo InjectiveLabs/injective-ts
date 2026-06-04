@@ -7,7 +7,14 @@ export declare namespace MsgUpdateParams {
     authority: string
     params: {
       wasmHookQueryMaxGas: string
-      enforcedRestrictionsContracts?: string[]
+      deprecatedEnforcedRestrictionsContracts?: string[]
+      enforcedRestrictionsEvmContracts?: {
+        contractAddress: string
+        pauseEventSignature: string
+        unpauseEventSignature: string
+        blacklistEventSignature: string
+        unblacklistEventSignature: string
+      }[]
     }
   }
 
@@ -30,6 +37,21 @@ export default class MsgUpdateParams extends MsgBase<
 
     const messageParams = InjectivePermissionsV1Beta1ParamsPb.Params.create({
       contractHookMaxGas: BigInt(params.params.wasmHookQueryMaxGas),
+      deprecatedEnforcedRestrictionsContracts:
+        params.params.deprecatedEnforcedRestrictionsContracts || [],
+      enforcedRestrictionsEvmContracts: (
+        params.params.enforcedRestrictionsEvmContracts || []
+      ).map((c) =>
+        InjectivePermissionsV1Beta1ParamsPb.EnforcedRestrictionsEVMContract.create(
+          {
+            contractAddress: c.contractAddress,
+            pauseEventSignature: c.pauseEventSignature,
+            unpauseEventSignature: c.unpauseEventSignature,
+            blacklistEventSignature: c.blacklistEventSignature,
+            unblacklistEventSignature: c.unblacklistEventSignature,
+          },
+        ),
+      ),
     })
 
     const message = InjectivePermissionsV1Beta1TxPb.MsgUpdateParams.create({
@@ -56,6 +78,17 @@ export default class MsgUpdateParams extends MsgBase<
       params: {
         contract_hook_max_gas:
           proto.params?.contractHookMaxGas.toString() || '0',
+        deprecated_enforced_restrictions_contracts:
+          proto.params?.deprecatedEnforcedRestrictionsContracts || [],
+        enforced_restrictions_evm_contracts: (
+          proto.params?.enforcedRestrictionsEvmContracts || []
+        ).map((c) => ({
+          contract_address: c.contractAddress,
+          pause_event_signature: c.pauseEventSignature,
+          unpause_event_signature: c.unpauseEventSignature,
+          blacklist_event_signature: c.blacklistEventSignature,
+          unblacklist_event_signature: c.unblacklistEventSignature,
+        })),
       },
     }
 
@@ -72,11 +105,6 @@ export default class MsgUpdateParams extends MsgBase<
     return {
       '@type': '/injective.permissions.v1beta1.MsgUpdateParams',
       ...value,
-      params: {
-        ...value.params,
-        enforced_restrictions_contracts:
-          this.params.params.enforcedRestrictionsContracts || [],
-      },
     }
   }
 

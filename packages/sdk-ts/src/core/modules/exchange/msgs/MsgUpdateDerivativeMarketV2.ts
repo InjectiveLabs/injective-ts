@@ -1,5 +1,6 @@
 import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
+import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
@@ -14,6 +15,7 @@ export declare namespace MsgUpdateDerivativeMarketV2 {
     newInitialMarginRatio?: string
     newMaintenanceMarginRatio?: string
     newReduceMarginRatio?: string
+    crossMarginEligibility?: InjectiveExchangeV2ProposalPb.CrossMarginEligibility
   }
 
   export type Proto = InjectiveExchangeV2TxPb.MsgUpdateDerivativeMarket
@@ -30,6 +32,10 @@ const createMessage = (params: MsgUpdateDerivativeMarketV2.Params) => {
     newInitialMarginRatio: params.newInitialMarginRatio || '0',
     newMaintenanceMarginRatio: params.newMaintenanceMarginRatio || '0',
     newReduceMarginRatio: params.newReduceMarginRatio || '0',
+    crossMarginEligibility:
+      params.crossMarginEligibility ??
+      InjectiveExchangeV2ProposalPb.CrossMarginEligibility
+        .CM_ELIGIBILITY_UNSPECIFIED,
   })
 
   return message
