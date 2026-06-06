@@ -403,7 +403,7 @@ export class TurnkeyWallet {
     const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'
 
     const response = await this.client.post<{
-      data: { credentialBundle: string; organizationId: string }
+      data: { credentialBundle: string; organizationId: string; email?: string }
     }>(path, { nonce, authCode, codeVerifier, targetPublicKey, providerName })
 
     if (!response?.data?.credentialBundle || !response?.data?.organizationId) {
@@ -412,13 +412,13 @@ export class TurnkeyWallet {
       )
     }
 
-    const { credentialBundle, organizationId } = response.data
+    const { credentialBundle, organizationId, email } = response.data
 
     await indexedDbClient.loginWithSession(credentialBundle)
 
     this.userOrganizationId = organizationId
 
-    return credentialBundle
+    return { session: credentialBundle, email }
   }
 
   public async refreshSession() {
