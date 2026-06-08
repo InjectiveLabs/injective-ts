@@ -60,5 +60,35 @@ describe('MsgMigrateContract', () => {
       // Should not throw "Do not know how to serialize a BigInt"
       expect(() => messageWithBigInt.toProto()).not.toThrow()
     })
+
+    it('serializes message object for EIP712 v2', () => {
+      const paramsWithBigInt: MsgMigrateContract['params'] = {
+        sender: mockFactory.injectiveAddress,
+        contract: mockFactory.injectiveAddress,
+        codeId: 1,
+        msg: {
+          amount: BigInt('1000000000000000000'),
+          nested: {
+            value: BigInt(12345),
+          },
+        },
+      }
+      const expectedMessage = {
+        amount: '1000000000000000000',
+        nested: {
+          value: '12345',
+        },
+      }
+
+      const messageWithBigInt = MsgMigrateContract.fromJSON(paramsWithBigInt)
+      const { eip712Args } = prepareEip712({
+        messages: messageWithBigInt,
+      })
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+      const [eip712Message] = JSON.parse(eip712TypedData.message.msgs)
+
+      expect(messageWithBigInt.toWeb3Gw().msg).toStrictEqual(expectedMessage)
+      expect(eip712Message.msg).toStrictEqual(expectedMessage)
+    })
   })
 })
