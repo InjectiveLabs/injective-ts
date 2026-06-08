@@ -171,6 +171,112 @@ describe('StreamManagerV2', () => {
       expect(streamFactory).toHaveBeenCalledTimes(2)
     })
 
+    it('should not reset retry attempts when a stream errors before it is stable', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 3,
+          initialDelayMs: 100,
+          maxDelayMs: 1000,
+          backoffMultiplier: 2,
+          persistent: false,
+          stableConnectionMs: 1000,
+        },
+      })
+
+      const retryEvents: any[] = []
+      manager.on('retry', (payload) => retryEvents.push(payload))
+
+      manager.start()
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost',
+      })
+
+      vi.advanceTimersByTime(100)
+
+      expect(retryEvents).toHaveLength(1)
+      expect(retryEvents[0]).toEqual({
+        attempt: 1,
+        delayMs: 100,
+        nextBackoff: 200,
+      })
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost again',
+      })
+
+      vi.advanceTimersByTime(199)
+      expect(retryEvents).toHaveLength(1)
+
+      vi.advanceTimersByTime(1)
+
+      expect(retryEvents).toHaveLength(2)
+      expect(retryEvents[1]).toEqual({
+        attempt: 2,
+        delayMs: 200,
+        nextBackoff: 400,
+      })
+    })
+
+    it('should reach maxAttempts for repeated early stream errors', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 2,
+          initialDelayMs: 100,
+          maxDelayMs: 1000,
+          backoffMultiplier: 2,
+          persistent: false,
+          stableConnectionMs: 1000,
+        },
+      })
+
+      const errorEvents: any[] = []
+      const retryEvents: any[] = []
+      manager.on('error', (payload) => errorEvents.push(payload))
+      manager.on('retry', (payload) => retryEvents.push(payload))
+
+      manager.start()
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost',
+      })
+
+      vi.advanceTimersByTime(100)
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost again',
+      })
+
+      vi.advanceTimersByTime(200)
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost before stable window',
+      })
+
+      const maxRetriesError = errorEvents.find((errorEvent) =>
+        errorEvent.message.includes('Max retries'),
+      )
+
+      expect(retryEvents).toHaveLength(2)
+      expect(retryEvents.map((event) => event.attempt)).toEqual([1, 2])
+      expect(maxRetriesError?.message).toContain('Max retries (2) reached')
+      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(streamFactory).toHaveBeenCalledTimes(3)
+    })
+
     it('should respect maxAttempts', () => {
       const manager = new StreamManagerV2({
         id: 'test-stream',
@@ -249,7 +355,7 @@ describe('StreamManagerV2', () => {
       })
     })
 
-    it('should reset retry count after successful connection', () => {
+    it('should connect on retry after an initial factory failure', () => {
       const manager = new StreamManagerV2({
         id: 'test-stream',
         streamFactory,
@@ -264,13 +370,115 @@ describe('StreamManagerV2', () => {
       manager.start()
       vi.advanceTimersByTime(1000) // Trigger retry
 
-      // Second attempt succeeds
-      vi.mocked(streamFactory).mockImplementationOnce(() => mockSubscription)
-
-      vi.advanceTimersByTime(2000) // Trigger retry
-
       expect(streamFactory).toHaveBeenCalledTimes(2)
       expect(manager.getState()).toBe(StreamState.Connected)
+    })
+
+    it('should reset retry attempts after a stable connection window', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 3,
+          initialDelayMs: 100,
+          maxDelayMs: 1000,
+          backoffMultiplier: 2,
+          persistent: false,
+          stableConnectionMs: 500,
+        },
+      })
+
+      const retryEvents: any[] = []
+      manager.on('retry', (payload) => retryEvents.push(payload))
+
+      manager.start()
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost',
+      })
+
+      vi.advanceTimersByTime(100)
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost before stable window',
+      })
+
+      vi.advanceTimersByTime(200)
+      vi.advanceTimersByTime(500)
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost after stable window',
+      })
+
+      vi.advanceTimersByTime(100)
+
+      expect(retryEvents).toHaveLength(3)
+      expect(retryEvents[0]).toEqual({
+        attempt: 1,
+        delayMs: 100,
+        nextBackoff: 200,
+      })
+      expect(retryEvents[1]).toEqual({
+        attempt: 2,
+        delayMs: 200,
+        nextBackoff: 400,
+      })
+      expect(retryEvents[2]).toEqual({
+        attempt: 1,
+        delayMs: 100,
+        nextBackoff: 200,
+      })
+    })
+
+    it('should reset retry attempts after the first successful data event', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 3,
+          initialDelayMs: 100,
+          maxDelayMs: 1000,
+          backoffMultiplier: 2,
+          persistent: false,
+          stableConnectionMs: 1000,
+        },
+      })
+
+      const retryEvents: any[] = []
+      manager.on('retry', (payload) => retryEvents.push(payload))
+
+      manager.start()
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost',
+      })
+
+      vi.advanceTimersByTime(100)
+
+      manager.emit('data', { price: '100' })
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost after data',
+      })
+
+      vi.advanceTimersByTime(100)
+
+      expect(onDataCallback).toHaveBeenCalledWith({ price: '100' })
+      expect(retryEvents).toHaveLength(2)
+      expect(retryEvents[1]).toEqual({
+        attempt: 1,
+        delayMs: 100,
+        nextBackoff: 200,
+      })
     })
 
     it('should use longer backoff for rate limiting errors', () => {

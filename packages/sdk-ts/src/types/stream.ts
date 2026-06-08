@@ -143,6 +143,13 @@ export interface StreamManagerRetryConfig {
    * after exhausting exponential backoff (default: true)
    */
   persistent: boolean
+
+  /**
+   * Time a reconnected stream must stay open before retry attempts reset.
+   * The first successful data event also resets retry attempts.
+   * Set to 0 to disable time-based reset (default: 30000).
+   */
+  stableConnectionMs?: number
 }
 
 /**

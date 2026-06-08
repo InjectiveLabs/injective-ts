@@ -20,10 +20,11 @@ import type {
 const DEFAULT_RETRY_CONFIG: StreamManagerRetryConfig = {
   enabled: true,
   maxAttempts: 5,
-  initialDelayMs: 1000,
+  persistent: true,
   maxDelayMs: 30000,
   backoffMultiplier: 2,
-  persistent: true,
+  initialDelayMs: 1000,
+  stableConnectionMs: 10000,
 }
 
 /**
@@ -114,6 +115,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   private state: StreamState = StreamState.Idle
   private subscription: StreamSubscription | null = null
   private retryTimeoutId: NodeJS.Timeout | null = null
+  private stableConnectionTimeoutId: NodeJS.Timeout | null = null
   private retryAttempt: number = 0
 
   constructor(config: StreamManagerConfig<TResponse>) {
@@ -198,6 +200,15 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     this.retryTimeoutId = null
   }
 
+  private clearStableConnectionTimeout(): void {
+    if (!this.stableConnectionTimeoutId) {
+      return
+    }
+
+    clearTimeout(this.stableConnectionTimeoutId)
+    this.stableConnectionTimeoutId = null
+  }
+
   private calculateNextBackoff(reason?: StreamDisconnectReason): number | null {
     // Rate limiting should use a longer initial backoff
     const baseDelay =
@@ -277,6 +288,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   private handleData(response: TResponse): void {
     try {
       this.config.onData(response)
+      this.markConnectionStable()
     } catch (error) {
       this.handleError(error)
     }
@@ -284,7 +296,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
 
   private handleConnected(isReconnect: boolean): void {
     this.updateState(StreamState.Connected)
-    this.retryAttempt = 0
+    this.scheduleStableConnectionReset()
 
     this.emit(StreamEvent.Connect, {
       isReconnect,
@@ -292,9 +304,41 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     })
   }
 
+  private scheduleStableConnectionReset(): void {
+    this.clearStableConnectionTimeout()
+
+    if (this.retryAttempt === 0) {
+      return
+    }
+
+    const stableConnectionMs =
+      this.config.retryConfig.stableConnectionMs ??
+      DEFAULT_RETRY_CONFIG.stableConnectionMs ??
+      0
+
+    if (stableConnectionMs <= 0) {
+      return
+    }
+
+    this.stableConnectionTimeoutId = setTimeout(() => {
+      this.markConnectionStable()
+    }, stableConnectionMs)
+  }
+
+  private markConnectionStable(): void {
+    this.clearStableConnectionTimeout()
+
+    if (this.retryAttempt === 0) {
+      return
+    }
+
+    this.retryAttempt = 0
+  }
+
   private handleDisconnect(reason: StreamDisconnectReason): void {
     this.clearSubscription()
     this.clearRetryTimeout()
+    this.clearStableConnectionTimeout()
 
     // Determine if retry should be attempted based on disconnect reason
     const willRetry =
@@ -316,6 +360,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
 
   private connect(): void {
     this.clearSubscription()
+    this.clearStableConnectionTimeout()
 
     const isReconnect = this.state === StreamState.Reconnecting
     this.updateState(
