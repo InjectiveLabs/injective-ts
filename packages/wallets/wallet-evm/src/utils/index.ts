@@ -4,6 +4,7 @@ import {
   Wallet,
   getEvmChainConfig,
   isEvmBrowserWallet,
+  EvmWalletProviderErrorCode,
 } from '@injectivelabs/wallet-base'
 import { getRabbyProvider } from '../strategy/utils/rabby.js'
 import { getOkxWalletProvider } from '../strategy/utils/Okx.js'
@@ -69,6 +70,27 @@ export const getEvmProvider = async (
   }
 }
 
+export const extractNormalizedErrorCode = (error: unknown): number => {
+  const normalizedError =
+    error && typeof error === 'object'
+      ? (error as {
+          code?: unknown
+          data?: { originalError?: { code?: unknown } }
+        })
+      : undefined
+  const code = normalizedError?.code
+  const originalCode = normalizedError?.data?.originalError?.code
+  const codeNormalized = code != null ? Number(code) : undefined
+  const rawCode =
+    codeNormalized === EvmWalletProviderErrorCode.InternalError ||
+    code === undefined ||
+    code === null
+      ? (originalCode ?? code)
+      : code
+
+  return rawCode != null ? Number(rawCode) : NaN
+}
+
 export const switchEthereumChainWithTimeout = async (
   provider: BrowserEip1993Provider,
   chainIdHex: string,
@@ -114,14 +136,18 @@ export const switchEthereumChainWithTimeout = async (
   await Promise.race([switchRequest, chainChangedWaiter])
 }
 
-export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
+export const updateEvmNetwork = async (
+  wallet: Wallet,
+  chainId: EvmChainId,
+  providerOverride?: BrowserEip1993Provider,
+) => {
   if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(
       new Error(`Evm Wallet for ${capitalize(wallet)} is not supported.`),
     )
   }
 
-  const provider = (await getEvmProvider(wallet)) as BrowserEip1993Provider
+  const provider = providerOverride || (await getEvmProvider(wallet))
 
   if (!provider) {
     throw new WalletException(
@@ -136,12 +162,9 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
   try {
     await switchEthereumChainWithTimeout(provider, chainIdToHex, TIMEOUT_MS)
   } catch (switchError: any) {
-    const rawCode = switchError?.code ?? switchError?.data?.originalError?.code
-    const parsed = rawCode != null ? Number(rawCode) : NaN
-    const errorCode = !isNaN(parsed) ? parsed : undefined
+    const errorCode = extractNormalizedErrorCode(switchError)
 
-    // 4001 = user rejected the switch request
-    if (errorCode === 4001) {
+    if (errorCode === EvmWalletProviderErrorCode.UserRejectedRequest) {
       throw new WalletException(
         new Error(`${capitalize(wallet)} chain switch was rejected`),
       )
@@ -151,8 +174,7 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
       throw new WalletException(new Error('Chain switch timed out'))
     }
 
-    // 4902 = chain not found in wallet — attempt to add it
-    if (errorCode !== 4902) {
+    if (errorCode !== EvmWalletProviderErrorCode.UnrecognizedChain) {
       throw new WalletException(
         new Error(`Please update your ${capitalize(wallet)} network`),
       )
@@ -209,12 +231,11 @@ export const updateEvmNetwork = async (wallet: Wallet, chainId: EvmChainId) => {
       try {
         await switchEthereumChainWithTimeout(provider, chainIdToHex, TIMEOUT_MS)
       } catch (postAddError: any) {
-        const rawCode =
-          postAddError?.code ?? postAddError?.data?.originalError?.code
-        const parsed = rawCode != null ? Number(rawCode) : NaN
-        const postAddErrorCode = !isNaN(parsed) ? parsed : undefined
+        const postAddErrorCode = extractNormalizedErrorCode(postAddError)
 
-        if (postAddErrorCode === 4001) {
+        if (
+          postAddErrorCode === EvmWalletProviderErrorCode.UserRejectedRequest
+        ) {
           throw new WalletException(
             new Error(
               `${capitalize(wallet)} chain switch after add was rejected`,
