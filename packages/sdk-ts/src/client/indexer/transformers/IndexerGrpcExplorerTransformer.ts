@@ -40,50 +40,85 @@ import type {
 
 const ZERO_IN_BASE = toBigNumber(0)
 
+type ContractTxV2Message = {
+  type?: string
+  value?: { msg?: unknown }
+}
+
+type TransactionV2Message = {
+  type: string
+  value: unknown
+}
+
+const isContractTxV2Message = (
+  message: unknown,
+): message is ContractTxV2Message =>
+  !!message && typeof message === 'object' && 'type' in message
+
+const isTransactionV2Message = (
+  message: unknown,
+): message is TransactionV2Message =>
+  !!message &&
+  typeof message === 'object' &&
+  typeof (message as { type?: unknown }).type === 'string' &&
+  Object.prototype.hasOwnProperty.call(message, 'value')
+
 const getContractTransactionV2Amount = (
   ApiTransaction: InjectiveExplorerRpcPb.TxDetailData,
 ): BigNumber => {
-  const messages = JSON.parse(uint8ArrayToString(ApiTransaction.messages))
+  const messages = parseStringToObjectLikeNoThrow<unknown>(
+    ApiTransaction.messages,
+  )
+  const [message] = Array.isArray(messages) ? messages : []
 
-  const { type, value } = messages[0]
-
-  const { msg } = value
-
-  if (!type.includes('MsgExecuteContract')) {
+  if (
+    !isContractTxV2Message(message) ||
+    !message.type?.includes('MsgExecuteContract')
+  ) {
     return ZERO_IN_BASE
   }
+
+  const msg = message.value?.msg
 
   if (typeof msg === 'string' && !isJsonString(msg)) {
     return ZERO_IN_BASE
   }
 
-  const msgObj = typeof msg === 'string' ? JSON.parse(msg) : msg
+  const msgObj =
+    typeof msg === 'string'
+      ? parseStringToObjectLikeNoThrow<Record<string, any> | undefined>(
+          msg,
+          undefined,
+        )
+      : msg
 
-  if (!msgObj.transfer) {
+  if (!msgObj || typeof msgObj !== 'object' || !('transfer' in msgObj)) {
     return ZERO_IN_BASE
   }
 
-  return toHumanReadable(msgObj.transfer.amount)
+  const transfer = msgObj.transfer as { amount?: string }
+
+  return transfer?.amount ? toHumanReadable(transfer.amount) : ZERO_IN_BASE
 }
 
-const parseStringToObjectLikeNoThrow = (
+const parseStringToObjectLikeNoThrow = <T = any[]>(
   object: string | Uint8Array<ArrayBufferLike>,
-  defaultValue: any[] = [],
-): any[] => {
+  defaultValue: T = [] as T,
+): T => {
   if (!object) {
     return defaultValue
   }
 
   if (typeof object === 'string') {
     try {
-      return JSON.parse(object)
+      return JSON.parse(object) as T
     } catch {
       return defaultValue
     }
   }
 
   try {
-    return JSON.parse(uint8ArrayToString(object))
+    return JSON.parse(uint8ArrayToString(object)) as T
   } catch {
     return defaultValue
   }
@@ -91,10 +126,12 @@ const parseStringToObjectLikeNoThrow = (
 
 const transactionV2MessagesToMessagesNoThrow = (messages: any): Message[] => {
   const messagesArray = parseStringToObjectLikeNoThrow(messages)
-  const nonNullMessages = messagesArray.filter((msg) => !!msg)
+  const wellFormedMessages = Array.isArray(messagesArray)
+    ? messagesArray.filter(isTransactionV2Message)
+    : []
 
-  return nonNullMessages.map(
-    (msg: any) =>
+  return wellFormedMessages.map(
+    (msg) =>
       ({
         type: msg.type,
         message: msg.value,
@@ -655,7 +692,7 @@ export class IndexerGrpcExplorerTransformer {
       tx_number: bigIntToNumber(tx.txNumber),
       time: bigIntToNumber(tx.blockUnixTimestamp),
       amount: getContractTransactionV2Amount(tx),
-      logs: JSON.parse(uint8ArrayToString(tx.logs)),
+      logs: parseStringToObjectLikeNoThrow(tx.logs),
       data: '/' + uint8ArrayToString(tx.data).split('/').pop(),
       fee: toHumanReadable(tx.gasFee?.amount[0]?.amount || '0'),
       signatures: tx.signatures.map((signature) => ({
