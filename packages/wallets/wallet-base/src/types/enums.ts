@@ -68,4 +68,13 @@ export const WalletEventListener = {
 export type WalletEventListener =
   (typeof WalletEventListener)[keyof typeof WalletEventListener]
 
+export const EvmWalletProviderErrorCode = {
+  InternalError: -32603,
+  UserRejectedRequest: 4001,
+  UnrecognizedChain: 4902,
+} as const
+
+export type EvmWalletProviderErrorCode =
+  (typeof EvmWalletProviderErrorCode)[keyof typeof EvmWalletProviderErrorCode]
+
 export const WalletAction = { ...WalletErrorActionModule }

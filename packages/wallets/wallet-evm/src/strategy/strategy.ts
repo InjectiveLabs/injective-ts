@@ -14,6 +14,7 @@ import {
   isEvmBrowserWallet,
   WalletEventListener,
   BaseConcreteStrategy,
+  EvmWalletProviderErrorCode,
   getViemPublicClientFromEip1193Provider,
 } from '@injectivelabs/wallet-base'
 import {
@@ -29,7 +30,10 @@ import {
   RabbyWalletException,
   RainbowWalletException,
 } from '@injectivelabs/exceptions'
-import { switchEthereumChainWithTimeout } from '../utils/index.js'
+import {
+  extractNormalizedErrorCode,
+  switchEthereumChainWithTimeout,
+} from '../utils/index.js'
 import {
   getRabbyProvider,
   getBitGetProvider,
@@ -43,7 +47,11 @@ import {
 import type { Hash } from 'viem'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
-import type { ErrorContext, ThrownException } from '@injectivelabs/exceptions'
+import type {
+  ErrorCode,
+  ErrorContext,
+  ThrownException,
+} from '@injectivelabs/exceptions'
 import type {
   TxRaw,
   AminoSignResponse,
@@ -467,12 +475,9 @@ export class EvmWallet
     try {
       await switchEthereumChainWithTimeout(ethereum, chainIdHex, TIMEOUT_MS)
     } catch (error) {
-      const rawCode =
-        (error as any).code ?? (error as any)?.data?.originalError?.code
-      const parsed = rawCode != null ? Number(rawCode) : NaN
-      const errorCode = !isNaN(parsed) ? parsed : undefined
+      const errorCode = extractNormalizedErrorCode(error)
 
-      if (errorCode === 4001) {
+      if (errorCode === EvmWalletProviderErrorCode.UserRejectedRequest) {
         throw this.EvmWalletException(
           new Error(
             `${capitalize(this.wallet || 'wallet')} chain switch was rejected`,
@@ -493,7 +498,7 @@ export class EvmWallet
         })
       }
 
-      if (errorCode !== 4902) {
+      if (errorCode !== EvmWalletProviderErrorCode.UnrecognizedChain) {
         throw this.EvmWalletException(
           new Error(
             `Something went wrong while switching ${capitalize(
@@ -513,7 +518,22 @@ export class EvmWallet
           method: 'wallet_addEthereumChain',
           params: [params],
         })
-      } catch {
+      } catch (addError) {
+        const addErrorCode = extractNormalizedErrorCode(addError)
+
+        if (addErrorCode === EvmWalletProviderErrorCode.UserRejectedRequest) {
+          throw this.EvmWalletException(
+            new Error(
+              `${capitalize(this.wallet || 'wallet')} add chain was rejected`,
+            ),
+            {
+              code: EvmWalletProviderErrorCode.UserRejectedRequest as ErrorCode,
+              type: ErrorType.WalletError,
+              contextModule: WalletAction.GetChainId,
+            },
+          )
+        }
+
         throw this.EvmWalletException(
           new Error(
             `Something went wrong while adding ${capitalize(
@@ -568,15 +588,11 @@ export class EvmWallet
         try {
           await switchEthereumChainWithTimeout(ethereum, chainIdHex, TIMEOUT_MS)
         } catch (postAddError: any) {
-          const postAddRawCode =
-            postAddError?.code ?? postAddError?.data?.originalError?.code
-          const postAddParsed =
-            postAddRawCode != null ? Number(postAddRawCode) : NaN
-          const postAddErrorCode = !isNaN(postAddParsed)
-            ? postAddParsed
-            : undefined
+          const postAddErrorCode = extractNormalizedErrorCode(postAddError)
 
-          if (postAddErrorCode === 4001) {
+          if (
+            postAddErrorCode === EvmWalletProviderErrorCode.UserRejectedRequest
+          ) {
             throw this.EvmWalletException(
               new Error(
                 `${capitalize(

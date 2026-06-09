@@ -29,7 +29,8 @@ reviews:
   auto_review:
     enabled: true
     auto_incremental_review: true
-    drafts: false
+    auto_pause_after_reviewed_commits: 0
+    drafts: true
     base_branches:
       - '.*'
     ignore_title_keywords:
