@@ -9,7 +9,7 @@ import {
 import { getEvmProviderWithFallback } from '../strategy/utils/providerResolver.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { ErrorCode } from '@injectivelabs/exceptions'
-import type { BrowserEip1993Provider, Wallet } from '@injectivelabs/wallet-base'
+import type { Wallet, BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 
 export const getEvmProvider = async (
   wallet: Wallet,
