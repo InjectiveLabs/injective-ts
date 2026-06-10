@@ -11,6 +11,10 @@ import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { ErrorCode } from '@injectivelabs/exceptions'
 import type { Wallet, BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 
+const EVM_WALLET_INVALID_REQUEST_ERROR_CODE = -32600
+const CHAIN_NOT_SUPPORTED_MESSAGE_REGEX =
+  /\b(chain(?:\s+id)?\s+not supported|unsupported\s+chain(?:\s+id)?)\b/
+
 export const getEvmProvider = async (
   wallet: Wallet,
 ): Promise<BrowserEip1993Provider> => {
@@ -56,6 +60,33 @@ export const extractNormalizedErrorCode = (error: unknown): number => {
       : code
 
   return rawCode != null ? Number(rawCode) : NaN
+}
+
+export const isUnrecognizedChainError = (error: unknown) => {
+  const errorCode = extractNormalizedErrorCode(error)
+
+  if (errorCode === EvmWalletProviderErrorCode.UnrecognizedChain) {
+    return true
+  }
+
+  if (errorCode !== EVM_WALLET_INVALID_REQUEST_ERROR_CODE) {
+    return false
+  }
+
+  const normalizedError =
+    error && typeof error === 'object'
+      ? (error as {
+          message?: unknown
+          data?: { originalError?: { message?: unknown } }
+        })
+      : undefined
+  const message = String(
+    normalizedError?.data?.originalError?.message ??
+      normalizedError?.message ??
+      '',
+  ).toLowerCase()
+
+  return CHAIN_NOT_SUPPORTED_MESSAGE_REGEX.test(message)
 }
 
 export const switchEthereumChainWithTimeout = async (
@@ -141,7 +172,7 @@ export const updateEvmNetwork = async (
       throw new WalletException(new Error('Chain switch timed out'))
     }
 
-    if (errorCode !== EvmWalletProviderErrorCode.UnrecognizedChain) {
+    if (!isUnrecognizedChainError(switchError)) {
       throw new WalletException(
         new Error(`Please update your ${capitalize(wallet)} network`),
       )

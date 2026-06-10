@@ -31,6 +31,7 @@ import {
   RainbowWalletException,
 } from '@injectivelabs/exceptions'
 import {
+  isUnrecognizedChainError,
   extractNormalizedErrorCode,
   switchEthereumChainWithTimeout,
 } from '../utils/index.js'
@@ -453,7 +454,7 @@ export class EvmWallet
         })
       }
 
-      if (errorCode !== EvmWalletProviderErrorCode.UnrecognizedChain) {
+      if (!isUnrecognizedChainError(error)) {
         throw this.EvmWalletException(
           new Error(
             `Something went wrong while switching ${capitalize(
