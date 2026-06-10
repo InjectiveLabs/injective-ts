@@ -1,61 +1,17 @@
-import type {
-  BrowserEip1993Provider,
-  WindowWithEip1193Provider,
-} from '@injectivelabs/wallet-base'
+import { Wallet } from '@injectivelabs/wallet-base'
+import { getEvmProviderWithFallback } from './providerResolver.js'
+import type { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 
-const getWindow = () =>
-  (typeof window === 'undefined'
-    ? {}
-    : window) as unknown as WindowWithEip1193Provider
-
-export async function getMetamaskProvider({ timeout } = { timeout: 3000 }) {
-  const provider = getMetamaskFromWindow()
-
-  if (provider) {
-    return provider
-  }
-
-  return listenForMetamaskInitialized({
+export async function getMetamaskProvider(
+  { timeout } = { timeout: 3000 },
+): Promise<BrowserEip1993Provider> {
+  const provider = await getEvmProviderWithFallback(Wallet.Metamask, {
     timeout,
-  }) as Promise<BrowserEip1993Provider>
-}
-
-async function listenForMetamaskInitialized({ timeout } = { timeout: 3000 }) {
-  return new Promise((resolve) => {
-    const handleInitialization = () => {
-      resolve(getMetamaskFromWindow())
-    }
-
-    const $window = getWindow()
-
-    $window.addEventListener('ethereum#initialized', handleInitialization, {
-      once: true,
-    })
-
-    setTimeout(() => {
-      $window.removeEventListener('ethereum#initialized', handleInitialization)
-      resolve(null)
-    }, timeout)
   })
-}
 
-function getMetamaskFromWindow() {
-  const $window = getWindow()
-  const injectedProviderExist =
-    typeof window !== 'undefined' && typeof $window.ethereum !== 'undefined'
-
-  // No injected providers exist.
-  if (!injectedProviderExist) {
-    return
+  if (!provider) {
+    throw new Error(`Please install the ${Wallet.Metamask} wallet extension.`)
   }
 
-  if ($window.ethereum.isMetaMask) {
-    return $window.ethereum
-  }
-
-  if ($window.providers) {
-    return $window.providers.find((p) => p.isMetaMask)
-  }
-
-  return
+  return provider
 }

@@ -31,19 +31,15 @@ import {
   RainbowWalletException,
 } from '@injectivelabs/exceptions'
 import {
+  isUnrecognizedChainError,
   extractNormalizedErrorCode,
   switchEthereumChainWithTimeout,
 } from '../utils/index.js'
 import {
-  getRabbyProvider,
-  getBitGetProvider,
-  getPhantomProvider,
-  getRainbowProvider,
-  getMetamaskProvider,
-  getKeplrEvmProvider,
-  getOkxWalletProvider,
-  getTrustWalletProvider,
-} from './utils/index.js'
+  requestEip6963Providers,
+  listenForEip6963Providers,
+  getEvmProviderWithFallback,
+} from './utils/providerResolver.js'
 import type { Hash } from 'viem'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
@@ -64,7 +60,6 @@ import type {
   BrowserEip1993Provider,
   ConcreteWalletStrategy,
   ConcreteWalletStrategyArgs,
-  EIP6963AnnounceProviderEvent,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 
@@ -91,47 +86,8 @@ export class EvmWallet
     }
 
     if (!isServerSide()) {
-      window.addEventListener(
-        'eip6963:announceProvider',
-        (announcement: any) => {
-          const event = announcement as unknown as EIP6963AnnounceProviderEvent
-          const walletName = event.detail.info.name.toLowerCase()
-
-          // Keplr announces as "Keplr" via EIP6963, not "keplr-evm"
-          if (walletName === 'keplr') {
-            this.evmProviders[Wallet.KeplrEvm] = event.detail.provider
-          }
-
-          if (walletName === Wallet.Metamask.toLowerCase()) {
-            this.evmProviders[Wallet.Metamask] = event.detail.provider
-          }
-
-          if (walletName === 'rabby wallet') {
-            this.evmProviders[Wallet.Rabby] = event.detail.provider
-          }
-
-          if (walletName === Wallet.Rainbow.toLowerCase()) {
-            this.evmProviders[Wallet.Rainbow] = event.detail.provider
-          }
-
-          if (walletName === Wallet.Phantom.toLowerCase()) {
-            this.evmProviders[Wallet.Phantom] = event.detail.provider
-          }
-
-          if (walletName === Wallet.OkxWallet.toLowerCase()) {
-            this.evmProviders[Wallet.OkxWallet] = event.detail.provider
-          }
-
-          if (walletName === Wallet.BitGet.toLowerCase()) {
-            this.evmProviders[Wallet.BitGet] = event.detail.provider
-          }
-
-          if (walletName === Wallet.TrustWallet.toLowerCase()) {
-            this.evmProviders[Wallet.TrustWallet] = event.detail.provider
-          }
-        },
-      )
-      window.dispatchEvent(new Event('eip6963:requestProvider'))
+      listenForEip6963Providers(this.evmProviders)
+      requestEip6963Providers()
     }
 
     this.wallet = args.wallet
@@ -498,7 +454,7 @@ export class EvmWallet
         })
       }
 
-      if (errorCode !== EvmWalletProviderErrorCode.UnrecognizedChain) {
+      if (!isUnrecognizedChainError(error)) {
         throw this.EvmWalletException(
           new Error(
             `Something went wrong while switching ${capitalize(
@@ -623,32 +579,11 @@ export class EvmWallet
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {
-    const evmProvider = this.evmProviders[this.wallet as Wallet]
+    const provider = await getEvmProviderWithFallback(this.wallet as Wallet, {
+      eip6963Providers: this.evmProviders,
+    })
 
-    if (evmProvider) {
-      return evmProvider
-    }
-
-    const backUpProvider =
-      this.wallet === Wallet.Metamask
-        ? await getMetamaskProvider()
-        : this.wallet === Wallet.Rabby
-          ? await getRabbyProvider()
-          : this.wallet === Wallet.Phantom
-            ? await getPhantomProvider()
-            : this.wallet === Wallet.BitGet
-              ? await getBitGetProvider()
-              : this.wallet === Wallet.OkxWallet
-                ? await getOkxWalletProvider()
-                : this.wallet === Wallet.TrustWallet
-                  ? await getTrustWalletProvider()
-                  : this.wallet === Wallet.Rainbow
-                    ? await getRainbowProvider()
-                    : this.wallet === Wallet.KeplrEvm
-                      ? await getKeplrEvmProvider()
-                      : undefined
-
-    if (!backUpProvider) {
+    if (!provider) {
       throw this.EvmWalletException(
         new Error(`Please install the ${this.wallet} wallet extension.`),
         {
@@ -659,6 +594,6 @@ export class EvmWallet
       )
     }
 
-    return backUpProvider
+    return provider
   }
 }
