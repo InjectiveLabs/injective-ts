@@ -233,4 +233,21 @@ describe('EVM provider resolver', () => {
 
     await expect(providerPromise).resolves.toBe(rainbow)
   })
+
+  it('waits for Rainbow initialization event before resolving provider', async () => {
+    vi.useFakeTimers()
+
+    const mockWindow = setupWindow()
+    const rainbow = createProvider({ isRainbow: true })
+
+    const { getEvmProvider } = await import('../../utils/index.js')
+    const providerPromise = getEvmProvider(Wallet.Rainbow)
+
+    await vi.advanceTimersByTimeAsync(250)
+
+    mockWindow.rainbow = rainbow
+    mockWindow.dispatchEvent(new Event('rainbow#initialized'))
+
+    await expect(providerPromise).resolves.toBe(rainbow)
+  })
 })

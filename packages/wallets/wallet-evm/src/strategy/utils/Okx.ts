@@ -5,7 +5,13 @@ import type { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 export async function getOkxWalletProvider(
   { timeout } = { timeout: 3000 },
 ): Promise<BrowserEip1993Provider> {
-  return getEvmProviderWithFallback(Wallet.OkxWallet, {
+  const provider = await getEvmProviderWithFallback(Wallet.OkxWallet, {
     timeout,
-  }) as Promise<BrowserEip1993Provider>
+  })
+
+  if (!provider) {
+    throw new Error(`Please install the ${Wallet.OkxWallet} wallet extension.`)
+  }
+
+  return provider
 }

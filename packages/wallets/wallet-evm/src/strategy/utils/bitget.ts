@@ -5,7 +5,13 @@ import type { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 export async function getBitGetProvider(
   { timeout } = { timeout: 3000 },
 ): Promise<BrowserEip1993Provider> {
-  return getEvmProviderWithFallback(Wallet.BitGet, {
+  const provider = await getEvmProviderWithFallback(Wallet.BitGet, {
     timeout,
-  }) as Promise<BrowserEip1993Provider>
+  })
+
+  if (!provider) {
+    throw new Error(`Please install the ${Wallet.BitGet} wallet extension.`)
+  }
+
+  return provider
 }

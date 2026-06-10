@@ -35,9 +35,9 @@ import {
   switchEthereumChainWithTimeout,
 } from '../utils/index.js'
 import {
-  resolveEvmProvider,
   requestEip6963Providers,
   listenForEip6963Providers,
+  getEvmProviderWithFallback,
 } from './utils/providerResolver.js'
 import type { Hash } from 'viem'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
@@ -578,7 +578,7 @@ export class EvmWallet
   }
 
   private async getEthereum(): Promise<BrowserEip1993Provider> {
-    const provider = await resolveEvmProvider(this.wallet as Wallet, {
+    const provider = await getEvmProviderWithFallback(this.wallet as Wallet, {
       eip6963Providers: this.evmProviders,
     })
 

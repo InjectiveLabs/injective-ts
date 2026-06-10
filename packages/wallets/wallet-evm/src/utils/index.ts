@@ -21,9 +21,7 @@ export const getEvmProvider = async (
   }
 
   try {
-    const provider = (await getEvmProviderWithFallback(
-      wallet,
-    )) as BrowserEip1993Provider
+    const provider = await getEvmProviderWithFallback(wallet)
 
     if (!provider) {
       throw new WalletException(

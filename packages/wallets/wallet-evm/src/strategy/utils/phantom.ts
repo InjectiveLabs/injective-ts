@@ -5,7 +5,13 @@ import type { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
 export async function getPhantomProvider(
   { timeout } = { timeout: 3000 },
 ): Promise<BrowserEip1993Provider> {
-  return getEvmProviderWithFallback(Wallet.Phantom, {
+  const provider = await getEvmProviderWithFallback(Wallet.Phantom, {
     timeout,
-  }) as Promise<BrowserEip1993Provider>
+  })
+
+  if (!provider) {
+    throw new Error(`Please install the ${Wallet.Phantom} wallet extension.`)
+  }
+
+  return provider
 }
