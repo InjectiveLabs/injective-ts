@@ -3,7 +3,10 @@ import { OracleClient } from '@injectivelabs/ws-price-oracle-proto-ts-v2/generat
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerWsPriceOracleStreamTransformer } from '../transformers/index.js'
-import type { WsPriceOracleLatestMarketPricesParams } from '../types/index.js'
+import type {
+  WsPriceOracleLatestMarketPricesParams,
+  WsPriceOracleLatestMarketPricesV2Params,
+} from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -42,6 +45,41 @@ export class IndexerGrpcWsPriceOracleApi extends BaseIndexerGrpcConsumer {
     >(request, this.client.latestMarketPrices.bind(this.client))
 
     return IndexerWsPriceOracleStreamTransformer.latestMarketPricesResponseToLatestMarketPrices(
+      response,
+    )
+  }
+
+  /**
+   * Returns latest stored derivative market index price snapshots with selectable response modes.
+   */
+  async fetchLatestMarketPricesV2(
+    params?: WsPriceOracleLatestMarketPricesV2Params,
+  ) {
+    const { marketIds, oracleTypes, includeInactive, mode } = params || {}
+    const request = GoagenApiOraclePb.LatestMarketPricesV2Request.create()
+
+    if (marketIds && marketIds.length > 0) {
+      request.marketIds = marketIds
+    }
+
+    if (oracleTypes && oracleTypes.length > 0) {
+      request.oracleTypes = oracleTypes
+    }
+
+    if (includeInactive !== undefined) {
+      request.includeInactive = includeInactive
+    }
+
+    if (mode) {
+      request.mode = mode
+    }
+
+    const response = await this.executeGrpcCall<
+      GoagenApiOraclePb.LatestMarketPricesV2Request,
+      GoagenApiOraclePb.LatestMarketPricesV2Response
+    >(request, this.client.latestMarketPricesV2.bind(this.client))
+
+    return IndexerWsPriceOracleStreamTransformer.latestMarketPricesV2ResponseToLatestMarketPricesV2(
       response,
     )
   }

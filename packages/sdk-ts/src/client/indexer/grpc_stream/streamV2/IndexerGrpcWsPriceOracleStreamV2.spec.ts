@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { IndexerGrpcWsPriceOracleStreamV2 } from './IndexerGrpcWsPriceOracleStreamV2.js'
@@ -66,6 +67,45 @@ describe('IndexerGrpcWsPriceOracleStreamV2', () => {
       expect(typeof subscription.unsubscribe).toBe('function')
 
       subscription.unsubscribe()
+    })
+  })
+
+  describe('streamMarketsV2', () => {
+    it('should forward filters and mode', () => {
+      const streamMarketsV2 = vi.fn().mockReturnValue({
+        responses: (async function* emptyStream() {})(),
+      })
+
+      ;(wsPriceOracleStream as any).client = { streamMarketsV2 }
+
+      const subscription = wsPriceOracleStream.streamMarketsV2({
+        marketIds: [marketId],
+        oracleTypes: ['pyth'],
+        includeInactive: false,
+        mode: 'slim',
+        callback: () => {},
+      })
+
+      const [request] = streamMarketsV2.mock.calls[0]
+
+      expect(request).toMatchObject({
+        marketIds: [marketId],
+        oracleTypes: ['pyth'],
+        includeInactive: false,
+        mode: 'slim',
+      })
+      expect(subscription).toBeDefined()
+      expect(typeof subscription.unsubscribe).toBe('function')
+
+      subscription.unsubscribe()
+    })
+
+    it('should throw error if callback is not a function', () => {
+      expect(() => {
+        wsPriceOracleStream.streamMarketsV2({
+          callback: null as any,
+        })
+      }).toThrow('callback must be a function')
     })
   })
 })

@@ -4,10 +4,17 @@ import { createStreamSubscriptionV2 } from './streamHelpersV2.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerWsPriceOracleStreamTransformer } from '../../transformers/index.js'
 import type { StreamSubscription } from '../../../../types/index.js'
+import type { WsPriceOracleResponseMode } from '../../types/index.js'
 
 export type WsPriceOracleMarketsStreamCallbackV2 = (
   response: ReturnType<
     typeof IndexerWsPriceOracleStreamTransformer.streamMarketsCallback
+  >,
+) => void
+
+export type WsPriceOracleMarketsV2StreamCallbackV2 = (
+  response: ReturnType<
+    typeof IndexerWsPriceOracleStreamTransformer.streamMarketsV2Callback
   >,
 ) => void
 
@@ -69,6 +76,59 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
     return createStreamSubscriptionV2(stream, (response) => {
       const transformed =
         IndexerWsPriceOracleStreamTransformer.streamMarketsCallback(response)
+      callback(transformed)
+    })
+  }
+
+  /**
+   * Stream current and live derivative market oracle prices with selectable response modes
+   * @param params.marketIds - Optional market IDs to filter
+   * @param params.oracleTypes - Optional oracle types to filter
+   * @param params.includeInactive - Whether inactive markets should be included
+   * @param params.mode - Optional response mode: full, light, or slim
+   * @param params.callback - Called for each market oracle update
+   * @returns StreamSubscription
+   */
+  streamMarketsV2({
+    mode,
+    callback,
+    marketIds,
+    oracleTypes,
+    includeInactive,
+  }: {
+    marketIds?: string[]
+    oracleTypes?: string[]
+    includeInactive?: boolean
+    mode?: WsPriceOracleResponseMode
+    callback: WsPriceOracleMarketsV2StreamCallbackV2
+  }): StreamSubscription {
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = GoagenApiOraclePb.StreamMarketsV2Request.create()
+
+    if (marketIds && marketIds.length > 0) {
+      request.marketIds = marketIds
+    }
+
+    if (oracleTypes && oracleTypes.length > 0) {
+      request.oracleTypes = oracleTypes
+    }
+
+    if (includeInactive !== undefined) {
+      request.includeInactive = includeInactive
+    }
+
+    if (mode) {
+      request.mode = mode
+    }
+
+    const stream = this.client.streamMarketsV2(request)
+
+    return createStreamSubscriptionV2(stream, (response) => {
+      const transformed =
+        IndexerWsPriceOracleStreamTransformer.streamMarketsV2Callback(response)
       callback(transformed)
     })
   }

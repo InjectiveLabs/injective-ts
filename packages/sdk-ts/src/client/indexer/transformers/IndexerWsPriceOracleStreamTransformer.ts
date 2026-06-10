@@ -1,16 +1,24 @@
 import { bigIntToNumber } from '../../../utils/helpers.js'
 import type * as GoagenApiOraclePb from '@injectivelabs/ws-price-oracle-proto-ts-v2/generated/goagen_api_oracle_pb'
 import type {
+  WsPriceOracleSlimPrices,
   WsPriceOracleMarketPrice,
+  WsPriceOracleResponseMode,
   WsPriceOracleMarketStreamLeg,
   GrpcWsPriceOracleMarketStreamLeg,
   WsPriceOracleStreamMarketsResponse,
   WsPriceOracleMarketStreamRawPayload,
+  WsPriceOracleStreamMarketsV2Response,
   GrpcWsPriceOracleMarketStreamMessage,
+  WsPriceOracleLightMarketStreamMessage,
   GrpcWsPriceOracleStreamMarketsResponse,
   WsPriceOracleLatestMarketPricesResponse,
   GrpcWsPriceOracleMarketStreamRawPayload,
+  GrpcWsPriceOracleStreamMarketsV2Response,
+  GrpcWsPriceOracleLightMarketStreamMessage,
+  WsPriceOracleLatestMarketPricesV2Response,
   GrpcWsPriceOracleLatestMarketPricesResponse,
+  GrpcWsPriceOracleLatestMarketPricesV2Response,
 } from '../types/ws-price-oracle.js'
 
 /**
@@ -43,6 +51,23 @@ export class IndexerWsPriceOracleStreamTransformer {
       encoding: raw.encoding,
       data: raw.data,
     }
+  }
+
+  static grpcLightMarketStreamMessageToLightMarketStreamMessage(
+    response: GrpcWsPriceOracleLightMarketStreamMessage,
+  ): WsPriceOracleLightMarketStreamMessage {
+    return {
+      type: response.type,
+      price: response.price,
+      marketId: response.marketId,
+      timestamp: response.timestamp,
+    }
+  }
+
+  static grpcSlimPricesToSlimPrices(
+    slimPrices: WsPriceOracleSlimPrices,
+  ): WsPriceOracleSlimPrices {
+    return { ...slimPrices }
   }
 
   static grpcMarketStreamMessageToMarketPrice(
@@ -82,6 +107,27 @@ export class IndexerWsPriceOracleStreamTransformer {
     )
   }
 
+  static streamMarketsV2ResponseToStreamMarketsV2(
+    response: GrpcWsPriceOracleStreamMarketsV2Response,
+  ): WsPriceOracleStreamMarketsV2Response {
+    return {
+      mode: response.mode as WsPriceOracleResponseMode,
+      message: response.message
+        ? IndexerWsPriceOracleStreamTransformer.grpcMarketStreamMessageToMarketPrice(
+            response.message,
+          )
+        : undefined,
+      light: response.light
+        ? IndexerWsPriceOracleStreamTransformer.grpcLightMarketStreamMessageToLightMarketStreamMessage(
+            response.light,
+          )
+        : undefined,
+      slim: IndexerWsPriceOracleStreamTransformer.grpcSlimPricesToSlimPrices(
+        response.slim,
+      ),
+    }
+  }
+
   static latestMarketPricesResponseToLatestMarketPrices(
     response: GrpcWsPriceOracleLatestMarketPricesResponse,
   ): WsPriceOracleLatestMarketPricesResponse {
@@ -92,10 +138,35 @@ export class IndexerWsPriceOracleStreamTransformer {
     }
   }
 
+  static latestMarketPricesV2ResponseToLatestMarketPricesV2(
+    response: GrpcWsPriceOracleLatestMarketPricesV2Response,
+  ): WsPriceOracleLatestMarketPricesV2Response {
+    return {
+      mode: response.mode as WsPriceOracleResponseMode,
+      prices: response.prices.map(
+        IndexerWsPriceOracleStreamTransformer.grpcMarketStreamMessageToMarketPrice,
+      ),
+      lightPrices: response.lightPrices.map(
+        IndexerWsPriceOracleStreamTransformer.grpcLightMarketStreamMessageToLightMarketStreamMessage,
+      ),
+      slimPrices:
+        IndexerWsPriceOracleStreamTransformer.grpcSlimPricesToSlimPrices(
+          response.slimPrices,
+        ),
+    }
+  }
+
   static streamMarketsCallback = (
     response: GoagenApiOraclePb.StreamMarketsResponse,
   ) =>
     IndexerWsPriceOracleStreamTransformer.streamMarketsResponseToStreamMarkets(
+      response,
+    )
+
+  static streamMarketsV2Callback = (
+    response: GoagenApiOraclePb.StreamMarketsV2Response,
+  ) =>
+    IndexerWsPriceOracleStreamTransformer.streamMarketsV2ResponseToStreamMarketsV2(
       response,
     )
 }

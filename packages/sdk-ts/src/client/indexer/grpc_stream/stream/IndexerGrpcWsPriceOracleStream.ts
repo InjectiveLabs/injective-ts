@@ -4,11 +4,20 @@ import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerWsPriceOracleStreamTransformer } from '../../transformers/index.js'
 import type { Subscription } from 'rxjs'
-import type { StreamStatusResponse } from '../../types/index.js'
+import type {
+  StreamStatusResponse,
+  WsPriceOracleResponseMode,
+} from '../../types/index.js'
 
 export type WsPriceOracleMarketsStreamCallback = (
   response: ReturnType<
     typeof IndexerWsPriceOracleStreamTransformer.streamMarketsCallback
+  >,
+) => void
+
+export type WsPriceOracleMarketsV2StreamCallback = (
+  response: ReturnType<
+    typeof IndexerWsPriceOracleStreamTransformer.streamMarketsV2Callback
   >,
 ) => void
 
@@ -40,11 +49,11 @@ export class IndexerGrpcWsPriceOracleStream {
    * @returns Subscription object with unsubscribe method
    */
   streamMarkets({
+    callback,
     marketIds,
     oracleTypes,
-    includeInactive,
-    callback,
     onEndCallback,
+    includeInactive,
     onStatusCallback,
   }: {
     marketIds?: string[]
@@ -79,6 +88,73 @@ export class IndexerGrpcWsPriceOracleStream {
       (response: GoagenApiOraclePb.StreamMarketsResponse) => {
         callback(
           IndexerWsPriceOracleStreamTransformer.streamMarketsCallback(response),
+        )
+      },
+      onEndCallback,
+      onStatusCallback,
+    )
+  }
+
+  /**
+   * Stream current and live derivative market oracle prices with selectable response modes
+   * @param params - Stream parameters
+   * @param params.marketIds - Optional market IDs to filter
+   * @param params.oracleTypes - Optional oracle types to filter
+   * @param params.includeInactive - Whether inactive markets should be included
+   * @param params.mode - Optional response mode: full, light, or slim
+   * @param params.callback - Called for each market oracle update
+   * @param params.onEndCallback - Called when stream ends normally
+   * @param params.onStatusCallback - Called on stream errors
+   * @returns Subscription object with unsubscribe method
+   */
+  streamMarketsV2({
+    mode,
+    callback,
+    marketIds,
+    oracleTypes,
+    onEndCallback,
+    includeInactive,
+    onStatusCallback,
+  }: {
+    marketIds?: string[]
+    oracleTypes?: string[]
+    includeInactive?: boolean
+    mode?: WsPriceOracleResponseMode
+    callback: WsPriceOracleMarketsV2StreamCallback
+    onEndCallback?: (status?: StreamStatusResponse) => void
+    onStatusCallback?: (status: StreamStatusResponse) => void
+  }): Subscription {
+    if (typeof callback !== 'function') {
+      throw new Error('callback must be a function')
+    }
+
+    const request = GoagenApiOraclePb.StreamMarketsV2Request.create()
+
+    if (marketIds && marketIds.length > 0) {
+      request.marketIds = marketIds
+    }
+
+    if (oracleTypes && oracleTypes.length > 0) {
+      request.oracleTypes = oracleTypes
+    }
+
+    if (includeInactive !== undefined) {
+      request.includeInactive = includeInactive
+    }
+
+    if (mode) {
+      request.mode = mode
+    }
+
+    const stream = this.client.streamMarketsV2(request)
+
+    return createStreamSubscription(
+      stream,
+      (response: GoagenApiOraclePb.StreamMarketsV2Response) => {
+        callback(
+          IndexerWsPriceOracleStreamTransformer.streamMarketsV2Callback(
+            response,
+          ),
         )
       },
       onEndCallback,
