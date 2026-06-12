@@ -92,8 +92,7 @@
       "next": "file:./etc/noop",
       "@ethereumjs/tx": "^4.1.1",
       "@solana/web3.js": "1.98.0",
-      "@ethereumjs/common": "3.2.0",
-      "@injectivelabs/sdk-ts": "link:packages/sdk-ts"
+      "@ethereumjs/common": "3.2.0"
     }
   },
   "dependencies": {

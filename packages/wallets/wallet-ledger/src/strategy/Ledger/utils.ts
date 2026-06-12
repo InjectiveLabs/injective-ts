@@ -52,33 +52,36 @@ export function isEIP712PayloadTooBig(eip712Payload: any) {
   try {
     // Check 1: Total payload size
     const totalSize = JSON.stringify(eip712Payload).length
+
     if (totalSize > LIMITS.MAX_TOTAL_SIZE) {
-      console.log(
-        `❌ Total payload size (${totalSize} bytes) exceeds limit (${LIMITS.MAX_TOTAL_SIZE} bytes)`,
-      )
+      // console.log(
+      //   `❌ Total payload size (${totalSize} bytes) exceeds limit (${LIMITS.MAX_TOTAL_SIZE} bytes)`,
+      // )
       return true
     }
 
     // Check 2: Message msgs field size
     if (eip712Payload.message?.msgs) {
       const msgsSize = eip712Payload.message.msgs.length
+
       if (msgsSize > LIMITS.MAX_MSGS_SIZE) {
-        console.log(
-          `❌ msgs field size (${msgsSize} bytes) exceeds limit (${LIMITS.MAX_MSGS_SIZE} bytes)`,
-        )
+        // console.log(
+        //   `❌ msgs field size (${msgsSize} bytes) exceeds limit (${LIMITS.MAX_MSGS_SIZE} bytes)`,
+        // )
         return true
       }
 
       // Check 3: Count number of messages in the array
       try {
         const msgsArray = JSON.parse(eip712Payload.message.msgs)
+
         if (
           Array.isArray(msgsArray) &&
           msgsArray.length > LIMITS.MAX_MESSAGE_COUNT
         ) {
-          console.log(
-            `❌ Message count (${msgsArray.length}) exceeds limit (${LIMITS.MAX_MESSAGE_COUNT})`,
-          )
+          // console.log(
+          //   `❌ Message count (${msgsArray.length}) exceeds limit (${LIMITS.MAX_MESSAGE_COUNT})`,
+          // )
           return true
         }
 
@@ -86,10 +89,11 @@ export function isEIP712PayloadTooBig(eip712Payload: any) {
         for (const msg of msgsArray) {
           if (msg.msg && typeof msg.msg === 'string') {
             const escapeCount = (msg.msg.match(/\\\\/g) || []).length
+
             if (escapeCount > 10) {
-              console.log(
-                `❌ Detected deeply nested/escaped JSON (${escapeCount} escape sequences)`,
-              )
+              // console.log(
+              //   `❌ Detected deeply nested/escaped JSON (${escapeCount} escape sequences)`,
+              // )
               return true
             }
           }
@@ -103,10 +107,11 @@ export function isEIP712PayloadTooBig(eip712Payload: any) {
     // Check 5: Context field size
     if (eip712Payload.message?.context) {
       const contextSize = eip712Payload.message.context.length
+
       if (contextSize > LIMITS.MAX_CONTEXT_SIZE) {
-        console.log(
-          `❌ context field size (${contextSize} bytes) exceeds limit (${LIMITS.MAX_CONTEXT_SIZE} bytes)`,
-        )
+        // console.log(
+        //   `❌ context field size (${contextSize} bytes) exceeds limit (${LIMITS.MAX_CONTEXT_SIZE} bytes)`,
+        // )
         return true
       }
     }

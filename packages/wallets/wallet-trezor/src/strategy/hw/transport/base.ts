@@ -49,7 +49,7 @@ export default class BaseTrezorTransport {
         manifest: TREZOR_CONNECT_MANIFEST,
         // 'popup' mode opens a popup window on connect.trezor.io for each operation
         // This is more reliable than 'iframe' mode which requires Trezor Bridge
-        coreMode: 'popup',
+        coreMode: 'auto',
         // Timeout in seconds for user interactions (PIN entry, confirmations)
         interactionTimeout: 600,
       })

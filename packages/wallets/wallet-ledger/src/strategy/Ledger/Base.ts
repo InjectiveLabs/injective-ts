@@ -217,18 +217,18 @@ export default class LedgerBase
     const object = JSON.parse(eip712json)
 
     if (isEIP712PayloadTooBig(object)) {
-      console.log('Payload is too big, signing with hashed message')
+      // console.log('Payload is too big, signing with hashed message')
       return this.signEIP712HashedMessage(derivationPath, object)
     }
 
     try {
-      console.log('Payload is not too big, signing with message')
+      // console.log('Payload is not too big, signing with message')
       const ledger = await this.ledger.getInstance()
       const result = await ledger.signEIP712Message(derivationPath, object)
 
       return this.formatSignatureResult(result)
     } catch (e: unknown) {
-      console.log('Error signing EIP712 message:', e)
+      // console.log('Error signing EIP712 message:', e)
       const errorMessage = (e as any).message
       const isKnownNanoSError =
         errorMessage.includes('instruction not supported') ||
