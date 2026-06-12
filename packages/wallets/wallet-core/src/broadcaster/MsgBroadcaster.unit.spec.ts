@@ -44,6 +44,11 @@ const makeValidTxRawBytes = () => {
   return CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw)
 }
 
+const makeMessage = () =>
+  ({
+    toDirectSign: () => ({ type: '/cosmos.bank.v1beta1.MsgSend' }),
+  }) as any
+
 const createMockWalletStrategy = () =>
   ({
     wallet: 'keplr',
@@ -303,6 +308,114 @@ describe('MsgBroadcaster event emission order', () => {
       )
       expect(emitCalls).not.toContain(
         WalletStrategyEmitterEventType.TransactionBroadcastEnd,
+      )
+    })
+  })
+
+  describe('sendTransaction broadcast callback', () => {
+    it('emits BroadcastSynced from onBroadcast before waiting for confirmation', async () => {
+      const events: string[] = []
+      const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create({
+        bodyBytes: new Uint8Array([1]),
+        authInfoBytes: new Uint8Array([2]),
+        signatures: [new Uint8Array([3])],
+      })
+      const wait = vi.fn().mockImplementation(async () => {
+        events.push('wait:start')
+
+        return makeTxResponse('MOCK_TX_HASH')
+      })
+
+      broadcaster = new MsgBroadcaster({
+        network: Network.Devnet,
+        walletStrategy: mockStrategy,
+        endpoints: {
+          indexer: 'http://localhost:8888',
+          grpc: 'http://localhost:9901',
+          rest: 'http://localhost:10337',
+          rpc: 'http://localhost:26657',
+        },
+        txInclusion: {
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          pollingInterval: 100,
+        },
+      })
+
+      vi.spyOn(
+        broadcaster as any,
+        'fetchAccountAndBlockDetails',
+      ).mockResolvedValue({
+        latestHeight: '100',
+        baseAccount: {
+          accountNumber: 1,
+          sequence: 1,
+          pubKey: { key: 'mockPubKeyBase64' },
+        },
+      })
+      vi.spyOn(
+        broadcaster as any,
+        'getTxWithSignersAndStdFee',
+      ).mockResolvedValue({
+        txRaw,
+        stdFee: {},
+      })
+      vi.spyOn(
+        broadcaster as any,
+        'prepareTxInclusionWaiter',
+      ).mockResolvedValue({
+        txHash: 'MOCK_TX_HASH',
+        inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+        close: vi.fn(),
+        wait,
+      })
+      ;(mockStrategy.emit as ReturnType<typeof vi.fn>).mockImplementation(
+        (event: string) => {
+          events.push(event)
+
+          return true
+        },
+      )
+      ;(
+        mockStrategy.sendTransaction as ReturnType<typeof vi.fn>
+      ).mockImplementation(async (_transaction: unknown, options: any) => {
+        events.push('sendTransaction:start')
+        options.onBroadcast('MOCK_TX_HASH')
+        events.push('sendTransaction:end')
+
+        return makeTxResponse('MOCK_TX_HASH')
+      })
+
+      await (broadcaster as any).broadcastDirectSign({
+        msgs: makeMessage(),
+        ethereumAddress: '0x0000000000000000000000000000000000000001',
+        injectiveAddress: 'inj1test',
+      })
+
+      const syncedEvents = events.filter(
+        (event) =>
+          event === WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+      )
+      const syncedIndex = events.indexOf(
+        WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+      )
+
+      expect(syncedEvents).toHaveLength(1)
+      expect(syncedIndex).toBeGreaterThan(
+        events.indexOf('sendTransaction:start'),
+      )
+      expect(syncedIndex).toBeLessThan(events.indexOf('wait:start'))
+      expect(mockStrategy.sendTransaction).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          onBroadcast: expect.any(Function),
+          txInclusion: expect.objectContaining({
+            inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+            pollingInterval: 100,
+            eventInclusion: expect.objectContaining({
+              rpcEndpoint: 'http://localhost:26657',
+            }),
+          }),
+        }),
       )
     })
   })

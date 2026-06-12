@@ -132,7 +132,7 @@ export class LedgerCosmos
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints, txTimeout } = options
+    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -143,7 +143,11 @@ export class LedgerCosmos
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, { txTimeout })
+    const response = await txApi.broadcast(transaction, {
+      txTimeout,
+      ...txInclusion,
+      onBroadcast,
+    })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

@@ -1,11 +1,14 @@
 import type { StdSignDoc } from '@keplr-wallet/types'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
-import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
   ChainId,
   EvmChainId,
   AccountAddress,
 } from '@injectivelabs/ts-types'
+import type {
+  TxResponse,
+  TxClientInclusionOptions,
+} from '@injectivelabs/sdk-ts/core/tx'
 import type {
   TxRaw,
   AminoSignResponse,
@@ -58,6 +61,8 @@ export interface SendTransactionOptions {
   address: string
   chainId: ChainId
   txTimeout?: number
+  txInclusion?: TxClientInclusionOptions
+  onBroadcast?: (txHash: string) => void
   endpoints: {
     rest: string
     grpc: string
@@ -225,6 +230,8 @@ export interface ConcreteWalletStrategy extends Omit<
       address: string
       chainId: ChainId
       txTimeout?: number
+      txInclusion?: TxClientInclusionOptions
+      onBroadcast?: (txHash: string) => void
       endpoints?: {
         rest: string
         grpc: string

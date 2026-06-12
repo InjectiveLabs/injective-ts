@@ -593,16 +593,18 @@ export class MsgBroadcaster {
         chainId,
         endpoints,
         txTimeout: txTimeoutInBlocks,
+        txInclusion: this.resolveTxInclusionOptions(tx),
         address: tx.injectiveAddress,
+        onBroadcast: () => {
+          walletStrategy.emit(
+            WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+          )
+        },
       })
     } catch (e) {
       inclusionWaiter.close()
       throw e
     }
-
-    walletStrategy.emit(
-      WalletStrategyEmitterEventType.TransactionBroadcastSynced,
-    )
 
     const confirmedTx = await this.waitForPreparedTxInclusion({
       tx,
@@ -746,16 +748,18 @@ export class MsgBroadcaster {
         chainId,
         endpoints,
         txTimeout: txTimeoutInBlocks,
+        txInclusion: this.resolveTxInclusionOptions(tx),
         address: tx.injectiveAddress,
+        onBroadcast: () => {
+          walletStrategy.emit(
+            WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+          )
+        },
       })
     } catch (e) {
       inclusionWaiter.close()
       throw e
     }
-
-    walletStrategy.emit(
-      WalletStrategyEmitterEventType.TransactionBroadcastSynced,
-    )
 
     const confirmedTx = await this.waitForPreparedTxInclusion({
       tx,
@@ -1016,15 +1020,17 @@ export class MsgBroadcaster {
           endpoints,
           address: tx.injectiveAddress,
           txTimeout: txTimeoutInBlocks,
+          txInclusion: this.resolveTxInclusionOptions(tx),
+          onBroadcast: () => {
+            walletStrategy.emit(
+              WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+            )
+          },
         })
       } catch (e) {
         inclusionWaiter.close()
         throw e
       }
-
-      walletStrategy.emit(
-        WalletStrategyEmitterEventType.TransactionBroadcastSynced,
-      )
 
       const confirmedTx = await this.waitForPreparedTxInclusion({
         tx,
@@ -1064,16 +1070,18 @@ export class MsgBroadcaster {
         chainId,
         endpoints,
         txTimeout: txTimeoutInBlocks,
+        txInclusion: this.resolveTxInclusionOptions(tx),
         address: tx.injectiveAddress,
+        onBroadcast: () => {
+          walletStrategy.emit(
+            WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+          )
+        },
       })
     } catch (e) {
       inclusionWaiter.close()
       throw e
     }
-
-    walletStrategy.emit(
-      WalletStrategyEmitterEventType.TransactionBroadcastSynced,
-    )
 
     const confirmedTx = await this.waitForPreparedTxInclusion({
       tx,

@@ -208,6 +208,8 @@ export class CosmosWalletStrategy
     try {
       const txHash = await cosmosWallet.broadcastTx(txRaw)
 
+      options.onBroadcast?.(txHash)
+
       return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
       if (e instanceof TransactionException) {

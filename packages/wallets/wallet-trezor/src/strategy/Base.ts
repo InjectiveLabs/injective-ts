@@ -214,7 +214,7 @@ export default class TrezorBase
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints, txTimeout } = options
+    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
 
     if (!endpoints) {
       throw new WalletException(
@@ -225,7 +225,11 @@ export default class TrezorBase
     }
 
     const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, { txTimeout })
+    const response = await txApi.broadcast(transaction, {
+      txTimeout,
+      ...txInclusion,
+      onBroadcast,
+    })
 
     if (response.code !== 0) {
       throw new TransactionException(new Error(response.rawLog), {

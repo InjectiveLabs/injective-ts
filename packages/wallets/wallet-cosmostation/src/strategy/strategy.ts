@@ -42,13 +42,14 @@ import type {
   AccountAddress,
 } from '@injectivelabs/ts-types'
 import type {
-  StdSignDoc,
-  ConcreteWalletStrategy,
-} from '@injectivelabs/wallet-base'
-import type {
   AminoSignResponse,
   DirectSignResponse,
 } from '@injectivelabs/sdk-ts/types'
+import type {
+  StdSignDoc,
+  SendTransactionOptions,
+  ConcreteWalletStrategy,
+} from '@injectivelabs/wallet-base'
 
 /**
  * Get an offline signer from the Cosmostation extension.
@@ -238,7 +239,10 @@ export class Cosmostation
 
   async sendTransaction(
     transaction: DirectSignResponse | CosmosTxV1Beta1TxPb.TxRaw,
-    _options: { address: AccountAddress; chainId: ChainId },
+    options: Pick<
+      SendTransactionOptions,
+      'address' | 'chainId' | 'onBroadcast'
+    >,
   ): Promise<TxResponse> {
     const provider = this.getProvider()
     const txRaw = createTxRawFromSigResponse(transaction)
@@ -256,6 +260,10 @@ export class Cosmostation
             mode: SEND_TRANSACTION_MODE.SYNC,
           },
         })
+
+      if (Number(response.tx_response.code || 0) === 0) {
+        options.onBroadcast?.(response.tx_response.txhash as string)
+      }
 
       return {
         ...response.tx_response,
