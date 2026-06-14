@@ -1,5 +1,5 @@
 import { CosmosChainId } from '@injectivelabs/ts-types'
-import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts/proto/cosmos-tx'
 import {
   uint8ArrayToHex,
   stringToUint8Array,

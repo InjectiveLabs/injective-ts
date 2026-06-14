@@ -19,6 +19,9 @@
       ],
       "@injectivelabs/wallet-base": [
         "../wallet-base/src/index.ts"
+      ],
+      "@injectivelabs/wallet-base/light": [
+        "../wallet-base/src/light.ts"
       ]
     }
   },

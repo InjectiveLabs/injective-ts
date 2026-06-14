@@ -1,12 +1,12 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import { BaseWalletStrategy } from '@injectivelabs/wallet-core'
-import { Wallet, isCosmosWallet } from '@injectivelabs/wallet-base'
+import { BaseWalletStrategy } from '@injectivelabs/wallet-core/strategy'
+import { Wallet, isCosmosWallet } from '@injectivelabs/wallet-base/light'
 import { loadCosmosWalletStrategy } from './lib.js'
 import type {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
-} from '@injectivelabs/wallet-base'
+} from '@injectivelabs/wallet-base/light'
 import type { CosmosWalletStrategyArguments } from './types.js'
 
 const createStrategy = async ({

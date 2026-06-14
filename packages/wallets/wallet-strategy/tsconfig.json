@@ -8,6 +8,12 @@
       "@injectivelabs/wallet-core": [
         "../wallet-core/src/index.ts"
       ],
+      "@injectivelabs/wallet-core/strategy": [
+        "../wallet-core/src/strategy/index.ts"
+      ],
+      "@injectivelabs/wallet-base/light": [
+        "../wallet-base/src/light.ts"
+      ],
       "@injectivelabs/wallet-evm": [
         "../wallet-evm/src/index.ts"
       ],

@@ -33,6 +33,26 @@
         "types": "./dist/cjs/index.d.cts",
         "default": "./dist/cjs/index.cjs"
       }
+    },
+    "./light": {
+      "react-native": {
+        "import": "./dist/esm/light.js",
+        "require": "./dist/cjs/light.cjs",
+        "types": "./dist/cjs/light.d.cts",
+        "default": "./dist/cjs/light.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/light.d.cts",
+        "default": "./dist/cjs/light.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/light.d.ts",
+        "default": "./dist/esm/light.js"
+      },
+      "default": {
+        "types": "./dist/cjs/light.d.cts",
+        "default": "./dist/cjs/light.cjs"
+      }
     }
   },
   "main": "dist/cjs/index.cjs",

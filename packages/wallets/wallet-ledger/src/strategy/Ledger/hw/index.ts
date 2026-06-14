@@ -1,7 +1,4 @@
 import { LedgerException } from '@injectivelabs/exceptions'
-import EIP712CAL from '@ledgerhq/cryptoassets-evm-signatures/data/eip712'
-import EIP712CALV2 from '@ledgerhq/cryptoassets-evm-signatures/data/eip712_v2'
-import { signatures as erc20Signatures } from '@ledgerhq/cryptoassets-evm-signatures/data/evm/index'
 import AccountManager from './AccountManager.js'
 import {
   loadEthType,
@@ -12,6 +9,38 @@ import type Eth from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
 
 type EthereumApp = Eth
+
+type LedgerSignatureData = {
+  staticERC20Signatures: unknown
+  staticEIP712SignaturesV1: unknown
+  staticEIP712SignaturesV2: unknown
+}
+
+let cachedSignatureData: LedgerSignatureData | null = null
+
+const loadLedgerSignatureData = async (): Promise<LedgerSignatureData> => {
+  if (cachedSignatureData) {
+    return cachedSignatureData
+  }
+
+  const [
+    { default: staticEIP712SignaturesV1 },
+    { default: staticEIP712SignaturesV2 },
+    { signatures: staticERC20Signatures },
+  ] = await Promise.all([
+    import('@ledgerhq/cryptoassets-evm-signatures/data/eip712'),
+    import('@ledgerhq/cryptoassets-evm-signatures/data/eip712_v2'),
+    import('@ledgerhq/cryptoassets-evm-signatures/data/evm/index'),
+  ])
+
+  cachedSignatureData = {
+    staticERC20Signatures,
+    staticEIP712SignaturesV1,
+    staticEIP712SignaturesV2,
+  }
+
+  return cachedSignatureData
+}
 
 export default class LedgerTransport {
   private ledger: EthereumApp | null = null
@@ -60,14 +89,13 @@ export default class LedgerTransport {
 
     if (!this.ledger) {
       const transport = await LedgerTransport.getTransport()
+      const signatureData = await loadLedgerSignatureData()
 
       this.ledger = new EthereumApp(transport, 'w0w', {
         calServiceURL: undefined,
         cryptoassetsBaseURL: undefined,
 
-        staticERC20Signatures: erc20Signatures,
-        staticEIP712SignaturesV1: EIP712CAL,
-        staticEIP712SignaturesV2: EIP712CALV2,
+        ...signatureData,
       })
 
       transport.on('disconnect', () => {

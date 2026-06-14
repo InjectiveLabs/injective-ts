@@ -116,6 +116,7 @@ const SUBPATH_MAPPINGS = {
   getInjectiveSignerAddress: '/core/tx',
   SIGN_DIRECT: '/core/tx',
   SIGN_AMINO: '/core/tx',
+  CosmosTxV1Beta1TxPb: '/proto/cosmos-tx',
 
   // types
   TxRaw: '/types',
@@ -143,7 +144,6 @@ const SUBPATH_MAPPINGS = {
 
 // Known exceptions that should stay in barrel import
 const BARREL_EXCEPTIONS = [
-  'CosmosTxV1Beta1TxPb',
   'ofacWallets',
   // Proto types that are only in barrel
   /^Cosmos.*Pb$/,
@@ -179,7 +179,7 @@ export default {
       useSubpath:
         'Import "{{importName}}" from "@injectivelabs/sdk-ts{{subpath}}" instead of the barrel import for better tree-shaking.',
       avoidBarrel:
-        'Avoid importing from "@injectivelabs/sdk-ts" barrel. Use subpath imports like /client/indexer, /client/chain, /core/modules, /core/accounts, /core/tx, /types, /utils, or /service.',
+        'Avoid importing from "@injectivelabs/sdk-ts" barrel. Use subpath imports like /client/indexer, /client/chain, /core/modules, /core/accounts, /core/tx, /proto/cosmos-tx, /types, /utils, or /service.',
     },
   },
 
@@ -207,11 +207,6 @@ export default {
         for (const specifier of specifiers) {
           const importName = specifier.imported.name
 
-          // Skip exceptions (proto types, etc.)
-          if (isException(importName)) {
-            continue
-          }
-
           // Check if we know the subpath for this import
           const subpath = SUBPATH_MAPPINGS[importName]
 
@@ -221,13 +216,19 @@ export default {
               messageId: 'useSubpath',
               data: { importName, subpath },
             })
-          } else {
-            // Unknown import from barrel - warn about it
-            context.report({
-              node: specifier,
-              messageId: 'avoidBarrel',
-            })
+            continue
           }
+
+          // Skip exceptions (proto types, etc.)
+          if (isException(importName)) {
+            continue
+          }
+
+          // Unknown import from barrel - warn about it
+          context.report({
+            node: specifier,
+            messageId: 'avoidBarrel',
+          })
         }
       },
     }

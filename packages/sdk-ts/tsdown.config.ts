@@ -18,6 +18,7 @@ export default defineConfig({
     'core/modules': './src/core/modules/index.ts',
     'core/accounts': './src/core/accounts/index.ts',
     'core/tx': './src/core/tx/index.ts',
+    'proto/cosmos-tx': './src/proto/cosmos-tx.ts',
     types: './src/types/index.ts',
     utils: './src/utils/index.ts',
     service: './src/service/index.ts',

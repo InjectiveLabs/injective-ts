@@ -33,6 +33,46 @@
         "types": "./dist/cjs/index.d.cts",
         "default": "./dist/cjs/index.cjs"
       }
+    },
+    "./strategy": {
+      "react-native": {
+        "import": "./dist/esm/strategy.js",
+        "require": "./dist/cjs/strategy.cjs",
+        "types": "./dist/cjs/strategy.d.cts",
+        "default": "./dist/cjs/strategy.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/strategy.d.cts",
+        "default": "./dist/cjs/strategy.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/strategy.d.ts",
+        "default": "./dist/esm/strategy.js"
+      },
+      "default": {
+        "types": "./dist/cjs/strategy.d.cts",
+        "default": "./dist/cjs/strategy.cjs"
+      }
+    },
+    "./broadcaster": {
+      "react-native": {
+        "import": "./dist/esm/broadcaster.js",
+        "require": "./dist/cjs/broadcaster.cjs",
+        "types": "./dist/cjs/broadcaster.d.cts",
+        "default": "./dist/cjs/broadcaster.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/broadcaster.d.cts",
+        "default": "./dist/cjs/broadcaster.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/broadcaster.d.ts",
+        "default": "./dist/esm/broadcaster.js"
+      },
+      "default": {
+        "types": "./dist/cjs/broadcaster.d.cts",
+        "default": "./dist/cjs/broadcaster.cjs"
+      }
     }
   },
   "main": "dist/cjs/index.cjs",

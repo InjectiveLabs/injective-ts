@@ -1,8 +1,11 @@
 import { defineConfig } from 'tsdown'
-import { createSimpleOnSuccess } from '../../../etc/tsdown-helpers.js'
+import { createNestedOnSuccess } from '../../../etc/tsdown-helpers.js'
 
 export default defineConfig({
-  entry: './src/index.ts',
+  entry: {
+    index: './src/index.ts',
+    light: './src/light.ts',
+  },
   format: ['cjs', 'esm'],
   dts: true,
   clean: true,
@@ -34,5 +37,5 @@ export default defineConfig({
     'url',
     'assert',
   ],
-  onSuccess: createSimpleOnSuccess(),
+  onSuccess: createNestedOnSuccess(),
 })

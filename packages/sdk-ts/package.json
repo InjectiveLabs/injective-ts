@@ -254,6 +254,26 @@
         "default": "./dist/cjs/core/tx.cjs"
       }
     },
+    "./proto/cosmos-tx": {
+      "react-native": {
+        "import": "./dist/esm/proto/cosmos-tx.js",
+        "require": "./dist/cjs/proto/cosmos-tx.cjs",
+        "types": "./dist/cjs/proto/cosmos-tx.d.cts",
+        "default": "./dist/cjs/proto/cosmos-tx.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/proto/cosmos-tx.d.cts",
+        "default": "./dist/cjs/proto/cosmos-tx.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/proto/cosmos-tx.d.ts",
+        "default": "./dist/esm/proto/cosmos-tx.js"
+      },
+      "default": {
+        "types": "./dist/cjs/proto/cosmos-tx.d.cts",
+        "default": "./dist/cjs/proto/cosmos-tx.cjs"
+      }
+    },
     "./types": {
       "react-native": {
         "import": "./dist/esm/types.js",

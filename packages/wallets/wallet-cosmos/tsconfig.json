@@ -7,6 +7,12 @@
       ],
       "@injectivelabs/wallet-base": [
         "../wallet-base/src/index.ts"
+      ],
+      "@injectivelabs/wallet-base/light": [
+        "../wallet-base/src/light.ts"
+      ],
+      "@injectivelabs/sdk-ts/proto/cosmos-tx": [
+        "../../sdk-ts/src/proto/cosmos-tx.ts"
       ]
     }
   },

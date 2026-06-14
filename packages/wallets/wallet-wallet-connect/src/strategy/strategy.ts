@@ -1,9 +1,7 @@
-import { createAppKit } from '@reown/appkit'
 import { sleep } from '@injectivelabs/utils'
 import { toUtf8 } from '@injectivelabs/sdk-ts/utils'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
-import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import {
   ErrorType,
   WalletException,
@@ -45,13 +43,14 @@ export class WalletConnect
   implements ConcreteWalletStrategy
 {
   private static appKit: AppKit | undefined
+  private static appKitPromise: Promise<AppKit> | undefined
   private static sessionRestorePromise: Promise<void> | undefined
 
   async getWalletDeviceType(): Promise<WalletDeviceType> {
     return Promise.resolve(WalletDeviceType.Browser)
   }
 
-  private createAppKit(): AppKit {
+  private async createAppKit(): Promise<AppKit> {
     const projectId = this.metadata?.walletConnect?.projectId as string
 
     if (!projectId) {
@@ -69,7 +68,27 @@ export class WalletConnect
       return WalletConnect.appKit
     }
 
+    if (WalletConnect.appKitPromise) {
+      return WalletConnect.appKitPromise
+    }
+
+    WalletConnect.appKitPromise = this.createAppKitInstance(projectId).catch(
+      (e) => {
+        WalletConnect.appKitPromise = undefined
+
+        throw e
+      },
+    )
+
+    return WalletConnect.appKitPromise
+  }
+
+  private async createAppKitInstance(projectId: string): Promise<AppKit> {
     const chainId = this.evmChainId || EvmChainId.Mainnet
+    const [{ createAppKit }, { EthersAdapter }] = await Promise.all([
+      import('@reown/appkit'),
+      import('@reown/appkit-adapter-ethers'),
+    ])
 
     WalletConnect.appKit = createAppKit({
       projectId,
@@ -149,7 +168,7 @@ export class WalletConnect
   }
 
   async initStrategy(): Promise<void> {
-    this.createAppKit()
+    await this.createAppKit()
 
     if (WalletConnect.sessionRestorePromise) {
       await WalletConnect.sessionRestorePromise
@@ -157,7 +176,9 @@ export class WalletConnect
   }
 
   private async getProvider(): Promise<Provider> {
-    return this.createAppKit().getUniversalProvider()
+    const modal = await this.createAppKit()
+
+    return modal.getUniversalProvider()
   }
 
   private async getWalletProvider(
@@ -179,7 +200,7 @@ export class WalletConnect
 
   private async getAppKit(): Promise<AppKit> {
     await this.initStrategy()
-    const modal = this.createAppKit()
+    const modal = await this.createAppKit()
 
     if (!modal.getIsConnectedState()) {
       throw new WalletException(
@@ -197,7 +218,7 @@ export class WalletConnect
 
   async enable(): Promise<boolean> {
     await this.initStrategy()
-    const modal = this.createAppKit()
+    const modal = await this.createAppKit()
 
     if (modal.getIsConnectedState()) {
       return true
@@ -209,7 +230,7 @@ export class WalletConnect
   }
 
   private async connect(): Promise<void> {
-    const modal = this.createAppKit()
+    const modal = await this.createAppKit()
 
     if (modal.getIsConnectedState()) {
       return
@@ -255,7 +276,7 @@ export class WalletConnect
 
   async disconnect(): Promise<void> {
     try {
-      const modal = this.createAppKit()
+      const modal = await this.createAppKit()
       const provider = modal.getWalletProvider() as
         | (Eip1193Provider & {
             removeListener?: (e: string, h: unknown) => void

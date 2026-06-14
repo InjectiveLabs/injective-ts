@@ -5,6 +5,9 @@
       "@injectivelabs/sdk-ts": [
         "../../sdk-ts/src/index.ts"
       ],
+      "@injectivelabs/sdk-ts/proto/cosmos-tx": [
+        "../../sdk-ts/src/proto/cosmos-tx.ts"
+      ],
       "@injectivelabs/ts-types": [
         "../../ts-types/src/index.ts"
       ]

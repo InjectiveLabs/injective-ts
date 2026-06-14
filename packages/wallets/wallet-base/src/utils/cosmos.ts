@@ -1,4 +1,4 @@
-import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts/proto/cosmos-tx'
 
 export const createCosmosSignDocFromSignDoc = (
   signDoc: CosmosTxV1Beta1TxPb.SignDoc,

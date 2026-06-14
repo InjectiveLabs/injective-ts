@@ -1,7 +1,7 @@
 import { capitalize } from '@injectivelabs/utils'
-import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts'
 import { uint8ArrayToHex } from '@injectivelabs/sdk-ts/utils'
 import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
+import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts/proto/cosmos-tx'
 import {
   ErrorType,
   GeneralException,

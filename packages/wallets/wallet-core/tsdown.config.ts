@@ -1,8 +1,12 @@
 import { defineConfig } from 'tsdown'
-import { createSimpleOnSuccess } from '../../../etc/tsdown-helpers.js'
+import { createNestedOnSuccess } from '../../../etc/tsdown-helpers.js'
 
 export default defineConfig({
-  entry: './src/index.ts',
+  entry: {
+    index: './src/index.ts',
+    strategy: './src/strategy/index.ts',
+    broadcaster: './src/broadcaster/index.ts',
+  },
   format: ['cjs', 'esm'],
   dts: true,
   clean: true,
@@ -19,5 +23,5 @@ export default defineConfig({
     '@injectivelabs/utils',
     '@injectivelabs/wallet-base',
   ],
-  onSuccess: createSimpleOnSuccess(),
+  onSuccess: createNestedOnSuccess(),
 })
