@@ -7,13 +7,14 @@ import {
 } from '../../lib.js'
 import type Eth from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
+import type { LoadConfig } from '@ledgerhq/hw-app-eth/lib/services/types'
 
 type EthereumApp = Eth
 
 type LedgerSignatureData = {
-  staticERC20Signatures: unknown
-  staticEIP712SignaturesV1: unknown
-  staticEIP712SignaturesV2: unknown
+  staticERC20Signatures: LoadConfig['staticERC20Signatures']
+  staticEIP712SignaturesV1: LoadConfig['staticEIP712SignaturesV1']
+  staticEIP712SignaturesV2: LoadConfig['staticEIP712SignaturesV2']
 }
 
 let cachedSignatureData: LedgerSignatureData | null = null
