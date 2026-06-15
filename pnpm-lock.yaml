@@ -204,8 +204,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
       '@injectivelabs/indexer-proto-ts-v2':
-        specifier: 1.18.21
-        version: 1.18.21
+        specifier: 1.18.22
+        version: 1.18.22
       '@injectivelabs/mito-proto-ts-v2':
         specifier: 1.17.3
         version: 1.17.3
@@ -623,6 +623,33 @@ importers:
         specifier: 1.8.15
         version: 1.8.15(@ethersproject/sha2@5.8.0)(@types/react@19.2.10)(bufferutil@4.1.0)(encoding@0.1.13)(ethers@6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(fastestsmallesttextencoderdecoder@1.0.22)(immer@11.1.8)(react@19.0.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.24.2)
 
+<<<<<<< HEAD
+=======
+  protoV2/indexer/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/ws-price-oracle/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+>>>>>>> c64293941 (chore: add grant request on web3gw)
 packages:
   '@adraffy/ens-normalize@1.10.1':
     resolution:
@@ -1475,11 +1502,8 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-  '@injectivelabs/indexer-proto-ts-v2@1.18.21':
-    resolution:
-      {
-        integrity: sha512-cheWvarEFNwQF0MRLXuFo5OMAiG8BEXXOFa1SP/Ku4aS12XYPQJscQ088RBMTvJ5yzAGNkFttZHUooAk4XUcgA==,
-      }
+  '@injectivelabs/indexer-proto-ts-v2@1.18.22':
+    resolution: {integrity: sha512-NDCbAQHplvFmSDPss1KCfI6RsqU/ZCkhOzsDnwBIF4KYmNCt+twwlOF57fbj84fM/uQWVm/XRDi/dehIkvCnyg==}
 
   '@injectivelabs/mito-proto-ts-v2@1.17.3':
     resolution:
@@ -14734,7 +14758,7 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.4
 
-  '@injectivelabs/indexer-proto-ts-v2@1.18.21':
+  '@injectivelabs/indexer-proto-ts-v2@1.18.22':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

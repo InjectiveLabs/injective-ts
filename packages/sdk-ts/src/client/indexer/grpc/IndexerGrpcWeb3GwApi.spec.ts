@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import {
   DEFAULT_BRIDGE_FEE_DENOM,
@@ -11,6 +12,52 @@ const endpoints = getNetworkEndpoints(Network.Mainnet)
 const indexerGrpcWeb3GwApi = new IndexerGrpcWeb3GwApi(endpoints.indexer)
 
 describe('IndexerGrpcWeb3GwApi', () => {
+  test('prepareFeeGrantRequest', async () => {
+    const granteeAddress =
+      'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z' as AccountAddress
+    const executeGrpcCall = vi
+      .spyOn(indexerGrpcWeb3GwApi as any, 'executeGrpcCall')
+      .mockResolvedValue({
+        granteeAddress,
+        txHash: 'ABC123',
+        expiration: 1780000000000n,
+        granterAddress: 'inj1granter',
+        spendLimit: {
+          denom: 'inj',
+          amount: '25000000000000000',
+        },
+        allowedMessages: [
+          '/cosmos.authz.v1beta1.MsgExec',
+          '/injective.wasmx.v1.MsgExecuteContractCompat',
+        ],
+      })
+
+    const response = await indexerGrpcWeb3GwApi.prepareFeeGrantRequest({
+      granteeAddress,
+    })
+    const [request] = executeGrpcCall.mock.calls[0]
+
+    expect(request).toMatchObject({ granteeAddress })
+    expect(response).toEqual(
+      expect.objectContaining<InjectiveExchangeRpcPb.PrepareFeeGrantResponse>({
+        granteeAddress,
+        txHash: 'ABC123',
+        expiration: 1780000000000n,
+        granterAddress: 'inj1granter',
+        spendLimit: expect.objectContaining({
+          denom: 'inj',
+          amount: '25000000000000000',
+        }),
+        allowedMessages: [
+          '/cosmos.authz.v1beta1.MsgExec',
+          '/injective.wasmx.v1.MsgExecuteContractCompat',
+        ],
+      }),
+    )
+
+    executeGrpcCall.mockRestore()
+  })
+
   test('prepareEip712Request', async () => {
     try {
       const args = {
