@@ -1,7 +1,7 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { toChainFormat, getDefaultStdFee } from '@injectivelabs/utils'
-import { getEip712TypedDataV2 } from './eip712.js'
 import MsgSend from '../../modules/bank/msgs/MsgSend.js'
+import { getEip712TypedData, getEip712TypedDataV2 } from './eip712.js'
 
 describe('EIP712V2', () => {
   test('generating proper EI712 v2', () => {
@@ -28,6 +28,7 @@ describe('EIP712V2', () => {
       fee: {
         ...getDefaultStdFee(),
         feePayer: 'inj18j2myhaf2at75kwwaqxfstk4q28n4am45nlfg7',
+        granter: 'inj1granter',
       },
       tx: {
         memo: '',
@@ -84,11 +85,46 @@ describe('EIP712V2', () => {
       },
       message: {
         context:
-          '{"account_number":11,"chain_id":"injective-777","fee":{"amount":[{"denom":"inj","amount":"64000000000000"}],"gas":400000,"payer":"inj18j2myhaf2at75kwwaqxfstk4q28n4am45nlfg7"},"memo":"","sequence":88,"timeout_height":1896}',
+          '{"account_number":11,"chain_id":"injective-777","fee":{"amount":[{"denom":"inj","amount":"64000000000000"}],"gas":400000,"payer":"inj18j2myhaf2at75kwwaqxfstk4q28n4am45nlfg7","granter":"inj1granter"},"memo":"","sequence":88,"timeout_height":1896}',
         msgs: `[{"@type":"/cosmos.bank.v1beta1.MsgSend","from_address":"${mockFactory.injectiveAddress}","to_address":"${mockFactory.injectiveAddress}","amount":[{"denom":"inj","amount":"10000000000000000"}]}]`,
       },
     }
 
     expect(eip712TypedData).toEqual(expectedEip712)
+  })
+
+  test('includes fee granter in EIP712 v1 fee typed data', () => {
+    const amount = {
+      denom: 'inj',
+      amount: toChainFormat(0.01).toFixed(),
+    }
+    const msg = MsgSend.fromJSON({
+      amount,
+      srcInjectiveAddress: mockFactory.injectiveAddress,
+      dstInjectiveAddress: mockFactory.injectiveAddress,
+    })
+    const eip712TypedData = getEip712TypedData({
+      msgs: [msg],
+      fee: {
+        ...getDefaultStdFee(),
+        granter: 'inj1granter',
+      },
+      tx: {
+        memo: '',
+        accountNumber: '11',
+        sequence: '88',
+        timeoutHeight: '1896',
+        chainId: 'injective-777',
+      },
+      evmChainId: 5,
+    })
+
+    expect(eip712TypedData.types.Fee).toContainEqual({
+      name: 'granter',
+      type: 'string',
+    })
+    expect(eip712TypedData.message.fee).toMatchObject({
+      granter: 'inj1granter',
+    })
   })
 })

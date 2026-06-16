@@ -90,6 +90,7 @@ export const getEip712Fee = (
     amount: { amount: string; denom: string }[]
     gas: string
     feePayer?: string
+    granter?: string
   }
 } => {
   const defaultStdFee = getDefaultStdFee()
@@ -100,15 +101,17 @@ export const getEip712Fee = (
     }
   }
 
-  const { amount, gas, feePayer } = {
+  const { amount, gas, feePayer, granter } = {
     amount: params.amount || defaultStdFee.amount,
     gas: params.gas || DEFAULT_GAS_LIMIT.toFixed(),
     feePayer: params.feePayer,
+    granter: params.granter,
   }
 
   return {
     fee: {
       ...(feePayer && { feePayer }),
+      ...(granter && { granter }),
       gas,
       amount,
     },
@@ -121,6 +124,7 @@ export const getEip712FeeV2 = (
   fee: {
     amount: { denom: string; amount: string }[]
     gas: number
+    granter?: string
     payer?: string
   }
 } => {
@@ -141,7 +145,7 @@ export const getEip712FeeV2 = (
   }
 
   const amountFromParams = (params.amount || defaultStdFee.amount)[0]
-  const { amount, gas, payer } = {
+  const { amount, gas, payer, granter } = {
     amount: [
       {
         denom: amountFromParams.denom,
@@ -150,6 +154,7 @@ export const getEip712FeeV2 = (
     ],
     gas: Number(params.gas || DEFAULT_GAS_LIMIT.toFixed()),
     payer: params.feePayer,
+    granter: params.granter,
   }
 
   return {
@@ -157,11 +162,12 @@ export const getEip712FeeV2 = (
       amount,
       gas,
       ...(payer && { payer }),
+      ...(granter && { granter }),
     },
   }
 }
 
-export const getTypesIncludingFeePayer = ({
+export const getTypesIncludingFeeOptions = ({
   fee,
   types,
 }: {
@@ -172,11 +178,13 @@ export const getTypesIncludingFeePayer = ({
     return types
   }
 
-  if (!fee.feePayer) {
-    return types
+  if (fee.granter) {
+    types.types['Fee'].unshift({ name: 'granter', type: 'string' })
   }
 
-  types.types['Fee'].unshift({ name: 'feePayer', type: 'string' })
+  if (fee.feePayer) {
+    types.types['Fee'].unshift({ name: 'feePayer', type: 'string' })
+  }
 
   return types
 }

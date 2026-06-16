@@ -18,6 +18,7 @@ export type Eip712ConvertFeeArgs = {
   }[]
   gas?: string
   feePayer?: string
+  granter?: string
 }
 
 export interface TypedDataField {

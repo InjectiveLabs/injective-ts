@@ -7,7 +7,7 @@ import {
   getEip712DomainV2,
   getDefaultEip712Types,
   getDefaultEip712TypesV2,
-  getTypesIncludingFeePayer,
+  getTypesIncludingFeeOptions,
 } from './utils.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { Msgs } from '../../modules/msgs.js'
@@ -35,13 +35,13 @@ export const getEip712TypedData = ({
       ...Object.fromEntries(eip712MessageTypes),
     },
   }
-  const typesWithFeePayer = getTypesIncludingFeePayer({
+  const typesWithFeeOptions = getTypesIncludingFeeOptions({
     fee,
     types: typesWithMessageTypes,
   })
 
   return {
-    ...typesWithFeePayer,
+    ...typesWithFeeOptions,
     primaryType: 'Tx',
     ...getEip712Domain(evmChainId),
     message: {

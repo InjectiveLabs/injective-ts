@@ -33,7 +33,7 @@ import type { Msgs } from '../../modules/msgs.js'
 import type { AccountDetails } from '../../../types/auth.js'
 import type { CreateTransactionArgs } from '../types/index.js'
 
-interface MsgBroadcasterTxOptions {
+export interface MsgBroadcasterTxOptions {
   msgs: Msgs | Msgs[]
   memo?: string
   gas?: {
@@ -44,7 +44,7 @@ interface MsgBroadcasterTxOptions {
   }
 }
 
-interface MsgBroadcasterWithPkOptions {
+export interface MsgBroadcasterWithPkOptions {
   network?: Network
 
   /**
