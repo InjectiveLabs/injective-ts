@@ -1273,12 +1273,7 @@ export class MsgBroadcaster {
       }
     }
 
-    const canDisableCosmosGasCheck = (
-      [Wallet.Keplr, Wallet.OWallet] as WalletType[]
-    ).includes(walletStrategy.wallet)
-    const cosmosWallet = canDisableCosmosGasCheck
-      ? walletStrategy.getCosmosWallet(chainId)
-      : undefined
+    const cosmosWallet = await walletStrategy.getCosmosWallet(chainId)
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )
