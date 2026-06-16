@@ -1238,7 +1238,7 @@ export class MsgBroadcaster {
    * Cosmos native wallets using the Web3Gateway.
    *
    * @param tx The transaction that needs to be broadcasted
-   * @returns transaction hash
+   * @returns transaction hashR
    */
   private async broadcastDirectSignWithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
@@ -1273,12 +1273,7 @@ export class MsgBroadcaster {
       }
     }
 
-    const canDisableCosmosGasCheck = (
-      [Wallet.Keplr, Wallet.OWallet] as WalletType[]
-    ).includes(walletStrategy.wallet)
-    const cosmosWallet = canDisableCosmosGasCheck
-      ? walletStrategy.getCosmosWallet(chainId)
-      : undefined
+    const cosmosWallet = await walletStrategy.getCosmosWallet(chainId)
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )

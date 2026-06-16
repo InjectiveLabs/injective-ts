@@ -13,11 +13,18 @@ import {
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts/core/tx'
 import { PrivateKeyWallet } from './strategy.js'
+import type { StdSignDoc } from '@keplr-wallet/types'
+import type { ChainId } from '@injectivelabs/ts-types'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
-import type { TxRaw, DirectSignResponse } from '@injectivelabs/sdk-ts/types'
+import type {
+  TxRaw,
+  AminoSignResponse,
+  DirectSignResponse,
+} from '@injectivelabs/sdk-ts/types'
 import type {
   ConcreteWalletStrategy,
   SendTransactionOptions,
+  CosmosWalletAbstraction,
 } from '@injectivelabs/wallet-base'
 
 export class PrivateKeyCosmosWallet
@@ -99,6 +106,20 @@ export class PrivateKeyCosmosWallet
         type: ErrorType.WalletError,
         contextModule: WalletAction.SignTransaction,
       })
+    }
+  }
+
+  /** this is a mock implementation of the CosmosWallet abstraction, just so it confronts the CosmosWallet interface */
+  public getCosmosWallet(_chainId: ChainId): CosmosWalletAbstraction {
+    return {
+      enableGasCheck: async () => {},
+      disableGasCheck: async () => {},
+      signEIP712CosmosTx: async (_args: {
+        signDoc: StdSignDoc
+        eip712: any
+      }) => {
+        return {} as AminoSignResponse
+      },
     }
   }
 }
