@@ -374,6 +374,7 @@ export interface WalletStrategy {
   getCosmosWallet?(chainId: ChainId): CosmosWalletAbstraction
   getEip1193Provider?(): Promise<Eip1193Provider>
   getOfflineSigner?(chainId: string): Promise<OfflineSigner>
+  deleteCurrentSubOrganization?(): Promise<{ organizationId: string }>
 }
 
 export type { StdSignDoc }
