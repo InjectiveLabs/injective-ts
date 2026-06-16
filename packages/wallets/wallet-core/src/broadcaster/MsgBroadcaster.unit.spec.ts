@@ -1,8 +1,13 @@
 import { vi } from 'vitest'
 import { Network } from '@injectivelabs/networks'
 import { TransactionException } from '@injectivelabs/exceptions'
-import { PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
-import { WalletStrategyEmitterEventType } from '@injectivelabs/wallet-base'
+import { ChainGrpcAuthApi } from '@injectivelabs/sdk-ts/client/chain'
+import { PublicKey, PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
+import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
+import {
+  Wallet,
+  WalletStrategyEmitterEventType,
+} from '@injectivelabs/wallet-base'
 import {
   TxClient,
   TxGrpcApi,
@@ -49,6 +54,17 @@ const makeMessage = () =>
     toDirectSign: () => ({ type: '/cosmos.bank.v1beta1.MsgSend' }),
   }) as any
 
+const makeDirectSignResponse = (pubKey = 'mockPubKeyBase64') => ({
+  signed: {
+    bodyBytes: new Uint8Array(),
+    authInfoBytes: new Uint8Array(),
+  },
+  signature: {
+    signature: 'bW9ja1NpZw==',
+    pub_key: { value: pubKey, type: 'ed25519' },
+  },
+})
+
 const createMockWalletStrategy = () =>
   ({
     wallet: 'keplr',
@@ -56,16 +72,7 @@ const createMockWalletStrategy = () =>
     getWalletDeviceType: vi.fn().mockResolvedValue('browser'),
     getPubKey: vi.fn().mockResolvedValue('mockPubKeyBase64'),
     getEthereumChainId: vi.fn().mockResolvedValue(undefined),
-    signCosmosTransaction: vi.fn().mockResolvedValue({
-      signed: {
-        bodyBytes: new Uint8Array(),
-        authInfoBytes: new Uint8Array(),
-      },
-      signature: {
-        signature: 'bW9ja1NpZw==',
-        pub_key: { value: 'mockPubKeyBase64', type: 'ed25519' },
-      },
-    }),
+    signCosmosTransaction: vi.fn().mockResolvedValue(makeDirectSignResponse()),
     sendTransaction: vi.fn().mockResolvedValue({ txHash: 'MOCK_TX_HASH' }),
     getCosmosWallet: vi.fn(),
     emit: vi.fn().mockReturnValue(true),
@@ -418,5 +425,119 @@ describe('MsgBroadcaster event emission order', () => {
         }),
       )
     })
+  })
+})
+
+describe('MsgBroadcaster direct sign fee delegation', () => {
+  let broadcaster: MsgBroadcaster
+  let mockStrategy: BaseWalletStrategy
+  let disableGasCheck: ReturnType<typeof vi.fn>
+  let enableGasCheck: ReturnType<typeof vi.fn>
+
+  beforeEach(() => {
+    disableGasCheck = vi.fn()
+    enableGasCheck = vi.fn()
+    mockStrategy = createMockWalletStrategy()
+    ;(mockStrategy.getCosmosWallet as ReturnType<typeof vi.fn>).mockReturnValue(
+      {
+        disableGasCheck,
+        enableGasCheck,
+      },
+    )
+
+    broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      walletStrategy: mockStrategy,
+      endpoints: {
+        indexer: 'http://localhost:8888',
+        grpc: 'http://localhost:9901',
+        rest: 'http://localhost:10337',
+        rpc: 'http://localhost:26657',
+      },
+    })
+
+    vi.spyOn(PublicKey, 'fromBase64').mockReturnValue({
+      toAddress: () => ({ address: 'inj1feepayer' }),
+      toBase64: () => 'mockFeePayerPubKeyBase64',
+    } as any)
+    vi.spyOn(ChainGrpcAuthApi.prototype, 'fetchAccount').mockResolvedValue({
+      baseAccount: {
+        accountNumber: 2,
+        sequence: 3,
+      },
+    } as any)
+    vi.spyOn(
+      IndexerGrpcWeb3GwApi.prototype,
+      'broadcastCosmosTxRequest',
+    ).mockResolvedValue({ txHash: 'MOCK_TX_HASH' } as any)
+    vi.spyOn(broadcaster as any, 'fetchFeePayerPubKey').mockResolvedValue(
+      'mockFeePayerPubKeyBase64',
+    )
+    vi.spyOn(
+      broadcaster as any,
+      'fetchAccountAndBlockDetails',
+    ).mockResolvedValue({
+      latestHeight: '100',
+      baseAccount: {
+        accountNumber: 1,
+        sequence: 1,
+        pubKey: { key: 'mockPubKeyBase64' },
+      },
+    })
+    vi.spyOn(broadcaster as any, 'getTxWithSignersAndStdFee').mockResolvedValue(
+      {
+        txRaw: CosmosTxV1Beta1TxPb.TxRaw.create({
+          bodyBytes: new Uint8Array(),
+          authInfoBytes: new Uint8Array(),
+          signatures: [],
+        }),
+        stdFee: {},
+      },
+    )
+    vi.spyOn(broadcaster as any, 'prepareTxInclusionWaiter').mockResolvedValue({
+      txHash: 'MOCK_TX_HASH',
+      inclusionStrategy: TxInclusionStrategy.Poll,
+      close: vi.fn(),
+      wait: vi.fn(),
+    })
+    vi.spyOn(
+      broadcaster as any,
+      'waitForPreparedTxInclusion',
+    ).mockResolvedValue(makeTxResponse('MOCK_TX_HASH'))
+  })
+
+  it('direct signs PrivateKeyCosmos fee delegation through its Cosmos wallet adapter', async () => {
+    Object.assign(mockStrategy, {
+      wallet: Wallet.PrivateKeyCosmos,
+      getWallet: vi.fn().mockReturnValue(Wallet.PrivateKeyCosmos),
+    })
+
+    await (broadcaster as any).broadcastDirectSignWithFeeDelegation({
+      gas: { gas: 100000 },
+      msgs: makeMessage(),
+      ethereumAddress: '0x0000000000000000000000000000000000000001',
+      injectiveAddress: 'inj1test',
+    })
+
+    expect(mockStrategy.getCosmosWallet).toHaveBeenCalledWith('injective-777')
+    expect(mockStrategy.signCosmosTransaction).toHaveBeenCalledWith(
+      expect.objectContaining({
+        address: 'inj1test',
+        accountNumber: 1,
+      }),
+    )
+  })
+
+  it('keeps Cosmos wallet adapter access for Keplr gas-check toggling', async () => {
+    await (broadcaster as any).broadcastDirectSignWithFeeDelegation({
+      gas: { gas: 100000 },
+      msgs: makeMessage(),
+      ethereumAddress: '0x0000000000000000000000000000000000000001',
+      injectiveAddress: 'inj1test',
+    })
+
+    expect(mockStrategy.getCosmosWallet).toHaveBeenCalledWith('injective-777')
+    expect(disableGasCheck).toHaveBeenCalledWith('injective-777')
+    expect(enableGasCheck).toHaveBeenCalledWith('injective-777')
   })
 })

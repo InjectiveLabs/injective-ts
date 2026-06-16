@@ -84,6 +84,13 @@ export interface TcDerivativePosition {
   effectiveCumulativeFundingEntry: string
 }
 
+export interface TcFundingPayment {
+  amount: string
+  marketId: string
+  timestamp: number
+  subaccountId: string
+}
+
 export interface TcDerivativeLimitOrder {
   cid: string
   price: string
@@ -130,6 +137,11 @@ export interface TcDerivativesPositionsResponse {
   positions: TcDerivativePosition[]
 }
 
+export interface TcFundingPaymentsResponse {
+  next: string[]
+  payments: TcFundingPayment[]
+}
+
 export type GrpcTcPositionDelta = InjectiveTCDerivativesRpcPb.PositionDelta
 export type GrpcTcDerivativeLimitOrder =
   InjectiveTCDerivativesRpcPb.DerivativeLimitOrder
@@ -139,6 +151,7 @@ export type GrpcTcDerivativePosition =
   InjectiveTCDerivativesRpcPb.DerivativePositionV2
 export type GrpcTcDerivativeOrderHistory =
   InjectiveTCDerivativesRpcPb.TCDerivativeOrderHistoryType
+export type GrpcTcFundingPayment = InjectiveTCDerivativesRpcPb.FundingPayment
 export type GrpcTcDerivativeOrdersResponse =
   InjectiveTCDerivativesRpcPb.OrdersResponse
 export type GrpcTcDerivativeTradesResponse =
@@ -147,3 +160,5 @@ export type GrpcTcDerivativesPositionsResponse =
   InjectiveTCDerivativesRpcPb.PositionsResponse
 export type GrpcTcDerivativesOrdersHistoryResponse =
   InjectiveTCDerivativesRpcPb.OrdersHistoryResponse
+export type GrpcTcFundingPaymentsResponse =
+  InjectiveTCDerivativesRpcPb.FundingPaymentsResponse

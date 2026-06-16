@@ -116,6 +116,10 @@ export default defineConfig({
         __dirname,
         'packages/sdk-ts/src/cosmjs.ts',
       ),
+      '@injectivelabs/sdk-ts/proto/cosmos-tx': join(
+        __dirname,
+        'packages/sdk-ts/src/proto/cosmos-tx.ts',
+      ),
       '@injectivelabs/sdk-ts': join(__dirname, 'packages/sdk-ts/src/index.ts'),
       '@injectivelabs/wallet-base': join(
         __dirname,

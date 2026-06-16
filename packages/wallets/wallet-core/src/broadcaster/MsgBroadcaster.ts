@@ -1273,10 +1273,7 @@ export class MsgBroadcaster {
       }
     }
 
-    const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
-    const canDisableCosmosGasCheck = (
-      [Wallet.Keplr, Wallet.OWallet] as WalletType[]
-    ).includes(walletStrategy.wallet)
+    const cosmosWallet = await walletStrategy.getCosmosWallet(chainId)
     const feePayerPubKey = await this.fetchFeePayerPubKey(
       options.feePayerPubKey,
     )
@@ -1372,7 +1369,7 @@ export class MsgBroadcaster {
     })
 
     // Temporary remove tx gas check because Keplr doesn't recognize feePayer
-    if (canDisableCosmosGasCheck && cosmosWallet.disableGasCheck) {
+    if (cosmosWallet?.disableGasCheck) {
       cosmosWallet.disableGasCheck(chainId)
     }
 
@@ -1428,7 +1425,7 @@ export class MsgBroadcaster {
       )
 
       // Re-enable tx gas check removed above
-      if (canDisableCosmosGasCheck && cosmosWallet.enableGasCheck) {
+      if (cosmosWallet?.enableGasCheck) {
         cosmosWallet.enableGasCheck(chainId)
       }
 

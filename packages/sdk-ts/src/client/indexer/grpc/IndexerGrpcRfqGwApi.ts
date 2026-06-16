@@ -23,6 +23,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     marketId,
     quantity,
     direction,
+    simulate,
     worstPrice,
     takerAddress,
     autosignPubKey,
@@ -42,6 +43,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     marketId: string
     quantity: string
     direction: string
+    simulate?: boolean
     worstPrice: string
     takerAddress?: string
     autosignPubKey: string
@@ -64,6 +66,10 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     request.worstPrice = worstPrice
     request.autosignAddress = autosignAddress
     request.autosignPubKey = autosignPubKey
+
+    if (simulate !== undefined) {
+      request.simulate = simulate
+    }
 
     if (autosignAccountNumber !== undefined) {
       request.autosignAccountNumber = BigInt(autosignAccountNumber)
@@ -139,6 +145,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     marketId,
     quantity,
     direction,
+    simulate,
     worstPrice,
     takerPubKey,
     takerAddress,
@@ -157,6 +164,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     marketId: string
     quantity: string
     direction: string
+    simulate?: boolean
     worstPrice: string
     takerAddress: string
     takerPubKey: string
@@ -178,6 +186,10 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     request.worstPrice = worstPrice
     request.takerAddress = takerAddress
     request.takerPubKey = takerPubKey
+
+    if (simulate !== undefined) {
+      request.simulate = simulate
+    }
 
     if (takerAccountNumber !== undefined) {
       request.takerAccountNumber = BigInt(takerAccountNumber)
@@ -248,6 +260,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     marketId,
     quantity,
     direction,
+    simulate,
     worstPrice,
     ethChainId,
     takerPubKey,
@@ -269,6 +282,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     marketId: string
     quantity: string
     direction: string
+    simulate?: boolean
     worstPrice: string
     ethChainId?: number
     takerAddress: string
@@ -292,6 +306,10 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     request.worstPrice = worstPrice
     request.takerAddress = takerAddress
     request.takerPubKey = takerPubKey
+
+    if (simulate !== undefined) {
+      request.simulate = simulate
+    }
 
     if (takerAccountNumber !== undefined) {
       request.takerAccountNumber = BigInt(takerAccountNumber)
@@ -374,6 +392,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     marketId,
     quantity,
     direction,
+    simulate,
     worstPrice,
     ethChainId,
     takerAddress,
@@ -396,6 +415,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     marketId: string
     quantity: string
     direction: string
+    simulate?: boolean
     worstPrice: string
     ethChainId?: number
     takerAddress?: string
@@ -421,6 +441,10 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     request.worstPrice = worstPrice
     request.autosignAddress = autosignAddress
     request.autosignPubKey = autosignPubKey
+
+    if (simulate !== undefined) {
+      request.simulate = simulate
+    }
 
     if (autosignAccountNumber !== undefined) {
       request.autosignAccountNumber = BigInt(autosignAccountNumber)

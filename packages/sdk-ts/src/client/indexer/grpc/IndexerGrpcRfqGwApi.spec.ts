@@ -31,6 +31,7 @@ describe('IndexerGrpcRfqGwApi', () => {
 
     const response = await api.fetchPrepareAutoSign({
       direction: 'long',
+      simulate: true,
       autosignAccountNumber: 1,
       autosignAccountSequence: 3,
       clientId: CLIENT_ID,
@@ -55,6 +56,12 @@ describe('IndexerGrpcRfqGwApi', () => {
       feePayerAccountSequence: expect.any(Number),
       quotes: expect.any(Array),
     })
+
+    const [requestMessage] = executeGrpcCall.mock.calls[0]
+    const request = (requestMessage as { request: { simulate: boolean } })
+      .request
+
+    expect(request.simulate).toBe(true)
 
     executeGrpcCall.mockRestore()
   })
@@ -137,6 +144,7 @@ describe('IndexerGrpcRfqGwApi', () => {
 
     const response = await api.fetchPrepare({
       direction: 'long',
+      simulate: true,
       takerAccountNumber: 1,
       takerAccountSequence: 2,
       clientId: CLIENT_ID,
@@ -162,6 +170,12 @@ describe('IndexerGrpcRfqGwApi', () => {
       quotes: expect.any(Array),
     })
 
+    const [requestMessage] = executeGrpcCall.mock.calls[0]
+    const request = (requestMessage as { request: { simulate: boolean } })
+      .request
+
+    expect(request.simulate).toBe(true)
+
     executeGrpcCall.mockRestore()
   })
 
@@ -186,6 +200,7 @@ describe('IndexerGrpcRfqGwApi', () => {
 
     const response = await api.fetchPrepareEip712({
       direction: 'long',
+      simulate: true,
       ethChainId: 1,
       eip712Wrapper: 'v2',
       takerAccountNumber: 1,
@@ -211,6 +226,12 @@ describe('IndexerGrpcRfqGwApi', () => {
       quotes: expect.any(Array),
     })
 
+    const [requestMessage] = executeGrpcCall.mock.calls[0]
+    const request = (requestMessage as { request: { simulate: boolean } })
+      .request
+
+    expect(request.simulate).toBe(true)
+
     executeGrpcCall.mockRestore()
   })
 
@@ -235,6 +256,7 @@ describe('IndexerGrpcRfqGwApi', () => {
 
     const response = await api.fetchPrepareEip712AutoSign({
       direction: 'long',
+      simulate: true,
       ethChainId: 1,
       eip712Wrapper: 'v2',
       autosignAccountNumber: 1,
@@ -259,6 +281,12 @@ describe('IndexerGrpcRfqGwApi', () => {
       autosignAccountSequence: expect.any(Number),
       quotes: expect.any(Array),
     })
+
+    const [requestMessage] = executeGrpcCall.mock.calls[0]
+    const request = (requestMessage as { request: { simulate: boolean } })
+      .request
+
+    expect(request.simulate).toBe(true)
 
     executeGrpcCall.mockRestore()
   })

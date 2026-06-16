@@ -233,4 +233,35 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     return IndexerGrpcTcDerivativesTransformer.ordersResponseToOrders(response)
   }
+
+  async fetchFundingPayments(params?: {
+    token?: string
+    perPage?: number
+    marketId?: string
+  }) {
+    const { marketId, perPage, token } = params || {}
+
+    const request = InjectiveTCDerivativesRpcPb.FundingPaymentsRequest.create()
+
+    if (marketId) {
+      request.marketIds = [marketId]
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveTCDerivativesRpcPb.FundingPaymentsRequest,
+      InjectiveTCDerivativesRpcPb.FundingPaymentsResponse
+    >(request, this.client.fundingPayments.bind(this.client))
+
+    return IndexerGrpcTcDerivativesTransformer.fundingPaymentsResponseToFundingPayments(
+      response,
+    )
+  }
 }

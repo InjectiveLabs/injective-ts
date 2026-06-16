@@ -56,4 +56,16 @@ describe('IndexerGrpcTcDerivativesApi', () => {
       orders: expect.any(Array),
     })
   })
+
+  test('fetchFundingPayments', async () => {
+    const response = await indexerGrpcTcDerivativesApi.fetchFundingPayments({
+      perPage: 10,
+    })
+
+    expect(response).toBeDefined()
+    expect(response).toMatchObject({
+      next: expect.any(Array),
+      payments: expect.any(Array),
+    })
+  })
 })

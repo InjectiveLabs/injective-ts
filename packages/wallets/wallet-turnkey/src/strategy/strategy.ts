@@ -3,19 +3,20 @@ import { HttpRestClient } from '@injectivelabs/utils'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { toUtf8, getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
 import {
-  ErrorType,
-  WalletException,
-  UnspecifiedErrorCode,
-  TransactionException,
-  CosmosWalletException,
-} from '@injectivelabs/exceptions'
-import {
   WalletAction,
   WalletDeviceType,
   getViemWalletClient,
   getViemPublicClient,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
+import {
+  ErrorType,
+  WalletException,
+  UnspecifiedErrorCode,
+  TransactionException,
+  CosmosWalletException,
+  TurnkeyWalletSessionException,
+} from '@injectivelabs/exceptions'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
@@ -116,6 +117,31 @@ export class TurnkeyWalletStrategy
     }
 
     await Promise.allSettled([turnkey.logout(), indexedDbClient.clear()])
+  }
+
+  public async deleteCurrentSubOrganization() {
+    const turnkeyWallet = await this.getTurnkeyWallet()
+    const turnkey = await turnkeyWallet.getTurnkey()
+    const indexedDbClient = await turnkeyWallet.getIndexedDbClient()
+    const activeSession = await turnkey.getSession()
+    const organizationId = activeSession?.organizationId
+
+    if (!activeSession?.token || !organizationId) {
+      throw new TurnkeyWalletSessionException(
+        new Error('Session expired. Please login again.'),
+      )
+    }
+
+    await indexedDbClient.deleteSubOrganization({
+      organizationId,
+      deleteWithoutExport: true,
+    })
+
+    await Promise.allSettled([turnkey.logout(), indexedDbClient.clear()])
+
+    turnkeyWallet.userOrganizationId = undefined
+
+    return { organizationId }
   }
 
   async getAddresses(): Promise<string[]> {
