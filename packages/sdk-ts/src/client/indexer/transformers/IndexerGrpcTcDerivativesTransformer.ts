@@ -7,15 +7,18 @@ import type {
 } from '../../../types/index.js'
 import type {
   TcPositionDelta,
+  TcFundingPayment,
   GrpcTcPositionDelta,
   TcDerivativePosition,
+  GrpcTcFundingPayment,
   TcDerivativeLimitOrder,
   TcDerivativeTradeHistory,
   GrpcTcDerivativePosition,
   TcDerivativeOrderHistory,
+  TcFundingPaymentsResponse,
+  TcDerivativeOrdersResponse,
   GrpcTcDerivativeLimitOrder,
   TcDerivativeTradesResponse,
-  TcDerivativeOrdersResponse,
   GrpcTcDerivativeTradeHistory,
   GrpcTcDerivativeOrderHistory,
   TcDerivativesPositionsResponse,
@@ -130,6 +133,17 @@ export class IndexerGrpcTcDerivativesTransformer {
     }
   }
 
+  static grpcFundingPaymentToFundingPayment(
+    fundingPayment: GrpcTcFundingPayment,
+  ): TcFundingPayment {
+    return {
+      amount: fundingPayment.amount,
+      marketId: fundingPayment.marketId,
+      timestamp: Number(fundingPayment.timestamp),
+      subaccountId: fundingPayment.subaccountId,
+    }
+  }
+
   static grpcDerivativeLimitOrderToDerivativeLimitOrder(
     order: GrpcTcDerivativeLimitOrder,
   ): TcDerivativeLimitOrder {
@@ -204,6 +218,17 @@ export class IndexerGrpcTcDerivativesTransformer {
       total: response.total ? Number(response.total) : undefined,
       positions: response.positions.map(
         IndexerGrpcTcDerivativesTransformer.grpcPositionToPosition,
+      ),
+    }
+  }
+
+  static fundingPaymentsResponseToFundingPayments(
+    response: InjectiveTCDerivativesRpcPb.FundingPaymentsResponse,
+  ): TcFundingPaymentsResponse {
+    return {
+      next: response.next,
+      payments: response.payments.map(
+        IndexerGrpcTcDerivativesTransformer.grpcFundingPaymentToFundingPayment,
       ),
     }
   }

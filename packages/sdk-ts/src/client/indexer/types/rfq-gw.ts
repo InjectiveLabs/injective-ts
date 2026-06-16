@@ -9,6 +9,7 @@ export interface RFQGwPrepareAutoSignRequestType {
   marketId: string
   quantity: string
   direction: string
+  simulate?: boolean
   worstPrice: string
   takerAddress?: string
   autosignPubKey: string
@@ -59,6 +60,7 @@ export interface RFQGwPrepareRequestType {
   marketId: string
   quantity: string
   direction: string
+  simulate?: boolean
   worstPrice: string
   takerAddress: string
   takerPubKey: string
@@ -97,6 +99,7 @@ export interface RFQGwPrepareEip712RequestType {
   marketId: string
   quantity: string
   direction: string
+  simulate?: boolean
   worstPrice: string
   takerAddress: string
   takerPubKey: string
@@ -135,6 +138,7 @@ export interface RFQGwPrepareEip712AutoSignRequestType {
   marketId: string
   quantity: string
   direction: string
+  simulate?: boolean
   worstPrice: string
   takerAddress?: string
   ethChainId?: number
