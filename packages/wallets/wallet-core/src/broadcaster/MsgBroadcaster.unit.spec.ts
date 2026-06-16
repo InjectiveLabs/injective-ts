@@ -506,7 +506,7 @@ describe('MsgBroadcaster direct sign fee delegation', () => {
     ).mockResolvedValue(makeTxResponse('MOCK_TX_HASH'))
   })
 
-  it('direct signs PrivateKeyCosmos fee delegation without reading a Cosmos wallet adapter', async () => {
+  it('direct signs PrivateKeyCosmos fee delegation through its Cosmos wallet adapter', async () => {
     Object.assign(mockStrategy, {
       wallet: Wallet.PrivateKeyCosmos,
       getWallet: vi.fn().mockReturnValue(Wallet.PrivateKeyCosmos),
@@ -519,7 +519,7 @@ describe('MsgBroadcaster direct sign fee delegation', () => {
       injectiveAddress: 'inj1test',
     })
 
-    expect(mockStrategy.getCosmosWallet).not.toHaveBeenCalled()
+    expect(mockStrategy.getCosmosWallet).toHaveBeenCalledWith('injective-777')
     expect(mockStrategy.signCosmosTransaction).toHaveBeenCalledWith(
       expect.objectContaining({
         address: 'inj1test',
@@ -536,8 +536,8 @@ describe('MsgBroadcaster direct sign fee delegation', () => {
       injectiveAddress: 'inj1test',
     })
 
-    expect(mockStrategy.getCosmosWallet).toHaveBeenCalledWith('injective-888')
-    expect(disableGasCheck).toHaveBeenCalledWith('injective-888')
-    expect(enableGasCheck).toHaveBeenCalledWith('injective-888')
+    expect(mockStrategy.getCosmosWallet).toHaveBeenCalledWith('injective-777')
+    expect(disableGasCheck).toHaveBeenCalledWith('injective-777')
+    expect(enableGasCheck).toHaveBeenCalledWith('injective-777')
   })
 })
