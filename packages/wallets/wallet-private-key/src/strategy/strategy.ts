@@ -263,7 +263,7 @@ export class PrivateKeyWallet
     //
   }
 
-  private getPrivateKey(): PrivateKeySigner {
+  protected getPrivateKey(): PrivateKeySigner {
     if (!this.privateKey) {
       if (!this.metadata?.privateKey?.privateKey) {
         throw new WalletException(

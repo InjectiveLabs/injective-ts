@@ -11,26 +11,28 @@ import type { Coin, ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
 export const prepareEip712 = <T>({
   messages,
+  memo = '',
+  granter = '',
+  payer = '',
+  sequence = 1,
+  accountNumber = 1,
+  endpoints = {},
   gas = DEFAULT_GAS_LIMIT,
   network = Network.Mainnet,
-  injectiveAddress = mockFactory.injectiveAddress,
-  ethereumAddress = mockFactory.ethereumAddress,
-  endpoints = {},
-  accountNumber = 1,
-  sequence = 1,
   timeoutHeight = 999_999_999,
-  memo = '',
+  ethereumAddress = mockFactory.ethereumAddress,
 }: {
-  ethereumAddress?: string
   messages: T
-  network?: Network
-  gas?: number | string
-  accountNumber?: number
-  sequence?: number
-  timeoutHeight?: number
   memo?: string
+  payer?: string
+  granter?: string
+  network?: Network
+  sequence?: number
+  accountNumber?: number
+  timeoutHeight?: number
+  gas?: number | string
+  ethereumAddress?: string
   endpoints?: Partial<NetworkEndpoints>
-  injectiveAddress?: string
 }): {
   endpoints: NetworkEndpoints
   eip712Args: {
@@ -44,7 +46,7 @@ export const prepareEip712 = <T>({
       timeoutHeight: string
     }
     evmChainId: EvmChainId
-    fee: { amount: Coin[]; gas: string; payer: string }
+    fee: { amount: Coin[]; gas: string; payer?: string; granter?: string }
   }
   prepareEip712Request: {
     chainId: EvmChainId
@@ -82,7 +84,8 @@ export const prepareEip712 = <T>({
         },
       ],
       gas: gas.toString(),
-      payer: injectiveAddress,
+      ...(granter && { granter }),
+      ...(payer && { payer }),
     },
     tx: {
       ...tx,
@@ -95,6 +98,7 @@ export const prepareEip712 = <T>({
 
   const prepareEip712Request = {
     ...eip712,
+    granter,
     chainId: eip712.evmChainId,
     message: web3Msgs,
     gasLimit: gas,

@@ -34,6 +34,7 @@ export const Wallet = {
   LedgerLegacy: 'ledger-legacy',
   WalletConnect: 'wallet-connect',
   CosmostationEth: 'cosmostation-eth',
+  PrivateKeyCosmos: 'private-key-cosmos',
 } as const
 
 export type Wallet = (typeof Wallet)[keyof typeof Wallet]

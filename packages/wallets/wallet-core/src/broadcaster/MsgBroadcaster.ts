@@ -305,7 +305,6 @@ export class MsgBroadcaster {
         : await this.broadcastEip712V2(txWithAddresses)
     } catch (e) {
       const error = e as any
-
       walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
 
       if (isThrownException(error)) {
@@ -892,7 +891,9 @@ export class MsgBroadcaster {
          * to just broadcast the transaction twice
          **/
         if (
-          walletStrategy.wallet === Wallet.PrivateKey &&
+          (
+            [Wallet.PrivateKey, Wallet.PrivateKeyCosmos] as WalletType[]
+          ).includes(walletStrategy.wallet) &&
           checkIfTxRunOutOfGas(exception)
         ) {
           /** Account Details * */

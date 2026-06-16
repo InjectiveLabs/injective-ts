@@ -10,6 +10,7 @@ import {
   loadTrezorStrategies,
   loadPrivateKeyStrategy,
   loadWalletConnectStrategy,
+  loadPrivateKeyCosmosStrategy,
 } from './loaders.js'
 import type { Wallet as WalletType } from '@injectivelabs/wallet-base/light'
 import type {
@@ -128,6 +129,12 @@ const createStrategy = async ({
       const PrivateKeyWalletStrategy = await loadPrivateKeyStrategy()
 
       return new PrivateKeyWalletStrategy(ethWalletArgs)
+    }
+
+    case Wallet.PrivateKeyCosmos: {
+      const PrivateKeyCosmosStrategy = await loadPrivateKeyCosmosStrategy()
+
+      return new PrivateKeyCosmosStrategy(cosmosWalletArgs)
     }
 
     case Wallet.Turnkey: {
