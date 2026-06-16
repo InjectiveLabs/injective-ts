@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-cosmostation",
-  "version": "1.20.10",
+  "version": "1.20.11",
   "description": "Cosmostation strategy for use with @injectivelabs/wallet-core.",
   "deprecated": "Use @injectivelabs/wallet-cosmos with Wallet.Cosmostation instead",
   "license": "Apache-2.0",
