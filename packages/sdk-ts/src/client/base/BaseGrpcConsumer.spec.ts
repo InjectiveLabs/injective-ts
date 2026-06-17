@@ -1,14 +1,25 @@
 import { RpcError } from '@protobuf-ts/runtime-rpc'
 import { it, vi, expect, describe, afterEach } from 'vitest'
+import {
+  TransactionException,
+  GrpcUnaryRequestException,
+} from '@injectivelabs/exceptions'
 import BaseGrpcConsumer from './BaseGrpcConsumer.js'
+import { GrpcStatusCode } from '../../types/stream.js'
 
 class TestGrpcConsumer extends BaseGrpcConsumer {
+  protected module: string = 'test-module'
+
   public retryCall<TResponse>(
     grpcCall: () => Promise<TResponse>,
     retries?: number,
     delay?: number,
   ) {
     return this.retry(grpcCall, retries, delay)
+  }
+
+  public throwGrpcError(error: unknown, context: string): never {
+    return this.handleGrpcError(error, context)
   }
 }
 
@@ -74,6 +85,100 @@ describe('BaseGrpcConsumer', () => {
 
       await assertion
       expect(grpcCall).toHaveBeenCalledTimes(3)
+    })
+  })
+
+  describe('handleGrpcError', () => {
+    it('enriches empty RpcError messages with method and service details', () => {
+      const error = new RpcError('', 'NOT_FOUND')
+      error.methodName = 'PrepareFeeGrant'
+      error.serviceName = 'injective_exchange_rpc.InjectiveExchangeRPC'
+
+      try {
+        consumer.throwGrpcError(error, 'prepareFeeGrant')
+        expect.unreachable('Expected handleGrpcError to throw')
+      } catch (e: unknown) {
+        expect(e).toBeInstanceOf(GrpcUnaryRequestException)
+
+        const exception = e as GrpcUnaryRequestException
+        const message =
+          'PrepareFeeGrant on injective_exchange_rpc.InjectiveExchangeRPC failed with NOT_FOUND'
+
+        expect(exception.message).toBe(message)
+        expect(exception.originalMessage).toBe(message)
+        expect(exception.code).toBe(GrpcStatusCode.NOT_FOUND)
+        expect(exception.context).toBe(
+          'prepareFeeGrant (baseUrl: http://localhost:9090, rpc: injective_exchange_rpc.InjectiveExchangeRPC/PrepareFeeGrant)',
+        )
+        expect(exception.contextModule).toBe('test-module')
+        expect(exception.contextCode).toBeUndefined()
+      }
+    })
+
+    it('falls back to context and module when RpcError method details are missing', () => {
+      const error = new RpcError('', '5')
+
+      try {
+        consumer.throwGrpcError(error, 'prepareFeeGrant')
+        expect.unreachable('Expected handleGrpcError to throw')
+      } catch (e: unknown) {
+        expect(e).toBeInstanceOf(GrpcUnaryRequestException)
+
+        const exception = e as GrpcUnaryRequestException
+        const message = 'prepareFeeGrant on test-module failed with NOT_FOUND'
+
+        expect(exception.message).toBe(message)
+        expect(exception.originalMessage).toBe(message)
+        expect(exception.code).toBe(GrpcStatusCode.NOT_FOUND)
+        expect(exception.context).toBe(
+          'prepareFeeGrant (baseUrl: http://localhost:9090)',
+        )
+        expect(exception.contextModule).toBe('test-module')
+        expect(exception.contextCode).toBeUndefined()
+      }
+    })
+
+    it('adds base URL context to generic non-RpcError exceptions', () => {
+      try {
+        consumer.throwGrpcError(new Error('network failure'), 'prepareFeeGrant')
+        expect.unreachable('Expected handleGrpcError to throw')
+      } catch (e: unknown) {
+        expect(e).toBeInstanceOf(GrpcUnaryRequestException)
+
+        const exception = e as GrpcUnaryRequestException
+
+        expect(exception.message).toBe('network failure')
+        expect(exception.originalMessage).toBe('network failure')
+        expect(exception.context).toBe(
+          'prepareFeeGrant (baseUrl: http://localhost:9090)',
+        )
+        expect(exception.contextModule).toBe('test-module')
+        expect(exception.contextCode).toBeUndefined()
+      }
+    })
+
+    it('preserves ABCI error parsing for non-empty RpcError messages', () => {
+      const error = new RpcError(
+        'failed to execute message; message index: 0: chain failure: invalid request {key:"ABCICode" value:"100"} {key:"Codespace" value:"exchange"}',
+        'INVALID_ARGUMENT',
+      )
+      error.methodName = 'PrepareFeeGrant'
+      error.serviceName = 'injective_exchange_rpc.InjectiveExchangeRPC'
+
+      try {
+        consumer.throwGrpcError(error, 'prepareFeeGrant')
+        expect.unreachable('Expected handleGrpcError to throw')
+      } catch (e: unknown) {
+        expect(e).toBeInstanceOf(TransactionException)
+
+        const exception = e as TransactionException
+
+        expect(exception.code).toBe(GrpcStatusCode.INVALID_ARGUMENT)
+        expect(exception.context).toBe('prepareFeeGrant')
+        expect(exception.contextModule).toBe('exchange')
+        expect(exception.contextCode).toBe(100)
+        expect(exception.originalMessage).toBe('chain failure')
+      }
     })
   })
 })

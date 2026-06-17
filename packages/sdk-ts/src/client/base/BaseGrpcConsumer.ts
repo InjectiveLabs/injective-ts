@@ -30,6 +30,20 @@ const GRPC_STATUS_CODE_BY_NAME: Partial<Record<string, GrpcStatusCode>> = {
   UNAUTHENTICATED: GrpcStatusCode.UNAUTHENTICATED,
 }
 
+const GRPC_STATUS_NAME_BY_CODE: Partial<Record<GrpcStatusCode, string>> =
+  Object.entries(GRPC_STATUS_CODE_BY_NAME).reduce(
+    (statusNameMap, [statusName, statusCode]) => {
+      if (statusCode === undefined) {
+        return statusNameMap
+      }
+
+      statusNameMap[statusCode] = statusName
+
+      return statusNameMap
+    },
+    {} as Partial<Record<GrpcStatusCode, string>>,
+  )
+
 const GRPC_RETRYABLE_STATUS_CODES = new Set<GrpcStatusCode>([
   GrpcStatusCode.UNAVAILABLE,
   GrpcStatusCode.DEADLINE_EXCEEDED,
@@ -137,6 +151,63 @@ export default class BaseGrpcConsumer {
   }
 
   /**
+   * Converts gRPC status names or numeric status values into status names.
+   */
+  private getGrpcStatusName(code: unknown): string | undefined {
+    const statusCode = this.getGrpcStatusCode(code)
+
+    if (statusCode !== undefined) {
+      return GRPC_STATUS_NAME_BY_CODE[statusCode] || `${statusCode}`
+    }
+
+    if (typeof code !== 'string') {
+      return undefined
+    }
+
+    const trimmedCode = code.trim()
+
+    return trimmedCode.length > 0 ? trimmedCode : undefined
+  }
+
+  /**
+   * Builds a short, useful fallback when protobuf-ts provides an empty message.
+   */
+  private getRpcErrorMessage(e: RpcError, context: string): string {
+    if (e.message.trim().length > 0) {
+      return e.message
+    }
+
+    const methodName = e.methodName || context
+    const serviceName = e.serviceName || this.module
+    const statusName = this.getGrpcStatusName(e.code)
+    const target = serviceName ? `${methodName} on ${serviceName}` : methodName
+
+    return statusName
+      ? `${target} failed with ${statusName}`
+      : `${target} failed`
+  }
+
+  /**
+   * Adds RPC method/service details to exception context when available.
+   */
+  private getRpcErrorContext(e: RpcError, context: string): string {
+    const rpcTarget = [e.serviceName, e.methodName].filter(Boolean).join('/')
+    const contextDetails = [
+      `baseUrl: ${this.endpoint}`,
+      rpcTarget ? `rpc: ${rpcTarget}` : undefined,
+    ].filter((detail): detail is string => Boolean(detail))
+
+    return `${context} (${contextDetails.join(', ')})`
+  }
+
+  /**
+   * Adds the base URL to generic exception context.
+   */
+  private getGrpcErrorContext(context: string): string {
+    return `${context} (baseUrl: ${this.endpoint})`
+  }
+
+  /**
    * Determines whether a gRPC error is safe to retry.
    */
   private isRetryableGrpcError(e: unknown): boolean {
@@ -236,14 +307,17 @@ export default class BaseGrpcConsumer {
         })
       }
 
-      throw new GrpcUnaryRequestException(new Error(message), {
-        code:
-          grpcStatusCode !== undefined
-            ? grpcErrorCodeToErrorCode(grpcStatusCode)
-            : UnspecifiedErrorCode,
-        context,
-        contextModule: this.module,
-      })
+      throw new GrpcUnaryRequestException(
+        new Error(this.getRpcErrorMessage(e, context)),
+        {
+          code:
+            grpcStatusCode !== undefined
+              ? grpcErrorCodeToErrorCode(grpcStatusCode)
+              : UnspecifiedErrorCode,
+          context: this.getRpcErrorContext(e, context),
+          contextModule: this.module,
+        },
+      )
     }
 
     const error = e as Error
@@ -263,7 +337,7 @@ export default class BaseGrpcConsumer {
 
     throw new GrpcUnaryRequestException(error, {
       code: UnspecifiedErrorCode,
-      context,
+      context: this.getGrpcErrorContext(context),
       contextModule: this.module,
     })
   }
@@ -309,7 +383,8 @@ export default class BaseGrpcConsumer {
     } catch (e: unknown) {
       // Derive context from method name if not provided
       const errorContext = clientMethod.name || 'UnknownMethod'
-      this.handleGrpcError(e, errorContext)
+
+      this.handleGrpcError(e, errorContext.replace('bound', '').trim())
     }
   }
 }

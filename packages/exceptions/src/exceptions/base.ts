@@ -166,21 +166,27 @@ export abstract class ConcreteException extends Error implements Exception {
     return error
   }
 
+  private toErrorDetails(errorClass: string) {
+    return {
+      code: this.code,
+      type: this.type,
+      errorClass,
+      message: this.message,
+      context: this.context,
+      ...(this.contextCode !== undefined
+        ? { contextCode: this.contextCode }
+        : {}),
+      contextModule: this.contextModule,
+      originalMessage: this.originalMessage,
+      stack: (this.stack || '').split('\n').map((line) => line.trim()),
+    }
+  }
+
   public toCompactError(): Error {
     const name = this.name || toPascalCase(this.type)
 
     const error = new Error(
-      `${this.message} | ${JSON.stringify({
-        type: this.type,
-        code: this.code,
-        errorClass: name,
-        message: this.message,
-        context: this.context,
-        contextCode: this.contextCode,
-        contextModule: this.contextModule,
-        originalMessage: this.originalMessage,
-        stack: (this.stack || '').split('\n').map((line) => line.trim()),
-      })}`,
+      `${this.message} | ${JSON.stringify(this.toErrorDetails(name))}`,
     )
     error.stack = this.stack
     error.name = this.name || toPascalCase(this.type)
@@ -195,17 +201,7 @@ export abstract class ConcreteException extends Error implements Exception {
   public toObject() {
     const name = this.name || toPascalCase(this.type)
 
-    return {
-      code: this.code,
-      type: this.type,
-      errorClass: name,
-      message: this.message,
-      context: this.context,
-      contextCode: this.contextCode,
-      contextModule: this.contextModule,
-      originalMessage: this.originalMessage,
-      stack: (this.stack || '').split('\n').map((line) => line.trim()),
-    }
+    return this.toErrorDetails(name)
   }
 
   public toString() {
