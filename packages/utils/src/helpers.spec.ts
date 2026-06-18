@@ -1,4 +1,8 @@
-import { awaitForAll, splitArrayToChunks } from './helpers.js'
+import {
+  awaitForAll,
+  splitArrayToChunks,
+  splitArrayToChunksThrow,
+} from './helpers.js'
 
 describe('awaitForAll', () => {
   it('should resolve all items when no errors occur', async () => {
@@ -85,6 +89,20 @@ describe('helpers', () => {
       [41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
       [51, 52, 53, 54],
     ])
+  })
+
+  it('should reject non-positive chunk size', () => {
+    const array = [1, 2, 3]
+
+    expect(() => splitArrayToChunksThrow({ array, chunkSize: 0 })).toThrow(
+      'Invalid chunk size, must be a positive integer',
+    )
+    expect(() => splitArrayToChunksThrow({ array, chunkSize: -1 })).toThrow(
+      'Invalid chunk size, must be a positive integer',
+    )
+    expect(() => splitArrayToChunksThrow({ array, chunkSize: 1.5 })).toThrow(
+      'Invalid chunk size, must be a positive integer',
+    )
   })
 
   it('should split array to chunks with filter and chunk size higher chunk size pyth price feeds', () => {

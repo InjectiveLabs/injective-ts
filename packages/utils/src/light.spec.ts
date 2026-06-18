@@ -6,6 +6,7 @@ import {
   snakeToPascal,
   getDefaultStdFee,
   formatWalletAddress,
+  splitArrayToChunksThrow,
   DEFAULT_STD_FEE_BY_DENOM,
 } from './light.js'
 import {
@@ -16,6 +17,7 @@ import {
   snakeToPascal as rootSnakeToPascal,
   getDefaultStdFee as rootGetDefaultStdFee,
   formatWalletAddress as rootFormatWalletAddress,
+  splitArrayToChunksThrow as rootSplitArrayToChunksThrow,
   DEFAULT_STD_FEE_BY_DENOM as ROOT_DEFAULT_STD_FEE_BY_DENOM,
 } from './index.js'
 
@@ -60,5 +62,20 @@ describe('light utils', () => {
       rootSnakeToPascal('foo_bar/baz_qux'),
     )
     expect(capitalize('injective')).toBe(rootCapitalize('injective'))
+    expect(capitalize('')).toBe(rootCapitalize(''))
+  })
+
+  it('matches root chunk size validation', () => {
+    const array = [1, 2, 3]
+
+    expect(() => splitArrayToChunksThrow({ array, chunkSize: 0 })).toThrow(
+      'Invalid chunk size, must be a positive integer',
+    )
+    expect(() => splitArrayToChunksThrow({ array, chunkSize: 1.5 })).toThrow(
+      'Invalid chunk size, must be a positive integer',
+    )
+    expect(() => rootSplitArrayToChunksThrow({ array, chunkSize: 0 })).toThrow(
+      'Invalid chunk size, must be a positive integer',
+    )
   })
 })

@@ -69,7 +69,13 @@ export const getSubaccountId = (
 ): string => {
   const bytes = getInjectiveAddressBytes(injectiveAddress)
 
-  return `0x${bytesToHex(bytes)}${'0'.repeat(23)}${nonce}`
+  if (!Number.isInteger(nonce) || nonce < 0 || nonce > 255) {
+    throw new Error('Invalid nonce, must be an integer between 0 and 255')
+  }
+
+  const nonceInHex = nonce.toString(16).padStart(2, '0')
+
+  return `0x${bytesToHex(bytes)}${'0'.repeat(22)}${nonceInHex}`
 }
 
 export const getAddressFromInjectiveAddress = (address: string): string => {

@@ -96,7 +96,7 @@ export function uint8ArrayToString(
     return ''
   }
 
-  if (string.constructor !== Uint8Array) {
+  if (!(string instanceof Uint8Array)) {
     return string as string
   }
 

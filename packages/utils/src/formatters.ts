@@ -38,5 +38,10 @@ export const snakeToPascal = (str: string): string => {
     .join('/')
 }
 
-export const capitalize = (str: string): string =>
-  str[0].toUpperCase() + str.slice(1)
+export const capitalize = (str: string): string => {
+  if (!str) {
+    return str
+  }
+
+  return str[0].toUpperCase() + str.slice(1)
+}

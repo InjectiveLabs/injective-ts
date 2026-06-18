@@ -174,8 +174,13 @@ export const snakeToPascal = (str: string): string => {
     .join('/')
 }
 
-export const capitalize = (str: string): string =>
-  str[0].toUpperCase() + str.slice(1)
+export const capitalize = (str: string): string => {
+  if (!str) {
+    return str
+  }
+
+  return str[0].toUpperCase() + str.slice(1)
+}
 
 export const sleep = (timeout: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, timeout))
@@ -218,8 +223,12 @@ export const splitArrayToChunksThrow = <T>({
   const chunks = []
   const chunkSizeInNumber = Number(chunkSize)
 
-  if (Number.isNaN(chunkSizeInNumber)) {
-    throw new Error('Invalid chunk size, must be a valid number')
+  if (
+    !Number.isFinite(chunkSizeInNumber) ||
+    !Number.isInteger(chunkSizeInNumber) ||
+    chunkSizeInNumber <= 0
+  ) {
+    throw new Error('Invalid chunk size, must be a positive integer')
   }
 
   for (let index = 0; index < array.length; index += chunkSizeInNumber) {
