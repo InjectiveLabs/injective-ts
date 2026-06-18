@@ -11,6 +11,8 @@ export interface MsgBroadcasterTxOptions {
   ethereumAddress?: string
   injectiveAddress?: string
   accountDetails?: AuthBaseAccount
+  latestHeight?: number | string
+  timeoutHeight?: number | string
   txTimeoutInBlocks?: number // blocks to wait for tx to be included in a block
   txInclusion?: TxClientInclusionOptions
   gas?: {
@@ -28,15 +30,16 @@ export interface MsgBroadcasterTxOptionsWithAddresses extends MsgBroadcasterTxOp
 
 export interface MsgBroadcasterOptions {
   network: Network
-  endpoints?: NetworkEndpoints
   chainId?: ChainId
+  txTimeout?: number // blocks to wait for tx to be included in a block
+  simulateTx?: boolean
   evmChainId?: EvmChainId
   feePayerPubKey?: string
-  simulateTx?: boolean
-  txTimeoutOnFeeDelegation?: boolean
-  txTimeout?: number // blocks to wait for tx to be included in a block
+  endpoints?: NetworkEndpoints
   txInclusion?: TxClientInclusionOptions
   walletStrategy: BaseWalletStrategy
+  useDynamicBaseFee?: boolean
+  txTimeoutOnFeeDelegation?: boolean
   gasBufferCoefficient?: number
   httpHeaders?: Record<string, string>
 }

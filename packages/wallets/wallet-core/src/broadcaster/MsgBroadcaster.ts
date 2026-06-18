@@ -141,6 +141,8 @@ export class MsgBroadcaster {
 
   public simulateTx: boolean = true
 
+  public useDynamicBaseFee: boolean = false
+
   public txTimeoutOnFeeDelegation: boolean = false
 
   public evmChainId?: EvmChainIdType
@@ -159,6 +161,10 @@ export class MsgBroadcaster {
     this.options = options
     this.simulateTx =
       options.simulateTx !== undefined ? options.simulateTx : true
+    this.useDynamicBaseFee =
+      options.useDynamicBaseFee !== undefined
+        ? options.useDynamicBaseFee
+        : false
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
     this.txTimeoutOnFeeDelegation =
       options.txTimeoutOnFeeDelegation !== undefined
@@ -174,11 +180,20 @@ export class MsgBroadcaster {
   }
 
   setOptions(options: Partial<MsgBroadcasterOptions>) {
-    this.simulateTx = options.simulateTx || this.simulateTx
-    this.txTimeout = options.txTimeout || this.txTimeout
+    this.simulateTx =
+      options.simulateTx !== undefined ? options.simulateTx : this.simulateTx
+    this.useDynamicBaseFee =
+      options.useDynamicBaseFee !== undefined
+        ? options.useDynamicBaseFee
+        : this.useDynamicBaseFee
+    this.txTimeout =
+      options.txTimeout !== undefined ? options.txTimeout : this.txTimeout
     this.txTimeoutOnFeeDelegation =
-      options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
-    this.txInclusion = options.txInclusion || this.txInclusion
+      options.txTimeoutOnFeeDelegation !== undefined
+        ? options.txTimeoutOnFeeDelegation
+        : this.txTimeoutOnFeeDelegation
+    this.txInclusion =
+      options.txInclusion !== undefined ? options.txInclusion : this.txInclusion
   }
 
   async getEvmChainId(): Promise<EvmChainId | undefined> {
@@ -490,15 +505,22 @@ export class MsgBroadcaster {
 
     const [evmChainId, { baseAccount, latestHeight }] = await Promise.all([
       this.getEvmChainId(),
-      this.fetchAccountAndBlockDetails(tx.injectiveAddress, tx.accountDetails),
+      this.fetchAccountAndBlockDetails({
+        latestHeight: tx.latestHeight,
+        timeoutHeight: tx.timeoutHeight,
+        address: tx.injectiveAddress,
+        existingAccountDetails: tx.accountDetails,
+      }),
     ])
 
     if (!evmChainId) {
       throw new GeneralException(new Error('Please provide evmChainId'))
     }
-    const timeoutHeight = toBigNumber(latestHeight.toString()).plus(
+    const timeoutHeight = this.resolveTimeoutHeight({
+      tx,
+      latestHeight,
       txTimeoutInBlocks,
-    )
+    })
     const txTimeoutTimeInSeconds =
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
@@ -635,14 +657,23 @@ export class MsgBroadcaster {
 
     const [evmChainId, { baseAccount, latestHeight }] = await Promise.all([
       this.getEvmChainId(),
-      this.fetchAccountAndBlockDetails(tx.injectiveAddress, tx.accountDetails),
+      this.fetchAccountAndBlockDetails({
+        latestHeight: tx.latestHeight,
+        timeoutHeight: tx.timeoutHeight,
+        address: tx.injectiveAddress,
+        existingAccountDetails: tx.accountDetails,
+      }),
     ])
 
     if (!evmChainId) {
       throw new GeneralException(new Error('Please provide evmChainId'))
     }
 
-    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+    const timeoutHeight = this.resolveTimeoutHeight({
+      tx,
+      latestHeight,
+      txTimeoutInBlocks,
+    })
     const txTimeoutTimeInSeconds =
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
@@ -811,18 +842,24 @@ export class MsgBroadcaster {
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
-    let timeoutHeight = undefined
+    let timeoutHeight = this.resolveOptionalTimeoutHeight({
+      tx,
+      latestHeight: tx.latestHeight,
+      txTimeoutInBlocks,
+    })
 
-    if (txTimeoutOnFeeDelegation) {
+    if (timeoutHeight === undefined && txTimeoutOnFeeDelegation) {
       const latestBlock = await new ChainGrpcTendermintApi(
         endpoints.grpc,
       ).fetchLatestBlock()
 
       const latestHeight = latestBlock!.header!.height.toString()
 
-      timeoutHeight = toBigNumber(latestHeight)
-        .plus(txTimeoutInBlocks)
-        .toNumber()
+      timeoutHeight = this.resolveTimeoutHeight({
+        tx,
+        latestHeight,
+        txTimeoutInBlocks,
+      })
     }
 
     walletStrategy.emit(
@@ -830,7 +867,7 @@ export class MsgBroadcaster {
     )
 
     const prepareTxResponse = await transactionApi.prepareTxRequest({
-      timeoutHeight,
+      timeoutHeight: timeoutHeight?.toNumber(),
       memo: tx.memo,
       message: web3Msgs,
       address: tx.ethereumAddress,
@@ -949,10 +986,19 @@ export class MsgBroadcaster {
     }
 
     const [{ baseAccount, latestHeight }, pubKey] = await Promise.all([
-      this.fetchAccountAndBlockDetails(tx.injectiveAddress, tx.accountDetails),
+      this.fetchAccountAndBlockDetails({
+        latestHeight: tx.latestHeight,
+        timeoutHeight: tx.timeoutHeight,
+        address: tx.injectiveAddress,
+        existingAccountDetails: tx.accountDetails,
+      }),
       walletStrategy.getPubKey(tx.injectiveAddress),
     ])
-    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+    const timeoutHeight = this.resolveTimeoutHeight({
+      tx,
+      latestHeight,
+      txTimeoutInBlocks,
+    })
     const txTimeoutTimeInSeconds =
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
@@ -1137,10 +1183,19 @@ export class MsgBroadcaster {
     const cosmosWallet = walletStrategy.getCosmosWallet(chainId)
 
     const [{ baseAccount, latestHeight }, pubKey] = await Promise.all([
-      this.fetchAccountAndBlockDetails(tx.injectiveAddress, tx.accountDetails),
+      this.fetchAccountAndBlockDetails({
+        latestHeight: tx.latestHeight,
+        timeoutHeight: tx.timeoutHeight,
+        address: tx.injectiveAddress,
+        existingAccountDetails: tx.accountDetails,
+      }),
       walletStrategy.getPubKey(),
     ])
-    const timeoutHeight = toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+    const timeoutHeight = this.resolveTimeoutHeight({
+      tx,
+      latestHeight,
+      txTimeoutInBlocks,
+    })
 
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
@@ -1291,10 +1346,12 @@ export class MsgBroadcaster {
     const fetchAccountBlockDetails = async () => {
       try {
         const { baseAccount, latestHeight } =
-          await this.fetchAccountAndBlockDetails(
-            tx.injectiveAddress,
-            tx.accountDetails,
-          )
+          await this.fetchAccountAndBlockDetails({
+            latestHeight: tx.latestHeight,
+            timeoutHeight: tx.timeoutHeight,
+            address: tx.injectiveAddress,
+            existingAccountDetails: tx.accountDetails,
+          })
 
         return { baseAccount, latestHeight }
       } catch (e) {
@@ -1314,7 +1371,11 @@ export class MsgBroadcaster {
           })
 
           const { baseAccount, latestHeight } =
-            await this.fetchAccountAndBlockDetails(tx.injectiveAddress)
+            await this.fetchAccountAndBlockDetails({
+              latestHeight: tx.latestHeight,
+              timeoutHeight: tx.timeoutHeight,
+              address: tx.injectiveAddress,
+            })
 
           return { baseAccount, latestHeight }
         }
@@ -1323,28 +1384,32 @@ export class MsgBroadcaster {
       }
     }
 
-    /** Account Details * */
-    const { baseAccount, latestHeight } = await fetchAccountBlockDetails()
-
     const chainGrpcAuthApi = new ChainGrpcAuthApi(endpoints.grpc)
 
     if (httpHeaders) {
       chainGrpcAuthApi.setMetadata(httpHeaders)
     }
 
-    const feePayerAccountDetails = await chainGrpcAuthApi.fetchAccount(feePayer)
+    const [accountBlockDetails, feePayerAccountDetails, pubKey] =
+      await Promise.all([
+        fetchAccountBlockDetails(),
+        chainGrpcAuthApi.fetchAccount(feePayer),
+        walletStrategy.getPubKey(),
+      ])
+    const { baseAccount, latestHeight } = accountBlockDetails
     const { baseAccount: feePayerBaseAccount } = feePayerAccountDetails
 
-    const timeoutHeight = toBigNumber(latestHeight).plus(
-      txTimeoutOnFeeDelegation
+    const timeoutHeight = this.resolveTimeoutHeight({
+      tx,
+      latestHeight,
+      txTimeoutInBlocks: txTimeoutOnFeeDelegation
         ? txTimeoutInBlocks
         : DEFAULT_BLOCK_TIMEOUT_HEIGHT,
-    )
+    })
     const txTimeoutTimeInSeconds =
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
-    const pubKey = await walletStrategy.getPubKey()
     const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
 
     /** Prepare the Transaction * */
@@ -1500,7 +1565,13 @@ export class MsgBroadcaster {
           gas?: string | number
         },
   ) {
-    const client = new ChainGrpcTxFeesApi(this.endpoints.grpc)
+    const { endpoints, useDynamicBaseFee } = this
+
+    if (!useDynamicBaseFee) {
+      return getStdFee(args)
+    }
+
+    const client = new ChainGrpcTxFeesApi(endpoints.grpc)
     let baseFee = DEFAULT_GAS_PRICE
 
     try {
@@ -1654,25 +1725,40 @@ export class MsgBroadcaster {
     }
   }
 
-  private async fetchAccountAndBlockDetails(
-    address: string,
-    existingAccountDetails?: AuthBaseAccount,
-  ) {
+  private async fetchAccountAndBlockDetails({
+    address,
+    latestHeight,
+    timeoutHeight,
+    existingAccountDetails,
+  }: {
+    address: string
+    latestHeight?: number | string
+    timeoutHeight?: number | string
+    existingAccountDetails?: AuthBaseAccount
+  }) {
     const { endpoints, httpHeaders } = this
-
-    const tendermintClient = new ChainGrpcTendermintApi(endpoints.grpc)
-
-    if (httpHeaders) {
-      tendermintClient.setMetadata(httpHeaders)
-    }
+    const shouldFetchLatestHeight =
+      latestHeight === undefined && timeoutHeight === undefined
 
     if (existingAccountDetails) {
+      if (!shouldFetchLatestHeight) {
+        return {
+          latestHeight: latestHeight?.toString(),
+          baseAccount: existingAccountDetails,
+        }
+      }
+
+      const tendermintClient = new ChainGrpcTendermintApi(endpoints.grpc)
+
+      if (httpHeaders) {
+        tendermintClient.setMetadata(httpHeaders)
+      }
+
       const latestBlock = await tendermintClient.fetchLatestBlock()
-      const latestHeight = latestBlock!.header!.height.toString()
 
       return {
         baseAccount: existingAccountDetails,
-        latestHeight,
+        latestHeight: latestBlock!.header!.height.toString(),
       }
     }
 
@@ -1682,18 +1768,74 @@ export class MsgBroadcaster {
       chainClient.setMetadata(httpHeaders)
     }
 
+    if (!shouldFetchLatestHeight) {
+      const accountDetails = await chainClient.fetchAccount(address)
+
+      return {
+        latestHeight: latestHeight?.toString(),
+        baseAccount: accountDetails.baseAccount,
+      }
+    }
+
+    const tendermintClient = new ChainGrpcTendermintApi(endpoints.grpc)
+
+    if (httpHeaders) {
+      tendermintClient.setMetadata(httpHeaders)
+    }
+
     const [accountDetails, latestBlock] = await Promise.all([
       chainClient.fetchAccount(address),
       tendermintClient.fetchLatestBlock(),
     ])
 
-    const { baseAccount } = accountDetails
-    const latestHeight = latestBlock!.header!.height.toString()
-
     return {
-      baseAccount,
-      latestHeight,
+      baseAccount: accountDetails.baseAccount,
+      latestHeight: latestBlock!.header!.height.toString(),
     }
+  }
+
+  private resolveOptionalTimeoutHeight({
+    tx,
+    latestHeight,
+    txTimeoutInBlocks,
+  }: {
+    latestHeight?: number | string
+    txTimeoutInBlocks: number
+    tx: Pick<MsgBroadcasterTxOptions, 'timeoutHeight'>
+  }) {
+    if (tx.timeoutHeight !== undefined) {
+      return toBigNumber(tx.timeoutHeight)
+    }
+
+    if (latestHeight === undefined) {
+      return undefined
+    }
+
+    return toBigNumber(latestHeight).plus(txTimeoutInBlocks)
+  }
+
+  private resolveTimeoutHeight({
+    tx,
+    latestHeight,
+    txTimeoutInBlocks,
+  }: {
+    latestHeight?: number | string
+    txTimeoutInBlocks: number
+    tx: Pick<MsgBroadcasterTxOptions, 'timeoutHeight'>
+  }) {
+    const timeoutHeight = this.resolveOptionalTimeoutHeight({
+      tx,
+      latestHeight,
+      txTimeoutInBlocks,
+    })
+
+    if (!timeoutHeight) {
+      throw new GeneralException(
+        new Error('Please provide latestHeight or timeoutHeight'),
+      )
+    }
+
+    return timeoutHeight
   }
 
   private resolveTimeoutInBlocks(override?: number): number {

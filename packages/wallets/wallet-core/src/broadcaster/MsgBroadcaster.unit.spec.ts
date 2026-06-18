@@ -1,7 +1,6 @@
-import { vi } from 'vitest'
+import { vi, afterEach } from 'vitest'
 import { Network } from '@injectivelabs/networks'
 import { TransactionException } from '@injectivelabs/exceptions'
-import { ChainGrpcAuthApi } from '@injectivelabs/sdk-ts/client/chain'
 import { PublicKey, PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
 import {
@@ -14,6 +13,11 @@ import {
   TxInclusionStrategy,
   CosmosTxV1Beta1TxPb,
 } from '@injectivelabs/sdk-ts/core/tx'
+import {
+  ChainGrpcAuthApi,
+  ChainGrpcTxFeesApi,
+  ChainGrpcTendermintApi,
+} from '@injectivelabs/sdk-ts/client/chain'
 import { MsgBroadcaster } from './MsgBroadcaster.js'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { MsgBroadcasterOptions } from './types.js'
@@ -51,6 +55,7 @@ const makeValidTxRawBytes = () => {
 
 const makeMessage = () =>
   ({
+    toBinary: () => new Uint8Array(),
     toDirectSign: () => ({ type: '/cosmos.bank.v1beta1.MsgSend' }),
   }) as any
 
@@ -65,6 +70,13 @@ const makeDirectSignResponse = (pubKey = 'mockPubKeyBase64') => ({
   },
 })
 
+const makeBaseAccount = (overrides: Record<string, unknown> = {}) => ({
+  accountNumber: 1,
+  sequence: 1,
+  pubKey: { key: 'mockPubKeyBase64' },
+  ...overrides,
+})
+
 const createMockWalletStrategy = () =>
   ({
     wallet: 'keplr',
@@ -77,6 +89,195 @@ const createMockWalletStrategy = () =>
     getCosmosWallet: vi.fn(),
     emit: vi.fn().mockReturnValue(true),
   }) as unknown as BaseWalletStrategy
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
+
+describe('MsgBroadcaster options', () => {
+  it('updates boolean options with explicit false values', () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      simulateTx: true,
+      useDynamicBaseFee: true,
+      walletStrategy: createMockWalletStrategy(),
+      txTimeoutOnFeeDelegation: true,
+    })
+
+    broadcaster.setOptions({
+      simulateTx: false,
+      useDynamicBaseFee: false,
+      txTimeoutOnFeeDelegation: false,
+    })
+
+    expect(broadcaster.simulateTx).toBe(false)
+    expect(broadcaster.useDynamicBaseFee).toBe(false)
+    expect(broadcaster.txTimeoutOnFeeDelegation).toBe(false)
+  })
+
+  it('skips dynamic base fee by default', async () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    const fetchEipBaseFee = vi
+      .spyOn(ChainGrpcTxFeesApi.prototype, 'fetchEipBaseFee')
+      .mockResolvedValue({ baseFee: '999' } as any)
+
+    await (broadcaster as any).getStdFeeWithDynamicBaseFee({ gas: '400000' })
+
+    expect(fetchEipBaseFee).not.toHaveBeenCalled()
+  })
+
+  it('fetches dynamic base fee when explicitly enabled', async () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      useDynamicBaseFee: true,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    const fetchEipBaseFee = vi
+      .spyOn(ChainGrpcTxFeesApi.prototype, 'fetchEipBaseFee')
+      .mockResolvedValue({ baseFee: '170000000' } as any)
+
+    await (broadcaster as any).getStdFeeWithDynamicBaseFee({ gas: '400000' })
+
+    expect(fetchEipBaseFee).toHaveBeenCalledOnce()
+  })
+
+  it('does not simulate or fetch dynamic base fee when both are disabled', async () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      simulateTx: false,
+      useDynamicBaseFee: false,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    const fetchEipBaseFee = vi
+      .spyOn(ChainGrpcTxFeesApi.prototype, 'fetchEipBaseFee')
+      .mockResolvedValue({ baseFee: '170000000' } as any)
+    const simulateTxWithSigners = vi.spyOn(
+      broadcaster as any,
+      'simulateTxWithSigners',
+    )
+
+    await (broadcaster as any).getTxWithSignersAndStdFee({
+      chainId: 'injective-888',
+      memo: '',
+      message: [makeMessage()],
+      timeoutHeight: 100,
+      signers: {
+        sequence: 1,
+        accountNumber: 1,
+        pubKey: 'mockPubKeyBase64',
+      },
+      fee: {
+        amount: [{ denom: 'inj', amount: '64000000000000' }],
+        gas: '400000',
+      },
+    })
+
+    expect(fetchEipBaseFee).not.toHaveBeenCalled()
+    expect(simulateTxWithSigners).not.toHaveBeenCalled()
+  })
+})
+
+describe('MsgBroadcaster account and height details', () => {
+  it('uses provided account details and latest height without RPC calls', async () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    const fetchAccount = vi.spyOn(ChainGrpcAuthApi.prototype, 'fetchAccount')
+    const fetchLatestBlock = vi.spyOn(
+      ChainGrpcTendermintApi.prototype,
+      'fetchLatestBlock',
+    )
+    const baseAccount = makeBaseAccount()
+
+    const result = await (broadcaster as any).fetchAccountAndBlockDetails({
+      latestHeight: '123',
+      address: 'inj1test',
+      existingAccountDetails: baseAccount,
+    })
+
+    expect(result).toEqual({ latestHeight: '123', baseAccount })
+    expect(fetchAccount).not.toHaveBeenCalled()
+    expect(fetchLatestBlock).not.toHaveBeenCalled()
+  })
+
+  it('fetches account only when timeout height is provided', async () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    const baseAccount = makeBaseAccount()
+    const fetchAccount = vi
+      .spyOn(ChainGrpcAuthApi.prototype, 'fetchAccount')
+      .mockResolvedValue({ baseAccount } as any)
+    const fetchLatestBlock = vi.spyOn(
+      ChainGrpcTendermintApi.prototype,
+      'fetchLatestBlock',
+    )
+
+    const result = await (broadcaster as any).fetchAccountAndBlockDetails({
+      timeoutHeight: '456',
+      address: 'inj1test',
+    })
+
+    expect(result).toEqual({ latestHeight: undefined, baseAccount })
+    expect(fetchAccount).toHaveBeenCalledOnce()
+    expect(fetchLatestBlock).not.toHaveBeenCalled()
+  })
+
+  it('fetches account and latest block in parallel when neither height is provided', async () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    let isAccountFetchStarted = false
+    let isLatestBlockFetchStarted = false
+    let resolveAccountFetch: (value: unknown) => void = () => undefined
+    let resolveLatestBlockFetch: (value: unknown) => void = () => undefined
+    const accountFetchPromise = new Promise((resolve) => {
+      resolveAccountFetch = resolve
+    })
+    const latestBlockFetchPromise = new Promise((resolve) => {
+      resolveLatestBlockFetch = resolve
+    })
+
+    vi.spyOn(ChainGrpcAuthApi.prototype, 'fetchAccount').mockImplementation(
+      () => {
+        isAccountFetchStarted = true
+
+        return accountFetchPromise as any
+      },
+    )
+    vi.spyOn(
+      ChainGrpcTendermintApi.prototype,
+      'fetchLatestBlock',
+    ).mockImplementation(() => {
+      isLatestBlockFetchStarted = true
+
+      return latestBlockFetchPromise as any
+    })
+
+    const resultPromise = (broadcaster as any).fetchAccountAndBlockDetails({
+      address: 'inj1test',
+    })
+    await Promise.resolve()
+
+    expect(isAccountFetchStarted).toBe(true)
+    expect(isLatestBlockFetchStarted).toBe(true)
+
+    const baseAccount = makeBaseAccount()
+    resolveAccountFetch({ baseAccount })
+    resolveLatestBlockFetch({ header: { height: '789' } })
+
+    await expect(resultPromise).resolves.toEqual({
+      baseAccount,
+      latestHeight: '789',
+    })
+  })
+})
 
 // ---------------------------------------------------------------------------
 // Event emission order tests
@@ -320,6 +521,54 @@ describe('MsgBroadcaster event emission order', () => {
   })
 
   describe('sendTransaction broadcast callback', () => {
+    it('uses per-call timeout height when building direct sign transactions', async () => {
+      const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create({
+        bodyBytes: new Uint8Array([1]),
+        authInfoBytes: new Uint8Array([2]),
+        signatures: [new Uint8Array([3])],
+      })
+      const baseAccount = makeBaseAccount()
+      const fetchAccountAndBlockDetails = vi
+        .spyOn(broadcaster as any, 'fetchAccountAndBlockDetails')
+        .mockResolvedValue({
+          baseAccount,
+          latestHeight: undefined,
+        })
+      const getTxWithSignersAndStdFee = vi
+        .spyOn(broadcaster as any, 'getTxWithSignersAndStdFee')
+        .mockResolvedValue({
+          txRaw,
+          stdFee: {},
+        })
+
+      vi.spyOn(
+        broadcaster as any,
+        'prepareTxInclusionWaiter',
+      ).mockResolvedValue({
+        txHash: 'MOCK_TX_HASH',
+        inclusionStrategy: TxInclusionStrategy.Poll,
+        close: vi.fn(),
+        wait: vi.fn().mockResolvedValue(makeTxResponse('MOCK_TX_HASH')),
+      })
+
+      await (broadcaster as any).broadcastDirectSign({
+        timeoutHeight: '999',
+        msgs: makeMessage(),
+        ethereumAddress: '0x0000000000000000000000000000000000000001',
+        injectiveAddress: 'inj1test',
+      })
+
+      expect(fetchAccountAndBlockDetails).toHaveBeenCalledWith(
+        expect.objectContaining({
+          timeoutHeight: '999',
+          address: 'inj1test',
+        }),
+      )
+      expect(getTxWithSignersAndStdFee).toHaveBeenCalledWith(
+        expect.objectContaining({ timeoutHeight: 999 }),
+      )
+    })
+
     it('emits BroadcastSynced from onBroadcast before waiting for confirmation', async () => {
       const events: string[] = []
       const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create({
