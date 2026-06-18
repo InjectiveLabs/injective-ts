@@ -5,7 +5,7 @@ import {
   isEvmWallet,
   isCosmosWallet,
   WalletStrategyEmitterEventType,
-} from '@injectivelabs/wallet-base/light'
+} from '@injectivelabs/wallet-base/runtime-light'
 import type { StdSignDoc } from '@keplr-wallet/types'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
 import type { AccountAddress } from '@injectivelabs/ts-types'
@@ -20,7 +20,7 @@ import type {
   WalletMetadata,
   WalletStrategyEmitter,
   WalletStrategyEmitterEvents,
-} from '@injectivelabs/wallet-base/light'
+} from '@injectivelabs/wallet-base/runtime-light'
 import type {
   Eip1193Provider,
   WalletDeviceType,
@@ -32,7 +32,7 @@ import type {
   WalletStrategyArguments,
   CosmosWalletAbstraction,
   WalletStrategy as WalletStrategyInterface,
-} from '@injectivelabs/wallet-base/light'
+} from '@injectivelabs/wallet-base/runtime-light'
 
 const getInitialWallet = (args: WalletStrategyArguments): Wallet => {
   if (args.wallet) {

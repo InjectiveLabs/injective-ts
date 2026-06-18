@@ -288,6 +288,15 @@ describe('Buffer Migration - Encoding Utilities', () => {
       expect(result).toBe('Hello')
     })
 
+    it('should convert Uint8Array subclasses to string', () => {
+      class CustomUint8Array extends Uint8Array {}
+
+      const arr = new CustomUint8Array([72, 101, 108, 108, 111])
+      const result = uint8ArrayToString(arr)
+
+      expect(result).toBe('Hello')
+    })
+
     it('should return string as-is', () => {
       const str = 'Hello'
       const result = uint8ArrayToString(str)
@@ -353,6 +362,13 @@ describe('Buffer Migration - Encoding Utilities', () => {
 
       const decoded = fromBase64(result)
       expect(decoded).toEqual(obj)
+    })
+
+    it('should handle bigint values', () => {
+      const result = toBase64({ amount: 123n })
+
+      const decoded = fromBase64(result)
+      expect(decoded).toEqual({ amount: '123' })
     })
   })
 

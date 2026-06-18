@@ -59,8 +59,12 @@ export const splitArrayToChunksThrow = <T>({
   const chunks = []
   const chunkSizeInNumber = Number(chunkSize)
 
-  if (isNaN(chunkSizeInNumber)) {
-    throw new Error('Invalid chunk size, must be a valid number')
+  if (
+    !Number.isFinite(chunkSizeInNumber) ||
+    !Number.isInteger(chunkSizeInNumber) ||
+    chunkSizeInNumber <= 0
+  ) {
+    throw new Error('Invalid chunk size, must be a positive integer')
   }
 
   for (let i = 0; i < array.length; i += chunkSizeInNumber) {

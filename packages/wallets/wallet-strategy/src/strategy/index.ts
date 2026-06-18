@@ -1,6 +1,6 @@
 import { GeneralException } from '@injectivelabs/exceptions'
-import { Wallet, isEvmWallet } from '@injectivelabs/wallet-base/light'
 import { BaseWalletStrategy } from '@injectivelabs/wallet-core/strategy'
+import { Wallet, isEvmWallet } from '@injectivelabs/wallet-base/runtime-light'
 import {
   loadEvmStrategy,
   loadMagicStrategy,
@@ -12,18 +12,18 @@ import {
   loadWalletConnectStrategy,
   loadPrivateKeyCosmosStrategy,
 } from './loaders.js'
-import type { Wallet as WalletType } from '@injectivelabs/wallet-base/light'
+import type { Wallet as WalletType } from '@injectivelabs/wallet-base/runtime-light'
 import type {
   WalletMetadata,
   StrategyEmitter,
-} from '@injectivelabs/wallet-base/light'
+} from '@injectivelabs/wallet-base/runtime-light'
 import type {
   ConcreteStrategiesArg,
   ConcreteWalletStrategy,
   WalletStrategyArguments,
   WalletStrategyEvmOptions,
   ConcreteEvmWalletStrategyArgs,
-} from '@injectivelabs/wallet-base/light'
+} from '@injectivelabs/wallet-base/runtime-light'
 
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { evmOptions } = args

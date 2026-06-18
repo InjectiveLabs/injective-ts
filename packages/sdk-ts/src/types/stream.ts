@@ -1,72 +1,9 @@
 /**
  * Subscription interface for stream management with event-based lifecycle
  */
+export { GrpcStatusCode, StreamDisconnectReason, StreamEvent } from './light.js'
+import type { StreamDisconnectReason } from './light.js'
 
-/**
- * gRPC Status Codes
- * @see https://grpc.io/docs/guides/status-codes/
- */
-export const GrpcStatusCode = {
-  OK: 0,
-  CANCELLED: 1,
-  UNKNOWN: 2,
-  INVALID_ARGUMENT: 3,
-  DEADLINE_EXCEEDED: 4,
-  NOT_FOUND: 5,
-  ALREADY_EXISTS: 6,
-  PERMISSION_DENIED: 7,
-  RESOURCE_EXHAUSTED: 8,
-  FAILED_PRECONDITION: 9,
-  ABORTED: 10,
-  OUT_OF_RANGE: 11,
-  UNIMPLEMENTED: 12,
-  INTERNAL: 13,
-  UNAVAILABLE: 14,
-  DATA_LOSS: 15,
-  UNAUTHENTICATED: 16,
-} as const
-
-export type GrpcStatusCode =
-  (typeof GrpcStatusCode)[keyof typeof GrpcStatusCode]
-
-/**
- * Enhanced disconnect reasons with gRPC error code mapping
- */
-export const StreamDisconnectReason = {
-  /** User explicitly called stop() */
-  UserStopped: 'user-stopped',
-  /** Stream encountered an error */
-  StreamError: 'stream-error',
-  /** Network unavailable (gRPC code 14) */
-  NetworkError: 'network-error',
-  /** Request timeout (gRPC code 4) */
-  Timeout: 'timeout',
-  /** Authentication/authorization failed (gRPC code 7 or 16) */
-  AuthenticationError: 'authentication-error',
-  /** Invalid request - non-retryable (gRPC code 3, 5, 6, 11, 12) */
-  InvalidRequest: 'invalid-request',
-  /** Rate limited (gRPC code 8) */
-  RateLimited: 'rate-limited',
-  /** Max retry attempts reached */
-  MaxRetries: 'max-retries',
-  /** Stream ended normally */
-  StreamEnded: 'stream-ended',
-} as const
-
-export type StreamDisconnectReason =
-  (typeof StreamDisconnectReason)[keyof typeof StreamDisconnectReason]
-
-export const StreamEvent = {
-  Data: 'data',
-  Connect: 'connect',
-  Disconnect: 'disconnect',
-  Retry: 'retry',
-  StateChange: 'state:change',
-  Error: 'error',
-  Warn: 'warn',
-} as const
-
-export type StreamEvent = (typeof StreamEvent)[keyof typeof StreamEvent]
 export interface StreamSubscription {
   /** Unsubscribe from the stream and cancel it */
   unsubscribe(): void
