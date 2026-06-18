@@ -34,6 +34,186 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./big-number": {
+      "react-native": {
+        "import": "./dist/esm/big-number.js",
+        "require": "./dist/cjs/big-number.cjs",
+        "types": "./dist/cjs/big-number.d.cts",
+        "default": "./dist/cjs/big-number.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/big-number.d.cts",
+        "default": "./dist/cjs/big-number.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/big-number.d.ts",
+        "default": "./dist/esm/big-number.js"
+      },
+      "default": {
+        "types": "./dist/cjs/big-number.d.cts",
+        "default": "./dist/cjs/big-number.cjs"
+      }
+    },
+    "./constants": {
+      "react-native": {
+        "import": "./dist/esm/constants.js",
+        "require": "./dist/cjs/constants.cjs",
+        "types": "./dist/cjs/constants.d.cts",
+        "default": "./dist/cjs/constants.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/constants.d.cts",
+        "default": "./dist/cjs/constants.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/constants.d.ts",
+        "default": "./dist/esm/constants.js"
+      },
+      "default": {
+        "types": "./dist/cjs/constants.d.cts",
+        "default": "./dist/cjs/constants.cjs"
+      }
+    },
+    "./formatters": {
+      "react-native": {
+        "import": "./dist/esm/formatters.js",
+        "require": "./dist/cjs/formatters.cjs",
+        "types": "./dist/cjs/formatters.d.cts",
+        "default": "./dist/cjs/formatters.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/formatters.d.cts",
+        "default": "./dist/cjs/formatters.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/formatters.d.ts",
+        "default": "./dist/esm/formatters.js"
+      },
+      "default": {
+        "types": "./dist/cjs/formatters.d.cts",
+        "default": "./dist/cjs/formatters.cjs"
+      }
+    },
+    "./helpers": {
+      "react-native": {
+        "import": "./dist/esm/helpers.js",
+        "require": "./dist/cjs/helpers.cjs",
+        "types": "./dist/cjs/helpers.d.cts",
+        "default": "./dist/cjs/helpers.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/helpers.d.cts",
+        "default": "./dist/cjs/helpers.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/helpers.d.ts",
+        "default": "./dist/esm/helpers.js"
+      },
+      "default": {
+        "types": "./dist/cjs/helpers.d.cts",
+        "default": "./dist/cjs/helpers.cjs"
+      }
+    },
+    "./http": {
+      "react-native": {
+        "import": "./dist/esm/http.js",
+        "require": "./dist/cjs/http.cjs",
+        "types": "./dist/cjs/http.d.cts",
+        "default": "./dist/cjs/http.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/http.d.cts",
+        "default": "./dist/cjs/http.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/http.d.ts",
+        "default": "./dist/esm/http.js"
+      },
+      "default": {
+        "types": "./dist/cjs/http.d.cts",
+        "default": "./dist/cjs/http.cjs"
+      }
+    },
+    "./light": {
+      "react-native": {
+        "import": "./dist/esm/light.js",
+        "require": "./dist/cjs/light.cjs",
+        "types": "./dist/cjs/light.d.cts",
+        "default": "./dist/cjs/light.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/light.d.cts",
+        "default": "./dist/cjs/light.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/light.d.ts",
+        "default": "./dist/esm/light.js"
+      },
+      "default": {
+        "types": "./dist/cjs/light.d.cts",
+        "default": "./dist/cjs/light.cjs"
+      }
+    },
+    "./numbers": {
+      "react-native": {
+        "import": "./dist/esm/numbers.js",
+        "require": "./dist/cjs/numbers.cjs",
+        "types": "./dist/cjs/numbers.d.cts",
+        "default": "./dist/cjs/numbers.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/numbers.d.cts",
+        "default": "./dist/cjs/numbers.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/numbers.d.ts",
+        "default": "./dist/esm/numbers.js"
+      },
+      "default": {
+        "types": "./dist/cjs/numbers.d.cts",
+        "default": "./dist/cjs/numbers.cjs"
+      }
+    },
+    "./status": {
+      "react-native": {
+        "import": "./dist/esm/status.js",
+        "require": "./dist/cjs/status.cjs",
+        "types": "./dist/cjs/status.d.cts",
+        "default": "./dist/cjs/status.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/status.d.cts",
+        "default": "./dist/cjs/status.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/status.d.ts",
+        "default": "./dist/esm/status.js"
+      },
+      "default": {
+        "types": "./dist/cjs/status.d.cts",
+        "default": "./dist/cjs/status.cjs"
+      }
+    },
+    "./storage": {
+      "react-native": {
+        "import": "./dist/esm/storage.js",
+        "require": "./dist/cjs/storage.cjs",
+        "types": "./dist/cjs/storage.d.cts",
+        "default": "./dist/cjs/storage.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/storage.d.cts",
+        "default": "./dist/cjs/storage.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/storage.d.ts",
+        "default": "./dist/esm/storage.js"
+      },
+      "default": {
+        "types": "./dist/cjs/storage.d.cts",
+        "default": "./dist/cjs/storage.cjs"
+      }
+    },
     "./test-utils": {
       "react-native": {
         "import": "./dist/esm/test-utils/index.js",
@@ -52,6 +232,26 @@
       "default": {
         "types": "./dist/cjs/test-utils/index.d.cts",
         "default": "./dist/cjs/test-utils/index.cjs"
+      }
+    },
+    "./time": {
+      "react-native": {
+        "import": "./dist/esm/time.js",
+        "require": "./dist/cjs/time.cjs",
+        "types": "./dist/cjs/time.d.cts",
+        "default": "./dist/cjs/time.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/time.d.cts",
+        "default": "./dist/cjs/time.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/time.d.ts",
+        "default": "./dist/esm/time.js"
+      },
+      "default": {
+        "types": "./dist/cjs/time.d.cts",
+        "default": "./dist/cjs/time.cjs"
       }
     }
   },

@@ -1,29 +1,5 @@
-export const TokenType = {
-  Ibc: 'ibc',
-  Cw20: 'cw20',
-  Spl: 'spl',
-  Erc20: 'erc20',
-  Lp: 'lp',
-  Evm: 'evm',
-  Native: 'native',
-  Symbol: 'symbol',
-  TokenFactory: 'tokenFactory',
-  InsuranceFund: 'insuranceFund',
-  Unknown: 'unknown',
-} as const
-
-export type TokenType = (typeof TokenType)[keyof typeof TokenType]
-
-export const TokenVerification = {
-  Verified: 'verified',
-  Submitted: 'submitted',
-  Internal: 'internal',
-  External: 'external',
-  Unverified: 'unverified',
-} as const
-
-export type TokenVerification =
-  (typeof TokenVerification)[keyof typeof TokenVerification]
+export { TokenType, TokenVerification } from './light.js'
+import type { TokenType, TokenVerification } from './light.js'
 
 export const TokenSource = {
   Aptos: 'aptos',

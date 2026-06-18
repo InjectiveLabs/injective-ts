@@ -354,6 +354,13 @@ describe('Buffer Migration - Encoding Utilities', () => {
       const decoded = fromBase64(result)
       expect(decoded).toEqual(obj)
     })
+
+    it('should handle bigint values', () => {
+      const result = toBase64({ amount: 123n })
+
+      const decoded = fromBase64(result)
+      expect(decoded).toEqual({ amount: '123' })
+    })
   })
 
   describe('fromBase64', () => {
