@@ -1,3 +1,6 @@
+import { WalletErrorActionModule } from '@injectivelabs/exceptions'
+import * as LightWalletBase from './light.js'
+import * as RuntimeLight from './runtime-light.js'
 import {
   DEFAULT_ADDRESS_SEARCH_LIMIT as ROOT_DEFAULT_ADDRESS_SEARCH_LIMIT,
   DEFAULT_BASE_DERIVATION_PATH as ROOT_DEFAULT_BASE_DERIVATION_PATH,
@@ -46,6 +49,10 @@ import {
 } from './index.js'
 
 describe('runtime-light wallet exports', () => {
+  it('keeps the light entry aligned with runtime-light', () => {
+    expect(LightWalletBase).toEqual(RuntimeLight)
+  })
+
   it('matches root enum and event exports', () => {
     expect(Wallet).toEqual(RootWallet)
     expect(WalletAction).toEqual(RootWalletAction)
@@ -62,6 +69,7 @@ describe('runtime-light wallet exports', () => {
     expect(WalletStrategyEmitterEventType).toEqual(
       RootWalletStrategyEmitterEventType,
     )
+    expect(RootWalletAction).toEqual(WalletErrorActionModule)
   })
 
   it('matches root wallet category helpers', () => {

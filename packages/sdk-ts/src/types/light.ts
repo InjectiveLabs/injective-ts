@@ -55,6 +55,118 @@ export const OrderSide = {
 
 export type OrderSide = (typeof OrderSide)[keyof typeof OrderSide]
 
+export const GrpcOrderTypeMap = {
+  0: 'UNSPECIFIED',
+  1: 'BUY',
+  2: 'SELL',
+  3: 'STOP_BUY',
+  4: 'STOP_SELL',
+  5: 'TAKE_BUY',
+  6: 'TAKE_SELL',
+  7: 'BUY_PO',
+  8: 'SELL_PO',
+  9: 'BUY_ATOMIC',
+  10: 'SELL_ATOMIC',
+  UNSPECIFIED: 0,
+  BUY: 1,
+  SELL: 2,
+  STOP_BUY: 3,
+  STOP_SELL: 4,
+  TAKE_BUY: 5,
+  TAKE_SELL: 6,
+  BUY_PO: 7,
+  SELL_PO: 8,
+  BUY_ATOMIC: 9,
+  SELL_ATOMIC: 10,
+} as const
+
+export type GrpcOrderType = Exclude<
+  (typeof GrpcOrderTypeMap)[keyof typeof GrpcOrderTypeMap],
+  string
+>
+
+export const OrderTypeMap = GrpcOrderTypeMap
+
+export type OrderType = GrpcOrderType
+
+export const GrpcMarketStatusMap = {
+  0: 'Unspecified',
+  1: 'Active',
+  2: 'Paused',
+  3: 'Demolished',
+  4: 'Expired',
+  Unspecified: 0,
+  Active: 1,
+  Paused: 2,
+  Demolished: 3,
+  Expired: 4,
+} as const
+
+export type GrpcMarketStatus = Exclude<
+  (typeof GrpcMarketStatusMap)[keyof typeof GrpcMarketStatusMap],
+  string
+>
+
+export const MarketStatusMap = GrpcMarketStatusMap
+
+export type MarketStatus = GrpcMarketStatus
+
+export const OracleTypeMap = {
+  0: 'Unspecified',
+  1: 'Band',
+  2: 'PriceFeed',
+  3: 'Coinbase',
+  4: 'Chainlink',
+  5: 'Razor',
+  6: 'Dia',
+  7: 'API3',
+  8: 'Uma',
+  9: 'Pyth',
+  10: 'BandIBC',
+  11: 'Provider',
+  12: 'Stork',
+  13: 'ChainlinkDataStreams',
+  14: 'PythPro',
+  15: 'SedaFast',
+  Unspecified: 0,
+  Band: 1,
+  PriceFeed: 2,
+  Coinbase: 3,
+  Chainlink: 4,
+  Razor: 5,
+  Dia: 6,
+  API3: 7,
+  Uma: 8,
+  Pyth: 9,
+  BandIBC: 10,
+  Provider: 11,
+  Stork: 12,
+  ChainlinkDataStreams: 13,
+  PythPro: 14,
+  SedaFast: 15,
+} as const
+
+export type OracleType = Exclude<
+  (typeof OracleTypeMap)[keyof typeof OracleTypeMap],
+  string
+>
+
+export const MarketType = {
+  Spot: 'spot',
+  Derivative: 'derivative',
+} as const
+
+export type MarketType = (typeof MarketType)[keyof typeof MarketType]
+
+export const GridStrategyType = {
+  Geometric: 'geometric',
+  Arithmetic: 'arithmetic',
+  Perpetual: 'perpetual',
+} as const
+
+export type GridStrategyType =
+  (typeof GridStrategyType)[keyof typeof GridStrategyType]
+
 export const TokenType = {
   Ibc: 'ibc',
   Cw20: 'cw20',
