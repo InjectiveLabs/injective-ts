@@ -4,7 +4,6 @@ import { createNestedOnSuccess } from '../../../etc/tsdown-helpers.js'
 export default defineConfig({
   entry: {
     index: './src/index.ts',
-    light: './src/light.ts',
     'runtime-light': './src/runtime-light.ts',
   },
   format: ['cjs', 'esm'],

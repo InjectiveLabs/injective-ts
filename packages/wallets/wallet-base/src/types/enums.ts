@@ -1,5 +1,3 @@
-import { WalletErrorActionModule } from '@injectivelabs/exceptions'
-
 export * from './events.js'
 
 export const BroadcastMode = {
@@ -78,4 +76,16 @@ export const EvmWalletProviderErrorCode = {
 export type EvmWalletProviderErrorCode =
   (typeof EvmWalletProviderErrorCode)[keyof typeof EvmWalletProviderErrorCode]
 
-export const WalletAction = { ...WalletErrorActionModule }
+export const WalletAction = {
+  GetChainId: 'get-chain-id',
+  GetAccounts: 'get-accounts',
+  GetNetworkId: 'get-network-id',
+  SignArbitrary: 'sign-arbitrary',
+  SignTransaction: 'sign-transaction',
+  SendTransaction: 'send-transaction',
+  SendEvmTransaction: 'send-evm-transaction',
+  SignEvmTransaction: 'sign-evm-transaction',
+  GetEvmTransactionReceipt: 'get-evm-transaction-receipt',
+} as const
+
+export type WalletAction = (typeof WalletAction)[keyof typeof WalletAction]

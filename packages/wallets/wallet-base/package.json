@@ -36,22 +36,22 @@
     },
     "./light": {
       "react-native": {
-        "import": "./dist/esm/light.js",
-        "require": "./dist/cjs/light.cjs",
-        "types": "./dist/cjs/light.d.cts",
-        "default": "./dist/cjs/light.cjs"
+        "import": "./dist/esm/runtime-light.js",
+        "require": "./dist/cjs/runtime-light.cjs",
+        "types": "./dist/cjs/runtime-light.d.cts",
+        "default": "./dist/cjs/runtime-light.cjs"
       },
       "require": {
-        "types": "./dist/cjs/light.d.cts",
-        "default": "./dist/cjs/light.cjs"
+        "types": "./dist/cjs/runtime-light.d.cts",
+        "default": "./dist/cjs/runtime-light.cjs"
       },
       "import": {
-        "types": "./dist/esm/light.d.ts",
-        "default": "./dist/esm/light.js"
+        "types": "./dist/esm/runtime-light.d.ts",
+        "default": "./dist/esm/runtime-light.js"
       },
       "default": {
-        "types": "./dist/cjs/light.d.cts",
-        "default": "./dist/cjs/light.cjs"
+        "types": "./dist/cjs/runtime-light.d.cts",
+        "default": "./dist/cjs/runtime-light.cjs"
       }
     },
     "./runtime-light": {
