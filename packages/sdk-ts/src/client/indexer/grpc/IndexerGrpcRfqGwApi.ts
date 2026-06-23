@@ -25,6 +25,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     direction,
     simulate,
     worstPrice,
+    txBodyMemo,
     takerAddress,
     autosignPubKey,
     unfilledAction,
@@ -45,6 +46,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     direction: string
     simulate?: boolean
     worstPrice: string
+    txBodyMemo?: string
     takerAddress?: string
     autosignPubKey: string
     autosignAddress: string
@@ -122,6 +124,10 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       request.cid = cid
     }
 
+    if (txBodyMemo) {
+      request.txBodyMemo = txBodyMemo
+    }
+
     const requestMessage = InjectiveRfqGwRpcPb.PrepareAutoSignRequest.create()
     requestMessage.request = request
 
@@ -147,6 +153,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     direction,
     simulate,
     worstPrice,
+    txBodyMemo,
     takerPubKey,
     takerAddress,
     unfilledAction,
@@ -166,6 +173,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     direction: string
     simulate?: boolean
     worstPrice: string
+    txBodyMemo?: string
     takerAddress: string
     takerPubKey: string
     subaccountNonce?: number
@@ -238,6 +246,10 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       request.cid = cid
     }
 
+    if (txBodyMemo) {
+      request.txBodyMemo = txBodyMemo
+    }
+
     const requestMessage = InjectiveRfqGwRpcPb.PrepareRequest.create()
     requestMessage.request = request
 
@@ -262,6 +274,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     direction,
     simulate,
     worstPrice,
+    txBodyMemo,
     ethChainId,
     takerPubKey,
     takerAddress,
@@ -284,6 +297,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     direction: string
     simulate?: boolean
     worstPrice: string
+    txBodyMemo?: string
     ethChainId?: number
     takerAddress: string
     takerPubKey: string
@@ -370,6 +384,10 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       request.gas = BigInt(gas)
     }
 
+    if (txBodyMemo) {
+      request.txBodyMemo = txBodyMemo
+    }
+
     const requestMessage = InjectiveRfqGwRpcPb.PrepareEip712Request.create()
     requestMessage.request = request
 
@@ -394,6 +412,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     direction,
     simulate,
     worstPrice,
+    txBodyMemo,
     ethChainId,
     takerAddress,
     autosignPubKey,
@@ -417,6 +436,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     direction: string
     simulate?: boolean
     worstPrice: string
+    txBodyMemo?: string
     ethChainId?: number
     takerAddress?: string
     autosignPubKey: string
@@ -507,6 +527,10 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
 
     if (gas !== undefined) {
       request.gas = BigInt(gas)
+    }
+
+    if (txBodyMemo) {
+      request.txBodyMemo = txBodyMemo
     }
 
     const requestMessage =
