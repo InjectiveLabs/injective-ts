@@ -78,7 +78,11 @@ export interface TcDerivativePosition {
   fundingSum: string
   fundingLast: string
   subaccountId: string
+  initialMargin: string
+  initialQuantity: string
+  initialLeverage: string
   liquidationPrice: string
+  initialEntryPrice: string
   direction: TradeDirection
   cumulativeFundingEntry: string
   effectiveCumulativeFundingEntry: string

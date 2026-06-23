@@ -38,6 +38,10 @@ export interface PositionV2 extends Omit<
   denom: string
   fundingSum: string
   fundingLast: string
+  initialMargin: string
+  initialQuantity: string
+  initialLeverage: string
+  initialEntryPrice: string
   cumulativeFundingEntry: string
   effectiveCumulativeFundingEntry: string
 }
