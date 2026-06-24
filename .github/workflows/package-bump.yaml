@@ -141,6 +141,19 @@ jobs:
           repository_url: injectiveLabs/injective-do-ui
           repository_branch: master
 
+  package-bump-uis:
+    name: 'Package bump UIS'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Package bump UIS
+        uses: InjectiveLabs/github-fe/actions/package-bump@master
+        with:
+          gh_token: ${{ secrets.UIS_GH_TOKEN }}
+          repository_url: InjectiveLabs/injective-uis
+          repository_branch: dev
+          post_install_command: 'pnpm deps:injective:update && pnpm install'
+
   package-bump-true-current:
     name: 'Package bump True Current'
     runs-on: ubuntu-latest
