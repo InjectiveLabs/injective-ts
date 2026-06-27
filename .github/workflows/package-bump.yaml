@@ -152,7 +152,7 @@ jobs:
           gh_token: ${{ secrets.UIS_GH_TOKEN }}
           repository_url: InjectiveLabs/injective-uis
           repository_branch: dev
-          post_install_command: 'pnpm deps:injective:update && pnpm install'
+          post_install_command: 'pnpm update:injectivelabs'
 
   package-bump-true-current:
     name: 'Package bump True Current'
