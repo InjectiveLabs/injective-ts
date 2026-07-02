@@ -21,6 +21,10 @@ export declare namespace MsgUpdateDerivativeMarketV2 {
   export type Proto = InjectiveExchangeV2TxPb.MsgUpdateDerivativeMarket
 }
 
+const defaultCrossMarginEligibility =
+  InjectiveExchangeV2ProposalPb.CrossMarginEligibility
+    .CM_ELIGIBILITY_UNSPECIFIED
+
 const createMessage = (params: MsgUpdateDerivativeMarketV2.Params) => {
   const message = InjectiveExchangeV2TxPb.MsgUpdateDerivativeMarket.create({
     admin: params.admin,
@@ -33,9 +37,7 @@ const createMessage = (params: MsgUpdateDerivativeMarketV2.Params) => {
     newMaintenanceMarginRatio: params.newMaintenanceMarginRatio || '0',
     newReduceMarginRatio: params.newReduceMarginRatio || '0',
     crossMarginEligibility:
-      params.crossMarginEligibility ??
-      InjectiveExchangeV2ProposalPb.CrossMarginEligibility
-        .CM_ELIGIBILITY_UNSPECIFIED,
+      params.crossMarginEligibility ?? defaultCrossMarginEligibility,
   })
 
   return message
@@ -77,6 +79,7 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
       newReduceMarginRatio: toChainFormat(
         initialParams.newReduceMarginRatio || '0',
       ).toFixed(),
+      crossMarginEligibility: initialParams.crossMarginEligibility,
     } as MsgUpdateDerivativeMarketV2.Params
 
     return createMessage(params)
@@ -103,6 +106,8 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
       new_initial_margin_ratio: params.newInitialMarginRatio,
       new_maintenance_margin_ratio: params.newMaintenanceMarginRatio,
       new_reduce_margin_ratio: params.newReduceMarginRatio,
+      cross_margin_eligibility:
+        params.crossMarginEligibility ?? defaultCrossMarginEligibility,
     }
 
     return {
@@ -162,6 +167,10 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
         params.newReduceMarginRatio || '0',
       ),
       new_open_notional_cap: {},
+      cross_margin_eligibility:
+        InjectiveExchangeV2ProposalPb.CrossMarginEligibility[
+          params.crossMarginEligibility ?? defaultCrossMarginEligibility
+        ],
     }
 
     return messageAdjusted

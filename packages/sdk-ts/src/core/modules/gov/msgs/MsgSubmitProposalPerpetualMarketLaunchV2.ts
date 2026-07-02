@@ -30,6 +30,7 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
         admin: string
         adminPermissions: number
       }
+      crossMarginEligible: boolean
     }
     proposer: string
     deposit: {
@@ -71,6 +72,7 @@ const createPerpetualMarketLaunch = (
     minQuantityTickSize: params.market.minQuantityTickSize,
     minNotional: params.market.minNotional,
     reduceMarginRatio: params.market.reduceMarginRatio,
+    crossMarginEligibility: params.market.crossMarginEligible,
   }
 
   if (params.market.adminInfo) {
@@ -127,6 +129,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
         reduceMarginRatio: toChainFormat(
           initialParams.market.reduceMarginRatio,
         ).toFixed(),
+        crossMarginEligibility: initialParams.market.crossMarginEligible,
       },
     }
 
@@ -188,6 +191,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           admin_info: content.adminInfo || null,
           reduce_margin_ratio: content.reduceMarginRatio,
           open_notional_cap: { uncapped: {} },
+          cross_margin_eligible: content.crossMarginEligible,
         },
       },
       initial_deposit: [
@@ -253,6 +257,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
             params.market.reduceMarginRatio,
           ).toFixed(),
           open_notional_cap: { uncapped: {} },
+          cross_margin_eligible: params.market.crossMarginEligible,
         },
       },
     }
@@ -302,6 +307,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           params.market.reduceMarginRatio,
         ),
         open_notional_cap: { uncapped: {} },
+        cross_margin_eligible: params.market.crossMarginEligible,
       },
     }
 
