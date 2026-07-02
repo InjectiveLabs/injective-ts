@@ -84,7 +84,7 @@ BUILD_DIR="./proto/gen"
 
 # remote branches/tags
 injective_core_branch=release/v1.20.x
-cosmos_sdk_branch=v0.50.14-inj.10
+cosmos_sdk_branch=v0.50.14-inj.11
 wasmd_branch=v0.53.3-inj.3
 ibc_go_branch=v8.7.0-inj.4
 

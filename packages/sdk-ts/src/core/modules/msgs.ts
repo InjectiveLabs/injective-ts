@@ -70,7 +70,7 @@ import type MsgCreateBinaryOptionsLimitOrder from './exchange/msgs/MsgCreateBina
 import type MsgAdminUpdateBinaryOptionsMarket from './exchange/msgs/MsgAdminUpdateBinaryOptionsMarket.js'
 import type MsgBatchCancelBinaryOptionsOrders from './exchange/msgs/MsgBatchCancelBinaryOptionsOrders.js'
 import type MsgCreateBinaryOptionsMarketOrder from './exchange/msgs/MsgCreateBinaryOptionsMarketOrder.js'
-import type MsgSetDelegationTransferReceivers from './exchange/msgs/MsgSetDelegationTransferReceivers.js'
+import type MsgSetDelegationTransferReceiversV2 from './exchange/msgs/MsgSetDelegationTransferReceiversV2.js'
 
 export type AuctionMsgs = MsgBid
 export type IbcMsgs = MsgTransfer
@@ -119,11 +119,11 @@ export type ExchangeV1Msgs =
   | MsgAdminUpdateBinaryOptionsMarket
   | MsgBatchCancelBinaryOptionsOrders
   | MsgCreateBinaryOptionsMarketOrder
-  | MsgSetDelegationTransferReceivers
 export type ExchangeV2Msgs =
   | MsgUpdateSpotMarketV2
   | MsgCancelPostOnlyModeV2
   | MsgUpdateDerivativeMarketV2
+  | MsgSetDelegationTransferReceiversV2
 export type InsuranceMsgs =
   | MsgUnderwrite
   | MsgRequestRedemption

@@ -31,6 +31,7 @@ const params: MsgSubmitProposalPerpetualMarketLaunchV2['params'] = {
       adminPermissions: 1,
     },
     reduceMarginRatio: '0.01',
+    crossMarginEligible: false,
   },
   proposer: mockFactory.injectiveAddress,
   deposit: {

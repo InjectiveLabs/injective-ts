@@ -1,41 +1,37 @@
+import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 
-export declare namespace MsgSetDelegationTransferReceivers {
+export declare namespace MsgSetDelegationTransferReceiversV2 {
   export interface Params {
     sender: string
     receivers: string[]
   }
 
-  // Note: MsgSetDelegationTransferReceivers doesn't exist in v2 proto package yet
-  export type Proto = {
-    sender: string
-    receivers: string[]
-  }
+  export type Proto = InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers
 }
 
 /**
- * @deprecated no longer supported on chain
+ * @deprecated Delegation transfer receiver support was removed. This message is kept for backward compatibility.
  * @category Messages
  */
-export default class MsgSetDelegationTransferReceivers extends MsgBase<
-  MsgSetDelegationTransferReceivers.Params,
-  MsgSetDelegationTransferReceivers.Proto
+export default class MsgSetDelegationTransferReceiversV2 extends MsgBase<
+  MsgSetDelegationTransferReceiversV2.Params,
+  MsgSetDelegationTransferReceiversV2.Proto
 > {
   static fromJSON(
-    params: MsgSetDelegationTransferReceivers.Params,
-  ): MsgSetDelegationTransferReceivers {
-    return new MsgSetDelegationTransferReceivers(params)
+    params: MsgSetDelegationTransferReceiversV2.Params,
+  ): MsgSetDelegationTransferReceiversV2 {
+    return new MsgSetDelegationTransferReceiversV2(params)
   }
 
   public toProto() {
     const { params } = this
 
-    // Note: MsgSetDelegationTransferReceivers doesn't exist in v2 proto package yet
-    // Returning a plain object for now
-    const message = {
-      sender: params.sender,
-      receivers: params.receivers,
-    }
+    const message =
+      InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers.create({
+        sender: params.sender,
+        receivers: params.receivers,
+      })
 
     return message
   }
@@ -82,8 +78,8 @@ export default class MsgSetDelegationTransferReceivers extends MsgBase<
   }
 
   public toBinary(): Uint8Array {
-    // Note: MsgSetDelegationTransferReceivers doesn't exist in v2 proto package yet
-    // Returning empty bytes for now
-    return new Uint8Array(0)
+    return InjectiveExchangeV2TxPb.MsgSetDelegationTransferReceivers.toBinary(
+      this.toProto(),
+    )
   }
 }

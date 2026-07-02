@@ -1,5 +1,6 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import MsgCreateRateLimit from './MsgCreateRateLimit.js'
 import { getEip712TypedDataV2 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from '../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
@@ -8,6 +9,7 @@ const params: MsgCreateRateLimit['params'] = {
   authority: mockFactory.injectiveAddress,
   tokenAddress: 'inj',
   tokenPriceId: '1234567890',
+  tokenOracleType: InjectiveOracleV1Beta1OraclePb.OracleType.Pyth,
   tokenDecimals: '6',
   absoluteMintLimit: '1000000000000000000',
   rateLimitInUsd: '1000000000000000000',
@@ -17,6 +19,26 @@ const params: MsgCreateRateLimit['params'] = {
 const message = MsgCreateRateLimit.fromJSON(params)
 
 describe('MsgCreateRateLimit', () => {
+  it('generates proper proto', () => {
+    const proto = message.toProto()
+
+    expect(proto.tokenOracleType).toBe(params.tokenOracleType)
+  })
+
+  it('generates proper amino', () => {
+    const amino = message.toAmino()
+
+    expect(amino.value.token_oracle_type).toBe(params.tokenOracleType)
+  })
+
+  it('generates proper EIP712 v2 message', () => {
+    const eip712 = message.toEip712V2()
+
+    expect(eip712.token_oracle_type).toBe(
+      InjectiveOracleV1Beta1OraclePb.OracleType[params.tokenOracleType],
+    )
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

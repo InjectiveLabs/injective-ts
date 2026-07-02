@@ -47,8 +47,8 @@ import MsgCreateDerivativeMarketOrderV2 from './msgs/MsgCreateDerivativeMarketOr
 import MsgAdminUpdateBinaryOptionsMarket from './msgs/MsgAdminUpdateBinaryOptionsMarket.js'
 import MsgBatchCancelBinaryOptionsOrders from './msgs/MsgBatchCancelBinaryOptionsOrders.js'
 import MsgCreateBinaryOptionsMarketOrder from './msgs/MsgCreateBinaryOptionsMarketOrder.js'
-import MsgSetDelegationTransferReceivers from './msgs/MsgSetDelegationTransferReceivers.js'
 import MsgCreateBinaryOptionsLimitOrderV2 from './msgs/MsgCreateBinaryOptionsLimitOrderV2.js'
+import MsgSetDelegationTransferReceiversV2 from './msgs/MsgSetDelegationTransferReceiversV2.js'
 import MsgInstantBinaryOptionsMarketLaunch from './msgs/MsgInstantBinaryOptionsMarketLaunch.js'
 import MsgAdminUpdateBinaryOptionsMarketV2 from './msgs/MsgAdminUpdateBinaryOptionsMarketV2.js'
 import MsgBatchCancelBinaryOptionsOrdersV2 from './msgs/MsgBatchCancelBinaryOptionsOrdersV2.js'
@@ -84,7 +84,6 @@ export {
   MsgAdminUpdateBinaryOptionsMarket,
   MsgCreateBinaryOptionsMarketOrder,
   MsgBatchCancelBinaryOptionsOrders,
-  MsgSetDelegationTransferReceivers,
   MsgInstantBinaryOptionsMarketLaunch,
   MsgDepositV2,
   MsgSignDataV2,
@@ -107,6 +106,7 @@ export {
   MsgCreateDerivativeLimitOrderV2,
   MsgBatchCancelDerivativeOrdersV2,
   MsgCreateDerivativeMarketOrderV2,
+  MsgSetDelegationTransferReceiversV2,
   MsgCreateBinaryOptionsLimitOrderV2,
   MsgAdminUpdateBinaryOptionsMarketV2,
   MsgBatchCancelBinaryOptionsOrdersV2,
