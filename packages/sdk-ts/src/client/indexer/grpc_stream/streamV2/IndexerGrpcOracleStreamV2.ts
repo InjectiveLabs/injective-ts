@@ -70,13 +70,15 @@ export class IndexerGrpcOracleStreamV2 {
 
     request.oracleType = oracleType
 
-    const stream = this.client.streamPrices(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerOracleStreamTransformer.pricesStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamPrices(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerOracleStreamTransformer.pricesStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -102,13 +104,15 @@ export class IndexerGrpcOracleStreamV2 {
       request.marketIds = marketIds
     }
 
-    const stream = this.client.streamPricesByMarkets(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerOracleStreamTransformer.pricesByMarketsCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamPricesByMarkets(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerOracleStreamTransformer.pricesByMarketsCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   streamOracleList({
@@ -134,12 +138,14 @@ export class IndexerGrpcOracleStreamV2 {
       request.symbols = symbols
     }
 
-    const stream = this.client.streamOracleList(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerOracleStreamTransformer.oracleListStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOracleList(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerOracleStreamTransformer.oracleListStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 }

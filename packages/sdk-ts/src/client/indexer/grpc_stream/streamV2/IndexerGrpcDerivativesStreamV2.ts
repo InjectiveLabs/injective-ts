@@ -106,13 +106,15 @@ export class IndexerGrpcDerivativesStreamV2 {
       request.orderSide = orderSide
     }
 
-    const stream = this.client.streamOrders(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerDerivativeStreamTransformer.ordersStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrders(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerDerivativeStreamTransformer.ordersStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -174,13 +176,17 @@ export class IndexerGrpcDerivativesStreamV2 {
       request.executionTypes = executionTypes
     }
 
-    const stream = this.client.streamOrdersHistory(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerDerivativeStreamTransformer.orderHistoryStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrdersHistory(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerDerivativeStreamTransformer.orderHistoryStreamCallback(
+            response,
+          )
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -255,13 +261,15 @@ export class IndexerGrpcDerivativesStreamV2 {
       }
     }
 
-    const stream = this.client.streamTrades(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerDerivativeStreamTransformer.tradesStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamTrades(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerDerivativeStreamTransformer.tradesStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -302,13 +310,15 @@ export class IndexerGrpcDerivativesStreamV2 {
       request.subaccountId = subaccountId
     }
 
-    const stream = this.client.streamPositions(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerDerivativeStreamTransformer.positionStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamPositions(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerDerivativeStreamTransformer.positionStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -335,11 +345,13 @@ export class IndexerGrpcDerivativesStreamV2 {
       request.marketIds = marketIds
     }
 
-    const stream = this.client.streamMarket(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      callback(response)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamMarket(request, { abort: abortSignal }),
+      (response) => {
+        callback(response)
+      },
+    )
   }
 
   /**
@@ -366,13 +378,15 @@ export class IndexerGrpcDerivativesStreamV2 {
       InjectiveDerivativeExchangeRpcPb.StreamOrderbookV2Request.create()
     request.marketIds = marketIds
 
-    const stream = this.client.streamOrderbookV2(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrderbookV2(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -400,15 +414,17 @@ export class IndexerGrpcDerivativesStreamV2 {
 
     request.marketIds = marketIds
 
-    const stream = this.client.streamOrderbookUpdate(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
-          response,
-        )
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrderbookUpdate(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerDerivativeStreamTransformer.orderbookUpdateStreamCallback(
+            response,
+          )
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -449,12 +465,14 @@ export class IndexerGrpcDerivativesStreamV2 {
       request.subaccountId = subaccountId
     }
 
-    const stream = this.client.streamPositionsV2(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerDerivativeStreamTransformer.positionV2StreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamPositionsV2(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerDerivativeStreamTransformer.positionV2StreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 }

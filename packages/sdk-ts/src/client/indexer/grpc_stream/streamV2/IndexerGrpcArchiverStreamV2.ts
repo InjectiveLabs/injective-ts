@@ -45,14 +45,16 @@ export class IndexerGrpcArchiverStreamV2 {
 
     request.account = account
 
-    const stream = this.client.streamSpotAverageEntries(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerArchiverStreamTransformer.spotAverageEntriesStreamCallback(
-          response,
-        )
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamSpotAverageEntries(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerArchiverStreamTransformer.spotAverageEntriesStreamCallback(
+            response,
+          )
+        callback(transformed)
+      },
+    )
   }
 }

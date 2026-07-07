@@ -74,13 +74,15 @@ export class IndexerGrpcMitoStreamV2 {
       request.account = account
     }
 
-    const stream = this.client.streamTransfers(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerGrpcMitoStreamTransformer.transfersStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamTransfers(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerGrpcMitoStreamTransformer.transfersStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -106,13 +108,14 @@ export class IndexerGrpcMitoStreamV2 {
       request.vault = vault
     }
 
-    const stream = this.client.streamVault(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerGrpcMitoStreamTransformer.vaultStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) => this.client.streamVault(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerGrpcMitoStreamTransformer.vaultStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -152,15 +155,17 @@ export class IndexerGrpcMitoStreamV2 {
       request.stakingContractAddress = stakingContractAddress
     }
 
-    const stream = this.client.streamHolderSubscription(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerGrpcMitoStreamTransformer.vaultHolderSubscriptionStreamCallback(
-          response,
-        )
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamHolderSubscription(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerGrpcMitoStreamTransformer.vaultHolderSubscriptionStreamCallback(
+            response,
+          )
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -193,15 +198,19 @@ export class IndexerGrpcMitoStreamV2 {
     request.staker = staker
     request.stakingContractAddress = stakingContractAddress
 
-    const stream = this.client.streamStakingRewardByAccount(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerGrpcMitoStreamTransformer.stakingRewardByAccountStreamCallback(
-          response,
-        )
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamStakingRewardByAccount(request, {
+          abort: abortSignal,
+        }),
+      (response) => {
+        const transformed =
+          IndexerGrpcMitoStreamTransformer.stakingRewardByAccountStreamCallback(
+            response,
+          )
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -234,14 +243,16 @@ export class IndexerGrpcMitoStreamV2 {
     request.staker = staker
     request.stakingContractAddress = stakingContractAddress
 
-    const stream = this.client.streamHistoricalStaking(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerGrpcMitoStreamTransformer.historicalStakingStreamCallback(
-          response,
-        )
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamHistoricalStaking(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerGrpcMitoStreamTransformer.historicalStakingStreamCallback(
+            response,
+          )
+        callback(transformed)
+      },
+    )
   }
 }

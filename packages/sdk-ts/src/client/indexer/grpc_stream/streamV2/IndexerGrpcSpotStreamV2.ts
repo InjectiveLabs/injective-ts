@@ -63,13 +63,15 @@ export class IndexerGrpcSpotStreamV2 {
       InjectiveSpotExchangeRpcPb.StreamOrderbookUpdateRequest.create()
     request.marketIds = marketIds
 
-    const stream = this.client.streamOrderbookUpdate(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerSpotStreamTransformer.orderbookUpdateStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrderbookUpdate(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerSpotStreamTransformer.orderbookUpdateStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -109,13 +111,15 @@ export class IndexerGrpcSpotStreamV2 {
       request.orderSide = orderSide
     }
 
-    const stream = this.client.streamOrders(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerSpotStreamTransformer.ordersStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrders(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerSpotStreamTransformer.ordersStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -177,13 +181,15 @@ export class IndexerGrpcSpotStreamV2 {
       request.executionTypes = executionTypes
     }
 
-    const stream = this.client.streamOrdersHistory(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerSpotStreamTransformer.orderHistoryStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrdersHistory(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerSpotStreamTransformer.orderHistoryStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -251,12 +257,14 @@ export class IndexerGrpcSpotStreamV2 {
       request.executionTypes = executionTypes
     }
 
-    const stream = this.client.streamTrades(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerSpotStreamTransformer.tradesStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamTrades(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerSpotStreamTransformer.tradesStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 }

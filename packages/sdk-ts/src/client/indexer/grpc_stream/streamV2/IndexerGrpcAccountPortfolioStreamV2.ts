@@ -58,14 +58,16 @@ export class IndexerGrpcAccountPortfolioStreamV2 {
       request.type = type
     }
 
-    const stream = this.client.streamAccountPortfolio(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerAccountPortfolioStreamTransformer.accountPortfolioStreamCallback(
-          response,
-        )
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamAccountPortfolio(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerAccountPortfolioStreamTransformer.accountPortfolioStreamCallback(
+            response,
+          )
+        callback(transformed)
+      },
+    )
   }
 }

@@ -47,14 +47,16 @@ export class IndexerGrpcRfqStreamV2 {
       request.marketIds = marketIds
     }
 
-    const stream = this.client.streamRequest(request)
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamRequest(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerRfqStreamTransformer.requestStreamCallback(response)
 
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerRfqStreamTransformer.requestStreamCallback(response)
-
-      callback(transformed)
-    })
+        callback(transformed)
+      },
+    )
   }
 
   streamQuotes({
@@ -80,14 +82,15 @@ export class IndexerGrpcRfqStreamV2 {
       request.marketIds = marketIds
     }
 
-    const stream = this.client.streamQuote(request)
+    return createStreamSubscriptionV2(
+      (abortSignal) => this.client.streamQuote(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerRfqStreamTransformer.quoteStreamCallback(response)
 
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerRfqStreamTransformer.quoteStreamCallback(response)
-
-      callback(transformed)
-    })
+        callback(transformed)
+      },
+    )
   }
 
   streamSettlements({
@@ -107,13 +110,15 @@ export class IndexerGrpcRfqStreamV2 {
       request.addresses = addresses
     }
 
-    const stream = this.client.streamSettlement(request)
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamSettlement(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerRfqStreamTransformer.settlementStreamCallback(response)
 
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerRfqStreamTransformer.settlementStreamCallback(response)
-
-      callback(transformed)
-    })
+        callback(transformed)
+      },
+    )
   }
 }

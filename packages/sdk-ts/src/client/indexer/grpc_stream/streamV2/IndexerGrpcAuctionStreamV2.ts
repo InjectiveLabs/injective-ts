@@ -36,12 +36,13 @@ export class IndexerGrpcAuctionStreamV2 {
 
     const request = InjectiveAuctionRpcPb.StreamBidsRequest.create()
 
-    const stream = this.client.streamBids(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerAuctionStreamTransformer.bidsStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) => this.client.streamBids(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerAuctionStreamTransformer.bidsStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 }

@@ -5,6 +5,14 @@ import type {
   StreamSubscription,
 } from '../../../../types/index.js'
 
+type StreamResponseSource<TResponse> = {
+  responses: AsyncIterable<TResponse>
+}
+
+type StreamFactory<TResponse> = (
+  abortSignal: AbortSignal,
+) => StreamResponseSource<TResponse>
+
 /**
  * Extracts detailed error information from a gRPC/RpcError object.
  *
@@ -61,16 +69,17 @@ function extractGrpcError(error: unknown): StreamError {
  * - User callback errors are caught and emitted separately to distinguish from stream errors
  * - Aborted streams don't emit any events (clean shutdown)
  *
- * @param stream - The ServerStreamingCall from the V2 client
+ * @param streamFactory - Creates the ServerStreamingCall from the V2 client
  * @param handleResponse - Callback to process each stream response
  * @returns StreamSubscription with event emitters for error/complete
  */
 export function createStreamSubscriptionV2<TResponse>(
-  stream: { responses: AsyncIterable<TResponse> },
+  streamFactory: StreamFactory<TResponse>,
   handleResponse: (response: TResponse) => void,
 ): StreamSubscription {
   const emitter = new EventEmitter()
   const abortController = new AbortController()
+  const stream = streamFactory(abortController.signal)
 
   // Track if we've already emitted a terminal event (error or complete)
   let hasEmittedTerminalEvent = false

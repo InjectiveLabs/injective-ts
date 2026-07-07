@@ -50,10 +50,12 @@ export class IndexerGrpcTradingStreamV2 {
       request.marketId = marketId
     }
 
-    const stream = this.client.streamStrategy(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      callback(response)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamStrategy(request, { abort: abortSignal }),
+      (response) => {
+        callback(response)
+      },
+    )
   }
 }

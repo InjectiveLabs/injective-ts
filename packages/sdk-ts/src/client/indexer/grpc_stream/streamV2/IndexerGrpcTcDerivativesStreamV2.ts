@@ -62,16 +62,18 @@ export class IndexerGrpcTcDerivativesStreamV2 {
       request.accountAddress = accountAddress
     }
 
-    const stream = this.client.streamOrdersHistory(request)
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrdersHistory(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerTcDerivativesStreamTransformer.orderHistoryStreamCallback(
+            response as InjectiveTCDerivativesRpcPb.StreamOrdersHistoryResponse,
+          )
 
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerTcDerivativesStreamTransformer.orderHistoryStreamCallback(
-          response as InjectiveTCDerivativesRpcPb.StreamOrdersHistoryResponse,
-        )
-
-      callback(transformed)
-    })
+        callback(transformed)
+      },
+    )
   }
 
   streamTrades({
@@ -103,16 +105,18 @@ export class IndexerGrpcTcDerivativesStreamV2 {
       request.rfqMaker = rfqMaker
     }
 
-    const stream = this.client.streamTrades(request)
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamTrades(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerTcDerivativesStreamTransformer.tradesStreamCallback(
+            response as InjectiveTCDerivativesRpcPb.StreamTradesResponse,
+          )
 
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerTcDerivativesStreamTransformer.tradesStreamCallback(
-          response as InjectiveTCDerivativesRpcPb.StreamTradesResponse,
-        )
-
-      callback(transformed)
-    })
+        callback(transformed)
+      },
+    )
   }
 
   streamPositions({
@@ -138,16 +142,18 @@ export class IndexerGrpcTcDerivativesStreamV2 {
       request.accountAddress = accountAddress
     }
 
-    const stream = this.client.streamPositions(request)
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamPositions(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerTcDerivativesStreamTransformer.positionsStreamCallback(
+            response as InjectiveTCDerivativesRpcPb.StreamPositionsResponse,
+          )
 
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerTcDerivativesStreamTransformer.positionsStreamCallback(
-          response as InjectiveTCDerivativesRpcPb.StreamPositionsResponse,
-        )
-
-      callback(transformed)
-    })
+        callback(transformed)
+      },
+    )
   }
 
   streamOrders({
@@ -173,15 +179,17 @@ export class IndexerGrpcTcDerivativesStreamV2 {
       request.accountAddress = accountAddress
     }
 
-    const stream = this.client.streamOrders(request)
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamOrders(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerTcDerivativesStreamTransformer.ordersStreamCallback(
+            response as InjectiveTCDerivativesRpcPb.StreamOrdersResponse,
+          )
 
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerTcDerivativesStreamTransformer.ordersStreamCallback(
-          response as InjectiveTCDerivativesRpcPb.StreamOrdersResponse,
-        )
-
-      callback(transformed)
-    })
+        callback(transformed)
+      },
+    )
   }
 }
