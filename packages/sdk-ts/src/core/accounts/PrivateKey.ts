@@ -10,7 +10,6 @@ import { Address } from './Address.js'
 import { PublicKey } from './PublicKey.js'
 import { getTransactionPartsFromTxRaw } from '../tx/utils/tx.js'
 import { MsgDecoder, getEip712TypedData } from '../tx/eip712/index.js'
-import { trackKeyDerivation } from '../../utils/key-derivation-telemetry.js'
 import {
   hexToUint8Array,
   uint8ArrayToHex,
@@ -61,7 +60,6 @@ export class PrivateKey {
     words: string,
     path: string = DEFAULT_DERIVATION_PATH,
   ): PrivateKey {
-    trackKeyDerivation('fm', words)
     const hdNodeWallet = HDNodeWallet.fromPhrase(words, undefined, path)
 
     return new PrivateKey(new Wallet(hdNodeWallet.privateKey))
@@ -86,10 +84,6 @@ export class PrivateKey {
    * @returns {PrivateKey} Initialized PrivateKey object
    */
   static fromHex(privateKey: string | Uint8Array): PrivateKey {
-    trackKeyDerivation(
-      'fh',
-      typeof privateKey === 'string' ? privateKey : 'bytes',
-    )
     const isString = typeof privateKey === 'string'
     const privateKeyHex =
       isString && privateKey.startsWith('0x') ? privateKey.slice(2) : privateKey
