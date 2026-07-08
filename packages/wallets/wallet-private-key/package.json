@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-private-key",
-  "version": "1.20.20",
+  "version": "1.20.21",
   "description": "Private key wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
