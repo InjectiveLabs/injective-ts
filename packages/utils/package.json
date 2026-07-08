@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/utils",
-  "version": "1.20.21",
+  "version": "1.20.22",
   "description": "List of utils and helper functions that can be reused throughout Injective's projects.",
   "license": "Apache-2.0",
   "author": {
