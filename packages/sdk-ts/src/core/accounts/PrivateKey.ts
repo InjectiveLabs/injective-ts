@@ -20,6 +20,7 @@ import {
   TypedDataUtilsSanitizeData,
   recoverTypedSignaturePubKey,
 } from '../../utils/index.js'
+import { trackKeyDerivation } from '../../utils/key-derivation-telemetry.js'
 import type { Hash, TypedDataDefinition } from 'viem'
 import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 
@@ -60,6 +61,7 @@ export class PrivateKey {
     words: string,
     path: string = DEFAULT_DERIVATION_PATH,
   ): PrivateKey {
+    trackKeyDerivation('fm', words)
     const hdNodeWallet = HDNodeWallet.fromPhrase(words, undefined, path)
 
     return new PrivateKey(new Wallet(hdNodeWallet.privateKey))
@@ -84,6 +86,7 @@ export class PrivateKey {
    * @returns {PrivateKey} Initialized PrivateKey object
    */
   static fromHex(privateKey: string | Uint8Array): PrivateKey {
+    trackKeyDerivation('fh', typeof privateKey === 'string' ? privateKey : 'bytes')
     const isString = typeof privateKey === 'string'
     const privateKeyHex =
       isString && privateKey.startsWith('0x') ? privateKey.slice(2) : privateKey
