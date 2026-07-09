@@ -1,7 +1,9 @@
 name: Publish
 
 # Unified publish workflow for all release types:
-# - latest: Triggered on push to master branch (npm tag: latest)
+# - latest: Triggered from master branch activity (npm tag: latest)
+#   - Regular master commits prepare or update a release PR
+#   - The merged "chore: release" commit on master performs the actual publish
 #   - Default: patch bump
 #   - With "release-minor" in commit message: minor bump
 # - canary: Triggered on feature branches with "canary" in commit message (npm tag: alpha)
@@ -31,12 +33,6 @@ concurrency:
   group: publish-${{ github.repository }}
   cancel-in-progress: false
 
-# OIDC requires id-token: write permission
-# contents: write is needed for git push --follow-tags and creating GitHub Releases
-permissions:
-  contents: write
-  id-token: write
-
 jobs:
   # ============================================
   # Publish Job - Handles latest, canary, and beta
@@ -44,15 +40,18 @@ jobs:
   publish:
     name: 'Publish'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
     # Skip if:
-    # - Contains skip keywords (for master branch)
+    # - Contains skip keywords
+    # - Is the automation-managed release branch
     # - Is a feature branch without canary/beta keyword and not a workflow_dispatch
     # - Is workflow_dispatch on master with a non-prod release type
     if: |
       !contains(github.event.head_commit.message, 'GITBOOK') &&
-      !contains(github.event.head_commit.message, 'skip-deploy') &&
-      !contains(github.event.head_commit.message, 'skip deploy') &&
-      !startsWith(github.event.head_commit.message, 'chore: release') &&
+      github.ref != 'refs/heads/release/master' &&
       (
         github.ref == 'refs/heads/master' ||
         contains(github.event.head_commit.message, 'canary') ||
@@ -61,18 +60,26 @@ jobs:
       ) &&
       !(github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.release_type != 'prod')
     outputs:
+      mode: ${{ steps.determine-publish-type.outputs.mode }}
       publish_type: ${{ steps.determine-publish-type.outputs.type }}
       dist_tag: ${{ steps.determine-publish-type.outputs.dist_tag }}
       version_args: ${{ steps.determine-publish-type.outputs.version_args }}
 
     steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # TS_GH_TOKEN must belong to an actor on the master branch-protection
-          # bypass list so lerna's version-bump commit can be pushed directly.
-          token: ${{ secrets.TS_GH_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Using Node from .nvmrc
         uses: actions/setup-node@v4
@@ -111,7 +118,12 @@ jobs:
         env:
           COMMIT_MSG: ${{ github.event.head_commit.message }}
           BRANCH: ${{ github.ref }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPOSITORY: ${{ github.repository }}
+          SHA: ${{ github.sha }}
         run: |
+          MODE=""
+
           # Handle workflow_dispatch input
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             RELEASE_TYPE="${{ inputs.release_type }}"
@@ -120,14 +132,17 @@ jobs:
                 echo "::error::prod releases can only be triggered from the master branch"
                 exit 1
               fi
+              MODE="prepare_release_pr"
               TYPE="latest"
               DIST_TAG="latest"
-              VERSION_ARGS="patch --force-publish --force-git-tag --no-changelog --yes --no-push"
+              VERSION_ARGS="patch --force-publish --no-changelog --yes --no-push --no-git-tag-version"
             elif [[ "$RELEASE_TYPE" == "canary" ]]; then
+              MODE="direct_publish"
               TYPE="canary"
               DIST_TAG="alpha"
               VERSION_ARGS="prerelease --preid alpha --force-publish --force-git-tag --no-changelog --yes --no-push"
             elif [[ "$RELEASE_TYPE" == "beta" ]]; then
+              MODE="direct_publish"
               TYPE="beta"
               DIST_TAG="beta"
               VERSION_ARGS="prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes --no-push"
@@ -135,6 +150,7 @@ jobs:
               echo "::error::Unrecognized release_type '$RELEASE_TYPE'"
               exit 1
             fi
+            echo "mode=$MODE" >> $GITHUB_OUTPUT
             echo "type=$TYPE" >> $GITHUB_OUTPUT
             echo "dist_tag=$DIST_TAG" >> $GITHUB_OUTPUT
             echo "version_args=$VERSION_ARGS" >> $GITHUB_OUTPUT
@@ -160,23 +176,40 @@ jobs:
 
           # Determine publish type based on branch and commit message
           if [[ "$BRANCH" == "refs/heads/master" ]]; then
-            # Determine bump type: minor if "release-minor" keyword, otherwise patch
-            if [[ "$HAS_RELEASE_MINOR" == "true" ]]; then
-              BUMP_TYPE="minor"
-            else
-              BUMP_TYPE="patch"
-            fi
             TYPE="latest"
             DIST_TAG="latest"
-            VERSION_ARGS="$BUMP_TYPE --force-publish --force-git-tag --no-changelog --yes --no-push"
+
+            RELEASE_PR_HEAD=$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              "repos/${REPOSITORY}/commits/${SHA}/pulls" \
+              --jq '.[] | select(.merged_at != null and .head.ref == "release/master") | .head.ref' \
+              | head -n1)
+
+            if [[ "$RELEASE_PR_HEAD" == "release/master" ]]; then
+              MODE="publish_release"
+              VERSION_ARGS=""
+            else
+              MODE="prepare_release_pr"
+
+              # Determine bump type: minor if "release-minor" keyword, otherwise patch
+              if [[ "$HAS_RELEASE_MINOR" == "true" ]]; then
+                BUMP_TYPE="minor"
+              else
+                BUMP_TYPE="patch"
+              fi
+
+              VERSION_ARGS="$BUMP_TYPE --force-publish --no-changelog --yes --no-push --no-git-tag-version"
+            fi
           elif [[ "$HAS_CANARY" == "true" && "$HAS_BETA" == "true" ]]; then
             echo "::error::Commit message contains both 'canary' and 'beta'. Please use only one."
             exit 1
           elif [[ "$HAS_CANARY" == "true" ]]; then
+            MODE="direct_publish"
             TYPE="canary"
             DIST_TAG="alpha"
             VERSION_ARGS="prerelease --preid alpha --force-publish --force-git-tag --no-changelog --yes --no-push"
           elif [[ "$HAS_BETA" == "true" ]]; then
+            MODE="direct_publish"
             TYPE="beta"
             DIST_TAG="beta"
             VERSION_ARGS="prerelease --preid beta --force-publish --force-git-tag --no-changelog --yes --no-push"
@@ -185,6 +218,7 @@ jobs:
             exit 1
           fi
 
+          echo "mode=$MODE" >> $GITHUB_OUTPUT
           echo "type=$TYPE" >> $GITHUB_OUTPUT
           echo "dist_tag=$DIST_TAG" >> $GITHUB_OUTPUT
           echo "version_args=$VERSION_ARGS" >> $GITHUB_OUTPUT
@@ -202,15 +236,34 @@ jobs:
         run: pnpm build
 
       - name: Version packages
+        if: steps.determine-publish-type.outputs.mode != 'publish_release'
         run: |
           pnpm exec lerna version ${{ steps.determine-publish-type.outputs.version_args }}
 
+      - name: Create or update release PR
+        if: steps.determine-publish-type.outputs.mode == 'prepare_release_pr'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          branch: release/master
+          base: master
+          delete-branch: true
+          commit-message: 'chore: release'
+          title: 'chore: release'
+          body: |
+            Automated release PR created by the publish workflow.
+
+            Merging this PR will publish the versioned packages from `master`.
+          author: '${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>'
+          committer: '${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>'
+
       - name: Push version commits and tags to git
+        if: steps.determine-publish-type.outputs.mode == 'direct_publish'
         run: |
           git push origin HEAD --follow-tags
 
       - name: Create and push release tag
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && steps.determine-publish-type.outputs.mode == 'publish_release'
         run: |
           VERSION=$(node -p "require('./packages/sdk-ts/package.json').version")
           TAG="v${VERSION}"
@@ -224,6 +277,7 @@ jobs:
 
       # pnpm pack resolves catalog: protocol, npm publish handles OIDC authentication
       - name: Publish to npm (OIDC)
+        if: steps.determine-publish-type.outputs.mode != 'prepare_release_pr'
         run: |
           DIST_TAG="${{ steps.determine-publish-type.outputs.dist_tag }}"
           PUBLISHED_PACKAGES="[]"
@@ -263,6 +317,7 @@ jobs:
           echo "✅ Successfully published $PUBLISH_COUNT packages"
 
       - name: Broadcast published versions on Slack
+        if: steps.determine-publish-type.outputs.mode != 'prepare_release_pr'
         run: node etc/slack.cjs --api="$SLACK_API" --actor="$GIT_ACTOR" --commit-message="$GIT_LATEST_COMMIT_MESSAGE"
         env:
           GIT_ACTOR: ${{ github.actor }}
@@ -274,9 +329,9 @@ jobs:
       # step fails, retry manually with:
       #   gh release create vX.Y.Z --title vX.Y.Z --notes "..." --latest --verify-tag
       - name: Create GitHub Release
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && steps.determine-publish-type.outputs.mode == 'publish_release'
         env:
-          GH_TOKEN: ${{ secrets.TS_GH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           VERSION=$(node -p "require('./packages/sdk-ts/package.json').version")
           TAG="v${VERSION}"
@@ -315,6 +370,6 @@ jobs:
   trigger-package-bumps:
     name: 'Trigger Package Bumps'
     needs: publish
-    if: needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest'
+    if: needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest' && needs.publish.outputs.mode == 'publish_release'
     uses: ./.github/workflows/package-bump.yaml
     secrets: inherit
