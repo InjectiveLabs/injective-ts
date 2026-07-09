@@ -29,6 +29,13 @@ import type {
   TurnkeyMetadata,
   TurnkeyOAuthProvider,
 } from '@injectivelabs/wallet-base'
+import type {
+  TurnkeyOauthProvider,
+  TurnkeyOAuth2Response,
+  TurnkeyOAuthConfirmResponse,
+  TurnkeyOAuth2ConfirmResponse,
+  TurnkeyLinkOAuthProviderResponse,
+} from '../types.js'
 
 export class TurnkeyWallet {
   private otpId?: string
@@ -359,7 +366,10 @@ export class TurnkeyWallet {
     )
   }
 
-  public async confirmOAuth(provider: TurnkeyOAuthProvider, oidcToken: string) {
+  public async confirmOAuth(
+    provider: TurnkeyOAuthProvider,
+    oidcToken: string,
+  ): Promise<TurnkeyOAuthConfirmResponse> {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -376,7 +386,16 @@ export class TurnkeyWallet {
       oauthLoginPath: this.metadata.oauthLoginPath || TURNKEY_OAUTH_PATH,
     })
 
-    if (!oauthResult || !oauthResult.credentialBundle) {
+    if (
+      oauthResult &&
+      'status' in oauthResult &&
+      (oauthResult.status === 'link_required' ||
+        oauthResult.status === 'existing_account_detected')
+    ) {
+      return oauthResult
+    }
+
+    if (!oauthResult?.credentialBundle) {
       throw new WalletException(new Error('Unexpected OAuth result'))
     }
 
@@ -398,13 +417,17 @@ export class TurnkeyWallet {
     codeVerifier: string
     targetPublicKey: string
     providerName: TurnkeyOAuthProvider
-  }) {
+  }): Promise<TurnkeyOAuth2ConfirmResponse> {
     const indexedDbClient = await this.getIndexedDbClient()
     const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'
 
     const response = await this.client.post<{
-      data: { credentialBundle: string; organizationId: string; email?: string }
+      data: TurnkeyOAuth2Response
     }>(path, { nonce, authCode, codeVerifier, targetPublicKey, providerName })
+
+    if (response?.data?.status === 'link_required') {
+      return response.data
+    }
 
     if (!response?.data?.credentialBundle || !response?.data?.organizationId) {
       throw new WalletException(
@@ -419,6 +442,79 @@ export class TurnkeyWallet {
     this.userOrganizationId = organizationId
 
     return { session: credentialBundle, email }
+  }
+
+  public async linkOAuthProvider({
+    oidcToken,
+    providerName,
+  }: {
+    oidcToken: string
+    providerName: TurnkeyOAuthProvider
+  }): Promise<TurnkeyLinkOAuthProviderResponse> {
+    const indexedDbClient = await this.getIndexedDbClient()
+    const { organizationId } = await this.getSession()
+
+    if (!organizationId) {
+      throw new WalletException(
+        new Error('Turnkey organization not found. Please login again.'),
+      )
+    }
+
+    const user = await indexedDbClient.getWhoami({ organizationId })
+    let userId = user?.userId
+
+    if (!userId) {
+      const { users } = await indexedDbClient.getUsers({ organizationId })
+
+      if (users.length !== 1) {
+        throw new WalletException(
+          new Error('Unable to resolve current Turnkey user.'),
+        )
+      }
+
+      userId = users[0].userId
+    }
+
+    await indexedDbClient.createOauthProviders({
+      userId,
+      organizationId,
+      oauthProviders: [{ providerName, oidcToken }],
+    })
+
+    return { organizationId }
+  }
+
+  public async getCurrentOauthProviders(): Promise<TurnkeyOauthProvider[]> {
+    const indexedDbClient = await this.getIndexedDbClient()
+    const { organizationId } = await this.getSession()
+
+    if (!organizationId) {
+      throw new WalletException(
+        new Error('Turnkey organization not found. Please login again.'),
+      )
+    }
+
+    const user = await indexedDbClient.getWhoami({ organizationId })
+    let userId = user?.userId
+
+    if (!userId) {
+      const { users } = await indexedDbClient.getUsers({ organizationId })
+
+      if (users.length !== 1) {
+        throw new WalletException(
+          new Error('Unable to resolve current Turnkey user.'),
+        )
+      }
+
+      userId = users[0].userId
+    }
+
+    const { oauthProviders } = await indexedDbClient.getOauthProviders({
+      organizationId,
+      userId,
+    })
+
+    return oauthProviders
   }
 
   public async refreshSession() {

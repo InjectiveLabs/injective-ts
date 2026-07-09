@@ -42,9 +42,7 @@ export class TurnkeyOauthWallet {
     providerName: TurnkeyOAuthProvider
     indexedDbClient: TurnkeyIndexedDbClient
     expirationSeconds?: number
-  }): Promise<
-    { organizationId: string; credentialBundle: string } | undefined
-  > {
+  }): Promise<TurnkeyOauthLoginResponse | undefined> {
     const { client, indexedDbClient, expirationSeconds } = args
 
     const path = args.oauthLoginPath || TURNKEY_OAUTH_PATH
