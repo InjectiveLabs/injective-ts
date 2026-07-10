@@ -1,5 +1,3 @@
-import type { TurnkeyOAuthProvider } from '@injectivelabs/wallet-base'
-
 export const TurnkeyErrorCodes = {
   UserLoggedOut: 7,
 } as const
@@ -32,10 +30,7 @@ export type TurnkeyEnableArgs =
 
 export type TurnkeyOTPCredentialsResponse = {
   otpId: string
-  email?: string
-  userName?: string
   organizationId: string
-  status?: 'existing_account_detected'
 }
 
 export type TurnkeyConfirmEmailOTPResponse = {
@@ -49,57 +44,20 @@ export type TurnkeyOauthAuthenticatedResponse = {
   credentialBundle: string
 }
 
-export type TurnkeyExistingAccountDetectedResponse = {
-  email?: string
-  message?: string
-  userName?: string
-  organizationId: string
-  credentialBundle: string
-  status: 'existing_account_detected'
-}
-
 export type TurnkeyOAuth2AuthenticatedResponse = {
   email?: string
+  session?: string
+  userName?: string
+  profileImageUrl?: string
   organizationId: string
-  status?: 'authenticated'
-  credentialBundle: string
+  credentialBundle?: string
 }
 
-export type TurnkeyOAuth2LinkRequiredResponse = {
-  email: string
-  oidcToken: string
-  expiresAt?: number
-  organizationId: string
-  status: 'link_required'
-  providerName: TurnkeyOAuthProvider
-}
-
-export type TurnkeyOAuthLinkRequiredResponse = TurnkeyOAuth2LinkRequiredResponse
-
-export type TurnkeyOAuth2Response =
-  | TurnkeyOAuth2AuthenticatedResponse
-  | TurnkeyOAuth2LinkRequiredResponse
-  | TurnkeyExistingAccountDetectedResponse
-
-export type TurnkeyOauthLoginResponse =
-  | TurnkeyOauthAuthenticatedResponse
-  | TurnkeyOAuth2LinkRequiredResponse
-  | TurnkeyExistingAccountDetectedResponse
-
-export type TurnkeyOAuthConfirmResponse =
-  | string
-  | TurnkeyOAuthLinkRequiredResponse
-  | TurnkeyExistingAccountDetectedResponse
-
-export type TurnkeyOAuth2ConfirmResponse =
-  | {
-      email?: string
-      session: string
-    }
-  | TurnkeyOAuthLinkRequiredResponse
-
-export type TurnkeyLinkOAuthProviderResponse = {
-  organizationId: string
+export type TurnkeyOAuth2ConfirmResponse = {
+  email?: string
+  session: string
+  userName?: string
+  profileImageUrl?: string
 }
 
 export type TurnkeyOauthProvider = {

@@ -31,10 +31,8 @@ import type {
 } from '@injectivelabs/wallet-base'
 import type {
   TurnkeyOauthProvider,
-  TurnkeyOAuth2Response,
-  TurnkeyOAuthConfirmResponse,
   TurnkeyOAuth2ConfirmResponse,
-  TurnkeyLinkOAuthProviderResponse,
+  TurnkeyOAuth2AuthenticatedResponse,
 } from '../types.js'
 
 export class TurnkeyWallet {
@@ -369,7 +367,7 @@ export class TurnkeyWallet {
   public async confirmOAuth(
     provider: TurnkeyOAuthProvider,
     oidcToken: string,
-  ): Promise<TurnkeyOAuthConfirmResponse> {
+  ): Promise<string> {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -385,15 +383,6 @@ export class TurnkeyWallet {
       providerName: provider,
       oauthLoginPath: this.metadata.oauthLoginPath || TURNKEY_OAUTH_PATH,
     })
-
-    if (
-      oauthResult &&
-      'status' in oauthResult &&
-      (oauthResult.status === 'link_required' ||
-        oauthResult.status === 'existing_account_detected')
-    ) {
-      return oauthResult
-    }
 
     if (!oauthResult?.credentialBundle) {
       throw new WalletException(new Error('Unexpected OAuth result'))
@@ -422,66 +411,27 @@ export class TurnkeyWallet {
     const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'
 
     const response = await this.client.post<{
-      data: TurnkeyOAuth2Response
+      data: TurnkeyOAuth2AuthenticatedResponse
     }>(path, { nonce, authCode, codeVerifier, targetPublicKey, providerName })
 
-    if (response?.data?.status === 'link_required') {
-      return response.data
-    }
+    const responseData = response?.data
+    const credentialBundle =
+      responseData?.credentialBundle ?? responseData?.session
+    const organizationId = responseData?.organizationId
 
-    if (!response?.data?.credentialBundle || !response?.data?.organizationId) {
+    if (!credentialBundle || !organizationId) {
       throw new WalletException(
         new Error(`${providerName} OAuth2 exchange failed`),
       )
     }
 
-    const { credentialBundle, organizationId, email } = response.data
+    const { email, userName, profileImageUrl } = responseData
 
     await indexedDbClient.loginWithSession(credentialBundle)
 
     this.userOrganizationId = organizationId
 
-    return { session: credentialBundle, email }
-  }
-
-  public async linkOAuthProvider({
-    oidcToken,
-    providerName,
-  }: {
-    oidcToken: string
-    providerName: TurnkeyOAuthProvider
-  }): Promise<TurnkeyLinkOAuthProviderResponse> {
-    const indexedDbClient = await this.getIndexedDbClient()
-    const { organizationId } = await this.getSession()
-
-    if (!organizationId) {
-      throw new WalletException(
-        new Error('Turnkey organization not found. Please login again.'),
-      )
-    }
-
-    const user = await indexedDbClient.getWhoami({ organizationId })
-    let userId = user?.userId
-
-    if (!userId) {
-      const { users } = await indexedDbClient.getUsers({ organizationId })
-
-      if (users.length !== 1) {
-        throw new WalletException(
-          new Error('Unable to resolve current Turnkey user.'),
-        )
-      }
-
-      userId = users[0].userId
-    }
-
-    await indexedDbClient.createOauthProviders({
-      userId,
-      organizationId,
-      oauthProviders: [{ providerName, oidcToken }],
-    })
-
-    return { organizationId }
+    return { session: credentialBundle, email, userName, profileImageUrl }
   }
 
   public async getCurrentOauthProviders(): Promise<TurnkeyOauthProvider[]> {
