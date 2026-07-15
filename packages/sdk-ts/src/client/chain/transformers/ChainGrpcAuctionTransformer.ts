@@ -54,6 +54,8 @@ export class ChainGrpcAuctionTransformer {
     return {
       auctionPeriod: Number(params.auctionPeriod ?? 0n),
       minNextBidIncrementRate: params.minNextBidIncrementRate ?? '0',
+      injBasketMaxCap: params.injBasketMaxCap ?? '',
+      biddersWhitelist: params.biddersWhitelist ?? [],
     }
   }
 
@@ -93,6 +95,8 @@ export class ChainGrpcAuctionTransformer {
       params: {
         auctionPeriod: Number(params.auctionPeriod),
         minNextBidIncrementRate: params.minNextBidIncrementRate,
+        injBasketMaxCap: params.injBasketMaxCap ?? '',
+        biddersWhitelist: params.biddersWhitelist ?? [],
       },
       auctionRound: Number(state.auctionRound),
       highestBid: state.highestBid
