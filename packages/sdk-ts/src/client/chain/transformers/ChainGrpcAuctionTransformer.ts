@@ -66,7 +66,7 @@ export class ChainGrpcAuctionTransformer {
       ),
       auctionRound: Number(response.auctionRound),
       auctionClosingTime: Number(response.auctionClosingTime),
-      highestBidder: response.highestBidAmount,
+      highestBidder: response.highestBidder,
       highestBidAmount: response.highestBidAmount,
     }
   }
