@@ -1,6 +1,43 @@
-import type { EIP1193Provider } from 'viem'
+interface BrowserEip1193ProviderRpcError extends Error {
+  message: string
+  code: number
+  data?: unknown
+}
 
-export interface BrowserEip1993Provider extends EIP1193Provider {
+interface BrowserEip1193ProviderMessage {
+  type: string
+  data: unknown
+}
+
+interface BrowserEip1193ProviderInfo {
+  chainId: string
+}
+
+interface BrowserEip1193RequestArguments {
+  method: string
+  params?: unknown[] | object
+}
+
+export interface BrowserEip1993Provider {
+  on(
+    event: 'connect',
+    listener: (info: BrowserEip1193ProviderInfo) => void,
+  ): void
+  on(
+    event: 'disconnect',
+    listener: (error: BrowserEip1193ProviderRpcError) => void,
+  ): void
+  on(
+    event: 'message',
+    listener: (message: BrowserEip1193ProviderMessage) => void,
+  ): void
+  on(event: 'chainChanged', listener: (chainId: string) => void): void
+  on(event: 'accountsChanged', listener: (accounts: string[]) => void): void
+  on(event: string, listener: any): void
+  once(event: string, listener: any): void
+  removeListener(event: string, listener: any): void
+  off(event: string, listener: any): void
+  request(args: BrowserEip1193RequestArguments): Promise<unknown>
   removeAllListeners(): void
   providers?: BrowserEip1993Provider[]
   isTrust: boolean
