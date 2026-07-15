@@ -1,7 +1,7 @@
+import { toHex, isHex, getAddress } from 'viem'
 import { capitalize } from '@injectivelabs/utils'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
-  toUtf8,
   isServerSide,
   uint8ArrayToHex,
   stringToUint8Array,
@@ -40,7 +40,7 @@ import {
   listenForEip6963Providers,
   getEvmProviderWithFallback,
 } from './utils/providerResolver.js'
-import type { Hex, Hash, RpcTransactionRequest } from 'viem'
+import type { Hash, RpcTransactionRequest } from 'viem'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type {
@@ -262,7 +262,7 @@ export class EvmWallet
     try {
       return (await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [address as Hash, eip712json],
+        params: [getAddress(address), eip712json],
       })) as string
     } catch (e: unknown) {
       if (
@@ -329,7 +329,7 @@ export class EvmWallet
     try {
       const signature = await ethereum.request({
         method: 'personal_sign',
-        params: [toUtf8(data) as Hex, signer as Hash],
+        params: [isHex(data) ? data : toHex(data), getAddress(signer)],
       })
 
       return signature as string

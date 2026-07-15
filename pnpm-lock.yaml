@@ -472,6 +472,9 @@ importers:
       '@injectivelabs/wallet-base':
         specifier: workspace:*
         version: link:../wallet-base
+      viem:
+        specifier: 2.54.6
+        version: 2.54.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.24.2)
 
   packages/wallets/wallet-ledger:
     dependencies:
