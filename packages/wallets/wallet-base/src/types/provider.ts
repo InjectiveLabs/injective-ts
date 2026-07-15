@@ -1,4 +1,4 @@
-import type { EIP1193Provider } from 'eip1193-provider'
+import type { EIP1193Provider } from 'viem'
 
 export interface BrowserEip1993Provider extends EIP1193Provider {
   removeAllListeners(): void

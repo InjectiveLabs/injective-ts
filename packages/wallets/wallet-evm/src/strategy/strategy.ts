@@ -40,7 +40,7 @@ import {
   listenForEip6963Providers,
   getEvmProviderWithFallback,
 } from './utils/providerResolver.js'
-import type { Hash } from 'viem'
+import type { Hex, Hash, RpcTransactionRequest } from 'viem'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type {
@@ -210,7 +210,7 @@ export class EvmWallet
     try {
       return (await ethereum.request({
         method: 'eth_sendTransaction',
-        params: [transaction],
+        params: [transaction as RpcTransactionRequest],
       })) as string
     } catch (e: unknown) {
       throw this.EvmWalletException(new Error((e as any).message), {
@@ -262,7 +262,7 @@ export class EvmWallet
     try {
       return (await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [address, eip712json],
+        params: [address as Hash, eip712json],
       })) as string
     } catch (e: unknown) {
       if (
@@ -329,7 +329,7 @@ export class EvmWallet
     try {
       const signature = await ethereum.request({
         method: 'personal_sign',
-        params: [toUtf8(data), signer],
+        params: [toUtf8(data) as Hex, signer as Hash],
       })
 
       return signature as string
