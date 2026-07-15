@@ -58,7 +58,6 @@ describe('MsgTransferCosmjs', () => {
         },
         timeoutTimestamp: params.timeout!.toString(),
         memo: '',
-        encoding: '',
       },
     })
   })
@@ -79,7 +78,6 @@ describe('MsgTransferCosmjs', () => {
       },
       timeoutTimestamp: params.timeout!.toString(),
       memo: '',
-      encoding: '',
     })
   })
 
