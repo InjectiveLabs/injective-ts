@@ -27,7 +27,7 @@ import type {
 } from '@injectivelabs/sdk-ts/types'
 import type {
   StdSignDoc,
-  BrowserEip1993Provider,
+  BrowserEip1193Provider,
   ConcreteWalletStrategy,
   SendTransactionOptions,
 } from '@injectivelabs/wallet-base'
@@ -36,7 +36,7 @@ export class Magic
   extends BaseConcreteStrategy
   implements ConcreteWalletStrategy
 {
-  public provider: BrowserEip1993Provider | undefined
+  public provider: BrowserEip1193Provider | undefined
 
   private magicWallet: MagicWallet | undefined
 

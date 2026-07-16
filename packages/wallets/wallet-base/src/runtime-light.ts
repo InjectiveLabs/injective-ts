@@ -191,9 +191,9 @@ export interface BrowserEip1193Provider {
   on(event: 'chainChanged', listener: (chainId: string) => void): void
   on(event: 'accountsChanged', listener: (accounts: string[]) => void): void
   on(event: string, listener: any): void
-  once(event: string, listener: any): void
+  once?(event: string, listener: any): void
   removeListener(event: string, listener: any): void
-  off(event: string, listener: any): void
+  off?(event: string, listener: any): void
   request(args: BrowserEip1193RequestArguments): Promise<unknown>
   removeAllListeners(): void
   providers?: BrowserEip1193Provider[]
@@ -208,8 +208,6 @@ export interface BrowserEip1193Provider {
   isOkxWallet: boolean
   isTrustWallet: boolean
 }
-
-export type BrowserEip1993Provider = BrowserEip1193Provider
 
 export interface WindowWithEip1193Provider extends Omit<
   Window,

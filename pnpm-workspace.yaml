@@ -4,7 +4,7 @@ packages:
   - 'protoV2/*/proto-ts'
 
 overrides:
-  zod: 3.24.2
+  zod: 3.25.76
   rxjs: 7.8.2
   rpc-websockets: 9.3.5
   next: file:./etc/noop
@@ -12,7 +12,7 @@ overrides:
   '@solana/web3.js': 1.98.1
   '@solana-program/token-2022@0.4.2>@solana/sysvars': 2.3.0
   '@ethereumjs/common': 3.2.0
-  '@coinbase/cdp-sdk': 1.46.0
+  '@coinbase/cdp-sdk': 1.48.3
   '@cosmjs/amino': 0.39.0
   '@cosmjs/crypto': 0.39.0
   '@cosmjs/encoding': 0.39.0
@@ -54,6 +54,7 @@ overrides:
   js-yaml@4: 4.2.0
   linkify-it: 5.0.2
   lodash: 4.18.1
+  'live-server>http-auth': 4.2.1
   micromatch: 4.0.8
   minimatch@3: 3.1.4
   minimatch@5: 5.1.9

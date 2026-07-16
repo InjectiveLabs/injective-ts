@@ -1,16 +1,16 @@
 import { Wallet } from '@injectivelabs/wallet-base'
 import type {
   EIP6963ProviderDetail,
-  BrowserEip1993Provider,
+  BrowserEip1193Provider,
   WindowWithEip1193Provider,
 } from '@injectivelabs/wallet-base'
 
 const EIP6963_REQUEST_TIMEOUT = 250
 
-type ProviderCache = Partial<Record<Wallet, BrowserEip1993Provider>>
+type ProviderCache = Partial<Record<Wallet, BrowserEip1193Provider>>
 
-type BrowserEip1993ProviderWithLegacyMetadata = BrowserEip1993Provider & {
-  providers?: BrowserEip1993ProviderWithLegacyMetadata[]
+type BrowserEip1193ProviderWithLegacyMetadata = BrowserEip1193Provider & {
+  providers?: BrowserEip1193ProviderWithLegacyMetadata[]
   isBitGet?: boolean
   isBitKeep?: boolean
 }
@@ -19,10 +19,10 @@ type WindowWithLegacyProviders = Omit<
   WindowWithEip1193Provider,
   'ethereum' | 'providers' | 'rabby' | 'rainbow'
 > & {
-  ethereum?: BrowserEip1993ProviderWithLegacyMetadata
-  providers?: BrowserEip1993ProviderWithLegacyMetadata[]
-  rabby?: BrowserEip1993Provider
-  rainbow?: BrowserEip1993Provider
+  ethereum?: BrowserEip1193ProviderWithLegacyMetadata
+  providers?: BrowserEip1193ProviderWithLegacyMetadata[]
+  rabby?: BrowserEip1193Provider
+  rainbow?: BrowserEip1193Provider
 }
 
 type ResolveProviderOptions = {
@@ -99,18 +99,18 @@ const competingMetaMaskFlags = [
 const isSupportedEip6963Wallet = (wallet: Wallet) =>
   wallet in walletProviderMetadata
 
-const providerHasCompetingMetaMaskFlag = (provider: BrowserEip1993Provider) =>
+const providerHasCompetingMetaMaskFlag = (provider: BrowserEip1193Provider) =>
   competingMetaMaskFlags.some((flag) => Boolean(provider[flag]))
 
 export const providerMatchesWallet = (
-  provider: BrowserEip1993Provider | undefined,
+  provider: BrowserEip1193Provider | undefined,
   wallet: Wallet,
 ) => {
   if (!provider) {
     return false
   }
 
-  const legacyProvider = provider as BrowserEip1993ProviderWithLegacyMetadata
+  const legacyProvider = provider as BrowserEip1193ProviderWithLegacyMetadata
 
   if (wallet === Wallet.Metamask) {
     return (
@@ -224,10 +224,10 @@ const requestEip6963Provider = (
   timeout = EIP6963_REQUEST_TIMEOUT,
 ) => {
   if (typeof window === 'undefined' || timeout <= 0) {
-    return Promise.resolve<BrowserEip1993Provider | undefined>(undefined)
+    return Promise.resolve<BrowserEip1193Provider | undefined>(undefined)
   }
 
-  return new Promise<BrowserEip1993Provider | undefined>((resolve) => {
+  return new Promise<BrowserEip1193Provider | undefined>((resolve) => {
     let timeoutId: ReturnType<typeof setTimeout> | undefined
     let resolved = false
     let handleAnnouncement = (_announcement: Event) => {}
@@ -240,7 +240,7 @@ const requestEip6963Provider = (
       }
     }
 
-    const resolveProvider = (provider?: BrowserEip1993Provider) => {
+    const resolveProvider = (provider?: BrowserEip1193Provider) => {
       if (resolved) {
         return
       }
@@ -270,9 +270,9 @@ const requestEip6963Provider = (
 }
 
 const uniqueProviders = (
-  providers: Array<BrowserEip1993Provider | undefined>,
+  providers: Array<BrowserEip1193Provider | undefined>,
 ) => {
-  const providerSet = new Set<BrowserEip1993Provider>()
+  const providerSet = new Set<BrowserEip1193Provider>()
 
   providers.forEach((provider) => {
     if (provider) {
@@ -402,7 +402,7 @@ export const getEvmProviderWithFallback = async (
     return undefined
   }
 
-  return new Promise<BrowserEip1993Provider | undefined>((resolve) => {
+  return new Promise<BrowserEip1193Provider | undefined>((resolve) => {
     let timeoutId: ReturnType<typeof setTimeout> | undefined
     let handleInitialization = async () => {}
 

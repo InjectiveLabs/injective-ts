@@ -16,7 +16,7 @@ import type {
   PublicClient,
   WalletClient,
 } from 'viem'
-import type { BrowserEip1993Provider } from './../types/provider'
+import type { BrowserEip1193Provider } from './../types/provider'
 
 export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
   if (chainId === EvmChainId.DevnetEvm) {
@@ -139,7 +139,7 @@ export const getViemWalletClient = ({
 
 export const getViemPublicClientFromEip1193Provider = (
   chainId: EvmChainId | number,
-  provider: BrowserEip1993Provider,
+  provider: BrowserEip1193Provider,
 ): PublicClient => {
   const chain = getEvmChainConfig(chainId)
 

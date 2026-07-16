@@ -3,13 +3,13 @@ import { vi, it, expect, describe } from 'vitest'
 import { ChainId } from '@injectivelabs/ts-types'
 import { Wallet } from '@injectivelabs/wallet-base'
 import { EvmWallet } from './strategy.js'
-import type { BrowserEip1993Provider } from '@injectivelabs/wallet-base'
+import type { BrowserEip1193Provider } from '@injectivelabs/wallet-base'
 
 const signer = '0x000000000000000000000000000000000000dead'
 
 const setup = () => {
   const request = vi.fn().mockResolvedValue('0xsigned')
-  const provider = { request } as unknown as BrowserEip1993Provider
+  const provider = { request } as unknown as BrowserEip1193Provider
   const strategy = new EvmWallet({
     chainId: ChainId.Devnet,
     wallet: Wallet.Metamask,
@@ -17,7 +17,7 @@ const setup = () => {
 
   vi.spyOn(
     strategy as unknown as {
-      getEthereum(): Promise<BrowserEip1993Provider>
+      getEthereum(): Promise<BrowserEip1193Provider>
     },
     'getEthereum',
   ).mockResolvedValue(provider)

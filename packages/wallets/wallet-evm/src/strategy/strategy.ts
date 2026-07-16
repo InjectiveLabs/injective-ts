@@ -57,7 +57,7 @@ import type {
   StdSignDoc,
   Eip1193Provider,
   SendTransactionOptions,
-  BrowserEip1993Provider,
+  BrowserEip1193Provider,
   ConcreteWalletStrategy,
   ConcreteWalletStrategyArgs,
   ConcreteEvmWalletStrategyArgs,
@@ -68,7 +68,7 @@ export class EvmWallet
   implements ConcreteWalletStrategy
 {
   public wallet?: Wallet
-  public evmProviders: Partial<Record<Wallet, BrowserEip1993Provider>> = {}
+  public evmProviders: Partial<Record<Wallet, BrowserEip1193Provider>> = {}
 
   constructor(
     args: (ConcreteWalletStrategyArgs | ConcreteEvmWalletStrategyArgs) & {
@@ -582,7 +582,7 @@ export class EvmWallet
     }
   }
 
-  private async getEthereum(): Promise<BrowserEip1993Provider> {
+  private async getEthereum(): Promise<BrowserEip1193Provider> {
     const provider = await getEvmProviderWithFallback(this.wallet as Wallet, {
       eip6963Providers: this.evmProviders,
     })

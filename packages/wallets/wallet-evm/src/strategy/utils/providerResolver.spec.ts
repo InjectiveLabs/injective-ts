@@ -2,28 +2,28 @@ import { Wallet } from '@injectivelabs/wallet-base'
 import { vi, it, expect, describe, afterEach, beforeEach } from 'vitest'
 import type {
   EIP6963ProviderDetail,
-  BrowserEip1993Provider,
+  BrowserEip1193Provider,
 } from '@injectivelabs/wallet-base'
 
 type MockWindow = Pick<
   Window,
   'addEventListener' | 'removeEventListener' | 'dispatchEvent'
 > & {
-  ethereum?: BrowserEip1993Provider
-  providers?: BrowserEip1993Provider[]
-  rainbow?: BrowserEip1993Provider
+  ethereum?: BrowserEip1193Provider
+  providers?: BrowserEip1193Provider[]
+  rainbow?: BrowserEip1193Provider
 }
 
 const createProvider = (
-  flags: Partial<BrowserEip1993Provider>,
-): BrowserEip1993Provider =>
+  flags: Partial<BrowserEip1193Provider>,
+): BrowserEip1193Provider =>
   ({
     request: vi.fn(),
     on: vi.fn(),
     removeListener: vi.fn(),
     removeAllListeners: vi.fn(),
     ...flags,
-  }) as unknown as BrowserEip1993Provider
+  }) as unknown as BrowserEip1193Provider
 
 const createMockWindow = (): MockWindow => {
   const target = new EventTarget()
@@ -51,7 +51,7 @@ const createDetail = ({
   rdns,
 }: {
   name: string
-  provider: BrowserEip1993Provider
+  provider: BrowserEip1193Provider
   rdns: string
 }): EIP6963ProviderDetail => ({
   info: {

@@ -18,7 +18,7 @@ interface BrowserEip1193RequestArguments {
   params?: unknown[] | object
 }
 
-export interface BrowserEip1993Provider {
+export interface BrowserEip1193Provider {
   on(
     event: 'connect',
     listener: (info: BrowserEip1193ProviderInfo) => void,
@@ -34,12 +34,12 @@ export interface BrowserEip1993Provider {
   on(event: 'chainChanged', listener: (chainId: string) => void): void
   on(event: 'accountsChanged', listener: (accounts: string[]) => void): void
   on(event: string, listener: any): void
-  once(event: string, listener: any): void
+  once?(event: string, listener: any): void
   removeListener(event: string, listener: any): void
-  off(event: string, listener: any): void
+  off?(event: string, listener: any): void
   request(args: BrowserEip1193RequestArguments): Promise<unknown>
   removeAllListeners(): void
-  providers?: BrowserEip1993Provider[]
+  providers?: BrowserEip1193Provider[]
   isTrust: boolean
   isKeplr: boolean
   isRabby: boolean
@@ -58,15 +58,15 @@ export interface WindowWithEip1193Provider extends Omit<
   Window,
   'ethereum' | 'keplr'
 > {
-  rainbow: BrowserEip1993Provider
-  rabby: BrowserEip1993Provider
-  ethereum: BrowserEip1993Provider
-  okxwallet: BrowserEip1993Provider
-  providers: BrowserEip1993Provider[]
-  trustWallet?: BrowserEip1993Provider
-  bitkeep: { ethereum: BrowserEip1993Provider }
-  phantom?: { ethereum?: BrowserEip1993Provider }
-  keplr?: { ethereum?: BrowserEip1993Provider }
+  rainbow: BrowserEip1193Provider
+  rabby: BrowserEip1193Provider
+  ethereum: BrowserEip1193Provider
+  okxwallet: BrowserEip1193Provider
+  providers: BrowserEip1193Provider[]
+  trustWallet?: BrowserEip1193Provider
+  bitkeep: { ethereum: BrowserEip1193Provider }
+  phantom?: { ethereum?: BrowserEip1193Provider }
+  keplr?: { ethereum?: BrowserEip1193Provider }
 }
 
 export interface EIP6963ProviderInfo {
@@ -78,7 +78,7 @@ export interface EIP6963ProviderInfo {
 
 export interface EIP6963ProviderDetail {
   info: EIP6963ProviderInfo
-  provider: BrowserEip1993Provider
+  provider: BrowserEip1193Provider
 }
 
 export type EIP6963AnnounceProviderEvent = {
