@@ -59,11 +59,3 @@ export type TurnkeyOAuth2ConfirmResponse = {
   userName?: string
   profileImageUrl?: string
 }
-
-export type TurnkeyOauthProvider = {
-  issuer: string
-  subject: string
-  audience: string
-  providerId: string
-  providerName: string
-}

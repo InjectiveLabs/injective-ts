@@ -30,7 +30,6 @@ import type {
   TurnkeyOAuthProvider,
 } from '@injectivelabs/wallet-base'
 import type {
-  TurnkeyOauthProvider,
   TurnkeyOAuth2ConfirmResponse,
   TurnkeyOAuth2AuthenticatedResponse,
 } from '../types.js'
@@ -432,39 +431,6 @@ export class TurnkeyWallet {
     this.userOrganizationId = organizationId
 
     return { session: credentialBundle, email, userName, profileImageUrl }
-  }
-
-  public async getCurrentOauthProviders(): Promise<TurnkeyOauthProvider[]> {
-    const indexedDbClient = await this.getIndexedDbClient()
-    const { organizationId } = await this.getSession()
-
-    if (!organizationId) {
-      throw new WalletException(
-        new Error('Turnkey organization not found. Please login again.'),
-      )
-    }
-
-    const user = await indexedDbClient.getWhoami({ organizationId })
-    let userId = user?.userId
-
-    if (!userId) {
-      const { users } = await indexedDbClient.getUsers({ organizationId })
-
-      if (users.length !== 1) {
-        throw new WalletException(
-          new Error('Unable to resolve current Turnkey user.'),
-        )
-      }
-
-      userId = users[0].userId
-    }
-
-    const { oauthProviders } = await indexedDbClient.getOauthProviders({
-      organizationId,
-      userId,
-    })
-
-    return oauthProviders
   }
 
   public async refreshSession() {
