@@ -5,6 +5,7 @@ export interface AuctionParams {
   auctionPeriod: number
   minNextBidIncrementRate: string
   injBasketMaxCap: string
+  biddersWhitelist: string[]
 }
 
 export interface AuctionBid {
@@ -52,6 +53,8 @@ export interface AuctionModuleParams {
 export interface AuctionModuleStateParams {
   auctionPeriod: number
   minNextBidIncrementRate: string
+  injBasketMaxCap: string
+  biddersWhitelist: string[]
 }
 export interface AuctionModuleState {
   params?: AuctionModuleStateParams
