@@ -24,19 +24,65 @@ export const ChainId = {
 export type ChainId = (typeof ChainId)[keyof typeof ChainId]
 
 export const DeprecatedMsgType = {
-  // Exchange v2
-  MsgSetDelegationTransferReceivers:
-    'injective.exchange.v2.MsgSetDelegationTransferReceivers',
-
-  // Oracle
-  MsgRelayBandRates: 'injective.oracle.v1beta1.MsgRelayBandRates',
-  MsgRequestBandIBCRates: 'injective.oracle.v1beta1.MsgRequestBandIBCRates',
-
   // Peggy - Proposals
   MsgBlacklistEthereumAddressesProposal:
     'injective.peggy.v1beta1.BlacklistEthereumAddressesProposal',
   MsgRevokeEthereumBlacklistProposal:
     'injective.peggy.v1beta1.RevokeEthereumBlacklistProposal',
+
+  // Exchange v1beta1 - Proposals
+  MsgBatchExchangeModificationProposal:
+    'injective.exchange.v1beta1.BatchExchangeModificationProposal',
+  MsgSpotMarketParamUpdateProposal:
+    'injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
+  MsgSpotMarketLaunchProposal:
+    'injective.exchange.v1beta1.SpotMarketLaunchProposal',
+  MsgPerpetualMarketLaunchProposal:
+    'injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
+  MsgExpiryFuturesMarketLaunchProposal:
+    'injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal',
+  MsgDerivativeMarketParamUpdateProposal:
+    'injective.exchange.v1beta1.DerivativeMarketParamUpdateProposal',
+  MsgMarketForcedSettlementProposal:
+    'injective.exchange.v1beta1.MarketForcedSettlementProposal',
+  MsgUpdateDenomDecimalsProposal:
+    'injective.exchange.v1beta1.UpdateDenomDecimalsProposal',
+  MsgTradingRewardCampaignLaunchProposal:
+    'injective.exchange.v1beta1.TradingRewardCampaignLaunchProposal',
+  MsgTradingRewardCampaignUpdateProposal:
+    'injective.exchange.v1beta1.TradingRewardCampaignUpdateProposal',
+  MsgTradingRewardPendingPointsUpdateProposal:
+    'injective.exchange.v1beta1.TradingRewardPendingPointsUpdateProposal',
+  MsgFeeDiscountProposal: 'injective.exchange.v1beta1.FeeDiscountProposal',
+  MsgBatchCommunityPoolSpendProposal:
+    'injective.exchange.v1beta1.BatchCommunityPoolSpendProposal',
+  MsgBinaryOptionsMarketParamUpdateProposal:
+    'injective.exchange.v1beta1.BinaryOptionsMarketParamUpdateProposal',
+  MsgBinaryOptionsMarketLaunchProposal:
+    'injective.exchange.v1beta1.BinaryOptionsMarketLaunchProposal',
+
+  // Exchange v1beta1 - Authz
+  MsgCreateSpotLimitOrderAuthz:
+    'injective.exchange.v1beta1.CreateSpotLimitOrderAuthz',
+  MsgCreateSpotMarketOrderAuthz:
+    'injective.exchange.v1beta1.CreateSpotMarketOrderAuthz',
+  MsgBatchCreateSpotLimitOrdersAuthz:
+    'injective.exchange.v1beta1.BatchCreateSpotLimitOrdersAuthz',
+  MsgCancelSpotOrderAuthz: 'injective.exchange.v1beta1.CancelSpotOrderAuthz',
+  MsgBatchCancelSpotOrdersAuthz:
+    'injective.exchange.v1beta1.BatchCancelSpotOrdersAuthz',
+  MsgCreateDerivativeLimitOrderAuthz:
+    'injective.exchange.v1beta1.CreateDerivativeLimitOrderAuthz',
+  MsgCreateDerivativeMarketOrderAuthz:
+    'injective.exchange.v1beta1.CreateDerivativeMarketOrderAuthz',
+  MsgBatchCreateDerivativeLimitOrdersAuthz:
+    'injective.exchange.v1beta1.BatchCreateDerivativeLimitOrdersAuthz',
+  MsgCancelDerivativeOrderAuthz:
+    'injective.exchange.v1beta1.CancelDerivativeOrderAuthz',
+  MsgBatchCancelDerivativeOrdersAuthz:
+    'injective.exchange.v1beta1.BatchCancelDerivativeOrdersAuthz',
+  MsgBatchUpdateOrdersAuthz:
+    'injective.exchange.v1beta1.BatchUpdateOrdersAuthz',
 
   // Permissions
   MsgDeleteNamespace: 'injective.permissions.v1beta1.MsgDeleteNamespace',
@@ -224,60 +270,6 @@ export const MsgType = {
   MsgInstantPerpetualMarketLaunch:
     'injective.exchange.v1beta1.MsgInstantPerpetualMarketLaunch',
 
-  // Exchange v1beta1 - Proposals
-  MsgBatchExchangeModificationProposal:
-    'injective.exchange.v1beta1.BatchExchangeModificationProposal',
-  MsgSpotMarketParamUpdateProposal:
-    'injective.exchange.v1beta1.SpotMarketParamUpdateProposal',
-  MsgSpotMarketLaunchProposal:
-    'injective.exchange.v1beta1.SpotMarketLaunchProposal',
-  MsgPerpetualMarketLaunchProposal:
-    'injective.exchange.v1beta1.PerpetualMarketLaunchProposal',
-  MsgExpiryFuturesMarketLaunchProposal:
-    'injective.exchange.v1beta1.ExpiryFuturesMarketLaunchProposal',
-  MsgDerivativeMarketParamUpdateProposal:
-    'injective.exchange.v1beta1.DerivativeMarketParamUpdateProposal',
-  MsgMarketForcedSettlementProposal:
-    'injective.exchange.v1beta1.MarketForcedSettlementProposal',
-  MsgUpdateDenomDecimalsProposal:
-    'injective.exchange.v1beta1.UpdateDenomDecimalsProposal',
-  MsgTradingRewardCampaignLaunchProposal:
-    'injective.exchange.v1beta1.TradingRewardCampaignLaunchProposal',
-  MsgTradingRewardCampaignUpdateProposal:
-    'injective.exchange.v1beta1.TradingRewardCampaignUpdateProposal',
-  MsgTradingRewardPendingPointsUpdateProposal:
-    'injective.exchange.v1beta1.TradingRewardPendingPointsUpdateProposal',
-  MsgFeeDiscountProposal: 'injective.exchange.v1beta1.FeeDiscountProposal',
-  MsgBatchCommunityPoolSpendProposal:
-    'injective.exchange.v1beta1.BatchCommunityPoolSpendProposal',
-  MsgBinaryOptionsMarketParamUpdateProposal:
-    'injective.exchange.v1beta1.BinaryOptionsMarketParamUpdateProposal',
-  MsgBinaryOptionsMarketLaunchProposal:
-    'injective.exchange.v1beta1.BinaryOptionsMarketLaunchProposal',
-
-  // Exchange v1beta1 - Authz
-  MsgCreateSpotLimitOrderAuthz:
-    'injective.exchange.v1beta1.CreateSpotLimitOrderAuthz',
-  MsgCreateSpotMarketOrderAuthz:
-    'injective.exchange.v1beta1.CreateSpotMarketOrderAuthz',
-  MsgBatchCreateSpotLimitOrdersAuthz:
-    'injective.exchange.v1beta1.BatchCreateSpotLimitOrdersAuthz',
-  MsgCancelSpotOrderAuthz: 'injective.exchange.v1beta1.CancelSpotOrderAuthz',
-  MsgBatchCancelSpotOrdersAuthz:
-    'injective.exchange.v1beta1.BatchCancelSpotOrdersAuthz',
-  MsgCreateDerivativeLimitOrderAuthz:
-    'injective.exchange.v1beta1.CreateDerivativeLimitOrderAuthz',
-  MsgCreateDerivativeMarketOrderAuthz:
-    'injective.exchange.v1beta1.CreateDerivativeMarketOrderAuthz',
-  MsgBatchCreateDerivativeLimitOrdersAuthz:
-    'injective.exchange.v1beta1.BatchCreateDerivativeLimitOrdersAuthz',
-  MsgCancelDerivativeOrderAuthz:
-    'injective.exchange.v1beta1.CancelDerivativeOrderAuthz',
-  MsgBatchCancelDerivativeOrdersAuthz:
-    'injective.exchange.v1beta1.BatchCancelDerivativeOrdersAuthz',
-  MsgBatchUpdateOrdersAuthz:
-    'injective.exchange.v1beta1.BatchUpdateOrdersAuthz',
-
   // Exchange V2
   OrderDataV2: 'injective.exchange.v2.OrderData',
   MsgDepositV2: 'injective.exchange.v2.MsgDeposit',
@@ -378,6 +370,9 @@ export const MsgType = {
   MsgAtomicMarketOrderFeeMultiplierScheduleV2:
     'injective.exchange.v2.MsgAtomicMarketOrderFeeMultiplierSchedule',
 
+  MsgSetDelegationTransferReceiversV2:
+    'injective.exchange.v2.MsgSetDelegationTransferReceivers',
+
   // Insurance
   MsgUnderwrite: 'injective.insurance.v1beta1.MsgUnderwrite',
   MsgInsuranceUpdateParams: 'injective.insurance.v1beta1.MsgUpdateParams',
@@ -387,6 +382,7 @@ export const MsgType = {
 
   // Oracle
   MsgRelayChainlinkPrices: 'injective.oracle.v1beta1.MsgRelayChainlinkPrices',
+  MsgRelayBandRates: 'injective.oracle.v1beta1.MsgRelayBandRates',
   MsgRelayPythPrices: 'injective.oracle.v1beta1.MsgRelayPythPrices',
   MsgRelayPythProPrices: 'injective.oracle.v1beta1.MsgRelayPythProPrices',
   MsgOracleUpdateParams: 'injective.oracle.v1beta1.MsgUpdateParams',
@@ -395,6 +391,7 @@ export const MsgType = {
   MsgRelayProviderPrices: 'injective.oracle.v1beta1.MsgRelayProviderPrices',
   MsgRelayPriceFeedPrice: 'injective.oracle.v1beta1.MsgRelayPriceFeedPrice',
   MsgRelayCoinbaseMessages: 'injective.oracle.v1beta1.MsgRelayCoinbaseMessages',
+  MsgRequestBandIBCRates: 'injective.oracle.v1beta1.MsgRequestBandIBCRates',
 
   // OCR
   MsgTransmit: 'injective.ocr.v1beta1.MsgTransmit',

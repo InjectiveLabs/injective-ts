@@ -1,6 +1,7 @@
 import { toChainFormat } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectivePeggyV1MsgsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/msgs_pb'
+import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
@@ -9,6 +10,7 @@ export declare namespace MsgUpdateRateLimit {
     injectiveAddress: string
     tokenAddress: string
     newTokenPriceId: string /** pyth price id */
+    newTokenOracleType: InjectiveOracleV1Beta1OraclePb.OracleType
     newRateLimitInUsd: string /** rate limit = notional amount of tokens per window */
     newRateLimitWindow: string /** window = numbers of blocks */
   }
@@ -34,6 +36,7 @@ export default class MsgUpdateRateLimit extends MsgBase<
       authority: params.injectiveAddress,
       tokenAddress: params.tokenAddress,
       newTokenPriceId: params.newTokenPriceId,
+      newTokenOracleType: params.newTokenOracleType,
       newRateLimitUsd: toChainFormat(params.newRateLimitInUsd).toFixed(),
       newRateLimitWindow: BigInt(params.newRateLimitWindow),
     })
@@ -58,6 +61,7 @@ export default class MsgUpdateRateLimit extends MsgBase<
       new_token_price_id: params.newTokenPriceId,
       new_rate_limit_usd: params.newRateLimitInUsd,
       new_rate_limit_window: params.newRateLimitWindow.toString(),
+      new_token_oracle_type: params.newTokenOracleType,
     }
 
     return {
@@ -80,6 +84,8 @@ export default class MsgUpdateRateLimit extends MsgBase<
 
     const messageAdjusted = {
       ...web3gw,
+      new_token_oracle_type:
+        InjectiveOracleV1Beta1OraclePb.OracleType[params.newTokenOracleType],
       new_rate_limit_usd: numberToCosmosSdkDecString(params.newRateLimitInUsd),
     }
 

@@ -171,6 +171,36 @@ describe('StreamManagerV2', () => {
       expect(streamFactory).toHaveBeenCalledTimes(2)
     })
 
+    it('should not call connect if a retry listener destroys the manager', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 3,
+          initialDelayMs: 1000,
+          maxDelayMs: 10000,
+          backoffMultiplier: 2,
+          persistent: false,
+        },
+      })
+
+      manager.on('retry', () => {
+        manager.destroy()
+      })
+
+      vi.mocked(streamFactory).mockImplementationOnce(() => {
+        throw new Error('Connection failed')
+      })
+
+      manager.start()
+
+      expect(() => vi.advanceTimersByTime(1000)).not.toThrow()
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(streamFactory).toHaveBeenCalledTimes(1)
+    })
+
     it('should not reset retry attempts when a stream errors before it is stable', () => {
       const manager = new StreamManagerV2({
         id: 'test-stream',
@@ -972,6 +1002,227 @@ describe('StreamManagerV2', () => {
       expect(streamFactory).toHaveBeenCalledTimes(1)
     })
 
+    it('should throw when start is called after destroy', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const stateChanges: any[] = []
+      manager.on('state:change', (payload) => stateChanges.push(payload))
+
+      manager.destroy()
+
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(stateChanges).toEqual([
+        {
+          from: StreamState.Idle,
+          to: StreamState.Destroyed,
+        },
+      ])
+      expect(() => manager.start()).toThrow(
+        'Cannot start destroyed stream manager: test-stream',
+      )
+      expect(streamFactory).not.toHaveBeenCalled()
+    })
+
+    it('should not create a subscription if a connecting state-change listener destroys the manager', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      manager.on('state:change', ({ to }) => {
+        if (to === StreamState.Connecting) {
+          manager.destroy()
+        }
+      })
+
+      expect(() => manager.start()).not.toThrow()
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(streamFactory).not.toHaveBeenCalled()
+      expect(mockSubscription.on).not.toHaveBeenCalled()
+    })
+
+    it('should emit a final non-retrying disconnect when destroyed', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+        },
+      })
+
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+      manager.destroy()
+
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(disconnectEvents.at(-1)).toEqual({
+        reason: StreamDisconnectReason.UserStopped,
+        willRetry: false,
+        attempt: 0,
+      })
+      expect(mockSubscription.unsubscribe).toHaveBeenCalledTimes(1)
+    })
+
+    it('should keep destroyed state and clean up listeners if a disconnect listener throws during destroy', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      manager.start()
+      manager.on('disconnect', () => {
+        throw new Error('disconnect listener failed')
+      })
+
+      expect(() => manager.destroy()).toThrow('disconnect listener failed')
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(manager.listenerCount('disconnect')).toBe(0)
+      expect(manager.listenerCount('state:change')).toBe(0)
+    })
+
+    it('should still transition to stopped if a disconnect listener throws during stop', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      manager.start()
+      manager.on('disconnect', () => {
+        throw new Error('disconnect listener failed')
+      })
+
+      expect(() => manager.stop()).toThrow('disconnect listener failed')
+      expect(manager.getState()).toBe(StreamState.Stopped)
+    })
+
+    it('should still transition to reconnecting if a disconnect listener throws on retryable error', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 3,
+          initialDelayMs: 1000,
+          maxDelayMs: 5000,
+          backoffMultiplier: 2,
+          persistent: true,
+        },
+      })
+
+      manager.start()
+      manager.on('disconnect', () => {
+        throw new Error('disconnect listener failed')
+      })
+
+      expect(() =>
+        mockSubscription._errorHandler?.({
+          code: GrpcStatusCode.UNAVAILABLE,
+          details: 'Connection lost',
+        }),
+      ).toThrow('disconnect listener failed')
+
+      expect(manager.getState()).toBe(StreamState.Reconnecting)
+    })
+
+    it('should finish destroy cleanup if a state-change listener throws', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const disconnectEvents: any[] = []
+      manager.start()
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+      manager.on('state:change', ({ to }) => {
+        if (to === StreamState.Destroyed) {
+          throw new Error('state change failed')
+        }
+      })
+
+      expect(() => manager.destroy()).toThrow('state change failed')
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(disconnectEvents.at(-1)).toEqual({
+        reason: StreamDisconnectReason.UserStopped,
+        willRetry: false,
+        attempt: 0,
+      })
+      expect(manager.listenerCount('disconnect')).toBe(0)
+      expect(manager.listenerCount('state:change')).toBe(0)
+    })
+
+    it('should finish destroy cleanup if a warn listener throws during unsubscribe', () => {
+      mockSubscription.unsubscribe = vi.fn(() => {
+        throw new Error('unsubscribe failed')
+      })
+
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const disconnectEvents: any[] = []
+      manager.start()
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+      manager.on('warn', () => {
+        throw new Error('warn listener failed')
+      })
+
+      expect(() => manager.destroy()).toThrow('warn listener failed')
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(disconnectEvents.at(-1)).toEqual({
+        reason: StreamDisconnectReason.UserStopped,
+        willRetry: false,
+        attempt: 0,
+      })
+      expect(manager.listenerCount('disconnect')).toBe(0)
+      expect(manager.listenerCount('warn')).toBe(0)
+    })
+
+    it('should treat repeated destroy calls as a no-op', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const stateChanges: any[] = []
+      const disconnectEvents: any[] = []
+      manager.on('state:change', (payload) => stateChanges.push(payload))
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+      manager.destroy()
+      manager.destroy()
+
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(stateChanges.at(-1)).toEqual({
+        from: StreamState.Connected,
+        to: StreamState.Destroyed,
+      })
+      expect(
+        stateChanges.filter((change) => change.to === StreamState.Destroyed),
+      ).toHaveLength(1)
+      expect(disconnectEvents.at(-1)).toEqual({
+        reason: StreamDisconnectReason.UserStopped,
+        willRetry: false,
+        attempt: 0,
+      })
+      expect(mockSubscription.unsubscribe).toHaveBeenCalledTimes(1)
+    })
+
     it('should handle callback errors gracefully', () => {
       const manager = new StreamManagerV2({
         id: 'test-stream',
@@ -1023,6 +1274,115 @@ describe('StreamManagerV2', () => {
       manager.stop()
 
       expect(manager.getState()).toBe(StreamState.Stopped)
+    })
+
+    it('should swallow abort errors thrown during unsubscribe on stop', () => {
+      mockSubscription.unsubscribe = vi.fn(() => {
+        const error = new Error('signal is aborted without reason')
+        error.name = 'AbortError'
+        throw error
+      })
+
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      manager.start()
+
+      expect(() => manager.stop()).not.toThrow()
+      expect(manager.getState()).toBe(StreamState.Stopped)
+    })
+
+    it('should emit a warning when unsubscribe throws a non-abort error', () => {
+      mockSubscription.unsubscribe = vi.fn(() => {
+        throw new Error('unsubscribe failed')
+      })
+
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+      })
+
+      const warnEvents: any[] = []
+      manager.on('warn', (payload) => warnEvents.push(payload))
+
+      manager.start()
+
+      expect(() => manager.stop()).not.toThrow()
+      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(warnEvents).toContainEqual({
+        message: 'Stream unsubscribe failed: unsubscribe failed',
+      })
+    })
+
+    it('should not retry after destroy during reconnect backoff', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 3,
+          initialDelayMs: 1000,
+          maxDelayMs: 5000,
+          backoffMultiplier: 2,
+          persistent: true,
+        },
+      })
+
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Connection lost',
+      })
+
+      expect(manager.getState()).toBe(StreamState.Reconnecting)
+      expect(disconnectEvents.at(-1)?.willRetry).toBe(true)
+
+      manager.destroy()
+
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+
+      vi.advanceTimersByTime(1000)
+
+      expect(streamFactory).toHaveBeenCalledTimes(1)
+    })
+
+    it('should report willRetry=false for late errors after destroy', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 3,
+          initialDelayMs: 1000,
+          maxDelayMs: 5000,
+          backoffMultiplier: 2,
+          persistent: true,
+        },
+      })
+
+      const disconnectEvents: any[] = []
+      manager.on('disconnect', (payload) => disconnectEvents.push(payload))
+
+      manager.start()
+      manager.destroy()
+
+      mockSubscription._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'Late connection lost',
+      })
+
+      expect(manager.getState()).toBe(StreamState.Destroyed)
+      expect(disconnectEvents.at(-1)?.willRetry).toBe(false)
     })
 
     it('should handle unknown error codes gracefully', () => {
@@ -1243,7 +1603,7 @@ describe('StreamManagerV2', () => {
       // Destroy should stop stream and remove listeners
       manager.destroy()
 
-      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(manager.getState()).toBe(StreamState.Destroyed)
 
       // Wait a bit to ensure no more events are emitted
       const countBeforeWait = eventCount

@@ -45,13 +45,15 @@ export class IndexerGrpcExplorerStreamV2 {
     }
 
     const request = InjectiveExplorerRpcPb.StreamBlocksRequest.create()
-    const stream = this.client.streamBlocks(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        ExplorerStreamTransformer.blocksStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamBlocks(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          ExplorerStreamTransformer.blocksStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -69,13 +71,15 @@ export class IndexerGrpcExplorerStreamV2 {
     }
 
     const request = InjectiveExplorerRpcPb.StreamBlocksRequest.create()
-    const stream = this.client.streamBlocks(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        ExplorerStreamTransformer.blocksWithTxsStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamBlocks(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          ExplorerStreamTransformer.blocksWithTxsStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -93,12 +97,13 @@ export class IndexerGrpcExplorerStreamV2 {
     }
 
     const request = InjectiveExplorerRpcPb.StreamTxsRequest.create()
-    const stream = this.client.streamTxs(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        ExplorerStreamTransformer.transactionsStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) => this.client.streamTxs(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          ExplorerStreamTransformer.transactionsStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 }

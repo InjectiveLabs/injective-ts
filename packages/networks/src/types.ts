@@ -25,7 +25,7 @@ export type NetworkEndpoints = {
   indexer: string // Indexer API
   grpc: string // Sentry gRPC
   rest: string // LCD
-  rpc?: string // Tendermint
+  rpc: string // Tendermint
   cacheGrpc?: string // Cache gRPC service
   cacheRest?: string // Cache LCD service
   chronos?: string // Chronos Service

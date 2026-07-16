@@ -1,6 +1,7 @@
 import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import MsgUpdateDerivativeMarketV2 from './MsgUpdateDerivativeMarketV2.js'
 import {
   getEip712TypedData,
@@ -31,6 +32,9 @@ const protoParams = {
   newInitialMarginRatio: '0.05',
   newMaintenanceMarginRatio: '0.05',
   newReduceMarginRatio: '0.05',
+  crossMarginEligibility:
+    InjectiveExchangeV2ProposalPb.CrossMarginEligibility
+      .CM_ELIGIBILITY_UNSPECIFIED,
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgUpdateDerivativeMarketV2.fromJSON(params)
@@ -46,7 +50,6 @@ describe('MsgUpdateDerivativeMarketV2', () => {
       newInitialMarginRatio: '50000000000000000',
       newMaintenanceMarginRatio: '50000000000000000',
       newReduceMarginRatio: '50000000000000000',
-      crossMarginEligibility: 0,
     })
   })
 
@@ -61,7 +64,6 @@ describe('MsgUpdateDerivativeMarketV2', () => {
       newInitialMarginRatio: '50000000000000000',
       newMaintenanceMarginRatio: '50000000000000000',
       newReduceMarginRatio: '50000000000000000',
-      crossMarginEligibility: 0,
     })
   })
 

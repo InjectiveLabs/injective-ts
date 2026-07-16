@@ -71,13 +71,15 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
       request.includeInactive = includeInactive
     }
 
-    const stream = this.client.streamMarkets(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerWsPriceOracleStreamTransformer.streamMarketsCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamMarkets(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerWsPriceOracleStreamTransformer.streamMarketsCallback(response)
+        callback(transformed)
+      },
+    )
   }
 
   /**
@@ -124,12 +126,16 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
       request.mode = mode
     }
 
-    const stream = this.client.streamMarketsV2(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerWsPriceOracleStreamTransformer.streamMarketsV2Callback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamMarketsV2(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerWsPriceOracleStreamTransformer.streamMarketsV2Callback(
+            response,
+          )
+        callback(transformed)
+      },
+    )
   }
 }

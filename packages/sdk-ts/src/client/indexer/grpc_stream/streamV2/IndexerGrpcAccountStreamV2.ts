@@ -44,12 +44,14 @@ export class IndexerGrpcAccountStreamV2 {
       InjectiveAccountsRpcPb.StreamSubaccountBalanceRequest.create()
     request.subaccountId = subaccountId
 
-    const stream = this.client.streamSubaccountBalance(request)
-
-    return createStreamSubscriptionV2(stream, (response) => {
-      const transformed =
-        IndexerAccountStreamTransformer.balanceStreamCallback(response)
-      callback(transformed)
-    })
+    return createStreamSubscriptionV2(
+      (abortSignal) =>
+        this.client.streamSubaccountBalance(request, { abort: abortSignal }),
+      (response) => {
+        const transformed =
+          IndexerAccountStreamTransformer.balanceStreamCallback(response)
+        callback(transformed)
+      },
+    )
   }
 }

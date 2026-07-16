@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/sdk-ts",
-  "version": "1.20.18",
+  "version": "1.20.24",
   "description": "SDK in TypeScript for building Injective applications in a browser, node, and react native environment.",
   "license": "Apache-2.0",
   "author": {
@@ -463,7 +463,7 @@
     "@cosmjs/proto-signing": "catalog:",
     "@cosmjs/stargate": "catalog:",
     "@injectivelabs/abacus-proto-ts-v2": "1.17.5",
-    "@injectivelabs/core-proto-ts-v2": "1.20.0",
+    "@injectivelabs/core-proto-ts-v2": "1.20.1",
     "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/grpc-web": "^0.0.1",
     "@injectivelabs/grpc-web-node-http-transport": "^0.0.2",

@@ -1,13 +1,13 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import MsgSetDelegationTransferReceivers from './MsgSetDelegationTransferReceivers.js'
+import MsgSetDelegationTransferReceiversV2 from './MsgSetDelegationTransferReceiversV2.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-const params: MsgSetDelegationTransferReceivers['params'] = {
+const params: MsgSetDelegationTransferReceiversV2['params'] = {
   sender: mockFactory.injectiveAddress,
   receivers: [mockFactory.injectiveAddress2],
 }
@@ -22,17 +22,16 @@ const protoParamsAmino = {
   sender: params.sender,
   receivers: params.receivers,
 }
-const message = MsgSetDelegationTransferReceivers.fromJSON(params)
+const message = MsgSetDelegationTransferReceiversV2.fromJSON(params)
 
-// hidden in chain v1.18.0
-describe('MsgSetDelegationTransferReceivers', () => {
-  it.skip('generates proper proto', () => {
+describe('MsgSetDelegationTransferReceiversV2', () => {
+  it('generates proper proto', () => {
     const proto = message.toProto()
 
     expect(proto).toStrictEqual(protoParams)
   })
 
-  it.skip('generates proper data', () => {
+  it('generates proper data', () => {
     const data = message.toData()
 
     expect(data).toStrictEqual({
@@ -41,7 +40,7 @@ describe('MsgSetDelegationTransferReceivers', () => {
     })
   })
 
-  it.skip('generates proper amino', () => {
+  it('generates proper amino', () => {
     const amino = message.toAmino()
 
     expect(amino).toStrictEqual({
@@ -50,7 +49,7 @@ describe('MsgSetDelegationTransferReceivers', () => {
     })
   })
 
-  it.skip('generates proper web3Gw', () => {
+  it('generates proper web3Gw', () => {
     const web3 = message.toWeb3Gw()
 
     expect(web3).toStrictEqual({
@@ -77,7 +76,6 @@ describe('MsgSetDelegationTransferReceivers', () => {
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
-    // will be resolved in chain v1.17.1
     it.skip('EIP712 v2', async () => {
       const eip712TypedData = getEip712TypedDataV2(eip712Args)
 

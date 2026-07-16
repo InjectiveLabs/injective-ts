@@ -29,6 +29,10 @@ import type {
   TurnkeyMetadata,
   TurnkeyOAuthProvider,
 } from '@injectivelabs/wallet-base'
+import type {
+  TurnkeyOAuth2ConfirmResponse,
+  TurnkeyOAuth2AuthenticatedResponse,
+} from '../types.js'
 
 export class TurnkeyWallet {
   private otpId?: string
@@ -359,7 +363,10 @@ export class TurnkeyWallet {
     )
   }
 
-  public async confirmOAuth(provider: TurnkeyOAuthProvider, oidcToken: string) {
+  public async confirmOAuth(
+    provider: TurnkeyOAuthProvider,
+    oidcToken: string,
+  ): Promise<string> {
     if (provider === TurnkeyProvider.Apple) {
       throw new WalletException(
         new Error('Apple sign in option is currently not supported'),
@@ -376,7 +383,7 @@ export class TurnkeyWallet {
       oauthLoginPath: this.metadata.oauthLoginPath || TURNKEY_OAUTH_PATH,
     })
 
-    if (!oauthResult || !oauthResult.credentialBundle) {
+    if (!oauthResult?.credentialBundle) {
       throw new WalletException(new Error('Unexpected OAuth result'))
     }
 
@@ -398,27 +405,32 @@ export class TurnkeyWallet {
     codeVerifier: string
     targetPublicKey: string
     providerName: TurnkeyOAuthProvider
-  }) {
+  }): Promise<TurnkeyOAuth2ConfirmResponse> {
     const indexedDbClient = await this.getIndexedDbClient()
     const path = this.metadata.oauth2ExchangePath || 'turnkey/oauth2'
 
     const response = await this.client.post<{
-      data: { credentialBundle: string; organizationId: string; email?: string }
+      data: TurnkeyOAuth2AuthenticatedResponse
     }>(path, { nonce, authCode, codeVerifier, targetPublicKey, providerName })
 
-    if (!response?.data?.credentialBundle || !response?.data?.organizationId) {
+    const responseData = response?.data
+    const credentialBundle =
+      responseData?.credentialBundle ?? responseData?.session
+    const organizationId = responseData?.organizationId
+
+    if (!credentialBundle || !organizationId) {
       throw new WalletException(
         new Error(`${providerName} OAuth2 exchange failed`),
       )
     }
 
-    const { credentialBundle, organizationId, email } = response.data
+    const { email, userName, profileImageUrl } = responseData
 
     await indexedDbClient.loginWithSession(credentialBundle)
 
     this.userOrganizationId = organizationId
 
-    return { session: credentialBundle, email }
+    return { session: credentialBundle, email, userName, profileImageUrl }
   }
 
   public async refreshSession() {

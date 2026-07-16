@@ -52,6 +52,7 @@ export const StreamState = {
   Connected: 'connected',
   Reconnecting: 'reconnecting',
   Stopped: 'stopped',
+  Destroyed: 'destroyed',
 } as const
 
 export type StreamState = (typeof StreamState)[keyof typeof StreamState]

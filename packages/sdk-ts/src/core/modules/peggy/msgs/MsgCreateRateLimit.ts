@@ -1,6 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import { toBigNumber, toChainFormat } from '@injectivelabs/utils'
 import * as InjectivePeggyV1MsgsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/msgs_pb'
+import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
@@ -11,6 +12,7 @@ export declare namespace MsgCreateRateLimit {
     tokenDecimals: string | number
     absoluteMintLimit?: string | number
     tokenPriceId: string /** pyth price id */
+    tokenOracleType: InjectiveOracleV1Beta1OraclePb.OracleType
     rateLimitInUsd:
       | string
       | number /** rate limit = notional amount of tokens per window */
@@ -38,6 +40,7 @@ export default class MsgCreateRateLimit extends MsgBase<
       tokenAddress: params.tokenAddress,
       tokenDecimals: Number(params.tokenDecimals),
       tokenPriceId: params.tokenPriceId,
+      tokenOracleType: params.tokenOracleType,
       rateLimitUsd: toChainFormat(params.rateLimitInUsd).toFixed(),
       absoluteMintLimit: toBigNumber(
         this.params.absoluteMintLimit ?? 0,
@@ -70,6 +73,7 @@ export default class MsgCreateRateLimit extends MsgBase<
         this.params.absoluteMintLimit ?? 0,
       ).toFixed(),
       rate_limit_window: params.rateLimitWindow.toString(),
+      token_oracle_type: params.tokenOracleType,
     }
 
     return {
@@ -92,6 +96,8 @@ export default class MsgCreateRateLimit extends MsgBase<
 
     const messageAdjusted = {
       ...web3gw,
+      token_oracle_type:
+        InjectiveOracleV1Beta1OraclePb.OracleType[params.tokenOracleType],
       rate_limit_usd: numberToCosmosSdkDecString(params.rateLimitInUsd),
     }
 

@@ -11,7 +11,7 @@ import {
 import type { HttpRestClient } from '@injectivelabs/utils'
 import type { TurnkeyIndexedDbClient } from '@turnkey/sdk-browser'
 import type { TurnkeyOAuthProvider } from '@injectivelabs/wallet-base'
-import type { TurnkeyOauthLoginResponse } from '../types.js'
+import type { TurnkeyOauthAuthenticatedResponse } from '../types.js'
 
 export class TurnkeyOauthWallet {
   static async generateOAuthNonce(indexedDbClient: TurnkeyIndexedDbClient) {
@@ -42,9 +42,7 @@ export class TurnkeyOauthWallet {
     providerName: TurnkeyOAuthProvider
     indexedDbClient: TurnkeyIndexedDbClient
     expirationSeconds?: number
-  }): Promise<
-    { organizationId: string; credentialBundle: string } | undefined
-  > {
+  }): Promise<TurnkeyOauthAuthenticatedResponse | undefined> {
     const { client, indexedDbClient, expirationSeconds } = args
 
     const path = args.oauthLoginPath || TURNKEY_OAUTH_PATH
@@ -57,7 +55,7 @@ export class TurnkeyOauthWallet {
       }
       // client.$post is undefined, resorting to this for now
       const response = await client.post<{
-        data: TurnkeyOauthLoginResponse
+        data: TurnkeyOauthAuthenticatedResponse
       }>(path, {
         targetPublicKey,
         oidcToken: args.oidcToken,

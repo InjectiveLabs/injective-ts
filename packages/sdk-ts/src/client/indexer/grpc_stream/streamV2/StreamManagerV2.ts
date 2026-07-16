@@ -142,6 +142,12 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   public start(): void {
+    if (this.isDestroyed) {
+      throw new Error(
+        `Cannot start destroyed stream manager: ${this.config.id}`,
+      )
+    }
+
     if (this.state !== StreamState.Idle && this.state !== StreamState.Stopped) {
       this.emit(StreamEvent.Warn, {
         message: `Stream already started (state: ${this.state})`,
@@ -166,8 +172,29 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
    * Call this when the stream manager is no longer needed
    */
   public destroy(): void {
-    this.stop()
-    this.removeAllListeners()
+    if (this.isDestroyed) {
+      return
+    }
+
+    let teardownError: unknown
+    const captureTeardownError = (callback: () => void) => {
+      try {
+        callback()
+      } catch (error) {
+        teardownError ??= error
+      }
+    }
+
+    captureTeardownError(() => this.cleanupForDisconnect())
+    captureTeardownError(() => this.updateState(StreamState.Destroyed))
+    captureTeardownError(() =>
+      this.emitDisconnectEvent(StreamDisconnectReason.UserStopped, false),
+    )
+    captureTeardownError(() => this.removeAllListeners())
+
+    if (teardownError) {
+      throw teardownError
+    }
   }
 
   public getState(): StreamState {
@@ -175,6 +202,10 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   private updateState(newState: StreamState): void {
+    if (this.state === newState) {
+      return
+    }
+
     const oldState = this.state
 
     this.state = newState
@@ -182,13 +213,57 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     this.emit(StreamEvent.StateChange, { from: oldState, to: newState })
   }
 
+  private get isDestroyed(): boolean {
+    return this.state === StreamState.Destroyed
+  }
+
+  private clearActiveConnection(): void {
+    this.clearSubscription()
+    this.clearStableConnectionTimeout()
+  }
+
+  private cleanupForDisconnect(): void {
+    this.clearActiveConnection()
+    this.clearRetryTimeout()
+  }
+
+  private emitDisconnectEvent(
+    reason: StreamDisconnectReason,
+    willRetry: boolean,
+  ): void {
+    this.emit(StreamEvent.Disconnect, {
+      reason,
+      willRetry,
+      attempt: this.retryAttempt,
+    })
+  }
+
   private clearSubscription(): void {
     if (!this.subscription) {
       return
     }
 
-    this.subscription.unsubscribe()
+    const subscription = this.subscription
     this.subscription = null
+
+    try {
+      subscription.unsubscribe()
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        (error.name === 'AbortError' ||
+          error.message.toLowerCase().includes('signal is aborted'))
+      ) {
+        return
+      }
+
+      this.emit(StreamEvent.Warn, {
+        message:
+          error instanceof Error
+            ? `Stream unsubscribe failed: ${error.message}`
+            : 'Stream unsubscribe failed with unknown error',
+      })
+    }
   }
 
   private clearRetryTimeout(): void {
@@ -233,7 +308,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   private scheduleRetry(reason?: StreamDisconnectReason): void {
-    if (!this.config.retryConfig.enabled) {
+    if (this.isDestroyed || !this.config.retryConfig.enabled) {
       return
     }
 
@@ -246,6 +321,10 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     }
 
     this.retryTimeoutId = setTimeout(() => {
+      if (this.isDestroyed) {
+        return
+      }
+
       this.retryAttempt++
 
       this.emit(StreamEvent.Retry, {
@@ -253,6 +332,10 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
         delayMs: nextBackoff,
         nextBackoff: this.calculateNextBackoff(reason),
       })
+
+      if (this.isDestroyed) {
+        return
+      }
 
       this.connect()
     }, nextBackoff)
@@ -296,6 +379,11 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
 
   private handleConnected(isReconnect: boolean): void {
     this.updateState(StreamState.Connected)
+
+    if (this.isDestroyed) {
+      return
+    }
+
     this.scheduleStableConnectionReset()
 
     this.emit(StreamEvent.Connect, {
@@ -336,36 +424,59 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   private handleDisconnect(reason: StreamDisconnectReason): void {
-    this.clearSubscription()
-    this.clearRetryTimeout()
-    this.clearStableConnectionTimeout()
+    this.cleanupForDisconnect()
 
-    // Determine if retry should be attempted based on disconnect reason
     const willRetry =
-      isRetryableReason(reason) && this.config.retryConfig.enabled
+      !this.isDestroyed &&
+      isRetryableReason(reason) &&
+      this.config.retryConfig.enabled
 
-    this.emit(StreamEvent.Disconnect, {
-      reason,
-      willRetry,
-      attempt: this.retryAttempt,
-    })
+    const nextState = this.isDestroyed
+      ? StreamState.Destroyed
+      : willRetry
+        ? StreamState.Reconnecting
+        : StreamState.Stopped
 
-    if (willRetry) {
-      this.updateState(StreamState.Reconnecting)
-      this.scheduleRetry(reason)
+    let disconnectError: unknown
+    const captureDisconnectError = (callback: () => void) => {
+      try {
+        callback()
+      } catch (error) {
+        disconnectError ??= error
+      }
+    }
+
+    captureDisconnectError(() => this.emitDisconnectEvent(reason, willRetry))
+
+    if (nextState === StreamState.Reconnecting) {
+      captureDisconnectError(() => this.updateState(StreamState.Reconnecting))
+      captureDisconnectError(() => this.scheduleRetry(reason))
     } else {
-      this.updateState(StreamState.Stopped)
+      captureDisconnectError(() => this.updateState(nextState))
+    }
+
+    if (disconnectError) {
+      throw disconnectError
     }
   }
 
   private connect(): void {
-    this.clearSubscription()
-    this.clearStableConnectionTimeout()
+    if (this.isDestroyed) {
+      throw new Error(
+        `Cannot connect destroyed stream manager: ${this.config.id}`,
+      )
+    }
 
     const isReconnect = this.state === StreamState.Reconnecting
+    this.clearActiveConnection()
+
     this.updateState(
       isReconnect ? StreamState.Reconnecting : StreamState.Connecting,
     )
+
+    if (this.isDestroyed) {
+      return
+    }
 
     try {
       this.subscription = this.config.streamFactory()

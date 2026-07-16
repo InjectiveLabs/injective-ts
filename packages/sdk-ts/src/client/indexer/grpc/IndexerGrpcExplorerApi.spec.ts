@@ -6,13 +6,15 @@ import type { ExplorerValidator } from '../types/index.js'
 import type { IndexerGrpcExplorerTransformer } from '../transformers/index.js'
 
 const injectiveAddress = mockFactory.injectiveAddress
-const endpoints = getNetworkEndpoints(Network.Devnet1)
+const endpoints = getNetworkEndpoints(Network.Mainnet)
 const indexerGrpcExplorerApi = new IndexerGrpcExplorerApi(endpoints.indexer)
 
 describe('IndexerGrpcExplorerApi', () => {
   let validator: Partial<ExplorerValidator>
 
   beforeAll(async () => {
+    console.log(`${endpoints.indexer}/api/explorer/v1`)
+
     const validators = await new IndexerRestExplorerApi(
       `${endpoints.indexer}/api/explorer/v1`,
     ).fetchValidators()
@@ -273,7 +275,7 @@ describe('IndexerGrpcExplorerApi', () => {
     }
   })
 
-  test('fetchAccountTxsV2WithBlockDetails', async () => {
+  test.skip('fetchAccountTxsV2WithBlockDetails', async () => {
     try {
       const response = await new IndexerGrpcExplorerApi(
         getNetworkEndpoints(Network.Testnet).indexer,

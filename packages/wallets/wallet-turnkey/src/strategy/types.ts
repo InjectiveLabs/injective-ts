@@ -38,8 +38,24 @@ export type TurnkeyConfirmEmailOTPResponse = {
   organizationId: string
 }
 
-export type TurnkeyOauthLoginResponse = {
+export type TurnkeyOauthAuthenticatedResponse = {
+  message?: string
   organizationId: string
   credentialBundle: string
-  message: string
+}
+
+export type TurnkeyOAuth2AuthenticatedResponse = {
+  email?: string
+  session?: string
+  userName?: string
+  profileImageUrl?: string
+  organizationId: string
+  credentialBundle?: string
+}
+
+export type TurnkeyOAuth2ConfirmResponse = {
+  email?: string
+  session: string
+  userName?: string
+  profileImageUrl?: string
 }
