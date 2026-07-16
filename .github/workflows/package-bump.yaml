@@ -230,10 +230,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Package bump UIS
-        uses: InjectiveLabs/github-fe/actions/package-bump@master
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
         with:
-          gh_token: ${{ secrets.UIS_GH_TOKEN }}
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          owner: InjectiveLabs
+          repositories: injective-uis
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Package bump UIS
+        uses: InjectiveLabs/github-fe/actions/package-bump-make-pr@master
+        with:
+          gh_token: ${{ steps.app-token.outputs.token }}
           repository_url: InjectiveLabs/injective-uis
           repository_branch: dev
           post_install_command: 'pnpm update:injectivelabs'
