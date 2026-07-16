@@ -9,7 +9,7 @@ import {
 import { getEvmProviderWithFallback } from '../strategy/utils/providerResolver.js'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { ErrorCode } from '@injectivelabs/exceptions'
-import type { Wallet, BrowserEip1993Provider } from '@injectivelabs/wallet-base'
+import type { Wallet, BrowserEip1193Provider } from '@injectivelabs/wallet-base'
 
 const EVM_WALLET_INVALID_REQUEST_ERROR_CODE = -32600
 const CHAIN_NOT_SUPPORTED_MESSAGE_REGEX =
@@ -17,7 +17,7 @@ const CHAIN_NOT_SUPPORTED_MESSAGE_REGEX =
 
 export const getEvmProvider = async (
   wallet: Wallet,
-): Promise<BrowserEip1993Provider> => {
+): Promise<BrowserEip1193Provider> => {
   if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(
       new Error(`Evm Wallet for ${capitalize(wallet)} is not supported.`),
@@ -90,7 +90,7 @@ export const isUnrecognizedChainError = (error: unknown) => {
 }
 
 export const switchEthereumChainWithTimeout = async (
-  provider: BrowserEip1993Provider,
+  provider: BrowserEip1193Provider,
   chainIdHex: string,
   timeoutMs = 30_000,
 ): Promise<void> => {
@@ -137,7 +137,7 @@ export const switchEthereumChainWithTimeout = async (
 export const updateEvmNetwork = async (
   wallet: Wallet,
   chainId: EvmChainId,
-  providerOverride?: BrowserEip1993Provider,
+  providerOverride?: BrowserEip1193Provider,
 ) => {
   if (!isEvmBrowserWallet(wallet)) {
     throw new WalletException(

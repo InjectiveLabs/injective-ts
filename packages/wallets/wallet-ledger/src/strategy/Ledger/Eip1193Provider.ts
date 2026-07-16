@@ -4,7 +4,7 @@ import {
   getViemPublicClient,
   getViemWalletClient,
 } from '@injectivelabs/wallet-base'
-import type { Hash } from 'viem'
+import type { Hash, WalletClient } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type {
   Eip1193Provider,
@@ -95,7 +95,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
     return this.rpcUrls?.[this.chainId as EvmChainId] || this.rpcUrl
   }
 
-  async getClient() {
+  async getClient(): Promise<WalletClient> {
     return getViemWalletClient({
       chainId: this.chainId,
       rpcUrl: this.getRpcUrl(),

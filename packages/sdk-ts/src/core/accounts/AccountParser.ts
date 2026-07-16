@@ -17,7 +17,7 @@ export const accountParser = (ethAccount: any): Account => {
           value: uint8ArrayToBase64(pubKey.value),
         }
       : null,
-    accountNumber: parseInt(baseAccount.accountNumber.toString(), 10),
+    accountNumber: baseAccount.accountNumber,
     sequence: parseInt(baseAccount.sequence.toString(), 10),
   }
 }

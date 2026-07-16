@@ -484,7 +484,7 @@
     "@scure/base": "catalog:",
     "@scure/bip39": "catalog:",
     "axios": "catalog:",
-    "cosmjs-types": "0.9.0",
+    "cosmjs-types": "0.11.0",
     "ethers": "catalog:",
     "eventemitter3": "catalog:",
     "http-status-codes": "catalog:",

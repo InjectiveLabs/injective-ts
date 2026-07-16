@@ -121,6 +121,10 @@ export default defineConfig({
         'packages/sdk-ts/src/proto/cosmos-tx.ts',
       ),
       '@injectivelabs/sdk-ts': join(__dirname, 'packages/sdk-ts/src/index.ts'),
+      '@injectivelabs/wallet-base/runtime-light': join(
+        __dirname,
+        'packages/wallets/wallet-base/src/runtime-light.ts',
+      ),
       '@injectivelabs/wallet-base': join(
         __dirname,
         'packages/wallets/wallet-base/src/index.ts',

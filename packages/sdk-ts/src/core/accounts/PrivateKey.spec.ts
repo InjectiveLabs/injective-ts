@@ -8,19 +8,16 @@ import {
   generateArbitrarySignDoc,
 } from '../tx/index.js'
 
-const pk = process.env.TEST_PRIVATE_KEY as string
-const seedPhrase = process.env.TEST_SEED_PHRASE as string
-
-if (!pk || !seedPhrase) {
-  throw new Error('TEST_PRIVATE_KEY or TEST_SEED_PHRASE is not set')
-}
+const pk = 'f9db9bf330e23cb7839039e944adef6e9df447b90b503d5b4464c90bea9022f3'
+const seedPhrase =
+  'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'
 
 describe('PrivateKey', () => {
   it('returns the correct address derived from a mnemonic', () => {
     const privateKey = PrivateKey.fromMnemonic(seedPhrase)
 
     expect(privateKey.toBech32()).toEqual(
-      'inj1u3f7yuwl8mkd88ryzdhxt6kt90a60rgl0nmxyq',
+      'inj1npvwllfr9dqr8erajqqr6s0vxnk2ak55re90dz',
     )
   })
 

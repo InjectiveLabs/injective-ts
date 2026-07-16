@@ -1,7 +1,7 @@
+import { toHex, isHex, getAddress } from 'viem'
 import { capitalize } from '@injectivelabs/utils'
 import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
-  toUtf8,
   isServerSide,
   uint8ArrayToHex,
   stringToUint8Array,
@@ -40,7 +40,7 @@ import {
   listenForEip6963Providers,
   getEvmProviderWithFallback,
 } from './utils/providerResolver.js'
-import type { Hash } from 'viem'
+import type { Hash, RpcTransactionRequest } from 'viem'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 import type {
@@ -57,7 +57,7 @@ import type {
   StdSignDoc,
   Eip1193Provider,
   SendTransactionOptions,
-  BrowserEip1993Provider,
+  BrowserEip1193Provider,
   ConcreteWalletStrategy,
   ConcreteWalletStrategyArgs,
   ConcreteEvmWalletStrategyArgs,
@@ -68,7 +68,7 @@ export class EvmWallet
   implements ConcreteWalletStrategy
 {
   public wallet?: Wallet
-  public evmProviders: Partial<Record<Wallet, BrowserEip1993Provider>> = {}
+  public evmProviders: Partial<Record<Wallet, BrowserEip1193Provider>> = {}
 
   constructor(
     args: (ConcreteWalletStrategyArgs | ConcreteEvmWalletStrategyArgs) & {
@@ -210,7 +210,7 @@ export class EvmWallet
     try {
       return (await ethereum.request({
         method: 'eth_sendTransaction',
-        params: [transaction],
+        params: [transaction as RpcTransactionRequest],
       })) as string
     } catch (e: unknown) {
       throw this.EvmWalletException(new Error((e as any).message), {
@@ -262,7 +262,7 @@ export class EvmWallet
     try {
       return (await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [address, eip712json],
+        params: [getAddress(address), eip712json],
       })) as string
     } catch (e: unknown) {
       if (
@@ -329,7 +329,7 @@ export class EvmWallet
     try {
       const signature = await ethereum.request({
         method: 'personal_sign',
-        params: [toUtf8(data), signer],
+        params: [isHex(data) ? data : toHex(data), getAddress(signer)],
       })
 
       return signature as string
@@ -582,7 +582,7 @@ export class EvmWallet
     }
   }
 
-  private async getEthereum(): Promise<BrowserEip1993Provider> {
+  private async getEthereum(): Promise<BrowserEip1193Provider> {
     const provider = await getEvmProviderWithFallback(this.wallet as Wallet, {
       eip6963Providers: this.evmProviders,
     })

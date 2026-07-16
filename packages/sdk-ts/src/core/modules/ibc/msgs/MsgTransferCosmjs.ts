@@ -109,7 +109,11 @@ export default class MsgTransferCosmjs {
     return {
       type: '/ibc.applications.transfer.v1.MsgTransfer',
       value: {
-        ...message,
+        sourcePort: message.sourcePort,
+        sourceChannel: message.sourceChannel,
+        token: message.token,
+        sender: message.sender,
+        receiver: message.receiver,
         timeoutHeight: message.timeoutHeight
           ? {
               revisionHeight: message.timeoutHeight.revisionHeight.toString(),
@@ -119,6 +123,7 @@ export default class MsgTransferCosmjs {
         timeoutTimestamp: message.timeoutTimestamp
           ? message.timeoutTimestamp.toString()
           : undefined,
+        memo: message.memo,
       },
     }
   }
