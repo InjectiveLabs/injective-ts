@@ -223,7 +223,7 @@ jobs:
         with:
           gh_token: ${{ steps.app-token.outputs.token }}
           repository_url: injectiveLabs/injective-do-ui
-          repository_branch: master
+          repository_branch: dev
 
   package-bump-uis:
     name: 'Package bump UIS'
@@ -247,4 +247,4 @@ jobs:
           gh_token: ${{ steps.app-token.outputs.token }}
           repository_url: InjectiveLabs/injective-uis
           repository_branch: dev
-          post_install_command: 'pnpm update:injectivelabs'
+          post_install_command: 'pnpm update:injectivelabs && pnpm bootstrap'
