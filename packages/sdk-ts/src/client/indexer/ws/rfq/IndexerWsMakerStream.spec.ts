@@ -1,6 +1,7 @@
 import { vi } from 'vitest'
 import * as InjectiveRFQExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
 import { WsState, WsDisconnectReason } from '../../types'
+import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
 import {
   createPongFrame,
   describeHeartbeatStreamBehavior,
@@ -92,4 +93,47 @@ describeHeartbeatStreamBehavior({
       ...(pingIntervalMs ? { pingIntervalMs } : {}),
     }),
   createPongFrame: createMakerPongFrame,
+})
+
+describe('IndexerWsMakerStream heartbeat encode failures', () => {
+  it('logs send failure and skips ping when ping encoding throws', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-07-27T00:00:00.000Z'))
+    const errorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined)
+    const encodeSpy = vi
+      .spyOn(GrpcWebSocketCodec, 'encodeMakerPing')
+      .mockImplementation(() => {
+        throw new Error('encode failed')
+      })
+
+    const stream = new IndexerWsMakerStream({
+      url: 'wss://rfq.example',
+      makerAddress: 'inj1maker',
+      pingIntervalMs: 100,
+    })
+    const pingListener = vi.fn()
+    stream.on('ping', pingListener)
+
+    await stream.connect()
+
+    const transport = mockTransportInstances.at(-1)
+    if (!transport) {
+      throw new Error('Expected mock transport instance')
+    }
+
+    vi.advanceTimersByTime(100)
+
+    expect(transport.send).not.toHaveBeenCalled()
+    expect(pingListener).not.toHaveBeenCalled()
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Failed to send ping:',
+      expect.objectContaining({ message: 'encode failed' }),
+    )
+
+    encodeSpy.mockRestore()
+    errorSpy.mockRestore()
+    vi.useRealTimers()
+  })
 })

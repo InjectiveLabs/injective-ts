@@ -95,6 +95,33 @@ export function describeHeartbeatStreamBehavior<
       expect(console.error).toHaveBeenCalledTimes(1)
     })
 
+    it('does not report a send failure when a ping listener throws', async () => {
+      const stream = options.createStream(100)
+
+      stream.on('ping', () => {
+        throw new Error('listener failed')
+      })
+
+      await stream.connect()
+
+      const transport = getLatestTransport(options.mockTransportInstances)
+
+      vi.advanceTimersByTime(100)
+
+      expect(transport.send).toHaveBeenCalledTimes(1)
+      expect(console.error).toHaveBeenCalledTimes(1)
+      expect(console.error).toHaveBeenCalledWith(
+        'Error in ping listener:',
+        expect.objectContaining({
+          message: 'listener failed',
+        }),
+      )
+      expect(console.error).not.toHaveBeenCalledWith(
+        'Failed to send ping:',
+        expect.anything(),
+      )
+    })
+
     it('continues to emit pong for heartbeat responses', async () => {
       const stream = options.createStream()
       const pongListener = vi.fn()

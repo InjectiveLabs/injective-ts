@@ -33,11 +33,7 @@ describe('MsgUpdateSpotMarketV2', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto).toStrictEqual({
-      ...protoParams,
-      newMinPriceTickSize: '100000000000',
-      newMinQuantityTickSize: '10000000000000000000',
-    })
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
@@ -46,8 +42,6 @@ describe('MsgUpdateSpotMarketV2', () => {
     expect(data).toStrictEqual({
       '@type': protoType,
       ...protoParams,
-      newMinPriceTickSize: '100000000000',
-      newMinQuantityTickSize: '10000000000000000000',
     })
   })
 
