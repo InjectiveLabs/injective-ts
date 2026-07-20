@@ -70,6 +70,32 @@ import type MsgCreateBinaryOptionsLimitOrder from './exchange/msgs/MsgCreateBina
 import type MsgAdminUpdateBinaryOptionsMarket from './exchange/msgs/MsgAdminUpdateBinaryOptionsMarket.js'
 import type MsgBatchCancelBinaryOptionsOrders from './exchange/msgs/MsgBatchCancelBinaryOptionsOrders.js'
 import type MsgCreateBinaryOptionsMarketOrder from './exchange/msgs/MsgCreateBinaryOptionsMarketOrder.js'
+import type MsgDepositV2 from './exchange/msgs/MsgDepositV2.js'
+import type MsgSignDataV2 from './exchange/msgs/MsgSignDataV2.js'
+import type MsgWithdrawV2 from './exchange/msgs/MsgWithdrawV2.js'
+import type MsgRewardsOptOutV2 from './exchange/msgs/MsgRewardsOptOutV2.js'
+import type MsgCancelSpotOrderV2 from './exchange/msgs/MsgCancelSpotOrderV2.js'
+import type MsgExternalTransferV2 from './exchange/msgs/MsgExternalTransferV2.js'
+import type MsgBatchUpdateOrdersV2 from './exchange/msgs/MsgBatchUpdateOrdersV2.js'
+import type MsgLiquidatePositionV2 from './exchange/msgs/MsgLiquidatePositionV2.js'
+import type MsgReclaimLockedFundsV2 from './exchange/msgs/MsgReclaimLockedFundsV2.js'
+import type MsgAuthorizeStakeGrantsV2 from './exchange/msgs/MsgAuthorizeStakeGrantsV2.js'
+import type MsgCreateSpotLimitOrderV2 from './exchange/msgs/MsgCreateSpotLimitOrderV2.js'
+import type MsgCancelDerivativeOrderV2 from './exchange/msgs/MsgCancelDerivativeOrderV2.js'
+import type MsgBatchCancelSpotOrdersV2 from './exchange/msgs/MsgBatchCancelSpotOrdersV2.js'
+import type MsgCreateSpotMarketOrderV2 from './exchange/msgs/MsgCreateSpotMarketOrderV2.js'
+import type MsgIncreasePositionMarginV2 from './exchange/msgs/MsgIncreasePositionMarginV2.js'
+import type MsgDecreasePositionMarginV2 from './exchange/msgs/MsgDecreasePositionMarginV2.js'
+import type MsgInstantSpotMarketLaunchV2 from './exchange/msgs/MsgInstantSpotMarketLaunchV2.js'
+import type MsgCancelBinaryOptionsOrderV2 from './exchange/msgs/MsgCancelBinaryOptionsOrderV2.js'
+import type MsgCreateDerivativeLimitOrderV2 from './exchange/msgs/MsgCreateDerivativeLimitOrderV2.js'
+import type MsgBatchCancelDerivativeOrdersV2 from './exchange/msgs/MsgBatchCancelDerivativeOrdersV2.js'
+import type MsgCreateDerivativeMarketOrderV2 from './exchange/msgs/MsgCreateDerivativeMarketOrderV2.js'
+import type MsgCreateBinaryOptionsLimitOrderV2 from './exchange/msgs/MsgCreateBinaryOptionsLimitOrderV2.js'
+import type MsgAdminUpdateBinaryOptionsMarketV2 from './exchange/msgs/MsgAdminUpdateBinaryOptionsMarketV2.js'
+import type MsgBatchCancelBinaryOptionsOrdersV2 from './exchange/msgs/MsgBatchCancelBinaryOptionsOrdersV2.js'
+import type MsgCreateBinaryOptionsMarketOrderV2 from './exchange/msgs/MsgCreateBinaryOptionsMarketOrderV2.js'
+import type MsgInstantBinaryOptionsMarketLaunchV2 from './exchange/msgs/MsgInstantBinaryOptionsMarketLaunchV2.js'
 import type MsgSetDelegationTransferReceiversV2 from './exchange/msgs/MsgSetDelegationTransferReceiversV2.js'
 
 export type AuctionMsgs = MsgBid
@@ -120,6 +146,32 @@ export type ExchangeV1Msgs =
   | MsgBatchCancelBinaryOptionsOrders
   | MsgCreateBinaryOptionsMarketOrder
 export type ExchangeV2Msgs =
+  | MsgDepositV2
+  | MsgSignDataV2
+  | MsgWithdrawV2
+  | MsgRewardsOptOutV2
+  | MsgCancelSpotOrderV2
+  | MsgExternalTransferV2
+  | MsgBatchUpdateOrdersV2
+  | MsgLiquidatePositionV2
+  | MsgReclaimLockedFundsV2
+  | MsgAuthorizeStakeGrantsV2
+  | MsgCreateSpotLimitOrderV2
+  | MsgCancelDerivativeOrderV2
+  | MsgBatchCancelSpotOrdersV2
+  | MsgCreateSpotMarketOrderV2
+  | MsgIncreasePositionMarginV2
+  | MsgDecreasePositionMarginV2
+  | MsgInstantSpotMarketLaunchV2
+  | MsgCancelBinaryOptionsOrderV2
+  | MsgCreateDerivativeLimitOrderV2
+  | MsgBatchCancelDerivativeOrdersV2
+  | MsgCreateDerivativeMarketOrderV2
+  | MsgCreateBinaryOptionsLimitOrderV2
+  | MsgAdminUpdateBinaryOptionsMarketV2
+  | MsgBatchCancelBinaryOptionsOrdersV2
+  | MsgCreateBinaryOptionsMarketOrderV2
+  | MsgInstantBinaryOptionsMarketLaunchV2
   | MsgUpdateSpotMarketV2
   | MsgCancelPostOnlyModeV2
   | MsgUpdateDerivativeMarketV2
