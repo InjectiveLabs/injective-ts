@@ -35,6 +35,11 @@ describe('MsgInstantSpotMarketLaunchV2', () => {
     expect(proto.ticker).toStrictEqual(params.market.ticker)
     expect(proto.baseDenom).toStrictEqual(params.market.baseDenom)
     expect(proto.quoteDenom).toStrictEqual(params.market.quoteDenom)
+    expect(proto.minPriceTickSize).toStrictEqual(params.market.minPriceTickSize)
+    expect(proto.minQuantityTickSize).toStrictEqual(
+      params.market.minQuantityTickSize,
+    )
+    expect(proto.minNotional).toStrictEqual(params.market.minNotional)
   })
 
   it('generates proper data', () => {
@@ -43,6 +48,11 @@ describe('MsgInstantSpotMarketLaunchV2', () => {
     expect(data['@type']).toStrictEqual(protoType)
     expect(data.sender).toStrictEqual(params.proposer)
     expect(data.ticker).toStrictEqual(params.market.ticker)
+    expect(data.minPriceTickSize).toStrictEqual(params.market.minPriceTickSize)
+    expect(data.minQuantityTickSize).toStrictEqual(
+      params.market.minQuantityTickSize,
+    )
+    expect(data.minNotional).toStrictEqual(params.market.minNotional)
   })
 
   it('generates proper amino', () => {

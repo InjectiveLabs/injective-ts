@@ -1,4 +1,3 @@
-import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
@@ -41,22 +40,7 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
   }
 
   public toProto() {
-    const { params: initialParams } = this
-
-    const params = {
-      ...initialParams,
-      newMinNotional: toChainFormat(
-        initialParams.newMinNotional || '0',
-      ).toFixed(),
-      newMinQuantityTickSize: toChainFormat(
-        initialParams.newMinQuantityTickSize || '0',
-      ).toFixed(),
-      newMinPriceTickSize: toChainFormat(
-        initialParams.newMinPriceTickSize || '0',
-      ).toFixed(),
-    } as MsgUpdateSpotMarketV2.Params
-
-    return createMessage(params)
+    return createMessage(this.params)
   }
 
   public toData() {

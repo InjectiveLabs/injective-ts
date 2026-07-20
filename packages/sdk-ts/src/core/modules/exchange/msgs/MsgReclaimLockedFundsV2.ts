@@ -1,10 +1,10 @@
-import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 import {
   base64ToUint8Array,
   uint8ArrayToBase64,
 } from '../../../../utils/encoding.js'
+import type { TypedDataField } from '../../../tx/eip712/types.js'
 
 export declare namespace MsgReclaimLockedFundsV2 {
   export interface Params {
@@ -65,22 +65,40 @@ export default class MsgReclaimLockedFundsV2 extends MsgBase<
     }
   }
 
-  public toWeb3Gw(): never {
-    throw new GeneralException(
-      new Error('EIP712 is not supported for MsgReclaimLockedFunds.'),
-    )
+  public toWeb3Gw() {
+    const amino = this.toAmino()
+    const { value } = amino
+
+    return {
+      '@type': '/injective.exchange.v2.MsgReclaimLockedFunds',
+      ...value,
+    }
   }
 
-  public toEip712(): never {
-    throw new GeneralException(
-      new Error('EIP712 is not supported for MsgReclaimLockedFunds.'),
-    )
+  public toEip712() {
+    const amino = this.toAmino()
+    const { value, type } = amino
+
+    return {
+      type,
+      value: {
+        sender: value.sender,
+        lockedAccountPubKey: value.lockedAccountPubKey,
+        signature: value.signature,
+      },
+    }
   }
 
-  public toEip712V2(): never {
-    throw new GeneralException(
-      new Error('EIP712 is not supported for MsgReclaimLockedFunds.'),
-    )
+  public toEip712Types(): Map<string, TypedDataField[]> {
+    const map = new Map<string, TypedDataField[]>()
+
+    map.set('MsgValue', [
+      { name: 'sender', type: 'string' },
+      { name: 'lockedAccountPubKey', type: 'uint8[]' },
+      { name: 'signature', type: 'uint8[]' },
+    ])
+
+    return map
   }
 
   public toDirectSign() {

@@ -51,23 +51,7 @@ export default class MsgInstantSpotMarketLaunchV2 extends MsgBase<
   }
 
   public toProto() {
-    const { params: initialParams } = this
-
-    const params = {
-      ...initialParams,
-      market: {
-        ...initialParams.market,
-        minPriceTickSize: toChainFormat(
-          initialParams.market.minPriceTickSize,
-        ).toFixed(),
-        minQuantityTickSize: toChainFormat(
-          initialParams.market.minQuantityTickSize,
-        ).toFixed(),
-        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
-      },
-    } as MsgInstantSpotMarketLaunchV2.Params
-
-    return createMessage(params)
+    return createMessage(this.params)
   }
 
   public toData() {

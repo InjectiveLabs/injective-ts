@@ -1,8 +1,9 @@
-import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toOpenNotionalCap } from '../../../../utils/formatter.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
+import type * as InjectiveExchangeV2MarketPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/market_pb'
 
 export declare namespace MsgUpdateDerivativeMarketV2 {
   export interface Params {
@@ -15,6 +16,7 @@ export declare namespace MsgUpdateDerivativeMarketV2 {
     newInitialMarginRatio?: string
     newMaintenanceMarginRatio?: string
     newReduceMarginRatio?: string
+    newOpenNotionalCap?: InjectiveExchangeV2MarketPb.OpenNotionalCap
     crossMarginEligibility?: InjectiveExchangeV2ProposalPb.CrossMarginEligibility
   }
 
@@ -36,6 +38,9 @@ const createMessage = (params: MsgUpdateDerivativeMarketV2.Params) => {
     newInitialMarginRatio: params.newInitialMarginRatio || '0',
     newMaintenanceMarginRatio: params.newMaintenanceMarginRatio || '0',
     newReduceMarginRatio: params.newReduceMarginRatio || '0',
+    ...(params.newOpenNotionalCap && {
+      newOpenNotionalCap: params.newOpenNotionalCap,
+    }),
     crossMarginEligibility:
       params.crossMarginEligibility ?? defaultCrossMarginEligibility,
   })
@@ -57,32 +62,7 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
   }
 
   public toProto() {
-    const { params: initialParams } = this
-
-    const params = {
-      ...initialParams,
-      newMinNotional: toChainFormat(
-        initialParams.newMinNotional || '0',
-      ).toFixed(),
-      newMinQuantityTickSize: toChainFormat(
-        initialParams.newMinQuantityTickSize || '0',
-      ).toFixed(),
-      newMinPriceTickSize: toChainFormat(
-        initialParams.newMinPriceTickSize || '0',
-      ).toFixed(),
-      newInitialMarginRatio: toChainFormat(
-        initialParams.newInitialMarginRatio || '0',
-      ).toFixed(),
-      newMaintenanceMarginRatio: toChainFormat(
-        initialParams.newMaintenanceMarginRatio || '0',
-      ).toFixed(),
-      newReduceMarginRatio: toChainFormat(
-        initialParams.newReduceMarginRatio || '0',
-      ).toFixed(),
-      crossMarginEligibility: initialParams.crossMarginEligibility,
-    } as MsgUpdateDerivativeMarketV2.Params
-
-    return createMessage(params)
+    return createMessage(this.params)
   }
 
   public toData() {
@@ -106,6 +86,9 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
       new_initial_margin_ratio: params.newInitialMarginRatio,
       new_maintenance_margin_ratio: params.newMaintenanceMarginRatio,
       new_reduce_margin_ratio: params.newReduceMarginRatio,
+      ...(params.newOpenNotionalCap && {
+        new_open_notional_cap: toOpenNotionalCap(params.newOpenNotionalCap),
+      }),
       cross_margin_eligibility:
         params.crossMarginEligibility ?? defaultCrossMarginEligibility,
     }
@@ -166,7 +149,11 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
       new_reduce_margin_ratio: numberToCosmosSdkDecString(
         params.newReduceMarginRatio || '0',
       ),
-      new_open_notional_cap: {},
+      new_open_notional_cap:
+        toOpenNotionalCap(
+          params.newOpenNotionalCap,
+          numberToCosmosSdkDecString,
+        ) ?? {},
       cross_margin_eligibility:
         InjectiveExchangeV2ProposalPb.CrossMarginEligibility[
           params.crossMarginEligibility ?? defaultCrossMarginEligibility
