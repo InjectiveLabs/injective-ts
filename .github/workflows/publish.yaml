@@ -367,9 +367,9 @@ jobs:
   # ============================================
   # Package Bump Jobs (only after latest publish on master branch)
   # ============================================
-  trigger-package-bumps:
-    name: 'Trigger Package Bumps'
-    needs: publish
-    if: needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest' && needs.publish.outputs.mode == 'publish_release'
-    uses: ./.github/workflows/package-bump.yaml
-    secrets: inherit
+  # trigger-package-bumps:
+  #   name: 'Trigger Package Bumps'
+  #   needs: publish
+  #   if: needs.publish.result == 'success' && needs.publish.outputs.publish_type == 'latest' && needs.publish.outputs.mode == 'publish_release'
+  #   uses: ./.github/workflows/package-bump.yaml
+  #   secrets: inherit

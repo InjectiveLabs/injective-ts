@@ -65,6 +65,7 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     rfqMaker?: string
     startTime?: number
     direction?: string
+    participant?: string
     sortDirection?: string
     accountAddress?: string
   }) {
@@ -77,9 +78,10 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
       marketId,
       startTime,
       direction,
+      rfqMaker,
+      participant,
       sortDirection,
       accountAddress,
-      rfqMaker,
     } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.TradesRequest.create()
@@ -94,6 +96,10 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
 
     if (accountAddress) {
       request.accountAddress = accountAddress
+    }
+
+    if (participant) {
+      request.participant = participant
     }
 
     if (perPage) {
