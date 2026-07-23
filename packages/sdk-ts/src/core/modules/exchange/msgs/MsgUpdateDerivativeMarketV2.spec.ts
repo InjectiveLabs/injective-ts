@@ -1,6 +1,7 @@
 import snakecaseKeys from 'snakecase-keys'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import * as InjectiveExchangeV2MarketPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/market_pb'
 import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import MsgUpdateDerivativeMarketV2 from './MsgUpdateDerivativeMarketV2.js'
 import {
@@ -38,19 +39,20 @@ const protoParams = {
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
 const message = MsgUpdateDerivativeMarketV2.fromJSON(params)
+const newOpenNotionalCap: InjectiveExchangeV2MarketPb.OpenNotionalCap = {
+  cap: {
+    oneofKind: 'capped',
+    capped: {
+      value: '1000',
+    },
+  },
+}
 
 describe('MsgUpdateDerivativeMarketV2', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto).toStrictEqual({
-      ...protoParams,
-      newMinPriceTickSize: '100000000000',
-      newMinQuantityTickSize: '10000000000000000000',
-      newInitialMarginRatio: '50000000000000000',
-      newMaintenanceMarginRatio: '50000000000000000',
-      newReduceMarginRatio: '50000000000000000',
-    })
+    expect(proto).toStrictEqual(protoParams)
   })
 
   it('generates proper data', () => {
@@ -59,11 +61,6 @@ describe('MsgUpdateDerivativeMarketV2', () => {
     expect(data).toStrictEqual({
       '@type': protoType,
       ...protoParams,
-      newMinPriceTickSize: '100000000000',
-      newMinQuantityTickSize: '10000000000000000000',
-      newInitialMarginRatio: '50000000000000000',
-      newMaintenanceMarginRatio: '50000000000000000',
-      newReduceMarginRatio: '50000000000000000',
     })
   })
 
@@ -82,6 +79,31 @@ describe('MsgUpdateDerivativeMarketV2', () => {
     expect(web3).toStrictEqual({
       '@type': protoType,
       ...protoParamsAmino,
+    })
+  })
+
+  it('supports newOpenNotionalCap', () => {
+    const msgWithOpenNotionalCap = MsgUpdateDerivativeMarketV2.fromJSON({
+      ...params,
+      newOpenNotionalCap,
+    })
+
+    expect(msgWithOpenNotionalCap.toProto().newOpenNotionalCap).toStrictEqual(
+      newOpenNotionalCap,
+    )
+    expect(
+      (msgWithOpenNotionalCap.toWeb3Gw() as any).new_open_notional_cap,
+    ).toStrictEqual({
+      capped: {
+        value: '1000',
+      },
+    })
+    expect(
+      (msgWithOpenNotionalCap.toEip712V2() as any).new_open_notional_cap,
+    ).toStrictEqual({
+      capped: {
+        value: '1000.000000000000000000',
+      },
     })
   })
 

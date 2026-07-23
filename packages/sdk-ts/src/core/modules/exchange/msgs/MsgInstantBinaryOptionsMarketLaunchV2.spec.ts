@@ -1,5 +1,6 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import * as InjectiveExchangeV2MarketPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/market_pb'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
@@ -28,8 +29,58 @@ const params: MsgInstantBinaryOptionsMarketLaunchV2['params'] = {
 }
 
 const message = MsgInstantBinaryOptionsMarketLaunchV2.fromJSON(params)
+const openNotionalCap: InjectiveExchangeV2MarketPb.OpenNotionalCap = {
+  cap: {
+    oneofKind: 'capped',
+    capped: {
+      value: '1000',
+    },
+  },
+}
 
 describe('MsgInstantBinaryOptionsMarketLaunchV2', () => {
+  it('generates proper proto with human-readable decimals', () => {
+    const proto = message.toProto()
+
+    expect(proto.sender).toStrictEqual(params.proposer)
+    expect(proto.minPriceTickSize).toStrictEqual(params.market.minPriceTickSize)
+    expect(proto.minQuantityTickSize).toStrictEqual(
+      params.market.minQuantityTickSize,
+    )
+    expect(proto.minNotional).toStrictEqual(params.market.minNotional)
+    expect(proto.makerFeeRate).toStrictEqual(params.market.makerFeeRate)
+    expect(proto.takerFeeRate).toStrictEqual(params.market.takerFeeRate)
+  })
+
+  it('supports openNotionalCap', () => {
+    const msgWithOpenNotionalCap =
+      MsgInstantBinaryOptionsMarketLaunchV2.fromJSON({
+        ...params,
+        market: {
+          ...params.market,
+          openNotionalCap,
+        },
+      })
+
+    expect(msgWithOpenNotionalCap.toProto().openNotionalCap).toStrictEqual(
+      openNotionalCap,
+    )
+    expect(
+      (msgWithOpenNotionalCap.toWeb3Gw() as any).open_notional_cap,
+    ).toStrictEqual({
+      capped: {
+        value: '1000',
+      },
+    })
+    expect(
+      (msgWithOpenNotionalCap.toEip712V2() as any).open_notional_cap,
+    ).toStrictEqual({
+      capped: {
+        value: '1000.000000000000000000',
+      },
+    })
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

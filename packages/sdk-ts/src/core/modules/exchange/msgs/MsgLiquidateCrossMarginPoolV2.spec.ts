@@ -1,60 +1,42 @@
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
-import MsgSetDelegationTransferReceiversV2 from './MsgSetDelegationTransferReceiversV2.js'
+import MsgLiquidateCrossMarginPoolV2 from './MsgLiquidateCrossMarginPoolV2.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-const params: MsgSetDelegationTransferReceiversV2['params'] = {
+const params: MsgLiquidateCrossMarginPoolV2['params'] = {
   sender: mockFactory.injectiveAddress,
-  receivers: [mockFactory.injectiveAddress2],
+  subaccountId: mockFactory.subaccountId,
+  quoteDenom: 'inj',
 }
 
-const protoType = '/injective.exchange.v2.MsgSetDelegationTransferReceivers'
-const protoTypeAmino = 'exchange/MsgSetDelegationTransferReceivers'
-const protoParams = {
-  sender: params.sender,
-  receivers: params.receivers,
-}
-const protoParamsAmino = {
-  sender: params.sender,
-  receivers: params.receivers,
-}
-const message = MsgSetDelegationTransferReceiversV2.fromJSON(params)
+const protoType = '/injective.exchange.v2.MsgLiquidateCrossMarginPool'
+const protoTypeShort = 'exchange/MsgLiquidateCrossMarginPool'
+const message = MsgLiquidateCrossMarginPoolV2.fromJSON(params)
 
-describe('MsgSetDelegationTransferReceiversV2', () => {
+describe('MsgLiquidateCrossMarginPoolV2', () => {
   it('generates proper proto', () => {
-    const proto = message.toProto()
-
-    expect(proto).toStrictEqual(protoParams)
+    expect(message.toProto()).toStrictEqual(params)
   })
 
   it('generates proper data', () => {
-    const data = message.toData()
-
-    expect(data).toStrictEqual({
+    expect(message.toData()).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...params,
     })
   })
 
   it('generates proper amino', () => {
-    const amino = message.toAmino()
-
-    expect(amino).toStrictEqual({
-      type: protoTypeAmino,
-      value: protoParamsAmino,
-    })
-  })
-
-  it('generates proper web3Gw', () => {
-    const web3 = message.toWeb3Gw()
-
-    expect(web3).toStrictEqual({
-      '@type': protoType,
-      ...protoParamsAmino,
+    expect(message.toAmino()).toStrictEqual({
+      type: protoTypeShort,
+      value: {
+        sender: params.sender,
+        subaccount_id: params.subaccountId,
+        quote_denom: params.quoteDenom,
+      },
     })
   })
 
@@ -65,7 +47,6 @@ describe('MsgSetDelegationTransferReceiversV2', () => {
 
     it('EIP712 v1', async () => {
       const eip712TypedData = getEip712TypedData(eip712Args)
-
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
       ).prepareEip712Request({
@@ -78,7 +59,6 @@ describe('MsgSetDelegationTransferReceiversV2', () => {
 
     it('EIP712 v2', async () => {
       const eip712TypedData = getEip712TypedDataV2(eip712Args)
-
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
       ).prepareEip712Request({

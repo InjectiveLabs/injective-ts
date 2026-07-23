@@ -1,9 +1,10 @@
-import { toChainFormat } from '@injectivelabs/utils'
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toOpenNotionalCap } from '../../../../utils/formatter.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
+import type * as InjectiveExchangeV2MarketPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/market_pb'
 
 export declare namespace MsgInstantBinaryOptionsMarketLaunchV2 {
   export interface Params {
@@ -23,6 +24,7 @@ export declare namespace MsgInstantBinaryOptionsMarketLaunchV2 {
       minPriceTickSize: string
       minQuantityTickSize: string
       minNotional: string
+      openNotionalCap?: InjectiveExchangeV2MarketPb.OpenNotionalCap
     }
   }
 
@@ -50,6 +52,9 @@ const createMessage = (
       minPriceTickSize: params.market.minPriceTickSize,
       minQuantityTickSize: params.market.minQuantityTickSize,
       minNotional: params.market.minNotional,
+      ...(params.market.openNotionalCap && {
+        openNotionalCap: params.market.openNotionalCap,
+      }),
     })
 
   return message
@@ -69,29 +74,7 @@ export default class MsgInstantBinaryOptionsMarketLaunchV2 extends MsgBase<
   }
 
   public toProto() {
-    const { params: initialParams } = this
-
-    const params = {
-      ...initialParams,
-      market: {
-        ...initialParams.market,
-        minPriceTickSize: toChainFormat(
-          initialParams.market.minPriceTickSize,
-        ).toFixed(),
-        makerFeeRate: toChainFormat(
-          initialParams.market.makerFeeRate,
-        ).toFixed(),
-        takerFeeRate: toChainFormat(
-          initialParams.market.takerFeeRate,
-        ).toFixed(),
-        minQuantityTickSize: toChainFormat(
-          initialParams.market.minQuantityTickSize,
-        ).toFixed(),
-        minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
-      },
-    } as MsgInstantBinaryOptionsMarketLaunchV2.Params
-
-    return createMessage(params)
+    return createMessage(this.params)
   }
 
   public toData() {
@@ -121,6 +104,9 @@ export default class MsgInstantBinaryOptionsMarketLaunchV2 extends MsgBase<
       min_price_tick_size: params.market.minPriceTickSize,
       min_quantity_tick_size: params.market.minQuantityTickSize,
       min_notional: params.market.minNotional,
+      ...(params.market.openNotionalCap && {
+        open_notional_cap: toOpenNotionalCap(params.market.openNotionalCap),
+      }),
     }
 
     return {
@@ -164,7 +150,11 @@ export default class MsgInstantBinaryOptionsMarketLaunchV2 extends MsgBase<
       maker_fee_rate: numberToCosmosSdkDecString(params.market.makerFeeRate),
       oracle_type:
         InjectiveOracleV1Beta1OraclePb.OracleType[params.market.oracleType],
-      open_notional_cap: {},
+      open_notional_cap:
+        toOpenNotionalCap(
+          params.market.openNotionalCap,
+          numberToCosmosSdkDecString,
+        ) ?? {},
     }
 
     return messageAdjusted

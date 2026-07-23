@@ -1,0 +1,68 @@
+name: Codex PR Review
+
+on:
+  pull_request:
+    types: [opened, ready_for_review, synchronize]
+
+concurrency:
+  group: codex-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  codex-review:
+    if: |
+      github.event.pull_request.head.repo.fork == false &&
+      github.event.pull_request.draft == false &&
+      !startsWith(github.event.pull_request.head.ref, 'release/') &&
+      github.event.pull_request.title != 'chore: release'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Fetch PR diff
+        id: pr_diff
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const MAX_DIFF_LENGTH = 100000
+            const pr = context.payload.pull_request
+
+            try {
+              const diff = await github.request(
+                'GET /repos/{owner}/{repo}/pulls/{pull_number}',
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  mediaType: { format: "diff" }
+                }
+              )
+
+              if (!diff.data) {
+                core.setFailed('PR diff response was empty')
+                return
+              }
+
+              const raw = String(diff.data)
+              const truncated = raw.length > MAX_DIFF_LENGTH
+                ? raw.slice(0, MAX_DIFF_LENGTH) + '\n\n... [TRUNCATED - diff exceeded 100 KB]'
+                : raw
+
+              core.setOutput("diff", truncated)
+            } catch (err) {
+              core.setFailed(`Failed to fetch PR diff: ${err.message}`)
+            }
+
+      - name: Codex Review
+        uses: InjectiveLabs/github-fe/actions/codex-review@447a04bef383ffc3bdc5d37f01c1de0aa4181212
+        with:
+          github-token: ${{ github.token }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          pr-diff: ${{ steps.pr_diff.outputs.diff }}
+          pr-title: ${{ github.event.pull_request.title }}
+          pr-body: ${{ github.event.pull_request.body }}
+          pr-number: ${{ github.event.pull_request.number }}
