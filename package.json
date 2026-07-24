@@ -30,6 +30,8 @@
     "publish:tc-abacus-proto-ts": "./protoV2/tcAbacus/publish.sh",
     "generate:indexer-proto-ts": "./protoV2/indexer/gen.sh",
     "publish:indexer-proto-ts": "./protoV2/indexer/publish.sh",
+    "generate:platform-services-proto-ts": "./protoV2/platform-services/gen.sh",
+    "publish:platform-services-proto-ts": "./protoV2/platform-services/publish.sh",
     "build:watch": "node etc/bootstrapEnv && lerna run build:watch --parallel --stream",
     "build:fresh": "pnpm clean-up && pnpm build:check",
     "clean-up": "lerna run clean && nx reset && shx rm -rf .build-cache *.log coverage junit.xml",

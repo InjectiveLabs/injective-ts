@@ -1,6 +1,6 @@
 ---
 name: align-proto
-description: Detect proto package changes (indexer-proto-ts-v2, abacus-proto-ts-v2, tc-abacus-proto-ts-v2), compare old vs new proto files, and implement new/modified gRPC services in sdk-ts following established patterns.
+description: Detect proto package changes (indexer-proto-ts-v2, abacus-proto-ts-v2, tc-abacus-proto-ts-v2, platform-services-proto-ts-v2), compare old vs new proto files, and implement new/modified gRPC services in sdk-ts following established patterns.
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, Agent, TodoWrite, AskUserQuestion
 ---
@@ -13,6 +13,23 @@ You are an AI that detects proto package changes and implements new gRPC service
 
 - `$ARGUMENTS` may contain `--check-only` to run in read-only mode (detect and report only, no implementation).
 
+## Interaction Contract
+
+This skill is procedural and approval-gated. Do **not** collapse it into an end-to-end implementation sprint.
+
+- Always show the todo checklist from Step 3 before making file changes.
+- Update checklist status as each step completes.
+- Narrate the result of each major step: selected package, current version, target version, backup status, install result, detected proto changes, proposal, validation result.
+- Do not infer package/version silently unless the user provided it explicitly in the prompt.
+- Before Step 5 changes `package.json` or runs install, show the dependency change plan and ask for explicit approval.
+- Before Step 10 implementation, show the detailed proposal from Step 9 and ask for explicit approval.
+- If the selected package is not currently in `packages/sdk-ts/package.json`, treat it as **initial onboarding**:
+  - Current version is `none`
+  - Backup is skipped with a clear explanation
+  - Generated proto files are treated as all-new
+  - Still require the Step 5 dependency/install approval and Step 10 implementation approval
+- If the user asks for `--check-only`, never edit files; stop after the implementation status report.
+
 ## Supported Packages
 
 | Package | Import Prefix | Base Class | Module Enum Source |
@@ -20,6 +37,14 @@ You are an AI that detects proto package changes and implements new gRPC service
 | `@injectivelabs/indexer-proto-ts-v2` | `indexer-proto-ts-v2` | `BaseIndexerGrpcConsumer` | `IndexerModule` from `../types/index.js` |
 | `@injectivelabs/abacus-proto-ts-v2` | `abacus-proto-ts-v2` | `BaseAbacusGrpcConsumer` | `AbacusModule` from `../types/index.js` |
 | `@injectivelabs/tc-abacus-proto-ts-v2` | `tc-abacus-proto-ts-v2` | `BaseGrpcConsumer` | `IndexerErrorModule` from `@injectivelabs/exceptions` |
+| `@injectivelabs/platform-services-proto-ts-v2` | `platform-services-proto-ts-v2` | `BaseGrpcConsumer` | `IndexerErrorModule` from `@injectivelabs/exceptions` unless a platform module exists |
+
+## Proto Source Packages
+
+- **Indexer**: generated from `protoV2/indexer/gen.sh`, source repo path `injective-indexer/api/gen/grpc/**/*.proto`
+- **Abacus**: generated from `protoV2/abacus/gen.sh`, source repo path `injective-abacus/api/gen/grpc/points_svc/pb/**/*.proto`
+- **TC Abacus**: generated from `protoV2/tcAbacus/gen.sh`, source repo path `injective-abacus/api/gen_tc/gen/grpc/injective_tc_abacus_rpc/pb/**/*.proto`
+- **Platform Services**: generated from `protoV2/platform-services/gen.sh`, source repo path `platform-services/api/gen/grpc/**/*.proto`
 
 ## Workflow Steps
 
@@ -30,6 +55,7 @@ Ask the user which proto package to sync:
 1. `indexer-proto-ts-v2` (Indexer gRPC services)
 2. `abacus-proto-ts-v2` (Abacus gRPC services)
 3. `tc-abacus-proto-ts-v2` (TC Abacus gRPC services)
+4. `platform-services-proto-ts-v2` (Platform services gRPC APIs, including positions/social leaderboard services)
 
 ### Step 1: Initialization
 
@@ -68,8 +94,11 @@ Copy all proto files from the package's node_modules generated directory:
 - **Indexer**: `node_modules/.pnpm/@injectivelabs+indexer-proto-ts-v2@{version}/node_modules/@injectivelabs/indexer-proto-ts-v2/generated/`
 - **Abacus**: `node_modules/.pnpm/@injectivelabs+abacus-proto-ts-v2@{version}/node_modules/@injectivelabs/abacus-proto-ts-v2/generated/`
 - **TC Abacus**: `node_modules/.pnpm/@injectivelabs+tc-abacus-proto-ts-v2@{version}/node_modules/@injectivelabs/tc-abacus-proto-ts-v2/generated/`
+- **Platform Services**: `node_modules/.pnpm/@injectivelabs+platform-services-proto-ts-v2@{version}/node_modules/@injectivelabs/platform-services-proto-ts-v2/generated/`
 
 ### Step 5: Bump Package Version (PERMANENT)
+
+Approval gate: show the exact dependency change and install command, then wait for explicit approval before editing `packages/sdk-ts/package.json` or running install.
 
 Update `packages/sdk-ts/package.json` with the new version. This change is permanent.
 
@@ -81,7 +110,7 @@ Run `pnpm install --force` in project root. The `--force` flag ensures all packa
 
 Compare backup vs new proto files. Detect:
 
-- **New services** (new `*_rpc_pb.d.ts` files)
+- **New services** (new `*_rpc_pb.d.ts` files; platform-services may use Goa names like `goagen_api_*_pb.d.ts`)
 - **Modified services** (existing files with changes) — see Step 7a for field-level audit
 - **Removed services** (files that disappeared)
 
@@ -89,9 +118,9 @@ Use `diff -rq` for a file-level summary, then `diff` individual files for detail
 
 ### Step 7a: Field-Level Audit of Modified Services
 
-When an existing `*_rpc_pb.d.ts` is modified, do NOT assume the changes are purely additive. Check for each of these change types:
+When an existing `*_rpc_pb.d.ts` or platform-services `goagen_api_*_pb.d.ts` file is modified, do NOT assume the changes are purely additive. Check for each of these change types:
 
-1. **New/renamed/removed RPC methods** — compare `protobuf rpc:` entries in `*_rpc_pb.client.d.ts`
+1. **New/renamed/removed RPC methods** — compare `protobuf rpc:` entries in the matching `*.client.d.ts`
 2. **New/renamed/removed message types** — compare `export interface` declarations
 3. **New/renamed/removed fields on request/response messages** — diff each message body individually
 4. **New enum values in `messageType` string fields** — check doc comments like `Type: 'a', 'b', 'c'` on bidirectional/WS stream wrapper responses (e.g. `TakerStreamResponse.messageType`). Added values require new `case` arms in the corresponding WS stream handler, even when no new gRPC method was added.
@@ -114,7 +143,7 @@ Present detected changes. Ask which services to implement. Skip old missing serv
 
 For each selected service:
 
-1. Parse the proto `*_rpc_pb.d.ts` file to extract:
+1. Parse the proto `*_rpc_pb.d.ts` file (or platform-services `goagen_api_*_pb.d.ts`) to extract:
    - Service name from `ServiceType` definition
    - RPC methods (name, request type, response type)
    - Whether each method is streaming (`serverStreaming: true`)
@@ -131,12 +160,15 @@ For each selected service:
    - Stream-heavy: like `IndexerGrpcSpotStreamV2`
    - Complex nested: like `IndexerGrpcDerivativesApi`
    - WS bidirectional: like `IndexerWsTakerStream` / `IndexerWsMakerStream`
+   - Platform services: start from `packages/sdk-ts/src/client/platformServices` if present; otherwise mirror the closest unary gRPC consumer pattern and keep names platform-scoped (for example `PlatformServicesGrpcPositionsApi`)
 
 4. For **modified services**, the proposal is a surgical edit list — NOT a file-creation list. Enumerate each existing file that needs editing with the specific add/remove/rename per field. Call out breaking removals explicitly (they affect downstream consumers).
 
 5. Show file list (or edit list), method breakdown, line estimates. Ask for approval.
 
 ### Step 10: Implementation
+
+Approval gate: do not create or edit SDK implementation files until the user explicitly approves the Step 9 proposal.
 
 Create files in dependency order:
 
@@ -157,6 +189,7 @@ Create files in dependency order:
 - `transformers/IndexerGrpc*Transformer.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Data transformation
 - `grpc/IndexerGrpc*Api.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Main API class
 - `grpc/IndexerGrpc*Api.spec.ts` (or `AbacusGrpc*` / `TcAbacusGrpc*`) - Test file for the API class
+- For platform-services wrappers, use platform-scoped folders/names if they exist (for example `platformServices`, `PlatformServicesGrpc*Api`) instead of indexer names.
 
 #### Optional files (if streaming methods exist):
 
@@ -179,10 +212,11 @@ All exports must be in **strict alphabetical order**.
    ```bash
    cd packages/exceptions && pnpm build
    ```
-2. Run `pnpm type-check` in `packages/sdk-ts`
-3. Run `pnpm build` in `packages/sdk-ts` (or `pnpm tsdown` if type-check has pre-existing errors)
-4. Distinguish new errors (in your files) vs pre-existing errors (in other files)
-5. Do NOT delete files on errors - let user fix
+2. If regenerating the platform-services proto package itself, run `protoV2/platform-services/gen.sh` before SDK validation.
+3. Run `pnpm type-check` in `packages/sdk-ts`
+4. Run `pnpm build` in `packages/sdk-ts` (or `pnpm tsdown` if type-check has pre-existing errors)
+5. Distinguish new errors (in your files) vs pre-existing errors (in other files)
+6. Do NOT delete files on errors - let user fix
 
 ### Step 12: Cleanup
 
@@ -216,6 +250,8 @@ import type * as ProtoPackagePb from '@injectivelabs/indexer-proto-ts-v2/generat
 import type * as ProtoPackagePb from '@injectivelabs/abacus-proto-ts-v2/generated/[proto_file]_pb'
 // For TC Abacus:
 import type * as TcAbacusPb from '@injectivelabs/tc-abacus-proto-ts-v2/generated/[proto_file]_pb'
+// For Platform Services:
+import type * as PlatformServicesPb from '@injectivelabs/platform-services-proto-ts-v2/generated/[proto_file]_pb'
 
 export interface DataType {
   field1: string

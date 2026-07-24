@@ -174,6 +174,26 @@
         "default": "./dist/cjs/client/olp.cjs"
       }
     },
+    "./client/platformServices": {
+      "react-native": {
+        "import": "./dist/esm/client/platformServices.js",
+        "require": "./dist/cjs/client/platformServices.cjs",
+        "types": "./dist/cjs/client/platformServices.d.cts",
+        "default": "./dist/cjs/client/platformServices.cjs"
+      },
+      "require": {
+        "types": "./dist/cjs/client/platformServices.d.cts",
+        "default": "./dist/cjs/client/platformServices.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/client/platformServices.d.ts",
+        "default": "./dist/esm/client/platformServices.js"
+      },
+      "default": {
+        "types": "./dist/cjs/client/platformServices.d.cts",
+        "default": "./dist/cjs/client/platformServices.cjs"
+      }
+    },
     "./client/tcAbacus": {
       "react-native": {
         "import": "./dist/esm/client/tcAbacus.js",
@@ -472,6 +492,7 @@
     "@injectivelabs/mito-proto-ts-v2": "1.17.3",
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/olp-proto-ts-v2": "1.17.6",
+    "@injectivelabs/platform-services-proto-ts-v2": "1.0.0",
     "@injectivelabs/tc-abacus-proto-ts-v2": "1.18.6",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/utils": "workspace:*",

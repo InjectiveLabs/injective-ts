@@ -42,6 +42,9 @@ export class TurnkeyWallet {
   public userOrganizationId?: string
   protected indexedDbClient?: TurnkeyIndexedDbClient
 
+  public static generateTwitterUrl = generateTwitterUrl
+  public static generateTwitterPkce = generateTwitterPkce
+
   private accountMap: Record<
     string,
     Awaited<ReturnType<typeof createAccount>>

@@ -13,6 +13,7 @@ export default defineConfig({
     'client/chain': './src/client/chain/index.ts',
     'client/wasm': './src/client/wasm/index.ts',
     'client/abacus': './src/client/abacus/index.ts',
+    'client/platformServices': './src/client/platformServices/index.ts',
     'client/tcAbacus': './src/client/tcAbacus/index.ts',
     'client/olp': './src/client/olp/index.ts',
     'core/modules': './src/core/modules/index.ts',
@@ -49,6 +50,7 @@ export default defineConfig({
     '@injectivelabs/core-proto-ts-v2',
     '@injectivelabs/abacus-proto-ts-v2',
     '@injectivelabs/indexer-proto-ts-v2',
+    '@injectivelabs/platform-services-proto-ts-v2',
     // CosmJS dependencies
     '@cosmjs/amino',
     '@cosmjs/math',
