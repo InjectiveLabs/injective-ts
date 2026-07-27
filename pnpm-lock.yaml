@@ -270,6 +270,9 @@ importers:
       '@injectivelabs/olp-proto-ts-v2':
         specifier: 1.17.6
         version: 1.17.6
+      '@injectivelabs/platform-services-proto-ts-v2':
+        specifier: 1.0.0
+        version: 1.0.0
       '@injectivelabs/tc-abacus-proto-ts-v2':
         specifier: 1.18.6
         version: 1.18.6
@@ -680,6 +683,78 @@ importers:
       '@reown/appkit-adapter-ethers':
         specifier: 1.8.15
         version: 1.8.15(@ethersproject/sha2@5.8.0)(@types/react@19.2.10)(bufferutil@4.1.0)(ethers@6.17.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(fastestsmallesttextencoderdecoder@1.0.22)(immer@11.1.8)(react@19.0.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
+
+  protoV2/abacus/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/core/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/indexer/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/mito/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/olp/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/tcAbacus/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
 
 packages:
 
@@ -1181,6 +1256,9 @@ packages:
 
   '@injectivelabs/olp-proto-ts-v2@1.17.6':
     resolution: {integrity: sha512-3jTAyj342TXVe8qsVcDzAUnH5vAbqoHy5jqTUxHvJtfDaJ+X0uvN6d/yj60CxmrDOyKrn6pFx0prZ6J3Tl8S6g==}
+
+  '@injectivelabs/platform-services-proto-ts-v2@1.0.0':
+    resolution: {integrity: sha512-1j0S6k8moY6OQ5CzkqEiZsfNhwFaM85zOvYYcIun52sOWUAQN6dtib0s414ethyTJWWYCIrUQNv5YoJMBs1MVQ==}
 
   '@injectivelabs/string-decoder@1.3.0':
     resolution: {integrity: sha512-/SsVxTo7EKVP4WxEkrpbHC00Rfp15DcljOJa/BM33BcCIC+IiahEn4O9qXNTrSc0Nr3mLoONauKmkb+1z613kg==}
@@ -8661,6 +8739,12 @@ snapshots:
       '@protobuf-ts/runtime-rpc': 2.11.1
 
   '@injectivelabs/olp-proto-ts-v2@1.17.6':
+    dependencies:
+      '@protobuf-ts/grpcweb-transport': 2.11.1
+      '@protobuf-ts/runtime': 2.11.1
+      '@protobuf-ts/runtime-rpc': 2.11.1
+
+  '@injectivelabs/platform-services-proto-ts-v2@1.0.0':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

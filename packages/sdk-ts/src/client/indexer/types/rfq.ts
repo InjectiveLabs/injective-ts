@@ -214,6 +214,10 @@ export interface RFQMakerStreamAckData {
   status: string
 }
 
+export interface RFQStreamPingData {
+  sentAt: number
+}
+
 // # Event payloads for TakerStream
 export interface TakerStreamEvents {
   /** Received a quote from a maker */
@@ -232,6 +236,8 @@ export interface TakerStreamEvents {
   }
   /** Error received from server */
   error: RFQStreamErrorData
+  /** Heartbeat ping sent via the local transport */
+  ping: RFQStreamPingData
   /** Pong received (response to ping) */
   pong: void
   connect: {
@@ -288,6 +294,8 @@ export interface MakerStreamEvents {
   challenge: {
     challenge: RFQMakerChallenge
   }
+  /** Heartbeat ping sent via the local transport */
+  ping: RFQStreamPingData
   /** Pong received (response to ping) */
   pong: void
   connect: {

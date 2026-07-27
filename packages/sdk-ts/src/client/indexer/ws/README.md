@@ -58,6 +58,7 @@ High-level API for takers:
 - `quote` - Received a quote from a maker
 - `request_ack` - Request was acknowledged
 - `error` - Error received from server
+- `ping` - Heartbeat ping sent via the local transport, includes `sentAt`
 - `pong` - Pong received (response to ping)
 - `connect` - Connection established
 - `disconnect` - Connection closed
@@ -81,6 +82,7 @@ High-level API for makers:
 - `request` - Received an RFQ request from a taker
 - `quote_ack` - Quote was acknowledged
 - `error` - Error received from server
+- `ping` - Heartbeat ping sent via the local transport, includes `sentAt`
 - `pong` - Pong received (response to ping)
 - `connect` - Connection established
 - `disconnect` - Connection closed
@@ -108,6 +110,10 @@ takerStream.on('request_ack', ({ rfqId, status }) => {
 
 takerStream.on('error', ({ code, message }) => {
   console.error('Stream error:', code, message)
+})
+
+takerStream.on('ping', ({ sentAt }) => {
+  console.log('Heartbeat ping sent at:', sentAt)
 })
 
 // Connect to the stream
@@ -167,6 +173,10 @@ makerStream.on('quote_ack', ({ rfqId, status }) => {
 
 makerStream.on('error', ({ code, message }) => {
   console.error('Stream error:', code, message)
+})
+
+makerStream.on('ping', ({ sentAt }) => {
+  console.log('Heartbeat ping sent at:', sentAt)
 })
 
 // Connect to the stream
