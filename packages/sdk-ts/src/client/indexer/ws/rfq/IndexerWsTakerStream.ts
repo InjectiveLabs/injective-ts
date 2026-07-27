@@ -236,8 +236,10 @@ export class IndexerWsTakerStream {
     this.pingInterval = setInterval(() => {
       if (this.isConnected()) {
         try {
+          const sentAt = Date.now()
           const pingMessage = GrpcWebSocketCodec.encodeTakerPing()
           this.transport.send(pingMessage)
+          this.emit('ping', { sentAt })
         } catch (error) {
           console.error('Failed to send ping:', error)
         }
