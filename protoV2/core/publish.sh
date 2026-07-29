@@ -44,12 +44,5 @@ cd "$SCRIPT_DIR/proto-ts" || exit
 # Update version in package.json
 npm version "$v1" --no-git-tag-version
 
-# Detect prerelease tag (alpha, beta, rc, etc.)
-if [[ "$v1" =~ -([a-z]+) ]]; then
-  tag="${BASH_REMATCH[1]}"
-  echo "publishing prerelease version with tag: $tag"
-  npm publish . --tag "$tag"
-else
-  echo "publishing release version"
-  npm publish .
-fi
+echo "publishing version: $v1"
+npm publish .
