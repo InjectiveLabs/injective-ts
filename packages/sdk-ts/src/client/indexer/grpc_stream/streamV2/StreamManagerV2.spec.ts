@@ -346,6 +346,47 @@ describe('StreamManagerV2', () => {
       expect(manager.getState()).toBe(StreamState.Stopped)
     })
 
+    it('should reset retry attempts when manually started after max retries', () => {
+      const manager = new StreamManagerV2({
+        id: 'test-stream',
+        streamFactory,
+        onData: onDataCallback,
+        retryConfig: {
+          enabled: true,
+          maxAttempts: 2,
+          initialDelayMs: 100,
+          maxDelayMs: 1000,
+          backoffMultiplier: 2,
+          persistent: false,
+        },
+      })
+
+      const retryEvents: any[] = []
+      const errorEvents: any[] = []
+      manager.on('retry', (payload) => retryEvents.push(payload))
+      manager.on('error', (payload) => errorEvents.push(payload))
+
+      vi.mocked(streamFactory).mockImplementation(() => {
+        throw new Error('Always fails')
+      })
+
+      manager.start()
+      vi.advanceTimersByTime(100)
+      vi.advanceTimersByTime(200)
+
+      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(retryEvents.map((event) => event.attempt)).toEqual([1, 2])
+
+      manager.start()
+      vi.advanceTimersByTime(100)
+
+      expect(retryEvents.map((event) => event.attempt)).toEqual([1, 2, 1])
+      expect(streamFactory).toHaveBeenCalledTimes(5)
+      expect(
+        errorEvents.filter((event) => event.message.includes('Max retries')),
+      ).toHaveLength(1)
+    })
+
     it('should use persistent mode after exhausting backoff', () => {
       const manager = new StreamManagerV2({
         id: 'test-stream',

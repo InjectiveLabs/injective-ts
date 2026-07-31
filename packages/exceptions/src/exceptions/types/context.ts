@@ -1,5 +1,10 @@
 import type { ErrorCode, ErrorContextCode } from './codes.js'
 
+export type ErrorContextMetadata = Record<
+  string,
+  string | number | boolean | undefined
+>
+
 export const HttpRequestMethod = {
   Get: 'GET',
   Post: 'POST',
@@ -47,6 +52,12 @@ export interface ErrorContext {
   contextCode?: ErrorContextCode
 
   /**
+   * Structured diagnostics for observability. This is intentionally separate
+   * from context so consumers can keep relying on stable context strings.
+   */
+  metadata?: ErrorContextMetadata
+
+  /**
    * If true, skip parsing the error message and use the raw message
    * Useful when you want to preserve the original error message without
    * any transformation or mapping
@@ -81,6 +92,11 @@ export interface Exception {
    * (ex: on-chain error code, etc)
    */
   contextCode?: ErrorContextCode
+
+  /**
+   * Structured diagnostics for observability.
+   */
+  metadata?: ErrorContextMetadata
 
   /**
    * Parsed message of the exception

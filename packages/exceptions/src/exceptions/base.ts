@@ -4,6 +4,7 @@ import type {
   ErrorCode,
   ErrorContext,
   ErrorContextCode,
+  ErrorContextMetadata,
 } from './types/index.js'
 
 /**
@@ -64,6 +65,11 @@ export abstract class ConcreteException extends Error implements Exception {
   public contextCode?: ErrorContextCode
 
   /**
+   * Structured diagnostics for observability.
+   */
+  public metadata?: ErrorContextMetadata
+
+  /**
    * Parsed message of the exception
    */
   public message: string = ''
@@ -97,13 +103,14 @@ export abstract class ConcreteException extends Error implements Exception {
   }
 
   public parseContext(errorContext?: ErrorContext) {
-    const { contextModule, type, code, context, contextCode } =
+    const { contextModule, type, code, context, contextCode, metadata } =
       errorContext || {
         contextModule: 'Unknown',
         context: 'Unknown',
         code: UnspecifiedErrorCode,
         type: ErrorType.Unspecified,
         contextCode: undefined,
+        metadata: undefined,
       }
 
     this.context = context
@@ -111,6 +118,7 @@ export abstract class ConcreteException extends Error implements Exception {
     this.type = type || ErrorType.Unspecified
     this.code = code || UnspecifiedErrorCode
     this.contextCode = contextCode
+    this.metadata = this.getMetadata(metadata)
   }
 
   public setType(type: ErrorType) {
@@ -150,6 +158,20 @@ export abstract class ConcreteException extends Error implements Exception {
     this.contextCode = code
   }
 
+  private getMetadata(metadata?: ErrorContextMetadata) {
+    if (!metadata) {
+      return
+    }
+
+    const sanitizedMetadata = Object.fromEntries(
+      Object.entries(metadata).filter(([, value]) => value !== undefined),
+    )
+
+    return Object.keys(sanitizedMetadata).length > 0
+      ? sanitizedMetadata
+      : undefined
+  }
+
   public toOriginalError(): Error {
     const error = new Error(this.originalMessage)
     error.stack = this.stack
@@ -176,6 +198,7 @@ export abstract class ConcreteException extends Error implements Exception {
       ...(this.contextCode !== undefined
         ? { contextCode: this.contextCode }
         : {}),
+      ...(this.metadata !== undefined ? { metadata: this.metadata } : {}),
       contextModule: this.contextModule,
       originalMessage: this.originalMessage,
       stack: (this.stack || '').split('\n').map((line) => line.trim()),

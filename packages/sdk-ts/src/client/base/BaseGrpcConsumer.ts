@@ -8,7 +8,15 @@ import {
 import { GrpcStatusCode } from '../../types/stream.js'
 import { GrpcWebRpcTransport } from './GrpcWebRpcTransport.js'
 import type { UnaryCall, RpcOptions } from '@protobuf-ts/runtime-rpc'
+import type { ErrorContextMetadata } from '@injectivelabs/exceptions'
 import type { GrpcWebTransportAdditionalOptions } from '../../types'
+
+type GrpcRetryDiagnostics = {
+  retryAttempt: number
+  retryMaxAttempts: number
+  retryDelayMs: number
+  retryStopReason: 'exhausted' | 'non-retryable'
+}
 
 const GRPC_STATUS_CODE_BY_NAME: Partial<Record<string, GrpcStatusCode>> = {
   OK: GrpcStatusCode.OK,
@@ -57,6 +65,7 @@ const GRPC_RETRYABLE_STATUS_CODES = new Set<GrpcStatusCode>([
  */
 export default class BaseGrpcConsumer {
   private _client: unknown
+  private grpcRetryDiagnostics = new WeakMap<object, GrpcRetryDiagnostics>()
   protected endpoint: string
   protected module: string = ''
   protected transport: GrpcWebRpcTransport
@@ -234,7 +243,16 @@ export default class BaseGrpcConsumer {
       try {
         return await grpcCall()
       } catch (e: unknown) {
-        if (attempt >= retries || !this.isRetryableGrpcError(e)) {
+        const isRetryable = this.isRetryableGrpcError(e)
+
+        if (attempt >= retries || !isRetryable) {
+          this.setGrpcRetryDiagnostics(e, {
+            retryAttempt: attempt,
+            retryMaxAttempts: retries,
+            retryDelayMs: delay,
+            retryStopReason: isRetryable ? 'exhausted' : 'non-retryable',
+          })
+
           throw e
         }
 
@@ -248,6 +266,68 @@ export default class BaseGrpcConsumer {
     }
 
     return retryGrpcCall()
+  }
+
+  private setGrpcRetryDiagnostics(
+    error: unknown,
+    diagnostics: GrpcRetryDiagnostics,
+  ) {
+    if (!error || typeof error !== 'object') {
+      return
+    }
+
+    this.grpcRetryDiagnostics.set(error, diagnostics)
+  }
+
+  private getGrpcRetryDiagnostics(error: unknown) {
+    if (!error || typeof error !== 'object') {
+      return
+    }
+
+    return this.grpcRetryDiagnostics.get(error)
+  }
+
+  private getGrpcErrorMetadata(e: unknown): ErrorContextMetadata {
+    const isRpcError = e instanceof RpcError
+    const error = e instanceof Error ? e : undefined
+    const grpcStatusCode = isRpcError
+      ? this.getGrpcStatusCode(e.code)
+      : undefined
+    const retryDiagnostics = this.getGrpcRetryDiagnostics(e)
+
+    return {
+      wasRetried: retryDiagnostics
+        ? retryDiagnostics.retryAttempt > 1
+        : undefined,
+      retryAttempt: retryDiagnostics?.retryAttempt,
+      retryMaxAttempts: retryDiagnostics?.retryMaxAttempts,
+      retryDelayMs: retryDiagnostics?.retryDelayMs,
+      retryStopReason: retryDiagnostics?.retryStopReason,
+      rawErrorName: error?.name,
+      rawErrorMessage: error?.message,
+      rawErrorCode: isRpcError ? e.code : this.getErrorScalar(e, 'code'),
+      grpcStatusCode,
+      grpcStatusName: isRpcError ? this.getGrpcStatusName(e.code) : undefined,
+      isRetryableGrpcStatus:
+        grpcStatusCode === undefined
+          ? undefined
+          : GRPC_RETRYABLE_STATUS_CODES.has(grpcStatusCode),
+    }
+  }
+
+  private getErrorScalar(
+    error: unknown,
+    key: string,
+  ): string | number | boolean | undefined {
+    if (!error || typeof error !== 'object' || !(key in error)) {
+      return undefined
+    }
+
+    const value = (error as Record<string, unknown>)[key]
+
+    return ['string', 'number', 'boolean'].includes(typeof value)
+      ? (value as string | number | boolean)
+      : undefined
   }
 
   /**
@@ -316,6 +396,7 @@ export default class BaseGrpcConsumer {
               : UnspecifiedErrorCode,
           context: this.getRpcErrorContext(e, context),
           contextModule: this.module,
+          metadata: this.getGrpcErrorMetadata(e),
         },
       )
     }
@@ -339,6 +420,7 @@ export default class BaseGrpcConsumer {
       code: UnspecifiedErrorCode,
       context: this.getGrpcErrorContext(context),
       contextModule: this.module,
+      metadata: this.getGrpcErrorMetadata(e),
     })
   }
 

@@ -36,6 +36,13 @@ describe('ConcreteException - Issue #259 Regression', () => {
     expect('contextCode' in object).toBe(false)
   })
 
+  it('omits undefined metadata in toObject()', () => {
+    const exception = new GrpcUnaryRequestException(new Error('test error'))
+    const object = exception.toObject()
+
+    expect('metadata' in object).toBe(false)
+  })
+
   it('preserves defined contextCode in toObject()', () => {
     const exception = new GrpcUnaryRequestException(new Error('test error'), {
       contextCode: 5,
@@ -45,6 +52,37 @@ describe('ConcreteException - Issue #259 Regression', () => {
     expect(object.contextCode).toBe(5)
   })
 
+  it('preserves defined metadata in toObject()', () => {
+    const exception = new GrpcUnaryRequestException(new Error('test error'), {
+      metadata: {
+        rawErrorName: 'RpcError',
+        retryAttempt: 3,
+        wasRetried: true,
+      },
+    })
+    const object = exception.toObject()
+
+    expect(object.metadata).toEqual({
+      rawErrorName: 'RpcError',
+      retryAttempt: 3,
+      wasRetried: true,
+    })
+  })
+
+  it('omits undefined metadata values in toObject()', () => {
+    const exception = new GrpcUnaryRequestException(new Error('test error'), {
+      metadata: {
+        rawErrorCode: undefined,
+        rawErrorName: 'RpcError',
+      },
+    })
+    const object = exception.toObject()
+
+    expect(object.metadata).toEqual({
+      rawErrorName: 'RpcError',
+    })
+  })
+
   it('omits undefined contextCode in toCompactError() details', () => {
     const exception = new GrpcUnaryRequestException(new Error('test error'))
     const compactError = exception.toCompactError()
@@ -52,6 +90,21 @@ describe('ConcreteException - Issue #259 Regression', () => {
     const details = JSON.parse(rawDetails)
 
     expect('contextCode' in details).toBe(false)
+  })
+
+  it('preserves defined metadata in toCompactError() details', () => {
+    const exception = new GrpcUnaryRequestException(new Error('test error'), {
+      metadata: {
+        rawErrorName: 'RpcError',
+      },
+    })
+    const compactError = exception.toCompactError()
+    const [, rawDetails] = compactError.message.split(' | ')
+    const details = JSON.parse(rawDetails)
+
+    expect(details.metadata).toEqual({
+      rawErrorName: 'RpcError',
+    })
   })
 })
 
