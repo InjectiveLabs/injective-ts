@@ -86,6 +86,39 @@ describe('BaseGrpcConsumer', () => {
       await assertion
       expect(grpcCall).toHaveBeenCalledTimes(3)
     })
+
+    it('adds retry exhaustion details to wrapped errors', async () => {
+      vi.useFakeTimers()
+
+      const error = new RpcError('unavailable', 'UNAVAILABLE')
+      const grpcCall = vi.fn<() => Promise<string>>().mockRejectedValue(error)
+
+      const promise = consumer.retryCall(grpcCall, 3, 10)
+      const assertion = expect(promise).rejects.toBe(error)
+
+      await vi.runAllTimersAsync()
+      await assertion
+
+      try {
+        consumer.throwGrpcError(error, 'fetchPositions')
+        expect.unreachable('Expected handleGrpcError to throw')
+      } catch (e: unknown) {
+        expect(e).toBeInstanceOf(GrpcUnaryRequestException)
+
+        const exception = e as GrpcUnaryRequestException
+
+        expect(exception.context).toBe(
+          'fetchPositions (baseUrl: http://localhost:9090)',
+        )
+        expect(exception.metadata).toMatchObject({
+          wasRetried: true,
+          retryAttempt: 3,
+          retryMaxAttempts: 3,
+          retryDelayMs: 10,
+          retryStopReason: 'exhausted',
+        })
+      }
+    })
   })
 
   describe('handleGrpcError', () => {
@@ -110,6 +143,12 @@ describe('BaseGrpcConsumer', () => {
         expect(exception.context).toBe(
           'prepareFeeGrant (baseUrl: http://localhost:9090, rpc: injective_exchange_rpc.InjectiveExchangeRPC/PrepareFeeGrant)',
         )
+        expect(exception.metadata).toMatchObject({
+          rawErrorName: 'RpcError',
+          grpcStatusCode: 5,
+          grpcStatusName: 'NOT_FOUND',
+          isRetryableGrpcStatus: false,
+        })
         expect(exception.contextModule).toBe('test-module')
         expect(exception.contextCode).toBeUndefined()
       }
@@ -133,6 +172,11 @@ describe('BaseGrpcConsumer', () => {
         expect(exception.context).toBe(
           'prepareFeeGrant (baseUrl: http://localhost:9090)',
         )
+        expect(exception.metadata).toMatchObject({
+          rawErrorCode: '5',
+          grpcStatusCode: 5,
+          grpcStatusName: 'NOT_FOUND',
+        })
         expect(exception.contextModule).toBe('test-module')
         expect(exception.contextCode).toBeUndefined()
       }
@@ -152,8 +196,39 @@ describe('BaseGrpcConsumer', () => {
         expect(exception.context).toBe(
           'prepareFeeGrant (baseUrl: http://localhost:9090)',
         )
+        expect(exception.metadata).toMatchObject({
+          rawErrorName: 'Error',
+          rawErrorMessage: 'network failure',
+        })
         expect(exception.contextModule).toBe('test-module')
         expect(exception.contextCode).toBeUndefined()
+      }
+    })
+
+    it('keeps grpc-web wrapped fetch failure details', () => {
+      const error = new RpcError('Failed to fetch', 'INTERNAL')
+      error.methodName = 'Positions'
+      error.serviceName =
+        'injective_derivative_exchange_rpc.InjectiveDerivativeExchangeRPC'
+
+      try {
+        consumer.throwGrpcError(error, 'positions')
+        expect.unreachable('Expected handleGrpcError to throw')
+      } catch (e: unknown) {
+        expect(e).toBeInstanceOf(GrpcUnaryRequestException)
+
+        const exception = e as GrpcUnaryRequestException
+
+        expect(exception.context).toContain(
+          'rpc: injective_derivative_exchange_rpc.InjectiveDerivativeExchangeRPC/Positions',
+        )
+        expect(exception.metadata).toMatchObject({
+          rawErrorName: 'RpcError',
+          rawErrorMessage: 'Failed to fetch',
+          rawErrorCode: 'INTERNAL',
+          grpcStatusCode: 13,
+          grpcStatusName: 'INTERNAL',
+        })
       }
     })
 

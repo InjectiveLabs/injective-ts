@@ -156,6 +156,10 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       return
     }
 
+    if (this.state === StreamState.Stopped) {
+      this.retryAttempt = 0
+    }
+
     this.connect()
   }
 
