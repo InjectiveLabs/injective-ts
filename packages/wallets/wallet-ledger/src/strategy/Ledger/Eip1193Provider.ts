@@ -20,6 +20,11 @@ const signTypedDataMethods = new Set([
 
 const signMessageMethods = new Set(['eth_sign', 'personal_sign'])
 
+const sendTransactionMethods = new Set([
+  'eth_sendTransaction',
+  'wallet_sendTransaction',
+])
+
 const isEthAddress = (value: unknown) =>
   typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/.test(value)
 
@@ -247,7 +252,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       return `0x${count.toString(16)}`
     }
 
-    if (args.method === 'eth_sendTransaction') {
+    if (sendTransactionMethods.has(args.method)) {
       const address = await this.getAddress()
 
       const walletClient = getViemWalletClient({
