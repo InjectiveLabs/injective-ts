@@ -1,13 +1,14 @@
 import * as PlatformServicesPositionsPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_positions_service_pb'
 import { PositionsServiceClient } from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_positions_service_pb.client'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import { PlatformServicesGrpcPositionsTransformer } from '../transformers/index'
+import { PlatformServicesGrpcPositionsTransformer } from '../transformers/index.js'
 import type {
   PlatformServicesListPositionsParams,
+  PlatformServicesListPositionTradesParams,
   PlatformServicesGetAccountDailyPNLParams,
   PlatformServicesGetAccountPositionStatsParams,
   PlatformServicesListAccountPositionStatsParams,
-} from '../types/index'
+} from '../types/index.js'
 
 export class SocialTradingGrpcApi extends BaseGrpcConsumer {
   protected module: string = 'platform-services'
@@ -17,9 +18,11 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
   }
 
   async fetchPositions(params?: PlatformServicesListPositionsParams) {
-    const { accountAddress, pageSize, nextToken } = params || {}
+    const { to, from, accountAddress, pageSize, nextToken } = params || {}
 
     const request = PlatformServicesPositionsPb.ListPositionsRequest.create({
+      to,
+      from,
       pageSize,
       nextToken,
       accountAddress,
@@ -31,6 +34,26 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
     >(request, this.client.listPositions.bind(this.client))
 
     return PlatformServicesGrpcPositionsTransformer.grpcListPositionsToListPositions(
+      response,
+    )
+  }
+
+  async fetchPositionTrades(params: PlatformServicesListPositionTradesParams) {
+    const { pageSize, nextToken, positionId } = params
+
+    const request =
+      PlatformServicesPositionsPb.ListPositionTradesRequest.create({
+        pageSize,
+        nextToken,
+        positionId,
+      })
+
+    const response = await this.executeGrpcCall<
+      PlatformServicesPositionsPb.ListPositionTradesRequest,
+      PlatformServicesPositionsPb.ListPositionTradesResponse
+    >(request, this.client.listPositionTrades.bind(this.client))
+
+    return PlatformServicesGrpcPositionsTransformer.grpcListPositionTradesToListPositionTrades(
       response,
     )
   }
@@ -80,6 +103,8 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
     params?: PlatformServicesListAccountPositionStatsParams,
   ) {
     const {
+      to,
+      from,
       window,
       sortBy,
       pageSize,
@@ -90,6 +115,8 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
 
     const request =
       PlatformServicesPositionsPb.ListAccountPositionStatsRequest.create({
+        to,
+        from,
         window,
         sortBy,
         pageSize,

@@ -17,12 +17,16 @@ describe('SocialTradingGrpcApi', () => {
       })
 
     const response = await socialTradingGrpcApi.fetchPositions({
+      to: '2026-07-17T00:00:00Z',
+      from: '2026-07-01T00:00:00Z',
       pageSize: 10,
       accountAddress,
     })
     const [request] = executeGrpcCall.mock.calls[0]
 
     expect(request).toMatchObject({
+      to: '2026-07-17T00:00:00Z',
+      from: '2026-07-01T00:00:00Z',
       pageSize: 10,
       accountAddress,
     })
@@ -40,6 +44,58 @@ describe('SocialTradingGrpcApi', () => {
     executeGrpcCall.mockRestore()
   })
 
+  test('fetchPositionTrades', async () => {
+    const executeGrpcCall = vi
+      .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
+      .mockResolvedValue({
+        nextToken: 'next',
+        trades: [
+          {
+            pnl: '0.12',
+            amount: '1.5',
+            eventType: 'trade',
+            positionId: 'position-1',
+            timestamp: '2026-07-17T00:00:00Z',
+            executionPrice: '100.5',
+          },
+        ],
+      })
+
+    const response = await socialTradingGrpcApi.fetchPositionTrades({
+      pageSize: 10,
+      nextToken: 'cursor',
+      positionId: 'position-1',
+    })
+    const [request] = executeGrpcCall.mock.calls[0]
+
+    expect(request).toMatchObject({
+      pageSize: 10,
+      nextToken: 'cursor',
+      positionId: 'position-1',
+    })
+    expect(response).toEqual(
+      expect.objectContaining<
+        ReturnType<
+          typeof PlatformServicesGrpcPositionsTransformer.grpcListPositionTradesToListPositionTrades
+        >
+      >({
+        nextToken: 'next',
+        trades: [
+          {
+            pnl: '0.12',
+            amount: '1.5',
+            eventType: 'trade',
+            positionId: 'position-1',
+            timestamp: '2026-07-17T00:00:00Z',
+            executionPrice: '100.5',
+          },
+        ],
+      }),
+    )
+
+    executeGrpcCall.mockRestore()
+  })
+
   test('fetchAccountPositionStats', async () => {
     const executeGrpcCall = vi
       .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
@@ -51,6 +107,8 @@ describe('SocialTradingGrpcApi', () => {
         winRate: '0.66',
         tradeCount: 3n,
         equityCurve: [],
+        tags: ['scalper'],
+        rank: 1n,
         maxDrawdown: '0',
         accountAddress,
         pnlPercentage: '0.12',
@@ -78,6 +136,8 @@ describe('SocialTradingGrpcApi', () => {
         losses: '1',
         leverage: '3',
         winRate: '0.66',
+        rank: '1',
+        tags: ['scalper'],
         tradeCount: '3',
         equityCurve: [],
         maxDrawdown: '0',
@@ -124,6 +184,8 @@ describe('SocialTradingGrpcApi', () => {
       })
 
     const response = await socialTradingGrpcApi.fetchAccountPositionStatsList({
+      to: '2026-07-17T00:00:00Z',
+      from: '2026-07-01T00:00:00Z',
       pageSize: 10,
       window: '30d',
       sortBy: 'pnl',
@@ -133,6 +195,8 @@ describe('SocialTradingGrpcApi', () => {
     const [request] = executeGrpcCall.mock.calls[0]
 
     expect(request).toMatchObject({
+      to: '2026-07-17T00:00:00Z',
+      from: '2026-07-01T00:00:00Z',
       pageSize: 10,
       window: '30d',
       sortBy: 'pnl',

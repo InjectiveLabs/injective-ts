@@ -15,6 +15,8 @@ export type PlatformServicesPositionsSortBy =
 export type PlatformServicesPositionsSortDirection = 'asc' | 'desc'
 
 export interface PlatformServicesListPositionsParams {
+  to?: string
+  from?: string
   pageSize?: number
   nextToken?: string
   accountAddress?: string
@@ -32,12 +34,20 @@ export interface PlatformServicesGetAccountDailyPNLParams {
 }
 
 export interface PlatformServicesListAccountPositionStatsParams {
+  to?: string
+  from?: string
   pageSize?: number
   nextToken?: string
   accountAddress?: string[]
   sortBy?: PlatformServicesPositionsSortBy
   window?: PlatformServicesPositionsStatsWindow
   sortDirection?: PlatformServicesPositionsSortDirection
+}
+
+export interface PlatformServicesListPositionTradesParams {
+  positionId: string
+  pageSize?: number
+  nextToken?: string
 }
 
 export interface PlatformServicesPosition {
@@ -75,9 +85,25 @@ export interface PlatformServicesListPositionsResponse {
   nextToken?: string
 }
 
+export interface PlatformServicesPositionTrade {
+  pnl: string
+  amount: string
+  timestamp: string
+  eventType: string
+  positionId: string
+  executionPrice: string
+}
+
+export interface PlatformServicesListPositionTradesResponse {
+  nextToken?: string
+  trades: PlatformServicesPositionTrade[]
+}
+
 export interface PlatformServicesAccountPositionStats {
   pnl: string
   wins: string
+  rank?: string
+  tags: string[]
   losses: string
   winRate: string
   leverage: string
@@ -105,6 +131,9 @@ export interface PlatformServicesListAccountPositionStatsResponse {
 }
 
 export type GrpcPlatformServicesPosition = PlatformServicesPositionsPb.Position
+
+export type GrpcPlatformServicesPositionTrade =
+  PlatformServicesPositionsPb.PositionTrade
 
 export type GrpcPlatformServicesAccountPositionStats =
   PlatformServicesPositionsPb.AccountPositionStats
