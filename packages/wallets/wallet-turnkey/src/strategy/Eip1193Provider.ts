@@ -21,6 +21,11 @@ const signMessageMethods = new Set([
   'eth_signMessage',
 ])
 
+const sendTransactionMethods = new Set([
+  'eth_sendTransaction',
+  'wallet_sendTransaction',
+])
+
 const parseChainId = (chainId: number | string) => {
   if (typeof chainId === 'number') {
     return chainId
@@ -265,7 +270,7 @@ class CustomEip1193Provider implements Eip1193Provider {
       return true
     }
 
-    if (args.method === 'eth_sendTransaction') {
+    if (sendTransactionMethods.has(args.method)) {
       if (!args.params) {
         throw new Error('params is required')
       }

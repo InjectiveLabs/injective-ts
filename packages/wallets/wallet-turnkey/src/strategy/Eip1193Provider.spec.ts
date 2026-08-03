@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+import { getViemWalletClient } from '@injectivelabs/wallet-base'
 import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
 import type { LocalAccount } from 'viem'
 
@@ -168,4 +169,59 @@ describe('Turnkey EIP-1193 provider', () => {
     ).resolves.toBe('0xsignedtx')
     expect(signTransaction).toHaveBeenCalledWith({ to: address })
   })
+
+  it.each(['eth_sendTransaction', 'wallet_sendTransaction'])(
+    'routes %s through the Turnkey transaction signer',
+    async (method) => {
+      const transaction = {
+        from: address,
+        to: '0x0000000000000000000000000000000000000002',
+        value: '0x0',
+        data: '0x',
+      }
+      const preparedTransaction = {
+        ...transaction,
+        value: 0n,
+        gas: 21_000n,
+      }
+      const prepareTransactionRequest = vi
+        .fn()
+        .mockResolvedValue(preparedTransaction)
+      const sendRawTransaction = vi.fn().mockResolvedValue('0xtxhash')
+      const request = vi.fn(() => {
+        throw new Error('Unexpected RPC fallback')
+      })
+
+      vi.mocked(getViemWalletClient).mockReturnValue({
+        prepareTransactionRequest,
+        sendRawTransaction,
+        request,
+      } as any)
+
+      const signTransaction = vi.fn().mockResolvedValue('0xsignedtx')
+      const provider = await getEip1193ProviderForTurnkey(
+        {
+          ...account,
+          signTransaction,
+        } as unknown as LocalAccount,
+        1,
+        {
+          rpcUrl: 'http://127.0.0.1:1',
+        },
+      )
+
+      await expect(
+        provider.request({ method, params: [transaction] }),
+      ).resolves.toBe('0xtxhash')
+      expect(prepareTransactionRequest).toHaveBeenCalledWith({
+        ...transaction,
+        value: 0n,
+      })
+      expect(signTransaction).toHaveBeenCalledWith(preparedTransaction)
+      expect(sendRawTransaction).toHaveBeenCalledWith({
+        serializedTransaction: '0xsignedtx',
+      })
+      expect(request).not.toHaveBeenCalled()
+    },
+  )
 })

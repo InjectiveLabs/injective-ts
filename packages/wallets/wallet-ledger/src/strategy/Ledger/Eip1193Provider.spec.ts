@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+import { getViemWalletClient } from '@injectivelabs/wallet-base'
 import { LedgerEip1193Provider } from './Eip1193Provider.js'
 import type LedgerHW from './hw/index.js'
 
@@ -103,4 +104,48 @@ describe('Ledger EIP-1193 provider', () => {
       provider.request({ method: 'eth_signTypedData_v4', params: [address] }),
     ).rejects.toThrow('Missing typed data parameter for eth_signTypedData_v4')
   })
+
+  it.each(['eth_sendTransaction', 'wallet_sendTransaction'])(
+    'routes %s through the Ledger transaction signer',
+    async (method) => {
+      const transaction = {
+        from: address,
+        to: '0x0000000000000000000000000000000000000002',
+        value: '0x0',
+        data: '0x',
+      }
+      const preparedTransaction = {
+        ...transaction,
+        gas: 21_000n,
+      }
+      const prepareTransactionRequest = vi
+        .fn()
+        .mockResolvedValue(preparedTransaction)
+      const sendRawTransaction = vi.fn().mockResolvedValue('0xtxhash')
+      const request = vi.fn(() => {
+        throw new Error('Unexpected RPC fallback')
+      })
+
+      vi.mocked(getViemWalletClient).mockReturnValue({
+        prepareTransactionRequest,
+        sendRawTransaction,
+        request,
+      } as any)
+
+      const provider = getProvider()
+      const signTransaction = vi
+        .spyOn(provider, 'signTransaction')
+        .mockResolvedValue('0xsignedtx')
+
+      await expect(
+        provider.request({ method, params: [transaction] }),
+      ).resolves.toBe('0xtxhash')
+      expect(prepareTransactionRequest).toHaveBeenCalledWith(transaction)
+      expect(signTransaction).toHaveBeenCalledWith(preparedTransaction)
+      expect(sendRawTransaction).toHaveBeenCalledWith({
+        serializedTransaction: '0xsignedtx',
+      })
+      expect(request).not.toHaveBeenCalled()
+    },
+  )
 })
