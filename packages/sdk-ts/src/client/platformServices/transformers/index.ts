@@ -2,11 +2,13 @@ import type * as PlatformServicesPositionsPb from '@injectivelabs/platform-servi
 import type {
   PlatformServicesPosition,
   PlatformServicesDailyPNL,
+  PlatformServicesPositionTrade,
   PlatformServicesAccountPositionStats,
   PlatformServicesListPositionsResponse,
   PlatformServicesGetAccountDailyPNLResponse,
+  PlatformServicesListPositionTradesResponse,
   PlatformServicesListAccountPositionStatsResponse,
-} from '../types/index'
+} from '../types/index.js'
 
 export class PlatformServicesGrpcPositionsTransformer {
   static grpcPositionToPosition(
@@ -56,13 +58,41 @@ export class PlatformServicesGrpcPositionsTransformer {
     }
   }
 
+  static grpcPositionTradeToPositionTrade(
+    trade: PlatformServicesPositionsPb.PositionTrade,
+  ): PlatformServicesPositionTrade {
+    return {
+      pnl: trade.pnl,
+      amount: trade.amount,
+      timestamp: trade.timestamp,
+      eventType: trade.eventType,
+      positionId: trade.positionId,
+      executionPrice: trade.executionPrice,
+    }
+  }
+
+  static grpcListPositionTradesToListPositionTrades(
+    response: PlatformServicesPositionsPb.ListPositionTradesResponse,
+  ): PlatformServicesListPositionTradesResponse {
+    return {
+      nextToken: response.nextToken,
+      trades: response.trades.map((trade) =>
+        PlatformServicesGrpcPositionsTransformer.grpcPositionTradeToPositionTrade(
+          trade,
+        ),
+      ),
+    }
+  }
+
   static grpcAccountPositionStatsToAccountPositionStats(
     stats: PlatformServicesPositionsPb.AccountPositionStats,
   ): PlatformServicesAccountPositionStats {
     return {
       pnl: stats.pnl,
+      tags: stats.tags,
       winRate: stats.winRate,
       leverage: stats.leverage,
+      rank: stats.rank?.toString(),
       wins: stats.wins.toString(),
       maxDrawdown: stats.maxDrawdown,
       equityCurve: stats.equityCurve,
@@ -79,8 +109,10 @@ export class PlatformServicesGrpcPositionsTransformer {
   ): PlatformServicesAccountPositionStats {
     return {
       pnl: response.pnl,
+      tags: response.tags,
       winRate: response.winRate,
       leverage: response.leverage,
+      rank: response.rank?.toString(),
       wins: response.wins.toString(),
       maxDrawdown: response.maxDrawdown,
       equityCurve: response.equityCurve,

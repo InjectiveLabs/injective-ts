@@ -21,8 +21,9 @@ This skill is procedural and approval-gated. Do **not** collapse it into an end-
 - Update checklist status as each step completes.
 - Narrate the result of each major step: selected package, current version, target version, backup status, install result, detected proto changes, proposal, validation result.
 - Do not infer package/version silently unless the user provided it explicitly in the prompt.
-- Before Step 5 changes `package.json` or runs install, show the dependency change plan and ask for explicit approval.
+- Default cadence: ask for package selection and target version first; after package/version are confirmed, continue through backup, dependency update/install, compare, and analysis until the Step 9 proposal. If dependency/install approval has not already been given, ask once before Step 5.
 - Before Step 10 implementation, show the detailed proposal from Step 9 and ask for explicit approval.
+- After the Step 9 proposal is approved, continue through implementation and validation without additional prompts. After validation, show an implementation summary and ask the user to confirm whether everything is as expected. If the user requests modifications, continue editing and re-validating, then show an updated implementation summary. Once the user confirms the result is set, clean up this run's backup files and give a separate cleanup/final summary. If validation finds new errors in touched files, keep the backup and report the blocker.
 - If the selected package is not currently in `packages/sdk-ts/package.json`, treat it as **initial onboarding**:
   - Current version is `none`
   - Backup is skipped with a clear explanation
@@ -220,7 +221,7 @@ All exports must be in **strict alphabetical order**.
 
 ### Step 12: Cleanup
 
-Ask: "Delete backup files?" If approved, delete `scripts/.align-proto-backup/{package-name}/{version}/`.
+After validation completes with no new errors in touched files, show an implementation summary and ask whether everything is as expected before deleting backups. If the user requests more changes, continue editing and re-validating, then show an updated implementation summary. Once the user confirms the result is set, delete `scripts/.align-proto-backup/{package-name}/{version}/` and give a separate cleanup/final summary. If validation failed with new errors in touched files, keep the backup and report what must be fixed.
 
 ## SDK Message EIP712 Debugging
 
