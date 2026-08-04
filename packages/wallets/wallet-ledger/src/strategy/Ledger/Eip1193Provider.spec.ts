@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+import { fromRlp } from 'viem'
 import { getViemWalletClient } from '@injectivelabs/wallet-base'
 import { LedgerEip1193Provider } from './Eip1193Provider.js'
 import type LedgerHW from './hw/index.js'
@@ -103,6 +104,43 @@ describe('Ledger EIP-1193 provider', () => {
     await expect(
       provider.request({ method: 'eth_signTypedData_v4', params: [address] }),
     ).rejects.toThrow('Missing typed data parameter for eth_signTypedData_v4')
+  })
+
+  it('serializes zero JSON-RPC quantities canonically', async () => {
+    const clearSignTransaction = vi.fn().mockResolvedValue({
+      r: `0x${'11'.repeat(32)}`,
+      s: `0x${'22'.repeat(32)}`,
+      v: 0,
+    })
+    const ledger = {
+      getInstance: vi.fn().mockResolvedValue({ clearSignTransaction }),
+    } as unknown as LedgerHW
+    const provider = new LedgerEip1193Provider(ledger, {
+      rpcUrl: 'http://127.0.0.1:1',
+    })
+
+    const signedTransaction = await provider.signTransaction({
+      type: 'eip1559',
+      chainId: '0xa4b1',
+      nonce: '0x0',
+      maxPriorityFeePerGas: '0x0',
+      maxFeePerGas: '0x2de1b40',
+      gas: '0xfb27',
+      to: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+      value: '0x0',
+      data: '0x',
+    })
+
+    const ledgerPayload = clearSignTransaction.mock.calls[0]?.[1]
+    const unsignedFields = fromRlp(`0x${ledgerPayload.slice(2)}`) as string[]
+    const signedFields = fromRlp(`0x${signedTransaction.slice(4)}`) as string[]
+
+    expect(unsignedFields[1]).toBe('0x')
+    expect(unsignedFields[2]).toBe('0x')
+    expect(unsignedFields[6]).toBe('0x')
+    expect(signedFields[1]).toBe('0x')
+    expect(signedFields[2]).toBe('0x')
+    expect(signedFields[6]).toBe('0x')
   })
 
   it.each(['eth_sendTransaction', 'wallet_sendTransaction'])(

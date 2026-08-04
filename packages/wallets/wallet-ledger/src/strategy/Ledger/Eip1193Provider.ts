@@ -25,6 +25,38 @@ const sendTransactionMethods = new Set([
   'wallet_sendTransaction',
 ])
 
+const bigintTransactionQuantityFields = [
+  'value',
+  'gas',
+  'gasLimit',
+  'gasPrice',
+  'maxFeePerGas',
+  'maxPriorityFeePerGas',
+  'maxFeePerBlobGas',
+]
+
+const numberTransactionQuantityFields = ['chainId', 'nonce']
+
+const normalizeTransactionQuantities = (transaction: any) => {
+  const normalizedTransaction = { ...transaction }
+
+  for (const field of bigintTransactionQuantityFields) {
+    if (normalizedTransaction[field] !== undefined) {
+      normalizedTransaction[field] = BigInt(normalizedTransaction[field])
+    }
+  }
+
+  for (const field of numberTransactionQuantityFields) {
+    if (normalizedTransaction[field] !== undefined) {
+      normalizedTransaction[field] = Number(
+        BigInt(normalizedTransaction[field]),
+      )
+    }
+  }
+
+  return normalizedTransaction
+}
+
 const isEthAddress = (value: unknown) =>
   typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/.test(value)
 
@@ -138,8 +170,9 @@ export class LedgerEip1193Provider implements Eip1193Provider {
 
   async signTransaction(txData: any) {
     const ledgerInstance = await this.ledger.getInstance()
+    const normalizedTransaction = normalizeTransactionQuantities(txData)
 
-    const serializedTransaction = serializeTransaction(txData)
+    const serializedTransaction = serializeTransaction(normalizedTransaction)
 
     // Sign the transaction with clear signing enabled
     const signature = await ledgerInstance.clearSignTransaction(
@@ -152,7 +185,7 @@ export class LedgerEip1193Provider implements Eip1193Provider {
       },
     )
 
-    const signedTransaction = serializeTransaction(txData, {
+    const signedTransaction = serializeTransaction(normalizedTransaction, {
       r: signature.r as Hash,
       s: signature.s as Hash,
       v: BigInt(signature.v),
