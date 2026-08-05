@@ -58,6 +58,58 @@ describe('IndexerGrpcWeb3GwApi', () => {
     executeGrpcCall.mockRestore()
   })
 
+  test('prepareTxPrerequisites', async () => {
+    const address =
+      'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z' as AccountAddress
+    const grpcResponse = {
+      schemaVersion: 'v1',
+      requestId: 'request-1',
+      operationId: 'operation-1',
+      status: 'READY',
+      chainId: 'injective-1',
+      address,
+      revision: 'revision-2',
+      validUntilMs: '1780000000000',
+      retryAfterMs: 0n,
+      blockers: [],
+    } satisfies InjectiveExchangeRpcPb.PrepareTxPrerequisitesResponse
+    const executeGrpcCall = vi
+      .spyOn(indexerGrpcWeb3GwApi as any, 'executeGrpcCall')
+      .mockResolvedValue(grpcResponse)
+
+    const response = await indexerGrpcWeb3GwApi.prepareTxPrerequisites({
+      schemaVersion: 'v1',
+      chainId: 'injective-1',
+      address,
+      timeoutInBlocks: 50,
+      requestFeeGrant: true,
+      knownRevision: 'revision-1',
+      rejectedFeeGrant: {
+        revision: 'fee-grant-revision-1',
+        chainCode: 5,
+        transactionHash: 'ABC123',
+      },
+    })
+    const [request] = executeGrpcCall.mock.calls[0]
+
+    expect(request).toMatchObject({
+      schemaVersion: 'v1',
+      chainId: 'injective-1',
+      address,
+      timeoutInBlocks: 50n,
+      requestFeeGrant: true,
+      knownRevision: 'revision-1',
+      rejectedFeeGrant: {
+        revision: 'fee-grant-revision-1',
+        chainCode: 5,
+        transactionHash: 'ABC123',
+      },
+    })
+    expect(response).toEqual(grpcResponse)
+
+    executeGrpcCall.mockRestore()
+  })
+
   test('prepareEip712Request', async () => {
     try {
       const args = {
