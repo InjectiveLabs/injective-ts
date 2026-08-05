@@ -33,6 +33,69 @@ export class IndexerGrpcWeb3GwApi extends IndexerGrpcTransactionApi {
     return response
   }
 
+  async prepareTxPrerequisites({
+    schemaVersion = '1',
+    chainId,
+    address,
+    timeoutInBlocks,
+    requestFeeGrant,
+    knownRevision,
+    rejectedFeeGrant,
+  }: {
+    schemaVersion?: string
+    chainId?: string
+    address: AccountAddress
+    timeoutInBlocks?: number
+    requestFeeGrant?: boolean
+    knownRevision?: string
+    rejectedFeeGrant?: {
+      revision: string
+      chainCode: number
+      transactionHash?: string
+    }
+  }) {
+    const request =
+      InjectiveExchangeRpcPb.PrepareTxPrerequisitesRequest.create()
+
+    request.schemaVersion = schemaVersion
+    request.address = address
+
+    if (chainId) {
+      request.chainId = chainId
+    }
+
+    if (timeoutInBlocks !== undefined) {
+      request.timeoutInBlocks = BigInt(timeoutInBlocks)
+    }
+
+    if (requestFeeGrant !== undefined) {
+      request.requestFeeGrant = requestFeeGrant
+    }
+
+    if (knownRevision) {
+      request.knownRevision = knownRevision
+    }
+
+    if (rejectedFeeGrant) {
+      request.rejectedFeeGrant =
+        InjectiveExchangeRpcPb.TxPrerequisitesRejectedFeeGrant.create({
+          revision: rejectedFeeGrant.revision,
+          chainCode: rejectedFeeGrant.chainCode,
+          transactionHash: rejectedFeeGrant.transactionHash,
+        })
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveExchangeRpcPb.PrepareTxPrerequisitesRequest,
+      InjectiveExchangeRpcPb.PrepareTxPrerequisitesResponse
+    >(
+      request,
+      (this as any).client.prepareTxPrerequisites.bind((this as any).client),
+    )
+
+    return response
+  }
+
   async prepareEip712Request({
     address,
     chainId,
