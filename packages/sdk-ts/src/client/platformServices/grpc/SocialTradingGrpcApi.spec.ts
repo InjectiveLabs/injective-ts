@@ -13,7 +13,38 @@ describe('SocialTradingGrpcApi', () => {
       .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
       .mockResolvedValue({
         nextToken: 'next',
-        positions: [],
+        positions: [
+          {
+            id: 'position-1',
+            pnl: '1.23',
+            fees: '0.1',
+            side: 'long',
+            state: 'closed',
+            netPnl: '1.13',
+            quantity: '10',
+            marketId: '0xmarket',
+            openedAt: '2026-07-01T00:00:00Z',
+            closedAt: '2026-07-17T00:00:00Z',
+            updatedAt: '2026-07-17T00:00:00Z',
+            exitPrice: '101',
+            sideAtOpen: 'long',
+            finalMargin: '50',
+            maxQuantity: '10',
+            minQuantity: '1',
+            closeReason: 'full_close',
+            subaccountId: '0xsubaccount',
+            initialMargin: '40',
+            avgEntryPrice: '100',
+            accountAddress,
+            totalTrades: 3n,
+            openedHeight: 100n,
+            closedHeight: 200n,
+            updatedHeight: 200n,
+            numOfBuyTrades: 2n,
+            numOfSellTrades: 1n,
+            durationInSeconds: 3600n,
+          },
+        ],
       })
 
     const response = await socialTradingGrpcApi.fetchPositions({
@@ -37,7 +68,19 @@ describe('SocialTradingGrpcApi', () => {
         >
       >({
         nextToken: 'next',
-        positions: [],
+        positions: [
+          expect.objectContaining({
+            id: 'position-1',
+            exitPrice: '101',
+            totalTrades: '3',
+            openedHeight: '100',
+            closedHeight: '200',
+            updatedHeight: '200',
+            numOfBuyTrades: '2',
+            numOfSellTrades: '1',
+            durationInSeconds: '3600',
+          }),
+        ],
       }),
     )
 
@@ -109,10 +152,12 @@ describe('SocialTradingGrpcApi', () => {
         equityCurve: [],
         tags: ['scalper'],
         rank: 1n,
+        totalVolume: '250.25',
         maxDrawdown: '0',
         accountAddress,
         pnlPercentage: '0.12',
         closedPositions: 3n,
+        avgHoldDurationInSeconds: 3600n,
       })
 
     const response = await socialTradingGrpcApi.fetchAccountPositionStats({
@@ -138,12 +183,14 @@ describe('SocialTradingGrpcApi', () => {
         winRate: '0.66',
         rank: '1',
         tags: ['scalper'],
+        totalVolume: '250.25',
         tradeCount: '3',
         equityCurve: [],
         maxDrawdown: '0',
         accountAddress,
         pnlPercentage: '0.12',
         closedPositions: '3',
+        avgHoldDurationInSeconds: '3600',
       }),
     )
 
@@ -175,12 +222,77 @@ describe('SocialTradingGrpcApi', () => {
     executeGrpcCall.mockRestore()
   })
 
+  test('fetchAccountTags', async () => {
+    const executeGrpcCall = vi
+      .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
+      .mockResolvedValue({
+        tags: ['scalper', 'swing'],
+      })
+
+    const response = await socialTradingGrpcApi.fetchAccountTags()
+    const [request] = executeGrpcCall.mock.calls[0]
+
+    expect(request).toMatchObject({})
+    expect(response).toEqual(
+      expect.objectContaining<
+        ReturnType<
+          typeof PlatformServicesGrpcPositionsTransformer.grpcListAccountTagsToListAccountTags
+        >
+      >({
+        tags: ['scalper', 'swing'],
+      }),
+    )
+
+    executeGrpcCall.mockRestore()
+  })
+
+  test('fetchAccountCount', async () => {
+    const executeGrpcCall = vi
+      .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
+      .mockResolvedValue({
+        totalAccounts: 123n,
+      })
+
+    const response = await socialTradingGrpcApi.fetchAccountCount()
+    const [request] = executeGrpcCall.mock.calls[0]
+
+    expect(request).toMatchObject({})
+    expect(response).toEqual(
+      expect.objectContaining<
+        ReturnType<
+          typeof PlatformServicesGrpcPositionsTransformer.grpcGetAccountCountToGetAccountCount
+        >
+      >({
+        totalAccounts: '123',
+      }),
+    )
+
+    executeGrpcCall.mockRestore()
+  })
+
   test('fetchAccountPositionStatsList', async () => {
     const executeGrpcCall = vi
       .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
       .mockResolvedValue({
         nextToken: 'next',
-        accounts: [],
+        accounts: [
+          {
+            pnl: '12.3',
+            wins: 2n,
+            losses: 1n,
+            leverage: '3',
+            winRate: '0.66',
+            tradeCount: 3n,
+            equityCurve: [],
+            tags: ['scalper'],
+            totalVolume: '250.25',
+            maxDrawdown: '0',
+            accountAddress,
+            pnlPercentage: '0.12',
+            closedPositions: 3n,
+            avgHoldDurationInSeconds: 3600n,
+          },
+        ],
       })
 
     const response = await socialTradingGrpcApi.fetchAccountPositionStatsList({
@@ -189,6 +301,7 @@ describe('SocialTradingGrpcApi', () => {
       pageSize: 10,
       window: '30d',
       sortBy: 'pnl',
+      tag: ['scalper'],
       accountAddress: [accountAddress],
       sortDirection: 'desc',
     })
@@ -200,6 +313,7 @@ describe('SocialTradingGrpcApi', () => {
       pageSize: 10,
       window: '30d',
       sortBy: 'pnl',
+      tag: ['scalper'],
       accountAddress: [accountAddress],
       sortDirection: 'desc',
     })
@@ -210,7 +324,24 @@ describe('SocialTradingGrpcApi', () => {
         >
       >({
         nextToken: 'next',
-        accounts: [],
+        accounts: [
+          expect.objectContaining({
+            pnl: '12.3',
+            wins: '2',
+            losses: '1',
+            leverage: '3',
+            winRate: '0.66',
+            tags: ['scalper'],
+            totalVolume: '250.25',
+            tradeCount: '3',
+            equityCurve: [],
+            maxDrawdown: '0',
+            accountAddress,
+            pnlPercentage: '0.12',
+            closedPositions: '3',
+            avgHoldDurationInSeconds: '3600',
+          }),
+        ],
       }),
     )
 
