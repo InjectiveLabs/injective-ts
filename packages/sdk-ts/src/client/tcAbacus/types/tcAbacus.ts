@@ -34,7 +34,7 @@ export interface AccountStatsResponse {
   code: string
   address: string
   isKol: boolean
-  category: ReferrerCategory
+  category?: ReferrerCategory
   last7DVolume: string
   inviteeCount: number
   allTimeVolume: string
@@ -50,7 +50,7 @@ export interface Referrer {
   createdAt: string
   isKol: boolean
   status: string
-  category: ReferrerCategory
+  category?: ReferrerCategory
   inviteeCount: number
   creatorAddress: string
 }

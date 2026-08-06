@@ -233,6 +233,34 @@ describe('TcAbacusGrpcApi', () => {
     ).toBe('kol1')
   })
 
+  test('maps account stats categories', () => {
+    const response = TcAbacusPb.GetAccountStatsResponse.create({
+      category: 'kol2',
+    })
+
+    expect(
+      TcAbacusGrpcTransformer.grpcAccountStatsToAccountStats(response).category,
+    ).toBe('kol2')
+  })
+
+  test('normalizes empty referrer categories to default', () => {
+    const response = TcAbacusPb.Referrer.create()
+
+    expect(
+      TcAbacusGrpcTransformer.grpcReferrerToReferrer(response).category,
+    ).toBe('default')
+  })
+
+  test('rejects unknown referrer categories', () => {
+    const response = TcAbacusPb.Referrer.create({
+      category: 'unknown',
+    })
+
+    expect(() =>
+      TcAbacusGrpcTransformer.grpcReferrerToReferrer(response),
+    ).toThrow('Unknown referrer category: unknown')
+  })
+
   test('setReferrerCategory', async () => {
     const executeGrpcCall = vi
       .spyOn(tcAbacusGrpcApi as any, 'executeGrpcCall')

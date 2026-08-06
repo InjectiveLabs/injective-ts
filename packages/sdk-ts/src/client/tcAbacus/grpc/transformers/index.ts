@@ -5,6 +5,7 @@ import type {
   SnapshotPoints,
   ReferrerInvitee,
   InviteeReferrer,
+  ReferrerCategory,
   HealthCheckResponse,
   CurrentEpochResponse,
   AccountStatsResponse,
@@ -16,6 +17,21 @@ import type {
 } from '../../types/index.js'
 
 export class TcAbacusGrpcTransformer {
+  private static grpcReferrerCategoryToReferrerCategory(
+    category: string,
+  ): ReferrerCategory {
+    switch (category) {
+      case '':
+      case 'default':
+        return 'default'
+      case 'kol1':
+      case 'kol2':
+        return category
+      default:
+        throw new Error(`Unknown referrer category: ${category}`)
+    }
+  }
+
   static grpcCurrentEpochToCurrentEpoch(
     response: TcAbacusPb.GetCurrentEpochResponse,
   ): CurrentEpochResponse {
@@ -71,7 +87,9 @@ export class TcAbacusGrpcTransformer {
       code: response.code,
       address: response.address,
       isKol: response.isKol,
-      category: response.category as AccountStatsResponse['category'],
+      category: TcAbacusGrpcTransformer.grpcReferrerCategoryToReferrerCategory(
+        response.category,
+      ),
       last7DVolume: response.last7DVolume,
       inviteeCount: response.inviteeCount,
       allTimeVolume: response.allTimeVolume,
@@ -89,7 +107,9 @@ export class TcAbacusGrpcTransformer {
       height: referrer.height.toString(),
       isKol: referrer.isKol,
       status: referrer.status,
-      category: referrer.category as Referrer['category'],
+      category: TcAbacusGrpcTransformer.grpcReferrerCategoryToReferrerCategory(
+        referrer.category,
+      ),
       inviteeCount: referrer.inviteeCount,
       creatorAddress: referrer.creatorAddress,
     }
