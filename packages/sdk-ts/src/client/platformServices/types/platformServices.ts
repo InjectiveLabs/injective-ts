@@ -36,6 +36,7 @@ export interface PlatformServicesGetAccountDailyPNLParams {
 export interface PlatformServicesListAccountPositionStatsParams {
   to?: string
   from?: string
+  tag?: string[]
   pageSize?: number
   nextToken?: string
   accountAddress?: string[]
@@ -72,6 +73,7 @@ export interface PlatformServicesPosition {
   openedHeight: string
   avgEntryPrice: string
   initialMargin: string
+  exitPrice: string
   updatedHeight: string
   closedHeight?: string
   accountAddress: string
@@ -108,11 +110,13 @@ export interface PlatformServicesAccountPositionStats {
   winRate: string
   leverage: string
   tradeCount: string
+  totalVolume: string
   maxDrawdown: string
   pnlPercentage: string
   equityCurve: string[]
   accountAddress: string
   closedPositions: string
+  avgHoldDurationInSeconds: string
 }
 
 export interface PlatformServicesDailyPNL {
@@ -128,6 +132,14 @@ export interface PlatformServicesGetAccountDailyPNLResponse {
 export interface PlatformServicesListAccountPositionStatsResponse {
   nextToken?: string
   accounts: PlatformServicesAccountPositionStats[]
+}
+
+export interface PlatformServicesListAccountTagsResponse {
+  tags: string[]
+}
+
+export interface PlatformServicesGetAccountCountResponse {
+  totalAccounts: string
 }
 
 export type GrpcPlatformServicesPosition = PlatformServicesPositionsPb.Position

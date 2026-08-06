@@ -492,7 +492,7 @@
     "@injectivelabs/mito-proto-ts-v2": "1.17.3",
     "@injectivelabs/networks": "workspace:*",
     "@injectivelabs/olp-proto-ts-v2": "1.17.6",
-    "@injectivelabs/platform-services-proto-ts-v2": "1.0.1",
+    "@injectivelabs/platform-services-proto-ts-v2": "1.0.2",
     "@injectivelabs/tc-abacus-proto-ts-v2": "1.18.6",
     "@injectivelabs/ts-types": "workspace:*",
     "@injectivelabs/utils": "workspace:*",

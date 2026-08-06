@@ -5,6 +5,8 @@ import type {
   PlatformServicesPositionTrade,
   PlatformServicesAccountPositionStats,
   PlatformServicesListPositionsResponse,
+  PlatformServicesGetAccountCountResponse,
+  PlatformServicesListAccountTagsResponse,
   PlatformServicesGetAccountDailyPNLResponse,
   PlatformServicesListPositionTradesResponse,
   PlatformServicesListAccountPositionStatsResponse,
@@ -35,6 +37,7 @@ export class PlatformServicesGrpcPositionsTransformer {
       initialMargin: position.initialMargin,
       avgEntryPrice: position.avgEntryPrice,
       accountAddress: position.accountAddress,
+      exitPrice: position.exitPrice,
       totalTrades: position.totalTrades.toString(),
       openedHeight: position.openedHeight.toString(),
       closedHeight: position.closedHeight?.toString(),
@@ -94,6 +97,7 @@ export class PlatformServicesGrpcPositionsTransformer {
       leverage: stats.leverage,
       rank: stats.rank?.toString(),
       wins: stats.wins.toString(),
+      totalVolume: stats.totalVolume,
       maxDrawdown: stats.maxDrawdown,
       equityCurve: stats.equityCurve,
       losses: stats.losses.toString(),
@@ -101,6 +105,7 @@ export class PlatformServicesGrpcPositionsTransformer {
       accountAddress: stats.accountAddress,
       tradeCount: stats.tradeCount.toString(),
       closedPositions: stats.closedPositions.toString(),
+      avgHoldDurationInSeconds: stats.avgHoldDurationInSeconds.toString(),
     }
   }
 
@@ -114,6 +119,7 @@ export class PlatformServicesGrpcPositionsTransformer {
       leverage: response.leverage,
       rank: response.rank?.toString(),
       wins: response.wins.toString(),
+      totalVolume: response.totalVolume,
       maxDrawdown: response.maxDrawdown,
       equityCurve: response.equityCurve,
       losses: response.losses.toString(),
@@ -121,6 +127,23 @@ export class PlatformServicesGrpcPositionsTransformer {
       accountAddress: response.accountAddress,
       tradeCount: response.tradeCount.toString(),
       closedPositions: response.closedPositions.toString(),
+      avgHoldDurationInSeconds: response.avgHoldDurationInSeconds.toString(),
+    }
+  }
+
+  static grpcListAccountTagsToListAccountTags(
+    response: PlatformServicesPositionsPb.ListAccountTagsResponse,
+  ): PlatformServicesListAccountTagsResponse {
+    return {
+      tags: response.tags,
+    }
+  }
+
+  static grpcGetAccountCountToGetAccountCount(
+    response: PlatformServicesPositionsPb.GetAccountCountResponse,
+  ): PlatformServicesGetAccountCountResponse {
+    return {
+      totalAccounts: response.totalAccounts.toString(),
     }
   }
 

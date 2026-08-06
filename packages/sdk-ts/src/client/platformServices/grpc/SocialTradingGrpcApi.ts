@@ -99,12 +99,39 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
     )
   }
 
+  async fetchAccountTags() {
+    const request = PlatformServicesPositionsPb.ListAccountTagsRequest.create()
+
+    const response = await this.executeGrpcCall<
+      PlatformServicesPositionsPb.ListAccountTagsRequest,
+      PlatformServicesPositionsPb.ListAccountTagsResponse
+    >(request, this.client.listAccountTags.bind(this.client))
+
+    return PlatformServicesGrpcPositionsTransformer.grpcListAccountTagsToListAccountTags(
+      response,
+    )
+  }
+
+  async fetchAccountCount() {
+    const request = PlatformServicesPositionsPb.GetAccountCountRequest.create()
+
+    const response = await this.executeGrpcCall<
+      PlatformServicesPositionsPb.GetAccountCountRequest,
+      PlatformServicesPositionsPb.GetAccountCountResponse
+    >(request, this.client.getAccountCount.bind(this.client))
+
+    return PlatformServicesGrpcPositionsTransformer.grpcGetAccountCountToGetAccountCount(
+      response,
+    )
+  }
+
   async fetchAccountPositionStatsList(
     params?: PlatformServicesListAccountPositionStatsParams,
   ) {
     const {
       to,
       from,
+      tag,
       window,
       sortBy,
       pageSize,
@@ -117,6 +144,7 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
       PlatformServicesPositionsPb.ListAccountPositionStatsRequest.create({
         to,
         from,
+        tag,
         window,
         sortBy,
         pageSize,
