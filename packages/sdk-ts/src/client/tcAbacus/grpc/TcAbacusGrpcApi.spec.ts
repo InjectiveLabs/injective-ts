@@ -251,14 +251,14 @@ describe('TcAbacusGrpcApi', () => {
     ).toBe('default')
   })
 
-  test('rejects unknown referrer categories', () => {
+  test('normalizes unknown referrer categories to default', () => {
     const response = TcAbacusPb.Referrer.create({
       category: 'unknown',
     })
 
-    expect(() =>
-      TcAbacusGrpcTransformer.grpcReferrerToReferrer(response),
-    ).toThrow('Unknown referrer category: unknown')
+    expect(
+      TcAbacusGrpcTransformer.grpcReferrerToReferrer(response).category,
+    ).toBe('default')
   })
 
   test('setReferrerCategory', async () => {

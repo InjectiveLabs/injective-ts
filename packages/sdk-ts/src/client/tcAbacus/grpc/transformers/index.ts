@@ -20,16 +20,7 @@ export class TcAbacusGrpcTransformer {
   private static grpcReferrerCategoryToReferrerCategory(
     category: string,
   ): ReferrerCategory {
-    switch (category) {
-      case '':
-      case 'default':
-        return 'default'
-      case 'kol1':
-      case 'kol2':
-        return category
-      default:
-        throw new Error(`Unknown referrer category: ${category}`)
-    }
+    return category === 'kol1' || category === 'kol2' ? category : 'default'
   }
 
   static grpcCurrentEpochToCurrentEpoch(
