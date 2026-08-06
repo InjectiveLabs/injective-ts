@@ -16,6 +16,12 @@ import type {
 } from '../../types/index.js'
 
 export class TcAbacusGrpcTransformer {
+  private static grpcReferrerCategoryToReferrerCategory(
+    category: string,
+  ): NonNullable<AccountStatsResponse['category']> {
+    return category || 'default'
+  }
+
   static grpcCurrentEpochToCurrentEpoch(
     response: TcAbacusPb.GetCurrentEpochResponse,
   ): CurrentEpochResponse {
@@ -71,6 +77,9 @@ export class TcAbacusGrpcTransformer {
       code: response.code,
       address: response.address,
       isKol: response.isKol,
+      category: TcAbacusGrpcTransformer.grpcReferrerCategoryToReferrerCategory(
+        response.category,
+      ),
       last7DVolume: response.last7DVolume,
       inviteeCount: response.inviteeCount,
       allTimeVolume: response.allTimeVolume,
@@ -88,6 +97,9 @@ export class TcAbacusGrpcTransformer {
       height: referrer.height.toString(),
       isKol: referrer.isKol,
       status: referrer.status,
+      category: TcAbacusGrpcTransformer.grpcReferrerCategoryToReferrerCategory(
+        referrer.category,
+      ),
       inviteeCount: referrer.inviteeCount,
       creatorAddress: referrer.creatorAddress,
     }

@@ -1,5 +1,6 @@
+import * as TcAbacusPb from '@injectivelabs/tc-abacus-proto-ts-v2/generated/injective_tc_abacus_rpc_pb'
 import { TcAbacusGrpcApi } from './TcAbacusGrpcApi.js'
-import type { TcAbacusGrpcTransformer } from './transformers/index.js'
+import { TcAbacusGrpcTransformer } from './transformers/index.js'
 
 const injectiveAddress = 'inj1995xnrrtnmtdgjmx0g937vf28dwefhkhy6gy5e'
 
@@ -8,6 +9,10 @@ const tcAbacusGrpcApi = new TcAbacusGrpcApi(
 )
 
 describe('TcAbacusGrpcApi', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   test('fetchCurrentEpoch', async () => {
     try {
       const response = await tcAbacusGrpcApi.fetchCurrentEpoch()
@@ -216,5 +221,73 @@ describe('TcAbacusGrpcApi', () => {
         'TcAbacusGrpcApi.fetchInviteeReferrer => ' + (e as any).message,
       )
     }
+  })
+
+  test('maps referrer categories', () => {
+    const response = TcAbacusPb.Referrer.create({
+      category: 'kol1',
+    })
+
+    expect(
+      TcAbacusGrpcTransformer.grpcReferrerToReferrer(response).category,
+    ).toBe('kol1')
+  })
+
+  test('maps account stats categories', () => {
+    const response = TcAbacusPb.GetAccountStatsResponse.create({
+      category: 'kol2',
+    })
+
+    expect(
+      TcAbacusGrpcTransformer.grpcAccountStatsToAccountStats(response).category,
+    ).toBe('kol2')
+  })
+
+  test('normalizes empty referrer categories to default', () => {
+    const response = TcAbacusPb.Referrer.create()
+
+    expect(
+      TcAbacusGrpcTransformer.grpcReferrerToReferrer(response).category,
+    ).toBe('default')
+  })
+
+  test('preserves unknown referrer categories', () => {
+    const response = TcAbacusPb.Referrer.create({
+      category: 'unknown',
+    })
+
+    expect(
+      TcAbacusGrpcTransformer.grpcReferrerToReferrer(response).category,
+    ).toBe('unknown')
+  })
+
+  test('setReferrerCategory', async () => {
+    const executeGrpcCall = vi
+      .spyOn(tcAbacusGrpcApi as any, 'executeGrpcCall')
+      .mockResolvedValue({})
+
+    await expect(
+      tcAbacusGrpcApi.setReferrerCategory(injectiveAddress, 'kol2'),
+    ).resolves.toEqual({})
+
+    expect(executeGrpcCall).toHaveBeenCalledOnce()
+    expect(executeGrpcCall.mock.calls[0]?.[0]).toEqual(
+      expect.objectContaining({
+        address: injectiveAddress,
+        category: 'kol2',
+      }),
+    )
+  })
+
+  test('rejects invalid referrer categories', async () => {
+    const executeGrpcCall = vi.spyOn(tcAbacusGrpcApi as any, 'executeGrpcCall')
+    const category = 'unknown' as Parameters<
+      typeof tcAbacusGrpcApi.setReferrerCategory
+    >[1]
+
+    await expect(
+      tcAbacusGrpcApi.setReferrerCategory(injectiveAddress, category),
+    ).rejects.toThrow('Invalid referrer category: unknown')
+    expect(executeGrpcCall).not.toHaveBeenCalled()
   })
 })
