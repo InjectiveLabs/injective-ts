@@ -71,6 +71,7 @@ export class TcAbacusGrpcTransformer {
       code: response.code,
       address: response.address,
       isKol: response.isKol,
+      category: response.category as AccountStatsResponse['category'],
       last7DVolume: response.last7DVolume,
       inviteeCount: response.inviteeCount,
       allTimeVolume: response.allTimeVolume,
@@ -88,6 +89,7 @@ export class TcAbacusGrpcTransformer {
       height: referrer.height.toString(),
       isKol: referrer.isKol,
       status: referrer.status,
+      category: referrer.category as Referrer['category'],
       inviteeCount: referrer.inviteeCount,
       creatorAddress: referrer.creatorAddress,
     }

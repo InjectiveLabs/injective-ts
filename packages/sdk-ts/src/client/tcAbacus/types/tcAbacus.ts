@@ -1,3 +1,5 @@
+export type ReferrerCategory = 'default' | 'kol1' | 'kol2'
+
 export interface CurrentEpochResponse {
   epochEnd: string
   epochPoints: string
@@ -32,6 +34,7 @@ export interface AccountStatsResponse {
   code: string
   address: string
   isKol: boolean
+  category: ReferrerCategory
   last7DVolume: string
   inviteeCount: number
   allTimeVolume: string
@@ -47,6 +50,7 @@ export interface Referrer {
   createdAt: string
   isKol: boolean
   status: string
+  category: ReferrerCategory
   inviteeCount: number
   creatorAddress: string
 }

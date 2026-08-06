@@ -274,8 +274,8 @@ importers:
         specifier: 1.0.2
         version: 1.0.2
       '@injectivelabs/tc-abacus-proto-ts-v2':
-        specifier: 1.18.6
-        version: 1.18.6
+        specifier: 1.18.7
+        version: 1.18.7
       '@injectivelabs/ts-types':
         specifier: workspace:*
         version: link:../ts-types
@@ -1191,8 +1191,8 @@ packages:
   '@injectivelabs/string-decoder@1.3.0':
     resolution: {integrity: sha512-/SsVxTo7EKVP4WxEkrpbHC00Rfp15DcljOJa/BM33BcCIC+IiahEn4O9qXNTrSc0Nr3mLoONauKmkb+1z613kg==}
 
-  '@injectivelabs/tc-abacus-proto-ts-v2@1.18.6':
-    resolution: {integrity: sha512-Bl3MQir4UUYOB1O24PkFqbznlBoxkBfQC6e0lnnFkpn5Sno0kVaA0lWHjYG9JVoqDkwcKo3CefFQoLnv59hVZQ==}
+  '@injectivelabs/tc-abacus-proto-ts-v2@1.18.7':
+    resolution: {integrity: sha512-589j5nS7OyRArSYRhYy+Sh1ku78qMKbep8uZA4wz7ZMqZR97nu+fIodwrIW7UyQD819jqcJ4asLxPSIBGYsk8Q==}
 
   '@injectivelabs/ws-price-oracle-proto-ts-v2@1.0.5':
     resolution: {integrity: sha512-dGCUzEurROr8RiasViZH+i2g8FJdl46Vcm6pnyUcldxHgYCztlJNDxzUc5Unqze7+9+bWeu+5QMwXhw5DrtCvA==}
@@ -8683,7 +8683,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  '@injectivelabs/tc-abacus-proto-ts-v2@1.18.6':
+  '@injectivelabs/tc-abacus-proto-ts-v2@1.18.7':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

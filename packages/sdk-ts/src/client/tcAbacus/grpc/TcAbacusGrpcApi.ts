@@ -3,6 +3,7 @@ import * as TcAbacusPb from '@injectivelabs/tc-abacus-proto-ts-v2/generated/inje
 import { InjectiveTCAbacusRPCClient } from '@injectivelabs/tc-abacus-proto-ts-v2/generated/injective_tc_abacus_rpc_pb.client'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { TcAbacusGrpcTransformer } from './transformers/index.js'
+import type { ReferrerCategory } from '../types/index.js'
 
 export class TcAbacusGrpcApi extends BaseGrpcConsumer {
   protected module: string = IndexerErrorModule.Abacus
@@ -129,6 +130,18 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     >(request, this.client.createReferrerCode.bind(this.client))
 
     return response // has no response fields
+  }
+
+  async setReferrerCategory(address: string, category: ReferrerCategory) {
+    const request = TcAbacusPb.SetReferrerCategoryRequest.create({
+      address,
+      category,
+    })
+
+    return this.executeGrpcCall<
+      TcAbacusPb.SetReferrerCategoryRequest,
+      TcAbacusPb.SetReferrerCategoryResponse
+    >(request, this.client.setReferrerCategory.bind(this.client))
   }
 
   async fetchReferrerCodes(address: string, cursor?: string, limit?: number) {
