@@ -251,14 +251,14 @@ describe('TcAbacusGrpcApi', () => {
     ).toBe('default')
   })
 
-  test('normalizes unknown referrer categories to default', () => {
+  test('preserves unknown referrer categories', () => {
     const response = TcAbacusPb.Referrer.create({
       category: 'unknown',
     })
 
     expect(
       TcAbacusGrpcTransformer.grpcReferrerToReferrer(response).category,
-    ).toBe('default')
+    ).toBe('unknown')
   })
 
   test('setReferrerCategory', async () => {
@@ -277,5 +277,17 @@ describe('TcAbacusGrpcApi', () => {
         category: 'kol2',
       }),
     )
+  })
+
+  test('rejects invalid referrer categories', async () => {
+    const executeGrpcCall = vi.spyOn(tcAbacusGrpcApi as any, 'executeGrpcCall')
+    const category = 'unknown' as Parameters<
+      typeof tcAbacusGrpcApi.setReferrerCategory
+    >[1]
+
+    await expect(
+      tcAbacusGrpcApi.setReferrerCategory(injectiveAddress, category),
+    ).rejects.toThrow('Invalid referrer category: unknown')
+    expect(executeGrpcCall).not.toHaveBeenCalled()
   })
 })

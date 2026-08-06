@@ -1,4 +1,5 @@
 export type ReferrerCategory = 'default' | 'kol1' | 'kol2'
+export type ReferrerCategoryResponse = ReferrerCategory | (string & {})
 
 export interface CurrentEpochResponse {
   epochEnd: string
@@ -34,7 +35,7 @@ export interface AccountStatsResponse {
   code: string
   address: string
   isKol: boolean
-  category?: ReferrerCategory
+  category?: ReferrerCategoryResponse
   last7DVolume: string
   inviteeCount: number
   allTimeVolume: string
@@ -50,7 +51,7 @@ export interface Referrer {
   createdAt: string
   isKol: boolean
   status: string
-  category?: ReferrerCategory
+  category?: ReferrerCategoryResponse
   inviteeCount: number
   creatorAddress: string
 }

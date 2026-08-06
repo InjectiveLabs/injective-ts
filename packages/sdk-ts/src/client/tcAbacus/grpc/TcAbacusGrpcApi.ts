@@ -133,6 +133,10 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
   }
 
   async setReferrerCategory(address: string, category: ReferrerCategory) {
+    if (category !== 'default' && category !== 'kol1' && category !== 'kol2') {
+      throw new Error(`Invalid referrer category: ${category}`)
+    }
+
     const request = TcAbacusPb.SetReferrerCategoryRequest.create({
       address,
       category,

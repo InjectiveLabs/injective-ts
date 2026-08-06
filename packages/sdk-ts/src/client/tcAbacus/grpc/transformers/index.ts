@@ -5,7 +5,6 @@ import type {
   SnapshotPoints,
   ReferrerInvitee,
   InviteeReferrer,
-  ReferrerCategory,
   HealthCheckResponse,
   CurrentEpochResponse,
   AccountStatsResponse,
@@ -19,8 +18,8 @@ import type {
 export class TcAbacusGrpcTransformer {
   private static grpcReferrerCategoryToReferrerCategory(
     category: string,
-  ): ReferrerCategory {
-    return category === 'kol1' || category === 'kol2' ? category : 'default'
+  ): NonNullable<AccountStatsResponse['category']> {
+    return category || 'default'
   }
 
   static grpcCurrentEpochToCurrentEpoch(
