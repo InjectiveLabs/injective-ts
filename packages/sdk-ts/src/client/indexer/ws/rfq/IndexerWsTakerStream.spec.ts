@@ -137,3 +137,77 @@ describe('IndexerWsTakerStream heartbeat encode failures', () => {
     vi.useRealTimers()
   })
 })
+
+describe('IndexerWsTakerStream authentication', () => {
+  it('encodes auth and emits challenge and result events', async () => {
+    const stream = new IndexerWsTakerStream({
+      url: 'wss://rfq.example',
+      requestAddress: 'inj1test',
+    })
+    const challengeListener = vi.fn()
+    const resultListener = vi.fn()
+    stream.on('challenge', challengeListener)
+    stream.on('auth_result', resultListener)
+
+    await stream.connect()
+    stream.sendAuth({ evmChainId: 1, signature: '0xsig' })
+
+    const transport = mockTransportInstances.at(-1)
+    if (!transport) {
+      throw new Error('Expected mock transport instance')
+    }
+
+    const sent = transport.send.mock.calls.at(-1)?.[0]
+    const auth =
+      InjectiveRFQExchangeRpcPb.TakerStreamStreamingRequest.fromBinary(
+        sent!.subarray(5),
+      )
+    expect(auth).toMatchObject({
+      messageType: 'auth',
+      auth: { evmChainId: 1n, signature: '0xsig' },
+    })
+
+    for (const response of [
+      {
+        messageType: 'challenge',
+        challenge: {
+          nonce: '0xnonce',
+          evmChainId: 1n,
+          expiresAt: 2n,
+          autosignAddress: '0xauto',
+        },
+      },
+      {
+        messageType: 'auth_result',
+        authResult: {
+          authenticated: true,
+          code: 'success',
+          message: 'verified',
+        },
+      },
+    ]) {
+      transport.emit(
+        'message',
+        createPongFrame(
+          InjectiveRFQExchangeRpcPb.TakerStreamResponse.toBinary(
+            InjectiveRFQExchangeRpcPb.TakerStreamResponse.create(response),
+          ),
+        ).buffer,
+      )
+    }
+
+    expect(challengeListener).toHaveBeenCalledWith({
+      challenge: {
+        nonce: '0xnonce',
+        evmChainId: 1,
+        expiresAt: 2,
+        autosignAddress: '0xauto',
+      },
+    })
+    expect(resultListener).toHaveBeenCalledWith({
+      authenticated: true,
+      code: 'success',
+      message: 'verified',
+    })
+  })
+})
