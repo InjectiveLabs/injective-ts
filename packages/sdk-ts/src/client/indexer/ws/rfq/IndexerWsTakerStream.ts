@@ -4,11 +4,13 @@ import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
 import type { WsState } from '../../types'
-import type { RFQRequestInputType } from '../../types'
+import type { RFQTakerAuth, RFQRequestInputType } from '../../types'
 import type {
   TakerStreamConfig,
   TakerStreamEvents,
+  RFQTakerChallenge,
   RFQStreamErrorData,
+  RFQTakerAuthResult,
   RFQTakerStreamAckData,
 } from '../../types'
 
@@ -78,6 +80,14 @@ export class IndexerWsTakerStream {
 
     const encoded = GrpcWebSocketCodec.encodeTakerRequest(request)
     this.transport.send(encoded)
+  }
+
+  sendAuth(auth: RFQTakerAuth): void {
+    if (!this.isConnected()) {
+      throw new Error('Cannot send auth: stream is not connected')
+    }
+
+    this.transport.send(GrpcWebSocketCodec.encodeTakerAuth(auth))
   }
 
   on<T extends keyof TakerStreamEvents>(
@@ -152,6 +162,29 @@ export class IndexerWsTakerStream {
       }
 
       switch (response.messageType) {
+        case 'challenge':
+          if (response.challenge) {
+            const challenge: RFQTakerChallenge = {
+              nonce: response.challenge.nonce,
+              evmChainId: Number(response.challenge.evmChainId),
+              expiresAt: Number(response.challenge.expiresAt),
+              autosignAddress: response.challenge.autosignAddress,
+            }
+            this.emit('challenge', { challenge })
+          }
+          break
+
+        case 'auth_result':
+          if (response.authResult) {
+            const authResult: RFQTakerAuthResult = {
+              authenticated: response.authResult.authenticated,
+              code: response.authResult.code,
+              message: response.authResult.message,
+            }
+            this.emit('auth_result', authResult)
+          }
+          break
+
         case 'pong':
           this.emit('pong', undefined)
           break

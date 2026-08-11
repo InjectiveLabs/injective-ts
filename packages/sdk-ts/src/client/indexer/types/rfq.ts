@@ -34,6 +34,7 @@ export interface RFQRequestInputType {
   direction: string
   worstPrice: string
   priceCheck?: boolean
+  memo?: string
   requestAddress?: string
   transactionTime?: number
 }
@@ -209,6 +210,24 @@ export interface RFQTakerStreamAckData {
   clientId: string
 }
 
+export interface RFQTakerAuth {
+  evmChainId: number
+  signature: string
+}
+
+export interface RFQTakerChallenge {
+  nonce: string
+  evmChainId: number
+  expiresAt: number
+  autosignAddress: string
+}
+
+export interface RFQTakerAuthResult {
+  authenticated: boolean
+  code: string
+  message: string
+}
+
 export interface RFQMakerStreamAckData {
   rfqId: number
   status: string
@@ -234,6 +253,12 @@ export interface TakerStreamEvents {
   conditional_order_update: {
     order: RFQConditionalOrder
   }
+  /** Auth challenge issued by server */
+  challenge: {
+    challenge: RFQTakerChallenge
+  }
+  /** Result of taker stream authentication */
+  auth_result: RFQTakerAuthResult
   /** Error received from server */
   error: RFQStreamErrorData
   /** Heartbeat ping sent via the local transport */
