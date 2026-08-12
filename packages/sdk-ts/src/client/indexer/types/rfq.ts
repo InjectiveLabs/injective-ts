@@ -281,6 +281,8 @@ export interface TakerStreamEvents {
 export interface TakerStreamConfig {
   url: string
   requestAddress: string
+  authVersion?: 'v1'
+  autosignAddress?: string
   pingIntervalMs?: number
   connectionTimeoutMs?: number
   reconnect?: WsTransportConfig['reconnect']

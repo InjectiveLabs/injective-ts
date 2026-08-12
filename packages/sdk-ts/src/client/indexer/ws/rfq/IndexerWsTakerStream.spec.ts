@@ -12,11 +12,13 @@ const { mockTransportInstances, MockGrpcWebSocketTransport } = vi.hoisted(
     const mockTransportInstances: MockGrpcWebSocketTransport[] = []
 
     class MockGrpcWebSocketTransport {
+      config: unknown
       private listeners = new Map<string, Set<(data: any) => void>>()
       private connected = false
       send = vi.fn<(data: Uint8Array) => void>()
 
-      constructor(_config: unknown) {
+      constructor(config: unknown) {
+        this.config = config
         mockTransportInstances.push(this)
       }
 
@@ -208,6 +210,26 @@ describe('IndexerWsTakerStream authentication', () => {
       authenticated: true,
       code: 'success',
       message: 'verified',
+    })
+  })
+
+  it('passes requested auth metadata when creating the transport', () => {
+    new IndexerWsTakerStream({
+      url: 'wss://rfq.example',
+      requestAddress: 'inj1test',
+      authVersion: 'v1',
+      autosignAddress: 'inj1autosign',
+    })
+
+    expect(mockTransportInstances.at(-1)).toMatchObject({
+      config: {
+        metadata: {
+          request_address: 'inj1test',
+          auth_version: 'v1',
+          autosign_address: 'inj1autosign',
+          subscribe_to_conditional_order_updates: 'true',
+        },
+      },
     })
   })
 })
