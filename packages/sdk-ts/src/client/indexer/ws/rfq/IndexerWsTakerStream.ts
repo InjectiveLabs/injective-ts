@@ -38,6 +38,10 @@ export class IndexerWsTakerStream {
       reconnect: config.reconnect,
       metadata: {
         request_address: config.requestAddress,
+        ...(config.authVersion ? { auth_version: config.authVersion } : {}),
+        ...(config.autosignAddress
+          ? { autosign_address: config.autosignAddress }
+          : {}),
         subscribe_to_conditional_order_updates: 'true',
       },
     })
