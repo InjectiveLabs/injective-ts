@@ -152,7 +152,7 @@ describe('IndexerWsTakerStream authentication', () => {
     stream.on('auth_result', resultListener)
 
     await stream.connect()
-    stream.sendAuth({ evmChainId: 1, signature: '0xsig' })
+    stream.sendAuth({ signature: '0xsig' })
 
     const transport = mockTransportInstances.at(-1)
     if (!transport) {
@@ -166,7 +166,7 @@ describe('IndexerWsTakerStream authentication', () => {
       )
     expect(auth).toMatchObject({
       messageType: 'auth',
-      auth: { evmChainId: 1n, signature: '0xsig' },
+      auth: { signature: '0xsig' },
     })
 
     for (const response of [
@@ -174,7 +174,6 @@ describe('IndexerWsTakerStream authentication', () => {
         messageType: 'challenge',
         challenge: {
           nonce: '0xnonce',
-          evmChainId: 1n,
           expiresAt: 2n,
           autosignAddress: '0xauto',
         },
@@ -201,7 +200,6 @@ describe('IndexerWsTakerStream authentication', () => {
     expect(challengeListener).toHaveBeenCalledWith({
       challenge: {
         nonce: '0xnonce',
-        evmChainId: 1,
         expiresAt: 2,
         autosignAddress: '0xauto',
       },

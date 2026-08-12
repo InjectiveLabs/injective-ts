@@ -170,7 +170,6 @@ export class IndexerWsTakerStream {
           if (response.challenge) {
             const challenge: RFQTakerChallenge = {
               nonce: response.challenge.nonce,
-              evmChainId: Number(response.challenge.evmChainId),
               expiresAt: Number(response.challenge.expiresAt),
               autosignAddress: response.challenge.autosignAddress,
             }
