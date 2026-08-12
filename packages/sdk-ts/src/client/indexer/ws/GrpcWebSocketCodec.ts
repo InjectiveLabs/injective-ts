@@ -61,7 +61,6 @@ export const GrpcWebSocketCodec = {
         messageType: 'auth',
         auth: InjectiveRFQExchangeRpcPb.TakerAuth.create({
           signature: auth.signature,
-          evmChainId: BigInt(auth.evmChainId),
         }),
       })
     return encodeGrpcFrame(

@@ -211,13 +211,11 @@ export interface RFQTakerStreamAckData {
 }
 
 export interface RFQTakerAuth {
-  evmChainId: number
   signature: string
 }
 
 export interface RFQTakerChallenge {
   nonce: string
-  evmChainId: number
   expiresAt: number
   autosignAddress: string
 }
