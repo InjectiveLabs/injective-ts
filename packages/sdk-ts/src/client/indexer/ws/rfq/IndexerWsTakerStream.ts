@@ -39,9 +39,6 @@ export class IndexerWsTakerStream {
       metadata: {
         request_address: config.requestAddress,
         ...(config.authVersion ? { auth_version: config.authVersion } : {}),
-        ...(config.autosignAddress
-          ? { autosign_address: config.autosignAddress }
-          : {}),
         subscribe_to_conditional_order_updates: 'true',
       },
     })
@@ -171,7 +168,6 @@ export class IndexerWsTakerStream {
             const challenge: RFQTakerChallenge = {
               nonce: response.challenge.nonce,
               expiresAt: Number(response.challenge.expiresAt),
-              autosignAddress: response.challenge.autosignAddress,
             }
             this.emit('challenge', { challenge })
           }

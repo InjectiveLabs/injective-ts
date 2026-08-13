@@ -175,7 +175,6 @@ describe('IndexerWsTakerStream authentication', () => {
         challenge: {
           nonce: '0xnonce',
           expiresAt: 2n,
-          autosignAddress: '0xauto',
         },
       },
       {
@@ -201,7 +200,6 @@ describe('IndexerWsTakerStream authentication', () => {
       challenge: {
         nonce: '0xnonce',
         expiresAt: 2,
-        autosignAddress: '0xauto',
       },
     })
     expect(resultListener).toHaveBeenCalledWith({
@@ -216,7 +214,6 @@ describe('IndexerWsTakerStream authentication', () => {
       url: 'wss://rfq.example',
       requestAddress: 'inj1test',
       authVersion: 'v1',
-      autosignAddress: 'inj1autosign',
     })
 
     expect(mockTransportInstances.at(-1)).toMatchObject({
@@ -224,7 +221,6 @@ describe('IndexerWsTakerStream authentication', () => {
         metadata: {
           request_address: 'inj1test',
           auth_version: 'v1',
-          autosign_address: 'inj1autosign',
           subscribe_to_conditional_order_updates: 'true',
         },
       },
