@@ -217,7 +217,6 @@ export interface RFQTakerAuth {
 export interface RFQTakerChallenge {
   nonce: string
   expiresAt: number
-  autosignAddress: string
 }
 
 export interface RFQTakerAuthResult {
@@ -280,7 +279,6 @@ export interface TakerStreamConfig {
   url: string
   requestAddress: string
   authVersion?: 'v1'
-  autosignAddress?: string
   pingIntervalMs?: number
   connectionTimeoutMs?: number
   reconnect?: WsTransportConfig['reconnect']

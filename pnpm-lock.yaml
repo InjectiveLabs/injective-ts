@@ -259,8 +259,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
       '@injectivelabs/indexer-proto-ts-v2':
-        specifier: 1.20.2
-        version: 1.20.2
+        specifier: 1.20.3
+        version: 1.20.3
       '@injectivelabs/mito-proto-ts-v2':
         specifier: 1.17.3
         version: 1.17.3
@@ -683,6 +683,78 @@ importers:
       '@reown/appkit-adapter-ethers':
         specifier: 1.8.15
         version: 1.8.15(@ethersproject/sha2@5.8.0)(@types/react@19.2.10)(bufferutil@4.1.0)(ethers@6.17.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(fastestsmallesttextencoderdecoder@1.0.22)(immer@11.1.8)(react@19.0.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
+
+  protoV2/abacus/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/core/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/indexer/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/mito/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/olp/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/tcAbacus/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
 
 packages:
 
@@ -1176,8 +1248,8 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-  '@injectivelabs/indexer-proto-ts-v2@1.20.2':
-    resolution: {integrity: sha512-eHAbCt+C1Pfak20qIO7CGLmjYQo3/dPg4AGiglrxdmN9r3v0XqjOgEB4LOvBuRmIzFUI7PNafqwLLwYDI7ys0w==}
+  '@injectivelabs/indexer-proto-ts-v2@1.20.3':
+    resolution: {integrity: sha512-zfFf8asy8NYm2yfKXMxdlXYjIXjdhQoWOKhScn7Px3lfW20yzgrs46QoLCaKkgwsWAP+5PMnHGcOqoH5bol2WA==}
 
   '@injectivelabs/mito-proto-ts-v2@1.17.3':
     resolution: {integrity: sha512-Fo6k1MCPT3CKUS9tbMbl/poGv7R8KHtA7RfU7mvxxVWS7MpF+LLZA6UgegfEA1iiJgIrhe+eEwEvhIOe6SiUzw==}
@@ -8655,7 +8727,7 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.4
 
-  '@injectivelabs/indexer-proto-ts-v2@1.20.2':
+  '@injectivelabs/indexer-proto-ts-v2@1.20.3':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1
