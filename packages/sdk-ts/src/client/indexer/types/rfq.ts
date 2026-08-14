@@ -223,6 +223,7 @@ export interface RFQTakerAuthResult {
   authenticated: boolean
   code: string
   message: string
+  nonce: string
 }
 
 export interface RFQMakerStreamAckData {

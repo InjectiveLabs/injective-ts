@@ -179,6 +179,7 @@ export class IndexerWsTakerStream {
               authenticated: response.authResult.authenticated,
               code: response.authResult.code,
               message: response.authResult.message,
+              nonce: response.authResult.nonce,
             }
             this.emit('auth_result', authResult)
           }
