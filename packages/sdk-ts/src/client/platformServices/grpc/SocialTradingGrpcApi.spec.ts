@@ -20,7 +20,6 @@ describe('SocialTradingGrpcApi', () => {
             fees: '0.1',
             side: 'long',
             state: 'closed',
-            netPnl: '1.13',
             quantity: '10',
             marketId: '0xmarket',
             openedAt: '2026-07-01T00:00:00Z',
@@ -253,10 +252,12 @@ describe('SocialTradingGrpcApi', () => {
         totalAccounts: 123n,
       })
 
-    const response = await socialTradingGrpcApi.fetchAccountCount()
+    const response = await socialTradingGrpcApi.fetchAccountCount({
+      window: '7d',
+    })
     const [request] = executeGrpcCall.mock.calls[0]
 
-    expect(request).toMatchObject({})
+    expect(request).toMatchObject({ window: '7d' })
     expect(response).toEqual(
       expect.objectContaining<
         ReturnType<
