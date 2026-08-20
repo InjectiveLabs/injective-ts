@@ -4,6 +4,7 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { PlatformServicesGrpcPositionsTransformer } from '../transformers/index.js'
 import type {
   PlatformServicesListPositionsParams,
+  PlatformServicesGetAccountCountParams,
   PlatformServicesListPositionTradesParams,
   PlatformServicesGetAccountDailyPNLParams,
   PlatformServicesGetAccountPositionStatsParams,
@@ -112,8 +113,12 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchAccountCount() {
-    const request = PlatformServicesPositionsPb.GetAccountCountRequest.create()
+  async fetchAccountCount(params?: PlatformServicesGetAccountCountParams) {
+    const { window } = params || {}
+
+    const request = PlatformServicesPositionsPb.GetAccountCountRequest.create({
+      window,
+    })
 
     const response = await this.executeGrpcCall<
       PlatformServicesPositionsPb.GetAccountCountRequest,

@@ -22,7 +22,6 @@ export class PlatformServicesGrpcPositionsTransformer {
       fees: position.fees,
       side: position.side,
       state: position.state,
-      netPnl: position.netPnl,
       quantity: position.quantity,
       marketId: position.marketId,
       openedAt: position.openedAt,

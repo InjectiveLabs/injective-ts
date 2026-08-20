@@ -11,6 +11,8 @@ export type PlatformServicesPositionsSortBy =
   | 'trade_count'
   | 'num_trades'
   | 'win_rate'
+  | 'avg_duration'
+  | 'avg_hold_duration'
 
 export type PlatformServicesPositionsSortDirection = 'asc' | 'desc'
 
@@ -51,13 +53,16 @@ export interface PlatformServicesListPositionTradesParams {
   nextToken?: string
 }
 
+export interface PlatformServicesGetAccountCountParams {
+  window?: PlatformServicesPositionsStatsWindow
+}
+
 export interface PlatformServicesPosition {
   id: string
   pnl: string
   side: string
   fees: string
   state: string
-  netPnl: string
   marketId: string
   quantity: string
   openedAt: string
