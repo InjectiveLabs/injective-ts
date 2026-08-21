@@ -2,10 +2,7 @@ import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcExchangeApiV2 } from './ChainGrpcExchangeApiV2.js'
 import type * as InjectiveExchangeV2QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/query_pb'
-import type {
-  ChainGrpcExchangeTransformer,
-  ChainGrpcExchangeTransformerV2,
-} from '../transformers/index.js'
+import type { ChainGrpcExchangeTransformerV2 } from '../transformers/index.js'
 
 const derivativeMarketId = mockFactory.derivativeMarketId
 const injectiveAddress = mockFactory.injectiveAddress
@@ -22,7 +19,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.moduleParamsResponseToParams
+            typeof ChainGrpcExchangeTransformerV2.moduleParamsResponseToParams
           >
         >(response),
       )
@@ -41,7 +38,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.feeDiscountScheduleResponseToFeeDiscountSchedule
+            typeof ChainGrpcExchangeTransformerV2.feeDiscountScheduleResponseToFeeDiscountSchedule
           >
         >(response),
       )
@@ -64,7 +61,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.feeDiscountAccountInfoResponseToFeeDiscountAccountInfo
+            typeof ChainGrpcExchangeTransformerV2.feeDiscountAccountInfoResponseToFeeDiscountAccountInfo
           >
         >(response),
       )
@@ -85,7 +82,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign
+            typeof ChainGrpcExchangeTransformerV2.tradingRewardsCampaignResponseToTradingRewardsCampaign
           >
         >(response),
       )
@@ -158,7 +155,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.positionsResponseToPositions
+            typeof ChainGrpcExchangeTransformerV2.positionsResponseToPositions
           >
         >(response),
       )
@@ -174,7 +171,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       const response =
         await chainGrpcExchangeApiV2.fetchCrossMarginPoolSnapshot({
           subaccountId,
-          quoteDenom: 'USDT',
+          quoteDenom: 'peggy0xdAC17F958D2ee523a2206206994597C13D831ec7',
         })
 
       expect(response).toBeDefined()
@@ -221,7 +218,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.isOptedOutOfRewardsResponseToIsOptedOutOfRewards
+            typeof ChainGrpcExchangeTransformerV2.isOptedOutOfRewardsResponseToIsOptedOutOfRewards
           >
         >(response),
       )
@@ -242,7 +239,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.activeStakeGrantResponseToActiveStakeGrant
+            typeof ChainGrpcExchangeTransformerV2.activeStakeGrantResponseToActiveStakeGrant
           >
         >(response),
       )
@@ -273,7 +270,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.denomDecimalsResponseToDenomDecimals
+            typeof ChainGrpcExchangeTransformerV2.denomDecimalsResponseToDenomDecimals
           >
         >(response),
       )
@@ -304,7 +301,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.denomMinNotionalsResponseToDenomMinNotionals
+            typeof ChainGrpcExchangeTransformerV2.denomMinNotionalsResponseToDenomMinNotionals
           >
         >(response),
       )
@@ -324,7 +321,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.fullDerivativeMarketsResponseToDerivativeMarkets
+            typeof ChainGrpcExchangeTransformerV2.derivativeMarketsResponseToDerivativeMarkets
           >
         >(response),
       )
@@ -344,7 +341,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.spotMarketsResponseToSpotMarkets
+            typeof ChainGrpcExchangeTransformerV2.spotMarketsResponseToSpotMarkets
           >
         >(response),
       )
@@ -363,7 +360,7 @@ describe('ChainGrpcExchangeApiV2', () => {
       expect(response).toEqual(
         expect.objectContaining<
           ReturnType<
-            typeof ChainGrpcExchangeTransformer.fullSpotMarketsResponseToSpotMarkets
+            typeof ChainGrpcExchangeTransformerV2.fullSpotMarketsResponseToSpotMarkets
           >
         >(response),
       )

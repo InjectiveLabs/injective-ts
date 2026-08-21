@@ -2,10 +2,7 @@ import * as InjectiveExchangeV2QueryPb from '@injectivelabs/core-proto-ts-v2/gen
 import { QueryClient as InjectiveExchangeV2QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
-import {
-  ChainGrpcExchangeTransformer,
-  ChainGrpcExchangeTransformerV2,
-} from '../transformers/index.js'
+import { ChainGrpcExchangeTransformerV2 } from '../transformers/index.js'
 import type * as InjectiveExchangeV2GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/genesis_pb'
 import type * as InjectiveExchangeV2ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/exchange_pb'
 
@@ -27,7 +24,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryExchangeParamsResponse
     >(request, this.client.queryExchangeParams.bind(this.client))
 
-    return ChainGrpcExchangeTransformer.moduleParamsResponseToParams(response)
+    return ChainGrpcExchangeTransformerV2.moduleParamsResponseToParams(response)
   }
 
   async fetchModuleState(): Promise<InjectiveExchangeV2GenesisPb.GenesisState> {
@@ -50,7 +47,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryFeeDiscountScheduleResponse
     >(request, this.client.feeDiscountSchedule.bind(this.client))
 
-    return ChainGrpcExchangeTransformer.feeDiscountScheduleResponseToFeeDiscountSchedule(
+    return ChainGrpcExchangeTransformerV2.feeDiscountScheduleResponseToFeeDiscountSchedule(
       response,
     )
   }
@@ -65,7 +62,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryFeeDiscountAccountInfoResponse
     >(request, this.client.feeDiscountAccountInfo.bind(this.client))
 
-    return ChainGrpcExchangeTransformer.feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
+    return ChainGrpcExchangeTransformerV2.feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
       response,
     )
   }
@@ -78,7 +75,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryTradeRewardCampaignResponse
     >(request, this.client.tradeRewardCampaign.bind(this.client))
 
-    return ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign(
+    return ChainGrpcExchangeTransformerV2.tradingRewardsCampaignResponseToTradingRewardsCampaign(
       response,
     )
   }
@@ -106,7 +103,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryTradeRewardPointsRequest.create()
     request.accounts = injectiveAddresses
 
-    if (timestamp) {
+    if (timestamp !== undefined) {
       request.pendingPoolTimestamp = BigInt(timestamp)
     }
 
@@ -127,7 +124,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryPositionsResponse
     >(request, this.client.positions.bind(this.client))
 
-    return ChainGrpcExchangeTransformer.positionsResponseToPositions(response)
+    return ChainGrpcExchangeTransformerV2.positionsResponseToPositions(response)
   }
 
   async fetchSubaccountTradeNonce(subaccountId: string) {
@@ -153,7 +150,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryIsOptedOutOfRewardsResponse
     >(request, this.client.isOptedOutOfRewards.bind(this.client))
 
-    return ChainGrpcExchangeTransformer.isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
+    return ChainGrpcExchangeTransformerV2.isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
       response,
     )
   }
@@ -171,7 +168,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryActiveStakeGrantResponse
     >(request, this.client.activeStakeGrant.bind(this.client))
 
-    return ChainGrpcExchangeTransformer.activeStakeGrantResponseToActiveStakeGrant(
+    return ChainGrpcExchangeTransformerV2.activeStakeGrantResponseToActiveStakeGrant(
       response,
     )
   }
@@ -203,7 +200,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       this.client.auctionExchangeTransferDenomDecimals.bind(this.client),
     )
 
-    return ChainGrpcExchangeTransformer.denomDecimalsResponseToDenomDecimals(
+    return ChainGrpcExchangeTransformerV2.denomDecimalsResponseToDenomDecimals(
       response,
     )
   }
@@ -229,7 +226,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryDenomMinNotionalsResponse
     >(request, this.client.denomMinNotionals.bind(this.client))
 
-    return ChainGrpcExchangeTransformer.denomMinNotionalsResponseToDenomMinNotionals(
+    return ChainGrpcExchangeTransformerV2.denomMinNotionalsResponseToDenomMinNotionals(
       response,
     )
   }
@@ -490,10 +487,10 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
     const request =
       InjectiveExchangeV2QueryPb.QuerySpotOrderbookRequest.create()
     request.marketId = marketId
-    if (limit) {
+    if (limit !== undefined) {
       request.limit = BigInt(limit)
     }
-    if (orderSide) {
+    if (orderSide !== undefined) {
       request.orderSide = orderSide
     }
     if (limitCumulativeNotional) {
@@ -658,7 +655,7 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
     const request =
       InjectiveExchangeV2QueryPb.QueryDerivativeOrderbookRequest.create()
     request.marketId = marketId
-    if (limit) {
+    if (limit !== undefined) {
       request.limit = BigInt(limit)
     }
     if (limitCumulativeNotional) {
@@ -843,7 +840,9 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QueryPositionsInMarketResponse
     >(request, this.client.positionsInMarket.bind(this.client))
 
-    return ChainGrpcExchangeTransformerV2.positionsResponseToPositions(response)
+    return ChainGrpcExchangeTransformerV2.positionsInMarketResponseToPositions(
+      response,
+    )
   }
 
   async fetchSubaccountPositions(subaccountId: string) {
@@ -856,7 +855,9 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
       InjectiveExchangeV2QueryPb.QuerySubaccountPositionsResponse
     >(request, this.client.subaccountPositions.bind(this.client))
 
-    return ChainGrpcExchangeTransformerV2.positionsResponseToPositions(response)
+    return ChainGrpcExchangeTransformerV2.positionsInMarketResponseToPositions(
+      response,
+    )
   }
 
   async fetchSubaccountPositionInMarket({

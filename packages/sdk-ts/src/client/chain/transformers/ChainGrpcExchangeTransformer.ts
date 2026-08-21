@@ -41,7 +41,11 @@ export class ChainGrpcExchangeTransformer {
   static moduleStateResponseToModuleState(
     response: InjectiveExchangeV1Beta1QueryPb.QueryModuleStateResponse,
   ): InjectiveExchangeV1Beta1GenesisPb.GenesisState {
-    return response.state!
+    if (!response.state) {
+      throw new Error('Exchange module state not found in response')
+    }
+
+    return response.state
   }
 
   static moduleParamsResponseToParams(
