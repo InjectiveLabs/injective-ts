@@ -36,7 +36,9 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
       InjectiveExchangeV1Beta1QueryPb.QueryModuleStateResponse
     >(request, this.client.exchangeModuleState.bind(this.client))
 
-    return response.state!
+    return ChainGrpcExchangeTransformer.moduleStateResponseToModuleState(
+      response,
+    )
   }
 
   async fetchFeeDiscountSchedule() {

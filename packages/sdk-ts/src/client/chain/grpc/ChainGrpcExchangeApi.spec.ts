@@ -37,7 +37,9 @@ describe('ChainGrpcExchangeApi', () => {
       expect(response).toBeDefined()
       expect(response).toEqual(
         expect.objectContaining<
-          InjectiveExchangeV1Beta1QueryPb.QueryModuleStateResponse['state']
+          ReturnType<
+            typeof ChainGrpcExchangeTransformer.moduleStateResponseToModuleState
+          >
         >(response),
       )
     } catch (e) {

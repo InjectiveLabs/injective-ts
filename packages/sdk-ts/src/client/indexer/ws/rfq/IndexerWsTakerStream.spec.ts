@@ -206,6 +206,7 @@ describe('IndexerWsTakerStream authentication', () => {
       authenticated: true,
       code: 'success',
       message: 'verified',
+      nonce: '',
     })
   })
 

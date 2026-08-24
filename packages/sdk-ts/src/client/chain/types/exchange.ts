@@ -129,6 +129,241 @@ export interface ChainDenomMinNotional {
   minNotional: string
 }
 
+export interface ChainCrossMarginPoolSnapshot {
+  quoteDenom: string
+  quoteBalance: string
+  positionMarginTotal: string
+  unrealizedPnl: string
+  unrealizedPnlEffective: string
+  equityAdmission: string
+  equityLiquidation: string
+  initialMarginTotal: string
+  maintenanceMarginTotal: string
+  initialMarginWithOrdersTotal: string
+  entryLossTotal: string
+  feeReserveTotal: string
+  orderLockRequirement: string
+  positiveUpnlHaircutRate: string
+  healthFactor: string
+}
+
+export interface ChainOrderbookLevel {
+  price: string
+  quantity: string
+}
+
+export interface ChainL3Orderbook {
+  bids: Array<{
+    price: string
+    quantity: string
+    orderHash: string
+    subaccountId: string
+  }>
+  asks: Array<{
+    price: string
+    quantity: string
+    orderHash: string
+    subaccountId: string
+  }>
+  sequence: number
+}
+
+export interface ChainOrderbook {
+  buys: ChainOrderbookLevel[]
+  sells: ChainOrderbookLevel[]
+  sequence: number
+}
+
+export interface ChainTrimmedSpotLimitOrder {
+  price: string
+  quantity: string
+  fillable: string
+  isBuy: boolean
+  orderHash: string
+  cid: string
+}
+
+export interface ChainTrimmedDerivativeLimitOrder extends ChainTrimmedSpotLimitOrder {
+  margin: string
+}
+
+export interface ChainTrimmedDerivativeConditionalOrder {
+  price: string
+  quantity: string
+  margin: string
+  triggerPrice: string
+  isBuy: boolean
+  isLimit: boolean
+  orderHash: string
+  cid: string
+}
+
+export interface ChainSubaccountOrderData {
+  order?: {
+    price: string
+    quantity: string
+    isReduceOnly: boolean
+    cid: string
+  }
+  orderHash: string
+}
+
+export interface ChainTradeRewardPoints {
+  accountTradeRewardPoints: string[]
+}
+
+export interface ChainOpenInterest {
+  marketId: string
+  balance: string
+}
+
+export interface ChainDeposit {
+  availableBalance: string
+  totalBalance: string
+}
+
+export interface ChainMarketVolume {
+  marketId: string
+  volume?: {
+    makerVolume: string
+    takerVolume: string
+  }
+}
+
+export interface ChainAggregateAccountVolume {
+  account: string
+  marketVolumes: ChainMarketVolume[]
+}
+
+export interface ChainMidPriceAndTob {
+  midPrice: string
+  bestBuyPrice: string
+  bestSellPrice: string
+}
+
+export interface ChainDerivativeMarketAddress {
+  address: string
+  subaccountId: string
+}
+
+export interface ChainSubaccountRiskProfile {
+  mode: number
+  reservationPolicy: number
+  creditLineId: string
+}
+
+export interface ChainEffectivePosition {
+  isLong: boolean
+  quantity: string
+  entryPrice: string
+  effectiveMargin: string
+}
+
+export interface ChainPerpetualMarketInfo {
+  marketId: string
+  hourlyFundingRateCap: string
+  hourlyInterestRate: string
+  nextFundingTimestamp: number
+  fundingInterval: number
+}
+
+export interface ChainExpiryFuturesMarketInfo {
+  marketId: string
+  expirationTimestamp: number
+  twapStartTimestamp: number
+  expirationTwapStartPriceCumulative: string
+  settlementPrice: string
+  expirationTwapStartBaseCumulativePrice: string
+  expirationTwapStartQuoteCumulativePrice: string
+}
+
+export interface ChainPerpetualMarketFunding {
+  cumulativeFunding: string
+  cumulativePrice: string
+  lastTimestamp: number
+}
+
+export interface ChainTierStatistic {
+  tier: number
+  count: number
+}
+
+export interface ChainTradeRecord {
+  timestamp: number
+  price: string
+  quantity: string
+}
+
+export interface ChainTradeRecords {
+  marketId: string
+  latestTradeRecords: ChainTradeRecord[]
+}
+
+export interface ChainGrantAuthorization {
+  grantee: string
+  amount: string
+}
+
+export interface ChainMarketBalance {
+  marketId: string
+  balance: string
+}
+
+export interface ChainSubaccountOrderbookMetadata {
+  marketId: string
+  isBuy: boolean
+  metadata?: {
+    vanillaLimitOrderCount: number
+    reduceOnlyLimitOrderCount: number
+    aggregateReduceOnlyQuantity: string
+    aggregateVanillaQuantity: string
+    vanillaConditionalOrderCount: number
+    reduceOnlyConditionalOrderCount: number
+  }
+}
+
+export interface ChainMarketVolatility {
+  volatility: string
+  historyMetadata?: {
+    groupCount: number
+    recordsSampleSize: number
+    mean: string
+    twap: string
+    firstTimestamp: number
+    lastTimestamp: number
+    minPrice: string
+    maxPrice: string
+    medianPrice: string
+  }
+  rawHistory: ChainTradeRecord[]
+}
+
+export interface ChainBinaryOptionsMarket {
+  ticker: string
+  oracleSymbol: string
+  oracleProvider: string
+  oracleType: number
+  oracleScaleFactor: number
+  expirationTimestamp: number
+  settlementTimestamp: number
+  admin: string
+  quoteDenom: string
+  marketId: string
+  makerFeeRate: string
+  takerFeeRate: string
+  relayerFeeShareRate: string
+  status: number
+  minPriceTickSize: string
+  minQuantityTickSize: string
+  settlementPrice: string
+  minNotional: string
+  adminPermissions: number
+  quoteDecimals: number
+  openNotionalCap?: { type?: 'uncapped' | 'capped'; value?: string }
+  hasDisabledMinimalProtocolFee: boolean
+  forcePausedInfo?: { reason: number; markPriceAtPausing: string }
+}
+
 export type GrpcOrderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo
 export type GrpcSpotMarket = InjectiveExchangeV1Beta1ExchangePb.SpotMarket
 export type GrpcSpotMarketOrder =

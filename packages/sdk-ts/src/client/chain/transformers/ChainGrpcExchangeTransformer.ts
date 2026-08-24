@@ -1,6 +1,7 @@
 import { toHumanReadable } from '@injectivelabs/utils'
 import { denomAmountFromGrpcChainDenomAmount } from './../../../utils/numbers.js'
 import type * as InjectiveExchangeV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb'
+import type * as InjectiveExchangeV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/genesis_pb'
 import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import type { SpotMarket } from '../../indexer/types/spot.js'
 import type { DerivativeMarket } from '../../indexer/types/derivatives.js'
@@ -37,6 +38,16 @@ import type {
  * @category Chain Grpc Transformer
  */
 export class ChainGrpcExchangeTransformer {
+  static moduleStateResponseToModuleState(
+    response: InjectiveExchangeV1Beta1QueryPb.QueryModuleStateResponse,
+  ): InjectiveExchangeV1Beta1GenesisPb.GenesisState {
+    if (!response.state) {
+      throw new Error('Exchange module state not found in response')
+    }
+
+    return response.state
+  }
+
   static moduleParamsResponseToParams(
     response: InjectiveExchangeV1Beta1QueryPb.QueryExchangeParamsResponse,
   ): ExchangeModuleParams {
