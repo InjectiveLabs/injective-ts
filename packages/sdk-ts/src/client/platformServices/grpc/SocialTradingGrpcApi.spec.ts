@@ -107,6 +107,7 @@ describe('SocialTradingGrpcApi', () => {
       pageSize: 10,
       nextToken: 'cursor',
       positionId: 'position-1',
+      sortDirection: 'asc',
     })
     const [request] = executeGrpcCall.mock.calls[0]
 
@@ -114,6 +115,7 @@ describe('SocialTradingGrpcApi', () => {
       pageSize: 10,
       nextToken: 'cursor',
       positionId: 'position-1',
+      sortDirection: 'asc',
     })
     expect(response).toEqual(
       expect.objectContaining<
@@ -143,6 +145,7 @@ describe('SocialTradingGrpcApi', () => {
       .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
       .mockResolvedValue({
         pnl: '12.3',
+        pnlUsd: '12.5',
         wins: 2n,
         losses: 1n,
         leverage: '3',
@@ -176,6 +179,7 @@ describe('SocialTradingGrpcApi', () => {
         >
       >({
         pnl: '12.3',
+        pnlUsd: '12.5',
         wins: '2',
         losses: '1',
         leverage: '3',
@@ -201,7 +205,7 @@ describe('SocialTradingGrpcApi', () => {
       .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
       .mockResolvedValue({
         accountAddress,
-        dailyPnl: [{ date: '2026-07-17', pnl: '1.23' }],
+        dailyPnl: [{ date: '2026-07-17', pnl: '1.23', pnlUsd: '1.25' }],
       })
 
     const response = await socialTradingGrpcApi.fetchAccountDailyPNL({
@@ -216,7 +220,9 @@ describe('SocialTradingGrpcApi', () => {
       from: '2026-07-01',
       to: '2026-07-17',
     })
-    expect(response.dailyPnl).toEqual([{ date: '2026-07-17', pnl: '1.23' }])
+    expect(response.dailyPnl).toEqual([
+      { date: '2026-07-17', pnl: '1.23', pnlUsd: '1.25' },
+    ])
 
     executeGrpcCall.mockRestore()
   })
@@ -279,6 +285,7 @@ describe('SocialTradingGrpcApi', () => {
         accounts: [
           {
             pnl: '12.3',
+            pnlUsd: '12.5',
             wins: 2n,
             losses: 1n,
             leverage: '3',
@@ -328,6 +335,7 @@ describe('SocialTradingGrpcApi', () => {
         accounts: [
           expect.objectContaining({
             pnl: '12.3',
+            pnlUsd: '12.5',
             wins: '2',
             losses: '1',
             leverage: '3',
