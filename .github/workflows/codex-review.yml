@@ -15,56 +15,72 @@ jobs:
       github.event.pull_request.draft == false &&
       !startsWith(github.event.pull_request.head.ref, 'release/') &&
       github.event.pull_request.title != 'chore: release'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    permissions: { contents: read, issues: write, pull-requests: write }
 
     steps:
-      - name: Fetch PR diff
-        id: pr_diff
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+      - name: Codex Review
+        id: codex_review
+        continue-on-error: true
+        uses: InjectiveLabs/github-fe/actions/codex-review-workspace@769d63d8c503ae3bd6226c3a9978c5674d068cc2
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          openai-api-key: ${{ secrets.OPENAI_FE_API_KEY }}
+
+      - name: Publish Codex Review Comment
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          ACTION_OUTCOME: ${{ steps.codex_review.outcome }}
+          CANDIDATE_COUNT: ${{ steps.codex_review.outputs.candidate-count }}
+          CHANGED_LINES: ${{ steps.codex_review.outputs.changed-lines }}
+          CODEX_OUTCOME: ${{ steps.codex_review.outputs.codex-outcome }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REVIEWABLE: ${{ steps.codex_review.outputs.reviewable }}
+          REVIEW_FILE: ${{ steps.codex_review.outputs.review-file }}
+          SKIP_REASON: ${{ steps.codex_review.outputs.skip-reason }}
         with:
           github-token: ${{ github.token }}
           script: |
-            const MAX_DIFF_LENGTH = 100000
-            const pr = context.payload.pull_request
+            const fs = require('fs')
+            const path = require('path')
+            let body
 
-            try {
-              const diff = await github.request(
-                'GET /repos/{owner}/{repo}/pulls/{pull_number}',
-                {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: pr.number,
-                  mediaType: { format: "diff" }
-                }
-              )
-
-              if (!diff.data) {
-                core.setFailed('PR diff response was empty')
-                return
-              }
-
-              const raw = String(diff.data)
-              if (raw.length > MAX_DIFF_LENGTH) {
-                core.setFailed(
-                  `PR diff exceeded ${MAX_DIFF_LENGTH} characters; refusing partial Codex review`
-                )
-                return
-              }
-
-              core.setOutput("diff", raw)
-            } catch (err) {
-              core.setFailed(`Failed to fetch PR diff: ${err.message}`)
+            if (process.env.ACTION_OUTCOME === 'failure') {
+              body = '⚠️ Codex review could not prepare the PR workspace. Please check the workflow logs.'
+            } else if (process.env.SKIP_REASON === 'limit') {
+              body = `⚠️ Codex review skipped: ${process.env.CANDIDATE_COUNT} reviewable files / ${process.env.CHANGED_LINES} changed lines\nexceed the automated-review limit (150 files / 15,000 lines).\nPlease split this PR.`
+            } else if (process.env.SKIP_REASON === 'diff-size') {
+              body = '⚠️ Codex review skipped because the filtered diff exceeds the 512 KiB automated-review limit.\nPlease split this PR.'
+            } else if (process.env.REVIEWABLE !== 'true') {
+              return
+            } else if (process.env.CODEX_OUTCOME !== 'success') {
+              body = '⚠️ Codex review did not complete. Please check the workflow logs.'
+            } else if (!process.env.REVIEW_FILE || !fs.existsSync(process.env.REVIEW_FILE)) {
+              body = '⚠️ Codex review completed without an output file. Please check the workflow logs.'
+            } else {
+              body = fs.readFileSync(process.env.REVIEW_FILE, 'utf8').trim()
+              body = body.replace(/\/home\/runner\/work\/[^/]+\//g, '')
+              body = body.replace(/\[([^\]\/\n]+\.[a-z]{1,4}(?::\d+)?)\]\(([^)]*\/[^)]+)\)/g, (match, text, href) => `[${href}](${href})`)
+              body ||= '⚠️ Codex review returned empty output. Please check the workflow logs.'
             }
 
-      - name: Codex Review
-        uses: InjectiveLabs/github-fe/actions/codex-review@447a04bef383ffc3bdc5d37f01c1de0aa4181212
-        with:
-          github-token: ${{ github.token }}
-          openai-api-key: ${{ secrets.OPENAI_FE_API_KEY }}
-          pr-diff: ${{ steps.pr_diff.outputs.diff }}
-          pr-title: ${{ github.event.pull_request.title }}
-          pr-body: ${{ github.event.pull_request.body }}
-          pr-number: ${{ github.event.pull_request.number }}
+            if (body.length > 60000) body = `${body.slice(0, 60000)}\n\n_Review output truncated._`
+            await core.summary.addHeading('Codex review').addRaw(body).write()
+            const payloadFile = path.join(process.env.RUNNER_TEMP, 'codex-review-comment.json')
+            fs.writeFileSync(payloadFile, JSON.stringify({ body }))
+            const endpoint = `repos/${context.repo.owner}/${context.repo.repo}/issues/${process.env.PR_NUMBER}/comments`
+
+            for (let attempt = 1; attempt <= 3; attempt += 1) {
+              const exitCode = await exec.exec('timeout', [
+                '20s', 'gh', 'api', '--silent', '--method', 'POST', endpoint, '--input', payloadFile
+              ], { ignoreReturnCode: true })
+              if (exitCode === 0) return
+              if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 2000))
+            }
+
+            throw new Error('Codex review comment failed after 3 attempts.')
