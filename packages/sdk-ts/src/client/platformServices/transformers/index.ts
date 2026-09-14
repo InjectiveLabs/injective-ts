@@ -91,6 +91,7 @@ export class PlatformServicesGrpcPositionsTransformer {
   ): PlatformServicesAccountPositionStats {
     return {
       pnl: stats.pnl,
+      pnlUsd: stats.pnlUsd,
       tags: stats.tags,
       winRate: stats.winRate,
       leverage: stats.leverage,
@@ -113,6 +114,7 @@ export class PlatformServicesGrpcPositionsTransformer {
   ): PlatformServicesAccountPositionStats {
     return {
       pnl: response.pnl,
+      pnlUsd: response.pnlUsd,
       tags: response.tags,
       winRate: response.winRate,
       leverage: response.leverage,
@@ -152,6 +154,7 @@ export class PlatformServicesGrpcPositionsTransformer {
     return {
       date: dailyPnl.date,
       pnl: dailyPnl.pnl,
+      pnlUsd: dailyPnl.pnlUsd,
     }
   }
 

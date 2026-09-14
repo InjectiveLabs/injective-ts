@@ -51,6 +51,7 @@ export interface PlatformServicesListPositionTradesParams {
   positionId: string
   pageSize?: number
   nextToken?: string
+  sortDirection?: PlatformServicesPositionsSortDirection
 }
 
 export interface PlatformServicesGetAccountCountParams {
@@ -108,6 +109,7 @@ export interface PlatformServicesListPositionTradesResponse {
 
 export interface PlatformServicesAccountPositionStats {
   pnl: string
+  pnlUsd: string
   wins: string
   rank?: string
   tags: string[]
@@ -126,6 +128,7 @@ export interface PlatformServicesAccountPositionStats {
 
 export interface PlatformServicesDailyPNL {
   pnl: string
+  pnlUsd: string
   date: string
 }
 
