@@ -322,4 +322,18 @@ describe('IndexerGrpcExplorerApi', () => {
       )
     }
   })
+
+  test('fetchBankTransfersV2', async () => {
+    try {
+      const response = await indexerGrpcExplorerApi.fetchBankTransfersV2({
+        perPage: 10,
+      })
+
+      expect(response).toBeDefined()
+    } catch (e) {
+      console.error(
+        'IndexerGrpcExplorerApi.fetchBankTransfersV2 => ' + (e as any).message,
+      )
+    }
+  })
 })

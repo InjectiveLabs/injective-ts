@@ -564,4 +564,67 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
       response,
     )
   }
+
+  async fetchBankTransfersV2({
+    senders,
+    address,
+    endTime,
+    perPage,
+    startTime,
+    recipients,
+    token,
+    isCommunityPoolRelated,
+  }: {
+    token?: string
+    perPage?: number
+    endTime?: number
+    startTime?: number
+    address?: string[]
+    senders?: string[]
+    recipients?: string[]
+    isCommunityPoolRelated?: boolean
+  }) {
+    const request = InjectiveExplorerRpcPb.GetBankTransfersV2Request.create()
+
+    if (senders && senders.length > 0) {
+      request.senders = senders
+    }
+
+    if (recipients && recipients.length > 0) {
+      request.recipients = recipients
+    }
+
+    if (isCommunityPoolRelated !== undefined) {
+      request.isCommunityPoolRelated = isCommunityPoolRelated
+    }
+
+    if (startTime) {
+      request.startTime = BigInt(startTime)
+    }
+
+    if (endTime) {
+      request.endTime = BigInt(endTime)
+    }
+
+    if (address && address.length > 0) {
+      request.address = address
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveExplorerRpcPb.GetBankTransfersV2Request,
+      InjectiveExplorerRpcPb.GetBankTransfersV2Response
+    >(request, this.client.getBankTransfersV2.bind(this.client))
+
+    return IndexerGrpcExplorerTransformer.getBankTransfersV2ResponseToBankTransfers(
+      response,
+    )
+  }
 }

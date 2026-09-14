@@ -92,6 +92,30 @@ export const grpcPagingToPagingV2 = (
   }
 }
 
+export const fetchAllWithTokenPagination = async <
+  T extends { perPage?: number; token?: string } | undefined,
+  Q extends { next: string[] },
+>(
+  args: T,
+  method: (args: T) => Promise<Q>,
+  result: Array<unknown> = [],
+): Promise<Q> => {
+  const response = await method(args)
+
+  const keys = Object.keys(response)
+  const valueKey = keys.find((key) => key !== 'next') as keyof typeof response
+
+  result.push(...(response[valueKey] as Array<unknown>))
+
+  const token = response.next[0]
+
+  if (token) {
+    return fetchAllWithTokenPagination({ ...args, token } as T, method, result)
+  }
+
+  return { [valueKey]: result, next: [] } as unknown as Q
+}
+
 export const fetchAllWithPagination = async <
   T extends
     | { pagination: PaginationOption | undefined }

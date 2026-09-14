@@ -16,6 +16,7 @@ import type {
   Message,
   GrpcGasFee,
   Transaction,
+  BankTransfer,
   BlockWithTxs,
   IBCTransferTx,
   ExplorerStats,
@@ -701,6 +702,31 @@ export class IndexerGrpcExplorerTransformer {
         signature: signature.signature,
         sequence: bigIntToNumber(signature.sequence),
       })),
+    }
+  }
+
+  static getBankTransfersV2ResponseToBankTransfers(
+    response: InjectiveExplorerRpcPb.GetBankTransfersV2Response,
+  ) {
+    return {
+      data: response.data.map((transfer) =>
+        IndexerGrpcExplorerTransformer.grpcBankTransferV2ToBankTransfer(
+          transfer,
+        ),
+      ),
+      paging: response.paging,
+    }
+  }
+
+  static grpcBankTransferV2ToBankTransfer(
+    transfer: InjectiveExplorerRpcPb.BankTransfer,
+  ): BankTransfer {
+    return {
+      sender: transfer.sender,
+      recipient: transfer.recipient,
+      amounts: transfer.amounts,
+      blockNumber: bigIntToNumber(transfer.blockNumber),
+      blockTimestamp: new Date(transfer.blockTimestamp).getTime(),
     }
   }
 }

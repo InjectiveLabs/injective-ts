@@ -39,7 +39,7 @@ describe('IndexerGrpcInsuranceFundApi', () => {
     try {
       const response = await indexerGrpcInsuranceFundApi.fetchInsuranceFunds()
 
-      if (response.length === 0) {
+      if (response.insuranceFunds.length === 0) {
         console.warn('fetchInsuranceFunds.redemptionsIsEmptyArray')
       }
 
@@ -54,6 +54,25 @@ describe('IndexerGrpcInsuranceFundApi', () => {
     } catch (e) {
       console.error(
         'IndexerGrpcInsuranceFundApi.fetchInsuranceFunds => ' +
+          (e as any).message,
+      )
+    }
+  })
+
+  test('fetchAllInsuranceFunds', async () => {
+    try {
+      const response =
+        await indexerGrpcInsuranceFundApi.fetchAllInsuranceFunds()
+
+      if (response.insuranceFunds.length === 0) {
+        console.warn('fetchAllInsuranceFunds.redemptionsIsEmptyArray')
+      }
+
+      expect(response).toBeDefined()
+      expect(response.next).toEqual([])
+    } catch (e) {
+      console.error(
+        'IndexerGrpcInsuranceFundApi.fetchAllInsuranceFunds => ' +
           (e as any).message,
       )
     }
