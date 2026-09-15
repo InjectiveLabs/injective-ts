@@ -19,9 +19,10 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
   }
 
   async fetchPositions(params?: PlatformServicesListPositionsParams) {
-    const { to, from, accountAddress, pageSize, nextToken } = params || {}
+    const { id, to, from, accountAddress, pageSize, nextToken } = params || {}
 
     const request = PlatformServicesPositionsPb.ListPositionsRequest.create({
+      id,
       to,
       from,
       pageSize,

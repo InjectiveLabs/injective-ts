@@ -86,6 +86,28 @@ describe('SocialTradingGrpcApi', () => {
     executeGrpcCall.mockRestore()
   })
 
+  test('fetchPositions by ids', async () => {
+    const executeGrpcCall = vi
+      .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
+      .mockResolvedValue({
+        nextToken: '',
+        positions: [],
+      })
+
+    await socialTradingGrpcApi.fetchPositions({
+      id: ['position-1', 'position-2'],
+      pageSize: 10,
+    })
+    const [request] = executeGrpcCall.mock.calls[0]
+
+    expect(request).toMatchObject({
+      id: ['position-1', 'position-2'],
+      pageSize: 10,
+    })
+
+    executeGrpcCall.mockRestore()
+  })
+
   test('fetchPositionTrades', async () => {
     const executeGrpcCall = vi
       .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')

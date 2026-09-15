@@ -17,6 +17,7 @@ export type PlatformServicesPositionsSortBy =
 export type PlatformServicesPositionsSortDirection = 'asc' | 'desc'
 
 export interface PlatformServicesListPositionsParams {
+  id?: string[]
   to?: string
   from?: string
   pageSize?: number
