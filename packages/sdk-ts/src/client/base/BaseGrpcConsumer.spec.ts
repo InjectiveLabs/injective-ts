@@ -21,6 +21,10 @@ class TestGrpcConsumer extends BaseGrpcConsumer {
   public throwGrpcError(error: unknown, context: string): never {
     return this.handleGrpcError(error, context)
   }
+
+  public rpcOptions() {
+    return this.getRpcOptions()
+  }
 }
 
 describe('BaseGrpcConsumer', () => {
@@ -254,6 +258,38 @@ describe('BaseGrpcConsumer', () => {
         expect(exception.contextCode).toBe(100)
         expect(exception.originalMessage).toBe('chain failure')
       }
+    })
+  })
+
+  describe('metadataProvider', () => {
+    it('reflects the provider value fresh on every call', () => {
+      const providerConsumer = new TestGrpcConsumer('http://localhost:9090')
+      let ip = ''
+
+      providerConsumer.setMetadataProvider(() => ({ 'x-forwarded-for': ip }))
+
+      expect(providerConsumer.rpcOptions().meta).toEqual({
+        'x-forwarded-for': '',
+      })
+
+      ip = '203.0.113.1'
+
+      expect(providerConsumer.rpcOptions().meta).toEqual({
+        'x-forwarded-for': '203.0.113.1',
+      })
+    })
+
+    it('lets an explicit setMetadata value override the provider', () => {
+      const providerConsumer = new TestGrpcConsumer('http://localhost:9090')
+
+      providerConsumer.setMetadataProvider(() => ({
+        'x-forwarded-for': 'from-provider',
+      }))
+      providerConsumer.setMetadata({ 'x-forwarded-for': 'from-setMetadata' })
+
+      expect(providerConsumer.rpcOptions().meta).toEqual({
+        'x-forwarded-for': 'from-setMetadata',
+      })
     })
   })
 })

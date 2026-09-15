@@ -70,6 +70,7 @@ export default class BaseGrpcConsumer {
   protected module: string = ''
   protected transport: GrpcWebRpcTransport
   protected metadata?: Record<string, string>
+  protected metadataProvider?: () => Record<string, string>
   protected options?: GrpcWebTransportAdditionalOptions
 
   constructor(endpoint: string, options?: GrpcWebTransportAdditionalOptions) {
@@ -88,6 +89,18 @@ export default class BaseGrpcConsumer {
 
     // Invalidate cached client so initClient creates a new client with updated transport
     this._client = undefined
+
+    return this
+  }
+
+  /**
+   * Registers a function that is invoked on every RPC call to supply default
+   * metadata (e.g. a client-reported IP resolved asynchronously after this
+   * consumer was constructed). Values from `metadata` (set via setMetadata)
+   * take precedence over values from the provider.
+   */
+  public setMetadataProvider(provider: () => Record<string, string>): this {
+    this.metadataProvider = provider
 
     return this
   }
@@ -132,7 +145,10 @@ export default class BaseGrpcConsumer {
    */
   protected getRpcOptions(): RpcOptions {
     const options: RpcOptions = {
-      meta: this.metadata || {},
+      meta: {
+        ...(this.metadataProvider?.() || {}),
+        ...(this.metadata || {}),
+      },
     }
 
     return options

@@ -39,6 +39,12 @@ export default class HttpRestClient {
     return this
   }
 
+  setHeaderProvider(provider: () => Record<string, string>): HttpRestClient {
+    this.client.setHeaderProvider(provider)
+
+    return this
+  }
+
   public async get<T>(
     endpoint: string,
     params: Record<string, any> = {},
