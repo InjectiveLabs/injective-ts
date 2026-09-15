@@ -103,7 +103,14 @@ export const fetchAllWithTokenPagination = async <
   const response = await method(args)
 
   const keys = Object.keys(response)
-  const valueKey = keys.find((key) => key !== 'next') as keyof typeof response
+  const valueKey = keys.find(
+    (key) =>
+      key !== 'next' && Array.isArray(response[key as keyof typeof response]),
+  ) as keyof typeof response | undefined
+
+  if (!valueKey) {
+    return response
+  }
 
   result.push(...(response[valueKey] as Array<unknown>))
 

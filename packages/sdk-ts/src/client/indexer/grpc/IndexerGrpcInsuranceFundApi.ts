@@ -67,11 +67,11 @@ export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
     )
   }
 
-  async fetchAllInsuranceFunds(
-    params: { perPage?: number } = { perPage: 200 },
-  ) {
+  async fetchAllInsuranceFunds(params: { perPage?: number } = {}) {
+    const { perPage = 200 } = params
+
     return fetchAllWithTokenPagination(
-      params,
+      { perPage },
       this.fetchInsuranceFunds.bind(this),
     )
   }

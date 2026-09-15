@@ -598,11 +598,11 @@ export class IndexerGrpcExplorerApi extends BaseIndexerGrpcConsumer {
       request.isCommunityPoolRelated = isCommunityPoolRelated
     }
 
-    if (startTime) {
+    if (startTime !== undefined) {
       request.startTime = BigInt(startTime)
     }
 
-    if (endTime) {
+    if (endTime !== undefined) {
       request.endTime = BigInt(endTime)
     }
 
