@@ -1,6 +1,26 @@
 import type * as InjectiveRfqGwRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_gw_rpc_pb'
 import type { RFQSettlementUnfilledActionType } from './rfq.js'
 
+export interface RFQGwSignedRFQRequestType {
+  taker: string
+  requestId: string
+  marketId: string
+  direction: string
+  quantity: string
+  margin: string
+  worstPrice: string
+  minTotalFillQuantity: string
+  cid: string
+  schemaVersion: number
+  evmChainId: number
+  createdAtMs: number
+  deadlineMs: number
+  subaccountNonce: number
+  allowedRelayer?: string
+  maxFeeRate?: string
+  maxTotalTakerFunds?: string
+}
+
 export interface RFQGwPrepareAutoSignRequestType {
   cid?: string
   margin: string
@@ -21,6 +41,8 @@ export interface RFQGwPrepareAutoSignRequestType {
   autosignAccountSequence?: number
   feePayerAccountSequence?: number
   unfilledAction?: RFQSettlementUnfilledActionType
+  signedRequest?: RFQGwSignedRFQRequestType
+  takerSignature?: string
 }
 
 export interface CosmosPubKeyType {
@@ -71,6 +93,8 @@ export interface RFQGwPrepareRequestType {
   feePayerAccountNumber?: number
   feePayerAccountSequence?: number
   unfilledAction?: RFQSettlementUnfilledActionType
+  signedRequest?: RFQGwSignedRFQRequestType
+  takerSignature?: string
 }
 
 export interface RFQGwPrepareResponseType {
@@ -112,6 +136,8 @@ export interface RFQGwPrepareEip712RequestType {
   feePayerAccountNumber?: number
   feePayerAccountSequence?: number
   unfilledAction?: RFQSettlementUnfilledActionType
+  signedRequest?: RFQGwSignedRFQRequestType
+  takerSignature?: string
 }
 
 export interface RFQGwPrepareEip712ResponseType {
@@ -152,6 +178,8 @@ export interface RFQGwPrepareEip712AutoSignRequestType {
   autosignAccountSequence?: number
   feePayerAccountSequence?: number
   unfilledAction?: RFQSettlementUnfilledActionType
+  signedRequest?: RFQGwSignedRFQRequestType
+  takerSignature?: string
 }
 
 export interface RFQGwPrepareEip712AutoSignResponseType {

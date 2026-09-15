@@ -259,8 +259,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
       '@injectivelabs/indexer-proto-ts-v2':
-        specifier: 1.20.4
-        version: 1.20.4
+        specifier: 1.20.5
+        version: 1.20.5
       '@injectivelabs/mito-proto-ts-v2':
         specifier: 1.17.3
         version: 1.17.3
@@ -683,6 +683,78 @@ importers:
       '@reown/appkit-adapter-ethers':
         specifier: 1.8.15
         version: 1.8.15(@ethersproject/sha2@5.8.0)(@types/react@19.2.10)(bufferutil@4.1.0)(ethers@6.17.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(fastestsmallesttextencoderdecoder@1.0.22)(immer@11.1.8)(react@19.0.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
+
+  protoV2/abacus/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/core/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/indexer/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/mito/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/olp/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
+
+  protoV2/tcAbacus/proto-ts:
+    dependencies:
+      '@protobuf-ts/grpcweb-transport':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime':
+        specifier: ^2.11.1
+        version: 2.11.1
+      '@protobuf-ts/runtime-rpc':
+        specifier: ^2.11.1
+        version: 2.11.1
 
 packages:
 
@@ -1176,8 +1248,8 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-  '@injectivelabs/indexer-proto-ts-v2@1.20.4':
-    resolution: {integrity: sha512-R2wzoZr7x/02aTQVdznkU7nrq0Xg0EyKMia8aMDfV70cb68UPpdrt+cnZqm4ctvR4RN1M5Asm36HXlsISiGEfA==}
+  '@injectivelabs/indexer-proto-ts-v2@1.20.5':
+    resolution: {integrity: sha512-wWM4qzn5nzm124YHqTD4HvxRRpig5DPxYbVG85kGV1jKkiGBrBH/5G+FW/zMJZw7kDO0d1LH3ciEPl9MCkb3/A==}
 
   '@injectivelabs/mito-proto-ts-v2@1.17.3':
     resolution: {integrity: sha512-Fo6k1MCPT3CKUS9tbMbl/poGv7R8KHtA7RfU7mvxxVWS7MpF+LLZA6UgegfEA1iiJgIrhe+eEwEvhIOe6SiUzw==}
@@ -7165,7 +7237,6 @@ packages:
   starknet@8.9.2:
     resolution: {integrity: sha512-+dp+o2w67fV6JyVOVkYeM1Ec71aORHc/JrF4VHLlfeGee0nLilooCQLE2u6hUcSGQG2x2/fvzkxYpIN+k1JBvA==}
     engines: {node: '>=22'}
-    deprecated: starknet <10 is end-of-life and no longer receives security fixes. Upgrade to starknet@10 (10.8.0 or later).
 
   statuses@1.5.0:
     resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
@@ -8657,7 +8728,7 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.4
 
-  '@injectivelabs/indexer-proto-ts-v2@1.20.4':
+  '@injectivelabs/indexer-proto-ts-v2@1.20.5':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

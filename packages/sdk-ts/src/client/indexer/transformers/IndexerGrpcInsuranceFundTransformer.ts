@@ -4,6 +4,7 @@ import type {
   Redemption,
   RedemptionStatus,
   IndexerInsuranceFund,
+  InsuranceFundsResponse,
   GrpcIndexerInsuranceFund,
   GrpcIndexerRedemptionSchedule,
 } from '../types/insurance-funds.js'
@@ -14,12 +15,14 @@ import type {
 export class IndexerGrpcInsuranceFundTransformer {
   static insuranceFundsResponseToInsuranceFunds(
     response: InjectiveInsuranceRpcPb.FundsResponse,
-  ) {
-    const insuranceFunds = response.funds
-
-    return IndexerGrpcInsuranceFundTransformer.grpcInsuranceFundsToInsuranceFunds(
-      insuranceFunds,
-    )
+  ): InsuranceFundsResponse {
+    return {
+      next: response.next,
+      insuranceFunds:
+        IndexerGrpcInsuranceFundTransformer.grpcInsuranceFundsToInsuranceFunds(
+          response.funds,
+        ),
+    }
   }
 
   static redemptionsResponseToRedemptions(

@@ -3,7 +3,10 @@ import { InjectiveRfqGwRPCClient } from '@injectivelabs/indexer-proto-ts-v2/gene
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcRfqGwTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
-import type { RFQSettlementUnfilledActionType } from '../types/index.js'
+import type {
+  RFQGwSignedRFQRequestType,
+  RFQSettlementUnfilledActionType,
+} from '../types/index.js'
 
 /**
  * @category Indexer Grpc API
@@ -13,6 +16,39 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
 
   private get client() {
     return this.initClient(InjectiveRfqGwRPCClient)
+  }
+
+  private buildSignedRequest(signedRequest: RFQGwSignedRFQRequestType) {
+    const request = InjectiveRfqGwRpcPb.RFQGwSignedRFQRequestType.create()
+
+    request.taker = signedRequest.taker
+    request.requestId = signedRequest.requestId
+    request.marketId = signedRequest.marketId
+    request.direction = signedRequest.direction
+    request.quantity = signedRequest.quantity
+    request.margin = signedRequest.margin
+    request.worstPrice = signedRequest.worstPrice
+    request.minTotalFillQuantity = signedRequest.minTotalFillQuantity
+    request.cid = signedRequest.cid
+    request.schemaVersion = signedRequest.schemaVersion
+    request.evmChainId = BigInt(signedRequest.evmChainId)
+    request.createdAtMs = BigInt(signedRequest.createdAtMs)
+    request.deadlineMs = BigInt(signedRequest.deadlineMs)
+    request.subaccountNonce = signedRequest.subaccountNonce
+
+    if (signedRequest.allowedRelayer) {
+      request.allowedRelayer = signedRequest.allowedRelayer
+    }
+
+    if (signedRequest.maxFeeRate) {
+      request.maxFeeRate = signedRequest.maxFeeRate
+    }
+
+    if (signedRequest.maxTotalTakerFunds) {
+      request.maxTotalTakerFunds = signedRequest.maxTotalTakerFunds
+    }
+
+    return request
   }
 
   async fetchPrepareAutoSign({
@@ -36,6 +72,8 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     feePayerAccountNumber,
     autosignAccountSequence,
     feePayerAccountSequence,
+    signedRequest,
+    takerSignature,
   }: {
     cid?: string
     margin: string
@@ -57,6 +95,8 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     autosignAccountSequence?: number
     feePayerAccountSequence?: number
     unfilledAction?: RFQSettlementUnfilledActionType
+    signedRequest?: RFQGwSignedRFQRequestType
+    takerSignature?: string
   }) {
     const request = InjectiveRfqGwRpcPb.RFQGwPrepareAutoSignRequestType.create()
 
@@ -128,6 +168,14 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       request.txBodyMemo = txBodyMemo
     }
 
+    if (signedRequest) {
+      request.signedRequest = this.buildSignedRequest(signedRequest)
+    }
+
+    if (takerSignature) {
+      request.takerSignature = takerSignature
+    }
+
     const requestMessage = InjectiveRfqGwRpcPb.PrepareAutoSignRequest.create()
     requestMessage.request = request
 
@@ -163,6 +211,8 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     feePayerAccountNumber,
     takerAccountSequence,
     feePayerAccountSequence,
+    signedRequest,
+    takerSignature,
   }: {
     cid?: string
     margin: string
@@ -183,6 +233,8 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     takerAccountSequence?: number
     feePayerAccountSequence?: number
     unfilledAction?: RFQSettlementUnfilledActionType
+    signedRequest?: RFQGwSignedRFQRequestType
+    takerSignature?: string
   }) {
     const request = InjectiveRfqGwRpcPb.RFQGwPrepareRequestType.create()
 
@@ -250,6 +302,14 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       request.txBodyMemo = txBodyMemo
     }
 
+    if (signedRequest) {
+      request.signedRequest = this.buildSignedRequest(signedRequest)
+    }
+
+    if (takerSignature) {
+      request.takerSignature = takerSignature
+    }
+
     const requestMessage = InjectiveRfqGwRpcPb.PrepareRequest.create()
     requestMessage.request = request
 
@@ -286,6 +346,8 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     feePayerAccountNumber,
     takerAccountSequence,
     feePayerAccountSequence,
+    signedRequest,
+    takerSignature,
   }: {
     cid?: string
     gas?: number
@@ -309,6 +371,8 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     takerAccountSequence?: number
     feePayerAccountSequence?: number
     unfilledAction?: RFQSettlementUnfilledActionType
+    signedRequest?: RFQGwSignedRFQRequestType
+    takerSignature?: string
   }) {
     const request = InjectiveRfqGwRpcPb.RFQGwPrepareEip712RequestType.create()
 
@@ -388,6 +452,14 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       request.txBodyMemo = txBodyMemo
     }
 
+    if (signedRequest) {
+      request.signedRequest = this.buildSignedRequest(signedRequest)
+    }
+
+    if (takerSignature) {
+      request.takerSignature = takerSignature
+    }
+
     const requestMessage = InjectiveRfqGwRpcPb.PrepareEip712Request.create()
     requestMessage.request = request
 
@@ -425,6 +497,8 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     feePayerAccountNumber,
     autosignAccountSequence,
     feePayerAccountSequence,
+    signedRequest,
+    takerSignature,
   }: {
     cid?: string
     gas?: number
@@ -449,6 +523,8 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     autosignAccountSequence?: number
     feePayerAccountSequence?: number
     unfilledAction?: RFQSettlementUnfilledActionType
+    signedRequest?: RFQGwSignedRFQRequestType
+    takerSignature?: string
   }) {
     const request =
       InjectiveRfqGwRpcPb.RFQGwPrepareEip712AutoSignRequestType.create()
@@ -531,6 +607,14 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
 
     if (txBodyMemo) {
       request.txBodyMemo = txBodyMemo
+    }
+
+    if (signedRequest) {
+      request.signedRequest = this.buildSignedRequest(signedRequest)
+    }
+
+    if (takerSignature) {
+      request.takerSignature = takerSignature
     }
 
     const requestMessage =

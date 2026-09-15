@@ -16,6 +16,11 @@ export interface IndexerInsuranceFund {
   expiry: number
 }
 
+export interface InsuranceFundsResponse {
+  next: string[]
+  insuranceFunds: IndexerInsuranceFund[]
+}
+
 export type RedemptionStatus = 'pending' | 'disbursed'
 
 export const RedemptionStatus = {
