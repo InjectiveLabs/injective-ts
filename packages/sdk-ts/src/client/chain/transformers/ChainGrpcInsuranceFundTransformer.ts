@@ -16,7 +16,7 @@ export class ChainGrpcInsuranceFundTransformer {
 
     return {
       defaultRedemptionNoticePeriodDuration: Number(
-        params.defaultRedemptionNoticePeriodDuration || 0n,
+        params.defaultRedemptionNoticePeriodDuration?.seconds || 0n,
       ),
     }
   }
@@ -28,7 +28,7 @@ export class ChainGrpcInsuranceFundTransformer {
       depositDenom: grpcFund.depositDenom,
       insurancePoolTokenDenom: grpcFund.insurancePoolTokenDenom,
       redemptionNoticePeriodDuration: Number(
-        grpcFund.redemptionNoticePeriodDuration || 0n,
+        grpcFund.redemptionNoticePeriodDuration?.seconds || 0n,
       ),
       balance: grpcFund.balance,
       totalShare: grpcFund.totalShare,
