@@ -14,6 +14,7 @@ export declare namespace MsgUpdateNamespace {
     sender: string
     denom: string
     evmHook?: string
+    evmPostHook?: string
     wasmHook?: string
     rolePermissions: PermissionRole[]
     roleManagers: PermissionRoleManager[]
@@ -42,6 +43,14 @@ export default class MsgUpdateNamespace extends MsgBase<
       ? InjectivePermissionsV1Beta1TxPb.MsgUpdateNamespace_SetContractHook.create(
           {
             newValue: params.evmHook,
+          },
+        )
+      : undefined
+
+    const evmPostHook = params.evmPostHook
+      ? InjectivePermissionsV1Beta1TxPb.MsgUpdateNamespace_SetContractHook.create(
+          {
+            newValue: params.evmPostHook,
           },
         )
       : undefined
@@ -99,6 +108,7 @@ export default class MsgUpdateNamespace extends MsgBase<
       roleManagers: roleManagers,
       policyStatuses: policyStatuses,
       policyManagerCapabilities: policyManagerCapabilities,
+      evmPostHook: evmPostHook,
     })
 
     return message
@@ -146,6 +156,9 @@ export default class MsgUpdateNamespace extends MsgBase<
       ),
       evm_hook: proto.evmHook
         ? { new_value: proto.evmHook.newValue }
+        : undefined,
+      evm_post_hook: proto.evmPostHook
+        ? { new_value: proto.evmPostHook.newValue }
         : undefined,
     }
 

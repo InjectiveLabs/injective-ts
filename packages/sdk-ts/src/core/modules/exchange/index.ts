@@ -15,6 +15,7 @@ import MsgCancelSpotOrderV2 from './msgs/MsgCancelSpotOrderV2.js'
 import MsgReclaimLockedFunds from './msgs/MsgReclaimLockedFunds.js'
 import MsgUpdateSpotMarketV2 from './msgs/MsgUpdateSpotMarketV2.js'
 import MsgExternalTransferV2 from './msgs/MsgExternalTransferV2.js'
+import MsgUpdateSwapParamsV2 from './msgs/MsgUpdateSwapParamsV2.js'
 import MsgBatchUpdateOrdersV2 from './msgs/MsgBatchUpdateOrdersV2.js'
 import MsgLiquidatePositionV2 from './msgs/MsgLiquidatePositionV2.js'
 import MsgCancelPostOnlyModeV2 from './msgs/MsgCancelPostOnlyModeV2.js'
@@ -100,6 +101,7 @@ export {
   MsgBatchUpdateOrdersV2,
   MsgLiquidatePositionV2,
   MsgOffsetPositionV2,
+  MsgUpdateSwapParamsV2,
   MsgReclaimLockedFundsV2,
   MsgSubaccountTransferV2,
   MsgActivateStakeGrantV2,

@@ -104,12 +104,7 @@ export const DeprecatedMsgType = {
     'injective.wasmx.v1beta1.ContractRegistrationRequestProposal',
   MsgBatchContractRegistrationRequestProposal:
     'injective.wasmx.v1beta1.BatchContractRegistrationRequestProposal',
-} as const
 
-export type DeprecatedMsgType =
-  (typeof DeprecatedMsgType)[keyof typeof DeprecatedMsgType]
-
-export const MsgType = {
   // Authz
   MsgExec: 'cosmos.authz.v1beta1.MsgExec',
   MsgGrant: 'cosmos.authz.v1beta1.MsgGrant',
@@ -183,7 +178,12 @@ export const MsgType = {
   MsgConnectionOpenTry: 'ibc.core.connection.v1.MsgConnectionOpenTry',
   MsgConnectionOpenInit: 'ibc.core.connection.v1.MsgConnectionOpenInit',
   MsgConnectionOpenConfirm: 'ibc.core.connection.v1.MsgConnectionOpenConfirm',
+} as const
 
+export type DeprecatedMsgType =
+  (typeof DeprecatedMsgType)[keyof typeof DeprecatedMsgType]
+
+export const MsgType = {
   // Auction
   MsgBid: 'injective.auction.v1beta1.MsgBid',
   MsgAuctionClaimVoucher: 'injective.auction.v1beta1.MsgClaimVoucher',
@@ -286,6 +286,7 @@ export const MsgType = {
   MsgUpdateSpotMarketV2: 'injective.exchange.v2.MsgUpdateSpotMarket',
   MsgUpdateSubaccountRiskProfileV2:
     'injective.exchange.v2.MsgUpdateSubaccountRiskProfile',
+  MsgUpdateSwapParamsV2: 'injective.exchange.v2.MsgUpdateSwapParams',
   MsgBatchUpdateOrdersV2: 'injective.exchange.v2.MsgBatchUpdateOrders',
   MsgLiquidatePositionV2: 'injective.exchange.v2.MsgLiquidatePosition',
   MsgBatchLiquidatePositionsV2:
