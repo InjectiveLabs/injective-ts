@@ -1,6 +1,7 @@
 // import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import { getEip712TypedData, getEip712TypedDataV2 } from '../../../tx/index.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 import MsgSubmitProposalPerpetualMarketLaunchV2 from './MsgSubmitProposalPerpetualMarketLaunchV2.js'
@@ -43,6 +44,66 @@ const params: MsgSubmitProposalPerpetualMarketLaunchV2['params'] = {
 const message = MsgSubmitProposalPerpetualMarketLaunchV2.fromJSON(params)
 
 describe('MsgSubmitProposalPerpetualMarketLaunchV2', () => {
+  it('includes an uncapped open notional cap in direct protobuf messages', () => {
+    const proposal = message.toProto()
+    const content =
+      InjectiveExchangeV2ProposalPb.PerpetualMarketLaunchProposal.fromBinary(
+        proposal.content!.value,
+      )
+
+    expect(content.openNotionalCap).toStrictEqual({
+      cap: { oneofKind: 'uncapped', uncapped: {} },
+    })
+  })
+
+  it('serializes a capped open notional cap from a string', () => {
+    const cappedMessage = MsgSubmitProposalPerpetualMarketLaunchV2.fromJSON({
+      ...params,
+      market: {
+        ...params.market,
+        openNotionalCap: '100000',
+      },
+    })
+    const proposal = cappedMessage.toProto()
+    const content =
+      InjectiveExchangeV2ProposalPb.PerpetualMarketLaunchProposal.fromBinary(
+        proposal.content!.value,
+      )
+
+    expect(content.openNotionalCap).toStrictEqual({
+      cap: { oneofKind: 'capped', capped: { value: '100000' } },
+    })
+    expect(
+      (cappedMessage.toWeb3Gw() as any).content.open_notional_cap,
+    ).toStrictEqual({
+      capped: { value: '100000' },
+    })
+    expect(
+      (cappedMessage.toEip712() as any).value.content.value.open_notional_cap,
+    ).toStrictEqual({
+      capped: { value: '100000000000000000000000' },
+    })
+    expect(
+      (cappedMessage.toEip712V2() as any).content.open_notional_cap,
+    ).toStrictEqual({
+      capped: { value: '100000.000000000000000000' },
+    })
+  })
+
+  it('rejects invalid capped open notional caps', () => {
+    const invalidMessage = MsgSubmitProposalPerpetualMarketLaunchV2.fromJSON({
+      ...params,
+      market: {
+        ...params.market,
+        openNotionalCap: null as unknown as string,
+      },
+    })
+
+    expect(() => invalidMessage.toProto()).toThrow(
+      'openNotionalCap must be a non-negative decimal string',
+    )
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,
