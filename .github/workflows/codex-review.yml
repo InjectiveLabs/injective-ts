@@ -23,7 +23,7 @@ jobs:
       - name: Codex Review
         id: codex_review
         continue-on-error: true
-        uses: InjectiveLabs/github-fe/actions/codex-review-workspace@769d63d8c503ae3bd6226c3a9978c5674d068cc2
+        uses: InjectiveLabs/github-fe/actions/codex-review-workspace@master
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           openai-api-key: ${{ secrets.OPENAI_FE_API_KEY }}

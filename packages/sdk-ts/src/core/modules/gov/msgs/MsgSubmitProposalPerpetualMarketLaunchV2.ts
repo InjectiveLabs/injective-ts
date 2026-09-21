@@ -26,6 +26,7 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
       minQuantityTickSize: string
       minNotional: string
       reduceMarginRatio: string
+      openNotionalCap?: string
       adminInfo?: {
         admin: string
         adminPermissions: number
@@ -52,9 +53,33 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
   }
 }
 
+const openNotionalCapValue = (value: unknown) => {
+  if (value === undefined) {
+    return undefined
+  }
+
+  if (typeof value !== 'string' || !/^\d+(\.\d+)?$/.test(value)) {
+    throw new Error('openNotionalCap must be a non-negative decimal string')
+  }
+
+  return value
+}
+
+const toOpenNotionalCap = (
+  value: unknown,
+  formatValue: (value: string) => string = (value) => value,
+) => {
+  const cap = openNotionalCapValue(value)
+
+  return cap === undefined
+    ? { uncapped: {} }
+    : { capped: { value: formatValue(cap) } }
+}
+
 const createPerpetualMarketLaunch = (
   params: MsgSubmitProposalPerpetualMarketLaunchV2.Params,
 ) => {
+  const openNotionalCap = openNotionalCapValue(params.market.openNotionalCap)
   const content: any = {
     title: params.market.title,
     description: params.market.description,
@@ -72,6 +97,17 @@ const createPerpetualMarketLaunch = (
     minQuantityTickSize: params.market.minQuantityTickSize,
     minNotional: params.market.minNotional,
     reduceMarginRatio: params.market.reduceMarginRatio,
+    openNotionalCap: {
+      cap:
+        openNotionalCap === undefined
+          ? { oneofKind: 'uncapped', uncapped: {} }
+          : {
+              oneofKind: 'capped',
+              capped: {
+                value: openNotionalCap,
+              },
+            },
+    },
     crossMarginEligibility: params.market.crossMarginEligible,
   }
 
@@ -190,7 +226,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           min_notional: content.minNotional,
           admin_info: content.adminInfo || null,
           reduce_margin_ratio: content.reduceMarginRatio,
-          open_notional_cap: { uncapped: {} },
+          open_notional_cap: toOpenNotionalCap(params.market.openNotionalCap),
           cross_margin_eligible: content.crossMarginEligible,
         },
       },
@@ -256,7 +292,10 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           reduce_margin_ratio: toChainFormat(
             params.market.reduceMarginRatio,
           ).toFixed(),
-          open_notional_cap: { uncapped: {} },
+          open_notional_cap: toOpenNotionalCap(
+            params.market.openNotionalCap,
+            (value) => toChainFormat(value).toFixed(),
+          ),
           cross_margin_eligible: params.market.crossMarginEligible,
         },
       },
@@ -306,7 +345,10 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
         reduce_margin_ratio: numberToCosmosSdkDecString(
           params.market.reduceMarginRatio,
         ),
-        open_notional_cap: { uncapped: {} },
+        open_notional_cap: toOpenNotionalCap(
+          params.market.openNotionalCap,
+          numberToCosmosSdkDecString,
+        ),
         cross_margin_eligible: params.market.crossMarginEligible,
       },
     }

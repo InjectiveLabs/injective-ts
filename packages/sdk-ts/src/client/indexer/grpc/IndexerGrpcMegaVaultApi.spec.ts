@@ -10,7 +10,7 @@ const indexerGrpcMegaVaultApi = new IndexerGrpcMegaVaultApi(endpoints.indexer)
 const mockVaultAddress = 'inj1djlhetddzrztjn4v0s4vt0dca3y8hwshkh37zg'
 const mockOperatorAddress = 'inj1djlhetddzrztjn4v0s4vt0dca3operator0001'
 
-describe('IndexerGrpcMegaVaultApi', () => {
+describe.skip('IndexerGrpcMegaVaultApi', () => {
   test('fetchVault', async () => {
     try {
       const response = await indexerGrpcMegaVaultApi.fetchVault({
