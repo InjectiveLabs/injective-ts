@@ -138,6 +138,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
 
   public toProto() {
     const { params: initialParams } = this
+    const openNotionalCap = openNotionalCapValue(
+      initialParams.market.openNotionalCap,
+    )
 
     const params = {
       ...initialParams,
@@ -162,6 +165,10 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           initialParams.market.minQuantityTickSize,
         ).toFixed(),
         minNotional: toChainFormat(initialParams.market.minNotional).toFixed(),
+        openNotionalCap:
+          openNotionalCap === undefined
+            ? undefined
+            : toChainFormat(openNotionalCap).toFixed(),
         reduceMarginRatio: toChainFormat(
           initialParams.market.reduceMarginRatio,
         ).toFixed(),

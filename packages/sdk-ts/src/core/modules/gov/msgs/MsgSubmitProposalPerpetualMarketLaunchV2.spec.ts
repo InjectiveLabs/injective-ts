@@ -71,7 +71,10 @@ describe('MsgSubmitProposalPerpetualMarketLaunchV2', () => {
       )
 
     expect(content.openNotionalCap).toStrictEqual({
-      cap: { oneofKind: 'capped', capped: { value: '100000' } },
+      cap: {
+        oneofKind: 'capped',
+        capped: { value: '100000000000000000000000' },
+      },
     })
     expect(
       (cappedMessage.toWeb3Gw() as any).content.open_notional_cap,
@@ -90,12 +93,12 @@ describe('MsgSubmitProposalPerpetualMarketLaunchV2', () => {
     })
   })
 
-  it('rejects invalid capped open notional caps', () => {
+  it.each([null, 1])('rejects invalid capped open notional cap %j', (value) => {
     const invalidMessage = MsgSubmitProposalPerpetualMarketLaunchV2.fromJSON({
       ...params,
       market: {
         ...params.market,
-        openNotionalCap: null as unknown as string,
+        openNotionalCap: value as unknown as string,
       },
     })
 
