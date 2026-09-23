@@ -17,12 +17,26 @@ export type PlatformServicesPositionsSortBy =
 export type PlatformServicesPositionsSortDirection = 'asc' | 'desc'
 
 export interface PlatformServicesListPositionsParams {
+  /**
+   * Position UUID filters. Repeat for multiple IDs, up to 100 supplied values.
+   * Duplicates are ignored; unknown or invisible positions are omitted.
+   * Cannot be combined with accountAddress, from, to, or txHash.
+   * Repeat the same ID set on every page; results remain newest first.
+   */
   id?: string[]
   to?: string
   from?: string
   pageSize?: number
   nextToken?: string
   accountAddress?: string
+  /**
+   * Transaction hash filter. Returns the positions with at least one trade in
+   * that transaction, so an RFQ fill resolves to the position it opened or
+   * changed. 32-byte hex, with or without 0x, any case. Cannot be combined
+   * with accountAddress, from, to, or id. Repeat it on every page; results
+   * remain newest first.
+   */
+  txHash?: string
 }
 
 export interface PlatformServicesGetAccountPositionStatsParams {
