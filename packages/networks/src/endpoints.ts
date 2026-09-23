@@ -10,7 +10,7 @@ export const getEndpointsMainnetSentry = (): NetworkEndpoints => ({
   cacheGrpc: 'https://sentry.chain.grpc-web.injective.network',
   cacheRest: 'https://staging.gateway.grpc-web.injective.network',
   web3gw: 'https://sentry.exchange.grpc-web.injective.network',
-  chart: 'https://sentry.exchange.grpc-web.injective.network',
+  chart: 'https://tc-charts.mainnet.injective.network',
 })
 
 export const getEndpointsStaging = (): NetworkEndpoints => ({
@@ -45,11 +45,11 @@ export const getEndpointsTestnetSentry = (): NetworkEndpoints => ({
   rpc: 'https://testnet.sentry.tm.injective.network',
   rest: 'https://testnet.sentry.lcd.injective.network',
   chronos: 'https://testnet.sentry.exchange.grpc-web.injective.network',
-  explorer: 'https://testnet.sentry.exchange.grpc-web.injective.network',
+  explorer: 'https://k8s.testnet.explorer.grpc-web.injective.network',
   cacheGrpc: 'https://testnet.sentry.chain.grpc-web.injective.network',
   cacheRest: 'https://testnet.sentry.exchange.grpc-web.injective.network',
   web3gw: 'https://testnet.sentry.exchange.grpc-web.injective.network',
-  chart: 'https://k8s.testnet.chart.grpc-web.injective.network',
+  chart: 'https://tc-charts.testnet.injective.network',
 })
 
 export const getEndpointsDevnet = (): NetworkEndpoints => ({
