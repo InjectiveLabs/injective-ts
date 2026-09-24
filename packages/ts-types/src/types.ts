@@ -286,6 +286,7 @@ export const MsgType = {
   MsgUpdateSpotMarketV2: 'injective.exchange.v2.MsgUpdateSpotMarket',
   MsgUpdateSubaccountRiskProfileV2:
     'injective.exchange.v2.MsgUpdateSubaccountRiskProfile',
+  MsgUpdateSwapParamsV2: 'injective.exchange.v2.MsgUpdateSwapParams',
   MsgBatchUpdateOrdersV2: 'injective.exchange.v2.MsgBatchUpdateOrders',
   MsgLiquidatePositionV2: 'injective.exchange.v2.MsgLiquidatePosition',
   MsgBatchLiquidatePositionsV2:

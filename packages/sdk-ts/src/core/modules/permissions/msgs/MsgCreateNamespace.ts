@@ -16,6 +16,7 @@ export declare namespace MsgCreateNamespace {
     namespace: {
       denom: string
       evmHook: string
+      evmPostHook?: string
       wasmHook: string
       rolePermissions: PermissionRole[]
       actorRoles: PermissionActorRoles[]
@@ -93,6 +94,7 @@ export default class MsgCreateNamespace extends MsgBase<
       {
         denom: params.namespace.denom,
         evmHook: params.namespace.evmHook,
+        evmPostHook: params.namespace.evmPostHook ?? '',
         wasmHook: params.namespace.wasmHook,
         rolePermissions: rolePermissions,
         actorRoles: actorRoles,
@@ -155,6 +157,7 @@ export default class MsgCreateNamespace extends MsgBase<
           }),
         ),
         evm_hook: ns?.evmHook,
+        evm_post_hook: ns?.evmPostHook,
       },
     }
 
@@ -215,6 +218,7 @@ export default class MsgCreateNamespace extends MsgBase<
         policy_statuses: policyStatuses,
         policy_manager_capabilities: policyManagerCapabilities,
         evm_hook: namespace.evm_hook,
+        evm_post_hook: namespace.evm_post_hook,
       },
     }
 
