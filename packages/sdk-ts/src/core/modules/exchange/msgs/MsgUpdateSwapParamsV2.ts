@@ -1,6 +1,7 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
 import type * as InjectiveExchangeV2ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/exchange_pb'
+import type { TypedDataField } from '../../../tx/eip712/types.js'
 
 export declare namespace MsgUpdateSwapParamsV2 {
   export interface Params {
@@ -69,6 +70,26 @@ export default class MsgUpdateSwapParamsV2 extends MsgBase<
 
   public toEip712V2() {
     return this.toWeb3Gw()
+  }
+
+  public toEip712Types(): Map<string, TypedDataField[]> {
+    // The market allowlist can be empty, so its element type cannot be inferred.
+    return new Map<string, TypedDataField[]>([
+      [
+        'TypeSwapParams',
+        [
+          { name: 'enabled', type: 'bool' },
+          { name: 'allowed_markets', type: 'string[]' },
+        ],
+      ],
+      [
+        'MsgValue',
+        [
+          { name: 'sender', type: 'string' },
+          { name: 'swap_params', type: 'TypeSwapParams' },
+        ],
+      ],
+    ])
   }
 
   public toDirectSign() {
