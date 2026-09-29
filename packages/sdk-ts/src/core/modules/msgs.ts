@@ -50,6 +50,7 @@ import type MsgTransferDelegation from './staking/msgs/MsgTransferDelegation.js'
 import type MsgRelayProviderPrices from './oracle/msgs/MsgRelayProviderPrices.js'
 import type MsgReclaimLockedFunds from './exchange/msgs/MsgReclaimLockedFunds.js'
 import type MsgUpdateSpotMarketV2 from './exchange/msgs/MsgUpdateSpotMarketV2.js'
+import type MsgUpdateSwapParamsV2 from './exchange/msgs/MsgUpdateSwapParamsV2.js'
 import type MsgSetDenomMetadata from './tokenfactory/msgs/MsgSetDenomMetadata.js'
 import type MsgExternalTransferV2 from './exchange/msgs/MsgExternalTransferV2.js'
 import type MsgFundCommunityPool from './distribution/msgs/MsgFundCommunityPool.js'
@@ -184,6 +185,7 @@ export type ExchangeV2Msgs =
   | MsgCreateBinaryOptionsMarketOrderV2
   | MsgInstantBinaryOptionsMarketLaunchV2
   | MsgUpdateSpotMarketV2
+  | MsgUpdateSwapParamsV2
   | MsgCancelPostOnlyModeV2
   | MsgUpdateDerivativeMarketV2
   | MsgSetDelegationTransferReceiversV2

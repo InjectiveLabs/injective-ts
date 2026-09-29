@@ -1,11 +1,15 @@
-import { EIP712Version } from '@injectivelabs/ts-types'
+import { expectTypeOf } from 'vitest'
+import { MsgType, EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
+import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import MsgUpdateSwapParamsV2 from './MsgUpdateSwapParamsV2.js'
+import { protoTypeToAminoType } from '../../../tx/eip712/maps.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
 } from '../../../tx/eip712/eip712.js'
 import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
+import type { ExchangeV2Msgs } from '../../msgs.js'
 
 const params: MsgUpdateSwapParamsV2['params'] = {
   sender: mockFactory.injectiveAddress,
@@ -27,6 +31,57 @@ const aminoValue = {
 }
 
 describe('MsgUpdateSwapParamsV2', () => {
+  it('is supported by the exchange message union and Amino mapping', () => {
+    expectTypeOf<MsgUpdateSwapParamsV2>().toExtend<ExchangeV2Msgs>()
+    expect(protoTypeToAminoType(MsgType.MsgUpdateSwapParamsV2)).toBe(
+      protoTypeShort,
+    )
+  })
+
+  it('generates proper direct sign data and binary', () => {
+    expect(message.toDirectSign()).toStrictEqual({
+      type: protoType,
+      message: params,
+    })
+    expect(
+      InjectiveExchangeV2TxPb.MsgUpdateSwapParams.fromBinary(
+        message.toBinary(),
+      ),
+    ).toStrictEqual(params)
+  })
+
+  it.each([true, false])(
+    'supports an empty market allowlist with enabled=%s',
+    (enabled) => {
+      const emptyAllowlistParams = {
+        sender: params.sender,
+        swapParams: { enabled, allowedMarkets: [] },
+      }
+      const emptyAllowlistMessage =
+        MsgUpdateSwapParamsV2.fromJSON(emptyAllowlistParams)
+      const { eip712Args } = prepareEip712({ messages: emptyAllowlistMessage })
+
+      expect(
+        InjectiveExchangeV2TxPb.MsgUpdateSwapParams.fromBinary(
+          emptyAllowlistMessage.toBinary(),
+        ),
+      ).toStrictEqual(emptyAllowlistParams)
+      expect(emptyAllowlistMessage.toAmino().value.swap_params).toStrictEqual({
+        enabled,
+        allowed_markets: [],
+      })
+      expect(getEip712TypedData(eip712Args).types).toMatchObject({
+        TypeSwapParams: [
+          { name: 'enabled', type: 'bool' },
+          { name: 'allowed_markets', type: 'string[]' },
+        ],
+      })
+      expect(
+        JSON.parse(getEip712TypedDataV2(eip712Args).message.msgs),
+      ).toStrictEqual([emptyAllowlistMessage.toWeb3Gw()])
+    },
+  )
+
   it('generates proper proto', () => {
     expect(message.toProto()).toStrictEqual(params)
   })
