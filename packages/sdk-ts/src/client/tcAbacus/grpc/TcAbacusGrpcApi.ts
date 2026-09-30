@@ -118,11 +118,32 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     )
   }
 
-  async createReferrerCode(address: string, code: string) {
+  async createReferrerCode(
+    address: string,
+    code: string,
+    params?: {
+      signature?: string
+      expiresAt?: number
+      evmChainId?: number
+    },
+  ) {
+    const { signature, expiresAt, evmChainId } = params || {}
     const request = TcAbacusPb.CreateReferrerCodeRequest.create({
       code,
       address,
     })
+
+    if (signature) {
+      request.signature = signature
+    }
+
+    if (expiresAt !== undefined) {
+      request.expiresAt = BigInt(expiresAt)
+    }
+
+    if (evmChainId !== undefined) {
+      request.evmChainId = BigInt(evmChainId)
+    }
 
     const response = await this.executeGrpcCall<
       TcAbacusPb.CreateReferrerCodeRequest,
