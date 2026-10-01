@@ -1,8 +1,12 @@
 import { vi, afterEach } from 'vitest'
 import { Network } from '@injectivelabs/networks'
-import { TransactionException } from '@injectivelabs/exceptions'
+import { MsgWithdrawV2 } from '@injectivelabs/sdk-ts/core/modules'
 import { PublicKey, PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
+import {
+  GeneralException,
+  TransactionException,
+} from '@injectivelabs/exceptions'
 import {
   Wallet,
   WalletStrategyEmitterEventType,
@@ -59,6 +63,17 @@ const makeMessage = () =>
     toDirectSign: () => ({ type: '/cosmos.bank.v1beta1.MsgSend' }),
   }) as any
 
+const makeFixedGasMessage = () =>
+  ({
+    toBinary: () => new Uint8Array(),
+    toDirectSign: () => ({
+      type: '/injective.exchange.v2.MsgWithdraw',
+      message: {},
+    }),
+    toWeb3: () => ({ '@type': '/injective.exchange.v2.MsgWithdraw' }),
+    toWeb3Gw: () => ({ '@type': '/injective.exchange.v2.MsgWithdraw' }),
+  }) as any
+
 const makeDirectSignResponse = (pubKey = 'mockPubKeyBase64') => ({
   signed: {
     bodyBytes: new Uint8Array(),
@@ -100,6 +115,7 @@ describe('MsgBroadcaster options', () => {
       network: Network.Devnet,
       simulateTx: true,
       useDynamicBaseFee: true,
+      useFixedGas: true,
       walletStrategy: createMockWalletStrategy(),
       txTimeoutOnFeeDelegation: true,
     })
@@ -107,11 +123,13 @@ describe('MsgBroadcaster options', () => {
     broadcaster.setOptions({
       simulateTx: false,
       useDynamicBaseFee: false,
+      useFixedGas: false,
       txTimeoutOnFeeDelegation: false,
     })
 
     expect(broadcaster.simulateTx).toBe(false)
     expect(broadcaster.useDynamicBaseFee).toBe(false)
+    expect(broadcaster.useFixedGas).toBe(false)
     expect(broadcaster.txTimeoutOnFeeDelegation).toBe(false)
   })
 
@@ -177,6 +195,90 @@ describe('MsgBroadcaster options', () => {
 
     expect(fetchEipBaseFee).not.toHaveBeenCalled()
     expect(simulateTxWithSigners).not.toHaveBeenCalled()
+  })
+
+  it('encodes the dynamically adjusted fee returned to callers', async () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      simulateTx: true,
+      useDynamicBaseFee: true,
+      useFixedGas: true,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    const dynamicFee = {
+      amount: [{ denom: 'inj', amount: '123' }],
+      gas: '777',
+    }
+    vi.spyOn(
+      broadcaster as any,
+      'getStdFeeWithDynamicBaseFee',
+    ).mockResolvedValue(dynamicFee)
+
+    const result = await (broadcaster as any).getTxWithSignersAndStdFee(
+      {
+        chainId: 'injective-888',
+        memo: '',
+        message: [makeMessage()],
+        timeoutHeight: 100,
+        signers: {
+          sequence: 1,
+          accountNumber: 1,
+          pubKey: 'mockPubKeyBase64',
+        },
+        fee: {
+          amount: [{ denom: 'inj', amount: '1' }],
+          gas: '400000',
+        },
+      },
+      false,
+    )
+    const authInfo = CosmosTxV1Beta1TxPb.AuthInfo.fromBinary(
+      result.txRaw.authInfoBytes,
+    )
+
+    expect(result.stdFee).toBe(dynamicFee)
+    expect(authInfo.fee?.gasLimit).toBe(777n)
+    expect(authInfo.fee?.amount[0].amount).toBe('123')
+  })
+
+  it('preserves legacy fee encoding when fixed gas is disabled', async () => {
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      simulateTx: false,
+      useDynamicBaseFee: true,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    const dynamicFee = {
+      amount: [{ denom: 'inj', amount: '123' }],
+      gas: '777',
+    }
+    vi.spyOn(
+      broadcaster as any,
+      'getStdFeeWithDynamicBaseFee',
+    ).mockResolvedValue(dynamicFee)
+
+    const result = await (broadcaster as any).getTxWithSignersAndStdFee({
+      chainId: 'injective-888',
+      memo: '',
+      message: [makeMessage()],
+      timeoutHeight: 100,
+      signers: {
+        sequence: 1,
+        accountNumber: 1,
+        pubKey: 'mockPubKeyBase64',
+      },
+      fee: {
+        amount: [{ denom: 'inj', amount: '1' }],
+        gas: '400000',
+      },
+    })
+    const authInfo = CosmosTxV1Beta1TxPb.AuthInfo.fromBinary(
+      result.txRaw.authInfoBytes,
+    )
+
+    expect(result.stdFee).toBe(dynamicFee)
+    expect(authInfo.fee?.gasLimit).toBe(400000n)
+    expect(authInfo.fee?.amount[0].amount).toBe('1')
   })
 })
 
@@ -276,6 +378,176 @@ describe('MsgBroadcaster account and height details', () => {
       baseAccount,
       latestHeight: '789',
     })
+  })
+})
+
+describe('MsgBroadcaster fixed exchange gas', () => {
+  let broadcaster: MsgBroadcaster
+
+  beforeEach(() => {
+    broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      simulateTx: true,
+      useFixedGas: true,
+      txTimeoutOnFeeDelegation: false,
+      walletStrategy: createMockWalletStrategy(),
+    })
+    vi.spyOn(broadcaster as any, 'getEvmChainId').mockResolvedValue(1)
+  })
+
+  it.each(['broadcastEip712', 'broadcastEip712V2'])(
+    'skips simulation in %s for fixed-gas messages',
+    async (method) => {
+      vi.spyOn(
+        broadcaster as any,
+        'fetchAccountAndBlockDetails',
+      ).mockResolvedValue({
+        latestHeight: '100',
+        baseAccount: makeBaseAccount(),
+      })
+      const getTxWithSignersAndStdFee = vi
+        .spyOn(broadcaster as any, 'getTxWithSignersAndStdFee')
+        .mockRejectedValue(new Error('stop after fee resolution'))
+
+      await expect(
+        (broadcaster as any)[method]({
+          msgs: makeFixedGasMessage(),
+          ethereumAddress: '0x0000000000000000000000000000000000000001',
+          injectiveAddress: 'inj1test',
+        }),
+      ).rejects.toThrow('stop after fee resolution')
+
+      expect(getTxWithSignersAndStdFee).toHaveBeenCalledWith(
+        expect.objectContaining({
+          fee: expect.objectContaining({ gas: '320000' }),
+        }),
+        false,
+      )
+    },
+  )
+
+  it('uses fixed gas when building direct sign transactions', async () => {
+    vi.spyOn(
+      broadcaster as any,
+      'fetchAccountAndBlockDetails',
+    ).mockResolvedValue({
+      latestHeight: '100',
+      baseAccount: makeBaseAccount(),
+    })
+    const getTxWithSignersAndStdFee = vi
+      .spyOn(broadcaster as any, 'getTxWithSignersAndStdFee')
+      .mockRejectedValue(new Error('stop after fee resolution'))
+
+    await expect(
+      (broadcaster as any).broadcastDirectSign({
+        msgs: makeFixedGasMessage(),
+        ethereumAddress: '0x0000000000000000000000000000000000000001',
+        injectiveAddress: 'inj1test',
+      }),
+    ).rejects.toThrow('stop after fee resolution')
+
+    expect(getTxWithSignersAndStdFee).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fee: expect.objectContaining({ gas: '320000' }),
+      }),
+      false,
+    )
+  })
+
+  it('disables gateway estimation for fixed-gas messages', async () => {
+    const prepareTxRequest = vi
+      .spyOn(IndexerGrpcWeb3GwApi.prototype, 'prepareTxRequest')
+      .mockRejectedValue(new Error('stop after gateway preparation'))
+
+    await expect(
+      (broadcaster as any).broadcastEip712WithFeeDelegation({
+        msgs: makeFixedGasMessage(),
+        ethereumAddress: '0x0000000000000000000000000000000000000001',
+        injectiveAddress: 'inj1test',
+      }),
+    ).rejects.toThrow('stop after gateway preparation')
+
+    expect(prepareTxRequest).toHaveBeenCalledWith(
+      expect.objectContaining({ gasLimit: 320000, estimateGas: false }),
+    )
+  })
+
+  it('keeps simulation enabled by default', async () => {
+    broadcaster.setOptions({ useFixedGas: false })
+    vi.spyOn(
+      broadcaster as any,
+      'fetchAccountAndBlockDetails',
+    ).mockResolvedValue({
+      latestHeight: '100',
+      baseAccount: makeBaseAccount(),
+    })
+    const getTxWithSignersAndStdFee = vi
+      .spyOn(broadcaster as any, 'getTxWithSignersAndStdFee')
+      .mockRejectedValue(new Error('stop after fee resolution'))
+
+    await expect(
+      (broadcaster as any).broadcastEip712({
+        msgs: makeFixedGasMessage(),
+        ethereumAddress: '0x0000000000000000000000000000000000000001',
+        injectiveAddress: 'inj1test',
+      }),
+    ).rejects.toThrow('stop after fee resolution')
+
+    expect(getTxWithSignersAndStdFee).toHaveBeenCalledWith(
+      expect.anything(),
+      true,
+    )
+  })
+})
+
+describe('MsgBroadcaster Ledger fixed exchange gas', () => {
+  it('skips the Ledger validity simulation when fixed gas is enabled', async () => {
+    const strategy = createMockWalletStrategy()
+    const signEIP712CosmosTx = vi.fn().mockResolvedValue({
+      signed: {
+        memo: '',
+        fee: { amount: [{ amount: '1', denom: 'inj' }], gas: '320000' },
+        sequence: '1',
+        account_number: '1',
+        timeout_height: '100',
+      },
+      signature: { signature: 'bW9ja1NpZw==' },
+    })
+    Object.assign(strategy, {
+      wallet: Wallet.Ledger,
+      getWallet: vi.fn().mockReturnValue(Wallet.Ledger),
+      getCosmosWallet: vi.fn().mockReturnValue({ signEIP712CosmosTx }),
+    })
+    const broadcaster = new MsgBroadcaster({
+      network: Network.Devnet,
+      simulateTx: true,
+      useFixedGas: true,
+      walletStrategy: strategy,
+    })
+    vi.spyOn(
+      broadcaster as any,
+      'fetchAccountAndBlockDetails',
+    ).mockResolvedValue({
+      latestHeight: '100',
+      baseAccount: makeBaseAccount(),
+    })
+    const simulateTxRaw = vi.spyOn(broadcaster as any, 'simulateTxRaw')
+    vi.spyOn(TxGrpcApi.prototype, 'broadcast').mockResolvedValue(
+      makeTxResponse(),
+    )
+
+    await (broadcaster as any).experimentalBroadcastWalletThroughLedger({
+      msgs: MsgWithdrawV2.fromJSON({
+        subaccountId: '0x' + '1'.repeat(64),
+        injectiveAddress: 'inj1test',
+        amount: { amount: '1', denom: 'inj' },
+      }),
+      ethereumAddress: '0x0000000000000000000000000000000000000001',
+      injectiveAddress: 'inj1test',
+    })
+
+    expect(signEIP712CosmosTx).toHaveBeenCalledOnce()
+    expect(simulateTxRaw).not.toHaveBeenCalled()
   })
 })
 
@@ -566,6 +838,7 @@ describe('MsgBroadcaster event emission order', () => {
       )
       expect(getTxWithSignersAndStdFee).toHaveBeenCalledWith(
         expect.objectContaining({ timeoutHeight: 999 }),
+        true,
       )
     })
 
@@ -778,15 +1051,80 @@ describe('MsgBroadcaster direct sign fee delegation', () => {
   })
 
   it('keeps Cosmos wallet adapter access for Keplr gas-check toggling', async () => {
+    broadcaster.setOptions({ useFixedGas: true })
+
     await (broadcaster as any).broadcastDirectSignWithFeeDelegation({
-      gas: { gas: 100000 },
-      msgs: makeMessage(),
+      msgs: makeFixedGasMessage(),
       ethereumAddress: '0x0000000000000000000000000000000000000001',
       injectiveAddress: 'inj1test',
     })
 
     expect(mockStrategy.getCosmosWallet).toHaveBeenCalledWith('injective-777')
+    expect((broadcaster as any).getTxWithSignersAndStdFee).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fee: expect.objectContaining({ gas: '320000' }),
+      }),
+      false,
+    )
     expect(disableGasCheck).toHaveBeenCalledWith('injective-777')
     expect(enableGasCheck).toHaveBeenCalledWith('injective-777')
+  })
+
+  it('uses fixed gas while creating a missing account through the gateway', async () => {
+    broadcaster.setOptions({ useFixedGas: true })
+    const fetchAccountAndBlockDetails = vi.mocked(
+      (broadcaster as any).fetchAccountAndBlockDetails,
+    )
+    fetchAccountAndBlockDetails
+      .mockRejectedValueOnce(
+        new GeneralException(new Error('account inj1test not found')),
+      )
+      .mockResolvedValueOnce({
+        latestHeight: '100',
+        baseAccount: makeBaseAccount(),
+      })
+    const prepareCosmosTxRequest = vi
+      .spyOn(IndexerGrpcWeb3GwApi.prototype, 'prepareCosmosTxRequest')
+      .mockResolvedValue({} as any)
+
+    await (broadcaster as any).broadcastDirectSignWithFeeDelegation({
+      msgs: makeFixedGasMessage(),
+      ethereumAddress: '0x0000000000000000000000000000000000000001',
+      injectiveAddress: 'inj1test',
+    })
+
+    expect(prepareCosmosTxRequest).toHaveBeenCalledWith(
+      expect.objectContaining({ gasLimit: 320000, estimateGas: false }),
+    )
+  })
+
+  it('keeps missing-account gateway preparation unchanged by default', async () => {
+    const fetchAccountAndBlockDetails = vi.mocked(
+      (broadcaster as any).fetchAccountAndBlockDetails,
+    )
+    fetchAccountAndBlockDetails.mockRejectedValueOnce(
+      new GeneralException(new Error('account inj1test not found')),
+    )
+    const prepareCosmosTxRequest = vi
+      .spyOn(IndexerGrpcWeb3GwApi.prototype, 'prepareCosmosTxRequest')
+      .mockRejectedValue(new Error('stop after gateway preparation'))
+    const msg = makeFixedGasMessage()
+    const toDirectSign = vi.spyOn(msg, 'toDirectSign')
+
+    await expect(
+      (broadcaster as any).broadcastDirectSignWithFeeDelegation({
+        msgs: msg,
+        ethereumAddress: '0x0000000000000000000000000000000000000001',
+        injectiveAddress: 'inj1test',
+      }),
+    ).rejects.toThrow('stop after gateway preparation')
+
+    expect(toDirectSign).not.toHaveBeenCalled()
+    expect(prepareCosmosTxRequest).toHaveBeenCalledWith(
+      expect.objectContaining({ estimateGas: true }),
+    )
+    expect(prepareCosmosTxRequest.mock.calls[0][0]).not.toHaveProperty(
+      'gasLimit',
+    )
   })
 })

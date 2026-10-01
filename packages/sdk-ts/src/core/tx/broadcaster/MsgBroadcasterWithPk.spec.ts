@@ -1,11 +1,18 @@
 import { Network } from '@injectivelabs/networks'
 import { EvmChainId } from '@injectivelabs/ts-types'
-import { DEFAULT_BLOCK_TIME_IN_SECONDS } from '@injectivelabs/utils'
+import {
+  toBigNumber,
+  DEFAULT_BLOCK_TIME_IN_SECONDS,
+} from '@injectivelabs/utils'
 import { TxGrpcApi } from '../api/TxGrpcApi.js'
 import { MsgSend } from '../../modules/bank/index.js'
 import { PrivateKey } from '../../accounts/PrivateKey.js'
 import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk.js'
 import { IndexerGrpcTransactionApi } from '../../../client/index.js'
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 // TODO
 describe.skip('MsgBroadcasterWithPk', () => {
@@ -89,6 +96,109 @@ describe.skip('MsgBroadcasterWithPk', () => {
 })
 
 describe('MsgBroadcasterWithPk fee delegation', () => {
+  it('does not simulate a direct transaction covered by fixed gas', async () => {
+    const privateKey = PrivateKey.fromHex(
+      '0x0000000000000000000000000000000000000000000000000000000000000001',
+    )
+    const message = {
+      toBinary: () => new Uint8Array(),
+      toDirectSign: () => ({
+        type: '/injective.exchange.v2.MsgWithdraw',
+        message: {},
+      }),
+    } as any
+    const broadcaster = new MsgBroadcasterWithPk({
+      network: Network.Devnet,
+      privateKey,
+      simulateTx: true,
+      useFixedGas: true,
+    })
+    vi.spyOn(broadcaster as any, 'getAccountDetails').mockResolvedValue({
+      accountNumber: 1,
+      sequence: 1,
+      address: privateKey.toBech32(),
+    })
+    vi.spyOn(broadcaster as any, 'getTimeoutHeight').mockResolvedValue(
+      toBigNumber(100),
+    )
+    const simulateTxRaw = vi.spyOn(broadcaster as any, 'simulateTxRaw')
+
+    await (broadcaster as any).prepareTxForBroadcast({ msgs: message })
+
+    expect(simulateTxRaw).not.toHaveBeenCalled()
+  })
+
+  it('keeps simulation enabled for fixed-gas messages by default', async () => {
+    const privateKey = PrivateKey.fromHex(
+      '0x0000000000000000000000000000000000000000000000000000000000000001',
+    )
+    const message = {
+      toBinary: () => new Uint8Array(),
+      toDirectSign: () => ({
+        type: '/injective.exchange.v2.MsgWithdraw',
+        message: {},
+      }),
+    } as any
+    const broadcaster = new MsgBroadcasterWithPk({
+      network: Network.Devnet,
+      privateKey,
+      simulateTx: true,
+    })
+    vi.spyOn(broadcaster as any, 'getAccountDetails').mockResolvedValue({
+      accountNumber: 1,
+      sequence: 1,
+      address: privateKey.toBech32(),
+    })
+    vi.spyOn(broadcaster as any, 'getTimeoutHeight').mockResolvedValue(
+      toBigNumber(100),
+    )
+    const simulateTxRaw = vi
+      .spyOn(broadcaster as any, 'simulateTxRaw')
+      .mockResolvedValue({ gasInfo: { gasUsed: '100' } })
+
+    await (broadcaster as any).prepareTxForBroadcast({ msgs: message })
+
+    expect(simulateTxRaw).toHaveBeenCalledOnce()
+  })
+
+  test('uses fixed gas instead of gateway estimation for exchange messages', async () => {
+    const privateKey = PrivateKey.fromHex(
+      '0x0000000000000000000000000000000000000000000000000000000000000001',
+    )
+    const message = {
+      toDirectSign: () => ({
+        type: '/injective.exchange.v2.MsgWithdraw',
+        message: {},
+      }),
+      toWeb3: () => ({ '@type': '/injective.exchange.v2.MsgWithdraw' }),
+    } as any
+    vi.spyOn(PrivateKey.prototype, 'signTypedData').mockResolvedValue(
+      new Uint8Array([1]),
+    )
+    const prepareTxRequest = vi
+      .spyOn(IndexerGrpcTransactionApi.prototype, 'prepareTxRequest')
+      .mockResolvedValue({ data: '{}' } as any)
+    vi.spyOn(
+      IndexerGrpcTransactionApi.prototype,
+      'broadcastTxRequest',
+    ).mockResolvedValue({
+      txHash: 'FIXED_GAS_HASH',
+    } as any)
+    vi.spyOn(TxGrpcApi.prototype, 'fetchTxPoll').mockResolvedValue({} as any)
+
+    await new MsgBroadcasterWithPk({
+      network: Network.Devnet,
+      privateKey,
+      evmChainId: EvmChainId.Sepolia,
+      simulateTx: true,
+      useFixedGas: true,
+    }).broadcastWithFeeDelegation({ msgs: message })
+
+    expect(prepareTxRequest).toHaveBeenCalledWith(
+      expect.objectContaining({ gasLimit: 320000, estimateGas: false }),
+    )
+  })
+
   test('forwards txTimeout to transaction polling', async () => {
     const txTimeout = 11
     const privateKey = PrivateKey.fromHex(

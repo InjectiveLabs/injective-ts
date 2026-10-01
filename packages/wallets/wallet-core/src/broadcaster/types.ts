@@ -39,6 +39,7 @@ export interface MsgBroadcasterOptions {
   txInclusion?: TxClientInclusionOptions
   walletStrategy: BaseWalletStrategy
   useDynamicBaseFee?: boolean
+  useFixedGas?: boolean
   txTimeoutOnFeeDelegation?: boolean
   gasBufferCoefficient?: number
   httpHeaders?: Record<string, string>

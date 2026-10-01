@@ -4,8 +4,8 @@ import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { PlatformServicesGrpcArchiverTransformer } from '../transformers/index.js'
 import type {
   PlatformServicesArchiverAccountParams,
-  PlatformServicesArchiverAccountStatsParams,
   PlatformServicesHistoricalTradesParams,
+  PlatformServicesArchiverAccountStatsParams,
 } from '../types/index.js'
 
 export class ArchiverGrpcApi extends BaseGrpcConsumer {
@@ -22,11 +22,14 @@ export class ArchiverGrpcApi extends BaseGrpcConsumer {
       PlatformServicesArchiverPb.BalanceResponse
     >(request, this.client.balance.bind(this.client))
 
-    return PlatformServicesGrpcArchiverTransformer.grpcBalanceToBalance(response)
+    return PlatformServicesGrpcArchiverTransformer.grpcBalanceToBalance(
+      response,
+    )
   }
 
   async fetchAccountStats(params: PlatformServicesArchiverAccountStatsParams) {
-    const request = PlatformServicesArchiverPb.AccountStatsRequest.create(params)
+    const request =
+      PlatformServicesArchiverPb.AccountStatsRequest.create(params)
     const response = await this.executeGrpcCall<
       PlatformServicesArchiverPb.AccountStatsRequest,
       PlatformServicesArchiverPb.AccountStatsResponse
@@ -48,7 +51,8 @@ export class ArchiverGrpcApi extends BaseGrpcConsumer {
   }
 
   async fetchHistoricalTrades(params?: PlatformServicesHistoricalTradesParams) {
-    const request = PlatformServicesArchiverPb.HistoricalTradesRequest.create(params)
+    const request =
+      PlatformServicesArchiverPb.HistoricalTradesRequest.create(params)
     const response = await this.executeGrpcCall<
       PlatformServicesArchiverPb.HistoricalTradesRequest,
       PlatformServicesArchiverPb.HistoricalTradesResponse
