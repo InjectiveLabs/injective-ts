@@ -188,8 +188,7 @@ export interface PlatformServicesMarketHistoryParams {
   countback?: number
 }
 
-export interface PlatformServicesSpotMarketHistoryParams
-  extends PlatformServicesMarketHistoryParams {
+export interface PlatformServicesSpotMarketHistoryParams extends PlatformServicesMarketHistoryParams {
   fillGaps?: boolean
 }
 

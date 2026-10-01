@@ -17,7 +17,7 @@ import { ofacList } from '../../../utils/ofac.js'
 import { PrivateKey } from '../../accounts/index.js'
 import { uint8ArrayToHex } from '../../../utils/encoding.js'
 import { IndexerGrpcWeb3GwApi } from '../../../client/index.js'
-import { getGasPriceBasedOnMessage } from '../../../utils/msgs.js'
+import { getGasOptionsBasedOnMessage } from '../../../utils/msgs.js'
 import {
   ChainGrpcAuthApi,
   ChainGrpcTendermintApi,
@@ -65,6 +65,7 @@ export interface MsgBroadcasterWithPkOptions {
   txTimeout?: number // blocks to wait for tx to be included in a block
   gasBufferCoefficient?: number
   txTimeoutOnFeeDelegation?: boolean
+  useFixedGas?: boolean
 }
 
 /**
@@ -94,6 +95,8 @@ export class MsgBroadcasterWithPk {
 
   public txTimeout = DEFAULT_BLOCK_TIMEOUT_HEIGHT
 
+  public useFixedGas: boolean = false
+
   constructor(options: MsgBroadcasterWithPkOptions) {
     const network = options.network || Network.MainnetSentry
     const networkInfo = getNetworkInfo(network)
@@ -112,6 +115,7 @@ export class MsgBroadcasterWithPk {
         : PrivateKey.fromHex(options.privateKey)
     this.txTimeoutOnFeeDelegation =
       options.txTimeoutOnFeeDelegation || this.txTimeoutOnFeeDelegation
+    this.useFixedGas = options.useFixedGas || false
   }
 
   /**
@@ -150,7 +154,6 @@ export class MsgBroadcasterWithPk {
     const {
       endpoints,
       txTimeout,
-      simulateTx,
       privateKey,
       evmChainId,
       txTimeoutOnFeeDelegation,
@@ -196,13 +199,19 @@ export class MsgBroadcasterWithPk {
     const transactionApi = new IndexerGrpcWeb3GwApi(
       endpoints.web3gw || endpoints.indexer,
     )
+    const { gasLimit, estimateGas } = getGasOptionsBasedOnMessage({
+      msgs,
+      gas: this.useFixedGas ? tx.gas?.gas : undefined,
+      simulateTx: this.simulateTx,
+      useFixedGas: this.useFixedGas,
+    })
     const txResponse = await transactionApi.prepareTxRequest({
       memo: tx.memo,
       message: web3Msgs,
       address: tx.ethereumAddress,
       chainId: evmChainId,
-      gasLimit: getGasPriceBasedOnMessage(msgs),
-      estimateGas: simulateTx || false,
+      gasLimit,
+      estimateGas,
       timeoutHeight,
     })
 
@@ -292,10 +301,13 @@ export class MsgBroadcasterWithPk {
    * gas limit based on the simulation and add a small multiplier
    * to be safe (factor of 1.1 (or user specified))
    */
-  private async getTxWithStdFee(args: CreateTransactionArgs) {
-    const { simulateTx, gasBufferCoefficient } = this
+  private async getTxWithStdFee(
+    args: CreateTransactionArgs,
+    estimateGas = this.simulateTx,
+  ) {
+    const { gasBufferCoefficient } = this
 
-    if (!simulateTx) {
+    if (!estimateGas) {
       return createTransaction(args)
     }
 
@@ -352,21 +364,27 @@ export class MsgBroadcasterWithPk {
     /** Block Details */
     const timeoutHeight = await this.getTimeoutHeight()
 
-    const gas = (
-      transaction.gas?.gas || getGasPriceBasedOnMessage(msgs)
-    ).toString()
+    const { gas, estimateGas } = getGasOptionsBasedOnMessage({
+      msgs,
+      gas: transaction.gas?.gas,
+      simulateTx: this.simulateTx,
+      useFixedGas: this.useFixedGas,
+    })
 
     /** Prepare the Transaction * */
-    const { signBytes, txRaw } = await this.getTxWithStdFee({
-      memo: tx.memo || '',
-      message: msgs,
-      fee: getStdFee({ ...tx.gas, gas }),
-      timeoutHeight: timeoutHeight.toNumber(),
-      pubKey: publicKey.toBase64(),
-      sequence: actualAccountDetails.sequence,
-      accountNumber: actualAccountDetails.accountNumber,
-      chainId: chainId,
-    })
+    const { signBytes, txRaw } = await this.getTxWithStdFee(
+      {
+        memo: tx.memo || '',
+        message: msgs,
+        fee: getStdFee({ ...tx.gas, gas }),
+        timeoutHeight: timeoutHeight.toNumber(),
+        pubKey: publicKey.toBase64(),
+        sequence: actualAccountDetails.sequence,
+        accountNumber: actualAccountDetails.accountNumber,
+        chainId: chainId,
+      },
+      estimateGas,
+    )
 
     /** Sign transaction */
     const signature = await privateKey.sign(signBytes)

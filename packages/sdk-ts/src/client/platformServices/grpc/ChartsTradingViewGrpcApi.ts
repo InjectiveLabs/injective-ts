@@ -3,10 +3,10 @@ import { ChartsTradingViewServiceClient } from '@injectivelabs/platform-services
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { PlatformServicesGrpcChartsTransformer } from '../transformers/index.js'
 import type {
-  PlatformServicesAllSpotMarketSummariesParams,
   PlatformServicesMarketHistoryParams,
   PlatformServicesSpotMarketHistoryParams,
   PlatformServicesSpotMarketSummaryParams,
+  PlatformServicesAllSpotMarketSummariesParams,
 } from '../types/index.js'
 
 export class ChartsTradingViewGrpcApi extends BaseGrpcConsumer {
@@ -31,8 +31,11 @@ export class ChartsTradingViewGrpcApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchSpotMarketHistory(params: PlatformServicesSpotMarketHistoryParams) {
-    const request = PlatformServicesChartsPb.SpotMarketHistoryRequest.create(params)
+  async fetchSpotMarketHistory(
+    params: PlatformServicesSpotMarketHistoryParams,
+  ) {
+    const request =
+      PlatformServicesChartsPb.SpotMarketHistoryRequest.create(params)
     const response = await this.executeGrpcCall<
       PlatformServicesChartsPb.SpotMarketHistoryRequest,
       PlatformServicesChartsPb.SpotMarketHistoryResponse
@@ -43,8 +46,11 @@ export class ChartsTradingViewGrpcApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchSpotMarketSummary(params: PlatformServicesSpotMarketSummaryParams) {
-    const request = PlatformServicesChartsPb.SpotMarketSummaryRequest.create(params)
+  async fetchSpotMarketSummary(
+    params: PlatformServicesSpotMarketSummaryParams,
+  ) {
+    const request =
+      PlatformServicesChartsPb.SpotMarketSummaryRequest.create(params)
     const response = await this.executeGrpcCall<
       PlatformServicesChartsPb.SpotMarketSummaryRequest,
       PlatformServicesChartsPb.SpotMarketSummaryResponse
@@ -58,9 +64,8 @@ export class ChartsTradingViewGrpcApi extends BaseGrpcConsumer {
   async fetchAllSpotMarketSummaries(
     params?: PlatformServicesAllSpotMarketSummariesParams,
   ) {
-    const request = PlatformServicesChartsPb.AllSpotMarketSummaryRequest.create(
-      params,
-    )
+    const request =
+      PlatformServicesChartsPb.AllSpotMarketSummaryRequest.create(params)
     const response = await this.executeGrpcCall<
       PlatformServicesChartsPb.AllSpotMarketSummaryRequest,
       PlatformServicesChartsPb.AllSpotMarketSummaryResponse

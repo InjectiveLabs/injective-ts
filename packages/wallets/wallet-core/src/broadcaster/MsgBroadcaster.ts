@@ -27,7 +27,7 @@ import {
   hexToUint8Array,
   base64ToUint8Array,
   uint8ArrayToBase64,
-  getGasPriceBasedOnMessage,
+  getGasOptionsBasedOnMessage,
   recoverTypedSignaturePubKey,
 } from '@injectivelabs/sdk-ts/utils'
 import {
@@ -143,6 +143,8 @@ export class MsgBroadcaster {
 
   public useDynamicBaseFee: boolean = false
 
+  public useFixedGas: boolean = false
+
   public txTimeoutOnFeeDelegation: boolean = false
 
   public evmChainId?: EvmChainIdType
@@ -165,6 +167,8 @@ export class MsgBroadcaster {
       options.useDynamicBaseFee !== undefined
         ? options.useDynamicBaseFee
         : false
+    this.useFixedGas =
+      options.useFixedGas !== undefined ? options.useFixedGas : false
     this.txTimeout = options.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT
     this.txTimeoutOnFeeDelegation =
       options.txTimeoutOnFeeDelegation !== undefined
@@ -186,6 +190,8 @@ export class MsgBroadcaster {
       options.useDynamicBaseFee !== undefined
         ? options.useDynamicBaseFee
         : this.useDynamicBaseFee
+    this.useFixedGas =
+      options.useFixedGas !== undefined ? options.useFixedGas : this.useFixedGas
     this.txTimeout =
       options.txTimeout !== undefined ? options.txTimeout : this.txTimeout
     this.txTimeoutOnFeeDelegation =
@@ -194,6 +200,18 @@ export class MsgBroadcaster {
         : this.txTimeoutOnFeeDelegation
     this.txInclusion =
       options.txInclusion !== undefined ? options.txInclusion : this.txInclusion
+  }
+
+  private resolveGasOptions(
+    msgs: MsgBroadcasterTxOptions['msgs'],
+    gas?: number,
+  ) {
+    return getGasOptionsBasedOnMessage({
+      msgs,
+      gas,
+      simulateTx: this.simulateTx,
+      useFixedGas: this.useFixedGas,
+    })
   }
 
   async getEvmChainId(): Promise<EvmChainId | undefined> {
@@ -525,7 +543,7 @@ export class MsgBroadcaster {
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
-    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
+    const { gas, estimateGas } = this.resolveGasOptions(msgs, tx.gas?.gas)
     let stdFee = getStdFee({ ...tx.gas, gas })
 
     /**
@@ -536,19 +554,22 @@ export class MsgBroadcaster {
     if (!baseAccount.pubKey) {
       stdFee = await this.getStdFeeWithDynamicBaseFee(stdFee)
     } else {
-      const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee({
-        chainId,
-        signMode: SIGN_EIP712,
-        memo: tx.memo,
-        message: msgs,
-        timeoutHeight: timeoutHeight.toNumber(),
-        signers: {
-          pubKey: baseAccount.pubKey.key,
-          accountNumber: baseAccount.accountNumber,
-          sequence: baseAccount.sequence,
+      const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee(
+        {
+          chainId,
+          signMode: SIGN_EIP712,
+          memo: tx.memo,
+          message: msgs,
+          timeoutHeight: timeoutHeight.toNumber(),
+          signers: {
+            pubKey: baseAccount.pubKey.key,
+            accountNumber: baseAccount.accountNumber,
+            sequence: baseAccount.sequence,
+          },
+          fee: stdFee,
         },
-        fee: stdFee,
-      })
+        estimateGas,
+      )
 
       stdFee = simulatedStdFee
     }
@@ -678,7 +699,7 @@ export class MsgBroadcaster {
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
-    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
+    const { gas, estimateGas } = this.resolveGasOptions(msgs, tx.gas?.gas)
     let stdFee = getStdFee({ ...tx.gas, gas })
 
     /**
@@ -689,19 +710,22 @@ export class MsgBroadcaster {
     if (!baseAccount.pubKey) {
       stdFee = await this.getStdFeeWithDynamicBaseFee(stdFee)
     } else {
-      const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee({
-        chainId,
-        signMode: SIGN_EIP712_V2,
-        memo: tx.memo,
-        message: msgs,
-        timeoutHeight: timeoutHeight.toNumber(),
-        signers: {
-          pubKey: baseAccount.pubKey.key,
-          sequence: baseAccount.sequence,
-          accountNumber: baseAccount.accountNumber,
+      const { stdFee: simulatedStdFee } = await this.getTxWithSignersAndStdFee(
+        {
+          chainId,
+          signMode: SIGN_EIP712_V2,
+          memo: tx.memo,
+          message: msgs,
+          timeoutHeight: timeoutHeight.toNumber(),
+          signers: {
+            pubKey: baseAccount.pubKey.key,
+            sequence: baseAccount.sequence,
+            accountNumber: baseAccount.accountNumber,
+          },
+          fee: stdFee,
         },
-        fee: stdFee,
-      })
+        estimateGas,
+      )
 
       stdFee = simulatedStdFee
     }
@@ -813,13 +837,8 @@ export class MsgBroadcaster {
   private async broadcastEip712WithFeeDelegation(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ): Promise<TxResponse> {
-    const {
-      endpoints,
-      simulateTx,
-      httpHeaders,
-      walletStrategy,
-      txTimeoutOnFeeDelegation,
-    } = this
+    const { endpoints, httpHeaders, walletStrategy, txTimeoutOnFeeDelegation } =
+      this
     const txTimeoutInBlocks = this.resolveTimeoutInBlocks(tx.txTimeoutInBlocks)
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
     const web3Msgs = msgs.map((msg) => msg.toWeb3())
@@ -866,14 +885,18 @@ export class MsgBroadcaster {
       WalletStrategyEmitterEventType.TransactionPreparationStart,
     )
 
+    const { gasLimit, estimateGas } = this.resolveGasOptions(
+      msgs,
+      this.useFixedGas ? tx.gas?.gas : undefined,
+    )
     const prepareTxResponse = await transactionApi.prepareTxRequest({
       timeoutHeight: timeoutHeight?.toNumber(),
       memo: tx.memo,
       message: web3Msgs,
       address: tx.ethereumAddress,
       chainId: evmChainId,
-      gasLimit: getGasPriceBasedOnMessage(msgs),
-      estimateGas: simulateTx,
+      gasLimit,
+      estimateGas,
     })
 
     walletStrategy.emit(
@@ -1006,26 +1029,29 @@ export class MsgBroadcaster {
     const signMode = isCosmosAminoOnlyWallet(walletStrategy.wallet)
       ? SIGN_EIP712
       : SIGN_DIRECT
-    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
+    const { gas, estimateGas } = this.resolveGasOptions(msgs, tx.gas?.gas)
 
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionPreparationStart,
     )
 
     /** Prepare the Transaction * */
-    const { txRaw } = await this.getTxWithSignersAndStdFee({
-      chainId,
-      signMode,
-      memo: tx.memo,
-      message: msgs,
-      timeoutHeight: timeoutHeight.toNumber(),
-      signers: {
-        pubKey,
-        accountNumber: baseAccount.accountNumber,
-        sequence: baseAccount.sequence,
+    const { txRaw } = await this.getTxWithSignersAndStdFee(
+      {
+        chainId,
+        signMode,
+        memo: tx.memo,
+        message: msgs,
+        timeoutHeight: timeoutHeight.toNumber(),
+        signers: {
+          pubKey,
+          accountNumber: baseAccount.accountNumber,
+          sequence: baseAccount.sequence,
+        },
+        fee: getStdFee({ ...tx.gas, gas }),
       },
-      fee: getStdFee({ ...tx.gas, gas }),
-    })
+      estimateGas,
+    )
 
     walletStrategy.emit(
       WalletStrategyEmitterEventType.TransactionPreparationEnd,
@@ -1151,7 +1177,7 @@ export class MsgBroadcaster {
   private async experimentalBroadcastWalletThroughLedger(
     tx: MsgBroadcasterTxOptionsWithAddresses,
   ) {
-    const { chainId, endpoints, evmChainId, simulateTx, walletStrategy } = this
+    const { chainId, endpoints, evmChainId, walletStrategy } = this
     const txTimeoutInBlocks = this.resolveTimeoutInBlocks(tx.txTimeoutInBlocks)
     const msgs = Array.isArray(tx.msgs) ? tx.msgs : [tx.msgs]
 
@@ -1197,7 +1223,7 @@ export class MsgBroadcaster {
       txTimeoutInBlocks,
     })
 
-    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
+    const { gas, estimateGas } = this.resolveGasOptions(msgs, tx.gas?.gas)
 
     /** EIP712 for signing on Ethereum wallets */
     const eip712TypedData = getEip712TypedData({
@@ -1251,7 +1277,7 @@ export class MsgBroadcaster {
     })
     const txRawEip712 = createTxRawEIP712(txRaw, web3Extension)
 
-    if (simulateTx) {
+    if (estimateGas) {
       await this.simulateTxRaw(txRawEip712)
     }
 
@@ -1302,7 +1328,6 @@ export class MsgBroadcaster {
       options,
       chainId,
       endpoints,
-      simulateTx,
       httpHeaders,
       walletStrategy,
       txTimeoutOnFeeDelegation,
@@ -1363,11 +1388,17 @@ export class MsgBroadcaster {
             .toLowerCase()
             .includes(`account ${tx.injectiveAddress} not found`)
         ) {
+          const fixedGasOptions = this.useFixedGas
+            ? this.resolveGasOptions(msgs, tx.gas?.gas)
+            : undefined
           await transactionApi.prepareCosmosTxRequest({
             address: tx.injectiveAddress,
             message: msgs.map((msg) => msg.toWeb3Gw()),
             memo: tx.memo,
-            estimateGas: simulateTx,
+            ...(fixedGasOptions && {
+              gasLimit: fixedGasOptions.gasLimit,
+            }),
+            estimateGas: fixedGasOptions?.estimateGas ?? this.simulateTx,
           })
 
           const { baseAccount, latestHeight } =
@@ -1410,28 +1441,31 @@ export class MsgBroadcaster {
       txTimeoutInBlocks * DEFAULT_BLOCK_TIME_IN_SECONDS
     const txTimeoutTimeInMilliSeconds = txTimeoutTimeInSeconds * 1000
 
-    const gas = (tx.gas?.gas || getGasPriceBasedOnMessage(msgs)).toString()
+    const { gas, estimateGas } = this.resolveGasOptions(msgs, tx.gas?.gas)
 
     /** Prepare the Transaction * */
-    const { txRaw } = await this.getTxWithSignersAndStdFee({
-      chainId,
-      memo: tx.memo,
-      message: msgs,
-      timeoutHeight: timeoutHeight.toNumber(),
-      signers: [
-        {
-          pubKey,
-          accountNumber: baseAccount.accountNumber,
-          sequence: baseAccount.sequence,
-        },
-        {
-          pubKey: feePayerPublicKey.toBase64(),
-          accountNumber: feePayerBaseAccount.accountNumber,
-          sequence: feePayerBaseAccount.sequence,
-        },
-      ],
-      fee: getStdFee({ ...tx.gas, gas, payer: feePayer }),
-    })
+    const { txRaw } = await this.getTxWithSignersAndStdFee(
+      {
+        chainId,
+        memo: tx.memo,
+        message: msgs,
+        timeoutHeight: timeoutHeight.toNumber(),
+        signers: [
+          {
+            pubKey,
+            accountNumber: baseAccount.accountNumber,
+            sequence: baseAccount.sequence,
+          },
+          {
+            pubKey: feePayerPublicKey.toBase64(),
+            accountNumber: feePayerBaseAccount.accountNumber,
+            sequence: feePayerBaseAccount.sequence,
+          },
+        ],
+        fee: getStdFee({ ...tx.gas, gas, payer: feePayer }),
+      },
+      estimateGas,
+    )
 
     // Temporary remove tx gas check because Keplr doesn't recognize feePayer
     if (cosmosWallet?.disableGasCheck) {
@@ -1609,14 +1643,20 @@ export class MsgBroadcaster {
    * to be safe (factor of 1.2 as default)
    */
   private async getTxWithSignersAndStdFee(
-    args: CreateTransactionWithSignersArgs,
+    args: Omit<CreateTransactionWithSignersArgs, 'fee'> & {
+      fee: ReturnType<typeof getStdFee>
+    },
+    estimateGas = this.simulateTx,
   ) {
-    const { simulateTx } = this
+    if (!estimateGas) {
+      const stdFee = await this.getStdFeeWithDynamicBaseFee(args.fee)
 
-    if (!simulateTx) {
       return {
-        ...createTransactionWithSigners(args),
-        stdFee: await this.getStdFeeWithDynamicBaseFee(args.fee),
+        ...createTransactionWithSigners({
+          ...args,
+          fee: this.useFixedGas ? stdFee : args.fee,
+        }),
+        stdFee,
       }
     }
 
