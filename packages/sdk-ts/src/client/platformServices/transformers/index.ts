@@ -1,12 +1,26 @@
 import type * as PlatformServicesPositionsPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_positions_service_pb'
+import type * as PlatformServicesArchiverPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_injective_archiver_rpc_pb'
+import type * as PlatformServicesChartsPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_charts_trading_view_service_pb'
 import type {
   PlatformServicesPosition,
   PlatformServicesDailyPNL,
+  PlatformServicesRpnlResponse,
   PlatformServicesPositionTrade,
+  PlatformServicesMarketHistory,
+  PlatformServicesHistoricalRpnl,
+  PlatformServicesBalanceResponse,
+  PlatformServicesHistoricalTrade,
+  PlatformServicesHistoricalBalance,
+  PlatformServicesSpotMarketSummary,
+  PlatformServicesArchiverPriceLevel,
   PlatformServicesAccountPositionStats,
+  PlatformServicesArchiverAccountStats,
   PlatformServicesListPositionsResponse,
+  PlatformServicesHistoricalDetailedPnl,
   PlatformServicesGetAccountCountResponse,
   PlatformServicesListAccountTagsResponse,
+  PlatformServicesHistoricalTradesResponse,
+  PlatformServicesHistoricalDetailedBalance,
   PlatformServicesGetAccountDailyPNLResponse,
   PlatformServicesListPositionTradesResponse,
   PlatformServicesListAccountPositionStatsResponse,
@@ -19,6 +33,7 @@ export class PlatformServicesGrpcPositionsTransformer {
     return {
       id: position.id,
       pnl: position.pnl,
+      pnlUsd: position.pnlUsd,
       fees: position.fees,
       side: position.side,
       state: position.state,
@@ -65,6 +80,7 @@ export class PlatformServicesGrpcPositionsTransformer {
   ): PlatformServicesPositionTrade {
     return {
       pnl: trade.pnl,
+      pnlUsd: trade.pnlUsd,
       amount: trade.amount,
       timestamp: trade.timestamp,
       eventType: trade.eventType,
@@ -180,6 +196,171 @@ export class PlatformServicesGrpcPositionsTransformer {
         PlatformServicesGrpcPositionsTransformer.grpcAccountPositionStatsToAccountPositionStats(
           account,
         ),
+      ),
+    }
+  }
+}
+
+export class PlatformServicesGrpcChartsTransformer {
+  static grpcMarketHistoryToMarketHistory(
+    response:
+      | PlatformServicesChartsPb.DerivativeMarketHistoryResponse
+      | PlatformServicesChartsPb.SpotMarketHistoryResponse,
+  ): PlatformServicesMarketHistory {
+    return {
+      s: response.s,
+      t: response.t,
+      o: response.o,
+      h: response.h,
+      l: response.l,
+      c: response.c,
+      v: response.v,
+    }
+  }
+
+  static grpcMarketSummaryToMarketSummary(
+    summary:
+      | PlatformServicesChartsPb.MarketSummaryResp
+      | PlatformServicesChartsPb.SpotMarketSummaryResponse,
+  ): PlatformServicesSpotMarketSummary {
+    return {
+      open: summary.open,
+      high: summary.high,
+      low: summary.low,
+      volume: summary.volume,
+      price: summary.price,
+      change: summary.change,
+      marketId: summary.marketId,
+    }
+  }
+}
+
+export class PlatformServicesGrpcArchiverTransformer {
+  static grpcHistoricalDetailedBalanceToHistoricalDetailedBalance(
+    balance: PlatformServicesArchiverPb.HistoricalDetailedBalance,
+  ): PlatformServicesHistoricalDetailedBalance {
+    return {
+      spot: balance.spot,
+      perp: balance.perp,
+      staking: balance.staking,
+    }
+  }
+
+  static grpcHistoricalBalanceToHistoricalBalance(
+    balance: PlatformServicesArchiverPb.HistoricalBalance,
+  ): PlatformServicesHistoricalBalance {
+    return {
+      t: balance.t,
+      v: balance.v,
+      dv: balance.dv.map(
+        PlatformServicesGrpcArchiverTransformer.grpcHistoricalDetailedBalanceToHistoricalDetailedBalance,
+      ),
+    }
+  }
+
+  static grpcBalanceToBalance(
+    response: PlatformServicesArchiverPb.BalanceResponse,
+  ): PlatformServicesBalanceResponse {
+    return {
+      historicalBalance: response.historicalBalance
+        ? PlatformServicesGrpcArchiverTransformer.grpcHistoricalBalanceToHistoricalBalance(
+            response.historicalBalance,
+          )
+        : undefined,
+    }
+  }
+
+  static grpcAccountStatsToAccountStats(
+    response: PlatformServicesArchiverPb.AccountStatsResponse,
+  ): PlatformServicesArchiverAccountStats {
+    return {
+      pnl: response.pnl,
+      stake: response.stake,
+      volume: response.volume,
+      account: response.account,
+    }
+  }
+
+  static grpcHistoricalDetailedPnlToHistoricalDetailedPnl(
+    pnl: PlatformServicesArchiverPb.HistoricalDetailedPNL,
+  ): PlatformServicesHistoricalDetailedPnl {
+    return {
+      rpnl: pnl.rpnl,
+      upnl: pnl.upnl,
+    }
+  }
+
+  static grpcHistoricalRpnlToHistoricalRpnl(
+    rpnl: PlatformServicesArchiverPb.HistoricalRPNL,
+  ): PlatformServicesHistoricalRpnl {
+    return {
+      t: rpnl.t,
+      v: rpnl.v,
+      dv: rpnl.dv.map(
+        PlatformServicesGrpcArchiverTransformer.grpcHistoricalDetailedPnlToHistoricalDetailedPnl,
+      ),
+    }
+  }
+
+  static grpcRpnlToRpnl(
+    response: PlatformServicesArchiverPb.RpnlResponse,
+  ): PlatformServicesRpnlResponse {
+    return {
+      historicalRpnl: response.historicalRpnl
+        ? PlatformServicesGrpcArchiverTransformer.grpcHistoricalRpnlToHistoricalRpnl(
+            response.historicalRpnl,
+          )
+        : undefined,
+    }
+  }
+
+  static grpcPriceLevelToPriceLevel(
+    price: PlatformServicesArchiverPb.PriceLevel,
+  ): PlatformServicesArchiverPriceLevel {
+    return {
+      price: price.price,
+      quantity: price.quantity,
+      timestamp: price.timestamp.toString(),
+    }
+  }
+
+  static grpcHistoricalTradeToHistoricalTrade(
+    trade: PlatformServicesArchiverPb.HistoricalTrade,
+  ): PlatformServicesHistoricalTrade {
+    return {
+      cid: trade.cid,
+      fee: trade.fee,
+      flags: trade.flags,
+      account: trade.account,
+      tradeId: trade.tradeId,
+      marketId: trade.marketId,
+      usdValue: trade.usdValue,
+      fundingRate: trade.fundingRate,
+      marketType: trade.marketType,
+      executionSide: trade.executionSide,
+      feeRecipient: trade.feeRecipient,
+      subaccountId: trade.subaccountId,
+      tradeDirection: trade.tradeDirection,
+      executionType: trade.executionType,
+      executedAt: trade.executedAt.toString(),
+      executedHeight: trade.executedHeight.toString(),
+      price: trade.price
+        ? PlatformServicesGrpcArchiverTransformer.grpcPriceLevelToPriceLevel(
+            trade.price,
+          )
+        : undefined,
+    }
+  }
+
+  static grpcHistoricalTradesToHistoricalTrades(
+    response: PlatformServicesArchiverPb.HistoricalTradesResponse,
+  ): PlatformServicesHistoricalTradesResponse {
+    return {
+      next: response.next,
+      lastHeight: response.lastHeight.toString(),
+      lastTime: response.lastTime.toString(),
+      trades: response.trades.map(
+        PlatformServicesGrpcArchiverTransformer.grpcHistoricalTradeToHistoricalTrade,
       ),
     }
   }
