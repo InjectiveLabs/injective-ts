@@ -17,6 +17,7 @@ describe('SocialTradingGrpcApi', () => {
           {
             id: 'position-1',
             pnl: '1.23',
+            pnlUsd: '1.25',
             fees: '0.1',
             side: 'long',
             state: 'closed',
@@ -70,6 +71,7 @@ describe('SocialTradingGrpcApi', () => {
         positions: [
           expect.objectContaining({
             id: 'position-1',
+            pnlUsd: '1.25',
             exitPrice: '101',
             totalTrades: '3',
             openedHeight: '100',
@@ -135,6 +137,7 @@ describe('SocialTradingGrpcApi', () => {
         trades: [
           {
             pnl: '0.12',
+            pnlUsd: '0.13',
             amount: '1.5',
             eventType: 'trade',
             positionId: 'position-1',
@@ -168,6 +171,7 @@ describe('SocialTradingGrpcApi', () => {
         trades: [
           {
             pnl: '0.12',
+            pnlUsd: '0.13',
             amount: '1.5',
             eventType: 'trade',
             positionId: 'position-1',

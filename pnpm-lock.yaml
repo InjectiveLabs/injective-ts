@@ -271,8 +271,8 @@ importers:
         specifier: 1.17.6
         version: 1.17.6
       '@injectivelabs/platform-services-proto-ts-v2':
-        specifier: 1.0.7
-        version: 1.0.7
+        specifier: 1.0.8
+        version: 1.0.8
       '@injectivelabs/tc-abacus-proto-ts-v2':
         specifier: 1.18.8
         version: 1.18.8
@@ -1185,8 +1185,8 @@ packages:
   '@injectivelabs/olp-proto-ts-v2@1.17.6':
     resolution: {integrity: sha512-3jTAyj342TXVe8qsVcDzAUnH5vAbqoHy5jqTUxHvJtfDaJ+X0uvN6d/yj60CxmrDOyKrn6pFx0prZ6J3Tl8S6g==}
 
-  '@injectivelabs/platform-services-proto-ts-v2@1.0.7':
-    resolution: {integrity: sha512-hkrVwPAwrSr4l6A6IWSiOZD9pxTqvjZDDlbEsjEUH4h1FOw2DCmqABPF6UOsSoTQXbl2DELTIdoWgp4xyZ5stg==}
+  '@injectivelabs/platform-services-proto-ts-v2@1.0.8':
+    resolution: {integrity: sha512-BkgnOQTkyzFA7iIZCh6vfLXIP6q3TM1CWFsMm0I4u7RmT15hxpIxq0BIkuxz6LT1TxHhHF68mSwmYoawiTtnfg==}
 
   '@injectivelabs/string-decoder@1.3.0':
     resolution: {integrity: sha512-/SsVxTo7EKVP4WxEkrpbHC00Rfp15DcljOJa/BM33BcCIC+IiahEn4O9qXNTrSc0Nr3mLoONauKmkb+1z613kg==}
@@ -8676,7 +8676,7 @@ snapshots:
       '@protobuf-ts/runtime': 2.11.1
       '@protobuf-ts/runtime-rpc': 2.11.1
 
-  '@injectivelabs/platform-services-proto-ts-v2@1.0.7':
+  '@injectivelabs/platform-services-proto-ts-v2@1.0.8':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

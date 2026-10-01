@@ -1,4 +1,6 @@
 import type * as PlatformServicesPositionsPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_positions_service_pb'
+import type * as PlatformServicesArchiverPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_injective_archiver_rpc_pb'
+import type * as PlatformServicesChartsPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_charts_trading_view_service_pb'
 
 export type PlatformServicesPositionsStatsWindow =
   | '24h'
@@ -76,6 +78,7 @@ export interface PlatformServicesGetAccountCountParams {
 export interface PlatformServicesPosition {
   id: string
   pnl: string
+  pnlUsd: string
   side: string
   fees: string
   state: string
@@ -110,6 +113,7 @@ export interface PlatformServicesListPositionsResponse {
 
 export interface PlatformServicesPositionTrade {
   pnl: string
+  pnlUsd: string
   amount: string
   timestamp: string
   eventType: string
@@ -174,3 +178,147 @@ export type GrpcPlatformServicesAccountPositionStats =
   PlatformServicesPositionsPb.AccountPositionStats
 
 export type GrpcPlatformServicesDailyPNL = PlatformServicesPositionsPb.DailyPNL
+
+export interface PlatformServicesMarketHistoryParams {
+  resolution: string
+  to: number
+  symbol?: string
+  marketId?: string
+  from?: number
+  countback?: number
+}
+
+export interface PlatformServicesSpotMarketHistoryParams
+  extends PlatformServicesMarketHistoryParams {
+  fillGaps?: boolean
+}
+
+export interface PlatformServicesSpotMarketSummaryParams {
+  marketId: string
+  resolution?: string
+}
+
+export interface PlatformServicesAllSpotMarketSummariesParams {
+  resolution?: string
+}
+
+export interface PlatformServicesMarketHistory {
+  s: string
+  t: number[]
+  o: number[]
+  h: number[]
+  l: number[]
+  c: number[]
+  v: number[]
+}
+
+export interface PlatformServicesSpotMarketSummary {
+  marketId: string
+  open: number
+  high: number
+  low: number
+  volume: number
+  price: number
+  change: number
+}
+
+export interface PlatformServicesArchiverAccountParams {
+  account: string
+  resolution?: string
+}
+
+export interface PlatformServicesArchiverAccountStatsParams {
+  account: string
+  period?: string
+}
+
+export interface PlatformServicesHistoricalTradesParams {
+  fromBlock?: bigint
+  endBlock?: bigint
+  fromTime?: bigint
+  endTime?: bigint
+  perPage?: number
+  token?: string
+  account?: string
+  executionTypes?: string[]
+}
+
+export interface PlatformServicesHistoricalDetailedBalance {
+  spot: number
+  perp: number
+  staking: number
+}
+
+export interface PlatformServicesHistoricalBalance {
+  t: number[]
+  v: number[]
+  dv: PlatformServicesHistoricalDetailedBalance[]
+}
+
+export interface PlatformServicesBalanceResponse {
+  historicalBalance?: PlatformServicesHistoricalBalance
+}
+
+export interface PlatformServicesArchiverAccountStats {
+  account: string
+  pnl: number
+  volume: number
+  stake: string
+}
+
+export interface PlatformServicesHistoricalDetailedPnl {
+  rpnl: number
+  upnl: number
+}
+
+export interface PlatformServicesHistoricalRpnl {
+  t: number[]
+  v: number[]
+  dv: PlatformServicesHistoricalDetailedPnl[]
+}
+
+export interface PlatformServicesRpnlResponse {
+  historicalRpnl?: PlatformServicesHistoricalRpnl
+}
+
+export interface PlatformServicesArchiverPriceLevel {
+  price: string
+  quantity: string
+  timestamp: string
+}
+
+export interface PlatformServicesHistoricalTrade {
+  account: string
+  subaccountId: string
+  marketId: string
+  tradeDirection: string
+  price?: PlatformServicesArchiverPriceLevel
+  fee: string
+  executedAt: string
+  executedHeight: string
+  feeRecipient: string
+  executionSide: string
+  usdValue: string
+  flags: string[]
+  marketType: string
+  tradeId: string
+  executionType: string
+  cid: string
+  fundingRate: string
+}
+
+export interface PlatformServicesHistoricalTradesResponse {
+  trades: PlatformServicesHistoricalTrade[]
+  lastHeight: string
+  lastTime: string
+  next: string[]
+}
+
+export type GrpcPlatformServicesChartMarketHistory =
+  PlatformServicesChartsPb.SpotMarketHistoryResponse
+
+export type GrpcPlatformServicesChartMarketSummary =
+  PlatformServicesChartsPb.MarketSummaryResp
+
+export type GrpcPlatformServicesHistoricalTrade =
+  PlatformServicesArchiverPb.HistoricalTrade
