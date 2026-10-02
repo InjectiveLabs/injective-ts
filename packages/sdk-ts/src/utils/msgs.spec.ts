@@ -2,7 +2,13 @@ import { it, expect, describe } from 'vitest'
 import { OrderTypeMap } from '../types/light.js'
 import MsgWithdraw from '../core/modules/exchange/msgs/MsgWithdraw.js'
 import MsgCreateSpotLimitOrder from '../core/modules/exchange/msgs/MsgCreateSpotLimitOrder.js'
+import MsgBatchCancelSpotOrders from '../core/modules/exchange/msgs/MsgBatchCancelSpotOrders.js'
 import MsgCreateSpotLimitOrderV2 from '../core/modules/exchange/msgs/MsgCreateSpotLimitOrderV2.js'
+import MsgBatchCancelSpotOrdersV2 from '../core/modules/exchange/msgs/MsgBatchCancelSpotOrdersV2.js'
+import MsgBatchCancelDerivativeOrders from '../core/modules/exchange/msgs/MsgBatchCancelDerivativeOrders.js'
+import MsgBatchCancelDerivativeOrdersV2 from '../core/modules/exchange/msgs/MsgBatchCancelDerivativeOrdersV2.js'
+import MsgBatchCancelBinaryOptionsOrders from '../core/modules/exchange/msgs/MsgBatchCancelBinaryOptionsOrders.js'
+import MsgBatchCancelBinaryOptionsOrdersV2 from '../core/modules/exchange/msgs/MsgBatchCancelBinaryOptionsOrdersV2.js'
 import {
   getGasPriceBasedOnMessage,
   getGasOptionsBasedOnMessage,
@@ -12,6 +18,9 @@ import {
 const message = (type: string, order?: Record<string, unknown>) =>
   ({ toDirectSign: () => ({ type, message: order ? { order } : {} }) }) as any
 
+const batchMessage = (type: string, data: unknown) =>
+  ({ toDirectSign: () => ({ type, message: { data } }) }) as any
+
 const spotOrderParams = {
   marketId: '0x' + '1'.repeat(64),
   subaccountId: '0x' + '2'.repeat(64),
@@ -20,6 +29,20 @@ const spotOrderParams = {
   feeRecipient: 'inj1test',
   price: '10',
   quantity: '1',
+}
+
+const batchCancelParams = {
+  injectiveAddress: 'inj1test',
+  orders: [
+    {
+      marketId: spotOrderParams.marketId,
+      subaccountId: spotOrderParams.subaccountId,
+    },
+    {
+      marketId: '0x' + '3'.repeat(64),
+      subaccountId: '0x' + '4'.repeat(64),
+    },
+  ],
 }
 
 const types = [
@@ -108,7 +131,58 @@ describe('getFixedGasLimitBasedOnMessage', () => {
     ).toBe(363000)
   })
 
-  it('falls back for non-exchange, governance deposit, batch, and mixed messages', () => {
+  it.each([
+    [MsgBatchCancelSpotOrders.fromJSON(batchCancelParams), 256000],
+    [MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams), 256000],
+    [MsgBatchCancelDerivativeOrders.fromJSON(batchCancelParams), 266000],
+    [MsgBatchCancelDerivativeOrdersV2.fromJSON(batchCancelParams), 266000],
+    [MsgBatchCancelBinaryOptionsOrders.fromJSON(batchCancelParams), 366000],
+    [MsgBatchCancelBinaryOptionsOrdersV2.fromJSON(batchCancelParams), 366000],
+  ] as const)('calculates gas from real batch-cancel messages', (msg, gas) => {
+    expect(getFixedGasLimitBasedOnMessage(msg)).toBe(gas)
+  })
+
+  it.each([
+    ['MsgBatchCancelSpotOrders', 188000],
+    ['MsgBatchCancelDerivativeOrders', 193000],
+    ['MsgBatchCancelBinaryOptionsOrders', 243000],
+  ])('calculates gas for one order in %s', (type, gas) => {
+    expect(
+      getFixedGasLimitBasedOnMessage(
+        batchMessage(`/injective.exchange.v2.${type}`, [{}]),
+      ),
+    ).toBe(gas)
+  })
+
+  it('falls back for batches with multiple top-level messages', () => {
+    const msgs = [
+      MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams),
+      MsgBatchCancelDerivativeOrdersV2.fromJSON(batchCancelParams),
+    ]
+
+    expect(getFixedGasLimitBasedOnMessage(msgs)).toBeUndefined()
+    expect(
+      getGasOptionsBasedOnMessage({
+        msgs,
+        simulateTx: true,
+        useFixedGas: true,
+      }),
+    ).toMatchObject({ estimateGas: true })
+  })
+
+  it('falls back for empty or malformed batch-cancel payloads', () => {
+    const type = '/injective.exchange.v2.MsgBatchCancelSpotOrders'
+
+    expect(
+      getFixedGasLimitBasedOnMessage(batchMessage(type, [])),
+    ).toBeUndefined()
+    expect(
+      getFixedGasLimitBasedOnMessage(batchMessage(type, {})),
+    ).toBeUndefined()
+    expect(getFixedGasLimitBasedOnMessage(message(type))).toBeUndefined()
+  })
+
+  it('falls back for non-exchange, governance deposit, batch updates, and mixed messages', () => {
     expect(getFixedGasLimitBasedOnMessage([])).toBeUndefined()
     expect(
       getFixedGasLimitBasedOnMessage(message('/cosmos.gov.v1.MsgDeposit')),
@@ -119,8 +193,13 @@ describe('getFixedGasLimitBasedOnMessage', () => {
       ),
     ).toBeUndefined()
     expect(
+      getFixedGasLimitBasedOnMessage(
+        message('/injective.exchange.v1beta1.MsgBatchUpdateOrders'),
+      ),
+    ).toBeUndefined()
+    expect(
       getFixedGasLimitBasedOnMessage([
-        message('/injective.exchange.v2.MsgWithdraw'),
+        batchMessage('/injective.exchange.v2.MsgBatchCancelSpotOrders', [{}]),
         message('/cosmos.bank.v1beta1.MsgSend'),
       ]),
     ).toBeUndefined()
@@ -174,6 +253,21 @@ describe('getFixedGasLimitBasedOnMessage', () => {
         useFixedGas: true,
       }),
     ).toMatchObject({ estimateGas: true })
+  })
+
+  it('uses fixed gas for supported batches only when enabled', () => {
+    const batch = MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams)
+
+    expect(
+      getGasOptionsBasedOnMessage({ msgs: batch, simulateTx: true }),
+    ).toMatchObject({ estimateGas: true })
+    expect(
+      getGasOptionsBasedOnMessage({
+        msgs: batch,
+        simulateTx: true,
+        useFixedGas: true,
+      }),
+    ).toEqual({ gas: '256000', gasLimit: 256000, estimateGas: false })
   })
 
   it('preserves the legacy fallback for a falsy explicit gas value', () => {
