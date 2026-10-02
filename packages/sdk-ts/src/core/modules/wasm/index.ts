@@ -17,6 +17,7 @@ import ExecArgNeptuneWithdraw from './exec-args/ExecArgNeptuneWithdraw.js'
 import ExecArgSwapExactOutput from './exec-args/ExecArgSwapExactOutput.js'
 import ExecArgInitiateTransfer from './exec-args/ExecArgInitiateTransfer.js'
 import ExecArgUpdateGridConfig from './exec-args/ExecArgUpdateGridConfig.js'
+import MsgUpdateInstantiateConfig from './msgs/MsgUpdateInstantiateConfig.js'
 import ExecArgIncreaseAllowance from './exec-args/ExecArgIncreaseAllowance.js'
 import ExecArgRemoveGridStrategy from './exec-args/ExecArgRemoveGridStrategy.js'
 import MsgPrivilegedExecuteContract from './msgs/MsgPrivilegedExecuteContract.js'
@@ -56,6 +57,7 @@ export {
   MsgExecuteContract,
   MsgMigrateContract,
   MsgInstantiateContract,
+  MsgUpdateInstantiateConfig,
   MsgExecuteContractCompat,
   MsgPrivilegedExecuteContract,
   //

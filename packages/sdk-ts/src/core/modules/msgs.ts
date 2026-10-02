@@ -65,6 +65,7 @@ import type MsgReclaimLockedFundsV2 from './exchange/msgs/MsgReclaimLockedFundsV
 import type MsgSubaccountTransferV2 from './exchange/msgs/MsgSubaccountTransferV2.js'
 import type MsgActivateStakeGrantV2 from './exchange/msgs/MsgActivateStakeGrantV2.js'
 import type MsgGrantWithAuthorization from './authz/msgs/MsgGrantWithAuthorization.js'
+import type MsgUpdateInstantiateConfig from './wasm/msgs/MsgUpdateInstantiateConfig.js'
 import type MsgBatchCancelSpotOrders from './exchange/msgs/MsgBatchCancelSpotOrders.js'
 import type MsgCancelDerivativeOrder from './exchange/msgs/MsgCancelDerivativeOrder.js'
 import type MsgCreateSpotMarketOrder from './exchange/msgs/MsgCreateSpotMarketOrder.js'
@@ -215,6 +216,7 @@ export type WasmMsgs =
   | MsgExecuteContract
   | MsgMigrateContract
   | MsgInstantiateContract
+  | MsgUpdateInstantiateConfig
   | MsgExecuteContractCompat
 export type Msgs =
   | AuctionMsgs

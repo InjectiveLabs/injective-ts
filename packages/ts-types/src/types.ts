@@ -157,6 +157,7 @@ export const MsgType = {
 
   MsgStoreCode: 'cosmwasm.wasm.v1.MsgStoreCode',
   MsgUpdateAdmin: 'cosmwasm.wasm.v1.MsgUpdateAdmin',
+  MsgUpdateInstantiateConfig: 'cosmwasm.wasm.v1.MsgUpdateInstantiateConfig',
   MsgExecuteContract: 'cosmwasm.wasm.v1.MsgExecuteContract',
   MsgMigrateContract: 'cosmwasm.wasm.v1.MsgMigrateContract',
   MsgInstantiateContract: 'cosmwasm.wasm.v1.MsgInstantiateContract',
