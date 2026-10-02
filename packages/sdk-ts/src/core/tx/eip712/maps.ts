@@ -360,6 +360,10 @@ export const protoTypeToAminoType = (type: string): string => {
   const actualType = type.startsWith('/') ? type.substring(1) : type
 
   switch (actualType) {
+    // Wasm
+    case 'cosmwasm.wasm.v1.MsgUpdateInstantiateConfig':
+      return 'wasm/MsgUpdateInstantiateConfig'
+
     // Exchange
     case 'injective.exchange.v1beta1.MsgDeposit':
       return 'exchange/MsgDeposit'
