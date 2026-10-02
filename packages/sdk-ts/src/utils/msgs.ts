@@ -37,6 +37,13 @@ const fixedExchangeGas = {
   MsgDecreasePositionMargin: { gas: 200000 },
 } as const
 
+const batchAnteGas = 120000
+const batchExchangeGasPerOrder = {
+  MsgBatchCancelSpotOrders: 68000,
+  MsgBatchCancelDerivativeOrders: 73000,
+  MsgBatchCancelBinaryOptionsOrders: 123000,
+} as const
+
 const fixedExchangeType = /^\/injective\.exchange\.v(?:1beta1|2)\.(Msg\w+)$/
 const postOnlyOrderTypes = new Set<number>([
   OrderTypeMap.BUY_PO,
@@ -77,6 +84,11 @@ const isFixedExchangeMessage = (
 ): messageType is keyof typeof fixedExchangeGas =>
   Object.prototype.hasOwnProperty.call(fixedExchangeGas, messageType)
 
+const isFixedBatchExchangeMessage = (
+  messageType: string,
+): messageType is keyof typeof batchExchangeGasPerOrder =>
+  Object.prototype.hasOwnProperty.call(batchExchangeGasPerOrder, messageType)
+
 export const getFixedGasLimitBasedOnMessage = (
   msgs: Msgs | Msgs[],
 ): number | undefined => {
@@ -93,7 +105,30 @@ export const getFixedGasLimitBasedOnMessage = (
     const match = directSign.type.match(fixedExchangeType)
     const messageType = match?.[1]
 
-    if (!messageType || !isFixedExchangeMessage(messageType)) {
+    if (!messageType) {
+      return undefined
+    }
+
+    if (isFixedBatchExchangeMessage(messageType)) {
+      if (messages.length > 1) {
+        return undefined
+      }
+
+      if (
+        !isRecord(directSign.message) ||
+        !Array.isArray(directSign.message.data) ||
+        directSign.message.data.length === 0
+      ) {
+        return undefined
+      }
+
+      gas +=
+        batchAnteGas +
+        directSign.message.data.length * batchExchangeGasPerOrder[messageType]
+      continue
+    }
+
+    if (!isFixedExchangeMessage(messageType)) {
       return undefined
     }
 
