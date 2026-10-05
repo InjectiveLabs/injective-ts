@@ -132,26 +132,37 @@ describe('getFixedGasLimitBasedOnMessage', () => {
   })
 
   it.each([
-    [MsgBatchCancelSpotOrders.fromJSON(batchCancelParams), 256000],
-    [MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams), 256000],
-    [MsgBatchCancelDerivativeOrders.fromJSON(batchCancelParams), 266000],
-    [MsgBatchCancelDerivativeOrdersV2.fromJSON(batchCancelParams), 266000],
-    [MsgBatchCancelBinaryOptionsOrders.fromJSON(batchCancelParams), 366000],
-    [MsgBatchCancelBinaryOptionsOrdersV2.fromJSON(batchCancelParams), 366000],
+    [MsgBatchCancelSpotOrders.fromJSON(batchCancelParams), 262000],
+    [MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams), 262000],
+    [MsgBatchCancelDerivativeOrders.fromJSON(batchCancelParams), 272000],
+    [MsgBatchCancelDerivativeOrdersV2.fromJSON(batchCancelParams), 272000],
+    [MsgBatchCancelBinaryOptionsOrders.fromJSON(batchCancelParams), 372000],
+    [MsgBatchCancelBinaryOptionsOrdersV2.fromJSON(batchCancelParams), 372000],
   ] as const)('calculates gas from real batch-cancel messages', (msg, gas) => {
     expect(getFixedGasLimitBasedOnMessage(msg)).toBe(gas)
   })
 
   it.each([
-    ['MsgBatchCancelSpotOrders', 188000],
-    ['MsgBatchCancelDerivativeOrders', 193000],
-    ['MsgBatchCancelBinaryOptionsOrders', 243000],
+    ['MsgBatchCancelSpotOrders', 191000],
+    ['MsgBatchCancelDerivativeOrders', 196000],
+    ['MsgBatchCancelBinaryOptionsOrders', 246000],
   ])('calculates gas for one order in %s', (type, gas) => {
     expect(
       getFixedGasLimitBasedOnMessage(
         batchMessage(`/injective.exchange.v2.${type}`, [{}]),
       ),
     ).toBe(gas)
+  })
+
+  it('scales ante gas with the number of cancelled orders', () => {
+    expect(
+      getFixedGasLimitBasedOnMessage(
+        MsgBatchCancelSpotOrdersV2.fromJSON({
+          ...batchCancelParams,
+          orders: Array.from({ length: 24 }, () => batchCancelParams.orders[0]),
+        }),
+      ),
+    ).toBe(1824000)
   })
 
   it('falls back for batches with multiple top-level messages', () => {
@@ -267,7 +278,7 @@ describe('getFixedGasLimitBasedOnMessage', () => {
         simulateTx: true,
         useFixedGas: true,
       }),
-    ).toEqual({ gas: '256000', gasLimit: 256000, estimateGas: false })
+    ).toEqual({ gas: '262000', gasLimit: 262000, estimateGas: false })
   })
 
   it('preserves the legacy fallback for a falsy explicit gas value', () => {

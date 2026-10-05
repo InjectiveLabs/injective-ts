@@ -38,6 +38,7 @@ const fixedExchangeGas = {
 } as const
 
 const batchAnteGas = 120000
+const batchAnteGasPerOrder = 3000
 const batchExchangeGasPerOrder = {
   MsgBatchCancelSpotOrders: 68000,
   MsgBatchCancelDerivativeOrders: 73000,
@@ -124,7 +125,8 @@ export const getFixedGasLimitBasedOnMessage = (
 
       gas +=
         batchAnteGas +
-        directSign.message.data.length * batchExchangeGasPerOrder[messageType]
+        directSign.message.data.length *
+          (batchAnteGasPerOrder + batchExchangeGasPerOrder[messageType])
       continue
     }
 
