@@ -572,6 +572,7 @@ export class IndexerGrpcDerivativeTransformer {
       subaccountId: position.subaccountId,
       updatedAt: Number(position.updatedAt),
       initialMargin: position.initialMargin,
+      cumulativeMargin: position.cumulativeMargin,
       initialQuantity: position.initialQuantity,
       initialLeverage: position.initialLeverage,
       liquidationPrice: position.liquidationPrice,
