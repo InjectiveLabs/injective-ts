@@ -49,11 +49,12 @@ describe('IndexerGrpcTcDerivativesTransformer', () => {
   )
 
   it('preserves an absent stream position and response metadata', () => {
-    const response =
-      InjectiveTCDerivativesRpcPb.StreamPositionsResponse.create({
+    const response = InjectiveTCDerivativesRpcPb.StreamPositionsResponse.create(
+      {
         timestamp: 123n,
         operationType: 'delete',
-      })
+      },
+    )
 
     expect(
       IndexerTcDerivativesStreamTransformer.positionsStreamCallback(response),
