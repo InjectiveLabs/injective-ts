@@ -6,6 +6,7 @@ import {
 } from '@injectivelabs/utils'
 import { TxGrpcApi } from '../api/TxGrpcApi.js'
 import { MsgSend } from '../../modules/bank/index.js'
+import MsgExec from '../../modules/authz/msgs/MsgExec.js'
 import { PrivateKey } from '../../accounts/PrivateKey.js'
 import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk.js'
 import { IndexerGrpcTransactionApi } from '../../../client/index.js'
@@ -96,37 +97,44 @@ describe.skip('MsgBroadcasterWithPk', () => {
 })
 
 describe('MsgBroadcasterWithPk fee delegation', () => {
-  it('does not simulate a direct transaction covered by fixed gas', async () => {
-    const privateKey = PrivateKey.fromHex(
-      '0x0000000000000000000000000000000000000000000000000000000000000001',
-    )
-    const message = {
-      toBinary: () => new Uint8Array(),
-      toDirectSign: () => ({
-        type: '/injective.exchange.v2.MsgWithdraw',
-        message: {},
-      }),
-    } as any
-    const broadcaster = new MsgBroadcasterWithPk({
-      network: Network.Devnet,
-      privateKey,
-      simulateTx: true,
-      useFixedGas: true,
-    })
-    vi.spyOn(broadcaster as any, 'getAccountDetails').mockResolvedValue({
-      accountNumber: 1,
-      sequence: 1,
-      address: privateKey.toBech32(),
-    })
-    vi.spyOn(broadcaster as any, 'getTimeoutHeight').mockResolvedValue(
-      toBigNumber(100),
-    )
-    const simulateTxRaw = vi.spyOn(broadcaster as any, 'simulateTxRaw')
+  it.each([false, true])(
+    'does not simulate fixed gas (authz: %s)',
+    async (authz) => {
+      const privateKey = PrivateKey.fromHex(
+        '0x0000000000000000000000000000000000000000000000000000000000000001',
+      )
+      const message = {
+        toBinary: () => new Uint8Array(),
+        toDirectSign: () => ({
+          type: '/injective.exchange.v2.MsgWithdraw',
+          message: {},
+        }),
+      } as any
+      const broadcaster = new MsgBroadcasterWithPk({
+        network: Network.Devnet,
+        privateKey,
+        simulateTx: true,
+        useFixedGas: true,
+      })
+      vi.spyOn(broadcaster as any, 'getAccountDetails').mockResolvedValue({
+        accountNumber: 1,
+        sequence: 1,
+        address: privateKey.toBech32(),
+      })
+      vi.spyOn(broadcaster as any, 'getTimeoutHeight').mockResolvedValue(
+        toBigNumber(100),
+      )
+      const simulateTxRaw = vi.spyOn(broadcaster as any, 'simulateTxRaw')
 
-    await (broadcaster as any).prepareTxForBroadcast({ msgs: message })
+      await (broadcaster as any).prepareTxForBroadcast({
+        msgs: authz
+          ? MsgExec.fromJSON({ grantee: privateKey.toBech32(), msgs: message })
+          : message,
+      })
 
-    expect(simulateTxRaw).not.toHaveBeenCalled()
-  })
+      expect(simulateTxRaw).not.toHaveBeenCalled()
+    },
+  )
 
   it('keeps simulation enabled for fixed-gas messages by default', async () => {
     const privateKey = PrivateKey.fromHex(

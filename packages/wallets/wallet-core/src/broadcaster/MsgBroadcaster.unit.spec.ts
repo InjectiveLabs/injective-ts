@@ -1,8 +1,8 @@
 import { vi, afterEach } from 'vitest'
 import { Network } from '@injectivelabs/networks'
-import { MsgWithdrawV2 } from '@injectivelabs/sdk-ts/core/modules'
 import { PublicKey, PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
+import { MsgAuthzExec, MsgWithdrawV2 } from '@injectivelabs/sdk-ts/core/modules'
 import {
   GeneralException,
   TransactionException,
@@ -395,9 +395,13 @@ describe('MsgBroadcaster fixed exchange gas', () => {
     vi.spyOn(broadcaster as any, 'getEvmChainId').mockResolvedValue(1)
   })
 
-  it.each(['broadcastEip712', 'broadcastEip712V2'])(
-    'skips simulation in %s for fixed-gas messages',
-    async (method) => {
+  it.each(
+    ['broadcastEip712', 'broadcastEip712V2', 'broadcastDirectSign'].flatMap(
+      (method) => [false, true].map((authz) => ({ method, authz })),
+    ),
+  )(
+    'skips simulation in $method for fixed-gas messages (authz: $authz)',
+    async ({ method, authz }) => {
       vi.spyOn(
         broadcaster as any,
         'fetchAccountAndBlockDetails',
@@ -411,7 +415,12 @@ describe('MsgBroadcaster fixed exchange gas', () => {
 
       await expect(
         (broadcaster as any)[method]({
-          msgs: makeFixedGasMessage(),
+          msgs: authz
+            ? MsgAuthzExec.fromJSON({
+                grantee: 'inj1test',
+                msgs: makeFixedGasMessage(),
+              })
+            : makeFixedGasMessage(),
           ethereumAddress: '0x0000000000000000000000000000000000000001',
           injectiveAddress: 'inj1test',
         }),
@@ -426,51 +435,31 @@ describe('MsgBroadcaster fixed exchange gas', () => {
     },
   )
 
-  it('uses fixed gas when building direct sign transactions', async () => {
-    vi.spyOn(
-      broadcaster as any,
-      'fetchAccountAndBlockDetails',
-    ).mockResolvedValue({
-      latestHeight: '100',
-      baseAccount: makeBaseAccount(),
-    })
-    const getTxWithSignersAndStdFee = vi
-      .spyOn(broadcaster as any, 'getTxWithSignersAndStdFee')
-      .mockRejectedValue(new Error('stop after fee resolution'))
+  it.each([false, true])(
+    'disables gateway estimation (authz: %s)',
+    async (authz) => {
+      const prepareTxRequest = vi
+        .spyOn(IndexerGrpcWeb3GwApi.prototype, 'prepareTxRequest')
+        .mockRejectedValue(new Error('stop after gateway preparation'))
 
-    await expect(
-      (broadcaster as any).broadcastDirectSign({
-        msgs: makeFixedGasMessage(),
-        ethereumAddress: '0x0000000000000000000000000000000000000001',
-        injectiveAddress: 'inj1test',
-      }),
-    ).rejects.toThrow('stop after fee resolution')
+      await expect(
+        (broadcaster as any).broadcastEip712WithFeeDelegation({
+          msgs: authz
+            ? MsgAuthzExec.fromJSON({
+                grantee: 'inj1test',
+                msgs: makeFixedGasMessage(),
+              })
+            : makeFixedGasMessage(),
+          ethereumAddress: '0x0000000000000000000000000000000000000001',
+          injectiveAddress: 'inj1test',
+        }),
+      ).rejects.toThrow('stop after gateway preparation')
 
-    expect(getTxWithSignersAndStdFee).toHaveBeenCalledWith(
-      expect.objectContaining({
-        fee: expect.objectContaining({ gas: '320000' }),
-      }),
-      false,
-    )
-  })
-
-  it('disables gateway estimation for fixed-gas messages', async () => {
-    const prepareTxRequest = vi
-      .spyOn(IndexerGrpcWeb3GwApi.prototype, 'prepareTxRequest')
-      .mockRejectedValue(new Error('stop after gateway preparation'))
-
-    await expect(
-      (broadcaster as any).broadcastEip712WithFeeDelegation({
-        msgs: makeFixedGasMessage(),
-        ethereumAddress: '0x0000000000000000000000000000000000000001',
-        injectiveAddress: 'inj1test',
-      }),
-    ).rejects.toThrow('stop after gateway preparation')
-
-    expect(prepareTxRequest).toHaveBeenCalledWith(
-      expect.objectContaining({ gasLimit: 320000, estimateGas: false }),
-    )
-  })
+      expect(prepareTxRequest).toHaveBeenCalledWith(
+        expect.objectContaining({ gasLimit: 320000, estimateGas: false }),
+      )
+    },
+  )
 
   it('keeps simulation enabled by default', async () => {
     broadcaster.setOptions({ useFixedGas: false })
