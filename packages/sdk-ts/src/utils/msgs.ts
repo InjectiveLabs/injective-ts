@@ -90,10 +90,28 @@ const isFixedBatchExchangeMessage = (
 ): messageType is keyof typeof batchExchangeGasPerOrder =>
   Object.prototype.hasOwnProperty.call(batchExchangeGasPerOrder, messageType)
 
+const authzExecType = '/cosmos.authz.v1beta1.MsgExec'
+
+// Matched by type url rather than instanceof so MsgExec from another SDK copy is still unwrapped.
+// An empty MsgExec is kept as-is so it fails the exchange type match and falls back to simulation.
+const unwrapAuthzExec = (msg: Msgs): Msgs[] => {
+  if (msg.toDirectSign().type !== authzExecType || !('msgs' in msg.params)) {
+    return [msg]
+  }
+
+  const innerMessages = Array.isArray(msg.params.msgs)
+    ? msg.params.msgs
+    : [msg.params.msgs]
+
+  return innerMessages.length ? innerMessages.flatMap(unwrapAuthzExec) : [msg]
+}
+
 export const getFixedGasLimitBasedOnMessage = (
   msgs: Msgs | Msgs[],
 ): number | undefined => {
-  const messages = Array.isArray(msgs) ? msgs : [msgs]
+  const messages = (Array.isArray(msgs) ? msgs : [msgs]).flatMap(
+    unwrapAuthzExec,
+  )
 
   if (!messages.length) {
     return undefined

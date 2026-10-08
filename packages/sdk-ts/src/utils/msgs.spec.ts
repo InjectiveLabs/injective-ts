@@ -1,10 +1,13 @@
-import { it, expect, describe } from 'vitest'
+import { it, vi, expect, describe } from 'vitest'
 import { OrderTypeMap } from '../types/light.js'
+import MsgSend from '../core/modules/bank/msgs/MsgSend.js'
+import MsgExec from '../core/modules/authz/msgs/MsgExec.js'
 import MsgWithdraw from '../core/modules/exchange/msgs/MsgWithdraw.js'
 import MsgCreateSpotLimitOrder from '../core/modules/exchange/msgs/MsgCreateSpotLimitOrder.js'
 import MsgBatchCancelSpotOrders from '../core/modules/exchange/msgs/MsgBatchCancelSpotOrders.js'
 import MsgCreateSpotLimitOrderV2 from '../core/modules/exchange/msgs/MsgCreateSpotLimitOrderV2.js'
 import MsgBatchCancelSpotOrdersV2 from '../core/modules/exchange/msgs/MsgBatchCancelSpotOrdersV2.js'
+import MsgCreateDerivativeLimitOrder from '../core/modules/exchange/msgs/MsgCreateDerivativeLimitOrder.js'
 import MsgBatchCancelDerivativeOrders from '../core/modules/exchange/msgs/MsgBatchCancelDerivativeOrders.js'
 import MsgBatchCancelDerivativeOrdersV2 from '../core/modules/exchange/msgs/MsgBatchCancelDerivativeOrdersV2.js'
 import MsgBatchCancelBinaryOptionsOrders from '../core/modules/exchange/msgs/MsgBatchCancelBinaryOptionsOrders.js'
@@ -44,6 +47,9 @@ const batchCancelParams = {
     },
   ],
 }
+
+const exec = (msgs: Parameters<typeof MsgExec.fromJSON>[0]['msgs']) =>
+  MsgExec.fromJSON({ grantee: 'inj1grantee', msgs })
 
 const types = [
   ['MsgCreateDerivativeLimitOrder', 330000, true],
@@ -129,6 +135,121 @@ describe('getFixedGasLimitBasedOnMessage', () => {
         }),
       ),
     ).toBe(363000)
+  })
+
+  it('uses fixed gas for an authz derivative limit order', () => {
+    const msg = exec(
+      MsgCreateDerivativeLimitOrder.fromJSON({
+        ...spotOrderParams,
+        orderType: OrderTypeMap.SELL,
+        price: '81527000000',
+        quantity: '0.0002',
+        margin: '773613',
+        cid: 'tc-web-40736698-1ab0-43d4-8',
+      }),
+    )
+
+    expect(getFixedGasLimitBasedOnMessage(msg)).toBe(330000)
+    expect(
+      getGasOptionsBasedOnMessage({
+        msgs: msg,
+        simulateTx: true,
+        useFixedGas: true,
+      }),
+    ).toEqual({ gas: '330000', gasLimit: 330000, estimateGas: false })
+    expect(
+      getGasOptionsBasedOnMessage({ msgs: msg, simulateTx: true }),
+    ).toMatchObject({ estimateGas: true })
+    expect(
+      getGasOptionsBasedOnMessage({
+        msgs: msg,
+        gas: 123456,
+        simulateTx: true,
+        useFixedGas: true,
+      }),
+    ).toEqual({ gas: '123456', gasLimit: 123456, estimateGas: false })
+  })
+
+  it('sums authz messages and preserves post-only and GTB gas', () => {
+    const v1 = MsgCreateSpotLimitOrder.fromJSON(spotOrderParams)
+    const v2 = MsgCreateSpotLimitOrderV2.fromJSON({
+      ...spotOrderParams,
+      expirationBlock: '42',
+    })
+
+    expect(getFixedGasLimitBasedOnMessage(exec([v1, v2]))).toBe(693000)
+    expect(getFixedGasLimitBasedOnMessage([exec(v1), exec(v2)])).toBe(693000)
+    expect(getFixedGasLimitBasedOnMessage([v1, exec(exec(v2))])).toBe(693000)
+  })
+
+  it('recognizes authz messages from a separate SDK module instance', async () => {
+    vi.resetModules()
+    const { default: OtherMsgExec } =
+      await import('../core/modules/authz/msgs/MsgExec.js')
+    const msg = OtherMsgExec.fromJSON({
+      grantee: 'inj1grantee',
+      msgs: MsgCreateSpotLimitOrder.fromJSON(spotOrderParams),
+    })
+
+    expect(msg).not.toBeInstanceOf(MsgExec)
+    expect(
+      getGasOptionsBasedOnMessage({
+        msgs: msg,
+        simulateTx: true,
+        useFixedGas: true,
+      }),
+    ).toEqual({ gas: '330000', gasLimit: 330000, estimateGas: false })
+  })
+
+  it('counts repeated message occurrences without mutating input arrays', () => {
+    const msg = exec(MsgCreateSpotLimitOrder.fromJSON(spotOrderParams))
+    const msgs = [msg, msg]
+    Object.freeze(msgs)
+
+    expect(getFixedGasLimitBasedOnMessage(msgs)).toBe(660000)
+    expect(msgs).toEqual([msg, msg])
+    expect(getFixedGasLimitBasedOnMessage(exec([msg, msg]))).toBe(660000)
+  })
+
+  it('does not unwrap another message type just because it has msgs params', () => {
+    const msg = {
+      params: { msgs: MsgCreateSpotLimitOrder.fromJSON(spotOrderParams) },
+      toDirectSign: () => ({
+        type: '/cosmos.bank.v1beta1.MsgSend',
+        message: {},
+      }),
+    } as any
+
+    expect(getFixedGasLimitBasedOnMessage(msg)).toBeUndefined()
+  })
+
+  it('preserves batch-cancel restrictions inside authz messages', () => {
+    const batch = MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams)
+    const order = MsgCreateSpotLimitOrder.fromJSON(spotOrderParams)
+
+    expect(getFixedGasLimitBasedOnMessage(exec(batch))).toBe(262000)
+    expect(getFixedGasLimitBasedOnMessage(exec([batch, order]))).toBeUndefined()
+    expect(getFixedGasLimitBasedOnMessage([exec(batch), order])).toBeUndefined()
+  })
+
+  it('falls back for empty authz wrappers and unsupported inner messages', () => {
+    const order = MsgCreateSpotLimitOrder.fromJSON(spotOrderParams)
+    const bank = MsgSend.fromJSON({
+      srcInjectiveAddress: 'inj1sender',
+      dstInjectiveAddress: 'inj1recipient',
+      amount: { denom: 'inj', amount: '1' },
+    })
+
+    for (const msgs of [exec([]), exec([order, bank]), [order, exec([])]]) {
+      expect(getFixedGasLimitBasedOnMessage(msgs)).toBeUndefined()
+      expect(
+        getGasOptionsBasedOnMessage({
+          msgs,
+          simulateTx: true,
+          useFixedGas: true,
+        }),
+      ).toMatchObject({ estimateGas: true })
+    }
   })
 
   it.each([
