@@ -137,7 +137,7 @@ describe('getFixedGasLimitBasedOnMessage', () => {
     ).toBe(363000)
   })
 
-  it('uses fixed gas for an authz derivative limit order', () => {
+  it('simulates an authz derivative limit order even when fixed gas is enabled', () => {
     const msg = exec(
       MsgCreateDerivativeLimitOrder.fromJSON({
         ...spotOrderParams,
@@ -149,17 +149,28 @@ describe('getFixedGasLimitBasedOnMessage', () => {
       }),
     )
 
-    expect(getFixedGasLimitBasedOnMessage(msg)).toBe(330000)
+    expect(getFixedGasLimitBasedOnMessage(msg)).toBeUndefined()
     expect(
       getGasOptionsBasedOnMessage({
         msgs: msg,
         simulateTx: true,
         useFixedGas: true,
       }),
-    ).toEqual({ gas: '330000', gasLimit: 330000, estimateGas: false })
+    ).toEqual({
+      gas: getGasPriceBasedOnMessage([msg]).toString(),
+      gasLimit: getGasPriceBasedOnMessage([msg]),
+      estimateGas: true,
+    })
     expect(
       getGasOptionsBasedOnMessage({ msgs: msg, simulateTx: true }),
     ).toMatchObject({ estimateGas: true })
+    expect(
+      getGasOptionsBasedOnMessage({
+        msgs: msg,
+        simulateTx: false,
+        useFixedGas: true,
+      }),
+    ).toMatchObject({ estimateGas: false })
     expect(
       getGasOptionsBasedOnMessage({
         msgs: msg,
@@ -170,19 +181,36 @@ describe('getFixedGasLimitBasedOnMessage', () => {
     ).toEqual({ gas: '123456', gasLimit: 123456, estimateGas: false })
   })
 
-  it('sums authz messages and preserves post-only and GTB gas', () => {
+  it('simulates nested authz, batches, and mixed direct/authz messages', () => {
     const v1 = MsgCreateSpotLimitOrder.fromJSON(spotOrderParams)
     const v2 = MsgCreateSpotLimitOrderV2.fromJSON({
       ...spotOrderParams,
       expirationBlock: '42',
     })
 
-    expect(getFixedGasLimitBasedOnMessage(exec([v1, v2]))).toBe(693000)
-    expect(getFixedGasLimitBasedOnMessage([exec(v1), exec(v2)])).toBe(693000)
-    expect(getFixedGasLimitBasedOnMessage([v1, exec(exec(v2))])).toBe(693000)
+    const batch = MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams)
+
+    for (const msgs of [
+      exec([v1, v2]),
+      [exec(v1), exec(v2)],
+      [v1, exec(exec(v2))],
+      [exec(v1), v2],
+      exec(batch),
+      exec([batch, v1]),
+      [exec(batch), v1],
+    ]) {
+      expect(getFixedGasLimitBasedOnMessage(msgs)).toBeUndefined()
+      expect(
+        getGasOptionsBasedOnMessage({
+          msgs,
+          simulateTx: true,
+          useFixedGas: true,
+        }),
+      ).toMatchObject({ estimateGas: true })
+    }
   })
 
-  it('recognizes authz messages from a separate SDK module instance', async () => {
+  it('simulates authz messages from a separate SDK module instance', async () => {
     vi.resetModules()
     const { default: OtherMsgExec } =
       await import('../core/modules/authz/msgs/MsgExec.js')
@@ -198,17 +226,16 @@ describe('getFixedGasLimitBasedOnMessage', () => {
         simulateTx: true,
         useFixedGas: true,
       }),
-    ).toEqual({ gas: '330000', gasLimit: 330000, estimateGas: false })
+    ).toMatchObject({ estimateGas: true })
   })
 
   it('counts repeated message occurrences without mutating input arrays', () => {
-    const msg = exec(MsgCreateSpotLimitOrder.fromJSON(spotOrderParams))
+    const msg = MsgCreateSpotLimitOrder.fromJSON(spotOrderParams)
     const msgs = [msg, msg]
     Object.freeze(msgs)
 
     expect(getFixedGasLimitBasedOnMessage(msgs)).toBe(660000)
     expect(msgs).toEqual([msg, msg])
-    expect(getFixedGasLimitBasedOnMessage(exec([msg, msg]))).toBe(660000)
   })
 
   it('does not unwrap another message type just because it has msgs params', () => {
@@ -223,13 +250,17 @@ describe('getFixedGasLimitBasedOnMessage', () => {
     expect(getFixedGasLimitBasedOnMessage(msg)).toBeUndefined()
   })
 
-  it('preserves batch-cancel restrictions inside authz messages', () => {
-    const batch = MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams)
-    const order = MsgCreateSpotLimitOrder.fromJSON(spotOrderParams)
+  it.each(['MsgGrant', 'MsgRevoke'])('simulates authz %s', (type) => {
+    const msg = message(`/cosmos.authz.v1beta1.${type}`)
 
-    expect(getFixedGasLimitBasedOnMessage(exec(batch))).toBe(262000)
-    expect(getFixedGasLimitBasedOnMessage(exec([batch, order]))).toBeUndefined()
-    expect(getFixedGasLimitBasedOnMessage([exec(batch), order])).toBeUndefined()
+    expect(getFixedGasLimitBasedOnMessage(msg)).toBeUndefined()
+    expect(
+      getGasOptionsBasedOnMessage({
+        msgs: msg,
+        simulateTx: true,
+        useFixedGas: true,
+      }),
+    ).toMatchObject({ estimateGas: true })
   })
 
   it('falls back for empty authz wrappers and unsupported inner messages', () => {
