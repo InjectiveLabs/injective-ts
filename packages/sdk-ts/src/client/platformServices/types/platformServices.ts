@@ -78,15 +78,17 @@ export interface PlatformServicesGetAccountCountParams {
 export interface PlatformServicesPosition {
   id: string
   pnl: string
-  pnlUsd: string
   side: string
   fees: string
   state: string
+  pnlUsd: string
+  funding: string
   marketId: string
   quantity: string
   openedAt: string
   updatedAt: string
   closedAt?: string
+  exitPrice: string
   sideAtOpen: string
   totalTrades: string
   maxQuantity: string
@@ -97,13 +99,13 @@ export interface PlatformServicesPosition {
   openedHeight: string
   avgEntryPrice: string
   initialMargin: string
-  exitPrice: string
   updatedHeight: string
   closedHeight?: string
   accountAddress: string
   numOfBuyTrades: string
   numOfSellTrades: string
   durationInSeconds: string
+  liquidationAdjustment: string
 }
 
 export interface PlatformServicesListPositionsResponse {
@@ -115,10 +117,12 @@ export interface PlatformServicesPositionTrade {
   pnl: string
   pnlUsd: string
   amount: string
+  funding: string
   timestamp: string
   eventType: string
   positionId: string
   executionPrice: string
+  liquidationAdjustment: string
 }
 
 export interface PlatformServicesListPositionTradesResponse {
@@ -231,6 +235,13 @@ export interface PlatformServicesArchiverAccountStatsParams {
   period?: string
 }
 
+export interface PlatformServicesArchiverListAccountStatsParams {
+  account: string[]
+  period?: string
+  pageSize?: number
+  nextToken?: string
+}
+
 export interface PlatformServicesHistoricalTradesParams {
   fromBlock?: bigint
   endBlock?: bigint
@@ -263,6 +274,13 @@ export interface PlatformServicesArchiverAccountStats {
   pnl: number
   volume: number
   stake: string
+  maxDrawdown: number
+  maxDrawdownPercentage: number
+}
+
+export interface PlatformServicesArchiverListAccountStatsResponse {
+  stats: PlatformServicesArchiverAccountStats[]
+  nextToken?: string
 }
 
 export interface PlatformServicesHistoricalDetailedPnl {
