@@ -2,6 +2,7 @@ import { Network } from '@injectivelabs/networks'
 import { EvmChainId } from '@injectivelabs/ts-types'
 import {
   toBigNumber,
+  DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
 } from '@injectivelabs/utils'
 import { TxGrpcApi } from '../api/TxGrpcApi.js'
@@ -9,6 +10,7 @@ import { MsgSend } from '../../modules/bank/index.js'
 import MsgExec from '../../modules/authz/msgs/MsgExec.js'
 import { PrivateKey } from '../../accounts/PrivateKey.js'
 import { MsgBroadcasterWithPk } from './MsgBroadcasterWithPk.js'
+import { CosmosTxV1Beta1TxPb } from '../../../proto/cosmos-tx.js'
 import { IndexerGrpcTransactionApi } from '../../../client/index.js'
 
 afterEach(() => {
@@ -98,7 +100,7 @@ describe.skip('MsgBroadcasterWithPk', () => {
 
 describe('MsgBroadcasterWithPk fee delegation', () => {
   it.each([false, true])(
-    'does not simulate fixed gas (authz: %s)',
+    'simulates authz wrappers while keeping direct exchange gas fixed (authz: %s)',
     async (authz) => {
       const privateKey = PrivateKey.fromHex(
         '0x0000000000000000000000000000000000000000000000000000000000000001',
@@ -124,15 +126,22 @@ describe('MsgBroadcasterWithPk fee delegation', () => {
       vi.spyOn(broadcaster as any, 'getTimeoutHeight').mockResolvedValue(
         toBigNumber(100),
       )
-      const simulateTxRaw = vi.spyOn(broadcaster as any, 'simulateTxRaw')
+      const simulateTxRaw = vi
+        .spyOn(broadcaster as any, 'simulateTxRaw')
+        .mockResolvedValue({ gasInfo: { gasUsed: '327054' } })
 
-      await (broadcaster as any).prepareTxForBroadcast({
+      const { txRaw } = await (broadcaster as any).prepareTxForBroadcast({
         msgs: authz
           ? MsgExec.fromJSON({ grantee: privateKey.toBech32(), msgs: message })
           : message,
       })
 
-      expect(simulateTxRaw).not.toHaveBeenCalled()
+      expect(simulateTxRaw).toHaveBeenCalledTimes(authz ? 1 : 0)
+      const authInfo = CosmosTxV1Beta1TxPb.AuthInfo.fromBinary(
+        txRaw.authInfoBytes,
+      )
+
+      expect(authInfo.fee?.gasLimit).toBe(authz ? 359759n : 320000n)
     },
   )
 
@@ -169,43 +178,54 @@ describe('MsgBroadcasterWithPk fee delegation', () => {
     expect(simulateTxRaw).toHaveBeenCalledOnce()
   })
 
-  test('uses fixed gas instead of gateway estimation for exchange messages', async () => {
-    const privateKey = PrivateKey.fromHex(
-      '0x0000000000000000000000000000000000000000000000000000000000000001',
-    )
-    const message = {
-      toDirectSign: () => ({
-        type: '/injective.exchange.v2.MsgWithdraw',
-        message: {},
-      }),
-      toWeb3: () => ({ '@type': '/injective.exchange.v2.MsgWithdraw' }),
-    } as any
-    vi.spyOn(PrivateKey.prototype, 'signTypedData').mockResolvedValue(
-      new Uint8Array([1]),
-    )
-    const prepareTxRequest = vi
-      .spyOn(IndexerGrpcTransactionApi.prototype, 'prepareTxRequest')
-      .mockResolvedValue({ data: '{}' } as any)
-    vi.spyOn(
-      IndexerGrpcTransactionApi.prototype,
-      'broadcastTxRequest',
-    ).mockResolvedValue({
-      txHash: 'FIXED_GAS_HASH',
-    } as any)
-    vi.spyOn(TxGrpcApi.prototype, 'fetchTxPoll').mockResolvedValue({} as any)
+  it.each([false, true])(
+    'uses gateway estimation only for authz wrappers (authz: %s)',
+    async (authz) => {
+      const privateKey = PrivateKey.fromHex(
+        '0x0000000000000000000000000000000000000000000000000000000000000001',
+      )
+      const message = {
+        toDirectSign: () => ({
+          type: '/injective.exchange.v2.MsgWithdraw',
+          message: {},
+        }),
+        toWeb3: () => ({ '@type': '/injective.exchange.v2.MsgWithdraw' }),
+        toBinary: () => new Uint8Array(),
+      } as any
+      vi.spyOn(PrivateKey.prototype, 'signTypedData').mockResolvedValue(
+        new Uint8Array([1]),
+      )
+      const prepareTxRequest = vi
+        .spyOn(IndexerGrpcTransactionApi.prototype, 'prepareTxRequest')
+        .mockResolvedValue({ data: '{}' } as any)
+      vi.spyOn(
+        IndexerGrpcTransactionApi.prototype,
+        'broadcastTxRequest',
+      ).mockResolvedValue({
+        txHash: 'FIXED_GAS_HASH',
+      } as any)
+      vi.spyOn(TxGrpcApi.prototype, 'fetchTxPoll').mockResolvedValue({} as any)
 
-    await new MsgBroadcasterWithPk({
-      network: Network.Devnet,
-      privateKey,
-      evmChainId: EvmChainId.Sepolia,
-      simulateTx: true,
-      useFixedGas: true,
-    }).broadcastWithFeeDelegation({ msgs: message })
+      await new MsgBroadcasterWithPk({
+        network: Network.Devnet,
+        privateKey,
+        evmChainId: EvmChainId.Sepolia,
+        simulateTx: true,
+        useFixedGas: true,
+      }).broadcastWithFeeDelegation({
+        msgs: authz
+          ? MsgExec.fromJSON({ grantee: privateKey.toBech32(), msgs: message })
+          : message,
+      })
 
-    expect(prepareTxRequest).toHaveBeenCalledWith(
-      expect.objectContaining({ gasLimit: 320000, estimateGas: false }),
-    )
-  })
+      expect(prepareTxRequest).toHaveBeenCalledWith(
+        expect.objectContaining({
+          gasLimit: authz ? DEFAULT_EXCHANGE_LIMIT : 320000,
+          estimateGas: authz,
+        }),
+      )
+    },
+  )
 
   test('forwards txTimeout to transaction polling', async () => {
     const txTimeout = 11
