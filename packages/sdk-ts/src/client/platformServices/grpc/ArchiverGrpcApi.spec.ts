@@ -98,7 +98,8 @@ describe('ArchiverGrpcApi', () => {
       const transport = archiverApi.getTransport()
       const unary = vi.spyOn(transport, 'unary').mockImplementation(() => {
         return Promise.resolve({
-          response: PlatformServicesArchiverPb.ListAccountStatsResponse.create(),
+          response:
+            PlatformServicesArchiverPb.ListAccountStatsResponse.create(),
         }) as any
       })
       const executeGrpcCall = vi.spyOn(archiverApi as any, 'executeGrpcCall')
@@ -115,7 +116,9 @@ describe('ArchiverGrpcApi', () => {
           nextToken: 'cursor',
         }
 
-        expect(await archiverApi.fetchAccountMaxDrawdown(requestParams)).toEqual({
+        expect(
+          await archiverApi.fetchAccountMaxDrawdown(requestParams),
+        ).toEqual({
           stats: [],
           nextToken: undefined,
         })
@@ -125,7 +128,9 @@ describe('ArchiverGrpcApi', () => {
             requestParams,
           ),
         )
-        expect(listAccountStats.mock.contexts[0]).toBe((archiverApi as any).client)
+        expect(listAccountStats.mock.contexts[0]).toBe(
+          (archiverApi as any).client,
+        )
         expect(listAccountStats.mock.contexts[0] === originalClient).toBe(
           !setMetadata,
         )
