@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+import * as PlatformServicesPositionsPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_positions_service_pb'
 import { SocialTradingGrpcApi } from './SocialTradingGrpcApi.js'
 import type { PlatformServicesGrpcPositionsTransformer } from '../transformers/index.js'
 
@@ -18,6 +19,8 @@ describe('SocialTradingGrpcApi', () => {
             id: 'position-1',
             pnl: '1.23',
             pnlUsd: '1.25',
+            funding: '-0.2',
+            liquidationAdjustment: '0.05',
             fees: '0.1',
             side: 'long',
             state: 'closed',
@@ -71,7 +74,10 @@ describe('SocialTradingGrpcApi', () => {
         positions: [
           expect.objectContaining({
             id: 'position-1',
+            pnl: '1.23',
             pnlUsd: '1.25',
+            funding: '-0.2',
+            liquidationAdjustment: '0.05',
             exitPrice: '101',
             totalTrades: '3',
             openedHeight: '100',
@@ -138,6 +144,8 @@ describe('SocialTradingGrpcApi', () => {
           {
             pnl: '0.12',
             pnlUsd: '0.13',
+            funding: '-0.02',
+            liquidationAdjustment: '0.01',
             amount: '1.5',
             eventType: 'trade',
             positionId: 'position-1',
@@ -172,6 +180,8 @@ describe('SocialTradingGrpcApi', () => {
           {
             pnl: '0.12',
             pnlUsd: '0.13',
+            funding: '-0.02',
+            liquidationAdjustment: '0.01',
             amount: '1.5',
             eventType: 'trade',
             positionId: 'position-1',
@@ -183,6 +193,41 @@ describe('SocialTradingGrpcApi', () => {
     )
 
     executeGrpcCall.mockRestore()
+  })
+
+  test('positions and trades preserve generated default funding fields', async () => {
+    const executeGrpcCall = vi
+      .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
+      .mockResolvedValueOnce(
+        PlatformServicesPositionsPb.ListPositionsResponse.create({
+          positions: [PlatformServicesPositionsPb.Position.create()],
+        }),
+      )
+      .mockResolvedValueOnce(
+        PlatformServicesPositionsPb.ListPositionTradesResponse.create({
+          trades: [PlatformServicesPositionsPb.PositionTrade.create()],
+        }),
+      )
+
+    try {
+      const positions = await socialTradingGrpcApi.fetchPositions()
+      const trades = await socialTradingGrpcApi.fetchPositionTrades({
+        positionId: 'position-1',
+      })
+
+      expect(positions.positions[0]).toMatchObject({
+        pnl: '',
+        funding: '',
+        liquidationAdjustment: '',
+      })
+      expect(trades.trades[0]).toMatchObject({
+        pnl: '',
+        funding: '',
+        liquidationAdjustment: '',
+      })
+    } finally {
+      executeGrpcCall.mockRestore()
+    }
   })
 
   test('fetchAccountPositionStats', async () => {

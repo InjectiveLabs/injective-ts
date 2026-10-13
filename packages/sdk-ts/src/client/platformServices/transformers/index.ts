@@ -24,6 +24,7 @@ import type {
   PlatformServicesGetAccountDailyPNLResponse,
   PlatformServicesListPositionTradesResponse,
   PlatformServicesListAccountPositionStatsResponse,
+  PlatformServicesArchiverListAccountStatsResponse,
 } from '../types/index.js'
 
 export class PlatformServicesGrpcPositionsTransformer {
@@ -37,10 +38,12 @@ export class PlatformServicesGrpcPositionsTransformer {
       fees: position.fees,
       side: position.side,
       state: position.state,
+      funding: position.funding,
       quantity: position.quantity,
       marketId: position.marketId,
       openedAt: position.openedAt,
       closedAt: position.closedAt,
+      exitPrice: position.exitPrice,
       updatedAt: position.updatedAt,
       sideAtOpen: position.sideAtOpen,
       finalMargin: position.finalMargin,
@@ -51,7 +54,7 @@ export class PlatformServicesGrpcPositionsTransformer {
       initialMargin: position.initialMargin,
       avgEntryPrice: position.avgEntryPrice,
       accountAddress: position.accountAddress,
-      exitPrice: position.exitPrice,
+      liquidationAdjustment: position.liquidationAdjustment,
       totalTrades: position.totalTrades.toString(),
       openedHeight: position.openedHeight.toString(),
       closedHeight: position.closedHeight?.toString(),
@@ -82,10 +85,12 @@ export class PlatformServicesGrpcPositionsTransformer {
       pnl: trade.pnl,
       pnlUsd: trade.pnlUsd,
       amount: trade.amount,
+      funding: trade.funding,
       timestamp: trade.timestamp,
       eventType: trade.eventType,
       positionId: trade.positionId,
       executionPrice: trade.executionPrice,
+      liquidationAdjustment: trade.liquidationAdjustment,
     }
   }
 
@@ -278,6 +283,19 @@ export class PlatformServicesGrpcArchiverTransformer {
       stake: response.stake,
       volume: response.volume,
       account: response.account,
+      maxDrawdown: response.maxDrawdown,
+      maxDrawdownPercentage: response.maxDrawdownPercentage,
+    }
+  }
+
+  static grpcListAccountStatsToListAccountStats(
+    response: PlatformServicesArchiverPb.ListAccountStatsResponse,
+  ): PlatformServicesArchiverListAccountStatsResponse {
+    return {
+      stats: response.stats.map(
+        PlatformServicesGrpcArchiverTransformer.grpcAccountStatsToAccountStats,
+      ),
+      nextToken: response.nextToken,
     }
   }
 

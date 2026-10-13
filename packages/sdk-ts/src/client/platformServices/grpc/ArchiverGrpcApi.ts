@@ -6,6 +6,7 @@ import type {
   PlatformServicesArchiverAccountParams,
   PlatformServicesHistoricalTradesParams,
   PlatformServicesArchiverAccountStatsParams,
+  PlatformServicesArchiverListAccountStatsParams,
 } from '../types/index.js'
 
 export class ArchiverGrpcApi extends BaseGrpcConsumer {
@@ -36,6 +37,28 @@ export class ArchiverGrpcApi extends BaseGrpcConsumer {
     >(request, this.client.accountStats.bind(this.client))
 
     return PlatformServicesGrpcArchiverTransformer.grpcAccountStatsToAccountStats(
+      response,
+    )
+  }
+
+  async fetchAccountMaxDrawdown(
+    params: PlatformServicesArchiverListAccountStatsParams,
+  ) {
+    const { account, period, pageSize, nextToken } = params
+
+    const request = PlatformServicesArchiverPb.ListAccountStatsRequest.create({
+      account,
+      period,
+      pageSize,
+      nextToken,
+    })
+
+    const response = await this.executeGrpcCall<
+      PlatformServicesArchiverPb.ListAccountStatsRequest,
+      PlatformServicesArchiverPb.ListAccountStatsResponse
+    >(request, this.client.listAccountStats.bind(this.client))
+
+    return PlatformServicesGrpcArchiverTransformer.grpcListAccountStatsToListAccountStats(
       response,
     )
   }
