@@ -64,6 +64,7 @@ export interface ListReferrersResponse {
 export interface ReferrerInvitee {
   height: string
   address: string
+  earnings?: string
   createdAt: string
   allTimeVolume: string
   referralPoints: string
@@ -73,6 +74,19 @@ export interface AccountInviteesResponse {
   address: string
   nextCursor?: string
   invitees: ReferrerInvitee[]
+}
+
+export interface ReferrerMonthlyEarnings {
+  month: string
+  volume: string
+  earnings: string
+  cumulativeEarnings: string
+}
+
+export interface AccountEarningsResponse {
+  address: string
+  totalEarnings: string
+  months: ReferrerMonthlyEarnings[]
 }
 
 export interface ReferrerEligibilityResponse {
