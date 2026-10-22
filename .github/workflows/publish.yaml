@@ -122,6 +122,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           SHA: ${{ github.sha }}
         run: |
+          echo "short_sha=${SHA:0:7}" >> "$GITHUB_OUTPUT"
           MODE=""
 
           # Handle workflow_dispatch input
@@ -249,9 +250,19 @@ jobs:
           base: master
           delete-branch: true
           commit-message: 'chore: release'
-          title: 'chore: release'
+          title: 'chore: release (${{ steps.determine-publish-type.outputs.short_sha }})'
           body: |
-            Automated release PR created by the publish workflow.
+            This release candidate is refreshed after its preparation build succeeds.
+
+            | Detail | Prepared candidate |
+            | --- | --- |
+            | Source commit on `master` | [`${{ steps.determine-publish-type.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |
+            | Preparation build | [Publish #${{ github.run_number }} (attempt ${{ github.run_attempt }})](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}) |
+            | Changes merged after preparation | [Compare with current `master`](${{ github.server_url }}/${{ github.repository }}/compare/${{ github.sha }}...master) |
+
+            If the comparison shows newer commits, this candidate has not yet been refreshed for them. Check the [latest `master` preparation runs](${{ github.server_url }}/${{ github.repository }}/actions/workflows/publish.yaml?query=branch%3Amaster) for progress or failures.
+
+            This PR's `Quality checks` validate the pull request merge candidate, which may include newer commits from `master` than the prepared source above. Use the comparison link to check whether the prepared source is current.
 
             Merging this PR will publish the versioned packages from `master`.
           author: '${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>'
