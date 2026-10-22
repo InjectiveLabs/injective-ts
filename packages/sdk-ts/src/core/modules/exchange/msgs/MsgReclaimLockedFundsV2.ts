@@ -1,5 +1,6 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import {
   base64ToUint8Array,
   uint8ArrayToBase64,
@@ -51,6 +52,13 @@ export default class MsgReclaimLockedFundsV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgReclaimLockedFunds,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const proto = this.toProto()
 
     const message = {
@@ -60,13 +68,13 @@ export default class MsgReclaimLockedFundsV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgReclaimLockedFunds',
+      type: 'exchange/v2/MsgReclaimLockedFunds',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {
@@ -79,7 +87,7 @@ export default class MsgReclaimLockedFundsV2 extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: 'exchange/MsgReclaimLockedFunds',
+      type: 'exchange/v2/MsgReclaimLockedFunds',
       value: {
         sender: proto.sender,
         lockedAccountPubKey: Array.from(proto.lockedAccountPubKey),

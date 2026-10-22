@@ -1,3 +1,4 @@
+import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgBatchCancelSpotOrdersV2 from './MsgBatchCancelSpotOrdersV2.js'
@@ -20,7 +21,7 @@ const params: MsgBatchCancelSpotOrdersV2['params'] = {
 }
 
 const protoType = '/injective.exchange.v2.MsgBatchCancelSpotOrders'
-const protoTypeShort = 'exchange/MsgBatchCancelSpotOrders'
+const protoTypeShort = 'exchange/v2/MsgBatchCancelSpotOrders'
 const message = MsgBatchCancelSpotOrdersV2.fromJSON(params)
 
 describe('MsgBatchCancelSpotOrdersV2', () => {
@@ -58,8 +59,18 @@ describe('MsgBatchCancelSpotOrdersV2', () => {
     expect(web3.data[0].market_id).toStrictEqual(params.orders[0].marketId)
   })
 
+  it('EIP712 v1 values and type equal the amino-json of the proto', () => {
+    const eip712 = message.toEip712()
+    const amino = message.toAmino()
+
+    expect(eip712.type).toBe(amino.type)
+    expect(eip712.value).toStrictEqual(amino.value)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
+      network: Network.Testnet,
       messages: message,
     })
 
@@ -74,6 +85,9 @@ describe('MsgBatchCancelSpotOrdersV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+      expect(message.toAmino()).toStrictEqual(
+        JSON.parse(txResponse.data).message.msgs[0],
+      )
     })
 
     it('EIP712 v2', async () => {

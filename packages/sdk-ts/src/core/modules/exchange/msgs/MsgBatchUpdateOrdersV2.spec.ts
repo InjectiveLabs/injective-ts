@@ -1,3 +1,4 @@
+import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgBatchUpdateOrdersV2 from './MsgBatchUpdateOrdersV2.js'
@@ -23,7 +24,7 @@ const params: MsgBatchUpdateOrdersV2['params'] = {
 }
 
 const protoType = '/injective.exchange.v2.MsgBatchUpdateOrders'
-const protoTypeShort = 'exchange/MsgBatchUpdateOrders'
+const protoTypeShort = 'exchange/v2/MsgBatchUpdateOrders'
 const message = MsgBatchUpdateOrdersV2.fromJSON(params)
 
 describe('MsgBatchUpdateOrdersV2', () => {
@@ -63,8 +64,18 @@ describe('MsgBatchUpdateOrdersV2', () => {
     expect(web3.spot_orders_to_create).toHaveLength(1)
   })
 
+  it('EIP712 v1 values and type equal the amino-json of the proto', () => {
+    const eip712 = message.toEip712()
+    const amino = message.toAmino()
+
+    expect(eip712.type).toBe(amino.type)
+    expect(eip712.value).toStrictEqual(amino.value)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
+      network: Network.Testnet,
       messages: message,
     })
 
@@ -79,6 +90,9 @@ describe('MsgBatchUpdateOrdersV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+      expect(message.toAmino()).toStrictEqual(
+        JSON.parse(txResponse.data).message.msgs[0],
+      )
     })
 
     it('EIP712 v2', async () => {
@@ -92,6 +106,31 @@ describe('MsgBatchUpdateOrdersV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    // the chain omits an empty cid from the v1 typed data and keeps expiration_block of a
+    // good-till-block order, in both the types and the values
+    it('EIP712 v1 matches the gateway for an empty cid and a good-till-block order', async () => {
+      const variant = MsgBatchUpdateOrdersV2.fromJSON({
+        ...params,
+        spotOrdersToCreate: params.spotOrdersToCreate?.map((order) => ({
+          ...order,
+          cid: '',
+          expirationBlock: '123456789',
+        })),
+      })
+      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
+        prepareEip712({ network: Network.Testnet, messages: variant })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...variantRequest,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(getEip712TypedData(variantArgs)).toStrictEqual(
+        JSON.parse(txResponse.data),
+      )
     })
   })
 })

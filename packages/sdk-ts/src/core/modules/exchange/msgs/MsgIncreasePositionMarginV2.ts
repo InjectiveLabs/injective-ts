@@ -1,6 +1,7 @@
 import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgIncreasePositionMarginV2 {
@@ -61,6 +62,13 @@ export default class MsgIncreasePositionMarginV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgIncreasePositionMargin,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const { params } = this
     const message = {
       sender: params.injectiveAddress,
@@ -71,13 +79,13 @@ export default class MsgIncreasePositionMarginV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgIncreasePositionMargin',
+      type: 'exchange/v2/MsgIncreasePositionMargin',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {
@@ -86,19 +94,9 @@ export default class MsgIncreasePositionMarginV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const amino = this.toAmino()
-    const { type, value } = amino
-
-    const messageAdjusted = {
-      ...value,
-      amount: toChainFormat(value.amount).toFixed(),
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
-    }
+  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
+  public toEip712(): never {
+    return this.eip712V1Unsupported('MsgIncreasePositionMarginV2')
   }
 
   public toEip712V2() {

@@ -1,3 +1,5 @@
+import { Network } from '@injectivelabs/networks'
+import { toChainFormat } from '@injectivelabs/utils'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgInstantSpotMarketLaunchV2 from './MsgInstantSpotMarketLaunchV2.js'
@@ -24,7 +26,7 @@ const params: MsgInstantSpotMarketLaunchV2['params'] = {
 }
 
 const protoType = '/injective.exchange.v2.MsgInstantSpotMarketLaunch'
-const protoTypeShort = 'exchange/MsgInstantSpotMarketLaunch'
+const protoTypeShort = 'exchange/v2/MsgInstantSpotMarketLaunch'
 const message = MsgInstantSpotMarketLaunchV2.fromJSON(params)
 
 describe('MsgInstantSpotMarketLaunchV2', () => {
@@ -35,11 +37,30 @@ describe('MsgInstantSpotMarketLaunchV2', () => {
     expect(proto.ticker).toStrictEqual(params.market.ticker)
     expect(proto.baseDenom).toStrictEqual(params.market.baseDenom)
     expect(proto.quoteDenom).toStrictEqual(params.market.quoteDenom)
-    expect(proto.minPriceTickSize).toStrictEqual(params.market.minPriceTickSize)
-    expect(proto.minQuantityTickSize).toStrictEqual(
-      params.market.minQuantityTickSize,
+    // params are human-readable, the proto stores LegacyDec (scaled by 1e18)
+    expect(proto.minPriceTickSize).toStrictEqual(
+      toChainFormat(params.market.minPriceTickSize).toFixed(),
     )
-    expect(proto.minNotional).toStrictEqual(params.market.minNotional)
+    expect(proto.minQuantityTickSize).toStrictEqual(
+      toChainFormat(params.market.minQuantityTickSize).toFixed(),
+    )
+    expect(proto.minNotional).toStrictEqual('1000000000000000000')
+  })
+
+  it('converts human-readable decimals to LegacyDec wire values', () => {
+    const proto = MsgInstantSpotMarketLaunchV2.fromJSON({
+      ...params,
+      market: {
+        ...params.market,
+        minPriceTickSize: '0.0000001',
+        minQuantityTickSize: '10',
+        minNotional: '0.5',
+      },
+    }).toProto()
+
+    expect(proto.minPriceTickSize).toBe('100000000000')
+    expect(proto.minQuantityTickSize).toBe('10000000000000000000')
+    expect(proto.minNotional).toBe('500000000000000000')
   })
 
   it('generates proper data', () => {
@@ -48,11 +69,13 @@ describe('MsgInstantSpotMarketLaunchV2', () => {
     expect(data['@type']).toStrictEqual(protoType)
     expect(data.sender).toStrictEqual(params.proposer)
     expect(data.ticker).toStrictEqual(params.market.ticker)
-    expect(data.minPriceTickSize).toStrictEqual(params.market.minPriceTickSize)
-    expect(data.minQuantityTickSize).toStrictEqual(
-      params.market.minQuantityTickSize,
+    expect(data.minPriceTickSize).toStrictEqual(
+      toChainFormat(params.market.minPriceTickSize).toFixed(),
     )
-    expect(data.minNotional).toStrictEqual(params.market.minNotional)
+    expect(data.minQuantityTickSize).toStrictEqual(
+      toChainFormat(params.market.minQuantityTickSize).toFixed(),
+    )
+    expect(data.minNotional).toStrictEqual('1000000000000000000')
   })
 
   it('generates proper amino', () => {
@@ -75,21 +98,16 @@ describe('MsgInstantSpotMarketLaunchV2', () => {
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
+      network: Network.Testnet,
       messages: message,
     })
 
-    // not supported on chain (invalid Go type math.LegacyDec for min_price_tick_size)
-    it.skip('EIP712 v1', async () => {
-      const eip712TypedData = getEip712TypedData(eip712Args)
-
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...prepareEip712Request,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    // the chain's EIP712 v1 typed-data generator rejects math.LegacyDec fields
+    it('EIP712 v1 throws, use EIP712 v2', () => {
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
+      )
     })
 
     it('EIP712 v2', async () => {

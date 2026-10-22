@@ -5,6 +5,8 @@ import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/genera
 import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { validateOracleType } from '../../oracle/utils.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
@@ -32,6 +34,7 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
         adminPermissions: number
       }
       crossMarginEligible: boolean
+      syntheticTradeFeeRate?: string
     }
     proposer: string
     deposit: {
@@ -65,6 +68,13 @@ const openNotionalCapValue = (value: unknown) => {
   return value
 }
 
+const toOpenNotionalCapProto = (value?: string) => ({
+  cap:
+    value === undefined
+      ? { oneofKind: 'uncapped' as const, uncapped: {} }
+      : { oneofKind: 'capped' as const, capped: { value } },
+})
+
 const toOpenNotionalCap = (
   value: unknown,
   formatValue: (value: string) => string = (value) => value,
@@ -79,6 +89,8 @@ const toOpenNotionalCap = (
 const createPerpetualMarketLaunch = (
   params: MsgSubmitProposalPerpetualMarketLaunchV2.Params,
 ) => {
+  validateOracleType(params.market.oracleType)
+
   const openNotionalCap = openNotionalCapValue(params.market.openNotionalCap)
   const content: any = {
     title: params.market.title,
@@ -97,18 +109,11 @@ const createPerpetualMarketLaunch = (
     minQuantityTickSize: params.market.minQuantityTickSize,
     minNotional: params.market.minNotional,
     reduceMarginRatio: params.market.reduceMarginRatio,
-    openNotionalCap: {
-      cap:
-        openNotionalCap === undefined
-          ? { oneofKind: 'uncapped', uncapped: {} }
-          : {
-              oneofKind: 'capped',
-              capped: {
-                value: openNotionalCap,
-              },
-            },
-    },
-    crossMarginEligibility: params.market.crossMarginEligible,
+    openNotionalCap: toOpenNotionalCapProto(openNotionalCap),
+    crossMarginEligible: params.market.crossMarginEligible,
+    ...(params.market.syntheticTradeFeeRate && {
+      syntheticTradeFeeRate: params.market.syntheticTradeFeeRate,
+    }),
   }
 
   if (params.market.adminInfo) {
@@ -172,7 +177,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
         reduceMarginRatio: toChainFormat(
           initialParams.market.reduceMarginRatio,
         ).toFixed(),
-        crossMarginEligibility: initialParams.market.crossMarginEligible,
+        syntheticTradeFeeRate: initialParams.market.syntheticTradeFeeRate
+          ? toChainFormat(initialParams.market.syntheticTradeFeeRate).toFixed()
+          : undefined,
       },
     }
 
@@ -208,13 +215,20 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(CosmosGovV1Beta1TxPb.MsgSubmitProposal, this.toProto(), {
+      '/injective.exchange.v2.PerpetualMarketLaunchProposal':
+        InjectiveExchangeV2ProposalPb.PerpetualMarketLaunchProposal,
+    })
+  }
+
+  public toAminoRaw() {
     const { params } = this
 
     const content = createPerpetualMarketLaunch(params)
 
     const messageWithProposalType = {
       content: {
-        type: 'exchange/PerpetualMarketLaunchProposal',
+        type: 'exchange/v2/PerpetualMarketLaunchProposal',
         value: {
           title: content.title,
           description: content.description,
@@ -235,6 +249,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           reduce_margin_ratio: content.reduceMarginRatio,
           open_notional_cap: toOpenNotionalCap(params.market.openNotionalCap),
           cross_margin_eligible: content.crossMarginEligible,
+          ...(content.syntheticTradeFeeRate && {
+            synthetic_trade_fee_rate: content.syntheticTradeFeeRate,
+          }),
         },
       },
       initial_deposit: [
@@ -253,7 +270,7 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     const messageWithProposalType = {
@@ -270,48 +287,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const { params } = this
-    const amino = this.toAmino()
-    const { value, type } = amino
-
-    const messageAdjusted = {
-      ...value,
-      content: {
-        type: 'exchange/PerpetualMarketLaunchProposal',
-        value: {
-          ...value.content.value,
-          initial_margin_ratio: toChainFormat(
-            params.market.initialMarginRatio,
-          ).toFixed(),
-          maintenance_margin_ratio: toChainFormat(
-            params.market.maintenanceMarginRatio,
-          ).toFixed(),
-          maker_fee_rate: toChainFormat(params.market.makerFeeRate).toFixed(),
-          taker_fee_rate: toChainFormat(params.market.takerFeeRate).toFixed(),
-          min_price_tick_size: toChainFormat(
-            params.market.minPriceTickSize,
-          ).toFixed(),
-          min_notional: toChainFormat(params.market.minNotional).toFixed(),
-          min_quantity_tick_size: toChainFormat(
-            params.market.minQuantityTickSize,
-          ).toFixed(),
-          reduce_margin_ratio: toChainFormat(
-            params.market.reduceMarginRatio,
-          ).toFixed(),
-          open_notional_cap: toOpenNotionalCap(
-            params.market.openNotionalCap,
-            (value) => toChainFormat(value).toFixed(),
-          ),
-          cross_margin_eligible: params.market.crossMarginEligible,
-        },
-      },
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
-    }
+  /** the chain cannot type the OpenNotionalCap oneof (no json name) for EIP712 v1 */
+  public toEip712(): never {
+    return this.eip712V1Unsupported('MsgSubmitProposalPerpetualMarketLaunchV2')
   }
 
   public toEip712V2() {
@@ -357,6 +335,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
           numberToCosmosSdkDecString,
         ),
         cross_margin_eligible: params.market.crossMarginEligible,
+        synthetic_trade_fee_rate: params.market.syntheticTradeFeeRate
+          ? numberToCosmosSdkDecString(params.market.syntheticTradeFeeRate)
+          : null,
       },
     }
 

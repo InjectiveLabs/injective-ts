@@ -290,6 +290,66 @@ const exchangeErrorMap = {
     'Client order id is invalid. Max length is 36 chars',
   [ChainExchangeModuleErrorCode.ErrInvalidClosingDirection]:
     'Invalid closing direction',
+  [ChainExchangeModuleErrorCode.ErrStaleOraclePrice]: 'Stale oracle price',
+  [ChainExchangeModuleErrorCode.ErrInvalidStakeGrant]: 'Invalid stake grant',
+  [ChainExchangeModuleErrorCode.ErrInsufficientStake]:
+    'Insufficient stake for grant',
+  [ChainExchangeModuleErrorCode.ErrInvalidPermissions]: 'Invalid permissions',
+  [ChainExchangeModuleErrorCode.ErrDenomDecimalsDoNotMatch]:
+    'The decimals specified for the denom is incorrect',
+  [ChainExchangeModuleErrorCode.ErrInsufficientMarketBalance]:
+    'Insufficient market balance',
+  [ChainExchangeModuleErrorCode.ErrInvalidExpirationBlock]:
+    'Invalid expiration block',
+  [ChainExchangeModuleErrorCode.ErrV1DerivativeMarketLaunch]:
+    'V1 perpetual and expiry market launch proposal is not supported',
+  [ChainExchangeModuleErrorCode.ErrPositionNotOffsettable]:
+    'Position not offsettable',
+  [ChainExchangeModuleErrorCode.ErrOffsettingSubaccountIDsEmpty]:
+    'Offsetting subaccount IDs cannot be empty',
+  [ChainExchangeModuleErrorCode.ErrInvalidOpenNotionalCap]:
+    'Invalid open notional cap',
+  [ChainExchangeModuleErrorCode.ErrOpenNotionalCapBreached]:
+    'Open notional cap breached',
+  [ChainExchangeModuleErrorCode.ErrNoOffsettingPositionsFound]:
+    'No valid offsetting positions found',
+  [ChainExchangeModuleErrorCode.ErrNotCanonicalLiquidationTarget]:
+    'Targeted market is not the canonical liquidation target',
+  [ChainExchangeModuleErrorCode.ErrMsgDeprecated]: 'Message type is deprecated',
+  [ChainExchangeModuleErrorCode.ErrTooManyCrossMarginSpotOrders]:
+    'Cross-margin subaccount has reached the per-denom spot order cap',
+  [ChainExchangeModuleErrorCode.ErrSwapDisabled]: 'Spot swap is disabled',
+  [ChainExchangeModuleErrorCode.ErrInvalidSwapRoute]: 'Invalid swap route',
+  [ChainExchangeModuleErrorCode.ErrSwapDeadlineExceeded]:
+    'Swap deadline exceeded',
+  [ChainExchangeModuleErrorCode.ErrSwapMinOutputNotMet]:
+    'Swap output below minimum',
+  [ChainExchangeModuleErrorCode.ErrPoolFundedCloseCannotRest]:
+    'Pool-funded cross-margin close cannot rest on the orderbook',
+  [ChainExchangeModuleErrorCode.ErrRFQPartialInsuranceNotLastResort]:
+    'RFQ partial may draw insurance only when the remaining pool positions hold no positive mark equity',
+  [ChainExchangeModuleErrorCode.ErrRFQInactiveSettlementNotLastResort]:
+    'Inactive cross-margin legs may be scheduled for settlement only when the active pool positions hold no positive mark equity',
+  [ChainExchangeModuleErrorCode.ErrRFQPartialBelowMarkWhileInsolvent]:
+    'A partial RFQ slice may pay below the exact-mark payout only while the pool has no mark shortfall after it',
+  [ChainExchangeModuleErrorCode.ErrTooManyIsolatedActiveMarkets]:
+    'Cross-exposed subaccount has reached the per-denom isolated active derivative market cap',
+  [ChainExchangeModuleErrorCode.ErrInvalidReferencePriceGateConfig]:
+    'Invalid reference price gate config',
+  [ChainExchangeModuleErrorCode.ErrUnsupportedReferencePriceSource]:
+    'Unsupported reference price source',
+  [ChainExchangeModuleErrorCode.ErrReferencePriceGateRejection]:
+    'Position-opening fill rejected by reference price gate',
+  [ChainExchangeModuleErrorCode.ErrTooManyOrdersPerAddress]:
+    'Address has reached the order-book order cap',
+  [ChainExchangeModuleErrorCode.ErrInvalidFundingImpactNotional]:
+    'Invalid funding impact notional',
+  [ChainExchangeModuleErrorCode.ErrTooManyFundingV2Markets]:
+    'Too many markets use funding v2',
+  [ChainExchangeModuleErrorCode.ErrInvalidSyntheticTradeFeeRate]:
+    'Invalid synthetic trade fee rate',
+  [ChainExchangeModuleErrorCode.ErrSwapMaxInputExceeded]:
+    'Swap input above maximum',
 }
 
 const insuranceErrorMap = {
@@ -314,6 +374,22 @@ const insuranceErrorMap = {
   [ChainInsuranceErrorCodes.ErrInvalidMarketID]: 'The marketId is not valid',
   [ChainInsuranceErrorCodes.ErrInvalidShareDenom]:
     'The share denom is not valid',
+  [ChainInsuranceErrorCodes.ErrConsolidatedPoolExists]:
+    'The consolidated insurance pool already exists',
+  [ChainInsuranceErrorCodes.ErrConsolidatedPoolNotFound]:
+    'The consolidated insurance pool has not been found',
+  [ChainInsuranceErrorCodes.ErrConsolidatedPolicyNotFound]:
+    'The consolidated insurance policy has not been found',
+  [ChainInsuranceErrorCodes.ErrConsolidatedPoolPaused]:
+    'The consolidated insurance payout pause is active',
+  [ChainInsuranceErrorCodes.ErrInsufficientSharesOut]:
+    'The shares out are insufficient',
+  [ChainInsuranceErrorCodes.ErrConsolidatedPoolDepleted]:
+    'The consolidated pool has outstanding shares but no balance',
+  [ChainInsuranceErrorCodes.ErrConsolidatedReservationPendingRedemption]:
+    'The consolidated reservation growth is blocked by pending redemptions',
+  [ChainInsuranceErrorCodes.ErrMarketLaunchPending]:
+    'A market launch proposal is pending',
 }
 
 const ocrErrorMap = {
@@ -959,6 +1035,55 @@ export const chainErrorMessagesMap: Record<
     module: TransactionChainErrorModule.Insurance,
   },
 
+  'consolidated insurance pool already exists': {
+    message: 'The consolidated insurance pool already exists',
+    code: ChainInsuranceErrorCodes.ErrConsolidatedPoolExists,
+    module: TransactionChainErrorModule.Insurance,
+  },
+
+  'consolidated insurance pool not found': {
+    message: 'The consolidated insurance pool has not been found',
+    code: ChainInsuranceErrorCodes.ErrConsolidatedPoolNotFound,
+    module: TransactionChainErrorModule.Insurance,
+  },
+
+  'consolidated insurance policy not found': {
+    message: 'The consolidated insurance policy has not been found',
+    code: ChainInsuranceErrorCodes.ErrConsolidatedPolicyNotFound,
+    module: TransactionChainErrorModule.Insurance,
+  },
+
+  'consolidated insurance payout pause is active': {
+    message: 'The consolidated insurance payout pause is active',
+    code: ChainInsuranceErrorCodes.ErrConsolidatedPoolPaused,
+    module: TransactionChainErrorModule.Insurance,
+  },
+
+  'insufficient shares out': {
+    message: 'The shares out are insufficient',
+    code: ChainInsuranceErrorCodes.ErrInsufficientSharesOut,
+    module: TransactionChainErrorModule.Insurance,
+  },
+
+  'consolidated pool has outstanding shares but no balance': {
+    message: 'The consolidated pool has outstanding shares but no balance',
+    code: ChainInsuranceErrorCodes.ErrConsolidatedPoolDepleted,
+    module: TransactionChainErrorModule.Insurance,
+  },
+
+  'consolidated reservation growth is blocked by pending redemptions': {
+    message:
+      'The consolidated reservation growth is blocked by pending redemptions',
+    code: ChainInsuranceErrorCodes.ErrConsolidatedReservationPendingRedemption,
+    module: TransactionChainErrorModule.Insurance,
+  },
+
+  'market launch proposal is pending': {
+    message: 'A market launch proposal is pending',
+    code: ChainInsuranceErrorCodes.ErrMarketLaunchPending,
+    module: TransactionChainErrorModule.Insurance,
+  },
+
   // Exchange Module Messages
   'failed to validate order': {
     message: 'Your order failed to validate',
@@ -1444,6 +1569,212 @@ export const chainErrorMessagesMap: Record<
   'Invalid argument': {
     message: 'The argument is not valid',
     code: ChainExchangeModuleErrorCode.ErrInvalidArgument,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'stale oracle price': {
+    message: 'Stale oracle price',
+    code: ChainExchangeModuleErrorCode.ErrStaleOraclePrice,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'invalid stake grant': {
+    message: 'Invalid stake grant',
+    code: ChainExchangeModuleErrorCode.ErrInvalidStakeGrant,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'insufficient stake for grant': {
+    message: 'Insufficient stake for grant',
+    code: ChainExchangeModuleErrorCode.ErrInsufficientStake,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'invalid permissions': {
+    message: 'Invalid permissions',
+    code: ChainExchangeModuleErrorCode.ErrInvalidPermissions,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'the decimals specified for the denom is incorrect': {
+    message: 'The decimals specified for the denom is incorrect',
+    code: ChainExchangeModuleErrorCode.ErrDenomDecimalsDoNotMatch,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'insufficient market balance': {
+    message: 'Insufficient market balance',
+    code: ChainExchangeModuleErrorCode.ErrInsufficientMarketBalance,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'invalid expiration block': {
+    message: 'Invalid expiration block',
+    code: ChainExchangeModuleErrorCode.ErrInvalidExpirationBlock,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'v1 perpetual and expiry market launch proposal is not supported': {
+    message: 'V1 perpetual and expiry market launch proposal is not supported',
+    code: ChainExchangeModuleErrorCode.ErrV1DerivativeMarketLaunch,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'position not offsettable': {
+    message: 'Position not offsettable',
+    code: ChainExchangeModuleErrorCode.ErrPositionNotOffsettable,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'offsetting subaccount IDs cannot be empty': {
+    message: 'Offsetting subaccount IDs cannot be empty',
+    code: ChainExchangeModuleErrorCode.ErrOffsettingSubaccountIDsEmpty,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'invalid open notional cap': {
+    message: 'Invalid open notional cap',
+    code: ChainExchangeModuleErrorCode.ErrInvalidOpenNotionalCap,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'open notional cap breached': {
+    message: 'Open notional cap breached',
+    code: ChainExchangeModuleErrorCode.ErrOpenNotionalCapBreached,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'no valid offsetting positions found': {
+    message: 'No valid offsetting positions found',
+    code: ChainExchangeModuleErrorCode.ErrNoOffsettingPositionsFound,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'targeted market is not the canonical liquidation target': {
+    message: 'Targeted market is not the canonical liquidation target',
+    code: ChainExchangeModuleErrorCode.ErrNotCanonicalLiquidationTarget,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'message type is deprecated': {
+    message: 'Message type is deprecated',
+    code: ChainExchangeModuleErrorCode.ErrMsgDeprecated,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'cross-margin subaccount has reached the per-denom spot order cap': {
+    message: 'Cross-margin subaccount has reached the per-denom spot order cap',
+    code: ChainExchangeModuleErrorCode.ErrTooManyCrossMarginSpotOrders,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'spot swap is disabled': {
+    message: 'Spot swap is disabled',
+    code: ChainExchangeModuleErrorCode.ErrSwapDisabled,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'invalid swap route': {
+    message: 'Invalid swap route',
+    code: ChainExchangeModuleErrorCode.ErrInvalidSwapRoute,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'swap deadline exceeded': {
+    message: 'Swap deadline exceeded',
+    code: ChainExchangeModuleErrorCode.ErrSwapDeadlineExceeded,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'swap output below minimum': {
+    message: 'Swap output below minimum',
+    code: ChainExchangeModuleErrorCode.ErrSwapMinOutputNotMet,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'pool-funded cross-margin close cannot rest on the orderbook': {
+    message: 'Pool-funded cross-margin close cannot rest on the orderbook',
+    code: ChainExchangeModuleErrorCode.ErrPoolFundedCloseCannotRest,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'RFQ partial may draw insurance only when the remaining pool positions hold no positive mark equity':
+    {
+      message:
+        'RFQ partial may draw insurance only when the remaining pool positions hold no positive mark equity',
+      code: ChainExchangeModuleErrorCode.ErrRFQPartialInsuranceNotLastResort,
+      module: TransactionChainErrorModule.Exchange,
+    },
+
+  'inactive cross-margin legs may be scheduled for settlement only when the active pool positions hold no positive mark equity':
+    {
+      message:
+        'Inactive cross-margin legs may be scheduled for settlement only when the active pool positions hold no positive mark equity',
+      code: ChainExchangeModuleErrorCode.ErrRFQInactiveSettlementNotLastResort,
+      module: TransactionChainErrorModule.Exchange,
+    },
+
+  'a partial RFQ slice may pay below the exact-mark payout only while the pool has no mark shortfall after it':
+    {
+      message:
+        'A partial RFQ slice may pay below the exact-mark payout only while the pool has no mark shortfall after it',
+      code: ChainExchangeModuleErrorCode.ErrRFQPartialBelowMarkWhileInsolvent,
+      module: TransactionChainErrorModule.Exchange,
+    },
+
+  'cross-exposed subaccount has reached the per-denom isolated active derivative market cap':
+    {
+      message:
+        'Cross-exposed subaccount has reached the per-denom isolated active derivative market cap',
+      code: ChainExchangeModuleErrorCode.ErrTooManyIsolatedActiveMarkets,
+      module: TransactionChainErrorModule.Exchange,
+    },
+
+  'invalid reference price gate config': {
+    message: 'Invalid reference price gate config',
+    code: ChainExchangeModuleErrorCode.ErrInvalidReferencePriceGateConfig,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'unsupported reference price source': {
+    message: 'Unsupported reference price source',
+    code: ChainExchangeModuleErrorCode.ErrUnsupportedReferencePriceSource,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'position-opening fill rejected by reference price gate': {
+    message: 'Position-opening fill rejected by reference price gate',
+    code: ChainExchangeModuleErrorCode.ErrReferencePriceGateRejection,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'address has reached the order-book order cap': {
+    message: 'Address has reached the order-book order cap',
+    code: ChainExchangeModuleErrorCode.ErrTooManyOrdersPerAddress,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'invalid funding impact notional': {
+    message: 'Invalid funding impact notional',
+    code: ChainExchangeModuleErrorCode.ErrInvalidFundingImpactNotional,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'too many markets use funding v2': {
+    message: 'Too many markets use funding v2',
+    code: ChainExchangeModuleErrorCode.ErrTooManyFundingV2Markets,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'invalid synthetic trade fee rate': {
+    message: 'Invalid synthetic trade fee rate',
+    code: ChainExchangeModuleErrorCode.ErrInvalidSyntheticTradeFeeRate,
+    module: TransactionChainErrorModule.Exchange,
+  },
+
+  'swap input above maximum': {
+    message: 'Swap input above maximum',
+    code: ChainExchangeModuleErrorCode.ErrSwapMaxInputExceeded,
     module: TransactionChainErrorModule.Exchange,
   },
 

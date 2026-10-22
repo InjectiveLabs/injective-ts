@@ -3,6 +3,7 @@ import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { MsgSend } from '../../bank/index.js'
 import MsgSubmitGenericProposal from './MsgSubmitGenericProposal.js'
+import { MsgIncreasePositionMarginV2 } from '../../exchange/index.js'
 import {
   getEip712TypedData,
   getEip712TypedDataV2,
@@ -34,6 +35,32 @@ const params: MsgSubmitGenericProposal['params'] = {
 const message = MsgSubmitGenericProposal.fromJSON(params)
 
 describe('MsgSubmitGenericProposal', () => {
+  describe('with an inner V2 exchange message', () => {
+    const inner = MsgIncreasePositionMarginV2.fromJSON({
+      marketId: mockFactory.derivativeMarketId,
+      injectiveAddress: mockFactory.injectiveAddress,
+      srcSubaccountId: mockFactory.subaccountId,
+      dstSubaccountId: mockFactory.subaccountId,
+      amount: '100',
+    })
+    const proposal = MsgSubmitGenericProposal.fromJSON({
+      ...params,
+      messages: [inner],
+    })
+
+    it('amino embeds the chain-format amino of the inner message', () => {
+      const [aminoInner] = proposal.toAmino().value.messages
+
+      expect(aminoInner).toStrictEqual(inner.toAmino())
+      expect(aminoInner.value.amount).toBe('100000000000000000000')
+    })
+
+    it('web3Gw keeps the inner proto-JSON (human-readable decimals)', () => {
+      expect(proposal.toWeb3Gw().messages).toStrictEqual([inner.toWeb3Gw()])
+      expect(inner.toWeb3Gw().amount).toBe('100')
+    })
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

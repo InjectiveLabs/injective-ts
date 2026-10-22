@@ -1,5 +1,7 @@
+import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgUpdateSpotMarketV2 {
@@ -20,9 +22,14 @@ const createMessage = (params: MsgUpdateSpotMarketV2.Params) => {
     admin: params.admin,
     marketId: params.marketId,
     newTicker: params.newTicker || '',
-    newMinNotional: params.newMinNotional || '0',
-    newMinPriceTickSize: params.newMinPriceTickSize || '0',
-    newMinQuantityTickSize: params.newMinQuantityTickSize || '0',
+    // params are human-readable, the proto stores LegacyDec (value scaled by 1e18)
+    newMinNotional: toChainFormat(params.newMinNotional || '0').toFixed(),
+    newMinPriceTickSize: toChainFormat(
+      params.newMinPriceTickSize || '0',
+    ).toFixed(),
+    newMinQuantityTickSize: toChainFormat(
+      params.newMinQuantityTickSize || '0',
+    ).toFixed(),
   })
 
   return message
@@ -53,6 +60,13 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgUpdateSpotMarket,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const { params } = this
     const message = {
       admin: params.admin,
@@ -64,13 +78,13 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgUpdateSpotMarket',
+      type: 'exchange/v2/MsgUpdateSpotMarket',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {
@@ -79,18 +93,9 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const amino = this.toAmino()
-    const { type, value } = amino
-
-    const messageAdjusted = {
-      ...value,
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
-    }
+  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
+  public toEip712(): never {
+    return this.eip712V1Unsupported('MsgUpdateSpotMarketV2')
   }
 
   public toEip712V2() {

@@ -1,6 +1,7 @@
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgExternalTransferV2 {
   export interface Params {
@@ -55,6 +56,13 @@ export default class MsgExternalTransferV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgExternalTransfer,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const proto = this.toProto()
     const message = {
       sender: proto.sender,
@@ -64,13 +72,13 @@ export default class MsgExternalTransferV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgExternalTransfer',
+      type: 'exchange/v2/MsgExternalTransfer',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {

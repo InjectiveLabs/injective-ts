@@ -1,3 +1,4 @@
+import { GeneralException } from '@injectivelabs/exceptions'
 import { prepareSignBytes } from './utils.js'
 import { objectKeysToEip712Types } from '../tx/eip712/maps.js'
 import type snakecaseKeys from 'snakecase-keys'
@@ -58,10 +59,20 @@ export abstract class MsgBase<
   }
 
   /**
+   * The full-field, human-readable object behind toWeb3Gw (proto-JSON keeps zero
+   * values) and the EIP712 v1 types (the chain lists every field in the types).
+   * Defaults to toAmino(); messages whose toAmino() follows the chain's aminojson
+   * sign bytes (Ledger), which omit zero values, override this.
+   */
+  public toAminoRaw() {
+    return this.toAmino()
+  }
+
+  /**
    * Returns the types of the message for EIP712
    */
   public toEip712Types(): Map<string, TypedDataField[]> {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
 
     return objectKeysToEip712Types({
       object: amino.value as Record<string, any>,
@@ -70,7 +81,8 @@ export abstract class MsgBase<
   }
 
   /**
-   * Returns the values of the message for EIP712
+   * Returns the values of the message for EIP712: the chain derives the v1 typed
+   * data values from its amino-json, so this is toAmino()
    */
   public toEip712() {
     return this.toAmino()
@@ -81,6 +93,18 @@ export abstract class MsgBase<
    */
   public toEip712V2() {
     return this.toWeb3Gw()
+  }
+
+  /**
+   * For messages the chain cannot type for EIP712 v1: fail loudly instead of
+   * returning typed data that cannot be signed
+   */
+  protected eip712V1Unsupported(messageName: string): never {
+    throw new GeneralException(
+      new Error(
+        `EIP712_v1 is not supported for ${messageName}. Please use EIP712_v2`,
+      ),
+    )
   }
 
   public toDirectSignJSON(): string {

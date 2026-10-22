@@ -1,4 +1,5 @@
 import snakecaseKeys from 'snakecase-keys'
+import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgUpdateSpotMarketV2 from './MsgUpdateSpotMarketV2.js'
@@ -17,7 +18,6 @@ const params: MsgUpdateSpotMarketV2['params'] = {
 }
 
 const protoType = '/injective.exchange.v2.MsgUpdateSpotMarket'
-const protoTypeShort = 'exchange/MsgUpdateSpotMarket'
 const protoParams = {
   admin: params.admin,
   marketId: params.marketId,
@@ -27,13 +27,20 @@ const protoParams = {
   newTicker: '',
 }
 const protoParamsAmino = snakecaseKeys(protoParams)
+// the proto stores LegacyDec, i.e. the human-readable params scaled by 1e18
+const chainProtoParams = {
+  ...protoParams,
+  newMinPriceTickSize: '100000000000',
+  newMinQuantityTickSize: '10000000000000000000',
+  newMinNotional: '0',
+}
 const message = MsgUpdateSpotMarketV2.fromJSON(params)
 
 describe('MsgUpdateSpotMarketV2', () => {
   it('generates proper proto', () => {
     const proto = message.toProto()
 
-    expect(proto).toStrictEqual(protoParams)
+    expect(proto).toStrictEqual(chainProtoParams)
   })
 
   it('generates proper data', () => {
@@ -41,17 +48,23 @@ describe('MsgUpdateSpotMarketV2', () => {
 
     expect(data).toStrictEqual({
       '@type': protoType,
-      ...protoParams,
+      ...chainProtoParams,
     })
   })
 
   it('generates proper amino', () => {
-    const amino = message.toAmino()
-
-    expect(amino).toStrictEqual({
-      type: protoTypeShort,
-      value: protoParamsAmino,
-    })
+    expect(message.toAmino()).toMatchInlineSnapshot(`
+      {
+        "type": "exchange/v2/MsgUpdateSpotMarket",
+        "value": {
+          "admin": "inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku",
+          "market_id": "0x7cc8b10d7deb61e744ef83bdec2bbcf4a056867e89b062c6a453020ca82bd4e4",
+          "new_min_notional": "0",
+          "new_min_price_tick_size": "100000000000",
+          "new_min_quantity_tick_size": "10000000000000000000",
+        },
+      }
+    `)
   })
 
   it('generates proper web3Gw', () => {
@@ -65,21 +78,16 @@ describe('MsgUpdateSpotMarketV2', () => {
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
+      network: Network.Testnet,
       messages: message,
     })
 
-    // TODO: invalid Go type math.LegacyDec for field injective.exchange.v1beta1.MsgUpdateSpotMarket.amount
-    it.skip('EIP712 v1', async () => {
-      const eip712TypedData = getEip712TypedData(eip712Args)
-
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...prepareEip712Request,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    // the chain's EIP712 v1 typed-data generator rejects math.LegacyDec fields
+    it('EIP712 v1 throws, use EIP712 v2', () => {
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
+      )
     })
 
     it('EIP712 v2', async () => {

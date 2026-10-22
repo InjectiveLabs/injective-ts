@@ -7,42 +7,40 @@ import {
 import { OrderTypeMap } from '../types/light.js'
 import type { Msgs } from '../core/modules/msgs.js'
 
+// chain v1.21 fixed_gas.go constants + 120k ante offset
 const fixedExchangeGas = {
   MsgCreateDerivativeLimitOrder: {
-    gas: 330000,
-    postOnlyGas: 370000,
+    gas: 560000,
+    postOnlyGas: 620000,
     hasOrder: true,
   },
-  MsgCreateDerivativeMarketOrder: { gas: 310000, hasOrder: true },
-  MsgCancelDerivativeOrder: { gas: 200000 },
+  MsgCreateDerivativeMarketOrder: { gas: 550000, hasOrder: true },
+  MsgCancelDerivativeOrder: { gas: 372000 },
   MsgCreateSpotLimitOrder: {
-    gas: 300000,
-    postOnlyGas: 330000,
+    gas: 540000,
+    postOnlyGas: 590000,
     hasOrder: true,
   },
-  MsgCreateSpotMarketOrder: { gas: 300000, hasOrder: true },
-  MsgCancelSpotOrder: { gas: 185000 },
-  MsgCreateBinaryOptionsLimitOrder: {
-    gas: 330000,
-    postOnlyGas: 370000,
-    hasOrder: true,
-  },
-  MsgCreateBinaryOptionsMarketOrder: { gas: 310000, hasOrder: true },
-  MsgCancelBinaryOptionsOrder: { gas: 200000 },
+  MsgCreateSpotMarketOrder: { gas: 540000, hasOrder: true },
+  MsgCancelSpotOrder: { gas: 362000 },
   MsgDeposit: { gas: 330000 },
   MsgWithdraw: { gas: 320000 },
   MsgSubaccountTransfer: { gas: 220000 },
   MsgExternalTransfer: { gas: 300000 },
-  MsgIncreasePositionMargin: { gas: 185000 },
-  MsgDecreasePositionMargin: { gas: 200000 },
+  MsgIncreasePositionMargin: { gas: 350000 },
+  MsgDecreasePositionMargin: { gas: 360000 },
 } as const
+
+// chain v1.21 AddressOrderAdmissionGas: charged per retained order after the GTB multiplier
+// ponytail: also added for atomic market orders (chain skips them), 12k overpay
+const orderAdmissionGas = 12000
 
 const batchAnteGas = 120000
 const batchAnteGasPerOrder = 3000
+// chain v1.21 charges each batch cancel as a full MsgCancel*OrderGas
 const batchExchangeGasPerOrder = {
-  MsgBatchCancelSpotOrders: 68000,
-  MsgBatchCancelDerivativeOrders: 73000,
-  MsgBatchCancelBinaryOptionsOrders: 123000,
+  MsgBatchCancelSpotOrders: 242000,
+  MsgBatchCancelDerivativeOrders: 252000,
 } as const
 
 const fixedExchangeType = /^\/injective\.exchange\.v(?:1beta1|2)\.(Msg\w+)$/
@@ -148,7 +146,9 @@ export const getFixedGasLimitBasedOnMessage = (
       isPostOnly && 'postOnlyGas' in policy ? policy.postOnlyGas : policy.gas
     const hasExpirationBlock = (order?.expirationBlock ?? 0n) > 0n
 
-    gas += hasExpirationBlock ? baseGas + baseGas / 10 : baseGas
+    gas +=
+      (hasExpirationBlock ? baseGas + baseGas / 10 : baseGas) +
+      ('hasOrder' in policy ? orderAdmissionGas : 0)
   }
 
   return gas

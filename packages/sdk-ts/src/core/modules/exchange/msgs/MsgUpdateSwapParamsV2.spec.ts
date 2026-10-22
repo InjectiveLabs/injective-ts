@@ -1,4 +1,5 @@
 import { expectTypeOf } from 'vitest'
+import { Network } from '@injectivelabs/networks'
 import { MsgType, EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
@@ -21,7 +22,7 @@ const params: MsgUpdateSwapParamsV2['params'] = {
 
 const message = MsgUpdateSwapParamsV2.fromJSON(params)
 const protoType = '/injective.exchange.v2.MsgUpdateSwapParams'
-const protoTypeShort = 'exchange/MsgUpdateSwapParams'
+const protoTypeShort = 'exchange/v2/MsgUpdateSwapParams'
 const aminoValue = {
   sender: params.sender,
   swap_params: {
@@ -66,15 +67,20 @@ describe('MsgUpdateSwapParamsV2', () => {
           emptyAllowlistMessage.toBinary(),
         ),
       ).toStrictEqual(emptyAllowlistParams)
-      expect(emptyAllowlistMessage.toAmino().value.swap_params).toStrictEqual({
+      // representation behind web3Gw / EIP712 keeps the empty allowlist
+      expect(
+        emptyAllowlistMessage.toAminoRaw().value.swap_params,
+      ).toStrictEqual({
         enabled,
         allowed_markets: [],
       })
+      // chain aminojson omits empty arrays and `false`
+      expect(emptyAllowlistMessage.toAmino().value.swap_params).toStrictEqual(
+        enabled ? { enabled } : {},
+      )
+      // the chain lists the bool but omits an empty array from the v1 types
       expect(getEip712TypedData(eip712Args).types).toMatchObject({
-        TypeSwapParams: [
-          { name: 'enabled', type: 'bool' },
-          { name: 'allowed_markets', type: 'string[]' },
-        ],
+        TypeSwapParams: [{ name: 'enabled', type: 'bool' }],
       })
       expect(
         JSON.parse(getEip712TypedDataV2(eip712Args).message.msgs),
@@ -118,8 +124,18 @@ describe('MsgUpdateSwapParamsV2', () => {
     })
   })
 
+  it('EIP712 v1 values and type equal the amino-json of the proto', () => {
+    const eip712 = message.toEip712()
+    const amino = message.toAmino()
+
+    expect(eip712.type).toBe(amino.type)
+    expect(eip712.value).toStrictEqual(amino.value)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
+      network: Network.Testnet,
       messages: message,
     })
 
@@ -145,6 +161,63 @@ describe('MsgUpdateSwapParamsV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v1 matches the gateway (enabled=false with an empty allowlist)', async () => {
+      const variant = MsgUpdateSwapParamsV2.fromJSON({
+        ...params,
+        swapParams: { enabled: false, allowedMarkets: [] },
+      })
+      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
+        prepareEip712({ network: Network.Testnet, messages: variant })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...variantRequest,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(getEip712TypedData(variantArgs)).toStrictEqual(
+        JSON.parse(txResponse.data),
+      )
+    })
+
+    it('EIP712 v1 matches the gateway (enabled=true with an empty allowlist)', async () => {
+      const variant = MsgUpdateSwapParamsV2.fromJSON({
+        ...params,
+        swapParams: { enabled: true, allowedMarkets: [] },
+      })
+      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
+        prepareEip712({ network: Network.Testnet, messages: variant })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...variantRequest,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(getEip712TypedData(variantArgs)).toStrictEqual(
+        JSON.parse(txResponse.data),
+      )
+    })
+
+    it('EIP712 v1 matches the gateway (enabled=false with an allowlist)', async () => {
+      const variant = MsgUpdateSwapParamsV2.fromJSON({
+        ...params,
+        swapParams: { enabled: false, allowedMarkets: ['0xmarket'] },
+      })
+      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
+        prepareEip712({ network: Network.Testnet, messages: variant })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...variantRequest,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(getEip712TypedData(variantArgs)).toStrictEqual(
+        JSON.parse(txResponse.data),
+      )
     })
   })
 })

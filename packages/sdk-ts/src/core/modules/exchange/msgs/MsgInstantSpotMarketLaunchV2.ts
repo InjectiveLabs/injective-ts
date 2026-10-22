@@ -1,6 +1,7 @@
 import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgInstantSpotMarketLaunchV2 {
@@ -27,9 +28,12 @@ const createMessage = (params: MsgInstantSpotMarketLaunchV2.Params) => {
     ticker: params.market.ticker,
     baseDenom: params.market.baseDenom,
     quoteDenom: params.market.quoteDenom,
-    minPriceTickSize: params.market.minPriceTickSize,
-    minQuantityTickSize: params.market.minQuantityTickSize,
-    minNotional: params.market.minNotional,
+    // params are human-readable, the proto stores LegacyDec (value scaled by 1e18)
+    minPriceTickSize: toChainFormat(params.market.minPriceTickSize).toFixed(),
+    minQuantityTickSize: toChainFormat(
+      params.market.minQuantityTickSize,
+    ).toFixed(),
+    minNotional: toChainFormat(params.market.minNotional).toFixed(),
     baseDecimals: Number(params.market.baseDecimals),
     quoteDecimals: Number(params.market.quoteDecimals),
   })
@@ -64,6 +68,13 @@ export default class MsgInstantSpotMarketLaunchV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgInstantSpotMarketLaunch,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const { params } = this
     const message = {
       sender: params.proposer,
@@ -78,13 +89,13 @@ export default class MsgInstantSpotMarketLaunchV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgInstantSpotMarketLaunch',
+      type: 'exchange/v2/MsgInstantSpotMarketLaunch',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {
@@ -93,23 +104,9 @@ export default class MsgInstantSpotMarketLaunchV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const amino = this.toAmino()
-    const { type, value } = amino
-
-    const messageAdjusted = {
-      ...value,
-      min_price_tick_size: toChainFormat(value.min_price_tick_size).toFixed(),
-      min_quantity_tick_size: toChainFormat(
-        value.min_quantity_tick_size,
-      ).toFixed(),
-      min_notional: toChainFormat(value.min_notional).toFixed(),
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
-    }
+  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
+  public toEip712(): never {
+    return this.eip712V1Unsupported('MsgInstantSpotMarketLaunchV2')
   }
 
   public toEip712V2() {
