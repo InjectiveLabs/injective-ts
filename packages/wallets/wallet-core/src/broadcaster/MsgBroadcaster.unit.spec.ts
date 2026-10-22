@@ -1,9 +1,8 @@
 import { vi, afterEach } from 'vitest'
 import { Network } from '@injectivelabs/networks'
-import { DEFAULT_EXCHANGE_LIMIT } from '@injectivelabs/utils'
+import { getStdFee, DEFAULT_EXCHANGE_LIMIT } from '@injectivelabs/utils'
 import { PublicKey, PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
-import { MsgAuthzExec, MsgWithdrawV2 } from '@injectivelabs/sdk-ts/core/modules'
 import {
   GeneralException,
   TransactionException,
@@ -12,6 +11,11 @@ import {
   Wallet,
   WalletStrategyEmitterEventType,
 } from '@injectivelabs/wallet-base'
+import {
+  MsgAuthzExec,
+  MsgWithdrawV2,
+  MsgCreateSpotLimitOrder,
+} from '@injectivelabs/sdk-ts/core/modules'
 import {
   TxClient,
   TxGrpcApi,
@@ -396,6 +400,101 @@ describe('MsgBroadcaster fixed exchange gas', () => {
     vi.spyOn(broadcaster as any, 'getEvmChainId').mockResolvedValue(1)
   })
 
+  it.each([
+    [Wallet.Keplr, 360000],
+    [Wallet.Leap, 360000],
+    [Wallet.Ninji, 360000],
+    [Wallet.OWallet, 360000],
+    [Wallet.Cosmostation, 360000],
+    [Wallet.LedgerCosmos, 360000],
+    [Wallet.PrivateKeyCosmos, 360000],
+    [Wallet.Metamask, 300000],
+    [Wallet.KeplrEvm, 300000],
+    [Wallet.PrivateKey, 300000],
+  ] as const)('uses %s spot order gas limit %i', (wallet, gasLimit) => {
+    broadcaster.walletStrategy.wallet = wallet
+    const msg = MsgCreateSpotLimitOrder.fromJSON({
+      marketId: '0x' + '1'.repeat(64),
+      subaccountId: '0x' + '2'.repeat(64),
+      injectiveAddress: 'inj1test',
+      feeRecipient: 'inj1test',
+      price: '10',
+      quantity: '1',
+      orderType: 1,
+    })
+
+    expect((broadcaster as any).resolveGasOptions(msg)).toEqual({
+      gas: gasLimit.toString(),
+      gasLimit,
+      estimateGas: false,
+    })
+  })
+
+  it('preserves explicit gas overrides', () => {
+    expect(
+      (broadcaster as any).resolveGasOptions(makeFixedGasMessage(), 123456),
+    ).toEqual({ gas: '123456', gasLimit: 123456, estimateGas: false })
+  })
+
+  it.each([true, false])(
+    'encodes buffered gas and fees without simulation (simulateTx: %s)',
+    async (simulateTx) => {
+      broadcaster.setOptions({ simulateTx })
+      const msg = makeFixedGasMessage()
+      const { gas, estimateGas } = (broadcaster as any).resolveGasOptions(msg)
+      const simulate = vi.spyOn(broadcaster as any, 'simulateTxWithSigners')
+
+      const { txRaw } = await (broadcaster as any).getTxWithSignersAndStdFee(
+        {
+          chainId: 'injective-888',
+          message: [msg],
+          signers: {
+            sequence: 1,
+            accountNumber: 1,
+            pubKey: 'mockPubKeyBase64',
+          },
+          fee: getStdFee({ gas, payer: 'inj1payer' }),
+        },
+        estimateGas,
+      )
+      const authInfo = CosmosTxV1Beta1TxPb.AuthInfo.fromBinary(
+        txRaw.authInfoBytes,
+      )
+
+      expect(simulate).not.toHaveBeenCalled()
+      expect(authInfo.fee).toMatchObject({
+        gasLimit: 384000n,
+        payer: 'inj1payer',
+        amount: [{ denom: 'inj', amount: '61440000000000' }],
+      })
+    },
+  )
+
+  it.each([1, 1.5])(
+    'keeps the Cosmos fixed gas buffer at 1.2 with gasBufferCoefficient %s',
+    (gasBufferCoefficient) => {
+      broadcaster.gasBufferCoefficient = gasBufferCoefficient
+
+      expect(
+        (broadcaster as any).resolveGasOptions(makeFixedGasMessage()),
+      ).toEqual({ gas: '384000', gasLimit: 384000, estimateGas: false })
+    },
+  )
+
+  it('preserves fallback gas when fixed gas is unavailable and simulation is disabled', () => {
+    broadcaster.setOptions({ simulateTx: false })
+    const msg = MsgAuthzExec.fromJSON({
+      grantee: 'inj1test',
+      msgs: makeFixedGasMessage(),
+    })
+
+    expect((broadcaster as any).resolveGasOptions(msg)).toEqual({
+      gas: DEFAULT_EXCHANGE_LIMIT.toString(),
+      gasLimit: DEFAULT_EXCHANGE_LIMIT,
+      estimateGas: false,
+    })
+  })
+
   it.each(
     ['broadcastEip712', 'broadcastEip712V2', 'broadcastDirectSign'].flatMap(
       (method) => [false, true].map((authz) => ({ method, authz })),
@@ -403,6 +502,10 @@ describe('MsgBroadcaster fixed exchange gas', () => {
   )(
     'uses simulation in $method only for authz wrappers (authz: $authz)',
     async ({ method, authz }) => {
+      const isDirectSign = method === 'broadcastDirectSign'
+      broadcaster.walletStrategy.wallet = isDirectSign
+        ? Wallet.Keplr
+        : Wallet.Metamask
       vi.spyOn(
         broadcaster as any,
         'fetchAccountAndBlockDetails',
@@ -430,7 +533,11 @@ describe('MsgBroadcaster fixed exchange gas', () => {
       expect(getTxWithSignersAndStdFee).toHaveBeenCalledWith(
         expect.objectContaining({
           fee: expect.objectContaining({
-            gas: authz ? DEFAULT_EXCHANGE_LIMIT.toString() : '320000',
+            gas: authz
+              ? DEFAULT_EXCHANGE_LIMIT.toString()
+              : isDirectSign
+                ? '384000'
+                : '320000',
           }),
         }),
         authz,
@@ -441,6 +548,7 @@ describe('MsgBroadcaster fixed exchange gas', () => {
   it.each([false, true])(
     'uses gateway estimation only for authz wrappers (authz: %s)',
     async (authz) => {
+      broadcaster.walletStrategy.wallet = Wallet.Metamask
       const prepareTxRequest = vi
         .spyOn(IndexerGrpcWeb3GwApi.prototype, 'prepareTxRequest')
         .mockRejectedValue(new Error('stop after gateway preparation'))
@@ -1111,7 +1219,7 @@ describe('MsgBroadcaster direct sign fee delegation', () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           fee: expect.objectContaining({
-            gas: authz ? DEFAULT_EXCHANGE_LIMIT.toString() : '320000',
+            gas: authz ? DEFAULT_EXCHANGE_LIMIT.toString() : '384000',
           }),
         }),
         authz,
@@ -1153,7 +1261,7 @@ describe('MsgBroadcaster direct sign fee delegation', () => {
 
       expect(prepareCosmosTxRequest).toHaveBeenCalledWith(
         expect.objectContaining({
-          gasLimit: authz ? DEFAULT_EXCHANGE_LIMIT : 320000,
+          gasLimit: authz ? DEFAULT_EXCHANGE_LIMIT : 384000,
           estimateGas: authz,
         }),
       )

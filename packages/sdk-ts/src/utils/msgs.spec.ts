@@ -177,6 +177,7 @@ describe('getFixedGasLimitBasedOnMessage', () => {
         gas: 123456,
         simulateTx: true,
         useFixedGas: true,
+        fixedGasBufferCoefficient: 1.2,
       }),
     ).toEqual({ gas: '123456', gasLimit: 123456, estimateGas: false })
   })
@@ -431,6 +432,56 @@ describe('getFixedGasLimitBasedOnMessage', () => {
         useFixedGas: true,
       }),
     ).toEqual({ gas: '262000', gasLimit: 262000, estimateGas: false })
+  })
+
+  it('buffers automatically selected fixed gas for messages and batches', () => {
+    for (const [msgs, gasLimit] of [
+      [message('/injective.exchange.v2.MsgWithdraw'), 384000],
+      [
+        [
+          message('/injective.exchange.v2.MsgWithdraw'),
+          message('/injective.exchange.v1beta1.MsgWithdraw'),
+        ],
+        768000,
+      ],
+      [MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams), 314400],
+    ] as const) {
+      expect(
+        getGasOptionsBasedOnMessage({
+          msgs,
+          simulateTx: true,
+          useFixedGas: true,
+          fixedGasBufferCoefficient: 1.2,
+        }),
+      ).toEqual({ gas: gasLimit.toString(), gasLimit, estimateGas: false })
+    }
+  })
+
+  it('does not buffer explicit gas, simulation inputs, or fallback gas', () => {
+    const msgs = message('/injective.exchange.v2.MsgWithdraw')
+
+    for (const options of [
+      { msgs, simulateTx: true },
+      { msgs, simulateTx: false },
+      { msgs, simulateTx: true, useFixedGas: true, gas: 123456 },
+      {
+        msgs: message('/cosmos.bank.v1beta1.MsgSend'),
+        simulateTx: true,
+        useFixedGas: true,
+      },
+      {
+        msgs: exec(MsgCreateSpotLimitOrder.fromJSON(spotOrderParams)),
+        simulateTx: false,
+        useFixedGas: true,
+      },
+    ]) {
+      expect(
+        getGasOptionsBasedOnMessage({
+          ...options,
+          fixedGasBufferCoefficient: 1.2,
+        }),
+      ).toEqual(getGasOptionsBasedOnMessage(options))
+    }
   })
 
   it('preserves the legacy fallback for a falsy explicit gas value', () => {
