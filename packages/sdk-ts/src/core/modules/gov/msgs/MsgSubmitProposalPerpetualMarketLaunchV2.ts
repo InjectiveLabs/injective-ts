@@ -5,6 +5,7 @@ import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/genera
 import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { validateOracleType } from '../../oracle/utils.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunchV2 {
@@ -79,6 +80,8 @@ const toOpenNotionalCap = (
 const createPerpetualMarketLaunch = (
   params: MsgSubmitProposalPerpetualMarketLaunchV2.Params,
 ) => {
+  validateOracleType(params.market.oracleType)
+
   const openNotionalCap = openNotionalCapValue(params.market.openNotionalCap)
   const content: any = {
     title: params.market.title,

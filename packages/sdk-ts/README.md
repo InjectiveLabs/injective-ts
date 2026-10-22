@@ -38,6 +38,19 @@ pnpm add @injectivelabs/sdk-ts
 
 ---
 
+## Core v1.21 compatibility
+
+This SDK follows the feature removals in [injective-core #3013](https://github.com/InjectiveLabs/injective-core/pull/3013):
+
+- Binary-options message builders and `MsgRewardsOptOut` are removed for both exchange versions. Batch-order inputs no longer accept binary-options operations; nonempty legacy inputs throw during serialization.
+- Exchange queries for trading rewards, reward opt-outs, binary-options markets, historical trade records, and market volatility are removed, along with their SDK transformers and response types.
+- `ChainGrpcWasmXApi` and `ChainGrpcClient.wasmX` are removed. CosmWasm, `MsgExecuteContractCompat`, and `ContractExecutionCompatAuthz` remain supported.
+- Market-launch proposals, insurance funds, and Peggy rate limits reject the retired Coinbase, PriceFeed, and Stork oracle sources. Insurance funds also reject the binary-options expiry flag (`-2`). Provider prices, conditional orders (including TP/SL), fee discounts, volume queries, and perpetual funding remain supported.
+
+Retired protobuf definitions, type URLs, oracle enum values, and Amino mappings remain available for historical decoding. Retired batch fields remain empty in signing payloads to match core's retained protobuf schema. Indexer and archive APIs are unchanged; this core PR does not change their service contracts.
+
+---
+
 ## 📖 Documentation
 
 - Read more and find example usages on our [Querying Docs](https://docs.ts.injective.network/querying)

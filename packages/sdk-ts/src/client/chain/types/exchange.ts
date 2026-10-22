@@ -24,30 +24,6 @@ export interface FeeDiscountSchedule {
   disqualifiedMarketIdsList: Array<string>
 }
 
-export interface PointsMultiplier {
-  makerPointsMultiplier: string
-  takerPointsMultiplier: string
-}
-
-export interface TradingRewardCampaignBoostInfo {
-  boostedSpotMarketIdsList: Array<string>
-  spotMarketMultipliersList: Array<PointsMultiplier>
-  boostedDerivativeMarketIdsList: Array<string>
-  derivativeMarketMultipliersList: Array<PointsMultiplier>
-}
-
-export interface TradingRewardCampaignInfo {
-  campaignDurationSeconds: number
-  quoteDenomsList: Array<string>
-  tradingRewardBoostInfo?: TradingRewardCampaignBoostInfo
-  disqualifiedMarketIdsList: Array<string>
-}
-
-export interface CampaignRewardPool {
-  startTimestamp: number
-  maxCampaignRewardsList: Coin[]
-}
-
 export interface FeeDiscountTierTTL {
   tier: number
   ttlTimestamp: number
@@ -57,18 +33,6 @@ export interface FeeDiscountAccountInfo {
   tierLevel: number
   accountInfo?: FeeDiscountTierInfo
   accountTtl?: FeeDiscountTierTTL
-}
-
-export interface TradeRewardCampaign {
-  tradingRewardCampaignInfo?: TradingRewardCampaignInfo
-  tradingRewardPoolCampaignScheduleList: CampaignRewardPool[]
-  totalTradeRewardPoints: string
-  pendingTradingRewardPoolCampaignScheduleList: CampaignRewardPool[]
-  pendingTotalTradeRewardPointsList: string[]
-}
-
-export interface IsOptedOutOfRewards {
-  isOptedOut: boolean
 }
 
 export interface ExchangeParams {
@@ -208,10 +172,6 @@ export interface ChainSubaccountOrderData {
   orderHash: string
 }
 
-export interface ChainTradeRewardPoints {
-  accountTradeRewardPoints: string[]
-}
-
 export interface ChainOpenInterest {
   marketId: string
   balance: string
@@ -288,17 +248,6 @@ export interface ChainTierStatistic {
   count: number
 }
 
-export interface ChainTradeRecord {
-  timestamp: number
-  price: string
-  quantity: string
-}
-
-export interface ChainTradeRecords {
-  marketId: string
-  latestTradeRecords: ChainTradeRecord[]
-}
-
 export interface ChainGrantAuthorization {
   grantee: string
   amount: string
@@ -322,48 +271,6 @@ export interface ChainSubaccountOrderbookMetadata {
   }
 }
 
-export interface ChainMarketVolatility {
-  volatility: string
-  historyMetadata?: {
-    groupCount: number
-    recordsSampleSize: number
-    mean: string
-    twap: string
-    firstTimestamp: number
-    lastTimestamp: number
-    minPrice: string
-    maxPrice: string
-    medianPrice: string
-  }
-  rawHistory: ChainTradeRecord[]
-}
-
-export interface ChainBinaryOptionsMarket {
-  ticker: string
-  oracleSymbol: string
-  oracleProvider: string
-  oracleType: number
-  oracleScaleFactor: number
-  expirationTimestamp: number
-  settlementTimestamp: number
-  admin: string
-  quoteDenom: string
-  marketId: string
-  makerFeeRate: string
-  takerFeeRate: string
-  relayerFeeShareRate: string
-  status: number
-  minPriceTickSize: string
-  minQuantityTickSize: string
-  settlementPrice: string
-  minNotional: string
-  adminPermissions: number
-  quoteDecimals: number
-  openNotionalCap?: { type?: 'uncapped' | 'capped'; value?: string }
-  hasDisabledMinimalProtocolFee: boolean
-  forcePausedInfo?: { reason: number; markPriceAtPausing: string }
-}
-
 export type GrpcOrderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo
 export type GrpcSpotMarket = InjectiveExchangeV1Beta1ExchangePb.SpotMarket
 export type GrpcSpotMarketOrder =
@@ -376,21 +283,11 @@ export type GrpcFeeDiscountTierTTL =
   InjectiveExchangeV1Beta1ExchangePb.FeeDiscountTierTTL
 export type GrpcFeeDiscountSchedule =
   InjectiveExchangeV1Beta1ExchangePb.FeeDiscountSchedule
-export type GrpcPointsMultiplier =
-  InjectiveExchangeV1Beta1ExchangePb.PointsMultiplier
-export type GrpcTradingRewardCampaignBoostInfo =
-  InjectiveExchangeV1Beta1ExchangePb.TradingRewardCampaignBoostInfo
-export type GrpcTradingRewardCampaignInfo =
-  InjectiveExchangeV1Beta1ExchangePb.TradingRewardCampaignInfo
-export type GrpcCampaignRewardPool =
-  InjectiveExchangeV1Beta1ExchangePb.CampaignRewardPool
 export type GrpcChainPosition = InjectiveExchangeV1Beta1ExchangePb.Position
 export type GrpcChainDerivativePosition =
   InjectiveExchangeV1Beta1GenesisPb.DerivativePosition
 export type GrpcFeeDiscountAccountInfo =
   InjectiveExchangeV1Beta1QueryPb.QueryFeeDiscountAccountInfoResponse
-export type GrpcTradeRewardCampaign =
-  InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignResponse
 export type GrpcDenomDecimals = InjectiveExchangeV1Beta1ExchangePb.DenomDecimals
 export type GrpcDenomMinNotional =
   InjectiveExchangeV1Beta1ExchangePb.DenomMinNotional

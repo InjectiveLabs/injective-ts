@@ -44,6 +44,17 @@ const params: MsgSubmitProposalPerpetualMarketLaunchV2['params'] = {
 const message = MsgSubmitProposalPerpetualMarketLaunchV2.fromJSON(params)
 
 describe('MsgSubmitProposalPerpetualMarketLaunchV2', () => {
+  it.each([2, 3, 12])('rejects retired oracle %s', (oracleType) => {
+    const invalid = MsgSubmitProposalPerpetualMarketLaunchV2.fromJSON({
+      ...params,
+      market: { ...params.market, oracleType },
+    })
+
+    expect(() => invalid.toProto()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toAmino()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toEip712V2()).toThrow('has been removed in core v1.21')
+  })
+
   it('includes an uncapped open notional cap in direct protobuf messages', () => {
     const proposal = message.toProto()
     const content =

@@ -73,76 +73,6 @@ describe('ChainGrpcExchangeApiV2', () => {
     }
   })
 
-  test('fetchTradingRewardsCampaign', async () => {
-    try {
-      const response =
-        await chainGrpcExchangeApiV2.fetchTradingRewardsCampaign()
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof ChainGrpcExchangeTransformerV2.tradingRewardsCampaignResponseToTradingRewardsCampaign
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'chainGrpcExchangeApiV2.fetchTradingRewardsCampaign => ' +
-          (e as any).message,
-      )
-    }
-  })
-
-  test('fetchTradeRewardPoints', async () => {
-    try {
-      const response = await chainGrpcExchangeApiV2.fetchTradeRewardPoints([
-        injectiveAddress,
-      ])
-
-      if (response.accountTradeRewardPoints.length === 0) {
-        console.warn('fetchTradeRewardPoints.arrayIsEmpty')
-      }
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<{ accountTradeRewardPoints: string[] }>(
-          response,
-        ),
-      )
-    } catch (e) {
-      console.error(
-        'chainGrpcExchangeApiV2.fetchTradeRewardPoints => ' +
-          (e as any).message,
-      )
-    }
-  })
-
-  test('fetchPendingTradeRewardPoints', async () => {
-    try {
-      const response =
-        await chainGrpcExchangeApiV2.fetchPendingTradeRewardPoints([
-          injectiveAddress,
-        ])
-
-      if (response.accountTradeRewardPoints.length === 0) {
-        console.warn('fetchPendingTradeRewardPoints.arrayIsEmpty')
-      }
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<{ accountTradeRewardPoints: string[] }>(
-          response,
-        ),
-      )
-    } catch (e) {
-      console.error(
-        'chainGrpcExchangeApiV2.fetchPendingTradeRewardPoints => ' +
-          (e as any).message,
-      )
-    }
-  })
-
   test('fetchPositions', async () => {
     try {
       const response = await chainGrpcExchangeApiV2.fetchPositions()
@@ -204,27 +134,6 @@ describe('ChainGrpcExchangeApiV2', () => {
     } catch (e) {
       console.error(
         'chainGrpcExchangeApiV2.fetchSubaccountTradeNonce => ' +
-          (e as any).message,
-      )
-    }
-  })
-
-  test('fetchIsOptedOutOfRewards', async () => {
-    try {
-      const response =
-        await chainGrpcExchangeApiV2.fetchIsOptedOutOfRewards(injectiveAddress)
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof ChainGrpcExchangeTransformerV2.isOptedOutOfRewardsResponseToIsOptedOutOfRewards
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'chainGrpcExchangeApiV2.fetchIsOptedOutOfRewards => ' +
           (e as any).message,
       )
     }

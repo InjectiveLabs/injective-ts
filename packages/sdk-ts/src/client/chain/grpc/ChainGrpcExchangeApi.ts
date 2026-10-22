@@ -71,55 +71,6 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchTradingRewardsCampaign() {
-    const request =
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignRequest.create()
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignRequest,
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignResponse
-    >(request, this.client.tradeRewardCampaign.bind(this.client))
-
-    return ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign(
-      response,
-    )
-  }
-
-  async fetchTradeRewardPoints(injectiveAddresses: string[]) {
-    const request =
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsRequest.create()
-
-    request.accounts = injectiveAddresses
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsRequest,
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsResponse
-    >(request, this.client.tradeRewardPoints.bind(this.client))
-
-    return response.accountTradeRewardPoints
-  }
-
-  async fetchPendingTradeRewardPoints(
-    injectiveAddresses: string[],
-    timestamp?: number,
-  ) {
-    const request =
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsRequest.create()
-
-    request.accounts = injectiveAddresses
-
-    if (timestamp) {
-      request.pendingPoolTimestamp = BigInt(timestamp)
-    }
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsRequest,
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsResponse
-    >(request, this.client.pendingTradeRewardPoints.bind(this.client))
-
-    return response.accountTradeRewardPoints
-  }
-
   async fetchPositions() {
     const request =
       InjectiveExchangeV1Beta1QueryPb.QueryPositionsRequest.create()
@@ -144,22 +95,6 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     >(request, this.client.subaccountTradeNonce.bind(this.client))
 
     return response
-  }
-
-  async fetchIsOptedOutOfRewards(account: string) {
-    const request =
-      InjectiveExchangeV1Beta1QueryPb.QueryIsOptedOutOfRewardsRequest.create()
-
-    request.account = account
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV1Beta1QueryPb.QueryIsOptedOutOfRewardsRequest,
-      InjectiveExchangeV1Beta1QueryPb.QueryIsOptedOutOfRewardsResponse
-    >(request, this.client.isOptedOutOfRewards.bind(this.client))
-
-    return ChainGrpcExchangeTransformer.isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
-      response,
-    )
   }
 
   async fetchActiveStakeGrant(account: string): Promise<{

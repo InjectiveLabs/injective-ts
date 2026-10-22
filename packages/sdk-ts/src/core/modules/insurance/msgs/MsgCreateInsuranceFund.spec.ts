@@ -17,7 +17,7 @@ const params: MsgCreateInsuranceFund['params'] = {
     quoteDenom: market.quoteDenom,
     oracleBase: market.oracleBase,
     oracleQuote: market.oracleQuote,
-    oracleType: 2,
+    oracleType: 9,
   },
   deposit: {
     amount: toChainFormat(1).toFixed(),
@@ -43,6 +43,41 @@ const protoParamsAmino = snakecaseKeys({
 const message = MsgCreateInsuranceFund.fromJSON(params)
 
 describe('MsgCreateInsuranceFund', () => {
+  it.each([2, 3, 12])('rejects retired oracle %s', (oracleType) => {
+    const invalid = MsgCreateInsuranceFund.fromJSON({
+      ...params,
+      fund: { ...params.fund, oracleType },
+    })
+
+    expect(() => invalid.toProto()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toAmino()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toEip712V2()).toThrow('has been removed in core v1.21')
+  })
+
+  it('preserves provider oracle support', () => {
+    const supported = MsgCreateInsuranceFund.fromJSON({
+      ...params,
+      fund: { ...params.fund, oracleType: 11 },
+    })
+
+    expect(supported.toProto().oracleType).toBe(11)
+    expect(supported.toAmino().value.oracle_type).toBe(11)
+  })
+
+  it('rejects the removed binary-options expiry flag', () => {
+    const invalid = MsgCreateInsuranceFund.fromJSON({
+      ...params,
+      fund: { ...params.fund, expiry: -2 },
+    })
+
+    expect(() => invalid.toProto()).toThrow(
+      'Binary options insurance funds have been removed',
+    )
+    expect(() => invalid.toAmino()).toThrow(
+      'Binary options insurance funds have been removed',
+    )
+  })
+
   it('generates proper proto', () => {
     const proto = message.toProto()
 
