@@ -78,63 +78,6 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
     )
   }
 
-  async fetchTradingRewardsCampaign(options?: RequestOptions) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV2QueryPb.QueryTradeRewardCampaignRequest.create()
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV2QueryPb.QueryTradeRewardCampaignRequest,
-      InjectiveExchangeV2QueryPb.QueryTradeRewardCampaignResponse
-    >(request, this.client.tradeRewardCampaign.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformerV2.tradingRewardsCampaignResponseToTradingRewardsCampaign(
-      response,
-    )
-  }
-
-  async fetchTradeRewardPoints(
-    injectiveAddresses: string[],
-    options?: RequestOptions,
-  ) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV2QueryPb.QueryTradeRewardPointsRequest.create()
-    request.accounts = injectiveAddresses
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV2QueryPb.QueryTradeRewardPointsRequest,
-      InjectiveExchangeV2QueryPb.QueryTradeRewardPointsResponse
-    >(request, this.client.tradeRewardPoints.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformerV2.tradeRewardPointsResponseToTradeRewardPoints(
-      response,
-    )
-  }
-
-  async fetchPendingTradeRewardPoints(
-    injectiveAddresses: string[],
-    timestamp?: number,
-    options?: RequestOptions,
-  ) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV2QueryPb.QueryTradeRewardPointsRequest.create()
-    request.accounts = injectiveAddresses
-
-    if (timestamp !== undefined) {
-      request.pendingPoolTimestamp = BigInt(timestamp)
-    }
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV2QueryPb.QueryTradeRewardPointsRequest,
-      InjectiveExchangeV2QueryPb.QueryTradeRewardPointsResponse
-    >(request, this.client.pendingTradeRewardPoints.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformerV2.tradeRewardPointsResponseToTradeRewardPoints(
-      response,
-    )
-  }
-
   async fetchPositions(options?: RequestOptions) {
     throwIfAborted(options?.signal)
     const request = InjectiveExchangeV2QueryPb.QueryPositionsRequest.create()
@@ -161,22 +104,6 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
     >(request, this.client.subaccountTradeNonce.bind(this.client), options)
 
     return { nonce: response.nonce }
-  }
-
-  async fetchIsOptedOutOfRewards(account: string, options?: RequestOptions) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV2QueryPb.QueryIsOptedOutOfRewardsRequest.create()
-    request.account = account
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV2QueryPb.QueryIsOptedOutOfRewardsRequest,
-      InjectiveExchangeV2QueryPb.QueryIsOptedOutOfRewardsResponse
-    >(request, this.client.isOptedOutOfRewards.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformerV2.isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
-      response,
-    )
   }
 
   async fetchActiveStakeGrant(
@@ -1167,84 +1094,6 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
     >(request, this.client.queryMarketIDFromVault.bind(this.client), options)
 
     return { marketId: response.marketId }
-  }
-
-  async fetchHistoricalTradeRecords(
-    marketId: string,
-    options?: RequestOptions,
-  ) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV2QueryPb.QueryHistoricalTradeRecordsRequest.create()
-    request.marketId = marketId
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV2QueryPb.QueryHistoricalTradeRecordsRequest,
-      InjectiveExchangeV2QueryPb.QueryHistoricalTradeRecordsResponse
-    >(request, this.client.historicalTradeRecords.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformerV2.historicalTradeRecordsResponseToHistoricalTradeRecords(
-      response,
-    )
-  }
-
-  async fetchOptedOutOfRewardsAccounts(options?: RequestOptions) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV2QueryPb.QueryOptedOutOfRewardsAccountsRequest.create()
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV2QueryPb.QueryOptedOutOfRewardsAccountsRequest,
-      InjectiveExchangeV2QueryPb.QueryOptedOutOfRewardsAccountsResponse
-    >(request, this.client.optedOutOfRewardsAccounts.bind(this.client), options)
-
-    return { accounts: response.accounts }
-  }
-
-  async fetchMarketVolatility(
-    {
-      marketId,
-      tradeHistoryOptions,
-    }: {
-      marketId: string
-      tradeHistoryOptions?: InjectiveExchangeV2QueryPb.TradeHistoryOptions
-    },
-    options?: RequestOptions,
-  ) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV2QueryPb.QueryMarketVolatilityRequest.create()
-    request.marketId = marketId
-    if (tradeHistoryOptions) {
-      request.tradeHistoryOptions = tradeHistoryOptions
-    }
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV2QueryPb.QueryMarketVolatilityRequest,
-      InjectiveExchangeV2QueryPb.QueryMarketVolatilityResponse
-    >(request, this.client.marketVolatility.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformerV2.marketVolatilityResponseToMarketVolatility(
-      response,
-    )
-  }
-
-  async fetchBinaryOptionsMarkets(status?: string, options?: RequestOptions) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV2QueryPb.QueryBinaryMarketsRequest.create()
-    if (status) {
-      request.status = status
-    }
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV2QueryPb.QueryBinaryMarketsRequest,
-      InjectiveExchangeV2QueryPb.QueryBinaryMarketsResponse
-    >(request, this.client.binaryOptionsMarkets.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformerV2.binaryOptionsMarketsResponseToBinaryOptionsMarkets(
-      response,
-    )
   }
 
   async fetchTraderDerivativeConditionalOrders(

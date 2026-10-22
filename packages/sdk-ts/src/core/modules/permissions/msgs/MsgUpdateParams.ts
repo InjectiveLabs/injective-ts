@@ -7,6 +7,8 @@ export declare namespace MsgUpdateParams {
     authority: string
     params: {
       wasmHookQueryMaxGas: string
+      /** required by the chain from v1.21 (must be positive); MsgUpdateParams replaces all params, so there is no default */
+      ownerBlacklistQueryMaxGas: string
       deprecatedEnforcedRestrictionsContracts?: string[]
       enforcedRestrictionsEvmContracts?: {
         contractAddress: string
@@ -37,6 +39,9 @@ export default class MsgUpdateParams extends MsgBase<
 
     const messageParams = InjectivePermissionsV1Beta1ParamsPb.Params.create({
       contractHookMaxGas: BigInt(params.params.wasmHookQueryMaxGas),
+      ownerBlacklistQueryMaxGas: BigInt(
+        params.params.ownerBlacklistQueryMaxGas,
+      ),
       deprecatedEnforcedRestrictionsContracts:
         params.params.deprecatedEnforcedRestrictionsContracts || [],
       enforcedRestrictionsEvmContracts: (
@@ -89,6 +94,8 @@ export default class MsgUpdateParams extends MsgBase<
           blacklist_event_signature: c.blacklistEventSignature,
           unblacklist_event_signature: c.unblacklistEventSignature,
         })),
+        owner_blacklist_query_max_gas:
+          proto.params?.ownerBlacklistQueryMaxGas.toString() || '0',
       },
     }
 

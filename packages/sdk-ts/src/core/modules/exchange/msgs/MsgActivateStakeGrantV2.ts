@@ -1,5 +1,6 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgActivateStakeGrantV2 {
   export interface Params {
@@ -42,10 +43,17 @@ export default class MsgActivateStakeGrantV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgActivateStakeGrant,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const proto = this.toProto()
 
     return {
-      type: 'exchange/MsgActivateStakeGrant',
+      type: 'exchange/v2/MsgActivateStakeGrant',
       value: {
         sender: proto.sender,
         granter: proto.granter,
@@ -54,7 +62,7 @@ export default class MsgActivateStakeGrantV2 extends MsgBase<
   }
 
   public toWeb3Gw() {
-    const { value } = this.toAmino()
+    const { value } = this.toAminoRaw()
 
     return {
       '@type': '/injective.exchange.v2.MsgActivateStakeGrant',
