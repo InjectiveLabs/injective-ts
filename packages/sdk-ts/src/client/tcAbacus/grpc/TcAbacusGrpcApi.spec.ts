@@ -223,6 +223,145 @@ describe('TcAbacusGrpcApi', () => {
     }
   })
 
+  test.each([undefined, '', '0', '9007199254740993.123456789012345678'])(
+    'preserves invitee earnings %s and existing fields offline',
+    (earnings) => {
+      const response = TcAbacusPb.GetAccountInviteesResponse.create({
+        address: injectiveAddress,
+        nextCursor: 'next-page',
+        invitees: [
+          {
+            address: 'inj-invitee',
+            height: 9007199254740993n,
+            createdAt: '2026-10-01T00:00:00Z',
+            allTimeVolume: '123456789.123456789012345678',
+            referralPoints: '987654321.987654321012345678',
+            earnings,
+          },
+        ],
+      })
+
+      expect(
+        TcAbacusGrpcTransformer.grpcAccountInviteesToAccountInvitees(response),
+      ).toStrictEqual({
+        address: injectiveAddress,
+        nextCursor: 'next-page',
+        invitees: [
+          {
+            address: 'inj-invitee',
+            height: '9007199254740993',
+            createdAt: '2026-10-01T00:00:00Z',
+            allTimeVolume: '123456789.123456789012345678',
+            referralPoints: '987654321.987654321012345678',
+            earnings,
+          },
+        ],
+      })
+    },
+  )
+
+  test('preserves account earnings precision and month order offline', () => {
+    const response = TcAbacusPb.GetAccountEarningsResponse.create({
+      address: injectiveAddress,
+      totalEarnings: '9007199254740993.123456789012345678',
+      months: [
+        {
+          month: '2026-10',
+          volume: '99999999999999999.999999999999999999',
+          earnings: '9007199254740993.123456789012345678',
+          cumulativeEarnings: '9007199254740993.123456789012345678',
+        },
+        {
+          month: '2026-08',
+          volume: '0',
+          earnings: '',
+          cumulativeEarnings: '0',
+        },
+      ],
+    })
+
+    expect(
+      TcAbacusGrpcTransformer.grpcAccountEarningsToAccountEarnings(response),
+    ).toStrictEqual({
+      address: injectiveAddress,
+      totalEarnings: '9007199254740993.123456789012345678',
+      months: response.months,
+    })
+  })
+
+  test('preserves generated earnings empty defaults offline', () => {
+    expect(
+      TcAbacusGrpcTransformer.grpcAccountEarningsToAccountEarnings(
+        TcAbacusPb.GetAccountEarningsResponse.create(),
+      ),
+    ).toStrictEqual({ address: '', totalEarnings: '', months: [] })
+    expect(
+      TcAbacusGrpcTransformer.grpcReferrerMonthlyEarningsToReferrerMonthlyEarnings(
+        TcAbacusPb.ReferrerMonthlyEarnings.create(),
+      ),
+    ).toStrictEqual({
+      month: '',
+      volume: '',
+      earnings: '',
+      cumulativeEarnings: '',
+    })
+  })
+
+  test('fetchAccountEarnings dispatches the generated RPC offline', async () => {
+    const api = new TcAbacusGrpcApi('https://localhost')
+    const response = TcAbacusPb.GetAccountEarningsResponse.create({
+      address: injectiveAddress,
+      totalEarnings: '123.000000000000000001',
+      months: [
+        {
+          month: '2026-10',
+          volume: '456.000000000000000002',
+          earnings: '123.000000000000000001',
+          cumulativeEarnings: '123.000000000000000001',
+        },
+      ],
+    })
+    const unary = vi
+      .spyOn(api.getTransport(), 'unary')
+      .mockReturnValue(Promise.resolve({ response }) as any)
+    const executeGrpcCall = vi.spyOn(api as any, 'executeGrpcCall')
+
+    await expect(
+      api.fetchAccountEarnings(injectiveAddress),
+    ).resolves.toStrictEqual({
+      address: injectiveAddress,
+      totalEarnings: response.totalEarnings,
+      months: response.months,
+    })
+    expect(executeGrpcCall).toHaveBeenCalledOnce()
+    expect(executeGrpcCall.mock.calls[0]?.[0]).toStrictEqual(
+      TcAbacusPb.GetAccountEarningsRequest.create({
+        address: injectiveAddress,
+      }),
+    )
+    expect(unary).toHaveBeenCalledOnce()
+    expect(unary).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: 'GetAccountEarnings',
+        service: expect.objectContaining({
+          typeName: 'injective_tc_abacus_rpc.InjectiveTCAbacusRPC',
+        }),
+      }),
+      TcAbacusPb.GetAccountEarningsRequest.create({
+        address: injectiveAddress,
+      }),
+      expect.any(Object),
+    )
+  })
+
+  test('fetchAccountEarnings propagates rejections offline', async () => {
+    const api = new TcAbacusGrpcApi('https://localhost')
+    const error = new Error('earnings unavailable')
+    vi.spyOn(api as any, 'executeGrpcCall').mockRejectedValue(error)
+
+    await expect(api.fetchAccountEarnings(injectiveAddress)).rejects.toBe(error)
+  })
+
   test('maps referrer categories', () => {
     const response = TcAbacusPb.Referrer.create({
       category: 'kol1',

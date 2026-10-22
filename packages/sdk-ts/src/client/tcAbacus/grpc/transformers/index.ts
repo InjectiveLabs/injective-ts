@@ -11,6 +11,8 @@ import type {
   AccountPointsResponse,
   ListReferrersResponse,
   AccountInviteesResponse,
+  ReferrerMonthlyEarnings,
+  AccountEarningsResponse,
   ListReferrerCodesResponse,
   ReferrerEligibilityResponse,
 } from '../../types/index.js'
@@ -123,6 +125,7 @@ export class TcAbacusGrpcTransformer {
       address: invitee.address,
       createdAt: invitee.createdAt,
       height: invitee.height.toString(),
+      earnings: invitee.earnings,
       allTimeVolume: invitee.allTimeVolume,
       referralPoints: invitee.referralPoints,
     }
@@ -147,6 +150,31 @@ export class TcAbacusGrpcTransformer {
       volume: response.volume,
       isEligible: response.isEligible,
       volumeThreshold: response.volumeThreshold,
+    }
+  }
+
+  static grpcReferrerMonthlyEarningsToReferrerMonthlyEarnings(
+    month: TcAbacusPb.ReferrerMonthlyEarnings,
+  ): ReferrerMonthlyEarnings {
+    return {
+      month: month.month,
+      volume: month.volume,
+      earnings: month.earnings,
+      cumulativeEarnings: month.cumulativeEarnings,
+    }
+  }
+
+  static grpcAccountEarningsToAccountEarnings(
+    response: TcAbacusPb.GetAccountEarningsResponse,
+  ): AccountEarningsResponse {
+    return {
+      address: response.address,
+      totalEarnings: response.totalEarnings,
+      months: response.months.map((month) =>
+        TcAbacusGrpcTransformer.grpcReferrerMonthlyEarningsToReferrerMonthlyEarnings(
+          month,
+        ),
+      ),
     }
   }
 

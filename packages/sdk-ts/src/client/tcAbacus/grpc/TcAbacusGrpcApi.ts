@@ -103,6 +103,21 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     )
   }
 
+  async fetchAccountEarnings(address: string) {
+    const request = TcAbacusPb.GetAccountEarningsRequest.create({
+      address,
+    })
+
+    const response = await this.executeGrpcCall<
+      TcAbacusPb.GetAccountEarningsRequest,
+      TcAbacusPb.GetAccountEarningsResponse
+    >(request, this.client.getAccountEarnings.bind(this.client))
+
+    return TcAbacusGrpcTransformer.grpcAccountEarningsToAccountEarnings(
+      response,
+    )
+  }
+
   async fetchReferrerEligibility(address: string) {
     const request = TcAbacusPb.GetReferrerElegibilityRequest.create({
       address,

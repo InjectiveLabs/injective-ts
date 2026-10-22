@@ -1,6 +1,7 @@
 import type * as PlatformServicesPositionsPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_positions_service_pb'
 import type * as PlatformServicesArchiverPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_injective_archiver_rpc_pb'
 import type * as PlatformServicesChartsPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_charts_trading_view_service_pb'
+import type * as PlatformServicesCompetitionPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_tc_competition_service_pb'
 import type {
   PlatformServicesPosition,
   PlatformServicesDailyPNL,
@@ -13,6 +14,7 @@ import type {
   PlatformServicesHistoricalBalance,
   PlatformServicesSpotMarketSummary,
   PlatformServicesArchiverPriceLevel,
+  PlatformServicesCompetitionInvitee,
   PlatformServicesAccountPositionStats,
   PlatformServicesArchiverAccountStats,
   PlatformServicesListPositionsResponse,
@@ -21,11 +23,83 @@ import type {
   PlatformServicesListAccountTagsResponse,
   PlatformServicesHistoricalTradesResponse,
   PlatformServicesHistoricalDetailedBalance,
+  PlatformServicesCompetitionTraderResponse,
   PlatformServicesGetAccountDailyPNLResponse,
   PlatformServicesListPositionTradesResponse,
+  PlatformServicesCurrentCompetitionResponse,
+  PlatformServicesCompetitionReferrerResponse,
   PlatformServicesListAccountPositionStatsResponse,
   PlatformServicesArchiverListAccountStatsResponse,
+  PlatformServicesListCompetitionReferrerInviteesResponse,
 } from '../types/index.js'
+
+export class PlatformServicesGrpcCompetitionTransformer {
+  static grpcGetCurrentCompetitionToCurrentCompetition(
+    response: PlatformServicesCompetitionPb.GetCurrentCompetitionResponse,
+  ): PlatformServicesCurrentCompetitionResponse {
+    return {
+      id: response.id.toString(),
+      title: response.title,
+      start: response.start,
+      end: response.end,
+      status: response.status,
+      final: response.final,
+      minEntryVolumeUsd: response.minEntryVolumeUsd,
+      roiMin: response.roiMin,
+    }
+  }
+
+  static grpcGetCompetitionTraderToCompetitionTrader(
+    response: PlatformServicesCompetitionPb.GetCompetitionTraderResponse,
+  ): PlatformServicesCompetitionTraderResponse {
+    return {
+      competitionId: response.competitionId.toString(),
+      accountAddress: response.accountAddress,
+      referred: response.referred,
+      participating: response.participating,
+      referrerCode: response.referrerCode,
+      volumeUsd: response.volumeUsd,
+      volumeRank: response.volumeRank?.toString(),
+      entered: response.entered,
+      roi: response.roi,
+      roiRank: response.roiRank?.toString(),
+      roiQualified: response.roiQualified,
+    }
+  }
+
+  static grpcGetCompetitionReferrerToCompetitionReferrer(
+    response: PlatformServicesCompetitionPb.GetCompetitionReferrerResponse,
+  ): PlatformServicesCompetitionReferrerResponse {
+    return {
+      competitionId: response.competitionId.toString(),
+      accountAddress: response.accountAddress,
+      codes: response.codes,
+      inviteesTotal: response.inviteesTotal.toString(),
+      inviteesEntered: response.inviteesEntered.toString(),
+      inviteesClose: response.inviteesClose.toString(),
+    }
+  }
+
+  static grpcCompetitionInviteeToCompetitionInvitee(
+    invitee: PlatformServicesCompetitionPb.CompetitionInvitee,
+  ): PlatformServicesCompetitionInvitee {
+    return {
+      accountAddress: invitee.accountAddress,
+      volumeUsd: invitee.volumeUsd,
+      entered: invitee.entered,
+    }
+  }
+
+  static grpcListCompetitionReferrerInviteesToListCompetitionReferrerInvitees(
+    response: PlatformServicesCompetitionPb.ListCompetitionReferrerInviteesResponse,
+  ): PlatformServicesListCompetitionReferrerInviteesResponse {
+    return {
+      invitees: response.invitees.map(
+        PlatformServicesGrpcCompetitionTransformer.grpcCompetitionInviteeToCompetitionInvitee,
+      ),
+    }
+  }
+}
 
 export class PlatformServicesGrpcPositionsTransformer {
   static grpcPositionToPosition(

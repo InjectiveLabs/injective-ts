@@ -339,3 +339,56 @@ export type GrpcPlatformServicesChartMarketSummary =
 
 export type GrpcPlatformServicesHistoricalTrade =
   PlatformServicesArchiverPb.HistoricalTrade
+
+export interface PlatformServicesCompetitionAccountParams {
+  id: bigint
+  accountAddress: string
+}
+
+export interface PlatformServicesListCompetitionReferrerInviteesParams extends PlatformServicesCompetitionAccountParams {
+  invitee: string[]
+}
+
+export interface PlatformServicesCurrentCompetitionResponse {
+  id: string
+  title: string
+  start: string
+  end: string
+  status: string
+  final: boolean
+  minEntryVolumeUsd: string
+  roiMin: string
+}
+
+export interface PlatformServicesCompetitionTraderResponse {
+  competitionId: string
+  accountAddress: string
+  referred: boolean
+  participating: boolean
+  referrerCode?: string
+  volumeUsd: string
+  volumeRank?: string
+  entered: boolean
+  roi?: string
+  roiRank?: string
+  roiQualified: boolean
+}
+
+export interface PlatformServicesCompetitionReferrerResponse {
+  competitionId: string
+  accountAddress: string
+  codes: string[]
+  inviteesTotal: string
+  inviteesEntered: string
+  inviteesClose: string
+}
+
+export interface PlatformServicesCompetitionInvitee {
+  accountAddress: string
+  volumeUsd: string
+  entered: boolean
+}
+
+export interface PlatformServicesListCompetitionReferrerInviteesResponse {
+  invitees: PlatformServicesCompetitionInvitee[]
+}
