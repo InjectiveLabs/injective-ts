@@ -111,6 +111,7 @@ export const MarketStatusMap = GrpcMarketStatusMap
 
 export type MarketStatus = GrpcMarketStatus
 
+// Retired oracle identifiers remain available for decoding historical data.
 export const OracleTypeMap = {
   0: 'Unspecified',
   1: 'Band',
@@ -130,7 +131,9 @@ export const OracleTypeMap = {
   15: 'SedaFast',
   Unspecified: 0,
   Band: 1,
+  /** @deprecated Removed in core v1.21; retained for historical decoding. */
   PriceFeed: 2,
+  /** @deprecated Removed in core v1.21; retained for historical decoding. */
   Coinbase: 3,
   Chainlink: 4,
   Razor: 5,
@@ -140,6 +143,7 @@ export const OracleTypeMap = {
   Pyth: 9,
   BandIBC: 10,
   Provider: 11,
+  /** @deprecated Removed in core v1.21; retained for historical decoding. */
   Stork: 12,
   ChainlinkDataStreams: 13,
   PythPro: 14,

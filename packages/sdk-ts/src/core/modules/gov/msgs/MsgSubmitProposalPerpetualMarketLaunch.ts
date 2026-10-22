@@ -5,6 +5,7 @@ import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/genera
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import * as InjectiveExchangeV1Beta1ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/proposal_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { validateOracleType } from '../../oracle/utils.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
@@ -53,6 +54,8 @@ export declare namespace MsgSubmitProposalPerpetualMarketLaunch {
 const createPerpetualMarketLaunch = (
   params: MsgSubmitProposalPerpetualMarketLaunch.Params,
 ) => {
+  validateOracleType(params.market.oracleType)
+
   const content: any = {
     title: params.market.title,
     description: params.market.description,

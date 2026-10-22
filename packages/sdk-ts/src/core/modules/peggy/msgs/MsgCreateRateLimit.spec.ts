@@ -19,6 +19,14 @@ const params: MsgCreateRateLimit['params'] = {
 const message = MsgCreateRateLimit.fromJSON(params)
 
 describe('MsgCreateRateLimit', () => {
+  it.each([2, 3, 12])('rejects retired oracle %s', (tokenOracleType) => {
+    const invalid = MsgCreateRateLimit.fromJSON({ ...params, tokenOracleType })
+
+    expect(() => invalid.toProto()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toAmino()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toEip712V2()).toThrow('has been removed in core v1.21')
+  })
+
   it('generates proper proto', () => {
     const proto = message.toProto()
 

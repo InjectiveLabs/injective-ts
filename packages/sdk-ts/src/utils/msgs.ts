@@ -22,13 +22,6 @@ const fixedExchangeGas = {
   },
   MsgCreateSpotMarketOrder: { gas: 300000, hasOrder: true },
   MsgCancelSpotOrder: { gas: 185000 },
-  MsgCreateBinaryOptionsLimitOrder: {
-    gas: 330000,
-    postOnlyGas: 370000,
-    hasOrder: true,
-  },
-  MsgCreateBinaryOptionsMarketOrder: { gas: 310000, hasOrder: true },
-  MsgCancelBinaryOptionsOrder: { gas: 200000 },
   MsgDeposit: { gas: 330000 },
   MsgWithdraw: { gas: 320000 },
   MsgSubaccountTransfer: { gas: 220000 },
@@ -42,7 +35,6 @@ const batchAnteGasPerOrder = 3000
 const batchExchangeGasPerOrder = {
   MsgBatchCancelSpotOrders: 68000,
   MsgBatchCancelDerivativeOrders: 73000,
-  MsgBatchCancelBinaryOptionsOrders: 123000,
 } as const
 
 const fixedExchangeType = /^\/injective\.exchange\.v(?:1beta1|2)\.(Msg\w+)$/

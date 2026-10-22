@@ -10,8 +10,6 @@ import MsgBatchCancelSpotOrdersV2 from '../core/modules/exchange/msgs/MsgBatchCa
 import MsgCreateDerivativeLimitOrder from '../core/modules/exchange/msgs/MsgCreateDerivativeLimitOrder.js'
 import MsgBatchCancelDerivativeOrders from '../core/modules/exchange/msgs/MsgBatchCancelDerivativeOrders.js'
 import MsgBatchCancelDerivativeOrdersV2 from '../core/modules/exchange/msgs/MsgBatchCancelDerivativeOrdersV2.js'
-import MsgBatchCancelBinaryOptionsOrders from '../core/modules/exchange/msgs/MsgBatchCancelBinaryOptionsOrders.js'
-import MsgBatchCancelBinaryOptionsOrdersV2 from '../core/modules/exchange/msgs/MsgBatchCancelBinaryOptionsOrdersV2.js'
 import {
   getGasPriceBasedOnMessage,
   getGasOptionsBasedOnMessage,
@@ -58,9 +56,6 @@ const types = [
   ['MsgCreateSpotLimitOrder', 300000, true],
   ['MsgCreateSpotMarketOrder', 300000, true],
   ['MsgCancelSpotOrder', 185000, false],
-  ['MsgCreateBinaryOptionsLimitOrder', 330000, true],
-  ['MsgCreateBinaryOptionsMarketOrder', 310000, true],
-  ['MsgCancelBinaryOptionsOrder', 200000, false],
   ['MsgDeposit', 330000, false],
   ['MsgWithdraw', 320000, false],
   ['MsgSubaccountTransfer', 220000, false],
@@ -89,7 +84,6 @@ describe('getFixedGasLimitBasedOnMessage', () => {
   it.each([
     ['MsgCreateDerivativeLimitOrder', 370000],
     ['MsgCreateSpotLimitOrder', 330000],
-    ['MsgCreateBinaryOptionsLimitOrder', 370000],
   ])('uses the post-only gas for %s', (type, gas) => {
     for (const version of ['v1beta1', 'v2']) {
       expect(
@@ -289,8 +283,6 @@ describe('getFixedGasLimitBasedOnMessage', () => {
     [MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams), 262000],
     [MsgBatchCancelDerivativeOrders.fromJSON(batchCancelParams), 272000],
     [MsgBatchCancelDerivativeOrdersV2.fromJSON(batchCancelParams), 272000],
-    [MsgBatchCancelBinaryOptionsOrders.fromJSON(batchCancelParams), 372000],
-    [MsgBatchCancelBinaryOptionsOrdersV2.fromJSON(batchCancelParams), 372000],
   ] as const)('calculates gas from real batch-cancel messages', (msg, gas) => {
     expect(getFixedGasLimitBasedOnMessage(msg)).toBe(gas)
   })
@@ -298,7 +290,6 @@ describe('getFixedGasLimitBasedOnMessage', () => {
   it.each([
     ['MsgBatchCancelSpotOrders', 191000],
     ['MsgBatchCancelDerivativeOrders', 196000],
-    ['MsgBatchCancelBinaryOptionsOrders', 246000],
   ])('calculates gas for one order in %s', (type, gas) => {
     expect(
       getFixedGasLimitBasedOnMessage(
