@@ -1,5 +1,6 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgOffsetPositionV2 {
   export interface Params {
@@ -44,10 +45,17 @@ export default class MsgOffsetPositionV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgOffsetPosition,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const proto = this.toProto()
 
     return {
-      type: 'exchange/MsgOffsetPosition',
+      type: 'exchange/v2/MsgOffsetPosition',
       value: {
         sender: proto.sender,
         subaccount_id: proto.subaccountId,
@@ -58,7 +66,7 @@ export default class MsgOffsetPositionV2 extends MsgBase<
   }
 
   public toWeb3Gw() {
-    const { value } = this.toAmino()
+    const { value } = this.toAminoRaw()
 
     return {
       '@type': '/injective.exchange.v2.MsgOffsetPosition',

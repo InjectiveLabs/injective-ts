@@ -8,7 +8,11 @@ import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import { IndexerRestExplorerTransformer } from '../transformers/index.js'
 import type { AxiosRequestConfig } from 'axios'
 import type { RequestOptions } from '@injectivelabs/utils'
-import type { MsgType, MsgStatus } from '@injectivelabs/ts-types'
+import type {
+  MsgType,
+  MsgStatus,
+  DeprecatedMsgType,
+} from '@injectivelabs/ts-types'
 import type { Block, ExplorerValidator } from '../types/explorer.js'
 import type {
   Paging,
@@ -185,7 +189,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       startTime?: number
       endTime?: number
       status?: MsgStatus
-      type?: MsgType[]
+      type?: (MsgType | DeprecatedMsgType)[]
     },
     options?: RequestOptions,
   ): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
@@ -259,7 +263,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         limit?: number
         after?: number
         before?: number
-        type?: MsgType[]
+        type?: (MsgType | DeprecatedMsgType)[]
         status?: MsgStatus
         endTime?: number
         toNumber?: number

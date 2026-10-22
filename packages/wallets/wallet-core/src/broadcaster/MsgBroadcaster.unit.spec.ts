@@ -529,16 +529,16 @@ describe('MsgBroadcaster fixed exchange gas', () => {
   })
 
   it.each([
-    [Wallet.Keplr, 360000],
-    [Wallet.Leap, 360000],
-    [Wallet.Ninji, 360000],
-    [Wallet.OWallet, 360000],
-    [Wallet.Cosmostation, 360000],
-    [Wallet.LedgerCosmos, 360000],
-    [Wallet.PrivateKeyCosmos, 360000],
-    [Wallet.Metamask, 300000],
-    [Wallet.KeplrEvm, 300000],
-    [Wallet.PrivateKey, 300000],
+    [Wallet.Keplr, 662400],
+    [Wallet.Leap, 662400],
+    [Wallet.Ninji, 662400],
+    [Wallet.OWallet, 662400],
+    [Wallet.Cosmostation, 662400],
+    [Wallet.LedgerCosmos, 662400],
+    [Wallet.PrivateKeyCosmos, 662400],
+    [Wallet.Metamask, 552000],
+    [Wallet.KeplrEvm, 552000],
+    [Wallet.PrivateKey, 552000],
   ] as const)('uses %s spot order gas limit %i', (wallet, gasLimit) => {
     broadcaster.walletStrategy.wallet = wallet
     const msg = MsgCreateSpotLimitOrder.fromJSON({

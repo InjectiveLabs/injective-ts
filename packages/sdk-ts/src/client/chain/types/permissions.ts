@@ -5,6 +5,7 @@ import type * as InjectiveCommonVouchersV1VouchersPb from '@injectivelabs/core-p
 
 export interface PermissionParams {
   wasmHookQueryMaxGas: string
+  ownerBlacklistQueryMaxGas: string
 }
 
 export interface PermissionRole {
@@ -63,6 +64,7 @@ export interface PermissionNamespace {
 
 export interface PermissionsModuleParams {
   wasmHookQueryMaxGas: string
+  ownerBlacklistQueryMaxGas: string
 }
 
 export interface PermissionAddressRoles {
