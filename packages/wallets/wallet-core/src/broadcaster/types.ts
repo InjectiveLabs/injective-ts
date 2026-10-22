@@ -39,6 +39,7 @@ export interface MsgBroadcasterOptions {
   txInclusion?: TxClientInclusionOptions
   walletStrategy: BaseWalletStrategy
   useDynamicBaseFee?: boolean
+  /** Buffers automatic message presets by 1.2 for Cosmos wallet strategies. */
   useFixedGas?: boolean
   txTimeoutOnFeeDelegation?: boolean
   gasBufferCoefficient?: number

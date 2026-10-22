@@ -177,6 +177,7 @@ describe('getFixedGasLimitBasedOnMessage', () => {
         gas: 123456,
         simulateTx: true,
         useFixedGas: true,
+        fixedGasBufferCoefficient: 1.2,
       }),
     ).toEqual({ gas: '123456', gasLimit: 123456, estimateGas: false })
   })
@@ -432,6 +433,92 @@ describe('getFixedGasLimitBasedOnMessage', () => {
       }),
     ).toEqual({ gas: '262000', gasLimit: 262000, estimateGas: false })
   })
+
+  it('buffers automatically selected fixed gas for messages and batches', () => {
+    for (const [msgs, gasLimit] of [
+      [message('/injective.exchange.v2.MsgWithdraw'), 384000],
+      [
+        [
+          message('/injective.exchange.v2.MsgWithdraw'),
+          message('/injective.exchange.v1beta1.MsgWithdraw'),
+        ],
+        768000,
+      ],
+      [MsgBatchCancelSpotOrdersV2.fromJSON(batchCancelParams), 314400],
+    ] as const) {
+      expect(
+        getGasOptionsBasedOnMessage({
+          msgs,
+          simulateTx: true,
+          useFixedGas: true,
+          fixedGasBufferCoefficient: 1.2,
+        }),
+      ).toEqual({ gas: gasLimit.toString(), gasLimit, estimateGas: false })
+    }
+  })
+
+  it.each([
+    0,
+    -1,
+    NaN,
+    Infinity,
+    -Infinity,
+    Number.MAX_VALUE,
+    Number.MAX_SAFE_INTEGER,
+  ])(
+    'rejects invalid fixed gas buffer coefficient %s',
+    (fixedGasBufferCoefficient) => {
+      expect(() =>
+        getGasOptionsBasedOnMessage({
+          msgs: message('/injective.exchange.v2.MsgWithdraw'),
+          simulateTx: true,
+          useFixedGas: true,
+          fixedGasBufferCoefficient,
+        }),
+      ).toThrow(RangeError)
+    },
+  )
+
+  it('rounds buffered fixed gas up to a whole gas unit', () => {
+    expect(
+      getGasOptionsBasedOnMessage({
+        msgs: message('/injective.exchange.v2.MsgWithdraw'),
+        simulateTx: true,
+        useFixedGas: true,
+        fixedGasBufferCoefficient: 1.200001,
+      }),
+    ).toEqual({ gas: '384001', gasLimit: 384001, estimateGas: false })
+  })
+
+  it.each([1.2, 0, -1, NaN, Infinity])(
+    'ignores buffer coefficient %s for explicit gas, simulation inputs, and fallback gas',
+    (fixedGasBufferCoefficient) => {
+      const msgs = message('/injective.exchange.v2.MsgWithdraw')
+
+      for (const options of [
+        { msgs, simulateTx: true },
+        { msgs, simulateTx: false },
+        { msgs, simulateTx: true, useFixedGas: true, gas: 123456 },
+        {
+          msgs: message('/cosmos.bank.v1beta1.MsgSend'),
+          simulateTx: true,
+          useFixedGas: true,
+        },
+        {
+          msgs: exec(MsgCreateSpotLimitOrder.fromJSON(spotOrderParams)),
+          simulateTx: false,
+          useFixedGas: true,
+        },
+      ]) {
+        expect(
+          getGasOptionsBasedOnMessage({
+            ...options,
+            fixedGasBufferCoefficient,
+          }),
+        ).toEqual(getGasOptionsBasedOnMessage(options))
+      }
+    },
+  )
 
   it('preserves the legacy fallback for a falsy explicit gas value', () => {
     const supported = message('/injective.exchange.v2.MsgWithdraw')

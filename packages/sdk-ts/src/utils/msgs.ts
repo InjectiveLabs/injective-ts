@@ -159,11 +159,13 @@ export const getGasOptionsBasedOnMessage = ({
   gas,
   simulateTx,
   useFixedGas = false,
+  fixedGasBufferCoefficient = 1,
 }: {
   msgs: Msgs | Msgs[]
   gas?: number
   simulateTx: boolean
   useFixedGas?: boolean
+  fixedGasBufferCoefficient?: number
 }) => {
   const messages = Array.isArray(msgs) ? msgs : [msgs]
   const explicitGas = gas || undefined
@@ -172,7 +174,22 @@ export const getGasOptionsBasedOnMessage = ({
       ? getFixedGasLimitBasedOnMessage(messages)
       : undefined
   const gasLimit =
-    explicitGas ?? fixedGasLimit ?? getGasPriceBasedOnMessage(messages)
+    explicitGas ??
+    (fixedGasLimit === undefined
+      ? getGasPriceBasedOnMessage(messages)
+      : Math.ceil(fixedGasLimit * fixedGasBufferCoefficient))
+
+  if (
+    fixedGasLimit !== undefined &&
+    (!Number.isFinite(fixedGasBufferCoefficient) ||
+      fixedGasBufferCoefficient <= 0 ||
+      !Number.isSafeInteger(gasLimit))
+  ) {
+    throw new RangeError(
+      'fixedGasBufferCoefficient must produce a positive safe integer gas limit',
+    )
+  }
+
   const estimateGas =
     simulateTx &&
     (!useFixedGas || (explicitGas === undefined && fixedGasLimit === undefined))

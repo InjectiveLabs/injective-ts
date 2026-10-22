@@ -211,6 +211,10 @@ export class MsgBroadcaster {
       gas,
       simulateTx: this.simulateTx,
       useFixedGas: this.useFixedGas,
+      // shortcut: ante costs can vary, recalibrate fixed gas after QA measurements.
+      fixedGasBufferCoefficient: isCosmosWallet(this.walletStrategy.wallet)
+        ? 1.2
+        : 1,
     })
   }
 

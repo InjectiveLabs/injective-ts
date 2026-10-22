@@ -65,6 +65,7 @@ export interface MsgBroadcasterWithPkOptions {
   txTimeout?: number // blocks to wait for tx to be included in a block
   gasBufferCoefficient?: number
   txTimeoutOnFeeDelegation?: boolean
+  /** Uses unbuffered presets, without wallet-core's Cosmos wallet buffer. */
   useFixedGas?: boolean
 }
 
