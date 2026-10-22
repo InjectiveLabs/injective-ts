@@ -1,6 +1,5 @@
 import { vi, afterEach } from 'vitest'
 import { Network } from '@injectivelabs/networks'
-import { getStdFee, DEFAULT_EXCHANGE_LIMIT } from '@injectivelabs/utils'
 import { PublicKey, PrivateKey } from '@injectivelabs/sdk-ts/core/accounts'
 import { IndexerGrpcWeb3GwApi } from '@injectivelabs/sdk-ts/client/indexer'
 import {
@@ -12,21 +11,28 @@ import {
   WalletStrategyEmitterEventType,
 } from '@injectivelabs/wallet-base'
 import {
+  getStdFee,
+  toBigNumber,
+  DEFAULT_EXCHANGE_LIMIT,
+} from '@injectivelabs/utils'
+import {
   MsgAuthzExec,
   MsgWithdrawV2,
   MsgCreateSpotLimitOrder,
 } from '@injectivelabs/sdk-ts/core/modules'
 import {
-  TxClient,
-  TxGrpcApi,
-  TxInclusionStrategy,
-  CosmosTxV1Beta1TxPb,
-} from '@injectivelabs/sdk-ts/core/tx'
-import {
   ChainGrpcAuthApi,
   ChainGrpcTxFeesApi,
   ChainGrpcTendermintApi,
 } from '@injectivelabs/sdk-ts/client/chain'
+import {
+  TxClient,
+  TxGrpcApi,
+  SIGN_DIRECT,
+  TxInclusionStrategy,
+  CosmosTxV1Beta1TxPb,
+  MsgBroadcasterWithPk,
+} from '@injectivelabs/sdk-ts/core/tx'
 import { MsgBroadcaster } from './MsgBroadcaster.js'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type { MsgBroadcasterOptions } from './types.js'
@@ -480,6 +486,89 @@ describe('MsgBroadcaster fixed exchange gas', () => {
       ).toEqual({ gas: '384000', gasLimit: 384000, estimateGas: false })
     },
   )
+
+  it('scopes the Cosmos buffer to wallet-core across DirectSign entry points', async () => {
+    const privateKey = PrivateKey.fromHex(
+      '0x0000000000000000000000000000000000000000000000000000000000000001',
+    )
+    const injectiveAddress = privateKey.toBech32()
+    const pubKey = privateKey.toPublicKey().toBase64()
+    const msg = MsgWithdrawV2.fromJSON({
+      injectiveAddress,
+      subaccountId: '0x' + '0'.repeat(64),
+      amount: { denom: 'inj', amount: '1' },
+    })
+    const walletStrategy = broadcaster.walletStrategy
+    walletStrategy.wallet = Wallet.PrivateKeyCosmos
+    vi.spyOn(walletStrategy, 'getWallet').mockReturnValue(
+      Wallet.PrivateKeyCosmos,
+    )
+    vi.spyOn(walletStrategy, 'getPubKey').mockResolvedValue(pubKey)
+    vi.spyOn(
+      broadcaster as any,
+      'fetchAccountAndBlockDetails',
+    ).mockResolvedValue({
+      latestHeight: '100',
+      baseAccount: makeBaseAccount({ pubKey: { key: pubKey } }),
+    })
+    const walletSign = vi
+      .spyOn(walletStrategy, 'signCosmosTransaction')
+      .mockRejectedValue(new Error('stop before wallet signing'))
+    const walletSimulate = vi
+      .spyOn(broadcaster as any, 'simulateTxWithSigners')
+      .mockRejectedValue(new Error('unexpected wallet simulation'))
+
+    await expect(
+      broadcaster.broadcast({
+        msgs: msg,
+        injectiveAddress,
+        timeoutHeight: 100,
+      }),
+    ).rejects.toThrow('stop before wallet signing')
+
+    const sdkBroadcaster = new MsgBroadcasterWithPk({
+      network: Network.Devnet,
+      privateKey,
+      simulateTx: true,
+      useFixedGas: true,
+    })
+    vi.spyOn(sdkBroadcaster as any, 'getTimeoutHeight').mockResolvedValue(
+      toBigNumber(100),
+    )
+    const sdkBroadcast = vi
+      .spyOn(sdkBroadcaster as any, 'broadcastTxRaw')
+      .mockRejectedValue(new Error('stop before SDK broadcast'))
+    const sdkSimulate = vi
+      .spyOn(sdkBroadcaster as any, 'simulateTxRaw')
+      .mockRejectedValue(new Error('unexpected SDK simulation'))
+
+    await expect(
+      sdkBroadcaster.broadcast(
+        { msgs: msg },
+        { accountNumber: 1, sequence: 1, address: injectiveAddress },
+      ),
+    ).rejects.toThrow('stop before SDK broadcast')
+
+    const walletTxRaw = walletSign.mock.calls[0][0].txRaw
+    const sdkTxRaw = sdkBroadcast.mock.calls[0][0]
+    const walletAuthInfo = CosmosTxV1Beta1TxPb.AuthInfo.fromBinary(
+      walletTxRaw.authInfoBytes,
+    )
+    const sdkAuthInfo = CosmosTxV1Beta1TxPb.AuthInfo.fromBinary(
+      sdkTxRaw.authInfoBytes,
+    )
+
+    expect(walletTxRaw.bodyBytes).toEqual(sdkTxRaw.bodyBytes)
+    expect(walletAuthInfo.signerInfos).toEqual(sdkAuthInfo.signerInfos)
+    expect(walletAuthInfo.signerInfos[0].modeInfo?.sum).toEqual({
+      oneofKind: 'single',
+      single: { mode: SIGN_DIRECT },
+    })
+    expect(walletAuthInfo.fee?.gasLimit).toBe(384000n)
+    expect(sdkAuthInfo.fee?.gasLimit).toBe(320000n)
+    expect(walletSimulate).not.toHaveBeenCalled()
+    expect(sdkSimulate).not.toHaveBeenCalled()
+  })
 
   it('preserves fallback gas when fixed gas is unavailable and simulation is disabled', () => {
     broadcaster.setOptions({ simulateTx: false })

@@ -178,6 +178,18 @@ export const getGasOptionsBasedOnMessage = ({
     (fixedGasLimit === undefined
       ? getGasPriceBasedOnMessage(messages)
       : Math.ceil(fixedGasLimit * fixedGasBufferCoefficient))
+
+  if (
+    fixedGasLimit !== undefined &&
+    (!Number.isFinite(fixedGasBufferCoefficient) ||
+      fixedGasBufferCoefficient <= 0 ||
+      !Number.isSafeInteger(gasLimit))
+  ) {
+    throw new RangeError(
+      'fixedGasBufferCoefficient must produce a positive safe integer gas limit',
+    )
+  }
+
   const estimateGas =
     simulateTx &&
     (!useFixedGas || (explicitGas === undefined && fixedGasLimit === undefined))

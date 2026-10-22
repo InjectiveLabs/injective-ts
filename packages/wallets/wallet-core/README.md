@@ -41,6 +41,12 @@ export const msgBroadcaster = new MsgBroadcaster({ ...broadcasterArgs, walletStr
 
 Read more and find example usages on our [WalletStrategy Docs](https://docs.ts.injective.network/wallet/wallet-wallet-strategy)
 
+### Fixed gas
+
+With `useFixedGas: true` and no explicit gas limit, `MsgBroadcaster` applies a fixed 1.2 multiplier to message presets for Cosmos wallet strategies, including `Wallet.PrivateKeyCosmos`. EVM wallet presets, explicit gas overrides, and fallback gas limits are unchanged. `gasBufferCoefficient` controls the buffer for simulated gas only.
+
+This correction is scoped to wallet-core's `MsgBroadcaster`. The SDK's `MsgBroadcasterWithPk` retains unbuffered presets for both DirectSign and EIP-712 fee delegation. For example, the same `MsgWithdrawV2` uses 384,000 gas through `MsgBroadcaster` with `Wallet.PrivateKeyCosmos`, and 320,000 through `MsgBroadcasterWithPk`.
+
 ---
 
 ## 📜 Contribution
