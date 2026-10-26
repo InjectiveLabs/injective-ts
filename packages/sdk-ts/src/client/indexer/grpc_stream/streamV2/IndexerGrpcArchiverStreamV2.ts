@@ -24,14 +24,17 @@ export class IndexerGrpcArchiverStreamV2 {
    * Stream spot average entries
    * @param params.account - The account address to stream entries for
    * @param params.callback - Called for each average entry update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamSpotAverageEntries({
     account,
     callback,
+    signal,
   }: {
     account: string
     callback: SpotAverageEntriesStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!account) {
       throw new Error('account is required')
@@ -55,6 +58,7 @@ export class IndexerGrpcArchiverStreamV2 {
           )
         callback(transformed)
       },
+      { signal },
     )
   }
 }

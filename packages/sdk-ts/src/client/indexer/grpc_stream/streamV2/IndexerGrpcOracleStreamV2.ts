@@ -38,6 +38,7 @@ export class IndexerGrpcOracleStreamV2 {
    * @param params.baseSymbol - Optional base symbol filter
    * @param params.quoteSymbol - Optional quote symbol filter
    * @param params.callback - Called for each price update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOraclePrices({
@@ -45,11 +46,13 @@ export class IndexerGrpcOracleStreamV2 {
     baseSymbol,
     quoteSymbol,
     callback,
+    signal,
   }: {
     oracleType: string
     baseSymbol?: string
     quoteSymbol?: string
     callback: OraclePriceStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!oracleType) {
       throw new Error('oracleType is required')
@@ -78,6 +81,7 @@ export class IndexerGrpcOracleStreamV2 {
           IndexerOracleStreamTransformer.pricesStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -85,14 +89,17 @@ export class IndexerGrpcOracleStreamV2 {
    * Stream oracle prices by markets
    * @param params.marketIds - Optional array of market IDs to filter
    * @param params.callback - Called for each price update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOraclePricesByMarkets({
     marketIds,
     callback,
+    signal,
   }: {
     marketIds?: string[]
     callback: OraclePricesByMarketsStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -112,6 +119,7 @@ export class IndexerGrpcOracleStreamV2 {
           IndexerOracleStreamTransformer.pricesByMarketsCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -119,10 +127,12 @@ export class IndexerGrpcOracleStreamV2 {
     oracleType,
     symbols,
     callback,
+    signal,
   }: {
     oracleType?: string
     symbols?: string[]
     callback: OracleListStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -146,6 +156,7 @@ export class IndexerGrpcOracleStreamV2 {
           IndexerOracleStreamTransformer.oracleListStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 }

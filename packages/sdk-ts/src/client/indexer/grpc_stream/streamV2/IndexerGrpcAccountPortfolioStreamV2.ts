@@ -26,6 +26,7 @@ export class IndexerGrpcAccountPortfolioStreamV2 {
    * @param params.subaccountId - Optional subaccount ID to filter
    * @param params.type - Optional portfolio type to filter
    * @param params.callback - Called for each portfolio update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamAccountPortfolio({
@@ -33,11 +34,13 @@ export class IndexerGrpcAccountPortfolioStreamV2 {
     subaccountId,
     type,
     callback,
+    signal,
   }: {
     accountAddress: string
     subaccountId?: string
     type?: string
     callback: AccountPortfolioStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!accountAddress) {
       throw new Error('accountAddress is required')
@@ -68,6 +71,7 @@ export class IndexerGrpcAccountPortfolioStreamV2 {
           )
         callback(transformed)
       },
+      { signal },
     )
   }
 }

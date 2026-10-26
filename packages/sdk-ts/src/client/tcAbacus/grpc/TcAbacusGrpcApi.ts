@@ -1,8 +1,10 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import { IndexerErrorModule } from '@injectivelabs/exceptions'
 import * as TcAbacusPb from '@injectivelabs/tc-abacus-proto-ts-v2/generated/injective_tc_abacus_rpc_pb'
 import { InjectiveTCAbacusRPCClient } from '@injectivelabs/tc-abacus-proto-ts-v2/generated/injective_tc_abacus_rpc_pb.client'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { TcAbacusGrpcTransformer } from './transformers/index.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { ReferrerCategory } from '../types/index.js'
 
 export class TcAbacusGrpcApi extends BaseGrpcConsumer {
@@ -12,29 +14,37 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     return this.initClient(InjectiveTCAbacusRPCClient)
   }
 
-  async fetchCurrentEpoch() {
+  async fetchCurrentEpoch(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.GetCurrentEpochRequest.create({})
 
     const response = await this.executeGrpcCall<
       TcAbacusPb.GetCurrentEpochRequest,
       TcAbacusPb.GetCurrentEpochResponse
-    >(request, this.client.getCurrentEpoch.bind(this.client))
+    >(request, this.client.getCurrentEpoch.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcCurrentEpochToCurrentEpoch(response)
   }
 
-  async fetchHealthCheck() {
+  async fetchHealthCheck(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.HealthCheckRequest.create({})
 
     const response = await this.executeGrpcCall<
       TcAbacusPb.HealthCheckRequest,
       TcAbacusPb.HealthCheckResponse
-    >(request, this.client.healthCheck.bind(this.client))
+    >(request, this.client.healthCheck.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcHealthCheckToHealthCheck(response)
   }
 
-  async fetchAccountPoints(address: string, cursor?: string, limit?: number) {
+  async fetchAccountPoints(
+    address: string,
+    cursor?: string,
+    limit?: number,
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.GetAccountPointsRequest.create({
       limit,
       cursor,
@@ -44,12 +54,13 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       TcAbacusPb.GetAccountPointsRequest,
       TcAbacusPb.GetAccountPointsResponse
-    >(request, this.client.getAccountPoints.bind(this.client))
+    >(request, this.client.getAccountPoints.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcAccountPointsToAccountPoints(response)
   }
 
-  async fetchAccountStats(address: string) {
+  async fetchAccountStats(address: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.GetAccountStatsRequest.create({
       address,
     })
@@ -57,18 +68,22 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       TcAbacusPb.GetAccountStatsRequest,
       TcAbacusPb.GetAccountStatsResponse
-    >(request, this.client.getAccountStats.bind(this.client))
+    >(request, this.client.getAccountStats.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcAccountStatsToAccountStats(response)
   }
 
-  async fetchReferrers(params?: {
-    cursor?: string
-    limit?: number
-    address?: string
-    code?: string
-    status?: string
-  }) {
+  async fetchReferrers(
+    params?: {
+      cursor?: string
+      limit?: number
+      address?: string
+      code?: string
+      status?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const { cursor, limit, address, code, status } = params || {}
     const request = TcAbacusPb.ListReferrersRequest.create({
       limit,
@@ -81,12 +96,18 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       TcAbacusPb.ListReferrersRequest,
       TcAbacusPb.ListReferrersResponse
-    >(request, this.client.listReferrers.bind(this.client))
+    >(request, this.client.listReferrers.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcListReferrersToListReferrers(response)
   }
 
-  async fetchAccountInvitees(address: string, cursor?: string, limit?: number) {
+  async fetchAccountInvitees(
+    address: string,
+    cursor?: string,
+    limit?: number,
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.GetAccountInviteesRequest.create({
       limit,
       cursor,
@@ -96,14 +117,15 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       TcAbacusPb.GetAccountInviteesRequest,
       TcAbacusPb.GetAccountInviteesResponse
-    >(request, this.client.getAccountInvitees.bind(this.client))
+    >(request, this.client.getAccountInvitees.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcAccountInviteesToAccountInvitees(
       response,
     )
   }
 
-  async fetchAccountEarnings(address: string) {
+  async fetchAccountEarnings(address: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.GetAccountEarningsRequest.create({
       address,
     })
@@ -111,14 +133,15 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       TcAbacusPb.GetAccountEarningsRequest,
       TcAbacusPb.GetAccountEarningsResponse
-    >(request, this.client.getAccountEarnings.bind(this.client))
+    >(request, this.client.getAccountEarnings.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcAccountEarningsToAccountEarnings(
       response,
     )
   }
 
-  async fetchReferrerEligibility(address: string) {
+  async fetchReferrerEligibility(address: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.GetReferrerElegibilityRequest.create({
       address,
     })
@@ -126,7 +149,7 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       TcAbacusPb.GetReferrerElegibilityRequest,
       TcAbacusPb.GetReferrerElegibilityResponse
-    >(request, this.client.getReferrerElegibility.bind(this.client))
+    >(request, this.client.getReferrerElegibility.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcReferrerEligibilityToReferrerEligibility(
       response,
@@ -184,7 +207,13 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     >(request, this.client.setReferrerCategory.bind(this.client))
   }
 
-  async fetchReferrerCodes(address: string, cursor?: string, limit?: number) {
+  async fetchReferrerCodes(
+    address: string,
+    cursor?: string,
+    limit?: number,
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.ListReferrerCodesRequest.create({
       limit,
       cursor,
@@ -194,14 +223,15 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       TcAbacusPb.ListReferrerCodesRequest,
       TcAbacusPb.ListReferrerCodesResponse
-    >(request, this.client.listReferrerCodes.bind(this.client))
+    >(request, this.client.listReferrerCodes.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcListReferrerCodesToListReferrerCodes(
       response,
     )
   }
 
-  async fetchInviteeReferrer(address: string) {
+  async fetchInviteeReferrer(address: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = TcAbacusPb.GetInviteeReferrerRequest.create({
       address,
     })
@@ -209,7 +239,7 @@ export class TcAbacusGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       TcAbacusPb.GetInviteeReferrerRequest,
       TcAbacusPb.GetInviteeReferrerResponse
-    >(request, this.client.getInviteeReferrer.bind(this.client))
+    >(request, this.client.getInviteeReferrer.bind(this.client), options)
 
     return TcAbacusGrpcTransformer.grpcInviteeReferrerToInviteeReferrer(
       response,

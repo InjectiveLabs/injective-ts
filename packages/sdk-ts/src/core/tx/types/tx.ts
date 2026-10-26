@@ -1,4 +1,5 @@
 import type { StdFee } from '@cosmjs/amino'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type * as GoogleProtobufAnyPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import type * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import type * as CosmosTxV1Beta1ServicePb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb'
@@ -22,12 +23,22 @@ export interface TxEventInclusionOptions {
   fallbackToPolling?: boolean
   webSocketFactory?: TxEventWebSocketFactory
   onFallback?: (error: Error) => void
+  /** Cancels the Tendermint event subscription and its pending wait. */
+  signal?: AbortSignal
 }
 
 export interface TxClientInclusionOptions {
   inclusionStrategy?: TxInclusionStrategy
   pollingInterval?: number
   eventInclusion?: TxEventInclusionOptions
+  /**
+   * Cancels inclusion observation (event subscription, polling and the final
+   * transaction fetch). It is observation-only and does not cancel signing or
+   * the broadcast request itself.
+   */
+  signal?: AbortSignal
+  /** Existing-style alias composed with `signal`. */
+  abortSignal?: AbortSignal
 }
 
 export interface TxInclusionWaiter {
@@ -41,19 +52,26 @@ export interface TxFetchTxPollArgs {
   txHash: string
   timeout?: number
   pollingInterval?: number
+  /** Existing cancellation field, kept for backwards compatibility. */
   abortSignal?: AbortSignal
+  /** Alias composed with `abortSignal`. */
+  signal?: AbortSignal
 }
 
 export interface TxWaitForTxInclusionArgs {
   txHash: string
   timeout?: number
   options?: TxClientInclusionOptions
+  signal?: AbortSignal
+  abortSignal?: AbortSignal
 }
 
 export interface TxPrepareTxInclusionWaitArgs {
   txHash: string
   timeout?: number
   options?: TxClientInclusionOptions
+  signal?: AbortSignal
+  abortSignal?: AbortSignal
 }
 
 export interface TxClientBroadcastOptions extends TxClientInclusionOptions {
@@ -94,21 +112,39 @@ export interface TxConcreteApi {
   broadcast(
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     options?: TxClientBroadcastOptions,
+    requestOptions?: RequestOptions,
   ): Promise<TxClientBroadcastResponse>
   broadcastBlock(
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
   ): Promise<TxClientBroadcastResponse>
-  fetchTx(txHash: string): Promise<TxClientBroadcastResponse | undefined>
+  /**
+   * Common cancellation shape: keep the optional positional params/placeholder
+   * second and append `RequestOptions` third. This deliberately does not
+   * inspect the second argument to guess whether it is a params dictionary or
+   * request options (REST treats it as query data). Direct gRPC callers also
+   * have a concrete second-`RequestOptions` convenience overload.
+   */
+  fetchTx(
+    txHash: string,
+    params?: unknown,
+    options?: RequestOptions,
+  ): Promise<TxClientBroadcastResponse | undefined>
   fetchTxPoll(
     args: TxFetchTxPollArgs,
+    options?: RequestOptions,
   ): Promise<TxClientBroadcastResponse | undefined>
   waitForTxInclusion(
     args: TxWaitForTxInclusionArgs,
+    options?: RequestOptions,
   ): Promise<TxClientBroadcastResponse | undefined>
   prepareTxInclusionWait(
     args: TxPrepareTxInclusionWaitArgs,
+    options?: RequestOptions,
   ): Promise<TxInclusionWaiter>
-  simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw): Promise<TxClientSimulateResponse>
+  simulate(
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
+    options?: RequestOptions,
+  ): Promise<TxClientSimulateResponse>
 }
 
 export const TxClientMode = {

@@ -1,9 +1,11 @@
+import { isAbortError, throwIfAborted } from '@injectivelabs/utils'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { RestApiResponse } from '../types/index.js'
 import type {
   AccountResponse,
@@ -23,17 +25,22 @@ export class ChainRestAuthApi extends BaseRestConsumer {
   public async fetchAccount(
     address: string,
     params: Record<string, any> = {},
+    options?: RequestOptions,
   ): Promise<AccountResponse> {
+    throwIfAborted(options?.signal)
     const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<AccountResponse>>(() =>
-        this.get(endpoint, params),
+      const response = await this.retry<RestApiResponse<AccountResponse>>(
+        (requestConfig) => this.get(endpoint, params, requestConfig),
+        undefined,
+        undefined,
+        options,
       )
 
       return response.data
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -53,7 +60,9 @@ export class ChainRestAuthApi extends BaseRestConsumer {
   public async fetchCosmosAccount(
     address: string,
     params: Record<string, any> = {},
+    options?: RequestOptions,
   ): Promise<BaseAccountRestResponse> {
+    throwIfAborted(options?.signal)
     const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
 
     try {
@@ -62,7 +71,12 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       const response = await this.retry<
         RestApiResponse<AccountResponse | CosmosAccountRestResponse>
-      >(() => this.get(endpoint, params))
+      >(
+        (requestConfig) => this.get(endpoint, params, requestConfig),
+        undefined,
+        undefined,
+        options,
+      )
 
       const baseAccount = isInjectiveAddress
         ? (response.data as AccountResponse).account.base_account
@@ -70,7 +84,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       return baseAccount
     } catch (e) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 

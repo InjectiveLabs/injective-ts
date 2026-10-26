@@ -1,7 +1,9 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as CosmosBaseTendermintV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/tendermint/v1beta1/query_pb'
 import { ServiceClient as CosmosBaseTendermintV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/tendermint/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 /**
  * @category Chain Grpc API
  */
@@ -12,19 +14,21 @@ export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
     return this.initClient(CosmosBaseTendermintV1Beta1QueryClient)
   }
 
-  async fetchLatestBlock() {
+  async fetchLatestBlock(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request =
       CosmosBaseTendermintV1Beta1QueryPb.GetLatestBlockRequest.create()
 
     const response = await this.executeGrpcCall<
       CosmosBaseTendermintV1Beta1QueryPb.GetLatestBlockRequest,
       CosmosBaseTendermintV1Beta1QueryPb.GetLatestBlockResponse
-    >(request, this.client.getLatestBlock.bind(this.client))
+    >(request, this.client.getLatestBlock.bind(this.client), options)
 
     return response.sdkBlock || response.block
   }
 
-  async fetchBlock(height: number | string) {
+  async fetchBlock(height: number | string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request =
       CosmosBaseTendermintV1Beta1QueryPb.GetBlockByHeightRequest.create()
 
@@ -33,7 +37,7 @@ export class ChainGrpcTendermintApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosBaseTendermintV1Beta1QueryPb.GetBlockByHeightRequest,
       CosmosBaseTendermintV1Beta1QueryPb.GetBlockByHeightResponse
-    >(request, this.client.getBlockByHeight.bind(this.client))
+    >(request, this.client.getBlockByHeight.bind(this.client), options)
 
     return response.sdkBlock || response.block
   }

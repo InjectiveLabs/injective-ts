@@ -1,7 +1,9 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as PlatformServicesCompetitionPb from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_tc_competition_service_pb'
 import { TCCompetitionServiceClient } from '@injectivelabs/platform-services-proto-ts-v2/generated/goagen_api_tc_competition_service_pb.client'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { PlatformServicesGrpcCompetitionTransformer } from '../transformers/index.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type {
   PlatformServicesCompetitionAccountParams,
   PlatformServicesListCompetitionReferrerInviteesParams,
@@ -14,14 +16,15 @@ export class CompetitionGrpcApi extends BaseGrpcConsumer {
     return this.initClient(TCCompetitionServiceClient)
   }
 
-  async fetchCurrentCompetition() {
+  async fetchCurrentCompetition(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request =
       PlatformServicesCompetitionPb.GetCurrentCompetitionRequest.create()
 
     const response = await this.executeGrpcCall<
       PlatformServicesCompetitionPb.GetCurrentCompetitionRequest,
       PlatformServicesCompetitionPb.GetCurrentCompetitionResponse
-    >(request, this.client.getCurrentCompetition.bind(this.client))
+    >(request, this.client.getCurrentCompetition.bind(this.client), options)
 
     return PlatformServicesGrpcCompetitionTransformer.grpcGetCurrentCompetitionToCurrentCompetition(
       response,
@@ -30,7 +33,9 @@ export class CompetitionGrpcApi extends BaseGrpcConsumer {
 
   async fetchCompetitionTrader(
     params: PlatformServicesCompetitionAccountParams,
+    options?: RequestOptions,
   ) {
+    throwIfAborted(options?.signal)
     const { id, accountAddress } = params
 
     const request =
@@ -42,7 +47,7 @@ export class CompetitionGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       PlatformServicesCompetitionPb.GetCompetitionTraderRequest,
       PlatformServicesCompetitionPb.GetCompetitionTraderResponse
-    >(request, this.client.getCompetitionTrader.bind(this.client))
+    >(request, this.client.getCompetitionTrader.bind(this.client), options)
 
     return PlatformServicesGrpcCompetitionTransformer.grpcGetCompetitionTraderToCompetitionTrader(
       response,
@@ -51,7 +56,9 @@ export class CompetitionGrpcApi extends BaseGrpcConsumer {
 
   async fetchCompetitionReferrer(
     params: PlatformServicesCompetitionAccountParams,
+    options?: RequestOptions,
   ) {
+    throwIfAborted(options?.signal)
     const { id, accountAddress } = params
 
     const request =
@@ -63,7 +70,7 @@ export class CompetitionGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       PlatformServicesCompetitionPb.GetCompetitionReferrerRequest,
       PlatformServicesCompetitionPb.GetCompetitionReferrerResponse
-    >(request, this.client.getCompetitionReferrer.bind(this.client))
+    >(request, this.client.getCompetitionReferrer.bind(this.client), options)
 
     return PlatformServicesGrpcCompetitionTransformer.grpcGetCompetitionReferrerToCompetitionReferrer(
       response,
@@ -72,7 +79,9 @@ export class CompetitionGrpcApi extends BaseGrpcConsumer {
 
   async fetchCompetitionReferrerInvitees(
     params: PlatformServicesListCompetitionReferrerInviteesParams,
+    options?: RequestOptions,
   ) {
+    throwIfAborted(options?.signal)
     const { id, accountAddress, invitee } = params
 
     const request =
@@ -87,7 +96,11 @@ export class CompetitionGrpcApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       PlatformServicesCompetitionPb.ListCompetitionReferrerInviteesRequest,
       PlatformServicesCompetitionPb.ListCompetitionReferrerInviteesResponse
-    >(request, this.client.listCompetitionReferrerInvitees.bind(this.client))
+    >(
+      request,
+      this.client.listCompetitionReferrerInvitees.bind(this.client),
+      options,
+    )
 
     return PlatformServicesGrpcCompetitionTransformer.grpcListCompetitionReferrerInviteesToListCompetitionReferrerInvitees(
       response,

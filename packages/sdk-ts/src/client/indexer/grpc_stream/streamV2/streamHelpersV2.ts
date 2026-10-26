@@ -1,4 +1,6 @@
 import { EventEmitter } from 'eventemitter3'
+import { isAbortError, combineAbortSignals } from '@injectivelabs/utils'
+import { extractGrpcError } from '../streamError.js'
 import { GrpcStatusCode } from '../../../../types/index.js'
 import type {
   StreamError,
@@ -13,144 +15,234 @@ type StreamFactory<TResponse> = (
   abortSignal: AbortSignal,
 ) => StreamResponseSource<TResponse>
 
-/**
- * Extracts detailed error information from a gRPC/RpcError object.
- *
- * gRPC-web errors typically have these properties:
- * - code: gRPC status code (number)
- * - message: Error message
- * - name: 'RpcError'
- * - methodName: The RPC method that failed
- * - serviceName: The service name
- * - metadata: Response metadata/trailers
- */
-function extractGrpcError(error: unknown): StreamError {
-  // Default values
-  let code: number = GrpcStatusCode.UNKNOWN
-  let details = 'Unknown stream error'
-  let metadata: any = undefined
-
-  if (error && typeof error === 'object') {
-    // Extract gRPC status code
-    if ('code' in error && typeof error.code === 'number') {
-      code = error.code
-    }
-
-    // Extract error message - gRPC errors use 'message' or 'details'
-    if ('message' in error && typeof error.message === 'string') {
-      details = error.message
-    } else if ('details' in error && typeof error.details === 'string') {
-      details = error.details
-    }
-
-    // Build metadata object with useful debugging info
-    const errorObj = error as Record<string, unknown>
-    metadata = {
-      originalError: error,
-      ...('name' in errorObj && { errorName: errorObj.name }),
-      ...('methodName' in errorObj && { methodName: errorObj.methodName }),
-      ...('serviceName' in errorObj && { serviceName: errorObj.serviceName }),
-      ...('metadata' in errorObj && { grpcMetadata: errorObj.metadata }),
-    }
-  } else if (error instanceof Error) {
-    details = error.message
-    metadata = { originalError: error, stack: error.stack }
-  }
-
-  return { code, details, metadata }
+export interface StreamSubscriptionOptions {
+  /** Caller-owned signal that cancels this stream */
+  signal?: AbortSignal
 }
 
 /**
  * Creates an event-based subscription for StreamManager V2.
- * This emits 'error' and 'complete' events instead of using callbacks.
  *
- * Error Handling:
- * - gRPC errors are extracted with full metadata and emitted as 'error' events
- * - User callback errors are caught and emitted separately to distinguish from stream errors
- * - Aborted streams don't emit any events (clean shutdown)
- *
- * @param streamFactory - Creates the ServerStreamingCall from the V2 client
- * @param handleResponse - Callback to process each stream response
- * @returns StreamSubscription with event emitters for error/complete
+ * The abort signal is passed to the factory before any network work starts.
+ * Local abort/unsubscribe is silent: no 'error' or 'complete' event is emitted.
+ * Genuine terminal events are emitted once and all listeners are released.
  */
 export function createStreamSubscriptionV2<TResponse>(
   streamFactory: StreamFactory<TResponse>,
   handleResponse: (response: TResponse) => void,
+  options: StreamSubscriptionOptions = {},
 ): StreamSubscription {
   const emitter = new EventEmitter()
   const abortController = new AbortController()
-  const stream = streamFactory(abortController.signal)
+  const combined = combineAbortSignals([abortController.signal, options.signal])
+  const signal = combined.signal ?? abortController.signal
+  const cancelHandlers = new Set<() => void>()
 
-  // Track if we've already emitted a terminal event (error or complete)
-  let hasEmittedTerminalEvent = false
+  let cancelled = false
+  let terminated = false
+  let cleaned = false
 
-  // Create subscription object with event emitters
+  const safeCall = (callback: (() => void) | undefined) => {
+    if (!callback) {
+      return
+    }
+
+    try {
+      callback()
+    } catch {
+      // Cancellation and terminal callbacks must not break cleanup.
+    }
+  }
+
+  const emitSafely = (event: string, payload?: unknown) => {
+    try {
+      if (payload === undefined) {
+        emitter.emit(event)
+      } else {
+        emitter.emit(event, payload)
+      }
+    } catch {
+      // A listener must not prevent the remaining terminal cleanup.
+    }
+  }
+
+  const notifyCancellation = () => {
+    const handlers = Array.from(cancelHandlers)
+    cancelHandlers.clear()
+
+    for (const handler of handlers) {
+      safeCall(handler)
+    }
+  }
+
+  const cancel = () => {
+    if (cancelled || terminated) {
+      return
+    }
+
+    cancelled = true
+    abortController.abort()
+    emitter.removeAllListeners()
+    notifyCancellation()
+  }
+
+  const onAbort = () => {
+    cancel()
+  }
+
+  const cleanup = () => {
+    if (cleaned) {
+      return
+    }
+
+    cleaned = true
+    signal.removeEventListener('abort', onAbort)
+    cancelHandlers.clear()
+    emitter.removeAllListeners()
+    combined.dispose()
+    abortController.abort()
+  }
+
   const subscription: StreamSubscription = {
-    unsubscribe: () => {
-      abortController.abort()
-      emitter.removeAllListeners()
+    unsubscribe: cancel,
+    get cancelled() {
+      return cancelled
     },
     on: (event: string, handler: (...args: any[]) => void) => {
-      emitter.on(event, handler)
+      if (!cancelled && !terminalEventReached()) {
+        emitter.on(event, handler)
+      }
     },
     off: (event: string, handler: (...args: any[]) => void) => {
       emitter.off(event, handler)
     },
+    onCancel: (handler: () => void) => {
+      if (cancelled) {
+        safeCall(handler)
+
+        return () => {}
+      }
+
+      if (terminalEventReached()) {
+        return () => {}
+      }
+
+      cancelHandlers.add(handler)
+
+      return () => {
+        cancelHandlers.delete(handler)
+      }
+    },
   }
 
-  // Handle stream responses with abort signal checking
+  function terminalEventReached(): boolean {
+    return terminated || cleaned
+  }
+
+  if (signal.aborted) {
+    cancelled = true
+    cleanup()
+
+    return subscription
+  }
+
+  signal.addEventListener('abort', onAbort, { once: true })
+
+  let stream: StreamResponseSource<TResponse>
+
+  try {
+    stream = streamFactory(signal)
+  } catch (error) {
+    // cleanup() aborts the internal controller, so capture the caller-facing
+    // cancellation state first. Otherwise every synchronous factory error
+    // would look locally cancelled and be swallowed.
+    const locallyCancelled = cancelled || signal.aborted
+
+    cleanup()
+
+    if (locallyCancelled) {
+      return subscription
+    }
+
+    throw error
+  }
+
+  if (signal.aborted) {
+    cancel()
+    cleanup()
+
+    return subscription
+  }
+
   ;(async () => {
     try {
       for await (const response of stream.responses) {
-        // Check abort signal before processing each response
-        if (abortController.signal.aborted) {
-          return // Clean exit, no events emitted
+        if (cancelled || terminated || signal.aborted) {
+          return
         }
 
-        // Wrap handleResponse to catch user callback errors
         try {
           handleResponse(response)
         } catch (callbackError) {
-          // User callback error - emit as error but with special code
-          // This distinguishes from gRPC transport errors
-          if (!abortController.signal.aborted && !hasEmittedTerminalEvent) {
-            hasEmittedTerminalEvent = true
-
-            const streamError: StreamError = {
-              code: GrpcStatusCode.INTERNAL, // Internal because it's our code that failed
-              details:
-                callbackError instanceof Error
-                  ? `Callback error: ${callbackError.message}`
-                  : 'Callback error: Unknown',
-              metadata: {
-                type: 'callback-error',
-                originalError: callbackError,
-                stack:
-                  callbackError instanceof Error
-                    ? callbackError.stack
-                    : undefined,
-              },
-            }
-
-            emitter.emit('error', streamError)
+          if (cancelled || terminated || signal.aborted) {
+            return
           }
 
-          return // Stop processing after callback error
+          if (isAbortError(callbackError)) {
+            cancel()
+
+            return
+          }
+
+          terminated = true
+          abortController.abort()
+
+          const streamError: StreamError = {
+            code: GrpcStatusCode.INTERNAL,
+            details:
+              callbackError instanceof Error
+                ? `Callback error: ${callbackError.message}`
+                : 'Callback error: Unknown',
+            metadata: {
+              type: 'callback-error',
+              originalError: callbackError,
+              stack:
+                callbackError instanceof Error
+                  ? callbackError.stack
+                  : undefined,
+            },
+          }
+
+          emitSafely('error', streamError)
+          cleanup()
+
+          return
         }
       }
 
-      // Stream completed successfully
-      if (!abortController.signal.aborted && !hasEmittedTerminalEvent) {
-        hasEmittedTerminalEvent = true
-        emitter.emit('complete')
+      if (!cancelled && !terminated && !signal.aborted) {
+        terminated = true
+        emitSafely('complete')
+        cleanup()
       }
     } catch (error) {
-      // Stream errored - this is where gRPC transport errors surface
-      if (!abortController.signal.aborted && !hasEmittedTerminalEvent) {
-        hasEmittedTerminalEvent = true
-        const streamError = extractGrpcError(error)
-        emitter.emit('error', streamError)
+      if (cancelled || terminated || signal.aborted) {
+        cleanup()
+
+        return
       }
+
+      if (isAbortError(error)) {
+        cancel()
+        cleanup()
+
+        return
+      }
+
+      terminated = true
+      abortController.abort()
+      emitSafely('error', extractGrpcError(error))
+      cleanup()
     }
   })()
 

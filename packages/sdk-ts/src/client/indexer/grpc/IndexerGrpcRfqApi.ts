@@ -1,8 +1,10 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as InjectiveRFQExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb'
 import { InjectiveRfqRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcRfqTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { RFQSignMode } from '../types/index.js'
 
 /**
@@ -15,11 +17,15 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveRfqRPCClient)
   }
 
-  async fetchSettlements(params?: {
-    token?: string
-    perPage?: number
-    addresses?: string[]
-  }) {
+  async fetchSettlements(
+    params?: {
+      token?: string
+      perPage?: number
+      addresses?: string[]
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const { addresses, token, perPage } = params || {}
     const request = InjectiveRFQExchangeRpcPb.ListSettlementRequest.create()
 
@@ -38,7 +44,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveRFQExchangeRpcPb.ListSettlementRequest,
       InjectiveRFQExchangeRpcPb.ListSettlementResponse
-    >(request, this.client.listSettlement.bind(this.client))
+    >(request, this.client.listSettlement.bind(this.client), options)
 
     return IndexerGrpcRfqTransformer.listSettlementsResponseToSettlements(
       response,
@@ -138,13 +144,17 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     }
   }
 
-  async listConditionalOrders(params?: {
-    token?: string
-    status?: string[]
-    perPage?: number
-    marketId?: string
-    requestAddress?: string
-  }) {
+  async listConditionalOrders(
+    params?: {
+      token?: string
+      status?: string[]
+      perPage?: number
+      marketId?: string
+      requestAddress?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const { requestAddress, status, marketId, perPage, token } = params || {}
     const request =
       InjectiveRFQExchangeRpcPb.ListConditionalOrdersRequest.create()
@@ -172,7 +182,7 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveRFQExchangeRpcPb.ListConditionalOrdersRequest,
       InjectiveRFQExchangeRpcPb.ListConditionalOrdersResponse
-    >(request, this.client.listConditionalOrders.bind(this.client))
+    >(request, this.client.listConditionalOrders.bind(this.client), options)
 
     return IndexerGrpcRfqTransformer.listConditionalOrdersResponseToConditionalOrders(
       response,

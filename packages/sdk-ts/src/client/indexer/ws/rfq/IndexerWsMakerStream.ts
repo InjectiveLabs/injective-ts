@@ -1,9 +1,9 @@
-import { GrpcDecodeError } from '../../types'
 import { RFQ_GRPC_PATHS } from '../constants.js'
+import { WsState, GrpcDecodeError } from '../../types'
 import { GrpcWebSocketCodec } from '../GrpcWebSocketCodec.js'
 import { GrpcWebSocketTransport } from '../GrpcWebSocketTransport.js'
 import { IndexerGrpcRfqTransformer } from '../../transformers/IndexerGrpcRfqTransformer.js'
-import type { WsState } from '../../types'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { RFQMakerAuth, RFQQuoteType } from '../../types'
 import type {
   MakerStreamConfig,
@@ -51,12 +51,18 @@ export class IndexerWsMakerStream {
     return this.transport.isConnected()
   }
 
-  async connect(): Promise<void> {
+  /**
+   * Connect the stream. The optional signal owns this explicit connection
+   * lifetime, including background reconnects. Later calls without a signal
+   * or with the same signal join the pending readiness; a different signal is
+   * rejected.
+   */
+  async connect(options?: RequestOptions): Promise<void> {
     if (this.isDestroyed) {
       throw new Error('Stream has been destroyed')
     }
 
-    await this.transport.connect()
+    await this.transport.connect(options)
   }
 
   disconnect(): void {
@@ -131,6 +137,10 @@ export class IndexerWsMakerStream {
     })
 
     this.transport.on('state_change', ({ from, to }) => {
+      if (to !== WsState.Connected) {
+        this.stopPingInterval()
+      }
+
       this.emit('state_change', { from, to })
     })
 

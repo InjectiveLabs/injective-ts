@@ -1,8 +1,10 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as InjectiveTCDerivativesRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_tc_derivatives_rpc_pb'
 import { InjectiveTCDerivativesRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_tc_derivatives_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcTcDerivativesTransformer } from '../transformers/index.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 
 /**
  * @category Indexer Grpc API
@@ -14,13 +16,17 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveTCDerivativesRPCClient)
   }
 
-  async fetchOrdersHistory(params?: {
-    token?: string
-    perPage?: number
-    marketId?: string
-    direction?: string
-    accountAddress?: string
-  }) {
+  async fetchOrdersHistory(
+    params?: {
+      token?: string
+      perPage?: number
+      marketId?: string
+      direction?: string
+      accountAddress?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const { token, perPage, marketId, direction, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.OrdersHistoryRequest.create()
@@ -48,27 +54,31 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.OrdersHistoryRequest,
       InjectiveTCDerivativesRpcPb.OrdersHistoryResponse
-    >(request, this.client.ordersHistory.bind(this.client))
+    >(request, this.client.ordersHistory.bind(this.client), options)
 
     return IndexerGrpcTcDerivativesTransformer.ordersHistoryResponseToOrdersHistory(
       response,
     )
   }
 
-  async fetchTradesHistory(params?: {
-    token?: string
-    sortBy?: string
-    endTime?: number
-    perPage?: number
-    withPnl?: boolean
-    marketId?: string
-    rfqMaker?: string
-    startTime?: number
-    direction?: string
-    participant?: string
-    sortDirection?: string
-    accountAddress?: string
-  }) {
+  async fetchTradesHistory(
+    params?: {
+      token?: string
+      sortBy?: string
+      endTime?: number
+      perPage?: number
+      withPnl?: boolean
+      marketId?: string
+      rfqMaker?: string
+      startTime?: number
+      direction?: string
+      participant?: string
+      sortDirection?: string
+      accountAddress?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const {
       token,
       sortBy,
@@ -137,20 +147,24 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.TradesRequest,
       InjectiveTCDerivativesRpcPb.TradesResponse
-    >(request, this.client.trades.bind(this.client))
+    >(request, this.client.trades.bind(this.client), options)
 
     return IndexerGrpcTcDerivativesTransformer.tradesResponseToTrades(response)
   }
 
-  async fetchPositions(params?: {
-    token?: string
-    perPage?: number
-    marketId?: string
-    withUpnl?: boolean
-    direction?: string
-    withCount?: boolean
-    accountAddress?: string
-  }) {
+  async fetchPositions(
+    params?: {
+      token?: string
+      perPage?: number
+      marketId?: string
+      withUpnl?: boolean
+      direction?: string
+      withCount?: boolean
+      accountAddress?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const {
       marketId,
       direction,
@@ -194,20 +208,24 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.PositionsRequest,
       InjectiveTCDerivativesRpcPb.PositionsResponse
-    >(request, this.client.positions.bind(this.client))
+    >(request, this.client.positions.bind(this.client), options)
 
     return IndexerGrpcTcDerivativesTransformer.positionsResponseToPositions(
       response,
     )
   }
 
-  async fetchOrders(params?: {
-    token?: string
-    perPage?: number
-    marketId?: string
-    direction?: string
-    accountAddress?: string
-  }) {
+  async fetchOrders(
+    params?: {
+      token?: string
+      perPage?: number
+      marketId?: string
+      direction?: string
+      accountAddress?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const { marketId, direction, perPage, token, accountAddress } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.OrdersRequest.create()
@@ -235,16 +253,20 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.OrdersRequest,
       InjectiveTCDerivativesRpcPb.OrdersResponse
-    >(request, this.client.orders.bind(this.client))
+    >(request, this.client.orders.bind(this.client), options)
 
     return IndexerGrpcTcDerivativesTransformer.ordersResponseToOrders(response)
   }
 
-  async fetchFundingPayments(params?: {
-    token?: string
-    perPage?: number
-    marketId?: string
-  }) {
+  async fetchFundingPayments(
+    params?: {
+      token?: string
+      perPage?: number
+      marketId?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const { marketId, perPage, token } = params || {}
 
     const request = InjectiveTCDerivativesRpcPb.FundingPaymentsRequest.create()
@@ -264,7 +286,7 @@ export class IndexerGrpcTcDerivativesApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveTCDerivativesRpcPb.FundingPaymentsRequest,
       InjectiveTCDerivativesRpcPb.FundingPaymentsResponse
-    >(request, this.client.fundingPayments.bind(this.client))
+    >(request, this.client.fundingPayments.bind(this.client), options)
 
     return IndexerGrpcTcDerivativesTransformer.fundingPaymentsResponseToFundingPayments(
       response,

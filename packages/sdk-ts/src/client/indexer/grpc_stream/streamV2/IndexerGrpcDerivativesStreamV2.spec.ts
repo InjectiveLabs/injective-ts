@@ -36,5 +36,63 @@ describe('IndexerGrpcDerivativesStreamV2', () => {
 
       expect(options.abort.aborted).toBe(true)
     })
+
+    it('aborts an idle generated stream when the caller signal aborts', () => {
+      const controller = new AbortController()
+      const streamOrderbookV2 = vi
+        .fn()
+        .mockImplementation(
+          (_request: unknown, options: { abort: AbortSignal }) => ({
+            responses: (async function* idleStream() {
+              await new Promise<void>((resolve) => {
+                if (options.abort.aborted) {
+                  resolve()
+
+                  return
+                }
+
+                options.abort.addEventListener('abort', () => resolve(), {
+                  once: true,
+                })
+              })
+            })(),
+          }),
+        )
+
+      ;(derivativesStream as any).client = { streamOrderbookV2 }
+
+      const subscription = derivativesStream.streamOrderbooksV2({
+        marketIds: [mockMarketId],
+        callback: () => {},
+        signal: controller.signal,
+      })
+
+      const [, options] = streamOrderbookV2.mock.calls[0]
+
+      expect(options.abort.aborted).toBe(false)
+
+      controller.abort('stop')
+
+      expect(options.abort.aborted).toBe(true)
+      expect(subscription.cancelled).toBe(true)
+    })
+
+    it('does not create a transport when the caller signal is pre-aborted', () => {
+      const controller = new AbortController()
+      const streamOrderbookV2 = vi.fn()
+
+      ;(derivativesStream as any).client = { streamOrderbookV2 }
+
+      controller.abort()
+
+      const subscription = derivativesStream.streamOrderbooksV2({
+        marketIds: [mockMarketId],
+        callback: () => {},
+        signal: controller.signal,
+      })
+
+      expect(streamOrderbookV2).not.toHaveBeenCalled()
+      expect(subscription.cancelled).toBe(true)
+    })
   })
 })

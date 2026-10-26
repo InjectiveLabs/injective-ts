@@ -1,9 +1,11 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as InjectiveInsuranceRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb'
 import { InjectiveInsuranceRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_insurance_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { fetchAllWithTokenPagination } from '../../../utils/pagination.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerGrpcInsuranceFundTransformer } from '../transformers/index.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 /**
  * @category Indexer Grpc API
  */
@@ -14,15 +16,19 @@ export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveInsuranceRPCClient)
   }
 
-  async fetchRedemptions({
-    denom,
-    address,
-    status,
-  }: {
-    address: string
-    denom?: string
-    status?: string
-  }) {
+  async fetchRedemptions(
+    {
+      denom,
+      address,
+      status,
+    }: {
+      address: string
+      denom?: string
+      status?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = InjectiveInsuranceRpcPb.RedemptionsRequest.create()
 
     request.redeemer = address
@@ -38,14 +44,18 @@ export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveInsuranceRpcPb.RedemptionsRequest,
       InjectiveInsuranceRpcPb.RedemptionsResponse
-    >(request, this.client.redemptions.bind(this.client))
+    >(request, this.client.redemptions.bind(this.client), options)
 
     return IndexerGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
       response,
     )
   }
 
-  async fetchInsuranceFunds(params?: { perPage?: number; token?: string }) {
+  async fetchInsuranceFunds(
+    params?: { perPage?: number; token?: string },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const { perPage, token } = params || {}
     const request = InjectiveInsuranceRpcPb.FundsRequest.create()
 
@@ -60,19 +70,25 @@ export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveInsuranceRpcPb.FundsRequest,
       InjectiveInsuranceRpcPb.FundsResponse
-    >(request, this.client.funds.bind(this.client))
+    >(request, this.client.funds.bind(this.client), options)
 
     return IndexerGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
       response,
     )
   }
 
-  async fetchAllInsuranceFunds(params: { perPage?: number } = {}) {
+  async fetchAllInsuranceFunds(
+    params: { perPage?: number } = {},
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const { perPage = 200 } = params
 
     return fetchAllWithTokenPagination(
       { perPage },
       this.fetchInsuranceFunds.bind(this),
+      undefined,
+      options,
     )
   }
 }

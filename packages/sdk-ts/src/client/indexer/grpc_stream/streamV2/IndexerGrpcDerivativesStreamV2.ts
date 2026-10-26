@@ -74,6 +74,7 @@ export class IndexerGrpcDerivativesStreamV2 {
    * @param params.subaccountId - Optional subaccount ID to filter
    * @param params.orderSide - Optional order side to filter
    * @param params.callback - Called for each order update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOrders({
@@ -81,11 +82,13 @@ export class IndexerGrpcDerivativesStreamV2 {
     subaccountId,
     orderSide,
     callback,
+    signal,
   }: {
     marketId?: string
     subaccountId?: string
     orderSide?: OrderSide
     callback: DerivativeOrdersStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -114,6 +117,7 @@ export class IndexerGrpcDerivativesStreamV2 {
           IndexerDerivativeStreamTransformer.ordersStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -126,6 +130,7 @@ export class IndexerGrpcDerivativesStreamV2 {
    * @param params.state - Optional state to filter
    * @param params.executionTypes - Optional execution types to filter
    * @param params.callback - Called for each order history update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOrdersHistory({
@@ -136,6 +141,7 @@ export class IndexerGrpcDerivativesStreamV2 {
     state,
     executionTypes,
     callback,
+    signal,
   }: {
     subaccountId?: string
     marketId?: string
@@ -144,6 +150,7 @@ export class IndexerGrpcDerivativesStreamV2 {
     state?: OrderState
     executionTypes?: TradeExecutionType[]
     callback: DerivativeOrderHistoryStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -186,6 +193,7 @@ export class IndexerGrpcDerivativesStreamV2 {
           )
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -199,6 +207,7 @@ export class IndexerGrpcDerivativesStreamV2 {
    * @param params.direction - Optional direction to filter
    * @param params.pagination - Optional pagination options
    * @param params.callback - Called for each trade update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamTrades({
@@ -210,6 +219,7 @@ export class IndexerGrpcDerivativesStreamV2 {
     direction,
     pagination,
     callback,
+    signal,
   }: {
     marketIds?: string[]
     marketId?: string
@@ -219,6 +229,7 @@ export class IndexerGrpcDerivativesStreamV2 {
     direction?: TradeDirection
     pagination?: PaginationOption
     callback: DerivativeTradesStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -269,6 +280,7 @@ export class IndexerGrpcDerivativesStreamV2 {
           IndexerDerivativeStreamTransformer.tradesStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -278,6 +290,7 @@ export class IndexerGrpcDerivativesStreamV2 {
    * @param params.address - Optional address to filter
    * @param params.subaccountId - Optional subaccount ID to filter
    * @param params.callback - Called for each position update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamPositions({
@@ -285,11 +298,13 @@ export class IndexerGrpcDerivativesStreamV2 {
     address,
     subaccountId,
     callback,
+    signal,
   }: {
     marketId?: string
     address?: string
     subaccountId?: string
     callback: DerivativePositionsStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -318,6 +333,7 @@ export class IndexerGrpcDerivativesStreamV2 {
           IndexerDerivativeStreamTransformer.positionStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -325,14 +341,17 @@ export class IndexerGrpcDerivativesStreamV2 {
    * Stream derivative markets
    * @param params.marketIds - Optional array of market IDs to filter
    * @param params.callback - Called for each market update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamMarkets({
     marketIds,
     callback,
+    signal,
   }: {
     marketIds?: string[]
     callback: DerivativeMarketStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -351,6 +370,7 @@ export class IndexerGrpcDerivativesStreamV2 {
       (response) => {
         callback(response)
       },
+      { signal },
     )
   }
 
@@ -358,14 +378,17 @@ export class IndexerGrpcDerivativesStreamV2 {
    * Stream derivative orderbooks V2
    * @param params.marketIds - Array of market IDs to stream
    * @param params.callback - Called for each orderbook update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOrderbooksV2({
     marketIds,
     callback,
+    signal,
   }: {
     marketIds: string[]
     callback: DerivativeOrderbookV2StreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!marketIds || marketIds.length === 0) {
       throw new Error('marketIds is required and cannot be empty')
@@ -386,6 +409,7 @@ export class IndexerGrpcDerivativesStreamV2 {
           IndexerDerivativeStreamTransformer.orderbookV2StreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -393,14 +417,17 @@ export class IndexerGrpcDerivativesStreamV2 {
    * Stream derivative orderbook updates
    * @param params.marketIds - Array of market IDs to stream
    * @param params.callback - Called for each orderbook update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOrderbookUpdates({
     marketIds,
     callback,
+    signal,
   }: {
     marketIds: string[]
     callback: DerivativeOrderbookUpdateStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!marketIds || marketIds.length === 0) {
       throw new Error('marketIds is required and cannot be empty')
@@ -424,6 +451,7 @@ export class IndexerGrpcDerivativesStreamV2 {
           )
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -433,6 +461,7 @@ export class IndexerGrpcDerivativesStreamV2 {
    * @param params.address - Optional address to filter
    * @param params.subaccountId - Optional subaccount ID to filter
    * @param params.callback - Called for each position update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamPositionsV2({
@@ -440,11 +469,13 @@ export class IndexerGrpcDerivativesStreamV2 {
     address,
     subaccountId,
     callback,
+    signal,
   }: {
     marketId?: string
     address?: string
     subaccountId?: string
     callback: DerivativePositionsV2StreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -473,6 +504,7 @@ export class IndexerGrpcDerivativesStreamV2 {
           IndexerDerivativeStreamTransformer.positionV2StreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 }

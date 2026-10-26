@@ -377,7 +377,10 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     waiter.close()
 
     expect(pollAbortSignal?.aborted).toBe(true)
-    await expect(waitPromise).rejects.toThrow('poll aborted')
+    await expect(waitPromise).rejects.toMatchObject({
+      name: 'AbortError',
+      code: 'ERR_CANCELED',
+    })
   })
 
   it('passes custom polling interval to polling waiter', async () => {
@@ -468,7 +471,9 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     })
 
     expect(result.txHash).toBe(txHash)
-    expect(fetchTx).toHaveBeenCalledWith(txHash)
+    expect(fetchTx).toHaveBeenCalledWith(txHash, {
+      signal: expect.any(Object),
+    })
     expect(fetchTxPoll).not.toHaveBeenCalled()
   })
 
@@ -523,7 +528,10 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     waiter.close()
 
     expect(pollAbortSignal?.aborted).toBe(true)
-    await expect(waitPromise).rejects.toThrow('poll aborted')
+    await expect(waitPromise).rejects.toMatchObject({
+      name: 'AbortError',
+      code: 'ERR_CANCELED',
+    })
   })
 
   it('races event and polling when dual inclusion is enabled', async () => {
@@ -580,7 +588,9 @@ describe('TxGrpcApi.broadcast event ordering', () => {
     })
 
     expect(result.txHash).toBe(txHash)
-    expect(fetchTx).toHaveBeenCalledWith(txHash)
+    expect(fetchTx).toHaveBeenCalledWith(txHash, {
+      signal: expect.any(Object),
+    })
     expect(fetchTxPoll).toHaveBeenCalledWith({
       txHash,
       timeout: expect.any(Number),

@@ -43,14 +43,17 @@ export class IndexerGrpcSpotStreamV2 {
    * Stream spot orderbook updates
    * @param params.marketIds - Array of market IDs to stream
    * @param params.callback - Called for each orderbook update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOrderbookUpdates({
     marketIds,
     callback,
+    signal,
   }: {
     marketIds: string[]
     callback: SpotOrderbookUpdateStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!marketIds || marketIds.length === 0) {
       throw new Error('marketIds is required')
@@ -71,6 +74,7 @@ export class IndexerGrpcSpotStreamV2 {
           IndexerSpotStreamTransformer.orderbookUpdateStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -80,6 +84,7 @@ export class IndexerGrpcSpotStreamV2 {
    * @param params.subaccountId - Optional subaccount ID to filter
    * @param params.orderSide - Optional order side to filter
    * @param params.callback - Called for each order update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOrders({
@@ -87,11 +92,13 @@ export class IndexerGrpcSpotStreamV2 {
     subaccountId,
     orderSide,
     callback,
+    signal,
   }: {
     marketId?: string
     subaccountId?: string
     orderSide?: OrderSide
     callback: SpotOrdersStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -119,6 +126,7 @@ export class IndexerGrpcSpotStreamV2 {
           IndexerSpotStreamTransformer.ordersStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -131,6 +139,7 @@ export class IndexerGrpcSpotStreamV2 {
    * @param params.state - Optional state to filter
    * @param params.executionTypes - Optional execution types to filter
    * @param params.callback - Called for each order history update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamOrderHistory({
@@ -141,6 +150,7 @@ export class IndexerGrpcSpotStreamV2 {
     state,
     executionTypes,
     callback,
+    signal,
   }: {
     subaccountId?: string
     marketId?: string
@@ -149,6 +159,7 @@ export class IndexerGrpcSpotStreamV2 {
     state?: string
     executionTypes?: string[]
     callback: SpotOrderHistoryStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -189,6 +200,7 @@ export class IndexerGrpcSpotStreamV2 {
           IndexerSpotStreamTransformer.orderHistoryStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -202,6 +214,7 @@ export class IndexerGrpcSpotStreamV2 {
    * @param params.direction - Optional direction to filter
    * @param params.executionTypes - Optional execution types to filter
    * @param params.callback - Called for each trade update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamTrades({
@@ -213,6 +226,7 @@ export class IndexerGrpcSpotStreamV2 {
     direction,
     executionTypes,
     callback,
+    signal,
   }: {
     marketId?: string
     marketIds?: string[]
@@ -222,6 +236,7 @@ export class IndexerGrpcSpotStreamV2 {
     direction?: string
     executionTypes?: string[]
     callback: SpotTradesStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -265,6 +280,7 @@ export class IndexerGrpcSpotStreamV2 {
           IndexerSpotStreamTransformer.tradesStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 }

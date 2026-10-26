@@ -1,5 +1,7 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import { bigIntToNumber } from './helpers.js'
 import { ChainGrpcCommonTransformer } from '../client/chain/transformers/ChainGrpcCommonTransformer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type * as InjectiveAccountsRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_accounts_rpc_pb'
 import type * as InjectiveExplorerRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_explorer_rpc_pb'
 import type * as CosmosBaseQueryV1Beta1PaginationPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/query/v1beta1/pagination_pb'
@@ -97,10 +99,15 @@ export const fetchAllWithTokenPagination = async <
   Q extends { next: string[] },
 >(
   args: T,
-  method: (args: T) => Promise<Q>,
+  method: (args: T, options?: RequestOptions) => Promise<Q>,
   result: Array<unknown> = [],
+  options?: RequestOptions,
 ): Promise<Q> => {
-  const response = await method(args)
+  throwIfAborted(options?.signal)
+
+  const response = options ? await method(args, options) : await method(args)
+
+  throwIfAborted(options?.signal)
 
   const keys = Object.keys(response)
   const valueKey = keys.find(
@@ -117,7 +124,12 @@ export const fetchAllWithTokenPagination = async <
   const token = response.next[0]
 
   if (token) {
-    return fetchAllWithTokenPagination({ ...args, token } as T, method, result)
+    return fetchAllWithTokenPagination(
+      { ...args, token } as T,
+      method,
+      result,
+      options,
+    )
   }
 
   return { [valueKey]: result, next: [] } as unknown as Q
@@ -131,10 +143,15 @@ export const fetchAllWithPagination = async <
   Q extends { pagination: Pagination },
 >(
   args: T,
-  method: (args: T) => Promise<Q>,
+  method: (args: T, options?: RequestOptions) => Promise<Q>,
   result: Array<unknown> = [],
+  options?: RequestOptions,
 ): Promise<Q> => {
-  let response = await method(args)
+  throwIfAborted(options?.signal)
+
+  let response = options ? await method(args, options) : await method(args)
+
+  throwIfAborted(options?.signal)
 
   if (!args) {
     return response
@@ -154,6 +171,7 @@ export const fetchAllWithPagination = async <
       { ...paginationOption, key: response.pagination.next } as T,
       method,
       result,
+      options,
     )
   }
 

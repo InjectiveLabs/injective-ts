@@ -33,9 +33,11 @@ export class IndexerGrpcRfqStreamV2 {
   streamRequests({
     marketIds,
     callback,
+    signal,
   }: {
     marketIds?: string[]
     callback: RequestStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -56,6 +58,7 @@ export class IndexerGrpcRfqStreamV2 {
 
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -63,10 +66,12 @@ export class IndexerGrpcRfqStreamV2 {
     addresses,
     marketIds,
     callback,
+    signal,
   }: {
     addresses?: string[]
     marketIds?: string[]
     callback: QuoteStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -90,15 +95,18 @@ export class IndexerGrpcRfqStreamV2 {
 
         callback(transformed)
       },
+      { signal },
     )
   }
 
   streamSettlements({
     addresses,
     callback,
+    signal,
   }: {
     addresses?: string[]
     callback: SettlementStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -119,6 +127,7 @@ export class IndexerGrpcRfqStreamV2 {
 
         callback(transformed)
       },
+      { signal },
     )
   }
 }

@@ -6,7 +6,18 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import HttpClient from './HttpClient.js'
+import { createRetryRequestConfig } from './RetryRequestConfig.js'
+import {
+  AbortError,
+  isAbortError,
+  raceWithAbort,
+  abortableSleep,
+  throwIfAborted,
+  createAbortError,
+} from '../abort.js'
 import type { AxiosError, AxiosRequestConfig } from 'axios'
+import type { RequestOptions } from '../abort.js'
+import type { RetryRequestConfig } from './RetryRequestConfig.js'
 
 const getErrorMessage = (error: any, endpoint: string): string => {
   if (!error.response) {
@@ -18,6 +29,39 @@ const getErrorMessage = (error: any, endpoint: string): string => {
         error.response.data.statusMessage ||
         error.response.data
     : error.response.statusText
+}
+
+const getLocalAbortError = (
+  error: unknown,
+  signal?: AbortSignal,
+): AbortError | undefined => {
+  const axiosSignal = axios.isAxiosError(error)
+    ? (error.config?.signal as AbortSignal | undefined)
+    : undefined
+
+  if (isAbortError(error)) {
+    if (error instanceof AbortError) {
+      return error
+    }
+
+    const reason = signal?.aborted
+      ? signal.reason
+      : axiosSignal?.aborted
+        ? axiosSignal.reason
+        : (error as { reason?: unknown }).reason
+
+    return new AbortError(reason)
+  }
+
+  if (signal?.aborted) {
+    return createAbortError(signal)
+  }
+
+  if (axiosSignal?.aborted) {
+    return createAbortError(axiosSignal)
+  }
+
+  return undefined
 }
 
 /**
@@ -42,11 +86,23 @@ export default class HttpRestClient {
   public async get<T>(
     endpoint: string,
     params: Record<string, any> = {},
+    config: AxiosRequestConfig = {},
   ): Promise<T> {
+    // Keep runtime compatibility for JS callers passing nullish config.
+    const requestConfig = config || {}
+
     try {
-      return await this.client.get(endpoint, params)
+      return await this.client.get(endpoint, params, requestConfig)
     } catch (e: unknown) {
       const error = e as Error | AxiosError
+      const abortError = getLocalAbortError(
+        error,
+        requestConfig.signal as AbortSignal | undefined,
+      )
+
+      if (abortError) {
+        throw abortError
+      }
 
       if (axios.isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
@@ -74,14 +130,47 @@ export default class HttpRestClient {
   }
 
   public async retry<TResponse>(
+    httpCall: (
+      requestConfig: RetryRequestConfig,
+    ) => TResponse | PromiseLike<TResponse>,
+    retries?: number,
+    delay?: number,
+    options?: RequestOptions,
+  ): Promise<TResponse>
+  public async retry<TResponse>(
+    httpCall: Function,
+    retries?: number,
+    delay?: number,
+    options?: RequestOptions,
+  ): Promise<TResponse>
+  public async retry<TResponse>(
     httpCall: Function,
     retries: number = 3,
     delay: number = 1000,
+    options?: RequestOptions,
   ): Promise<TResponse> {
-    const retryHttpCall = async (attempt = 1): Promise<any> => {
+    const { signal, dispose } = this.client.getAbortSignal(options?.signal)
+
+    const retryHttpCall = async (attempt = 1): Promise<TResponse> => {
+      throwIfAborted(signal)
+
       try {
-        return (await httpCall()) as TResponse
+        const requestConfig = createRetryRequestConfig(signal)
+        const response = await raceWithAbort(
+          Promise.resolve(httpCall(requestConfig)),
+          signal,
+        )
+
+        return response as TResponse
       } catch (e: any) {
+        const abortError = getLocalAbortError(e, signal)
+
+        if (abortError) {
+          throw abortError
+        }
+
+        throwIfAborted(signal)
+
         if (e instanceof HttpRequestException) {
           if (e.code === StatusCodes.REQUEST_TOO_LONG) {
             throw e
@@ -92,26 +181,39 @@ export default class HttpRestClient {
           throw e
         }
 
-        return new Promise((resolve) =>
-          setTimeout(
-            () => resolve(retryHttpCall(attempt + 1)),
-            delay * attempt,
-          ),
-        )
+        await abortableSleep(delay * attempt, signal)
+
+        return retryHttpCall(attempt + 1)
       }
     }
 
-    return retryHttpCall()
+    try {
+      return await retryHttpCall()
+    } finally {
+      dispose()
+    }
   }
 
   public async post<T>(
     endpoint: string,
     params: Record<string, any> = {},
+    config: AxiosRequestConfig = {},
   ): Promise<T> {
+    // Keep runtime compatibility for JS callers passing nullish config.
+    const requestConfig = config || {}
+
     try {
-      return await this.client.post(endpoint, params)
+      return await this.client.post(endpoint, params, requestConfig)
     } catch (e: unknown) {
       const error = e as Error | AxiosError
+      const abortError = getLocalAbortError(
+        error,
+        requestConfig.signal as AbortSignal | undefined,
+      )
+
+      if (abortError) {
+        throw abortError
+      }
 
       if (axios.isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {

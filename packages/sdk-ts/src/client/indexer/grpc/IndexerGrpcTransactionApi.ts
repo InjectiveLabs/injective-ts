@@ -8,6 +8,7 @@ import * as InjectiveExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/gene
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { InjectiveExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_exchange_rpc_pb.client'
 import {
+  throwIfAborted,
   DEFAULT_GAS_LIMIT,
   DEFAULT_EXCHANGE_LIMIT,
   DEFAULT_BRIDGE_FEE_DENOM,
@@ -22,6 +23,7 @@ import {
   stringToUint8Array,
   base64ToUint8Array,
 } from '../../../utils/encoding.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
 interface PrepareTxArgs {
   address: AccountAddress
@@ -273,13 +275,14 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
     return response
   }
 
-  async fetchFeePayer() {
+  async fetchFeePayer(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = InjectiveExchangeRpcPb.GetFeePayerRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveExchangeRpcPb.GetFeePayerRequest,
       InjectiveExchangeRpcPb.GetFeePayerResponse
-    >(request, this.client.getFeePayer.bind(this.client))
+    >(request, this.client.getFeePayer.bind(this.client), options)
 
     return response
   }

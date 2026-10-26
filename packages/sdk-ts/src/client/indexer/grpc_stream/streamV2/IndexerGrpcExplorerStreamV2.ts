@@ -33,12 +33,15 @@ export class IndexerGrpcExplorerStreamV2 {
   /**
    * Stream block updates
    * @param params.callback - Called for each block update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamBlocks({
     callback,
+    signal,
   }: {
     callback: BlocksStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -53,18 +56,22 @@ export class IndexerGrpcExplorerStreamV2 {
           ExplorerStreamTransformer.blocksStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
   /**
    * Stream blocks with transactions
    * @param params.callback - Called for each block with transactions update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamBlocksWithTxs({
     callback,
+    signal,
   }: {
     callback: BlocksWithTxsStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -79,18 +86,22 @@ export class IndexerGrpcExplorerStreamV2 {
           ExplorerStreamTransformer.blocksWithTxsStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
   /**
    * Stream transaction updates
    * @param params.callback - Called for each transaction update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamTransactions({
     callback,
+    signal,
   }: {
     callback: TransactionsStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -104,6 +115,7 @@ export class IndexerGrpcExplorerStreamV2 {
           ExplorerStreamTransformer.transactionsStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 }
