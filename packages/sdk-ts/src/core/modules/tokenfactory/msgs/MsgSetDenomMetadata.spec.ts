@@ -74,6 +74,20 @@ describe('MsgSetDenomMetadata', () => {
     })
   })
 
+  it('keeps zero decimals as a number', () => {
+    const zeroDecimals = MsgSetDenomMetadata.fromJSON({
+      ...params,
+      metadata: {
+        ...params.metadata,
+        decimals: 0,
+      },
+    })
+
+    expect(zeroDecimals.toProto().metadata?.decimals).toBe(0)
+    expect(zeroDecimals.toAmino().value.metadata.decimals).toBe(0)
+    expect(zeroDecimals.toWeb3Gw().metadata.decimals).toBe(0)
+  })
+
   it('generates proper amino', () => {
     const amino = message.toAmino()
 
