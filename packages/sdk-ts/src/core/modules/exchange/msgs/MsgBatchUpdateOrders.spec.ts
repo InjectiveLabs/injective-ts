@@ -100,4 +100,53 @@ describe('MsgBatchUpdateOrders', () => {
       expect(v2Msgs[0][key]).toEqual([])
     }
   })
+
+  it('covers lists from every batch update in one EIP712 v1 transaction', () => {
+    const derivativeMessage = MsgBatchUpdateOrders.fromJSON({
+      injectiveAddress: mockFactory.injectiveAddress,
+      subaccountId: mockFactory.subaccountId,
+      derivativeOrdersToCancel: [
+        {
+          marketId: mockFactory.derivativeMarketId,
+          subaccountId: mockFactory.subaccountId,
+          orderHash: mockFactory.orderHash2,
+        },
+      ],
+    })
+    const { eip712Args } = prepareEip712({
+      messages: [message, derivativeMessage],
+    })
+    const typedData = getEip712TypedData(eip712Args)
+    const types = typedData.types as Record<
+      string,
+      { name: string; type: string }[]
+    >
+    const msgs = typedData.message.msgs as {
+      value: Record<string, unknown>
+    }[]
+
+    expect(types.MsgValue).toEqual(
+      expect.arrayContaining([
+        { name: 'spot_orders_to_cancel', type: 'TypeSpotOrdersToCancel[]' },
+        {
+          name: 'derivative_orders_to_cancel',
+          type: 'TypeDerivativeOrdersToCancel[]',
+        },
+      ]),
+    )
+    expect(msgs[0].value.spot_orders_to_cancel).toHaveLength(1)
+    expect(msgs[0].value.derivative_orders_to_cancel).toEqual([])
+    expect(msgs[1].value.derivative_orders_to_cancel).toHaveLength(1)
+    expect(msgs[1].value.spot_orders_to_cancel).toEqual([])
+    expect(types.TypeSpotOrdersToCancel).toEqual([
+      { name: 'market_id', type: 'string' },
+      { name: 'subaccount_id', type: 'string' },
+      { name: 'order_hash', type: 'string' },
+    ])
+    expect(types.TypeDerivativeOrdersToCancel).toEqual([
+      { name: 'market_id', type: 'string' },
+      { name: 'subaccount_id', type: 'string' },
+      { name: 'order_hash', type: 'string' },
+    ])
+  })
 })
