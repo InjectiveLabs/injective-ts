@@ -2,6 +2,7 @@ import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/genera
 import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { validateOracleType } from '../../oracle/utils.js'
 
 export declare namespace MsgCreateInsuranceFund {
   export interface Params {
@@ -38,6 +39,13 @@ export default class MsgCreateInsuranceFund extends MsgBase<
 
   public toProto() {
     const { params } = this
+
+    if (params.fund.expiry === -2) {
+      throw new Error(
+        'Binary options insurance funds have been removed in v1.21',
+      )
+    }
+    validateOracleType(params.fund.oracleType)
 
     const coin = CosmosBaseV1Beta1CoinPb.Coin.create({
       denom: params.deposit.denom,
