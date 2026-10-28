@@ -170,30 +170,84 @@ describe('createStreamSubscription cancellation', () => {
     expect(subscription.cancelled).toBe(false)
   })
 
-  it('normalizes string gRPC codes and emits one status callback', async () => {
-    const statuses: StreamStatusResponse[] = []
-    const onEnd = vi.fn()
+  it.each(['UNAVAILABLE', 14])(
+    'preserves the legacy status payload for code %s',
+    async (code) => {
+      const statuses: StreamStatusResponse[] = []
+      const onEnd = vi.fn()
+      const error = Object.assign(new Error('backend unavailable'), { code })
 
-    const subscription = createStreamSubscription(
-      () => ({
-        responses: (async function* failingStream() {
-          throw Object.assign(new Error('backend unavailable'), {
-            code: 'UNAVAILABLE',
-          })
-        })(),
-      }),
-      () => {},
-      onEnd,
-      (status) => statuses.push(status),
+      const subscription = createStreamSubscription(
+        () => ({
+          responses: (async function* failingStream() {
+            throw error
+          })(),
+        }),
+        () => {},
+        onEnd,
+        (status) => statuses.push(status),
+      )
+
+      await flush()
+
+      expect(onEnd).not.toHaveBeenCalled()
+      expect(statuses).toHaveLength(1)
+      expect(statuses[0].code).toBe(2)
+      expect(statuses[0].details).toBe('backend unavailable')
+      expect(statuses[0].metadata).toBe(error)
+      expect(statuses[0].metadata.message).toBe('backend unavailable')
+      expect(subscription.cancelled).toBe(false)
+    },
+  )
+
+  it.each([
+    ['callback', { name: 'AbortError' }],
+    ['callback', { code: 'ERR_CANCELED' }],
+    ['transport', { name: 'AbortError' }],
+    ['transport', { code: 'ERR_CANCELED' }],
+  ])('reports an unrelated cancellation from the %s', async (source, shape) => {
+    const error = Object.assign(
+      new Error('another operation was cancelled'),
+      shape,
     )
+    const onStatus = vi.fn()
+    const onCancel = vi.fn()
+    let transportSignal: AbortSignal | undefined
+    const subscription = createStreamSubscription(
+      (signal) => {
+        transportSignal = signal
+
+        return {
+          responses: (async function* stream() {
+            expect(signal.aborted).toBe(false)
+
+            if (source === 'transport') {
+              throw error
+            }
+
+            yield 1
+          })(),
+        }
+      },
+      () => {
+        expect(transportSignal?.aborted).toBe(false)
+        throw error
+      },
+      undefined,
+      onStatus,
+    )
+    subscription.onCancel?.(onCancel)
 
     await flush()
 
-    expect(onEnd).not.toHaveBeenCalled()
-    expect(statuses).toHaveLength(1)
-    expect(statuses[0].code).toBe(14)
-    expect(statuses[0].details).toBe('backend unavailable')
+    expect(onStatus).toHaveBeenCalledExactlyOnceWith({
+      code: 2,
+      details: error.message,
+      metadata: error,
+    })
+    expect(onCancel).not.toHaveBeenCalled()
     expect(subscription.cancelled).toBe(false)
+    expect(transportSignal?.aborted).toBe(true)
   })
 
   it('cleans up and cancels the transport when the data callback throws', async () => {

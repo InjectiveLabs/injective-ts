@@ -50,7 +50,7 @@ export class TokenPrice {
     }>(
       (requestConfig) =>
         this.client.get(`denoms?withPrice=true`, {}, requestConfig),
-      options,
+      options ?? {},
     )
 
     const tokenPriceMap: Record<string, number> = Object.values(

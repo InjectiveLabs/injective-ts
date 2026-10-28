@@ -1,5 +1,4 @@
-import { isAbortError, combineAbortSignals } from '@injectivelabs/utils'
-import { extractGrpcError } from '../streamError.js'
+import { combineAbortSignals } from '@injectivelabs/utils'
 import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
 
@@ -114,9 +113,17 @@ export function createStreamSubscription<TResponse>(
     abortController.abort()
   }
 
-  const statusCallback = (status: StreamStatusResponse | undefined): void => {
+  const reportError = (error: unknown): void => {
     if (typeof onStatusCallback === 'function') {
-      safeCall(() => onStatusCallback(status as StreamStatusResponse))
+      // V1 consumers rely on UNKNOWN and on metadata being the raw error.
+      safeCall(() =>
+        onStatusCallback({
+          code: 2,
+          details:
+            error instanceof Error ? error.message : 'Unknown stream error',
+          metadata: error,
+        }),
+      )
     }
   }
 
@@ -195,14 +202,9 @@ export function createStreamSubscription<TResponse>(
             break
           }
 
-          if (isAbortError(error)) {
-            cancel()
-            break
-          }
-
           terminated = true
           abortController.abort()
-          statusCallback(extractGrpcError(error) as StreamStatusResponse)
+          reportError(error)
           break
         }
       }
@@ -219,15 +221,9 @@ export function createStreamSubscription<TResponse>(
         return
       }
 
-      if (isAbortError(error)) {
-        cancel()
-
-        return
-      }
-
       terminated = true
       abortController.abort()
-      statusCallback(extractGrpcError(error) as StreamStatusResponse)
+      reportError(error)
     } finally {
       cleanup()
     }

@@ -1,3 +1,4 @@
+import { RpcError } from '@protobuf-ts/runtime-rpc'
 import { StreamManagerV2 } from './StreamManagerV2.js'
 import { createStreamSubscriptionV2 } from './streamHelpersV2.js'
 import {
@@ -616,7 +617,7 @@ describe('StreamManagerV2 cancellation', () => {
     expect(subscription.on).not.toHaveBeenCalled()
   })
 
-  it('normalizes string gRPC codes from subscription errors', () => {
+  it('preserves string codes from custom subscriptions without changing retry classification', () => {
     const subscription = createMockSubscription()
     const disconnectEvents: any[] = []
 
@@ -635,31 +636,116 @@ describe('StreamManagerV2 cancellation', () => {
       details: 'connection lost',
     } as unknown as StreamError)
 
-    expect(disconnectEvents[0].reason).toBe(StreamDisconnectReason.NetworkError)
+    expect(disconnectEvents[0].reason).toBe(StreamDisconnectReason.StreamError)
     expect(disconnectEvents[0].willRetry).toBe(true)
 
     manager.stop()
   })
 
-  it('treats an abort-shaped subscription error as a silent local stop', () => {
-    const subscription = createMockSubscription()
-    const errorEvents: any[] = []
+  it.each(['subscription', 'onData'])(
+    'retries an unrelated abort-shaped error from %s',
+    (source) => {
+      const subscription = createMockSubscription()
+      const errorEvents: any[] = []
+      const error = Object.assign(
+        new Error('another operation was cancelled'),
+        {
+          name: 'AbortError',
+          code: 'ERR_CANCELED',
+        },
+      )
+      const controller = new AbortController()
+      const streamFactory = vi
+        .fn(() => createMockSubscription())
+        .mockReturnValueOnce(subscription)
 
-    const manager = new StreamManagerV2({
-      id: 'abort-shaped-error',
-      streamFactory: () => subscription,
-      onData: () => {},
-    })
+      const manager = new StreamManagerV2({
+        id: 'abort-shaped-error',
+        streamFactory,
+        signal: controller.signal,
+        onData: () => {
+          throw error
+        },
+        retryConfig: { initialDelayMs: 100 },
+      })
 
-    manager.on('error', (event) => errorEvents.push(event))
-    manager.start()
+      manager.on('error', (event) => errorEvents.push(event))
+      manager.start()
 
-    subscription._errorHandler?.(
-      new DOMException('aborted', 'AbortError') as unknown as StreamError,
-    )
+      if (source === 'subscription') {
+        subscription._errorHandler?.(error as unknown as StreamError)
+      } else {
+        manager.emit('data', 1)
+      }
 
-    expect(manager.getState()).toBe(StreamState.Stopped)
-    expect(errorEvents).toHaveLength(0)
-    expect(subscription.unsubscribe).toHaveBeenCalledTimes(1)
-  })
+      expect(controller.signal.aborted).toBe(false)
+      expect(manager.getState()).toBe(StreamState.Reconnecting)
+      expect(errorEvents).toHaveLength(1)
+      expect(subscription.unsubscribe).toHaveBeenCalledTimes(1)
+
+      vi.advanceTimersByTime(100)
+
+      expect(streamFactory).toHaveBeenCalledTimes(2)
+      expect(manager.getState()).toBe(StreamState.Connected)
+      manager.destroy()
+    },
+  )
+
+  it.each([
+    'UNAUTHENTICATED',
+    'PERMISSION_DENIED',
+    'INVALID_ARGUMENT',
+    'NOT_FOUND',
+    'ALREADY_EXISTS',
+    'OUT_OF_RANGE',
+    'UNIMPLEMENTED',
+    'FAILED_PRECONDITION',
+    'UNAVAILABLE',
+    '5',
+  ])(
+    'keeps protobuf-ts %s retryable with the legacy error code',
+    async (code) => {
+      const error = new RpcError('temporary backend response', code)
+      const errors: any[] = []
+      const disconnects: any[] = []
+      const streamFactory = vi.fn(() =>
+        createStreamSubscriptionV2(
+          () => ({
+            responses: (async function* stream() {
+              throw error
+            })(),
+          }),
+          () => {},
+        ),
+      )
+      const manager = new StreamManagerV2({
+        id: code,
+        streamFactory,
+        onData: () => {},
+        retryConfig: { initialDelayMs: 100, persistent: false },
+      })
+      manager.on('error', (event) => errors.push(event))
+      manager.on('disconnect', (event) => disconnects.push(event))
+
+      manager.start()
+      await vi.advanceTimersByTimeAsync(0)
+
+      expect(errors).toHaveLength(1)
+      expect(errors[0]).toMatchObject({
+        code: GrpcStatusCode.UNKNOWN,
+        message: error.message,
+        details: { metadata: { originalError: error } },
+      })
+      expect(disconnects[0]).toMatchObject({
+        reason: StreamDisconnectReason.StreamError,
+        willRetry: true,
+      })
+      expect(manager.getState()).toBe(StreamState.Reconnecting)
+
+      await vi.advanceTimersByTimeAsync(100)
+
+      expect(streamFactory).toHaveBeenCalledTimes(2)
+      manager.destroy()
+    },
+  )
 })

@@ -588,8 +588,7 @@ describe('HttpRestClient', () => {
       })
       const promise = client.retry(
         (requestConfig) => client.get('/path', {}, requestConfig),
-        3,
-        10000,
+        { retries: 3, delay: 10000 },
       )
 
       await vi.advanceTimersByTimeAsync(0)
@@ -623,8 +622,7 @@ describe('HttpRestClient', () => {
       const client = new HttpRestClient('http://api.test', { adapter })
       const promise = client.retry(
         (requestConfig) => client.get('/path', {}, requestConfig),
-        3,
-        10,
+        { retries: 3, delay: 10 },
       )
 
       await vi.advanceTimersByTimeAsync(0)
@@ -645,9 +643,7 @@ describe('HttpRestClient', () => {
       const client = new HttpRestClient('http://api.test', { adapter })
       const promise = client.retry(
         (requestConfig) => client.get('/path', {}, requestConfig),
-        3,
-        10,
-        { signal: controller.signal },
+        { retries: 3, delay: 10, signal: controller.signal },
       )
 
       await vi.waitFor(() => expect(calls).toHaveLength(1))
@@ -701,8 +697,7 @@ describe('HttpRestClient', () => {
 
           return client.get('/second', {}, requestConfig)
         },
-        3,
-        10,
+        { retries: 3, delay: 10 },
       )
 
       await vi.runAllTimersAsync()
@@ -756,8 +751,7 @@ describe('HttpRestClient', () => {
 
           return client.get('/pinned', {}, requestConfig)
         },
-        3,
-        10,
+        { retries: 3, delay: 10 },
       )
 
       await expect(promise).resolves.toMatchObject({ data: 'ok' })
@@ -776,6 +770,58 @@ describe('HttpRestClient', () => {
 
       await expect(client.retry(callback, 3, 10)).resolves.toBe('legacy result')
       expect(callback).toHaveBeenCalledTimes(1)
+      expect(callback).toHaveBeenCalledWith()
+    })
+
+    it.each(['omitted', 'undefined', 'positional', 'positional signal'])(
+      'preserves optional callback parameters for %s retry settings',
+      async (form) => {
+        const controller = new AbortController()
+        const client = new HttpRestClient('http://api.test')
+        const callback = vi.fn((page = 1) => Promise.resolve(page))
+        const promise =
+          form === 'omitted'
+            ? client.retry(callback)
+            : form === 'undefined'
+              ? client.retry(callback, undefined)
+              : form === 'positional'
+                ? client.retry(callback, 3, 10)
+                : client.retry(callback, 3, 10, { signal: controller.signal })
+
+        await expect(promise).resolves.toBe(1)
+        expect(callback).toHaveBeenCalledExactlyOnceWith()
+      },
+    )
+
+    it('keeps legacy callback arity unchanged on every retry', async () => {
+      vi.useFakeTimers()
+      const client = new HttpRestClient('http://api.test')
+      let attempts = 0
+      const callback = vi.fn((...args: unknown[]) => {
+        attempts += 1
+
+        if (attempts === 1) {
+          throw new Error('transient failure')
+        }
+
+        return args.length
+      })
+      const promise = client.retry(callback, 2, 10)
+
+      await vi.runAllTimersAsync()
+
+      await expect(promise).resolves.toBe(0)
+      expect(callback.mock.calls).toEqual([[], []])
+    })
+
+    it('passes request config only when the options-object form is explicit', async () => {
+      const client = new HttpRestClient('http://api.test')
+      const callback = vi.fn((requestConfig) => requestConfig)
+
+      await expect(client.retry(callback, {})).resolves.toMatchObject({
+        signal: undefined,
+      })
+      expect(callback.mock.calls[0]).toHaveLength(1)
     })
 
     it('keeps Function-typed callbacks source-compatible', async () => {
@@ -796,9 +842,7 @@ describe('HttpRestClient', () => {
       const client = new HttpRestClient('http://api.test', { adapter })
       const promise = client.retry(
         (requestConfig) => client.get('/path', {}, requestConfig),
-        1,
-        10,
-        { signal: controller.signal },
+        { retries: 1, delay: 10, signal: controller.signal },
       )
 
       try {

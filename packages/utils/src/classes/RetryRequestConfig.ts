@@ -5,7 +5,7 @@ const RETRY_REQUEST_CONFIG_BRAND = Symbol(
 )
 
 /**
- * Optional retry callback request config.
+ * Request config passed to callbacks in the options-object retry overload.
  *
  * It is a regular Axios request config that carries an internal cancellation
  * scope. Forward it directly to HttpClient methods:
@@ -14,7 +14,7 @@ const RETRY_REQUEST_CONFIG_BRAND = Symbol(
  * client.retry(
  *   (requestConfig) =>
  *     client.get(endpoint, params, requestConfig),
- *   options,
+ *   options ?? {},
  * )
  * ```
  *

@@ -134,17 +134,15 @@ export default class HttpRestClient {
     httpCall: (
       requestConfig: RetryRequestConfig,
     ) => TResponse | PromiseLike<TResponse>,
-    options?: RetryOptions,
+    options: RetryOptions,
   ): Promise<TResponse>
   public async retry<TResponse>(
     httpCall: Function,
-    options?: RetryOptions,
+    options: RetryOptions,
   ): Promise<TResponse>
   /** @deprecated Pass a RetryOptions object instead of positional retry settings. */
   public async retry<TResponse>(
-    httpCall: (
-      requestConfig: RetryRequestConfig,
-    ) => TResponse | PromiseLike<TResponse>,
+    httpCall: () => TResponse | PromiseLike<TResponse>,
     retries?: number,
     delay?: number,
     options?: RequestOptions,
@@ -157,15 +155,17 @@ export default class HttpRestClient {
   ): Promise<TResponse>
   public async retry<TResponse>(
     httpCall: Function,
-    retriesOrOptions: number | RetryOptions = {},
+    retriesOrOptions?: number | RetryOptions,
     legacyDelay?: number,
     options?: RequestOptions,
   ): Promise<TResponse> {
+    const withRequestConfig =
+      typeof retriesOrOptions === 'object' && retriesOrOptions !== null
     const {
       retries = 3,
       delay = 1000,
       signal: requestSignal,
-    } = typeof retriesOrOptions === 'number'
+    } = !withRequestConfig
       ? { ...options, retries: retriesOrOptions, delay: legacyDelay }
       : {
           ...options,
@@ -178,9 +178,13 @@ export default class HttpRestClient {
       throwIfAborted(signal)
 
       try {
-        const requestConfig = createRetryRequestConfig(signal)
+        // The options-object form explicitly opts into a config argument.
+        // Legacy callbacks may have optional parameters with unrelated meaning.
+        const responsePromise = withRequestConfig
+          ? httpCall(createRetryRequestConfig(signal))
+          : httpCall()
         const response = await raceWithAbort(
-          Promise.resolve(httpCall(requestConfig)),
+          Promise.resolve(responsePromise),
           signal,
         )
 

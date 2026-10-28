@@ -1,5 +1,5 @@
 import { EventEmitter } from 'eventemitter3'
-import { isAbortError, combineAbortSignals } from '@injectivelabs/utils'
+import { combineAbortSignals } from '@injectivelabs/utils'
 import { extractGrpcError } from '../streamError.js'
 import { GrpcStatusCode } from '../../../../types/index.js'
 import type {
@@ -188,12 +188,6 @@ export function createStreamSubscriptionV2<TResponse>(
             return
           }
 
-          if (isAbortError(callbackError)) {
-            cancel()
-
-            return
-          }
-
           terminated = true
           abortController.abort()
 
@@ -227,13 +221,6 @@ export function createStreamSubscriptionV2<TResponse>(
       }
     } catch (error) {
       if (cancelled || terminated || signal.aborted) {
-        cleanup()
-
-        return
-      }
-
-      if (isAbortError(error)) {
-        cancel()
         cleanup()
 
         return

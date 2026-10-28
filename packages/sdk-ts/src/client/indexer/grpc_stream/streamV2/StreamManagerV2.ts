@@ -1,6 +1,5 @@
 import { EventEmitter } from 'eventemitter3'
 import { isAbortError } from '@injectivelabs/utils'
-import { normalizeGrpcCode } from '../streamError.js'
 import {
   StreamState,
   StreamEvent,
@@ -598,13 +597,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       return
     }
 
-    if (this.isLifetimeAbort()) {
-      this.handleDisconnect(StreamDisconnectReason.UserStopped)
-
-      return
-    }
-
-    if (isAbortError(error)) {
+    if (this.isLifetimeAbort() || this.subscription?.cancelled === true) {
       this.handleDisconnect(StreamDisconnectReason.UserStopped)
 
       return
@@ -628,7 +621,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       return
     }
 
-    const grpcCode = normalizeGrpcCode(errorInfo.code) ?? GrpcStatusCode.UNKNOWN
+    const grpcCode = errorInfo.code ?? GrpcStatusCode.UNKNOWN
     const reason = mapGrpcCodeToReason(grpcCode)
 
     this.handleDisconnect(reason)
@@ -946,16 +939,13 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
             : error instanceof Error
               ? error.message
               : 'Unknown stream error',
-        code: normalizeGrpcCode(error.code),
+        code: error.code,
         details: error,
       }
     }
 
     // Handle standard Error
-    const code =
-      error && typeof error === 'object'
-        ? normalizeGrpcCode(error.code)
-        : undefined
+    const code = error && typeof error === 'object' ? error.code : undefined
 
     return {
       message: error instanceof Error ? error.message : 'Unknown error',

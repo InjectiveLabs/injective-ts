@@ -25,7 +25,7 @@ export class IndexerRestLeaderboardChronosApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       return data

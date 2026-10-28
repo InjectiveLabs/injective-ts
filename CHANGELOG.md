@@ -13,7 +13,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
+* sdk-ts: preserve legacy stream status payloads and V2 retries for protobuf-ts string status codes; report unrelated callback cancellation as a stream error instead of silently stopping.
+* sdk-ts: settle RFQ connect promises safely during disconnect/destroy while preserving rejection for awaiting callers.
+* sdk-ts: throw plain AbortError when inclusion preparation is cancelled before broadcasting; only attach a recovery txHash after a successful broadcast response.
+* utils: retain zero-argument callbacks for legacy HttpRestClient.retry calls; request-config callbacks require the explicit options-object overload.
 * sdk-ts: emit RFQ websocket heartbeat `ping` only after a successful heartbeat send
+
+### Compatibility notes
+
+* sdk-ts/utils: existing polling abortSignal, HTTP constructor/config signals and cancel tokens, and gRPC constructor abort now use AbortError (`message: The operation was aborted`, `code: ERR_CANCELED`). Replace cancellation-message checks and axios.isCancel with isAbortError. HTTP cancellation signals compose instead of replacing the constructor signal.
+* sdk-ts: closing an inclusion waiter now rejects pending observation with AbortError; event-only waits previously could remain pending. Closing the waiter does not throw synchronously.
+* sdk-ts: legacy stream subscriptions add closed/cancelled state and cancellation observers. add()/remove() are now no-ops rather than absent methods; they do not implement RxJS teardown composition.
+* sdk-ts: duplicate RFQ connect calls await shared readiness. Pending connect rejects on disconnect/abort/destroy, and connection-attempt disconnect events retain specific reasons such as ConnectionTimeout. Ignored readiness promises are internally handled; awaiting/chaining callers must handle rejection.
+* sdk-ts: remote numeric gRPC CANCELLED (1) now triggers StreamManagerV2 retry when enabled; local signal cancellation and unsubscribe remain silent stops. String status codes retain their previous UNKNOWN mapping and retry behavior.
+* See [cancellation and migration guidance](docs/CANCELLATION.md). Upgrade related Injective packages together, including wallet packages, to avoid missing helpers or exception-class version skew.
 
 
 ## [1.14.40](https://github.com/InjectiveLabs/injective-ts/compare/v1.14.35...v1.14.40) (2025-01-21)

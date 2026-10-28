@@ -63,7 +63,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       >(
         (requestConfig) =>
           this.get(`blocks/${blockHashHeight}`, {}, requestConfig),
-        options,
+        options ?? {},
       )
 
       return IndexerRestExplorerTransformer.blockWithTxToBlockWithTx(
@@ -111,7 +111,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       const { paging, data } = response.data
@@ -162,7 +162,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       const { paging, data } = response.data
@@ -240,7 +240,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       const { paging, data } = response.data
@@ -327,7 +327,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       const { paging, data } = response.data
@@ -365,7 +365,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       >(
         (requestConfig) =>
           this.get(endpoint, { is_evm_hash: isEvmTx }, requestConfig),
-        options,
+        options ?? {},
       )
 
       return IndexerRestExplorerTransformer.transactionToTransaction(
@@ -392,7 +392,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const response = await this.retry<
         ExplorerApiResponseWithPagination<any[]>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options)
+      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
 
       if (!response.data || !response.data.data) {
         return []
@@ -426,7 +426,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         ExplorerApiResponseWithPagination<
           ValidatorUptimeFromExplorerApiResponse[]
         >
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options)
+      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
 
       if (!response.data || !response.data.data) {
         return []
@@ -458,7 +458,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const response = await this.retry<
         ExplorerApiResponse<ContractExplorerApiResponse>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options)
+      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
 
       return IndexerRestExplorerTransformer.contractToExplorerContract(
         response.data,
@@ -527,7 +527,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
       const { paging, data } = response.data
 
@@ -587,7 +587,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       const { paging, data } = response.data
@@ -653,7 +653,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       const { paging, data } = response.data
@@ -689,7 +689,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const response = await this.retry<
         ExplorerApiResponse<WasmCodeExplorerApiResponse>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options)
+      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
 
       return IndexerRestExplorerTransformer.wasmCodeToExplorerWasmCode(
         response.data,
@@ -737,7 +737,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       const { paging, data } = response.data
@@ -771,7 +771,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const response = await this.retry<
         ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options)
+      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
 
       if (response.data.length === 0) {
         return []
@@ -803,7 +803,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const response = await this.retry<
         ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options)
+      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
 
       if (response.data.length === 0) {
         return []
@@ -871,7 +871,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       const { data, paging } = response.data

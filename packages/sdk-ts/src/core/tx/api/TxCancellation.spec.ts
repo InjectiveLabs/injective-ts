@@ -1,3 +1,4 @@
+import { AbortError } from '@injectivelabs/utils'
 import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import {
   HttpRequestException,
@@ -1709,6 +1710,72 @@ describe('tx observation cancellation: dual inclusion', () => {
 // ---------------------------------------------------------------------------
 
 describe('tx observation cancellation: broadcast inclusion', () => {
+  it.each([
+    ['REST', 'pre-aborted'],
+    ['REST', 'handshake'],
+    ['gRPC', 'pre-aborted'],
+    ['gRPC', 'handshake'],
+  ])(
+    '%s returns plain AbortError for %s preparation without broadcasting',
+    async (transport, phase) => {
+      const api =
+        transport === 'REST'
+          ? new TxRestApi('https://lcd.injective.network')
+          : new TxGrpcApi('https://sentry.tm.injective.network:443')
+      const controller = new AbortController()
+      const socket = new ControlledWebSocket({ autoOpen: false })
+      const webSocketFactory = vi.fn(() => socket as unknown as WebSocket)
+      const onBroadcast = vi.fn()
+      const onFallback = vi.fn()
+      const broadcast = vi
+        .spyOn(
+          api as any,
+          api instanceof TxRestApi ? 'broadcastTx' : 'executeGrpcCall',
+        )
+        .mockRejectedValue(new Error('unexpected broadcast'))
+      const poll = vi.spyOn(api, 'fetchTxPoll')
+      const reason = { source: 'cancel preparation' }
+
+      if (phase === 'pre-aborted') {
+        controller.abort(reason)
+      }
+
+      const promise = api.broadcast(
+        makeTxRaw(),
+        {
+          onBroadcast,
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          eventInclusion: {
+            rpcEndpoint: 'http://localhost:26657',
+            webSocketFactory,
+            onFallback,
+          },
+        },
+        { signal: controller.signal },
+      )
+
+      if (phase === 'handshake') {
+        expect(webSocketFactory).toHaveBeenCalledOnce()
+        controller.abort(reason)
+      }
+
+      await expect(promise).rejects.toBeInstanceOf(AbortError)
+      await expect(promise).rejects.not.toBeInstanceOf(TxObservationAbortError)
+      await expect(promise).rejects.not.toHaveProperty('txHash')
+      await expectAbortError(promise, reason)
+      expect(broadcast).not.toHaveBeenCalled()
+      expect(onBroadcast).not.toHaveBeenCalled()
+      expect(onFallback).not.toHaveBeenCalled()
+      expect(poll).not.toHaveBeenCalled()
+
+      if (phase === 'pre-aborted') {
+        expect(webSocketFactory).not.toHaveBeenCalled()
+      } else {
+        expect(socket.closed).toBe(true)
+      }
+    },
+  )
+
   it.each([
     ['REST', 'poll'],
     ['REST', 'broadcast'],

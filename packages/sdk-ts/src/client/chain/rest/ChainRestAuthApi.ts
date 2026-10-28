@@ -33,7 +33,7 @@ export class ChainRestAuthApi extends BaseRestConsumer {
     try {
       const response = await this.retry<RestApiResponse<AccountResponse>>(
         (requestConfig) => this.get(endpoint, params, requestConfig),
-        options,
+        options ?? {},
       )
 
       return response.data
@@ -69,7 +69,10 @@ export class ChainRestAuthApi extends BaseRestConsumer {
 
       const response = await this.retry<
         RestApiResponse<AccountResponse | CosmosAccountRestResponse>
-      >((requestConfig) => this.get(endpoint, params, requestConfig), options)
+      >(
+        (requestConfig) => this.get(endpoint, params, requestConfig),
+        options ?? {},
+      )
 
       const baseAccount = isInjectiveAddress
         ? (response.data as AccountResponse).account.base_account

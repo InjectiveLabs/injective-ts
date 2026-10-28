@@ -142,7 +142,7 @@ describe('createStreamSubscriptionV2 cancellation', () => {
     expect(subscription.cancelled).toBe(false)
   })
 
-  it('normalizes string gRPC codes and emits one error event', async () => {
+  it('keeps numeric strings as UNKNOWN and emits one error event', async () => {
     const errors: StreamError[] = []
     const onComplete = vi.fn()
 
@@ -164,7 +164,7 @@ describe('createStreamSubscriptionV2 cancellation', () => {
 
     expect(onComplete).not.toHaveBeenCalled()
     expect(errors).toHaveLength(1)
-    expect(errors[0].code).toBe(14)
+    expect(errors[0].code).toBe(2)
     expect(errors[0].details).toBe('backend unavailable')
     expect(subscription.cancelled).toBe(false)
   })
@@ -205,17 +205,40 @@ describe('createStreamSubscriptionV2 cancellation', () => {
     expect(transportSignal?.aborted).toBe(true)
   })
 
-  it('treats a local AbortError as silent cancellation', async () => {
+  it.each([
+    ['callback', { name: 'AbortError' }],
+    ['callback', { code: 'ERR_CANCELED' }],
+    ['transport', { name: 'AbortError' }],
+    ['transport', { code: 'ERR_CANCELED' }],
+  ])('reports an unrelated cancellation from the %s', async (source, shape) => {
     const errors = vi.fn()
     const onCancel = vi.fn()
+    const error = Object.assign(
+      new Error('another operation was cancelled'),
+      shape,
+    )
+    let transportSignal: AbortSignal | undefined
 
     const subscription = createStreamSubscriptionV2(
-      () => ({
-        responses: (async function* stream() {
-          throw new DOMException('aborted', 'AbortError')
-        })(),
-      }),
-      () => {},
+      (signal) => {
+        transportSignal = signal
+
+        return {
+          responses: (async function* stream() {
+            expect(signal.aborted).toBe(false)
+
+            if (source === 'transport') {
+              throw error
+            }
+
+            yield 1
+          })(),
+        }
+      },
+      () => {
+        expect(transportSignal?.aborted).toBe(false)
+        throw error
+      },
     )
 
     subscription.on('error', errors)
@@ -223,9 +246,14 @@ describe('createStreamSubscriptionV2 cancellation', () => {
 
     await flush()
 
-    expect(errors).not.toHaveBeenCalled()
-    expect(onCancel).toHaveBeenCalledTimes(1)
-    expect(subscription.cancelled).toBe(true)
+    expect(errors).toHaveBeenCalledOnce()
+    expect(errors.mock.calls[0][0]).toMatchObject({
+      code: source === 'callback' ? 13 : 2,
+      metadata: { originalError: error },
+    })
+    expect(onCancel).not.toHaveBeenCalled()
+    expect(subscription.cancelled).toBe(false)
+    expect(transportSignal?.aborted).toBe(true)
   })
 
   it('does not leave an unhandled rejection when the source rejects after unsubscribe', async () => {

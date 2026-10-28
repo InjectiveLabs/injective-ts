@@ -26,7 +26,10 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
     try {
       const response = await this.retry<
         RestApiResponse<BlockLatestRestResponse>
-      >((requestConfig) => this.get(endpoint, params, requestConfig), options)
+      >(
+        (requestConfig) => this.get(endpoint, params, requestConfig),
+        options ?? {},
+      )
 
       return response.data.sdk_block || response.data.block
     } catch (e) {
@@ -53,7 +56,10 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
     try {
       const response = await this.retry<
         RestApiResponse<BlockLatestRestResponse>
-      >((requestConfig) => this.get(endpoint, params, requestConfig), options)
+      >(
+        (requestConfig) => this.get(endpoint, params, requestConfig),
+        options ?? {},
+      )
 
       return response.data.sdk_block || response.data.block
     } catch (e) {
@@ -82,7 +88,7 @@ export class ChainRestTendermintApi extends BaseRestConsumer {
     try {
       const response = await this.retry<RestApiResponse<NodeInfoRestResponse>>(
         (requestConfig) => this.get(endpoint, params, requestConfig),
-        options,
+        options ?? {},
       )
 
       return {

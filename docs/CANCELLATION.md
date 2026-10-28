@@ -47,6 +47,24 @@ reasons and `AbortSignal.timeout()`. This deliberately differs from remote gRPC
 status `CANCELLED`; prefer `isAbortError` when handling local cancellation.
 Publish and upgrade `@injectivelabs/sdk-ts` and `@injectivelabs/utils` together
 in the same release, since the SDK depends on the utils cancellation helpers.
+Upgrade related Injective wallet packages together as well to avoid separate
+exception-class versions breaking cross-package `instanceof` checks.
+
+### Migration for existing cancellation callers
+
+Existing cancellation entry points now use the shared `AbortError`, even when no
+new per-call options are supplied:
+
+- `fetchTxPoll({ abortSignal })` previously rejected with
+  `Error('Transaction inclusion polling was cancelled')`. It now rejects with
+  `AbortError('The operation was aborted')`; use `isAbortError`, not message matching.
+- HTTP constructor signals, `setConfig({ signal })`, and Axios cancel tokens now
+  produce `AbortError` rather than Axios `CanceledError` or an HTTP 400 exception.
+  `axios.isCancel(error)` is false for this SDK error; use `isAbortError(error)`.
+- gRPC constructor `{ abort: signal }` cancellation also uses the shared error
+  rather than a gRPC request exception.
+- HTTP constructor, configured, and per-call signals compose: any can cancel a
+  request. A later config signal no longer overrides the constructor signal.
 
 Pagination helpers also accept request options directly as their third argument:
 `fetchAllWithPagination(args, fetchPage, { signal })`. Existing calls passing an
@@ -55,21 +73,28 @@ as well as inside each page request.
 
 ### Custom HTTP retries
 
-When using `HttpRestClient.retry` directly, forward the callback's request
-configuration into each HTTP call. This keeps cancellation scoped to that
+The **options-object** form of `HttpRestClient.retry` passes a request configuration
+to its callback. Forward it into each HTTP call to keep cancellation scoped to that
 operation, including after an `await` inside the callback:
 
 ```ts
 await httpClient.retry((requestConfig) => httpClient.get('/path', {}, requestConfig), { signal: controller.signal })
+
+// Opt in explicitly even when no per-call signal is needed.
+await httpClient.retry((requestConfig) => httpClient.get('/path', {}, requestConfig), {})
 ```
 
-The operation's cancellation constraints are captured when retrying starts. Later
-`setConfig` updates still apply to headers, authentication, adapters and other
-non-cancellation settings, but cannot attach an unrelated signal to that operation.
+In this form, the operation's cancellation constraints are captured when retrying
+starts. Later `setConfig` updates still apply to headers, authentication, adapters
+and other non-cancellation settings, but cannot attach an unrelated signal to that
+operation.
 
-Legacy zero-argument callbacks still work. If they ignore the provided request
-configuration, cancelling the retry interrupts its promise and backoff, but the
-callback is responsible for forwarding cancellation to its own network work.
+Legacy `retry(fn)` and positional `retry(fn, retries, delay, options?)` calls still
+invoke `fn()` with **zero arguments**, preserving optional/default parameters.
+Their cancellation interrupts the retry promise and backoff, but the callback is
+responsible for forwarding cancellation to its own network work. Use the explicit
+options-object form for a pinned request configuration; when forwarding optional
+options, pass `options ?? {}`.
 
 ## gRPC streams
 
@@ -90,6 +115,18 @@ do not invoke the existing error/completion handlers. An already-aborted signal
 returns an inactive subscription without starting a network stream. The deprecated
 legacy helper overload accepting an already-created stream cannot attach transport
 cancellation retroactively; SDK stream methods use the factory-based overload.
+
+Legacy methods return `LegacyStreamSubscription`, assignable to the previous
+`Subscription` type, with `closed`, optional `cancelled`, and optional `onCancel`.
+Its `add()`/`remove()` methods are compatibility no-ops (previously these methods
+were absent and calling them threw). They do not compose RxJS teardowns; use
+`unsubscribe()` to cancel the stream explicitly.
+
+Legacy status callbacks retain `{ code: 2, details, metadata: originalError }`.
+V2 transport errors retain numeric codes and map string codes, including protobuf-ts
+status names, to `UNKNOWN` (`2`) as before. A callback or transport error shaped
+like an `AbortError` is not by itself a user stop: only the stream's own cancellation
+state suppresses error reporting.
 
 ## Managed streams
 
@@ -120,6 +157,11 @@ lifecycle signal cannot be reset; create a new manager with a fresh signal.
 `destroy()` permanently releases a manager. Independent cancellation of SDK V2
 subscriptions is also observed by the manager and does not trigger a retry.
 
+A remote numeric gRPC `CANCELLED` (`1`) now reports `StreamError` and retries when
+retrying is enabled; it previously reported `UserStopped`. String `CANCELLED`
+remains `UNKNOWN` and retryable. Owned-signal abort, unsubscribe, and manager
+`stop()`/`destroy()` remain local stops without retries.
+
 The legacy `StreamManager.cancelAll()` attempts every teardown even if one fails.
 A single failure is rethrown unchanged; multiple failures are available through
 `StreamManagerCleanupError.errors` after all teardowns have been attempted.
@@ -137,8 +179,18 @@ controller.abort() // Closes the socket, stops heartbeats and disables reconnect
 Existing `disconnect()` and `destroy()` remain available. After disconnecting, an
 explicit connect with a fresh signal starts a new lifecycle. Duplicate connects
 without a signal or with the same signal share the connection; conflicting signals
-are rejected rather than replacing its owner. Attach rejection handling to a
-pending connection promise before aborting it.
+are rejected rather than replacing its owner. Duplicate calls during connection
+setup now wait for the shared socket to open.
+
+Cancelling a pending connection now settles it instead of leaving it pending:
+`disconnect()` or signal abort rejects with `AbortError`, and `destroy()` rejects
+with `Error('Transport has been destroyed')`. The public readiness promise is
+internally handled so an ignored `connect()` is safe during cleanup. Awaiting or
+chaining that promise still observes rejection and must handle it. A resolved
+promise means the connection opened, not that cleanup completed.
+
+Connection-attempt failures now emit their specific disconnect reason, such as
+`ConnectionTimeout`, instead of being collapsed to `ConnectionFailed`.
 
 ## Transaction observation
 
@@ -146,6 +198,9 @@ Transaction fetching, polling and inclusion waiting support cancellation. Existi
 `fetchTxPoll({ txHash, abortSignal })` callers remain supported. Cancellation stops
 the active requests, delays, event subscriptions and any fallback polling. Closing
 an inclusion waiter cancels unresolved observation, including a pending `wait()`.
+`close()` itself returns normally; pending `wait()` promises reject with the shared
+`AbortError`. Previously polling could reject with the old cancellation message,
+while event-only waits could remain pending after close.
 
 Read-only transaction simulation also accepts final request options. Concrete gRPC
 clients support `fetchTx(hash, options)`; REST clients keep query parameters second
@@ -157,7 +212,13 @@ attempt can be followed by another poll while the overall inclusion timeout has
 not expired. Cancelling observation cannot reverse a broadcast transaction, and
 must not be interpreted as evidence that the transaction failed on-chain.
 
-The signal passed to `broadcast` only controls inclusion observation, not the
-broadcast mutation. If observation is cancelled, `TxObservationAbortError`
-preserves both the abort `reason` and `txHash`, so callers can resume checking
-that transaction rather than submitting it again.
+The signal passed to `broadcast` controls preparation and inclusion observation,
+not an in-flight broadcast mutation. If it is already aborted or aborts during
+inclusion-waiter preparation (for example the event WebSocket handshake), no
+broadcast is sent and the call rejects with plain `AbortError`.
+
+After a successful broadcast response, cancelled observation rejects with
+`TxObservationAbortError`, preserving both the abort `reason` and `txHash` so
+callers can resume checking that transaction rather than submitting it again.
+If the observation signal aborts while the mutation is in flight, the mutation
+still completes; a successful response supplies the hash for this recovery error.

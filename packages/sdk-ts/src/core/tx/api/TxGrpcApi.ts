@@ -508,6 +508,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
     let txHash = TxClient.hash(txRaw)
+    let broadcastCompleted = false
     let inclusionWaiter: TxInclusionWaiter | undefined
 
     try {
@@ -556,6 +557,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       }
 
       txHash = txResponse.txhash || txHash
+      broadcastCompleted = true
 
       if (options?.onBroadcast) {
         options.onBroadcast(txResponse.txhash)
@@ -577,9 +579,13 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     } catch (e: unknown) {
       inclusionWaiter?.close()
 
-      // Observation cancellation must stay a local cancellation error even when
-      // it aborts while broadcast() is waiting for inclusion.
+      // Preparation can be cancelled before the mutation is sent. Only attach
+      // a recovery hash once broadcast has completed successfully.
       if (isAbortError(e)) {
+        if (!broadcastCompleted) {
+          throw e
+        }
+
         throw new TxObservationAbortError(
           txHash,
           (e as { reason?: unknown }).reason,

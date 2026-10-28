@@ -30,7 +30,7 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       return data
@@ -61,7 +61,7 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
             },
             requestConfig,
           ),
-        options,
+        options ?? {},
       )
 
       return data

@@ -801,6 +801,7 @@ describe('GrpcWebSocketTransport cancellation and lifecycle', () => {
 describe('RFQ streams propagate abort ownership to the transport', () => {
   type TestRfqStream = {
     connect(options?: { signal?: AbortSignal }): Promise<void>
+    disconnect(): void
     destroy(): void
     getState(): WsState
     on(
@@ -862,6 +863,44 @@ describe('RFQ streams propagate abort ownership to the transport', () => {
     activeStreams.forEach((stream) => stream.destroy())
     activeStreams.length = 0
   })
+
+  it.each(
+    streams.flatMap((stream) =>
+      (['disconnect', 'destroy'] as const).map((action) => ({
+        ...stream,
+        action,
+      })),
+    ),
+  )(
+    '$name safely settles an ignored connect on $action',
+    async ({ create, action }) => {
+      vi.useRealTimers()
+      const stream = create()
+      activeStreams.push(stream)
+      const onUnhandled = vi.fn()
+      process.on('unhandledRejection', onUnhandled)
+
+      try {
+        const pending = stream.connect()
+        const socket = latestSocket()
+        stream[action]()
+
+        // Leave the public promise unobserved through a full event-loop turn.
+        await new Promise<void>((resolve) => setImmediate(resolve))
+
+        expect(onUnhandled).not.toHaveBeenCalled()
+        expect(socket.close).toHaveBeenCalledOnce()
+        expect(stream.getState()).toBe(WsState.Disconnected)
+        await expect(pending).rejects.toThrow(
+          action === 'disconnect'
+            ? 'The operation was aborted'
+            : 'Transport has been destroyed',
+        )
+      } finally {
+        process.off('unhandledRejection', onUnhandled)
+      }
+    },
+  )
 
   it.each(streams)(
     '$name rejects a pre-aborted connect without creating a socket',

@@ -60,12 +60,14 @@ export class IndexerWsTakerStream {
    * or with the same signal join the pending readiness; a different signal is
    * rejected.
    */
-  async connect(options?: RequestOptions): Promise<void> {
+  connect(options?: RequestOptions): Promise<void> {
     if (this.isDestroyed) {
-      throw new Error('Stream has been destroyed')
+      return Promise.reject(new Error('Stream has been destroyed'))
     }
 
-    await this.transport.connect(options)
+    // Forward the handled readiness promise so ignored connects stay safe when
+    // cleanup cancels them. Awaiting callers still observe the rejection.
+    return this.transport.connect(options)
   }
 
   disconnect(): void {
