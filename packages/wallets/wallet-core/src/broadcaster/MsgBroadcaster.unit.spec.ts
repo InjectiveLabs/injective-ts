@@ -11,11 +11,6 @@ import {
   WalletStrategyEmitterEventType,
 } from '@injectivelabs/wallet-base'
 import {
-  getStdFee,
-  toBigNumber,
-  DEFAULT_EXCHANGE_LIMIT,
-} from '@injectivelabs/utils'
-import {
   MsgAuthzExec,
   MsgWithdrawV2,
   MsgCreateSpotLimitOrder,
@@ -26,12 +21,20 @@ import {
   ChainGrpcTendermintApi,
 } from '@injectivelabs/sdk-ts/client/chain'
 import {
+  getStdFee,
+  AbortError,
+  toBigNumber,
+  isAbortError,
+  DEFAULT_EXCHANGE_LIMIT,
+} from '@injectivelabs/utils'
+import {
   TxClient,
   TxGrpcApi,
   SIGN_DIRECT,
   TxInclusionStrategy,
   CosmosTxV1Beta1TxPb,
   MsgBroadcasterWithPk,
+  TxObservationAbortError,
 } from '@injectivelabs/sdk-ts/core/tx'
 import { MsgBroadcaster } from './MsgBroadcaster.js'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
@@ -118,6 +121,97 @@ const createMockWalletStrategy = () =>
 
 afterEach(() => {
   vi.restoreAllMocks()
+})
+
+describe('MsgBroadcaster cancellation', () => {
+  const privateKey = '0x' + '1'.padStart(64, '0')
+  const txHash = 'A'.repeat(64)
+  const reason = { source: 'observation' }
+  const createBroadcaster = () =>
+    new MsgBroadcaster({
+      network: Network.Devnet,
+      walletStrategy: createMockWalletStrategy(),
+    })
+
+  describe.each([
+    'broadcast',
+    'broadcastV2',
+    'broadcastWithFeeDelegation',
+    'broadcastWithFeePayerSig',
+  ] as const)('%s', (method) => {
+    it.each(['pre-submission', 'post-submission', 'failure'] as const)(
+      'preserves %s errors and event semantics',
+      async (phase) => {
+        const broadcaster = createBroadcaster()
+        const error =
+          phase === 'pre-submission'
+            ? new AbortError(reason)
+            : phase === 'post-submission'
+              ? new TxObservationAbortError(txHash, reason)
+              : new TransactionException(new Error('chain failure'))
+        let pending: Promise<unknown>
+        if (method === 'broadcastWithFeePayerSig') {
+          vi.spyOn(TxGrpcApi.prototype, 'broadcast').mockRejectedValue(error)
+          pending = broadcaster[method]({
+            tx: makeValidTxRawBytes(),
+            privateKey,
+            feePayerSig: '0x00',
+            accountNumber: 1,
+          })
+        } else {
+          vi.spyOn(
+            broadcaster as any,
+            method === 'broadcastWithFeeDelegation'
+              ? 'broadcastDirectSignWithFeeDelegation'
+              : 'broadcastDirectSign',
+          ).mockRejectedValue(error)
+          pending = broadcaster[method]({
+            msgs: [],
+            injectiveAddress: PrivateKey.fromHex(privateKey).toBech32(),
+          })
+        }
+        const result = await pending.catch((e: unknown) => e)
+        expect(result).toBe(error)
+        expect(isAbortError(result)).toBe(phase !== 'failure')
+        if (phase === 'failure') {
+          expect(broadcaster.walletStrategy.emit).toHaveBeenCalledWith(
+            WalletStrategyEmitterEventType.TransactionFail,
+          )
+        } else {
+          expect(broadcaster.walletStrategy.emit).not.toHaveBeenCalledWith(
+            WalletStrategyEmitterEventType.TransactionFail,
+          )
+        }
+      },
+    )
+  })
+
+  it.each(['direct', 'prepared', 'unprepared'] as const)(
+    'retains the submitted hash during %s inclusion cancellation',
+    async (path) => {
+      const broadcaster = createBroadcaster()
+      const cancellation = new AbortError(reason)
+      vi.spyOn(TxGrpcApi.prototype, 'waitForTxInclusion').mockRejectedValue(
+        cancellation,
+      )
+      const waiter = {
+        wait: vi.fn().mockRejectedValue(cancellation),
+        close: vi.fn(),
+      }
+      const pending =
+        path === 'direct'
+          ? (broadcaster as any).waitForTxInclusion({ txHash, timeout: 100 })
+          : (broadcaster as any).waitForPreparedTxInclusion({
+              tx: {},
+              responseTxHash: txHash,
+              timeout: 100,
+              inclusionWaiter: path === 'prepared' ? waiter : undefined,
+            })
+      const error = await pending.catch((e: unknown) => e)
+      expect(error).toBeInstanceOf(TxObservationAbortError)
+      expect(error).toMatchObject({ txHash, reason, code: 'ERR_CANCELED' })
+    },
+  )
 })
 
 describe('MsgBroadcaster options', () => {

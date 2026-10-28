@@ -1,8 +1,10 @@
 import { vi } from 'vitest'
 import { Wallet } from '@injectivelabs/wallet-base'
+import { AbortError, isAbortError } from '@injectivelabs/utils'
 import {
   waitTxBroadcasted,
   CosmosTxV1Beta1TxPb,
+  TxObservationAbortError,
 } from '@injectivelabs/sdk-ts/core/tx'
 import { CosmosWalletStrategy } from './strategy.js'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
@@ -35,6 +37,50 @@ const makeTxResponse = (txHash: string): TxResponse =>
   }) as TxResponse
 
 describe('CosmosWalletStrategy.sendTransaction', () => {
+  it.each(['provider', 'observation', 'decorated'] as const)(
+    'preserves cancellation from %s with a hash only after submission',
+    async (phase) => {
+      const txHash = 'PROVIDER_HASH'
+      const reason = { source: phase }
+      const cancellation =
+        phase === 'decorated'
+          ? new TxObservationAbortError(txHash, reason)
+          : new AbortError(reason)
+      const strategy = new CosmosWalletStrategy({
+        wallet: Wallet.Keplr,
+        chainId: 'injective-1' as any,
+      })
+      const broadcast = vi.fn()
+      if (phase === 'provider') broadcast.mockRejectedValue(cancellation)
+      else broadcast.mockResolvedValue(txHash)
+      vi.spyOn(strategy as any, 'getCurrentCosmosWallet').mockReturnValue({
+        broadcastTx: broadcast,
+      })
+      vi.mocked(waitTxBroadcasted).mockRejectedValue(cancellation)
+      const error = await strategy
+        .sendTransaction(CosmosTxV1Beta1TxPb.TxRaw.create(), {
+          address: 'inj1test',
+          chainId: 'injective-1' as any,
+          endpoints: {
+            grpc: 'http://unused.invalid',
+            rest: 'http://unused.invalid',
+          },
+        })
+        .catch((e: unknown) => e)
+      expect(isAbortError(error)).toBe(true)
+      expect(error).toMatchObject({ reason, code: 'ERR_CANCELED' })
+      if (phase === 'provider') {
+        expect(error).toBe(cancellation)
+        expect(error).not.toHaveProperty('txHash')
+        expect(waitTxBroadcasted).not.toHaveBeenCalled()
+      } else {
+        expect(error).toBeInstanceOf(TxObservationAbortError)
+        expect(error).toMatchObject({ txHash })
+        if (phase === 'decorated') expect(error).toBe(cancellation)
+      }
+    },
+  )
+
   it('fires onBroadcast after provider broadcast and before confirmation wait', async () => {
     const events: string[] = []
     const txHash = 'PROVIDER_HASH'

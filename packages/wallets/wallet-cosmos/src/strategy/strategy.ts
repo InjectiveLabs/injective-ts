@@ -1,4 +1,4 @@
-import { capitalize } from '@injectivelabs/utils'
+import { capitalize, isAbortError } from '@injectivelabs/utils'
 import {
   uint8ArrayToHex,
   uint8ArrayToBase64,
@@ -12,6 +12,7 @@ import {
 } from '@injectivelabs/exceptions'
 import {
   waitTxBroadcasted,
+  TxObservationAbortError,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -205,13 +206,26 @@ export class CosmosWalletStrategy
       )
     }
 
+    let txHash: string | undefined
+
     try {
-      const txHash = await cosmosWallet.broadcastTx(txRaw)
+      txHash = await cosmosWallet.broadcastTx(txRaw)
 
       options.onBroadcast?.(txHash)
 
       return await waitTxBroadcasted(txHash, options)
     } catch (e: unknown) {
+      if (isAbortError(e)) {
+        if (txHash && !(e instanceof TxObservationAbortError)) {
+          throw new TxObservationAbortError(
+            txHash,
+            (e as { reason?: unknown }).reason,
+          )
+        }
+
+        throw e
+      }
+
       if (e instanceof TransactionException) {
         throw e
       }

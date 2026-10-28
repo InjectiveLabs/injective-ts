@@ -151,7 +151,9 @@ export class TxRestApi implements TxConcreteApi {
     }: TxFetchTxPollArgs,
     options?: RequestOptions,
   ): Promise<TxResponse> {
+    const clientCancellation = this.httpClient.getAbortSignal()
     const observationSignals = combineAbortSignals([
+      clientCancellation.signal,
       abortSignal,
       signal,
       options?.signal,
@@ -223,6 +225,7 @@ export class TxRestApi implements TxConcreteApi {
       )
     } finally {
       observationSignals.dispose()
+      clientCancellation.dispose()
     }
   }
 
@@ -272,6 +275,8 @@ export class TxRestApi implements TxConcreteApi {
     }: TxPrepareTxInclusionWaitArgs,
     requestOptions?: RequestOptions,
   ): Promise<TxInclusionWaiter> {
+    const clientCancellation = this.httpClient.getAbortSignal()
+
     return prepareTxInclusionWaiter({
       txHash,
       timeout,
@@ -279,6 +284,8 @@ export class TxRestApi implements TxConcreteApi {
       signal,
       abortSignal,
       requestOptions,
+      clientSignal: clientCancellation.signal,
+      disposeClientSignal: clientCancellation.dispose,
       fetchTx: (includedTxHash, fetchOptions) =>
         this.fetchTx(includedTxHash, undefined, fetchOptions),
       fetchTxPoll: (args) => this.fetchTxPoll(args),
@@ -360,7 +367,9 @@ export class TxRestApi implements TxConcreteApi {
     let txHash = TxClient.hash(txRaw)
     let broadcastCompleted = false
     let inclusionWaiter: TxInclusionWaiter | undefined
+    const clientCancellation = this.httpClient.getAbortSignal()
     const observationSignals = combineAbortSignals([
+      clientCancellation.signal,
       options?.signal,
       options?.abortSignal,
       options?.eventInclusion?.signal,
@@ -453,6 +462,7 @@ export class TxRestApi implements TxConcreteApi {
       throw e
     } finally {
       observationSignals.dispose()
+      clientCancellation.dispose()
     }
   }
 

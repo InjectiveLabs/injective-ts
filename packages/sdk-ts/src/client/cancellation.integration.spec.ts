@@ -92,7 +92,12 @@ async function createRetryingRestEndpoint() {
 
 describe('cancellation reaches the network transports', () => {
   describe.each(['REST', 'gRPC'])('%s transaction reads', (transport) => {
-    describe.each(['fetchTx', 'simulate'] as const)('%s', (method) => {
+    describe.each([
+      'fetchTx',
+      'simulate',
+      'fetchTxPoll',
+      'waitForTxInclusion',
+    ] as const)('%s', (method) => {
       it.each(
         ['pre-aborted', 'active'].flatMap((phase) =>
           ['client', 'request'].map((first) => ({ phase, first })),
@@ -125,14 +130,19 @@ describe('cancellation reaches the network transports', () => {
           const pending =
             method === 'fetchTx'
               ? api.fetchTx('A'.repeat(64), undefined, options)
-              : api.simulate(
-                  {
-                    bodyBytes: new Uint8Array([1]),
-                    authInfoBytes: new Uint8Array([2]),
-                    signatures: [],
-                  },
-                  options,
-                )
+              : method === 'simulate'
+                ? api.simulate(
+                    {
+                      bodyBytes: new Uint8Array([1]),
+                      authInfoBytes: new Uint8Array([2]),
+                      signatures: [],
+                    },
+                    options,
+                  )
+                : api[method](
+                    { txHash: 'A'.repeat(64), timeout: 2000 },
+                    options,
+                  )
           const outcome = pending.catch((error: unknown) => error)
 
           if (phase === 'active') {

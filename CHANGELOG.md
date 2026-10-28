@@ -13,6 +13,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
+* sdk-ts: honor REST client cancellation throughout transaction polling, event preparation and inclusion observation; preserve the first reason and release client scopes on abort, close or settlement.
+* wallet-core/wallet-cosmos: preserve cancellation identity, reason and known broadcast hashes instead of wrapping cancellation as a transaction failure; suppress TransactionFail events for cancellation.
 * sdk-ts: preserve the first cancellation reason across client-wide and per-call signals in transaction fetching and simulation.
 * sdk-ts: retain pagination callback type compatibility for legacy callbacks with unrelated optional parameters.
 * sdk-ts: recheck cancellation immediately before transaction submission, including the asynchronous gap after inclusion preparation.

@@ -33,8 +33,10 @@ export interface PrepareTxInclusionWaiterArgs {
   signal?: AbortSignal
   abortSignal?: AbortSignal
   requestOptions?: RequestOptions
-  /** Client-wide constructor cancellation constraint. */
+  /** Client-wide cancellation constraint. */
   clientSignal?: AbortSignal
+  /** Releases an owned client scope when the waiter aborts, closes or settles. */
+  disposeClientSignal?: () => void
   fetchTx: (txHash: string, options?: RequestOptions) => Promise<TxResponse>
   fetchTxPoll: (
     args: TxFetchTxPollArgs & { timeout: number },

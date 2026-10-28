@@ -205,6 +205,12 @@ an inclusion waiter cancels unresolved observation, including a pending `wait()`
 `AbortError`. Previously polling could reject with the old cancellation message,
 while event-only waits could remain pending after close.
 
+REST observation also honors the signals configured on `httpClient` (constructor
+and `setConfig`) throughout polling backoff, event preparation and inclusion
+waiting. These compose with per-operation signals and preserve the first abort
+reason. Prepared waiters retain their client cancellation scope until abort,
+`close()` or wait settlement, including cancellation before `wait()` is called.
+
 Read-only transaction simulation also accepts final request options. Concrete gRPC
 clients support `fetchTx(hash, options)`; REST clients keep query parameters second
 and accept options third. When using the common `TxConcreteApi` interface, use
@@ -227,3 +233,8 @@ After a successful broadcast response, cancelled observation rejects with
 callers can resume checking that transaction rather than submitting it again.
 If the observation signal aborts while the mutation is in flight, the mutation
 still completes; a successful response supplies the hash for this recovery error.
+
+Wallet `MsgBroadcaster` entry points preserve cancellation without emitting
+`TransactionFail`. Wallet inclusion waits and `CosmosWalletStrategy` retain the
+known broadcast hash in `TxObservationAbortError`. Cancellation before a provider
+returns a successful broadcast hash remains a plain cancellation error.

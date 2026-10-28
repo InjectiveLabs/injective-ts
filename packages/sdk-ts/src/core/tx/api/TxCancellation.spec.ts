@@ -1,5 +1,5 @@
 import { getEventListeners } from 'node:events'
-import { AbortError } from '@injectivelabs/utils'
+import { AbortError, HttpClient } from '@injectivelabs/utils'
 import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import {
   HttpRequestException,
@@ -190,7 +190,7 @@ const prepareEventInclusion = async ({
   strategy = TxInclusionStrategy.TendermintEvent,
   onFallback,
 }: {
-  api: TxGrpcApi
+  api: TxGrpcApi | TxRestApi
   txHash: string
   socket: ControlledWebSocket
   signal?: AbortSignal
@@ -1228,6 +1228,266 @@ describe('tx observation cancellation: client-wide constructor abort', () => {
 // ---------------------------------------------------------------------------
 // Event inclusion waiter
 // ---------------------------------------------------------------------------
+
+describe('REST observation client cancellation scope', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  const createApi = () => {
+    const constructor = new AbortController()
+    const config = new AbortController()
+    const request = new AbortController()
+    const api = new TxRestApi('https://unused.invalid')
+    api.httpClient = new HttpClient('https://unused.invalid', {
+      signal: constructor.signal,
+    })
+    api.httpClient.setConfig({ signal: config.signal })
+    return { api, constructor, config, request }
+  }
+
+  it.each(['constructor', 'config'] as const)(
+    'cancels backoff promptly through the %s signal',
+    async (source) => {
+      vi.useFakeTimers()
+      const scope = createApi()
+      const fetchTx = vi
+        .spyOn(scope.api, 'fetchTx')
+        .mockRejectedValue(new Error('not found'))
+      const pending = scope.api.fetchTxPoll({
+        txHash: makeTxHash(),
+        timeout: 500,
+        pollingInterval: 1000,
+      })
+      const outcome = pending.catch((error: unknown) => error)
+      await vi.advanceTimersByTimeAsync(0)
+      expect(fetchTx).toHaveBeenCalledTimes(1)
+      scope[source].abort('cancel backoff')
+      await vi.advanceTimersByTimeAsync(500)
+      await expect(outcome).resolves.toMatchObject({
+        name: 'AbortError',
+        reason: 'cancel backoff',
+      })
+      expect(fetchTx).toHaveBeenCalledTimes(1)
+      expect(vi.getTimerCount()).toBe(0)
+      for (const controller of [scope.constructor, scope.config]) {
+        expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+      }
+    },
+  )
+
+  it.each(['constructor', 'config'] as const)(
+    'rejects a pre-aborted %s signal before opening an event socket',
+    async (source) => {
+      const scope = createApi()
+      scope[source].abort('already cancelled')
+      const socket = new ControlledWebSocket()
+      const factory = vi.fn(() => socket as unknown as WebSocket)
+      const pending = scope.api.prepareTxInclusionWait({
+        txHash: makeTxHash(),
+        options: {
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          eventInclusion: {
+            rpcEndpoint: 'https://unused.invalid',
+            webSocketFactory: factory,
+          },
+        },
+      })
+      const result = await pending.catch((error: unknown) => error)
+      if (result && typeof result === 'object' && 'close' in result)
+        (result as { close(): void }).close()
+      expect(result).toMatchObject({
+        name: 'AbortError',
+        reason: 'already cancelled',
+      })
+      expect(factory).not.toHaveBeenCalled()
+      for (const controller of [scope.constructor, scope.config]) {
+        expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+      }
+    },
+  )
+
+  it.each(['constructor', 'config', 'request'] as const)(
+    'releases a prepared event waiter when %s aborts before wait',
+    async (source) => {
+      const scope = createApi()
+      const socket = new ControlledWebSocket()
+      const fallback = vi.fn()
+      const waiter = await prepareEventInclusion({
+        api: scope.api,
+        txHash: makeTxHash(),
+        socket,
+        signal: scope.request.signal,
+        onFallback: fallback,
+      })
+      expect(
+        getEventListeners(scope.constructor.signal, 'abort').length,
+      ).toBeGreaterThan(0)
+      scope[source].abort('prepared cancellation')
+      const closedOnAbort = socket.closed
+      for (const controller of [
+        scope.constructor,
+        scope.config,
+        scope.request,
+      ]) {
+        expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+      }
+      // Cleanup is safe even if the cancellation assertion fails.
+      waiter.close()
+      await expectAbortError(waiter.wait(), 'prepared cancellation')
+      expect(closedOnAbort).toBe(true)
+      expect(fallback).not.toHaveBeenCalled()
+      for (const controller of [
+        scope.constructor,
+        scope.config,
+        scope.request,
+      ]) {
+        expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+      }
+    },
+  )
+
+  it('cancels an event handshake without fallback and releases both client signals', async () => {
+    vi.useFakeTimers()
+    const scope = createApi()
+    const socket = new ControlledWebSocket({ autoOpen: false })
+    const fallback = vi.fn()
+    const pending = prepareEventInclusion({
+      api: scope.api,
+      txHash: makeTxHash(),
+      socket,
+      onFallback: fallback,
+    })
+    const outcome = pending.catch((error: unknown) => error)
+    scope.config.abort('handshake cancellation')
+    await vi.advanceTimersByTimeAsync(5000)
+    const result = await outcome
+    if (result && typeof result === 'object' && 'close' in result)
+      (result as { close(): void }).close()
+    expect(result).toMatchObject({
+      name: 'AbortError',
+      reason: 'handshake cancellation',
+    })
+    expect(fallback).not.toHaveBeenCalled()
+    expect(socket.closed).toBe(true)
+    for (const controller of [scope.constructor, scope.config]) {
+      expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+    }
+  })
+
+  it('releases client signals when event preparation fails', async () => {
+    const scope = createApi()
+    await expect(
+      scope.api.prepareTxInclusionWait({
+        txHash: makeTxHash(),
+        options: {
+          inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+          eventInclusion: { fallbackToPolling: false },
+        },
+      }),
+    ).rejects.toBeInstanceOf(HttpRequestException)
+    for (const controller of [scope.constructor, scope.config]) {
+      expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+    }
+  })
+
+  it('releases a polling waiter client scope on request abort before wait', async () => {
+    const scope = createApi()
+    const poll = vi.spyOn(scope.api, 'fetchTxPoll')
+    const waiter = await scope.api.prepareTxInclusionWait({
+      txHash: makeTxHash(),
+      signal: scope.request.signal,
+    })
+    scope.request.abort('before wait')
+    for (const controller of [scope.constructor, scope.config, scope.request]) {
+      expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+    }
+    await expectAbortError(waiter.wait(), 'before wait')
+    expect(poll).not.toHaveBeenCalled()
+  })
+
+  describe.each(['constructor', 'config'] as const)(
+    '%s broadcast cancellation',
+    (source) => {
+      it.each(['before submission', 'after submission'] as const)(
+        'preserves the first reason %s and retains only submitted hashes',
+        async (phase) => {
+          const scope = createApi()
+          const txHash = makeTxHash()
+          const broadcast = vi
+            .spyOn(scope.api as any, 'broadcastTx')
+            .mockResolvedValue({ tx_response: { code: 0, txhash: txHash } })
+          const abort = () => {
+            scope[source].abort('first reason')
+            scope.request.abort('second reason')
+          }
+          const pending = scope.api.broadcast(makeTxRaw(), {
+            signal: scope.request.signal,
+            onBroadcast: phase === 'after submission' ? abort : undefined,
+          })
+          if (phase === 'before submission') abort()
+          const error = await pending.catch((e: unknown) => e)
+          expect(error).toMatchObject({
+            name: 'AbortError',
+            reason: 'first reason',
+          })
+          if (phase === 'before submission') {
+            expect(broadcast).not.toHaveBeenCalled()
+            expect(error).not.toHaveProperty('txHash')
+          } else {
+            expect(broadcast).toHaveBeenCalledOnce()
+            expect(error).toBeInstanceOf(TxObservationAbortError)
+            expect(error).toMatchObject({ txHash })
+          }
+          for (const controller of [
+            scope.constructor,
+            scope.config,
+            scope.request,
+          ]) {
+            expect(getEventListeners(controller.signal, 'abort')).toHaveLength(
+              0,
+            )
+          }
+        },
+      )
+    },
+  )
+
+  it.each(['success', 'failure', 'close', 'abort'] as const)(
+    'releases client scope listeners after waiter %s',
+    async (outcome) => {
+      const scope = createApi()
+      const response = makeTxResponse()
+      const error = new Error('poll failed')
+      const poll = vi.spyOn(scope.api, 'fetchTxPoll')
+      if (outcome === 'success') poll.mockResolvedValue(response)
+      else if (outcome === 'failure') poll.mockRejectedValue(error)
+      else poll.mockImplementation(() => new Promise(() => {}))
+      const waiter = await scope.api.prepareTxInclusionWait({
+        txHash: makeTxHash(),
+        signal: scope.request.signal,
+      })
+      expect(
+        getEventListeners(scope.constructor.signal, 'abort').length,
+      ).toBeGreaterThan(0)
+      const pending = waiter.wait()
+      const result = pending.catch((error: unknown) => error)
+      if (outcome === 'close') waiter.close()
+      if (outcome === 'abort') scope.config.abort('waiting cancellation')
+      if (outcome === 'success') await expect(result).resolves.toBe(response)
+      else if (outcome === 'failure') await expect(result).resolves.toBe(error)
+      else await expect(result).resolves.toMatchObject({ name: 'AbortError' })
+      for (const controller of [
+        scope.constructor,
+        scope.config,
+        scope.request,
+      ]) {
+        expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+      }
+      waiter.close()
+    },
+  )
+})
 
 describe('tx observation cancellation: event inclusion waiter', () => {
   afterEach(() => {

@@ -36,14 +36,34 @@ interface InclusionWaiterLifecycle {
 
 function createInclusionWaiterLifecycle(
   signals: readonly (AbortSignal | undefined)[],
+  disposeClientSignal?: () => void,
 ): InclusionWaiterLifecycle {
   const closeController = new AbortController()
   const combined = combineAbortSignals([...signals, closeController.signal])
+  const signal = combined.signal as AbortSignal
   let closed = false
   let finalized = false
 
+  const finalize = () => {
+    if (finalized) {
+      return
+    }
+
+    finalized = true
+    signal.removeEventListener('abort', finalize)
+    combined.dispose()
+    disposeClientSignal?.()
+  }
+
+  // Prepared waiters may be aborted before wait() is ever called.
+  signal.addEventListener('abort', finalize, { once: true })
+
+  if (signal.aborted) {
+    finalize()
+  }
+
   return {
-    signal: combined.signal as AbortSignal,
+    signal,
     get closed() {
       return closed
     },
@@ -54,16 +74,9 @@ function createInclusionWaiterLifecycle(
 
       closed = true
       closeController.abort()
-      combined.dispose()
+      finalize()
     },
-    finalize: () => {
-      if (finalized) {
-        return
-      }
-
-      finalized = true
-      combined.dispose()
-    },
+    finalize,
   }
 }
 
@@ -117,22 +130,26 @@ export async function prepareTxInclusionWaiter(
     abortSignal,
     requestOptions: argsRequestOptions,
     clientSignal,
+    disposeClientSignal,
     fetchTx,
     fetchTxPoll,
     createRequestException,
   }: PrepareTxInclusionWaiterArgs,
   requestOptions?: RequestOptions,
 ): Promise<TxInclusionWaiter> {
-  const lifecycle = createInclusionWaiterLifecycle([
-    clientSignal,
-    signal,
-    abortSignal,
-    options?.signal,
-    options?.abortSignal,
-    options?.eventInclusion?.signal,
-    argsRequestOptions?.signal,
-    requestOptions?.signal,
-  ])
+  const lifecycle = createInclusionWaiterLifecycle(
+    [
+      clientSignal,
+      signal,
+      abortSignal,
+      options?.signal,
+      options?.abortSignal,
+      options?.eventInclusion?.signal,
+      argsRequestOptions?.signal,
+      requestOptions?.signal,
+    ],
+    disposeClientSignal,
+  )
   const waiterSignal = lifecycle.signal
   const inclusionStrategy = options?.inclusionStrategy
 

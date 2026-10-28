@@ -17,6 +17,7 @@ import {
   sleep,
   getStdFee,
   toBigNumber,
+  isAbortError,
   DEFAULT_GAS_PRICE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
@@ -64,6 +65,7 @@ import {
   createWeb3Extension,
   CosmosTxV1Beta1TxPb,
   getEip712TypedDataV2,
+  TxObservationAbortError,
   createTxRawFromSigResponse,
   createTransactionWithSigners,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -303,6 +305,10 @@ export class MsgBroadcaster {
     } catch (e) {
       const error = e as any
 
+      if (isAbortError(error)) {
+        throw error
+      }
+
       walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
 
       if (isThrownException(error)) {
@@ -342,6 +348,10 @@ export class MsgBroadcaster {
         : await this.broadcastEip712V2(txWithAddresses)
     } catch (e) {
       const error = e as any
+      if (isAbortError(error)) {
+        throw error
+      }
+
       walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
 
       if (isThrownException(error)) {
@@ -381,6 +391,10 @@ export class MsgBroadcaster {
         : await this.broadcastEip712WithFeeDelegation(txWithAddresses)
     } catch (e) {
       const error = e as any
+
+      if (isAbortError(error)) {
+        throw error
+      }
 
       walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
 
@@ -500,6 +514,10 @@ export class MsgBroadcaster {
       return txResponse
     } catch (e) {
       const error = e as any
+
+      if (isAbortError(error)) {
+        throw error
+      }
 
       walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
 
@@ -1928,11 +1946,22 @@ export class MsgBroadcaster {
     timeout: number
     tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>
   }): Promise<TxResponse> {
-    return this.createTxGrpcApi().waitForTxInclusion({
-      txHash,
-      timeout,
-      options: this.resolveTxInclusionOptions(tx),
-    })
+    try {
+      return await this.createTxGrpcApi().waitForTxInclusion({
+        txHash,
+        timeout,
+        options: this.resolveTxInclusionOptions(tx),
+      })
+    } catch (e: unknown) {
+      if (isAbortError(e) && !(e instanceof TxObservationAbortError)) {
+        throw new TxObservationAbortError(
+          txHash,
+          (e as { reason?: unknown }).reason,
+        )
+      }
+
+      throw e
+    }
   }
 
   private async prepareTxInclusionWaiter({
@@ -1973,7 +2002,20 @@ export class MsgBroadcaster {
       })
     }
 
-    const confirmedTx = await inclusionWaiter.wait(responseTxHash)
+    let confirmedTx: TxResponse | undefined
+
+    try {
+      confirmedTx = await inclusionWaiter.wait(responseTxHash)
+    } catch (e: unknown) {
+      if (isAbortError(e) && !(e instanceof TxObservationAbortError)) {
+        throw new TxObservationAbortError(
+          responseTxHash,
+          (e as { reason?: unknown }).reason,
+        )
+      }
+
+      throw e
+    }
 
     if (!confirmedTx) {
       throw new TransactionException(
