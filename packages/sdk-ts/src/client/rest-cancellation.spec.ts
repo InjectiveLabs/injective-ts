@@ -20,6 +20,22 @@ afterEach(() => {
 })
 
 describe('REST query cancellation', () => {
+  it('normalizes AbortSignal.timeout to the shared local cancellation error', async () => {
+    const signal = AbortSignal.timeout(10)
+    const adapter = vi.fn<AxiosAdapter>(() => new Promise(() => {}))
+    const api = new ChainRestBankApi(endpoint)
+    api.setConfig({ adapter })
+
+    await expect(
+      api.fetchBalances('inj1test', undefined, { signal }),
+    ).rejects.toMatchObject({
+      name: 'AbortError',
+      code: 'ERR_CANCELED',
+      reason: expect.objectContaining({ name: 'TimeoutError' }),
+    })
+    expect(adapter).toHaveBeenCalledOnce()
+  })
+
   const auth = new ChainRestAuthApi(endpoint)
   const bank = new ChainRestBankApi(endpoint)
   const wasm = new ChainRestWasmApi(endpoint)

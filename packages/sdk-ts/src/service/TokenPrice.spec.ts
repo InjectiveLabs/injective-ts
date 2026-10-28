@@ -25,8 +25,6 @@ describe('TokenPrice cancellation', () => {
       .spyOn(HttpRestClient.prototype, 'retry')
       .mockImplementation((async (
         callback: (config: AxiosRequestConfig) => Promise<unknown>,
-        _retries?: number,
-        _delay?: number,
         requestOptions?: RequestOptions,
       ) => callback({ signal: requestOptions?.signal })) as any)
 
@@ -41,7 +39,7 @@ describe('TokenPrice cancellation', () => {
       },
     )
     expect(retry).toHaveBeenCalledTimes(1)
-    expect(retry.mock.calls[0][3]).toBe(options)
+    expect(retry.mock.calls[0][1]).toBe(options)
     expect(prices).toEqual({ 'injective-protocol': 20 })
   })
 

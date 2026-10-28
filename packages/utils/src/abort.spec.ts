@@ -124,6 +124,29 @@ describe('isAbortError', () => {
 })
 
 describe('throwIfAborted', () => {
+  it('supports reasonless polyfill signals without DOMException or native throwIfAborted', async () => {
+    vi.stubGlobal('DOMException', undefined)
+    const signal = Object.assign(new EventTarget(), {
+      aborted: false,
+    }) as AbortSignal
+    const promise = abortableSleep(1000, signal)
+
+    try {
+      Object.assign(signal, { aborted: true })
+      signal.dispatchEvent(new Event('abort'))
+
+      await expect(promise).rejects.toMatchObject({
+        name: 'AbortError',
+        code: 'ERR_CANCELED',
+        reason: undefined,
+      })
+      expect(() => throwIfAborted(signal)).toThrow(AbortError)
+      expect(isAbortError(new Error('network failure'))).toBe(false)
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('does nothing for missing or live signals', () => {
     expect(() => throwIfAborted()).not.toThrow()
     expect(() => throwIfAborted(new AbortController().signal)).not.toThrow()

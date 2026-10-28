@@ -14,8 +14,6 @@ const RETRY_REQUEST_CONFIG_BRAND = Symbol(
  * client.retry(
  *   (requestConfig) =>
  *     client.get(endpoint, params, requestConfig),
- *   3,
- *   1000,
  *   options,
  * )
  * ```

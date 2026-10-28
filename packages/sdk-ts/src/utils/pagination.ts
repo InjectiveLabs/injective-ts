@@ -100,9 +100,11 @@ export const fetchAllWithTokenPagination = async <
 >(
   args: T,
   method: (args: T, options?: RequestOptions) => Promise<Q>,
-  result: Array<unknown> = [],
+  resultOrOptions: Array<unknown> | RequestOptions = [],
   options?: RequestOptions,
 ): Promise<Q> => {
+  const result = Array.isArray(resultOrOptions) ? resultOrOptions : []
+  options = Array.isArray(resultOrOptions) ? options : resultOrOptions
   throwIfAborted(options?.signal)
 
   const response = options ? await method(args, options) : await method(args)
@@ -144,9 +146,11 @@ export const fetchAllWithPagination = async <
 >(
   args: T,
   method: (args: T, options?: RequestOptions) => Promise<Q>,
-  result: Array<unknown> = [],
+  resultOrOptions: Array<unknown> | RequestOptions = [],
   options?: RequestOptions,
 ): Promise<Q> => {
+  const result = Array.isArray(resultOrOptions) ? resultOrOptions : []
+  options = Array.isArray(resultOrOptions) ? options : resultOrOptions
   throwIfAborted(options?.signal)
 
   let response = options ? await method(args, options) : await method(args)

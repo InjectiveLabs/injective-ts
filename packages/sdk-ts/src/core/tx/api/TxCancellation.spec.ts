@@ -10,6 +10,7 @@ import { waitTxBroadcasted } from './utils.js'
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
 import { subscribeToTendermintTxEvent } from './TxEventInclusion.js'
+import { TxObservationAbortError } from './TxObservationAbortError.js'
 import type { RequestOptions } from '@injectivelabs/utils'
 import type { TxResponse, TxConcreteApi } from '../types/tx.js'
 
@@ -517,6 +518,48 @@ describe('tx observation cancellation: simulate', () => {
 // ---------------------------------------------------------------------------
 
 describe('tx observation cancellation: fetchTxPoll', () => {
+  it.each([
+    ['REST', 'request'],
+    ['REST', 'backoff'],
+    ['gRPC', 'request'],
+    ['gRPC', 'backoff'],
+  ])(
+    '%s stops promptly when aborted during polling %s',
+    async (transport, phase) => {
+      vi.useFakeTimers()
+      const api =
+        transport === 'REST'
+          ? new TxRestApi('https://lcd.injective.network')
+          : new TxGrpcApi('https://sentry.tm.injective.network:443')
+      const controller = new AbortController()
+      const fetchTx = vi.spyOn(api as any, 'fetchTx')
+
+      if (phase === 'request') {
+        fetchTx.mockImplementation(() => new Promise(() => {}))
+      } else {
+        fetchTx.mockRejectedValue(new Error('not found'))
+      }
+
+      const promise = api.fetchTxPoll({
+        txHash: 'CANCEL_POLL',
+        abortSignal: controller.signal,
+        timeout: 10000,
+        pollingInterval: 1000,
+      })
+      const assertion = expectAbortError(promise, 'stop polling')
+
+      await vi.advanceTimersByTimeAsync(300)
+      expect(fetchTx).toHaveBeenCalled()
+      const callsBeforeAbort = fetchTx.mock.calls.length
+      controller.abort('stop polling')
+
+      await assertion
+      expect(vi.getTimerCount()).toBe(0)
+      await vi.advanceTimersByTimeAsync(10000)
+      expect(fetchTx).toHaveBeenCalledTimes(callsBeforeAbort)
+    },
+  )
+
   afterEach(() => {
     vi.useRealTimers()
   })
@@ -1666,6 +1709,65 @@ describe('tx observation cancellation: dual inclusion', () => {
 // ---------------------------------------------------------------------------
 
 describe('tx observation cancellation: broadcast inclusion', () => {
+  it.each([
+    ['REST', 'poll'],
+    ['REST', 'broadcast'],
+    ['gRPC', 'poll'],
+    ['gRPC', 'broadcast'],
+  ])(
+    '%s preserves the txHash when aborting during %s',
+    async (transport, phase) => {
+      const api =
+        transport === 'REST'
+          ? new TxRestApi('https://lcd.injective.network')
+          : new TxGrpcApi('https://sentry.tm.injective.network:443')
+      const controller = new AbortController()
+      const txRaw = makeTxRaw()
+      const serverTxHash = 'SERVER_HASH'
+      const response =
+        api instanceof TxRestApi
+          ? { tx_response: { txhash: serverTxHash, code: 0 } }
+          : { txResponse: { txhash: serverTxHash, code: 0 } }
+      const mutation = makeDeferred<typeof response>()
+      const broadcast = vi
+        .spyOn(
+          api as any,
+          api instanceof TxRestApi ? 'broadcastTx' : 'executeGrpcCall',
+        )
+        .mockReturnValue(mutation.promise)
+      const poll = vi
+        .spyOn(api, 'fetchTxPoll')
+        .mockImplementation(() => new Promise(() => {}))
+      const onBroadcast = vi.fn()
+      const promise = api.broadcast(
+        txRaw,
+        { onBroadcast },
+        { signal: controller.signal },
+      )
+      const assertion = expect(promise).rejects.toMatchObject({
+        name: 'AbortError',
+        code: 'ERR_CANCELED',
+        reason: 'stop observation',
+        txHash: serverTxHash,
+      })
+
+      await vi.waitFor(() => expect(broadcast).toHaveBeenCalledOnce())
+
+      if (phase === 'poll') {
+        mutation.resolve(response)
+        await vi.waitFor(() => expect(poll).toHaveBeenCalledOnce())
+      }
+
+      controller.abort('stop observation')
+      mutation.resolve(response)
+
+      await assertion
+      await expect(promise).rejects.toBeInstanceOf(TxObservationAbortError)
+      expect(onBroadcast).toHaveBeenCalledWith(serverTxHash)
+      expect(broadcast).toHaveBeenCalledOnce()
+    },
+  )
+
   afterEach(() => {
     vi.useRealTimers()
   })

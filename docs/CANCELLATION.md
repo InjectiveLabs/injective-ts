@@ -42,6 +42,17 @@ root/types subpath and `@injectivelabs/utils`. Cancellation preserves its origin
 reason even if it is not an `Error`. A remote gRPC cancellation or a deadline
 failure is not automatically considered a caller-requested cancellation.
 
+Every local cancellation uses `code: 'ERR_CANCELED'`, including custom abort
+reasons and `AbortSignal.timeout()`. This deliberately differs from remote gRPC
+status `CANCELLED`; prefer `isAbortError` when handling local cancellation.
+Publish and upgrade `@injectivelabs/sdk-ts` and `@injectivelabs/utils` together
+in the same release, since the SDK depends on the utils cancellation helpers.
+
+Pagination helpers also accept request options directly as their third argument:
+`fetchAllWithPagination(args, fetchPage, { signal })`. Existing calls passing an
+accumulator array third continue to work. Cancellation is checked between pages
+as well as inside each page request.
+
 ### Custom HTTP retries
 
 When using `HttpRestClient.retry` directly, forward the callback's request
@@ -49,7 +60,7 @@ configuration into each HTTP call. This keeps cancellation scoped to that
 operation, including after an `await` inside the callback:
 
 ```ts
-await httpClient.retry((requestConfig) => httpClient.get('/path', {}, requestConfig), undefined, undefined, { signal: controller.signal })
+await httpClient.retry((requestConfig) => httpClient.get('/path', {}, requestConfig), { signal: controller.signal })
 ```
 
 The operation's cancellation constraints are captured when retrying starts. Later
@@ -145,3 +156,8 @@ Per-poll request deadlines are separate from caller cancellation: an expired
 attempt can be followed by another poll while the overall inclusion timeout has
 not expired. Cancelling observation cannot reverse a broadcast transaction, and
 must not be interpreted as evidence that the transaction failed on-chain.
+
+The signal passed to `broadcast` only controls inclusion observation, not the
+broadcast mutation. If observation is cancelled, `TxObservationAbortError`
+preserves both the abort `reason` and `txHash`, so callers can resume checking
+that transaction rather than submitting it again.

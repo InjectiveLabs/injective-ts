@@ -1,3 +1,4 @@
+import { getEventListeners } from 'node:events'
 import { AbortError } from '@injectivelabs/utils'
 import { RpcError } from '@protobuf-ts/runtime-rpc'
 import { it, vi, expect, describe, afterEach } from 'vitest'
@@ -7,6 +8,7 @@ import {
 } from '@injectivelabs/exceptions'
 import BaseGrpcConsumer from './BaseGrpcConsumer.js'
 import { GrpcStatusCode } from '../../types/stream.js'
+import type { RetryOptions } from '@injectivelabs/utils'
 import type { UnaryCall, RpcOptions } from '@protobuf-ts/runtime-rpc'
 
 const flushMicrotasks = async () => {
@@ -30,6 +32,13 @@ class TestGrpcConsumer extends BaseGrpcConsumer {
     signal?: AbortSignal,
   ) {
     return this.retry(grpcCall, retries, delay, signal)
+  }
+
+  public retryWithOptions<TResponse>(
+    grpcCall: () => Promise<TResponse>,
+    options?: RetryOptions,
+  ) {
+    return this.retry(grpcCall, options)
   }
 
   public executeCall<
@@ -60,6 +69,26 @@ describe('BaseGrpcConsumer', () => {
   })
 
   describe('retry', () => {
+    it('accepts retry options and leaves no listeners after a successful retry', async () => {
+      vi.useFakeTimers()
+      const controller = new AbortController()
+      const grpcCall = vi
+        .fn<() => Promise<string>>()
+        .mockRejectedValueOnce(new RpcError('unavailable', 'UNAVAILABLE'))
+        .mockResolvedValue('ok')
+      const promise = consumer.retryWithOptions(grpcCall, {
+        retries: 2,
+        delay: 10,
+        signal: controller.signal,
+      })
+
+      await vi.runAllTimersAsync()
+      await expect(promise).resolves.toBe('ok')
+      expect(grpcCall).toHaveBeenCalledTimes(2)
+      expect(getEventListeners(controller.signal, 'abort')).toEqual([])
+      expect(vi.getTimerCount()).toBe(0)
+    })
+
     it('settles an active retry callback promptly on abort and observes its late rejection', async () => {
       const controller = new AbortController()
       let rejectCall!: (error: Error) => void
@@ -174,6 +203,34 @@ describe('BaseGrpcConsumer', () => {
 
   describe('executeGrpcCall cancellation', () => {
     const unavailable = () => new RpcError('unavailable', 'UNAVAILABLE')
+
+    it('normalizes AbortSignal.timeout to the shared local cancellation error', async () => {
+      const signal = AbortSignal.timeout(10)
+      const method = vi.fn(() => createCall(new Promise<object>(() => {})))
+      const promise = consumer.executeCall({}, method, { signal })
+
+      await expect(promise).rejects.toMatchObject({
+        name: 'AbortError',
+        code: 'ERR_CANCELED',
+        reason: expect.objectContaining({ name: 'TimeoutError' }),
+      })
+      expect(method).toHaveBeenCalledOnce()
+      expect(getEventListeners(signal, 'abort')).toEqual([])
+    })
+
+    it('keeps noRetry when a cancellation signal is also supplied', async () => {
+      const controller = new AbortController()
+      const method = vi.fn(() => createCall(Promise.reject(unavailable())))
+
+      await expect(
+        consumer.executeCall({}, method, {
+          noRetry: true,
+          signal: controller.signal,
+        }),
+      ).rejects.toBeInstanceOf(GrpcUnaryRequestException)
+      expect(method).toHaveBeenCalledOnce()
+      expect(getEventListeners(controller.signal, 'abort')).toEqual([])
+    })
 
     it('forwards only per-call overrides and composes the constructor signal', async () => {
       const constructorController = new AbortController()
@@ -480,6 +537,44 @@ describe('BaseGrpcConsumer', () => {
   })
 
   describe('handleGrpcError', () => {
+    it('preserves generic, gRPC and chain error mapping without a DOMException global', () => {
+      const descriptor = Object.getOwnPropertyDescriptor(
+        globalThis,
+        'DOMException',
+      )!
+      Reflect.deleteProperty(globalThis, 'DOMException')
+
+      try {
+        expect(() =>
+          consumer.throwGrpcError(new Error('network failure'), 'fetch'),
+        ).toThrow(GrpcUnaryRequestException)
+
+        try {
+          consumer.throwGrpcError(
+            new RpcError('does not exist', 'NOT_FOUND'),
+            'fetch',
+          )
+          expect.unreachable('Expected handleGrpcError to throw')
+        } catch (error: unknown) {
+          expect(error).toBeInstanceOf(GrpcUnaryRequestException)
+          expect(error).toMatchObject({ code: GrpcStatusCode.NOT_FOUND })
+          expect((error as Error).message).toContain('does not exist')
+        }
+
+        expect(() =>
+          consumer.throwGrpcError(
+            new RpcError(
+              'chain failure {key:"ABCICode" value:"100"} {key:"Codespace" value:"exchange"}',
+              'INVALID_ARGUMENT',
+            ),
+            'simulate',
+          ),
+        ).toThrow(TransactionException)
+      } finally {
+        Object.defineProperty(globalThis, 'DOMException', descriptor)
+      }
+    })
+
     it('enriches empty RpcError messages with method and service details', () => {
       const error = new RpcError('', 'NOT_FOUND')
       error.methodName = 'PrepareFeeGrant'

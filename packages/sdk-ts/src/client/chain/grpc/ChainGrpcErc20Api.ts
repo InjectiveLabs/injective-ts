@@ -64,7 +64,6 @@ export class ChainGrpcErc20Api extends BaseGrpcConsumer {
     return fetchAllWithPagination(
       pagination,
       this.fetchTokenPairs.bind(this),
-      undefined,
       options,
     )
   }

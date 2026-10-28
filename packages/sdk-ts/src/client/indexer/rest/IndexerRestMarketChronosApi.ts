@@ -40,8 +40,6 @@ export class IndexerRestMarketChronosApi extends BaseRestConsumer {
     try {
       const { data } = await this.retry<ChronosMarketHistoryResponse>(
         (requestConfig) => this.get(pathWithParams, {}, requestConfig),
-        undefined,
-        undefined,
         options,
       )
 

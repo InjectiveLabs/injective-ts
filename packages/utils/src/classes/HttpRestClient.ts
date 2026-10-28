@@ -16,6 +16,7 @@ import {
   createAbortError,
 } from '../abort.js'
 import type { AxiosError, AxiosRequestConfig } from 'axios'
+import type { RetryOptions } from '../retry.js'
 import type { RequestOptions } from '../abort.js'
 import type { RetryRequestConfig } from './RetryRequestConfig.js'
 
@@ -133,6 +134,17 @@ export default class HttpRestClient {
     httpCall: (
       requestConfig: RetryRequestConfig,
     ) => TResponse | PromiseLike<TResponse>,
+    options?: RetryOptions,
+  ): Promise<TResponse>
+  public async retry<TResponse>(
+    httpCall: Function,
+    options?: RetryOptions,
+  ): Promise<TResponse>
+  /** @deprecated Pass a RetryOptions object instead of positional retry settings. */
+  public async retry<TResponse>(
+    httpCall: (
+      requestConfig: RetryRequestConfig,
+    ) => TResponse | PromiseLike<TResponse>,
     retries?: number,
     delay?: number,
     options?: RequestOptions,
@@ -145,11 +157,22 @@ export default class HttpRestClient {
   ): Promise<TResponse>
   public async retry<TResponse>(
     httpCall: Function,
-    retries: number = 3,
-    delay: number = 1000,
+    retriesOrOptions: number | RetryOptions = {},
+    legacyDelay?: number,
     options?: RequestOptions,
   ): Promise<TResponse> {
-    const { signal, dispose } = this.client.getAbortSignal(options?.signal)
+    const {
+      retries = 3,
+      delay = 1000,
+      signal: requestSignal,
+    } = typeof retriesOrOptions === 'number'
+      ? { ...options, retries: retriesOrOptions, delay: legacyDelay }
+      : {
+          ...options,
+          ...retriesOrOptions,
+          delay: retriesOrOptions.delay ?? legacyDelay,
+        }
+    const { signal, dispose } = this.client.getAbortSignal(requestSignal)
 
     const retryHttpCall = async (attempt = 1): Promise<TResponse> => {
       throwIfAborted(signal)

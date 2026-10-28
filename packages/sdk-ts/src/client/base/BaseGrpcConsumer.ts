@@ -16,6 +16,7 @@ import {
 } from '@injectivelabs/utils'
 import { GrpcStatusCode } from '../../types/stream.js'
 import { GrpcWebRpcTransport } from './GrpcWebRpcTransport.js'
+import type { RetryOptions } from '@injectivelabs/utils'
 import type { UnaryCall, RpcOptions } from '@protobuf-ts/runtime-rpc'
 import type { ErrorContextMetadata } from '@injectivelabs/exceptions'
 import type { GrpcWebTransportAdditionalOptions } from '../../types'
@@ -254,10 +255,32 @@ export default class BaseGrpcConsumer {
    */
   protected async retry<TResponse>(
     grpcCall: () => Promise<TResponse>,
-    retries: number = 3,
-    delay: number = 1000,
+    options?: RetryOptions,
+  ): Promise<TResponse>
+  /** @deprecated Pass a RetryOptions object instead of positional retry settings. */
+  protected async retry<TResponse>(
+    grpcCall: () => Promise<TResponse>,
+    retries?: number,
+    delay?: number,
     signal?: AbortSignal,
+  ): Promise<TResponse>
+  protected async retry<TResponse>(
+    grpcCall: () => Promise<TResponse>,
+    retriesOrOptions: number | RetryOptions = {},
+    legacyDelay?: number,
+    legacySignal?: AbortSignal,
   ): Promise<TResponse> {
+    const {
+      retries = 3,
+      delay = 1000,
+      signal,
+    } = typeof retriesOrOptions === 'number'
+      ? { retries: retriesOrOptions, delay: legacyDelay, signal: legacySignal }
+      : {
+          signal: legacySignal,
+          ...retriesOrOptions,
+          delay: retriesOrOptions.delay ?? legacyDelay,
+        }
     const retryGrpcCall = async (attempt = 1): Promise<TResponse> => {
       throwIfAborted(signal)
 
@@ -501,7 +524,7 @@ export default class BaseGrpcConsumer {
 
       return options?.noRetry
         ? await executeCall()
-        : await this.retry(executeCall, 3, 1000, signal)
+        : await this.retry(executeCall, { signal })
     } catch (e: unknown) {
       if (signal?.aborted) {
         throw createAbortError(signal)

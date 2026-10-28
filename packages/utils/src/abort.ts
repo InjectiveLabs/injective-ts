@@ -70,14 +70,6 @@ export const isAbortError = (error: unknown): boolean => {
     return true
   }
 
-  if (
-    typeof DOMException !== 'undefined' &&
-    error instanceof DOMException &&
-    error.name === 'AbortError'
-  ) {
-    return true
-  }
-
   return false
 }
 

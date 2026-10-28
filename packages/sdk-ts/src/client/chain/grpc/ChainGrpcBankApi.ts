@@ -111,7 +111,6 @@ export class ChainGrpcBankApi extends BaseGrpcConsumer {
     return fetchAllWithPagination(
       pagination,
       this.fetchTotalSupply.bind(this),
-      undefined,
       options,
     )
   }

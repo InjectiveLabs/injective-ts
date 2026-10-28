@@ -36,8 +36,6 @@ export class ChainRestBankApi extends BaseRestConsumer {
     try {
       const response = await this.retry<RestApiResponse<BalancesResponse>>(
         (requestConfig) => this.get(endpoint, params, requestConfig),
-        undefined,
-        undefined,
         options,
       )
 
@@ -72,8 +70,6 @@ export class ChainRestBankApi extends BaseRestConsumer {
     try {
       const response = await this.retry<RestApiResponse<BalancesResponse>>(
         (requestConfig) => this.get(endpoint, params, requestConfig),
-        undefined,
-        undefined,
         options,
       )
 
@@ -120,8 +116,6 @@ export class ChainRestBankApi extends BaseRestConsumer {
     try {
       const response = await this.retry<RestApiResponse<DenomOwnersResponse>>(
         (requestConfig) => this.get(endpoint, params, requestConfig),
-        undefined,
-        undefined,
         options,
       )
 

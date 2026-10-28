@@ -23,6 +23,7 @@ import {
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
 import { prepareTxInclusionWaiter } from './TxInclusion.js'
+import { TxObservationAbortError } from './TxObservationAbortError.js'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
 import type { RequestOptions } from '@injectivelabs/utils'
 import type { TxResponse } from '../types/tx.js'
@@ -506,7 +507,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
-    const txHash = TxClient.hash(txRaw)
+    let txHash = TxClient.hash(txRaw)
     let inclusionWaiter: TxInclusionWaiter | undefined
 
     try {
@@ -554,6 +555,8 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         })
       }
 
+      txHash = txResponse.txhash || txHash
+
       if (options?.onBroadcast) {
         options.onBroadcast(txResponse.txhash)
       }
@@ -577,7 +580,10 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       // Observation cancellation must stay a local cancellation error even when
       // it aborts while broadcast() is waiting for inclusion.
       if (isAbortError(e)) {
-        throw e
+        throw new TxObservationAbortError(
+          txHash,
+          (e as { reason?: unknown }).reason,
+        )
       }
 
       if (e instanceof TransactionException) {

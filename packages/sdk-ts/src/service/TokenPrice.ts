@@ -50,8 +50,6 @@ export class TokenPrice {
     }>(
       (requestConfig) =>
         this.client.get(`denoms?withPrice=true`, {}, requestConfig),
-      undefined,
-      undefined,
       options,
     )
 

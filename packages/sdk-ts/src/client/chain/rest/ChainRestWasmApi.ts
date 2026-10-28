@@ -26,12 +26,7 @@ export class ChainRestWasmApi extends BaseRestConsumer {
     try {
       const response = await this.retry<
         RestApiResponse<SmartContractStateResponse>
-      >(
-        (requestConfig) => this.get(endpoint, params, requestConfig),
-        undefined,
-        undefined,
-        options,
-      )
+      >((requestConfig) => this.get(endpoint, params, requestConfig), options)
 
       return response.data
     } catch (e) {

@@ -31,7 +31,6 @@ describe('fetchAllWithTokenPagination', () => {
     const response = await fetchAllWithTokenPagination(
       { perPage: 1 },
       method,
-      [],
       options,
     )
 
@@ -49,7 +48,7 @@ describe('fetchAllWithTokenPagination', () => {
     const method = vi.fn()
 
     await expect(
-      fetchAllWithTokenPagination({ perPage: 1 }, method, [], {
+      fetchAllWithTokenPagination({ perPage: 1 }, method, {
         signal: controller.signal,
       }),
     ).rejects.toMatchObject({
@@ -61,6 +60,18 @@ describe('fetchAllWithTokenPagination', () => {
 })
 
 describe('fetchAllWithPagination', () => {
+  test('retains the legacy accumulator argument', async () => {
+    const result = [1]
+    const response = await fetchAllWithPagination(
+      { limit: 1 },
+      async () => ({ items: [2], pagination: { next: '', total: 2 } }),
+      result,
+    )
+
+    expect(response.items).toEqual([1, 2])
+    expect(result).toEqual([1, 2])
+  })
+
   test('forwards options to every page and merges results', async () => {
     const options = { signal: new AbortController().signal }
     const receivedOptions: unknown[] = []
@@ -79,12 +90,7 @@ describe('fetchAllWithPagination', () => {
       }
     })
 
-    const response = await fetchAllWithPagination(
-      { limit: 1 },
-      method,
-      [],
-      options,
-    )
+    const response = await fetchAllWithPagination({ limit: 1 }, method, options)
 
     expect(method).toHaveBeenCalledTimes(2)
     expect(receivedOptions).toEqual([options, options])
@@ -108,7 +114,7 @@ describe('fetchAllWithPagination', () => {
     })
 
     await expect(
-      fetchAllWithPagination({ limit: 1 }, method, [], {
+      fetchAllWithPagination({ limit: 1 }, method, {
         signal: controller.signal,
       }),
     ).rejects.toMatchObject({
@@ -124,7 +130,7 @@ describe('fetchAllWithPagination', () => {
     const method = vi.fn()
 
     await expect(
-      fetchAllWithPagination({ limit: 1 }, method, [], {
+      fetchAllWithPagination({ limit: 1 }, method, {
         signal: controller.signal,
       }),
     ).rejects.toMatchObject({

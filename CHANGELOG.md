@@ -7,6 +7,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
+* sdk-ts/utils: add caller-owned AbortSignal cancellation with a shared AbortError (`code: ERR_CANCELED`) and isAbortError helper. Publish and upgrade both packages together in the same release; sdk-ts requires the matching utils cancellation helpers and HTTP signatures.
+* sdk-ts: preserve txHash on TxObservationAbortError when broadcast inclusion observation is cancelled; the submitted transaction may still succeed.
 * sdk-ts: expose RFQ websocket heartbeat `ping` events with `sentAt` metadata for taker and maker streams
 
 ### Bug Fixes

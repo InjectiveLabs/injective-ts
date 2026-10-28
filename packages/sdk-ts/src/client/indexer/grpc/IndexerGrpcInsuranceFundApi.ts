@@ -87,7 +87,6 @@ export class IndexerGrpcInsuranceFundApi extends BaseIndexerGrpcConsumer {
     return fetchAllWithTokenPagination(
       { perPage },
       this.fetchInsuranceFunds.bind(this),
-      undefined,
       options,
     )
   }

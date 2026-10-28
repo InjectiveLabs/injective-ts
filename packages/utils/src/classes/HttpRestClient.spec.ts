@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import { getEventListeners } from 'node:events'
 import { HttpRequestException } from '@injectivelabs/exceptions'
 import { AbortError } from '../abort.js'
 import HttpRestClient from './HttpRestClient.js'
@@ -361,6 +362,43 @@ describe('HttpRestClient', () => {
   })
 
   describe('retry', () => {
+    it('accepts retry options and leaves no listeners after a successful retry', async () => {
+      vi.useFakeTimers()
+      const controller = new AbortController()
+      const callback = vi
+        .fn<() => Promise<string>>()
+        .mockRejectedValueOnce(new Error('transient'))
+        .mockResolvedValue('ok')
+      const client = new HttpRestClient('http://api.test')
+      const promise = client.retry(callback, {
+        retries: 2,
+        delay: 10,
+        signal: controller.signal,
+      })
+
+      await vi.runAllTimersAsync()
+      await expect(promise).resolves.toBe('ok')
+      expect(callback).toHaveBeenCalledTimes(2)
+      expect(getEventListeners(controller.signal, 'abort')).toEqual([])
+      expect(vi.getTimerCount()).toBe(0)
+    })
+
+    it('uses default retry settings with the options-object shorthand', async () => {
+      vi.useFakeTimers()
+      const callback = vi
+        .fn<() => Promise<string>>()
+        .mockRejectedValueOnce(new Error('transient'))
+        .mockResolvedValue('ok')
+      const client = new HttpRestClient('http://api.test')
+      const promise = client.retry(callback, {})
+
+      await vi.advanceTimersByTimeAsync(999)
+      expect(callback).toHaveBeenCalledOnce()
+      await vi.advanceTimersByTimeAsync(1)
+      await expect(promise).resolves.toBe('ok')
+      expect(callback).toHaveBeenCalledTimes(2)
+    })
+
     it('retries transient failures and then resolves', async () => {
       vi.useFakeTimers()
 
