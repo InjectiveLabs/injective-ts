@@ -392,6 +392,139 @@ describe('StreamManagerV2 cancellation', () => {
     expect(errorEvents[0].message).toBe('factory failed')
   })
 
+  it.each(['connect', 'state:change'] as const)(
+    'handles a throwing %s listener during initial connection',
+    (event) => {
+      const subscription = createMockSubscription()
+      const onError = vi.fn()
+      const manager = new StreamManagerV2({
+        id: 'initial-connection-listener-error',
+        streamFactory: () => subscription,
+        onData: () => {},
+        retryConfig: { enabled: false },
+      })
+      const listener = () => {
+        throw new Error('connection listener failed')
+      }
+
+      if (event === 'connect') {
+        manager.on(event, listener)
+      } else {
+        manager.on(event, ({ to }) => {
+          if (to === StreamState.Connected) listener()
+        })
+      }
+      manager.on('error', onError)
+
+      expect(() => manager.start()).not.toThrow()
+      expect(onError).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({
+          message: 'connection listener failed',
+        }),
+      )
+      expect(subscription.unsubscribe).toHaveBeenCalledOnce()
+      expect(manager.getState()).toBe(StreamState.Stopped)
+      expect(vi.getTimerCount()).toBe(0)
+      manager.destroy()
+    },
+  )
+
+  it.each(['connect', 'state:change'] as const)(
+    'handles a throwing %s listener during a background reconnect and retries again',
+    (event) => {
+      const subscriptions = [
+        createMockSubscription(),
+        createMockSubscription(),
+        createMockSubscription(),
+      ]
+      let index = 0
+      let connects = 0
+      const onError = vi.fn()
+      const manager = new StreamManagerV2({
+        id: 'reconnection-listener-error',
+        streamFactory: () => subscriptions[index++],
+        onData: () => {},
+        retryConfig: { initialDelayMs: 100, maxAttempts: 3, persistent: false },
+      })
+      const listener = () => {
+        if (++connects === 2) throw new Error('reconnection listener failed')
+      }
+
+      if (event === 'connect') {
+        manager.on(event, listener)
+      } else {
+        manager.on(event, ({ to }) => {
+          if (to === StreamState.Connected) listener()
+        })
+      }
+      manager.on('error', onError)
+      manager.start()
+      subscriptions[0]._errorHandler?.({
+        code: GrpcStatusCode.UNAVAILABLE,
+        details: 'connection lost',
+      })
+
+      expect(() => vi.advanceTimersByTime(100)).not.toThrow()
+      expect(onError).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          message: 'reconnection listener failed',
+        }),
+      )
+      expect(onError).toHaveBeenCalledTimes(2)
+      expect(subscriptions[1].unsubscribe).toHaveBeenCalledOnce()
+      expect(manager.getState()).toBe(StreamState.Reconnecting)
+      expect(vi.getTimerCount()).toBe(1)
+
+      vi.advanceTimersByTime(200)
+
+      expect(connects).toBe(3)
+      expect(manager.getState()).toBe(StreamState.Connected)
+      manager.destroy()
+      expect(vi.getTimerCount()).toBe(0)
+    },
+  )
+
+  it.each(['connect', 'state:change'] as const)(
+    'does not stop a replacement connection when an old %s listener throws',
+    (event) => {
+      const subscriptions = [createMockSubscription(), createMockSubscription()]
+      let index = 0
+      let restarted = false
+      const onError = vi.fn()
+      const manager = new StreamManagerV2({
+        id: 'reentrant-connection-listener-error',
+        streamFactory: () => subscriptions[index++],
+        onData: () => {},
+        retryConfig: { enabled: false },
+      })
+      const listener = () => {
+        if (restarted) return
+        restarted = true
+        manager.stop()
+        manager.start()
+        throw new Error('old connection listener failed')
+      }
+
+      if (event === 'connect') {
+        manager.on(event, listener)
+      } else {
+        manager.on(event, ({ to }) => {
+          if (to === StreamState.Connected) listener()
+        })
+      }
+      manager.on('error', onError)
+
+      expect(() => manager.start()).not.toThrow()
+      expect(index).toBe(2)
+      expect(manager.getState()).toBe(StreamState.Connected)
+      expect(subscriptions[0].unsubscribe).toHaveBeenCalledOnce()
+      expect(subscriptions[1].unsubscribe).not.toHaveBeenCalled()
+      expect(onError).not.toHaveBeenCalled()
+      manager.destroy()
+      expect(vi.getTimerCount()).toBe(0)
+    },
+  )
+
   it('observes independent cancellation from the real stream helper', () => {
     const controller = new AbortController()
     let transportSignal: AbortSignal | undefined

@@ -94,7 +94,26 @@ export const grpcPagingToPagingV2 = (
   }
 }
 
-export const fetchAllWithTokenPagination = async <
+export function fetchAllWithTokenPagination<
+  T extends { perPage?: number; token?: string } | undefined,
+  Q extends { next: string[] },
+>(
+  args: T,
+  method: (args: T, options?: RequestOptions) => Promise<Q>,
+  resultOrOptions: Array<unknown> | RequestOptions | undefined,
+  options?: RequestOptions,
+): Promise<Q>
+/** Legacy callbacks receive only the page arguments. */
+export function fetchAllWithTokenPagination<
+  T extends { perPage?: number; token?: string } | undefined,
+  Q extends { next: string[] },
+>(
+  args: T,
+  method: (args: T) => Promise<Q>,
+  result?: Array<unknown>,
+  options?: undefined,
+): Promise<Q>
+export async function fetchAllWithTokenPagination<
   T extends { perPage?: number; token?: string } | undefined,
   Q extends { next: string[] },
 >(
@@ -102,7 +121,7 @@ export const fetchAllWithTokenPagination = async <
   method: (args: T, options?: RequestOptions) => Promise<Q>,
   resultOrOptions: Array<unknown> | RequestOptions = [],
   options?: RequestOptions,
-): Promise<Q> => {
+): Promise<Q> {
   const result = Array.isArray(resultOrOptions) ? resultOrOptions : []
   options = Array.isArray(resultOrOptions) ? options : resultOrOptions
   throwIfAborted(options?.signal)
@@ -137,7 +156,32 @@ export const fetchAllWithTokenPagination = async <
   return { [valueKey]: result, next: [] } as unknown as Q
 }
 
-export const fetchAllWithPagination = async <
+export function fetchAllWithPagination<
+  T extends
+    | { pagination: PaginationOption | undefined }
+    | PaginationOption
+    | undefined,
+  Q extends { pagination: Pagination },
+>(
+  args: T,
+  method: (args: T, options?: RequestOptions) => Promise<Q>,
+  resultOrOptions: Array<unknown> | RequestOptions | undefined,
+  options?: RequestOptions,
+): Promise<Q>
+/** Legacy callbacks receive only the page arguments. */
+export function fetchAllWithPagination<
+  T extends
+    | { pagination: PaginationOption | undefined }
+    | PaginationOption
+    | undefined,
+  Q extends { pagination: Pagination },
+>(
+  args: T,
+  method: (args: T) => Promise<Q>,
+  result?: Array<unknown>,
+  options?: undefined,
+): Promise<Q>
+export async function fetchAllWithPagination<
   T extends
     | { pagination: PaginationOption | undefined }
     | PaginationOption
@@ -148,7 +192,7 @@ export const fetchAllWithPagination = async <
   method: (args: T, options?: RequestOptions) => Promise<Q>,
   resultOrOptions: Array<unknown> | RequestOptions = [],
   options?: RequestOptions,
-): Promise<Q> => {
+): Promise<Q> {
   const result = Array.isArray(resultOrOptions) ? resultOrOptions : []
   options = Array.isArray(resultOrOptions) ? options : resultOrOptions
   throwIfAborted(options?.signal)

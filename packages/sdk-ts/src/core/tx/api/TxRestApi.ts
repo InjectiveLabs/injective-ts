@@ -66,7 +66,8 @@ export class TxRestApi implements TxConcreteApi {
     params: any = {},
     options?: RequestOptions,
   ): Promise<TxResponse> {
-    const signal = options?.signal
+    const cancellation = this.httpClient.getAbortSignal(options?.signal)
+    const signal = cancellation.signal
 
     try {
       throwIfAborted(signal)
@@ -75,7 +76,7 @@ export class TxRestApi implements TxConcreteApi {
         this.getRaw<TxResultResponse>(
           `/cosmos/tx/v1beta1/txs/${txHash}`,
           params,
-          options,
+          { signal },
         ),
         signal,
       )
@@ -135,6 +136,8 @@ export class TxRestApi implements TxConcreteApi {
           contextModule: 'TxRestApi.fetch-tx',
         },
       )
+    } finally {
+      cancellation.dispose()
     }
   }
 
@@ -291,12 +294,14 @@ export class TxRestApi implements TxConcreteApi {
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     options?: RequestOptions,
   ) {
-    const signal = options?.signal
     const txRawClone = CosmosTxV1Beta1TxPb.TxRaw.create({ ...txRaw })
 
     if (txRawClone.signatures.length === 0) {
       txRawClone.signatures = [new Uint8Array(0)]
     }
+
+    const cancellation = this.httpClient.getAbortSignal(options?.signal)
+    const signal = cancellation.signal
 
     try {
       throwIfAborted(signal)
@@ -307,7 +312,7 @@ export class TxRestApi implements TxConcreteApi {
           {
             tx_bytes: TxClient.encode(txRawClone),
           },
-          options,
+          { signal },
         ),
         signal,
       )
@@ -333,6 +338,8 @@ export class TxRestApi implements TxConcreteApi {
       }
 
       throw new TransactionException(e as Error, { skipParsing: true })
+    } finally {
+      cancellation.dispose()
     }
   }
 
@@ -353,6 +360,12 @@ export class TxRestApi implements TxConcreteApi {
     let txHash = TxClient.hash(txRaw)
     let broadcastCompleted = false
     let inclusionWaiter: TxInclusionWaiter | undefined
+    const observationSignals = combineAbortSignals([
+      options?.signal,
+      options?.abortSignal,
+      options?.eventInclusion?.signal,
+      requestOptions?.signal,
+    ])
 
     try {
       const prepareArgs = {
@@ -364,6 +377,10 @@ export class TxRestApi implements TxConcreteApi {
       inclusionWaiter = requestOptions
         ? await this.prepareTxInclusionWait(prepareArgs, requestOptions)
         : await this.prepareTxInclusionWait(prepareArgs)
+
+      // Preparation yields even for polling. Cancellation in that gap must
+      // prevent submission, without cancelling a mutation already in flight.
+      throwIfAborted(observationSignals.signal)
 
       const { tx_response: txResponse } = await this.broadcastTx<{
         tx_response: TxInfoResponse
@@ -434,6 +451,8 @@ export class TxRestApi implements TxConcreteApi {
       }
 
       throw e
+    } finally {
+      observationSignals.dispose()
     }
   }
 

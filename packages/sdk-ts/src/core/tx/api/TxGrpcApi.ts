@@ -55,6 +55,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     requestOptions?: RequestOptions,
   ): Promise<TxResponse> {
     const cancellation = combineAbortSignals([
+      this.options?.abort,
       options?.signal,
       requestOptions?.signal,
     ])
@@ -440,7 +441,6 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     options?: RequestOptions,
   ) {
-    const signal = options?.signal
     const txRawClone = CosmosTxV1Beta1TxPb.TxRaw.create({ ...txRaw })
     const simulateRequest = CosmosTxV1Beta1ServicePb.SimulateRequest.create()
 
@@ -449,6 +449,11 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     }
 
     simulateRequest.txBytes = CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRawClone)
+    const cancellation = combineAbortSignals([
+      this.options?.abort,
+      options?.signal,
+    ])
+    const signal = cancellation.signal
 
     try {
       throwIfAborted(signal)
@@ -490,6 +495,8 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         context: 'TxGrpcApi.simulate',
         skipParsing: true,
       })
+    } finally {
+      cancellation.dispose()
     }
   }
 
@@ -510,6 +517,13 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     let txHash = TxClient.hash(txRaw)
     let broadcastCompleted = false
     let inclusionWaiter: TxInclusionWaiter | undefined
+    const observationSignals = combineAbortSignals([
+      this.options?.abort,
+      options?.signal,
+      options?.abortSignal,
+      options?.eventInclusion?.signal,
+      requestOptions?.signal,
+    ])
 
     try {
       const prepareArgs = {
@@ -531,6 +545,10 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         CosmosTxV1Beta1ServicePb.BroadcastTxRequest.create()
       broadcastTxRequest.txBytes = CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw)
       broadcastTxRequest.mode = mode as CosmosTxV1Beta1ServicePb.BroadcastMode
+
+      // Preparation yields even for polling. Cancellation in that gap must
+      // prevent submission, without cancelling a mutation already in flight.
+      throwIfAborted(observationSignals.signal)
 
       const response = await this.executeGrpcCall<
         CosmosTxV1Beta1ServicePb.BroadcastTxRequest,
@@ -601,6 +619,8 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       }
 
       throw new TransactionException(new Error(e as any))
+    } finally {
+      observationSignals.dispose()
     }
   }
 

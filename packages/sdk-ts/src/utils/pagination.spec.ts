@@ -1,10 +1,35 @@
-import { vi, test, expect, describe } from 'vitest'
+import { vi, test, expect, describe, expectTypeOf } from 'vitest'
 import {
   fetchAllWithPagination,
   fetchAllWithTokenPagination,
 } from './pagination.js'
 
 describe('fetchAllWithTokenPagination', () => {
+  test.each([false, true])(
+    'accepts legacy callback defaults with accumulator=%s',
+    async (withAccumulator) => {
+      let page = 0
+      const calls: number[] = []
+      async function method(_args: { perPage?: number }, currency = 'USD') {
+        calls.push(arguments.length)
+
+        return {
+          funds: [currency],
+          next: ++page === 1 ? ['next-token'] : [],
+        }
+      }
+      const response = withAccumulator
+        ? await fetchAllWithTokenPagination({ perPage: 1 }, method, ['seed'])
+        : await fetchAllWithTokenPagination({ perPage: 1 }, method)
+
+      expectTypeOf(response.funds).toEqualTypeOf<string[]>()
+      expect(response.funds).toEqual(
+        withAccumulator ? ['seed', 'USD', 'USD'] : ['USD', 'USD'],
+      )
+      expect(calls).toEqual([1, 1])
+    },
+  )
+
   test('returns a next-only response without throwing', async () => {
     const response = await fetchAllWithTokenPagination(undefined, async () => ({
       next: [],
@@ -60,6 +85,34 @@ describe('fetchAllWithTokenPagination', () => {
 })
 
 describe('fetchAllWithPagination', () => {
+  test.each([false, true])(
+    'accepts legacy callback defaults with accumulator=%s',
+    async (withAccumulator) => {
+      let page = 0
+      const calls: number[] = []
+      async function method(
+        _args: { limit?: number },
+        includeMetadata = false,
+      ) {
+        calls.push(arguments.length)
+
+        return {
+          items: [includeMetadata],
+          pagination: { next: ++page === 1 ? 'next-key' : '', total: 2 },
+        }
+      }
+      const response = withAccumulator
+        ? await fetchAllWithPagination({ limit: 1 }, method, [true])
+        : await fetchAllWithPagination({ limit: 1 }, method)
+
+      expectTypeOf(response.items).toEqualTypeOf<boolean[]>()
+      expect(response.items).toEqual(
+        withAccumulator ? [true, false, false] : [false, false],
+      )
+      expect(calls).toEqual([1, 1])
+    },
+  )
+
   test('retains the legacy accumulator argument', async () => {
     const result = [1]
     const response = await fetchAllWithPagination(

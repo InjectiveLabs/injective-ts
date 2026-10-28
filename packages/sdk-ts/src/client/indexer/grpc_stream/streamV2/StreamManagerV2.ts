@@ -905,21 +905,21 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
 
         this.handleDisconnect(StreamDisconnectReason.StreamEnded)
       })
+
+      if (!this.isActiveConnection(generation, subscription)) {
+        return
+      }
+
+      // Connection listeners are part of setup: their failures must follow
+      // normal error handling, including when setup runs from a retry timer.
+      this.handleConnected(generation, isReconnect)
     } catch (error) {
       if (!this.isActiveConnection(generation, subscription)) {
         return
       }
 
       this.handleError(error)
-
-      return
     }
-
-    if (!this.isActiveConnection(generation, subscription)) {
-      return
-    }
-
-    this.handleConnected(generation, isReconnect)
   }
 
   /**

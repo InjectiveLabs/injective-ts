@@ -13,6 +13,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
+* sdk-ts: preserve the first cancellation reason across client-wide and per-call signals in transaction fetching and simulation.
+* sdk-ts: retain pagination callback type compatibility for legacy callbacks with unrelated optional parameters.
+* sdk-ts: recheck cancellation immediately before transaction submission, including the asynchronous gap after inclusion preparation.
+* sdk-ts: route StreamManagerV2 connection-listener failures through error handling and retry without affecting replacement connections.
 * sdk-ts: preserve legacy stream status payloads and V2 retries for protobuf-ts string status codes; report unrelated callback cancellation as a stream error instead of silently stopping.
 * sdk-ts: settle RFQ connect promises safely during disconnect/destroy while preserving rejection for awaiting callers.
 * sdk-ts: throw plain AbortError when inclusion preparation is cancelled before broadcasting; only attach a recovery txHash after a successful broadcast response.

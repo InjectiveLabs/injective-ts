@@ -1,7 +1,10 @@
 import { createServer } from 'node:http'
+import { getEventListeners } from 'node:events'
 import { isAbortError } from '@injectivelabs/utils'
 import { it, vi, expect, describe, afterEach } from 'vitest'
 import { GrpcUnaryRequestException } from '@injectivelabs/exceptions'
+import { TxGrpcApi } from '../core/tx/api/TxGrpcApi.js'
+import { TxRestApi } from '../core/tx/api/TxRestApi.js'
 import { ChainRestBankApi } from './chain/rest/ChainRestBankApi.js'
 import { IndexerGrpcSpotApi } from './indexer/grpc/IndexerGrpcSpotApi.js'
 import { IndexerGrpcSpotStream } from './indexer/grpc_stream/stream/IndexerGrpcSpotStream.js'
@@ -88,6 +91,75 @@ async function createRetryingRestEndpoint() {
 }
 
 describe('cancellation reaches the network transports', () => {
+  describe.each(['REST', 'gRPC'])('%s transaction reads', (transport) => {
+    describe.each(['fetchTx', 'simulate'] as const)('%s', (method) => {
+      it.each(
+        ['pre-aborted', 'active'].flatMap((phase) =>
+          ['client', 'request'].map((first) => ({ phase, first })),
+        ),
+      )(
+        'preserves the first $first cancellation reason for $phase requests',
+        async ({ phase, first }) => {
+          const server = await createIdleGrpcEndpoint()
+          const clientController = new AbortController()
+          const requestController = new AbortController()
+          const api =
+            transport === 'REST'
+              ? new TxRestApi(server.endpoint)
+              : new TxGrpcApi(server.endpoint, {
+                  abort: clientController.signal,
+                })
+
+          if (api instanceof TxRestApi) {
+            api.httpClient.setConfig({ signal: clientController.signal })
+          }
+
+          const controllers =
+            first === 'client'
+              ? [clientController, requestController]
+              : [requestController, clientController]
+          const reason = { first, phase }
+          if (phase === 'pre-aborted') controllers[0].abort(reason)
+
+          const options = { signal: requestController.signal }
+          const pending =
+            method === 'fetchTx'
+              ? api.fetchTx('A'.repeat(64), undefined, options)
+              : api.simulate(
+                  {
+                    bodyBytes: new Uint8Array([1]),
+                    authInfoBytes: new Uint8Array([2]),
+                    signatures: [],
+                  },
+                  options,
+                )
+          const outcome = pending.catch((error: unknown) => error)
+
+          if (phase === 'active') {
+            await vi.waitFor(() => expect(server.requests()).toBe(1))
+            controllers[0].abort(reason)
+          }
+          controllers[1].abort('later cancellation')
+
+          await expect(outcome).resolves.toMatchObject({
+            name: 'AbortError',
+            code: 'ERR_CANCELED',
+            reason,
+          })
+          if (phase === 'active') {
+            await vi.waitFor(() => expect(server.closedResponses()).toBe(1))
+          }
+          expect(server.requests()).toBe(phase === 'active' ? 1 : 0)
+          for (const controller of controllers) {
+            expect(getEventListeners(controller.signal, 'abort')).toHaveLength(
+              0,
+            )
+          }
+        },
+      )
+    })
+  })
+
   it('does not classify a remote CANCELLED status as caller cancellation', async () => {
     const server = await createIdleGrpcEndpoint(true)
     const api = new IndexerGrpcSpotApi(server.endpoint)
@@ -102,16 +174,21 @@ describe('cancellation reaches the network transports', () => {
     const server = await createIdleGrpcEndpoint(true)
     const stream = new IndexerGrpcSpotStreamV2(server.endpoint)
     const callback = vi.fn()
+    const onCancel = vi.fn()
     const subscription = stream.streamOrders({ callback })
+    subscription.onCancel?.(onCancel)
     const failure = new Promise<StreamError>((resolve) =>
       subscription.on('error', resolve),
     )
 
     await expect(failure).resolves.toMatchObject({
-      code: 1,
+      code: 2,
       details: 'remote cancellation',
+      metadata: { originalError: { code: 'CANCELLED' } },
     })
     expect(callback).not.toHaveBeenCalled()
+    expect(onCancel).not.toHaveBeenCalled()
+    expect(subscription.cancelled).toBe(false)
     subscription.unsubscribe()
   })
 

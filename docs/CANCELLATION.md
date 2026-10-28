@@ -70,6 +70,9 @@ Pagination helpers also accept request options directly as their third argument:
 `fetchAllWithPagination(args, fetchPage, { signal })`. Existing calls passing an
 accumulator array third continue to work. Cancellation is checked between pages
 as well as inside each page request.
+Without request options, page callbacks still receive only the page arguments,
+including callbacks with unrelated optional/default parameters. Pass an options
+object to opt into forwarding `RequestOptions` as the callback's second argument.
 
 ### Custom HTTP retries
 
@@ -216,6 +219,8 @@ The signal passed to `broadcast` controls preparation and inclusion observation,
 not an in-flight broadcast mutation. If it is already aborted or aborts during
 inclusion-waiter preparation (for example the event WebSocket handshake), no
 broadcast is sent and the call rejects with plain `AbortError`.
+Cancellation is checked again immediately before submission, including when it
+occurs just after calling `broadcast()` with the default polling strategy.
 
 After a successful broadcast response, cancelled observation rejects with
 `TxObservationAbortError`, preserving both the abort `reason` and `txHash` so

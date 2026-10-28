@@ -1,3 +1,4 @@
+import { getEventListeners } from 'node:events'
 import { AbortError } from '@injectivelabs/utils'
 import * as CosmosTxV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/tx_pb'
 import {
@@ -13,7 +14,11 @@ import { TxClient } from '../utils/classes/TxClient.js'
 import { subscribeToTendermintTxEvent } from './TxEventInclusion.js'
 import { TxObservationAbortError } from './TxObservationAbortError.js'
 import type { RequestOptions } from '@injectivelabs/utils'
-import type { TxResponse, TxConcreteApi } from '../types/tx.js'
+import type {
+  TxResponse,
+  TxConcreteApi,
+  TxClientBroadcastOptions,
+} from '../types/tx.js'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -513,6 +518,81 @@ describe('tx observation cancellation: simulate', () => {
     )
   })
 })
+
+// ---------------------------------------------------------------------------
+// Read/simulation signal cleanup
+// ---------------------------------------------------------------------------
+
+describe.each(['REST', 'gRPC'])(
+  '%s transaction read signal cleanup',
+  (transport) => {
+    it.each(
+      (['fetchTx', 'simulate'] as const).flatMap((method) =>
+        ['success', 'failure'].map((outcome) => ({ method, outcome })),
+      ),
+    )(
+      'releases both signal listeners after $method $outcome',
+      async ({ method, outcome }) => {
+        const client = new AbortController()
+        const request = new AbortController()
+        const api =
+          transport === 'REST'
+            ? new TxRestApi('https://unused.invalid')
+            : new TxGrpcApi('https://unused.invalid', { abort: client.signal })
+
+        if (api instanceof TxRestApi) {
+          api.httpClient.setConfig({ signal: client.signal })
+        }
+
+        const call =
+          api instanceof TxRestApi
+            ? vi.spyOn(api.httpClient, method === 'fetchTx' ? 'get' : 'post')
+            : vi.spyOn(api as any, 'executeGrpcCall')
+        if (outcome === 'failure') {
+          call.mockRejectedValue(new Error('request failed'))
+        } else {
+          call.mockResolvedValue({
+            txResponse: {
+              code: 0,
+              txhash: 'ABC',
+              height: '1',
+              gasWanted: '1',
+              gasUsed: '1',
+            },
+            result: {},
+            gasInfo: { gasWanted: '1', gasUsed: '1' },
+            data: {
+              tx_response: {
+                code: 0,
+                txhash: 'ABC',
+                height: '1',
+                gas_wanted: '1',
+                gas_used: '1',
+              },
+              result: { data: '', log: '', events: [] },
+              gas_info: { gas_wanted: '1', gas_used: '1' },
+            },
+          })
+        }
+        const options = { signal: request.signal }
+        const pending =
+          method === 'fetchTx'
+            ? api.fetchTx('ABC', undefined, options)
+            : api.simulate(makeTxRaw(), options)
+
+        if (outcome === 'success') {
+          await expect(pending).resolves.toBeDefined()
+        } else {
+          await expect(pending).rejects.toBeInstanceOf(Error)
+        }
+        for (const controller of [client, request]) {
+          expect(controller.signal.aborted).toBe(false)
+          expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+        }
+      },
+    )
+  },
+)
 
 // ---------------------------------------------------------------------------
 // fetchTxPoll
@@ -1710,6 +1790,175 @@ describe('tx observation cancellation: dual inclusion', () => {
 // ---------------------------------------------------------------------------
 
 describe('tx observation cancellation: broadcast inclusion', () => {
+  describe.each(['REST', 'gRPC'])(
+    '%s pre-submission cancellation',
+    (transport) => {
+      const createApi = () =>
+        transport === 'REST'
+          ? new TxRestApi('https://lcd.injective.network')
+          : new TxGrpcApi('https://sentry.tm.injective.network:443')
+
+      it.each(
+        (
+          ['requestOptions', 'signal', 'abortSignal', 'eventInclusion'] as const
+        ).flatMap((source) =>
+          ['synchronous', 'microtask'].map((timing) => ({ source, timing })),
+        ),
+      )(
+        'skips submission for $source cancellation in the $timing gap',
+        async ({ source, timing }) => {
+          const api = createApi()
+          const controller = new AbortController()
+          const onBroadcast = vi.fn()
+          const options: TxClientBroadcastOptions = { onBroadcast }
+          const requestOptions: RequestOptions = {}
+
+          if (source === 'requestOptions') {
+            requestOptions.signal = controller.signal
+          } else if (source === 'eventInclusion') {
+            options.eventInclusion = { signal: controller.signal }
+          } else {
+            options[source] = controller.signal
+          }
+
+          const broadcast = vi
+            .spyOn(
+              api as any,
+              api instanceof TxRestApi ? 'broadcastTx' : 'executeGrpcCall',
+            )
+            .mockResolvedValue({
+              tx_response: { txhash: makeTxHash(), code: 0 },
+              txResponse: { txhash: makeTxHash(), code: 0 },
+            })
+          const poll = vi.spyOn(api, 'fetchTxPoll')
+          const reason = { source, timing }
+          const pending = api.broadcast(makeTxRaw(), options, requestOptions)
+
+          if (timing === 'microtask') {
+            queueMicrotask(() => controller.abort(reason))
+          } else {
+            controller.abort(reason)
+          }
+
+          await expectAbortError(pending, reason)
+          await expect(pending).rejects.not.toHaveProperty('txHash')
+          expect(broadcast).not.toHaveBeenCalled()
+          expect(onBroadcast).not.toHaveBeenCalled()
+          expect(poll).not.toHaveBeenCalled()
+        },
+      )
+
+      it('closes a prepared event waiter when cancellation precedes submission', async () => {
+        const api = createApi()
+        const controller = new AbortController()
+        const socket = new ControlledWebSocket()
+        const prepare = api.prepareTxInclusionWait.bind(api)
+        vi.spyOn(api, 'prepareTxInclusionWait').mockImplementation(
+          async (...args) => {
+            const waiter = await prepare(...args)
+            controller.abort('prepared but not submitted')
+
+            return waiter
+          },
+        )
+        const broadcast = vi
+          .spyOn(
+            api as any,
+            api instanceof TxRestApi ? 'broadcastTx' : 'executeGrpcCall',
+          )
+          .mockRejectedValue(new Error('unexpected broadcast'))
+        const onFallback = vi.fn()
+        const pending = api.broadcast(
+          makeTxRaw(),
+          {
+            inclusionStrategy: TxInclusionStrategy.TendermintEvent,
+            eventInclusion: {
+              rpcEndpoint: 'http://localhost:26657',
+              webSocketFactory: () => socket as unknown as WebSocket,
+              onFallback,
+            },
+          },
+          { signal: controller.signal },
+        )
+
+        await expectAbortError(pending, 'prepared but not submitted')
+        await expect(pending).rejects.not.toHaveProperty('txHash')
+        expect(broadcast).not.toHaveBeenCalled()
+        expect(onFallback).not.toHaveBeenCalled()
+        expect(socket.closed).toBe(true)
+      })
+
+      it('preserves the first cancellation reason when multiple sources abort before submission', async () => {
+        const api = createApi()
+        const first = new AbortController()
+        const second = new AbortController()
+        const broadcast = vi
+          .spyOn(
+            api as any,
+            api instanceof TxRestApi ? 'broadcastTx' : 'executeGrpcCall',
+          )
+          .mockRejectedValue(new Error('unexpected broadcast'))
+        const pending = api.broadcast(
+          makeTxRaw(),
+          {
+            abortSignal: first.signal,
+          },
+          { signal: second.signal },
+        )
+
+        first.abort('first cancellation')
+        second.abort('second cancellation')
+
+        await expectAbortError(pending, 'first cancellation')
+        expect(broadcast).not.toHaveBeenCalled()
+      })
+
+      it.each(['success', 'failure'])(
+        'releases composed signal listeners after broadcast %s',
+        async (outcome) => {
+          const api = createApi()
+          const first = new AbortController()
+          const second = new AbortController()
+          const tx = makeTxResponse(makeTxHash())
+          const broadcast = vi.spyOn(
+            api as any,
+            api instanceof TxRestApi ? 'broadcastTx' : 'executeGrpcCall',
+          )
+
+          if (outcome === 'success') {
+            broadcast.mockResolvedValue({
+              tx_response: { txhash: tx.txHash, code: 0 },
+              txResponse: { txhash: tx.txHash, code: 0 },
+            })
+          } else {
+            broadcast.mockRejectedValue(new Error('mutation failed'))
+          }
+          vi.spyOn(api, 'fetchTxPoll').mockResolvedValue(tx)
+          const pending = api.broadcast(
+            makeTxRaw(),
+            {
+              signal: first.signal,
+            },
+            { signal: second.signal },
+          )
+
+          if (outcome === 'success') {
+            await expect(pending).resolves.toBe(tx)
+          } else {
+            await expect(pending).rejects.toThrow('mutation failed')
+          }
+
+          for (const controller of [first, second]) {
+            expect(controller.signal.aborted).toBe(false)
+            expect(getEventListeners(controller.signal, 'abort')).toHaveLength(
+              0,
+            )
+          }
+        },
+      )
+    },
+  )
+
   it.each([
     ['REST', 'pre-aborted'],
     ['REST', 'handshake'],
