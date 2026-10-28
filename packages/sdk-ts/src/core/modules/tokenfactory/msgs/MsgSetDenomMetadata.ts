@@ -86,7 +86,7 @@ export default class MsgSetDenomMetadata extends MsgBase<
         symbol: proto.metadata?.symbol || '',
         uri: proto.metadata?.uri || '',
         uri_hash: proto.metadata?.uriHash || '',
-        decimals: proto.metadata?.decimals || '',
+        decimals: proto.metadata?.decimals ?? 0,
       },
       ...(proto.adminBurnDisabled && {
         admin_burn_disabled: {
