@@ -19,21 +19,6 @@ export default class BaseRestConsumer extends HttpRestClient {
       toRetryOptions(options),
     )
   }
-
-  /**
-   * POST with retries, forwarding the retry-scoped request config so the
-   * operation's cancellation applies to every attempt.
-   */
-  protected postWithRetry<T>(
-    endpoint: string,
-    params: Record<string, any> = {},
-    options?: RequestOptions,
-  ): Promise<T> {
-    return this.retry<T>(
-      (requestConfig) => this.post<T>(endpoint, params, requestConfig),
-      toRetryOptions(options),
-    )
-  }
 }
 
 /**
