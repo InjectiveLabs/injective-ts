@@ -66,6 +66,8 @@ import {
   createWeb3Extension,
   CosmosTxV1Beta1TxPb,
   getEip712TypedDataV2,
+  getTxObservationSignals,
+  TxObservationAbortError,
   createTxRawFromSigResponse,
   createTransactionWithSigners,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -303,7 +305,7 @@ export class MsgBroadcaster {
           ? await this.broadcastEip712V2(txWithAddresses)
           : await this.broadcastEip712(txWithAddresses)
     } catch (e) {
-      return this.handleBroadcastError(e)
+      return this.handleBroadcastError(e, tx)
     }
   }
 
@@ -335,7 +337,7 @@ export class MsgBroadcaster {
         ? await this.broadcastDirectSign(txWithAddresses)
         : await this.broadcastEip712V2(txWithAddresses)
     } catch (e) {
-      return this.handleBroadcastError(e)
+      return this.handleBroadcastError(e, tx)
     }
   }
 
@@ -367,7 +369,7 @@ export class MsgBroadcaster {
         ? await this.broadcastDirectSignWithFeeDelegation(txWithAddresses)
         : await this.broadcastEip712WithFeeDelegation(txWithAddresses)
     } catch (e) {
-      return this.handleBroadcastError(e)
+      return this.handleBroadcastError(e, tx)
     }
   }
 
@@ -478,12 +480,25 @@ export class MsgBroadcaster {
 
       return txResponse
     } catch (e) {
-      return this.handleBroadcastError(e)
+      return this.handleBroadcastError(e, { txInclusion })
     }
   }
 
-  private handleBroadcastError(error: unknown): never {
-    if (isAbortError(error)) {
+  private handleBroadcastError(
+    error: unknown,
+    tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>,
+  ): never {
+    // A cancellation is either observation of a submitted tx, or an abort
+    // caused by a signal we were given. Abort-shaped errors from wallets or
+    // providers without that signal are failures.
+    const isCancellation =
+      error instanceof TxObservationAbortError ||
+      (isAbortError(error) &&
+        getTxObservationSignals(this.resolveTxInclusionOptions(tx)).some(
+          (signal) => signal?.aborted,
+        ))
+
+    if (isCancellation) {
       // BroadcastEnd is used as inclusion confirmation by consumers. Local
       // cancellation needs a distinct terminal event, with the recovery error.
       this.walletStrategy.emit(

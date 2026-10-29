@@ -1,4 +1,4 @@
-import { capitalize, isAbortError } from '@injectivelabs/utils'
+import { capitalize } from '@injectivelabs/utils'
 import {
   uint8ArrayToHex,
   uint8ArrayToBase64,
@@ -13,6 +13,7 @@ import {
 import {
   observeTx,
   waitTxBroadcasted,
+  TxObservationAbortError,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -214,11 +215,12 @@ export class CosmosWalletStrategy
         return waitTxBroadcasted(txHash, options)
       })
     } catch (e: unknown) {
-      if (isAbortError(e)) {
-        throw e
-      }
-
-      if (e instanceof TransactionException) {
+      // Only observation of the submitted tx is cancellable here. Provider
+      // errors are failures even when abort-shaped.
+      if (
+        e instanceof TxObservationAbortError ||
+        e instanceof TransactionException
+      ) {
         throw e
       }
 

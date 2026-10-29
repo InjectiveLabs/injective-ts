@@ -69,7 +69,7 @@ describe('CosmosWalletStrategy.sendTransaction', () => {
           ['SDK', 'native'].map((shape) => ({ phase, shape })),
         ),
       )(
-        'preserves $shape cancellation from $phase',
+        'reports $shape abort-shaped errors from $phase as failures',
         async ({ phase, shape }) => {
           const cancellation =
             shape === 'SDK'
@@ -82,8 +82,11 @@ describe('CosmosWalletStrategy.sendTransaction', () => {
           provider[phase as 'enable' | 'sendTx'].mockRejectedValue(cancellation)
           vi.stubGlobal('window', { keplr: provider })
           const error = await send().catch((e: unknown) => e)
-          expect(error).toBe(cancellation)
-          expect(error).not.toHaveProperty('txHash')
+          // No signal was given to the provider, so this is not cancellation.
+          expect(error).toBeInstanceOf(
+            entry === 'strategy' ? TransactionException : CosmosWalletException,
+          )
+          expect(isAbortError(error)).toBe(false)
           expect(waitTxBroadcasted).not.toHaveBeenCalled()
           if (phase === 'enable') expect(provider.sendTx).not.toHaveBeenCalled()
           else expect(provider.sendTx).toHaveBeenCalledOnce()
@@ -108,7 +111,7 @@ describe('CosmosWalletStrategy.sendTransaction', () => {
   )
 
   it.each(['provider', 'observation', 'decorated', 'onBroadcast'] as const)(
-    'preserves cancellation from %s with a hash only after submission',
+    'classifies abort-shaped errors from %s by submission phase',
     async (phase) => {
       const txHash = 'PROVIDER_HASH'
       const reason = { source: phase }
@@ -143,13 +146,13 @@ describe('CosmosWalletStrategy.sendTransaction', () => {
           },
         })
         .catch((e: unknown) => e)
-      expect(isAbortError(error)).toBe(true)
-      expect(error).toMatchObject({ reason, code: 'ERR_CANCELED' })
       if (phase === 'provider') {
-        expect(error).toBe(cancellation)
-        expect(error).not.toHaveProperty('txHash')
+        expect(error).toBeInstanceOf(TransactionException)
+        expect(isAbortError(error)).toBe(false)
         expect(waitTxBroadcasted).not.toHaveBeenCalled()
       } else {
+        expect(isAbortError(error)).toBe(true)
+        expect(error).toMatchObject({ reason, code: 'ERR_CANCELED' })
         expect(error).toBeInstanceOf(TxObservationAbortError)
         expect(error).toMatchObject({ txHash })
         if (phase === 'decorated') expect(error).toBe(cancellation)

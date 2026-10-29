@@ -249,18 +249,21 @@ For that case, save `TxClient.hash(txRaw)` before sending and query that hash to
 recover the outcome rather than assuming the transaction was never submitted.
 
 Wallet `MsgBroadcaster` entry points preserve cancellation without emitting
-`TransactionFail`. They emit `TransactionCancelled` (`transaction-cancelled`)
-exactly once, passing the original cancellation error as the event argument.
+`TransactionFail`. An error counts as cancellation only when it is a
+`TxObservationAbortError` from observing the submitted transaction, or when it
+is abort-shaped and one of the `txInclusion` signals has aborted. They then emit
+`TransactionCancelled` (`transaction-cancelled`) exactly once, passing the
+original cancellation error as the event argument.
 Event-driven UIs should handle this terminal event to clear pending state. It
 means the local operation stopped, not that the transaction was cancelled on-chain;
 `TransactionBroadcastEnd` continues to indicate completed inclusion observation.
 The event is available from both the root and lightweight wallet-base entry points.
 
 Wallet inclusion waits and `CosmosWalletStrategy` retain the
-known broadcast hash in `TxObservationAbortError`. Cancellation before a provider
-returns a successful broadcast hash remains a plain cancellation error. Provider
-abort errors from `enable` and `sendTx` pass through the Cosmos wallet adapters
-unchanged, including native abort errors.
+known broadcast hash in `TxObservationAbortError`. Wallet providers receive no
+signal, so errors from `enable` and `sendTx` are reported as wallet/transaction
+failures (`CosmosWalletException` / `TransactionException`) even when they are
+abort-shaped, and `MsgBroadcaster` emits `TransactionFail` for them.
 
 Custom broadcasters can use `observeTx(txHash, () => waitForInclusion())` from
 `@injectivelabs/sdk-ts/core/tx` after successful submission. It adds the known hash
