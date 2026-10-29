@@ -4,8 +4,8 @@ import { InjectiveSpotExchangeRPCClient } from '@injectivelabs/indexer-proto-ts-
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerSpotStreamTransformer } from '../../transformers/index.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 import type {
   OrderSide,
   OrderState,
@@ -68,7 +68,8 @@ export class IndexerGrpcSpotStream {
     callback: any
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     throw new GeneralException(new Error('deprecated - use streamOrderbookV2'))
   }
 
@@ -81,6 +82,7 @@ export class IndexerGrpcSpotStream {
    * @param params.callback - Called for each order update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOrders({
@@ -90,6 +92,7 @@ export class IndexerGrpcSpotStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketId?: string
     subaccountId?: string
@@ -97,7 +100,8 @@ export class IndexerGrpcSpotStream {
     callback: SpotOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -117,15 +121,15 @@ export class IndexerGrpcSpotStream {
       request.orderSide = orderSide
     }
 
-    const stream = this.client.streamOrders(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamOrders(request, { abort: abortSignal }),
       (response: InjectiveSpotExchangeRpcPb.StreamOrdersResponse) => {
         callback(IndexerSpotStreamTransformer.ordersStreamCallback(response))
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -141,6 +145,7 @@ export class IndexerGrpcSpotStream {
    * @param params.callback - Called for each order history update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOrderHistory({
@@ -153,6 +158,7 @@ export class IndexerGrpcSpotStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketId?: string
     subaccountId?: string
@@ -163,7 +169,8 @@ export class IndexerGrpcSpotStream {
     callback: SpotOrderHistoryStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -196,10 +203,9 @@ export class IndexerGrpcSpotStream {
       request.executionTypes = executionTypes
     }
 
-    const stream = this.client.streamOrdersHistory(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamOrdersHistory(request, { abort: abortSignal }),
       (response: InjectiveSpotExchangeRpcPb.StreamOrdersHistoryResponse) => {
         callback(
           IndexerSpotStreamTransformer.orderHistoryStreamCallback(response),
@@ -207,6 +213,7 @@ export class IndexerGrpcSpotStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -223,6 +230,7 @@ export class IndexerGrpcSpotStream {
    * @param params.callback - Called for each trade update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamTrades({
@@ -236,6 +244,7 @@ export class IndexerGrpcSpotStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds?: string[]
     marketId?: string
@@ -247,7 +256,8 @@ export class IndexerGrpcSpotStream {
     callback: SpotTradesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -289,15 +299,15 @@ export class IndexerGrpcSpotStream {
       }
     }
 
-    const stream = this.client.streamTrades(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamTrades(request, { abort: abortSignal }),
       (response: InjectiveSpotExchangeRpcPb.StreamTradesResponse) => {
         callback(IndexerSpotStreamTransformer.tradesStreamCallback(response))
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -308,6 +318,7 @@ export class IndexerGrpcSpotStream {
    * @param params.callback - Called for each market update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamMarkets({
@@ -315,12 +326,14 @@ export class IndexerGrpcSpotStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds?: string[]
     callback: MarketsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -332,15 +345,15 @@ export class IndexerGrpcSpotStream {
       request.marketIds = marketIds
     }
 
-    const stream = this.client.streamMarkets(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamMarkets(request, { abort: abortSignal }),
       (response: InjectiveSpotExchangeRpcPb.StreamMarketsResponse) => {
         callback(response)
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -351,6 +364,7 @@ export class IndexerGrpcSpotStream {
    * @param params.callback - Called for each orderbook update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOrderbooksV2({
@@ -358,12 +372,14 @@ export class IndexerGrpcSpotStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds: string[]
     callback: SpotOrderbookV2StreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!marketIds || marketIds.length === 0) {
       throw new Error('marketIds is required and cannot be empty')
@@ -376,10 +392,9 @@ export class IndexerGrpcSpotStream {
 
     request.marketIds = marketIds
 
-    const stream = this.client.streamOrderbookV2(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamOrderbookV2(request, { abort: abortSignal }),
       (response: InjectiveSpotExchangeRpcPb.StreamOrderbookV2Response) => {
         callback(
           IndexerSpotStreamTransformer.orderbookV2StreamCallback(response),
@@ -387,6 +402,7 @@ export class IndexerGrpcSpotStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -397,6 +413,7 @@ export class IndexerGrpcSpotStream {
    * @param params.callback - Called for each orderbook update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOrderbookUpdates({
@@ -404,12 +421,14 @@ export class IndexerGrpcSpotStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds: string[]
     callback: SpotOrderbookUpdateStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!marketIds || marketIds.length === 0) {
       throw new Error('marketIds is required and cannot be empty')
@@ -423,10 +442,9 @@ export class IndexerGrpcSpotStream {
 
     request.marketIds = marketIds
 
-    const stream = this.client.streamOrderbookUpdate(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamOrderbookUpdate(request, { abort: abortSignal }),
       (response: InjectiveSpotExchangeRpcPb.StreamOrderbookUpdateResponse) => {
         callback(
           IndexerSpotStreamTransformer.orderbookUpdateStreamCallback(response),
@@ -434,6 +452,7 @@ export class IndexerGrpcSpotStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

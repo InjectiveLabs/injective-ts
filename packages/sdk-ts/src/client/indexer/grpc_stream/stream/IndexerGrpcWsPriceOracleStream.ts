@@ -3,7 +3,7 @@ import { OracleClient } from '@injectivelabs/ws-price-oracle-proto-ts-v2/generat
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerWsPriceOracleStreamTransformer } from '../../transformers/index.js'
-import type { Subscription } from 'rxjs'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 import type {
   StreamStatusResponse,
   WsPriceOracleResponseMode,
@@ -46,6 +46,7 @@ export class IndexerGrpcWsPriceOracleStream {
    * @param params.callback - Called for each market oracle update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamMarkets({
@@ -55,6 +56,7 @@ export class IndexerGrpcWsPriceOracleStream {
     onEndCallback,
     includeInactive,
     onStatusCallback,
+    signal,
   }: {
     marketIds?: string[]
     oracleTypes?: string[]
@@ -62,7 +64,8 @@ export class IndexerGrpcWsPriceOracleStream {
     callback: WsPriceOracleMarketsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
     }
@@ -81,10 +84,9 @@ export class IndexerGrpcWsPriceOracleStream {
       request.includeInactive = includeInactive
     }
 
-    const stream = this.client.streamMarkets(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamMarkets(request, { abort: abortSignal }),
       (response: GoagenApiOraclePb.StreamMarketsResponse) => {
         callback(
           IndexerWsPriceOracleStreamTransformer.streamMarketsCallback(response),
@@ -92,6 +94,7 @@ export class IndexerGrpcWsPriceOracleStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -105,6 +108,7 @@ export class IndexerGrpcWsPriceOracleStream {
    * @param params.callback - Called for each market oracle update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamMarketsV2({
@@ -115,6 +119,7 @@ export class IndexerGrpcWsPriceOracleStream {
     onEndCallback,
     includeInactive,
     onStatusCallback,
+    signal,
   }: {
     marketIds?: string[]
     oracleTypes?: string[]
@@ -123,7 +128,8 @@ export class IndexerGrpcWsPriceOracleStream {
     callback: WsPriceOracleMarketsV2StreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
     }
@@ -146,10 +152,9 @@ export class IndexerGrpcWsPriceOracleStream {
       request.mode = mode
     }
 
-    const stream = this.client.streamMarketsV2(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamMarketsV2(request, { abort: abortSignal }),
       (response: GoagenApiOraclePb.StreamMarketsV2Response) => {
         callback(
           IndexerWsPriceOracleStreamTransformer.streamMarketsV2Callback(
@@ -159,6 +164,7 @@ export class IndexerGrpcWsPriceOracleStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

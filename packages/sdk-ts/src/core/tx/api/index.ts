@@ -1,4 +1,7 @@
 export * from './utils.js'
 export * from './TxGrpcApi.js'
 export * from './TxRestApi.js'
+export type * from './types.js'
 export * from './TxEventInclusion.js'
+export * from './TxObservationAbortError.js'
+export { getTxObservationSignals } from './TxInclusion.js'

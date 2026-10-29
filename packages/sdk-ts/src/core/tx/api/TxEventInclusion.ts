@@ -1,3 +1,5 @@
+import { throwIfAborted, createAbortError } from '@injectivelabs/utils'
+import { closeWebSocketSafely } from '../../../utils/websocket.js'
 import type {
   TxEventWebSocketFactory,
   TxClientBroadcastResponse,
@@ -26,7 +28,10 @@ export async function subscribeToTendermintTxEvent({
   timeout,
   endpoint,
   webSocketFactory,
+  signal,
 }: SubscribeToTendermintTxEventArgs): Promise<TendermintTxEventSubscription> {
+  throwIfAborted(signal)
+
   const normalizedTxHash = normalizeTendermintTxHash(txHash)
   const websocketEndpoint = normalizeTendermintWebSocketEndpoint(endpoint)
   const socket = createTendermintSocket(websocketEndpoint, webSocketFactory)
@@ -36,8 +41,8 @@ export async function subscribeToTendermintTxEvent({
   return new Promise((resolve, reject) => {
     let ready = false
     let waitSettled = false
-    let closedIntentionally = false
-    let timeoutId: ReturnType<typeof setTimeout>
+    let closed = false
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
 
     let waitResolve: (response: TxClientBroadcastResponse) => void
     let waitReject: (error: Error) => void
@@ -49,39 +54,102 @@ export async function subscribeToTendermintTxEvent({
       },
     )
 
-    const resolveSubscription = () => {
-      if (ready) {
-        return
-      }
+    // A subscription may be closed by a winning observation before anyone
+    // consumes `wait()`. Keep the internal rejection observed while still
+    // returning the original promise to callers.
+    waitPromise.then(
+      () => undefined,
+      () => undefined,
+    )
 
-      ready = true
-      resolve({
-        close: cleanup,
-        wait: () => waitPromise,
-      })
+    const removeAbortListener = () => {
+      signal?.removeEventListener('abort', onAbort)
     }
 
     const cleanup = () => {
-      closedIntentionally = true
-      clearTimeout(timeoutId)
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId)
+        timeoutId = undefined
+      }
+
+      removeAbortListener()
       socket.removeEventListener('open', onOpen)
       socket.removeEventListener('message', onMessage)
       socket.removeEventListener('error', onError)
       socket.removeEventListener('close', onClose)
 
-      if (socket.readyState === 1 || socket.readyState === 0) {
-        socket.close()
-      }
+      closeWebSocketSafely(socket)
     }
 
-    const rejectWait = (error: Error) => {
+    /**
+     * Settles the wait promise once and releases the socket/timer/listeners.
+     * Later `wait()` calls reuse the same already-settled promise.
+     */
+    const settleWait = (settle: () => void): boolean => {
       if (waitSettled) {
-        return
+        return false
       }
 
       waitSettled = true
-      waitReject(error)
+      closed = true
       cleanup()
+      settle()
+
+      return true
+    }
+
+    const close = () => {
+      if (closed && waitSettled) {
+        return
+      }
+
+      closed = true
+      cleanup()
+
+      if (!waitSettled) {
+        waitSettled = true
+        waitReject(createAbortError(signal))
+      }
+
+      if (!ready) {
+        ready = true
+        reject(createAbortError(signal))
+      }
+    }
+
+    const onAbort = () => {
+      close()
+    }
+
+    const resolveSubscription = () => {
+      if (ready || closed) {
+        return
+      }
+
+      ready = true
+      resolve({
+        close,
+        wait: () => waitPromise,
+      })
+    }
+
+    const rejectWait = (error: Error) => {
+      settleWait(() => waitReject(error))
+    }
+
+    const rejectSubscription = (error: Error) => {
+      closed = true
+      cleanup()
+
+      if (!waitSettled) {
+        waitSettled = true
+        waitReject(error)
+      }
+
+      if (!ready) {
+        ready = true
+        reject(error)
+      }
     }
 
     timeoutId = setTimeout(() => {
@@ -94,44 +162,43 @@ export async function subscribeToTendermintTxEvent({
         return
       }
 
-      cleanup()
-      reject(error)
+      rejectSubscription(error)
     }, timeout)
 
     const resolveWait = (response: TxClientBroadcastResponse) => {
-      if (waitSettled) {
-        return
-      }
-
-      waitSettled = true
-      waitResolve(response)
-      cleanup()
-    }
-
-    const rejectForMessageError = (error: Error) => {
-      if (ready) {
-        rejectWait(error)
-        return
-      }
-
-      cleanup()
-      reject(error)
+      settleWait(() => waitResolve(response))
     }
 
     const onOpen = () => {
-      socket.send(
-        JSON.stringify({
-          id: requestId,
-          jsonrpc: '2.0',
-          method: 'subscribe',
-          params: { query },
-        }),
-      )
+      if (closed) {
+        return
+      }
+
+      try {
+        socket.send(
+          JSON.stringify({
+            id: requestId,
+            jsonrpc: '2.0',
+            method: 'subscribe',
+            params: { query },
+          }),
+        )
+      } catch (error: unknown) {
+        rejectSubscription(
+          error instanceof Error
+            ? error
+            : new Error(`Tendermint subscribe failed: ${String(error)}`),
+        )
+      }
     }
 
     const onMessage = (event: MessageEvent) => {
       void readMessageEventData(event)
         .then((messageData) => {
+          if (closed || waitSettled) {
+            return
+          }
+
           const message = JSON.parse(messageData)
           const eventResponse = parseTxEventResponse(message, normalizedTxHash)
 
@@ -146,28 +213,45 @@ export async function subscribeToTendermintTxEvent({
           }
 
           if (message.error) {
-            rejectForMessageError(
-              new Error(
-                `Tendermint subscribe failed: ${JSON.stringify(message.error)}`,
-              ),
+            const error = new Error(
+              `Tendermint subscribe failed: ${JSON.stringify(message.error)}`,
             )
+
+            if (ready) {
+              rejectWait(error)
+              return
+            }
+
+            rejectSubscription(error)
             return
           }
 
           resolveSubscription()
         })
         .catch((error: unknown) => {
-          rejectForMessageError(
+          if (closed || waitSettled) {
+            return
+          }
+
+          const messageError =
             error instanceof Error
               ? error
-              : new Error(
-                  `Invalid Tendermint WebSocket JSON: ${String(error)}`,
-                ),
-          )
+              : new Error(`Invalid Tendermint WebSocket JSON: ${String(error)}`)
+
+          if (ready) {
+            rejectWait(messageError)
+            return
+          }
+
+          rejectSubscription(messageError)
         })
     }
 
     const onError = () => {
+      if (closed) {
+        return
+      }
+
       const error = new Error('Tendermint WebSocket error')
 
       if (ready) {
@@ -175,12 +259,11 @@ export async function subscribeToTendermintTxEvent({
         return
       }
 
-      cleanup()
-      reject(error)
+      rejectSubscription(error)
     }
 
     const onClose = () => {
-      if (closedIntentionally) {
+      if (closed) {
         return
       }
 
@@ -191,14 +274,23 @@ export async function subscribeToTendermintTxEvent({
         return
       }
 
-      cleanup()
-      reject(error)
+      rejectSubscription(error)
     }
 
     socket.addEventListener('open', onOpen)
     socket.addEventListener('message', onMessage)
     socket.addEventListener('error', onError)
     socket.addEventListener('close', onClose)
+
+    if (signal) {
+      signal.addEventListener('abort', onAbort, { once: true })
+
+      // Guard against a signal aborting between the initial check and listener
+      // setup.
+      if (signal.aborted) {
+        onAbort()
+      }
+    }
   })
 }
 

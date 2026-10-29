@@ -8,9 +8,14 @@ import {
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import {
-  sleep,
   HttpClient,
   toBigNumber,
+  isAbortError,
+  raceWithAbort,
+  abortableSleep,
+  throwIfAborted,
+  createAbortError,
+  combineAbortSignals,
   DEFAULT_TX_POLL_INTERVAL_MS,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
@@ -19,10 +24,16 @@ import {
 } from '@injectivelabs/utils'
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
+import { fetchTxWithAttemptTimeout } from './TxPoll.js'
+import { observeTx } from './TxObservationAbortError.js'
 import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
-import { prepareTxInclusionWaiter } from './TxInclusion.js'
+import {
+  getTxObservationSignals,
+  prepareTxInclusionWaiter,
+} from './TxInclusion.js'
 import type { AxiosError } from 'axios'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { TxResponse } from '../types/tx.js'
 import type {
   TxInfoResponse,
@@ -53,11 +64,24 @@ export class TxRestApi implements TxConcreteApi {
     })
   }
 
-  public async fetchTx(txHash: string, params: any = {}): Promise<TxResponse> {
+  public async fetchTx(
+    txHash: string,
+    params: any = {},
+    options?: RequestOptions,
+  ): Promise<TxResponse> {
+    const cancellation = this.httpClient.getAbortSignal(options?.signal)
+    const signal = cancellation.signal
+
     try {
-      const response = await this.getRaw<TxResultResponse>(
-        `/cosmos/tx/v1beta1/txs/${txHash}`,
-        params,
+      throwIfAborted(signal)
+
+      const response = await raceWithAbort(
+        this.getRaw<TxResultResponse>(
+          `/cosmos/tx/v1beta1/txs/${txHash}`,
+          params,
+          { signal },
+        ),
+        signal,
       )
 
       const { tx_response: txResponse } = response
@@ -88,6 +112,15 @@ export class TxRestApi implements TxConcreteApi {
         txHash: txResponse.txhash,
       }
     } catch (e: unknown) {
+      // Local cancellation is not a transportation or transaction failure
+      if (isAbortError(e)) {
+        throw e
+      }
+
+      if (signal?.aborted) {
+        throw createAbortError(signal)
+      }
+
       // Transaction has failed on the chain
       if (e instanceof TransactionException) {
         throw e
@@ -106,81 +139,120 @@ export class TxRestApi implements TxConcreteApi {
           contextModule: 'TxRestApi.fetch-tx',
         },
       )
+    } finally {
+      cancellation.dispose()
     }
   }
 
-  public async fetchTxPoll({
-    txHash,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    pollingInterval = DEFAULT_TX_POLL_INTERVAL_MS,
-    abortSignal,
-  }: TxFetchTxPollArgs): Promise<TxResponse> {
+  public async fetchTxPoll(
+    {
+      txHash,
+      timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+      pollingInterval = DEFAULT_TX_POLL_INTERVAL_MS,
+      abortSignal,
+      signal,
+    }: TxFetchTxPollArgs,
+    options?: RequestOptions,
+  ): Promise<TxResponse> {
+    const clientCancellation = this.httpClient.getAbortSignal()
+    const observationSignals = combineAbortSignals([
+      clientCancellation.signal,
+      abortSignal,
+      signal,
+      options?.signal,
+    ])
+    const observationSignal = observationSignals.signal
     const deadline = Date.now() + timeout
 
-    for (let start = Date.now(); start < deadline; start = Date.now()) {
-      this.throwIfTxPollingCancelled(abortSignal)
+    try {
+      throwIfAborted(observationSignal)
 
-      const callTimeout = Math.max(
-        0,
-        Math.min(DEFAULT_TX_POLL_CALL_TIMEOUT_MS, deadline - Date.now()),
+      for (let start = Date.now(); start < deadline; start = Date.now()) {
+        throwIfAborted(observationSignal)
+
+        const callTimeout = Math.max(
+          0,
+          Math.min(DEFAULT_TX_POLL_CALL_TIMEOUT_MS, deadline - Date.now()),
+        )
+
+        try {
+          const txResponse = await fetchTxWithAttemptTimeout({
+            txHash,
+            timeout: callTimeout,
+            signal: observationSignal,
+            fetchTx: (includedTxHash, fetchOptions) =>
+              this.fetchTx(includedTxHash, undefined, fetchOptions),
+          })
+
+          throwIfAborted(observationSignal)
+
+          if (txResponse) {
+            return txResponse
+          }
+        } catch (e: unknown) {
+          if (isAbortError(e)) {
+            throw e
+          }
+
+          if (observationSignal?.aborted) {
+            throw createAbortError(observationSignal)
+          }
+
+          if (e instanceof TransactionException) {
+            throw e
+          }
+        }
+
+        throwIfAborted(observationSignal)
+
+        const elapsed = Date.now() - start
+        const remaining = pollingInterval - elapsed
+        const untilDeadline = deadline - Date.now()
+        const wait = Math.max(0, Math.min(remaining, untilDeadline))
+
+        if (wait > 0) {
+          await abortableSleep(wait, observationSignal)
+        }
+      }
+
+      throwIfAborted(observationSignal)
+
+      throw new HttpRequestException(
+        new Error(
+          `Transaction was not included in a block before timeout of ${timeout}ms`,
+        ),
+        {
+          context: `/cosmos/tx/v1beta1/txs/${txHash}`,
+          contextModule: 'TxRestApi.fetch-tx-poll',
+        },
       )
-
-      try {
-        const txResponse = await Promise.race([
-          this.fetchTx(txHash),
-          sleep(callTimeout).then(() => null as TxResponse | null),
-        ])
-
-        if (txResponse) {
-          return txResponse
-        }
-      } catch (e: unknown) {
-        this.throwIfTxPollingCancelled(abortSignal)
-
-        if (e instanceof TransactionException) {
-          throw e
-        }
-      }
-
-      this.throwIfTxPollingCancelled(abortSignal)
-
-      const elapsed = Date.now() - start
-      const remaining = pollingInterval - elapsed
-
-      if (remaining > 0) {
-        await sleep(remaining)
-      }
+    } finally {
+      observationSignals.dispose()
+      clientCancellation.dispose()
     }
-
-    throw new HttpRequestException(
-      new Error(
-        `Transaction was not included in a block before timeout of ${timeout}ms`,
-      ),
-      {
-        context: `/cosmos/tx/v1beta1/txs/${txHash}`,
-        contextModule: 'TxRestApi.fetch-tx-poll',
-      },
-    )
   }
 
-  private throwIfTxPollingCancelled(abortSignal?: AbortSignal) {
-    if (!abortSignal?.aborted) {
-      return
-    }
-
-    throw new Error('Transaction inclusion polling was cancelled')
-  }
-
-  public async waitForTxInclusion({
-    txHash,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    options,
-  }: TxWaitForTxInclusionArgs): Promise<TxResponse> {
-    const waiter = await this.prepareTxInclusionWait({
+  public async waitForTxInclusion(
+    {
+      txHash,
+      timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+      options,
+      signal,
+      abortSignal,
+    }: TxWaitForTxInclusionArgs,
+    requestOptions?: RequestOptions,
+  ): Promise<TxResponse> {
+    const prepareArgs = {
       txHash,
       timeout,
       options,
-    })
+      signal,
+      abortSignal,
+    }
+    const waiter = await this.prepareTxInclusionWait(
+      prepareArgs,
+      requestOptions,
+    )
 
     const txResponse = await waiter.wait()
 
@@ -197,16 +269,29 @@ export class TxRestApi implements TxConcreteApi {
     return txResponse
   }
 
-  public async prepareTxInclusionWait({
-    txHash,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    options,
-  }: TxPrepareTxInclusionWaitArgs): Promise<TxInclusionWaiter> {
+  public async prepareTxInclusionWait(
+    {
+      txHash,
+      timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+      options,
+      signal,
+      abortSignal,
+    }: TxPrepareTxInclusionWaitArgs,
+    requestOptions?: RequestOptions,
+  ): Promise<TxInclusionWaiter> {
+    const clientCancellation = this.httpClient.getAbortSignal()
+
     return prepareTxInclusionWaiter({
       txHash,
       timeout,
       options,
-      fetchTx: (includedTxHash) => this.fetchTx(includedTxHash),
+      signal,
+      abortSignal,
+      requestOptions,
+      clientSignal: clientCancellation.signal,
+      disposeClientSignal: clientCancellation.dispose,
+      fetchTx: (includedTxHash, fetchOptions) =>
+        this.fetchTx(includedTxHash, undefined, fetchOptions),
       fetchTxPoll: (args) => this.fetchTxPoll(args),
       createRequestException: (error, contextModule) =>
         new HttpRequestException(error, {
@@ -216,19 +301,31 @@ export class TxRestApi implements TxConcreteApi {
     })
   }
 
-  public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
+  public async simulate(
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
+    options?: RequestOptions,
+  ) {
     const txRawClone = CosmosTxV1Beta1TxPb.TxRaw.create({ ...txRaw })
 
     if (txRawClone.signatures.length === 0) {
       txRawClone.signatures = [new Uint8Array(0)]
     }
 
+    const cancellation = this.httpClient.getAbortSignal(options?.signal)
+    const signal = cancellation.signal
+
     try {
-      const response = await this.postRaw<SimulationResponse>(
-        '/cosmos/tx/v1beta1/simulate',
-        {
-          tx_bytes: TxClient.encode(txRawClone),
-        },
+      throwIfAborted(signal)
+
+      const response = await raceWithAbort(
+        this.postRaw<SimulationResponse>(
+          '/cosmos/tx/v1beta1/simulate',
+          {
+            tx_bytes: TxClient.encode(txRawClone),
+          },
+          { signal },
+        ),
+        signal,
       )
 
       return {
@@ -243,13 +340,28 @@ export class TxRestApi implements TxConcreteApi {
         },
       }
     } catch (e: unknown) {
+      if (isAbortError(e)) {
+        throw e
+      }
+
+      if (signal?.aborted) {
+        throw createAbortError(signal)
+      }
+
       throw new TransactionException(e as Error, { skipParsing: true })
+    } finally {
+      cancellation.dispose()
     }
   }
 
   public async broadcast(
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     options?: TxClientBroadcastOptions,
+    /**
+     * Observation-only cancellation for the inclusion wait. The broadcast
+     * mutation itself is deliberately not cancelled by this signal.
+     */
+    requestOptions?: RequestOptions,
   ): Promise<TxResponse> {
     const timeout =
       options?.timeout ||
@@ -258,13 +370,30 @@ export class TxRestApi implements TxConcreteApi {
         .toNumber()
     const txHash = TxClient.hash(txRaw)
     let inclusionWaiter: TxInclusionWaiter | undefined
+    const clientCancellation = this.httpClient.getAbortSignal()
+    // Existing custom implementations of the public waiter API need not
+    // expose a signal, so the pre-submission barrier owns its own scope.
+    const observationSignals = combineAbortSignals([
+      clientCancellation.signal,
+      ...getTxObservationSignals(options, requestOptions),
+    ])
 
     try {
-      inclusionWaiter = await this.prepareTxInclusionWait({
+      const prepareArgs = {
         txHash,
         timeout,
         options,
-      })
+        signal: options?.signal,
+      }
+      const waiter = await this.prepareTxInclusionWait(
+        prepareArgs,
+        requestOptions,
+      )
+      inclusionWaiter = waiter
+
+      // Preparation yields even for polling. Cancellation in that gap must
+      // prevent submission, without cancelling a mutation already in flight.
+      throwIfAborted(observationSignals.signal)
 
       const { tx_response: txResponse } = await this.broadcastTx<{
         tx_response: TxInfoResponse
@@ -292,33 +421,30 @@ export class TxRestApi implements TxConcreteApi {
         })
       }
 
-      if (options?.onBroadcast) {
-        options.onBroadcast(txResponse.txhash)
-      }
+      return await observeTx(txResponse.txhash || txHash, async () => {
+        options?.onBroadcast?.(txResponse.txhash)
 
-      const result = await inclusionWaiter.wait(txResponse.txhash)
+        const result = await waiter.wait(txResponse.txhash)
 
-      if (!result) {
-        throw new HttpRequestException(
-          new Error(`The transaction with ${txResponse.txhash} is not found`),
-          {
-            context: 'TxRestApi.broadcast',
-            contextModule: 'wait-for-tx-inclusion',
-          },
-        )
-      }
+        if (!result) {
+          throw new HttpRequestException(
+            new Error(`The transaction with ${txResponse.txhash} is not found`),
+            {
+              context: 'TxRestApi.broadcast',
+              contextModule: 'wait-for-tx-inclusion',
+            },
+          )
+        }
 
-      return result
+        return result
+      })
     } catch (e: unknown) {
       inclusionWaiter?.close()
 
-      if (e instanceof HttpRequestException) {
-        if (e.code !== StatusCodes.OK) {
-          throw e
-        }
-      }
-
       throw e
+    } finally {
+      observationSignals.dispose()
+      clientCancellation.dispose()
     }
   }
 
@@ -380,13 +506,20 @@ export class TxRestApi implements TxConcreteApi {
   private async getRaw<T>(
     endpoint: string,
     params: URLSearchParams | any = {},
+    options?: RequestOptions,
   ): Promise<T> {
     try {
       return await this.httpClient
-        .get<URLSearchParams | any, { data: T }>(endpoint, params)
+        .get<URLSearchParams | any, { data: T }>(endpoint, params, {
+          signal: options?.signal,
+        })
         .then((d) => d.data)
     } catch (e) {
       const error = e as Error | AxiosError
+
+      if (isAbortError(error)) {
+        throw error
+      }
 
       if (axios.isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
@@ -416,13 +549,27 @@ export class TxRestApi implements TxConcreteApi {
   private async postRaw<T>(
     endpoint: string,
     params: URLSearchParams | any = {},
+    options?: RequestOptions,
   ): Promise<T> {
     try {
-      return await this.httpClient
-        .post<URLSearchParams | any, { data: T }>(endpoint, params)
-        .then((d) => d.data)
+      const request = options?.signal
+        ? this.httpClient.post<URLSearchParams | any, { data: T }>(
+            endpoint,
+            params,
+            { signal: options.signal },
+          )
+        : this.httpClient.post<URLSearchParams | any, { data: T }>(
+            endpoint,
+            params,
+          )
+
+      return await request.then((d) => d.data)
     } catch (e) {
       const error = e as Error | AxiosError
+
+      if (isAbortError(error)) {
+        throw error
+      }
 
       if (axios.isAxiosError(error)) {
         const message = getErrorMessage(error, endpoint)

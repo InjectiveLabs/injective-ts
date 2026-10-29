@@ -11,7 +11,9 @@ import {
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import {
+  observeTx,
   waitTxBroadcasted,
+  TxObservationAbortError,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -208,11 +210,17 @@ export class CosmosWalletStrategy
     try {
       const txHash = await cosmosWallet.broadcastTx(txRaw)
 
-      options.onBroadcast?.(txHash)
-
-      return await waitTxBroadcasted(txHash, options)
+      return await observeTx(txHash, () => {
+        options.onBroadcast?.(txHash)
+        return waitTxBroadcasted(txHash, options)
+      })
     } catch (e: unknown) {
-      if (e instanceof TransactionException) {
+      // Only observation of the submitted tx is cancellable here. Provider
+      // errors are failures even when abort-shaped.
+      if (
+        e instanceof TxObservationAbortError ||
+        e instanceof TransactionException
+      ) {
         throw e
       }
 

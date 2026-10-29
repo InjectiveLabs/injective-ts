@@ -3,8 +3,8 @@ import { MitoAPIClient } from '@injectivelabs/mito-proto-ts-v2/generated/goadesi
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerGrpcMitoStreamTransformer } from '../../transformers/index.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 
 export type TransfersStreamCallback = (
   response: ReturnType<
@@ -57,6 +57,7 @@ export class IndexerGrpcMitoStream {
    * @param params.callback - Called for each transfer update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamTransfers({
@@ -65,13 +66,15 @@ export class IndexerGrpcMitoStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     vault?: string
     account?: string
     callback: TransfersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -87,10 +90,9 @@ export class IndexerGrpcMitoStream {
       request.account = account
     }
 
-    const stream = this.client.streamTransfers(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamTransfers(request, { abort: abortSignal }),
       (response: MitoApiPb.StreamTransfersResponse) => {
         callback(
           IndexerGrpcMitoStreamTransformer.transfersStreamCallback(response),
@@ -98,6 +100,7 @@ export class IndexerGrpcMitoStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -108,6 +111,7 @@ export class IndexerGrpcMitoStream {
    * @param params.callback - Called for each vault update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamVault({
@@ -115,12 +119,14 @@ export class IndexerGrpcMitoStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     vault?: string
     callback: VaultStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -132,15 +138,14 @@ export class IndexerGrpcMitoStream {
       request.vault = vault
     }
 
-    const stream = this.client.streamVault(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) => this.client.streamVault(request, { abort: abortSignal }),
       (response: MitoApiPb.StreamVaultResponse) => {
         callback(IndexerGrpcMitoStreamTransformer.vaultStreamCallback(response))
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -153,6 +158,7 @@ export class IndexerGrpcMitoStream {
    * @param params.callback - Called for each subscription update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamVaultHolderSubscriptions({
@@ -162,6 +168,7 @@ export class IndexerGrpcMitoStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     holderAddress: string
     vaultAddress?: string
@@ -169,7 +176,8 @@ export class IndexerGrpcMitoStream {
     callback: VaultHolderSubscriptionStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!holderAddress) {
       throw new Error('holderAddress is required')
@@ -189,10 +197,9 @@ export class IndexerGrpcMitoStream {
       request.stakingContractAddress = stakingContractAddress
     }
 
-    const stream = this.client.streamHolderSubscription(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamHolderSubscription(request, { abort: abortSignal }),
       (response: MitoApiPb.StreamHolderSubscriptionResponse) => {
         callback(
           IndexerGrpcMitoStreamTransformer.vaultHolderSubscriptionStreamCallback(
@@ -202,6 +209,7 @@ export class IndexerGrpcMitoStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -213,6 +221,7 @@ export class IndexerGrpcMitoStream {
    * @param params.callback - Called for each reward update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamStakingRewardsByAccount({
@@ -221,13 +230,15 @@ export class IndexerGrpcMitoStream {
     onEndCallback,
     onStatusCallback,
     stakingContractAddress,
+    signal,
   }: {
     staker: string
     stakingContractAddress: string
     callback: StakingRewardByAccountStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!staker) {
       throw new Error('staker is required')
@@ -243,10 +254,11 @@ export class IndexerGrpcMitoStream {
     request.staker = staker
     request.stakingContractAddress = stakingContractAddress
 
-    const stream = this.client.streamStakingRewardByAccount(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamStakingRewardByAccount(request, {
+          abort: abortSignal,
+        }),
       (response: MitoApiPb.StreamStakingRewardByAccountResponse) => {
         callback(
           IndexerGrpcMitoStreamTransformer.stakingRewardByAccountStreamCallback(
@@ -256,6 +268,7 @@ export class IndexerGrpcMitoStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -267,6 +280,7 @@ export class IndexerGrpcMitoStream {
    * @param params.callback - Called for each historical staking update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamHistoricalStaking({
@@ -275,13 +289,15 @@ export class IndexerGrpcMitoStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     staker: string
     stakingContractAddress: string
     callback: HistoricalStakingStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!staker) {
       throw new Error('staker is required')
@@ -297,10 +313,9 @@ export class IndexerGrpcMitoStream {
     request.staker = staker
     request.stakingContractAddress = stakingContractAddress
 
-    const stream = this.client.streamHistoricalStaking(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamHistoricalStaking(request, { abort: abortSignal }),
       (response: MitoApiPb.StreamHistoricalStakingResponse) => {
         callback(
           IndexerGrpcMitoStreamTransformer.historicalStakingStreamCallback(
@@ -310,6 +325,7 @@ export class IndexerGrpcMitoStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

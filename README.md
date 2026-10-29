@@ -8,6 +8,9 @@ _Access Limitless DeFi Markets with Zero Barriers._
 
 Learn more on our [Docs](https://docs.ts.injective.network/)
 
+See [cancelling queries and streams](docs/CANCELLATION.md) for request, stream,
+WebSocket, and transaction-observation cancellation with `AbortSignal`.
+
 ---
 
 ## 📜 Contribution

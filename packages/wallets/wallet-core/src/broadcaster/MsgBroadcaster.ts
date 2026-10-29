@@ -17,6 +17,7 @@ import {
   sleep,
   getStdFee,
   toBigNumber,
+  isAbortError,
   DEFAULT_GAS_PRICE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
@@ -54,6 +55,7 @@ import {
 import {
   TxClient,
   TxGrpcApi,
+  observeTx,
   SIGN_DIRECT,
   SIGN_EIP712,
   SIGN_EIP712_V2,
@@ -64,6 +66,8 @@ import {
   createWeb3Extension,
   CosmosTxV1Beta1TxPb,
   getEip712TypedDataV2,
+  getTxObservationSignals,
+  TxObservationAbortError,
   createTxRawFromSigResponse,
   createTransactionWithSigners,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -301,15 +305,7 @@ export class MsgBroadcaster {
           ? await this.broadcastEip712V2(txWithAddresses)
           : await this.broadcastEip712(txWithAddresses)
     } catch (e) {
-      const error = e as any
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
+      return this.handleBroadcastError(e, tx)
     }
   }
 
@@ -341,14 +337,7 @@ export class MsgBroadcaster {
         ? await this.broadcastDirectSign(txWithAddresses)
         : await this.broadcastEip712V2(txWithAddresses)
     } catch (e) {
-      const error = e as any
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
+      return this.handleBroadcastError(e, tx)
     }
   }
 
@@ -380,15 +369,7 @@ export class MsgBroadcaster {
         ? await this.broadcastDirectSignWithFeeDelegation(txWithAddresses)
         : await this.broadcastEip712WithFeeDelegation(txWithAddresses)
     } catch (e) {
-      const error = e as any
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
+      return this.handleBroadcastError(e, tx)
     }
   }
 
@@ -499,16 +480,41 @@ export class MsgBroadcaster {
 
       return txResponse
     } catch (e) {
-      const error = e as any
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
+      return this.handleBroadcastError(e, { txInclusion })
     }
+  }
+
+  private handleBroadcastError(
+    error: unknown,
+    tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>,
+  ): never {
+    // A cancellation is either observation of a submitted tx, or an abort
+    // caused by a signal we were given. Abort-shaped errors from wallets or
+    // providers without that signal are failures.
+    const isCancellation =
+      error instanceof TxObservationAbortError ||
+      (isAbortError(error) &&
+        getTxObservationSignals(this.resolveTxInclusionOptions(tx)).some(
+          (signal) => signal?.aborted,
+        ))
+
+    if (isCancellation) {
+      // BroadcastEnd is used as inclusion confirmation by consumers. Local
+      // cancellation needs a distinct terminal event, with the recovery error.
+      this.walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionCancelled,
+        error,
+      )
+      throw error
+    }
+
+    this.walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
+
+    if (isThrownException(error as Error)) {
+      throw error
+    }
+
+    throw new TransactionException(new Error(error as any))
   }
 
   /**
@@ -1928,11 +1934,13 @@ export class MsgBroadcaster {
     timeout: number
     tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>
   }): Promise<TxResponse> {
-    return this.createTxGrpcApi().waitForTxInclusion({
-      txHash,
-      timeout,
-      options: this.resolveTxInclusionOptions(tx),
-    })
+    return observeTx(txHash, () =>
+      this.createTxGrpcApi().waitForTxInclusion({
+        txHash,
+        timeout,
+        options: this.resolveTxInclusionOptions(tx),
+      }),
+    )
   }
 
   private async prepareTxInclusionWaiter({
@@ -1973,7 +1981,9 @@ export class MsgBroadcaster {
       })
     }
 
-    const confirmedTx = await inclusionWaiter.wait(responseTxHash)
+    const confirmedTx = await observeTx(responseTxHash, () =>
+      inclusionWaiter.wait(responseTxHash),
+    )
 
     if (!confirmedTx) {
       throw new TransactionException(

@@ -1,9 +1,11 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as CosmosGovV1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb'
 import { QueryClient as CosmosGovV1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcGovTransformer } from '../transformers/ChainGrpcGovTransformer.js'
 import { ChainGrpcCommonTransformer } from '../transformers/ChainGrpcCommonTransformer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type * as CosmosGovV1GovPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1/gov_pb'
 import type { PaginationOption } from '../../../types/pagination.js'
 /**
@@ -16,7 +18,8 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     return this.initClient(CosmosGovV1QueryClient)
   }
 
-  async fetchModuleParams() {
+  async fetchModuleParams(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const paramTypes = ['voting', 'deposit', 'tallying']
     const requests = paramTypes.map((type) => {
       const request = CosmosGovV1QueryPb.QueryParamsRequest.create()
@@ -30,7 +33,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
         this.executeGrpcCall<
           CosmosGovV1QueryPb.QueryParamsRequest,
           CosmosGovV1QueryPb.QueryParamsResponse
-        >(request, this.client.params.bind(this.client)),
+        >(request, this.client.params.bind(this.client), options),
       ),
     )
     const [votingParams, depositParams, tallyParams] = responses
@@ -42,13 +45,17 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     })
   }
 
-  async fetchProposals({
-    status,
-    pagination,
-  }: {
-    status: CosmosGovV1GovPb.ProposalStatus
-    pagination?: PaginationOption
-  }) {
+  async fetchProposals(
+    {
+      status,
+      pagination,
+    }: {
+      status: CosmosGovV1GovPb.ProposalStatus
+      pagination?: PaginationOption
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = CosmosGovV1QueryPb.QueryProposalsRequest.create()
 
     request.proposalStatus = status
@@ -63,12 +70,13 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosGovV1QueryPb.QueryProposalsRequest,
       CosmosGovV1QueryPb.QueryProposalsResponse
-    >(request, this.client.proposals.bind(this.client))
+    >(request, this.client.proposals.bind(this.client), options)
 
     return ChainGrpcGovTransformer.proposalsResponseToProposals(response)
   }
 
-  async fetchProposal(proposalId: number) {
+  async fetchProposal(proposalId: number, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = CosmosGovV1QueryPb.QueryProposalRequest.create()
 
     request.proposalId = BigInt(proposalId)
@@ -76,18 +84,22 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosGovV1QueryPb.QueryProposalRequest,
       CosmosGovV1QueryPb.QueryProposalResponse
-    >(request, this.client.proposal.bind(this.client))
+    >(request, this.client.proposal.bind(this.client), options)
 
     return ChainGrpcGovTransformer.proposalResponseToProposal(response)
   }
 
-  async fetchProposalDeposits({
-    proposalId,
-    pagination,
-  }: {
-    proposalId: number
-    pagination?: PaginationOption
-  }) {
+  async fetchProposalDeposits(
+    {
+      proposalId,
+      pagination,
+    }: {
+      proposalId: number
+      pagination?: PaginationOption
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = CosmosGovV1QueryPb.QueryDepositsRequest.create()
 
     request.proposalId = BigInt(proposalId)
@@ -102,18 +114,22 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosGovV1QueryPb.QueryDepositsRequest,
       CosmosGovV1QueryPb.QueryDepositsResponse
-    >(request, this.client.deposits.bind(this.client))
+    >(request, this.client.deposits.bind(this.client), options)
 
     return ChainGrpcGovTransformer.depositsResponseToDeposits(response)
   }
 
-  async fetchProposalVotes({
-    proposalId,
-    pagination,
-  }: {
-    proposalId: number
-    pagination?: PaginationOption
-  }) {
+  async fetchProposalVotes(
+    {
+      proposalId,
+      pagination,
+    }: {
+      proposalId: number
+      pagination?: PaginationOption
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = CosmosGovV1QueryPb.QueryVotesRequest.create()
 
     request.proposalId = BigInt(proposalId)
@@ -128,12 +144,13 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosGovV1QueryPb.QueryVotesRequest,
       CosmosGovV1QueryPb.QueryVotesResponse
-    >(request, this.client.votes.bind(this.client))
+    >(request, this.client.votes.bind(this.client), options)
 
     return ChainGrpcGovTransformer.votesResponseToVotes(response)
   }
 
-  async fetchProposalTally(proposalId: number) {
+  async fetchProposalTally(proposalId: number, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = CosmosGovV1QueryPb.QueryTallyResultRequest.create()
 
     request.proposalId = BigInt(proposalId)
@@ -141,7 +158,7 @@ export class ChainGrpcGovApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosGovV1QueryPb.QueryTallyResultRequest,
       CosmosGovV1QueryPb.QueryTallyResultResponse
-    >(request, this.client.tallyResult.bind(this.client))
+    >(request, this.client.tallyResult.bind(this.client), options)
 
     return ChainGrpcGovTransformer.tallyResultResponseToTallyResult(response)
   }

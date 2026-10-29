@@ -1,8 +1,10 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as InjectiveInsuranceV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/query_pb'
 import { QueryClient as InjectiveInsuranceV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcInsuranceFundTransformer } from '../transformers/ChainGrpcInsuranceFundTransformer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 /**
  * @category Chain Grpc API
  */
@@ -13,35 +15,38 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     return this.initClient(InjectiveInsuranceV1Beta1QueryClient)
   }
 
-  async fetchModuleParams() {
+  async fetchModuleParams(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request =
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceParamsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceParamsRequest,
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceParamsResponse
-    >(request, this.client.insuranceParams.bind(this.client))
+    >(request, this.client.insuranceParams.bind(this.client), options)
 
     return ChainGrpcInsuranceFundTransformer.moduleParamsResponseToModuleParams(
       response,
     )
   }
 
-  async fetchInsuranceFunds() {
+  async fetchInsuranceFunds(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request =
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundsRequest.create()
 
     const response = await this.executeGrpcCall<
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundsRequest,
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundsResponse
-    >(request, this.client.insuranceFunds.bind(this.client))
+    >(request, this.client.insuranceFunds.bind(this.client), options)
 
     return ChainGrpcInsuranceFundTransformer.insuranceFundsResponseToInsuranceFunds(
       response,
     )
   }
 
-  async fetchInsuranceFund(marketId: string) {
+  async fetchInsuranceFund(marketId: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request =
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundRequest.create()
 
@@ -50,20 +55,24 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundRequest,
       InjectiveInsuranceV1Beta1QueryPb.QueryInsuranceFundResponse
-    >(request, this.client.insuranceFund.bind(this.client))
+    >(request, this.client.insuranceFund.bind(this.client), options)
 
     return ChainGrpcInsuranceFundTransformer.insuranceFundResponseToInsuranceFund(
       response,
     )
   }
 
-  async fetchEstimatedRedemptions({
-    marketId,
-    address,
-  }: {
-    marketId: string
-    address: string
-  }) {
+  async fetchEstimatedRedemptions(
+    {
+      marketId,
+      address,
+    }: {
+      marketId: string
+      address: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request =
       InjectiveInsuranceV1Beta1QueryPb.QueryEstimatedRedemptionsRequest.create()
 
@@ -73,20 +82,24 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveInsuranceV1Beta1QueryPb.QueryEstimatedRedemptionsRequest,
       InjectiveInsuranceV1Beta1QueryPb.QueryEstimatedRedemptionsResponse
-    >(request, this.client.estimatedRedemptions.bind(this.client))
+    >(request, this.client.estimatedRedemptions.bind(this.client), options)
 
     return ChainGrpcInsuranceFundTransformer.estimatedRedemptionsResponseToEstimatedRedemptions(
       response,
     )
   }
 
-  async fetchPendingRedemptions({
-    marketId,
-    address,
-  }: {
-    marketId: string
-    address: string
-  }) {
+  async fetchPendingRedemptions(
+    {
+      marketId,
+      address,
+    }: {
+      marketId: string
+      address: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request =
       InjectiveInsuranceV1Beta1QueryPb.QueryPendingRedemptionsRequest.create()
 
@@ -96,7 +109,7 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       InjectiveInsuranceV1Beta1QueryPb.QueryPendingRedemptionsRequest,
       InjectiveInsuranceV1Beta1QueryPb.QueryPendingRedemptionsResponse
-    >(request, this.client.pendingRedemptions.bind(this.client))
+    >(request, this.client.pendingRedemptions.bind(this.client), options)
 
     return ChainGrpcInsuranceFundTransformer.redemptionsResponseToRedemptions(
       response,

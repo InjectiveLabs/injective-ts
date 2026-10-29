@@ -5,8 +5,18 @@ import {
   grpcErrorCodeToErrorCode,
   GrpcUnaryRequestException,
 } from '@injectivelabs/exceptions'
+import {
+  AbortError,
+  isAbortError,
+  raceWithAbort,
+  abortableSleep,
+  throwIfAborted,
+  createAbortError,
+  combineAbortSignals,
+} from '@injectivelabs/utils'
 import { GrpcStatusCode } from '../../types/stream.js'
 import { GrpcWebRpcTransport } from './GrpcWebRpcTransport.js'
+import type { RetryOptions } from '@injectivelabs/utils'
 import type { UnaryCall, RpcOptions } from '@protobuf-ts/runtime-rpc'
 import type { ErrorContextMetadata } from '@injectivelabs/exceptions'
 import type { GrpcWebTransportAdditionalOptions } from '../../types'
@@ -127,12 +137,20 @@ export default class BaseGrpcConsumer {
   }
 
   /**
-   * Builds RpcOptions with metadata
+   * Builds per-call RpcOptions with metadata and an optional abort signal.
+   *
+   * Only call-level overrides belong here. Transport defaults (including
+   * interceptors) are merged exactly once by the generated client transport.
+   *
    * @deprecated Options should be managed externally and passed into the constructor instead
    */
-  protected getRpcOptions(): RpcOptions {
+  protected getRpcOptions(signal?: AbortSignal): RpcOptions {
     const options: RpcOptions = {
       meta: this.metadata || {},
+    }
+
+    if (signal) {
+      options.abort = signal
     }
 
     return options
@@ -233,16 +251,50 @@ export default class BaseGrpcConsumer {
 
   /**
    * Retry a gRPC call with backoff, only for retryable gRPC statuses.
+   * An optional signal aborts both pending calls and backoff waits.
    */
-  protected retry<TResponse>(
+  protected async retry<TResponse>(
     grpcCall: () => Promise<TResponse>,
-    retries: number = 3,
-    delay: number = 1000,
+    options?: RetryOptions,
+  ): Promise<TResponse>
+  /** @deprecated Pass a RetryOptions object instead of positional retry settings. */
+  protected async retry<TResponse>(
+    grpcCall: () => Promise<TResponse>,
+    retries?: number,
+    delay?: number,
+    signal?: AbortSignal,
+  ): Promise<TResponse>
+  protected async retry<TResponse>(
+    grpcCall: () => Promise<TResponse>,
+    retriesOrOptions: number | RetryOptions = {},
+    legacyDelay?: number,
+    legacySignal?: AbortSignal,
   ): Promise<TResponse> {
+    const {
+      retries = 3,
+      delay = 1000,
+      signal,
+    } = typeof retriesOrOptions === 'number'
+      ? { retries: retriesOrOptions, delay: legacyDelay, signal: legacySignal }
+      : {
+          signal: legacySignal,
+          ...retriesOrOptions,
+          delay: retriesOrOptions.delay ?? legacyDelay,
+        }
     const retryGrpcCall = async (attempt = 1): Promise<TResponse> => {
+      throwIfAborted(signal)
+
       try {
-        return await grpcCall()
+        return await raceWithAbort(grpcCall(), signal)
       } catch (e: unknown) {
+        throwIfAborted(signal)
+
+        if (isAbortError(e)) {
+          throw e instanceof AbortError
+            ? e
+            : new AbortError((e as { reason?: unknown }).reason)
+        }
+
         const isRetryable = this.isRetryableGrpcError(e)
 
         if (attempt >= retries || !isRetryable) {
@@ -256,12 +308,9 @@ export default class BaseGrpcConsumer {
           throw e
         }
 
-        return new Promise((resolve) =>
-          setTimeout(
-            () => resolve(retryGrpcCall(attempt + 1)),
-            delay * attempt,
-          ),
-        )
+        await abortableSleep(delay * attempt, signal)
+
+        return retryGrpcCall(attempt + 1)
       }
     }
 
@@ -440,6 +489,8 @@ export default class BaseGrpcConsumer {
    * @param options.noRetry - Set to true for non-idempotent RPCs (e.g. broadcast,
    * prepare-auto-sign) where retrying after a server-side success could cause
    * duplicate side effects. Defaults to false (retry with exponential backoff).
+   * @param options.signal - Optional per-call cancellation signal. It is composed
+   * with the constructor-level signal and only overrides abort for this call.
    */
   protected async executeGrpcCall<
     TRequest extends object = object,
@@ -450,23 +501,47 @@ export default class BaseGrpcConsumer {
       req: TRequest,
       options?: RpcOptions,
     ) => UnaryCall<TRequest, TResponse>,
-    options?: { noRetry?: boolean },
+    options?: { noRetry?: boolean; signal?: AbortSignal },
   ): Promise<TResponse> {
-    const executeCall = async () => {
-      const call = clientMethod(request, this.getRpcOptions())
+    const { signal, dispose } = combineAbortSignals([
+      this.options?.abort,
+      options?.signal,
+    ])
 
-      return (await call).response
+    const executeCall = async () => {
+      throwIfAborted(signal)
+
+      const call = clientMethod(request, this.getRpcOptions(signal))
+      const response = Promise.resolve(call).then(
+        (finishedCall) => finishedCall.response,
+      )
+
+      return raceWithAbort(response, signal)
     }
 
     try {
+      throwIfAborted(signal)
+
       return options?.noRetry
         ? await executeCall()
-        : await this.retry(executeCall)
+        : await this.retry(executeCall, { signal })
     } catch (e: unknown) {
+      if (signal?.aborted) {
+        throw createAbortError(signal)
+      }
+
+      if (isAbortError(e)) {
+        throw e instanceof AbortError
+          ? e
+          : new AbortError((e as { reason?: unknown }).reason)
+      }
+
       // Derive context from method name if not provided
       const errorContext = clientMethod.name || 'UnknownMethod'
 
       this.handleGrpcError(e, errorContext.replace('bound', '').trim())
+    } finally {
+      dispose()
     }
   }
 }

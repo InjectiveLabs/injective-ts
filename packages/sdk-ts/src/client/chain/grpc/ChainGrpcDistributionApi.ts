@@ -1,9 +1,12 @@
+import { isAbortError } from '@injectivelabs/utils'
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as CosmosDistributionV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/query_pb'
 import { QueryClient as CosmosDistributionV1Beta1QueryClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/distribution/v1beta1/query_pb.client'
 import { ChainModule } from '../types/index.js'
 import BaseGrpcConsumer from '../../base/BaseGrpcConsumer.js'
 import { ChainGrpcDistributionTransformer } from '../transformers/index.js'
 import type { Coin } from '@injectivelabs/ts-types'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { ValidatorRewards } from '../types/index.js'
 /**
  * @category Chain Grpc API
@@ -15,26 +18,31 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     return this.initClient(CosmosDistributionV1Beta1QueryClient)
   }
 
-  async fetchModuleParams() {
+  async fetchModuleParams(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = CosmosDistributionV1Beta1QueryPb.QueryParamsRequest.create()
 
     const response = await this.executeGrpcCall<
       CosmosDistributionV1Beta1QueryPb.QueryParamsRequest,
       CosmosDistributionV1Beta1QueryPb.QueryParamsResponse
-    >(request, this.client.params.bind(this.client))
+    >(request, this.client.params.bind(this.client), options)
 
     return ChainGrpcDistributionTransformer.moduleParamsResponseToModuleParams(
       response,
     )
   }
 
-  async fetchDelegatorRewardsForValidator({
-    delegatorAddress,
-    validatorAddress,
-  }: {
-    delegatorAddress: string
-    validatorAddress: string
-  }) {
+  async fetchDelegatorRewardsForValidator(
+    {
+      delegatorAddress,
+      validatorAddress,
+    }: {
+      delegatorAddress: string
+      validatorAddress: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request =
       CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsRequest.create()
 
@@ -44,20 +52,24 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsRequest,
       CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsResponse
-    >(request, this.client.delegationRewards.bind(this.client))
+    >(request, this.client.delegationRewards.bind(this.client), options)
 
     return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
       response,
     )
   }
 
-  async fetchDelegatorRewardsForValidatorNoThrow({
-    delegatorAddress,
-    validatorAddress,
-  }: {
-    delegatorAddress: string
-    validatorAddress: string
-  }) {
+  async fetchDelegatorRewardsForValidatorNoThrow(
+    {
+      delegatorAddress,
+      validatorAddress,
+    }: {
+      delegatorAddress: string
+      validatorAddress: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request =
       CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsRequest.create()
 
@@ -68,12 +80,15 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsRequest,
         CosmosDistributionV1Beta1QueryPb.QueryDelegationRewardsResponse
-      >(request, this.client.delegationRewards.bind(this.client))
+      >(request, this.client.delegationRewards.bind(this.client), options)
 
       return ChainGrpcDistributionTransformer.delegationRewardResponseToReward(
         response,
       )
     } catch (e: any) {
+      if (isAbortError(e)) {
+        throw e
+      }
       if (
         e.message.includes('does not exist') ||
         e.message.includes('no delegation for (address, validator) tuple')
@@ -85,7 +100,11 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     }
   }
 
-  async fetchDelegatorRewards(injectiveAddress: string) {
+  async fetchDelegatorRewards(
+    injectiveAddress: string,
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request =
       CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsRequest.create()
 
@@ -94,14 +113,18 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
     const response = await this.executeGrpcCall<
       CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsRequest,
       CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsResponse
-    >(request, this.client.delegationTotalRewards.bind(this.client))
+    >(request, this.client.delegationTotalRewards.bind(this.client), options)
 
     return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
       response,
     )
   }
 
-  async fetchDelegatorRewardsNoThrow(injectiveAddress: string) {
+  async fetchDelegatorRewardsNoThrow(
+    injectiveAddress: string,
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request =
       CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsRequest.create()
 
@@ -111,12 +134,15 @@ export class ChainGrpcDistributionApi extends BaseGrpcConsumer {
       const response = await this.executeGrpcCall<
         CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsRequest,
         CosmosDistributionV1Beta1QueryPb.QueryDelegationTotalRewardsResponse
-      >(request, this.client.delegationTotalRewards.bind(this.client))
+      >(request, this.client.delegationTotalRewards.bind(this.client), options)
 
       return ChainGrpcDistributionTransformer.totalDelegationRewardResponseToTotalReward(
         response,
       )
     } catch (e: any) {
+      if (isAbortError(e)) {
+        throw e
+      }
       if (e.message.includes('does not exist')) {
         return [] as ValidatorRewards[]
       }

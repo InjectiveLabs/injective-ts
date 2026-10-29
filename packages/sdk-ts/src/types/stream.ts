@@ -16,6 +16,20 @@ export interface StreamSubscription {
 
   /** Remove event listener */
   off(event: 'error' | 'complete', handler: (...args: any[]) => void): void
+
+  /**
+   * Observe local cancellation (abort or unsubscribe).
+   * Returns a function that removes the listener.
+   *
+   * Optional so existing custom subscriptions remain compatible.
+   */
+  onCancel?(handler: () => void): () => void
+
+  /**
+   * Snapshot of the local cancellation state.
+   * Optional so existing custom subscriptions remain compatible.
+   */
+  readonly cancelled?: boolean
 }
 
 /**
@@ -106,6 +120,12 @@ export interface StreamManagerConfig<TResponse> {
 
   /** Callback to handle stream data */
   onData: (response: TResponse) => void
+
+  /**
+   * Lifetime signal for the manager.
+   * Aborting it stops the stream and prevents any later restart.
+   */
+  signal?: AbortSignal
 
   /** Retry configuration */
   retryConfig?: Partial<StreamManagerRetryConfig>

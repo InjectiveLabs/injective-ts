@@ -7,8 +7,13 @@ import {
 } from '@injectivelabs/exceptions'
 import { ServiceClient as CosmosTxV1Beta1ServicePbClient } from '@injectivelabs/core-proto-ts-v2/generated/cosmos/tx/v1beta1/service_pb.client'
 import {
-  sleep,
   toBigNumber,
+  isAbortError,
+  raceWithAbort,
+  abortableSleep,
+  throwIfAborted,
+  createAbortError,
+  combineAbortSignals,
   DEFAULT_TX_POLL_INTERVAL_MS,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   DEFAULT_BLOCK_TIME_IN_SECONDS,
@@ -17,10 +22,15 @@ import {
 } from '@injectivelabs/utils'
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
-import { prepareTxInclusionWaiter } from './TxInclusion.js'
+import { observeTx } from './TxObservationAbortError.js'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
+import {
+  getTxObservationSignals,
+  prepareTxInclusionWaiter,
+} from './TxInclusion.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { TxResponse } from '../types/tx.js'
-import type { TxSafeFetchArgs, TxFetchDualArgs } from './types.js'
+import type { TxFetchDualArgs } from './types.js'
 import type {
   TxConcreteApi,
   TxInclusionWaiter,
@@ -38,15 +48,34 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     return this.initClient(CosmosTxV1Beta1ServicePbClient)
   }
 
-  public async fetchTx(hash: string): Promise<TxResponse> {
+  public async fetchTx(
+    hash: string,
+    options?: RequestOptions,
+    /**
+     * Supports the common `TxConcreteApi` shape where implementations that
+     * keep a positional params argument append options third.
+     */
+    requestOptions?: RequestOptions,
+  ): Promise<TxResponse> {
+    const cancellation = combineAbortSignals([
+      this.options?.abort,
+      options?.signal,
+      requestOptions?.signal,
+    ])
+    const signal = cancellation.signal
     const request = CosmosTxV1Beta1ServicePb.GetTxRequest.create()
     request.hash = hash
 
     try {
-      const response = await this.executeGrpcCall<
-        CosmosTxV1Beta1ServicePb.GetTxRequest,
-        CosmosTxV1Beta1ServicePb.GetTxResponse
-      >(request, this.client.getTx.bind(this.client))
+      throwIfAborted(signal)
+
+      const response = await raceWithAbort(
+        this.executeGrpcCall<
+          CosmosTxV1Beta1ServicePb.GetTxRequest,
+          CosmosTxV1Beta1ServicePb.GetTxResponse
+        >(request, this.client.getTx.bind(this.client), { signal }),
+        signal,
+      )
 
       const txResponse = response.txResponse
 
@@ -75,6 +104,15 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         txHash: txResponse.txhash,
       }
     } catch (e: unknown) {
+      // Local cancellation is not a transportation or transaction failure
+      if (isAbortError(e)) {
+        throw e
+      }
+
+      if (signal?.aborted) {
+        throw createAbortError(signal)
+      }
+
       // Transaction has failed on the chain
       if (e instanceof TransactionException) {
         throw e
@@ -93,63 +131,107 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
           contextModule: 'fetch-tx',
         },
       )
+    } finally {
+      cancellation.dispose()
     }
   }
 
-  public async fetchTxPoll({
-    txHash,
-    abortSignal,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    pollingInterval = DEFAULT_TX_POLL_INTERVAL_MS,
-  }: TxFetchTxPollArgs): Promise<TxResponse> {
+  public async fetchTxPoll(
+    {
+      txHash,
+      abortSignal,
+      signal,
+      timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+      pollingInterval = DEFAULT_TX_POLL_INTERVAL_MS,
+    }: TxFetchTxPollArgs,
+    options?: RequestOptions,
+  ): Promise<TxResponse> {
+    const observationSignals = combineAbortSignals([
+      this.options?.abort,
+      abortSignal,
+      signal,
+      options?.signal,
+    ])
+    const observationSignal = observationSignals.signal
     const deadline = Date.now() + timeout
 
-    for (let start = Date.now(); start < deadline; start = Date.now()) {
-      this.throwIfTxPollingCancelled(abortSignal)
+    try {
+      throwIfAborted(observationSignal)
 
-      try {
-        const tx = await this.fetchTxDual({ txHash, deadline, abortSignal })
+      for (let start = Date.now(); start < deadline; start = Date.now()) {
+        throwIfAborted(observationSignal)
 
-        this.throwIfTxPollingCancelled(abortSignal)
+        try {
+          const tx = await this.fetchTxDual({
+            txHash,
+            deadline,
+            abortSignal: observationSignal,
+          })
 
-        if (tx) {
-          return tx
+          throwIfAborted(observationSignal)
+
+          if (tx) {
+            return tx
+          }
+        } catch (e: unknown) {
+          if (isAbortError(e)) {
+            throw e
+          }
+
+          if (observationSignal?.aborted) {
+            throw createAbortError(observationSignal)
+          }
+
+          if (e instanceof TransactionException) {
+            throw e
+          }
         }
-      } catch (e: unknown) {
-        this.throwIfTxPollingCancelled(abortSignal)
 
-        if (e instanceof TransactionException) {
-          throw e
+        throwIfAborted(observationSignal)
+
+        const gap = pollingInterval - (Date.now() - start)
+        const untilDeadline = deadline - Date.now()
+        const wait = Math.max(0, Math.min(gap, untilDeadline))
+
+        if (wait > 0) {
+          await abortableSleep(wait, observationSignal)
         }
       }
 
-      this.throwIfTxPollingCancelled(abortSignal)
+      throwIfAborted(observationSignal)
 
-      const gap = pollingInterval - (Date.now() - start)
-
-      if (gap > 0) {
-        await sleep(gap)
-      }
+      throw new GrpcUnaryRequestException(
+        new Error(
+          `Transaction was not included in a block before timeout of ${timeout}ms`,
+        ),
+        { context: 'TxGrpcApi', contextModule: 'fetch-tx-poll' },
+      )
+    } finally {
+      observationSignals.dispose()
     }
-
-    throw new GrpcUnaryRequestException(
-      new Error(
-        `Transaction was not included in a block before timeout of ${timeout}ms`,
-      ),
-      { context: 'TxGrpcApi', contextModule: 'fetch-tx-poll' },
-    )
   }
 
-  public async waitForTxInclusion({
-    txHash,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    options,
-  }: TxWaitForTxInclusionArgs): Promise<TxResponse> {
-    const waiter = await this.prepareTxInclusionWait({
+  public async waitForTxInclusion(
+    {
+      txHash,
+      timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+      options,
+      signal,
+      abortSignal,
+    }: TxWaitForTxInclusionArgs,
+    requestOptions?: RequestOptions,
+  ): Promise<TxResponse> {
+    const prepareArgs = {
       txHash,
       timeout,
       options,
-    })
+      signal,
+      abortSignal,
+    }
+    const waiter = await this.prepareTxInclusionWait(
+      prepareArgs,
+      requestOptions,
+    )
 
     const txResponse = await waiter.wait()
 
@@ -166,16 +248,26 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     return txResponse
   }
 
-  public async prepareTxInclusionWait({
-    txHash,
-    timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
-    options,
-  }: TxPrepareTxInclusionWaitArgs): Promise<TxInclusionWaiter> {
+  public async prepareTxInclusionWait(
+    {
+      txHash,
+      timeout = DEFAULT_TX_BLOCK_INCLUSION_TIMEOUT_IN_MS,
+      options,
+      signal,
+      abortSignal,
+    }: TxPrepareTxInclusionWaitArgs,
+    requestOptions?: RequestOptions,
+  ): Promise<TxInclusionWaiter> {
     return prepareTxInclusionWaiter({
       txHash,
       timeout,
       options,
-      fetchTx: (includedTxHash) => this.fetchTx(includedTxHash),
+      signal,
+      abortSignal,
+      requestOptions,
+      clientSignal: this.options?.abort,
+      fetchTx: (includedTxHash, fetchOptions) =>
+        this.fetchTx(includedTxHash, fetchOptions),
       fetchTxPoll: (args) => this.fetchTxPoll(args),
       createRequestException: (error, contextModule) =>
         new GrpcUnaryRequestException(error, {
@@ -185,59 +277,174 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     })
   }
 
-  private async safeFetchTx({
-    txHash,
-    delay,
-    abortSignal,
-  }: TxSafeFetchArgs): Promise<TxResponse | null> {
-    if (delay) {
-      await sleep(delay)
-    }
-
-    this.throwIfTxPollingCancelled(abortSignal)
-
-    return this.fetchTx(txHash).catch((e: unknown) => {
-      if (e instanceof TransactionException) {
-        throw e
-      }
-
-      return null
-    })
-  }
-
-  private fetchTxDual({
+  /**
+   * Runs two staggered observations using the baseline Promise.all semantics:
+   * both branches settle, the first branch result is preferred (`a ?? b`), and
+   * a TransactionException from either branch fails the attempt even when the
+   * other branch already succeeded.
+   *
+   * Cancellation is separate from result selection: a fresh attempt controller
+   * aborts both in-flight branches on caller cancellation or the attempt
+   * deadline. External abort rejects promptly; the attempt deadline resolves to
+   * `null` so the next poll can continue.
+   */
+  private async fetchTxDual({
     txHash,
     deadline,
     abortSignal,
+    signal,
   }: TxFetchDualArgs): Promise<TxResponse | null> {
+    throwIfAborted(abortSignal)
+    throwIfAborted(signal)
+
     const STAGGER = 300
     const timeout = Math.max(
       0,
       Math.min(DEFAULT_TX_POLL_CALL_TIMEOUT_MS, deadline - Date.now()),
     )
 
-    const fetches = Promise.all([
-      this.safeFetchTx({ txHash, abortSignal }),
-      this.safeFetchTx({ txHash, delay: STAGGER, abortSignal }),
-    ]).then(([a, b]) => a ?? b)
-
-    fetches.catch(() => {})
-
-    return Promise.race([
-      fetches,
-      sleep(timeout).then(() => null as TxResponse | null),
-    ])
-  }
-
-  private throwIfTxPollingCancelled(abortSignal?: AbortSignal) {
-    if (!abortSignal?.aborted) {
-      return
+    if (timeout <= 0) {
+      return null
     }
 
-    throw new Error('Transaction inclusion polling was cancelled')
+    const attemptController = new AbortController()
+    const attemptSignals = combineAbortSignals([
+      abortSignal,
+      signal,
+      attemptController.signal,
+    ])
+    const attemptSignal = attemptSignals.signal
+
+    return new Promise<TxResponse | null>((resolve, reject) => {
+      const results: Array<TxResponse | null> = [null, null]
+      let settled = false
+      let finishedCount = 0
+      let timer: ReturnType<typeof setTimeout> | undefined
+
+      function cleanup() {
+        if (timer !== undefined) {
+          clearTimeout(timer)
+          timer = undefined
+        }
+
+        abortSignal?.removeEventListener('abort', onAbort)
+        signal?.removeEventListener('abort', onAbort)
+        attemptSignals.dispose()
+      }
+
+      function abortAttempt() {
+        if (!attemptController.signal.aborted) {
+          attemptController.abort()
+        }
+      }
+
+      function finishNull() {
+        if (settled) {
+          return
+        }
+
+        settled = true
+        abortAttempt()
+        cleanup()
+        resolve(null)
+      }
+
+      function finishReject(error: Error) {
+        if (settled) {
+          return
+        }
+
+        settled = true
+        abortAttempt()
+        cleanup()
+        reject(error)
+      }
+
+      function finishBranch() {
+        finishedCount += 1
+
+        if (finishedCount < 2 || settled) {
+          return
+        }
+
+        settled = true
+        cleanup()
+        resolve(results[0] ?? results[1])
+      }
+
+      function onAbort() {
+        finishReject(createAbortError(abortSignal ?? signal))
+      }
+
+      const runBranch = async (index: number) => {
+        try {
+          if (index === 1) {
+            await abortableSleep(STAGGER, attemptSignal)
+          }
+
+          throwIfAborted(attemptSignal)
+
+          const tx = await raceWithAbort(
+            this.fetchTx(txHash, { signal: attemptSignal }),
+            attemptSignal,
+          )
+
+          if (settled) {
+            return
+          }
+
+          results[index] = tx ?? null
+          finishBranch()
+        } catch (e: unknown) {
+          if (settled) {
+            return
+          }
+
+          if (abortSignal?.aborted || signal?.aborted) {
+            finishReject(createAbortError(abortSignal ?? signal))
+            return
+          }
+
+          if (e instanceof TransactionException) {
+            finishReject(e)
+            return
+          }
+
+          if (isAbortError(e)) {
+            finishReject(
+              e instanceof Error ? e : createAbortError(attemptSignal),
+            )
+
+            return
+          }
+
+          results[index] = null
+          finishBranch()
+        }
+      }
+
+      abortSignal?.addEventListener('abort', onAbort, { once: true })
+      signal?.addEventListener('abort', onAbort, { once: true })
+
+      if (abortSignal?.aborted || signal?.aborted) {
+        onAbort()
+
+        return
+      }
+
+      timer = setTimeout(() => {
+        finishNull()
+      }, timeout)
+
+      void runBranch(0)
+      void runBranch(1)
+    })
   }
 
-  public async simulate(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
+  public async simulate(
+    txRaw: CosmosTxV1Beta1TxPb.TxRaw,
+    options?: RequestOptions,
+  ) {
     const txRawClone = CosmosTxV1Beta1TxPb.TxRaw.create({ ...txRaw })
     const simulateRequest = CosmosTxV1Beta1ServicePb.SimulateRequest.create()
 
@@ -246,12 +453,22 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     }
 
     simulateRequest.txBytes = CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRawClone)
+    const cancellation = combineAbortSignals([
+      this.options?.abort,
+      options?.signal,
+    ])
+    const signal = cancellation.signal
 
     try {
-      const response = await this.executeGrpcCall<
-        CosmosTxV1Beta1ServicePb.SimulateRequest,
-        CosmosTxV1Beta1ServicePb.SimulateResponse
-      >(simulateRequest, this.client.simulate.bind(this.client))
+      throwIfAborted(signal)
+
+      const response = await raceWithAbort(
+        this.executeGrpcCall<
+          CosmosTxV1Beta1ServicePb.SimulateRequest,
+          CosmosTxV1Beta1ServicePb.SimulateResponse
+        >(simulateRequest, this.client.simulate.bind(this.client), { signal }),
+        signal,
+      )
 
       const result = {
         ...response.result,
@@ -270,16 +487,31 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         gasInfo: gasInfo,
       }
     } catch (e: unknown) {
+      if (isAbortError(e)) {
+        throw e
+      }
+
+      if (signal?.aborted) {
+        throw createAbortError(signal)
+      }
+
       throw new TransactionException(e as Error, {
         context: 'TxGrpcApi.simulate',
         skipParsing: true,
       })
+    } finally {
+      cancellation.dispose()
     }
   }
 
   public async broadcast(
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
     options?: TxClientBroadcastOptions,
+    /**
+     * Observation-only cancellation for the inclusion wait. The broadcast
+     * mutation itself is deliberately not cancelled by this signal.
+     */
+    requestOptions?: RequestOptions,
   ): Promise<TxResponse> {
     const timeout =
       options?.timeout ||
@@ -288,13 +520,25 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         .toNumber()
     const txHash = TxClient.hash(txRaw)
     let inclusionWaiter: TxInclusionWaiter | undefined
+    // Keep the submission barrier independent of the public, overridable
+    // waiter API. Existing custom waiters do not expose a lifecycle signal.
+    const observationSignals = combineAbortSignals([
+      this.options?.abort,
+      ...getTxObservationSignals(options, requestOptions),
+    ])
 
     try {
-      inclusionWaiter = await this.prepareTxInclusionWait({
+      const prepareArgs = {
         txHash,
         timeout,
         options,
-      })
+        signal: options?.signal,
+      }
+      const waiter = await this.prepareTxInclusionWait(
+        prepareArgs,
+        requestOptions,
+      )
+      inclusionWaiter = waiter
 
       const mode =
         options?.mode ||
@@ -305,6 +549,10 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         CosmosTxV1Beta1ServicePb.BroadcastTxRequest.create()
       broadcastTxRequest.txBytes = CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw)
       broadcastTxRequest.mode = mode as CosmosTxV1Beta1ServicePb.BroadcastMode
+
+      // Preparation yields even for polling. Cancellation in that gap must
+      // prevent submission, without cancelling a mutation already in flight.
+      throwIfAborted(observationSignals.signal)
 
       const response = await this.executeGrpcCall<
         CosmosTxV1Beta1ServicePb.BroadcastTxRequest,
@@ -330,25 +578,29 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         })
       }
 
-      if (options?.onBroadcast) {
-        options.onBroadcast(txResponse.txhash)
-      }
+      return await observeTx(txResponse.txhash || txHash, async () => {
+        options?.onBroadcast?.(txResponse.txhash)
 
-      const result = await inclusionWaiter.wait(txResponse.txhash)
+        const result = await waiter.wait(txResponse.txhash)
 
-      if (!result) {
-        throw new GrpcUnaryRequestException(
-          new Error(`The transaction with ${txResponse.txhash} is not found`),
-          {
-            context: 'TxGrpcApi.broadcast',
-            contextModule: 'wait-for-tx-inclusion',
-          },
-        )
-      }
+        if (!result) {
+          throw new GrpcUnaryRequestException(
+            new Error(`The transaction with ${txResponse.txhash} is not found`),
+            {
+              context: 'TxGrpcApi.broadcast',
+              contextModule: 'wait-for-tx-inclusion',
+            },
+          )
+        }
 
-      return result
+        return result
+      })
     } catch (e: unknown) {
       inclusionWaiter?.close()
+
+      if (isAbortError(e)) {
+        throw e
+      }
 
       if (e instanceof TransactionException) {
         throw e
@@ -359,6 +611,8 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       }
 
       throw new TransactionException(new Error(e as any))
+    } finally {
+      observationSignals.dispose()
     }
   }
 

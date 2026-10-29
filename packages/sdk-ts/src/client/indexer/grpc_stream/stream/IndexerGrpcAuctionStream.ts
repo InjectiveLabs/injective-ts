@@ -3,8 +3,8 @@ import { InjectiveAuctionRPCClient } from '@injectivelabs/indexer-proto-ts-v2/ge
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerAuctionStreamTransformer } from '../../transformers/index.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 
 export type BidsStreamCallback = (
   response: ReturnType<
@@ -31,17 +31,20 @@ export class IndexerGrpcAuctionStream {
    * @param params.callback - Called for each bid update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamBids({
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     callback: BidsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -49,15 +52,14 @@ export class IndexerGrpcAuctionStream {
 
     const request = InjectiveAuctionRpcPb.StreamBidsRequest.create()
 
-    const stream = this.client.streamBids(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) => this.client.streamBids(request, { abort: abortSignal }),
       (response: InjectiveAuctionRpcPb.StreamBidsResponse) => {
         callback(IndexerAuctionStreamTransformer.bidsStreamCallback(response))
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }
