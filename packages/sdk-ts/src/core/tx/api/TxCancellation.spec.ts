@@ -11,6 +11,7 @@ import { TxRestApi } from './TxRestApi.js'
 import { waitTxBroadcasted } from './utils.js'
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
+import { getTxObservationSignals } from './TxInclusion.js'
 import { subscribeToTendermintTxEvent } from './TxEventInclusion.js'
 import { TxObservationAbortError } from './TxObservationAbortError.js'
 import type { RequestOptions } from '@injectivelabs/utils'
@@ -949,6 +950,26 @@ describe('tx observation cancellation: Tendermint subscription', () => {
 describe('tx observation cancellation: inclusion preparation', () => {
   afterEach(() => {
     vi.useRealTimers()
+  })
+
+  it('collects every observation signal alias in one place', () => {
+    const [signal, abortSignal, eventSignal, requestSignal] = Array.from(
+      { length: 4 },
+      () => new AbortController().signal,
+    )
+
+    expect(
+      getTxObservationSignals(
+        { signal, abortSignal, eventInclusion: { signal: eventSignal } },
+        { signal: requestSignal },
+      ),
+    ).toEqual([signal, abortSignal, eventSignal, requestSignal])
+    expect(getTxObservationSignals()).toEqual([
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ])
   })
 
   it('pre-aborted prepare rejects before polling and before fallback', async () => {

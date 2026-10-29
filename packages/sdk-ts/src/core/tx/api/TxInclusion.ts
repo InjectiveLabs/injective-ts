@@ -16,6 +16,7 @@ import type {
   TxResponse,
   TxFetchTxPollArgs,
   TxInclusionWaiter,
+  TxClientInclusionOptions,
   TxInclusionStrategy as TxInclusionStrategyType,
 } from '../types/tx.js'
 
@@ -84,6 +85,22 @@ async function waitForAbortableOperation<T>(
   }
 }
 
+/**
+ * Every caller-provided signal that cancels transaction inclusion observation.
+ * Pre-submission barriers and inclusion waiters must agree on this list.
+ */
+export function getTxObservationSignals(
+  options?: TxClientInclusionOptions,
+  requestOptions?: RequestOptions,
+): (AbortSignal | undefined)[] {
+  return [
+    options?.signal,
+    options?.abortSignal,
+    options?.eventInclusion?.signal,
+    requestOptions?.signal,
+  ]
+}
+
 export function isTendermintEventStrategy(
   inclusionStrategy?: TxInclusionStrategyType,
 ) {
@@ -114,11 +131,8 @@ export async function prepareTxInclusionWaiter(
       clientSignal,
       signal,
       abortSignal,
-      options?.signal,
-      options?.abortSignal,
-      options?.eventInclusion?.signal,
       argsRequestOptions?.signal,
-      requestOptions?.signal,
+      ...getTxObservationSignals(options, requestOptions),
     ],
     disposeClientSignal,
   )

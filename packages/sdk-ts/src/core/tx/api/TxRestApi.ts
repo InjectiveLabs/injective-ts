@@ -28,7 +28,10 @@ import { fetchTxWithAttemptTimeout } from './TxPoll.js'
 import { observeTx } from './TxObservationAbortError.js'
 import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
-import { prepareTxInclusionWaiter } from './TxInclusion.js'
+import {
+  getTxObservationSignals,
+  prepareTxInclusionWaiter,
+} from './TxInclusion.js'
 import type { AxiosError } from 'axios'
 import type { RequestOptions } from '@injectivelabs/utils'
 import type { TxResponse } from '../types/tx.js'
@@ -372,10 +375,7 @@ export class TxRestApi implements TxConcreteApi {
     // expose a signal, so the pre-submission barrier owns its own scope.
     const observationSignals = combineAbortSignals([
       clientCancellation.signal,
-      options?.signal,
-      options?.abortSignal,
-      options?.eventInclusion?.signal,
-      requestOptions?.signal,
+      ...getTxObservationSignals(options, requestOptions),
     ])
 
     try {

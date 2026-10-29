@@ -23,8 +23,11 @@ import {
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
 import { observeTx } from './TxObservationAbortError.js'
-import { prepareTxInclusionWaiter } from './TxInclusion.js'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
+import {
+  getTxObservationSignals,
+  prepareTxInclusionWaiter,
+} from './TxInclusion.js'
 import type { RequestOptions } from '@injectivelabs/utils'
 import type { TxResponse } from '../types/tx.js'
 import type { TxFetchDualArgs } from './types.js'
@@ -521,10 +524,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
     // waiter API. Existing custom waiters do not expose a lifecycle signal.
     const observationSignals = combineAbortSignals([
       this.options?.abort,
-      options?.signal,
-      options?.abortSignal,
-      options?.eventInclusion?.signal,
-      requestOptions?.signal,
+      ...getTxObservationSignals(options, requestOptions),
     ])
 
     try {
