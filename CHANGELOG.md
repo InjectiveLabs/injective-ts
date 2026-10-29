@@ -8,25 +8,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 * sdk-ts/utils: add caller-owned AbortSignal cancellation with a shared AbortError (`code: ERR_CANCELED`) and isAbortError helper. Publish and upgrade both packages together in the same release; sdk-ts requires the matching utils cancellation helpers and HTTP signatures.
-* sdk-ts: preserve txHash on TxObservationAbortError when broadcast inclusion observation is cancelled; the submitted transaction may still succeed.
+* sdk-ts: preserve txHash on TxObservationAbortError when broadcast inclusion observation is cancelled; the submitted transaction may still succeed. Custom broadcasters can use observeTx for the same recovery error.
+* wallet-core/wallet-base: emit TransactionCancelled with the original cancellation error when a txInclusion signal aborts or observation of the submitted transaction is cancelled; it does not imply on-chain failure or inclusion.
 * sdk-ts: expose RFQ websocket heartbeat `ping` events with `sentAt` metadata for taker and maker streams
 
 ### Bug Fixes
 
-* sdk-ts: base inclusion fallback and sibling-branch cancellation on the owned lifecycle signal; unrelated abort-shaped dependency errors no longer stop viable observation.
-* wallet-core/wallet-base: emit TransactionCancelled with the original cancellation error as a distinct terminal event; it does not imply on-chain failure or inclusion.
-* wallet-cosmos: preserve provider cancellation from enable/sendTx through both sync and block broadcast adapters instead of wrapping it as a wallet failure.
-* sdk-ts/wallet-core/wallet-cosmos: share post-submission cancellation decoration through observeTx, preserving existing recovery errors and callback cancellation hashes.
-* sdk-ts: honor REST client cancellation throughout transaction polling, event preparation and inclusion observation; preserve the first reason and release client scopes on abort, close or settlement.
-* wallet-core/wallet-cosmos: preserve cancellation identity, reason and known broadcast hashes instead of wrapping cancellation as a transaction failure; suppress TransactionFail events for cancellation.
-* sdk-ts: preserve the first cancellation reason across client-wide and per-call signals in transaction fetching and simulation.
-* sdk-ts: retain pagination callback type compatibility for legacy callbacks with unrelated optional parameters.
-* sdk-ts: recheck cancellation immediately before transaction submission, including the asynchronous gap after inclusion preparation.
-* sdk-ts: route StreamManagerV2 connection-listener failures through error handling and retry without affecting replacement connections.
-* sdk-ts: preserve legacy stream status payloads and V2 retries for protobuf-ts string status codes; report unrelated callback cancellation as a stream error instead of silently stopping.
-* sdk-ts: settle RFQ connect promises safely during disconnect/destroy while preserving rejection for awaiting callers.
-* sdk-ts: throw plain AbortError when inclusion preparation is cancelled before broadcasting; only attach a recovery txHash after a successful broadcast response.
-* utils: retain zero-argument callbacks for legacy HttpRestClient.retry calls; request-config callbacks require the explicit options-object overload.
+* sdk-ts: route StreamManagerV2 Connect-listener failures through error handling and retry instead of throwing from the connection callback.
 * sdk-ts: emit RFQ websocket heartbeat `ping` only after a successful heartbeat send
 
 ### Compatibility notes
