@@ -195,6 +195,73 @@ describe('SocialTradingGrpcApi', () => {
     executeGrpcCall.mockRestore()
   })
 
+  test('fetchAccountTrades', async () => {
+    const marketId =
+      '0x5d379fa10f0a74cd5983391b7391fa72af9cb4c0740a72adb1aed966e78103f3'
+    const executeGrpcCall = vi
+      .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
+      .mockResolvedValue({
+        nextToken: 'next',
+        trades: [
+          {
+            marketId,
+            pnl: '-44.01',
+            pnlUsd: '-44.00',
+            funding: '0.09',
+            liquidationAdjustment: '0',
+            amount: '6.85',
+            eventType: 'full_close',
+            positionId: 'position-1',
+            timestamp: '2026-10-29T15:10:29.584Z',
+            executionPrice: '94.43',
+          },
+        ],
+      })
+
+    const response = await socialTradingGrpcApi.fetchAccountTrades({
+      marketId,
+      accountAddress,
+      pageSize: 10,
+      nextToken: 'cursor',
+      sortDirection: 'asc',
+    })
+    const [request, rpc] = executeGrpcCall.mock.calls[0]
+
+    expect((rpc as Function).name).toBe('bound listAccountTrades')
+    expect(request).toMatchObject({
+      marketId,
+      accountAddress,
+      pageSize: 10,
+      nextToken: 'cursor',
+      sortDirection: 'asc',
+    })
+    expect(response).toEqual(
+      expect.objectContaining<
+        ReturnType<
+          typeof PlatformServicesGrpcPositionsTransformer.grpcListAccountTradesToListAccountTrades
+        >
+      >({
+        nextToken: 'next',
+        trades: [
+          {
+            marketId,
+            pnl: '-44.01',
+            pnlUsd: '-44.00',
+            funding: '0.09',
+            liquidationAdjustment: '0',
+            amount: '6.85',
+            eventType: 'full_close',
+            positionId: 'position-1',
+            timestamp: '2026-10-29T15:10:29.584Z',
+            executionPrice: '94.43',
+          },
+        ],
+      }),
+    )
+
+    executeGrpcCall.mockRestore()
+  })
+
   test('positions and trades preserve generated default funding fields', async () => {
     const executeGrpcCall = vi
       .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
@@ -208,11 +275,20 @@ describe('SocialTradingGrpcApi', () => {
           trades: [PlatformServicesPositionsPb.PositionTrade.create()],
         }),
       )
+      .mockResolvedValueOnce(
+        PlatformServicesPositionsPb.ListAccountTradesResponse.create({
+          trades: [PlatformServicesPositionsPb.PositionTrade.create()],
+        }),
+      )
 
     try {
       const positions = await socialTradingGrpcApi.fetchPositions()
       const trades = await socialTradingGrpcApi.fetchPositionTrades({
         positionId: 'position-1',
+      })
+      const accountTrades = await socialTradingGrpcApi.fetchAccountTrades({
+        accountAddress,
+        marketId: '0x01',
       })
 
       expect(positions.positions[0]).toMatchObject({
@@ -225,6 +301,12 @@ describe('SocialTradingGrpcApi', () => {
         funding: '',
         liquidationAdjustment: '',
       })
+      expect(accountTrades.trades[0]).toMatchObject({
+        pnl: '',
+        funding: '',
+        liquidationAdjustment: '',
+      })
+      expect(accountTrades.trades[0].marketId).toBeUndefined()
     } finally {
       executeGrpcCall.mockRestore()
     }
