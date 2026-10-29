@@ -31,10 +31,9 @@ export class ChainRestAuthApi extends BaseRestConsumer {
     const endpoint = `cosmos/auth/v1beta1/accounts/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<AccountResponse>>(
-        (requestConfig) => this.get(endpoint, params, requestConfig),
-        options ?? {},
-      )
+      const response = await this.getWithRetry<
+        RestApiResponse<AccountResponse>
+      >(endpoint, params, options)
 
       return response.data
     } catch (e: unknown) {
@@ -67,12 +66,9 @@ export class ChainRestAuthApi extends BaseRestConsumer {
       const isInjectiveAddress =
         address.startsWith('inj') || address.startsWith('evmos')
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         RestApiResponse<AccountResponse | CosmosAccountRestResponse>
-      >(
-        (requestConfig) => this.get(endpoint, params, requestConfig),
-        options ?? {},
-      )
+      >(endpoint, params, options)
 
       const baseAccount = isInjectiveAddress
         ? (response.data as AccountResponse).account.base_account

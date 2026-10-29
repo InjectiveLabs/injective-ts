@@ -16,16 +16,12 @@ export class IndexerRestLeaderboardChronosApi extends BaseRestConsumer {
     const path = ``
 
     try {
-      const { data } = await this.retry<ChronosLeaderboardResponse>(
-        (requestConfig) =>
-          this.get(
-            path,
-            {
-              resolution,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+      const { data } = await this.getWithRetry<ChronosLeaderboardResponse>(
+        path,
+        {
+          resolution,
+        },
+        options,
       )
 
       return data

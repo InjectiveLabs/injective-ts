@@ -256,6 +256,38 @@ describe('REST query cancellation', () => {
     expect(vi.getTimerCount()).toBe(0)
   })
 
+  // These methods previously took no arguments. Untyped JS callers may still
+  // pass one, which must never become a retry count.
+  it.each([
+    ['spot markets summary', 'fetchMarketsSummary', 'spot'],
+    ['derivatives markets summary', 'fetchMarketsSummary', 'derivatives'],
+    ['explorer validators', 'fetchValidators', 'explorer'],
+  ] as const)(
+    'bounds retries for %s when given a non-options argument',
+    async (_name, method, client) => {
+      vi.useFakeTimers()
+
+      for (const junk of ['inj1test', 5, () => undefined]) {
+        const adapter = vi.fn<AxiosAdapter>(() =>
+          Promise.reject(new Error('network unavailable')),
+        )
+        const api =
+          client === 'explorer'
+            ? new IndexerRestExplorerApi(endpoint, { adapter })
+            : client === 'spot'
+              ? new IndexerRestSpotChronosApi(endpoint, { adapter })
+              : new IndexerRestDerivativesChronosApi(endpoint, { adapter })
+
+        const pending = (api as any)[method](junk)
+        const rejection = expect(pending).rejects.toBeDefined()
+
+        await vi.runAllTimersAsync()
+        await rejection
+        expect(adapter).toHaveBeenCalledTimes(3)
+      }
+    },
+  )
+
   it('keeps the optional query dictionary separate from request options', async () => {
     const controller = new AbortController()
     const adapter = vi.fn<AxiosAdapter>(

@@ -50,7 +50,8 @@ export class TokenPrice {
     }>(
       (requestConfig) =>
         this.client.get(`denoms?withPrice=true`, {}, requestConfig),
-      options ?? {},
+      // Forward only the signal so a stray JS argument can't set retries.
+      { signal: options?.signal },
     )
 
     const tokenPriceMap: Record<string, number> = Object.values(

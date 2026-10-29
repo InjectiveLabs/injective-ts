@@ -20,18 +20,15 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
     const path = `market_summary`
 
     try {
-      const { data } = await this.retry<ChronosDerivativeMarketSummaryResponse>(
-        (requestConfig) =>
-          this.get(
-            path,
-            {
-              marketId,
-              resolution: '24h',
-            },
-            requestConfig,
-          ),
-        options ?? {},
-      )
+      const { data } =
+        await this.getWithRetry<ChronosDerivativeMarketSummaryResponse>(
+          path,
+          {
+            marketId,
+            resolution: '24h',
+          },
+          options,
+        )
 
       return data
     } catch (e: unknown) {
@@ -52,17 +49,14 @@ export class IndexerRestDerivativesChronosApi extends BaseRestConsumer {
     const path = `market_summary_all`
 
     try {
-      const { data } = await this.retry<AllDerivativeMarketSummaryResponse>(
-        (requestConfig) =>
-          this.get(
-            path,
-            {
-              resolution: '24h',
-            },
-            requestConfig,
-          ),
-        options ?? {},
-      )
+      const { data } =
+        await this.getWithRetry<AllDerivativeMarketSummaryResponse>(
+          path,
+          {
+            resolution: '24h',
+          },
+          options,
+        )
 
       return data
     } catch (e: unknown) {

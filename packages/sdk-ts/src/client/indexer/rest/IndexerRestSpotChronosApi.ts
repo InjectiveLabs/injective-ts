@@ -20,18 +20,15 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
     const path = `market_summary`
 
     try {
-      const { data } = await this.retry<ChronosSpotMarketSummaryResponse>(
-        (requestConfig) =>
-          this.get(
-            path,
-            {
-              marketId,
-              resolution: '24h',
-            },
-            requestConfig,
-          ),
-        options ?? {},
-      )
+      const { data } =
+        await this.getWithRetry<ChronosSpotMarketSummaryResponse>(
+          path,
+          {
+            marketId,
+            resolution: '24h',
+          },
+          options,
+        )
 
       return data
     } catch (e: unknown) {
@@ -52,16 +49,12 @@ export class IndexerRestSpotChronosApi extends BaseRestConsumer {
     const path = `market_summary_all`
 
     try {
-      const { data } = await this.retry<AllSpotMarketSummaryResponse>(
-        (requestConfig) =>
-          this.get(
-            path,
-            {
-              resolution: '24h',
-            },
-            requestConfig,
-          ),
-        options ?? {},
+      const { data } = await this.getWithRetry<AllSpotMarketSummaryResponse>(
+        path,
+        {
+          resolution: '24h',
+        },
+        options,
       )
 
       return data

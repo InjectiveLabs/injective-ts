@@ -34,10 +34,9 @@ export class ChainRestBankApi extends BaseRestConsumer {
     const endpoint = `cosmos/bank/v1beta1/balances/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<BalancesResponse>>(
-        (requestConfig) => this.get(endpoint, params, requestConfig),
-        options ?? {},
-      )
+      const response = await this.getWithRetry<
+        RestApiResponse<BalancesResponse>
+      >(endpoint, params, options)
 
       return response.data
     } catch (e) {
@@ -68,10 +67,9 @@ export class ChainRestBankApi extends BaseRestConsumer {
     const endpoint = `cosmos/bank/v1beta1/balances/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<BalancesResponse>>(
-        (requestConfig) => this.get(endpoint, params, requestConfig),
-        options ?? {},
-      )
+      const response = await this.getWithRetry<
+        RestApiResponse<BalancesResponse>
+      >(endpoint, params, options)
 
       const balance = response.data.balances.find(
         (balance) => balance.denom === denom,
@@ -114,10 +112,9 @@ export class ChainRestBankApi extends BaseRestConsumer {
     const endpoint = `cosmos/bank/v1beta1/denom_owners/${denom}`
 
     try {
-      const response = await this.retry<RestApiResponse<DenomOwnersResponse>>(
-        (requestConfig) => this.get(endpoint, params, requestConfig),
-        options ?? {},
-      )
+      const response = await this.getWithRetry<
+        RestApiResponse<DenomOwnersResponse>
+      >(endpoint, params, options)
 
       return response.data.denom_owners
     } catch (e) {

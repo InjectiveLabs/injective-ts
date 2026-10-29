@@ -58,13 +58,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `blocks/${blockHashHeight}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse>
-      >(
-        (requestConfig) =>
-          this.get(`blocks/${blockHashHeight}`, {}, requestConfig),
-        options ?? {},
-      )
+      >(`blocks/${blockHashHeight}`, {}, options)
 
       return IndexerRestExplorerTransformer.blockWithTxToBlockWithTx(
         response.data.data,
@@ -97,21 +93,17 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const { before, limit, from, to } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              before,
-              limit,
-              from,
-              to,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          before,
+          limit,
+          from,
+          to,
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -148,21 +140,17 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const { before, limit, from, to } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              before,
-              limit,
-              from,
-              to,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          before,
+          limit,
+          from,
+          to,
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -220,27 +208,23 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         limit: 12,
       }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse[]>
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              skip,
-              limit,
-              after,
-              before,
-              status,
-              end_time: endTime,
-              to_number: toNumber,
-              start_time: startTime,
-              from_number: fromNumber,
-              type: type ? type.join(',') : undefined,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          skip,
+          limit,
+          after,
+          before,
+          status,
+          end_time: endTime,
+          to_number: toNumber,
+          start_time: startTime,
+          from_number: fromNumber,
+          type: type ? type.join(',') : undefined,
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -306,28 +290,24 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         limit: 12,
       }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse[]>
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              skip,
-              limit,
-              after,
-              before,
-              status,
-              end_time: endTime,
-              to_number: toNumber,
-              start_time: startTime,
-              from_number: fromNumber,
-              type: type ? type.join(',') : undefined,
-              with_claim_id: withClaimId,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          skip,
+          limit,
+          after,
+          before,
+          status,
+          end_time: endTime,
+          to_number: toNumber,
+          start_time: startTime,
+          from_number: fromNumber,
+          type: type ? type.join(',') : undefined,
+          with_claim_id: withClaimId,
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -360,13 +340,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `txs/${hash}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse>
-      >(
-        (requestConfig) =>
-          this.get(endpoint, { is_evm_hash: isEvmTx }, requestConfig),
-        options ?? {},
-      )
+      >(endpoint, { is_evm_hash: isEvmTx }, options)
 
       return IndexerRestExplorerTransformer.transactionToTransaction(
         response.data.data,
@@ -390,9 +366,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = 'validators'
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<any[]>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
+      >(endpoint, {}, options)
 
       if (!response.data || !response.data.data) {
         return []
@@ -422,11 +398,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `validator_uptime/${validatorConsensusAddress}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<
           ValidatorUptimeFromExplorerApiResponse[]
         >
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
+      >(endpoint, {}, options)
 
       if (!response.data || !response.data.data) {
         return []
@@ -456,9 +432,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/contracts/${contractAddress}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponse<ContractExplorerApiResponse>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
+      >(endpoint, {}, options)
 
       return IndexerRestExplorerTransformer.contractToExplorerContract(
         response.data,
@@ -509,25 +485,21 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         limit: 12,
       }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<ContractExplorerApiResponse[]>
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              skip,
-              limit,
-              label,
-              token,
-              lookup,
-              assets_only: assetsOnly,
-              from_number: fromNumber,
-              code_id: codeId?.toString(),
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          skip,
+          limit,
+          label,
+          token,
+          lookup,
+          assets_only: assetsOnly,
+          from_number: fromNumber,
+          code_id: codeId?.toString(),
+        },
+        options,
       )
       const { paging, data } = response.data
 
@@ -571,23 +543,19 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const { fromNumber, limit, skip, toNumber } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<
           ContractTransactionExplorerApiResponse[]
         >
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              skip,
-              limit,
-              to_number: toNumber,
-              from_number: fromNumber,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          skip,
+          limit,
+          to_number: toNumber,
+          from_number: fromNumber,
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -637,23 +605,19 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const { fromNumber, limit, skip, toNumber } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<
           ContractTransactionExplorerApiResponse[]
         >
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              skip,
-              limit,
-              to_number: toNumber,
-              from_number: fromNumber,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          skip,
+          limit,
+          to_number: toNumber,
+          from_number: fromNumber,
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -687,9 +651,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/codes/${codeId}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponse<WasmCodeExplorerApiResponse>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
+      >(endpoint, {}, options)
 
       return IndexerRestExplorerTransformer.wasmCodeToExplorerWasmCode(
         response.data,
@@ -724,20 +688,16 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     try {
       const { fromNumber, limit, toNumber } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<WasmCodeExplorerApiResponse[]>
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              limit,
-              from_number: fromNumber,
-              to_number: toNumber,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          limit,
+          from_number: fromNumber,
+          to_number: toNumber,
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -769,9 +729,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/${address}/cw20-balance`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
+      >(endpoint, {}, options)
 
       if (response.data.length === 0) {
         return []
@@ -801,9 +761,9 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     const endpoint = `/wasm/${address}/cw20-balance`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
-      >((requestConfig) => this.get(endpoint, {}, requestConfig), options ?? {})
+      >(endpoint, {}, options)
 
       if (response.data.length === 0) {
         return []
@@ -853,25 +813,21 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
       params || { limit: 10 }
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<BankTransferFromExplorerApiResponse[]>
       >(
-        (requestConfig) =>
-          this.get(
-            endpoint,
-            {
-              skip,
-              limit,
-              senders,
-              address,
-              recipients,
-              end_time: endTime,
-              start_time: startTime,
-              is_community_pool_related: params.isCommunitySpendPool,
-            },
-            requestConfig,
-          ),
-        options ?? {},
+        endpoint,
+        {
+          skip,
+          limit,
+          senders,
+          address,
+          recipients,
+          end_time: endTime,
+          start_time: startTime,
+          is_community_pool_related: params.isCommunitySpendPool,
+        },
+        options,
       )
 
       const { data, paging } = response.data

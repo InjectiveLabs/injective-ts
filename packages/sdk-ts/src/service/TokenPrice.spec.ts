@@ -39,7 +39,7 @@ describe('TokenPrice cancellation', () => {
       },
     )
     expect(retry).toHaveBeenCalledTimes(1)
-    expect(retry.mock.calls[0][1]).toBe(options)
+    expect(retry.mock.calls[0][1]).toEqual({ signal: options.signal })
     expect(prices).toEqual({ 'injective-protocol': 20 })
   })
 

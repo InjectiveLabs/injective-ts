@@ -24,12 +24,9 @@ export class ChainRestWasmApi extends BaseRestConsumer {
     const endpoint = `cosmwasm/wasm/v1/contract/${contractAddress}/smart/${query}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         RestApiResponse<SmartContractStateResponse>
-      >(
-        (requestConfig) => this.get(endpoint, params, requestConfig),
-        options ?? {},
-      )
+      >(endpoint, params, options)
 
       return response.data
     } catch (e) {
