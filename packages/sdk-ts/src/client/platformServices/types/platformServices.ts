@@ -71,6 +71,18 @@ export interface PlatformServicesListPositionTradesParams {
   sortDirection?: PlatformServicesPositionsSortDirection
 }
 
+export interface PlatformServicesListAccountTradesParams {
+  accountAddress: string
+  /**
+   * Derivative market ID, 32-byte hex, with or without 0x, any case.
+   * Repeat it on every page.
+   */
+  marketId: string
+  pageSize?: number
+  nextToken?: string
+  sortDirection?: PlatformServicesPositionsSortDirection
+}
+
 export interface PlatformServicesGetAccountCountParams {
   window?: PlatformServicesPositionsStatsWindow
 }
@@ -120,6 +132,7 @@ export interface PlatformServicesPositionTrade {
   funding: string
   timestamp: string
   eventType: string
+  marketId?: string
   positionId: string
   executionPrice: string
   liquidationAdjustment: string
@@ -129,6 +142,9 @@ export interface PlatformServicesListPositionTradesResponse {
   nextToken?: string
   trades: PlatformServicesPositionTrade[]
 }
+
+export type PlatformServicesListAccountTradesResponse =
+  PlatformServicesListPositionTradesResponse
 
 export interface PlatformServicesAccountPositionStats {
   pnl: string

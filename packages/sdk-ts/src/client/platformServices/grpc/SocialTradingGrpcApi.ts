@@ -5,6 +5,7 @@ import { PlatformServicesGrpcPositionsTransformer } from '../transformers/index.
 import type {
   PlatformServicesListPositionsParams,
   PlatformServicesGetAccountCountParams,
+  PlatformServicesListAccountTradesParams,
   PlatformServicesListPositionTradesParams,
   PlatformServicesGetAccountDailyPNLParams,
   PlatformServicesGetAccountPositionStatsParams,
@@ -59,6 +60,34 @@ export class SocialTradingGrpcApi extends BaseGrpcConsumer {
     >(request, this.client.listPositionTrades.bind(this.client))
 
     return PlatformServicesGrpcPositionsTransformer.grpcListPositionTradesToListPositionTrades(
+      response,
+    )
+  }
+
+  /**
+   * A page can hold fewer trades than pageSize, or none, while nextToken is
+   * set; keep paging until nextToken is empty.
+   */
+  async fetchAccountTrades(params: PlatformServicesListAccountTradesParams) {
+    const { marketId, pageSize, nextToken, sortDirection, accountAddress } =
+      params
+
+    const request = PlatformServicesPositionsPb.ListAccountTradesRequest.create(
+      {
+        marketId,
+        pageSize,
+        nextToken,
+        sortDirection,
+        accountAddress,
+      },
+    )
+
+    const response = await this.executeGrpcCall<
+      PlatformServicesPositionsPb.ListAccountTradesRequest,
+      PlatformServicesPositionsPb.ListAccountTradesResponse
+    >(request, this.client.listAccountTrades.bind(this.client))
+
+    return PlatformServicesGrpcPositionsTransformer.grpcListAccountTradesToListAccountTrades(
       response,
     )
   }
