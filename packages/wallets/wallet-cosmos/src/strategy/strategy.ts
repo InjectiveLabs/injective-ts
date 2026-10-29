@@ -11,8 +11,8 @@ import {
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import {
+  observeTx,
   waitTxBroadcasted,
-  TxObservationAbortError,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -206,23 +206,15 @@ export class CosmosWalletStrategy
       )
     }
 
-    let txHash: string | undefined
-
     try {
-      txHash = await cosmosWallet.broadcastTx(txRaw)
+      const txHash = await cosmosWallet.broadcastTx(txRaw)
 
-      options.onBroadcast?.(txHash)
-
-      return await waitTxBroadcasted(txHash, options)
+      return await observeTx(txHash, () => {
+        options.onBroadcast?.(txHash)
+        return waitTxBroadcasted(txHash, options)
+      })
     } catch (e: unknown) {
       if (isAbortError(e)) {
-        if (txHash && !(e instanceof TxObservationAbortError)) {
-          throw new TxObservationAbortError(
-            txHash,
-            (e as { reason?: unknown }).reason,
-          )
-        }
-
         throw e
       }
 

@@ -45,13 +45,19 @@ export const createAbortError = (signal?: AbortSignal): AbortError => {
   return new AbortError(signal?.aborted ? signal.reason : undefined)
 }
 
+/** Structural because native and cross-package cancellation may be plain objects. */
+export type AbortErrorLike = (
+  | { name: 'AbortError'; code?: unknown }
+  | { name?: unknown; code: 'ERR_CANCELED' }
+) & { reason?: unknown }
+
 /**
  * Identifies local/SDK/documented abort-shaped errors.
  *
  * This intentionally does not treat gRPC status codes (`CANCELLED`,
  * `ABORTED`, `DEADLINE_EXCEEDED`) or arbitrary server errors as cancellation.
  */
-export const isAbortError = (error: unknown): boolean => {
+export const isAbortError = (error: unknown): error is AbortErrorLike => {
   if (error instanceof AbortError) {
     return true
   }
@@ -92,12 +98,20 @@ export const throwIfAborted = (signal?: AbortSignal): void => {
  *
  * `dispose` removes all listeners and is safe to call more than once.
  */
-export const combineAbortSignals = (
+export function combineAbortSignals(
+  signals:
+    | readonly [AbortSignal, ...(AbortSignal | undefined)[]]
+    | readonly [...(AbortSignal | undefined)[], AbortSignal],
+): { signal: AbortSignal; dispose(): void }
+export function combineAbortSignals(
+  signals: readonly (AbortSignal | undefined)[],
+): { signal: AbortSignal | undefined; dispose(): void }
+export function combineAbortSignals(
   signals: readonly (AbortSignal | undefined)[],
 ): {
   signal: AbortSignal | undefined
   dispose(): void
-} => {
+} {
   const uniqueSignals = Array.from(
     new Set(signals.filter((signal): signal is AbortSignal => Boolean(signal))),
   )

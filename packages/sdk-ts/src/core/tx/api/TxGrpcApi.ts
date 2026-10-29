@@ -22,8 +22,8 @@ import {
 } from '@injectivelabs/utils'
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
+import { observeTx } from './TxObservationAbortError.js'
 import { prepareTxInclusionWaiter } from './TxInclusion.js'
-import { TxObservationAbortError } from './TxObservationAbortError.js'
 import BaseGrpcConsumer from '../../../client/base/BaseGrpcConsumer.js'
 import type { RequestOptions } from '@injectivelabs/utils'
 import type { TxResponse } from '../types/tx.js'
@@ -225,9 +225,10 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       signal,
       abortSignal,
     }
-    const waiter = requestOptions
-      ? await this.prepareTxInclusionWait(prepareArgs, requestOptions)
-      : await this.prepareTxInclusionWait(prepareArgs)
+    const waiter = await this.prepareTxInclusionWait(
+      prepareArgs,
+      requestOptions,
+    )
 
     const txResponse = await waiter.wait()
 
@@ -309,7 +310,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       signal,
       attemptController.signal,
     ])
-    const attemptSignal = attemptSignals.signal as AbortSignal
+    const attemptSignal = attemptSignals.signal
 
     return new Promise<TxResponse | null>((resolve, reject) => {
       const results: Array<TxResponse | null> = [null, null]
@@ -514,9 +515,10 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
-    let txHash = TxClient.hash(txRaw)
-    let broadcastCompleted = false
+    const txHash = TxClient.hash(txRaw)
     let inclusionWaiter: TxInclusionWaiter | undefined
+    // Keep the submission barrier independent of the public, overridable
+    // waiter API. Existing custom waiters do not expose a lifecycle signal.
     const observationSignals = combineAbortSignals([
       this.options?.abort,
       options?.signal,
@@ -532,9 +534,11 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         options,
         signal: options?.signal,
       }
-      inclusionWaiter = requestOptions
-        ? await this.prepareTxInclusionWait(prepareArgs, requestOptions)
-        : await this.prepareTxInclusionWait(prepareArgs)
+      const waiter = await this.prepareTxInclusionWait(
+        prepareArgs,
+        requestOptions,
+      )
+      inclusionWaiter = waiter
 
       const mode =
         options?.mode ||
@@ -574,40 +578,28 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
         })
       }
 
-      txHash = txResponse.txhash || txHash
-      broadcastCompleted = true
+      return await observeTx(txResponse.txhash || txHash, async () => {
+        options?.onBroadcast?.(txResponse.txhash)
 
-      if (options?.onBroadcast) {
-        options.onBroadcast(txResponse.txhash)
-      }
+        const result = await waiter.wait(txResponse.txhash)
 
-      const result = await inclusionWaiter.wait(txResponse.txhash)
+        if (!result) {
+          throw new GrpcUnaryRequestException(
+            new Error(`The transaction with ${txResponse.txhash} is not found`),
+            {
+              context: 'TxGrpcApi.broadcast',
+              contextModule: 'wait-for-tx-inclusion',
+            },
+          )
+        }
 
-      if (!result) {
-        throw new GrpcUnaryRequestException(
-          new Error(`The transaction with ${txResponse.txhash} is not found`),
-          {
-            context: 'TxGrpcApi.broadcast',
-            contextModule: 'wait-for-tx-inclusion',
-          },
-        )
-      }
-
-      return result
+        return result
+      })
     } catch (e: unknown) {
       inclusionWaiter?.close()
 
-      // Preparation can be cancelled before the mutation is sent. Only attach
-      // a recovery hash once broadcast has completed successfully.
       if (isAbortError(e)) {
-        if (!broadcastCompleted) {
-          throw e
-        }
-
-        throw new TxObservationAbortError(
-          txHash,
-          (e as { reason?: unknown }).reason,
-        )
+        throw e
       }
 
       if (e instanceof TransactionException) {

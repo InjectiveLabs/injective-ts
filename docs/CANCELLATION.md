@@ -211,6 +211,12 @@ waiting. These compose with per-operation signals and preserve the first abort
 reason. Prepared waiters retain their client cancellation scope until abort,
 `close()` or wait settlement, including cancellation before `wait()` is called.
 
+Event-inclusion fallback and dual event/poll observation use their owned lifecycle
+signal to distinguish cancellation from a dependency failure. An unrelated
+abort-shaped error from a WebSocket factory, subscription or fetch does not skip
+configured fallback or cancel a viable sibling branch. Actual lifecycle aborts
+and explicit waiter `close()` still stop all observation immediately.
+
 Read-only transaction simulation also accepts final request options. Concrete gRPC
 clients support `fetchTx(hash, options)`; REST clients keep query parameters second
 and accept options third. When using the common `TxConcreteApi` interface, use
@@ -234,7 +240,31 @@ callers can resume checking that transaction rather than submitting it again.
 If the observation signal aborts while the mutation is in flight, the mutation
 still completes; a successful response supplies the hash for this recovery error.
 
+This observation-only guarantee applies to the per-operation inclusion/request
+signals. Legacy client-wide transport cancellation (gRPC constructor `abort`, or
+HTTP constructor/config `signal`) still applies to the broadcast request itself.
+If it interrupts an in-flight submission before a successful response is received,
+the outcome is unknown and the plain cancellation error may not contain `txHash`.
+For that case, save `TxClient.hash(txRaw)` before sending and query that hash to
+recover the outcome rather than assuming the transaction was never submitted.
+
 Wallet `MsgBroadcaster` entry points preserve cancellation without emitting
-`TransactionFail`. Wallet inclusion waits and `CosmosWalletStrategy` retain the
+`TransactionFail`. They emit `TransactionCancelled` (`transaction-cancelled`)
+exactly once, passing the original cancellation error as the event argument.
+Event-driven UIs should handle this terminal event to clear pending state. It
+means the local operation stopped, not that the transaction was cancelled on-chain;
+`TransactionBroadcastEnd` continues to indicate completed inclusion observation.
+The event is available from both the root and lightweight wallet-base entry points.
+
+Wallet inclusion waits and `CosmosWalletStrategy` retain the
 known broadcast hash in `TxObservationAbortError`. Cancellation before a provider
-returns a successful broadcast hash remains a plain cancellation error.
+returns a successful broadcast hash remains a plain cancellation error. Provider
+abort errors from `enable` and `sendTx` pass through the Cosmos wallet adapters
+unchanged, including native abort errors.
+
+Custom broadcasters can use `observeTx(txHash, () => waitForInclusion())` from
+`@injectivelabs/sdk-ts/core/tx` after successful submission. It adds the known hash
+to cancellation and preserves an existing `TxObservationAbortError`. Put any
+post-submission callbacks inside the observation callback as well. Preparation and
+the submit call must run before this helper, so a transaction that was never
+submitted cannot acquire a recovery hash.

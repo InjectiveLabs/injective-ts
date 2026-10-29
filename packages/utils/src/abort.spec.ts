@@ -1,3 +1,4 @@
+import { expectTypeOf } from 'vitest'
 import {
   AbortError,
   isAbortError,
@@ -7,6 +8,7 @@ import {
   createAbortError,
   combineAbortSignals,
 } from './abort.js'
+import type { AbortErrorLike } from './abort.js'
 
 const createDeferred = <T>() => {
   let resolve!: (value: T | PromiseLike<T>) => void
@@ -64,6 +66,16 @@ describe('createAbortError', () => {
 })
 
 describe('isAbortError', () => {
+  it('narrows structural errors without claiming they are Error instances', () => {
+    const error: unknown = {
+      code: 'ERR_CANCELED',
+      reason: { source: 'adapter' },
+    }
+    if (!isAbortError(error)) throw new Error('Expected cancellation')
+    expectTypeOf(error).toEqualTypeOf<AbortErrorLike>()
+    expect(error.reason).toEqual({ source: 'adapter' })
+    expect(error).not.toBeInstanceOf(Error)
+  })
   it('recognizes SDK and native abort-shaped errors', () => {
     expect(isAbortError(new AbortError('reason'))).toBe(true)
     expect(
@@ -170,6 +182,19 @@ describe('throwIfAborted', () => {
 })
 
 describe('combineAbortSignals', () => {
+  it('guarantees a signal only for a tuple containing a definite endpoint signal', () => {
+    const controller = new AbortController()
+    const optional: AbortSignal | undefined = undefined
+    const first = combineAbortSignals([controller.signal, optional])
+    const last = combineAbortSignals([optional, controller.signal])
+    const missing = combineAbortSignals([optional])
+    expectTypeOf(first.signal).toEqualTypeOf<AbortSignal>()
+    expectTypeOf(last.signal).toEqualTypeOf<AbortSignal>()
+    expectTypeOf(missing.signal).toEqualTypeOf<AbortSignal | undefined>()
+    expect(first.signal).toBe(controller.signal)
+    expect(last.signal).toBe(controller.signal)
+    expect(missing.signal).toBeUndefined()
+  })
   afterEach(() => {
     vi.restoreAllMocks()
     vi.useRealTimers()

@@ -3,7 +3,6 @@ import {
   TransactionException,
 } from '@injectivelabs/exceptions'
 import {
-  isAbortError,
   raceWithAbort,
   throwIfAborted,
   createAbortError,
@@ -20,13 +19,6 @@ import type {
   TxInclusionStrategy as TxInclusionStrategyType,
 } from '../types/tx.js'
 
-/**
- * Errors thrown by local cancellation must never be converted into fallback,
- * polling or transaction failures.
- */
-const isLocalCancellation = (error: unknown, signal?: AbortSignal): boolean =>
-  isAbortError(error) || Boolean(signal?.aborted)
-
 interface InclusionWaiterLifecycle {
   signal: AbortSignal
   closed: boolean
@@ -40,7 +32,7 @@ function createInclusionWaiterLifecycle(
 ): InclusionWaiterLifecycle {
   const closeController = new AbortController()
   const combined = combineAbortSignals([...signals, closeController.signal])
-  const signal = combined.signal as AbortSignal
+  const signal = combined.signal
   let closed = false
   let finalized = false
 
@@ -87,28 +79,8 @@ async function waitForAbortableOperation<T>(
   try {
     return await raceWithAbort(operation, signal)
   } catch (e: unknown) {
-    if (isAbortError(e)) {
-      throw e
-    }
-
-    if (signal.aborted) {
-      throw createAbortError(signal)
-    }
-
+    throwIfAborted(signal)
     throw e
-  }
-}
-
-function normalizeInclusionCancellation(
-  error: unknown,
-  signal: AbortSignal,
-): void {
-  if (isAbortError(error)) {
-    throw error
-  }
-
-  if (signal.aborted) {
-    throw createAbortError(signal)
   }
 }
 
@@ -232,7 +204,9 @@ export async function prepareTxInclusionWaiter(
         lifecycle,
       })
     } catch (e: unknown) {
-      normalizeInclusionCancellation(e, waiterSignal)
+      // A dependency can fail with an abort-shaped error without cancelling
+      // this observation. Only our lifecycle may suppress fallback.
+      throwIfAborted(waiterSignal)
 
       if (e instanceof TransactionException) {
         throw e
@@ -258,20 +232,10 @@ export async function prepareTxInclusionWaiter(
       })
     }
   } catch (e: unknown) {
-    if (isAbortError(e)) {
-      lifecycle.close()
-      throw e
-    }
-
-    if (waiterSignal.aborted) {
-      const cancellation = createAbortError(waiterSignal)
-
-      lifecycle.close()
-      throw cancellation
-    }
-
+    // Capture cancellation before close() aborts the internal cleanup signal.
+    const error = waiterSignal.aborted ? createAbortError(waiterSignal) : e
     lifecycle.close()
-    throw e
+    throw error
   }
 }
 
@@ -518,11 +482,7 @@ async function waitForSubscribedTxInclusion({
       signal,
     })
   } catch (e: unknown) {
-    if (isLocalCancellation(e, signal)) {
-      normalizeInclusionCancellation(e, signal)
-
-      throw e
-    }
+    throwIfAborted(signal)
 
     if (e instanceof TransactionException) {
       throw e
@@ -643,14 +603,9 @@ async function waitForSubscribedTxInclusionAndPoll({
         return
       }
 
-      if (isLocalCancellation(error, signal)) {
-        finishReject(
-          signal.aborted
-            ? createAbortError(signal)
-            : error instanceof Error
-              ? error
-              : createAbortError(signal),
-        )
+      // Failure of one dependency must not cancel a viable sibling branch.
+      if (signal.aborted) {
+        finishReject(createAbortError(signal))
 
         return
       }
@@ -695,7 +650,7 @@ async function waitForSubscribedTxInclusionAndPoll({
       txHash,
       subscription,
       fetchTx,
-      signal: eventSignals.signal as AbortSignal,
+      signal: eventSignals.signal,
     })
       .then((txResponse) => finishResolve(txResponse, 'event'))
       .catch((error: unknown) => failBranch('event', error))
@@ -705,7 +660,7 @@ async function waitForSubscribedTxInclusionAndPoll({
         txHash,
         timeout,
         options,
-        signal: pollSignals.signal as AbortSignal,
+        signal: pollSignals.signal,
       }),
     )
       .then((txResponse) => finishResolve(txResponse, 'poll'))

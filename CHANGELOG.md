@@ -13,6 +13,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
+* sdk-ts: base inclusion fallback and sibling-branch cancellation on the owned lifecycle signal; unrelated abort-shaped dependency errors no longer stop viable observation.
+* wallet-core/wallet-base: emit TransactionCancelled with the original cancellation error as a distinct terminal event; it does not imply on-chain failure or inclusion.
+* wallet-cosmos: preserve provider cancellation from enable/sendTx through both sync and block broadcast adapters instead of wrapping it as a wallet failure.
+* sdk-ts/wallet-core/wallet-cosmos: share post-submission cancellation decoration through observeTx, preserving existing recovery errors and callback cancellation hashes.
 * sdk-ts: honor REST client cancellation throughout transaction polling, event preparation and inclusion observation; preserve the first reason and release client scopes on abort, close or settlement.
 * wallet-core/wallet-cosmos: preserve cancellation identity, reason and known broadcast hashes instead of wrapping cancellation as a transaction failure; suppress TransactionFail events for cancellation.
 * sdk-ts: preserve the first cancellation reason across client-wide and per-call signals in transaction fetching and simulation.

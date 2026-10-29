@@ -121,6 +121,8 @@ export const WalletConnectStrategyEventType = {
 
 export const WalletStrategyEmitterEventType = {
   TransactionFail: 'transaction-fail',
+  /** Local cancellation, with the original error; not proof of on-chain failure. */
+  TransactionCancelled: 'transaction-cancelled',
   TransactionSigned: 'transaction-signed',
   TransactionSignStart: 'transaction-sign-start',
   TransactionBroadcastEnd: 'transaction-broadcast-end',

@@ -1,5 +1,5 @@
-import { capitalize } from '@injectivelabs/utils'
 import { uint8ArrayToHex } from '@injectivelabs/sdk-ts/utils'
+import { capitalize, isAbortError } from '@injectivelabs/utils'
 import { Wallet, BroadcastMode } from '@injectivelabs/wallet-base'
 import { CosmosTxV1Beta1TxPb } from '@injectivelabs/sdk-ts/proto/cosmos-tx'
 import {
@@ -72,6 +72,10 @@ export class CosmosWallet {
 
       return cosmos as Keplr
     } catch (e: unknown) {
+      if (isAbortError(e)) {
+        throw e
+      }
+
       throw new CosmosWalletException(new Error((e as any).message))
     }
   }
@@ -196,7 +200,7 @@ export class CosmosWallet {
 
       return uint8ArrayToHex(result)
     } catch (e) {
-      if (e instanceof TransactionException) {
+      if (isAbortError(e) || e instanceof TransactionException) {
         throw e
       }
 
@@ -236,7 +240,7 @@ export class CosmosWallet {
 
       return uint8ArrayToHex(result)
     } catch (e) {
-      if (e instanceof TransactionException) {
+      if (isAbortError(e) || e instanceof TransactionException) {
         throw e
       }
 

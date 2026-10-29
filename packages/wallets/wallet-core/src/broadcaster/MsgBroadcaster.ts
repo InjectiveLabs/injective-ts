@@ -55,6 +55,7 @@ import {
 import {
   TxClient,
   TxGrpcApi,
+  observeTx,
   SIGN_DIRECT,
   SIGN_EIP712,
   SIGN_EIP712_V2,
@@ -65,7 +66,6 @@ import {
   createWeb3Extension,
   CosmosTxV1Beta1TxPb,
   getEip712TypedDataV2,
-  TxObservationAbortError,
   createTxRawFromSigResponse,
   createTransactionWithSigners,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -303,19 +303,7 @@ export class MsgBroadcaster {
           ? await this.broadcastEip712V2(txWithAddresses)
           : await this.broadcastEip712(txWithAddresses)
     } catch (e) {
-      const error = e as any
-
-      if (isAbortError(error)) {
-        throw error
-      }
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
+      return this.handleBroadcastError(e)
     }
   }
 
@@ -347,18 +335,7 @@ export class MsgBroadcaster {
         ? await this.broadcastDirectSign(txWithAddresses)
         : await this.broadcastEip712V2(txWithAddresses)
     } catch (e) {
-      const error = e as any
-      if (isAbortError(error)) {
-        throw error
-      }
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
+      return this.handleBroadcastError(e)
     }
   }
 
@@ -390,19 +367,7 @@ export class MsgBroadcaster {
         ? await this.broadcastDirectSignWithFeeDelegation(txWithAddresses)
         : await this.broadcastEip712WithFeeDelegation(txWithAddresses)
     } catch (e) {
-      const error = e as any
-
-      if (isAbortError(error)) {
-        throw error
-      }
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
+      return this.handleBroadcastError(e)
     }
   }
 
@@ -513,20 +478,28 @@ export class MsgBroadcaster {
 
       return txResponse
     } catch (e) {
-      const error = e as any
-
-      if (isAbortError(error)) {
-        throw error
-      }
-
-      walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
-
-      if (isThrownException(error)) {
-        throw error
-      }
-
-      throw new TransactionException(new Error(error))
+      return this.handleBroadcastError(e)
     }
+  }
+
+  private handleBroadcastError(error: unknown): never {
+    if (isAbortError(error)) {
+      // BroadcastEnd is used as inclusion confirmation by consumers. Local
+      // cancellation needs a distinct terminal event, with the recovery error.
+      this.walletStrategy.emit(
+        WalletStrategyEmitterEventType.TransactionCancelled,
+        error,
+      )
+      throw error
+    }
+
+    this.walletStrategy.emit(WalletStrategyEmitterEventType.TransactionFail)
+
+    if (isThrownException(error as Error)) {
+      throw error
+    }
+
+    throw new TransactionException(new Error(error as any))
   }
 
   /**
@@ -1946,22 +1919,13 @@ export class MsgBroadcaster {
     timeout: number
     tx?: Pick<MsgBroadcasterTxOptions, 'txInclusion'>
   }): Promise<TxResponse> {
-    try {
-      return await this.createTxGrpcApi().waitForTxInclusion({
+    return observeTx(txHash, () =>
+      this.createTxGrpcApi().waitForTxInclusion({
         txHash,
         timeout,
         options: this.resolveTxInclusionOptions(tx),
-      })
-    } catch (e: unknown) {
-      if (isAbortError(e) && !(e instanceof TxObservationAbortError)) {
-        throw new TxObservationAbortError(
-          txHash,
-          (e as { reason?: unknown }).reason,
-        )
-      }
-
-      throw e
-    }
+      }),
+    )
   }
 
   private async prepareTxInclusionWaiter({
@@ -2002,20 +1966,9 @@ export class MsgBroadcaster {
       })
     }
 
-    let confirmedTx: TxResponse | undefined
-
-    try {
-      confirmedTx = await inclusionWaiter.wait(responseTxHash)
-    } catch (e: unknown) {
-      if (isAbortError(e) && !(e instanceof TxObservationAbortError)) {
-        throw new TxObservationAbortError(
-          responseTxHash,
-          (e as { reason?: unknown }).reason,
-        )
-      }
-
-      throw e
-    }
+    const confirmedTx = await observeTx(responseTxHash, () =>
+      inclusionWaiter.wait(responseTxHash),
+    )
 
     if (!confirmedTx) {
       throw new TransactionException(

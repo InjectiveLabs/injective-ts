@@ -2,10 +2,15 @@ import { vi } from 'vitest'
 import { Wallet } from '@injectivelabs/wallet-base'
 import { AbortError, isAbortError } from '@injectivelabs/utils'
 import {
+  TransactionException,
+  CosmosWalletException,
+} from '@injectivelabs/exceptions'
+import {
   waitTxBroadcasted,
   CosmosTxV1Beta1TxPb,
   TxObservationAbortError,
 } from '@injectivelabs/sdk-ts/core/tx'
+import { CosmosWallet } from '../wallet.js'
 import { CosmosWalletStrategy } from './strategy.js'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 
@@ -37,7 +42,72 @@ const makeTxResponse = (txHash: string): TxResponse =>
   }) as TxResponse
 
 describe('CosmosWalletStrategy.sendTransaction', () => {
-  it.each(['provider', 'observation', 'decorated'] as const)(
+  describe.each(['strategy', 'sync', 'block'] as const)(
+    'real provider through %s',
+    (entry) => {
+      const send = () => {
+        const args = { wallet: Wallet.Keplr, chainId: 'injective-1' as any }
+        const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create()
+        if (entry !== 'strategy') {
+          const wallet = new CosmosWallet(args)
+          return entry === 'sync'
+            ? wallet.broadcastTx(txRaw)
+            : wallet.broadcastTxBlock(txRaw)
+        }
+        return new CosmosWalletStrategy(args).sendTransaction(txRaw, {
+          address: 'inj1test',
+          chainId: args.chainId,
+          endpoints: {
+            grpc: 'http://unused.invalid',
+            rest: 'http://unused.invalid',
+          },
+        })
+      }
+
+      it.each(
+        ['enable', 'sendTx'].flatMap((phase) =>
+          ['SDK', 'native'].map((shape) => ({ phase, shape })),
+        ),
+      )(
+        'preserves $shape cancellation from $phase',
+        async ({ phase, shape }) => {
+          const cancellation =
+            shape === 'SDK'
+              ? new AbortError({ source: phase })
+              : new DOMException('cancelled', 'AbortError')
+          const provider = {
+            enable: vi.fn().mockResolvedValue(undefined),
+            sendTx: vi.fn().mockResolvedValue(new Uint8Array(32)),
+          }
+          provider[phase as 'enable' | 'sendTx'].mockRejectedValue(cancellation)
+          vi.stubGlobal('window', { keplr: provider })
+          const error = await send().catch((e: unknown) => e)
+          expect(error).toBe(cancellation)
+          expect(error).not.toHaveProperty('txHash')
+          expect(waitTxBroadcasted).not.toHaveBeenCalled()
+          if (phase === 'enable') expect(provider.sendTx).not.toHaveBeenCalled()
+          else expect(provider.sendTx).toHaveBeenCalledOnce()
+        },
+      )
+
+      it('keeps ordinary provider failures as wallet/transaction failures', async () => {
+        vi.stubGlobal('window', {
+          keplr: {
+            enable: vi.fn().mockResolvedValue(undefined),
+            sendTx: vi.fn().mockRejectedValue(new Error('provider failed')),
+          },
+        })
+        const error = await send().catch((e: unknown) => e)
+        expect(error).toBeInstanceOf(
+          entry === 'strategy' ? TransactionException : CosmosWalletException,
+        )
+        expect(isAbortError(error)).toBe(false)
+        expect(waitTxBroadcasted).not.toHaveBeenCalled()
+      })
+    },
+  )
+
+  it.each(['provider', 'observation', 'decorated', 'onBroadcast'] as const)(
     'preserves cancellation from %s with a hash only after submission',
     async (phase) => {
       const txHash = 'PROVIDER_HASH'
@@ -61,6 +131,12 @@ describe('CosmosWalletStrategy.sendTransaction', () => {
         .sendTransaction(CosmosTxV1Beta1TxPb.TxRaw.create(), {
           address: 'inj1test',
           chainId: 'injective-1' as any,
+          onBroadcast:
+            phase === 'onBroadcast'
+              ? () => {
+                  throw cancellation
+                }
+              : undefined,
           endpoints: {
             grpc: 'http://unused.invalid',
             rest: 'http://unused.invalid',
@@ -77,6 +153,8 @@ describe('CosmosWalletStrategy.sendTransaction', () => {
         expect(error).toBeInstanceOf(TxObservationAbortError)
         expect(error).toMatchObject({ txHash })
         if (phase === 'decorated') expect(error).toBe(cancellation)
+        if (phase === 'onBroadcast')
+          expect(waitTxBroadcasted).not.toHaveBeenCalled()
       }
     },
   )

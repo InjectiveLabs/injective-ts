@@ -49,7 +49,7 @@ const getLocalAbortError = (
       ? signal.reason
       : axiosSignal?.aborted
         ? axiosSignal.reason
-        : (error as { reason?: unknown }).reason
+        : error.reason
 
     return new AbortError(reason)
   }
@@ -136,10 +136,6 @@ export default class HttpRestClient {
     ) => TResponse | PromiseLike<TResponse>,
     options: RetryOptions,
   ): Promise<TResponse>
-  public async retry<TResponse>(
-    httpCall: Function,
-    options: RetryOptions,
-  ): Promise<TResponse>
   /** @deprecated Pass a RetryOptions object instead of positional retry settings. */
   public async retry<TResponse>(
     httpCall: () => TResponse | PromiseLike<TResponse>,
@@ -147,6 +143,10 @@ export default class HttpRestClient {
     delay?: number,
     options?: RequestOptions,
   ): Promise<TResponse>
+  /**
+   * @deprecated Retained for callers typed as Function by the legacy API.
+   * The options-object overload requires a typed request-config callback.
+   */
   public async retry<TResponse>(
     httpCall: Function,
     retries?: number,

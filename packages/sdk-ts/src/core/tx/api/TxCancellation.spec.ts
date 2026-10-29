@@ -1741,6 +1741,93 @@ describe('tx observation cancellation: event inclusion waiter', () => {
 // Dual event + poll observation
 // ---------------------------------------------------------------------------
 
+describe.each([
+  { name: 'gRPC', Api: TxGrpcApi },
+  { name: 'REST', Api: TxRestApi },
+])('$name inclusion cancellation ownership', ({ Api }) => {
+  it.each(
+    ['factory', 'subscribe', 'final-fetch', 'dual-event', 'dual-poll'].flatMap(
+      (stage) =>
+        ['AbortError', 'ERR_CANCELED'].map((shape) => ({ stage, shape })),
+    ),
+  )(
+    'allows fallback or a sibling winner after an unrelated $shape at $stage',
+    async ({ stage, shape }) => {
+      const api = new Api('https://unused.invalid')
+      const controller = new AbortController()
+      const txHash = makeTxHash()
+      const response = makeTxResponse(txHash)
+      const dependencyError =
+        shape === 'AbortError'
+          ? new DOMException('dependency aborted', 'AbortError')
+          : Object.assign(new Error('dependency cancelled'), {
+              code: 'ERR_CANCELED',
+            })
+      const onFallback = vi.fn()
+      const pollResult = makeDeferred<TxResponse>()
+      const poll = vi.spyOn(api, 'fetchTxPoll').mockImplementation(async () => {
+        if (stage === 'dual-poll') throw dependencyError
+        return stage === 'dual-event' ? pollResult.promise : response
+      })
+      vi.spyOn(api as any, 'fetchTx').mockImplementation(async () => {
+        if (stage === 'final-fetch' || stage === 'dual-event')
+          throw dependencyError
+        return response
+      })
+      let socket: ControlledWebSocket | undefined
+      const waiter = await api.prepareTxInclusionWait({
+        txHash,
+        timeout: 5000,
+        signal: controller.signal,
+        options: {
+          inclusionStrategy: stage.startsWith('dual-')
+            ? TxInclusionStrategy.TendermintEventAndPoll
+            : TxInclusionStrategy.TendermintEvent,
+          eventInclusion: {
+            rpcEndpoint: 'http://unused.invalid',
+            onFallback,
+            webSocketFactory: () => {
+              if (stage === 'factory') throw dependencyError
+              socket = new ControlledWebSocket()
+              if (stage === 'subscribe')
+                vi.spyOn(socket, 'send').mockImplementation(() => {
+                  throw dependencyError
+                })
+              return socket as unknown as WebSocket
+            },
+          },
+        },
+      })
+      try {
+        let settled = false
+        const pending = waiter.wait().finally(() => {
+          settled = true
+        })
+        const assertion = expect(pending).resolves.toEqual(response)
+        void assertion.catch(() => undefined)
+        if (stage === 'dual-poll') {
+          await new Promise<void>((resolve) => setImmediate(resolve))
+          expect(settled).toBe(false)
+          expect(socket?.closed).toBe(false)
+        }
+        socket?.emitTx(txHash)
+        if (stage === 'dual-event') {
+          await new Promise<void>((resolve) => setImmediate(resolve))
+          expect(settled).toBe(false)
+          pollResult.resolve(response)
+        }
+        await assertion
+        expect(controller.signal.aborted).toBe(false)
+        expect(poll).toHaveBeenCalledOnce()
+        expect(onFallback).toHaveBeenCalledTimes(stage === 'dual-poll' ? 0 : 1)
+        expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+      } finally {
+        waiter.close()
+      }
+    },
+  )
+})
+
 describe('tx observation cancellation: dual inclusion', () => {
   afterEach(() => {
     vi.useRealTimers()
@@ -2057,6 +2144,41 @@ describe('tx observation cancellation: broadcast inclusion', () => {
         transport === 'REST'
           ? new TxRestApi('https://lcd.injective.network')
           : new TxGrpcApi('https://sentry.tm.injective.network:443')
+
+      it.each(['plain', 'decorated'] as const)(
+        'retains recovery information for a %s onBroadcast cancellation',
+        async (shape) => {
+          const api = createApi()
+          const txHash = makeTxHash()
+          const reason = { source: 'onBroadcast' }
+          const cancellation =
+            shape === 'decorated'
+              ? new TxObservationAbortError(txHash, reason)
+              : new AbortError(reason)
+          const controller = new AbortController()
+          vi.spyOn(
+            api as any,
+            api instanceof TxRestApi ? 'broadcastTx' : 'executeGrpcCall',
+          ).mockResolvedValue({
+            tx_response: { txhash: txHash, code: 0 },
+            txResponse: { txhash: txHash, code: 0 },
+          })
+          const poll = vi.spyOn(api, 'fetchTxPoll')
+          const error = await api
+            .broadcast(makeTxRaw(), {
+              signal: controller.signal,
+              onBroadcast: () => {
+                throw cancellation
+              },
+            })
+            .catch((e: unknown) => e)
+          expect(error).toBeInstanceOf(TxObservationAbortError)
+          expect(error).toMatchObject({ txHash, reason })
+          if (shape === 'decorated') expect(error).toBe(cancellation)
+          expect(poll).not.toHaveBeenCalled()
+          expect(getEventListeners(controller.signal, 'abort')).toHaveLength(0)
+        },
+      )
 
       it.each(
         (

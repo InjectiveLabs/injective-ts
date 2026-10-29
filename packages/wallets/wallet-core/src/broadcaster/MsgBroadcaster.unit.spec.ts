@@ -177,9 +177,23 @@ describe('MsgBroadcaster cancellation', () => {
           expect(broadcaster.walletStrategy.emit).toHaveBeenCalledWith(
             WalletStrategyEmitterEventType.TransactionFail,
           )
+          expect(broadcaster.walletStrategy.emit).not.toHaveBeenCalledWith(
+            'transaction-cancelled',
+            expect.anything(),
+          )
         } else {
           expect(broadcaster.walletStrategy.emit).not.toHaveBeenCalledWith(
             WalletStrategyEmitterEventType.TransactionFail,
+          )
+          const cancellations = vi
+            .mocked(broadcaster.walletStrategy.emit)
+            .mock.calls.filter(
+              ([event]) =>
+                event === WalletStrategyEmitterEventType.TransactionCancelled,
+            )
+          expect(cancellations).toEqual([['transaction-cancelled', error]])
+          expect(broadcaster.walletStrategy.emit).not.toHaveBeenCalledWith(
+            WalletStrategyEmitterEventType.TransactionBroadcastEnd,
           )
         }
       },
@@ -915,6 +929,45 @@ describe('MsgBroadcaster event emission order', () => {
   })
 
   describe('broadcastWithFeePayerSig', () => {
+    it('ends the event lifecycle with cancellation after successful submission', async () => {
+      const controller = new AbortController()
+      const txHash = 'A'.repeat(64)
+      vi.spyOn(TxGrpcApi.prototype as any, 'executeGrpcCall').mockResolvedValue(
+        {
+          txResponse: { code: 0, txhash: txHash },
+        },
+      )
+      vi.mocked(mockStrategy.emit).mockImplementation((event) => {
+        if (event === WalletStrategyEmitterEventType.TransactionBroadcastSynced)
+          controller.abort('stop observing')
+        return true
+      })
+      const error = await broadcaster
+        .broadcastWithFeePayerSig({
+          tx: validTxBytes,
+          privateKey: '0x' + 'ab'.repeat(32),
+          feePayerSig: 'bW9ja1NpZw==',
+          accountNumber: 1,
+          txInclusion: { signal: controller.signal },
+        })
+        .catch((e: unknown) => e)
+      expect(error).toBeInstanceOf(TxObservationAbortError)
+      expect(error).toMatchObject({ txHash, reason: 'stop observing' })
+      expect(
+        vi.mocked(mockStrategy.emit).mock.calls.map(([event]) => event),
+      ).toEqual([
+        WalletStrategyEmitterEventType.TransactionPreparationStart,
+        WalletStrategyEmitterEventType.TransactionPreparationEnd,
+        WalletStrategyEmitterEventType.TransactionBroadcastStart,
+        WalletStrategyEmitterEventType.TransactionBroadcastSynced,
+        'transaction-cancelled',
+      ])
+      expect(mockStrategy.emit).toHaveBeenLastCalledWith(
+        'transaction-cancelled',
+        error,
+      )
+    })
+
     it('emits events in correct order: Preparation → Broadcast → Synced → End', async () => {
       vi.spyOn(TxGrpcApi.prototype, 'broadcast').mockImplementation(
         async (_txRaw, options) => {

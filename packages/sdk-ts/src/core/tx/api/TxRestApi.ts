@@ -25,10 +25,10 @@ import {
 import { TxInclusionStrategy } from '../types/tx.js'
 import { TxClient } from '../utils/classes/TxClient.js'
 import { fetchTxWithAttemptTimeout } from './TxPoll.js'
+import { observeTx } from './TxObservationAbortError.js'
 import { BroadcastMode } from '../types/tx-rest-client.js'
 import { getErrorMessage } from '../../../utils/helpers.js'
 import { prepareTxInclusionWaiter } from './TxInclusion.js'
-import { TxObservationAbortError } from './TxObservationAbortError.js'
 import type { AxiosError } from 'axios'
 import type { RequestOptions } from '@injectivelabs/utils'
 import type { TxResponse } from '../types/tx.js'
@@ -246,9 +246,10 @@ export class TxRestApi implements TxConcreteApi {
       signal,
       abortSignal,
     }
-    const waiter = requestOptions
-      ? await this.prepareTxInclusionWait(prepareArgs, requestOptions)
-      : await this.prepareTxInclusionWait(prepareArgs)
+    const waiter = await this.prepareTxInclusionWait(
+      prepareArgs,
+      requestOptions,
+    )
 
     const txResponse = await waiter.wait()
 
@@ -364,10 +365,11 @@ export class TxRestApi implements TxConcreteApi {
       toBigNumber(options?.txTimeout || DEFAULT_BLOCK_TIMEOUT_HEIGHT)
         .times(DEFAULT_BLOCK_TIME_IN_SECONDS * 1000)
         .toNumber()
-    let txHash = TxClient.hash(txRaw)
-    let broadcastCompleted = false
+    const txHash = TxClient.hash(txRaw)
     let inclusionWaiter: TxInclusionWaiter | undefined
     const clientCancellation = this.httpClient.getAbortSignal()
+    // Existing custom implementations of the public waiter API need not
+    // expose a signal, so the pre-submission barrier owns its own scope.
     const observationSignals = combineAbortSignals([
       clientCancellation.signal,
       options?.signal,
@@ -383,9 +385,11 @@ export class TxRestApi implements TxConcreteApi {
         options,
         signal: options?.signal,
       }
-      inclusionWaiter = requestOptions
-        ? await this.prepareTxInclusionWait(prepareArgs, requestOptions)
-        : await this.prepareTxInclusionWait(prepareArgs)
+      const waiter = await this.prepareTxInclusionWait(
+        prepareArgs,
+        requestOptions,
+      )
+      inclusionWaiter = waiter
 
       // Preparation yields even for polling. Cancellation in that gap must
       // prevent submission, without cancelling a mutation already in flight.
@@ -417,47 +421,25 @@ export class TxRestApi implements TxConcreteApi {
         })
       }
 
-      txHash = txResponse.txhash || txHash
-      broadcastCompleted = true
+      return await observeTx(txResponse.txhash || txHash, async () => {
+        options?.onBroadcast?.(txResponse.txhash)
 
-      if (options?.onBroadcast) {
-        options.onBroadcast(txResponse.txhash)
-      }
+        const result = await waiter.wait(txResponse.txhash)
 
-      const result = await inclusionWaiter.wait(txResponse.txhash)
+        if (!result) {
+          throw new HttpRequestException(
+            new Error(`The transaction with ${txResponse.txhash} is not found`),
+            {
+              context: 'TxRestApi.broadcast',
+              contextModule: 'wait-for-tx-inclusion',
+            },
+          )
+        }
 
-      if (!result) {
-        throw new HttpRequestException(
-          new Error(`The transaction with ${txResponse.txhash} is not found`),
-          {
-            context: 'TxRestApi.broadcast',
-            contextModule: 'wait-for-tx-inclusion',
-          },
-        )
-      }
-
-      return result
+        return result
+      })
     } catch (e: unknown) {
       inclusionWaiter?.close()
-
-      // Preparation can be cancelled before the mutation is sent. Only attach
-      // a recovery hash once broadcast has completed successfully.
-      if (isAbortError(e)) {
-        if (!broadcastCompleted) {
-          throw e
-        }
-
-        throw new TxObservationAbortError(
-          txHash,
-          (e as { reason?: unknown }).reason,
-        )
-      }
-
-      if (e instanceof HttpRequestException) {
-        if (e.code !== StatusCodes.OK) {
-          throw e
-        }
-      }
 
       throw e
     } finally {
