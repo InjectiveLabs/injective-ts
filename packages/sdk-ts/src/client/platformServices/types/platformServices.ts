@@ -132,7 +132,8 @@ export interface PlatformServicesPositionTrade {
   funding: string
   timestamp: string
   eventType: string
-  marketId?: string
+  isBuy: boolean
+  marketId: string
   positionId: string
   executionPrice: string
   liquidationAdjustment: string
