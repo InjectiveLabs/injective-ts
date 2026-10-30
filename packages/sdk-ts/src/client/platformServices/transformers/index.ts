@@ -163,7 +163,9 @@ export class PlatformServicesGrpcPositionsTransformer {
       funding: trade.funding,
       timestamp: trade.timestamp,
       eventType: trade.eventType,
-      marketId: trade.marketId,
+      // Optional in the API, but always set
+      isBuy: trade.isBuy!,
+      marketId: trade.marketId!,
       positionId: trade.positionId,
       executionPrice: trade.executionPrice,
       liquidationAdjustment: trade.liquidationAdjustment,

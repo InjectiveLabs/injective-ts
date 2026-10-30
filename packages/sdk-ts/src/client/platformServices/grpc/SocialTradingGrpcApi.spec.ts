@@ -142,6 +142,8 @@ describe('SocialTradingGrpcApi', () => {
         nextToken: 'next',
         trades: [
           {
+            isBuy: true,
+            marketId: '0x01',
             pnl: '0.12',
             pnlUsd: '0.13',
             funding: '-0.02',
@@ -178,6 +180,8 @@ describe('SocialTradingGrpcApi', () => {
         nextToken: 'next',
         trades: [
           {
+            isBuy: true,
+            marketId: '0x01',
             pnl: '0.12',
             pnlUsd: '0.13',
             funding: '-0.02',
@@ -205,6 +209,7 @@ describe('SocialTradingGrpcApi', () => {
         trades: [
           {
             marketId,
+            isBuy: false,
             pnl: '-44.01',
             pnlUsd: '-44.00',
             funding: '0.09',
@@ -245,6 +250,7 @@ describe('SocialTradingGrpcApi', () => {
         trades: [
           {
             marketId,
+            isBuy: false,
             pnl: '-44.01',
             pnlUsd: '-44.00',
             funding: '0.09',
@@ -272,12 +278,22 @@ describe('SocialTradingGrpcApi', () => {
       )
       .mockResolvedValueOnce(
         PlatformServicesPositionsPb.ListPositionTradesResponse.create({
-          trades: [PlatformServicesPositionsPb.PositionTrade.create()],
+          trades: [
+            PlatformServicesPositionsPb.PositionTrade.create({
+              isBuy: true,
+              marketId: '0x01',
+            }),
+          ],
         }),
       )
       .mockResolvedValueOnce(
         PlatformServicesPositionsPb.ListAccountTradesResponse.create({
-          trades: [PlatformServicesPositionsPb.PositionTrade.create()],
+          trades: [
+            PlatformServicesPositionsPb.PositionTrade.create({
+              isBuy: false,
+              marketId: '0x01',
+            }),
+          ],
         }),
       )
 
@@ -306,7 +322,6 @@ describe('SocialTradingGrpcApi', () => {
         funding: '',
         liquidationAdjustment: '',
       })
-      expect(accountTrades.trades[0].marketId).toBeUndefined()
     } finally {
       executeGrpcCall.mockRestore()
     }
