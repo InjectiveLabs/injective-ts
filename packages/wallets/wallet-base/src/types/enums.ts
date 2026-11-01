@@ -14,6 +14,7 @@ export const Wallet = {
   Ninji: 'ninji',
   Magic: 'magic',
   Rabby: 'rabby',
+  Privy: 'privy',
   Ledger: 'ledger',
   BitGet: 'BitGet',
   OWallet: 'owallet',

@@ -4,6 +4,7 @@ import { Wallet, isEvmWallet } from '@injectivelabs/wallet-base/runtime-light'
 import {
   loadEvmStrategy,
   loadMagicStrategy,
+  loadPrivyStrategy,
   loadCosmosStrategy,
   loadTurnkeyStrategy,
   loadLedgerStrategies,
@@ -144,6 +145,12 @@ const createStrategy = async ({
       const TurnkeyWalletStrategy = await loadTurnkeyStrategy()
 
       return new TurnkeyWalletStrategy(ethWalletArgs)
+    }
+
+    case Wallet.Privy: {
+      const PrivyWalletStrategy = await loadPrivyStrategy()
+
+      return new PrivyWalletStrategy(ethWalletArgs)
     }
 
     case Wallet.Magic: {

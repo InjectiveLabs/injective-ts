@@ -114,8 +114,16 @@ export interface TurnkeyMetadata {
   defaultOrganizationId: string
 }
 
+export type PrivyEip1193Provider = Pick<Eip1193Provider, 'request'>
+
+export interface PrivyMetadata {
+  address: string
+  getProvider: () => Promise<PrivyEip1193Provider>
+}
+
 export interface WalletMetadata {
   magic?: MagicMetadata
+  privy?: PrivyMetadata
   turnkey?: Partial<TurnkeyMetadata>
   walletConnect?: WalletConnectMetadata
   privateKey?: PrivateKeyMetadata
