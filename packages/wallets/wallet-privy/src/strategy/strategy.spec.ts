@@ -292,6 +292,34 @@ describe('PrivyWalletStrategy', () => {
     })
   })
 
+  it('reads decimal quantity strings as decimal', async () => {
+    const publicClient = mockPublicClient({
+      to: '0x0000000000000000000000000000000000000002',
+      data: '0x',
+      value: 10n,
+      gas: 21_000n,
+      nonce: 0,
+      gasPrice: 3n,
+    })
+    const provider = createProvider()
+    provider.request.mockResolvedValueOnce('0x00signed')
+    const strategy = await createStrategy(provider)
+
+    await strategy.sendEvmTransaction(
+      {
+        to: '0x0000000000000000000000000000000000000002',
+        value: '10',
+        gas: '21000',
+        gasPrice: '3',
+      },
+      { address: account.address, evmChainId: EvmChainId.TestnetEvm },
+    )
+
+    expect(publicClient.prepareTransactionRequest).toHaveBeenCalledWith(
+      expect.objectContaining({ value: 10n, gas: 21_000n, gasPrice: 3n }),
+    )
+  })
+
   it('drops null fields and sends legacy transactions as type 0', async () => {
     const publicClient = mockPublicClient({
       to: '0x0000000000000000000000000000000000000002',

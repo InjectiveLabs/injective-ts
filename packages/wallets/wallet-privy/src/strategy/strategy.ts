@@ -49,14 +49,6 @@ const HEX_QUANTITY_FIELDS = [
 // viem's names for EIP-2718 transaction types 0, 1 and 2
 const VIEM_TX_TYPES = ['legacy', 'eip2930', 'eip1559'] as const
 
-const toBigInt = (value: string | number | bigint) => {
-  if (typeof value === 'string') {
-    return BigInt(value.startsWith('0x') ? value : `0x${value}`)
-  }
-
-  return BigInt(value)
-}
-
 // Privy returns r‖s‖v in several shapes; Injective expects v as 27/28
 const normalizeSignature = (result: unknown): Hex => {
   const raw =
@@ -185,7 +177,8 @@ export class PrivyWalletStrategy
 
       for (const field of HEX_QUANTITY_FIELDS) {
         if (request[field] !== undefined) {
-          request[field] = toBigInt(request[field])
+          // BigInt reads 0x strings as hex and other strings as decimal
+          request[field] = BigInt(request[field])
         }
       }
 
