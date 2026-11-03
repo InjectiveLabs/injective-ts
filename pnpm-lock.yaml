@@ -259,8 +259,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
       '@injectivelabs/indexer-proto-ts-v2':
-        specifier: 1.20.8
-        version: 1.20.8
+        specifier: 1.20.8-alpha
+        version: 1.20.8-alpha
       '@injectivelabs/mito-proto-ts-v2':
         specifier: 1.17.3
         version: 1.17.3
@@ -1176,8 +1176,8 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-  '@injectivelabs/indexer-proto-ts-v2@1.20.8':
-    resolution: {integrity: sha512-GDkCDucgJglp+THrIrty6TrV9nb7xIEjQu0q2924sigRxEVR/GCZnIAGFAFOYDRmYT6oeX/SpzvA3fmGs9Docw==}
+  '@injectivelabs/indexer-proto-ts-v2@1.20.8-alpha':
+    resolution: {integrity: sha512-KU8IfuIH3/8XxHZzaZULMglCzet4Z+3cOY9NsuqQkpAB2Vyb83q5mobSIQ1gBT0HxGkFMbZZarJkvqKLq9ZOjw==}
 
   '@injectivelabs/mito-proto-ts-v2@1.17.3':
     resolution: {integrity: sha512-Fo6k1MCPT3CKUS9tbMbl/poGv7R8KHtA7RfU7mvxxVWS7MpF+LLZA6UgegfEA1iiJgIrhe+eEwEvhIOe6SiUzw==}
@@ -1404,9 +1404,11 @@ packages:
 
   '@ledgerhq/hw-transport-webhid@6.35.4':
     resolution: {integrity: sha512-5tspX0/XMaLd5Nz45AYUcsevvG5QoYJ8/n8g4dUFfIketH8CZA9UPZbgPJD+OWykzhzYLQPGpahDmzxjItVZlQ==}
+    deprecated: This package is no longer maintained. Use @ledgerhq/device-transport-kit-web-hid instead.
 
   '@ledgerhq/hw-transport-webusb@6.34.4':
     resolution: {integrity: sha512-asBy3Uu8Cl/leyEAY5M27S/oAZwCpYuRPi9Sz6fgEgF2clX8Sold0iSI+MD0sne3PqcLK1K8V6H4MxviHH7sVw==}
+    deprecated: This package is no longer maintained. Use @ledgerhq/device-transport-kit-web-hid instead.
 
   '@ledgerhq/hw-transport@6.35.4':
     resolution: {integrity: sha512-FMVxiniQp0pgSIEBX9CjXYBuIAH9BTm3OcrN+/2LqkB8QBeFZdiwmO4BeN9nc2aWspe9z6kxN3SuUyouedNokA==}
@@ -7166,7 +7168,6 @@ packages:
   starknet@8.9.2:
     resolution: {integrity: sha512-+dp+o2w67fV6JyVOVkYeM1Ec71aORHc/JrF4VHLlfeGee0nLilooCQLE2u6hUcSGQG2x2/fvzkxYpIN+k1JBvA==}
     engines: {node: '>=22'}
-    deprecated: starknet <10 is end-of-life and no longer receives security fixes. Upgrade to starknet@10 (10.8.0 or later).
 
   statuses@1.5.0:
     resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
@@ -8658,7 +8659,7 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.4
 
-  '@injectivelabs/indexer-proto-ts-v2@1.20.8':
+  '@injectivelabs/indexer-proto-ts-v2@1.20.8-alpha':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

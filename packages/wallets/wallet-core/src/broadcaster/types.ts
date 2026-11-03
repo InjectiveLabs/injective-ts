@@ -42,6 +42,7 @@ export interface MsgBroadcasterOptions {
   /** Buffers automatic message presets by 1.2 for Cosmos wallet strategies. */
   useFixedGas?: boolean
   txTimeoutOnFeeDelegation?: boolean
+  eip712Version?: 'v2' | 'v3'
   gasBufferCoefficient?: number
   httpHeaders?: Record<string, string>
 }

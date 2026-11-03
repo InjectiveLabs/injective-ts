@@ -849,6 +849,62 @@ describe('MsgBroadcaster fixed exchange gas', () => {
   })
 })
 
+describe('MsgBroadcaster eip712Version', () => {
+  it.each([
+    { name: 'Phantom default', wallet: Wallet.Phantom, expected: 'v3' },
+    { name: 'Metamask default', wallet: Wallet.Metamask, expected: 'v2' },
+    {
+      name: 'Phantom forced to v2',
+      wallet: Wallet.Phantom,
+      options: { eip712Version: 'v2' },
+      expected: 'v2',
+    },
+    {
+      name: 'Metamask forced to v3',
+      wallet: Wallet.Metamask,
+      options: { eip712Version: 'v3' },
+      expected: 'v3',
+    },
+    {
+      name: 'Phantom v2 then setOptions v3',
+      wallet: Wallet.Phantom,
+      options: { eip712Version: 'v2' },
+      setOptions: { eip712Version: 'v3' },
+      expected: 'v3',
+    },
+  ] as {
+    name: string
+    wallet: Wallet
+    expected: 'v2' | 'v3'
+    options?: Partial<MsgBroadcasterOptions>
+    setOptions?: Partial<MsgBroadcasterOptions>
+  }[])(
+    'passes $expected to the gateway ($name)',
+    async ({ wallet, options, setOptions, expected }) => {
+      const broadcaster = new MsgBroadcaster({
+        network: Network.Devnet,
+        walletStrategy: createMockWalletStrategy(),
+        ...options,
+      })
+      if (setOptions) broadcaster.setOptions(setOptions)
+      broadcaster.walletStrategy.wallet = wallet
+      const prepareTxRequest = vi
+        .spyOn(IndexerGrpcWeb3GwApi.prototype, 'prepareTxRequest')
+        .mockRejectedValue(new Error('stop after gateway preparation'))
+
+      await expect(
+        (broadcaster as any).broadcastEip712WithFeeDelegation({
+          msgs: makeFixedGasMessage(),
+          ethereumAddress: '0x0000000000000000000000000000000000000001',
+          injectiveAddress: 'inj1test',
+        }),
+      ).rejects.toThrow('stop after gateway preparation')
+
+      expect(prepareTxRequest.mock.calls[0][0].eip712Version).toBe(expected)
+    },
+  )
+})
+
 describe('MsgBroadcaster Ledger fixed exchange gas', () => {
   it.each([false, true])(
     'runs Ledger validity simulation only for authz wrappers (authz: %s)',
