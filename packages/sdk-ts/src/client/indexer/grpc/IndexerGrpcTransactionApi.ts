@@ -35,6 +35,8 @@ interface PrepareTxArgs {
   timeoutHeight?: number
   feeDenom?: string
   feePrice?: string
+  /** Omitted = gateway default (v2). 'v3' needs the gateway's EIP712 v3 flag. */
+  eip712Version?: 'v2' | 'v3'
 }
 
 /**
@@ -59,6 +61,7 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
       feeDenom = DEFAULT_BRIDGE_FEE_DENOM,
       feePrice = DEFAULT_BRIDGE_FEE_PRICE,
       timeoutHeight,
+      eip712Version,
     } = args
     const txFeeAmount = CosmosBaseV1Beta1CoinPb.Coin.create()
     txFeeAmount.denom = feeDenom
@@ -89,6 +92,10 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
 
     if (memo) {
       prepareTxRequest.memo = typeof memo === 'number' ? memo.toString() : memo
+    }
+
+    if (eip712Version) {
+      prepareTxRequest.eip712Wrapper = eip712Version
     }
 
     const response = await this.executeGrpcCall<
@@ -215,6 +222,11 @@ export class IndexerGrpcTransactionApi extends BaseIndexerGrpcConsumer {
 
     broadcastTxRequest.feePayer = txResponse.feePayer
     broadcastTxRequest.feePayerSig = txResponse.feePayerSig
+
+    // Gateway treats anything but V3 as V2, so only forward V3.
+    if (txResponse.signMode === 'SIGN_MODE_EIP712_V3') {
+      broadcastTxRequest.signMode = txResponse.signMode
+    }
 
     const arrayOfMessages = Array.isArray(message) ? message : [message]
 
