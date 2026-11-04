@@ -26,6 +26,9 @@ import type {
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base/runtime-light'
 
+const isPlainObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value)
+
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { evmOptions } = args
 
@@ -221,6 +224,27 @@ export class WalletStrategy extends BaseWalletStrategy {
    *
    */
   public async setMetadata(metadata?: WalletMetadata): Promise<void> {
+    const current = (this.args.metadata ?? {}) as Record<string, unknown>
+    // One level deep, as the strategies merge it: { turnkey: { session } } keeps the org ID
+    const merged = Object.fromEntries(
+      Object.entries({ ...current, ...metadata }).map(([key, value]) => [
+        key,
+        isPlainObject(current[key]) && isPlainObject(value)
+          ? { ...current[key], ...value }
+          : value,
+      ]),
+    ) as WalletMetadata
+    // Kept for strategies loaded later. A private key passed here only goes to the
+    // strategy built now; the constructor's stays
+    const { privateKey: _privateKey, ...kept } = merged
+
+    this.args = {
+      ...this.args,
+      metadata: current.privateKey
+        ? ({ ...kept, privateKey: current.privateKey } as WalletMetadata)
+        : kept,
+    }
+
     const shouldRecreateStrategyOnMetadataChange = [
       Wallet.PrivateKey,
       Wallet.WalletConnect,
@@ -240,10 +264,7 @@ export class WalletStrategy extends BaseWalletStrategy {
         this.loadingStrategies.delete(walletEnum)
 
         this.strategies[walletEnum] = await createStrategy({
-          args: {
-            ...this.args,
-            metadata: { ...this.args.metadata, ...metadata },
-          },
+          args: { ...this.args, metadata: merged },
           wallet: walletEnum,
           emitter: this.getEmitter(),
         })
@@ -299,8 +320,9 @@ export class WalletStrategy extends BaseWalletStrategy {
     }
 
     // Start loading the strategy
+    const { args } = this
     const loadPromise = createStrategy({
-      args: this.args,
+      args,
       wallet,
       emitter: this.getEmitter(),
     })
@@ -311,6 +333,11 @@ export class WalletStrategy extends BaseWalletStrategy {
       const strategy = await loadPromise
 
       if (strategy) {
+        // A setMetadata call during the load didn't reach this strategy
+        if (this.args !== args) {
+          strategy.setMetadata?.(this.args.metadata)
+        }
+
         this.strategies[wallet] = strategy
       }
 
