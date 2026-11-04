@@ -50,8 +50,9 @@ describe('TurnkeyWalletStrategy', () => {
       }),
     }
 
-    vi.doMock('./Eip1193Provider.js', () => ({
-      getEip1193ProviderForTurnkey: vi.fn().mockResolvedValue(fakeProvider),
+    vi.doMock('@injectivelabs/wallet-base', async (importOriginal) => ({
+      ...(await importOriginal<typeof import('@injectivelabs/wallet-base')>()),
+      getEip1193ProviderForAccount: vi.fn().mockResolvedValue(fakeProvider),
     }))
 
     const { TurnkeyWalletStrategy } = await import('./strategy.js')

@@ -3,9 +3,10 @@ import {
   getEvmChainConfig,
   getViemPublicClient,
   getViemWalletClient,
-} from '@injectivelabs/wallet-base'
-import type { Hash, LocalAccount } from 'viem'
-import type { Eip1193Provider } from '@injectivelabs/wallet-base'
+  toViemTransactionRequest,
+} from './viem.js'
+import type { Hash, BlockTag, LocalAccount } from 'viem'
+import type { Eip1193Provider } from '../types/index.js'
 
 type RpcUrls = Partial<Record<number, string>>
 
@@ -124,7 +125,8 @@ const getSignableMessage = (message: any) => {
   return { message }
 }
 
-export const getEip1193ProviderForTurnkey = async (
+/** An EIP-1193 provider that signs with a viem account and talks to our RPCs */
+export const getEip1193ProviderForAccount = async (
   account: LocalAccount,
   chainId: number | string,
   params: {
@@ -217,9 +219,8 @@ class CustomEip1193Provider implements Eip1193Provider {
     }
 
     if (signTypedDataMethods.has(args.method)) {
-      // ? We need to manually hash the EIP712 data to get the raw hash and sign that via Turnkey due to a breaking change on their end
-      // account.sign is available in @turnkey/viem >= 0.12.0; older versions hashed client-side inside
-      // signTypedData already, so both paths produce an identical signature.
+      // Sign the raw EIP-712 hash when the account can: Turnkey and Privy can reject
+      // typed data with Injective's domain. Both paths produce the same signature.
       const typedData = getTypedDataParam(args.method, args.params)
 
       if (this.sign) {
@@ -253,7 +254,10 @@ class CustomEip1193Provider implements Eip1193Provider {
         throw new Error('params is required')
       }
 
-      return this.signTransaction(args.params[0])
+      return this.signTransaction({
+        chainId: this.chainId,
+        ...toViemTransactionRequest(args.params[0], this.address),
+      })
     }
 
     if (args.method === 'eth_chainId') {
@@ -283,38 +287,9 @@ class CustomEip1193Provider implements Eip1193Provider {
 
       const client = this.getClient()
 
-      const parseHexValue = (value: string | number | bigint) => {
-        if (typeof value === 'string') {
-          const hexValue = value.startsWith('0x') ? value : `0x${value}`
-
-          return BigInt(hexValue)
-        }
-
-        return BigInt(value)
-      }
-
-      const txData = args.params[0] as any
-      const processedTransaction = { ...txData }
-
-      const hexFields = [
-        'value',
-        'gas',
-        'gasLimit',
-        'gasPrice',
-        'maxFeePerGas',
-        'maxPriorityFeePerGas',
-      ]
-
-      for (const field of hexFields) {
-        if (processedTransaction[field] !== undefined) {
-          processedTransaction[field] = parseHexValue(
-            processedTransaction[field],
-          )
-        }
-      }
-
-      const preparedTransaction =
-        await accountClient.prepareTransactionRequest(processedTransaction)
+      const preparedTransaction = await accountClient.prepareTransactionRequest(
+        toViemTransactionRequest(args.params[0], this.address) as any,
+      )
 
       const signedTransaction = await this.signTransaction(preparedTransaction)
 
@@ -332,10 +307,9 @@ class CustomEip1193Provider implements Eip1193Provider {
 
       const client = getViemPublicClient(this.chainId, this.getRpcUrl())
 
-      const count = await client.getTransactionCount({
-        address: this.address as Hash,
-        blockTag: 'pending',
-      })
+      const [address = this.address as Hash, blockTag = 'pending'] =
+        args.params as [Hash?, BlockTag?]
+      const count = await client.getTransactionCount({ address, blockTag })
 
       return `0x${count.toString(16)}`
     }
