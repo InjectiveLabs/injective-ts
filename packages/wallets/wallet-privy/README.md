@@ -19,23 +19,25 @@ pnpm add @injectivelabs/wallet-privy
 ## 📖 Documentation
 
 The strategy does not depend on a Privy SDK. Your app signs the user in with Privy
-(`@privy-io/js-sdk-core` on web, `@privy-io/expo` on mobile) and hands the strategy
-the embedded wallet's address and a function that returns its EIP-1193 provider.
+(tested with `@privy-io/js-sdk-core` on web) and hands the strategy the embedded
+wallet's address and a function that returns its EIP-1193 provider.
 Privy keeps the key; the strategy only sends requests to that provider, so the
 provider must support these methods:
 
-| Strategy method       | Provider request                                                  |
-| --------------------- | ----------------------------------------------------------------- |
-| `signEip712TypedData` | `secp256k1_sign` on the EIP-712 digest, like the Turnkey strategy |
-| `signArbitrary`       | `personal_sign`                                                   |
-| `sendEvmTransaction`  | `eth_signTransaction`, then sent through `evmOptions.rpcUrl`      |
-| `sendTransaction`     | none: broadcasts the signed Injective transaction over gRPC       |
+| Strategy method       | Provider request                                                             |
+| --------------------- | ---------------------------------------------------------------------------- |
+| `signEip712TypedData` | `secp256k1_sign` on the EIP-712 digest, like the Turnkey strategy            |
+| `signArbitrary`       | `personal_sign`                                                              |
+| `sendEvmTransaction`  | `secp256k1_sign` on the transaction hash; prepared and sent via `evmOptions` |
+| `sendTransaction`     | none: broadcasts the signed Injective transaction over gRPC                  |
+
+Privy only ever sees hashes of EVM transactions, so Privy's transaction policies
+and confirmation screens don't apply to them.
 
 `Wallet.Privy` is an EVM wallet, so `MsgBroadcaster` uses the same EIP-712 path as
 `Wallet.Turnkey`, including fee delegation.
 
-The Privy wallet only exists after sign-in, so select the wallet first and set its
-metadata afterwards. `setMetadata` only reaches strategies that are already loaded:
+The Privy wallet only exists after sign-in, so pass it with `setMetadata`:
 
 ```typescript
 import { Wallet } from '@injectivelabs/wallet-base'
@@ -51,7 +53,7 @@ const walletStrategy = new WalletStrategy({
 })
 
 // After the user signs in with Privy, e.g. privy.embeddedWallet.getEthereumProvider(...)
-// on web or wallets[0].getProvider() from useEmbeddedEthereumWallet() on Expo.
+// from @privy-io/js-sdk-core.
 await walletStrategy.setWallet(Wallet.Privy)
 await walletStrategy.setMetadata({
   privy: {
@@ -81,10 +83,10 @@ from `@injectivelabs/exceptions`, the Privy counterpart of
 and send the user back to sign-in. A `getProvider` that throws it is passed on
 unchanged.
 
-`getEip1193Provider()` returns Privy's provider as it is, on whatever chain Privy
-selected. If you use it directly, add the Injective EVM chain to Privy's
-`supportedChains`. The strategy's own EVM transactions don't need this: they are
-prepared and sent through `evmOptions`.
+`getEip1193Provider()` returns the same provider as the Turnkey strategy: it signs
+with the Privy wallet and sends through `evmOptions.rpcUrl` / `rpcUrls`, starting on
+`evmOptions.evmChainId` and switching with `wallet_switchEthereumChain`. Privy's
+`supportedChains` doesn't apply to it.
 
 The strategy never creates a wallet. Create one with Privy only for users who never
 had an embedded wallet; existing users import their key first (see Privy's Turnkey

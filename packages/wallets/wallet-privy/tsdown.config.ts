@@ -12,11 +12,9 @@ export default defineConfig({
   outDir: 'dist',
   external: [
     '@injectivelabs/exceptions',
-    '@injectivelabs/networks',
     '@injectivelabs/sdk-ts',
     '@injectivelabs/ts-types',
     '@injectivelabs/wallet-base',
-    '@injectivelabs/wallet-core',
   ],
   onSuccess: createSimpleOnSuccess(),
 })
