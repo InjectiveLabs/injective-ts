@@ -353,8 +353,9 @@ export class PrivyWalletStrategy
    */
   private getAccount(action: WalletAction): LocalAccount {
     const address = getAddress(this.getPrivyMetadata(action).address)
-    // Read again on every request: the wallet can change while viem prepares a transaction
-    const request = async (method: string, params: unknown[]) => {
+    // The user can sign out or switch wallets while viem prepares or Privy signs,
+    // so the wallet is checked again after each wait
+    const requireSameWallet = () => {
       const privy = this.getPrivyMetadata(action)
 
       if (!isAddressEqual(privy.address as Hex, address)) {
@@ -368,7 +369,16 @@ export class PrivyWalletStrategy
         )
       }
 
-      return (await privy.getProvider()).request({ method, params })
+      return privy
+    }
+    const request = async (method: string, params: unknown[]) => {
+      const provider = await requireSameWallet().getProvider()
+      requireSameWallet()
+
+      const result = await provider.request({ method, params })
+      requireSameWallet()
+
+      return result
     }
     const sign = async ({ hash }: { hash: Hex }) =>
       normalizeSignature(await request('secp256k1_sign', [hash]))

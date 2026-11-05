@@ -479,6 +479,46 @@ describe('PrivyWalletStrategy', () => {
     expect(provider.request).not.toHaveBeenCalled()
   })
 
+  it('drops a signature when the wallet signs out while Privy signs', async () => {
+    const provider = createProvider()
+    const strategy = await createStrategy(provider)
+    const signing = strategy.signArbitrary(account.address, 'hello')
+
+    await strategy.disconnect()
+
+    await expect(signing).rejects.toMatchObject({
+      name: 'PrivyWalletSessionException',
+    })
+  })
+
+  it('does not ask an old provider to sign after the wallet changes', async () => {
+    const provider = createProvider()
+    let resolveProvider: (value: typeof provider) => void = () => {}
+    const { PrivyWalletStrategy } = await import('./strategy.js')
+    const strategy = new PrivyWalletStrategy({
+      chainId: ChainId.Testnet,
+      evmOptions,
+      metadata: {
+        privy: {
+          address: account.address,
+          getProvider: () =>
+            new Promise((resolve) => {
+              resolveProvider = resolve
+            }),
+        },
+      },
+    })
+    const signing = strategy.signArbitrary(account.address, 'hello')
+
+    strategy.setMetadata({
+      privy: { address: to, getProvider: async () => provider },
+    })
+    resolveProvider(provider)
+
+    await expect(signing).rejects.toMatchObject({ name: 'WalletException' })
+    expect(provider.request).not.toHaveBeenCalled()
+  })
+
   it('signs bytes that read as "0x41" as those four bytes', async () => {
     const provider = createProvider()
     const strategy = await createStrategy(provider)
