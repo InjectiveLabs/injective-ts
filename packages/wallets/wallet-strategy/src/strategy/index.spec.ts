@@ -91,6 +91,21 @@ describe('WalletStrategy.setMetadata', () => {
     ).toEqual({ privateKey: '0x01' })
   })
 
+  it('forgets the Privy wallet on disconnect', async () => {
+    const walletStrategy = createWalletStrategy()
+
+    await walletStrategy.setMetadata({ privy: { address: '0x02' } } as any)
+    await walletStrategy.setWallet(Wallet.Privy)
+    await walletStrategy.disconnect()
+
+    expect(walletStrategy.getStrategy()).toBeDefined()
+    expect((walletStrategy as any).args.metadata.privy).toBeUndefined()
+    expect((walletStrategy as any).args.metadata.turnkey).toEqual({
+      defaultOrganizationId: 'org',
+      apiBaseUrl: 'url',
+    })
+  })
+
   it('passes metadata set during a load to the loaded strategy', async () => {
     const walletStrategy = createWalletStrategy()
     const loading = walletStrategy.loadStrategy(Wallet.Privy)
