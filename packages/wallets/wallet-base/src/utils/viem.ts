@@ -64,14 +64,19 @@ const toTransactionType = (value: unknown): TransactionType => {
   return type
 }
 
+// viem's TransactionRequest leaves out the chainId we keep
+export type ViemTransactionRequest = TransactionRequest & { chainId?: number }
+
 /**
  * Turns a transaction as callers send it (e.g. Web3Broadcaster: null fields,
- * quantities as strings, gasLimit, input) into a viem request for `from`
+ * quantities as strings, gasLimit, input) into a viem request for `from`,
+ * refusing one for a chain other than `chainId`
  */
 export const toViemTransactionRequest = (
   transaction: unknown,
   from: string,
-): TransactionRequest & { chainId?: number } => {
+  chainId?: number,
+): ViemTransactionRequest => {
   const request: Record<string, any> = Object.fromEntries(
     Object.entries(transaction as Record<string, unknown>).filter(
       ([, value]) => value != null,
@@ -114,7 +119,17 @@ export const toViemTransactionRequest = (
 
   delete request.from
 
-  return request as TransactionRequest & { chainId?: number }
+  if (
+    chainId !== undefined &&
+    request.chainId !== undefined &&
+    request.chainId !== chainId
+  ) {
+    throw new Error(
+      `Transaction is for chain ${request.chainId}, not ${chainId}`,
+    )
+  }
+
+  return request as ViemTransactionRequest
 }
 
 export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {

@@ -188,15 +188,7 @@ class CustomEip1193Provider implements Eip1193Provider {
 
   // Signs only for the provider's chain, which wallet_switchEthereumChain sets
   private toTransactionRequest(transaction: unknown) {
-    const request = toViemTransactionRequest(transaction, this.address)
-
-    if (request.chainId !== undefined && request.chainId !== this.chainId) {
-      throw new Error(
-        `Transaction is for chain ${request.chainId}, not ${this.chainId}`,
-      )
-    }
-
-    return request
+    return toViemTransactionRequest(transaction, this.address, this.chainId)
   }
 
   async requestAccounts() {

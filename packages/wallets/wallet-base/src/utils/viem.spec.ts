@@ -49,6 +49,15 @@ describe('toViemTransactionRequest', () => {
     )
   })
 
+  it('refuses a transaction for another chain', () => {
+    expect(
+      toViemTransactionRequest({ to, chainId: '0x59f' }, from, 1439).chainId,
+    ).toBe(1439)
+    expect(() =>
+      toViemTransactionRequest({ to, chainId: '0x1' }, from, 1439),
+    ).toThrow('Transaction is for chain 1, not 1439')
+  })
+
   it('rejects an empty type instead of reading it as legacy', () => {
     expect(() => toViemTransactionRequest({ to, type: '' }, from)).toThrow(
       'Unsupported transaction type',

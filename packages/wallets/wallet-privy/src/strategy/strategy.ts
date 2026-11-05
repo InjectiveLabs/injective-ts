@@ -1,5 +1,4 @@
 import { toAccount } from 'viem/accounts'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
   uint8ArrayToHex,
   stringToUint8Array,
@@ -10,7 +9,6 @@ import {
   WalletException,
   isThrownException,
   UnspecifiedErrorCode,
-  TransactionException,
   PrivyWalletSessionException,
 } from '@injectivelabs/exceptions'
 import {
@@ -28,6 +26,7 @@ import {
 } from 'viem'
 import {
   WalletAction,
+  broadcastTxRaw,
   WalletDeviceType,
   getViemPublicClient,
   getViemWalletClient,
@@ -185,7 +184,7 @@ export class PrivyWalletStrategy
 
       // Prepared and sent through our RPC; Privy only signs the hash
       return await client.sendTransaction({
-        ...toViemTransactionRequest(transaction, account.address),
+        ...toViemTransactionRequest(transaction, account.address, chainId),
         account,
         chain: client.chain,
       })
@@ -198,33 +197,7 @@ export class PrivyWalletStrategy
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<any> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw this.toWalletException(
-        new Error(
-          'You have to pass endpoints.grpc within the options for using Privy wallet',
-        ),
-        WalletAction.SendTransaction,
-      )
-    }
-
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(transaction, options)
   }
 
   async signEip712TypedData(

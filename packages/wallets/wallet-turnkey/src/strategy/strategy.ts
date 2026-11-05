@@ -219,7 +219,7 @@ export class TurnkeyWalletStrategy
       })
 
       const preparedTransaction = await accountClient.prepareTransactionRequest(
-        toViemTransactionRequest(transaction, account.address) as any,
+        toViemTransactionRequest(transaction, account.address, chainId) as any,
       )
 
       // Remove account property as it's not needed for signing
