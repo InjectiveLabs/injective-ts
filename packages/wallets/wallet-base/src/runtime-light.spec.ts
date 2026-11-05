@@ -15,6 +15,7 @@ import {
   isCosmosWallet,
   TurnkeyProvider,
   WalletDeviceType,
+  isEip712V3Wallet,
   StrategyEventType,
   isEvmBrowserWallet,
   WalletEventListener,
@@ -37,6 +38,7 @@ import {
   isCosmosWallet as rootIsCosmosWallet,
   TurnkeyProvider as RootTurnkeyProvider,
   WalletDeviceType as RootWalletDeviceType,
+  isEip712V3Wallet as rootIsEip712V3Wallet,
   StrategyEventType as RootStrategyEventType,
   isEvmBrowserWallet as rootIsEvmBrowserWallet,
   WalletEventListener as RootWalletEventListener,
@@ -82,6 +84,9 @@ describe('runtime-light wallet exports', () => {
     )
     expect(wallets.map(isEip712V2OnlyWallet)).toEqual(
       wallets.map(rootIsEip712V2OnlyWallet),
+    )
+    expect(wallets.map(isEip712V3Wallet)).toEqual(
+      wallets.map(rootIsEip712V3Wallet),
     )
     expect(wallets.map(isCosmosBrowserWallet)).toEqual(
       wallets.map(rootIsCosmosBrowserWallet),

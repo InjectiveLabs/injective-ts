@@ -1,6 +1,7 @@
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgSubaccountTransferV2 {
   export interface Params {
@@ -50,10 +51,17 @@ export default class MsgSubaccountTransferV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgSubaccountTransfer,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const proto = this.toProto()
 
     return {
-      type: 'exchange/MsgSubaccountTransfer',
+      type: 'exchange/v2/MsgSubaccountTransfer',
       value: {
         sender: proto.sender,
         source_subaccount_id: proto.sourceSubaccountId,
@@ -64,7 +72,7 @@ export default class MsgSubaccountTransferV2 extends MsgBase<
   }
 
   public toWeb3Gw() {
-    const { value } = this.toAmino()
+    const { value } = this.toAminoRaw()
 
     return {
       '@type': '/injective.exchange.v2.MsgSubaccountTransfer',

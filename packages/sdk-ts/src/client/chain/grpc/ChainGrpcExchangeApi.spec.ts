@@ -90,65 +90,6 @@ describe('ChainGrpcExchangeApi', () => {
     }
   })
 
-  test('fetchTradingRewardsCampaign', async () => {
-    try {
-      const response = await chainGrpcExchangeApi.fetchTradingRewardsCampaign()
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'chainGrpcExchangeApi.fetchTradingRewardsCampaign => ' +
-          (e as any).message,
-      )
-    }
-  })
-
-  test('fetchTradeRewardPoints', async () => {
-    try {
-      const response = await chainGrpcExchangeApi.fetchTradeRewardPoints([
-        injectiveAddress,
-      ])
-
-      if (response.length === 0) {
-        console.warn('fetchTradeRewardPoints.arrayIsEmpty')
-      }
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(expect.objectContaining<string[]>(response))
-    } catch (e) {
-      console.error(
-        'chainGrpcExchangeApi.fetchTradeRewardPoints => ' + (e as any).message,
-      )
-    }
-  })
-
-  test('fetchPendingTradeRewardPoints', async () => {
-    try {
-      const response = await chainGrpcExchangeApi.fetchPendingTradeRewardPoints(
-        [injectiveAddress],
-      )
-
-      if (response.length === 0) {
-        console.warn('fetchPendingTradeRewardPoints.arrayIsEmpty')
-      }
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(expect.objectContaining<string[]>(response))
-    } catch (e) {
-      console.error(
-        'chainGrpcExchangeApi.fetchPendingTradeRewardPoints => ' +
-          (e as any).message,
-      )
-    }
-  })
-
   test('fetchPositions', async () => {
     try {
       const response = await chainGrpcExchangeApi.fetchPositions()
@@ -186,27 +127,6 @@ describe('ChainGrpcExchangeApi', () => {
     } catch (e) {
       console.error(
         'chainGrpcExchangeApi.fetchSubaccountTradeNonce => ' +
-          (e as any).message,
-      )
-    }
-  })
-
-  test('fetchIsOptedOutOfRewards', async () => {
-    try {
-      const response =
-        await chainGrpcExchangeApi.fetchIsOptedOutOfRewards(injectiveAddress)
-
-      expect(response).toBeDefined()
-      expect(response).toEqual(
-        expect.objectContaining<
-          ReturnType<
-            typeof ChainGrpcExchangeTransformer.isOptedOutOfRewardsResponseToIsOptedOutOfRewards
-          >
-        >(response),
-      )
-    } catch (e) {
-      console.error(
-        'chainGrpcExchangeApi.fetchIsOptedOutOfRewards => ' +
           (e as any).message,
       )
     }
