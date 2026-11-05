@@ -35,7 +35,7 @@ import type {
   TxConcreteApi,
   TxInclusionWaiter,
   TxFetchTxPollArgs,
-  TxClientBroadcastOptions,
+  TxGrpcBroadcastOptions,
   TxWaitForTxInclusionArgs,
   TxClientBroadcastResponse,
   TxPrepareTxInclusionWaitArgs,
@@ -506,7 +506,7 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
 
   public async broadcast(
     txRaw: CosmosTxV1Beta1TxPb.TxRaw,
-    options?: TxClientBroadcastOptions,
+    options?: TxGrpcBroadcastOptions,
     /**
      * Observation-only cancellation for the inclusion wait. The broadcast
      * mutation itself is deliberately not cancelled by this signal.
@@ -554,10 +554,21 @@ export class TxGrpcApi extends BaseGrpcConsumer implements TxConcreteApi {
       // prevent submission, without cancelling a mutation already in flight.
       throwIfAborted(observationSignals.signal)
 
-      const response = await this.executeGrpcCall<
+      const broadcastApi = options?.broadcastEndpoint
+        ? new TxGrpcApi(options.broadcastEndpoint, this.options)
+        : this
+
+      if (broadcastApi !== this && this.metadata) {
+        broadcastApi.setMetadata(this.metadata)
+      }
+
+      const response = await broadcastApi.executeGrpcCall<
         CosmosTxV1Beta1ServicePb.BroadcastTxRequest,
         CosmosTxV1Beta1ServicePb.BroadcastTxResponse
-      >(broadcastTxRequest, this.client.broadcastTx.bind(this.client))
+      >(
+        broadcastTxRequest,
+        broadcastApi.client.broadcastTx.bind(broadcastApi.client),
+      )
 
       const txResponse = response.txResponse
 

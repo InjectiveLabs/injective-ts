@@ -1,16 +1,15 @@
 import { sleep } from '@injectivelabs/utils'
 import { toUtf8 } from '@injectivelabs/sdk-ts/utils'
 import { EvmChainId } from '@injectivelabs/ts-types'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
   ErrorType,
   WalletException,
   UnspecifiedErrorCode,
-  TransactionException,
   WalletConnectException,
 } from '@injectivelabs/exceptions'
 import {
   WalletAction,
+  broadcastTxRaw,
   WalletDeviceType,
   WalletEventListener,
   BaseConcreteStrategy,
@@ -399,30 +398,7 @@ export class WalletConnect
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw new WalletException(
-        new Error('You have to pass endpoints within the options'),
-      )
-    }
-
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(transaction, options)
   }
 
   async sendEvmTransaction(

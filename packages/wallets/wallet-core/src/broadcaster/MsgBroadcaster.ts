@@ -452,6 +452,7 @@ export class MsgBroadcaster {
       const txInclusionOptions = this.resolveTxInclusionOptions({ txInclusion })
 
       const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw, {
+        broadcastEndpoint: endpoints.broadcastGrpc,
         txTimeout: txTimeoutInBlocks,
         ...txInclusionOptions,
         onBroadcast: () => {
@@ -1301,6 +1302,7 @@ export class MsgBroadcaster {
     const response = await new TxGrpcApi(endpoints.grpc).broadcast(
       txRawEip712,
       {
+        broadcastEndpoint: endpoints.broadcastGrpc,
         txTimeout: txTimeoutInBlocks,
         ...this.resolveTxInclusionOptions(tx),
         onBroadcast: () => {

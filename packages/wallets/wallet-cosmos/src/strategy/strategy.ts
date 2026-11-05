@@ -24,6 +24,7 @@ import {
   WalletEventListener,
   BaseConcreteStrategy,
   createCosmosSignDocFromSignDoc,
+  broadcastTxRawAsTransactionException,
 } from '@injectivelabs/wallet-base'
 import { CosmosWallet } from './../wallet.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
@@ -196,7 +197,6 @@ export class CosmosWalletStrategy
     transaction: DirectSignResponse | TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const cosmosWallet = this.getCurrentCosmosWallet()
     const txRaw = createTxRawFromSigResponse(transaction)
 
     if (!options.endpoints) {
@@ -206,6 +206,12 @@ export class CosmosWalletStrategy
         ),
       )
     }
+
+    if (options.endpoints.broadcastGrpc) {
+      return await broadcastTxRawAsTransactionException(txRaw, options)
+    }
+
+    const cosmosWallet = this.getCurrentCosmosWallet()
 
     try {
       const txHash = await cosmosWallet.broadcastTx(txRaw)

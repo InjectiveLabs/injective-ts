@@ -1,22 +1,10 @@
 import { toHex, isHex, getAddress } from 'viem'
 import { capitalize } from '@injectivelabs/utils'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
   isServerSide,
   uint8ArrayToHex,
   stringToUint8Array,
 } from '@injectivelabs/sdk-ts/utils'
-import {
-  Wallet,
-  WalletAction,
-  WalletDeviceType,
-  getEvmChainConfig,
-  isEvmBrowserWallet,
-  WalletEventListener,
-  BaseConcreteStrategy,
-  EvmWalletProviderErrorCode,
-  getViemPublicClientFromEip1193Provider,
-} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
@@ -25,11 +13,22 @@ import {
   MetamaskException,
   OkxWalletException,
   UnspecifiedErrorCode,
-  TransactionException,
   TrustWalletException,
   RabbyWalletException,
   RainbowWalletException,
 } from '@injectivelabs/exceptions'
+import {
+  Wallet,
+  WalletAction,
+  broadcastTxRaw,
+  WalletDeviceType,
+  getEvmChainConfig,
+  isEvmBrowserWallet,
+  WalletEventListener,
+  BaseConcreteStrategy,
+  EvmWalletProviderErrorCode,
+  getViemPublicClientFromEip1193Provider,
+} from '@injectivelabs/wallet-base'
 import {
   isUnrecognizedChainError,
   extractNormalizedErrorCode,
@@ -225,32 +224,7 @@ export class EvmWallet
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw new WalletException(
-        new Error(
-          'You have to pass endpoints within the options for using Ethereum native wallets',
-        ),
-      )
-    }
-
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(transaction, options)
   }
 
   async signEip712TypedData(
