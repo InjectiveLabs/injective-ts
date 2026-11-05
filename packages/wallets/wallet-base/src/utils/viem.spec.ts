@@ -1,4 +1,6 @@
+import { parseTransaction, serializeTransaction } from 'viem'
 import { toViemTransactionRequest } from './viem.js'
+import type { TransactionSerializable } from 'viem'
 
 const from = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const to = '0x0000000000000000000000000000000000000002'
@@ -56,6 +58,36 @@ describe('toViemTransactionRequest', () => {
     expect(() =>
       toViemTransactionRequest({ to, chainId: '0x1' }, from, 1439),
     ).toThrow('Transaction is for chain 1, not 1439')
+  })
+
+  it('makes EIP-7702 authorization quantities numbers, so they serialize as signed', () => {
+    const authorization = {
+      address: to,
+      chainId: '0x59f',
+      nonce: '0x0',
+      yParity: '0x1',
+      r: `0x${'11'.repeat(32)}`,
+      s: `0x${'22'.repeat(32)}`,
+    }
+    const request = toViemTransactionRequest(
+      {
+        to,
+        type: '0x4',
+        chainId: '0x59f',
+        nonce: '0x0',
+        gas: '0x5208',
+        maxFeePerGas: '0x1',
+        maxPriorityFeePerGas: '0x1',
+        authorizationList: [authorization],
+      },
+      from,
+    )
+    const [parsed] = parseTransaction(
+      serializeTransaction(request as TransactionSerializable),
+    ).authorizationList!
+
+    expect(parsed).toMatchObject({ chainId: 1439, nonce: 0, yParity: 1 })
+    expect(authorization.chainId).toBe('0x59f')
   })
 
   it('rejects an empty type instead of reading it as legacy', () => {

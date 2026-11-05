@@ -96,6 +96,25 @@ export const toViemTransactionRequest = (
     }
   }
 
+  // The same for EIP-7702 authorizations: viem would encode '0x59f' as text
+  if (Array.isArray(request.authorizationList)) {
+    request.authorizationList = request.authorizationList.map(
+      (authorization: Record<string, unknown>) => {
+        const normalized = { ...authorization }
+
+        for (const field of ['chainId', 'nonce', 'yParity'] as const) {
+          if (normalized[field] != null) {
+            normalized[field] = Number(
+              toQuantity(`authorization ${field}`, normalized[field]),
+            )
+          }
+        }
+
+        return normalized
+      },
+    )
+  }
+
   if (request.gasLimit !== undefined) {
     request.gas ??= request.gasLimit
     delete request.gasLimit
