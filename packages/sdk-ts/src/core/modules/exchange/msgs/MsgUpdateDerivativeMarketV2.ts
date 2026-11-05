@@ -34,28 +34,20 @@ const defaultCrossMarginEligibility =
   InjectiveExchangeV2ProposalPb.CrossMarginEligibility
     .CM_ELIGIBILITY_UNSPECIFIED
 
+// params are human-readable, the proto stores LegacyDec (value scaled by 1e18)
+const toLegacyDec = (value?: string) => toChainFormat(value || '0').toFixed()
+
 const createMessage = (params: MsgUpdateDerivativeMarketV2.Params) => {
   const message = InjectiveExchangeV2TxPb.MsgUpdateDerivativeMarket.create({
     admin: params.admin,
     marketId: params.marketId,
     newTicker: params.newTicker || '',
-    // params are human-readable, the proto stores LegacyDec (value scaled by 1e18)
-    newMinNotional: toChainFormat(params.newMinNotional || '0').toFixed(),
-    newMinPriceTickSize: toChainFormat(
-      params.newMinPriceTickSize || '0',
-    ).toFixed(),
-    newMinQuantityTickSize: toChainFormat(
-      params.newMinQuantityTickSize || '0',
-    ).toFixed(),
-    newInitialMarginRatio: toChainFormat(
-      params.newInitialMarginRatio || '0',
-    ).toFixed(),
-    newMaintenanceMarginRatio: toChainFormat(
-      params.newMaintenanceMarginRatio || '0',
-    ).toFixed(),
-    newReduceMarginRatio: toChainFormat(
-      params.newReduceMarginRatio || '0',
-    ).toFixed(),
+    newMinNotional: toLegacyDec(params.newMinNotional),
+    newMinPriceTickSize: toLegacyDec(params.newMinPriceTickSize),
+    newMinQuantityTickSize: toLegacyDec(params.newMinQuantityTickSize),
+    newInitialMarginRatio: toLegacyDec(params.newInitialMarginRatio),
+    newMaintenanceMarginRatio: toLegacyDec(params.newMaintenanceMarginRatio),
+    newReduceMarginRatio: toLegacyDec(params.newReduceMarginRatio),
     ...(params.newOpenNotionalCap && {
       newOpenNotionalCap: openNotionalCapToChainFormat(
         params.newOpenNotionalCap,
@@ -145,8 +137,8 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
   }
 
   /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
-  public toEip712(): never {
-    return this.eip712V1Unsupported('MsgUpdateDerivativeMarketV2')
+  public assertEip712V1Supported(): void {
+    this.eip712V1Unsupported('MsgUpdateDerivativeMarketV2')
   }
 
   public toEip712V2() {

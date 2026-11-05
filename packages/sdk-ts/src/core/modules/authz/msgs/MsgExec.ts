@@ -1,7 +1,9 @@
 import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import * as CosmosAuthzV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/authz/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { graftEip712Types } from '../../../tx/eip712/maps.js'
 import type { Msgs } from '../../msgs.js'
+import type { TypedDataField } from '../../../tx/eip712/types.js'
 
 export declare namespace MsgExec {
   export interface Params {
@@ -15,6 +17,8 @@ export declare namespace MsgExec {
     msgs: any
   }
 }
+
+type Amino = { type: string; value: MsgExec.Object }
 
 /**
  * @category Messages
@@ -61,17 +65,33 @@ export default class MsgExec extends MsgBase<
     }
   }
 
-  public toAmino() {
+  private compose(child: (msg: Msgs) => unknown): Amino {
     const { params } = this
     const msgs = Array.isArray(params.msgs) ? params.msgs : [params.msgs]
 
     return {
       type: 'cosmos-sdk/MsgExec',
-      value: {
-        grantee: params.grantee,
-        msgs: msgs.map((msg) => msg.toEip712()),
-      } as unknown as MsgExec.Object,
+      value: { grantee: params.grantee, msgs: msgs.map(child) },
     }
+  }
+
+  public toAmino(): Amino {
+    return this.compose((msg) => msg.toAmino())
+  }
+
+  /** the first message's schema stands for all of them, as arrays are typed by their first entry */
+  public toEip712Types(): Map<string, TypedDataField[]> {
+    const { msgs } = this.params
+    const [first] = Array.isArray(msgs) ? msgs : [msgs]
+    const types = super.toEip712Types()
+
+    return first
+      ? graftEip712Types(types, 'TypeMsgsValue', first.toEip712Types())
+      : types
+  }
+
+  public toEip712(): Amino {
+    return this.compose((msg) => msg.toEip712())
   }
 
   public toEip712V2() {

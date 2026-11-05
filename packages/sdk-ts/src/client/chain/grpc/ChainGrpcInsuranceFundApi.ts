@@ -127,7 +127,9 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     const request =
       InjectiveInsuranceV1Beta1QueryPb.QueryConsolidatedInsurancePoolsRequest.create()
 
-    request.depositDenom = depositDenom || ''
+    if (depositDenom) {
+      request.depositDenom = depositDenom
+    }
 
     const response = await this.executeGrpcCall<
       InjectiveInsuranceV1Beta1QueryPb.QueryConsolidatedInsurancePoolsRequest,
@@ -182,7 +184,9 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     const request =
       InjectiveInsuranceV1Beta1QueryPb.QueryConsolidatedInsurancePoliciesRequest.create()
 
-    request.poolDenom = poolDenom || ''
+    if (poolDenom) {
+      request.poolDenom = poolDenom
+    }
 
     const paginationForRequest =
       ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)
@@ -220,7 +224,9 @@ export class ChainGrpcInsuranceFundApi extends BaseGrpcConsumer {
     const request =
       InjectiveInsuranceV1Beta1QueryPb.QueryConsolidatedRedemptionsRequest.create()
 
-    request.redeemer = redeemer || ''
+    if (redeemer) {
+      request.redeemer = redeemer
+    }
 
     const paginationForRequest =
       ChainGrpcCommonTransformer.pageRequestToGrpcPageRequestV2(pagination)

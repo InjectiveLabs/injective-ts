@@ -132,22 +132,14 @@ describe('MsgUpdateSubaccountMarketRiskModeV2', () => {
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
-    it('EIP712 v1 matches the gateway when a zero value is omitted (mode=UNSPECIFIED)', async () => {
+    it('EIP712 v1 rejects an omitted mode when unpinning', () => {
       const zero = MsgUpdateSubaccountMarketRiskModeV2.fromJSON({
         ...params,
         mode: InjectiveExchangeV2ExchangePb.RiskMode.UNSPECIFIED,
       })
-      const { eip712Args: zeroArgs, prepareEip712Request: zeroRequest } =
-        prepareEip712({ network: Network.Testnet, messages: zero })
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...zeroRequest,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(getEip712TypedData(zeroArgs)).toStrictEqual(
-        JSON.parse(txResponse.data),
+      const { eip712Args } = prepareEip712({ messages: zero })
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
       )
     })
   })

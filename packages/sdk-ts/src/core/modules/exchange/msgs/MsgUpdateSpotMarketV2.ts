@@ -94,8 +94,8 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
   }
 
   /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
-  public toEip712(): never {
-    return this.eip712V1Unsupported('MsgUpdateSpotMarketV2')
+  public assertEip712V1Supported(): void {
+    this.eip712V1Unsupported('MsgUpdateSpotMarketV2')
   }
 
   public toEip712V2() {

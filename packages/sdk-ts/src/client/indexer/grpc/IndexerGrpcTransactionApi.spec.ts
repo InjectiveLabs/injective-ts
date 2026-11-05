@@ -203,6 +203,7 @@ describe('IndexerGrpcTransactionApi eip712 v3', () => {
   )
 
   test.each([
+    ['v2', 'v2'],
     ['v3', 'v3'],
     [undefined, ''],
   ] as const)(

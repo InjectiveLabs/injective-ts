@@ -79,7 +79,9 @@ describe('MsgUpdateSwapParamsV2', () => {
         enabled ? { enabled } : {},
       )
       // the chain lists the bool but omits an empty array from the v1 types
-      expect(getEip712TypedData(eip712Args).types).toMatchObject({
+      expect(
+        Object.fromEntries(emptyAllowlistMessage.toEip712Types()),
+      ).toMatchObject({
         TypeSwapParams: [{ name: 'enabled', type: 'bool' }],
       })
       expect(
@@ -163,22 +165,14 @@ describe('MsgUpdateSwapParamsV2', () => {
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
-    it('EIP712 v1 matches the gateway (enabled=false with an empty allowlist)', async () => {
+    it('EIP712 v1 rejects the omitted field (enabled=false with an empty allowlist)', () => {
       const variant = MsgUpdateSwapParamsV2.fromJSON({
         ...params,
         swapParams: { enabled: false, allowedMarkets: [] },
       })
-      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
-        prepareEip712({ network: Network.Testnet, messages: variant })
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...variantRequest,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(getEip712TypedData(variantArgs)).toStrictEqual(
-        JSON.parse(txResponse.data),
+      const { eip712Args } = prepareEip712({ messages: variant })
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
       )
     })
 
@@ -201,22 +195,14 @@ describe('MsgUpdateSwapParamsV2', () => {
       )
     })
 
-    it('EIP712 v1 matches the gateway (enabled=false with an allowlist)', async () => {
+    it('EIP712 v1 rejects the omitted field (enabled=false with an allowlist)', () => {
       const variant = MsgUpdateSwapParamsV2.fromJSON({
         ...params,
         swapParams: { enabled: false, allowedMarkets: ['0xmarket'] },
       })
-      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
-        prepareEip712({ network: Network.Testnet, messages: variant })
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...variantRequest,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(getEip712TypedData(variantArgs)).toStrictEqual(
-        JSON.parse(txResponse.data),
+      const { eip712Args } = prepareEip712({ messages: variant })
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
       )
     })
   })

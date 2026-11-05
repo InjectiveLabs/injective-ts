@@ -83,7 +83,6 @@ describe('MsgUpdateSpotMarketV2', () => {
       messages: message,
     })
 
-    // the chain's EIP712 v1 typed-data generator rejects math.LegacyDec fields
     it('EIP712 v1 throws, use EIP712 v2', () => {
       expect(() => getEip712TypedData(eip712Args)).toThrow(
         'Please use EIP712_v2',

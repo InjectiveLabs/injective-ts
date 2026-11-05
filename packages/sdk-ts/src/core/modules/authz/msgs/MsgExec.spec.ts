@@ -1,7 +1,10 @@
 import { toChainFormat } from '@injectivelabs/utils'
-import { mockFactory } from '@injectivelabs/utils/test-utils'
+import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgExec from './MsgExec.js'
 import MsgSend from '../../bank/msgs/MsgSend.js'
+import { getEip712TypedData } from '../../../tx/eip712/eip712.js'
+import { MsgIncreasePositionMarginV2 } from '../../exchange/index.js'
+import MsgSetConsolidatedInsurancePoolPause from '../../insurance/msgs/MsgSetConsolidatedInsurancePoolPause.js'
 
 const { injectiveAddress, injectiveAddress2 } = mockFactory
 
@@ -49,5 +52,46 @@ describe('MsgExec', () => {
       '@type': protoType,
       ...protoParams,
     })
+  })
+
+  describe('with a child that EIP712 v1 cannot sign', () => {
+    const margin = MsgIncreasePositionMarginV2.fromJSON({
+      marketId: mockFactory.derivativeMarketId,
+      injectiveAddress,
+      srcSubaccountId: mockFactory.subaccountId,
+      dstSubaccountId: mockFactory.subaccountId,
+      amount: '100',
+    })
+    const exec = MsgExec.fromJSON({ grantee: injectiveAddress, msgs: [margin] })
+
+    it('amino embeds the amino of the child (Ledger Cosmos authz)', () => {
+      expect(exec.toAmino().value.msgs).toStrictEqual([margin.toAmino()])
+    })
+
+    it('EIP712 v1 serializes the child like any other (only a root message is restricted)', () => {
+      expect(exec.toEip712().value.msgs).toStrictEqual([margin.toAmino()])
+      expect(() => margin.assertEip712V1Supported()).toThrow(
+        'EIP712_v1 is not supported',
+      )
+    })
+  })
+
+  it('EIP712 v1 declares the fields a child omits, so signing them is rejected', () => {
+    const exec = MsgExec.fromJSON({
+      grantee: injectiveAddress,
+      msgs: [
+        MsgSetConsolidatedInsurancePoolPause.fromJSON({
+          authority: injectiveAddress,
+          depositDenom: 'usdt',
+          paused: false,
+        }),
+      ],
+    })
+
+    expect(JSON.stringify([...exec.toEip712Types()])).toContain('"paused"')
+
+    const { eip712Args } = prepareEip712({ messages: exec })
+
+    expect(() => getEip712TypedData(eip712Args)).toThrow('paused')
   })
 })

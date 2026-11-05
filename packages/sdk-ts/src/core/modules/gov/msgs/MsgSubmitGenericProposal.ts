@@ -2,7 +2,9 @@ import * as CosmosGovV1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosm
 import * as GoogleProtobufAnyPbPb from '@injectivelabs/core-proto-ts-v2/generated/google/protobuf/any_pb'
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { graftEip712Types } from '../../../tx/eip712/maps.js'
 import type { Msgs } from '../../../../core/modules/msgs.js'
+import type { TypedDataField } from '../../../tx/eip712/types.js'
 
 export declare namespace MsgSubmitGenericProposal {
   export interface Params {
@@ -71,6 +73,16 @@ export default class MsgSubmitGenericProposal extends MsgBase<
     }
   }
 
+  /** the first message's schema stands for all of them, as arrays are typed by their first entry */
+  public toEip712Types(): Map<string, TypedDataField[]> {
+    const [first] = this.params.messages
+    const types = super.toEip712Types()
+
+    return first
+      ? graftEip712Types(types, 'TypeMessagesValue', first.toEip712Types())
+      : types
+  }
+
   public toAmino() {
     const { params } = this
     const proto = this.toProto()
@@ -118,6 +130,14 @@ export default class MsgSubmitGenericProposal extends MsgBase<
     return {
       type,
       value: messageAdjusted,
+    }
+  }
+
+  /** each inner message formats its own EIP712 v2 values (e.g. LegacyDec decimals) */
+  public toEip712V2(): Record<string, any> {
+    return {
+      ...this.toWeb3Gw(),
+      messages: this.params.messages.map((msg) => msg.toEip712V2()),
     }
   }
 

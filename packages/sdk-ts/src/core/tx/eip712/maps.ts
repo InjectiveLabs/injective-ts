@@ -35,13 +35,13 @@ export const objectKeysToEip712Types = ({
     'contract_hook_max_gas',
     'owner_blacklist_query_max_gas',
     'expiration_block',
+    'redemption_notice_period_seconds',
   ]
   const stringFieldsWithNumberValue = [
     'timeout_timestamp',
     'revision_height',
     'revision_number',
   ]
-  const stringFieldsToOmitIfEmpty = ['cid']
   const fieldsToOmitIfEmpty = ['admin_info', 'order']
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
@@ -71,7 +71,8 @@ export const objectKeysToEip712Types = ({
         type: numberTypeToReflectionNumberType(property, messageType),
       })
     } else if (type === 'string') {
-      if (stringFieldsToOmitIfEmpty.includes(property) && !propertyValue) {
+      // the chain's amino-json omits an empty string, so it declares no type for it
+      if (!propertyValue) {
         continue
       }
 
@@ -169,6 +170,45 @@ export const objectKeysToEip712Types = ({
   output.set(primaryType, types)
 
   return output
+}
+
+/**
+ * A wrapper (MsgExec, a proposal) infers its schema from the values it embeds,
+ * which cannot declare what a child omits or what a child's own rules decide.
+ * Replaces the schema inferred for the child at `nestedPrimaryType` with the
+ * child's own `toEip712Types()`, renamed to where it sits in the wrapper: type
+ * names are the path of the field (`TypeSwapParams` is `TypeMsgsValueSwapParams`
+ * under `msgs[].value`)
+ */
+export const graftEip712Types = (
+  types: Map<string, TypedDataField[]>,
+  nestedPrimaryType: string,
+  childTypes: Map<string, TypedDataField[]>,
+) => {
+  const rename = (name: string) =>
+    name === 'MsgValue'
+      ? nestedPrimaryType
+      : nestedPrimaryType + name.replace(/^Type/, '')
+  const renameFieldType = (type: string) => {
+    const name = type.replace(/\[\]$/, '')
+
+    return childTypes.has(name) ? rename(name) + type.slice(name.length) : type
+  }
+
+  for (const name of [...types.keys()]) {
+    if (name.startsWith(nestedPrimaryType)) {
+      types.delete(name)
+    }
+  }
+
+  for (const [name, fields] of childTypes) {
+    types.set(
+      rename(name),
+      fields.map((field) => ({ ...field, type: renameFieldType(field.type) })),
+    )
+  }
+
+  return types
 }
 
 /**
@@ -283,6 +323,10 @@ export const numberTypeToReflectionNumberType = (
       return 'int64'
     case 'expiration_block':
       return 'int64'
+    case 'redemption_notice_period_seconds':
+      return 'int64'
+    case 'quote_decimals':
+      return 'uint32'
     case 'option':
       return 'int32'
     case 'proposal_id':

@@ -107,6 +107,12 @@ export abstract class MsgBase<
     )
   }
 
+  /**
+   * Throws for a message the chain cannot sign with EIP712 v1 on its own. Only called for the
+   * root messages of a transaction: nested in MsgExec a message serializes like any other.
+   */
+  public assertEip712V1Supported(): void {}
+
   public toDirectSignJSON(): string {
     return JSON.stringify(prepareSignBytes(this.toDirectSign()))
   }
