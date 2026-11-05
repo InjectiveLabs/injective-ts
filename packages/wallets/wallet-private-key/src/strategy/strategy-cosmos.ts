@@ -1,11 +1,9 @@
-import { WalletAction } from '@injectivelabs/wallet-base'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { uint8ArrayToBase64 } from '@injectivelabs/sdk-ts/utils'
+import { WalletAction, broadcastTxRaw } from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
   UnspecifiedErrorCode,
-  TransactionException,
 } from '@injectivelabs/exceptions'
 import {
   CosmosTxV1Beta1TxPb,
@@ -35,33 +33,7 @@ export class PrivateKeyCosmosWallet
     transaction: TxRaw | DirectSignResponse,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw new WalletException(
-        new Error(
-          'You have to pass endpoints within the options for using Ethereum native wallets',
-        ),
-      )
-    }
-
-    const txRaw = createTxRawFromSigResponse(transaction)
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(txRaw, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(createTxRawFromSigResponse(transaction), options)
   }
 
   async signCosmosTransaction(transaction: {

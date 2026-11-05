@@ -1,14 +1,6 @@
 import { ChainId, EvmChainId } from '@injectivelabs/ts-types'
+import { getInjectiveSignerAddress } from '@injectivelabs/sdk-ts/core/tx'
 import { PrivateKey as PrivateKeySigner } from '@injectivelabs/sdk-ts/core/accounts'
-import {
-  TxGrpcApi,
-  getInjectiveSignerAddress,
-} from '@injectivelabs/sdk-ts/core/tx'
-import {
-  WalletAction,
-  WalletDeviceType,
-  BaseConcreteStrategy,
-} from '@injectivelabs/wallet-base'
 import {
   toUtf8,
   uint8ArrayToHex,
@@ -20,8 +12,13 @@ import {
   WalletException,
   MetamaskException,
   UnspecifiedErrorCode,
-  TransactionException,
 } from '@injectivelabs/exceptions'
+import {
+  WalletAction,
+  broadcastTxRaw,
+  WalletDeviceType,
+  BaseConcreteStrategy,
+} from '@injectivelabs/wallet-base'
 import type { AccountAddress } from '@injectivelabs/ts-types'
 import type { TxResponse } from '@injectivelabs/sdk-ts/core/tx'
 import type {
@@ -108,32 +105,7 @@ export class PrivateKeyWallet
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw new WalletException(
-        new Error(
-          'You have to pass endpoints within the options for using Ethereum native wallets',
-        ),
-      )
-    }
-
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(transaction, options)
   }
 
   async signEip712TypedData(
