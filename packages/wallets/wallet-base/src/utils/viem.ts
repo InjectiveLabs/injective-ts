@@ -52,7 +52,10 @@ const toQuantity = (field: string, value: unknown) => {
 const toTransactionType = (value: unknown): TransactionType => {
   const type = TRANSACTION_TYPES.includes(value as TransactionType)
     ? (value as TransactionType)
-    : TRANSACTION_TYPES[Number(value)]
+    : // Number('') is 0, which would read an empty type as legacy
+      String(value).trim()
+      ? TRANSACTION_TYPES[Number(value)]
+      : undefined
 
   if (!type) {
     throw new Error(`Unsupported transaction type ${value}`)

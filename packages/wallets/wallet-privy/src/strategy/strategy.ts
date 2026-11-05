@@ -141,7 +141,9 @@ export class PrivyWalletStrategy
 
   async getAddresses(): Promise<string[]> {
     try {
-      return [this.getAccount(WalletAction.GetAccounts).address]
+      return [
+        getAddress(this.getPrivyMetadata(WalletAction.GetAccounts).address),
+      ]
     } catch (e: unknown) {
       throw this.toWalletException(e, WalletAction.GetAccounts)
     }
@@ -248,14 +250,12 @@ export class PrivyWalletStrategy
         parsedData.domain.chainId = Number(parsedData.domain.chainId)
       }
 
-      // Sign the digest like Turnkey: eth_signTypedData_v4 can reject Injective's domain
-      return await account.sign!({
-        hash: hashTypedData({
-          types: parsedData.types,
-          domain: parsedData.domain,
-          message: parsedData.message,
-          primaryType: parsedData.primaryType,
-        }),
+      // Signs the digest like Turnkey: eth_signTypedData_v4 can reject Injective's domain
+      return await account.signTypedData({
+        types: parsedData.types,
+        domain: parsedData.domain,
+        message: parsedData.message,
+        primaryType: parsedData.primaryType,
       })
     } catch (e: unknown) {
       throw this.toWalletException(e, action)
@@ -362,7 +362,7 @@ export class PrivyWalletStrategy
 
     if (!privy?.address) {
       throw new PrivyWalletSessionException(
-        new Error('Privy metadata with address and getProvider is required'),
+        new Error('Privy metadata with an address is required'),
         {
           code: UnspecifiedErrorCode,
           type: ErrorType.WalletError,
@@ -385,7 +385,7 @@ export class PrivyWalletStrategy
       const privy = this.getPrivyMetadata(action)
 
       if (!isAddressEqual(privy.address as Hex, address)) {
-        throw new PrivyWalletSessionException(
+        throw new WalletException(
           new Error(`The Privy wallet is no longer ${address}`),
           {
             code: UnspecifiedErrorCode,

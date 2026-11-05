@@ -49,6 +49,12 @@ describe('toViemTransactionRequest', () => {
     )
   })
 
+  it('rejects an empty type instead of reading it as legacy', () => {
+    expect(() => toViemTransactionRequest({ to, type: '' }, from)).toThrow(
+      'Unsupported transaction type',
+    )
+  })
+
   it.each(['', '  '])('rejects an empty quantity (%j)', (value) => {
     expect(() => toViemTransactionRequest({ to, value }, from)).toThrow(
       'Transaction value is empty',

@@ -268,7 +268,7 @@ describe('PrivyWalletStrategy', () => {
     await expect(empty.enable()).resolves.toBe(false)
     await expect(empty.getAddresses()).rejects.toMatchObject({
       name: 'PrivyWalletSessionException',
-      message: 'Privy metadata with address and getProvider is required',
+      message: 'Privy metadata with an address is required',
     })
   })
 
@@ -475,7 +475,7 @@ describe('PrivyWalletStrategy', () => {
         method: 'personal_sign',
         params: ['hello', account.address],
       }),
-    ).rejects.toMatchObject({ name: 'PrivyWalletSessionException' })
+    ).rejects.toMatchObject({ name: 'WalletException' })
     expect(provider.request).not.toHaveBeenCalled()
   })
 
