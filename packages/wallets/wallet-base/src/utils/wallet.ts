@@ -61,5 +61,8 @@ export const isEip712V2OnlyWallet = (wallet: Wallet): boolean =>
     ] as WalletType[]
   ).includes(wallet)
 
+export const isEip712V3Wallet = (wallet: Wallet): boolean =>
+  ([Wallet.Phantom] as WalletType[]).includes(wallet)
+
 export const isCosmosAminoOnlyWallet = (wallet: Wallet): boolean =>
   ([Wallet.LedgerCosmos] as WalletType[]).includes(wallet)

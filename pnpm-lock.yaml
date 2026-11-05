@@ -259,8 +259,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(@injectivelabs/grpc-web@0.0.1(google-protobuf@3.21.4))
       '@injectivelabs/indexer-proto-ts-v2':
-        specifier: 1.20.8
-        version: 1.20.8
+        specifier: 1.21.0
+        version: 1.21.0
       '@injectivelabs/mito-proto-ts-v2':
         specifier: 1.17.3
         version: 1.17.3
@@ -368,6 +368,9 @@ importers:
       '@injectivelabs/ts-types':
         specifier: workspace:*
         version: link:../../ts-types
+      '@injectivelabs/utils':
+        specifier: workspace:*
+        version: link:../../utils
       viem:
         specifier: 2.54.6
         version: 2.54.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)
@@ -1248,8 +1251,8 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-  '@injectivelabs/indexer-proto-ts-v2@1.20.8':
-    resolution: {integrity: sha512-GDkCDucgJglp+THrIrty6TrV9nb7xIEjQu0q2924sigRxEVR/GCZnIAGFAFOYDRmYT6oeX/SpzvA3fmGs9Docw==}
+  '@injectivelabs/indexer-proto-ts-v2@1.21.0':
+    resolution: {integrity: sha512-r9TjwIkD+XUtJo6/PtzZMHUiJbIhoxq7NYE2Srk9craGivzxvLR83haxEQNWLYdC+tm8RE8JGByqBXsDUO1a8Q==}
 
   '@injectivelabs/mito-proto-ts-v2@1.17.3':
     resolution: {integrity: sha512-Fo6k1MCPT3CKUS9tbMbl/poGv7R8KHtA7RfU7mvxxVWS7MpF+LLZA6UgegfEA1iiJgIrhe+eEwEvhIOe6SiUzw==}
@@ -1449,6 +1452,7 @@ packages:
 
   '@ledgerhq/client-ids@0.10.2':
     resolution: {integrity: sha512-6bFdV8uEy/iIJMUdOkbQrlwO45eqjK7UNq732KjPCmh4hZUHFWWM2twGPnrlI5ygTdYeQpWFphRAD6BiqDixYg==}
+    deprecated: This package is no longer maintained and will not receive updates. Published versions remain available.
 
   '@ledgerhq/cryptoassets-evm-signatures@13.7.1':
     resolution: {integrity: sha512-ehLn62L15fOlTH6u5D1eV1d4/QIju6aaUKWy7CpVLSiRmkWEBaORhOL/l9TvBrRIvNLHVBQEhiBaJcJ4hGrlEw==}
@@ -1461,6 +1465,7 @@ packages:
 
   '@ledgerhq/errors@6.36.0':
     resolution: {integrity: sha512-o2Q5hNvf2TzAzlH8ORAozppRbzixRPYDfmSQrP7FOcM997OEH7qDleXgp/uMpvRdxR/t3CJCG+n0i+bU/oYMKA==}
+    deprecated: This package is no longer maintained and will not receive updates. Published versions remain available.
 
   '@ledgerhq/evm-tools@1.12.9':
     resolution: {integrity: sha512-JQ/xgkgGdB4BrSRa54TPJdM7Lth+xejs9rmidp8fwg3eDgenJHWgtstaVIy8akYqyP3PNLBLOkrtv57ozVjY0w==}
@@ -1476,9 +1481,11 @@ packages:
 
   '@ledgerhq/hw-transport-webhid@6.35.4':
     resolution: {integrity: sha512-5tspX0/XMaLd5Nz45AYUcsevvG5QoYJ8/n8g4dUFfIketH8CZA9UPZbgPJD+OWykzhzYLQPGpahDmzxjItVZlQ==}
+    deprecated: This package is no longer maintained. Use @ledgerhq/device-transport-kit-web-hid instead.
 
   '@ledgerhq/hw-transport-webusb@6.34.4':
     resolution: {integrity: sha512-asBy3Uu8Cl/leyEAY5M27S/oAZwCpYuRPi9Sz6fgEgF2clX8Sold0iSI+MD0sne3PqcLK1K8V6H4MxviHH7sVw==}
+    deprecated: This package is no longer maintained. Use @ledgerhq/device-transport-kit-web-hid instead.
 
   '@ledgerhq/hw-transport@6.35.4':
     resolution: {integrity: sha512-FMVxiniQp0pgSIEBX9CjXYBuIAH9BTm3OcrN+/2LqkB8QBeFZdiwmO4BeN9nc2aWspe9z6kxN3SuUyouedNokA==}
@@ -8729,7 +8736,7 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.4
 
-  '@injectivelabs/indexer-proto-ts-v2@1.20.8':
+  '@injectivelabs/indexer-proto-ts-v2@1.21.0':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

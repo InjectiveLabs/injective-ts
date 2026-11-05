@@ -51,11 +51,10 @@ export interface MsgBroadcasterWithPkOptions {
    * Only used if we want to override the default
    * endpoints taken from the network param
    */
-  endpoints?: {
-    indexer: string
-    grpc: string
-    rest: string
-  }
+  endpoints?: Pick<
+    NetworkEndpoints,
+    'rest' | 'grpc' | 'indexer' | 'broadcastGrpc'
+  >
   privateKey: string | PrivateKey /* hex or PrivateKey class */
   evmChainId?: EvmChainId
   chainId?: ChainId
@@ -473,6 +472,7 @@ export class MsgBroadcasterWithPk {
   private async broadcastTxRaw(txRaw: CosmosTxV1Beta1TxPb.TxRaw) {
     const { endpoints, txTimeout } = this
     const txResponse = await new TxGrpcApi(endpoints.grpc).broadcast(txRaw, {
+      broadcastEndpoint: endpoints.broadcastGrpc,
       txTimeout,
     })
 

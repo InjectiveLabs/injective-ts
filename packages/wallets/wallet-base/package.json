@@ -1,6 +1,6 @@
 {
   "name": "@injectivelabs/wallet-base",
-  "version": "1.20.64",
+  "version": "1.20.65",
   "description": "Base wallet strategy for use with @injectivelabs/wallet-core.",
   "license": "Apache-2.0",
   "author": {
@@ -100,6 +100,7 @@
     "@injectivelabs/exceptions": "workspace:*",
     "@injectivelabs/sdk-ts": "workspace:*",
     "@injectivelabs/ts-types": "workspace:*",
+    "@injectivelabs/utils": "workspace:*",
     "viem": "catalog:"
   },
   "publishConfig": {

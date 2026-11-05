@@ -81,6 +81,11 @@ export interface TxClientBroadcastOptions extends TxClientInclusionOptions {
   onBroadcast?: (txHash: string) => void // called after broadcast, before inclusion detection
 }
 
+export interface TxGrpcBroadcastOptions extends TxClientBroadcastOptions {
+  /** gRPC-web endpoint used for `BroadcastTx` only; defaults to the client's own endpoint. */
+  broadcastEndpoint?: string
+}
+
 export interface TxClientBroadcastResponse {
   height: number
   txHash: string
