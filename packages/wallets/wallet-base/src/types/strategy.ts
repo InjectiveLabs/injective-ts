@@ -57,17 +57,20 @@ export interface WalletStrategyEvmOptions {
   rpcUrls?: Partial<Record<number, string>>
 }
 
+export interface SendTransactionEndpoints {
+  rest: string
+  grpc: string
+  tm?: string
+  broadcastGrpc?: string
+}
+
 export interface SendTransactionOptions {
   address: string
   chainId: ChainId
   txTimeout?: number
   txInclusion?: TxClientInclusionOptions
   onBroadcast?: (txHash: string) => void
-  endpoints: {
-    rest: string
-    grpc: string
-    tm?: string
-  }
+  endpoints: SendTransactionEndpoints
 }
 
 export const TurnkeyProvider = {
@@ -226,17 +229,8 @@ export interface ConcreteWalletStrategy extends Omit<
    */
   sendTransaction(
     transaction: DirectSignResponse | TxRaw,
-    options: {
-      address: string
-      chainId: ChainId
-      txTimeout?: number
-      txInclusion?: TxClientInclusionOptions
-      onBroadcast?: (txHash: string) => void
-      endpoints?: {
-        rest: string
-        grpc: string
-        tm?: string
-      }
+    options: Omit<SendTransactionOptions, 'endpoints'> & {
+      endpoints?: SendTransactionEndpoints
     },
   ): Promise<TxResponse>
 

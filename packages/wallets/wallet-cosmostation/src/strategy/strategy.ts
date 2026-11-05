@@ -19,7 +19,9 @@ import {
   WalletAction,
   WalletDeviceType,
   BaseConcreteStrategy,
+  type BroadcastTxRawOptions,
   type onAccountChangeCallback,
+  broadcastTxRawAsTransactionException,
   type ConcreteCosmosWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
 import { loadMakeSignDoc } from './lib.js'
@@ -239,13 +241,16 @@ export class Cosmostation
 
   async sendTransaction(
     transaction: DirectSignResponse | CosmosTxV1Beta1TxPb.TxRaw,
-    options: Pick<
-      SendTransactionOptions,
-      'address' | 'chainId' | 'onBroadcast'
-    >,
+    options: Pick<SendTransactionOptions, 'address' | 'chainId'> &
+      BroadcastTxRawOptions,
   ): Promise<TxResponse> {
-    const provider = this.getProvider()
     const txRaw = createTxRawFromSigResponse(transaction)
+
+    if (options.endpoints?.broadcastGrpc) {
+      return await broadcastTxRawAsTransactionException(txRaw, options)
+    }
+
+    const provider = this.getProvider()
     const txBytes = uint8ArrayToBase64(
       CosmosTxV1Beta1TxPb.TxRaw.toBinary(txRaw),
     )

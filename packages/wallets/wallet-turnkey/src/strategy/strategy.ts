@@ -1,22 +1,21 @@
 import { getAddress, hashTypedData } from 'viem'
 import { HttpRestClient } from '@injectivelabs/utils'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { toUtf8, getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
 import {
+  ErrorType,
+  WalletException,
+  UnspecifiedErrorCode,
+  CosmosWalletException,
+  TurnkeyWalletSessionException,
+} from '@injectivelabs/exceptions'
+import {
   WalletAction,
+  broadcastTxRaw,
   WalletDeviceType,
   getViemWalletClient,
   getViemPublicClient,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
-import {
-  ErrorType,
-  WalletException,
-  UnspecifiedErrorCode,
-  TransactionException,
-  CosmosWalletException,
-  TurnkeyWalletSessionException,
-} from '@injectivelabs/exceptions'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
 import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
@@ -275,32 +274,7 @@ export class TurnkeyWalletStrategy
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<any> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw new WalletException(
-        new Error(
-          'You have to pass endpoints.grpc within the options for using Turnkey wallet',
-        ),
-      )
-    }
-
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(transaction, options)
   }
 
   async signEip712TypedData(

@@ -889,6 +889,10 @@ describe('MsgBroadcaster Ledger fixed exchange gas', () => {
         makeTxResponse(),
       )
 
+      broadcaster.endpoints = {
+        ...broadcaster.endpoints,
+        broadcastGrpc: 'https://broadcast.example.test',
+      }
       const message = MsgWithdrawV2.fromJSON({
         subaccountId: '0x' + '1'.repeat(64),
         injectiveAddress: 'inj1test',
@@ -903,6 +907,12 @@ describe('MsgBroadcaster Ledger fixed exchange gas', () => {
         injectiveAddress: 'inj1test',
       })
 
+      expect(TxGrpcApi.prototype.broadcast).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          broadcastEndpoint: 'https://broadcast.example.test',
+        }),
+      )
       expect(signEIP712CosmosTx).toHaveBeenCalledOnce()
       expect(simulateTxRaw).toHaveBeenCalledTimes(authz ? 1 : 0)
     },
@@ -943,6 +953,28 @@ describe('MsgBroadcaster event emission order', () => {
   })
 
   describe('broadcastWithFeePayerSig', () => {
+    it('forwards the separate submission endpoint for server-prepared RFQ transactions', async () => {
+      broadcaster.endpoints = {
+        ...broadcaster.endpoints,
+        broadcastGrpc: 'https://broadcast.example.test',
+      }
+      const broadcast = vi
+        .spyOn(TxGrpcApi.prototype, 'broadcast')
+        .mockResolvedValue(makeTxResponse())
+      await broadcaster.broadcastWithFeePayerSig({
+        tx: validTxBytes,
+        privateKey: '0x' + 'ab'.repeat(32),
+        feePayerSig: 'bW9ja1NpZw==',
+        accountNumber: 1,
+      })
+      expect(broadcast).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          broadcastEndpoint: 'https://broadcast.example.test',
+        }),
+      )
+    })
+
     it('ends the event lifecycle with cancellation after successful submission', async () => {
       const controller = new AbortController()
       const txHash = 'A'.repeat(64)
