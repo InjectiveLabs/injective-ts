@@ -173,6 +173,23 @@ describe('EIP-1193 provider for a viem account', () => {
     expect(signTransaction).toHaveBeenCalledWith({ chainId: 1, to: address })
   })
 
+  it.each(['eth_signTransaction', 'eth_sendTransaction'])(
+    '%s refuses a transaction for another chain',
+    async (method) => {
+      const signTransaction = vi.fn()
+      const provider = await getEip1193ProviderForAccount(
+        { ...account, signTransaction } as unknown as LocalAccount,
+        1439,
+        { rpcUrl: 'http://127.0.0.1:1' },
+      )
+
+      await expect(
+        provider.request({ method, params: [{ to: address, chainId: '0x1' }] }),
+      ).rejects.toThrow('Transaction is for chain 1, not 1439')
+      expect(signTransaction).not.toHaveBeenCalled()
+    },
+  )
+
   it('signs an RPC-shaped EIP-1559 transaction for the account', async () => {
     // Anvil's first well-known test key
     const signer = privateKeyToAccount(

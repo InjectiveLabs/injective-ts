@@ -186,6 +186,19 @@ class CustomEip1193Provider implements Eip1193Provider {
     return this.rpcUrls?.[this.chainId] || this.rpcUrl
   }
 
+  // Signs only for the provider's chain, which wallet_switchEthereumChain sets
+  private toTransactionRequest(transaction: unknown) {
+    const request = toViemTransactionRequest(transaction, this.address)
+
+    if (request.chainId !== undefined && request.chainId !== this.chainId) {
+      throw new Error(
+        `Transaction is for chain ${request.chainId}, not ${this.chainId}`,
+      )
+    }
+
+    return request
+  }
+
   async requestAccounts() {
     return [this.address]
   }
@@ -256,7 +269,7 @@ class CustomEip1193Provider implements Eip1193Provider {
 
       return this.signTransaction({
         chainId: this.chainId,
-        ...toViemTransactionRequest(args.params[0], this.address),
+        ...this.toTransactionRequest(args.params[0]),
       })
     }
 
@@ -288,7 +301,7 @@ class CustomEip1193Provider implements Eip1193Provider {
       const client = this.getClient()
 
       const preparedTransaction = await accountClient.prepareTransactionRequest(
-        toViemTransactionRequest(args.params[0], this.address) as any,
+        this.toTransactionRequest(args.params[0]) as any,
       )
 
       const signedTransaction = await this.signTransaction(preparedTransaction)

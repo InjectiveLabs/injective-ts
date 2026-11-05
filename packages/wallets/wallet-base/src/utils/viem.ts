@@ -71,7 +71,7 @@ const toTransactionType = (value: unknown): TransactionType => {
 export const toViemTransactionRequest = (
   transaction: unknown,
   from: string,
-): TransactionRequest => {
+): TransactionRequest & { chainId?: number } => {
   const request: Record<string, any> = Object.fromEntries(
     Object.entries(transaction as Record<string, unknown>).filter(
       ([, value]) => value != null,
@@ -114,7 +114,7 @@ export const toViemTransactionRequest = (
 
   delete request.from
 
-  return request as TransactionRequest
+  return request as TransactionRequest & { chainId?: number }
 }
 
 export const getEvmChainConfig = (chainId: EvmChainId | number): Chain => {
