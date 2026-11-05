@@ -137,19 +137,9 @@ describe('MsgLiquidatePositionV2', () => {
       messages: message,
     })
 
-    it('EIP712 v1', async () => {
-      const eip712TypedData = getEip712TypedData(eip712Args)
-
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...prepareEip712Request,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
-      expect(message.toAmino()).toStrictEqual(
-        JSON.parse(txResponse.data).message.msgs[0],
+    it('EIP712 v1 rejects an omitted expiration_block', () => {
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
       )
     })
 
@@ -166,8 +156,6 @@ describe('MsgLiquidatePositionV2', () => {
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
-    // the chain omits an empty cid from the v1 typed data and keeps expiration_block of a
-    // good-till-block order, in both the types and the values
     it('EIP712 v1 matches the gateway for an empty cid and a good-till-block order', async () => {
       const variant = MsgLiquidatePositionV2.fromJSON({
         ...params,

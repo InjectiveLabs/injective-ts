@@ -125,7 +125,9 @@ describe('MsgSubmitProposalPerpetualMarketLaunchV2', () => {
   })
 
   it('toEip712 (v1) throws, use toEip712V2', () => {
-    expect(() => message.toEip712()).toThrow('Please use EIP712_v2')
+    expect(() => message.assertEip712V1Supported()).toThrow(
+      'Please use EIP712_v2',
+    )
   })
 
   it('sends crossMarginEligible in the proto and amino', () => {

@@ -83,19 +83,6 @@ export default class MsgReclaimLockedFundsV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const proto = this.toProto()
-
-    return {
-      type: 'exchange/v2/MsgReclaimLockedFunds',
-      value: {
-        sender: proto.sender,
-        lockedAccountPubKey: Array.from(proto.lockedAccountPubKey),
-        signature: Array.from(proto.signature),
-      },
-    }
-  }
-
   public toEip712Types(): Map<string, TypedDataField[]> {
     const map = new Map<string, TypedDataField[]>()
 

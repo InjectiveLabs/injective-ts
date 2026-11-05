@@ -1,7 +1,7 @@
 import * as CosmosGovV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/gov/v1beta1/tx_pb'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
-import { toAminoJson, toAminoJsonValue } from './toAminoJson.js'
+import { assertAminoJsonSupported } from './toAminoJson.js'
 import type { MessageType } from '@protobuf-ts/runtime'
 
 const isMsg = (m: unknown): m is MessageType<any> =>
@@ -12,6 +12,13 @@ const isMsg = (m: unknown): m is MessageType<any> =>
 const NOT_SIGNABLE = [
   'injective.exchange.v2.MsgSignData',
   'injective.exchange.v2.MsgSignDoc',
+]
+
+// These existing proto types contain Duration; no SDK builder uses this encoder for them.
+const UNSUPPORTED_TYPES = [
+  'injective.insurance.v1beta1.MsgUpdateParams',
+  'injective.insurance.v1beta1.Params',
+  'google.protobuf.Duration',
 ]
 
 const roots = [
@@ -45,7 +52,7 @@ const collectReachableTypes = (
 // A proto bump that adds an amino option the encoder does not implement (or a
 // Timestamp/Duration/map field) to one of these messages would otherwise only surface
 // at signing time on Ledger. This fails the test suite instead.
-describe('toAminoJson can encode every type reachable from the V2 exchange / insurance / gov msgs', () => {
+describe('toAminoJson schema compatibility for V2 exchange / insurance / gov msgs', () => {
   const reachable = new Map<string, MessageType<any>>()
 
   roots.forEach((root) => collectReachableTypes(root, reachable))
@@ -60,14 +67,20 @@ describe('toAminoJson can encode every type reachable from the V2 exchange / ins
       .filter((root) => !root.typeName.endsWith('Response'))
       .map((root) => [root.typeName, root]),
   )('%s is signable (has an amino.name)', (_name, root) => {
-    expect(() => toAminoJson(root, root.create())).not.toThrow()
+    expect(root.options['amino.name']).toBeTypeOf('string')
   })
 
   it.each(
     [...reachable.entries()].filter(
       ([name]) => name !== 'google.protobuf.Any' && !name.endsWith('Response'),
     ),
-  )('%s', (_name, type) => {
-    expect(() => toAminoJsonValue(type, type.create())).not.toThrow()
+  )('%s', (name, type) => {
+    if (UNSUPPORTED_TYPES.includes(name)) {
+      expect(() => assertAminoJsonSupported(type)).toThrow(
+        'google.protobuf.Duration is not supported',
+      )
+    } else {
+      expect(() => assertAminoJsonSupported(type)).not.toThrow()
+    }
   })
 })

@@ -3,6 +3,7 @@ import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
 import { protoTypeToAminoType } from '../../../tx/eip712/maps.js'
+import MsgSubmitGenericProposal from '../../gov/msgs/MsgSubmitGenericProposal.js'
 import MsgCreateConsolidatedInsurancePool from './MsgCreateConsolidatedInsurancePool.js'
 import {
   getEip712TypedData,
@@ -106,6 +107,47 @@ describe('MsgCreateConsolidatedInsurancePool', () => {
       ).prepareEip712Request({
         ...prepareEip712Request,
         eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+  })
+
+  describe('inside an expedited proposal (governance creates the pool)', () => {
+    const proposal = MsgSubmitGenericProposal.fromJSON({
+      title: 'Create pool',
+      summary: 'Create pool',
+      expedited: true,
+      proposer: mockFactory.injectiveAddress,
+      metadata: 'Test Metadata',
+      messages: [message],
+      deposit: { amount: '1', denom: 'inj' },
+    })
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      network: Network.Testnet,
+      messages: proposal,
+    })
+
+    it('EIP712 v1 types the integers like the chain', () => {
+      const fields = [...proposal.toEip712Types().values()]
+        .flat()
+        .filter(({ name }) =>
+          ['quote_decimals', 'redemption_notice_period_seconds'].includes(name),
+        )
+
+      expect(fields).toStrictEqual([
+        { name: 'quote_decimals', type: 'uint32' },
+        { name: 'redemption_notice_period_seconds', type: 'int64' },
+      ])
+    })
+
+    it('EIP712 v1 matches the Web3Gw (chain)', async () => {
+      const eip712TypedData = getEip712TypedData(eip712Args)
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))

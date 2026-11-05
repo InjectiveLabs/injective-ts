@@ -91,8 +91,8 @@ export default class MsgCreateConsolidatedInsurancePool extends MsgBase<
   }
 
   /** the chain cannot type `math.Int` fields for EIP712 v1 */
-  public toEip712(): never {
-    return this.eip712V1Unsupported('MsgCreateConsolidatedInsurancePool')
+  public assertEip712V1Supported(): void {
+    this.eip712V1Unsupported('MsgCreateConsolidatedInsurancePool')
   }
 
   public toDirectSign() {

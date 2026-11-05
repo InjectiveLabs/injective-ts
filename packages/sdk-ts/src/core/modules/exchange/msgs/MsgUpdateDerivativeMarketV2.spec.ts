@@ -159,7 +159,9 @@ describe('MsgUpdateDerivativeMarketV2', () => {
   })
 
   it('toEip712 (v1) throws, use EIP712 v2', () => {
-    expect(() => message.toEip712()).toThrow('Please use EIP712_v2')
+    expect(() => message.assertEip712V1Supported()).toThrow(
+      'Please use EIP712_v2',
+    )
   })
 
   describe('newReferencePriceGateConfig', () => {
@@ -224,7 +226,6 @@ describe('MsgUpdateDerivativeMarketV2', () => {
       messages: message,
     })
 
-    // the chain's EIP712 v1 typed-data generator rejects math.LegacyDec fields
     it('EIP712 v1 throws, use EIP712 v2', () => {
       expect(() => getEip712TypedData(eip712Args)).toThrow(
         'Please use EIP712_v2',

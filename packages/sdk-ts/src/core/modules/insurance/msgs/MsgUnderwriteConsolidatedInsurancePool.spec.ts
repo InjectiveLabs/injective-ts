@@ -76,8 +76,6 @@ describe('MsgUnderwriteConsolidatedInsurancePool', () => {
       messages: message,
     })
 
-    // EIP712 v1 is not supported: the chain/web3gw typed-data generator fails with
-    // "invalid Go type math.Int for field ..." for cosmossdk.io/math.Int fields
     it('EIP712 v1 throws, use toEip712V2', () => {
       expect(() => getEip712TypedData(eip712Args)).toThrow(
         'EIP712_v1 is not supported for MsgUnderwriteConsolidatedInsurancePool. Please use EIP712_v2',

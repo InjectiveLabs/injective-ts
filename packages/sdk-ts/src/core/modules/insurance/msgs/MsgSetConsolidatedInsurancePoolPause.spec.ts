@@ -121,22 +121,14 @@ describe('MsgSetConsolidatedInsurancePoolPause', () => {
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
-    it('EIP712 v1 matches the gateway when a zero value is omitted (paused=false)', async () => {
+    it('EIP712 v1 rejects an omitted paused flag when resuming', () => {
       const zero = MsgSetConsolidatedInsurancePoolPause.fromJSON({
         ...params,
         paused: false,
       })
-      const { eip712Args: zeroArgs, prepareEip712Request: zeroRequest } =
-        prepareEip712({ network: Network.Testnet, messages: zero })
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...zeroRequest,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(getEip712TypedData(zeroArgs)).toStrictEqual(
-        JSON.parse(txResponse.data),
+      const { eip712Args } = prepareEip712({ messages: zero })
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
       )
     })
   })

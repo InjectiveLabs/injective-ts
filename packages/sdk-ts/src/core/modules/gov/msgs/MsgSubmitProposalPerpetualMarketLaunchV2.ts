@@ -288,8 +288,8 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
   }
 
   /** the chain cannot type the OpenNotionalCap oneof (no json name) for EIP712 v1 */
-  public toEip712(): never {
-    return this.eip712V1Unsupported('MsgSubmitProposalPerpetualMarketLaunchV2')
+  public assertEip712V1Supported(): void {
+    this.eip712V1Unsupported('MsgSubmitProposalPerpetualMarketLaunchV2')
   }
 
   public toEip712V2() {

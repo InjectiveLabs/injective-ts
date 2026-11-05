@@ -6,7 +6,8 @@ import * as InjectiveExchangeV2AuthzPb from '@injectivelabs/core-proto-ts-v2/gen
 import * as InjectiveExchangeV2MarketPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/market_pb'
 import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import * as InjectiveTxfeesV1Beta1TxfeesPb from '@injectivelabs/core-proto-ts-v2/generated/injective/txfees/v1beta1/txfees_pb'
-import { toAminoJson } from './toAminoJson.js'
+import * as InjectiveInsuranceV1Beta1InsurancePb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/insurance_pb'
+import { toAminoJson, assertAminoJsonSupported } from './toAminoJson.js'
 
 /**
  * The expected JSON below was produced by the chain's own encoder
@@ -230,6 +231,25 @@ describe('toAminoJson (matches the chain aminojson encoder)', () => {
   })
 
   describe('refuses amino options it does not implement (instead of signing wrong bytes)', () => {
+    it('rejects an unsupported nested Duration even when its value is absent', () => {
+      const type = InjectiveInsuranceV1Beta1InsurancePb.Params
+
+      expect(() => assertAminoJsonSupported(type)).toThrow(
+        'google.protobuf.Duration is not supported',
+      )
+      expect(() => toAminoJson(type, type.create())).toThrow(
+        'google.protobuf.Duration is not supported',
+      )
+      expect(() =>
+        toAminoJson(
+          type,
+          type.create({
+            defaultRedemptionNoticePeriodDuration: { seconds: 1n, nanos: 0 },
+          }),
+        ),
+      ).toThrow('google.protobuf.Duration is not supported')
+    })
+
     it('amino.encoding other than legacy_coins (inline_json on wasm msg)', () => {
       expect(() =>
         toAminoJson(

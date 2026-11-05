@@ -112,22 +112,14 @@ describe('MsgUpdateSubaccountRiskProfileV2', () => {
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
     })
 
-    it('EIP712 v1 matches the gateway (zero mode / policy are omitted)', async () => {
+    it('EIP712 v1 rejects the omitted field (zero mode / policy are omitted)', () => {
       const variant = MsgUpdateSubaccountRiskProfileV2.fromJSON({
         ...params,
         riskProfile: { mode: 0, reservationPolicy: 0, creditLineId: '' },
       })
-      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
-        prepareEip712({ network: Network.Testnet, messages: variant })
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...variantRequest,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(getEip712TypedData(variantArgs)).toStrictEqual(
-        JSON.parse(txResponse.data),
+      const { eip712Args } = prepareEip712({ messages: variant })
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
       )
     })
 

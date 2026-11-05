@@ -1,4 +1,5 @@
 import { getEipTxContext } from './utils.js'
+import { assertEip712V1Values } from './validate.js'
 import { safeBigIntStringify } from '../../../utils/helpers.js'
 import {
   getEip712Fee,
@@ -25,8 +26,20 @@ export const getEip712TypedData = ({
   evmChainId: EvmChainId
 }) => {
   const messages = Array.isArray(msgs) ? msgs : [msgs]
+
+  messages.forEach((m) => m.assertEip712V1Supported())
+
   const eip712Msgs = messages.map((m) => m.toEip712())
   const eip712MessageTypes = messages[0].toEip712Types()
+
+  eip712Msgs.forEach((message, index) =>
+    assertEip712V1Values(
+      message.value,
+      eip712MessageTypes,
+      'MsgValue',
+      `msgs[${index}].value`,
+    ),
+  )
 
   const types = getDefaultEip712Types()
   const typesWithMessageTypes = {

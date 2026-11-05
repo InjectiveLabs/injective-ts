@@ -1,3 +1,4 @@
+import { ScalarType } from '@protobuf-ts/runtime'
 import { GeneralException } from '@injectivelabs/exceptions'
 import { uint8ArrayToBase64 } from '../../../utils/encoding-light.js'
 import type { FieldInfo, MessageType } from '@protobuf-ts/runtime'
@@ -21,20 +22,12 @@ import type { FieldInfo, MessageType } from '@protobuf-ts/runtime'
 
 type AnyMessage = Record<string, any>
 
-const SCALAR_INT64 = 3
-const SCALAR_UINT64 = 4
-const SCALAR_FIXED64 = 6
-const SCALAR_BOOL = 8
-const SCALAR_BYTES = 12
-const SCALAR_SFIXED64 = 16
-const SCALAR_SINT64 = 18
-
-const LONG_SCALARS = new Set([
-  SCALAR_INT64,
-  SCALAR_UINT64,
-  SCALAR_FIXED64,
-  SCALAR_SFIXED64,
-  SCALAR_SINT64,
+const LONG_SCALARS = new Set<number>([
+  ScalarType.INT64,
+  ScalarType.UINT64,
+  ScalarType.FIXED64,
+  ScalarType.SFIXED64,
+  ScalarType.SINT64,
 ])
 
 // amino options of the chain encoder that this implementation does NOT support. A message
@@ -76,6 +69,39 @@ const UNSUPPORTED_WELL_KNOWN = new Set([
   'google.protobuf.Duration',
 ])
 
+/** Checks the entire schema, including fields absent from the current value. */
+export const assertAminoJsonSupported = (
+  type: MessageType<any>,
+  seen = new Set<string>(),
+): void => {
+  if (seen.has(type.typeName)) {
+    return
+  }
+
+  seen.add(type.typeName)
+  assertSupported(type)
+
+  if (UNSUPPORTED_WELL_KNOWN.has(type.typeName)) {
+    throw new GeneralException(
+      new Error(`toAminoJson: ${type.typeName} is not supported`),
+    )
+  }
+
+  for (const field of type.fields) {
+    assertSupported(type, field)
+
+    if (field.kind === 'map') {
+      throw new GeneralException(
+        new Error(`toAminoJson: map fields are not supported (${field.name})`),
+      )
+    }
+
+    if (field.kind === 'message') {
+      assertAminoJsonSupported(field.T() as MessageType<any>, seen)
+    }
+  }
+}
+
 // strcase.ToCamel, used by the chain encoder for the oneof wrapper key
 const toUpperCamel = (name: string) =>
   name
@@ -92,11 +118,11 @@ const isZeroScalar = (field: FieldInfo, value: unknown) => {
     return true
   }
 
-  if (field.kind === 'scalar' && field.T === SCALAR_BOOL) {
+  if (field.kind === 'scalar' && field.T === ScalarType.BOOL) {
     return value === false
   }
 
-  if (field.kind === 'scalar' && field.T === SCALAR_BYTES) {
+  if (field.kind === 'scalar' && field.T === ScalarType.BYTES) {
     return (value as Uint8Array).length === 0
   }
 
@@ -126,7 +152,7 @@ const encodeScalar = (field: FieldInfo, value: any) => {
     return String(value)
   }
 
-  if (type === SCALAR_BYTES) {
+  if (type === ScalarType.BYTES) {
     return uint8ArrayToBase64(value)
   }
 
@@ -145,21 +171,7 @@ const encodeValue = (
       return encodeAny(value, anyTypes)
     }
 
-    if (UNSUPPORTED_WELL_KNOWN.has(type.typeName)) {
-      throw new GeneralException(
-        new Error(
-          `toAminoJson: ${type.typeName} is not supported (field ${field.name})`,
-        ),
-      )
-    }
-
     return encodeMessage(type, value, anyTypes)
-  }
-
-  if (field.kind === 'map') {
-    throw new GeneralException(
-      new Error(`toAminoJson: map fields are not supported (${field.name})`),
-    )
   }
 
   return encodeScalar(field, value)
@@ -177,10 +189,7 @@ const encodeAny = (
     )
   }
 
-  return {
-    type: type.options['amino.name'],
-    value: encodeMessage(type, type.fromBinary(any.value), anyTypes),
-  }
+  return toAminoJson(type, type.fromBinary(any.value), anyTypes)
 }
 
 const encodeMessage = (
@@ -191,11 +200,7 @@ const encodeMessage = (
   const output: Record<string, unknown> = {}
   const oneofsWritten = new Set<string>()
 
-  assertSupported(type)
-
   for (const field of type.fields) {
-    assertSupported(type, field)
-
     const dontOmitEmpty = field.options?.['amino.dont_omitempty'] === true
 
     if (field.oneof) {
@@ -230,7 +235,7 @@ const encodeMessage = (
 
     if (field.repeat) {
       if (!value || value.length === 0) {
-        // `dont_omitempty` (and `legacy_coins`) write an empty list as `[]`
+        // `dont_omitempty` writes an empty list as `[]` (every `legacy_coins` field carries it)
         if (dontOmitEmpty) {
           output[field.name] = []
         }
@@ -267,13 +272,6 @@ const encodeMessage = (
   return output
 }
 
-/** the amino-json `value` of any message, nested messages do not need an `amino.name` */
-export const toAminoJsonValue = <T extends object>(
-  type: MessageType<T>,
-  message: T,
-  anyTypes: Record<string, MessageType<any>> = {},
-): Record<string, any> => encodeMessage(type, message as AnyMessage, anyTypes)
-
 /** amino-json of a top-level (signable) message: `{ type: <amino.name>, value }` */
 export const toAminoJson = <T extends object>(
   type: MessageType<T>,
@@ -288,5 +286,10 @@ export const toAminoJson = <T extends object>(
     )
   }
 
-  return { type: aminoName, value: toAminoJsonValue(type, message, anyTypes) }
+  assertAminoJsonSupported(type)
+
+  return {
+    type: aminoName,
+    value: encodeMessage(type, message as AnyMessage, anyTypes),
+  }
 }
