@@ -576,6 +576,24 @@ importers:
         specifier: workspace:*
         version: link:../wallet-base
 
+  packages/wallets/wallet-privy:
+    dependencies:
+      '@injectivelabs/exceptions':
+        specifier: workspace:*
+        version: link:../../exceptions
+      '@injectivelabs/sdk-ts':
+        specifier: workspace:*
+        version: link:../../sdk-ts
+      '@injectivelabs/ts-types':
+        specifier: workspace:*
+        version: link:../../ts-types
+      '@injectivelabs/wallet-base':
+        specifier: workspace:*
+        version: link:../wallet-base
+      viem:
+        specifier: 2.54.6
+        version: 2.54.6(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)
+
   packages/wallets/wallet-strategy:
     dependencies:
       '@injectivelabs/exceptions':
@@ -602,6 +620,9 @@ importers:
       '@injectivelabs/wallet-private-key':
         specifier: workspace:*
         version: link:../wallet-private-key
+      '@injectivelabs/wallet-privy':
+        specifier: workspace:*
+        version: link:../wallet-privy
       '@injectivelabs/wallet-trezor':
         specifier: workspace:*
         version: link:../wallet-trezor

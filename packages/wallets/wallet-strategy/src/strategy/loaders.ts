@@ -15,6 +15,8 @@ type PrivateKeyCosmosStrategy =
   typeof import('@injectivelabs/wallet-private-key').PrivateKeyCosmosWalletStrategy
 type TurnkeyStrategy =
   typeof import('@injectivelabs/wallet-turnkey').TurnkeyWalletStrategy
+type PrivyStrategy =
+  typeof import('@injectivelabs/wallet-privy').PrivyWalletStrategy
 type MagicStrategy = typeof import('@injectivelabs/wallet-magic').MagicStrategy
 type WalletConnectStrategy =
   typeof import('@injectivelabs/wallet-wallet-connect').WalletConnectStrategy
@@ -25,6 +27,7 @@ let cachedLedgerStrategies: LedgerStrategies | null = null
 let cachedTrezorStrategies: TrezorStrategies | null = null
 let cachedPrivateKeyStrategy: PrivateKeyStrategy | null = null
 let cachedTurnkeyStrategy: TurnkeyStrategy | null = null
+let cachedPrivyStrategy: PrivyStrategy | null = null
 let cachedMagicStrategy: MagicStrategy | null = null
 let cachedWalletConnectStrategy: WalletConnectStrategy | null = null
 let cachedPrivateKeyCosmosStrategy: PrivateKeyCosmosStrategy | null = null
@@ -92,6 +95,14 @@ export const loadTurnkeyStrategy = async (): Promise<TurnkeyStrategy> => {
       .TurnkeyWalletStrategy
   }
   return cachedTurnkeyStrategy
+}
+
+export const loadPrivyStrategy = async (): Promise<PrivyStrategy> => {
+  if (!cachedPrivyStrategy) {
+    cachedPrivyStrategy = (await import('@injectivelabs/wallet-privy'))
+      .PrivyWalletStrategy
+  }
+  return cachedPrivyStrategy
 }
 
 export const loadMagicStrategy = async (): Promise<MagicStrategy> => {

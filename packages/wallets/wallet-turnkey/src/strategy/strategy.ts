@@ -15,10 +15,11 @@ import {
   getViemWalletClient,
   getViemPublicClient,
   BaseConcreteStrategy,
+  toViemTransactionRequest,
+  getEip1193ProviderForAccount,
 } from '@injectivelabs/wallet-base'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
-import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
 import type { Hash } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
@@ -217,38 +218,9 @@ export class TurnkeyWalletStrategy
         rpcUrl: url,
       })
 
-      const parseHexValue = (value: string | number | bigint) => {
-        if (typeof value === 'string') {
-          const hexValue = value.startsWith('0x') ? value : `0x${value}`
-
-          return BigInt(hexValue)
-        }
-
-        return BigInt(value)
-      }
-
-      const txData = transaction as any
-      const processedTransaction = { ...txData }
-
-      const hexFields = [
-        'value',
-        'gas',
-        'gasLimit',
-        'gasPrice',
-        'maxFeePerGas',
-        'maxPriorityFeePerGas',
-      ]
-
-      for (const field of hexFields) {
-        if (processedTransaction[field] !== undefined) {
-          processedTransaction[field] = parseHexValue(
-            processedTransaction[field],
-          )
-        }
-      }
-
-      const preparedTransaction =
-        await accountClient.prepareTransactionRequest(processedTransaction)
+      const preparedTransaction = await accountClient.prepareTransactionRequest(
+        toViemTransactionRequest(transaction, account.address, chainId) as any,
+      )
 
       // Remove account property as it's not needed for signing
       const { account: _, ...transactionToSign } = preparedTransaction
@@ -371,7 +343,7 @@ export class TurnkeyWalletStrategy
       const checksumAddress = getAddress(getEthereumAddress(signer))
       const account =
         await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
-      const provider = await getEip1193ProviderForTurnkey(
+      const provider = await getEip1193ProviderForAccount(
         account,
         String(this.evmOptions.evmChainId),
         {
@@ -489,7 +461,7 @@ export class TurnkeyWalletStrategy
     const account =
       await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
 
-    const eip1193Provider = await getEip1193ProviderForTurnkey(
+    const eip1193Provider = await getEip1193ProviderForAccount(
       account,
       String(this.evmOptions.evmChainId),
       {

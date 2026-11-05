@@ -1,9 +1,12 @@
 import { vi } from 'vitest'
-import { getViemWalletClient } from '@injectivelabs/wallet-base'
-import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
+import { privateKeyToAccount } from 'viem/accounts'
+import { parseTransaction, recoverTransactionAddress } from 'viem'
+import { getViemWalletClient } from './viem.js'
+import { getEip1193ProviderForAccount } from './eip1193.js'
 import type { LocalAccount } from 'viem'
 
-vi.mock('@injectivelabs/wallet-base', () => ({
+vi.mock('./viem.js', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('./viem.js')>()),
   getEvmChainConfig: vi.fn(),
   getViemPublicClient: vi.fn(),
   getViemWalletClient: vi.fn(() => ({
@@ -13,7 +16,7 @@ vi.mock('@injectivelabs/wallet-base', () => ({
   })),
 }))
 
-describe('Turnkey EIP-1193 provider', () => {
+describe('EIP-1193 provider for a viem account', () => {
   const address = '0x0000000000000000000000000000000000000001'
   const typedData = {
     domain: {
@@ -40,9 +43,9 @@ describe('Turnkey EIP-1193 provider', () => {
   } as unknown as LocalAccount
 
   it.each(['eth_requestAccounts', 'eth_accounts'])(
-    'resolves %s from the Turnkey account',
+    'resolves %s from the account',
     async (method) => {
-      const provider = await getEip1193ProviderForTurnkey(account, 1, {
+      const provider = await getEip1193ProviderForAccount(account, 1, {
         rpcUrl: 'http://127.0.0.1:1',
       })
 
@@ -53,10 +56,10 @@ describe('Turnkey EIP-1193 provider', () => {
   )
 
   it.each(['eth_sign', 'personal_sign', 'eth_signMessage'])(
-    'routes %s through the Turnkey message signer',
+    'routes %s through the message signer',
     async (method) => {
       const signMessage = vi.fn().mockResolvedValue('0xsigned')
-      const provider = await getEip1193ProviderForTurnkey(
+      const provider = await getEip1193ProviderForAccount(
         {
           ...account,
           signMessage,
@@ -85,7 +88,7 @@ describe('Turnkey EIP-1193 provider', () => {
     'rejects %s without a message payload',
     async (method) => {
       const signMessage = vi.fn()
-      const provider = await getEip1193ProviderForTurnkey(
+      const provider = await getEip1193ProviderForAccount(
         {
           ...account,
           signMessage,
@@ -107,9 +110,9 @@ describe('Turnkey EIP-1193 provider', () => {
     'eth_signTypedData',
     'eth_signTypedData_v3',
     'eth_signTypedData_v4',
-  ])('routes %s through the Turnkey typed data signer', async (method) => {
+  ])('routes %s through the typed data signer', async (method) => {
     const sign = vi.fn().mockResolvedValue('0xtyped')
-    const provider = await getEip1193ProviderForTurnkey(
+    const provider = await getEip1193ProviderForAccount(
       {
         ...account,
         sign,
@@ -131,7 +134,7 @@ describe('Turnkey EIP-1193 provider', () => {
 
   it('rejects typed data signing without a typed-data payload', async () => {
     const sign = vi.fn()
-    const provider = await getEip1193ProviderForTurnkey(
+    const provider = await getEip1193ProviderForAccount(
       {
         ...account,
         sign,
@@ -148,9 +151,9 @@ describe('Turnkey EIP-1193 provider', () => {
     expect(sign).not.toHaveBeenCalled()
   })
 
-  it('routes eth_signTransaction through the Turnkey transaction signer', async () => {
+  it('routes eth_signTransaction through the transaction signer', async () => {
     const signTransaction = vi.fn().mockResolvedValue('0xsignedtx')
-    const provider = await getEip1193ProviderForTurnkey(
+    const provider = await getEip1193ProviderForAccount(
       {
         ...account,
         signTransaction,
@@ -167,11 +170,64 @@ describe('Turnkey EIP-1193 provider', () => {
         params: [{ to: address }],
       }),
     ).resolves.toBe('0xsignedtx')
-    expect(signTransaction).toHaveBeenCalledWith({ to: address })
+    expect(signTransaction).toHaveBeenCalledWith({ chainId: 1, to: address })
+  })
+
+  it.each(['eth_signTransaction', 'eth_sendTransaction'])(
+    '%s refuses a transaction for another chain',
+    async (method) => {
+      const signTransaction = vi.fn()
+      const provider = await getEip1193ProviderForAccount(
+        { ...account, signTransaction } as unknown as LocalAccount,
+        1439,
+        { rpcUrl: 'http://127.0.0.1:1' },
+      )
+
+      await expect(
+        provider.request({ method, params: [{ to: address, chainId: '0x1' }] }),
+      ).rejects.toThrow('Transaction is for chain 1, not 1439')
+      expect(signTransaction).not.toHaveBeenCalled()
+    },
+  )
+
+  it('signs an RPC-shaped EIP-1559 transaction for the account', async () => {
+    // Anvil's first well-known test key
+    const signer = privateKeyToAccount(
+      '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+    )
+    const provider = await getEip1193ProviderForAccount(signer, 1439, {
+      rpcUrl: 'http://127.0.0.1:1',
+    })
+
+    const signed = await provider.request({
+      method: 'eth_signTransaction',
+      params: [
+        {
+          from: signer.address,
+          to: address,
+          type: '0x2',
+          nonce: '0x0',
+          value: '0xa',
+          gas: '0x5208',
+          maxFeePerGas: '0x3b9aca00',
+          maxPriorityFeePerGas: '0x1',
+        },
+      ],
+    })
+
+    expect(parseTransaction(signed)).toMatchObject({
+      type: 'eip1559',
+      chainId: 1439,
+      nonce: 0,
+      value: 10n,
+    })
+    expect(
+      await recoverTransactionAddress({ serializedTransaction: signed }),
+    ).toBe(signer.address)
   })
 
   it.each(['eth_sendTransaction', 'wallet_sendTransaction'])(
-    'routes %s through the Turnkey transaction signer',
+    'routes %s through the transaction signer',
     async (method) => {
       const transaction = {
         from: address,
@@ -199,7 +255,7 @@ describe('Turnkey EIP-1193 provider', () => {
       } as any)
 
       const signTransaction = vi.fn().mockResolvedValue('0xsignedtx')
-      const provider = await getEip1193ProviderForTurnkey(
+      const provider = await getEip1193ProviderForAccount(
         {
           ...account,
           signTransaction,
@@ -214,7 +270,8 @@ describe('Turnkey EIP-1193 provider', () => {
         provider.request({ method, params: [transaction] }),
       ).resolves.toBe('0xtxhash')
       expect(prepareTransactionRequest).toHaveBeenCalledWith({
-        ...transaction,
+        to: transaction.to,
+        data: transaction.data,
         value: 0n,
       })
       expect(signTransaction).toHaveBeenCalledWith(preparedTransaction)

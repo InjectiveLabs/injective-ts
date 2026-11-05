@@ -65,6 +65,7 @@
     "@injectivelabs/wallet-ledger": "workspace:*",
     "@injectivelabs/wallet-magic": "workspace:*",
     "@injectivelabs/wallet-private-key": "workspace:*",
+    "@injectivelabs/wallet-privy": "workspace:*",
     "@injectivelabs/wallet-trezor": "workspace:*",
     "@injectivelabs/wallet-turnkey": "workspace:*",
     "@injectivelabs/wallet-wallet-connect": "workspace:*"
