@@ -14,6 +14,7 @@ import {
 import {
   isHex,
   toHex,
+  BaseError,
   keccak256,
   getAddress,
   bytesToHex,
@@ -86,22 +87,8 @@ const toPersonalSignMessage = (message: SignableMessage) => {
   return typeof message.raw === 'string' ? message.raw : bytesToHex(message.raw)
 }
 
-// The error and its causes, where viem keeps the provider's and our own errors
-const getCauses = (e: unknown) => {
-  const causes: object[] = []
-
-  for (let error = e; error && typeof error === 'object'; ) {
-    // Bounded: a cause can point back at its error
-    if (causes.length === 5 || causes.includes(error)) {
-      break
-    }
-
-    causes.push(error)
-    error = (error as { cause?: unknown }).cause
-  }
-
-  return causes
-}
+const isOurException = (e: unknown): e is Error =>
+  e instanceof Error && isThrownException(e)
 
 /** Signs through the Privy embedded wallet provider passed in `metadata.privy`. */
 export class PrivyWalletStrategy
@@ -372,13 +359,35 @@ export class PrivyWalletStrategy
       return privy
     }
     const request = async (method: string, params: unknown[]) => {
-      const provider = await requireSameWallet().getProvider()
-      requireSameWallet()
+      try {
+        const provider = await requireSameWallet().getProvider()
+        requireSameWallet()
 
-      const result = await provider.request({ method, params })
-      requireSameWallet()
+        const result = await provider.request({ method, params })
+        requireSameWallet()
 
-      return result
+        return result
+      } catch (e: unknown) {
+        if (isOurException(e)) {
+          throw e
+        }
+
+        const { message, code } = (e ?? {}) as {
+          message?: unknown
+          code?: unknown
+        }
+
+        // EIP-1193 errors carry e.g. 4001 (user rejected)
+        throw new WalletException(
+          new Error(typeof message === 'string' ? message : String(e)),
+          {
+            code: UnspecifiedErrorCode,
+            type: ErrorType.WalletError,
+            contextModule: action,
+            ...(typeof code === 'number' ? { contextCode: code } : {}),
+          },
+        )
+      }
     }
     const sign = async ({ hash }: { hash: Hex }) =>
       normalizeSignature(await request('secp256k1_sign', [hash]))
@@ -435,37 +444,33 @@ export class PrivyWalletStrategy
   }
 
   private toWalletException(e: unknown, action: WalletAction) {
-    const causes = getCauses(e)
-    // Ours already (e.g. a session error), also when viem wrapped it as the cause
-    const thrown = causes.find((error) => isThrownException(error as Error))
-
-    if (thrown) {
-      return thrown as Error
+    if (isOurException(e)) {
+      return e
     }
 
-    // viem's shortMessage leaves out its request and version details. A viem error
-    // wrapping the provider's has none, so the provider's own message is used
-    const shortMessage = causes
-      .map((error) => (error as { shortMessage?: unknown }).shortMessage)
-      .find((text) => typeof text === 'string' && text)
-    const { message } = (causes.at(-1) ?? {}) as { message?: unknown }
+    // Ours (e.g. a session error) wrapped by viem as a cause
+    const thrown = e instanceof BaseError ? e.walk(isOurException) : null
+
+    if (isOurException(thrown)) {
+      return thrown
+    }
+
+    const { shortMessage, message } = (e ?? {}) as {
+      shortMessage?: unknown
+      message?: unknown
+    }
+    // viem's shortMessage leaves out its request and version details
     const text =
-      typeof shortMessage === 'string'
+      typeof shortMessage === 'string' && shortMessage
         ? shortMessage
         : typeof message === 'string'
           ? message
           : String(e)
-    // EIP-1193 errors carry e.g. 4001 (user rejected); the provider's is the deepest
-    const providerCode = causes
-      .map((error) => (error as { code?: unknown }).code)
-      .reverse()
-      .find((code) => typeof code === 'number')
 
     return new WalletException(new Error(text), {
       code: UnspecifiedErrorCode,
       type: ErrorType.WalletError,
       contextModule: action,
-      ...(providerCode !== undefined ? { contextCode: providerCode } : {}),
     })
   }
 }
