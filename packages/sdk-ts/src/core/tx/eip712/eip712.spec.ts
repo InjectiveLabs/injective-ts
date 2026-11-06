@@ -1,6 +1,7 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { toChainFormat, getDefaultStdFee } from '@injectivelabs/utils'
 import MsgSend from '../../modules/bank/msgs/MsgSend.js'
+import MsgDelegate from '../../modules/staking/msgs/MsgDelegate.js'
 import { getEip712TypedData, getEip712TypedDataV2 } from './eip712.js'
 
 describe('EIP712V2', () => {
@@ -126,5 +127,37 @@ describe('EIP712V2', () => {
     expect(eip712TypedData.message.fee).toMatchObject({
       granter: 'inj1granter',
     })
+  })
+
+  test('rejects EIP712 v1 messages that do not share a schema', () => {
+    const amount = {
+      denom: 'inj',
+      amount: toChainFormat(0.01).toFixed(),
+    }
+    const send = MsgSend.fromJSON({
+      amount,
+      srcInjectiveAddress: mockFactory.injectiveAddress,
+      dstInjectiveAddress: mockFactory.injectiveAddress,
+    })
+    const delegate = MsgDelegate.fromJSON({
+      amount,
+      injectiveAddress: mockFactory.injectiveAddress,
+      validatorAddress: mockFactory.validatorAddress,
+    })
+
+    expect(() =>
+      getEip712TypedData({
+        msgs: [send, delegate],
+        fee: getDefaultStdFee(),
+        tx: {
+          memo: '',
+          accountNumber: '11',
+          sequence: '88',
+          timeoutHeight: '1896',
+          chainId: 'injective-777',
+        },
+        evmChainId: 5,
+      }),
+    ).toThrow(/EIP712 v1/)
   })
 })

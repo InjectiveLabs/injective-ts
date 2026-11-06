@@ -2,6 +2,7 @@ import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { objectKeysToEip712Types } from '../../../tx/eip712/maps.js'
 
 type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> = T
 
@@ -419,6 +420,38 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       value:
         msg as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1TxPb.MsgBatchUpdateOrders>,
     }
+  }
+
+  public toEip712() {
+    const amino = this.toAmino()
+    const value = amino.value as unknown as Record<string, unknown>
+    const filtered: Record<string, unknown> = {}
+
+    for (const [key, field] of Object.entries(value)) {
+      if (Array.isArray(field)) {
+        if (field.length > 0) {
+          filtered[key] = field
+        }
+
+        continue
+      }
+
+      filtered[key] = field
+    }
+
+    return {
+      type: amino.type,
+      value: filtered as unknown as typeof amino.value,
+    }
+  }
+
+  public toEip712Types() {
+    const eip712 = this.toEip712()
+
+    return objectKeysToEip712Types({
+      object: eip712.value as Record<string, any>,
+      messageType: eip712.type,
+    })
   }
 
   public toWeb3Gw() {
