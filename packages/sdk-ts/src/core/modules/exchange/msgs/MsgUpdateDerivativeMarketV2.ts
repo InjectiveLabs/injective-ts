@@ -1,7 +1,7 @@
-import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2ProposalPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/proposal_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toLegacyDec } from './utils/legacyDec.js'
 import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import { toReferencePriceGateConfig } from './utils/referencePriceGateConfig.js'
@@ -33,9 +33,6 @@ export declare namespace MsgUpdateDerivativeMarketV2 {
 const defaultCrossMarginEligibility =
   InjectiveExchangeV2ProposalPb.CrossMarginEligibility
     .CM_ELIGIBILITY_UNSPECIFIED
-
-// params are human-readable, the proto stores LegacyDec (value scaled by 1e18)
-const toLegacyDec = (value?: string) => toChainFormat(value || '0').toFixed()
 
 const createMessage = (params: MsgUpdateDerivativeMarketV2.Params) => {
   const message = InjectiveExchangeV2TxPb.MsgUpdateDerivativeMarket.create({
@@ -70,6 +67,9 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
   MsgUpdateDerivativeMarketV2.Params,
   MsgUpdateDerivativeMarketV2.Proto
 > {
+  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
+  static readonly eip712V1Supported = false
+
   static fromJSON(
     params: MsgUpdateDerivativeMarketV2.Params,
   ): MsgUpdateDerivativeMarketV2 {
@@ -134,11 +134,6 @@ export default class MsgUpdateDerivativeMarketV2 extends MsgBase<
       '@type': '/injective.exchange.v2.MsgUpdateDerivativeMarket',
       ...value,
     }
-  }
-
-  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
-  public assertEip712V1Supported(): void {
-    this.eip712V1Unsupported('MsgUpdateDerivativeMarketV2')
   }
 
   public toEip712V2() {

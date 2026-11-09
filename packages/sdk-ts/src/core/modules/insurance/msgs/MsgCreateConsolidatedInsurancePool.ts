@@ -1,5 +1,6 @@
 import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toTypeUrl } from '../../typeUrl.js'
 import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgCreateConsolidatedInsurancePool {
@@ -25,6 +26,9 @@ export default class MsgCreateConsolidatedInsurancePool extends MsgBase<
   MsgCreateConsolidatedInsurancePool.Params,
   MsgCreateConsolidatedInsurancePool.Proto
 > {
+  /** the chain cannot type `math.Int` fields for EIP712 v1 */
+  static readonly eip712V1Supported = false
+
   static fromJSON(
     params: MsgCreateConsolidatedInsurancePool.Params,
   ): MsgCreateConsolidatedInsurancePool {
@@ -51,8 +55,9 @@ export default class MsgCreateConsolidatedInsurancePool extends MsgBase<
     const proto = this.toProto()
 
     return {
-      '@type':
-        '/injective.insurance.v1beta1.MsgCreateConsolidatedInsurancePool',
+      '@type': toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgCreateConsolidatedInsurancePool,
+      ),
       ...proto,
     }
   }
@@ -84,22 +89,20 @@ export default class MsgCreateConsolidatedInsurancePool extends MsgBase<
     const { value } = this.toAminoRaw()
 
     return {
-      '@type':
-        '/injective.insurance.v1beta1.MsgCreateConsolidatedInsurancePool',
+      '@type': toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgCreateConsolidatedInsurancePool,
+      ),
       ...value,
     }
-  }
-
-  /** the chain cannot type `math.Int` fields for EIP712 v1 */
-  public assertEip712V1Supported(): void {
-    this.eip712V1Unsupported('MsgCreateConsolidatedInsurancePool')
   }
 
   public toDirectSign() {
     const proto = this.toProto()
 
     return {
-      type: '/injective.insurance.v1beta1.MsgCreateConsolidatedInsurancePool',
+      type: toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgCreateConsolidatedInsurancePool,
+      ),
       message: proto,
     }
   }
