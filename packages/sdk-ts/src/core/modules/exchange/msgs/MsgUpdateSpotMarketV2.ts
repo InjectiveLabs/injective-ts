@@ -1,6 +1,6 @@
-import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toLegacyDec } from './utils/legacyDec.js'
 import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
@@ -22,14 +22,9 @@ const createMessage = (params: MsgUpdateSpotMarketV2.Params) => {
     admin: params.admin,
     marketId: params.marketId,
     newTicker: params.newTicker || '',
-    // params are human-readable, the proto stores LegacyDec (value scaled by 1e18)
-    newMinNotional: toChainFormat(params.newMinNotional || '0').toFixed(),
-    newMinPriceTickSize: toChainFormat(
-      params.newMinPriceTickSize || '0',
-    ).toFixed(),
-    newMinQuantityTickSize: toChainFormat(
-      params.newMinQuantityTickSize || '0',
-    ).toFixed(),
+    newMinNotional: toLegacyDec(params.newMinNotional),
+    newMinPriceTickSize: toLegacyDec(params.newMinPriceTickSize),
+    newMinQuantityTickSize: toLegacyDec(params.newMinQuantityTickSize),
   })
 
   return message
@@ -42,6 +37,9 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
   MsgUpdateSpotMarketV2.Params,
   MsgUpdateSpotMarketV2.Proto
 > {
+  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
+  static readonly eip712V1Supported = false
+
   static fromJSON(params: MsgUpdateSpotMarketV2.Params): MsgUpdateSpotMarketV2 {
     return new MsgUpdateSpotMarketV2(params)
   }
@@ -91,11 +89,6 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
       '@type': '/injective.exchange.v2.MsgUpdateSpotMarket',
       ...value,
     }
-  }
-
-  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
-  public assertEip712V1Supported(): void {
-    this.eip712V1Unsupported('MsgUpdateSpotMarketV2')
   }
 
   public toEip712V2() {

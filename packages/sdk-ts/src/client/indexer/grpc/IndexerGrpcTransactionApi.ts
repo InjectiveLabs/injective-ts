@@ -24,7 +24,11 @@ import {
   base64ToUint8Array,
 } from '../../../utils/encoding.js'
 import type { RequestOptions } from '@injectivelabs/utils'
-import type { EvmChainId, AccountAddress } from '@injectivelabs/ts-types'
+import type {
+  EvmChainId,
+  AccountAddress,
+  EIP712WrapperVersion,
+} from '@injectivelabs/ts-types'
 interface PrepareTxArgs {
   address: AccountAddress
   chainId: EvmChainId
@@ -36,7 +40,7 @@ interface PrepareTxArgs {
   feeDenom?: string
   feePrice?: string
   /** Omitted = gateway default (v2). 'v3' needs the gateway's EIP712 v3 flag. */
-  eip712Version?: 'v2' | 'v3'
+  eip712Version?: EIP712WrapperVersion
 }
 
 /**

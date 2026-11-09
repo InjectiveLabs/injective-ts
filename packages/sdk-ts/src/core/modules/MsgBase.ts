@@ -96,22 +96,22 @@ export abstract class MsgBase<
   }
 
   /**
-   * For messages the chain cannot type for EIP712 v1: fail loudly instead of
-   * returning typed data that cannot be signed
+   * Whether the chain can sign this message with EIP712 v1 on its own: it cannot type some
+   * fields (`math.LegacyDec`, `math.Int`, oneofs). Enforced for the root messages of a
+   * transaction by `assertEip712V1Supported`; nested in MsgExec or a proposal a message
+   * serializes like any other.
    */
-  protected eip712V1Unsupported(messageName: string): never {
-    throw new GeneralException(
-      new Error(
-        `EIP712_v1 is not supported for ${messageName}. Please use EIP712_v2`,
-      ),
-    )
-  }
+  static readonly eip712V1Supported: boolean = true
 
-  /**
-   * Throws for a message the chain cannot sign with EIP712 v1 on its own. Only called for the
-   * root messages of a transaction: nested in MsgExec a message serializes like any other.
-   */
-  public assertEip712V1Supported(): void {}
+  public assertEip712V1Supported(): void {
+    if (!(this.constructor as typeof MsgBase).eip712V1Supported) {
+      throw new GeneralException(
+        new Error(
+          `EIP712_v1 is not supported for ${this.constructor.name}. Please use EIP712_v2`,
+        ),
+      )
+    }
+  }
 
   public toDirectSignJSON(): string {
     return JSON.stringify(prepareSignBytes(this.toDirectSign()))

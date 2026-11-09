@@ -32,7 +32,7 @@ const fixedExchangeGas = {
 } as const
 
 // chain v1.21 AddressOrderAdmissionGas: charged per retained order after the GTB multiplier
-// ponytail: also added for atomic market orders (chain skips them), 12k overpay
+// Atomic market orders are exempt on chain, but charging it for every order keeps one rule at the cost of a 12k overpay for them
 const orderAdmissionGas = 12000
 
 const batchAnteGas = 120000

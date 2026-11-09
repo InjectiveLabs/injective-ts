@@ -1,8 +1,12 @@
 import type { Msgs } from '@injectivelabs/sdk-ts/core/modules'
-import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 import type { Network, NetworkEndpoints } from '@injectivelabs/networks'
 import type { AuthBaseAccount } from '@injectivelabs/sdk-ts/client/chain'
 import type { TxClientInclusionOptions } from '@injectivelabs/sdk-ts/core/tx'
+import type {
+  ChainId,
+  EvmChainId,
+  EIP712WrapperVersion,
+} from '@injectivelabs/ts-types'
 import type BaseWalletStrategy from '../strategy/BaseWalletStrategy.js'
 
 export interface MsgBroadcasterTxOptions {
@@ -42,7 +46,7 @@ export interface MsgBroadcasterOptions {
   /** Buffers automatic message presets by 1.2 for Cosmos wallet strategies. */
   useFixedGas?: boolean
   txTimeoutOnFeeDelegation?: boolean
-  eip712Version?: 'v2' | 'v3'
+  eip712Version?: EIP712WrapperVersion
   gasBufferCoefficient?: number
   httpHeaders?: Record<string, string>
 }

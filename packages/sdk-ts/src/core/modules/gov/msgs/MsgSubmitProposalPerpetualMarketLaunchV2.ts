@@ -135,6 +135,9 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
   MsgSubmitProposalPerpetualMarketLaunchV2.Params,
   MsgSubmitProposalPerpetualMarketLaunchV2.Proto
 > {
+  /** the chain cannot type the OpenNotionalCap oneof (no json name) for EIP712 v1 */
+  static readonly eip712V1Supported = false
+
   static fromJSON(
     params: MsgSubmitProposalPerpetualMarketLaunchV2.Params,
   ): MsgSubmitProposalPerpetualMarketLaunchV2 {
@@ -285,11 +288,6 @@ export default class MsgSubmitProposalPerpetualMarketLaunchV2 extends MsgBase<
       '@type': '/cosmos.gov.v1beta1.MsgSubmitProposal',
       ...messageWithProposalType,
     }
-  }
-
-  /** the chain cannot type the OpenNotionalCap oneof (no json name) for EIP712 v1 */
-  public assertEip712V1Supported(): void {
-    this.eip712V1Unsupported('MsgSubmitProposalPerpetualMarketLaunchV2')
   }
 
   public toEip712V2() {

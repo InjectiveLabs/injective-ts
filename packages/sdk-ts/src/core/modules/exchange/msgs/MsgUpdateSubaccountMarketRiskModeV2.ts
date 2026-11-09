@@ -1,6 +1,7 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toTypeUrl } from '../../typeUrl.js'
 import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import type { TypedDataField } from '../../../tx/eip712/types.js'
 
@@ -46,7 +47,9 @@ export default class MsgUpdateSubaccountMarketRiskModeV2 extends MsgBase<
     const proto = this.toProto()
 
     return {
-      '@type': '/injective.exchange.v2.MsgUpdateSubaccountMarketRiskMode',
+      '@type': toTypeUrl(
+        InjectiveExchangeV2TxPb.MsgUpdateSubaccountMarketRiskMode,
+      ),
       ...proto,
     }
   }
@@ -76,7 +79,9 @@ export default class MsgUpdateSubaccountMarketRiskModeV2 extends MsgBase<
     const { value } = this.toAminoRaw()
 
     return {
-      '@type': '/injective.exchange.v2.MsgUpdateSubaccountMarketRiskMode',
+      '@type': toTypeUrl(
+        InjectiveExchangeV2TxPb.MsgUpdateSubaccountMarketRiskMode,
+      ),
       ...value,
     }
   }
@@ -103,7 +108,9 @@ export default class MsgUpdateSubaccountMarketRiskModeV2 extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: '/injective.exchange.v2.MsgUpdateSubaccountMarketRiskMode',
+      type: toTypeUrl(
+        InjectiveExchangeV2TxPb.MsgUpdateSubaccountMarketRiskMode,
+      ),
       message: proto,
     }
   }

@@ -1,5 +1,6 @@
 import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toTypeUrl } from '../../typeUrl.js'
 import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgSetConsolidatedInsurancePoolPause {
@@ -45,8 +46,9 @@ export default class MsgSetConsolidatedInsurancePoolPause extends MsgBase<
     const proto = this.toProto()
 
     return {
-      '@type':
-        '/injective.insurance.v1beta1.MsgSetConsolidatedInsurancePoolPause',
+      '@type': toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgSetConsolidatedInsurancePoolPause,
+      ),
       ...proto,
     }
   }
@@ -75,8 +77,9 @@ export default class MsgSetConsolidatedInsurancePoolPause extends MsgBase<
     const { value } = this.toAminoRaw()
 
     return {
-      '@type':
-        '/injective.insurance.v1beta1.MsgSetConsolidatedInsurancePoolPause',
+      '@type': toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgSetConsolidatedInsurancePoolPause,
+      ),
       ...value,
     }
   }
@@ -85,7 +88,9 @@ export default class MsgSetConsolidatedInsurancePoolPause extends MsgBase<
     const proto = this.toProto()
 
     return {
-      type: '/injective.insurance.v1beta1.MsgSetConsolidatedInsurancePoolPause',
+      type: toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgSetConsolidatedInsurancePoolPause,
+      ),
       message: proto,
     }
   }

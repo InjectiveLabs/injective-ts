@@ -44,8 +44,8 @@ import {
   Wallet,
   isCosmosWallet,
   WalletDeviceType,
-  isEip712V3Wallet,
   isEvmBrowserWallet,
+  resolveEip712Version,
   isEip712V2OnlyWallet,
   createEip712StdSignDoc,
   isCosmosAminoOnlyWallet,
@@ -916,9 +916,10 @@ export class MsgBroadcaster {
       chainId: evmChainId,
       gasLimit,
       estimateGas,
-      eip712Version:
-        this.eip712Version ??
-        (isEip712V3Wallet(walletStrategy.wallet) ? 'v3' : 'v2'),
+      eip712Version: resolveEip712Version(
+        walletStrategy.wallet,
+        this.eip712Version,
+      ),
     })
 
     walletStrategy.emit(

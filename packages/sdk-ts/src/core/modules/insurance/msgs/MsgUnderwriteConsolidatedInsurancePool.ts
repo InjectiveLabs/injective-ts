@@ -1,6 +1,7 @@
 import * as CosmosBaseV1Beta1CoinPb from '@injectivelabs/core-proto-ts-v2/generated/cosmos/base/v1beta1/coin_pb'
 import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toTypeUrl } from '../../typeUrl.js'
 import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgUnderwriteConsolidatedInsurancePool {
@@ -26,6 +27,9 @@ export default class MsgUnderwriteConsolidatedInsurancePool extends MsgBase<
   MsgUnderwriteConsolidatedInsurancePool.Params,
   MsgUnderwriteConsolidatedInsurancePool.Proto
 > {
+  /** the chain cannot type `math.Int` fields for EIP712 v1 */
+  static readonly eip712V1Supported = false
+
   static fromJSON(
     params: MsgUnderwriteConsolidatedInsurancePool.Params,
   ): MsgUnderwriteConsolidatedInsurancePool {
@@ -51,8 +55,9 @@ export default class MsgUnderwriteConsolidatedInsurancePool extends MsgBase<
     const proto = this.toProto()
 
     return {
-      '@type':
-        '/injective.insurance.v1beta1.MsgUnderwriteConsolidatedInsurancePool',
+      '@type': toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgUnderwriteConsolidatedInsurancePool,
+      ),
       ...proto,
     }
   }
@@ -81,22 +86,20 @@ export default class MsgUnderwriteConsolidatedInsurancePool extends MsgBase<
     const { value } = this.toAminoRaw()
 
     return {
-      '@type':
-        '/injective.insurance.v1beta1.MsgUnderwriteConsolidatedInsurancePool',
+      '@type': toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgUnderwriteConsolidatedInsurancePool,
+      ),
       ...value,
     }
-  }
-
-  /** the chain cannot type `math.Int` fields for EIP712 v1 */
-  public assertEip712V1Supported(): void {
-    this.eip712V1Unsupported('MsgUnderwriteConsolidatedInsurancePool')
   }
 
   public toDirectSign() {
     const proto = this.toProto()
 
     return {
-      type: '/injective.insurance.v1beta1.MsgUnderwriteConsolidatedInsurancePool',
+      type: toTypeUrl(
+        InjectiveInsuranceV1Beta1TxPb.MsgUnderwriteConsolidatedInsurancePool,
+      ),
       message: proto,
     }
   }

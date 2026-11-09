@@ -11,6 +11,11 @@ type RetiredBatchFields = Partial<
   >
 >
 
+/**
+ * Fails loudly for JS callers that still pass the retired binary-options batch fields. This
+ * guard can go in a later major release. The empty `binary_options_*` fields it protects in the
+ * signing payload cannot: they stay while core's MsgBatchUpdateOrders schema defines them.
+ */
 export const assertNoBinaryOptionsOrders = (params: object) => {
   // Legacy JavaScript callers can still supply the removed SDK parameters.
   const legacy = params as RetiredBatchFields

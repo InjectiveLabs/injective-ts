@@ -272,6 +272,9 @@ const encodeMessage = (
   return output
 }
 
+// a schema never changes, so each type is checked once (a failed check is not remembered)
+const checkedTypes = new WeakSet<MessageType<any>>()
+
 /** amino-json of a top-level (signable) message: `{ type: <amino.name>, value }` */
 export const toAminoJson = <T extends object>(
   type: MessageType<T>,
@@ -286,7 +289,10 @@ export const toAminoJson = <T extends object>(
     )
   }
 
-  assertAminoJsonSupported(type)
+  if (!checkedTypes.has(type)) {
+    assertAminoJsonSupported(type)
+    checkedTypes.add(type)
+  }
 
   return {
     type: aminoName,

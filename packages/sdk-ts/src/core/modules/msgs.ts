@@ -39,6 +39,7 @@ import type MsgCancelSpotOrder from './exchange/msgs/MsgCancelSpotOrder.js'
 import type MsgRevokeAllowance from './feegrant/msgs/MsgRevokeAllowance.js'
 import type MsgExternalTransfer from './exchange/msgs/MsgExternalTransfer.js'
 import type MsgOffsetPositionV2 from './exchange/msgs/MsgOffsetPositionV2.js'
+import type MsgUpdateNamespace from './permissions/msgs/MsgUpdateNamespace.js'
 import type MsgBatchUpdateOrders from './exchange/msgs/MsgBatchUpdateOrders.js'
 import type MsgLiquidatePosition from './exchange/msgs/MsgLiquidatePosition.js'
 import type MsgInstantiateContract from './wasm/msgs/MsgInstantiateContract.js'
@@ -221,5 +222,6 @@ export type Msgs =
   | WasmMsgs
   | Erc20Msgs
   | OracleMsgs
+  | MsgUpdateNamespace
 
 export type ExchangeMsgs = ExchangeV1Msgs | ExchangeV2Msgs

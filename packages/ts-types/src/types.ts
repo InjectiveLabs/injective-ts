@@ -492,3 +492,6 @@ export const EIP712Version = {
 } as const
 
 export type EIP712Version = (typeof EIP712Version)[keyof typeof EIP712Version]
+
+/** The EIP712 wrapper a gateway prepares a fee-delegated transaction with ('v3' needs the gateway's EIP712 v3 flag) */
+export type EIP712WrapperVersion = 'v2' | 'v3'

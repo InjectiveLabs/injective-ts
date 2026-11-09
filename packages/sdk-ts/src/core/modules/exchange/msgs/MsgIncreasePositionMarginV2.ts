@@ -35,6 +35,9 @@ export default class MsgIncreasePositionMarginV2 extends MsgBase<
   MsgIncreasePositionMarginV2.Params,
   MsgIncreasePositionMarginV2.Proto
 > {
+  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
+  static readonly eip712V1Supported = false
+
   static fromJSON(
     params: MsgIncreasePositionMarginV2.Params,
   ): MsgIncreasePositionMarginV2 {
@@ -92,11 +95,6 @@ export default class MsgIncreasePositionMarginV2 extends MsgBase<
       '@type': '/injective.exchange.v2.MsgIncreasePositionMargin',
       ...value,
     }
-  }
-
-  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
-  public assertEip712V1Supported(): void {
-    this.eip712V1Unsupported('MsgIncreasePositionMarginV2')
   }
 
   public toEip712V2() {
