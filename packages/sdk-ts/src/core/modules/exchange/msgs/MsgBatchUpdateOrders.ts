@@ -423,25 +423,29 @@ export default class MsgBatchUpdateOrders extends MsgBase<
   }
 
   public toEip712() {
+    const { params } = this
     const amino = this.toAmino()
-    const value = amino.value as unknown as Record<string, unknown>
-    const filtered: Record<string, unknown> = {}
+    const hasCancelAll =
+      (params.spotMarketIdsToCancelAll &&
+        params.spotMarketIdsToCancelAll.length > 0) ||
+      (params.derivativeMarketIdsToCancelAll &&
+        params.derivativeMarketIdsToCancelAll.length > 0) ||
+      (params.binaryOptionsMarketIdsToCancelAll &&
+        params.binaryOptionsMarketIdsToCancelAll.length > 0)
 
-    for (const [key, field] of Object.entries(value)) {
-      if (Array.isArray(field)) {
-        if (field.length > 0) {
-          filtered[key] = field
-        }
-
-        continue
-      }
-
-      filtered[key] = field
+    if (hasCancelAll) {
+      return amino
     }
+
+    const value = {
+      ...(amino.value as unknown as Record<string, unknown>),
+    }
+
+    delete value.subaccount_id
 
     return {
       type: amino.type,
-      value: filtered as unknown as typeof amino.value,
+      value: value as unknown as typeof amino.value,
     }
   }
 
