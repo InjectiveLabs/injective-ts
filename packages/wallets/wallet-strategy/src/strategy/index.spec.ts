@@ -1,5 +1,8 @@
 import { vi } from 'vitest'
-import { Wallet } from '@injectivelabs/wallet-base/runtime-light'
+import {
+  Wallet,
+  WalletStrategyEmitterEventType,
+} from '@injectivelabs/wallet-base/runtime-light'
 import { WalletStrategy } from './index.js'
 import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 
@@ -104,6 +107,22 @@ describe('WalletStrategy.setMetadata', () => {
       defaultOrganizationId: 'org',
       apiBaseUrl: 'url',
     })
+  })
+
+  it('forgets the Privy wallet when a disconnect listener switches wallets', async () => {
+    const walletStrategy = createWalletStrategy()
+
+    await walletStrategy.setMetadata({ privy: { address: '0x02' } } as any)
+    await walletStrategy.setWallet(Wallet.Privy)
+    ;(walletStrategy.getStrategy() as any).disconnect = vi.fn(async () => {})
+    walletStrategy
+      .getEmitter()
+      .on(WalletStrategyEmitterEventType.WalletStrategyDisconnect, () => {
+        void walletStrategy.setWallet(Wallet.Turnkey)
+      })
+    await walletStrategy.disconnect()
+
+    expect((walletStrategy as any).args.metadata.privy).toBeUndefined()
   })
 
   it('passes metadata set during a load to the loaded strategy', async () => {

@@ -292,10 +292,19 @@ export class WalletStrategy extends BaseWalletStrategy {
   }
 
   public async disconnect() {
+    // Read before the await: a disconnect listener can switch wallets
+    const wallet = this.wallet
+    const privy = this.args.metadata?.privy
+
     await super.disconnect()
 
-    // The Privy strategy forgets its wallet; strategies loaded later must not get it back
-    if (this.wallet === Wallet.Privy && this.args.metadata?.privy) {
+    // The Privy strategy forgets its wallet; strategies loaded later must not get it
+    // back. Privy metadata set during the disconnect stays
+    if (
+      wallet === Wallet.Privy &&
+      privy &&
+      this.args.metadata?.privy === privy
+    ) {
       const { privy: _privy, ...metadata } = this.args.metadata
 
       this.args = { ...this.args, metadata }
