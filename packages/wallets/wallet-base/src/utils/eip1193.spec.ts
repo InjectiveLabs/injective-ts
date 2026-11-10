@@ -42,6 +42,22 @@ describe('EIP-1193 provider for a viem account', () => {
     signTransaction: vi.fn(),
   } as unknown as LocalAccount
 
+  it.each(['accountsChanged', 'chainChanged', 'disconnect'])(
+    'accepts %s listeners without emitting events',
+    async (event) => {
+      const provider = await getEip1193ProviderForAccount(account, 1)
+      const listener = vi.fn()
+
+      expect(() => provider.on(event, listener)).not.toThrow()
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x2' }],
+      })
+      expect(listener).not.toHaveBeenCalled()
+      expect(() => provider.removeListener(event, listener)).not.toThrow()
+    },
+  )
+
   it.each(['eth_requestAccounts', 'eth_accounts'])(
     'resolves %s from the account',
     async (method) => {

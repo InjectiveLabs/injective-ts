@@ -207,13 +207,10 @@ class CustomEip1193Provider implements Eip1193Provider {
     return getEvmChainConfig(this.chainId)
   }
 
-  on(_event: string, _listener: (...args: any[]) => void) {
-    throw new Error('Not implemented')
-  }
+  // This account-backed provider does not emit events, but accepts subscriptions.
+  on(_event: string, _listener: (...args: any[]) => void) {}
 
-  removeListener(..._args: any[]) {
-    throw new Error('Not implemented!')
-  }
+  removeListener(..._args: any[]) {}
 
   async request(args: { method: string; params?: any[] }) {
     if (
