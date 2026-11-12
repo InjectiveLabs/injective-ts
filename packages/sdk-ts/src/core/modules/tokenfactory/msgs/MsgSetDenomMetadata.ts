@@ -111,6 +111,39 @@ export default class MsgSetDenomMetadata extends MsgBase<
     }
   }
 
+  /**
+   * EIP-712 v2 signatures cover the message JSON the chain rebuilds with
+   * `MarshalInterfaceJSON`, which keeps proto field order and emits defaults,
+   * so an unset `admin_burn_disabled` must be signed as `null`, not omitted.
+   */
+  public toEip712V2() {
+    const proto = this.toProto()
+    const metadata = proto.metadata
+
+    return {
+      '@type': '/injective.tokenfactory.v1beta1.MsgSetDenomMetadata',
+      sender: proto.sender,
+      metadata: {
+        description: metadata?.description || '',
+        denom_units: (metadata?.denomUnits || []).map((unit) => ({
+          denom: unit.denom,
+          exponent: unit.exponent,
+          aliases: unit.aliases,
+        })),
+        base: metadata?.base || '',
+        display: metadata?.display || '',
+        name: metadata?.name || '',
+        symbol: metadata?.symbol || '',
+        uri: metadata?.uri || '',
+        uri_hash: metadata?.uriHash || '',
+        decimals: metadata?.decimals ?? 0,
+      },
+      admin_burn_disabled: proto.adminBurnDisabled
+        ? { should_disable: proto.adminBurnDisabled.shouldDisable }
+        : null,
+    }
+  }
+
   public toDirectSign() {
     const proto = this.toProto()
 

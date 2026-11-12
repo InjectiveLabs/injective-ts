@@ -106,6 +106,57 @@ describe('MsgSetDenomMetadata', () => {
     })
   })
 
+  describe('generates EIP712 v2 messages matching the chain JSON', () => {
+    const chainMetadataJson =
+      '{"description":"test description","denom_units":[{"denom":"factory/test","exponent":1,"aliases":["uinj"]}],' +
+      '"base":"factory/test","display":"factory/test","name":"Test","symbol":"TEST","uri":"https://injective.com","uri_hash":"test"'
+    const toChainMessageJson = (
+      metadataTail: string,
+      adminBurnDisabled: string,
+    ) =>
+      `{"@type":"${protoType}","sender":"${params.sender}","metadata":${chainMetadataJson}${metadataTail},"admin_burn_disabled":${adminBurnDisabled}}`
+    const getEip712MessagesJson = (denomMetadataMessage: MsgSetDenomMetadata) =>
+      getEip712TypedDataV2({
+        msgs: denomMetadataMessage,
+        tx: {
+          accountNumber: '1',
+          sequence: '2',
+          timeoutHeight: '3',
+          chainId: 'injective-1',
+        },
+        evmChainId: 1,
+      }).message.msgs
+
+    it('signs admin_burn_disabled when set', () => {
+      expect(getEip712MessagesJson(message)).toBe(
+        `[${toChainMessageJson(',"decimals":18}', '{"should_disable":true}')}]`,
+      )
+    })
+
+    it('signs an unset admin_burn_disabled as null', () => {
+      const withoutAdminBurn = MsgSetDenomMetadata.fromJSON({
+        ...params,
+        adminBurnDisabled: undefined,
+      })
+
+      expect(getEip712MessagesJson(withoutAdminBurn)).toBe(
+        `[${toChainMessageJson(',"decimals":18}', 'null')}]`,
+      )
+    })
+
+    it('signs zero decimals as a number', () => {
+      const zeroDecimals = MsgSetDenomMetadata.fromJSON({
+        ...params,
+        adminBurnDisabled: undefined,
+        metadata: { ...params.metadata, decimals: 0 },
+      })
+
+      expect(getEip712MessagesJson(zeroDecimals)).toBe(
+        `[${toChainMessageJson(',"decimals":0}', 'null')}]`,
+      )
+    })
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,
