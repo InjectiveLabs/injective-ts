@@ -45,6 +45,7 @@ import {
   isCosmosWallet,
   WalletDeviceType,
   isEvmBrowserWallet,
+  resolveEip712Version,
   isEip712V2OnlyWallet,
   createEip712StdSignDoc,
   isCosmosAminoOnlyWallet,
@@ -151,6 +152,8 @@ export class MsgBroadcaster {
 
   public txTimeoutOnFeeDelegation: boolean = false
 
+  public eip712Version?: MsgBroadcasterOptions['eip712Version']
+
   public evmChainId?: EvmChainIdType
 
   public gasBufferCoefficient: number = 1.2
@@ -178,6 +181,7 @@ export class MsgBroadcaster {
       options.txTimeoutOnFeeDelegation !== undefined
         ? options.txTimeoutOnFeeDelegation
         : true
+    this.eip712Version = options.eip712Version
     this.gasBufferCoefficient = options.gasBufferCoefficient || 1.2
     this.chainId = options.chainId || networkInfo.chainId
     this.evmChainId = options.evmChainId || networkInfo.evmChainId
@@ -202,6 +206,10 @@ export class MsgBroadcaster {
       options.txTimeoutOnFeeDelegation !== undefined
         ? options.txTimeoutOnFeeDelegation
         : this.txTimeoutOnFeeDelegation
+    this.eip712Version =
+      options.eip712Version !== undefined
+        ? options.eip712Version
+        : this.eip712Version
     this.txInclusion =
       options.txInclusion !== undefined ? options.txInclusion : this.txInclusion
   }
@@ -908,6 +916,10 @@ export class MsgBroadcaster {
       chainId: evmChainId,
       gasLimit,
       estimateGas,
+      eip712Version: resolveEip712Version(
+        walletStrategy.wallet,
+        this.eip712Version,
+      ),
     })
 
     walletStrategy.emit(

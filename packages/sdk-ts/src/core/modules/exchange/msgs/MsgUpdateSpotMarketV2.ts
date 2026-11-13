@@ -1,5 +1,7 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toLegacyDec } from './utils/legacyDec.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgUpdateSpotMarketV2 {
@@ -20,9 +22,9 @@ const createMessage = (params: MsgUpdateSpotMarketV2.Params) => {
     admin: params.admin,
     marketId: params.marketId,
     newTicker: params.newTicker || '',
-    newMinNotional: params.newMinNotional || '0',
-    newMinPriceTickSize: params.newMinPriceTickSize || '0',
-    newMinQuantityTickSize: params.newMinQuantityTickSize || '0',
+    newMinNotional: toLegacyDec(params.newMinNotional),
+    newMinPriceTickSize: toLegacyDec(params.newMinPriceTickSize),
+    newMinQuantityTickSize: toLegacyDec(params.newMinQuantityTickSize),
   })
 
   return message
@@ -35,6 +37,9 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
   MsgUpdateSpotMarketV2.Params,
   MsgUpdateSpotMarketV2.Proto
 > {
+  /** the chain cannot type `math.LegacyDec` fields for EIP712 v1 */
+  static readonly eip712V1Supported = false
+
   static fromJSON(params: MsgUpdateSpotMarketV2.Params): MsgUpdateSpotMarketV2 {
     return new MsgUpdateSpotMarketV2(params)
   }
@@ -53,6 +58,13 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgUpdateSpotMarket,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const { params } = this
     const message = {
       admin: params.admin,
@@ -64,32 +76,18 @@ export default class MsgUpdateSpotMarketV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgUpdateSpotMarket',
+      type: 'exchange/v2/MsgUpdateSpotMarket',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {
       '@type': '/injective.exchange.v2.MsgUpdateSpotMarket',
       ...value,
-    }
-  }
-
-  public toEip712() {
-    const amino = this.toAmino()
-    const { type, value } = amino
-
-    const messageAdjusted = {
-      ...value,
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
     }
   }
 

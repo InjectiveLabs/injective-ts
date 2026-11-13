@@ -1,5 +1,6 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgCancelPostOnlyModeV2 {
   export interface Params {
@@ -50,6 +51,13 @@ export default class MsgCancelPostOnlyModeV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgCancelPostOnlyMode,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const { params } = this
     const msg = createMessage(params)
     const message = {
@@ -57,32 +65,18 @@ export default class MsgCancelPostOnlyModeV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgCancelPostOnlyMode',
+      type: 'exchange/v2/MsgCancelPostOnlyMode',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {
       '@type': '/injective.exchange.v2.MsgCancelPostOnlyMode',
       ...value,
-    }
-  }
-
-  public toEip712() {
-    const amino = this.toAmino()
-    const { type, value } = amino
-
-    const messageAdjusted = {
-      ...value,
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
     }
   }
 

@@ -52,12 +52,24 @@ export interface PerpetualMarketInfo {
   hourlyInterestRate: string
   hourlyFundingRateCap: string
   nextFundingTimestamp: number
+  /** chain v1.21+, zero selects legacy funding */
+  fundingImpactNotional?: string
 }
 
 export interface PerpetualMarketFunding {
   lastTimestamp: number
   cumulativePrice: string
   cumulativeFunding: string
+  periodStart?: number
+  lastPremium?: string
+  lastSampleTimestamp?: number
+}
+
+/** chain v1.21+, `referencePriceSource` is the proto ReferencePriceSource enum value */
+export interface ReferencePriceGateConfig {
+  referencePriceSource: number
+  referenceWindowSeconds: number
+  maxOpenDeviationBps: number
 }
 
 export interface ExpiryFuturesMarketInfo {
@@ -82,6 +94,8 @@ export interface BaseDerivativeMarket {
   serviceProviderFee: string
   minQuantityTickSize: number
   quoteToken: TokenMeta | undefined
+  syntheticTradeFeeRate?: string
+  referencePriceGateConfig?: ReferencePriceGateConfig
 }
 
 export interface PerpetualMarket extends BaseDerivativeMarket {

@@ -1,3 +1,4 @@
+import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import * as InjectiveExchangeV2ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/exchange_pb'
@@ -20,7 +21,7 @@ const params: MsgUpdateSubaccountRiskProfileV2['params'] = {
 }
 
 const protoType = '/injective.exchange.v2.MsgUpdateSubaccountRiskProfile'
-const protoTypeShort = 'exchange/MsgUpdateSubaccountRiskProfile'
+const protoTypeShort = 'exchange/v2/MsgUpdateSubaccountRiskProfile'
 const message = MsgUpdateSubaccountRiskProfileV2.fromJSON(params)
 
 describe('MsgUpdateSubaccountRiskProfileV2', () => {
@@ -36,18 +37,19 @@ describe('MsgUpdateSubaccountRiskProfileV2', () => {
   })
 
   it('generates proper amino', () => {
-    expect(message.toAmino()).toStrictEqual({
-      type: protoTypeShort,
-      value: {
-        sender: params.sender,
-        subaccount_id: params.subaccountId,
-        risk_profile: {
-          mode: params.riskProfile.mode,
-          reservation_policy: params.riskProfile.reservationPolicy,
-          credit_line_id: params.riskProfile.creditLineId,
+    expect(message.toAmino()).toMatchInlineSnapshot(`
+      {
+        "type": "exchange/v2/MsgUpdateSubaccountRiskProfile",
+        "value": {
+          "risk_profile": {
+            "mode": 2,
+            "reservation_policy": 1,
+          },
+          "sender": "inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku",
+          "subaccount_id": "0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000",
         },
-      },
-    })
+      }
+    `)
   })
 
   it('matches chain-compatible EIP712 v1 risk profile fields', () => {
@@ -68,8 +70,18 @@ describe('MsgUpdateSubaccountRiskProfileV2', () => {
     ])
   })
 
+  it('EIP712 v1 values and type equal the amino-json of the proto', () => {
+    const eip712 = message.toEip712()
+    const amino = message.toAmino()
+
+    expect(eip712.type).toBe(amino.type)
+    expect(eip712.value).toStrictEqual(amino.value)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
+      network: Network.Testnet,
       messages: message,
     })
 
@@ -83,6 +95,9 @@ describe('MsgUpdateSubaccountRiskProfileV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+      expect(message.toAmino()).toStrictEqual(
+        JSON.parse(txResponse.data).message.msgs[0],
+      )
     })
 
     it('EIP712 v2', async () => {
@@ -95,6 +110,36 @@ describe('MsgUpdateSubaccountRiskProfileV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v1 rejects the omitted field (zero mode / policy are omitted)', () => {
+      const variant = MsgUpdateSubaccountRiskProfileV2.fromJSON({
+        ...params,
+        riskProfile: { mode: 0, reservationPolicy: 0, creditLineId: '' },
+      })
+      const { eip712Args } = prepareEip712({ messages: variant })
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
+      )
+    })
+
+    it('EIP712 v1 matches the gateway (a credit line is included and typed)', async () => {
+      const variant = MsgUpdateSubaccountRiskProfileV2.fromJSON({
+        ...params,
+        riskProfile: { ...params.riskProfile, creditLineId: 'line-1' },
+      })
+      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
+        prepareEip712({ network: Network.Testnet, messages: variant })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...variantRequest,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(getEip712TypedData(variantArgs)).toStrictEqual(
+        JSON.parse(txResponse.data),
+      )
     })
   })
 })

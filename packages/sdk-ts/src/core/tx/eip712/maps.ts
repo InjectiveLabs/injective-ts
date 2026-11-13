@@ -33,14 +33,15 @@ export const objectKeysToEip712Types = ({
     'proposal_id',
     'creation_height',
     'contract_hook_max_gas',
+    'owner_blacklist_query_max_gas',
     'expiration_block',
+    'redemption_notice_period_seconds',
   ]
   const stringFieldsWithNumberValue = [
     'timeout_timestamp',
     'revision_height',
     'revision_number',
   ]
-  const stringFieldsToOmitIfEmpty = ['cid']
   const fieldsToOmitIfEmpty = ['admin_info', 'order']
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
@@ -70,7 +71,8 @@ export const objectKeysToEip712Types = ({
         type: numberTypeToReflectionNumberType(property, messageType),
       })
     } else if (type === 'string') {
-      if (stringFieldsToOmitIfEmpty.includes(property) && !propertyValue) {
+      // the chain's amino-json omits an empty string, so it declares no type for it
+      if (!propertyValue) {
         continue
       }
 
@@ -171,6 +173,45 @@ export const objectKeysToEip712Types = ({
 }
 
 /**
+ * A wrapper (MsgExec, a proposal) infers its schema from the values it embeds,
+ * which cannot declare what a child omits or what a child's own rules decide.
+ * Replaces the schema inferred for the child at `nestedPrimaryType` with the
+ * child's own `toEip712Types()`, renamed to where it sits in the wrapper: type
+ * names are the path of the field (`TypeSwapParams` is `TypeMsgsValueSwapParams`
+ * under `msgs[].value`)
+ */
+export const graftEip712Types = (
+  types: Map<string, TypedDataField[]>,
+  nestedPrimaryType: string,
+  childTypes: Map<string, TypedDataField[]>,
+) => {
+  const rename = (name: string) =>
+    name === 'MsgValue'
+      ? nestedPrimaryType
+      : nestedPrimaryType + name.replace(/^Type/, '')
+  const renameFieldType = (type: string) => {
+    const name = type.replace(/\[\]$/, '')
+
+    return childTypes.has(name) ? rename(name) + type.slice(name.length) : type
+  }
+
+  for (const name of [...types.keys()]) {
+    if (name.startsWith(nestedPrimaryType)) {
+      types.delete(name)
+    }
+  }
+
+  for (const [name, fields] of childTypes) {
+    types.set(
+      rename(name),
+      fields.map((field) => ({ ...field, type: renameFieldType(field.type) })),
+    )
+  }
+
+  return types
+}
+
+/**
  * The chain always includes expiration_block in order type schemas
  * even when the EIP712 v1 message value omits zero-valued fields.
  * Patch the resolved type map to add it to any of the given keys
@@ -234,6 +275,10 @@ export const numberTypeToReflectionNumberType = (
       base_decimals: 'uint32',
       quote_decimals: 'uint32',
     },
+    'exchange/v2/MsgInstantSpotMarketLaunch': {
+      base_decimals: 'uint32',
+      quote_decimals: 'uint32',
+    },
   }
 
   if (msgTypeKey && messageTypeToNumberTypeMaps[msgTypeKey] && property) {
@@ -262,6 +307,12 @@ export const numberTypeToReflectionNumberType = (
       return 'uint32'
     case 'oracle_type':
       return 'int32'
+    case 'reference_price_source':
+      return 'int32'
+    case 'reference_window_seconds':
+      return 'uint32'
+    case 'max_open_deviation_bps':
+      return 'uint32'
     case 'exponent':
       return 'uint32'
     case 'round':
@@ -272,6 +323,10 @@ export const numberTypeToReflectionNumberType = (
       return 'int64'
     case 'expiration_block':
       return 'int64'
+    case 'redemption_notice_period_seconds':
+      return 'int64'
+    case 'quote_decimals':
+      return 'uint32'
     case 'option':
       return 'int32'
     case 'proposal_id':
@@ -458,9 +513,9 @@ export const protoTypeToAminoType = (type: string): string => {
     case 'injective.exchange.v1beta1.MsgTransferAndExecute':
       return 'exchange/MsgTransferAndExecute'
     case 'injective.exchange.v2.MsgUpdateSpotMarket':
-      return 'exchange/MsgUpdateSpotMarket'
+      return 'exchange/v2/MsgUpdateSpotMarket'
     case 'injective.exchange.v2.MsgUpdateDerivativeMarket':
-      return 'exchange/MsgUpdateDerivativeMarket'
+      return 'exchange/v2/MsgUpdateDerivativeMarket'
 
     case 'injective.exchange.v1beta1.CreateSpotLimitOrderAuthz':
       return 'exchange/CreateSpotLimitOrderAuthz'
@@ -487,61 +542,63 @@ export const protoTypeToAminoType = (type: string): string => {
 
     // Exchange v2
     case 'injective.exchange.v2.MsgUpdateSwapParams':
-      return 'exchange/MsgUpdateSwapParams'
+      return 'exchange/v2/MsgUpdateSwapParams'
+    case 'injective.exchange.v2.MsgUpdateSubaccountMarketRiskMode':
+      return 'exchange/v2/MsgUpdateSubaccountMarketRiskMode'
     case 'injective.exchange.v2.MsgSetDelegationTransferReceivers':
-      return 'exchange/MsgSetDelegationTransferReceivers'
+      return 'exchange/v2/MsgSetDelegationTransferReceivers'
     case 'injective.exchange.v2.MsgDeposit':
-      return 'exchange/MsgDeposit'
+      return 'exchange/v2/MsgDeposit'
     case 'injective.exchange.v2.MsgWithdraw':
-      return 'exchange/MsgWithdraw'
+      return 'exchange/v2/MsgWithdraw'
     case 'injective.exchange.v2.MsgSignData':
       return 'exchange/MsgSignData'
     case 'injective.exchange.v2.MsgRewardsOptOut':
-      return 'exchange/MsgRewardsOptOut'
+      return 'exchange/v2/MsgRewardsOptOut'
     case 'injective.exchange.v2.MsgCancelSpotOrder':
-      return 'exchange/MsgCancelSpotOrder'
+      return 'exchange/v2/MsgCancelSpotOrder'
     case 'injective.exchange.v2.MsgExternalTransfer':
-      return 'exchange/MsgExternalTransfer'
+      return 'exchange/v2/MsgExternalTransfer'
     case 'injective.exchange.v2.MsgBatchUpdateOrders':
-      return 'exchange/MsgBatchUpdateOrders'
+      return 'exchange/v2/MsgBatchUpdateOrders'
     case 'injective.exchange.v2.MsgLiquidatePosition':
-      return 'exchange/MsgLiquidatePosition'
+      return 'exchange/v2/MsgLiquidatePosition'
     case 'injective.exchange.v2.MsgReclaimLockedFunds':
-      return 'exchange/MsgReclaimLockedFunds'
+      return 'exchange/v2/MsgReclaimLockedFunds'
     case 'injective.exchange.v2.MsgAuthorizeStakeGrants':
-      return 'exchange/MsgAuthorizeStakeGrants'
+      return 'exchange/v2/MsgAuthorizeStakeGrants'
     case 'injective.exchange.v2.MsgCancelDerivativeOrder':
-      return 'exchange/MsgCancelDerivativeOrder'
+      return 'exchange/v2/MsgCancelDerivativeOrder'
     case 'injective.exchange.v2.MsgBatchCancelSpotOrders':
-      return 'exchange/MsgBatchCancelSpotOrders'
+      return 'exchange/v2/MsgBatchCancelSpotOrders'
     case 'injective.exchange.v2.MsgCreateSpotLimitOrder':
-      return 'exchange/MsgCreateSpotLimitOrder'
+      return 'exchange/v2/MsgCreateSpotLimitOrder'
     case 'injective.exchange.v2.MsgCreateSpotMarketOrder':
-      return 'exchange/MsgCreateSpotMarketOrder'
+      return 'exchange/v2/MsgCreateSpotMarketOrder'
     case 'injective.exchange.v2.MsgIncreasePositionMargin':
-      return 'exchange/MsgIncreasePositionMargin'
+      return 'exchange/v2/MsgIncreasePositionMargin'
     case 'injective.exchange.v2.MsgDecreasePositionMargin':
-      return 'exchange/MsgDecreasePositionMargin'
+      return 'exchange/v2/MsgDecreasePositionMargin'
     case 'injective.exchange.v2.MsgInstantSpotMarketLaunch':
-      return 'exchange/MsgInstantSpotMarketLaunch'
+      return 'exchange/v2/MsgInstantSpotMarketLaunch'
     case 'injective.exchange.v2.MsgCancelBinaryOptionsOrder':
-      return 'exchange/MsgCancelBinaryOptionsOrder'
+      return 'exchange/v2/MsgCancelBinaryOptionsOrder'
     case 'injective.exchange.v2.MsgCreateDerivativeLimitOrder':
-      return 'exchange/MsgCreateDerivativeLimitOrder'
+      return 'exchange/v2/MsgCreateDerivativeLimitOrder'
     case 'injective.exchange.v2.MsgBatchCancelDerivativeOrders':
-      return 'exchange/MsgBatchCancelDerivativeOrders'
+      return 'exchange/v2/MsgBatchCancelDerivativeOrders'
     case 'injective.exchange.v2.MsgCreateDerivativeMarketOrder':
-      return 'exchange/MsgCreateDerivativeMarketOrder'
+      return 'exchange/v2/MsgCreateDerivativeMarketOrder'
     case 'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder':
-      return 'exchange/MsgCreateBinaryOptionsLimitOrder'
+      return 'exchange/v2/MsgCreateBinaryOptionsLimitOrder'
     case 'injective.exchange.v2.MsgAdminUpdateBinaryOptionsMarket':
-      return 'exchange/MsgAdminUpdateBinaryOptionsMarket'
+      return 'exchange/v2/MsgAdminUpdateBinaryOptionsMarket'
     case 'injective.exchange.v2.MsgBatchCancelBinaryOptionsOrders':
-      return 'exchange/MsgBatchCancelBinaryOptionsOrders'
+      return 'exchange/v2/MsgBatchCancelBinaryOptionsOrders'
     case 'injective.exchange.v2.MsgCreateBinaryOptionsMarketOrder':
-      return 'exchange/MsgCreateBinaryOptionsMarketOrder'
+      return 'exchange/v2/MsgCreateBinaryOptionsMarketOrder'
     case 'injective.exchange.v2.MsgInstantBinaryOptionsMarketLaunch':
-      return 'exchange/MsgInstantBinaryOptionsMarketLaunch'
+      return 'exchange/v2/MsgInstantBinaryOptionsMarketLaunch'
 
     // Auction
     case 'injective.auction.v1beta1.MsgBid':
@@ -554,6 +611,16 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'insurance/MsgUnderwrite'
     case 'injective.insurance.v1beta1.MsgRequestRedemption':
       return 'insurance/MsgRequestRedemption'
+    case 'injective.insurance.v1beta1.MsgCreateConsolidatedInsurancePool':
+      return 'insurance/MsgCreateConsolidatedInsurancePool'
+    case 'injective.insurance.v1beta1.MsgSetConsolidatedInsurancePoolPause':
+      return 'insurance/MsgSetConsolidatedInsurancePoolPause'
+    case 'injective.insurance.v1beta1.MsgUpdateConsolidatedInsurancePolicy':
+      return 'insurance/MsgUpdateConsolidatedInsurancePolicy'
+    case 'injective.insurance.v1beta1.MsgUnderwriteConsolidatedInsurancePool':
+      return 'insurance/MsgUnderwriteConsolidatedInsurancePool'
+    case 'injective.insurance.v1beta1.MsgRequestConsolidatedRedemption':
+      return 'insurance/MsgRequestConsolidatedRedemption'
 
     // Peggy
     case 'injective.peggy.v1beta1.MsgSetOrchestratorAddresses':
@@ -596,9 +663,9 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'peggy/RevokeEthereumBlacklistProposal'
 
     // WasmX
-    case 'injective.wasmx.v1beta1.ContractRegistrationRequestProposal':
+    case 'injective.wasmx.v1.ContractRegistrationRequestProposal':
       return 'wasmx/ContractRegistrationRequestProposal'
-    case 'injective.wasmx.v1beta1.BatchContractRegistrationRequestProposal':
+    case 'injective.wasmx.v1.BatchContractRegistrationRequestProposal':
       return 'wasmx/BatchContractRegistrationRequestProposal'
 
     // Token factory

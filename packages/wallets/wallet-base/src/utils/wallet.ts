@@ -1,4 +1,5 @@
 import { Wallet } from './../types/enums.js'
+import type { EIP712WrapperVersion } from '@injectivelabs/ts-types'
 import type { Wallet as WalletType } from './../types/enums.js'
 
 export const isEvmWallet = (wallet: Wallet): boolean =>
@@ -61,6 +62,15 @@ export const isEip712V2OnlyWallet = (wallet: Wallet): boolean =>
       Wallet.WalletConnect,
     ] as WalletType[]
   ).includes(wallet)
+
+export const isEip712V3Wallet = (wallet: Wallet): boolean =>
+  ([Wallet.Phantom] as WalletType[]).includes(wallet)
+
+/** The wrapper to prepare a fee-delegated transaction with: an explicit choice wins over the wallet's capability */
+export const resolveEip712Version = (
+  wallet: Wallet,
+  override?: EIP712WrapperVersion,
+): EIP712WrapperVersion => override ?? (isEip712V3Wallet(wallet) ? 'v3' : 'v2')
 
 export const isCosmosAminoOnlyWallet = (wallet: Wallet): boolean =>
   ([Wallet.LedgerCosmos] as WalletType[]).includes(wallet)

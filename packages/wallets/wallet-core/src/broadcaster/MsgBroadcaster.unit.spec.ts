@@ -529,16 +529,16 @@ describe('MsgBroadcaster fixed exchange gas', () => {
   })
 
   it.each([
-    [Wallet.Keplr, 360000],
-    [Wallet.Leap, 360000],
-    [Wallet.Ninji, 360000],
-    [Wallet.OWallet, 360000],
-    [Wallet.Cosmostation, 360000],
-    [Wallet.LedgerCosmos, 360000],
-    [Wallet.PrivateKeyCosmos, 360000],
-    [Wallet.Metamask, 300000],
-    [Wallet.KeplrEvm, 300000],
-    [Wallet.PrivateKey, 300000],
+    [Wallet.Keplr, 662400],
+    [Wallet.Leap, 662400],
+    [Wallet.Ninji, 662400],
+    [Wallet.OWallet, 662400],
+    [Wallet.Cosmostation, 662400],
+    [Wallet.LedgerCosmos, 662400],
+    [Wallet.PrivateKeyCosmos, 662400],
+    [Wallet.Metamask, 552000],
+    [Wallet.KeplrEvm, 552000],
+    [Wallet.PrivateKey, 552000],
   ] as const)('uses %s spot order gas limit %i', (wallet, gasLimit) => {
     broadcaster.walletStrategy.wallet = wallet
     const msg = MsgCreateSpotLimitOrder.fromJSON({
@@ -847,6 +847,62 @@ describe('MsgBroadcaster fixed exchange gas', () => {
     expect(authInfo.fee?.gasLimit).toBe(392465n)
     expect(authInfo.fee?.granter).toBe('inj1granter')
   })
+})
+
+describe('MsgBroadcaster eip712Version', () => {
+  it.each([
+    { name: 'Phantom default', wallet: Wallet.Phantom, expected: 'v3' },
+    { name: 'Metamask default', wallet: Wallet.Metamask, expected: 'v2' },
+    {
+      name: 'Phantom forced to v2',
+      wallet: Wallet.Phantom,
+      options: { eip712Version: 'v2' },
+      expected: 'v2',
+    },
+    {
+      name: 'Metamask forced to v3',
+      wallet: Wallet.Metamask,
+      options: { eip712Version: 'v3' },
+      expected: 'v3',
+    },
+    {
+      name: 'Phantom v2 then setOptions v3',
+      wallet: Wallet.Phantom,
+      options: { eip712Version: 'v2' },
+      setOptions: { eip712Version: 'v3' },
+      expected: 'v3',
+    },
+  ] as {
+    name: string
+    wallet: Wallet
+    expected: 'v2' | 'v3'
+    options?: Partial<MsgBroadcasterOptions>
+    setOptions?: Partial<MsgBroadcasterOptions>
+  }[])(
+    'passes $expected to the gateway ($name)',
+    async ({ wallet, options, setOptions, expected }) => {
+      const broadcaster = new MsgBroadcaster({
+        network: Network.Devnet,
+        walletStrategy: createMockWalletStrategy(),
+        ...options,
+      })
+      if (setOptions) broadcaster.setOptions(setOptions)
+      broadcaster.walletStrategy.wallet = wallet
+      const prepareTxRequest = vi
+        .spyOn(IndexerGrpcWeb3GwApi.prototype, 'prepareTxRequest')
+        .mockRejectedValue(new Error('stop after gateway preparation'))
+
+      await expect(
+        (broadcaster as any).broadcastEip712WithFeeDelegation({
+          msgs: makeFixedGasMessage(),
+          ethereumAddress: '0x0000000000000000000000000000000000000001',
+          injectiveAddress: 'inj1test',
+        }),
+      ).rejects.toThrow('stop after gateway preparation')
+
+      expect(prepareTxRequest.mock.calls[0][0].eip712Version).toBe(expected)
+    },
+  )
 })
 
 describe('MsgBroadcaster Ledger fixed exchange gas', () => {
