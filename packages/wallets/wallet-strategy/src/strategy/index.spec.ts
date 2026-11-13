@@ -10,6 +10,7 @@ import type { ChainId, EvmChainId } from '@injectivelabs/ts-types'
 const { FakeStrategy } = vi.hoisted(() => ({
   FakeStrategy: class {
     setMetadata = vi.fn()
+    disconnect = vi.fn()
 
     constructor(public args: Record<string, any>) {}
   },
@@ -137,5 +138,68 @@ describe('WalletStrategy.setMetadata', () => {
     expect(strategy.setMetadata).toHaveBeenCalledWith(
       expect.objectContaining({ privy: { address: '0x02' } }),
     )
+  })
+})
+
+describe('WalletStrategy.disconnect', () => {
+  it('forgets cached Privy metadata before emitting disconnect', async () => {
+    const walletStrategy = createWalletStrategy()
+    const privy = { address: '0x02', getProvider: vi.fn() }
+    const onDisconnect = vi.fn()
+
+    await walletStrategy.setMetadata({ privy })
+    await walletStrategy.setWallet(Wallet.Privy)
+    const disconnect = walletStrategy.getStrategy().disconnect
+    walletStrategy.on(
+      WalletStrategyEmitterEventType.WalletStrategyDisconnect,
+      () => onDisconnect(walletStrategy.args.metadata?.privy),
+    )
+
+    await walletStrategy.disconnect()
+
+    expect(disconnect).toHaveBeenCalledOnce()
+    expect(onDisconnect).toHaveBeenCalledExactlyOnceWith(undefined)
+    expect(walletStrategy.args.metadata?.privy).toBeUndefined()
+    expect(walletStrategy.args.metadata?.turnkey).toEqual({
+      defaultOrganizationId: 'org',
+      apiBaseUrl: 'url',
+    })
+
+    await walletStrategy.setMetadata({ derivationPath: 'path' })
+    expect(
+      (await createdArgs(walletStrategy, Wallet.PrivateKey)).metadata.privy,
+    ).toBeUndefined()
+  })
+
+  it('keeps cached Privy metadata when another wallet disconnects', async () => {
+    const walletStrategy = createWalletStrategy()
+    const privy = { address: '0x02', getProvider: vi.fn() }
+
+    await walletStrategy.setMetadata({ privy })
+    await walletStrategy.setWallet(Wallet.Turnkey)
+    await walletStrategy.disconnect()
+
+    expect(walletStrategy.args.metadata?.privy).toEqual(privy)
+  })
+
+  it('keeps new Privy metadata set by a disconnect listener', async () => {
+    const walletStrategy = createWalletStrategy()
+    const privy = { address: '0x02', getProvider: vi.fn() }
+    const nextPrivy = { address: '0x03', getProvider: vi.fn() }
+    let metadataUpdate: Promise<void> | undefined
+
+    await walletStrategy.setMetadata({ privy })
+    await walletStrategy.setWallet(Wallet.Privy)
+    walletStrategy.on(
+      WalletStrategyEmitterEventType.WalletStrategyDisconnect,
+      () => {
+        metadataUpdate = walletStrategy.setMetadata({ privy: nextPrivy })
+      },
+    )
+
+    await walletStrategy.disconnect()
+    await metadataUpdate
+
+    expect(walletStrategy.args.metadata?.privy).toEqual(nextPrivy)
   })
 })
