@@ -16,7 +16,7 @@ export class IndexerGrpcRfqPricerStreamV2 {
   private transport: GrpcWebRpcTransport
 
   constructor(endpoint: string, metadata?: Record<string, string>) {
-    this.transport = new GrpcWebRpcTransport(endpoint, metadata)
+    this.transport = new GrpcWebRpcTransport(endpoint, { meta: metadata })
     this.client = new InjectiveRfqPricerRPCClient(this.transport)
   }
 

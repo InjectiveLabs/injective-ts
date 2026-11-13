@@ -25,6 +25,36 @@ describe('IndexerGrpcRfqPricerStreamV2', () => {
     vi.useRealTimers()
   })
 
+  it('forwards constructor metadata as outgoing HTTP headers', async () => {
+    const fetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response('', {
+        headers: {
+          'content-type': 'application/grpc-web-text',
+          'grpc-status': '0',
+        },
+      }),
+    )
+    const stream = new IndexerGrpcRfqPricerStreamV2('http://localhost:1', {
+      'x-trace-id': 'rfq-pricer-test',
+    })
+    const subscription = stream.streamPricing({
+      marketIds: ['market'],
+      callback: () => {},
+    })
+
+    try {
+      expect(fetch).toHaveBeenCalledOnce()
+      const headers = new Headers(fetch.mock.calls[0][1]?.headers)
+      expect(headers.get('x-trace-id')).toBe('rfq-pricer-test')
+      await new Promise<void>((resolve, reject) => {
+        subscription.on('complete', resolve)
+        subscription.on('error', reject)
+      })
+    } finally {
+      subscription.unsubscribe()
+    }
+  })
+
   it('delivers snapshots, withdrawals, and restoration without filtering', async () => {
     vi.spyOn(
       InjectiveRfqPricerRPCClient.prototype,
