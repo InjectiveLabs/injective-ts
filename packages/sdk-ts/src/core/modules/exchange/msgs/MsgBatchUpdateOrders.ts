@@ -2,6 +2,7 @@ import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { objectKeysToEip712Types } from '../../../tx/eip712/maps.js'
 
 type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> = T
 
@@ -419,6 +420,42 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       value:
         msg as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1TxPb.MsgBatchUpdateOrders>,
     }
+  }
+
+  public toEip712() {
+    const { params } = this
+    const amino = this.toAmino()
+    const hasCancelAll =
+      (params.spotMarketIdsToCancelAll &&
+        params.spotMarketIdsToCancelAll.length > 0) ||
+      (params.derivativeMarketIdsToCancelAll &&
+        params.derivativeMarketIdsToCancelAll.length > 0) ||
+      (params.binaryOptionsMarketIdsToCancelAll &&
+        params.binaryOptionsMarketIdsToCancelAll.length > 0)
+
+    if (hasCancelAll) {
+      return amino
+    }
+
+    const value = {
+      ...(amino.value as unknown as Record<string, unknown>),
+    }
+
+    delete value.subaccount_id
+
+    return {
+      type: amino.type,
+      value: value as unknown as typeof amino.value,
+    }
+  }
+
+  public toEip712Types() {
+    const eip712 = this.toEip712()
+
+    return objectKeysToEip712Types({
+      object: eip712.value as Record<string, any>,
+      messageType: eip712.type,
+    })
   }
 
   public toWeb3Gw() {
