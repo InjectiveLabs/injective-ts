@@ -21,6 +21,7 @@ export {
 
 // V2 Streams (Event-based, for StreamManagerV2)
 export * from './streamV2/IndexerGrpcRfqStreamV2.js'
+export * from './streamV2/IndexerGrpcRfqPricerStreamV2.js'
 export * from './streamV2/IndexerGrpcSpotStreamV2.js'
 export * from './streamV2/IndexerGrpcMitoStreamV2.js'
 export * from './streamV2/IndexerGrpcOracleStreamV2.js'
