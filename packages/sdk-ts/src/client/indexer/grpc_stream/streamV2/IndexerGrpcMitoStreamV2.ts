@@ -49,16 +49,19 @@ export class IndexerGrpcMitoStreamV2 {
    * @param params.vault - Optional vault address to filter
    * @param params.account - Optional account address to filter
    * @param params.callback - Called for each transfer update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamTransfers({
     vault,
     account,
     callback,
+    signal,
   }: {
     vault?: string
     account?: string
     callback: TransfersStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -82,6 +85,7 @@ export class IndexerGrpcMitoStreamV2 {
           IndexerGrpcMitoStreamTransformer.transfersStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -89,14 +93,17 @@ export class IndexerGrpcMitoStreamV2 {
    * Stream vault information
    * @param params.vault - Optional vault address to filter
    * @param params.callback - Called for each vault update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamVault({
     vault,
     callback,
+    signal,
   }: {
     vault?: string
     callback: VaultStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -115,6 +122,7 @@ export class IndexerGrpcMitoStreamV2 {
           IndexerGrpcMitoStreamTransformer.vaultStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -124,6 +132,7 @@ export class IndexerGrpcMitoStreamV2 {
    * @param params.vaultAddress - Optional vault address to filter
    * @param params.stakingContractAddress - Optional staking contract address to filter
    * @param params.callback - Called for each subscription update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamVaultHolderSubscriptions({
@@ -131,11 +140,13 @@ export class IndexerGrpcMitoStreamV2 {
     vaultAddress,
     stakingContractAddress,
     callback,
+    signal,
   }: {
     holderAddress: string
     vaultAddress?: string
     stakingContractAddress?: string
     callback: VaultHolderSubscriptionStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!holderAddress) {
       throw new Error('holderAddress is required')
@@ -165,6 +176,7 @@ export class IndexerGrpcMitoStreamV2 {
           )
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -173,16 +185,19 @@ export class IndexerGrpcMitoStreamV2 {
    * @param params.staker - The staker address to stream rewards for
    * @param params.stakingContractAddress - The staking contract address
    * @param params.callback - Called for each reward update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamStakingRewardsByAccount({
     staker,
     stakingContractAddress,
     callback,
+    signal,
   }: {
     staker: string
     stakingContractAddress: string
     callback: StakingRewardByAccountStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!staker) {
       throw new Error('staker is required')
@@ -210,6 +225,7 @@ export class IndexerGrpcMitoStreamV2 {
           )
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -218,16 +234,19 @@ export class IndexerGrpcMitoStreamV2 {
    * @param params.staker - The staker address to stream data for
    * @param params.stakingContractAddress - The staking contract address
    * @param params.callback - Called for each historical staking update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamHistoricalStaking({
     staker,
     stakingContractAddress,
     callback,
+    signal,
   }: {
     staker: string
     stakingContractAddress: string
     callback: HistoricalStakingStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!staker) {
       throw new Error('staker is required')
@@ -253,6 +272,7 @@ export class IndexerGrpcMitoStreamV2 {
           )
         callback(transformed)
       },
+      { signal },
     )
   }
 }

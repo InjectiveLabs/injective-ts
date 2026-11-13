@@ -1,25 +1,25 @@
 import { getAddress, hashTypedData } from 'viem'
 import { HttpRestClient } from '@injectivelabs/utils'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import { toUtf8, getEthereumAddress } from '@injectivelabs/sdk-ts/utils'
-import {
-  WalletAction,
-  WalletDeviceType,
-  getViemWalletClient,
-  getViemPublicClient,
-  BaseConcreteStrategy,
-} from '@injectivelabs/wallet-base'
 import {
   ErrorType,
   WalletException,
   UnspecifiedErrorCode,
-  TransactionException,
   CosmosWalletException,
   TurnkeyWalletSessionException,
 } from '@injectivelabs/exceptions'
+import {
+  WalletAction,
+  broadcastTxRaw,
+  WalletDeviceType,
+  getViemWalletClient,
+  getViemPublicClient,
+  BaseConcreteStrategy,
+  toViemTransactionRequest,
+  getEip1193ProviderForAccount,
+} from '@injectivelabs/wallet-base'
 import { TurnkeyErrorCodes } from './types.js'
 import { TurnkeyWallet } from './turnkey/turnkey.js'
-import { getEip1193ProviderForTurnkey } from './Eip1193Provider.js'
 import type { Hash } from 'viem'
 import type { EvmChainId } from '@injectivelabs/ts-types'
 import type { AccountAddress } from '@injectivelabs/ts-types'
@@ -218,38 +218,9 @@ export class TurnkeyWalletStrategy
         rpcUrl: url,
       })
 
-      const parseHexValue = (value: string | number | bigint) => {
-        if (typeof value === 'string') {
-          const hexValue = value.startsWith('0x') ? value : `0x${value}`
-
-          return BigInt(hexValue)
-        }
-
-        return BigInt(value)
-      }
-
-      const txData = transaction as any
-      const processedTransaction = { ...txData }
-
-      const hexFields = [
-        'value',
-        'gas',
-        'gasLimit',
-        'gasPrice',
-        'maxFeePerGas',
-        'maxPriorityFeePerGas',
-      ]
-
-      for (const field of hexFields) {
-        if (processedTransaction[field] !== undefined) {
-          processedTransaction[field] = parseHexValue(
-            processedTransaction[field],
-          )
-        }
-      }
-
-      const preparedTransaction =
-        await accountClient.prepareTransactionRequest(processedTransaction)
+      const preparedTransaction = await accountClient.prepareTransactionRequest(
+        toViemTransactionRequest(transaction, account.address, chainId) as any,
+      )
 
       // Remove account property as it's not needed for signing
       const { account: _, ...transactionToSign } = preparedTransaction
@@ -275,32 +246,7 @@ export class TurnkeyWalletStrategy
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<any> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw new WalletException(
-        new Error(
-          'You have to pass endpoints.grpc within the options for using Turnkey wallet',
-        ),
-      )
-    }
-
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(transaction, options)
   }
 
   async signEip712TypedData(
@@ -397,7 +343,7 @@ export class TurnkeyWalletStrategy
       const checksumAddress = getAddress(getEthereumAddress(signer))
       const account =
         await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
-      const provider = await getEip1193ProviderForTurnkey(
+      const provider = await getEip1193ProviderForAccount(
         account,
         String(this.evmOptions.evmChainId),
         {
@@ -515,7 +461,7 @@ export class TurnkeyWalletStrategy
     const account =
       await turnkeyWallet.getOrCreateAndGetAccount(checksumAddress)
 
-    const eip1193Provider = await getEip1193ProviderForTurnkey(
+    const eip1193Provider = await getEip1193ProviderForAccount(
       account,
       String(this.evmOptions.evmChainId),
       {

@@ -42,10 +42,12 @@ export class IndexerGrpcTcDerivativesStreamV2 {
     marketId,
     accountAddress,
     callback,
+    signal,
   }: {
     marketId?: string
     accountAddress?: string
     callback: TcDerivativeOrderHistoryStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -73,6 +75,7 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -80,12 +83,14 @@ export class IndexerGrpcTcDerivativesStreamV2 {
     marketId,
     rfqMaker,
     callback,
+    signal,
     accountAddress,
   }: {
     marketId?: string
     rfqMaker?: string
     accountAddress?: string
     callback: TcDerivativeTradesStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -116,6 +121,7 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -123,10 +129,12 @@ export class IndexerGrpcTcDerivativesStreamV2 {
     marketId,
     accountAddress,
     callback,
+    signal,
   }: {
     marketId?: string
     accountAddress?: string
     callback: TcDerivativePositionsStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -153,6 +161,7 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -160,10 +169,12 @@ export class IndexerGrpcTcDerivativesStreamV2 {
     marketId,
     accountAddress,
     callback,
+    signal,
   }: {
     marketId?: string
     accountAddress?: string
     callback: TcDerivativeOrdersStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -190,6 +201,7 @@ export class IndexerGrpcTcDerivativesStreamV2 {
 
         callback(transformed)
       },
+      { signal },
     )
   }
 }

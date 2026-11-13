@@ -6,6 +6,7 @@ export const isEvmWallet = (wallet: Wallet): boolean =>
     [
       Wallet.Magic,
       Wallet.Rabby,
+      Wallet.Privy,
       Wallet.BitGet,
       Wallet.Ledger,
       Wallet.Phantom,

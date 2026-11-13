@@ -1,8 +1,10 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as InjectiveReferralRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_referral_rpc_pb'
 import { InjectiveReferralRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_referral_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcReferralTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 /**
  * @category Indexer Grpc API
  */
@@ -13,14 +15,15 @@ export class IndexerGrpcReferralApi extends BaseIndexerGrpcConsumer {
     return this.initClient(InjectiveReferralRPCClient)
   }
 
-  async fetchReferrerDetails(address: string) {
+  async fetchReferrerDetails(address: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = InjectiveReferralRpcPb.GetReferrerDetailsRequest.create()
     request.referrerAddress = address
 
     const response = await this.executeGrpcCall<
       InjectiveReferralRpcPb.GetReferrerDetailsRequest,
       InjectiveReferralRpcPb.GetReferrerDetailsResponse
-    >(request, this.client.getReferrerDetails.bind(this.client))
+    >(request, this.client.getReferrerDetails.bind(this.client), options)
 
     return IndexerGrpcReferralTransformer.referrerDetailsResponseToReferrerDetails(
       address,
@@ -28,28 +31,30 @@ export class IndexerGrpcReferralApi extends BaseIndexerGrpcConsumer {
     )
   }
 
-  async fetchInviteeDetails(address: string) {
+  async fetchInviteeDetails(address: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = InjectiveReferralRpcPb.GetInviteeDetailsRequest.create()
     request.inviteeAddress = address
 
     const response = await this.executeGrpcCall<
       InjectiveReferralRpcPb.GetInviteeDetailsRequest,
       InjectiveReferralRpcPb.GetInviteeDetailsResponse
-    >(request, this.client.getInviteeDetails.bind(this.client))
+    >(request, this.client.getInviteeDetails.bind(this.client), options)
 
     return IndexerGrpcReferralTransformer.inviteeDetailsResponseToInviteeDetails(
       response,
     )
   }
 
-  async fetchReferrerByCode(code: string) {
+  async fetchReferrerByCode(code: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const request = InjectiveReferralRpcPb.GetReferrerByCodeRequest.create()
     request.referralCode = code
 
     const response = await this.executeGrpcCall<
       InjectiveReferralRpcPb.GetReferrerByCodeRequest,
       InjectiveReferralRpcPb.GetReferrerByCodeResponse
-    >(request, this.client.getReferrerByCode.bind(this.client))
+    >(request, this.client.getReferrerByCode.bind(this.client), options)
 
     return IndexerGrpcReferralTransformer.referrerByCodeResponseToReferrerByCode(
       response,

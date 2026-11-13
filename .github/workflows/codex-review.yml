@@ -3,33 +3,72 @@ name: Codex PR Review
 on:
   pull_request:
     types: [opened, ready_for_review, synchronize]
+  issue_comment:
+    types: [created]
 
 concurrency:
-  group: codex-review-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  group: codex-review-${{ github.event_name == 'issue_comment' && 'manual' || 'automatic' }}-${{ github.event.pull_request.number || github.event.issue.number }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   codex-review:
     if: |
-      github.event.pull_request.head.repo.fork == false &&
-      github.event.pull_request.draft == false &&
-      !startsWith(github.event.pull_request.head.ref, 'release/') &&
-      github.event.pull_request.title != 'chore: release'
+      github.event_name == 'pull_request' ||
+      (github.event.issue.pull_request && contains(github.event.comment.body, '@codex_review'))
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     permissions: { contents: read, issues: write, pull-requests: write }
 
     steps:
+      - name: Resolve review request
+        id: request
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const manual = context.eventName === 'issue_comment'
+            let pr = context.payload.pull_request
+
+            if (manual) {
+              if (!context.payload.issue?.pull_request || context.payload.comment?.body?.trim().toLowerCase() !== '@codex_review') {
+                return
+              }
+              const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+                ...context.repo,
+                username: context.payload.comment.user.login
+              })
+              if (!['admin', 'maintain', 'write'].includes(data.permission)) {
+                return
+              }
+              const response = await github.rest.pulls.get({
+                ...context.repo,
+                pull_number: context.issue.number
+              })
+              pr = response.data
+            }
+
+            if (!pr || pr.state !== 'open' || pr.draft !== false ||
+                pr.head?.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}` ||
+                pr.head.ref.startsWith('release/') ||
+                pr.title === 'chore: release') {
+              return
+            }
+
+            core.setOutput('pull-request-number', String(pr.number))
+            core.setOutput('bypass-limits', String(manual))
+
       - name: Codex Review
         id: codex_review
+        if: steps.request.outputs.pull-request-number != ''
         continue-on-error: true
         uses: InjectiveLabs/github-fe/actions/codex-review-workspace@master
         with:
-          pull-request-number: ${{ github.event.pull_request.number }}
+          pull-request-number: ${{ steps.request.outputs.pull-request-number }}
           openai-api-key: ${{ secrets.OPENAI_FE_API_KEY }}
+          bypass-limits: ${{ steps.request.outputs.bypass-limits }}
 
       - name: Publish Codex Review Comment
-        if: always()
+        if: always() && steps.request.outputs.pull-request-number != ''
         continue-on-error: true
         timeout-minutes: 2
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
@@ -39,7 +78,7 @@ jobs:
           CHANGED_LINES: ${{ steps.codex_review.outputs.changed-lines }}
           CODEX_OUTCOME: ${{ steps.codex_review.outputs.codex-outcome }}
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ steps.request.outputs.pull-request-number }}
           REVIEWABLE: ${{ steps.codex_review.outputs.reviewable }}
           REVIEW_FILE: ${{ steps.codex_review.outputs.review-file }}
           SKIP_REASON: ${{ steps.codex_review.outputs.skip-reason }}
@@ -53,9 +92,9 @@ jobs:
             if (process.env.ACTION_OUTCOME === 'failure') {
               body = '⚠️ Codex review could not prepare the PR workspace. Please check the workflow logs.'
             } else if (process.env.SKIP_REASON === 'limit') {
-              body = `⚠️ Codex review skipped: ${process.env.CANDIDATE_COUNT} reviewable files / ${process.env.CHANGED_LINES} changed lines\nexceed the automated-review limit (150 files / 15,000 lines).\nPlease split this PR.`
+              body = `⚠️ Codex review skipped: ${process.env.CANDIDATE_COUNT} reviewable files / ${process.env.CHANGED_LINES} changed lines\nexceed the automated-review limit (150 files / 15,000 lines).\nSplit this PR or comment \`@codex_review\` to run manually and bypass size limits (requires write access).`
             } else if (process.env.SKIP_REASON === 'diff-size') {
-              body = '⚠️ Codex review skipped because the filtered diff exceeds the 512 KiB automated-review limit.\nPlease split this PR.'
+              body = '⚠️ Codex review skipped because the filtered diff exceeds the 512 KiB automated-review limit.\nSplit this PR or comment `@codex_review` to run manually and bypass size limits (requires write access).'
             } else if (process.env.REVIEWABLE !== 'true') {
               return
             } else if (process.env.CODEX_OUTCOME !== 'success') {
@@ -67,6 +106,18 @@ jobs:
               body = body.replace(/\/home\/runner\/work\/[^/]+\//g, '')
               body = body.replace(/\[([^\]\/\n]+\.[a-z]{1,4}(?::\d+)?)\]\(([^)]*\/[^)]+)\)/g, (match, text, href) => `[${href}](${href})`)
               body ||= '⚠️ Codex review returned empty output. Please check the workflow logs.'
+            }
+
+            if (process.env.ACTION_OUTCOME !== 'failure') {
+              const { stdout } = await exec.getExecOutput('git', ['rev-parse', 'HEAD^2'], { silent: true })
+              const reviewedHeadSha = stdout.trim()
+              const { data: pull } = await github.rest.pulls.get({ ...context.repo, pull_number: Number(process.env.PR_NUMBER) })
+              if (pull.head.sha !== reviewedHeadSha) {
+                core.info(`Skipping stale Codex review for ${reviewedHeadSha} because PR #${process.env.PR_NUMBER} is now at ${pull.head.sha}.`)
+                return
+              }
+              const commitUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/commit/${reviewedHeadSha}`
+              body = `Reviewed commit: [${reviewedHeadSha.slice(0, 7)}](${commitUrl})\n\n${body}`
             }
 
             if (body.length > 60000) body = `${body.slice(0, 60000)}\n\n_Review output truncated._`

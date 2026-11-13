@@ -1,3 +1,4 @@
+import { isAbortError, throwIfAborted } from '@injectivelabs/utils'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
@@ -5,6 +6,8 @@ import {
 import { IndexerModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
 import { IndexerRestExplorerTransformer } from '../transformers/index.js'
+import type { AxiosRequestConfig } from 'axios'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { MsgType, MsgStatus } from '@injectivelabs/ts-types'
 import type { Block, ExplorerValidator } from '../types/explorer.js'
 import type {
@@ -38,27 +41,32 @@ const explorerEndpointSuffix = 'api/explorer/v1'
  * @category Indexer Rest API
  */
 export class IndexerRestExplorerApi extends BaseRestConsumer {
-  constructor(endpoint: string) {
+  constructor(endpoint: string, options?: AxiosRequestConfig) {
     super(
       endpoint.includes(explorerEndpointSuffix)
         ? endpoint
         : `${endpoint}/${explorerEndpointSuffix}`,
+      options,
     )
   }
 
-  async fetchBlock(blockHashHeight: string): Promise<ExplorerBlockWithTxs> {
+  async fetchBlock(
+    blockHashHeight: string,
+    options?: RequestOptions,
+  ): Promise<ExplorerBlockWithTxs> {
+    throwIfAborted(options?.signal)
     const endpoint = `blocks/${blockHashHeight}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse>
-      >(() => this.get(`blocks/${blockHashHeight}`))
+      >(`blocks/${blockHashHeight}`, {}, options)
 
       return IndexerRestExplorerTransformer.blockWithTxToBlockWithTx(
         response.data.data,
       )
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -70,26 +78,32 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchBlocks(params?: {
-    before?: number
-    limit?: number
-    from?: number
-    to?: number
-  }): Promise<{ paging: Paging; blocks: Block[] }> {
+  async fetchBlocks(
+    params?: {
+      before?: number
+      limit?: number
+      from?: number
+      to?: number
+    },
+    options?: RequestOptions,
+  ): Promise<{ paging: Paging; blocks: Block[] }> {
+    throwIfAborted(options?.signal)
     const endpoint = 'blocks'
 
     try {
       const { before, limit, from, to } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           before,
           limit,
           from,
           to,
-        }),
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -99,7 +113,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         blocks: IndexerRestExplorerTransformer.blocksToBlocks(data),
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -111,26 +125,32 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchBlocksWithTx(params?: {
-    before?: number
-    limit?: number
-    from?: number
-    to?: number
-  }): Promise<{ paging: Paging; blocks: ExplorerBlockWithTxs[] }> {
+  async fetchBlocksWithTx(
+    params?: {
+      before?: number
+      limit?: number
+      from?: number
+      to?: number
+    },
+    options?: RequestOptions,
+  ): Promise<{ paging: Paging; blocks: ExplorerBlockWithTxs[] }> {
+    throwIfAborted(options?.signal)
     const endpoint = 'blocks'
 
     try {
       const { before, limit, from, to } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<BlockFromExplorerApiResponse[]>
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           before,
           limit,
           from,
           to,
-        }),
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -142,7 +162,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -154,18 +174,22 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchTransactions(params?: {
-    fromNumber?: number
-    limit?: number
-    before?: number
-    after?: number
-    toNumber?: number
-    skip?: number
-    startTime?: number
-    endTime?: number
-    status?: MsgStatus
-    type?: MsgType[]
-  }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
+  async fetchTransactions(
+    params?: {
+      fromNumber?: number
+      limit?: number
+      before?: number
+      after?: number
+      toNumber?: number
+      skip?: number
+      startTime?: number
+      endTime?: number
+      status?: MsgStatus
+      type?: MsgType[]
+    },
+    options?: RequestOptions,
+  ): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
+    throwIfAborted(options?.signal)
     const endpoint = 'txs'
 
     try {
@@ -184,10 +208,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         limit: 12,
       }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse[]>
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           skip,
           limit,
           after,
@@ -198,7 +223,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           start_time: startTime,
           from_number: fromNumber,
           type: type ? type.join(',') : undefined,
-        }),
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -210,7 +236,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -222,25 +248,29 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchAccountTransactions({
-    account,
-    params,
-  }: {
-    account: string
-    params?: {
-      skip?: number
-      limit?: number
-      after?: number
-      before?: number
-      type?: MsgType[]
-      status?: MsgStatus
-      endTime?: number
-      toNumber?: number
-      fromNumber?: number
-      startTime?: number
-      withClaimId?: boolean
-    }
-  }): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
+  async fetchAccountTransactions(
+    {
+      account,
+      params,
+    }: {
+      account: string
+      params?: {
+        skip?: number
+        limit?: number
+        after?: number
+        before?: number
+        type?: MsgType[]
+        status?: MsgStatus
+        endTime?: number
+        toNumber?: number
+        fromNumber?: number
+        startTime?: number
+        withClaimId?: boolean
+      }
+    },
+    options?: RequestOptions,
+  ): Promise<{ paging: Paging; transactions: ExplorerTransaction[] }> {
+    throwIfAborted(options?.signal)
     const endpoint = `accountTxs/${account}`
 
     try {
@@ -260,10 +290,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         limit: 12,
       }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse[]>
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           skip,
           limit,
           after,
@@ -275,7 +306,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           from_number: fromNumber,
           type: type ? type.join(',') : undefined,
           with_claim_id: withClaimId,
-        }),
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -287,7 +319,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -302,19 +334,21 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
   async fetchTransaction(
     hash: string,
     isEvmTx = false,
+    options?: RequestOptions,
   ): Promise<ExplorerTransaction> {
+    throwIfAborted(options?.signal)
     const endpoint = `txs/${hash}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<TransactionFromExplorerApiResponse>
-      >(() => this.get(endpoint, { is_evm_hash: isEvmTx }))
+      >(endpoint, { is_evm_hash: isEvmTx }, options)
 
       return IndexerRestExplorerTransformer.transactionToTransaction(
         response.data.data,
       )
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -325,13 +359,16 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchValidators(): Promise<Partial<ExplorerValidator>[]> {
+  async fetchValidators(
+    options?: RequestOptions,
+  ): Promise<Partial<ExplorerValidator>[]> {
+    throwIfAborted(options?.signal)
     const endpoint = 'validators'
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<any[]>
-      >(() => this.get(endpoint))
+      >(endpoint, {}, options)
 
       if (!response.data || !response.data.data) {
         return []
@@ -341,7 +378,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         response.data.data,
       )
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -355,15 +392,17 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
   async fetchValidatorUptime(
     validatorConsensusAddress: string,
+    options?: RequestOptions,
   ): Promise<ExplorerValidatorUptime[]> {
+    throwIfAborted(options?.signal)
     const endpoint = `validator_uptime/${validatorConsensusAddress}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<
           ValidatorUptimeFromExplorerApiResponse[]
         >
-      >(() => this.get(endpoint))
+      >(endpoint, {}, options)
 
       if (!response.data || !response.data.data) {
         return []
@@ -373,7 +412,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         response.data.data,
       )
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -385,19 +424,23 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchContract(contractAddress: string): Promise<Contract> {
+  async fetchContract(
+    contractAddress: string,
+    options?: RequestOptions,
+  ): Promise<Contract> {
+    throwIfAborted(options?.signal)
     const endpoint = `/wasm/contracts/${contractAddress}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponse<ContractExplorerApiResponse>
-      >(() => this.get(endpoint))
+      >(endpoint, {}, options)
 
       return IndexerRestExplorerTransformer.contractToExplorerContract(
         response.data,
       )
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -409,19 +452,23 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchContracts(params?: {
-    assetsOnly?: boolean
-    fromNumber?: number
-    codeId?: string | number
-    limit?: number
-    skip?: number
-    label?: string
-    token?: string
-    lookup?: string
-  }): Promise<{
+  async fetchContracts(
+    params?: {
+      assetsOnly?: boolean
+      fromNumber?: number
+      codeId?: string | number
+      limit?: number
+      skip?: number
+      label?: string
+      token?: string
+      lookup?: string
+    },
+    options?: RequestOptions,
+  ): Promise<{
     paging: Paging
     contracts: Contract[]
   }> {
+    throwIfAborted(options?.signal)
     const endpoint = `/wasm/contracts`
 
     try {
@@ -438,10 +485,11 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         limit: 12,
       }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<ContractExplorerApiResponse[]>
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           skip,
           limit,
           label,
@@ -450,7 +498,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           assets_only: assetsOnly,
           from_number: fromNumber,
           code_id: codeId?.toString(),
-        }),
+        },
+        options,
       )
       const { paging, data } = response.data
 
@@ -461,7 +510,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -473,34 +522,40 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchContractTransactions({
-    contractAddress,
-    params,
-  }: {
-    contractAddress: string
-    params?: {
-      fromNumber?: number
-      limit?: number
-      toNumber?: number
-      skip?: number
-    }
-  }): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
+  async fetchContractTransactions(
+    {
+      contractAddress,
+      params,
+    }: {
+      contractAddress: string
+      params?: {
+        fromNumber?: number
+        limit?: number
+        toNumber?: number
+        skip?: number
+      }
+    },
+    options?: RequestOptions,
+  ): Promise<{ paging: Paging; transactions: ContractTransaction[] }> {
+    throwIfAborted(options?.signal)
     const endpoint = `/contractTxs/${contractAddress}`
 
     try {
       const { fromNumber, limit, skip, toNumber } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<
           ContractTransactionExplorerApiResponse[]
         >
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           skip,
           limit,
           to_number: toNumber,
           from_number: fromNumber,
-        }),
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -514,7 +569,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -526,37 +581,43 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchContractTransactionsWithMessages({
-    contractAddress,
-    params,
-  }: {
-    contractAddress: string
-    params?: {
-      fromNumber?: number
-      limit?: number
-      toNumber?: number
-      skip?: number
-    }
-  }): Promise<{
+  async fetchContractTransactionsWithMessages(
+    {
+      contractAddress,
+      params,
+    }: {
+      contractAddress: string
+      params?: {
+        fromNumber?: number
+        limit?: number
+        toNumber?: number
+        skip?: number
+      }
+    },
+    options?: RequestOptions,
+  ): Promise<{
     paging: Paging
     transactions: ContractTransactionWithMessages[]
   }> {
+    throwIfAborted(options?.signal)
     const endpoint = `/contractTxs/${contractAddress}`
 
     try {
       const { fromNumber, limit, skip, toNumber } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<
           ContractTransactionExplorerApiResponse[]
         >
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           skip,
           limit,
           to_number: toNumber,
           from_number: fromNumber,
-        }),
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -570,7 +631,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -582,19 +643,23 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchWasmCode(codeId: number): Promise<WasmCode> {
+  async fetchWasmCode(
+    codeId: number,
+    options?: RequestOptions,
+  ): Promise<WasmCode> {
+    throwIfAborted(options?.signal)
     const endpoint = `/wasm/codes/${codeId}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponse<WasmCodeExplorerApiResponse>
-      >(() => this.get(endpoint))
+      >(endpoint, {}, options)
 
       return IndexerRestExplorerTransformer.wasmCodeToExplorerWasmCode(
         response.data,
       )
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -606,27 +671,33 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchWasmCodes(params?: {
-    fromNumber?: number
-    limit?: number
-    toNumber?: number
-  }): Promise<{
+  async fetchWasmCodes(
+    params?: {
+      fromNumber?: number
+      limit?: number
+      toNumber?: number
+    },
+    options?: RequestOptions,
+  ): Promise<{
     paging: Paging
     wasmCodes: WasmCode[]
   }> {
+    throwIfAborted(options?.signal)
     const endpoint = `/wasm/codes`
 
     try {
       const { fromNumber, limit, toNumber } = params || { limit: 12 }
 
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<WasmCodeExplorerApiResponse[]>
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           limit,
           from_number: fromNumber,
           to_number: toNumber,
-        }),
+        },
+        options,
       )
 
       const { paging, data } = response.data
@@ -638,7 +709,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           : [],
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -652,13 +723,15 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
   async fetchCW20Balances(
     address: string,
+    options?: RequestOptions,
   ): Promise<ExplorerCW20BalanceWithToken[]> {
+    throwIfAborted(options?.signal)
     const endpoint = `/wasm/${address}/cw20-balance`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
-      >(() => this.get(endpoint))
+      >(endpoint, {}, options)
 
       if (response.data.length === 0) {
         return []
@@ -668,7 +741,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         IndexerRestExplorerTransformer.CW20BalanceToExplorerCW20Balance,
       )
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -682,13 +755,15 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
   async fetchCW20BalancesNoThrow(
     address: string,
+    options?: RequestOptions,
   ): Promise<CW20BalanceExplorerApiResponse[]> {
+    throwIfAborted(options?.signal)
     const endpoint = `/wasm/${address}/cw20-balance`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponse<CW20BalanceExplorerApiResponse[]>
-      >(() => this.get(endpoint))
+      >(endpoint, {}, options)
 
       if (response.data.length === 0) {
         return []
@@ -696,6 +771,10 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
 
       return response.data
     } catch (e: unknown) {
+      if (isAbortError(e)) {
+        throw e
+      }
+
       const error = e as any
 
       if (error.message.includes(404) || error.message.includes(500)) {
@@ -714,26 +793,31 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
     }
   }
 
-  async fetchBankTransfers(params: {
-    limit?: number
-    skip?: number
-    startTime?: number
-    endTime?: number
-    address?: string
-    isCommunitySpendPool?: boolean
-    senders?: string
-    recipients?: string
-  }): Promise<{ paging: Paging; data: BankTransfer[] }> {
+  async fetchBankTransfers(
+    params: {
+      limit?: number
+      skip?: number
+      startTime?: number
+      endTime?: number
+      address?: string
+      isCommunitySpendPool?: boolean
+      senders?: string
+      recipients?: string
+    },
+    options?: RequestOptions,
+  ): Promise<{ paging: Paging; data: BankTransfer[] }> {
+    throwIfAborted(options?.signal)
     const endpoint = `/bank/transfers`
 
     const { endTime, limit, skip, startTime, address, recipients, senders } =
       params || { limit: 10 }
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         ExplorerApiResponseWithPagination<BankTransferFromExplorerApiResponse[]>
-      >(() =>
-        this.get(endpoint, {
+      >(
+        endpoint,
+        {
           skip,
           limit,
           senders,
@@ -742,7 +826,8 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
           end_time: endTime,
           start_time: startTime,
           is_community_pool_related: params.isCommunitySpendPool,
-        }),
+        },
+        options,
       )
 
       const { data, paging } = response.data
@@ -754,7 +839,7 @@ export class IndexerRestExplorerApi extends BaseRestConsumer {
         ),
       }
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 

@@ -1,7 +1,6 @@
 import { Magic as MagicWallet } from 'magic-sdk'
 import { OAuthExtension } from '@magic-ext/oauth2'
 import { CosmosExtension } from '@magic-ext/cosmos'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
   uint8ArrayToHex,
   stringToUint8Array,
@@ -9,6 +8,7 @@ import {
 import {
   WalletAction,
   MagicProvider,
+  broadcastTxRaw,
   WalletDeviceType,
   BaseConcreteStrategy,
 } from '@injectivelabs/wallet-base'
@@ -183,32 +183,7 @@ export class Magic
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<any> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw new WalletException(
-        new Error(
-          'You have to pass endpoints.grpc within the options for using Magic wallet',
-        ),
-      )
-    }
-
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(transaction, options)
   }
 
   async signEip712TypedData(

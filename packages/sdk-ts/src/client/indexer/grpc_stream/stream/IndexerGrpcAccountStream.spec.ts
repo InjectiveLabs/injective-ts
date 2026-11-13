@@ -124,6 +124,16 @@ describe('IndexerGrpcAccountStream', () => {
       let statusCalled = false
       let errorMessage = ''
 
+      ;(invalidStream as any).client = {
+        streamSubaccountBalance: () => ({
+          responses: (async function* failingStream() {
+            throw Object.assign(new Error('Transport unavailable'), {
+              code: 14,
+            })
+          })(),
+        }),
+      }
+
       const subscription = invalidStream.streamSubaccountBalance({
         subaccountId,
         callback: () => {},
@@ -133,13 +143,13 @@ describe('IndexerGrpcAccountStream', () => {
         },
       })
 
-      // Wait for error to occur
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // Wait for the mocked transport error to surface
+      await new Promise((resolve) => setTimeout(resolve, 20))
 
       subscription.unsubscribe()
 
       expect(statusCalled).toBe(true)
-      expect(errorMessage).toBeTruthy()
+      expect(errorMessage).toBe('Transport unavailable')
     })
   })
 

@@ -24,6 +24,7 @@ import type {
   PlatformServicesHistoricalTradesResponse,
   PlatformServicesHistoricalDetailedBalance,
   PlatformServicesCompetitionTraderResponse,
+  PlatformServicesListAccountTradesResponse,
   PlatformServicesGetAccountDailyPNLResponse,
   PlatformServicesListPositionTradesResponse,
   PlatformServicesCurrentCompetitionResponse,
@@ -162,6 +163,9 @@ export class PlatformServicesGrpcPositionsTransformer {
       funding: trade.funding,
       timestamp: trade.timestamp,
       eventType: trade.eventType,
+      // Optional in the API, but always set
+      isBuy: trade.isBuy!,
+      marketId: trade.marketId!,
       positionId: trade.positionId,
       executionPrice: trade.executionPrice,
       liquidationAdjustment: trade.liquidationAdjustment,
@@ -171,6 +175,19 @@ export class PlatformServicesGrpcPositionsTransformer {
   static grpcListPositionTradesToListPositionTrades(
     response: PlatformServicesPositionsPb.ListPositionTradesResponse,
   ): PlatformServicesListPositionTradesResponse {
+    return {
+      nextToken: response.nextToken,
+      trades: response.trades.map((trade) =>
+        PlatformServicesGrpcPositionsTransformer.grpcPositionTradeToPositionTrade(
+          trade,
+        ),
+      ),
+    }
+  }
+
+  static grpcListAccountTradesToListAccountTrades(
+    response: PlatformServicesPositionsPb.ListAccountTradesResponse,
+  ): PlatformServicesListAccountTradesResponse {
     return {
       nextToken: response.nextToken,
       trades: response.trades.map((trade) =>

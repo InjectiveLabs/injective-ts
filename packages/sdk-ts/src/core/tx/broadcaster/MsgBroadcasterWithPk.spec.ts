@@ -289,3 +289,31 @@ describe('MsgBroadcasterWithPk fee delegation', () => {
     )
   })
 })
+
+describe('MsgBroadcasterWithPk submission endpoint', () => {
+  it('uses the query client for preparation and forwards the broadcast endpoint', async () => {
+    const txRaw = CosmosTxV1Beta1TxPb.TxRaw.create()
+    const broadcaster = new MsgBroadcasterWithPk({
+      network: Network.Devnet,
+      privateKey: '0x' + '1'.padStart(64, '0'),
+      endpoints: {
+        indexer: 'https://indexer.example.test',
+        grpc: 'https://query.example.test',
+        rest: 'https://lcd.example.test',
+        broadcastGrpc: 'https://broadcast.example.test',
+      },
+    })
+    vi.spyOn(broadcaster as any, 'prepareTxForBroadcast').mockResolvedValue({
+      txRaw,
+    })
+    const broadcast = vi
+      .spyOn(TxGrpcApi.prototype, 'broadcast')
+      .mockResolvedValue({ code: 0, txHash: 'confirmed' } as any)
+    await broadcaster.broadcast({ msgs: [] })
+    expect(broadcast).toHaveBeenCalledWith(txRaw, {
+      broadcastEndpoint: 'https://broadcast.example.test',
+      txTimeout: broadcaster.txTimeout,
+    })
+    expect(broadcaster.endpoints.grpc).toBe('https://query.example.test')
+  })
+})

@@ -1,8 +1,10 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as InjectiveRfqGwRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_gw_rpc_pb'
 import { InjectiveRfqGwRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_rfq_gw_rpc_pb.client'
 import { IndexerModule } from '../types/index.js'
 import { IndexerGrpcRfqGwTransformer } from '../transformers/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type {
   RFQGwSignedRFQRequestType,
   RFQSettlementUnfilledActionType,
@@ -51,53 +53,57 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     return request
   }
 
-  async fetchPrepareAutoSign({
-    cid,
-    margin,
-    expiry,
-    clientId,
-    marketId,
-    quantity,
-    direction,
-    simulate,
-    worstPrice,
-    txBodyMemo,
-    takerAddress,
-    autosignPubKey,
-    unfilledAction,
-    autosignAddress,
-    subaccountNonce,
-    quotesWaitTimeMs,
-    autosignAccountNumber,
-    feePayerAccountNumber,
-    autosignAccountSequence,
-    feePayerAccountSequence,
-    signedRequest,
-    takerSignature,
-  }: {
-    cid?: string
-    margin: string
-    expiry?: number
-    clientId: string
-    marketId: string
-    quantity: string
-    direction: string
-    simulate?: boolean
-    worstPrice: string
-    txBodyMemo?: string
-    takerAddress?: string
-    autosignPubKey: string
-    autosignAddress: string
-    subaccountNonce?: number
-    quotesWaitTimeMs?: number
-    autosignAccountNumber?: number
-    feePayerAccountNumber?: number
-    autosignAccountSequence?: number
-    feePayerAccountSequence?: number
-    unfilledAction?: RFQSettlementUnfilledActionType
-    signedRequest?: RFQGwSignedRFQRequestType
-    takerSignature?: string
-  }) {
+  async fetchPrepareAutoSign(
+    {
+      cid,
+      margin,
+      expiry,
+      clientId,
+      marketId,
+      quantity,
+      direction,
+      simulate,
+      worstPrice,
+      txBodyMemo,
+      takerAddress,
+      autosignPubKey,
+      unfilledAction,
+      autosignAddress,
+      subaccountNonce,
+      quotesWaitTimeMs,
+      autosignAccountNumber,
+      feePayerAccountNumber,
+      autosignAccountSequence,
+      feePayerAccountSequence,
+      signedRequest,
+      takerSignature,
+    }: {
+      cid?: string
+      margin: string
+      expiry?: number
+      clientId: string
+      marketId: string
+      quantity: string
+      direction: string
+      simulate?: boolean
+      worstPrice: string
+      txBodyMemo?: string
+      takerAddress?: string
+      autosignPubKey: string
+      autosignAddress: string
+      subaccountNonce?: number
+      quotesWaitTimeMs?: number
+      autosignAccountNumber?: number
+      feePayerAccountNumber?: number
+      autosignAccountSequence?: number
+      feePayerAccountSequence?: number
+      unfilledAction?: RFQSettlementUnfilledActionType
+      signedRequest?: RFQGwSignedRFQRequestType
+      takerSignature?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = InjectiveRfqGwRpcPb.RFQGwPrepareAutoSignRequestType.create()
 
     request.clientId = clientId
@@ -184,6 +190,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       InjectiveRfqGwRpcPb.PrepareAutoSignResponse
     >(requestMessage, this.client.prepareAutoSign.bind(this.client), {
       noRetry: true,
+      signal: options?.signal,
     })
 
     return IndexerGrpcRfqGwTransformer.prepareAutoSignResponseToResponse(
@@ -191,51 +198,55 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
     )
   }
 
-  async fetchPrepare({
-    cid,
-    margin,
-    expiry,
-    clientId,
-    marketId,
-    quantity,
-    direction,
-    simulate,
-    worstPrice,
-    txBodyMemo,
-    takerPubKey,
-    takerAddress,
-    unfilledAction,
-    subaccountNonce,
-    quotesWaitTimeMs,
-    takerAccountNumber,
-    feePayerAccountNumber,
-    takerAccountSequence,
-    feePayerAccountSequence,
-    signedRequest,
-    takerSignature,
-  }: {
-    cid?: string
-    margin: string
-    expiry?: number
-    clientId: string
-    marketId: string
-    quantity: string
-    direction: string
-    simulate?: boolean
-    worstPrice: string
-    txBodyMemo?: string
-    takerAddress: string
-    takerPubKey: string
-    subaccountNonce?: number
-    quotesWaitTimeMs?: number
-    takerAccountNumber?: number
-    feePayerAccountNumber?: number
-    takerAccountSequence?: number
-    feePayerAccountSequence?: number
-    unfilledAction?: RFQSettlementUnfilledActionType
-    signedRequest?: RFQGwSignedRFQRequestType
-    takerSignature?: string
-  }) {
+  async fetchPrepare(
+    {
+      cid,
+      margin,
+      expiry,
+      clientId,
+      marketId,
+      quantity,
+      direction,
+      simulate,
+      worstPrice,
+      txBodyMemo,
+      takerPubKey,
+      takerAddress,
+      unfilledAction,
+      subaccountNonce,
+      quotesWaitTimeMs,
+      takerAccountNumber,
+      feePayerAccountNumber,
+      takerAccountSequence,
+      feePayerAccountSequence,
+      signedRequest,
+      takerSignature,
+    }: {
+      cid?: string
+      margin: string
+      expiry?: number
+      clientId: string
+      marketId: string
+      quantity: string
+      direction: string
+      simulate?: boolean
+      worstPrice: string
+      txBodyMemo?: string
+      takerAddress: string
+      takerPubKey: string
+      subaccountNonce?: number
+      quotesWaitTimeMs?: number
+      takerAccountNumber?: number
+      feePayerAccountNumber?: number
+      takerAccountSequence?: number
+      feePayerAccountSequence?: number
+      unfilledAction?: RFQSettlementUnfilledActionType
+      signedRequest?: RFQGwSignedRFQRequestType
+      takerSignature?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = InjectiveRfqGwRpcPb.RFQGwPrepareRequestType.create()
 
     request.clientId = clientId
@@ -318,62 +329,67 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       InjectiveRfqGwRpcPb.PrepareResponse
     >(requestMessage, this.client.prepare.bind(this.client), {
       noRetry: true,
+      signal: options?.signal,
     })
 
     return IndexerGrpcRfqGwTransformer.prepareResponseToResponse(response)
   }
 
-  async fetchPrepareEip712({
-    cid,
-    gas,
-    margin,
-    expiry,
-    clientId,
-    marketId,
-    quantity,
-    direction,
-    simulate,
-    worstPrice,
-    txBodyMemo,
-    ethChainId,
-    takerPubKey,
-    takerAddress,
-    eip712Wrapper,
-    unfilledAction,
-    subaccountNonce,
-    quotesWaitTimeMs,
-    takerAccountNumber,
-    feePayerAccountNumber,
-    takerAccountSequence,
-    feePayerAccountSequence,
-    signedRequest,
-    takerSignature,
-  }: {
-    cid?: string
-    gas?: number
-    margin: string
-    expiry?: number
-    clientId: string
-    marketId: string
-    quantity: string
-    direction: string
-    simulate?: boolean
-    worstPrice: string
-    txBodyMemo?: string
-    ethChainId?: number
-    takerAddress: string
-    takerPubKey: string
-    eip712Wrapper?: string
-    subaccountNonce?: number
-    quotesWaitTimeMs?: number
-    takerAccountNumber?: number
-    feePayerAccountNumber?: number
-    takerAccountSequence?: number
-    feePayerAccountSequence?: number
-    unfilledAction?: RFQSettlementUnfilledActionType
-    signedRequest?: RFQGwSignedRFQRequestType
-    takerSignature?: string
-  }) {
+  async fetchPrepareEip712(
+    {
+      cid,
+      gas,
+      margin,
+      expiry,
+      clientId,
+      marketId,
+      quantity,
+      direction,
+      simulate,
+      worstPrice,
+      txBodyMemo,
+      ethChainId,
+      takerPubKey,
+      takerAddress,
+      eip712Wrapper,
+      unfilledAction,
+      subaccountNonce,
+      quotesWaitTimeMs,
+      takerAccountNumber,
+      feePayerAccountNumber,
+      takerAccountSequence,
+      feePayerAccountSequence,
+      signedRequest,
+      takerSignature,
+    }: {
+      cid?: string
+      gas?: number
+      margin: string
+      expiry?: number
+      clientId: string
+      marketId: string
+      quantity: string
+      direction: string
+      simulate?: boolean
+      worstPrice: string
+      txBodyMemo?: string
+      ethChainId?: number
+      takerAddress: string
+      takerPubKey: string
+      eip712Wrapper?: string
+      subaccountNonce?: number
+      quotesWaitTimeMs?: number
+      takerAccountNumber?: number
+      feePayerAccountNumber?: number
+      takerAccountSequence?: number
+      feePayerAccountSequence?: number
+      unfilledAction?: RFQSettlementUnfilledActionType
+      signedRequest?: RFQGwSignedRFQRequestType
+      takerSignature?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request = InjectiveRfqGwRpcPb.RFQGwPrepareEip712RequestType.create()
 
     request.clientId = clientId
@@ -468,64 +484,69 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       InjectiveRfqGwRpcPb.PrepareEip712Response
     >(requestMessage, this.client.prepareEip712.bind(this.client), {
       noRetry: true,
+      signal: options?.signal,
     })
 
     return IndexerGrpcRfqGwTransformer.prepareEip712ResponseToResponse(response)
   }
 
-  async fetchPrepareEip712AutoSign({
-    cid,
-    gas,
-    margin,
-    expiry,
-    clientId,
-    marketId,
-    quantity,
-    direction,
-    simulate,
-    worstPrice,
-    txBodyMemo,
-    ethChainId,
-    takerAddress,
-    autosignPubKey,
-    eip712Wrapper,
-    unfilledAction,
-    autosignAddress,
-    subaccountNonce,
-    quotesWaitTimeMs,
-    autosignAccountNumber,
-    feePayerAccountNumber,
-    autosignAccountSequence,
-    feePayerAccountSequence,
-    signedRequest,
-    takerSignature,
-  }: {
-    cid?: string
-    gas?: number
-    margin: string
-    expiry?: number
-    clientId: string
-    marketId: string
-    quantity: string
-    direction: string
-    simulate?: boolean
-    worstPrice: string
-    txBodyMemo?: string
-    ethChainId?: number
-    takerAddress?: string
-    autosignPubKey: string
-    eip712Wrapper?: string
-    autosignAddress: string
-    subaccountNonce?: number
-    quotesWaitTimeMs?: number
-    autosignAccountNumber?: number
-    feePayerAccountNumber?: number
-    autosignAccountSequence?: number
-    feePayerAccountSequence?: number
-    unfilledAction?: RFQSettlementUnfilledActionType
-    signedRequest?: RFQGwSignedRFQRequestType
-    takerSignature?: string
-  }) {
+  async fetchPrepareEip712AutoSign(
+    {
+      cid,
+      gas,
+      margin,
+      expiry,
+      clientId,
+      marketId,
+      quantity,
+      direction,
+      simulate,
+      worstPrice,
+      txBodyMemo,
+      ethChainId,
+      takerAddress,
+      autosignPubKey,
+      eip712Wrapper,
+      unfilledAction,
+      autosignAddress,
+      subaccountNonce,
+      quotesWaitTimeMs,
+      autosignAccountNumber,
+      feePayerAccountNumber,
+      autosignAccountSequence,
+      feePayerAccountSequence,
+      signedRequest,
+      takerSignature,
+    }: {
+      cid?: string
+      gas?: number
+      margin: string
+      expiry?: number
+      clientId: string
+      marketId: string
+      quantity: string
+      direction: string
+      simulate?: boolean
+      worstPrice: string
+      txBodyMemo?: string
+      ethChainId?: number
+      takerAddress?: string
+      autosignPubKey: string
+      eip712Wrapper?: string
+      autosignAddress: string
+      subaccountNonce?: number
+      quotesWaitTimeMs?: number
+      autosignAccountNumber?: number
+      feePayerAccountNumber?: number
+      autosignAccountSequence?: number
+      feePayerAccountSequence?: number
+      unfilledAction?: RFQSettlementUnfilledActionType
+      signedRequest?: RFQGwSignedRFQRequestType
+      takerSignature?: string
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
     const request =
       InjectiveRfqGwRpcPb.RFQGwPrepareEip712AutoSignRequestType.create()
 
@@ -626,6 +647,7 @@ export class IndexerGrpcRfqGwApi extends BaseIndexerGrpcConsumer {
       InjectiveRfqGwRpcPb.PrepareEip712AutoSignResponse
     >(requestMessage, this.client.prepareEip712AutoSign.bind(this.client), {
       noRetry: true,
+      signal: options?.signal,
     })
 
     return IndexerGrpcRfqGwTransformer.prepareEip712AutoSignResponseToResponse(

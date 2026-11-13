@@ -1,4 +1,5 @@
 import { GeneralException } from '@injectivelabs/exceptions'
+import { isAbortError, throwIfAborted } from '@injectivelabs/utils'
 import {
   Network,
   isMainnet,
@@ -13,6 +14,7 @@ import { QueryGetPrices, QueryGetAllLendingRates } from './queries/index.js'
 import ExecArgNeptuneDeposit from '../../../core/modules/wasm/exec-args/ExecArgNeptuneDeposit.js'
 import MsgExecuteContractCompat from '../../../core/modules/wasm/msgs/MsgExecuteContractCompat.js'
 import ExecArgNeptuneWithdraw from '../../../core/modules/wasm/exec-args/ExecArgNeptuneWithdraw.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { NetworkEndpoints } from '@injectivelabs/networks'
 import type { AssetInfo, AssetInfoWithPrice } from './types.js'
 import type { GrpcWebTransportAdditionalOptions } from '../../../types'
@@ -49,20 +51,32 @@ export class NeptuneService {
    * @param assets Array of AssetInfo objects.
    * @returns Array of Price objects.
    */
-  async fetchPrices(assets: AssetInfo[]): Promise<AssetInfoWithPrice[]> {
+  async fetchPrices(
+    assets: AssetInfo[],
+    options?: RequestOptions,
+  ): Promise<AssetInfoWithPrice[]> {
+    throwIfAborted(options?.signal)
+
     const queryGetPricesPayload = new QueryGetPrices({ assets }).toPayload()
 
     try {
       const response = await this.client.fetchSmartContractState(
         this.priceOracleContract,
         queryGetPricesPayload,
+        options,
       )
+
+      throwIfAborted(options?.signal)
 
       const prices =
         NeptuneQueryTransformer.contractPricesResponseToPrices(response)
 
       return prices
     } catch (error) {
+      if (isAbortError(error)) {
+        throw error
+      }
+
       console.error('Error fetching prices:', error)
       throw new GeneralException(new Error('Failed to fetch prices'))
     }
@@ -74,14 +88,21 @@ export class NeptuneService {
    * @param nativeAsset AssetInfo for the native token.
    * @returns Redemption ratio as a number.
    */
-  async fetchRedemptionRatio({
-    cw20Asset,
-    nativeAsset,
-  }: {
-    cw20Asset: AssetInfo
-    nativeAsset: AssetInfo
-  }): Promise<number> {
-    const prices = await this.fetchPrices([cw20Asset, nativeAsset])
+  async fetchRedemptionRatio(
+    {
+      cw20Asset,
+      nativeAsset,
+    }: {
+      cw20Asset: AssetInfo
+      nativeAsset: AssetInfo
+    },
+    options?: RequestOptions,
+  ): Promise<number> {
+    throwIfAborted(options?.signal)
+
+    const prices = await this.fetchPrices([cw20Asset, nativeAsset], options)
+
+    throwIfAborted(options?.signal)
 
     const [cw20Price] = prices
     const [nativePrice] = prices.reverse()
@@ -179,15 +200,20 @@ export class NeptuneService {
    * @param startAfter AssetInfo to start after for pagination.
    * @returns Array of [AssetInfo, Decimal256] tuples.
    */
-  async getLendingRates({
-    limit,
-    startAfter,
-    contractAddress = NEPTUNE_INTEREST_CONTRACT,
-  }: {
-    limit?: number
-    startAfter?: AssetInfo
-    contractAddress?: string
-  }): Promise<Array<{ assetInfo: AssetInfo; lendingRate: string }>> {
+  async getLendingRates(
+    {
+      limit,
+      startAfter,
+      contractAddress = NEPTUNE_INTEREST_CONTRACT,
+    }: {
+      limit?: number
+      startAfter?: AssetInfo
+      contractAddress?: string
+    },
+    options?: RequestOptions,
+  ): Promise<Array<{ assetInfo: AssetInfo; lendingRate: string }>> {
+    throwIfAborted(options?.signal)
+
     const query = new QueryGetAllLendingRates({ limit, startAfter })
     const payload = query.toPayload()
 
@@ -195,7 +221,10 @@ export class NeptuneService {
       const response = await this.client.fetchSmartContractState(
         contractAddress,
         payload,
+        options,
       )
+
+      throwIfAborted(options?.signal)
 
       const lendingRates =
         NeptuneQueryTransformer.contractLendingRatesResponseToLendingRates(
@@ -203,7 +232,11 @@ export class NeptuneService {
         )
 
       return lendingRates
-    } catch {
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw error
+      }
+
       throw new GeneralException(new Error('Failed to fetch lending rates'))
     }
   }
@@ -213,22 +246,34 @@ export class NeptuneService {
    * @param denom The denomination string of the asset to find the lending rate for.
    * @returns Lending rate as a string.
    */
-  async getLendingRateByDenom({
-    denom,
-    contractAddress = NEPTUNE_INTEREST_CONTRACT,
-  }: {
-    denom: string
-    contractAddress?: string
-  }): Promise<string | undefined> {
+  async getLendingRateByDenom(
+    {
+      denom,
+      contractAddress = NEPTUNE_INTEREST_CONTRACT,
+    }: {
+      denom: string
+      contractAddress?: string
+    },
+    options?: RequestOptions,
+  ): Promise<string | undefined> {
+    throwIfAborted(options?.signal)
+
     const limit = 10
     let startAfter = undefined
 
     while (true) {
-      const lendingRates = await this.getLendingRates({
-        limit,
-        startAfter,
-        contractAddress,
-      })
+      throwIfAborted(options?.signal)
+
+      const lendingRates = await this.getLendingRates(
+        {
+          limit,
+          startAfter,
+          contractAddress,
+        },
+        options,
+      )
+
+      throwIfAborted(options?.signal)
 
       if (lendingRates.length === 0) {
         return

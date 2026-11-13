@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import { isAbortError, throwIfAborted } from '@injectivelabs/utils'
 import {
   ErrorType,
   GeneralException,
@@ -7,6 +8,7 @@ import {
 } from '@injectivelabs/exceptions'
 import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { RestApiResponse } from '../types/index.js'
 import type {
   DenomBalance,
@@ -26,17 +28,19 @@ export class ChainRestBankApi extends BaseRestConsumer {
   public async fetchBalances(
     address: string,
     params: Record<string, any> = {},
+    options?: RequestOptions,
   ): Promise<BalancesResponse> {
+    throwIfAborted(options?.signal)
     const endpoint = `cosmos/bank/v1beta1/balances/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<BalancesResponse>>(() =>
-        this.get(endpoint, params),
-      )
+      const response = await this.getWithRetry<
+        RestApiResponse<BalancesResponse>
+      >(endpoint, params, options)
 
       return response.data
     } catch (e) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -57,13 +61,15 @@ export class ChainRestBankApi extends BaseRestConsumer {
     address: string,
     denom: string,
     params: Record<string, any> = {},
+    options?: RequestOptions,
   ): Promise<DenomBalance> {
+    throwIfAborted(options?.signal)
     const endpoint = `cosmos/bank/v1beta1/balances/${address}`
 
     try {
-      const response = await this.retry<RestApiResponse<BalancesResponse>>(() =>
-        this.get(endpoint, params),
-      )
+      const response = await this.getWithRetry<
+        RestApiResponse<BalancesResponse>
+      >(endpoint, params, options)
 
       const balance = response.data.balances.find(
         (balance) => balance.denom === denom,
@@ -81,7 +87,7 @@ export class ChainRestBankApi extends BaseRestConsumer {
 
       return balance
     } catch (e) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 
@@ -100,17 +106,19 @@ export class ChainRestBankApi extends BaseRestConsumer {
   public async fetchDenomOwners(
     denom: string,
     params: Record<string, any> = {},
+    options?: RequestOptions,
   ): Promise<DenomOwnersResponse['denom_owners']> {
+    throwIfAborted(options?.signal)
     const endpoint = `cosmos/bank/v1beta1/denom_owners/${denom}`
 
     try {
-      const response = await this.retry<RestApiResponse<DenomOwnersResponse>>(
-        () => this.get(endpoint, params),
-      )
+      const response = await this.getWithRetry<
+        RestApiResponse<DenomOwnersResponse>
+      >(endpoint, params, options)
 
       return response.data.denom_owners
     } catch (e) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 

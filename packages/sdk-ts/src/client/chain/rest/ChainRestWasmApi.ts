@@ -1,9 +1,11 @@
+import { isAbortError, throwIfAborted } from '@injectivelabs/utils'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import { ChainModule } from '../types/index.js'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { RestApiResponse } from '../types/index.js'
 
 export type SmartContractStateResponse = unknown
@@ -16,17 +18,19 @@ export class ChainRestWasmApi extends BaseRestConsumer {
     contractAddress: string,
     query: string,
     params: Record<string, any> = {},
+    options?: RequestOptions,
   ): Promise<SmartContractStateResponse> {
+    throwIfAborted(options?.signal)
     const endpoint = `cosmwasm/wasm/v1/contract/${contractAddress}/smart/${query}`
 
     try {
-      const response = await this.retry<
+      const response = await this.getWithRetry<
         RestApiResponse<SmartContractStateResponse>
-      >(() => this.get(endpoint, params))
+      >(endpoint, params, options)
 
       return response.data
     } catch (e) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 

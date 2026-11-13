@@ -3,8 +3,8 @@ import { InjectiveExplorerRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { createStreamSubscription } from './streamHelpers.js'
 import { ExplorerStreamTransformer } from '../../transformers/index.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 
 export type BlocksStreamCallback = (
   response: ReturnType<typeof ExplorerStreamTransformer.blocksStreamCallback>,
@@ -39,32 +39,35 @@ export class IndexerGrpcExplorerStream {
    * @param params.callback - Called for each block update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamBlocks({
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     callback: BlocksStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
     }
 
     const request = InjectiveExplorerRpcPb.StreamBlocksRequest.create()
-    const stream = this.client.streamBlocks(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamBlocks(request, { abort: abortSignal }),
       (response: InjectiveExplorerRpcPb.StreamBlocksResponse) => {
         callback(ExplorerStreamTransformer.blocksStreamCallback(response))
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -74,27 +77,29 @@ export class IndexerGrpcExplorerStream {
    * @param params.callback - Called for each block with transactions update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamBlocksWithTxs({
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     callback: BlocksWithTxsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
     }
 
     const request = InjectiveExplorerRpcPb.StreamBlocksRequest.create()
-    const stream = this.client.streamBlocks(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamBlocks(request, { abort: abortSignal }),
       (response: InjectiveExplorerRpcPb.StreamBlocksResponse) => {
         callback(
           ExplorerStreamTransformer.blocksWithTxsStreamCallback(response),
@@ -102,6 +107,7 @@ export class IndexerGrpcExplorerStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -111,32 +117,34 @@ export class IndexerGrpcExplorerStream {
    * @param params.callback - Called for each transaction update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamTransactions({
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     callback: TransactionsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
     }
 
     const request = InjectiveExplorerRpcPb.StreamTxsRequest.create()
-    const stream = this.client.streamTxs(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) => this.client.streamTxs(request, { abort: abortSignal }),
       (response: InjectiveExplorerRpcPb.StreamTxsResponse) => {
         callback(ExplorerStreamTransformer.transactionsStreamCallback(response))
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

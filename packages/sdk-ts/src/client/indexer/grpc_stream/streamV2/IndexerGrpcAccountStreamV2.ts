@@ -24,14 +24,17 @@ export class IndexerGrpcAccountStreamV2 {
    * Stream subaccount balance updates
    * @param params.subaccountId - The subaccount ID to stream balance for
    * @param params.callback - Called for each balance update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamSubaccountBalance({
     subaccountId,
     callback,
+    signal,
   }: {
     subaccountId: string
     callback: BalanceStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (!subaccountId) {
       throw new Error('subaccountId is required')
@@ -52,6 +55,7 @@ export class IndexerGrpcAccountStreamV2 {
           IndexerAccountStreamTransformer.balanceStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 }

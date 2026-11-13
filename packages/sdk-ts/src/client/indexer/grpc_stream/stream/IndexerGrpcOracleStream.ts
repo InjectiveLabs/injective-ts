@@ -3,8 +3,8 @@ import { InjectiveOracleRPCClient } from '@injectivelabs/indexer-proto-ts-v2/gen
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerOracleStreamTransformer } from '../../transformers/IndexerOracleStreamTransformer.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 
 export type OraclePriceStreamCallback = (
   response: ReturnType<
@@ -40,6 +40,7 @@ export class IndexerGrpcOracleStream {
    * @param params.callback - Called for each price update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOraclePrices({
@@ -49,6 +50,7 @@ export class IndexerGrpcOracleStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     oracleType: string
     baseSymbol?: string
@@ -56,7 +58,8 @@ export class IndexerGrpcOracleStream {
     callback: OraclePriceStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!oracleType) {
       throw new Error('oracleType is required')
@@ -77,15 +80,15 @@ export class IndexerGrpcOracleStream {
 
     request.oracleType = oracleType
 
-    const stream = this.client.streamPrices(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamPrices(request, { abort: abortSignal }),
       (response: InjectiveOracleRpcPb.StreamPricesResponse) => {
         callback(IndexerOracleStreamTransformer.pricesStreamCallback(response))
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -96,6 +99,7 @@ export class IndexerGrpcOracleStream {
    * @param params.callback - Called for each price update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOraclePricesByMarkets({
@@ -103,12 +107,14 @@ export class IndexerGrpcOracleStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds?: string[]
     callback: OraclePricesByMarketsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -120,10 +126,9 @@ export class IndexerGrpcOracleStream {
       request.marketIds = marketIds
     }
 
-    const stream = this.client.streamPricesByMarkets(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamPricesByMarkets(request, { abort: abortSignal }),
       (response: InjectiveOracleRpcPb.StreamPricesByMarketsResponse) => {
         callback(
           IndexerOracleStreamTransformer.pricesByMarketsCallback(response),
@@ -131,6 +136,7 @@ export class IndexerGrpcOracleStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

@@ -2,8 +2,8 @@ import * as InjectiveTradingRpcPb from '@injectivelabs/indexer-proto-ts-v2/gener
 import { InjectiveTradingRPCClient } from '@injectivelabs/indexer-proto-ts-v2/generated/injective_trading_rpc_pb.client'
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 
 /**
  * @category Indexer Grid Strategy Grpc Stream
@@ -26,6 +26,7 @@ export class IndexerGrpcTradingStream {
    * @param params.callback - Called for each strategy update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamGridStrategies({
@@ -34,13 +35,15 @@ export class IndexerGrpcTradingStream {
     onEndCallback,
     accountAddresses,
     onStatusCallback,
+    signal,
   }: {
     marketId?: string
     accountAddresses?: string[]
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
     callback: (response: InjectiveTradingRpcPb.StreamStrategyResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     const request = InjectiveTradingRpcPb.StreamStrategyRequest.create()
 
     // Input validation (already exists in original)
@@ -60,15 +63,15 @@ export class IndexerGrpcTradingStream {
       request.marketId = marketId
     }
 
-    const stream = this.client.streamStrategy(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamStrategy(request, { abort: abortSignal }),
       (response: InjectiveTradingRpcPb.StreamStrategyResponse) => {
         callback(response)
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

@@ -3,8 +3,8 @@ import { InjectivePortfolioRPCClient } from '@injectivelabs/indexer-proto-ts-v2/
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerAccountPortfolioStreamTransformer } from '../../transformers/index.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 
 export type AccountPortfolioStreamCallback = (
   response: ReturnType<
@@ -34,6 +34,7 @@ export class IndexerGrpcAccountPortfolioStream {
    * @param params.callback - Called for each portfolio update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamAccountPortfolio({
@@ -43,6 +44,7 @@ export class IndexerGrpcAccountPortfolioStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     accountAddress: string
     subaccountId?: string
@@ -50,7 +52,8 @@ export class IndexerGrpcAccountPortfolioStream {
     callback: AccountPortfolioStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!accountAddress) {
       throw new Error('accountAddress is required')
@@ -71,10 +74,9 @@ export class IndexerGrpcAccountPortfolioStream {
       request.type = type
     }
 
-    const stream = this.client.streamAccountPortfolio(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamAccountPortfolio(request, { abort: abortSignal }),
       (response: InjectivePortfolioRpcPb.StreamAccountPortfolioResponse) => {
         callback(
           IndexerAccountPortfolioStreamTransformer.accountPortfolioStreamCallback(
@@ -84,6 +86,7 @@ export class IndexerGrpcAccountPortfolioStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

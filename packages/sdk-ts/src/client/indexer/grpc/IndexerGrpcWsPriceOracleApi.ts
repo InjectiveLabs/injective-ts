@@ -1,8 +1,10 @@
+import { throwIfAborted } from '@injectivelabs/utils'
 import * as GoagenApiOraclePb from '@injectivelabs/ws-price-oracle-proto-ts-v2/generated/goagen_api_oracle_pb'
 import { OracleClient } from '@injectivelabs/ws-price-oracle-proto-ts-v2/generated/goagen_api_oracle_pb.client'
 import { IndexerModule } from '../types/index.js'
 import BaseIndexerGrpcConsumer from '../../base/BaseIndexerGrpcConsumer.js'
 import { IndexerWsPriceOracleStreamTransformer } from '../transformers/index.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type {
   WsPriceOracleLatestMarketPricesParams,
   WsPriceOracleLatestMarketPricesV2Params,
@@ -23,7 +25,9 @@ export class IndexerGrpcWsPriceOracleApi extends BaseIndexerGrpcConsumer {
    */
   async fetchLatestMarketPrices(
     params?: WsPriceOracleLatestMarketPricesParams,
+    options?: RequestOptions,
   ) {
+    throwIfAborted(options?.signal)
     const { marketIds, oracleTypes, includeInactive } = params || {}
     const request = GoagenApiOraclePb.LatestMarketPricesRequest.create()
 
@@ -42,7 +46,7 @@ export class IndexerGrpcWsPriceOracleApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoagenApiOraclePb.LatestMarketPricesRequest,
       GoagenApiOraclePb.LatestMarketPricesResponse
-    >(request, this.client.latestMarketPrices.bind(this.client))
+    >(request, this.client.latestMarketPrices.bind(this.client), options)
 
     return IndexerWsPriceOracleStreamTransformer.latestMarketPricesResponseToLatestMarketPrices(
       response,
@@ -54,7 +58,9 @@ export class IndexerGrpcWsPriceOracleApi extends BaseIndexerGrpcConsumer {
    */
   async fetchLatestMarketPricesV2(
     params?: WsPriceOracleLatestMarketPricesV2Params,
+    options?: RequestOptions,
   ) {
+    throwIfAborted(options?.signal)
     const { marketIds, oracleTypes, includeInactive, mode } = params || {}
     const request = GoagenApiOraclePb.LatestMarketPricesV2Request.create()
 
@@ -77,7 +83,7 @@ export class IndexerGrpcWsPriceOracleApi extends BaseIndexerGrpcConsumer {
     const response = await this.executeGrpcCall<
       GoagenApiOraclePb.LatestMarketPricesV2Request,
       GoagenApiOraclePb.LatestMarketPricesV2Response
-    >(request, this.client.latestMarketPricesV2.bind(this.client))
+    >(request, this.client.latestMarketPricesV2.bind(this.client), options)
 
     return IndexerWsPriceOracleStreamTransformer.latestMarketPricesV2ResponseToLatestMarketPricesV2(
       response,

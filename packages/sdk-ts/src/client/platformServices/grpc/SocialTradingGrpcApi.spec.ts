@@ -142,6 +142,8 @@ describe('SocialTradingGrpcApi', () => {
         nextToken: 'next',
         trades: [
           {
+            isBuy: true,
+            marketId: '0x01',
             pnl: '0.12',
             pnlUsd: '0.13',
             funding: '-0.02',
@@ -178,6 +180,8 @@ describe('SocialTradingGrpcApi', () => {
         nextToken: 'next',
         trades: [
           {
+            isBuy: true,
+            marketId: '0x01',
             pnl: '0.12',
             pnlUsd: '0.13',
             funding: '-0.02',
@@ -187,6 +191,75 @@ describe('SocialTradingGrpcApi', () => {
             positionId: 'position-1',
             timestamp: '2026-07-17T00:00:00Z',
             executionPrice: '100.5',
+          },
+        ],
+      }),
+    )
+
+    executeGrpcCall.mockRestore()
+  })
+
+  test('fetchAccountTrades', async () => {
+    const marketId =
+      '0x5d379fa10f0a74cd5983391b7391fa72af9cb4c0740a72adb1aed966e78103f3'
+    const executeGrpcCall = vi
+      .spyOn(socialTradingGrpcApi as any, 'executeGrpcCall')
+      .mockResolvedValue({
+        nextToken: 'next',
+        trades: [
+          {
+            marketId,
+            isBuy: false,
+            pnl: '-44.01',
+            pnlUsd: '-44.00',
+            funding: '0.09',
+            liquidationAdjustment: '0',
+            amount: '6.85',
+            eventType: 'full_close',
+            positionId: 'position-1',
+            timestamp: '2026-10-29T15:10:29.584Z',
+            executionPrice: '94.43',
+          },
+        ],
+      })
+
+    const response = await socialTradingGrpcApi.fetchAccountTrades({
+      marketId,
+      accountAddress,
+      pageSize: 10,
+      nextToken: 'cursor',
+      sortDirection: 'asc',
+    })
+    const [request, rpc] = executeGrpcCall.mock.calls[0]
+
+    expect((rpc as Function).name).toBe('bound listAccountTrades')
+    expect(request).toMatchObject({
+      marketId,
+      accountAddress,
+      pageSize: 10,
+      nextToken: 'cursor',
+      sortDirection: 'asc',
+    })
+    expect(response).toEqual(
+      expect.objectContaining<
+        ReturnType<
+          typeof PlatformServicesGrpcPositionsTransformer.grpcListAccountTradesToListAccountTrades
+        >
+      >({
+        nextToken: 'next',
+        trades: [
+          {
+            marketId,
+            isBuy: false,
+            pnl: '-44.01',
+            pnlUsd: '-44.00',
+            funding: '0.09',
+            liquidationAdjustment: '0',
+            amount: '6.85',
+            eventType: 'full_close',
+            positionId: 'position-1',
+            timestamp: '2026-10-29T15:10:29.584Z',
+            executionPrice: '94.43',
           },
         ],
       }),
@@ -205,7 +278,22 @@ describe('SocialTradingGrpcApi', () => {
       )
       .mockResolvedValueOnce(
         PlatformServicesPositionsPb.ListPositionTradesResponse.create({
-          trades: [PlatformServicesPositionsPb.PositionTrade.create()],
+          trades: [
+            PlatformServicesPositionsPb.PositionTrade.create({
+              isBuy: true,
+              marketId: '0x01',
+            }),
+          ],
+        }),
+      )
+      .mockResolvedValueOnce(
+        PlatformServicesPositionsPb.ListAccountTradesResponse.create({
+          trades: [
+            PlatformServicesPositionsPb.PositionTrade.create({
+              isBuy: false,
+              marketId: '0x01',
+            }),
+          ],
         }),
       )
 
@@ -214,6 +302,10 @@ describe('SocialTradingGrpcApi', () => {
       const trades = await socialTradingGrpcApi.fetchPositionTrades({
         positionId: 'position-1',
       })
+      const accountTrades = await socialTradingGrpcApi.fetchAccountTrades({
+        accountAddress,
+        marketId: '0x01',
+      })
 
       expect(positions.positions[0]).toMatchObject({
         pnl: '',
@@ -221,6 +313,11 @@ describe('SocialTradingGrpcApi', () => {
         liquidationAdjustment: '',
       })
       expect(trades.trades[0]).toMatchObject({
+        pnl: '',
+        funding: '',
+        liquidationAdjustment: '',
+      })
+      expect(accountTrades.trades[0]).toMatchObject({
         pnl: '',
         funding: '',
         liquidationAdjustment: '',

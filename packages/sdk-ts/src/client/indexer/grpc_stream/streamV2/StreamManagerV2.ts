@@ -1,4 +1,5 @@
 import { EventEmitter } from 'eventemitter3'
+import { isAbortError } from '@injectivelabs/utils'
 import {
   StreamState,
   StreamEvent,
@@ -28,14 +29,13 @@ const DEFAULT_RETRY_CONFIG: StreamManagerRetryConfig = {
 }
 
 /**
- * Maps gRPC status code to disconnect reason
+ * Maps gRPC status code to disconnect reason.
+ *
+ * A server-side CANCELLED is not a local user stop. Local abort/unsubscribe is
+ * handled before this mapping (and never emits a stream error event).
  */
 function mapGrpcCodeToReason(code: number): StreamDisconnectReason {
   switch (code) {
-    // User-initiated cancellation
-    case GrpcStatusCode.CANCELLED:
-      return StreamDisconnectReason.UserStopped
-
     // Network/connectivity issues - retryable
     case GrpcStatusCode.UNAVAILABLE:
       return StreamDisconnectReason.NetworkError
@@ -62,7 +62,9 @@ function mapGrpcCodeToReason(code: number): StreamDisconnectReason {
     case GrpcStatusCode.FAILED_PRECONDITION:
       return StreamDisconnectReason.InvalidRequest
 
+    // Remote cancellation is a stream error, not a caller-initiated stop.
     // Server-side errors - retryable
+    case GrpcStatusCode.CANCELLED:
     case GrpcStatusCode.UNKNOWN:
     case GrpcStatusCode.INTERNAL:
     case GrpcStatusCode.DATA_LOSS:
@@ -106,6 +108,7 @@ function isRetryableReason(reason: StreamDisconnectReason): boolean {
  * - Persistent retry mode
  * - Comprehensive gRPC error code mapping
  * - Distinguishes retryable vs non-retryable errors
+ * - Optional lifetime AbortSignal
  *
  */
 export class StreamManagerV2<TResponse> extends EventEmitter<
@@ -117,6 +120,13 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   private retryTimeoutId: NodeJS.Timeout | null = null
   private stableConnectionTimeoutId: NodeJS.Timeout | null = null
   private retryAttempt: number = 0
+  private readonly lifetimeSignal: AbortSignal | undefined
+  private lifetimeAborted: boolean
+  private lifetimeAbortHandler: (() => void) | null = null
+  private cancelObserverDispose: (() => void) | null = null
+  private generation = 0
+  private destroying = false
+  private stoppingForAbortedLifetime = false
 
   constructor(config: StreamManagerConfig<TResponse>) {
     super()
@@ -127,13 +137,36 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       onData: config.onData,
       retryConfig: { ...DEFAULT_RETRY_CONFIG, ...config.retryConfig },
     }
+    this.lifetimeSignal = config.signal
+    this.lifetimeAborted = config.signal?.aborted ?? false
+
+    if (this.lifetimeSignal && !this.lifetimeAborted) {
+      this.lifetimeAbortHandler = () => this.handleLifetimeAbort()
+      this.lifetimeSignal.addEventListener('abort', this.lifetimeAbortHandler, {
+        once: true,
+      })
+    }
 
     // Override emit to intercept 'data' events for stats tracking and user callback
     const originalEmit = this.emit.bind(this)
 
     this.emit = ((event: any, ...args: any[]) => {
-      if (event === StreamEvent.Data && args.length > 0) {
-        this.handleData(args[0] as TResponse)
+      if (event === StreamEvent.Data) {
+        if (!this.canReceiveData()) {
+          return false
+        }
+
+        const generation = this.generation
+
+        if (args.length > 0) {
+          this.handleData(args[0] as TResponse)
+        }
+
+        // onData can stop, abort, or replace this connection synchronously.
+        // Do not deliver the old payload to listeners of the next lifetime.
+        if (!this.canContinue(generation) || !this.canReceiveData()) {
+          return false
+        }
       }
 
       // Also emit the event to listeners
@@ -146,6 +179,16 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       throw new Error(
         `Cannot start destroyed stream manager: ${this.config.id}`,
       )
+    }
+
+    if (this.stoppingForAbortedLifetime) {
+      return
+    }
+
+    if (this.isLifetimeAbort()) {
+      this.stopForAbortedLifetime()
+
+      return
     }
 
     if (this.state !== StreamState.Idle && this.state !== StreamState.Stopped) {
@@ -164,6 +207,10 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   public stop(): void {
+    if (this.isDestroyed) {
+      return
+    }
+
     this.handleDisconnect(StreamDisconnectReason.UserStopped)
   }
 
@@ -179,6 +226,12 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     if (this.isDestroyed) {
       return
     }
+
+    // Terminal guard: user unsubscribe/removal callbacks may reenter the
+    // manager. They must not be able to start a replacement generation.
+    this.destroying = true
+    this.detachLifetimeSignal()
+    this.generation++
 
     let teardownError: unknown
     const captureTeardownError = (callback: () => void) => {
@@ -218,17 +271,129 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   private get isDestroyed(): boolean {
-    return this.state === StreamState.Destroyed
+    return this.destroying || this.state === StreamState.Destroyed
+  }
+
+  private isLifetimeAbort(): boolean {
+    if (this.lifetimeSignal?.aborted) {
+      this.lifetimeAborted = true
+    }
+
+    return this.lifetimeAborted
+  }
+
+  private isCurrentGeneration(generation: number): boolean {
+    return generation === this.generation
+  }
+
+  private canContinue(generation: number): boolean {
+    return (
+      this.isCurrentGeneration(generation) &&
+      !this.isDestroyed &&
+      !this.isLifetimeAbort()
+    )
+  }
+
+  private isActiveConnection(
+    generation: number,
+    subscription: StreamSubscription,
+  ): boolean {
+    return this.canContinue(generation) && this.subscription === subscription
+  }
+
+  private canReceiveData(): boolean {
+    if (this.isDestroyed || this.isLifetimeAbort()) {
+      return false
+    }
+
+    // Connecting/Reconnecting is intentional: a factory may synchronously
+    // emit initial data before handleConnected() runs.
+    return (
+      this.state === StreamState.Connecting ||
+      this.state === StreamState.Connected ||
+      this.state === StreamState.Reconnecting
+    )
+  }
+
+  private detachLifetimeSignal(): void {
+    if (!this.lifetimeSignal || !this.lifetimeAbortHandler) {
+      return
+    }
+
+    this.lifetimeSignal.removeEventListener('abort', this.lifetimeAbortHandler)
+    this.lifetimeAbortHandler = null
+  }
+
+  private handleLifetimeAbort(): void {
+    this.lifetimeAborted = true
+
+    if (this.isDestroyed) {
+      return
+    }
+
+    if (this.state === StreamState.Idle || this.state === StreamState.Stopped) {
+      this.generation++
+      this.cleanupForDisconnect()
+
+      return
+    }
+
+    this.handleDisconnect(StreamDisconnectReason.UserStopped)
+  }
+
+  private stopForAbortedLifetime(): void {
+    if (this.isDestroyed || this.stoppingForAbortedLifetime) {
+      return
+    }
+
+    this.stoppingForAbortedLifetime = true
+
+    try {
+      this.lifetimeAborted = true
+      const generation = ++this.generation
+      this.retryAttempt = 0
+
+      let teardownError: unknown
+      const captureTeardownError = (callback: () => void) => {
+        try {
+          callback()
+        } catch (error) {
+          teardownError ??= error
+        }
+      }
+
+      captureTeardownError(() => this.cleanupForDisconnect())
+
+      if (this.isCurrentGeneration(generation)) {
+        captureTeardownError(() =>
+          this.emitDisconnectEvent(StreamDisconnectReason.UserStopped, false),
+        )
+
+        if (this.isCurrentGeneration(generation)) {
+          captureTeardownError(() => this.updateState(StreamState.Stopped))
+        }
+      }
+
+      if (teardownError) {
+        throw teardownError
+      }
+    } finally {
+      this.stoppingForAbortedLifetime = false
+    }
   }
 
   private clearActiveConnection(): void {
-    this.clearSubscription()
+    // Detach timers before invoking user unsubscribe/observer callbacks. A
+    // reentrant stop/start during those callbacks must not have its new
+    // generation's timers cleared by this (old generation) cleanup.
     this.clearStableConnectionTimeout()
+    this.clearSubscription()
   }
 
   private cleanupForDisconnect(): void {
-    this.clearActiveConnection()
+    this.clearStableConnectionTimeout()
     this.clearRetryTimeout()
+    this.clearSubscription()
   }
 
   private emitDisconnectEvent(
@@ -242,20 +407,33 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     })
   }
 
-  private clearSubscription(): void {
-    if (!this.subscription) {
+  private disposeCancellationObserver(): void {
+    if (!this.cancelObserverDispose) {
       return
     }
 
-    const subscription = this.subscription
-    this.subscription = null
+    const dispose = this.cancelObserverDispose
+    this.cancelObserverDispose = null
 
+    try {
+      dispose()
+    } catch (error) {
+      this.emit(StreamEvent.Warn, {
+        message:
+          error instanceof Error
+            ? `Stream cancellation observer cleanup failed: ${error.message}`
+            : 'Stream cancellation observer cleanup failed',
+      })
+    }
+  }
+
+  private unsubscribeSubscription(subscription: StreamSubscription): void {
     try {
       subscription.unsubscribe()
     } catch (error) {
       if (
-        error instanceof Error &&
-        (error.name === 'AbortError' ||
+        isAbortError(error) ||
+        (error instanceof Error &&
           error.message.toLowerCase().includes('signal is aborted'))
       ) {
         return
@@ -268,6 +446,20 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
             : 'Stream unsubscribe failed with unknown error',
       })
     }
+  }
+
+  private clearSubscription(): void {
+    if (!this.subscription) {
+      this.cancelObserverDispose = null
+
+      return
+    }
+
+    const subscription = this.subscription
+    this.subscription = null
+
+    this.disposeCancellationObserver()
+    this.unsubscribeSubscription(subscription)
   }
 
   private clearRetryTimeout(): void {
@@ -311,33 +503,58 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     return Math.min(nextBackoffDelay, this.config.retryConfig.maxDelayMs)
   }
 
-  private scheduleRetry(reason?: StreamDisconnectReason): void {
-    if (this.isDestroyed || !this.config.retryConfig.enabled) {
+  private scheduleRetry(
+    reason: StreamDisconnectReason | undefined,
+    generation: number,
+  ): void {
+    if (
+      !this.canContinue(generation) ||
+      this.state !== StreamState.Reconnecting ||
+      !this.config.retryConfig.enabled
+    ) {
       return
     }
 
     const nextBackoff = this.calculateNextBackoff(reason)
 
     if (nextBackoff === null) {
-      this.handleMaxRetriesReached()
+      this.handleMaxRetriesReached(generation)
 
       return
     }
 
+    this.clearRetryTimeout()
+
     this.retryTimeoutId = setTimeout(() => {
-      if (this.isDestroyed) {
+      this.retryTimeoutId = null
+
+      if (
+        !this.canContinue(generation) ||
+        this.state !== StreamState.Reconnecting
+      ) {
         return
       }
 
       this.retryAttempt++
 
-      this.emit(StreamEvent.Retry, {
-        attempt: this.retryAttempt,
-        delayMs: nextBackoff,
-        nextBackoff: this.calculateNextBackoff(reason),
-      })
+      try {
+        this.emit(StreamEvent.Retry, {
+          attempt: this.retryAttempt,
+          delayMs: nextBackoff,
+          nextBackoff: this.calculateNextBackoff(reason),
+        })
+      } catch (error) {
+        if (this.canContinue(generation)) {
+          this.handleError(error)
+        }
 
-      if (this.isDestroyed) {
+        return
+      }
+
+      if (
+        !this.canContinue(generation) ||
+        this.state !== StreamState.Reconnecting
+      ) {
         return
       }
 
@@ -345,27 +562,73 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     }, nextBackoff)
   }
 
-  private handleMaxRetriesReached(): void {
-    this.emit(StreamEvent.Error, {
-      message: `Max retries (${this.config.retryConfig.maxAttempts}) reached`,
-    })
+  private handleMaxRetriesReached(generation: number): void {
+    if (!this.canContinue(generation)) {
+      return
+    }
+
+    let eventError: unknown
+
+    try {
+      this.emit(StreamEvent.Error, {
+        message: `Max retries (${this.config.retryConfig.maxAttempts}) reached`,
+      })
+    } catch (error) {
+      eventError = error
+    }
+
+    if (!this.canContinue(generation)) {
+      if (eventError) {
+        throw eventError
+      }
+
+      return
+    }
+
     this.handleDisconnect(StreamDisconnectReason.MaxRetries)
+
+    if (eventError) {
+      throw eventError
+    }
   }
 
   private handleError(error: Error | StreamError | any): void {
+    if (this.isDestroyed) {
+      return
+    }
+
+    if (this.isLifetimeAbort() || this.subscription?.cancelled === true) {
+      this.handleDisconnect(StreamDisconnectReason.UserStopped)
+
+      return
+    }
+
+    const generation = this.generation
     const errorInfo = this.extractErrorInfo(error)
+    let eventError: unknown
 
-    this.emit(StreamEvent.Error, errorInfo)
+    try {
+      this.emit(StreamEvent.Error, errorInfo)
+    } catch (caughtError) {
+      eventError = caughtError
+    }
 
-    // Map gRPC error code to appropriate disconnect reason
-    const grpcCode =
-      error && typeof error === 'object' && 'code' in error
-        ? error.code
-        : GrpcStatusCode.UNKNOWN
+    if (!this.isCurrentGeneration(generation)) {
+      if (eventError) {
+        throw eventError
+      }
 
+      return
+    }
+
+    const grpcCode = errorInfo.code ?? GrpcStatusCode.UNKNOWN
     const reason = mapGrpcCodeToReason(grpcCode)
 
     this.handleDisconnect(reason)
+
+    if (eventError) {
+      throw eventError
+    }
   }
 
   /**
@@ -373,22 +636,48 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
    * Called automatically when user emits 'data' event from streamFactory callback
    */
   private handleData(response: TResponse): void {
+    if (!this.canReceiveData()) {
+      return
+    }
+
+    const generation = this.generation
+
     try {
       this.config.onData(response)
+
+      if (
+        !this.canContinue(generation) ||
+        this.state !== StreamState.Connected
+      ) {
+        return
+      }
+
       this.markConnectionStable()
     } catch (error) {
+      if (!this.canContinue(generation)) {
+        return
+      }
+
       this.handleError(error)
     }
   }
 
-  private handleConnected(isReconnect: boolean): void {
-    this.updateState(StreamState.Connected)
-
-    if (this.isDestroyed) {
+  private handleConnected(generation: number, isReconnect: boolean): void {
+    if (!this.canContinue(generation)) {
       return
     }
 
-    this.scheduleStableConnectionReset()
+    this.updateState(StreamState.Connected)
+
+    if (!this.canContinue(generation)) {
+      return
+    }
+
+    this.scheduleStableConnectionReset(generation)
+
+    if (!this.canContinue(generation)) {
+      return
+    }
 
     this.emit(StreamEvent.Connect, {
       isReconnect,
@@ -396,7 +685,7 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     })
   }
 
-  private scheduleStableConnectionReset(): void {
+  private scheduleStableConnectionReset(generation: number): void {
     this.clearStableConnectionTimeout()
 
     if (this.retryAttempt === 0) {
@@ -413,6 +702,15 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     }
 
     this.stableConnectionTimeoutId = setTimeout(() => {
+      this.stableConnectionTimeoutId = null
+
+      if (
+        !this.canContinue(generation) ||
+        this.state !== StreamState.Connected
+      ) {
+        return
+      }
+
       this.markConnectionStable()
     }, stableConnectionMs)
   }
@@ -428,10 +726,11 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
   }
 
   private handleDisconnect(reason: StreamDisconnectReason): void {
-    this.cleanupForDisconnect()
+    const generation = ++this.generation
 
     const willRetry =
       !this.isDestroyed &&
+      !this.isLifetimeAbort() &&
       isRetryableReason(reason) &&
       this.config.retryConfig.enabled
 
@@ -450,17 +749,78 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       }
     }
 
+    captureDisconnectError(() => this.cleanupForDisconnect())
+
+    if (!this.isCurrentGeneration(generation)) {
+      if (disconnectError) {
+        throw disconnectError
+      }
+
+      return
+    }
+
     captureDisconnectError(() => this.emitDisconnectEvent(reason, willRetry))
+
+    if (!this.isCurrentGeneration(generation)) {
+      if (disconnectError) {
+        throw disconnectError
+      }
+
+      return
+    }
 
     if (nextState === StreamState.Reconnecting) {
       captureDisconnectError(() => this.updateState(StreamState.Reconnecting))
-      captureDisconnectError(() => this.scheduleRetry(reason))
+
+      if (this.isCurrentGeneration(generation) && !this.isLifetimeAbort()) {
+        captureDisconnectError(() => this.scheduleRetry(reason, generation))
+      }
     } else {
       captureDisconnectError(() => this.updateState(nextState))
     }
 
     if (disconnectError) {
       throw disconnectError
+    }
+  }
+
+  private observeSubscriptionCancellation(
+    subscription: StreamSubscription,
+    generation: number,
+  ): void {
+    if (typeof subscription.onCancel !== 'function') {
+      return
+    }
+
+    let dispose: (() => void) | undefined
+
+    try {
+      dispose = subscription.onCancel(() => {
+        if (!this.isActiveConnection(generation, subscription)) {
+          return
+        }
+
+        this.handleDisconnect(StreamDisconnectReason.UserStopped)
+      })
+    } catch (error) {
+      if (!this.isActiveConnection(generation, subscription)) {
+        return
+      }
+
+      this.emit(StreamEvent.Warn, {
+        message:
+          error instanceof Error
+            ? `Stream cancellation listener failed: ${error.message}`
+            : 'Stream cancellation listener failed',
+      })
+
+      return
+    }
+
+    if (this.isActiveConnection(generation, subscription)) {
+      this.cancelObserverDispose = dispose ?? null
+    } else if (dispose) {
+      dispose()
     }
   }
 
@@ -471,32 +831,93 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
       )
     }
 
+    if (this.isLifetimeAbort()) {
+      this.stopForAbortedLifetime()
+
+      return
+    }
+
+    const generation = ++this.generation
     const isReconnect = this.state === StreamState.Reconnecting
+
     this.clearActiveConnection()
+
+    if (!this.isCurrentGeneration(generation)) {
+      return
+    }
 
     this.updateState(
       isReconnect ? StreamState.Reconnecting : StreamState.Connecting,
     )
 
-    if (this.isDestroyed) {
+    if (!this.canContinue(generation)) {
+      return
+    }
+
+    let subscription: StreamSubscription
+
+    try {
+      subscription = this.config.streamFactory()
+    } catch (error) {
+      if (!this.canContinue(generation)) {
+        return
+      }
+
+      this.handleError(error)
+
+      return
+    }
+
+    if (!this.canContinue(generation)) {
+      this.unsubscribeSubscription(subscription)
+
+      return
+    }
+
+    this.subscription = subscription
+    this.observeSubscriptionCancellation(subscription, generation)
+
+    if (!this.isActiveConnection(generation, subscription)) {
+      return
+    }
+
+    if (subscription.cancelled === true) {
+      this.handleDisconnect(StreamDisconnectReason.UserStopped)
+
       return
     }
 
     try {
-      this.subscription = this.config.streamFactory()
-
       // Listen for error events from the stream
-      this.subscription.on('error', (error: StreamError) => {
+      subscription.on('error', (error: StreamError) => {
+        if (!this.isActiveConnection(generation, subscription)) {
+          return
+        }
+
         this.handleError(error)
       })
 
       // Listen for completion events from the stream
-      this.subscription.on('complete', () => {
+      subscription.on('complete', () => {
+        if (!this.isActiveConnection(generation, subscription)) {
+          return
+        }
+
         this.handleDisconnect(StreamDisconnectReason.StreamEnded)
       })
 
-      this.handleConnected(isReconnect)
+      if (!this.isActiveConnection(generation, subscription)) {
+        return
+      }
+
+      // Connection listeners are part of setup: their failures must follow
+      // normal error handling, including when setup runs from a retry timer.
+      this.handleConnected(generation, isReconnect)
     } catch (error) {
+      if (!this.isActiveConnection(generation, subscription)) {
+        return
+      }
+
       this.handleError(error)
     }
   }
@@ -512,17 +933,19 @@ export class StreamManagerV2<TResponse> extends EventEmitter<
     // Handle StreamError with gRPC details field
     if (error && typeof error === 'object' && 'details' in error) {
       return {
-        message: error.details,
+        message:
+          typeof error.details === 'string'
+            ? error.details
+            : error instanceof Error
+              ? error.message
+              : 'Unknown stream error',
         code: error.code,
         details: error,
       }
     }
 
     // Handle standard Error
-    const code =
-      error && typeof error === 'object' && 'code' in error
-        ? error.code
-        : undefined
+    const code = error && typeof error === 'object' ? error.code : undefined
 
     return {
       message: error instanceof Error ? error.message : 'Unknown error',

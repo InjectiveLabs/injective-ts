@@ -22,16 +22,19 @@ export class IndexerGrpcTradingStreamV2 {
    * @param params.marketId - Optional market ID to filter strategies
    * @param params.accountAddresses - Optional array of account addresses to filter
    * @param params.callback - Called for each strategy update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamGridStrategies({
     marketId,
     accountAddresses,
     callback,
+    signal,
   }: {
     marketId?: string
     accountAddresses?: string[]
     callback: GridStrategyStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if ((!accountAddresses || accountAddresses.length === 0) && !marketId) {
       throw new Error('accountAddresses or marketId is required')
@@ -56,6 +59,7 @@ export class IndexerGrpcTradingStreamV2 {
       (response) => {
         callback(response)
       },
+      { signal },
     )
   }
 }

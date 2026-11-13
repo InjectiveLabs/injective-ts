@@ -1,27 +1,32 @@
+import { isAbortError, throwIfAborted } from '@injectivelabs/utils'
 import {
   HttpRequestException,
   UnspecifiedErrorCode,
 } from '@injectivelabs/exceptions'
 import BaseRestConsumer from '../../base/BaseRestConsumer.js'
+import type { RequestOptions } from '@injectivelabs/utils'
 import type { ChronosLeaderboardResponse } from '../types/leaderboard-rest.js'
 
 /**
  * @category Indexer Chronos API
  */
 export class IndexerRestLeaderboardChronosApi extends BaseRestConsumer {
-  async fetchLeaderboard(resolution: string) {
+  async fetchLeaderboard(resolution: string, options?: RequestOptions) {
+    throwIfAborted(options?.signal)
     const path = ``
 
     try {
-      const { data } = await this.retry<ChronosLeaderboardResponse>(() =>
-        this.get(path, {
+      const { data } = await this.getWithRetry<ChronosLeaderboardResponse>(
+        path,
+        {
           resolution,
-        }),
+        },
+        options,
       )
 
       return data
     } catch (e: unknown) {
-      if (e instanceof HttpRequestException) {
+      if (isAbortError(e) || e instanceof HttpRequestException) {
         throw e
       }
 

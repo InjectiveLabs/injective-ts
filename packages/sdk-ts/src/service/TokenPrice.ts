@@ -1,5 +1,6 @@
-import { HttpRestClient } from '@injectivelabs/utils'
+import { HttpRestClient, throwIfAborted } from '@injectivelabs/utils'
 import { Network, isDevnet, isTestnet } from '@injectivelabs/networks'
+import type { RequestOptions } from '@injectivelabs/utils'
 
 interface TokenStaticWithPrice {
   denom: string
@@ -41,10 +42,17 @@ export class TokenPrice {
     this.client = new HttpRestClient(getAssetMicroserviceEndpoint(network))
   }
 
-  async fetchUsdTokensPriceMap() {
+  async fetchUsdTokensPriceMap(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
+
     const response = await this.client.retry<{
       data: Record<string, TokenStaticWithPrice>
-    }>(() => this.client.get(`denoms?withPrice=true`))
+    }>(
+      (requestConfig) =>
+        this.client.get(`denoms?withPrice=true`, {}, requestConfig),
+      // Forward only the signal so a stray JS argument can't set retries.
+      { signal: options?.signal },
+    )
 
     const tokenPriceMap: Record<string, number> = Object.values(
       response.data,

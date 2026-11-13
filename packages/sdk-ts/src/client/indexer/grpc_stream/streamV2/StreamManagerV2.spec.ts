@@ -769,8 +769,8 @@ describe('StreamManagerV2', () => {
         // Non-retryable errors
         {
           code: GrpcStatusCode.CANCELLED,
-          expected: StreamDisconnectReason.UserStopped,
-          shouldRetry: false,
+          expected: StreamDisconnectReason.StreamError,
+          shouldRetry: true,
         },
         {
           code: GrpcStatusCode.UNAUTHENTICATED,
@@ -1001,7 +1001,7 @@ describe('StreamManagerV2', () => {
       )
     })
 
-    it('should not retry on user cancelled (code 1)', () => {
+    it('should treat remote cancelled (code 1) as a stream error instead of a user stop', () => {
       const manager = new StreamManagerV2({
         id: 'test-stream',
         streamFactory,
@@ -1019,8 +1019,11 @@ describe('StreamManagerV2', () => {
       }
       mockSubscription._errorHandler?.(streamError)
 
-      expect(manager.getState()).toBe(StreamState.Stopped)
-      expect(disconnectEvents[0].willRetry).toBe(false)
+      expect(manager.getState()).toBe(StreamState.Reconnecting)
+      expect(disconnectEvents[0].willRetry).toBe(true)
+      expect(disconnectEvents[0].reason).toBe(
+        StreamDisconnectReason.StreamError,
+      )
     })
   })
 

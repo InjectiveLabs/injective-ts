@@ -23,12 +23,15 @@ export class IndexerGrpcAuctionStreamV2 {
   /**
    * Stream auction bids
    * @param params.callback - Called for each bid update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamBids({
     callback,
+    signal,
   }: {
     callback: BidsStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -43,6 +46,7 @@ export class IndexerGrpcAuctionStreamV2 {
           IndexerAuctionStreamTransformer.bidsStreamCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 }

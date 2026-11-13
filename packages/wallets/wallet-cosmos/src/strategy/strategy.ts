@@ -11,7 +11,9 @@ import {
   CosmosWalletException,
 } from '@injectivelabs/exceptions'
 import {
+  observeTx,
   waitTxBroadcasted,
+  TxObservationAbortError,
   createTxRawFromSigResponse,
   createSignDocFromTransaction,
 } from '@injectivelabs/sdk-ts/core/tx'
@@ -22,6 +24,7 @@ import {
   WalletEventListener,
   BaseConcreteStrategy,
   createCosmosSignDocFromSignDoc,
+  broadcastTxRawAsTransactionException,
 } from '@injectivelabs/wallet-base'
 import { CosmosWallet } from './../wallet.js'
 import type { OfflineSigner } from '@cosmjs/proto-signing'
@@ -194,7 +197,6 @@ export class CosmosWalletStrategy
     transaction: DirectSignResponse | TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const cosmosWallet = this.getCurrentCosmosWallet()
     const txRaw = createTxRawFromSigResponse(transaction)
 
     if (!options.endpoints) {
@@ -205,14 +207,26 @@ export class CosmosWalletStrategy
       )
     }
 
+    if (options.endpoints.broadcastGrpc) {
+      return await broadcastTxRawAsTransactionException(txRaw, options)
+    }
+
+    const cosmosWallet = this.getCurrentCosmosWallet()
+
     try {
       const txHash = await cosmosWallet.broadcastTx(txRaw)
 
-      options.onBroadcast?.(txHash)
-
-      return await waitTxBroadcasted(txHash, options)
+      return await observeTx(txHash, () => {
+        options.onBroadcast?.(txHash)
+        return waitTxBroadcasted(txHash, options)
+      })
     } catch (e: unknown) {
-      if (e instanceof TransactionException) {
+      // Only observation of the submitted tx is cancellable here. Provider
+      // errors are failures even when abort-shaped.
+      if (
+        e instanceof TxObservationAbortError ||
+        e instanceof TransactionException
+      ) {
         throw e
       }
 

@@ -3,8 +3,8 @@ import { InjectiveDerivativeExchangeRPCClient } from '@injectivelabs/indexer-pro
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerDerivativeStreamTransformer } from '../../transformers/index.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 import type {
   OrderSide,
   OrderState,
@@ -82,6 +82,7 @@ export class IndexerGrpcDerivativesStream {
    * @param params.callback - Called for each order update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOrders({
@@ -91,6 +92,7 @@ export class IndexerGrpcDerivativesStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketId?: string
     subaccountId?: string
@@ -98,7 +100,8 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativeOrdersStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -119,10 +122,9 @@ export class IndexerGrpcDerivativesStream {
       request.orderSide = orderSide
     }
 
-    const stream = this.client.streamOrders(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamOrders(request, { abort: abortSignal }),
       (response: InjectiveDerivativeExchangeRpcPb.StreamOrdersResponse) => {
         callback(
           IndexerDerivativeStreamTransformer.ordersStreamCallback(response),
@@ -130,6 +132,7 @@ export class IndexerGrpcDerivativesStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -145,6 +148,7 @@ export class IndexerGrpcDerivativesStream {
    * @param params.callback - Called for each order history update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOrdersHistory({
@@ -157,6 +161,7 @@ export class IndexerGrpcDerivativesStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketId?: string
     subaccountId?: string
@@ -167,7 +172,8 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativeOrderHistoryStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -200,10 +206,9 @@ export class IndexerGrpcDerivativesStream {
       request.executionTypes = executionTypes
     }
 
-    const stream = this.client.streamOrdersHistory(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamOrdersHistory(request, { abort: abortSignal }),
       (
         response: InjectiveDerivativeExchangeRpcPb.StreamOrdersHistoryResponse,
       ) => {
@@ -215,6 +220,7 @@ export class IndexerGrpcDerivativesStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -231,6 +237,7 @@ export class IndexerGrpcDerivativesStream {
    * @param params.callback - Called for each trade update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamTrades({
@@ -244,6 +251,7 @@ export class IndexerGrpcDerivativesStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds?: string[]
     marketId?: string
@@ -255,7 +263,8 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativeTradesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -298,10 +307,9 @@ export class IndexerGrpcDerivativesStream {
       }
     }
 
-    const stream = this.client.streamTrades(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamTrades(request, { abort: abortSignal }),
       (response: InjectiveDerivativeExchangeRpcPb.StreamTradesResponse) => {
         callback(
           IndexerDerivativeStreamTransformer.tradesStreamCallback(response),
@@ -309,6 +317,7 @@ export class IndexerGrpcDerivativesStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -321,6 +330,7 @@ export class IndexerGrpcDerivativesStream {
    * @param params.callback - Called for each position update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamPositions({
@@ -330,6 +340,7 @@ export class IndexerGrpcDerivativesStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketId?: string
     address?: string
@@ -337,7 +348,8 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativePositionsStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -358,10 +370,9 @@ export class IndexerGrpcDerivativesStream {
       request.subaccountId = subaccountId
     }
 
-    const stream = this.client.streamPositions(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamPositions(request, { abort: abortSignal }),
       (response: InjectiveDerivativeExchangeRpcPb.StreamPositionsResponse) => {
         callback(
           IndexerDerivativeStreamTransformer.positionStreamCallback(response),
@@ -369,6 +380,7 @@ export class IndexerGrpcDerivativesStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -379,6 +391,7 @@ export class IndexerGrpcDerivativesStream {
    * @param params.callback - Called for each market update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamMarkets({
@@ -386,12 +399,14 @@ export class IndexerGrpcDerivativesStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds?: string[]
     callback: DerivativeMarketStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -404,15 +419,15 @@ export class IndexerGrpcDerivativesStream {
       request.marketIds = marketIds
     }
 
-    const stream = this.client.streamMarket(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamMarket(request, { abort: abortSignal }),
       (response: InjectiveDerivativeExchangeRpcPb.StreamMarketResponse) => {
         callback(response)
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -423,6 +438,7 @@ export class IndexerGrpcDerivativesStream {
    * @param params.callback - Called for each orderbook update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOrderbooksV2({
@@ -430,12 +446,14 @@ export class IndexerGrpcDerivativesStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds: string[]
     callback: DerivativeOrderbookV2StreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!marketIds || marketIds.length === 0) {
       throw new Error('marketIds is required and cannot be empty')
@@ -448,10 +466,9 @@ export class IndexerGrpcDerivativesStream {
       InjectiveDerivativeExchangeRpcPb.StreamOrderbookV2Request.create()
     request.marketIds = marketIds
 
-    const stream = this.client.streamOrderbookV2(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamOrderbookV2(request, { abort: abortSignal }),
       (
         response: InjectiveDerivativeExchangeRpcPb.StreamOrderbookV2Response,
       ) => {
@@ -463,6 +480,7 @@ export class IndexerGrpcDerivativesStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -473,6 +491,7 @@ export class IndexerGrpcDerivativesStream {
    * @param params.callback - Called for each orderbook update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamOrderbookUpdates({
@@ -480,12 +499,14 @@ export class IndexerGrpcDerivativesStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketIds: string[]
     callback: DerivativeOrderbookUpdateStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!marketIds || marketIds.length === 0) {
       throw new Error('marketIds is required and cannot be empty')
@@ -499,10 +520,9 @@ export class IndexerGrpcDerivativesStream {
 
     request.marketIds = marketIds
 
-    const stream = this.client.streamOrderbookUpdate(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamOrderbookUpdate(request, { abort: abortSignal }),
       (
         response: InjectiveDerivativeExchangeRpcPb.StreamOrderbookUpdateResponse,
       ) => {
@@ -514,6 +534,7 @@ export class IndexerGrpcDerivativesStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 
@@ -526,6 +547,7 @@ export class IndexerGrpcDerivativesStream {
    * @param params.callback - Called for each position update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamPositionsV2({
@@ -535,6 +557,7 @@ export class IndexerGrpcDerivativesStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     marketId?: string
     address?: string
@@ -542,7 +565,8 @@ export class IndexerGrpcDerivativesStream {
     callback: DerivativePositionsV2StreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -563,10 +587,9 @@ export class IndexerGrpcDerivativesStream {
       request.subaccountId = subaccountId
     }
 
-    const stream = this.client.streamPositionsV2(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamPositionsV2(request, { abort: abortSignal }),
       (
         response: InjectiveDerivativeExchangeRpcPb.StreamPositionsV2Response,
       ) => {
@@ -576,6 +599,7 @@ export class IndexerGrpcDerivativesStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

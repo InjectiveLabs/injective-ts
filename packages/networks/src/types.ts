@@ -32,6 +32,7 @@ export type NetworkEndpoints = {
   web3gw?: string // Web3Gateway Service
   explorer?: string // Explorer Service
   chart?: string // Chart Service
+  broadcastGrpc?: string // broadcast endpoint override
 }
 
 export type UrlEndpoints = NetworkEndpoints /** Deprecated */

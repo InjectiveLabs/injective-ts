@@ -40,6 +40,7 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
    * @param params.oracleTypes - Optional oracle types to filter
    * @param params.includeInactive - Whether inactive markets should be included
    * @param params.callback - Called for each market oracle update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamMarkets({
@@ -47,11 +48,13 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
     oracleTypes,
     includeInactive,
     callback,
+    signal,
   }: {
     marketIds?: string[]
     oracleTypes?: string[]
     includeInactive?: boolean
     callback: WsPriceOracleMarketsStreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -79,6 +82,7 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
           IndexerWsPriceOracleStreamTransformer.streamMarketsCallback(response)
         callback(transformed)
       },
+      { signal },
     )
   }
 
@@ -89,11 +93,13 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
    * @param params.includeInactive - Whether inactive markets should be included
    * @param params.mode - Optional response mode: full, light, or slim
    * @param params.callback - Called for each market oracle update
+   * @param params.signal - Optional signal that cancels the stream
    * @returns StreamSubscription
    */
   streamMarketsV2({
     mode,
     callback,
+    signal,
     marketIds,
     oracleTypes,
     includeInactive,
@@ -103,6 +109,7 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
     includeInactive?: boolean
     mode?: WsPriceOracleResponseMode
     callback: WsPriceOracleMarketsV2StreamCallbackV2
+    signal?: AbortSignal
   }): StreamSubscription {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function')
@@ -136,6 +143,7 @@ export class IndexerGrpcWsPriceOracleStreamV2 {
           )
         callback(transformed)
       },
+      { signal },
     )
   }
 }

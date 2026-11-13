@@ -3,8 +3,8 @@ import { InjectiveArchiverRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerArchiverStreamTransformer } from '../../transformers/index.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 
 export type SpotAverageEntriesStreamCallback = (
   response: ReturnType<
@@ -32,6 +32,7 @@ export class IndexerGrpcArchiverStream {
    * @param params.callback - Called for each average entry update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamSpotAverageEntries({
@@ -39,12 +40,14 @@ export class IndexerGrpcArchiverStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     account: string
     callback: SpotAverageEntriesStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!account) {
       throw new Error('account is required')
@@ -58,10 +61,9 @@ export class IndexerGrpcArchiverStream {
 
     request.account = account
 
-    const stream = this.client.streamSpotAverageEntries(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamSpotAverageEntries(request, { abort: abortSignal }),
       (response: InjectiveArchiverRpcPb.StreamSpotAverageEntriesResponse) => {
         callback(
           IndexerArchiverStreamTransformer.spotAverageEntriesStreamCallback(
@@ -71,6 +73,7 @@ export class IndexerGrpcArchiverStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

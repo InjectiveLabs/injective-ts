@@ -3,8 +3,8 @@ import { InjectiveAccountsRPCClient } from '@injectivelabs/indexer-proto-ts-v2/g
 import { createStreamSubscription } from './streamHelpers.js'
 import { GrpcWebRpcTransport } from '../../../base/GrpcWebRpcTransport.js'
 import { IndexerAccountStreamTransformer } from '../../transformers/index.js'
-import type { Subscription } from 'rxjs'
 import type { StreamStatusResponse } from '../../types/index.js'
+import type { LegacyStreamSubscription } from './streamHelpers.js'
 
 export type BalanceStreamCallback = (
   response: ReturnType<
@@ -32,6 +32,7 @@ export class IndexerGrpcAccountStream {
    * @param params.callback - Called for each balance update
    * @param params.onEndCallback - Called when stream ends normally
    * @param params.onStatusCallback - Called on stream errors
+   * @param params.signal - Optional signal that cancels the stream
    * @returns Subscription object with unsubscribe method
    */
   streamSubaccountBalance({
@@ -39,12 +40,14 @@ export class IndexerGrpcAccountStream {
     callback,
     onEndCallback,
     onStatusCallback,
+    signal,
   }: {
     subaccountId: string
     callback: BalanceStreamCallback
     onEndCallback?: (status?: StreamStatusResponse) => void
     onStatusCallback?: (status: StreamStatusResponse) => void
-  }): Subscription {
+    signal?: AbortSignal
+  }): LegacyStreamSubscription {
     // Input validation
     if (!subaccountId) {
       throw new Error('subaccountId is required')
@@ -57,10 +60,9 @@ export class IndexerGrpcAccountStream {
       InjectiveAccountsRpcPb.StreamSubaccountBalanceRequest.create()
     request.subaccountId = subaccountId
 
-    const stream = this.client.streamSubaccountBalance(request)
-
     return createStreamSubscription(
-      stream,
+      (abortSignal) =>
+        this.client.streamSubaccountBalance(request, { abort: abortSignal }),
       (response: InjectiveAccountsRpcPb.StreamSubaccountBalanceResponse) => {
         callback(
           IndexerAccountStreamTransformer.balanceStreamCallback(response),
@@ -68,6 +70,7 @@ export class IndexerGrpcAccountStream {
       },
       onEndCallback,
       onStatusCallback,
+      { signal },
     )
   }
 }

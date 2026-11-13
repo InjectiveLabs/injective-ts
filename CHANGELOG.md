@@ -7,11 +7,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
+* sdk-ts/utils: add caller-owned AbortSignal cancellation with a shared AbortError (`code: ERR_CANCELED`) and isAbortError helper. Publish and upgrade both packages together in the same release; sdk-ts requires the matching utils cancellation helpers and HTTP signatures.
+* sdk-ts: preserve txHash on TxObservationAbortError when broadcast inclusion observation is cancelled; the submitted transaction may still succeed. Custom broadcasters can use observeTx for the same recovery error.
+* wallet-core/wallet-base: emit TransactionCancelled with the original cancellation error when a txInclusion signal aborts or observation of the submitted transaction is cancelled; it does not imply on-chain failure or inclusion.
 * sdk-ts: expose RFQ websocket heartbeat `ping` events with `sentAt` metadata for taker and maker streams
 
 ### Bug Fixes
 
+* sdk-ts: route StreamManagerV2 Connect-listener failures through error handling and retry instead of throwing from the connection callback.
 * sdk-ts: emit RFQ websocket heartbeat `ping` only after a successful heartbeat send
+
+### Compatibility notes
+
+* sdk-ts/utils: existing polling abortSignal, HTTP constructor/config signals and cancel tokens, and gRPC constructor abort now use AbortError (`message: The operation was aborted`, `code: ERR_CANCELED`). Replace cancellation-message checks and axios.isCancel with isAbortError. HTTP cancellation signals compose instead of replacing the constructor signal.
+* sdk-ts: closing an inclusion waiter now rejects pending observation with AbortError; event-only waits previously could remain pending. Closing the waiter does not throw synchronously.
+* sdk-ts: legacy stream subscriptions add closed/cancelled state and cancellation observers. add()/remove() are now no-ops rather than absent methods; they do not implement RxJS teardown composition.
+* sdk-ts: duplicate RFQ connect calls await shared readiness. Pending connect rejects on disconnect/abort/destroy, and connection-attempt disconnect events retain specific reasons such as ConnectionTimeout. Ignored readiness promises are internally handled; awaiting/chaining callers must handle rejection.
+* sdk-ts: remote numeric gRPC CANCELLED (1) now triggers StreamManagerV2 retry when enabled; local signal cancellation and unsubscribe remain silent stops. String status codes retain their previous UNKNOWN mapping and retry behavior.
+* See [cancellation and migration guidance](docs/CANCELLATION.md). Upgrade related Injective packages together, including wallet packages, to avoid missing helpers or exception-class version skew.
 
 
 ## [1.14.40](https://github.com/InjectiveLabs/injective-ts/compare/v1.14.35...v1.14.40) (2025-01-21)

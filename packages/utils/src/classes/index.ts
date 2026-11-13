@@ -11,6 +11,9 @@ import {
   toHumanReadable,
   default as BigNumber,
 } from './BigNumber.js'
+import type { RetryRequestConfig } from './RetryRequestConfig.js'
+
+export type { RetryRequestConfig }
 
 export {
   Status,

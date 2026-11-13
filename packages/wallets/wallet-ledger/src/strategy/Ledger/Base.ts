@@ -1,5 +1,4 @@
 import { serializeTransaction } from 'viem'
-import { TxGrpcApi } from '@injectivelabs/sdk-ts/core/tx'
 import {
   toUtf8,
   uint8ArrayToHex,
@@ -11,10 +10,10 @@ import {
   WalletException,
   GeneralException,
   UnspecifiedErrorCode,
-  TransactionException,
 } from '@injectivelabs/exceptions'
 import {
   WalletAction,
+  broadcastTxRaw,
   WalletDeviceType,
   getViemPublicClient,
   BaseConcreteStrategy,
@@ -185,32 +184,7 @@ export default class LedgerBase
     transaction: TxRaw,
     options: SendTransactionOptions,
   ): Promise<TxResponse> {
-    const { endpoints, txTimeout, txInclusion, onBroadcast } = options
-
-    if (!endpoints) {
-      throw new WalletException(
-        new Error(
-          'You have to pass endpoints.grpc within the options for using Ethereum native wallets',
-        ),
-      )
-    }
-
-    const txApi = new TxGrpcApi(endpoints.grpc)
-    const response = await txApi.broadcast(transaction, {
-      txTimeout,
-      ...txInclusion,
-      onBroadcast,
-    })
-
-    if (response.code !== 0) {
-      throw new TransactionException(new Error(response.rawLog), {
-        code: UnspecifiedErrorCode,
-        contextCode: response.code,
-        contextModule: response.codespace,
-      })
-    }
-
-    return response
+    return broadcastTxRaw(transaction, options)
   }
 
   async signEip712TypedData(

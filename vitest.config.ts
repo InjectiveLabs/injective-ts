@@ -129,6 +129,10 @@ export default defineConfig({
         __dirname,
         'packages/wallets/wallet-base/src/index.ts',
       ),
+      '@injectivelabs/wallet-core/strategy': join(
+        __dirname,
+        'packages/wallets/wallet-core/src/strategy/index.ts',
+      ),
       '@injectivelabs/wallet-core': join(
         __dirname,
         'packages/wallets/wallet-core/src/index.ts',
@@ -160,6 +164,10 @@ export default defineConfig({
       '@injectivelabs/wallet-private-key': join(
         __dirname,
         'packages/wallets/wallet-private-key/src/index.ts',
+      ),
+      '@injectivelabs/wallet-privy': join(
+        __dirname,
+        'packages/wallets/wallet-privy/src/index.ts',
       ),
       '@injectivelabs/wallet-strategy': join(
         __dirname,
