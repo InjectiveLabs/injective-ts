@@ -14,7 +14,6 @@ import {
 import {
   isHex,
   toHex,
-  BaseError,
   keccak256,
   getAddress,
   bytesToHex,
@@ -89,6 +88,49 @@ const toPersonalSignMessage = (message: SignableMessage) => {
 
 const isOurException = (e: unknown): e is Error =>
   e instanceof Error && isThrownException(e)
+
+const MAX_CAUSES = 5
+
+const getCauses = (e: unknown) => {
+  const causes = new Set<object>()
+
+  // Bounded: the repeat check alone never ends on a cause that is new each time
+  for (
+    let error = e;
+    error &&
+    typeof error === 'object' &&
+    causes.size < MAX_CAUSES &&
+    !causes.has(error);
+  ) {
+    causes.add(error)
+    error = (error as { cause?: unknown }).cause
+  }
+
+  return [...causes]
+}
+
+// EIP-1193 and RPC errors carry e.g. 4001 (user rejected), -32000; the deepest is the origin's
+const getCode = (causes: object[]) =>
+  causes
+    .map((error) => (error as { code?: unknown }).code)
+    .reverse()
+    .find((code) => typeof code === 'number')
+
+// WalletException copies only the message of the error it is given, so the
+// caught error's stack is kept and the error itself becomes the native cause
+const keepOrigin = (exception: WalletException, origin: unknown) => {
+  const { stack } = (origin ?? {}) as { stack?: unknown }
+
+  if (typeof stack === 'string' && stack) {
+    exception.setStack(stack)
+  }
+
+  return Object.defineProperty(exception, 'cause', {
+    value: origin,
+    writable: true,
+    configurable: true,
+  })
+}
 
 /** Signs through the Privy embedded wallet provider passed in `metadata.privy`. */
 export class PrivyWalletStrategy
@@ -368,24 +410,29 @@ export class PrivyWalletStrategy
 
         return result
       } catch (e: unknown) {
-        if (isOurException(e)) {
-          throw e
+        const causes = getCauses(e)
+        const thrown = causes.find(isOurException)
+
+        if (thrown) {
+          throw thrown
         }
 
-        const { message, code } = (e ?? {}) as {
+        const { message } = (causes.at(-1) ?? {}) as {
           message?: unknown
-          code?: unknown
         }
+        const code = getCode(causes)
 
-        // EIP-1193 errors carry e.g. 4001 (user rejected)
-        throw new WalletException(
-          new Error(typeof message === 'string' ? message : String(e)),
-          {
-            code: UnspecifiedErrorCode,
-            type: ErrorType.WalletError,
-            contextModule: action,
-            ...(typeof code === 'number' ? { contextCode: code } : {}),
-          },
+        throw keepOrigin(
+          new WalletException(
+            new Error(typeof message === 'string' ? message : String(e)),
+            {
+              code: UnspecifiedErrorCode,
+              type: ErrorType.WalletError,
+              contextModule: action,
+              ...(typeof code === 'number' ? { contextCode: code } : {}),
+            },
+          ),
+          e,
         )
       }
     }
@@ -444,17 +491,14 @@ export class PrivyWalletStrategy
   }
 
   private toWalletException(e: unknown, action: WalletAction) {
-    if (isOurException(e)) {
-      return e
-    }
+    const causes = getCauses(e)
+    const thrown = causes.find(isOurException)
 
-    // Ours (e.g. a session error) wrapped by viem as a cause
-    const thrown = e instanceof BaseError ? e.walk(isOurException) : null
-
-    if (isOurException(thrown)) {
+    if (thrown) {
       return thrown
     }
 
+    const code = getCode(causes)
     const { shortMessage, message } = (e ?? {}) as {
       shortMessage?: unknown
       message?: unknown
@@ -467,10 +511,14 @@ export class PrivyWalletStrategy
           ? message
           : String(e)
 
-    return new WalletException(new Error(text), {
-      code: UnspecifiedErrorCode,
-      type: ErrorType.WalletError,
-      contextModule: action,
-    })
+    return keepOrigin(
+      new WalletException(new Error(text), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: action,
+        ...(code !== undefined ? { contextCode: code } : {}),
+      }),
+      e,
+    )
   }
 }

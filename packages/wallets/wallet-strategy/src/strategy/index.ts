@@ -292,6 +292,9 @@ export class WalletStrategy extends BaseWalletStrategy {
   }
 
   public async disconnect(): Promise<void> {
+    // Throws if the strategy isn't loaded, before the cached metadata is touched
+    this.getStrategy()
+
     // Clear the cached wallet before disconnect listeners can start a new session.
     if (this.wallet === Wallet.Privy && this.args.metadata?.privy) {
       const { privy: _privy, ...metadata } = this.args.metadata

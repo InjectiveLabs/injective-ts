@@ -142,6 +142,24 @@ describe('WalletStrategy.setMetadata', () => {
 })
 
 describe('WalletStrategy.disconnect', () => {
+  it('keeps cached Privy metadata if the strategy has not loaded', async () => {
+    const privy = { address: '0x02', getProvider: vi.fn() }
+    const walletStrategy = new WalletStrategy({
+      ...createWalletStrategy().args,
+      wallet: Wallet.Privy,
+      metadata: { privy },
+    })
+
+    await expect(walletStrategy.disconnect()).rejects.toThrow(
+      'strategy not loaded',
+    )
+
+    expect(walletStrategy.args.metadata?.privy).toEqual(privy)
+    expect(
+      (await createdArgs(walletStrategy, Wallet.Privy)).metadata.privy,
+    ).toEqual(privy)
+  })
+
   it('forgets cached Privy metadata before emitting disconnect', async () => {
     const walletStrategy = createWalletStrategy()
     const privy = { address: '0x02', getProvider: vi.fn() }
