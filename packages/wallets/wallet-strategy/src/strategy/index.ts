@@ -29,6 +29,30 @@ import type {
 const isPlainObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
+// One level deep, as the strategies merge it: { turnkey: { session } } keeps the org ID
+const mergeMetadata = (
+  current: WalletMetadata = {},
+  incoming: WalletMetadata = {},
+): WalletMetadata => {
+  const previous = new Map<string, unknown>(Object.entries(current))
+
+  return {
+    ...current,
+    ...Object.fromEntries(
+      Object.entries(incoming).map(([key, value]) => {
+        const old = previous.get(key)
+
+        return [
+          key,
+          isPlainObject(old) && isPlainObject(value)
+            ? { ...old, ...value }
+            : value,
+        ]
+      }),
+    ),
+  }
+}
+
 const ethereumWalletsDisabled = (args: WalletStrategyArguments) => {
   const { evmOptions } = args
 
@@ -224,25 +248,13 @@ export class WalletStrategy extends BaseWalletStrategy {
    *
    */
   public async setMetadata(metadata?: WalletMetadata): Promise<void> {
-    const current = (this.args.metadata ?? {}) as Record<string, unknown>
-    // One level deep, as the strategies merge it: { turnkey: { session } } keeps the org ID
-    const merged = Object.fromEntries(
-      Object.entries({ ...current, ...metadata }).map(([key, value]) => [
-        key,
-        isPlainObject(current[key]) && isPlainObject(value)
-          ? { ...current[key], ...value }
-          : value,
-      ]),
-    ) as WalletMetadata
     // Kept for strategies loaded later. A private key passed here only goes to the
     // strategy built now; the constructor's stays
-    const { privateKey: _privateKey, ...kept } = merged
+    const { privateKey: _privateKey, ...kept } = metadata ?? {}
 
     this.args = {
       ...this.args,
-      metadata: current.privateKey
-        ? ({ ...kept, privateKey: current.privateKey } as WalletMetadata)
-        : kept,
+      metadata: mergeMetadata(this.args.metadata, kept),
     }
 
     const shouldRecreateStrategyOnMetadataChange = [
@@ -264,7 +276,10 @@ export class WalletStrategy extends BaseWalletStrategy {
         this.loadingStrategies.delete(walletEnum)
 
         this.strategies[walletEnum] = await createStrategy({
-          args: { ...this.args, metadata: merged },
+          args: {
+            ...this.args,
+            metadata: mergeMetadata(this.args.metadata, metadata),
+          },
           wallet: walletEnum,
           emitter: this.getEmitter(),
         })
@@ -274,6 +289,20 @@ export class WalletStrategy extends BaseWalletStrategy {
 
       this.strategies[walletEnum]?.setMetadata?.(metadata)
     }
+  }
+
+  public async disconnect(): Promise<void> {
+    // Throws if the strategy isn't loaded, before the cached metadata is touched
+    this.getStrategy()
+
+    // Clear the cached wallet before disconnect listeners can start a new session.
+    if (this.wallet === Wallet.Privy && this.args.metadata?.privy) {
+      const { privy: _privy, ...metadata } = this.args.metadata
+
+      this.args = { ...this.args, metadata }
+    }
+
+    await super.disconnect()
   }
 
   /**

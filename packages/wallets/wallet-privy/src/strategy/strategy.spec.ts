@@ -6,6 +6,7 @@ import {
   toHex,
   isHex,
   custom,
+  BaseError,
   hexToBytes,
   bytesToHex,
   stringToHex,
@@ -72,7 +73,7 @@ const to = '0x0000000000000000000000000000000000000002'
 const TX_HASH = `0x${'ab'.repeat(32)}`
 
 // Our RPC: answers what viem asks while preparing, and keeps the raw transactions
-const mockRpc = () => {
+const mockRpc = (sendError?: Error) => {
   const sent: Hex[] = []
   const request = async ({
     method,
@@ -95,6 +96,10 @@ const mockRpc = () => {
       case 'eth_getBlockByNumber':
         return { number: '0x1', baseFeePerGas: '0x1', transactions: [] }
       case 'eth_sendRawTransaction':
+        if (sendError) {
+          throw sendError
+        }
+
         sent.push(params![0] as Hex)
 
         return TX_HASH
@@ -291,6 +296,119 @@ describe('PrivyWalletStrategy', () => {
     ).rejects.toMatchObject({ name: 'PrivyWalletSessionException' })
   })
 
+  it.each(['Error', 'BaseError'])(
+    'preserves session errors wrapped in %s at the provider boundary',
+    async (kind) => {
+      const { PrivyWalletSessionException } =
+        await import('@injectivelabs/exceptions')
+      const session = new PrivyWalletSessionException(new Error('Signed out'))
+      const wrapped =
+        kind === 'Error'
+          ? new Error('Provider unavailable', { cause: session })
+          : new BaseError('Provider unavailable', { cause: session })
+      const provider = createProvider()
+      provider.request.mockRejectedValue(wrapped)
+      const strategy = await createStrategy(provider)
+
+      await expect(
+        strategy.signArbitrary(account.address, 'hello'),
+      ).rejects.toBe(session)
+
+      strategy.setMetadata({
+        privy: {
+          address: account.address,
+          getProvider: async () => {
+            throw wrapped
+          },
+        },
+      })
+
+      await expect(
+        strategy.signArbitrary(account.address, 'hello'),
+      ).rejects.toBe(session)
+    },
+  )
+
+  it.each(['Error', 'BaseError'])(
+    'keeps the provider reason and code inside an %s wrapper',
+    async (kind) => {
+      const rejected = Object.assign(new Error('User rejected the request'), {
+        code: 4001,
+      })
+      const provider = createProvider()
+      provider.request.mockRejectedValueOnce(
+        kind === 'Error'
+          ? new Error('Provider failed', { cause: rejected })
+          : new BaseError('Provider failed', { cause: rejected }),
+      )
+      const strategy = await createStrategy(provider)
+
+      await expect(
+        strategy.signArbitrary(account.address, 'hello'),
+      ).rejects.toMatchObject({
+        name: 'WalletException',
+        message: 'User rejected the request',
+        contextCode: 4001,
+        contextModule: 'sign-arbitrary',
+      })
+    },
+  )
+
+  it("keeps the provider's error as the cause, with its stack", async () => {
+    const rejected = Object.assign(new Error('User rejected the request'), {
+      code: 4001,
+    })
+    const provider = createProvider()
+    provider.request.mockRejectedValueOnce(rejected)
+    const strategy = await createStrategy(provider)
+
+    const error = await strategy
+      .signArbitrary(account.address, 'hello')
+      .catch((e: unknown) => e as Error)
+
+    expect(error).toMatchObject({
+      name: 'WalletException',
+      message: 'User rejected the request',
+      contextCode: 4001,
+    })
+    expect(error.cause).toBe(rejected)
+    expect(error.stack).toBe(rejected.stack)
+  })
+
+  it('handles a provider error with a circular cause', async () => {
+    const error = new Error('Provider failed')
+    error.cause = error
+    const provider = createProvider()
+    provider.request.mockRejectedValueOnce(error)
+    const strategy = await createStrategy(provider)
+
+    await expect(
+      strategy.signArbitrary(account.address, 'hello'),
+    ).rejects.toMatchObject({
+      name: 'WalletException',
+      message: 'Provider failed',
+    })
+  })
+
+  it('stops walking a very deep cause chain', async () => {
+    const error = Array.from({ length: 50 }, (_, i) => `cause ${i}`)
+      .reverse()
+      .reduce<Error | undefined>(
+        (cause, message) => new Error(message, { cause }),
+        undefined,
+      )
+    const provider = createProvider()
+    provider.request.mockRejectedValueOnce(error)
+    const strategy = await createStrategy(provider)
+
+    await expect(
+      strategy.signArbitrary(account.address, 'hello'),
+    ).rejects.toMatchObject({
+      name: 'WalletException',
+      message: 'cause 4',
+    })
+  })
+
   it('prepares EVM transactions on our RPC and signs their hash with secp256k1_sign', async () => {
     const rpc = mockRpc()
     const provider = createProvider()
@@ -353,6 +471,25 @@ describe('PrivyWalletStrategy', () => {
         await recoverTransactionAddress({ serializedTransaction: raw as any }),
       ).toBe(account.address)
     }
+  })
+
+  it("passes our RPC's error code on and keeps its error as the cause", async () => {
+    mockRpc(Object.assign(new Error('insufficient funds'), { code: -32000 }))
+    const strategy = await createStrategy(createProvider())
+
+    const error = await strategy
+      .sendEvmTransaction(
+        { to, value: '10', gasLimit: toHex(21_000), from: account.address },
+        { address: account.address, evmChainId: EvmChainId.TestnetEvm },
+      )
+      .catch((e: unknown) => e as Error)
+
+    expect(error).toMatchObject({
+      name: 'WalletException',
+      contextCode: -32000,
+    })
+    expect(error.cause).toBeInstanceOf(Error)
+    expect(error.stack).toBe((error.cause as Error).stack)
   })
 
   it('refuses a transaction from another address', async () => {

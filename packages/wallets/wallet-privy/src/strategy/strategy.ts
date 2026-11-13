@@ -86,21 +86,50 @@ const toPersonalSignMessage = (message: SignableMessage) => {
   return typeof message.raw === 'string' ? message.raw : bytesToHex(message.raw)
 }
 
-// The error and its causes, where viem keeps the provider's and our own errors
+const isOurException = (e: unknown): e is Error =>
+  e instanceof Error && isThrownException(e)
+
+const MAX_CAUSES = 5
+
 const getCauses = (e: unknown) => {
-  const causes: object[] = []
+  const causes = new Set<object>()
 
-  for (let error = e; error && typeof error === 'object'; ) {
-    // Bounded: a cause can point back at its error
-    if (causes.length === 5 || causes.includes(error)) {
-      break
-    }
-
-    causes.push(error)
+  // Bounded: the repeat check alone never ends on a cause that is new each time
+  for (
+    let error = e;
+    error &&
+    typeof error === 'object' &&
+    causes.size < MAX_CAUSES &&
+    !causes.has(error);
+  ) {
+    causes.add(error)
     error = (error as { cause?: unknown }).cause
   }
 
-  return causes
+  return [...causes]
+}
+
+// EIP-1193 and RPC errors carry e.g. 4001 (user rejected), -32000; the deepest is the origin's
+const getCode = (causes: object[]) =>
+  causes
+    .map((error) => (error as { code?: unknown }).code)
+    .reverse()
+    .find((code) => typeof code === 'number')
+
+// WalletException copies only the message of the error it is given, so the
+// caught error's stack is kept and the error itself becomes the native cause
+const keepOrigin = (exception: WalletException, origin: unknown) => {
+  const { stack } = (origin ?? {}) as { stack?: unknown }
+
+  if (typeof stack === 'string' && stack) {
+    exception.setStack(stack)
+  }
+
+  return Object.defineProperty(exception, 'cause', {
+    value: origin,
+    writable: true,
+    configurable: true,
+  })
 }
 
 /** Signs through the Privy embedded wallet provider passed in `metadata.privy`. */
@@ -372,13 +401,40 @@ export class PrivyWalletStrategy
       return privy
     }
     const request = async (method: string, params: unknown[]) => {
-      const provider = await requireSameWallet().getProvider()
-      requireSameWallet()
+      try {
+        const provider = await requireSameWallet().getProvider()
+        requireSameWallet()
 
-      const result = await provider.request({ method, params })
-      requireSameWallet()
+        const result = await provider.request({ method, params })
+        requireSameWallet()
 
-      return result
+        return result
+      } catch (e: unknown) {
+        const causes = getCauses(e)
+        const thrown = causes.find(isOurException)
+
+        if (thrown) {
+          throw thrown
+        }
+
+        const { message } = (causes.at(-1) ?? {}) as {
+          message?: unknown
+        }
+        const code = getCode(causes)
+
+        throw keepOrigin(
+          new WalletException(
+            new Error(typeof message === 'string' ? message : String(e)),
+            {
+              code: UnspecifiedErrorCode,
+              type: ErrorType.WalletError,
+              contextModule: action,
+              ...(typeof code === 'number' ? { contextCode: code } : {}),
+            },
+          ),
+          e,
+        )
+      }
     }
     const sign = async ({ hash }: { hash: Hex }) =>
       normalizeSignature(await request('secp256k1_sign', [hash]))
@@ -436,36 +492,33 @@ export class PrivyWalletStrategy
 
   private toWalletException(e: unknown, action: WalletAction) {
     const causes = getCauses(e)
-    // Ours already (e.g. a session error), also when viem wrapped it as the cause
-    const thrown = causes.find((error) => isThrownException(error as Error))
+    const thrown = causes.find(isOurException)
 
     if (thrown) {
-      return thrown as Error
+      return thrown
     }
 
-    // viem's shortMessage leaves out its request and version details. A viem error
-    // wrapping the provider's has none, so the provider's own message is used
-    const shortMessage = causes
-      .map((error) => (error as { shortMessage?: unknown }).shortMessage)
-      .find((text) => typeof text === 'string' && text)
-    const { message } = (causes.at(-1) ?? {}) as { message?: unknown }
+    const code = getCode(causes)
+    const { shortMessage, message } = (e ?? {}) as {
+      shortMessage?: unknown
+      message?: unknown
+    }
+    // viem's shortMessage leaves out its request and version details
     const text =
-      typeof shortMessage === 'string'
+      typeof shortMessage === 'string' && shortMessage
         ? shortMessage
         : typeof message === 'string'
           ? message
           : String(e)
-    // EIP-1193 errors carry e.g. 4001 (user rejected); the provider's is the deepest
-    const providerCode = causes
-      .map((error) => (error as { code?: unknown }).code)
-      .reverse()
-      .find((code) => typeof code === 'number')
 
-    return new WalletException(new Error(text), {
-      code: UnspecifiedErrorCode,
-      type: ErrorType.WalletError,
-      contextModule: action,
-      ...(providerCode !== undefined ? { contextCode: providerCode } : {}),
-    })
+    return keepOrigin(
+      new WalletException(new Error(text), {
+        code: UnspecifiedErrorCode,
+        type: ErrorType.WalletError,
+        contextModule: action,
+        ...(code !== undefined ? { contextCode: code } : {}),
+      }),
+      e,
+    )
   }
 }
