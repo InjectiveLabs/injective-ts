@@ -39,6 +39,14 @@ const messageWithPostHook = MsgUpdateNamespace.fromJSON({
   ...params,
   evmPostHook: 'evm-post-hook',
 })
+const withoutHooks = MsgUpdateNamespace.fromJSON({
+  sender: params.sender,
+  denom: params.denom,
+  rolePermissions: [],
+  roleManagers: [],
+  policyStatuses: [],
+  policyManagerCapabilities: [],
+})
 
 describe('MsgUpdateNamespace', () => {
   it('serializes the EVM post hook', () => {
@@ -53,6 +61,45 @@ describe('MsgUpdateNamespace', () => {
     })
     expect(messageWithPostHook.toEip712V2()).toMatchObject({
       evm_post_hook: { new_value: 'evm-post-hook' },
+    })
+  })
+
+  describe('generates EIP712 v2 messages matching the chain JSON', () => {
+    const protoType = '/injective.permissions.v1beta1.MsgUpdateNamespace'
+    const getEip712MessagesJson = (namespaceMessage: MsgUpdateNamespace) =>
+      getEip712TypedDataV2({
+        msgs: namespaceMessage,
+        tx: {
+          accountNumber: '1',
+          sequence: '2',
+          timeoutHeight: '3',
+          chainId: 'injective-1',
+        },
+        evmChainId: 1,
+      }).message.msgs
+
+    it('signs unset hooks as null with empty updates', () => {
+      expect(getEip712MessagesJson(withoutHooks)).toBe(
+        `[{"@type":"${protoType}","sender":"${params.sender}","denom":"inj",` +
+          '"wasm_hook":null,"role_permissions":[],"role_managers":[],"policy_statuses":[],' +
+          '"policy_manager_capabilities":[],"evm_hook":null,"evm_post_hook":null}]',
+      )
+      // The transaction itself must leave the namespace's hooks untouched.
+      expect(withoutHooks.toProto().wasmHook).toBeUndefined()
+      expect(withoutHooks.toProto().evmHook).toBeUndefined()
+      expect(withoutHooks.toProto().evmPostHook).toBeUndefined()
+    })
+
+    it('signs set hooks and updates in proto field order', () => {
+      expect(getEip712MessagesJson(messageWithPostHook)).toBe(
+        `[{"@type":"${protoType}","sender":"${params.sender}","denom":"inj",` +
+          '"wasm_hook":{"new_value":"wasm"},' +
+          '"role_permissions":[{"name":"admin","role_id":1,"permissions":1}],' +
+          `"role_managers":[{"manager":"${params.sender}","roles":["admin"]}],` +
+          '"policy_statuses":[{"action":"SEND","is_disabled":false,"is_sealed":false}],' +
+          `"policy_manager_capabilities":[{"manager":"${mockFactory.injectiveAddress2}","action":"SEND","can_disable":false,"can_seal":false}],` +
+          '"evm_hook":{"new_value":"evm"},"evm_post_hook":{"new_value":"evm-post-hook"}}]',
+      )
     })
   })
 
@@ -87,6 +134,24 @@ describe('MsgUpdateNamespace', () => {
     })
 
     it('EIP712 v2 - MsgUpdateNamespace with EVM post hook reaches Web3Gw', async () => {
+      const eip712TypedData = getEip712TypedDataV2(eip712Args)
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V2,
+      })
+
+      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+  })
+
+  describe('generates EIP712 v2 without hooks compared to the Web3Gw (chain)', () => {
+    const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      messages: withoutHooks,
+    })
+
+    it('EIP712 v2 - MsgUpdateNamespace without hooks', async () => {
       const eip712TypedData = getEip712TypedDataV2(eip712Args)
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
