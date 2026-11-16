@@ -40,7 +40,7 @@ export const objectKeysToEip712Types = ({
     'revision_height',
     'revision_number',
   ]
-  const stringFieldsToOmitIfEmpty = ['cid']
+  const stringFieldsToOmitIfEmpty = ['cid', 'order_hash']
   const fieldsToOmitIfEmpty = ['admin_info', 'order']
   const output = new Map<string, TypedDataField[]>()
   const types = new Array<TypedDataField>()
