@@ -2,6 +2,7 @@ import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/tx_pb'
 import * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { objectKeysToEip712Types } from '../../../tx/eip712/maps.js'
 
 type SnakeCaseKeys<T extends Record<string, any> | readonly any[]> = T
 
@@ -419,6 +420,169 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       value:
         msg as unknown as SnakeCaseKeys<InjectiveExchangeV1Beta1TxPb.MsgBatchUpdateOrders>,
     }
+  }
+
+  public toEip712() {
+    const { params } = this
+    const amino = this.toAmino()
+    const msgValue = amino.value as Record<string, any>
+
+    const spotOrderToEip712 = (order: any, args: SpotOrderToCreate) => ({
+      market_id: order.market_id,
+      order_info: {
+        subaccount_id: order.order_info.subaccount_id,
+        fee_recipient: order.order_info.fee_recipient,
+        price: toChainFormat(args.price).toFixed(),
+        quantity: toChainFormat(args.quantity).toFixed(),
+        cid: order.order_info.cid,
+      },
+      order_type: order.order_type,
+      trigger_price: toChainFormat(args.triggerPrice || '0').toFixed(),
+    })
+
+    const derivativeOrderToEip712 = (
+      order: any,
+      args: DerivativeOrderToCreate | BinaryOptionOrderToCreate,
+    ) => ({
+      market_id: order.market_id,
+      order_info: {
+        subaccount_id: order.order_info.subaccount_id,
+        fee_recipient: order.order_info.fee_recipient,
+        price: toChainFormat(args.price).toFixed(),
+        quantity: toChainFormat(args.quantity).toFixed(),
+        cid: order.order_info.cid,
+      },
+      order_type: order.order_type,
+      margin: toChainFormat(args.margin).toFixed(),
+      trigger_price: toChainFormat(args.triggerPrice || '0').toFixed(),
+    })
+
+    // A cancel-by-cid has no order_hash, so that field stays off the signed value.
+    const cancelToEip712 = (order: any) => {
+      const entry: Record<string, string | number> = {
+        market_id: order.market_id,
+        subaccount_id: order.subaccount_id,
+      }
+
+      if (order.order_hash) {
+        entry.order_hash = order.order_hash
+      }
+
+      if (order.cid) {
+        entry.cid = order.cid
+      }
+
+      return entry
+    }
+
+    const result: Record<string, any> = {
+      sender: msgValue.sender,
+    }
+
+    // createMsgAndCancelOrders only sets subaccount_id for a cancel-all.
+    if (msgValue.subaccount_id) {
+      result.subaccount_id = msgValue.subaccount_id
+    }
+
+    const copyIfPresent = (key: string) => {
+      if (msgValue[key]?.length > 0) {
+        result[key] = msgValue[key]
+      }
+    }
+
+    copyIfPresent('spot_market_ids_to_cancel_all')
+    copyIfPresent('derivative_market_ids_to_cancel_all')
+    copyIfPresent('binary_options_market_ids_to_cancel_all')
+
+    if (msgValue.spot_orders_to_cancel?.length > 0) {
+      result.spot_orders_to_cancel =
+        msgValue.spot_orders_to_cancel.map(cancelToEip712)
+    }
+
+    if (msgValue.derivative_orders_to_cancel?.length > 0) {
+      result.derivative_orders_to_cancel =
+        msgValue.derivative_orders_to_cancel.map(cancelToEip712)
+    }
+
+    if (msgValue.binary_options_orders_to_cancel?.length > 0) {
+      result.binary_options_orders_to_cancel =
+        msgValue.binary_options_orders_to_cancel.map(cancelToEip712)
+    }
+
+    if (params.spotOrdersToCreate && params.spotOrdersToCreate.length > 0) {
+      result.spot_orders_to_create = params.spotOrdersToCreate.map((args, i) =>
+        spotOrderToEip712(msgValue.spot_orders_to_create[i], args),
+      )
+    }
+
+    if (
+      params.derivativeOrdersToCreate &&
+      params.derivativeOrdersToCreate.length > 0
+    ) {
+      result.derivative_orders_to_create = params.derivativeOrdersToCreate.map(
+        (args, i) =>
+          derivativeOrderToEip712(
+            msgValue.derivative_orders_to_create[i],
+            args,
+          ),
+      )
+    }
+
+    if (
+      params.binaryOptionsOrdersToCreate &&
+      params.binaryOptionsOrdersToCreate.length > 0
+    ) {
+      result.binary_options_orders_to_create =
+        params.binaryOptionsOrdersToCreate.map((args, i) =>
+          derivativeOrderToEip712(
+            msgValue.binary_options_orders_to_create[i],
+            args,
+          ),
+        )
+    }
+
+    return {
+      type: amino.type,
+      value: result,
+    }
+  }
+
+  public toEip712Types() {
+    const eip712 = this.toEip712()
+    const types = objectKeysToEip712Types({
+      object: eip712.value as Record<string, any>,
+      messageType: eip712.type,
+    })
+
+    // The chain declares order_mask on every cancel entry, and omits the
+    // default from the signed value. Same shape as expiration_block on creates.
+    const orderMask = { name: 'order_mask', type: 'int32' }
+
+    for (const key of [
+      'TypeSpotOrdersToCancel',
+      'TypeDerivativeOrdersToCancel',
+      'TypeBinaryOptionsOrdersToCancel',
+    ]) {
+      const fields = types.get(key)
+
+      if (!fields || fields.some((field) => field.name === 'order_mask')) {
+        continue
+      }
+
+      const orderHashIndex = fields.findIndex(
+        (field) => field.name === 'order_hash',
+      )
+      const insertAt =
+        orderHashIndex >= 0
+          ? orderHashIndex + 1
+          : fields.findIndex((field) => field.name === 'subaccount_id') + 1
+      const next = [...fields]
+
+      next.splice(Math.max(insertAt, 0), 0, orderMask)
+      types.set(key, next)
+    }
+
+    return types
   }
 
   public toWeb3Gw() {
