@@ -3,6 +3,7 @@ import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectivePeggyV1MsgsPb from '@injectivelabs/core-proto-ts-v2/generated/injective/peggy/v1/msgs_pb'
 import * as InjectiveOracleV1Beta1OraclePb from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { validateOracleType } from '../../oracle/utils.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgUpdateRateLimit {
@@ -31,6 +32,7 @@ export default class MsgUpdateRateLimit extends MsgBase<
 
   public toProto() {
     const { params } = this
+    validateOracleType(params.newTokenOracleType)
 
     const message = InjectivePeggyV1MsgsPb.MsgUpdateRateLimit.create({
       authority: params.injectiveAddress,
@@ -55,6 +57,8 @@ export default class MsgUpdateRateLimit extends MsgBase<
 
   public toAmino() {
     const { params } = this
+    validateOracleType(params.newTokenOracleType)
+
     const message = {
       authority: params.injectiveAddress,
       token_address: params.tokenAddress,

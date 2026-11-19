@@ -10,34 +10,24 @@ import type {
   ChainPosition,
   ChainOrderbook,
   ChainL3Orderbook,
-  ChainTradeRecord,
-  PointsMultiplier,
   ChainDenomDecimal,
   ChainMarketVolume,
   ChainOpenInterest,
-  ChainTradeRecords,
   ChainMarketBalance,
   ChainTierStatistic,
-  CampaignRewardPool,
   FeeDiscountTierTTL,
   ChainOrderbookLevel,
   ChainMidPriceAndTob,
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
-  IsOptedOutOfRewards,
-  TradeRewardCampaign,
   ExchangeModuleParams,
   ChainDenomMinNotional,
-  ChainMarketVolatility,
-  ChainTradeRewardPoints,
   ChainEffectivePosition,
   FeeDiscountAccountInfo,
   ChainDerivativePosition,
   ChainGrantAuthorization,
   ChainSubaccountOrderData,
   ChainPerpetualMarketInfo,
-  ChainBinaryOptionsMarket,
-  TradingRewardCampaignInfo,
   ChainTrimmedSpotLimitOrder,
   ChainSubaccountRiskProfile,
   ChainAggregateAccountVolume,
@@ -45,7 +35,6 @@ import type {
   ChainCrossMarginPoolSnapshot,
   ChainDerivativeMarketAddress,
   ChainExpiryFuturesMarketInfo,
-  TradingRewardCampaignBoostInfo,
   ChainSubaccountOrderbookMetadata,
   ChainTrimmedDerivativeLimitOrder,
   ChainTrimmedDerivativeConditionalOrder,
@@ -163,81 +152,6 @@ export class ChainGrpcExchangeTransformerV2 {
     return info
       ? { tier: Number(info.tier), ttlTimestamp: Number(info.ttlTimestamp) }
       : undefined
-  }
-  static grpcPointsMultiplierToPointsMultiplier(
-    point: InjectiveExchangeV2ExchangePb.PointsMultiplier,
-  ): PointsMultiplier {
-    return {
-      makerPointsMultiplier: point.makerPointsMultiplier,
-      takerPointsMultiplier: point.takerPointsMultiplier,
-    }
-  }
-  static grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
-    info?: InjectiveExchangeV2ExchangePb.TradingRewardCampaignBoostInfo,
-  ): TradingRewardCampaignBoostInfo | undefined {
-    return info
-      ? {
-          boostedSpotMarketIdsList: info.boostedSpotMarketIds,
-          spotMarketMultipliersList: info.spotMarketMultipliers.map(
-            ChainGrpcExchangeTransformerV2.grpcPointsMultiplierToPointsMultiplier,
-          ),
-          boostedDerivativeMarketIdsList: info.boostedDerivativeMarketIds,
-          derivativeMarketMultipliersList: info.derivativeMarketMultipliers.map(
-            ChainGrpcExchangeTransformerV2.grpcPointsMultiplierToPointsMultiplier,
-          ),
-        }
-      : undefined
-  }
-  static grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
-    info?: InjectiveExchangeV2ExchangePb.TradingRewardCampaignInfo,
-  ): TradingRewardCampaignInfo | undefined {
-    return info
-      ? {
-          campaignDurationSeconds: Number(info.campaignDurationSeconds),
-          quoteDenomsList: info.quoteDenoms,
-          tradingRewardBoostInfo:
-            ChainGrpcExchangeTransformerV2.grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
-              info.tradingRewardBoostInfo,
-            ),
-          disqualifiedMarketIdsList: info.disqualifiedMarketIds,
-        }
-      : undefined
-  }
-  static grpcCampaignRewardPoolToCampaignRewardPool(
-    pool: InjectiveExchangeV2ExchangePb.CampaignRewardPool,
-  ): CampaignRewardPool {
-    return {
-      startTimestamp: Number(pool.startTimestamp),
-      maxCampaignRewardsList: pool.maxCampaignRewards.map((coin) => ({
-        amount: coin.amount,
-        denom: coin.denom,
-      })),
-    }
-  }
-  static tradingRewardsCampaignResponseToTradingRewardsCampaign(
-    response: InjectiveExchangeV2QueryPb.QueryTradeRewardCampaignResponse,
-  ): TradeRewardCampaign {
-    return {
-      tradingRewardCampaignInfo:
-        ChainGrpcExchangeTransformerV2.grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
-          response.tradingRewardCampaignInfo,
-        ),
-      tradingRewardPoolCampaignScheduleList:
-        response.tradingRewardPoolCampaignSchedule.map(
-          ChainGrpcExchangeTransformerV2.grpcCampaignRewardPoolToCampaignRewardPool,
-        ),
-      pendingTradingRewardPoolCampaignScheduleList:
-        response.pendingTradingRewardPoolCampaignSchedule.map(
-          ChainGrpcExchangeTransformerV2.grpcCampaignRewardPoolToCampaignRewardPool,
-        ),
-      totalTradeRewardPoints: response.totalTradeRewardPoints,
-      pendingTotalTradeRewardPointsList: response.pendingTotalTradeRewardPoints,
-    }
-  }
-  static isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
-    response: InjectiveExchangeV2QueryPb.QueryIsOptedOutOfRewardsResponse,
-  ): IsOptedOutOfRewards {
-    return { isOptedOut: response.isOptedOut }
   }
   static activeStakeGrantResponseToActiveStakeGrant(
     response: InjectiveExchangeV2QueryPb.QueryActiveStakeGrantResponse,
@@ -411,13 +325,11 @@ export class ChainGrpcExchangeTransformerV2 {
       orderLockRequirement: response.orderLockRequirement,
       positiveUpnlHaircutRate: response.positiveUpnlHaircutRate,
       healthFactor: response.healthFactor,
+      ratchetedMaintenanceMarginTotal: response.ratchetedMaintenanceMarginTotal,
+      crossMarginUtilRatio: response.crossMarginUtilRatio,
+      positionOrderLockRequirement: response.positionOrderLockRequirement,
+      nonPositionOrderLockRequirement: response.nonPositionOrderLockRequirement,
     }
-  }
-
-  static tradeRewardPointsResponseToTradeRewardPoints(
-    response: InjectiveExchangeV2QueryPb.QueryTradeRewardPointsResponse,
-  ): ChainTradeRewardPoints {
-    return { accountTradeRewardPoints: response.accountTradeRewardPoints }
   }
 
   static openInterestResponseToOpenInterest(
@@ -629,6 +541,8 @@ export class ChainGrpcExchangeTransformerV2 {
       oracleBase: marketInfo.oracleBase,
       oracleQuote: marketInfo.oracleQuote,
       oracleScaleFactor: marketInfo.oracleScaleFactor,
+      syntheticTradeFeeRate: marketInfo.syntheticTradeFeeRate,
+      referencePriceGateConfig: marketInfo.referencePriceGateConfig,
       perpetualMarketInfo: {
         hourlyFundingRateCap: perpetualMarketInfo?.hourlyFundingRateCap ?? '0',
         hourlyInterestRate: perpetualMarketInfo?.hourlyInterestRate ?? '0',
@@ -636,6 +550,8 @@ export class ChainGrpcExchangeTransformerV2 {
           perpetualMarketInfo?.nextFundingTimestamp ?? 0,
         ),
         fundingInterval: Number(perpetualMarketInfo?.fundingInterval ?? 0),
+        fundingImpactNotional:
+          perpetualMarketInfo?.fundingImpactNotional ?? '0',
       },
     }
   }
@@ -737,6 +653,7 @@ export class ChainGrpcExchangeTransformerV2 {
             hourlyInterestRate: response.info.hourlyInterestRate,
             nextFundingTimestamp: Number(response.info.nextFundingTimestamp),
             fundingInterval: Number(response.info.fundingInterval),
+            fundingImpactNotional: response.info.fundingImpactNotional,
           }
         : undefined,
     }
@@ -772,6 +689,9 @@ export class ChainGrpcExchangeTransformerV2 {
             cumulativeFunding: response.state.cumulativeFunding,
             cumulativePrice: response.state.cumulativePrice,
             lastTimestamp: Number(response.state.lastTimestamp),
+            periodStart: Number(response.state.periodStart),
+            lastPremium: response.state.lastPremium,
+            lastSampleTimestamp: Number(response.state.lastSampleTimestamp),
           }
         : undefined,
     }
@@ -785,29 +705,6 @@ export class ChainGrpcExchangeTransformerV2 {
         tier: Number(statistic.tier),
         count: Number(statistic.count),
       })),
-    }
-  }
-
-  static historicalTradeRecordsResponseToHistoricalTradeRecords(
-    response: InjectiveExchangeV2QueryPb.QueryHistoricalTradeRecordsResponse,
-  ): { tradeRecords: ChainTradeRecords[] } {
-    return {
-      tradeRecords: response.tradeRecords.map((records) => ({
-        marketId: records.marketId,
-        latestTradeRecords: records.latestTradeRecords.map(
-          ChainGrpcExchangeTransformerV2.grpcTradeRecordToTradeRecord,
-        ),
-      })),
-    }
-  }
-
-  static grpcTradeRecordToTradeRecord(
-    record: InjectiveExchangeV2ExchangePb.TradeRecord,
-  ): ChainTradeRecord {
-    return {
-      timestamp: Number(record.timestamp),
-      price: record.price,
-      quantity: record.quantity,
     }
   }
 
@@ -875,80 +772,6 @@ export class ChainGrpcExchangeTransformerV2 {
             }
           : undefined,
       })),
-    }
-  }
-
-  static binaryOptionsMarketsResponseToBinaryOptionsMarkets(
-    response: InjectiveExchangeV2QueryPb.QueryBinaryMarketsResponse,
-  ): { markets: ChainBinaryOptionsMarket[] } {
-    return {
-      markets: response.markets.map((market) => ({
-        ticker: market.ticker,
-        oracleSymbol: market.oracleSymbol,
-        oracleProvider: market.oracleProvider,
-        oracleType: market.oracleType,
-        oracleScaleFactor: market.oracleScaleFactor,
-        expirationTimestamp: Number(market.expirationTimestamp),
-        settlementTimestamp: Number(market.settlementTimestamp),
-        admin: market.admin,
-        quoteDenom: market.quoteDenom,
-        marketId: market.marketId,
-        makerFeeRate: market.makerFeeRate,
-        takerFeeRate: market.takerFeeRate,
-        relayerFeeShareRate: market.relayerFeeShareRate,
-        status: market.status,
-        minPriceTickSize: market.minPriceTickSize,
-        minQuantityTickSize: market.minQuantityTickSize,
-        settlementPrice: market.settlementPrice,
-        minNotional: market.minNotional,
-        adminPermissions: market.adminPermissions,
-        quoteDecimals: market.quoteDecimals,
-        openNotionalCap:
-          market.openNotionalCap &&
-          market.openNotionalCap.cap.oneofKind !== undefined
-            ? {
-                type:
-                  market.openNotionalCap.cap.oneofKind === 'capped'
-                    ? 'capped'
-                    : 'uncapped',
-                value:
-                  market.openNotionalCap.cap.oneofKind === 'capped'
-                    ? market.openNotionalCap.cap.capped.value
-                    : undefined,
-              }
-            : undefined,
-        hasDisabledMinimalProtocolFee: market.hasDisabledMinimalProtocolFee,
-        forcePausedInfo: market.forcePausedInfo
-          ? {
-              reason: market.forcePausedInfo.reason,
-              markPriceAtPausing: market.forcePausedInfo.markPriceAtPausing,
-            }
-          : undefined,
-      })),
-    }
-  }
-
-  static marketVolatilityResponseToMarketVolatility(
-    response: InjectiveExchangeV2QueryPb.QueryMarketVolatilityResponse,
-  ): ChainMarketVolatility {
-    return {
-      volatility: response.volatility,
-      historyMetadata: response.historyMetadata
-        ? {
-            groupCount: response.historyMetadata.groupCount,
-            recordsSampleSize: response.historyMetadata.recordsSampleSize,
-            mean: response.historyMetadata.mean,
-            twap: response.historyMetadata.twap,
-            firstTimestamp: Number(response.historyMetadata.firstTimestamp),
-            lastTimestamp: Number(response.historyMetadata.lastTimestamp),
-            minPrice: response.historyMetadata.minPrice,
-            maxPrice: response.historyMetadata.maxPrice,
-            medianPrice: response.historyMetadata.medianPrice,
-          }
-        : undefined,
-      rawHistory: response.rawHistory.map(
-        ChainGrpcExchangeTransformerV2.grpcTradeRecordToTradeRecord,
-      ),
     }
   }
 }

@@ -1,5 +1,6 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import type { TypedDataField } from '../../../tx/eip712/types.js'
 
 export declare namespace MsgActivatePostOnlyModeV2 {
@@ -43,10 +44,17 @@ export default class MsgActivatePostOnlyModeV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgActivatePostOnlyMode,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const proto = this.toProto()
 
     return {
-      type: 'exchange/MsgActivatePostOnlyMode',
+      type: 'exchange/v2/MsgActivatePostOnlyMode',
       value: {
         sender: proto.sender,
         blocks_amount: proto.blocksAmount,
@@ -55,7 +63,7 @@ export default class MsgActivatePostOnlyModeV2 extends MsgBase<
   }
 
   public toWeb3Gw() {
-    const { value } = this.toAmino()
+    const { value } = this.toAminoRaw()
 
     return {
       '@type': '/injective.exchange.v2.MsgActivatePostOnlyMode',

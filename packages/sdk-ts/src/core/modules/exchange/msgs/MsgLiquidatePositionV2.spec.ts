@@ -1,3 +1,4 @@
+import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgLiquidatePositionV2 from './MsgLiquidatePositionV2.js'
@@ -27,7 +28,6 @@ const params: MsgLiquidatePositionV2['params'] = {
 }
 
 const protoType = '/injective.exchange.v2.MsgLiquidatePosition'
-const protoTypeShort = 'exchange/MsgLiquidatePosition'
 
 const protoOrder = {
   marketId: market.marketId,
@@ -88,12 +88,29 @@ describe('MsgLiquidatePositionV2', () => {
   })
 
   it('generates proper amino', () => {
-    const amino = message.toAmino()
-
-    expect(amino).toStrictEqual({
-      type: protoTypeShort,
-      value: protoParamsAmino,
-    })
+    expect(message.toAmino()).toMatchInlineSnapshot(`
+      {
+        "type": "exchange/v2/MsgLiquidatePosition",
+        "value": {
+          "market_id": "0x7cc8b10d7deb61e744ef83bdec2bbcf4a056867e89b062c6a453020ca82bd4e4",
+          "order": {
+            "margin": "88250000000000000000000000",
+            "market_id": "0x7cc8b10d7deb61e744ef83bdec2bbcf4a056867e89b062c6a453020ca82bd4e4",
+            "order_info": {
+              "cid": "test-cid",
+              "fee_recipient": "inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku",
+              "price": "1765000000000000000000000",
+              "quantity": "100000000000000000000",
+              "subaccount_id": "0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000",
+            },
+            "order_type": 1,
+            "trigger_price": "0",
+          },
+          "sender": "inj14au322k9munkmx5wrchz9q30juf5wjgz2cfqku",
+          "subaccount_id": "0xaf79152ac5df276d9a8e1e2e22822f9713474902000000000000000000000000",
+        },
+      }
+    `)
   })
 
   it('generates proper web3Gw', () => {
@@ -105,22 +122,25 @@ describe('MsgLiquidatePositionV2', () => {
     })
   })
 
+  it('EIP712 v1 values and type equal the amino-json of the proto', () => {
+    const eip712 = message.toEip712()
+    const amino = message.toAmino()
+
+    expect(eip712.type).toBe(amino.type)
+    expect(eip712.value).toStrictEqual(amino.value)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
+      network: Network.Testnet,
       messages: message,
     })
 
-    it('EIP712 v1', async () => {
-      const eip712TypedData = getEip712TypedData(eip712Args)
-
-      const txResponse = await new IndexerGrpcWeb3GwApi(
-        endpoints.indexer,
-      ).prepareEip712Request({
-        ...prepareEip712Request,
-        eip712Version: EIP712Version.V1,
-      })
-
-      expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    it('EIP712 v1 rejects an omitted expiration_block', () => {
+      expect(() => getEip712TypedData(eip712Args)).toThrow(
+        'Please use EIP712_v2',
+      )
     })
 
     it('EIP712 v2', async () => {
@@ -134,6 +154,29 @@ describe('MsgLiquidatePositionV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+    })
+
+    it('EIP712 v1 matches the gateway for an empty cid and a good-till-block order', async () => {
+      const variant = MsgLiquidatePositionV2.fromJSON({
+        ...params,
+        order: {
+          ...(params.order as NonNullable<typeof params.order>),
+          cid: '',
+          expirationBlock: '123456789',
+        },
+      })
+      const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
+        prepareEip712({ network: Network.Testnet, messages: variant })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...variantRequest,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(getEip712TypedData(variantArgs)).toStrictEqual(
+        JSON.parse(txResponse.data),
+      )
     })
   })
 })

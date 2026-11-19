@@ -101,9 +101,71 @@ export const DeprecatedMsgType = {
 
   // WasmX - Proposals
   MsgContractRegistrationRequestProposal:
-    'injective.wasmx.v1beta1.ContractRegistrationRequestProposal',
+    'injective.wasmx.v1.ContractRegistrationRequestProposal',
   MsgBatchContractRegistrationRequestProposal:
-    'injective.wasmx.v1beta1.BatchContractRegistrationRequestProposal',
+    'injective.wasmx.v1.BatchContractRegistrationRequestProposal',
+
+  MsgRewardsOptOut: 'injective.exchange.v1beta1.MsgRewardsOptOut',
+  MsgCancelBinaryOptionsOrder:
+    'injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder',
+  MsgCreateBinaryOptionsLimitOrder:
+    'injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder',
+  MsgAdminUpdateBinaryOptionsMarket:
+    'injective.exchange.v1beta1.MsgAdminUpdateBinaryOptionsMarket',
+  MsgCreateBinaryOptionsMarketOrder:
+    'injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
+  MsgBatchCancelBinaryOptionsOrders:
+    'injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders',
+  MsgInstantBinaryOptionsMarketLaunch:
+    'injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
+  MsgRewardsOptOutV2: 'injective.exchange.v2.MsgRewardsOptOut',
+  MsgCancelBinaryOptionsOrderV2:
+    'injective.exchange.v2.MsgCancelBinaryOptionsOrder',
+  MsgBinaryOptionsMarketLaunchV2:
+    'injective.exchange.v2.MsgBinaryOptionsMarketLaunch',
+  MsgTradingRewardCampaignLaunchV2:
+    'injective.exchange.v2.MsgTradingRewardCampaignLaunch',
+  MsgTradingRewardCampaignUpdateV2:
+    'injective.exchange.v2.MsgTradingRewardCampaignUpdate',
+  MsgCreateBinaryOptionsLimitOrderV2:
+    'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder',
+  MsgAdminUpdateBinaryOptionsMarketV2:
+    'injective.exchange.v2.MsgAdminUpdateBinaryOptionsMarket',
+  MsgBatchCancelBinaryOptionsOrdersV2:
+    'injective.exchange.v2.MsgBatchCancelBinaryOptionsOrders',
+  MsgBinaryOptionsMarketParamUpdateV2:
+    'injective.exchange.v2.MsgBinaryOptionsMarketParamUpdate',
+  MsgCreateBinaryOptionsMarketOrderV2:
+    'injective.exchange.v2.MsgCreateBinaryOptionsMarketOrder',
+  MsgInstantBinaryOptionsMarketLaunchV2:
+    'injective.exchange.v2.MsgInstantBinaryOptionsMarketLaunch',
+  MsgTradingRewardPendingPointsUpdateV2:
+    'injective.exchange.v2.MsgTradingRewardPendingPointsUpdate',
+
+  // Oracle (retired in chain v1.21)
+  MsgRelayBandRates: 'injective.oracle.v1beta1.MsgRelayBandRates',
+  MsgRelayStorkPrices: 'injective.oracle.v1beta1.MsgRelayStorkPrices',
+  MsgRelayPriceFeedPrice: 'injective.oracle.v1beta1.MsgRelayPriceFeedPrice',
+  MsgRelayCoinbaseMessages: 'injective.oracle.v1beta1.MsgRelayCoinbaseMessages',
+  MsgRequestBandIBCRates: 'injective.oracle.v1beta1.MsgRequestBandIBCRates',
+
+  // WasmX (retired in chain v1.21, only MsgExecuteContractCompat remains)
+  MsgUpdateContract: 'injective.wasmx.v1.MsgUpdateContract',
+  MsgWasmxUpdateParams: 'injective.wasmx.v1.MsgUpdateParams',
+  MsgActivateContract: 'injective.wasmx.v1.MsgActivateContract',
+  MsgRegisterContract: 'injective.wasmx.v1.MsgRegisterContract',
+  MsgDeactivateContract: 'injective.wasmx.v1.MsgDeactivateContract',
+
+  // OCR (module not part of the generated protos)
+  MsgTransmit: 'injective.ocr.v1beta1.MsgTransmit',
+  MsgSetPayees: 'injective.ocr.v1beta1.MsgSetPayees',
+  MsgCreateFeed: 'injective.ocr.v1beta1.MsgCreateFeed',
+  MsgUpdateFeed: 'injective.ocr.v1beta1.MsgUpdateFeed',
+  MsgOcrUpdateParams: 'injective.ocr.v1beta1.MsgUpdateParams',
+  MsgAcceptPayeeship: 'injective.ocr.v1beta1.MsgAcceptPayeeship',
+  MsgTransferPayeeship: 'injective.ocr.v1beta1.MsgTransferPayeeship',
+  MsgFundFeedRewardPool: 'injective.ocr.v1beta1.MsgFundFeedRewardPool',
+  MsgWithdrawFeedRewardPool: 'injective.ocr.v1beta1.MsgWithdrawFeedRewardPool',
 } as const
 
 export type DeprecatedMsgType =
@@ -209,7 +271,6 @@ export const MsgType = {
   MsgSignDoc: 'injective.exchange.v1beta1.MsgSignDoc',
   MsgSignData: 'injective.exchange.v1beta1.MsgSignData',
   MsgWithdraw: 'injective.exchange.v1beta1.MsgWithdraw',
-  MsgRewardsOptOut: 'injective.exchange.v1beta1.MsgRewardsOptOut',
   MsgCancelSpotOrder: 'injective.exchange.v1beta1.MsgCancelSpotOrder',
   MsgExchangeUpdateParams: 'injective.exchange.v1beta1.MsgUpdateParams',
   MsgExternalTransfer: 'injective.exchange.v1beta1.MsgExternalTransfer',
@@ -238,8 +299,6 @@ export const MsgType = {
     'injective.exchange.v1beta1.MsgUpdateDerivativeMarket',
   MsgInstantSpotMarketLaunch:
     'injective.exchange.v1beta1.MsgInstantSpotMarketLaunch',
-  MsgCancelBinaryOptionsOrder:
-    'injective.exchange.v1beta1.MsgCancelBinaryOptionsOrder',
   DerivativeMarketOrderResults:
     'injective.exchange.v1beta1.DerivativeMarketOrderResults',
   MsgBatchExchangeModification:
@@ -254,18 +313,8 @@ export const MsgType = {
     'injective.exchange.v1beta1.MsgBatchCancelDerivativeOrders',
   MsgCreateDerivativeMarketOrder:
     'injective.exchange.v1beta1.MsgCreateDerivativeMarketOrder',
-  MsgCreateBinaryOptionsLimitOrder:
-    'injective.exchange.v1beta1.MsgCreateBinaryOptionsLimitOrder',
-  MsgAdminUpdateBinaryOptionsMarket:
-    'injective.exchange.v1beta1.MsgAdminUpdateBinaryOptionsMarket',
-  MsgCreateBinaryOptionsMarketOrder:
-    'injective.exchange.v1beta1.MsgCreateBinaryOptionsMarketOrder',
-  MsgBatchCancelBinaryOptionsOrders:
-    'injective.exchange.v1beta1.MsgBatchCancelBinaryOptionsOrders',
   MsgBatchCreateDerivativeLimitOrders:
     'injective.exchange.v1beta1.MsgBatchCreateDerivativeLimitOrders',
-  MsgInstantBinaryOptionsMarketLaunch:
-    'injective.exchange.v1beta1.MsgInstantBinaryOptionsMarketLaunch',
   MsgInstantExpiryFuturesMarketLaunch:
     'injective.exchange.v1beta1.MsgInstantExpiryFuturesMarketLaunch',
   MsgInstantPerpetualMarketLaunch:
@@ -279,7 +328,6 @@ export const MsgType = {
   MsgWithdrawV2: 'injective.exchange.v2.MsgWithdraw',
   MsgFeeDiscountV2: 'injective.exchange.v2.MsgFeeDiscount',
   MsgUpdateParamsV2: 'injective.exchange.v2.MsgUpdateParams',
-  MsgRewardsOptOutV2: 'injective.exchange.v2.MsgRewardsOptOut',
   MsgExchangeEnableV2: 'injective.exchange.v2.MsgExchangeEnable',
   MsgCancelSpotOrderV2: 'injective.exchange.v2.MsgCancelSpotOrder',
   MsgExternalTransferV2: 'injective.exchange.v2.MsgExternalTransfer',
@@ -287,6 +335,8 @@ export const MsgType = {
   MsgUpdateSpotMarketV2: 'injective.exchange.v2.MsgUpdateSpotMarket',
   MsgUpdateSubaccountRiskProfileV2:
     'injective.exchange.v2.MsgUpdateSubaccountRiskProfile',
+  MsgUpdateSubaccountMarketRiskModeV2:
+    'injective.exchange.v2.MsgUpdateSubaccountMarketRiskMode',
   MsgUpdateSwapParamsV2: 'injective.exchange.v2.MsgUpdateSwapParams',
   MsgBatchUpdateOrdersV2: 'injective.exchange.v2.MsgBatchUpdateOrders',
   MsgLiquidatePositionV2: 'injective.exchange.v2.MsgLiquidatePosition',
@@ -321,16 +371,12 @@ export const MsgType = {
     'injective.exchange.v2.MsgBatchCommunityPoolSpend',
   MsgInstantSpotMarketLaunchV2:
     'injective.exchange.v2.MsgInstantSpotMarketLaunch',
-  MsgCancelBinaryOptionsOrderV2:
-    'injective.exchange.v2.MsgCancelBinaryOptionsOrder',
   DerivativeMarketOrderResultsV2:
     'injective.exchange.v2.DerivativeMarketOrderResults',
   LiquidatePositionDataV2: 'injective.exchange.v2.LiquidatePositionData',
   LiquidatePositionResultV2: 'injective.exchange.v2.LiquidatePositionResult',
   MsgBatchExchangeModificationV2:
     'injective.exchange.v2.MsgBatchExchangeModification',
-  MsgBinaryOptionsMarketLaunchV2:
-    'injective.exchange.v2.MsgBinaryOptionsMarketLaunch',
   MsgExpiryFuturesMarketLaunchV2:
     'injective.exchange.v2.MsgExpiryFuturesMarketLaunch',
   MsgPrivilegedExecuteContractV2:
@@ -345,30 +391,12 @@ export const MsgType = {
     'injective.exchange.v2.MsgCreateDerivativeMarketOrder',
   MsgDerivativeMarketParamUpdateV2:
     'injective.exchange.v2.MsgDerivativeMarketParamUpdate',
-  MsgTradingRewardCampaignLaunchV2:
-    'injective.exchange.v2.MsgTradingRewardCampaignLaunch',
-  MsgTradingRewardCampaignUpdateV2:
-    'injective.exchange.v2.MsgTradingRewardCampaignUpdate',
   MsgInstantPerpetualMarketLaunchV2:
     'injective.exchange.v2.MsgInstantPerpetualMarketLaunch',
-  MsgCreateBinaryOptionsLimitOrderV2:
-    'injective.exchange.v2.MsgCreateBinaryOptionsLimitOrder',
-  MsgAdminUpdateBinaryOptionsMarketV2:
-    'injective.exchange.v2.MsgAdminUpdateBinaryOptionsMarket',
-  MsgBatchCancelBinaryOptionsOrdersV2:
-    'injective.exchange.v2.MsgBatchCancelBinaryOptionsOrders',
-  MsgBinaryOptionsMarketParamUpdateV2:
-    'injective.exchange.v2.MsgBinaryOptionsMarketParamUpdate',
-  MsgCreateBinaryOptionsMarketOrderV2:
-    'injective.exchange.v2.MsgCreateBinaryOptionsMarketOrder',
   MsgBatchCreateDerivativeLimitOrdersV2:
     'injective.exchange.v2.MsgBatchCreateDerivativeLimitOrders',
-  MsgInstantBinaryOptionsMarketLaunchV2:
-    'injective.exchange.v2.MsgInstantBinaryOptionsMarketLaunch',
   MsgInstantExpiryFuturesMarketLaunchV2:
     'injective.exchange.v2.MsgInstantExpiryFuturesMarketLaunch',
-  MsgTradingRewardPendingPointsUpdateV2:
-    'injective.exchange.v2.MsgTradingRewardPendingPointsUpdate',
   MsgAtomicMarketOrderFeeMultiplierScheduleV2:
     'injective.exchange.v2.MsgAtomicMarketOrderFeeMultiplierSchedule',
 
@@ -381,30 +409,24 @@ export const MsgType = {
   MsgInsuranceClaimVoucher: 'injective.insurance.v1beta1.MsgClaimVoucher',
   MsgRequestRedemption: 'injective.insurance.v1beta1.MsgRequestRedemption',
   MsgCreateInsuranceFund: 'injective.insurance.v1beta1.MsgCreateInsuranceFund',
+  MsgCreateConsolidatedInsurancePool:
+    'injective.insurance.v1beta1.MsgCreateConsolidatedInsurancePool',
+  MsgSetConsolidatedInsurancePoolPause:
+    'injective.insurance.v1beta1.MsgSetConsolidatedInsurancePoolPause',
+  MsgUpdateConsolidatedInsurancePolicy:
+    'injective.insurance.v1beta1.MsgUpdateConsolidatedInsurancePolicy',
+  MsgUnderwriteConsolidatedInsurancePool:
+    'injective.insurance.v1beta1.MsgUnderwriteConsolidatedInsurancePool',
+  MsgRequestConsolidatedRedemption:
+    'injective.insurance.v1beta1.MsgRequestConsolidatedRedemption',
 
   // Oracle
   MsgRelayChainlinkPrices: 'injective.oracle.v1beta1.MsgRelayChainlinkPrices',
-  MsgRelayBandRates: 'injective.oracle.v1beta1.MsgRelayBandRates',
   MsgRelayPythPrices: 'injective.oracle.v1beta1.MsgRelayPythPrices',
   MsgRelayPythProPrices: 'injective.oracle.v1beta1.MsgRelayPythProPrices',
   MsgOracleUpdateParams: 'injective.oracle.v1beta1.MsgUpdateParams',
-  MsgRelayStorkPrices: 'injective.oracle.v1beta1.MsgRelayStorkPrices',
   MsgRelaySedaFastPrices: 'injective.oracle.v1beta1.MsgRelaySedaFastPrices',
   MsgRelayProviderPrices: 'injective.oracle.v1beta1.MsgRelayProviderPrices',
-  MsgRelayPriceFeedPrice: 'injective.oracle.v1beta1.MsgRelayPriceFeedPrice',
-  MsgRelayCoinbaseMessages: 'injective.oracle.v1beta1.MsgRelayCoinbaseMessages',
-  MsgRequestBandIBCRates: 'injective.oracle.v1beta1.MsgRequestBandIBCRates',
-
-  // OCR
-  MsgTransmit: 'injective.ocr.v1beta1.MsgTransmit',
-  MsgSetPayees: 'injective.ocr.v1beta1.MsgSetPayees',
-  MsgCreateFeed: 'injective.ocr.v1beta1.MsgCreateFeed',
-  MsgUpdateFeed: 'injective.ocr.v1beta1.MsgUpdateFeed',
-  MsgOcrUpdateParams: 'injective.ocr.v1beta1.MsgUpdateParams',
-  MsgAcceptPayeeship: 'injective.ocr.v1beta1.MsgAcceptPayeeship',
-  MsgTransferPayeeship: 'injective.ocr.v1beta1.MsgTransferPayeeship',
-  MsgFundFeedRewardPool: 'injective.ocr.v1beta1.MsgFundFeedRewardPool',
-  MsgWithdrawFeedRewardPool: 'injective.ocr.v1beta1.MsgWithdrawFeedRewardPool',
 
   // Peggy (Bridge)
   MsgSendToEth: 'injective.peggy.v1.MsgSendToEth',
@@ -447,11 +469,6 @@ export const MsgType = {
     'injective.tokenfactory.v1beta1.MsgSetDenomMetadata.AdminBurnDisabled',
 
   // Wasmx
-  MsgUpdateContract: 'injective.wasmx.v1.MsgUpdateContract',
-  MsgWasmxUpdateParams: 'injective.wasmx.v1.MsgUpdateParams',
-  MsgActivateContract: 'injective.wasmx.v1.MsgActivateContract',
-  MsgRegisterContract: 'injective.wasmx.v1.MsgRegisterContract',
-  MsgDeactivateContract: 'injective.wasmx.v1.MsgDeactivateContract',
   MsgExecuteContractCompat: 'injective.wasmx.v1.MsgExecuteContractCompat',
 
   // TxFees
@@ -475,3 +492,6 @@ export const EIP712Version = {
 } as const
 
 export type EIP712Version = (typeof EIP712Version)[keyof typeof EIP712Version]
+
+/** The EIP712 wrapper a gateway prepares a fee-delegated transaction with ('v3' needs the gateway's EIP712 v3 flag) */
+export type EIP712WrapperVersion = 'v2' | 'v3'

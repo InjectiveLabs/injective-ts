@@ -28,6 +28,10 @@ on:
           - canary
           - beta
           - prod
+      canary_version:
+        description: 'Exact canary version (optional, e.g. 1.21.0-alpha.0)'
+        type: string
+        required: false
 
 concurrency:
   group: publish-${{ github.repository }}
@@ -121,6 +125,7 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPOSITORY: ${{ github.repository }}
           SHA: ${{ github.sha }}
+          CANARY_VERSION: ${{ inputs.canary_version }}
         run: |
           echo "short_sha=${SHA:0:7}" >> "$GITHUB_OUTPUT"
           MODE=""
@@ -128,6 +133,12 @@ jobs:
           # Handle workflow_dispatch input
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             RELEASE_TYPE="${{ inputs.release_type }}"
+            if [[ -n "$CANARY_VERSION" ]]; then
+              if [[ "$RELEASE_TYPE" != "canary" || ! "$CANARY_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)-alpha\.(0|[1-9][0-9]*)$ ]]; then
+                echo '::error::canary_version requires a canary release and a version such as 1.21.0-alpha.0'
+                exit 1
+              fi
+            fi
             if [[ "$RELEASE_TYPE" == "prod" ]]; then
               if [[ "$BRANCH" != "refs/heads/master" ]]; then
                 echo "::error::prod releases can only be triggered from the master branch"
@@ -141,7 +152,7 @@ jobs:
               MODE="direct_publish"
               TYPE="canary"
               DIST_TAG="alpha"
-              VERSION_ARGS="prerelease --preid alpha --force-publish --force-git-tag --no-changelog --yes --no-push"
+              VERSION_ARGS="${CANARY_VERSION:-prerelease --preid alpha} --force-publish --force-git-tag --no-changelog --yes --no-push"
             elif [[ "$RELEASE_TYPE" == "beta" ]]; then
               MODE="direct_publish"
               TYPE="beta"
