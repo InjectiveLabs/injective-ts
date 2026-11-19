@@ -1,4 +1,3 @@
-import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgBatchUpdateOrdersV2 from './MsgBatchUpdateOrdersV2.js'
@@ -74,8 +73,6 @@ describe('MsgBatchUpdateOrdersV2', () => {
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
-      network: Network.Testnet,
       messages: message,
     })
 
@@ -108,7 +105,7 @@ describe('MsgBatchUpdateOrdersV2', () => {
         })),
       })
       const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
-        prepareEip712({ network: Network.Testnet, messages: variant })
+        prepareEip712({ messages: variant })
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
       ).prepareEip712Request({

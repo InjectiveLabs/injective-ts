@@ -1,4 +1,3 @@
-import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { prepareEip712 } from '@injectivelabs/utils/test-utils'
@@ -63,8 +62,6 @@ describe('MsgReclaimLockedFundsV2', () => {
 
   describe('generates proper EIP712 payloads', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
-      network: Network.Testnet,
       messages: message,
     })
 

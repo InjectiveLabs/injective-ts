@@ -1,4 +1,3 @@
-import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import * as InjectiveInsuranceV1Beta1TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/insurance/v1beta1/tx_pb'
@@ -63,7 +62,6 @@ describe('MsgSetConsolidatedInsurancePoolPause', () => {
       paused: false,
     })
     expect(resumed.toAmino().value).not.toHaveProperty('paused')
-    // proto-JSON (web3Gw) always carries it
     expect(resumed.toWeb3Gw()).toHaveProperty('paused', false)
   })
 
@@ -89,8 +87,6 @@ describe('MsgSetConsolidatedInsurancePoolPause', () => {
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
-      network: Network.Testnet,
       messages: message,
     })
 

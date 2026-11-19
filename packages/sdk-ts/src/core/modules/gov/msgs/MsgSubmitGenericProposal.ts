@@ -133,7 +133,6 @@ export default class MsgSubmitGenericProposal extends MsgBase<
     }
   }
 
-  /** each inner message formats its own EIP712 v2 values (e.g. LegacyDec decimals) */
   public toEip712V2(): Record<string, any> {
     return {
       ...this.toWeb3Gw(),

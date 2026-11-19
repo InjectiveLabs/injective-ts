@@ -63,7 +63,6 @@ export default class MsgLiquidateCrossMarginPoolV2 extends MsgBase<
         sender: proto.sender,
         subaccount_id: proto.subaccountId,
         quote_denom: proto.quoteDenom,
-        // amino omits empty fields
         ...(proto.rfqAction && { rfq_action: proto.rfqAction }),
       },
     }
@@ -75,7 +74,6 @@ export default class MsgLiquidateCrossMarginPoolV2 extends MsgBase<
     return {
       '@type': '/injective.exchange.v2.MsgLiquidateCrossMarginPool',
       ...value,
-      // proto-JSON always carries the field
       rfq_action: this.params.rfqAction ?? '',
     }
   }

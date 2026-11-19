@@ -80,6 +80,7 @@ import type MsgCreateSpotMarketOrderV2 from './exchange/msgs/MsgCreateSpotMarket
 import type MsgUpdateDerivativeMarketV2 from './exchange/msgs/MsgUpdateDerivativeMarketV2.js'
 import type MsgIncreasePositionMarginV2 from './exchange/msgs/MsgIncreasePositionMarginV2.js'
 import type MsgDecreasePositionMarginV2 from './exchange/msgs/MsgDecreasePositionMarginV2.js'
+import type MsgSetOutflowGuardBlockedV2 from './exchange/msgs/MsgSetOutflowGuardBlockedV2.js'
 import type MsgCancelUnbondingDelegation from './staking/msgs/MsgCancelUnbondingDelegation.js'
 import type MsgWithdrawDelegatorReward from './distribution/msgs/MsgWithdrawDelegatorReward.js'
 import type MsgInstantSpotMarketLaunchV2 from './exchange/msgs/MsgInstantSpotMarketLaunchV2.js'
@@ -173,6 +174,7 @@ export type ExchangeV2Msgs =
   | MsgSetDelegationTransferReceiversV2
   | MsgUpdateSubaccountRiskProfileV2
   | MsgUpdateSubaccountMarketRiskModeV2
+  | MsgSetOutflowGuardBlockedV2
 export type InsuranceMsgs =
   | MsgUnderwrite
   | MsgRequestRedemption

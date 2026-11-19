@@ -37,6 +37,7 @@ import MsgCreateSpotMarketOrderV2 from './msgs/MsgCreateSpotMarketOrderV2.js'
 import MsgUpdateDerivativeMarketV2 from './msgs/MsgUpdateDerivativeMarketV2.js'
 import MsgIncreasePositionMarginV2 from './msgs/MsgIncreasePositionMarginV2.js'
 import MsgDecreasePositionMarginV2 from './msgs/MsgDecreasePositionMarginV2.js'
+import MsgSetOutflowGuardBlockedV2 from './msgs/MsgSetOutflowGuardBlockedV2.js'
 import MsgInstantSpotMarketLaunchV2 from './msgs/MsgInstantSpotMarketLaunchV2.js'
 import MsgLiquidateCrossMarginPoolV2 from './msgs/MsgLiquidateCrossMarginPoolV2.js'
 import MsgCreateDerivativeLimitOrder from './msgs/MsgCreateDerivativeLimitOrder.js'
@@ -100,6 +101,7 @@ export {
   MsgSetDelegationTransferReceiversV2,
   MsgUpdateSubaccountRiskProfileV2,
   MsgUpdateSubaccountMarketRiskModeV2,
+  MsgSetOutflowGuardBlockedV2,
 }
 
 export * from './utils/index.js'

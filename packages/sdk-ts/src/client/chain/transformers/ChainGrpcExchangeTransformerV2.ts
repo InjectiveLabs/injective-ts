@@ -22,6 +22,7 @@ import type {
   FeeDiscountTierInfo,
   ExchangeModuleParams,
   ChainDenomMinNotional,
+  ChainOutflowGuardState,
   ChainEffectivePosition,
   FeeDiscountAccountInfo,
   ChainDerivativePosition,
@@ -98,6 +99,21 @@ export class ChainGrpcExchangeTransformerV2 {
       marginDecreasePriceTimestampThresholdSeconds:
         params.marginDecreasePriceTimestampThresholdSeconds.toString(),
       exchangeAdmins: params.exchangeAdmins,
+      outflowGuardParams: params.outflowGuardParams
+        ? {
+            enabled: params.outflowGuardParams.enabled,
+            maxOutflowRatio: params.outflowGuardParams.maxOutflowRatio,
+            trackedDenoms: params.outflowGuardParams.trackedDenoms.map(
+              (trackedDenom) => ({
+                denom: trackedDenom.denom,
+                decimals: trackedDenom.decimals,
+                oracleType: trackedDenom.oracleType,
+                oracleBase: trackedDenom.oracleBase,
+                oracleQuote: trackedDenom.oracleQuote,
+              }),
+            ),
+          }
+        : undefined,
     }
   }
 
@@ -329,6 +345,17 @@ export class ChainGrpcExchangeTransformerV2 {
       crossMarginUtilRatio: response.crossMarginUtilRatio,
       positionOrderLockRequirement: response.positionOrderLockRequirement,
       nonPositionOrderLockRequirement: response.nonPositionOrderLockRequirement,
+    }
+  }
+
+  static outflowGuardStateResponseToOutflowGuardState(
+    response: InjectiveExchangeV2QueryPb.QueryOutflowGuardStateResponse,
+  ): ChainOutflowGuardState {
+    return {
+      enabled: response.enabled,
+      manuallyBlocked: response.manuallyBlocked,
+      headroom: response.headroom,
+      blocking: response.blocking,
     }
   }
 

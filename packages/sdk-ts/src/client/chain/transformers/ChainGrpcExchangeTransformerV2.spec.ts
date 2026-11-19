@@ -1,5 +1,7 @@
+import { OracleType } from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import * as InjectiveExchangeV2QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/query_pb'
 import * as InjectiveExchangeV2MarketPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/market_pb'
+import * as InjectiveExchangeV2ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/exchange_pb'
 import { ChainGrpcExchangeTransformerV2 } from './ChainGrpcExchangeTransformerV2.js'
 
 const fullDerivativeMarket = (
@@ -120,5 +122,70 @@ describe('ChainGrpcExchangeTransformerV2 (chain v1.21 fields)', () => {
       positionOrderLockRequirement: '3',
       nonPositionOrderLockRequirement: '4',
     })
+  })
+
+  it('maps the outflow guard state', () => {
+    const state =
+      ChainGrpcExchangeTransformerV2.outflowGuardStateResponseToOutflowGuardState(
+        InjectiveExchangeV2QueryPb.QueryOutflowGuardStateResponse.create({
+          enabled: true,
+          manuallyBlocked: true,
+          headroom: '-1500000000000000000',
+          blocking: true,
+        }),
+      )
+
+    expect(state).toStrictEqual({
+      enabled: true,
+      manuallyBlocked: true,
+      headroom: '-1500000000000000000',
+      blocking: true,
+    })
+  })
+
+  it('maps the outflow guard params', () => {
+    const params = ChainGrpcExchangeTransformerV2.moduleParamsResponseToParams(
+      InjectiveExchangeV2QueryPb.QueryExchangeParamsResponse.create({
+        params: InjectiveExchangeV2ExchangePb.Params.create({
+          outflowGuardParams: {
+            enabled: true,
+            maxOutflowRatio: '100000000000000000',
+            trackedDenoms: [
+              {
+                denom: 'peggy0xdAC17F958D2ee523a2206206994597C13D831ec7',
+                decimals: 6,
+                oracleType: OracleType.Provider,
+                oracleBase: 'USDT',
+                oracleQuote: 'USD',
+              },
+            ],
+          },
+        }),
+      }),
+    )
+
+    expect(params.outflowGuardParams).toStrictEqual({
+      enabled: true,
+      maxOutflowRatio: '100000000000000000',
+      trackedDenoms: [
+        {
+          denom: 'peggy0xdAC17F958D2ee523a2206206994597C13D831ec7',
+          decimals: 6,
+          oracleType: OracleType.Provider,
+          oracleBase: 'USDT',
+          oracleQuote: 'USD',
+        },
+      ],
+    })
+  })
+
+  it('leaves the outflow guard params undefined when the chain omits them', () => {
+    const params = ChainGrpcExchangeTransformerV2.moduleParamsResponseToParams(
+      InjectiveExchangeV2QueryPb.QueryExchangeParamsResponse.create({
+        params: InjectiveExchangeV2ExchangePb.Params.create(),
+      }),
+    )
+
+    expect(params.outflowGuardParams).toBeUndefined()
   })
 })

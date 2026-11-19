@@ -1,4 +1,3 @@
-import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import * as InjectiveExchangeV2ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/exchange_pb'
@@ -80,8 +79,6 @@ describe('MsgUpdateSubaccountRiskProfileV2', () => {
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
-      network: Network.Testnet,
       messages: message,
     })
 
@@ -129,7 +126,7 @@ describe('MsgUpdateSubaccountRiskProfileV2', () => {
         riskProfile: { ...params.riskProfile, creditLineId: 'line-1' },
       })
       const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
-        prepareEip712({ network: Network.Testnet, messages: variant })
+        prepareEip712({ messages: variant })
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
       ).prepareEip712Request({

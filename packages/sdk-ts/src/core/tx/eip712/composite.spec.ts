@@ -1,4 +1,3 @@
-import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { getEip712TypedData } from './eip712.js'
@@ -48,8 +47,6 @@ const proposalOf = (msg: Child) =>
     deposit: { amount: '1', denom: 'inj' },
   })
 
-// Children own their schema rules (an empty list is omitted from their types), and
-// the wrapper nests their types under the path of the field that holds them
 describe('EIP712 v1 schema of a wrapped message', () => {
   describe.each([
     ['MsgExec', execOf, 'TypeMsgsValue'],
@@ -73,7 +70,6 @@ describe('EIP712 v1 schema of a wrapped message', () => {
 
   it('matches the gateway for a swap with an empty allowlist in a proposal', async () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      network: Network.Testnet,
       messages: proposalOf(emptyAllowlistSwap),
     })
     const txResponse = await new IndexerGrpcWeb3GwApi(
@@ -126,7 +122,6 @@ describe('EIP712 v1 of a restricted message nested in MsgExec', () => {
 
     const exec = MsgExec.fromJSON({ grantee: sender, msgs: [child] })
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      network: Network.Testnet,
       messages: exec,
     })
     const txResponse = await new IndexerGrpcWeb3GwApi(

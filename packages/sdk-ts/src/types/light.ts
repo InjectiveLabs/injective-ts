@@ -111,7 +111,6 @@ export const MarketStatusMap = GrpcMarketStatusMap
 
 export type MarketStatus = GrpcMarketStatus
 
-// Retired oracle identifiers remain available for decoding historical data.
 export const OracleTypeMap = {
   0: 'Unspecified',
   1: 'Band',

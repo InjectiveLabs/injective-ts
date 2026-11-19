@@ -462,6 +462,13 @@ export const chainErrorMessagesMap: Record<
     module: TransactionChainErrorModule.CosmosSdk,
   },
 
+  'transfer not allowed': {
+    message:
+      'This transfer is not allowed at the moment. Please try again later.',
+    code: ChainCosmosErrorCode.ErrUnauthorized,
+    module: TransactionChainErrorModule.CosmosSdk,
+  },
+
   unauthorized: {
     message: 'Unauthorized',
     code: ChainCosmosErrorCode.ErrUnauthorized,

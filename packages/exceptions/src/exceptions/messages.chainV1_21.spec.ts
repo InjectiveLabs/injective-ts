@@ -1,6 +1,7 @@
 import { chainModuleCodeErrorMessagesMap } from './messages.js'
 import { mapFailedTransactionMessageFromString } from './utils/maps.js'
 import {
+  ChainCosmosErrorCode,
   ChainInsuranceErrorCodes,
   TransactionChainErrorModule,
   ChainExchangeModuleErrorCode,
@@ -56,8 +57,6 @@ describe('chain v1.21 error mappings', () => {
     ).toMatchObject({ code, module })
   })
 
-  // lookup returns the first key contained in the message, and the generic cosmos
-  // 'not found' key comes later: the specific insurance keys must win over it
   it.each([
     [
       'consolidated insurance pool not found',
@@ -73,5 +72,18 @@ describe('chain v1.21 error mappings', () => {
         `message index: 0: ${text}: invalid request`,
       ),
     ).toMatchObject({ code, module: TransactionChainErrorModule.Insurance })
+  })
+
+  it('maps a transfer refused by the outflow guard ahead of the generic unauthorized', () => {
+    expect(
+      mapFailedTransactionMessageFromString(
+        'failed to execute message; message index: 0: transfer not allowed: unauthorized',
+      ),
+    ).toMatchObject({
+      message:
+        'This transfer is not allowed at the moment. Please try again later.',
+      code: ChainCosmosErrorCode.ErrUnauthorized,
+      module: TransactionChainErrorModule.CosmosSdk,
+    })
   })
 })

@@ -3,10 +3,9 @@ import * as InjectiveInsuranceV1Beta1QueryPb from '@injectivelabs/core-proto-ts-
 import { ChainGrpcInsuranceFundApi } from './ChainGrpcInsuranceFundApi.js'
 
 const api = new ChainGrpcInsuranceFundApi(
-  getNetworkEndpoints(Network.TestnetSentry).grpc,
+  getNetworkEndpoints(Network.MainnetSentry).grpc,
 )
 
-/** stubs the gRPC call and returns the request the method built */
 const stubCall = (response: unknown) => {
   const spy = vi
     .spyOn(api as any, 'executeGrpcCall')

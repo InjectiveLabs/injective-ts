@@ -545,6 +545,8 @@ export const protoTypeToAminoType = (type: string): string => {
       return 'exchange/v2/MsgUpdateSwapParams'
     case 'injective.exchange.v2.MsgUpdateSubaccountMarketRiskMode':
       return 'exchange/v2/MsgUpdateSubaccountMarketRiskMode'
+    case 'injective.exchange.v2.MsgSetOutflowGuardBlocked':
+      return 'exchange/v2/MsgSetOutflowGuardBlocked'
     case 'injective.exchange.v2.MsgSetDelegationTransferReceivers':
       return 'exchange/v2/MsgSetDelegationTransferReceivers'
     case 'injective.exchange.v2.MsgDeposit':

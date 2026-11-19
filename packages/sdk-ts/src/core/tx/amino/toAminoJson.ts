@@ -69,7 +69,6 @@ const UNSUPPORTED_WELL_KNOWN = new Set([
   'google.protobuf.Duration',
 ])
 
-/** Checks the entire schema, including fields absent from the current value. */
 export const assertAminoJsonSupported = (
   type: MessageType<any>,
   seen = new Set<string>(),
@@ -272,10 +271,8 @@ const encodeMessage = (
   return output
 }
 
-// a schema never changes, so each type is checked once (a failed check is not remembered)
 const checkedTypes = new WeakSet<MessageType<any>>()
 
-/** amino-json of a top-level (signable) message: `{ type: <amino.name>, value }` */
 export const toAminoJson = <T extends object>(
   type: MessageType<T>,
   message: T,

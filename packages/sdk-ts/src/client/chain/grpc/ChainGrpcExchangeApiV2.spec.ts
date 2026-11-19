@@ -319,4 +319,24 @@ describe('ChainGrpcExchangeApiV2', () => {
       )
     }
   })
+
+  test('fetchOutflowGuardState', async () => {
+    try {
+      const response = await chainGrpcExchangeApiV2.fetchOutflowGuardState()
+
+      expect(response).toEqual(
+        expect.objectContaining({
+          enabled: expect.any(Boolean),
+          manuallyBlocked: expect.any(Boolean),
+          headroom: expect.any(String),
+          blocking: expect.any(Boolean),
+        }),
+      )
+    } catch (e) {
+      console.error(
+        'chainGrpcExchangeApiV2.fetchOutflowGuardState => ' +
+          (e as any).message,
+      )
+    }
+  })
 })

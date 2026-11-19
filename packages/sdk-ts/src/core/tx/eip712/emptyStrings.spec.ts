@@ -1,5 +1,4 @@
 import { hashTypedData } from 'viem'
-import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import { getEip712TypedData } from './eip712.js'
@@ -58,7 +57,6 @@ describe('EIP712 v1 of a message with empty strings', () => {
     ],
   ] as const)('hashes like the gateway for %s', async (_name, message) => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      network: Network.Testnet,
       messages: message,
     })
     const txResponse = await new IndexerGrpcWeb3GwApi(

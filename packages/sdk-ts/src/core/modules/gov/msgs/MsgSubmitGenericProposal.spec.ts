@@ -1,4 +1,3 @@
-import { Network } from '@injectivelabs/networks'
 import { toChainFormat } from '@injectivelabs/utils'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
@@ -59,7 +58,6 @@ describe('MsgSubmitGenericProposal', () => {
 
     it('EIP712 v2 embeds the EIP712 v2 values of the inner message', async () => {
       const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-        network: Network.Testnet,
         messages: proposal,
       })
       const txResponse = await new IndexerGrpcWeb3GwApi(

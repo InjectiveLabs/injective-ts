@@ -14,7 +14,6 @@ const NOT_SIGNABLE = [
   'injective.exchange.v2.MsgSignDoc',
 ]
 
-// These existing proto types contain Duration; no SDK builder uses this encoder for them.
 const UNSUPPORTED_TYPES = [
   'injective.insurance.v1beta1.MsgUpdateParams',
   'injective.insurance.v1beta1.Params',
@@ -49,9 +48,6 @@ const collectReachableTypes = (
   return seen
 }
 
-// A proto bump that adds an amino option the encoder does not implement (or a
-// Timestamp/Duration/map field) to one of these messages would otherwise only surface
-// at signing time on Ledger. This fails the test suite instead.
 describe('toAminoJson schema compatibility for V2 exchange / insurance / gov msgs', () => {
   const reachable = new Map<string, MessageType<any>>()
 

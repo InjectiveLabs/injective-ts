@@ -1,5 +1,4 @@
 import { expectTypeOf } from 'vitest'
-import { Network } from '@injectivelabs/networks'
 import { MsgType, EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
@@ -67,7 +66,6 @@ describe('MsgUpdateSwapParamsV2', () => {
           emptyAllowlistMessage.toBinary(),
         ),
       ).toStrictEqual(emptyAllowlistParams)
-      // representation behind web3Gw / EIP712 keeps the empty allowlist
       expect(
         emptyAllowlistMessage.toAminoRaw().value.swap_params,
       ).toStrictEqual({
@@ -136,8 +134,6 @@ describe('MsgUpdateSwapParamsV2', () => {
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
-      network: Network.Testnet,
       messages: message,
     })
 
@@ -182,7 +178,7 @@ describe('MsgUpdateSwapParamsV2', () => {
         swapParams: { enabled: true, allowedMarkets: [] },
       })
       const { eip712Args: variantArgs, prepareEip712Request: variantRequest } =
-        prepareEip712({ network: Network.Testnet, messages: variant })
+        prepareEip712({ messages: variant })
       const txResponse = await new IndexerGrpcWeb3GwApi(
         endpoints.indexer,
       ).prepareEip712Request({

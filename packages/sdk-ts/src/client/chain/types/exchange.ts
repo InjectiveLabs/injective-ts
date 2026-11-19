@@ -1,5 +1,6 @@
 import * as ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import type { Coin } from '@injectivelabs/ts-types'
+import type { OracleType } from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import type * as InjectiveExchangeV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb'
 import type * as InjectiveExchangeV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/genesis_pb'
 import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
@@ -63,6 +64,30 @@ export interface ExchangeParams {
   postOnlyModeHeightThreshold: string
   marginDecreasePriceTimestampThresholdSeconds: string
   exchangeAdmins: string[]
+  /** chain v1.21+ (exchange v2 params only) */
+  outflowGuardParams?: ChainOutflowGuardParams
+}
+
+/** chain v1.21+: a denom valued and limited by the outflow guard */
+export interface ChainOutflowGuardTrackedDenom {
+  denom: string
+  /** decimals of the denom's base unit */
+  decimals: number
+  /** oracle_type, oracle_base and oracle_quote select the price feed for one whole unit of the denom */
+  oracleType: OracleType
+  oracleBase: string
+  oracleQuote: string
+}
+
+/** chain v1.21+: the exchange outflow guard (net outflow limit) configuration */
+export interface ChainOutflowGuardParams {
+  enabled: boolean
+  /**
+   * maximum net outflow over the rolling window, as a fraction of the perimeter notional
+   * at the start of the window, in (0, 1]. Raw LegacyDec (x 1e18, see `cosmosSdkDecToBigNumber`)
+   */
+  maxOutflowRatio: string
+  trackedDenoms: ChainOutflowGuardTrackedDenom[]
 }
 
 export interface ExchangeModuleParams extends ExchangeParams {
@@ -113,6 +138,22 @@ export interface ChainCrossMarginPoolSnapshot {
   crossMarginUtilRatio: string
   positionOrderLockRequirement: string
   nonPositionOrderLockRequirement: string
+}
+
+/** chain v1.21+: the exchange outflow guard's state for the current block */
+export interface ChainOutflowGuardState {
+  /** whether the guard is enabled in params */
+  enabled: boolean
+  /** whether the manual block (MsgSetOutflowGuardBlocked) is set, only effective while the guard is enabled */
+  manuallyBlocked: boolean
+  /**
+   * remaining 24h net outflow allowance in USD (ignoring the manual block), as the raw
+   * LegacyDec (x 1e18, see `cosmosSdkDecToBigNumber`). Zero when the guard is disabled
+   * or failed, zero or negative once the cap is exhausted.
+   */
+  headroom: string
+  /** whether tracked outflows to non-exempt addresses are refused this block */
+  blocking: boolean
 }
 
 export interface ChainOrderbookLevel {

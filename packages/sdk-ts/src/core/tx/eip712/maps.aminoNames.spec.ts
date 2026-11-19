@@ -19,11 +19,10 @@ const mapped = (Object.values(InjectiveExchangeV2TxPb) as unknown[])
         },
       ]
     } catch {
-      return [] // not mapped by the SDK
+      return []
     }
   })
 
-// guards against drift between protoTypeToAminoType and the chain's `amino.name`
 describe('protoTypeToAminoType exchange v2 amino names', () => {
   it('maps a meaningful number of v2 messages', () => {
     expect(mapped.length).toBeGreaterThan(20)

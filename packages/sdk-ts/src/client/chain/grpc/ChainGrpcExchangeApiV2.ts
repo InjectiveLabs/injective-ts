@@ -899,6 +899,22 @@ export class ChainGrpcExchangeApiV2 extends BaseGrpcConsumer {
     )
   }
 
+  /** chain v1.21+ */
+  async fetchOutflowGuardState(options?: RequestOptions) {
+    throwIfAborted(options?.signal)
+    const request =
+      InjectiveExchangeV2QueryPb.QueryOutflowGuardStateRequest.create()
+
+    const response = await this.executeGrpcCall<
+      InjectiveExchangeV2QueryPb.QueryOutflowGuardStateRequest,
+      InjectiveExchangeV2QueryPb.QueryOutflowGuardStateResponse
+    >(request, this.client.outflowGuardState.bind(this.client), options)
+
+    return ChainGrpcExchangeTransformerV2.outflowGuardStateResponseToOutflowGuardState(
+      response,
+    )
+  }
+
   async fetchPositionsInMarket(marketId: string, options?: RequestOptions) {
     throwIfAborted(options?.signal)
     const request =

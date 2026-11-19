@@ -14,7 +14,6 @@ const typesOf = (
     ).map((field) => [field.name, field.type]),
   )
 
-// EIP712 v1 typing of the v1.21 fields (the parity tests that would cover them are skipped)
 describe('objectKeysToEip712Types (chain v1.21 fields)', () => {
   it('types permissions owner_blacklist_query_max_gas as uint64', () => {
     expect(

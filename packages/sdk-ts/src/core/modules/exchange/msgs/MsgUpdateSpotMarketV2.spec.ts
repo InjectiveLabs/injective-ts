@@ -1,5 +1,4 @@
 import snakecaseKeys from 'snakecase-keys'
-import { Network } from '@injectivelabs/networks'
 import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgUpdateSpotMarketV2 from './MsgUpdateSpotMarketV2.js'
@@ -78,8 +77,6 @@ describe('MsgUpdateSpotMarketV2', () => {
 
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
-      // TODO: switch to Network.Mainnet after the v1.21 mainnet upgrade
-      network: Network.Testnet,
       messages: message,
     })
 

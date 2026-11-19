@@ -8,7 +8,7 @@ import MsgCreateDerivativeLimitOrder from '../../../exchange/msgs/MsgCreateDeriv
 
 const address = Address.fromBech32('inj1hkhdaj2a2clmq5jq6mspsggqs32vynpk228q3r')
 const orderHashManager = new OrderHashManager({
-  network: Network.TestnetK8s,
+  network: Network.Mainnet,
   address: address.bech32Address,
   subaccountIndex: 0,
 })

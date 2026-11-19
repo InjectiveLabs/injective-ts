@@ -83,9 +83,9 @@ BUILD_DIR="./proto/gen"
 # https://github.com/InjectiveLabs/injective-core/blob/release/v1.16.x/go.mod
 
 # remote branches/tags
-injective_core_branch=release/v1.21.x
-cosmos_sdk_branch=v0.50.15-inj.2
-wasmd_branch=v0.54.10-inj.4
+injective_core_branch=v1.21.0
+cosmos_sdk_branch=v0.50.15-inj.4
+wasmd_branch=v0.54.12-inj.1
 ibc_go_branch=v8.7.0-inj.5
 
 if [ "$SKIP_CLONE" = false ]; then

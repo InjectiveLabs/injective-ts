@@ -142,21 +142,18 @@ export const DeprecatedMsgType = {
   MsgTradingRewardPendingPointsUpdateV2:
     'injective.exchange.v2.MsgTradingRewardPendingPointsUpdate',
 
-  // Oracle (retired in chain v1.21)
   MsgRelayBandRates: 'injective.oracle.v1beta1.MsgRelayBandRates',
   MsgRelayStorkPrices: 'injective.oracle.v1beta1.MsgRelayStorkPrices',
   MsgRelayPriceFeedPrice: 'injective.oracle.v1beta1.MsgRelayPriceFeedPrice',
   MsgRelayCoinbaseMessages: 'injective.oracle.v1beta1.MsgRelayCoinbaseMessages',
   MsgRequestBandIBCRates: 'injective.oracle.v1beta1.MsgRequestBandIBCRates',
 
-  // WasmX (retired in chain v1.21, only MsgExecuteContractCompat remains)
   MsgUpdateContract: 'injective.wasmx.v1.MsgUpdateContract',
   MsgWasmxUpdateParams: 'injective.wasmx.v1.MsgUpdateParams',
   MsgActivateContract: 'injective.wasmx.v1.MsgActivateContract',
   MsgRegisterContract: 'injective.wasmx.v1.MsgRegisterContract',
   MsgDeactivateContract: 'injective.wasmx.v1.MsgDeactivateContract',
 
-  // OCR (module not part of the generated protos)
   MsgTransmit: 'injective.ocr.v1beta1.MsgTransmit',
   MsgSetPayees: 'injective.ocr.v1beta1.MsgSetPayees',
   MsgCreateFeed: 'injective.ocr.v1beta1.MsgCreateFeed',
@@ -337,6 +334,8 @@ export const MsgType = {
     'injective.exchange.v2.MsgUpdateSubaccountRiskProfile',
   MsgUpdateSubaccountMarketRiskModeV2:
     'injective.exchange.v2.MsgUpdateSubaccountMarketRiskMode',
+  MsgSetOutflowGuardBlockedV2:
+    'injective.exchange.v2.MsgSetOutflowGuardBlocked',
   MsgUpdateSwapParamsV2: 'injective.exchange.v2.MsgUpdateSwapParams',
   MsgBatchUpdateOrdersV2: 'injective.exchange.v2.MsgBatchUpdateOrders',
   MsgLiquidatePositionV2: 'injective.exchange.v2.MsgLiquidatePosition',

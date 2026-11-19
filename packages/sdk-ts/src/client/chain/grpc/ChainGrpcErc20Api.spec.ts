@@ -2,7 +2,7 @@ import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcErc20Api } from './ChainGrpcErc20Api.js'
 import type { ChainGrpcErc20Transformer } from '../transformers/ChainGrpcErc20Transformer.js'
 
-const endpoints = getNetworkEndpoints(Network.TestnetSentry)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcErc20Api = new ChainGrpcErc20Api(endpoints.grpc)
 
 describe('ChainGrpcErc20Api', () => {
@@ -65,7 +65,7 @@ describe('ChainGrpcErc20Api', () => {
   test('fetchTokenPairByDenom', async () => {
     try {
       const response = await chainGrpcErc20Api.fetchTokenPairByDenom(
-        'peggy0x87aB3B4C8661e07D6372361211B96ed4Dc36B1B5',
+        'peggy0xdAC17F958D2ee523a2206206994597C13D831ec7',
       )
 
       expect(response).toBeDefined()
@@ -87,7 +87,7 @@ describe('ChainGrpcErc20Api', () => {
   test('fetchTokenPairByErc20Address', async () => {
     try {
       const response = await chainGrpcErc20Api.fetchTokenPairByErc20Address(
-        '0xaDC7bcB5d8fe053Ef19b4E0C861c262Af6e0db60',
+        '0x88f7F2b685F9692caf8c478f5BADF09eE9B1Cc13',
       )
 
       expect(response).toBeDefined()
