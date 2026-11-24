@@ -1,5 +1,5 @@
-import { toHex, isHex, getAddress } from 'viem'
 import { capitalize } from '@injectivelabs/utils'
+import { toHex, isHex, getAddress, hexToNumber } from 'viem'
 import {
   isServerSide,
   uint8ArrayToHex,
@@ -61,6 +61,27 @@ import type {
   ConcreteWalletStrategyArgs,
   ConcreteEvmWalletStrategyArgs,
 } from '@injectivelabs/wallet-base'
+
+/**
+ * Phantom rejects eth_signTypedData_v4 when domain.chainId is a hex string
+ * ("0x1"), which the web3 gateway and the SDK's EIP-712 builders produce.
+ * A numeric chainId gives the same EIP-712 digest. Injective typed data keeps
+ * message values as strings, so re-serializing it cannot round a number.
+ */
+const withNumericDomainChainId = (eip712json: string): string => {
+  const typedData = JSON.parse(eip712json)
+  const chainId = typedData?.domain?.chainId
+
+  if (typeof chainId !== 'string' || !isHex(chainId)) {
+    return eip712json
+  }
+
+  return JSON.stringify({
+    ...typedData,
+    // throws for a chainId above Number.MAX_SAFE_INTEGER instead of rounding
+    domain: { ...typedData.domain, chainId: hexToNumber(chainId) },
+  })
+}
 
 export class EvmWallet
   extends BaseConcreteStrategy
@@ -236,7 +257,12 @@ export class EvmWallet
     try {
       return (await ethereum.request({
         method: 'eth_signTypedData_v4',
-        params: [getAddress(address), eip712json],
+        params: [
+          getAddress(address),
+          this.wallet === Wallet.Phantom
+            ? withNumericDomainChainId(eip712json)
+            : eip712json,
+        ],
       })) as string
     } catch (e: unknown) {
       if (
