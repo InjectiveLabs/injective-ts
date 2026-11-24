@@ -199,7 +199,11 @@ export default class HttpRestClient {
         throwIfAborted(signal)
 
         if (e instanceof HttpRequestException) {
-          if (e.code === StatusCodes.REQUEST_TOO_LONG) {
+          // 410 Gone: the data was pruned from this host, retrying won't help
+          if (
+            e.code === StatusCodes.REQUEST_TOO_LONG ||
+            e.code === StatusCodes.GONE
+          ) {
             throw e
           }
         }

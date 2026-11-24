@@ -37,6 +37,7 @@ export interface Paging {
   from: number
   to: number
   total: number
+  pruned?: boolean
 }
 
 export interface EventLogEvent {
@@ -405,7 +406,7 @@ export interface ExplorerStats {
 
 export interface ExplorerTxsV2Response {
   data: ExplorerTransactionV2[]
-  paging?: InjectiveExplorerRpcPb.Paging
+  paging?: InjectiveExplorerRpcPb.Cursor
 }
 
 export interface ExplorerTransactionV2 {

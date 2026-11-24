@@ -28,4 +28,5 @@ export interface ExchangePagination {
   total: number
   countBySubaccount?: number
   next?: string[]
+  pruned?: boolean
 }

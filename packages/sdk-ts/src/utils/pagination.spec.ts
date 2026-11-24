@@ -1,5 +1,6 @@
 import { vi, test, expect, describe, expectTypeOf } from 'vitest'
 import {
+  grpcPagingToPagingV2,
   fetchAllWithPagination,
   fetchAllWithTokenPagination,
 } from './pagination.js'
@@ -191,5 +192,27 @@ describe('fetchAllWithPagination', () => {
       reason: expect.objectContaining({ message: 'pagination cancelled' }),
     })
     expect(method).not.toHaveBeenCalled()
+  })
+})
+
+describe('grpcPagingToPagingV2', () => {
+  test.each([true, false])('keeps the explorer pruned=%s flag', (pruned) => {
+    const paging = grpcPagingToPagingV2({
+      total: 5n,
+      from: 1,
+      to: 5,
+      countBySubaccount: 0n,
+      next: ['token'],
+      pruned,
+    })
+
+    expect(paging).toEqual({
+      total: 5,
+      from: 1,
+      to: 5,
+      countBySubaccount: 0,
+      next: ['token'],
+      pruned,
+    })
   })
 })

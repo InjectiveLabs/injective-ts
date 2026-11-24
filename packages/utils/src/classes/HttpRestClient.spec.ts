@@ -525,6 +525,18 @@ describe('HttpRestClient', () => {
       expect(callback).toHaveBeenCalledTimes(1)
     })
 
+    it('does not retry 410 Gone responses (pruned data)', async () => {
+      const error = new HttpRequestException(new Error('pruned'), {
+        code: StatusCodes.GONE,
+      })
+      const callback = vi.fn<() => Promise<string>>().mockRejectedValue(error)
+      const { adapter } = createAdapter('unused')
+      const client = new HttpRestClient('http://api.test', { adapter })
+
+      await expect(client.retry(callback, 3, 10)).rejects.toBe(error)
+      expect(callback).toHaveBeenCalledTimes(1)
+    })
+
     it('composes constructor signals into retry backoff', async () => {
       vi.useFakeTimers()
 
