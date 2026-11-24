@@ -6,7 +6,6 @@ import { ChainGrpcBankApi } from './grpc/ChainGrpcBankApi.js'
 import { ChainGrpcMintApi } from './grpc/ChainGrpcMintApi.js'
 import { ChainGrpcWasmApi } from './grpc/ChainGrpcWasmApi.js'
 import { ChainGrpcPeggyApi } from './grpc/ChainGrpcPeggyApi.js'
-import { ChainGrpcWasmXApi } from './grpc/ChainGrpcWasmXApi.js'
 import { ChainGrpcErc20Api } from './grpc/ChainGrpcErc20Api.js'
 import { ChainGrpcOracleApi } from './grpc/ChainGrpcOracleApi.js'
 import { ChainGrpcAuctionApi } from './grpc/ChainGrpcAuctionApi.js'
@@ -30,7 +29,6 @@ export class ChainGrpcClient {
   mint: ChainGrpcMintApi
   wasm: ChainGrpcWasmApi
   peggy: ChainGrpcPeggyApi
-  wasmX: ChainGrpcWasmXApi
   erc20: ChainGrpcErc20Api
   oracle: ChainGrpcOracleApi
   auction: ChainGrpcAuctionApi
@@ -51,7 +49,6 @@ export class ChainGrpcClient {
     this.wasm = new ChainGrpcWasmApi(endpoint)
     this.erc20 = new ChainGrpcErc20Api(endpoint)
     this.peggy = new ChainGrpcPeggyApi(endpoint)
-    this.wasmX = new ChainGrpcWasmXApi(endpoint)
     this.oracle = new ChainGrpcOracleApi(endpoint)
     this.auction = new ChainGrpcAuctionApi(endpoint)
     this.staking = new ChainGrpcStakingApi(endpoint)

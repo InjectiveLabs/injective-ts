@@ -1,5 +1,6 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import type * as InjectiveExchangeV2ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/exchange_pb'
 import type { TypedDataField } from '../../../tx/eip712/types.js'
 
@@ -39,10 +40,17 @@ export default class MsgUpdateSwapParamsV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgUpdateSwapParams,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const { params } = this
 
     return {
-      type: 'exchange/MsgUpdateSwapParams',
+      type: 'exchange/v2/MsgUpdateSwapParams',
       value: {
         sender: params.sender,
         swap_params: {
@@ -54,18 +62,12 @@ export default class MsgUpdateSwapParamsV2 extends MsgBase<
   }
 
   public toWeb3Gw() {
-    const { value } = this.toAmino()
+    const { value } = this.toAminoRaw()
 
     return {
       '@type': '/injective.exchange.v2.MsgUpdateSwapParams',
       ...value,
     }
-  }
-
-  public toEip712() {
-    const { type, value } = this.toAmino()
-
-    return { type, value }
   }
 
   public toEip712V2() {
@@ -74,12 +76,15 @@ export default class MsgUpdateSwapParamsV2 extends MsgBase<
 
   public toEip712Types(): Map<string, TypedDataField[]> {
     // The market allowlist can be empty, so its element type cannot be inferred.
+    // The chain lists a bool always but omits an empty array from the types.
     return new Map<string, TypedDataField[]>([
       [
         'TypeSwapParams',
         [
           { name: 'enabled', type: 'bool' },
-          { name: 'allowed_markets', type: 'string[]' },
+          ...(this.params.swapParams.allowedMarkets?.length
+            ? [{ name: 'allowed_markets', type: 'string[]' }]
+            : []),
         ],
       ],
       [

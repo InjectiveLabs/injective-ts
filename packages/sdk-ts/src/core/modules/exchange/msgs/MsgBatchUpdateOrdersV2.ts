@@ -2,6 +2,8 @@ import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2OrderPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/order_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
+import { assertNoBinaryOptionsOrders } from './utils/binaryOptions.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 import {
   objectKeysToEip712Types,
@@ -31,24 +33,11 @@ interface DerivativeOrderToCreate {
   expirationBlock?: string
 }
 
-interface BinaryOptionOrderToCreate {
-  orderType: InjectiveExchangeV2OrderPb.OrderType
-  triggerPrice?: string
-  feeRecipient: string
-  marketId: string
-  price: string
-  margin: string
-  quantity: string
-  cid?: string
-  expirationBlock?: string
-}
-
 export declare namespace MsgBatchUpdateOrdersV2 {
   export interface Params {
     subaccountId: string
     spotMarketIdsToCancelAll?: string[]
     derivativeMarketIdsToCancelAll?: string[]
-    binaryOptionsMarketIdsToCancelAll?: string[]
     spotOrdersToCancel?: {
       marketId: string
       subaccountId: string
@@ -61,18 +50,10 @@ export declare namespace MsgBatchUpdateOrdersV2 {
       orderHash?: string
       cid?: string
     }[]
-    binaryOptionsOrdersToCancel?: {
-      marketId: string
-      subaccountId: string
-      orderHash?: string
-      cid?: string
-    }[]
     spotOrdersToCreate?: SpotOrderToCreate[]
     derivativeOrdersToCreate?: DerivativeOrderToCreate[]
-    binaryOptionsOrdersToCreate?: BinaryOptionOrderToCreate[]
     spotMarketOrdersToCreate?: SpotOrderToCreate[]
     derivativeMarketOrdersToCreate?: DerivativeOrderToCreate[]
-    binaryOptionsMarketOrdersToCreate?: BinaryOptionOrderToCreate[]
     injectiveAddress: string
   }
 
@@ -128,32 +109,6 @@ const createDerivativeOrder = (
   return order
 }
 
-const createBinaryOptionOrder = (
-  args: BinaryOptionOrderToCreate & { subaccountId: string },
-) => {
-  const orderInfo = InjectiveExchangeV2OrderPb.OrderInfo.create({
-    subaccountId: args.subaccountId,
-    feeRecipient: args.feeRecipient,
-    price: args.price,
-    quantity: args.quantity,
-    cid: args.cid,
-  })
-
-  // Binary options reuse the DerivativeOrder proto type on-chain
-  const order = InjectiveExchangeV2OrderPb.DerivativeOrder.create({
-    marketId: args.marketId,
-    orderType: args.orderType,
-    orderInfo: orderInfo,
-    margin: args.margin,
-    triggerPrice: args.triggerPrice,
-    expirationBlock: args.expirationBlock
-      ? BigInt(args.expirationBlock)
-      : BigInt(0),
-  })
-
-  return order
-}
-
 type OrderFormatFn = (value: string) => string
 type OptionalOrderFormatFn = (value: string | undefined) => string
 
@@ -190,31 +145,14 @@ const buildDerivativeOrders = (
     }),
   )
 
-const buildBinaryOptionOrders = (
-  orders: BinaryOptionOrderToCreate[],
-  subaccountId: string,
-  fmt: OrderFormatFn,
-  fmtOpt: OptionalOrderFormatFn,
-) =>
-  orders.map((args) =>
-    createBinaryOptionOrder({
-      ...args,
-      price: fmt(args.price),
-      margin: fmt(args.margin),
-      triggerPrice: fmtOpt(args.triggerPrice),
-      quantity: fmt(args.quantity),
-      subaccountId,
-    }),
-  )
-
 const createMsgAndCancelOrders = (params: MsgBatchUpdateOrdersV2.Params) => {
+  assertNoBinaryOptionsOrders(params)
+
   const hasCancelAll =
     (params.spotMarketIdsToCancelAll &&
       params.spotMarketIdsToCancelAll.length > 0) ||
     (params.derivativeMarketIdsToCancelAll &&
-      params.derivativeMarketIdsToCancelAll.length > 0) ||
-    (params.binaryOptionsMarketIdsToCancelAll &&
-      params.binaryOptionsMarketIdsToCancelAll.length > 0)
+      params.derivativeMarketIdsToCancelAll.length > 0)
 
   const message = InjectiveExchangeV2TxPb.MsgBatchUpdateOrders.create({
     sender: params.injectiveAddress,
@@ -234,14 +172,6 @@ const createMsgAndCancelOrders = (params: MsgBatchUpdateOrdersV2.Params) => {
   ) {
     message.derivativeMarketIdsToCancelAll =
       params.derivativeMarketIdsToCancelAll
-  }
-
-  if (
-    params.binaryOptionsMarketIdsToCancelAll &&
-    params.binaryOptionsMarketIdsToCancelAll.length > 0
-  ) {
-    message.binaryOptionsMarketIdsToCancelAll =
-      params.binaryOptionsMarketIdsToCancelAll
   }
 
   if (params.spotOrdersToCancel) {
@@ -268,20 +198,6 @@ const createMsgAndCancelOrders = (params: MsgBatchUpdateOrdersV2.Params) => {
         })
       },
     )
-  }
-
-  if (params.binaryOptionsOrdersToCancel) {
-    message.binaryOptionsOrdersToCancel =
-      params.binaryOptionsOrdersToCancel.map(
-        ({ marketId, subaccountId, orderHash, cid }) => {
-          return InjectiveExchangeV2TxPb.OrderData.create({
-            marketId,
-            subaccountId,
-            orderHash,
-            cid,
-          })
-        },
-      )
   }
 
   return message
@@ -321,13 +237,6 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
         fmt,
         fmtOpt,
       )
-    if (params.binaryOptionsOrdersToCreate)
-      message.binaryOptionsOrdersToCreate = buildBinaryOptionOrders(
-        params.binaryOptionsOrdersToCreate,
-        params.subaccountId,
-        fmt,
-        fmtOpt,
-      )
     if (params.spotMarketOrdersToCreate)
       message.spotMarketOrdersToCreate = buildSpotOrders(
         params.spotMarketOrdersToCreate,
@@ -338,13 +247,6 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
     if (params.derivativeMarketOrdersToCreate)
       message.derivativeMarketOrdersToCreate = buildDerivativeOrders(
         params.derivativeMarketOrdersToCreate,
-        params.subaccountId,
-        fmt,
-        fmtOpt,
-      )
-    if (params.binaryOptionsMarketOrdersToCreate)
-      message.binaryOptionsMarketOrdersToCreate = buildBinaryOptionOrders(
-        params.binaryOptionsMarketOrdersToCreate,
         params.subaccountId,
         fmt,
         fmtOpt,
@@ -363,6 +265,13 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgBatchUpdateOrders,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const { params } = this
 
     const message = createMsgAndCancelOrders(params)
@@ -384,13 +293,6 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
         fmt,
         fmtOpt,
       )
-    if (params.binaryOptionsOrdersToCreate)
-      message.binaryOptionsOrdersToCreate = buildBinaryOptionOrders(
-        params.binaryOptionsOrdersToCreate,
-        params.subaccountId,
-        fmt,
-        fmtOpt,
-      )
     if (params.spotMarketOrdersToCreate)
       message.spotMarketOrdersToCreate = buildSpotOrders(
         params.spotMarketOrdersToCreate,
@@ -401,13 +303,6 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
     if (params.derivativeMarketOrdersToCreate)
       message.derivativeMarketOrdersToCreate = buildDerivativeOrders(
         params.derivativeMarketOrdersToCreate,
-        params.subaccountId,
-        fmt,
-        fmtOpt,
-      )
-    if (params.binaryOptionsMarketOrdersToCreate)
-      message.binaryOptionsMarketOrdersToCreate = buildBinaryOptionOrders(
-        params.binaryOptionsMarketOrdersToCreate,
         params.subaccountId,
         fmt,
         fmtOpt,
@@ -445,6 +340,7 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
       cid: orderData.cid,
     })
 
+    // Retired fields stay empty to preserve the chain's signing schema.
     const msg = {
       sender: message.sender,
       subaccount_id: message.subaccountId,
@@ -460,190 +356,29 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
       derivative_orders_to_create: message.derivativeOrdersToCreate.map(
         derivativeOrderToSnakeCase,
       ),
-      binary_options_orders_to_cancel:
-        message.binaryOptionsOrdersToCancel.map(orderDataToSnakeCase),
-      binary_options_market_ids_to_cancel_all:
-        message.binaryOptionsMarketIdsToCancelAll,
-      binary_options_orders_to_create: message.binaryOptionsOrdersToCreate.map(
-        derivativeOrderToSnakeCase,
-      ),
+      binary_options_orders_to_cancel: [],
+      binary_options_market_ids_to_cancel_all: [],
+      binary_options_orders_to_create: [],
       spot_market_orders_to_create:
         message.spotMarketOrdersToCreate.map(spotOrderToSnakeCase),
       derivative_market_orders_to_create:
         message.derivativeMarketOrdersToCreate.map(derivativeOrderToSnakeCase),
-      binary_options_market_orders_to_create:
-        message.binaryOptionsMarketOrdersToCreate.map(
-          derivativeOrderToSnakeCase,
-        ),
+      binary_options_market_orders_to_create: [],
     }
 
     return {
-      type: 'exchange/MsgBatchUpdateOrders',
+      type: 'exchange/v2/MsgBatchUpdateOrders',
       value: msg as any,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {
       '@type': '/injective.exchange.v2.MsgBatchUpdateOrders',
       ...value,
-    }
-  }
-
-  public toEip712() {
-    const { params } = this
-    const amino = this.toAmino()
-    const { value, type } = amino
-
-    const spotOrderToEip712 = (order: any, args: SpotOrderToCreate) => ({
-      market_id: order.market_id,
-      order_info: {
-        subaccount_id: order.order_info.subaccount_id,
-        fee_recipient: order.order_info.fee_recipient,
-        price: toChainFormat(args.price).toFixed(),
-        quantity: toChainFormat(args.quantity).toFixed(),
-        cid: order.order_info.cid,
-      },
-      order_type: order.order_type,
-      trigger_price: toChainFormat(args.triggerPrice || '0').toFixed(),
-    })
-
-    const derivativeOrderToEip712 = (
-      order: any,
-      args: DerivativeOrderToCreate | BinaryOptionOrderToCreate,
-    ) => ({
-      market_id: order.market_id,
-      order_info: {
-        subaccount_id: order.order_info.subaccount_id,
-        fee_recipient: order.order_info.fee_recipient,
-        price: toChainFormat(args.price).toFixed(),
-        quantity: toChainFormat(args.quantity).toFixed(),
-        cid: order.order_info.cid,
-      },
-      order_type: order.order_type,
-      margin: toChainFormat((args as DerivativeOrderToCreate).margin).toFixed(),
-      trigger_price: toChainFormat(args.triggerPrice || '0').toFixed(),
-    })
-
-    const msgValue = value as any
-    const hasCancelAll =
-      (params.spotMarketIdsToCancelAll &&
-        params.spotMarketIdsToCancelAll.length > 0) ||
-      (params.derivativeMarketIdsToCancelAll &&
-        params.derivativeMarketIdsToCancelAll.length > 0) ||
-      (params.binaryOptionsMarketIdsToCancelAll &&
-        params.binaryOptionsMarketIdsToCancelAll.length > 0)
-
-    const result: Record<string, any> = {
-      sender: msgValue.sender,
-    }
-
-    if (hasCancelAll) {
-      result.subaccount_id = msgValue.subaccount_id
-    }
-
-    if (msgValue.spot_market_ids_to_cancel_all?.length > 0) {
-      result.spot_market_ids_to_cancel_all =
-        msgValue.spot_market_ids_to_cancel_all
-    }
-
-    if (msgValue.derivative_market_ids_to_cancel_all?.length > 0) {
-      result.derivative_market_ids_to_cancel_all =
-        msgValue.derivative_market_ids_to_cancel_all
-    }
-
-    if (msgValue.spot_orders_to_cancel?.length > 0) {
-      result.spot_orders_to_cancel = msgValue.spot_orders_to_cancel
-    }
-
-    if (msgValue.derivative_orders_to_cancel?.length > 0) {
-      result.derivative_orders_to_cancel = msgValue.derivative_orders_to_cancel
-    }
-
-    if (params.spotOrdersToCreate && params.spotOrdersToCreate.length > 0) {
-      result.spot_orders_to_create = params.spotOrdersToCreate.map((args, i) =>
-        spotOrderToEip712(msgValue.spot_orders_to_create[i], args),
-      )
-    }
-
-    if (
-      params.derivativeOrdersToCreate &&
-      params.derivativeOrdersToCreate.length > 0
-    ) {
-      result.derivative_orders_to_create = params.derivativeOrdersToCreate.map(
-        (args, i) =>
-          derivativeOrderToEip712(
-            msgValue.derivative_orders_to_create[i],
-            args,
-          ),
-      )
-    }
-
-    if (msgValue.binary_options_orders_to_cancel?.length > 0) {
-      result.binary_options_orders_to_cancel =
-        msgValue.binary_options_orders_to_cancel
-    }
-
-    if (msgValue.binary_options_market_ids_to_cancel_all?.length > 0) {
-      result.binary_options_market_ids_to_cancel_all =
-        msgValue.binary_options_market_ids_to_cancel_all
-    }
-
-    if (
-      params.binaryOptionsOrdersToCreate &&
-      params.binaryOptionsOrdersToCreate.length > 0
-    ) {
-      result.binary_options_orders_to_create =
-        params.binaryOptionsOrdersToCreate.map((args, i) =>
-          derivativeOrderToEip712(
-            msgValue.binary_options_orders_to_create[i],
-            args,
-          ),
-        )
-    }
-
-    if (
-      params.spotMarketOrdersToCreate &&
-      params.spotMarketOrdersToCreate.length > 0
-    ) {
-      result.spot_market_orders_to_create = params.spotMarketOrdersToCreate.map(
-        (args, i) =>
-          spotOrderToEip712(msgValue.spot_market_orders_to_create[i], args),
-      )
-    }
-
-    if (
-      params.derivativeMarketOrdersToCreate &&
-      params.derivativeMarketOrdersToCreate.length > 0
-    ) {
-      result.derivative_market_orders_to_create =
-        params.derivativeMarketOrdersToCreate.map((args, i) =>
-          derivativeOrderToEip712(
-            msgValue.derivative_market_orders_to_create[i],
-            args,
-          ),
-        )
-    }
-
-    if (
-      params.binaryOptionsMarketOrdersToCreate &&
-      params.binaryOptionsMarketOrdersToCreate.length > 0
-    ) {
-      result.binary_options_market_orders_to_create =
-        params.binaryOptionsMarketOrdersToCreate.map((args, i) =>
-          derivativeOrderToEip712(
-            msgValue.binary_options_market_orders_to_create[i],
-            args,
-          ),
-        )
-    }
-
-    return {
-      type,
-      value: result,
     }
   }
 
@@ -658,10 +393,8 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
     return patchOrderTypesWithExpirationBlock(result, [
       'TypeSpotOrdersToCreate',
       'TypeDerivativeOrdersToCreate',
-      'TypeBinaryOptionsOrdersToCreate',
       'TypeSpotMarketOrdersToCreate',
       'TypeDerivativeMarketOrdersToCreate',
-      'TypeBinaryOptionsMarketOrdersToCreate',
     ])
   }
 
@@ -685,7 +418,7 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
 
     const formatDerivativeOrderEip712 = (
       order: any,
-      args: DerivativeOrderToCreate | BinaryOptionOrderToCreate,
+      args: DerivativeOrderToCreate,
     ) => ({
       market_id: order.market_id,
       order_info: {
@@ -696,9 +429,7 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
         cid: order.order_info.cid,
       },
       order_type: InjectiveExchangeV2OrderPb.OrderType[args.orderType],
-      margin: numberToCosmosSdkDecString(
-        (args as DerivativeOrderToCreate).margin,
-      ),
+      margin: numberToCosmosSdkDecString(args.margin),
       trigger_price: numberToCosmosSdkDecString(args.triggerPrice || '0'),
       expiration_block: args.expirationBlock || '0',
     })
@@ -728,20 +459,10 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
               ),
             )
           : [],
-      binary_options_orders_to_cancel:
-        web3gw.binary_options_orders_to_cancel ?? [],
-      binary_options_market_ids_to_cancel_all:
-        web3gw.binary_options_market_ids_to_cancel_all ?? [],
-      binary_options_orders_to_create:
-        params.binaryOptionsOrdersToCreate &&
-        params.binaryOptionsOrdersToCreate.length > 0
-          ? params.binaryOptionsOrdersToCreate.map((args, i) =>
-              formatDerivativeOrderEip712(
-                web3gw.binary_options_orders_to_create[i],
-                args,
-              ),
-            )
-          : [],
+      // EIP712 v2 includes the retained protobuf fields, even when empty.
+      binary_options_orders_to_cancel: [],
+      binary_options_market_ids_to_cancel_all: [],
+      binary_options_orders_to_create: [],
       spot_market_orders_to_create:
         params.spotMarketOrdersToCreate &&
         params.spotMarketOrdersToCreate.length > 0
@@ -762,16 +483,7 @@ export default class MsgBatchUpdateOrdersV2 extends MsgBase<
               ),
             )
           : [],
-      binary_options_market_orders_to_create:
-        params.binaryOptionsMarketOrdersToCreate &&
-        params.binaryOptionsMarketOrdersToCreate.length > 0
-          ? params.binaryOptionsMarketOrdersToCreate.map((args, i) =>
-              formatDerivativeOrderEip712(
-                web3gw.binary_options_market_orders_to_create[i],
-                args,
-              ),
-            )
-          : [],
+      binary_options_market_orders_to_create: [],
     }
   }
 

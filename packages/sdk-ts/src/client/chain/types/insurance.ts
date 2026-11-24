@@ -19,6 +19,43 @@ export interface InsuranceFund {
   expiry: number
 }
 
+/** chain v1.21+: a pool shared by many markets, quote-denominated */
+export interface ConsolidatedInsurancePool {
+  depositDenom: string
+  shareDenom: string
+  quoteDecimals: number
+  /** seconds */
+  redemptionNoticePeriodDuration: number
+  balance: string
+  totalShare: string
+  maxDrawPerMarket: string
+  /** insurance-payout pause (not a trading halt) */
+  paused: boolean
+  reservedBalance: string
+  pendingReservationRedemptions: number
+}
+
+/** chain v1.21+: binds one perpetual market to a consolidated pool */
+export interface ConsolidatedInsurancePolicy {
+  marketId: string
+  poolDenom: string
+  maxDraw: string
+  outstandingDraw: string
+  netPrefunding: string
+  reservedAmount: string
+}
+
+/** chain v1.21+: shares escrowed until the notice period expires */
+export interface ConsolidatedRedemptionSchedule {
+  id: number
+  poolDenom: string
+  redeemer: string
+  /** unix seconds */
+  claimableRedemptionTime: number
+  shares: { denom: string; amount: string }
+  waitingForReservedCash: boolean
+}
+
 export type GrpcInsuranceParams = InjectiveInsuranceV1Beta1InsurancePb.Params
 export type GrpcInsuranceFund =
   InjectiveInsuranceV1Beta1InsurancePb.InsuranceFund

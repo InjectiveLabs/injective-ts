@@ -17,7 +17,7 @@ const params: MsgCancelSpotOrderV2['params'] = {
 }
 
 const protoType = '/injective.exchange.v2.MsgCancelSpotOrder'
-const protoTypeShort = 'exchange/MsgCancelSpotOrder'
+const protoTypeShort = 'exchange/v2/MsgCancelSpotOrder'
 const protoParams = {
   sender: params.injectiveAddress,
   marketId: params.marketId,
@@ -62,6 +62,14 @@ describe('MsgCancelSpotOrderV2', () => {
     })
   })
 
+  it('EIP712 v1 values and type equal the amino-json of the proto', () => {
+    const eip712 = message.toEip712()
+    const amino = message.toAmino()
+
+    expect(eip712.type).toBe(amino.type)
+    expect(eip712.value).toStrictEqual(amino.value)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,
@@ -78,6 +86,9 @@ describe('MsgCancelSpotOrderV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+      expect(message.toAmino()).toStrictEqual(
+        JSON.parse(txResponse.data).message.msgs[0],
+      )
     })
 
     it('EIP712 v2', async () => {

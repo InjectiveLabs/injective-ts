@@ -13,6 +13,14 @@ const params: MsgSignDataV2['params'] = {
 const message = MsgSignDataV2.fromJSON(params)
 
 describe('MsgSignDataV2', () => {
+  it('EIP712 v1 values and type equal the amino-json of the proto', () => {
+    const eip712 = message.toEip712()
+    const amino = message.toAmino()
+
+    expect(eip712.type).toBe(amino.type)
+    expect(eip712.value).toStrictEqual(amino.value)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { eip712Args } = prepareEip712({ messages: message })
 
