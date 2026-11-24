@@ -65,15 +65,28 @@ import type {
 /**
  * Phantom rejects eth_signTypedData_v4 when domain.chainId is a hex string
  * ("0x1"), which the web3 gateway and the SDK's EIP-712 builders produce.
- * A numeric chainId gives the same EIP-712 digest. Injective typed data keeps
- * message values as strings, so re-serializing it cannot round a number.
+ * A numeric chainId gives the same EIP-712 digest. Re-serializing would round
+ * numbers that are not safe integers, so such typed data is rejected instead.
  */
 const withNumericDomainChainId = (eip712json: string): string => {
-  const typedData = JSON.parse(eip712json)
+  let hasUnsafeNumber = false
+  const typedData = JSON.parse(eip712json, (_key, value) => {
+    if (typeof value === 'number' && !Number.isSafeInteger(value)) {
+      hasUnsafeNumber = true
+    }
+
+    return value
+  })
   const chainId = typedData?.domain?.chainId
 
   if (typeof chainId !== 'string' || !isHex(chainId)) {
     return eip712json
+  }
+
+  if (hasUnsafeNumber) {
+    throw new Error(
+      'Phantom cannot sign typed data with numbers that are not safe integers',
+    )
   }
 
   return JSON.stringify({
