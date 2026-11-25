@@ -7,12 +7,12 @@ import type { BrowserEip1193Provider } from '@injectivelabs/wallet-base'
 
 const signer = '0x000000000000000000000000000000000000dead'
 
-const setup = () => {
+const setup = (wallet: Wallet = Wallet.Metamask) => {
   const request = vi.fn().mockResolvedValue('0xsigned')
   const provider = { request } as unknown as BrowserEip1193Provider
   const strategy = new EvmWallet({
     chainId: ChainId.Devnet,
-    wallet: Wallet.Metamask,
+    wallet,
   })
 
   vi.spyOn(
@@ -37,6 +37,53 @@ describe('EvmWallet signing payloads', () => {
       method: 'eth_signTypedData_v4',
       params: [getAddress(signer), typedData],
     })
+  })
+
+  it.each([
+    { wallet: Wallet.Phantom, domain: { chainId: '0x1' }, expected: 1 },
+    { wallet: Wallet.Metamask, domain: { chainId: '0x1' }, expected: '0x1' },
+    { wallet: Wallet.Phantom, domain: { name: 'x' }, expected: undefined },
+  ])(
+    'sends $domain from $wallet with chainId $expected',
+    async ({ wallet, domain, expected }) => {
+      const { request, strategy } = setup(wallet)
+
+      await strategy.signEip712TypedData(JSON.stringify({ domain }), signer)
+
+      const sent = JSON.parse(request.mock.calls[0][0].params[1])
+      expect(sent.domain.chainId).toBe(expected)
+    },
+  )
+
+  it.each([
+    {
+      name: 'an unsafe chainId',
+      typedData: '{"domain":{"chainId":"0x20000000000001"}}',
+      error: '9007199254740993',
+    },
+    {
+      name: 'an unsafe message number',
+      typedData:
+        '{"domain":{"chainId":"0x1"},"message":{"n":9007199254740993}}',
+      error: 'not safe integers',
+    },
+  ])('rejects Phantom typed data with $name', async ({ typedData, error }) => {
+    const { request, strategy } = setup(Wallet.Phantom)
+
+    await expect(
+      strategy.signEip712TypedData(typedData, signer),
+    ).rejects.toThrow(error)
+    expect(request).not.toHaveBeenCalled()
+  })
+
+  it('forwards Phantom typed data without a hex chainId unchanged', async () => {
+    const { request, strategy } = setup(Wallet.Phantom)
+    const typedData =
+      '{"domain":{"chainId":1},"message":{"n":9007199254740993}}'
+
+    await strategy.signEip712TypedData(typedData, signer)
+
+    expect(request.mock.calls[0][0].params[1]).toBe(typedData)
   })
 
   it.each([
