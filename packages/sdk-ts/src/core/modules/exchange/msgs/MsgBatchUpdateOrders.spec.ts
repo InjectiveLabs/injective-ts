@@ -1,121 +1,206 @@
+import { toChainFormat } from '@injectivelabs/utils'
+import { EIP712Version } from '@injectivelabs/ts-types'
 import { mockFactory, prepareEip712 } from '@injectivelabs/utils/test-utils'
 import MsgBatchUpdateOrders from './MsgBatchUpdateOrders.js'
-import {
-  getEip712TypedData,
-  getEip712TypedDataV2,
-} from '../../../tx/eip712/eip712.js'
+import { getEip712TypedData } from '../../../tx/eip712/eip712.js'
+import { IndexerGrpcWeb3GwApi } from './../../../../client/indexer/grpc/IndexerGrpcWeb3GwApi.js'
 
-const spotOrderToCancel = {
-  marketId: mockFactory.injUsdtSpotMarket.marketId,
-  subaccountId: mockFactory.subaccountId,
-  orderHash: mockFactory.orderHash,
-}
+const marketId = mockFactory.injUsdtSpotMarket.marketId
+const subaccountId = mockFactory.subaccountId
 
-const params: MsgBatchUpdateOrders['params'] = {
+const base = {
   injectiveAddress: mockFactory.injectiveAddress,
-  subaccountId: mockFactory.subaccountId,
-  spotOrdersToCancel: [spotOrderToCancel],
+  subaccountId,
 }
 
-const message = MsgBatchUpdateOrders.fromJSON(params)
+type Field = { name: string; type: string }
 
-const emptyListKeys = [
-  'spot_market_ids_to_cancel_all',
-  'derivative_market_ids_to_cancel_all',
-  'binary_options_market_ids_to_cancel_all',
-  'derivative_orders_to_cancel',
-  'binary_options_orders_to_cancel',
-  'spot_orders_to_create',
-  'derivative_orders_to_create',
-  'binary_options_orders_to_create',
-] as const
+const typedV1 = (message: MsgBatchUpdateOrders) => {
+  const { eip712Args } = prepareEip712({ messages: message })
+  const typedData = getEip712TypedData(eip712Args)
+  const types = typedData.types as Record<string, Field[]>
+
+  return {
+    value: message.toEip712().value as Record<string, any>,
+    msgValue: types.MsgValue,
+    types,
+  }
+}
 
 describe('MsgBatchUpdateOrders', () => {
-  it('omits empty lists from EIP712 v1 typed data', () => {
-    const amino = message.toAmino()
-    const aminoValue = amino.value as Record<string, any>
-    const cancel = {
-      market_id: spotOrderToCancel.marketId,
-      subaccount_id: spotOrderToCancel.subaccountId,
-      order_hash: spotOrderToCancel.orderHash,
-      cid: '',
-    }
-
-    expect(amino.type).toBe('exchange/MsgBatchUpdateOrders')
-    expect(aminoValue.subaccount_id).toBe('')
-    expect(aminoValue.spot_orders_to_cancel).toEqual([cancel])
-
-    for (const key of emptyListKeys) {
-      expect(aminoValue[key]).toEqual([])
-    }
-
-    const eip712 = message.toEip712()
-    const eip712Value = eip712.value as Record<string, any>
-
-    expect(eip712.type).toBe('exchange/MsgBatchUpdateOrders')
-    expect(eip712Value.sender).toBe(mockFactory.injectiveAddress)
-    expect(eip712Value.spot_orders_to_cancel).toEqual([cancel])
-    expect(eip712Value).not.toHaveProperty('subaccount_id')
-
-    for (const key of emptyListKeys) {
-      expect(eip712Value[key]).toEqual([])
-    }
-
-    const { eip712Args } = prepareEip712({ messages: message })
-    const typedData = getEip712TypedData(eip712Args)
-
-    expect(typedData.message.msgs[0]).toEqual(eip712)
-    expect(
-      (typedData.types as Record<string, { name: string; type: string }[]>)
-        .MsgValue,
-    ).toEqual([
-      { name: 'sender', type: 'string' },
-      { name: 'spot_orders_to_cancel', type: 'TypeSpotOrdersToCancel[]' },
-    ])
-    expect(typedData.types).toMatchObject({
-      TypeSpotOrdersToCancel: [
-        { name: 'market_id', type: 'string' },
-        { name: 'subaccount_id', type: 'string' },
-        { name: 'order_hash', type: 'string' },
+  it('signs a cancel-by-hash with order_mask and no empty cid', () => {
+    const message = MsgBatchUpdateOrders.fromJSON({
+      ...base,
+      spotOrdersToCancel: [
+        {
+          marketId,
+          subaccountId,
+          orderHash: mockFactory.orderHash,
+        },
       ],
     })
+    const { value, msgValue, types } = typedV1(message)
 
-    const cancelTypes = (
-      typedData.types as Record<string, { name: string; type: string }[]>
-    ).TypeSpotOrdersToCancel
+    expect(value.spot_orders_to_cancel).toEqual([
+      {
+        market_id: marketId,
+        subaccount_id: subaccountId,
+        order_hash: mockFactory.orderHash,
+      },
+    ])
+    expect(value).not.toHaveProperty('subaccount_id')
+    expect(msgValue.map((field) => field.name)).toEqual([
+      'sender',
+      'spot_orders_to_cancel',
+    ])
+    expect(types.TypeSpotOrdersToCancel).toEqual([
+      { name: 'market_id', type: 'string' },
+      { name: 'subaccount_id', type: 'string' },
+      { name: 'order_hash', type: 'string' },
+      { name: 'order_mask', type: 'int32' },
+    ])
+  })
 
-    expect(cancelTypes.map((field) => field.name)).not.toContain('cid')
-    expect(cancelTypes.map((field) => field.name)).not.toContain(
-      'expiration_block',
-    )
+  it('omits order_hash when cancelling by cid', () => {
+    const message = MsgBatchUpdateOrders.fromJSON({
+      ...base,
+      spotOrdersToCancel: [
+        {
+          marketId,
+          subaccountId,
+          cid: 'order-1',
+        },
+      ],
+    })
+    const { value, types } = typedV1(message)
 
-    const v2Msgs = JSON.parse(getEip712TypedDataV2(eip712Args).message.msgs)
-
-    expect(v2Msgs).toEqual([message.toWeb3Gw()])
-    expect(v2Msgs[0].subaccount_id).toBe('')
-
-    for (const key of emptyListKeys) {
-      expect(v2Msgs[0][key]).toEqual([])
-    }
+    expect(value.spot_orders_to_cancel).toEqual([
+      {
+        market_id: marketId,
+        subaccount_id: subaccountId,
+        cid: 'order-1',
+      },
+    ])
+    expect(types.TypeSpotOrdersToCancel.map((field) => field.name)).toEqual([
+      'market_id',
+      'subaccount_id',
+      'order_mask',
+      'cid',
+    ])
   })
 
   it('keeps subaccount_id when a cancel-all is set', () => {
-    const cancelAll = MsgBatchUpdateOrders.fromJSON({
-      ...params,
-      spotMarketIdsToCancelAll: [mockFactory.injUsdtSpotMarket.marketId],
+    const message = MsgBatchUpdateOrders.fromJSON({
+      ...base,
+      spotMarketIdsToCancelAll: [marketId],
     })
-    const eip712 = cancelAll.toEip712()
-    const value = eip712.value as Record<string, any>
-    const { eip712Args } = prepareEip712({ messages: cancelAll })
-    const typedData = getEip712TypedData(eip712Args)
-    const msgValue = (
-      typedData.types as Record<string, { name: string; type: string }[]>
-    ).MsgValue
+    const { value, msgValue } = typedV1(message)
 
-    expect(value.subaccount_id).toBe(mockFactory.subaccountId)
+    expect(value.subaccount_id).toBe(subaccountId)
     expect(msgValue.map((field) => field.name)).toContain('subaccount_id')
-    expect(JSON.parse(getEip712TypedDataV2(eip712Args).message.msgs)).toEqual([
-      cancelAll.toWeb3Gw(),
+  })
+
+  it('scales created orders and uses the chain field order', () => {
+    const message = MsgBatchUpdateOrders.fromJSON({
+      ...base,
+      spotOrdersToCreate: [
+        {
+          orderType: 1,
+          marketId,
+          feeRecipient: mockFactory.injectiveAddress2,
+          price: '1.5',
+          quantity: '2',
+          cid: 'cid-1',
+        },
+      ],
+    })
+    const { value, types } = typedV1(message)
+    const order = value.spot_orders_to_create[0]
+
+    expect(Object.keys(order)).toEqual([
+      'market_id',
+      'order_info',
+      'order_type',
+      'trigger_price',
     ])
+    expect(order.order_info.price).toBe('1500000000000000000')
+    expect(order.order_info.quantity).toBe(toChainFormat('2').toFixed())
+    expect(order.trigger_price).toBe(toChainFormat(0).toFixed())
+    expect(types.TypeSpotOrdersToCreate.map((field) => field.name)).toEqual([
+      'market_id',
+      'order_info',
+      'order_type',
+      'trigger_price',
+    ])
+  })
+
+  describe('EIP712 v1 matches Web3Gw', () => {
+    const cases: Array<[string, MsgBatchUpdateOrders]> = [
+      [
+        'cancel-by-hash',
+        MsgBatchUpdateOrders.fromJSON({
+          ...base,
+          spotOrdersToCancel: [
+            {
+              marketId,
+              subaccountId,
+              orderHash: mockFactory.orderHash,
+            },
+          ],
+        }),
+      ],
+      [
+        'cancel-by-cid',
+        MsgBatchUpdateOrders.fromJSON({
+          ...base,
+          spotOrdersToCancel: [
+            {
+              marketId,
+              subaccountId,
+              cid: 'order-1',
+            },
+          ],
+        }),
+      ],
+      [
+        'cancel-all',
+        MsgBatchUpdateOrders.fromJSON({
+          ...base,
+          spotMarketIdsToCancelAll: [marketId],
+        }),
+      ],
+      [
+        'create',
+        MsgBatchUpdateOrders.fromJSON({
+          ...base,
+          spotOrdersToCreate: [
+            {
+              orderType: 1,
+              marketId,
+              feeRecipient: mockFactory.injectiveAddress2,
+              price: '1.5',
+              quantity: '2',
+              cid: 'cid-1',
+            },
+          ],
+        }),
+      ],
+    ]
+
+    it.each(cases)('%s', async (_name, message) => {
+      const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
+        messages: message,
+      })
+      const txResponse = await new IndexerGrpcWeb3GwApi(
+        endpoints.indexer,
+      ).prepareEip712Request({
+        ...prepareEip712Request,
+        eip712Version: EIP712Version.V1,
+      })
+
+      expect(getEip712TypedData(eip712Args)).toStrictEqual(
+        JSON.parse(txResponse.data),
+      )
+    })
   })
 })
