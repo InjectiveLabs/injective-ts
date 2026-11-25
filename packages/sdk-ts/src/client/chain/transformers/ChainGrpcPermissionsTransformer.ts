@@ -116,6 +116,7 @@ export class ChainGrpcPermissionsTransformer {
 
     return {
       wasmHookQueryMaxGas: params.contractHookMaxGas.toString(),
+      ownerBlacklistQueryMaxGas: params.ownerBlacklistQueryMaxGas.toString(),
     }
   }
 

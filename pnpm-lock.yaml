@@ -244,8 +244,8 @@ importers:
         specifier: 1.17.5
         version: 1.17.5
       '@injectivelabs/core-proto-ts-v2':
-        specifier: 1.20.5
-        version: 1.20.5
+        specifier: 1.21.0
+        version: 1.21.0
       '@injectivelabs/exceptions':
         specifier: workspace:*
         version: link:../exceptions
@@ -1182,8 +1182,8 @@ packages:
   '@injectivelabs/abacus-proto-ts-v2@1.17.5':
     resolution: {integrity: sha512-6/W2i87y1uqcBSlncBMLKyiBje2ZNf4/PmVN2baMS3irJzGkfmAuVj2aIVyDnhDJ/bxuS7pv5MPPFF1h0u0PTw==}
 
-  '@injectivelabs/core-proto-ts-v2@1.20.5':
-    resolution: {integrity: sha512-8yotgFu4qVq+pFTMv42pZMikWnsfrMkDiLgwmCuUYyekR0RmfpniSePKLAJQ+/R0o06l/hfY8OUuAHO6nxhLRw==}
+  '@injectivelabs/core-proto-ts-v2@1.21.0':
+    resolution: {integrity: sha512-Mrctlx6rwUmHRK1BqfvXr9k3og9Q7ncYNtK0pZ9KqgxkFx0tEbJz/fFYu+yOU0wtvDrCo4vLHDGoThSjNhUrbg==}
 
   '@injectivelabs/grpc-web-node-http-transport@0.0.2':
     resolution: {integrity: sha512-rpyhXLiGY/UMs6v6YmgWHJHiO9l0AgDyVNv+jcutNVt4tQrmNvnpvz2wCAGOFtq5LuX/E9ChtTVpk3gWGqXcGA==}
@@ -8670,7 +8670,7 @@ snapshots:
       '@protobuf-ts/runtime': 2.11.1
       '@protobuf-ts/runtime-rpc': 2.11.1
 
-  '@injectivelabs/core-proto-ts-v2@1.20.5':
+  '@injectivelabs/core-proto-ts-v2@1.21.0':
     dependencies:
       '@protobuf-ts/grpcweb-transport': 2.11.1
       '@protobuf-ts/runtime': 2.11.1

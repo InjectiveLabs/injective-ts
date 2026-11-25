@@ -36,6 +36,17 @@ const aminoParams = {
 }
 
 describe('MsgUpdateRateLimit', () => {
+  it.each([2, 3, 12])('rejects retired oracle %s', (newTokenOracleType) => {
+    const invalid = MsgUpdateRateLimit.fromJSON({
+      ...params,
+      newTokenOracleType,
+    })
+
+    expect(() => invalid.toProto()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toAmino()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toEip712V2()).toThrow('has been removed in core v1.21')
+  })
+
   it('generates proper proto', () => {
     const proto = message.toProto()
 

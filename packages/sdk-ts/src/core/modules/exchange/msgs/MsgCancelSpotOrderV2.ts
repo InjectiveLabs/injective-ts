@@ -1,6 +1,7 @@
 import { GeneralException } from '@injectivelabs/exceptions'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 
 export declare namespace MsgCancelSpotOrderV2 {
   export interface Params {
@@ -56,6 +57,13 @@ export default class MsgCancelSpotOrderV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgCancelSpotOrder,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const proto = this.toProto()
     const message = {
       sender: proto.sender,
@@ -66,13 +74,13 @@ export default class MsgCancelSpotOrderV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgCancelSpotOrder',
+      type: 'exchange/v2/MsgCancelSpotOrder',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {

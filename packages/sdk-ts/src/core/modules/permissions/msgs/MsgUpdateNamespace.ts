@@ -207,10 +207,23 @@ export default class MsgUpdateNamespace extends MsgBase<
         ],
     }))
 
+    /**
+     * EIP-712 v2 signatures cover the message JSON the chain rebuilds with
+     * `cdc.MarshalInterfaceJSON`, which serializes unset hooks as `null` and
+     * keeps proto field order. The amino JSON leaves unset hooks `undefined`,
+     * which `JSON.stringify` drops, so the signature would never verify.
+     */
     const messageAdjusted = {
-      ...web3gw,
+      '@type': web3gw['@type'],
+      sender: web3gw.sender,
+      denom: web3gw.denom,
+      wasm_hook: web3gw.wasm_hook ?? null,
+      role_permissions: web3gw.role_permissions,
+      role_managers: web3gw.role_managers,
       policy_statuses: policyStatuses,
       policy_manager_capabilities: policyManagerCapabilities,
+      evm_hook: web3gw.evm_hook ?? null,
+      evm_post_hook: web3gw.evm_post_hook ?? null,
     }
 
     return messageAdjusted

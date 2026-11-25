@@ -277,9 +277,7 @@ describe('IndexerGrpcExplorerApi', () => {
 
   test.skip('fetchAccountTxsV2WithBlockDetails', async () => {
     try {
-      const response = await new IndexerGrpcExplorerApi(
-        getNetworkEndpoints(Network.Testnet).indexer,
-      ).fetchAccountTxsV2({
+      const response = await indexerGrpcExplorerApi.fetchAccountTxsV2({
         address: 'inj17gkuet8f6pssxd8nycm3qr9d9y699rupv6397z',
         perPage: 10,
         type: 'cosmos.bank.v1beta1.MsgSend,cosmos.bank.v1beta1.MsgMultiSend',

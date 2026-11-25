@@ -12,26 +12,16 @@ import type {
 } from '../types/exchange.js'
 import type {
   ChainPosition,
-  PointsMultiplier,
   ChainDenomDecimal,
   GrpcChainPosition,
-  CampaignRewardPool,
   FeeDiscountTierTTL,
-  IsOptedOutOfRewards,
   FeeDiscountSchedule,
   FeeDiscountTierInfo,
-  TradeRewardCampaign,
-  GrpcPointsMultiplier,
   ExchangeModuleParams,
   ChainDenomMinNotional,
-  GrpcCampaignRewardPool,
   FeeDiscountAccountInfo,
   GrpcFeeDiscountTierTTL,
   ChainDerivativePosition,
-  TradingRewardCampaignInfo,
-  GrpcTradingRewardCampaignInfo,
-  TradingRewardCampaignBoostInfo,
-  GrpcTradingRewardCampaignBoostInfo,
 } from '../types/exchange.js'
 
 /**
@@ -139,27 +129,6 @@ export class ChainGrpcExchangeTransformer {
     }
   }
 
-  static tradingRewardsCampaignResponseToTradingRewardsCampaign(
-    response: InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignResponse,
-  ): TradeRewardCampaign {
-    return {
-      tradingRewardCampaignInfo:
-        ChainGrpcExchangeTransformer.grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
-          response.tradingRewardCampaignInfo,
-        ),
-      tradingRewardPoolCampaignScheduleList:
-        response.tradingRewardPoolCampaignSchedule.map(
-          ChainGrpcExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool,
-        ),
-      pendingTradingRewardPoolCampaignScheduleList:
-        response.pendingTradingRewardPoolCampaignSchedule.map(
-          ChainGrpcExchangeTransformer.grpcCampaignRewardPoolToCampaignRewardPool,
-        ),
-      totalTradeRewardPoints: response.totalTradeRewardPoints,
-      pendingTotalTradeRewardPointsList: response.pendingTotalTradeRewardPoints,
-    }
-  }
-
   static feeDiscountAccountInfoResponseToFeeDiscountAccountInfo(
     response: InjectiveExchangeV1Beta1QueryPb.QueryFeeDiscountAccountInfoResponse,
   ): FeeDiscountAccountInfo {
@@ -204,67 +173,6 @@ export class ChainGrpcExchangeTransformer {
     }
   }
 
-  static grpcPointsMultiplierToPointsMultiplier(
-    point: GrpcPointsMultiplier,
-  ): PointsMultiplier {
-    return {
-      makerPointsMultiplier: point.makerPointsMultiplier,
-      takerPointsMultiplier: point.takerPointsMultiplier,
-    }
-  }
-
-  static grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
-    info?: GrpcTradingRewardCampaignBoostInfo,
-  ): TradingRewardCampaignBoostInfo | undefined {
-    if (!info) {
-      return
-    }
-
-    return {
-      boostedSpotMarketIdsList: info.boostedSpotMarketIds,
-      boostedDerivativeMarketIdsList: info.boostedDerivativeMarketIds,
-      spotMarketMultipliersList: info.spotMarketMultipliers.map(
-        ChainGrpcExchangeTransformer.grpcPointsMultiplierToPointsMultiplier,
-      ),
-      derivativeMarketMultipliersList: info.derivativeMarketMultipliers.map(
-        ChainGrpcExchangeTransformer.grpcPointsMultiplierToPointsMultiplier,
-      ),
-    }
-  }
-
-  static grpcTradingRewardCampaignInfoToTradingRewardCampaignInfo(
-    info?: GrpcTradingRewardCampaignInfo,
-  ): TradingRewardCampaignInfo | undefined {
-    if (!info) {
-      return
-    }
-
-    return {
-      campaignDurationSeconds: parseInt(
-        info.campaignDurationSeconds.toString(),
-        10,
-      ),
-      quoteDenomsList: info.quoteDenoms,
-      tradingRewardBoostInfo:
-        ChainGrpcExchangeTransformer.grpcTradingRewardCampaignBoostInfoToTradingRewardCampaignBoostInfo(
-          info.tradingRewardBoostInfo!,
-        ),
-      disqualifiedMarketIdsList: info.disqualifiedMarketIds,
-    }
-  }
-
-  static grpcCampaignRewardPoolToCampaignRewardPool(
-    pool: GrpcCampaignRewardPool,
-  ): CampaignRewardPool {
-    return {
-      startTimestamp: parseInt(pool.startTimestamp.toString(), 10),
-      maxCampaignRewardsList: pool.maxCampaignRewards.map((coin) => ({
-        amount: coin.amount,
-        denom: coin.denom,
-      })),
-    }
-  }
-
   static grpcPositionToPosition(position: GrpcChainPosition): ChainPosition {
     return {
       islong: position.isLong,
@@ -284,14 +192,6 @@ export class ChainGrpcExchangeTransformer {
         ),
       }
     })
-  }
-
-  static isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
-    response: InjectiveExchangeV1Beta1QueryPb.QueryIsOptedOutOfRewardsResponse,
-  ): IsOptedOutOfRewards {
-    return {
-      isOptedOut: response.isOptedOut,
-    }
   }
 
   static activeStakeGrantResponseToActiveStakeGrant(

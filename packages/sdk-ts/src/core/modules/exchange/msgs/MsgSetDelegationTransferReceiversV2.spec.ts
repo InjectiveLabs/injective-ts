@@ -13,7 +13,7 @@ const params: MsgSetDelegationTransferReceiversV2['params'] = {
 }
 
 const protoType = '/injective.exchange.v2.MsgSetDelegationTransferReceivers'
-const protoTypeAmino = 'exchange/MsgSetDelegationTransferReceivers'
+const protoTypeAmino = 'exchange/v2/MsgSetDelegationTransferReceivers'
 const protoParams = {
   sender: params.sender,
   receivers: params.receivers,
@@ -58,6 +58,14 @@ describe('MsgSetDelegationTransferReceiversV2', () => {
     })
   })
 
+  it('EIP712 v1 values and type equal the amino-json of the proto', () => {
+    const eip712 = message.toEip712()
+    const amino = message.toAmino()
+
+    expect(eip712.type).toBe(amino.type)
+    expect(eip712.value).toStrictEqual(amino.value)
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,
@@ -74,6 +82,9 @@ describe('MsgSetDelegationTransferReceiversV2', () => {
       })
 
       expect(eip712TypedData).toStrictEqual(JSON.parse(txResponse.data))
+      expect(message.toAmino()).toStrictEqual(
+        JSON.parse(txResponse.data).message.msgs[0],
+      )
     })
 
     it('EIP712 v2', async () => {
