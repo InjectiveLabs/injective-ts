@@ -326,9 +326,7 @@ export default class MsgBatchUpdateOrders extends MsgBase<
       (params.spotMarketIdsToCancelAll &&
         params.spotMarketIdsToCancelAll.length > 0) ||
       (params.derivativeMarketIdsToCancelAll &&
-        params.derivativeMarketIdsToCancelAll.length > 0) ||
-      (params.binaryOptionsMarketIdsToCancelAll &&
-        params.binaryOptionsMarketIdsToCancelAll.length > 0)
+        params.derivativeMarketIdsToCancelAll.length > 0)
 
     if (hasCancelAll) {
       return amino
