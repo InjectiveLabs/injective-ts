@@ -188,4 +188,58 @@ export class IndexerGrpcRFQApi extends BaseIndexerGrpcConsumer {
       response,
     )
   }
+
+  /**
+   * Lists conditional orders that reached a terminal status within a time
+   * window, sorted by terminal time ascending. Paginate by passing the
+   * previous response's `next` as `token`.
+   */
+  async listTerminalConditionalOrders(
+    params?: {
+      token?: string
+      status?: string[]
+      endTime?: number
+      perPage?: number
+      startTime?: number
+    },
+    options?: RequestOptions,
+  ) {
+    throwIfAborted(options?.signal)
+    const { status, startTime, endTime, perPage, token } = params || {}
+    const request =
+      InjectiveRFQExchangeRpcPb.ListTerminalConditionalOrdersRequest.create()
+
+    if (status && status.length > 0) {
+      request.status = status
+    }
+
+    if (startTime) {
+      request.startTime = BigInt(startTime)
+    }
+
+    if (endTime) {
+      request.endTime = BigInt(endTime)
+    }
+
+    if (perPage) {
+      request.perPage = perPage
+    }
+
+    if (token) {
+      request.token = token
+    }
+
+    const response = await this.executeGrpcCall<
+      InjectiveRFQExchangeRpcPb.ListTerminalConditionalOrdersRequest,
+      InjectiveRFQExchangeRpcPb.ListTerminalConditionalOrdersResponse
+    >(
+      request,
+      this.client.listTerminalConditionalOrders.bind(this.client),
+      options,
+    )
+
+    return IndexerGrpcRfqTransformer.listTerminalConditionalOrdersResponseToConditionalOrders(
+      response,
+    )
+  }
 }

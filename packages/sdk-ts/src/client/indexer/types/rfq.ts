@@ -186,6 +186,11 @@ export interface RFQConditionalOrdersResponse {
   orders: RFQConditionalOrder[]
 }
 
+export interface RFQTerminalConditionalOrdersResponse {
+  next: string
+  orders: RFQConditionalOrder[]
+}
+
 export type GrpcRFQQuote = InjectiveRFQRpcPb.RFQQuoteType
 export type GrpcRFQExpiry = InjectiveRFQRpcPb.RFQExpiryType
 export type GrpcRFQRequest = InjectiveRFQRpcPb.RFQRequestType
