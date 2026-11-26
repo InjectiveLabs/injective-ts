@@ -13,6 +13,7 @@ import type {
   GrpcRFQProcessedQuote,
   GrpcRFQConditionalOrder,
   RFQConditionalOrdersResponse,
+  RFQTerminalConditionalOrdersResponse,
 } from '../types'
 
 /**
@@ -193,6 +194,17 @@ export class IndexerGrpcRfqTransformer {
   static listConditionalOrdersResponseToConditionalOrders(
     response: InjectiveRFQRpcPb.ListConditionalOrdersResponse,
   ): RFQConditionalOrdersResponse {
+    return {
+      next: response.next,
+      orders: response.orders.map(
+        IndexerGrpcRfqTransformer.grpcConditionalOrderToConditionalOrder,
+      ),
+    }
+  }
+
+  static listTerminalConditionalOrdersResponseToConditionalOrders(
+    response: InjectiveRFQRpcPb.ListTerminalConditionalOrdersResponse,
+  ): RFQTerminalConditionalOrdersResponse {
     return {
       next: response.next,
       orders: response.orders.map(
