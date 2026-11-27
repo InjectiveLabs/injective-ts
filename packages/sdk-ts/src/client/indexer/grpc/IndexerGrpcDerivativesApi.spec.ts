@@ -1,5 +1,6 @@
 import { mockFactory } from '@injectivelabs/utils/test-utils'
 import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
+import * as InjectiveDerivativeExchangeRpcPb from '@injectivelabs/indexer-proto-ts-v2/generated/injective_derivative_exchange_rpc_pb'
 import { getDefaultSubaccountId } from '../../../utils/address.js'
 import { IndexerGrpcDerivativesApi } from './IndexerGrpcDerivativesApi.js'
 import type { DerivativeMarket } from '../types/index.js'
@@ -285,6 +286,25 @@ describe('IndexerGrpcDerivativeApi', () => {
         'IndexerGrpcDerivativesApi.fetchFundingRates => ' + (e as any).message,
       )
     }
+  })
+
+  test('fetchFundingRates sends pagination endTime', async () => {
+    const execute = vi
+      .spyOn(indexerGrpcDerivativesApi as any, 'executeGrpcCall')
+      .mockResolvedValue(
+        InjectiveDerivativeExchangeRpcPb.FundingRatesResponse.create(),
+      )
+
+    await indexerGrpcDerivativesApi.fetchFundingRates({
+      marketId: 'market',
+      pagination: { limit: 3, endTime: 1795132800000 },
+    })
+
+    expect(execute.mock.calls[0][0]).toMatchObject({
+      marketId: 'market',
+      limit: 3,
+      endTime: 1795132800000n,
+    })
   })
 
   test('fetchFundingPayments', async () => {
