@@ -1,6 +1,7 @@
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/exchange_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import type { TypedDataField } from '../../../tx/eip712/types.js'
 
 export declare namespace MsgUpdateSubaccountRiskProfileV2 {
@@ -69,10 +70,17 @@ export default class MsgUpdateSubaccountRiskProfileV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgUpdateSubaccountRiskProfile,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const proto = this.toProto()
 
     return {
-      type: 'exchange/MsgUpdateSubaccountRiskProfile',
+      type: 'exchange/v2/MsgUpdateSubaccountRiskProfile',
       value: {
         sender: proto.sender,
         subaccount_id: proto.subaccountId,
@@ -82,7 +90,7 @@ export default class MsgUpdateSubaccountRiskProfileV2 extends MsgBase<
   }
 
   public toWeb3Gw() {
-    const { value } = this.toAmino()
+    const { value } = this.toAminoRaw()
 
     return {
       '@type': '/injective.exchange.v2.MsgUpdateSubaccountRiskProfile',
@@ -100,29 +108,16 @@ export default class MsgUpdateSubaccountRiskProfileV2 extends MsgBase<
     }
   }
 
-  public toEip712() {
-    const amino = this.toAmino()
-    const { value, type } = amino
-    const riskProfile = (value as any).risk_profile
-
-    return {
-      type,
-      value: {
-        ...value,
-        risk_profile: {
-          mode: riskProfile.mode,
-          reservation_policy: riskProfile.reservation_policy,
-        },
-      },
-    }
-  }
-
   public toEip712Types(): Map<string, TypedDataField[]> {
     const map = new Map<string, TypedDataField[]>()
 
     map.set('TypeRiskProfile', [
       { name: 'mode', type: 'int32' },
       { name: 'reservation_policy', type: 'int32' },
+      // the chain lists credit_line_id in the types only when it is set
+      ...(this.params.riskProfile.creditLineId
+        ? [{ name: 'credit_line_id', type: 'string' }]
+        : []),
     ])
 
     map.set('MsgValue', [

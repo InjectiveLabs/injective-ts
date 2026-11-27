@@ -1,5 +1,6 @@
 import * as ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
 import type { Coin } from '@injectivelabs/ts-types'
+import type { OracleType } from '@injectivelabs/core-proto-ts-v2/generated/injective/oracle/v1beta1/oracle_pb'
 import type * as InjectiveExchangeV1Beta1QueryPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/query_pb'
 import type * as InjectiveExchangeV1Beta1GenesisPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/genesis_pb'
 import type * as InjectiveExchangeV1Beta1ExchangePb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v1beta1/exchange_pb'
@@ -24,30 +25,6 @@ export interface FeeDiscountSchedule {
   disqualifiedMarketIdsList: Array<string>
 }
 
-export interface PointsMultiplier {
-  makerPointsMultiplier: string
-  takerPointsMultiplier: string
-}
-
-export interface TradingRewardCampaignBoostInfo {
-  boostedSpotMarketIdsList: Array<string>
-  spotMarketMultipliersList: Array<PointsMultiplier>
-  boostedDerivativeMarketIdsList: Array<string>
-  derivativeMarketMultipliersList: Array<PointsMultiplier>
-}
-
-export interface TradingRewardCampaignInfo {
-  campaignDurationSeconds: number
-  quoteDenomsList: Array<string>
-  tradingRewardBoostInfo?: TradingRewardCampaignBoostInfo
-  disqualifiedMarketIdsList: Array<string>
-}
-
-export interface CampaignRewardPool {
-  startTimestamp: number
-  maxCampaignRewardsList: Coin[]
-}
-
 export interface FeeDiscountTierTTL {
   tier: number
   ttlTimestamp: number
@@ -57,18 +34,6 @@ export interface FeeDiscountAccountInfo {
   tierLevel: number
   accountInfo?: FeeDiscountTierInfo
   accountTtl?: FeeDiscountTierTTL
-}
-
-export interface TradeRewardCampaign {
-  tradingRewardCampaignInfo?: TradingRewardCampaignInfo
-  tradingRewardPoolCampaignScheduleList: CampaignRewardPool[]
-  totalTradeRewardPoints: string
-  pendingTradingRewardPoolCampaignScheduleList: CampaignRewardPool[]
-  pendingTotalTradeRewardPointsList: string[]
-}
-
-export interface IsOptedOutOfRewards {
-  isOptedOut: boolean
 }
 
 export interface ExchangeParams {
@@ -99,6 +64,30 @@ export interface ExchangeParams {
   postOnlyModeHeightThreshold: string
   marginDecreasePriceTimestampThresholdSeconds: string
   exchangeAdmins: string[]
+  /** chain v1.21+ (exchange v2 params only) */
+  outflowGuardParams?: ChainOutflowGuardParams
+}
+
+/** chain v1.21+: a denom valued and limited by the outflow guard */
+export interface ChainOutflowGuardTrackedDenom {
+  denom: string
+  /** decimals of the denom's base unit */
+  decimals: number
+  /** oracle_type, oracle_base and oracle_quote select the price feed for one whole unit of the denom */
+  oracleType: OracleType
+  oracleBase: string
+  oracleQuote: string
+}
+
+/** chain v1.21+: the exchange outflow guard (net outflow limit) configuration */
+export interface ChainOutflowGuardParams {
+  enabled: boolean
+  /**
+   * maximum net outflow over the rolling window, as a fraction of the perimeter notional
+   * at the start of the window, in (0, 1]. Raw LegacyDec (x 1e18, see `cosmosSdkDecToBigNumber`)
+   */
+  maxOutflowRatio: string
+  trackedDenoms: ChainOutflowGuardTrackedDenom[]
 }
 
 export interface ExchangeModuleParams extends ExchangeParams {
@@ -145,6 +134,26 @@ export interface ChainCrossMarginPoolSnapshot {
   orderLockRequirement: string
   positiveUpnlHaircutRate: string
   healthFactor: string
+  ratchetedMaintenanceMarginTotal: string
+  crossMarginUtilRatio: string
+  positionOrderLockRequirement: string
+  nonPositionOrderLockRequirement: string
+}
+
+/** chain v1.21+: the exchange outflow guard's state for the current block */
+export interface ChainOutflowGuardState {
+  /** whether the guard is enabled in params */
+  enabled: boolean
+  /** whether the manual block (MsgSetOutflowGuardBlocked) is set, only effective while the guard is enabled */
+  manuallyBlocked: boolean
+  /**
+   * remaining 24h net outflow allowance in USD (ignoring the manual block), as the raw
+   * LegacyDec (x 1e18, see `cosmosSdkDecToBigNumber`). Zero when the guard is disabled
+   * or failed, zero or negative once the cap is exhausted.
+   */
+  headroom: string
+  /** whether tracked outflows to non-exempt addresses are refused this block */
+  blocking: boolean
 }
 
 export interface ChainOrderbookLevel {
@@ -208,10 +217,6 @@ export interface ChainSubaccountOrderData {
   orderHash: string
 }
 
-export interface ChainTradeRewardPoints {
-  accountTradeRewardPoints: string[]
-}
-
 export interface ChainOpenInterest {
   marketId: string
   balance: string
@@ -265,6 +270,7 @@ export interface ChainPerpetualMarketInfo {
   hourlyInterestRate: string
   nextFundingTimestamp: number
   fundingInterval: number
+  fundingImpactNotional: string
 }
 
 export interface ChainExpiryFuturesMarketInfo {
@@ -281,22 +287,14 @@ export interface ChainPerpetualMarketFunding {
   cumulativeFunding: string
   cumulativePrice: string
   lastTimestamp: number
+  periodStart: number
+  lastPremium: string
+  lastSampleTimestamp: number
 }
 
 export interface ChainTierStatistic {
   tier: number
   count: number
-}
-
-export interface ChainTradeRecord {
-  timestamp: number
-  price: string
-  quantity: string
-}
-
-export interface ChainTradeRecords {
-  marketId: string
-  latestTradeRecords: ChainTradeRecord[]
 }
 
 export interface ChainGrantAuthorization {
@@ -322,48 +320,6 @@ export interface ChainSubaccountOrderbookMetadata {
   }
 }
 
-export interface ChainMarketVolatility {
-  volatility: string
-  historyMetadata?: {
-    groupCount: number
-    recordsSampleSize: number
-    mean: string
-    twap: string
-    firstTimestamp: number
-    lastTimestamp: number
-    minPrice: string
-    maxPrice: string
-    medianPrice: string
-  }
-  rawHistory: ChainTradeRecord[]
-}
-
-export interface ChainBinaryOptionsMarket {
-  ticker: string
-  oracleSymbol: string
-  oracleProvider: string
-  oracleType: number
-  oracleScaleFactor: number
-  expirationTimestamp: number
-  settlementTimestamp: number
-  admin: string
-  quoteDenom: string
-  marketId: string
-  makerFeeRate: string
-  takerFeeRate: string
-  relayerFeeShareRate: string
-  status: number
-  minPriceTickSize: string
-  minQuantityTickSize: string
-  settlementPrice: string
-  minNotional: string
-  adminPermissions: number
-  quoteDecimals: number
-  openNotionalCap?: { type?: 'uncapped' | 'capped'; value?: string }
-  hasDisabledMinimalProtocolFee: boolean
-  forcePausedInfo?: { reason: number; markPriceAtPausing: string }
-}
-
 export type GrpcOrderInfo = InjectiveExchangeV1Beta1ExchangePb.OrderInfo
 export type GrpcSpotMarket = InjectiveExchangeV1Beta1ExchangePb.SpotMarket
 export type GrpcSpotMarketOrder =
@@ -376,21 +332,11 @@ export type GrpcFeeDiscountTierTTL =
   InjectiveExchangeV1Beta1ExchangePb.FeeDiscountTierTTL
 export type GrpcFeeDiscountSchedule =
   InjectiveExchangeV1Beta1ExchangePb.FeeDiscountSchedule
-export type GrpcPointsMultiplier =
-  InjectiveExchangeV1Beta1ExchangePb.PointsMultiplier
-export type GrpcTradingRewardCampaignBoostInfo =
-  InjectiveExchangeV1Beta1ExchangePb.TradingRewardCampaignBoostInfo
-export type GrpcTradingRewardCampaignInfo =
-  InjectiveExchangeV1Beta1ExchangePb.TradingRewardCampaignInfo
-export type GrpcCampaignRewardPool =
-  InjectiveExchangeV1Beta1ExchangePb.CampaignRewardPool
 export type GrpcChainPosition = InjectiveExchangeV1Beta1ExchangePb.Position
 export type GrpcChainDerivativePosition =
   InjectiveExchangeV1Beta1GenesisPb.DerivativePosition
 export type GrpcFeeDiscountAccountInfo =
   InjectiveExchangeV1Beta1QueryPb.QueryFeeDiscountAccountInfoResponse
-export type GrpcTradeRewardCampaign =
-  InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignResponse
 export type GrpcDenomDecimals = InjectiveExchangeV1Beta1ExchangePb.DenomDecimals
 export type GrpcDenomMinNotional =
   InjectiveExchangeV1Beta1ExchangePb.DenomMinNotional

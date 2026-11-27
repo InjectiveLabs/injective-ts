@@ -18,12 +18,17 @@ export const createEip712StdSignDoc = ({
   sequence: number
   gas?: string
   msgs: Msgs[]
-}) => ({
-  chain_id: chainId,
-  timeout_height: timeoutHeight || '',
-  account_number: accountNumber.toString(),
-  sequence: sequence.toString(),
-  fee: getStdFee({ gas }),
-  msgs: msgs.map((m) => m.toEip712()),
-  memo: memo || '',
-})
+}) => {
+  // root messages of the transaction, the chain cannot verify some of them signed with EIP712 v1
+  msgs.forEach((m) => m.assertEip712V1Supported())
+
+  return {
+    chain_id: chainId,
+    timeout_height: timeoutHeight || '',
+    account_number: accountNumber.toString(),
+    sequence: sequence.toString(),
+    fee: getStdFee({ gas }),
+    msgs: msgs.map((m) => m.toEip712()),
+    memo: memo || '',
+  }
+}

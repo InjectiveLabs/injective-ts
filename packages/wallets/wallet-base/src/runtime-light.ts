@@ -290,6 +290,8 @@ const eip712V2OnlyWallets = [
   Wallet.WalletConnect,
 ] as Wallet[]
 
+const eip712V3Wallets = [Wallet.Phantom] as Wallet[]
+
 export const isEvmWallet = (wallet: Wallet): boolean =>
   evmWallets.includes(wallet)
 
@@ -303,6 +305,9 @@ export const isCosmosBrowserWallet = (wallet: Wallet): boolean =>
 
 export const isEip712V2OnlyWallet = (wallet: Wallet): boolean =>
   eip712V2OnlyWallets.includes(wallet)
+
+export const isEip712V3Wallet = (wallet: Wallet): boolean =>
+  eip712V3Wallets.includes(wallet)
 
 export const isCosmosAminoOnlyWallet = (wallet: Wallet): boolean =>
   wallet === Wallet.LedgerCosmos

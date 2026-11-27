@@ -2,7 +2,7 @@ import { Network, getNetworkEndpoints } from '@injectivelabs/networks'
 import { ChainGrpcEvmApi } from './ChainGrpcEvmApi.js'
 import type { ChainGrpcEvmTransformer } from '../transformers/ChainGrpcEvmTransformer.js'
 
-const endpoints = getNetworkEndpoints(Network.TestnetSentry)
+const endpoints = getNetworkEndpoints(Network.MainnetSentry)
 const chainGrpcEvmApi = new ChainGrpcEvmApi(endpoints.grpc)
 
 describe('ChainGrpcEvmApi', () => {

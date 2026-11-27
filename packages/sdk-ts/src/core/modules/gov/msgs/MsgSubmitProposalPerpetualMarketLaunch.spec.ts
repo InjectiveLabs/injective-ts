@@ -40,6 +40,17 @@ const params: MsgSubmitProposalPerpetualMarketLaunch['params'] = {
 const message = MsgSubmitProposalPerpetualMarketLaunch.fromJSON(params)
 
 describe('MsgSubmitProposalPerpetualMarketLaunch', () => {
+  it.each([2, 3, 12])('rejects retired oracle %s', (oracleType) => {
+    const invalid = MsgSubmitProposalPerpetualMarketLaunch.fromJSON({
+      ...params,
+      market: { ...params.market, oracleType },
+    })
+
+    expect(() => invalid.toProto()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toAmino()).toThrow('has been removed in core v1.21')
+    expect(() => invalid.toEip712V2()).toThrow('has been removed in core v1.21')
+  })
+
   describe('generates proper EIP712 compared to the Web3Gw (chain)', () => {
     const { endpoints, eip712Args, prepareEip712Request } = prepareEip712({
       messages: message,

@@ -82,62 +82,6 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     )
   }
 
-  async fetchTradingRewardsCampaign(options?: RequestOptions) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignRequest.create()
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignRequest,
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardCampaignResponse
-    >(request, this.client.tradeRewardCampaign.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformer.tradingRewardsCampaignResponseToTradingRewardsCampaign(
-      response,
-    )
-  }
-
-  async fetchTradeRewardPoints(
-    injectiveAddresses: string[],
-    options?: RequestOptions,
-  ) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsRequest.create()
-
-    request.accounts = injectiveAddresses
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsRequest,
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsResponse
-    >(request, this.client.tradeRewardPoints.bind(this.client), options)
-
-    return response.accountTradeRewardPoints
-  }
-
-  async fetchPendingTradeRewardPoints(
-    injectiveAddresses: string[],
-    timestamp?: number,
-    options?: RequestOptions,
-  ) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsRequest.create()
-
-    request.accounts = injectiveAddresses
-
-    if (timestamp) {
-      request.pendingPoolTimestamp = BigInt(timestamp)
-    }
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsRequest,
-      InjectiveExchangeV1Beta1QueryPb.QueryTradeRewardPointsResponse
-    >(request, this.client.pendingTradeRewardPoints.bind(this.client), options)
-
-    return response.accountTradeRewardPoints
-  }
-
   async fetchPositions(options?: RequestOptions) {
     throwIfAborted(options?.signal)
     const request =
@@ -167,23 +111,6 @@ export class ChainGrpcExchangeApi extends BaseGrpcConsumer {
     >(request, this.client.subaccountTradeNonce.bind(this.client), options)
 
     return response
-  }
-
-  async fetchIsOptedOutOfRewards(account: string, options?: RequestOptions) {
-    throwIfAborted(options?.signal)
-    const request =
-      InjectiveExchangeV1Beta1QueryPb.QueryIsOptedOutOfRewardsRequest.create()
-
-    request.account = account
-
-    const response = await this.executeGrpcCall<
-      InjectiveExchangeV1Beta1QueryPb.QueryIsOptedOutOfRewardsRequest,
-      InjectiveExchangeV1Beta1QueryPb.QueryIsOptedOutOfRewardsResponse
-    >(request, this.client.isOptedOutOfRewards.bind(this.client), options)
-
-    return ChainGrpcExchangeTransformer.isOptedOutOfRewardsResponseToIsOptedOutOfRewards(
-      response,
-    )
   }
 
   async fetchActiveStakeGrant(

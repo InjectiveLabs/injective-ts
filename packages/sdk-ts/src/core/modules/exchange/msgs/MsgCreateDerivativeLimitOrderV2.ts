@@ -2,6 +2,7 @@ import { toChainFormat } from '@injectivelabs/utils'
 import * as InjectiveExchangeV2TxPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/tx_pb'
 import * as InjectiveExchangeV2OrderPb from '@injectivelabs/core-proto-ts-v2/generated/injective/exchange/v2/order_pb'
 import { MsgBase } from '../../MsgBase.js'
+import { toAminoJson } from '../../../tx/amino/toAminoJson.js'
 import { numberToCosmosSdkDecString } from '../../../../utils/numbers.js'
 
 export declare namespace MsgCreateDerivativeLimitOrderV2 {
@@ -87,6 +88,13 @@ export default class MsgCreateDerivativeLimitOrderV2 extends MsgBase<
   }
 
   public toAmino() {
+    return toAminoJson(
+      InjectiveExchangeV2TxPb.MsgCreateDerivativeLimitOrder,
+      this.toProto(),
+    )
+  }
+
+  public toAminoRaw() {
     const { params } = this
     const message = {
       sender: params.injectiveAddress,
@@ -107,13 +115,13 @@ export default class MsgCreateDerivativeLimitOrderV2 extends MsgBase<
     }
 
     return {
-      type: 'exchange/MsgCreateDerivativeLimitOrder',
+      type: 'exchange/v2/MsgCreateDerivativeLimitOrder',
       value: message,
     }
   }
 
   public toWeb3Gw() {
-    const amino = this.toAmino()
+    const amino = this.toAminoRaw()
     const { value } = amino
 
     return {
@@ -143,33 +151,6 @@ export default class MsgCreateDerivativeLimitOrderV2 extends MsgBase<
     }
 
     return messageAdjusted
-  }
-
-  public toEip712() {
-    const { params } = this
-    const amino = this.toAmino()
-    const { value, type } = amino
-    const { expiration_block: _eb, ...orderWithoutExpiration } =
-      (value.order as any) || {}
-
-    const messageAdjusted = {
-      ...value,
-      order: {
-        ...orderWithoutExpiration,
-        order_info: {
-          ...orderWithoutExpiration?.order_info,
-          price: toChainFormat(params.price).toFixed(),
-          quantity: toChainFormat(params.quantity).toFixed(),
-        },
-        margin: toChainFormat(params.margin).toFixed(),
-        trigger_price: toChainFormat(params.triggerPrice || '0').toFixed(),
-      },
-    }
-
-    return {
-      type,
-      value: messageAdjusted,
-    }
   }
 
   public toDirectSign() {

@@ -88,4 +88,26 @@ describe('IndexerGrpcRFQApi', () => {
       )
     }
   })
+
+  test('listTerminalConditionalOrders', async () => {
+    try {
+      const response = await indexerGrpcRfqApi.listTerminalConditionalOrders({
+        perPage: 10,
+      })
+
+      expect(response).toBeDefined()
+      expect(response).toEqual(
+        expect.objectContaining<
+          ReturnType<
+            typeof IndexerGrpcRfqTransformer.listTerminalConditionalOrdersResponseToConditionalOrders
+          >
+        >(response),
+      )
+    } catch (e) {
+      console.error(
+        'IndexerGrpcRFQApi.listTerminalConditionalOrders => ' +
+          (e as any).message,
+      )
+    }
+  })
 })
