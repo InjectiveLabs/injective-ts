@@ -632,6 +632,10 @@ export class IndexerGrpcDerivativesApi extends BaseIndexerGrpcConsumer {
       if (pagination.limit !== undefined) {
         request.limit = pagination.limit
       }
+
+      if (pagination.endTime !== undefined) {
+        request.endTime = BigInt(pagination.endTime)
+      }
     }
 
     const response = await this.executeGrpcCall<
