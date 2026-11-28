@@ -95,4 +95,23 @@ describe('IndexerGrpcExplorerTransformer', () => {
       ])
     })
   })
+
+  describe('getTxByTxHashResponseToTx', () => {
+    it('keeps memo and error log of the transaction', () => {
+      const transaction =
+        IndexerGrpcExplorerTransformer.getTxByTxHashResponseToTx({
+          s: 'ok',
+          errmsg: '',
+          data: createTxDetailData({
+            code: 5,
+            memo: '10189320',
+            errorLog: 'insufficient funds',
+            gasFee: { amount: [], gasLimit: 0n, payer: '', granter: '' },
+          }),
+        })
+
+      expect(transaction.memo).toBe('10189320')
+      expect(transaction.errorLog).toBe('insufficient funds')
+    })
+  })
 })
