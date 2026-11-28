@@ -23,6 +23,14 @@ export const assertEip712V1Values = (
         ? (value as Record<string, unknown>)[field.name]
         : undefined
 
+    // Batch-cancel web3gw declares order_mask and leaves the zero default out of the value.
+    if (
+      field.name === 'order_mask' &&
+      (fieldValue === undefined || fieldValue === null)
+    ) {
+      continue
+    }
+
     if (fieldValue === undefined || fieldValue === null) {
       throw new GeneralException(
         new Error(
